@@ -22,7 +22,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -38,8 +38,8 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %                 Example - 'eff',0.99
 %                 Data Types - double
 %
-%     effshape : locacation or scale effiicency. dummy scalar. 
-%                If effshape=1 efficiency refers to shape 
+%     effshape : locacation or scale effiicency. dummy scalar.
+%                If effshape=1 efficiency refers to shape
 %                efficiency else (default) efficiency refers to location
 %                 Example - 'effshape',1
 %                 Data Types - double
@@ -83,16 +83,18 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
 %               The default is bisquare
-%                 Example - 'rhofunc','optimal' 
+%                 Example - 'rhofunc','optimal'
 %                 Data Types - char
 %
 % rhofuncparam: Additional parameters for the specified rho function.
-%               Scalar or vector.
+%               Scalar or vector or empty  value.
 %               For hyperbolic rho function it is possible to set up the
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
-%               a, b and c (the default values are a=2, b=4, c=8). 
-%                 Example - 'rhofuncparam',5 
+%               a, b and c (the default values are a=2, b=4, c=8). For the
+%               other rho functions (Tuhey, PD and optimal) it is an empty
+%               value.
+%                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
@@ -100,7 +102,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               that y and X are left unchanged. In other words the
 %               additional column of ones for the intercept is not added.
 %               As default nocheck=false.
-%               Example - 'nocheck',true 
+%               Example - 'nocheck',true
 %               Data Types - boolean
 %
 %       plots : Plot on the screen. Scalar or structure.
@@ -109,20 +111,20 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               confidence bands for the residuals is given by the input
 %               option conflev. If conflev is not specified a nominal 0.975
 %               confidence interval will be used.
-%                 Example - 'plots',0 
+%                 Example - 'plots',0
 %                 Data Types - single | double
 %
 %       yxsave : the response vector y and data matrix X are saved into the output
 %                structure out. Scalar.
 %               Default is 0, i.e. no saving is done.
-%               Example - 'yxsave',1 
+%               Example - 'yxsave',1
 %               Data Types - double
 %
 %  Output:
 %
 %      out :     A structure containing the following fields
 %
-%       out.beta  = p x 1 vector. Estimate of beta coefficients after 
+%       out.beta  = p x 1 vector. Estimate of beta coefficients after
 %                   refsteps refining steps
 %   out.residuals = n x 1 vector containing the estimates of the robust
 %                   scaled residuals
@@ -132,16 +134,16 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %   out.conflev   = Confidence level that was used to declare outliers
 %   out.weights   = n x 1 vector. Weights assigned to each observation
 %     out.rhofunc = string identifying the rho function which has been
-%                   used. 
+%                   used.
 % out.rhofuncparam= vector which contains the additional parameters
 %                   for the specified rho function which have been
 %                   used. For hyperbolic rho function the value of
 %                   k =sup CVC. For Hampel rho function the parameters
-%                   a, b and c. This field is present only if rhofunc is
+%                   a, b and c. This field is empty if rhofunc is not
 %                   'hampel' or 'hyperbolic'.
-%     out.y       = response vector y. The field is present only if option 
+%     out.y       = response vector y. The field is present only if option
 %                   yxsave is set to 1.
-%     out.X       = data matrix X. The field is present only if option 
+%     out.X       = data matrix X. The field is present only if option
 %                   yxsave is set to 1.
 %     out.class   = 'MMreg'
 %
@@ -213,7 +215,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
     % Weighting the residuals with a rho function.
     % Determine, e.g., an S estimate and extract the required arguments for the MM estimate.
     % This time use a Tukey biweight for S estimation and HA rho function
-    % for MM loop 
+    % for MM loop
     n=200;
     p=3;
     state1=123456;
@@ -270,22 +272,29 @@ reftoldef = 1e-7;
 % rho (psi) function which has to be used to weight the residuals
 rhofuncdef='bisquare';
 Srhofuncdef=rhofuncdef;
-% store default values in the structure options
-options=struct('refsteps',refstepsdef,'reftol',reftoldef,...
-    'eff',effdef,'effshape',effshapedef,'conflev',0.975,...
-    'rhofunc',rhofuncdef,'rhofuncparam','',...
-    'Srhofunc',Srhofuncdef,'Srhofuncparam','',...
-    'plots',0,'nocheck',false,'yxsave',0,'intercept',true);
 
-% check user options and update structure options
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:MMregcore:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if coder.target('MATLAB')
+    
+    % store default values in the structure options
+    options=struct('refsteps',refstepsdef,'reftol',reftoldef,...
+        'eff',effdef,'effshape',effshapedef,'conflev',0.975,...
+        'rhofunc',rhofuncdef,'rhofuncparam','',...
+        'Srhofunc',Srhofuncdef,'Srhofuncparam','',...
+        'plots',0,'nocheck',false,'yxsave',0,'intercept',true);
+    
+    % check user options and update structure options
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:MMregcore:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
+else
+    % MATLAB c coder initialization
+    c=zeros(1,n);  %#ok<PREALL>
 end
 
 % Write in structure 'options' the options chosen by the user
@@ -300,22 +309,24 @@ effshape= options.effshape; % nominal efficiency refers to shape or location
 refsteps= options.refsteps; % maximum refining iterations
 reftol  = options.reftol;   % tolerance for refining iterations covergence
 rhofunc = options.rhofunc;  % String which specifies the function to use to weight the residuals
-  
+
 psifunc=struct;
 
 if strcmp(rhofunc,'bisquare')
     
     % Compute tuning constant associated to the requested nominal efficiency
     % c = consistency factor for a given value of efficiency
-if effshape==1
-    c=TBeff(eff,1,1);
-else
-    c=TBeff(eff,1);
-end
-%TODO:MMregcore:shapeff
-
+    if effshape==1
+        c=TBeff(eff,1,1);
+    else
+        c=TBeff(eff,1);
+    end
+    %TODO:MMregcore:shapeff
+    
     psifunc.c=c;
     psifunc.class='TB';
+    
+    rhofuncparam=[];
     
 elseif strcmp(rhofunc,'optimal')
     
@@ -329,12 +340,15 @@ elseif strcmp(rhofunc,'optimal')
     psifunc.c=c;
     psifunc.class='OPT';
     
+    rhofuncparam=[];
+    
 elseif strcmp(rhofunc,'hyperbolic')
     
     if isempty(options.rhofuncparam)
         kdef=4.5;
     else
         kdef=options.rhofuncparam;
+        kdef=kdef(1); % Instruction necessary for Ccoder
     end
     rhofuncparam=kdef;
     
@@ -354,7 +368,7 @@ elseif strcmp(rhofunc,'hyperbolic')
         A2 =0.650228046997054;
         B2 =0.743433840145084;
         d2 =1.419320821762087;
-
+        
     elseif kdef == 4 && eff==0.90
         c2 =3.544333040714264;
         A2 =0.655651252372878;
@@ -370,7 +384,7 @@ elseif strcmp(rhofunc,'hyperbolic')
         A2 =0.729727894789617;
         B2 =0.810404284656104;
         d2 =1.5553258180618305;
-
+        
     elseif kdef == 4 && eff==0.95
         c2 =4.331634521484375;
         A2 =0.754327484845243;
@@ -389,9 +403,13 @@ elseif strcmp(rhofunc,'hyperbolic')
         
     else
         
-        % Compute tuning constant associated to the requested nominal efficiency
-        % c2 = consistency factor for a given value of efficiency
-        [c2,A2,B2,d2]=HYPeff(eff,1,kdef);
+        if coder.target('MATLAB')
+            % Compute tuning constant associated to the requested nominal efficiency
+            % c2 = consistency factor for a given value of efficiency
+            [c2,A2,B2,d2]=HYPeff(eff,1,kdef);
+        else
+            error('FSDA:MMregcore:WrongBdpEff','Values of eff for hyperbolic tangent estimator not supported for code generation')
+        end
     end
     
     
@@ -420,7 +438,7 @@ elseif strcmp(rhofunc,'hampel')
     c=psifunc.c;
     
 elseif strcmp(rhofunc,'mdpd')
-     % Compute tuning constant associated to the requested nominal efficiency
+    % Compute tuning constant associated to the requested nominal efficiency
     % c = consistency factor for a given value of efficiency
     c=PDeff(eff);
     
@@ -428,19 +446,22 @@ elseif strcmp(rhofunc,'mdpd')
     psifunc.class='PD';
     
     c=psifunc.c;
-  
+    
+    rhofuncparam=[];
+    
 else
     error('FSDA:MMregcore:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'', ''mdpd''')
     
 end
 
-
-XXwei=strcat(psifunc.class,'wei');
-hwei=str2func(XXwei);
-
+if coder.target('MATLAB')
+    XXwei=strcat(psifunc.class,'wei');
+    hwei=str2func(XXwei);
+end
 
 epsf = eps;
 iter=0;crit=Inf;b1=b0;
+b2=b0; w=y; % MATLAB Ccoder initialization
 while (iter <= refsteps) && (crit > reftol)
     r1=(y-X*b1)/auxscale;
     tmp = find(abs(r1) <= epsf);
@@ -455,9 +476,29 @@ while (iter <= refsteps) && (crit > reftol)
     % OLD INSTRUCTION
     % w=TBwei(r1,c);
     
-    % Compute weights for prespecified rho function
-    w=feval(hwei,r1,c);
-    
+    if coder.target('MATLAB')
+        % Compute weights for prespecified rho function
+        w=feval(hwei,r1,c);
+    else
+        if strcmp(psifunc.class,'TB')
+            w = TBwei(r1,c);
+            
+        elseif strcmp(psifunc.class,'OPT')
+            w = OPTwei(r1,c);
+            
+        elseif strcmp(psifunc.class,'HA')
+            w = HAwei(r1,c);
+            
+        elseif strcmp(psifunc.class,'HYP')
+            w = HYPwei(r1,c);
+            
+        elseif strcmp(psifunc.class,'PD')
+            w = PDwei(r1,c);
+            
+        else
+            error('FSDA:MMregcore:WrongRhoFunc','Wrong rho function supplied')
+        end
+    end
     % Every column of matrix X and vector y is multiplied by the sqrt root of the n x 1
     % weight vector w, then weighted regression is performed
     w1=sqrt(w);
@@ -476,13 +517,15 @@ end
 out.class = 'MMreg';
 out.beta = b2;
 out.weights = w;
-out.residuals = (y-X*out.beta)/auxscale;
+residuals=(y-X*b2)/auxscale;
+out.residuals =residuals ;
 
 % Store in output structure the outliers found with confidence level conflev
 % which has been usedto declared the outliers
 conflev = options.conflev;
+
 seq = 1:n;
-out.outliers = seq(abs(out.residuals) > sqrt(chi2inv(conflev,1)) );
+out.outliers = seq(abs(residuals) > sqrt(chi2inv(conflev,1)) );
 out.conflev = conflev;
 
 out.rhofunc=rhofunc;
@@ -490,9 +533,9 @@ out.rhofunc=rhofunc;
 % parameters which have been used
 % For Hampel store a vector of length 3 containing parameters a, b and c
 % For hyperbolic store the value of k= sup CVC
-if exist('rhofuncparam','var')
-    out.rhofuncparam=rhofuncparam;
-end
+out.rhofuncparam=rhofuncparam;
+
+
 
 % Store X (without the column of ones if there is an intercept)
 if options.yxsave
