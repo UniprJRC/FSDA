@@ -183,10 +183,10 @@ function [out , varargout] = Sreg(y,X,varargin)
 %                       used
 %    out.rhofuncparam = vector which contains the additional parameters
 %                       for the specified rho function which have been
-%                       used. For hyperbolic rho function the value of
-%                       k =sup CVC. For Hampel rho function the parameters
-%                       a, b and c. This field is present only if input
-%                       argument 'rhofunc' is  'hyperbolic' or 'hampel'.
+%                       used. For hyperbolic rho function the value of k
+%                       =sup CVC. For Hampel rho function the parameters a,
+%                       b and c. If input option argument 'rhofunc' is  not
+%                       'hyperbolic' or 'hampel' this field is empty.
 %            out.y    = response vector Y. The field is present only if option
 %                       yxsave is set to 1.
 %            out.X    = data matrix X. The field is present only if option
@@ -396,9 +396,8 @@ if strcmp(rhofunc,'bisquare')
     psifunc.kc1=kc;
     psifunc.class='TB';
     
-    if ~coder.target('MATLAB')
-        rhofuncparam=[];
-    end
+    rhofuncparam=[];
+    
 elseif strcmp(rhofunc,'optimal')
     % Optimal rho function is strictly increasing on [0 3c] and constant (equal to 3.25c^2) on [3c \infty)
     % E(\rho) = kc = (3.25c^2)*bdp = TBrho(3*c,c)*bdp, being kc the K of
@@ -417,9 +416,7 @@ elseif strcmp(rhofunc,'optimal')
     psifunc.kc1=kc;
     psifunc.class='OPT';
     
-    if ~coder.target('MATLAB')
-        rhofuncparam=[];
-    end
+    rhofuncparam=[];
     
 elseif strcmp(rhofunc,'hyperbolic')
     
@@ -510,10 +507,8 @@ elseif strcmp(rhofunc,'mdpd')
     psifunc.c1=c;
     psifunc.kc1=kc;
     psifunc.class='PD';
+    rhofuncparam=[];
     
-    if ~coder.target('MATLAB')
-        rhofuncparam=[];
-    end
 else
     error('FSDA:Sreg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'' ,''mpdp''')
 end
@@ -736,14 +731,7 @@ out.rhofunc=rhofunc;
 % parameters which have been used
 % For Hampel store a vector of length 3 containing parameters a, b and c
 % For hyperbolic store the value of k= sup CVC
-if coder.target('MATLAB')
-    if exist('rhofuncparam','var')
-        out.rhofuncparam=rhofuncparam;
-    end
-else
-    out.rhofuncparam=rhofuncparam;
-end
-
+out.rhofuncparam=rhofuncparam;
 
 if options.yxsave
     if options.intercept==true
