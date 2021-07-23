@@ -33,12 +33,12 @@ function ceff = HAeff(eff,v,abc)
 %
 % Function HApsi transforms vector u as follows.
 %  \[
-%  HApsi(u)  = \left\{   
+%  HApsi(u)  = \left\{
 %  \begin{array}{cc}
 %    u & |u| <= a                                       \\
 %    a \times sign(u) & a <= |u| < b                    \\
 %    a \frac{c-|u|}{c-b} \times sign(u) & b <= |u| <  c \\
-%    0 & |u| >= c 
+%    0 & |u| >= c
 %  \end{array} \right.
 % \]
 %
@@ -47,9 +47,9 @@ function ceff = HAeff(eff,v,abc)
 %                   $c$= ctun *param(3).
 %
 %             The default is
-%                   $a$= 2*ctun. 
-%                   $b$= 4*ctun. 
-%                   $c$= 8*ctun. 
+%                   $a$= 2*ctun.
+%                   $b$= 4*ctun.
+%                   $c$= 8*ctun.
 %
 %	It is necessary to have 0 <= a <= b <= c.
 %
@@ -98,8 +98,9 @@ function ceff = HAeff(eff,v,abc)
 
 if (nargin >2)
     if ((abc(1) < 0) || (abc(2) < abc(1)) || (abc(3) < abc(2)))
-        error('FSDA:HAeff:WrongAbc',[' illegal choice of parameters in Hampel: ' ...
-            num2str(abc) ]')
+        error('FSDA:HAeff:WrongAbc','Illegal choice of parameters in Hampel: %f,%f,%f', abc(1),abc(2),abc(3));
+        % error('FSDA:HAeff:WrongAbc',[' illegal choice of parameters in Hampel: ' ...
+        %    num2str(abc) ]')
     end
     a0 = abc(1);
     b0 = abc(2);
@@ -108,9 +109,9 @@ else
     a0 = 2;
     b0 = 4;
     c0 = 8;
-%     a0 = 1.5;
-%     b0 = 3.5;
-%     c0 = 8;
+    %     a0 = 1.5;
+    %     b0 = 3.5;
+    %     c0 = 8;
 end
 
 
@@ -151,18 +152,18 @@ while abs(empeff-eff)> eps
     
     % alph = \int \psi^2(x) d \Phi(x)
     alph= v*gammainc(a2,(v+2)/2)...                                        % 2* \int_0^a x^2 f(x) dx
-        +a.^2 .*(gammainc(b2,v/2)-gammainc(a2,v/2))...                     % 2* a^2 \int_a^b f(x) dx  
-        +(a./(c-b)).^2 .*(c.^2.*(gammainc(c2,v/2)-gammainc(b2,v/2)) ...    %(a./(c-b)).^2 (2 c^2 \int_b^c f(x) dx 
-        + v*(gammainc(c2,(v+2)/2)-gammainc(b2,(v+2)/2)) ...                %   + 2*  \int_b^c x^2 f(x) dx  
-    -2*c*v*sqrt(2/pi)*(gammainc(c2,(v+1)/2)-gammainc(b2,(v+1)/2)));        % +2 *2* \int_b^c |x| f(x) 
+        +a.^2 .*(gammainc(b2,v/2)-gammainc(a2,v/2))...                     % 2* a^2 \int_a^b f(x) dx
+        +(a./(c-b)).^2 .*(c.^2.*(gammainc(c2,v/2)-gammainc(b2,v/2)) ...    %(a./(c-b)).^2 (2 c^2 \int_b^c f(x) dx
+        + v*(gammainc(c2,(v+2)/2)-gammainc(b2,(v+2)/2)) ...                %   + 2*  \int_b^c x^2 f(x) dx
+        -2*c*v*sqrt(2/pi)*(gammainc(c2,(v+1)/2)-gammainc(b2,(v+1)/2)));        % +2 *2* \int_b^c |x| f(x)
     
-
-   % Remark: if v=1
-   % -2*c*v*sqrt(2/pi)*(gammainc(c2,(v+1)/2)-gammainc(b2,(v+1)/2))); 
-   %     -4*c.*(normpdf(b)-normpdf(c))  );                                     
+    
+    % Remark: if v=1
+    % -2*c*v*sqrt(2/pi)*(gammainc(c2,(v+1)/2)-gammainc(b2,(v+1)/2)));
+    %     -4*c.*(normpdf(b)-normpdf(c))  );
     
     % empeff = bet^2/alph = 1 / [var (robust estimator of location)]
-    empeff=(bet^2)/alph;
+    empeff=(real(bet)^2)/real(alph);
     
     step=step/2;
     if empeff<eff
@@ -172,7 +173,7 @@ while abs(empeff-eff)> eps
     else
     end
     
-  % disp([empeff eff ctun])
+    % disp([empeff eff ctun])
 end
 
 
