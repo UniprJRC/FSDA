@@ -141,7 +141,7 @@ if nargin<=2 || shapeeff  ~=1
         alph= p8*gammainc(cs,(v+10)/2)./(c.^8)-4*p6*gammainc(cs,(v+8)/2)./(c.^6)+...
             6*p4*gammainc(cs,(v+6)/2)./(c.^4)-2*(v+2)*gammainc(cs,(v+4)/2)./cs+...
             gammainc(cs,(v+2)/2);
-        empeff=(bet^2)/alph;
+        empeff=(real(bet)^2)/real(alph);
         
         step=step/2;
         if empeff<eff

@@ -144,7 +144,7 @@ eps=1e-12;
         
         bet=(1-1/v)*Epsidivx+(1/v)*Epsider;   
         
-        empeff=(bet^2)/(Epsisq/v);
+        empeff=(real(bet)^2)/(real(Epsisq)/v);
         
         step=step*0.5;
          % disp([step c empeff])
