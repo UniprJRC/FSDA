@@ -429,7 +429,7 @@ msg=options.msg;
 % S-estimation
 InitialEst=options.InitialEst;
 
-if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta))) 
+if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
     
     bdp = options.Sbdp;              % break down point
     refsteps = options.Srefsteps;    % refining steps
@@ -473,8 +473,8 @@ else
     ss = InitialEst.scale;
     singsub=0;
     % In this case there is no preliminary S estimator
-   rhofuncS='';
-   rhofuncparamS=[];
+    rhofuncS='';
+    rhofuncparamS=[];
     C=0;
 end
 
