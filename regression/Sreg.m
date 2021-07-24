@@ -262,7 +262,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 
 
 %{
-    % Sreg with hyperbolic rho function.
+    %% Sreg with hyperbolic rho function.
     % Run this code to see the output shown in the help file
     n=200;
     p=3;
@@ -273,7 +273,7 @@ function [out , varargout] = Sreg(y,X,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out]=Sreg(ycont,X,'rhofunc','hyperbolic');
+    [out]=Sreg(ycont,X,'rhofunc','hyperbolic','plots',1);
 %}
 
 
@@ -427,33 +427,43 @@ elseif strcmp(rhofunc,'hyperbolic')
         kdef=kdef(1); % Instruction necessary for Ccoder
     end
     rhofuncparam=kdef;
-    
     % Use (if possible) precalculated values of c,A,b,d and kc
-    if kdef == 4 && bdp==0.5
-        c =2.158325031399727;
-        A =1.627074124322223e-04;
-        B =0.006991738279441;
-        d =0.016982948780061;
-        kc=0.010460153813287;
+    BDP=0.5:-0.01:0.01;
+    KDEF=[4 4.5 5];
+    [diffbdp,inddiffbdp]=min(abs(bdp-BDP));
+    [diffk,inddiffk]=min(abs(kdef-KDEF));
+    if diffbdp<1e-6 && diffk<1e-06
+        % Load precalculated values of tuning constants
+        Mat=coder.load('Hyp_BdpEff.mat','MatBDP');
+        row=Mat.MatBDP(inddiffbdp,2:end,inddiffk);
+        c=row(1); A=row(2); B=row(3); d=row(4); kc=row(5);
         
-    elseif kdef == 4.5 && bdp==0.5
-        c =2.010311082005501;
-        A =0.008931591866092;
-        B =0.051928487236632;
-        d =0.132017481327058;
-        kc=0.074478627985759;
-    elseif kdef == 5 && bdp==0.5
-        c =1.900709968805313;
-        A =0.023186529890225;
-        B =0.083526860351552;
-        d =0.221246910095216;
-        kc=0.116380290077336;
-    elseif kdef == 4.5 && bdp==0.25
-        c =2.679452645778656;
-        A =0.464174145115400;
-        B =0.588821276233494;
-        d =1.092639541625978;
-        kc=0.410853066399912;
+        %     % Use (if possible) precalculated values of c,A,b,d and kc
+        %     if kdef == 4 && bdp==0.5
+        %         c =2.158325031399727;
+        %         A =1.627074124322223e-04;
+        %         B =0.006991738279441;
+        %         d =0.016982948780061;
+        %         kc=0.010460153813287;
+        %
+        %     elseif kdef == 4.5 && bdp==0.5
+        %         c =2.010311082005501;
+        %         A =0.008931591866092;
+        %         B =0.051928487236632;
+        %         d =0.132017481327058;
+        %         kc=0.074478627985759;
+        %     elseif kdef == 5 && bdp==0.5
+        %         c =1.900709968805313;
+        %         A =0.023186529890225;
+        %         B =0.083526860351552;
+        %         d =0.221246910095216;
+        %         kc=0.116380290077336;
+        %     elseif kdef == 4.5 && bdp==0.25
+        %         c =2.679452645778656;
+        %         A =0.464174145115400;
+        %         B =0.588821276233494;
+        %         d =1.092639541625978;
+        %         kc=0.410853066399912;
         
     else
         if coder.target('MATLAB')
