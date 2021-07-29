@@ -76,6 +76,7 @@ function w = OPTwei(u,c)
 
 %% Beginning of code
 
+c=c(1); % MATLAB Ccoder instruction to enforce that c is a scalar
 
 % weights are = 0 if r >3*c
 w = zeros(length(u),1);

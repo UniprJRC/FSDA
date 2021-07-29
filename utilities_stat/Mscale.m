@@ -227,13 +227,13 @@ while  (( loop < maxiter ) && (err > tol))
         else
             error('rho function not supported by code generation')
         end
-        
+     
     end
     
     % Note that when there is convergence
     % sqrt( mean(TBrho(u/sc,c)) / kc) tends to 1 (from below)
     % disp([loop sc sqrt( mean(TBrho(u/sc,c)) / kc)])
-    
+
     err = abs(scnew/sc - 1);
     sc = scnew;
     % disp(sc)

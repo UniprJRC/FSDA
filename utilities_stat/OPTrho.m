@@ -72,6 +72,7 @@ function rhoOPT=OPTrho(u, c)
 
 %% Beginning of code
 
+c=c(1); % MATLAB Ccoder instruction to enforce that c is a scalar
 
 rhoOPT = ones(length(u),1);
 absx=abs(u);

@@ -144,6 +144,8 @@ function w = TBwei(u,c)
 
 %% beginning of code
 
+c=c(1); % MATLAB Ccoder instruction to enforce that c is a scalar
+
 w = (1 - (u/c).^2).^2;
 
 % The following instruction is unnecessary

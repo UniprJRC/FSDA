@@ -118,27 +118,34 @@ if length(ctuning)>1
     b =  ctuning(3)*ctuning(1);
     c =  ctuning(4)*ctuning(1);
 else
-    a = 2*ctuning;
-    b = 4*ctuning;
-    c = 8*ctuning;
+    % Note ctuning(1) instead of ctuning to convince MATLAB Ccoder that a,
+    % b and c are scalar.
+    a = 2*ctuning(1);
+    b = 4*ctuning(1);
+    c = 8*ctuning(1);
 end
-
 rhoHA = ones(size(u));
 absu=abs(u);
 
 
 % 0.5* u^2,		   |u| <=a
-rhoHA(absu<=a) = 0.5*u(absu<=a).^2;
-
+if any(absu<=a)
+    rhoHA(absu<=a) = 0.5*u(absu<=a).^2;
+end
 
 % a/|u|,		 a <= |u| < b,
-rhoHA(absu > a & absu <=b) = a*(abs(u(absu > a & absu <=b))) -0.5* a^2 ;
+if any(absu>a & absu<=b)
+    rhoHA(absu > a & absu <=b) = a*(abs(u(absu > a & absu <=b))) -0.5* a^2 ;
+end
 
 % ab-0.5a^2+0.5*(c-b)*a(1- ((c-|u|)/(c-b))^2 ),	  b <= |u| <  c,
-rhoHA(absu>b & absu <=c) = a*b-0.5*a^2+0.5*(c-b)*a*(1-  ( (c-abs(u(absu>b & absu <=c)))/(c-b)  ).^2);
+if any(absu>b & absu <=c)
+    rhoHA(absu>b & absu <=c) = a*b-0.5*a^2+0.5*(c-b)*a*(1-  ( (c-abs(u(absu>b & absu <=c)))/(c-b)  ).^2);
+end
 
 % ab-0.5a^2+0.5*(c-b)*a,			              |u| >= c.
-rhoHA(absu > c) = a*b-0.5*a^2+0.5*(c-b)*a ;
-
+if any(absu > c)
+    rhoHA(absu > c) = a*b-0.5*a^2+0.5*(c-b)*a ;
+end
 end
 %FScategory:UTISTAT

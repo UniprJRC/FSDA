@@ -100,7 +100,7 @@ function rhoTB = TBrho(u,c)
 %}
 
 %% Beginning of code
-
+c=c(1); % MATLAB Ccoder instruction to enforce that c is a scalar
 w = (abs(u)<=c);
 rhoTB = (u.^2/(2).*(1-(u.^2/(c^2))+(u.^4/(3*c^4)))).*w +(1-w)*(c^2/6);
 

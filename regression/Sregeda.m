@@ -1,5 +1,5 @@
 function [out , varargout] = Sregeda(y,X,varargin)
-%Sregeda computes S estimators in linear regression for a series of values of bdp 
+%Sregeda computes S estimators in linear regression for a series of values of bdp
 %
 %<a href="matlab: docsearchFS('Sregeda')">Link to the help function</a>
 %
@@ -16,14 +16,6 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
-%                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
-%                 Example - 'intercept',false
-%                 Data Types - boolean
-%
 %         bdp :  breakdown point. Scalar or vector.
 %               It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
@@ -33,6 +25,95 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               decreasing.
 %                 Example - 'bdp',[0.5 0.4 0.3 0.2 0.1]
 %                 Data Types - double
+%
+%
+%      bestr  : number of "best betas" to remember. Scalar. Scalar defining
+%               number of "best betas" to remember from the subsamples.
+%               These will be later iterated until convergence (default=5).
+%                 Example - 'bestr',10
+%                 Data Types - single | double
+%
+%
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar.
+%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+%               Default value is 0.975
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%
+%    intercept :  Indicator for constant term. true (default) | false.
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
+%
+%     minsctol: tolerance for the iterative
+%               procedure for finding the minimum value of the scale. Scalar.
+%               Value of tolerance for the iterative
+%               procedure for finding the minimum value of the scale
+%               for each subset and each of the best subsets
+%               (It is used by subroutine minscale.m)
+%               The default value is 1e-7;
+%                 Example - 'minsctol',1e-7
+%                 Data Types - single | double
+%
+%
+%        msg  : Level of output to display. Scalar. It controls whether
+%                 to display or not messages on the screen.
+%               If msg==1 (default) messages are displayed
+%               on the screen about estimated time to compute the estimator
+%               and the warnings about
+%               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
+%               'MATLAB:nearlySingularMatrix' are set to off
+%               else no message is displayed on the screen
+%                 Example - 'msg',0
+%                 Data Types - single | double
+%
+%       nocheck : Check input arguments. Boolean. If nocheck is equal to
+%               true no check is performed on matrix y and matrix X. Notice
+%               that y and X are left unchanged. In other words the
+%               additional column of ones for the intercept is not added.
+%               As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
+%
+%       nsamp   : Number of subsamples which will be extracted to find the
+%                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
+%                 They will be (n choose p).
+%                 If the number of all possible subset is <1000 the
+%                 default is to extract all subsets otherwise just 1000.
+%                 Example - 'nsamp',1000
+%                 Data Types - single | double
+%
+%
+%    refsteps : Number of refining iterations. Scalar. Number of refining
+%               iterationsin each subsample (default = 3).
+%               refsteps = 0 means "raw-subsampling" without iterations.
+%                 Example - 'refsteps',10
+%                 Data Types - single | double
+%
+%refstepsbestr: number of refining iterations for each best subset. Scalar.
+%               Scalar defining number of refining iterations for each
+%               best subset (default = 50).
+%                 Example - 'refstepsbestr',10
+%                 Data Types - single | double
+%
+%     reftol  : tolerance for the refining steps. Scalar.
+%               The default value is 1e-6;
+%                 Example - 'reftol',1e-05
+%                 Data Types - single | double
+%
+% reftolbestr : Tolerance for the refining steps. Scalar.
+%               Tolerance for the refining steps
+%               for each of the best subsets
+%               The default value is 1e-8;
+%                 Example - 'reftolbestr',1e-10
+%                 Data Types - single | double
+%
 %
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals.
@@ -53,7 +134,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
 %               The default is bisquare
-%                 Example - 'rhofunc','optimal' 
+%                 Example - 'rhofunc','optimal'
 %                 Data Types - double
 %
 % rhofuncparam: Additional parameters for the specified rho function.
@@ -62,83 +143,8 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
 %               a, b and c (the default values are a=2, b=4, c=8)
-%                 Example - 'rhofuncparam',5 
+%                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
-%
-%       nsamp   : Number of subsamples which will be extracted to find the
-%                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
-%                 They will be (n choose p).
-%                 If the number of all possible subset is <1000 the
-%                 default is to extract all subsets otherwise just 1000.
-%                 Example - 'nsamp',1000 
-%                 Data Types - single | double
-%
-%    refsteps : Number of refining iterations. Scalar. Number of refining
-%               iterationsin each subsample (default = 3).
-%               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'refsteps',10 
-%                 Data Types - single | double
-%
-%     reftol  : tolerance for the refining steps. Scalar. 
-%               The default value is 1e-6;
-%                 Example - 'reftol',1e-05 
-%                 Data Types - single | double
-%
-%refstepsbestr: number of refining iterations for each best subset. Scalar.
-%               Scalar defining number of refining iterations for each
-%               best subset (default = 50).
-%                 Example - 'refstepsbestr',10 
-%                 Data Types - single | double
-%
-% reftolbestr : Tolerance for the refining steps. Scalar. 
-%               Tolerance for the refining steps
-%               for each of the best subsets
-%               The default value is 1e-8;
-%                 Example - 'reftolbestr',1e-10 
-%                 Data Types - single | double
-%
-%     minsctol: tolerance for the iterative
-%               procedure for finding the minimum value of the scale. Scalar. 
-%               Value of tolerance for the iterative
-%               procedure for finding the minimum value of the scale
-%               for each subset and each of the best subsets
-%               (It is used by subroutine minscale.m)
-%               The default value is 1e-7;
-%                 Example - 'minsctol',1e-7 
-%                 Data Types - single | double
-%
-%      bestr  : number of "best betas" to remember. Scalar. Scalar defining
-%               number of "best betas" to remember from the subsamples.
-%               These will be later iterated until convergence (default=5).
-%                 Example - 'bestr',10 
-%                 Data Types - single | double
-%
-%     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar.
-%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
-%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
-%               Default value is 0.975
-%                 Example - 'conflev',0.99
-%                 Data Types - double
-%
-%        msg  : Level of output to display. Scalar. It controls whether
-%                 to display or not messages on the screen.
-%               If msg==1 (default) messages are displayed
-%               on the screen about estimated time to compute the estimator
-%               and the warnings about
-%               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
-%               'MATLAB:nearlySingularMatrix' are set to off
-%               else no message is displayed on the screen
-%                 Example - 'msg',0 
-%                 Data Types - single | double
-%
-%       nocheck : Check input arguments. Boolean. If nocheck is equal to
-%               true no check is performed on matrix y and matrix X. Notice
-%               that y and X are left unchanged. In other words the
-%               additional column of ones for the intercept is not added.
-%               As default nocheck=false.
-%               Example - 'nocheck',true 
-%               Data Types - boolean
 %
 %       plots : Plot on the screen. Scalar.
 %               If plots = 1, generates a plot with the robust residuals
@@ -146,7 +152,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               confidence bands for the residuals is given by the input
 %               option conflev. If conflev is not specified a nominal 0.975
 %               confidence interval will be used.
-%                 Example - 'plots',0 
+%                 Example - 'plots',0
 %                 Data Types - single | double
 %
 %  Output:
@@ -181,13 +187,13 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %                       argument 'rhofunc' is  'hyperbolic' or 'hampel'.
 %           out.bdp   = vector which contains the values of bdp which have
 %                       been used
-%            out.y    = response vector y. 
-%            out.X    = data matrix X. 
+%            out.y    = response vector y.
+%            out.X    = data matrix X.
 %           out.class = 'Sregeda'
 %
 %  Optional Output:
 %
-%            C        : matrix containing the indices of the subsamples 
+%            C        : matrix containing the indices of the subsamples
 %                       extracted for computing the estimate (the so called
 %                       elemental sets).
 %
@@ -227,7 +233,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
     ycont(1:5)=ycont(1:5)+6;
     [out]=Sregeda(ycont,X,'msg',0);
     resfwdplot(out)
-    ylabel('Scaled S residuals'); 
+    ylabel('Scaled S residuals');
 %}
 
 %{
@@ -273,7 +279,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
     standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
     fground.Color={'r'}
     resfwdplot(out,'standard',standard,'fground',fground)
-    ylabel('Scaled S residuals'); 
+    ylabel('Scaled S residuals');
 
     
     RHO = [];
@@ -342,22 +348,24 @@ minsctoldef=1e-7;
 rhofuncdef='bisquare';
 %rhofuncdef='optimal';
 
-
-% store default values in the structure options
-options=struct('intercept',true,'nsamp',nsampdef,'refsteps',refstepsdef,...
-    'reftol',reftoldef,'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
-    'minsctol',minsctoldef,'bestr',bestrdef,'rhofunc',rhofuncdef,'rhofuncparam','','bdp',bdpdef,...
-    'plots',0,'conflev',0.975,'nocheck',false,'msg',1);
-
-% check user options and update structure options
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:Sregeda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if coder.target('MATLAB')
+    
+    % store default values in the structure options
+    options=struct('intercept',true,'nsamp',nsampdef,'refsteps',refstepsdef,...
+        'reftol',reftoldef,'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
+        'minsctol',minsctoldef,'bestr',bestrdef,'rhofunc',rhofuncdef,'rhofuncparam','','bdp',bdpdef,...
+        'plots',0,'conflev',0.975,'nocheck',false,'msg',1);
+    
+    % check user options and update structure options
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:Sregeda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
 end
 
 % Write in structure 'options' the options chosen by the user
@@ -368,16 +376,19 @@ if nargin > 2
 end
 
 
-
-% Get user values of warnings
-warnrank=warning('query','MATLAB:rankDeficientMatrix');
-warnsing=warning('query','MATLAB:singularMatrix');
-warnnear=warning('query','MATLAB:nearlySingularMatrix');
-% Set them to off inside this function
-% At the end of the file they will be restored to previous values
-warning('off','MATLAB:rankDeficientMatrix');
-warning('off','MATLAB:singularMatrix');
-warning('off','MATLAB:nearlySingularMatrix');
+if coder.target('MATLAB')
+    
+    % Get user values of warnings
+    warnrank=warning('query','MATLAB:rankDeficientMatrix');
+    warnsing=warning('query','MATLAB:singularMatrix');
+    warnnear=warning('query','MATLAB:nearlySingularMatrix');
+    % Set them to off inside this function
+    % At the end of the file they will be restored to previous values
+    warning('off','MATLAB:rankDeficientMatrix');
+    warning('off','MATLAB:singularMatrix');
+    warning('off','MATLAB:nearlySingularMatrix');
+    
+end
 
 bdp = options.bdp;              % break down point
 refsteps = options.refsteps;    % refining steps
@@ -395,7 +406,7 @@ if min(bdp)<0
 elseif max(bdp)>0.5
     error('FSDA:Sregeda:Wrongbdp','elements of bdp must lie in the interval [0 0.5]')
 else
-   bdp=sort(bdp,'descend');
+    bdp=sort(bdp,'descend');
 end
 
 %% Extract in the rows of matrix C the indexes of all required subsets
@@ -416,7 +427,7 @@ psifunc=struct;
 
 % Define matrices which will store relevant quantities
 lbdp=length(bdp);
-% Beta= matrix which will contain beta coefficients  
+% Beta= matrix which will contain beta coefficients
 Beta=zeros(p,lbdp);
 % Scale = vector which will contain the estimate of the scale
 Scale=zeros(lbdp,1);
@@ -425,295 +436,343 @@ Weights=zeros(n,lbdp);
 Residuals=zeros(n,lbdp);
 Singsub=zeros(lbdp,1);
 Outliers=false(n,lbdp);
-
+rhofuncparam=[];
 
 for jj=1:length(bdp)
     
-if strcmp(rhofunc,'bisquare')
-    % Tukey's biweight is strictly increasing on [0 c] and constant (equal to c^2/6) on [c \infty)
-    % E(\rho) = kc = (c^2/6)*bdp = TBrho(c,c)*bdp, being kc the K of Rousseeuw
-    % and Leroy (1987)
-    
-    % Compute tuning constant associated to the requested breakdown
-    % point
-    % For bdp =0.5 and Tukey biweight rho function c1=0.4046
-    % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
-    % it is necessary to divide the output of OPTbdp by 3
-    c=TBbdp(bdp(jj),1);
-    % kc1 = E(rho) = sup(rho)*bdp
-    kc=TBrho(c,c)*bdp(jj);
-    
-    
-    psifunc.c1=c;
-    psifunc.kc1=kc;
-    psifunc.class='TB';
-    
-elseif strcmp(rhofunc,'optimal')
-    % Optimal rho function is strictly increasing on [0 3c] and constant (equal to 3.25c^2) on [3c \infty)
-    % E(\rho) = kc = (3.25c^2)*bdp = TBrho(3*c,c)*bdp, being kc the K of
-    % Rousseeuw and Leroy (1987)
-    
-    % Compute tuning constant associated to the requested breakdown
-    % point
-    % For bdp =0.5 and optimal rho function c1=0.4046
-    % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
-    % it is necessary to divide the output of OPTbdp by 3
-    c=OPTbdp(bdp(jj),1)/3;
-    % kc1 = E(rho) = sup(rho)*bdp
-    kc=OPTrho(3*c,c)*bdp(jj);
-    
-    psifunc.c1=c;
-    psifunc.kc1=kc;
-    psifunc.class='OPT';
-    
-elseif strcmp(rhofunc,'hyperbolic')
-    
-    if isempty(options.rhofuncparam)
-        kdef=4.5;
-    else
-        kdef=options.rhofuncparam;
-    end
-    rhofuncparam=kdef;
-    
-    % Use (if possible) precalculated values of c,A,b,d and kc
-    if kdef == 4 && bdp(jj)==0.5
-        c =2.158325031399727;
-        A =1.627074124322223e-04;
-        B =0.006991738279441;
-        d =0.016982948780061;
-        kc=0.010460153813287;
-        
-    elseif kdef == 4.5 && bdp(jj)==0.5
-        c =2.010311082005501;
-        A =0.008931591866092;
-        B =0.051928487236632;
-        d =0.132017481327058;
-        kc=0.074478627985759;
-    elseif kdef == 5 && bdp(jj)==0.5
-        c =1.900709968805313;
-        A =0.023186529890225;
-        B =0.083526860351552;
-        d =0.221246910095216;
-        kc=0.116380290077336;
-    elseif kdef == 4.5 && bdp(jj)==0.25
-        c =2.679452645778656;
-        A =0.464174145115400;
-        B =0.588821276233494;
-        d =1.092639541625978;
-        kc=0.410853066399912;
-        
-    else
+    if strcmp(rhofunc,'bisquare')
+        % Tukey's biweight is strictly increasing on [0 c] and constant (equal to c^2/6) on [c \infty)
+        % E(\rho) = kc = (c^2/6)*bdp = TBrho(c,c)*bdp, being kc the K of Rousseeuw
+        % and Leroy (1987)
         
         % Compute tuning constant associated to the requested breakdown
         % point
-        [c,A,B,d]=HYPbdp(bdp(jj),1,kdef);
+        % For bdp =0.5 and Tukey biweight rho function c1=0.4046
+        % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
+        % it is necessary to divide the output of OPTbdp by 3
+        c=TBbdp(bdp(jj),1);
         % kc1 = E(rho) = sup(rho)*bdp
-        kc=HYPrho(c,[c,kdef,A,B,d])*bdp(jj);
-    end
-    
-    
-    psifunc.c1=[c,kdef,A,B,d];
-    psifunc.kc1=kc;
-    
-    psifunc.class='HYP';
-    
-    
-elseif strcmp(rhofunc,'hampel')
-    
-    if isempty(options.rhofuncparam)
-        abc=[2,4,8];
-    else
-        abc=options.rhofuncparam;
-    end
-    rhofuncparam=abc;
-    
-    % Compute tuning constant associated to the requested breakdown
-    % point
-    c=HAbdp(bdp(jj),1,abc);
-    % kc = E(rho) = sup(rho)*bdp
-    kc=HArho(c*abc(3),[c, abc])*bdp(jj);
-    
-    
-    
-    psifunc.c1=[c,abc];
-    psifunc.kc1=kc;
-    
-    psifunc.class='HA';
-    
-elseif strcmp(rhofunc,'mdpd')
-    % minimum density power divergence estimator 
-      % minimum density power divergence estimator 
-
-    c=PDbdp(bdp(jj));
-    % kc1 = E(rho) = sup(rho)*bdp
-    kc=bdp(jj);
-    
-    psifunc.c1=c;
-    psifunc.kc1=kc;
-    psifunc.class='PD';
-else
-    error('FSDA:Sreg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'' ,''mdpd''')
-end
-
-XXrho=strcat(psifunc.class,'rho');
-hrho=str2func(XXrho);
-
-
-bestbetas = zeros(bestr,p);
-bestsubset = bestbetas;
-bestscales = Inf * ones(bestr,1);
-sworst = Inf;
-
-% singsub = scalar which will contain the number of singular subsets which
-% are extracted (that is the subsets of size p which are not full rank)
-singsub=0;
-
-% ij is a scalar used to ensure that the best first bestr non singular
-% subsets are stored
-ij=1;
-
-% initialise and start timer.
-tsampling = ceil(min(nselected/100 , 1000));
-time=zeros(tsampling,1);
-
-
-for i = 1:nselected
-    
-    if i <= tsampling, tic; end
-    
-    % extract a subset of size p
-    index = C(i,:);
-    
-    Xb = X(index,:);
-    yb = y(index);
-    
-    % beta estimate
-    beta = Xb\yb;
-    
-    if ~isnan(beta(1)) && ~isinf(beta(1))
+        kc=TBrho(c,c)*bdp(jj);
         
-        if refsteps > 0
-            % do the refsteps refining steps
-            % kc determines the breakdown point
-            % c is linked to the biweight function
-            tmp = IRWLSregS(y,X,beta,psifunc,refsteps,reftol);
-            
-            betarw = tmp.betarw;
-            scalerw = tmp.scalerw;
-            resrw = y - X * betarw;
+        
+        psifunc.c1=c;
+        psifunc.kc1=kc;
+        psifunc.class='TB';
+        
+    elseif strcmp(rhofunc,'optimal')
+        % Optimal rho function is strictly increasing on [0 3c] and constant (equal to 3.25c^2) on [3c \infty)
+        % E(\rho) = kc = (3.25c^2)*bdp = TBrho(3*c,c)*bdp, being kc the K of
+        % Rousseeuw and Leroy (1987)
+        
+        % Compute tuning constant associated to the requested breakdown
+        % point
+        % For bdp =0.5 and optimal rho function c1=0.4046
+        % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
+        % it is necessary to divide the output of OPTbdp by 3
+        c=OPTbdp(bdp(jj),1)/3;
+        % kc1 = E(rho) = sup(rho)*bdp
+        kc=OPTrho(3*c,c)*bdp(jj);
+        
+        psifunc.c1=c;
+        psifunc.kc1=kc;
+        psifunc.class='OPT';
+        
+        
+    elseif strcmp(rhofunc,'hyperbolic')
+        
+        if isempty(options.rhofuncparam)
+            kdef=4.5;
         else
-            % no refining steps
-            betarw = beta;
-            resrw = y - X * betarw;
-            scalerw = median(abs(resrw))/.6745;
+            kdef=options.rhofuncparam;
+            kdef=kdef(1); % Instruction necessary for Ccoder
         end
+        rhofuncparam=kdef;
         
-        % to find s, save first the best bestr scales (deriving from non
-        % singular subsets) and, from iteration bestr+1 (associated to
-        % another non singular subset), replace the worst scale
-        % with a better one as follows
-        if ij > bestr
-            % compute the objective function using current residuals and
-            % the worst estimate of the scale among the bests previously
-            % stored
-            % scaletest = (1/n) \sum_i=1^n (u_i/(sworst*c))
+        % Use (if possible) precalculated values of c,A,b,d and kc
+        BDP=0.5:-0.01:0.01;
+        KDEF=[4 4.5 5];
+        [diffbdp,inddiffbdp]=min(abs(bdp(jj)-BDP));
+        [diffk,inddiffk]=min(abs(kdef-KDEF));
+        if diffbdp<1e-6 && diffk<1e-06
+            % Load precalculated values of tuning constants
+            Mat=coder.load('Hyp_BdpEff.mat','MatBDP');
+            row=Mat.MatBDP(inddiffbdp,2:end,inddiffk);
+            c=row(1); A=row(2); B=row(3); d=row(4); kc=row(5);
             
-            % Use function handle hrho. For example if
-            % for optimal psi hrho=OPTrho
+            %     % Use (if possible) precalculated values of c,A,b,d and kc
+            %     if kdef == 4 && bdp(jj)==0.5
+            %         c =2.158325031399727;
+            %         A =1.627074124322223e-04;
+            %         B =0.006991738279441;
+            %         d =0.016982948780061;
+            %         kc=0.010460153813287;
+            %
+            %     elseif kdef == 4.5 && bdp(jj)==0.5
+            %         c =2.010311082005501;
+            %         A =0.008931591866092;
+            %         B =0.051928487236632;
+            %         d =0.132017481327058;
+            %         kc=0.074478627985759;
+            %     elseif kdef == 5 && bdp(jj)==0.5
+            %         c =1.900709968805313;
+            %         A =0.023186529890225;
+            %         B =0.083526860351552;
+            %         d =0.221246910095216;
+            %         kc=0.116380290077336;
+            %     elseif kdef == 4.5 && bdp(jj)==0.25
+            %         c =2.679452645778656;
+            %         A =0.464174145115400;
+            %         B =0.588821276233494;
+            %         d =1.092639541625978;
+            %         kc=0.410853066399912;
             
-            scaletest=mean(feval(hrho,resrw/sworst,psifunc.c1));
+        else
+            if coder.target('MATLAB')
+                % Compute tuning constant associated to the requested breakdown
+                % point
+                [c,A,B,d]=HYPbdp(bdp(jj),1,kdef);
+                % kc1 = E(rho) = sup(rho)*bdp
+                kc=HYPrho(c,[c,kdef,A,B,d])*bdp(jj);
+            else
+                error('FSDA:Sregeda:WrongBdpHyp','Values of bdp for hyperbolic tangent estimator not supported for code generation')
+            end
+        end
+        psifunc.c1=[c,kdef,A,B,d];
+        psifunc.kc1=kc;
+        
+        psifunc.class='HYP';
+        
+        
+    elseif strcmp(rhofunc,'hampel')
+        
+        if isempty(options.rhofuncparam)
+            abc=[2,4,8];
+        else
+            abc=options.rhofuncparam;
+        end
+        rhofuncparam=abc;
+        
+        % Compute tuning constant associated to the requested breakdown
+        % point
+        c=HAbdp(bdp(jj),1,abc);
+        % kc = E(rho) = sup(rho)*bdp
+        kc=HArho(c*abc(3),[c, abc])*bdp(jj);
+        
+        
+        
+        psifunc.c1=[c,abc];
+        psifunc.kc1=kc;
+        
+        psifunc.class='HA';
+        
+    elseif strcmp(rhofunc,'mdpd')
+        % minimum density power divergence estimator
+        % minimum density power divergence estimator
+        
+        c=PDbdp(bdp(jj));
+        % kc1 = E(rho) = sup(rho)*bdp
+        kc=bdp(jj);
+        
+        psifunc.c1=c;
+        psifunc.kc1=kc;
+        psifunc.class='PD';
+        
+    else
+        error('FSDA:Sregeda:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'' ,''mdpd''')
+    end
+    
+    if coder.target('MATLAB')
+        XXrho=strcat(psifunc.class,'rho');
+        hrho=str2func(XXrho);
+    end
+    
+    bestbetas = zeros(bestr,p);
+    bestsubset = bestbetas;
+    bestscales = Inf * ones(bestr,1);
+    sworst = Inf;
+    
+    % singsub = scalar which will contain the number of singular subsets which
+    % are extracted (that is the subsets of size p which are not full rank)
+    singsub=0;
+    
+    % ij is a scalar used to ensure that the best first bestr non singular
+    % subsets are stored
+    ij=1;
+    
+    % initialise and start timer.
+    tsampling = ceil(min(nselected/100 , 1000));
+    time=zeros(tsampling,1);
+    
+    
+    for i = 1:nselected
+        
+        if i <= tsampling, tic; end
+        
+        % extract a subset of size p
+        index = C(i,:);
+        
+        Xb = X(index,:);
+        yb = y(index);
+        
+        % beta estimate
+        beta = Xb\yb;
+        
+        if ~isnan(beta(1)) && ~isinf(beta(1))
             
-            % OLD DELETED TO CHECK
-            % scaletest=mean(feval(hrho,resrw/sworst,c));
+            if refsteps > 0
+                % do the refsteps refining steps
+                % kc determines the breakdown point
+                % c is linked to the biweight function
+                tmp = IRWLSregS(y,X,beta,psifunc,refsteps,reftol);
+                
+                betarw = tmp.betarw;
+                scalerw = tmp.scalerw;
+                resrw = y - X * betarw;
+            else
+                % no refining steps
+                betarw = beta;
+                resrw = y - X * betarw;
+                scalerw = median(abs(resrw))/.6745;
+            end
             
-            
-            %scaletest = mean(TBrho(resrw/sworst,c));
-            
-            
-            if scaletest < kc
-                % Find position of the maximum value of previously stored
-                % best scales
-                [~,ind] = max(bestscales);
+            % to find s, save first the best bestr scales (deriving from non
+            % singular subsets) and, from iteration bestr+1 (associated to
+            % another non singular subset), replace the worst scale
+            % with a better one as follows
+            if ij > bestr
+                % compute the objective function using current residuals and
+                % the worst estimate of the scale among the bests previously
+                % stored
+                % scaletest = (1/n) \sum_i=1^n (u_i/(sworst*c))
+                
+                % Use function handle hrho. For example if
+                % for optimal psi hrho=OPTrho
                 
                 
-                sbest = Mscale(resrw,psifunc,scalerw,minsctol);
-                %sbest1 = Mscale1(resrw,psifunc,scalerw,minsctol);
-                %sbest2 = minscale(resrw,psifunc.c1,psifunc.kc1,scalerw,minsctol);
-                %[sbest sbest1 sbest2]
+                if coder.target('MATLAB')
+                    scaletest=mean(feval(hrho,resrw/sworst,psifunc.c1));
+                    % OLD DELETED TO CHECK
+                    % scaletest=mean(feval(hrho,resrw/sworst,c));
+                    %scaletest = mean(TBrho(resrw/sworst,c));
+                else
+                    if strcmp(psifunc.class,'TB')
+                        scaletest = mean(TBrho(resrw/sworst,psifunc.c1));
+                        
+                    elseif strcmp(psifunc.class,'OPT')
+                        scaletest = mean(OPTrho(resrw/sworst,psifunc.c1));
+                        
+                    elseif strcmp(psifunc.class,'HA')
+                        scaletest = mean(HArho(resrw/sworst,psifunc.c1));
+                        
+                    elseif strcmp(psifunc.class,'HYP')
+                        scaletest = mean(HYPrho(resrw/sworst,psifunc.c1));
+                        
+                    elseif strcmp(psifunc.class,'PD')
+                        scaletest = mean(PDrho(resrw/sworst,psifunc.c1));
+                        
+                    else
+                        error('FSDA:Sreg:WrongRhoFunc','Wrong rho function supplied')
+                    end
+                    
+                end
                 
-                % Store sbest, betarw and indexes of the units forming the
-                % best subset associated with minimum value
-                % of the scale
-                bestscales(ind) = sbest;
-                bestbetas(ind,:) = betarw';
-                % best subset
-                bestsubset(ind,:)=index;
-                % sworst = the best scale among the bestr found up to now
-                sworst = max(bestscales);
+                
+                if scaletest < kc
+                    % Find position of the maximum value of previously stored
+                    % best scales
+                    [~,ind] = max(bestscales);
+                    
+                    
+                    sbest = Mscale(resrw,psifunc,scalerw,minsctol);
+                    %sbest1 = Mscale1(resrw,psifunc,scalerw,minsctol);
+                    %sbest2 = minscale(resrw,psifunc.c1,psifunc.kc1,scalerw,minsctol);
+                    %[sbest sbest1 sbest2]
+                    
+                    % Store sbest, betarw and indexes of the units forming the
+                    % best subset associated with minimum value
+                    % of the scale
+                    bestscales(ind) = sbest;
+                    bestbetas(ind,:) = betarw';
+                    % best subset
+                    bestsubset(ind,:)=index;
+                    % sworst = the best scale among the bestr found up to now
+                    sworst = max(bestscales);
+                end
+            else
+                %bestscales(ij) = minscale(resrw,psifunc,scalerw,minsctol);
+                
+                bestscales(ij) = Mscale(resrw,psifunc,scalerw,minsctol);
+                
+                
+                bestbetas(ij,:) = betarw';
+                bestsubset(ij,:) = index;
+                ij=ij+1;
             end
         else
-            %bestscales(ij) = minscale(resrw,psifunc,scalerw,minsctol);
-            
-            bestscales(ij) = Mscale(resrw,psifunc,scalerw,minsctol);
-            
-            
-            bestbetas(ij,:) = betarw';
-            bestsubset(ij,:) = index;
-            ij=ij+1;
+            singsub=singsub+1;
         end
-    else
-        singsub=singsub+1;
+        
+        % Write total estimate time to compute final estimate
+        if i <= tsampling
+            % sampling time until step tsampling
+            time(i)=toc;
+        elseif i==tsampling+1
+            % stop sampling and print the estimated time
+            if msg==1
+                fprintf('Total estimated time to complete S estimate: %5.2f seconds \n', nselected*median(time));
+            end
+        end
+        
     end
     
-    % Write total estimate time to compute final estimate
-    if i <= tsampling
-        % sampling time until step tsampling
-        time(i)=toc;
-    elseif i==tsampling+1
-        % stop sampling and print the estimated time
-        if msg==1
-            fprintf('Total estimated time to complete S estimate: %5.2f seconds \n', nselected*median(time));
+    % perform C-steps on best 'bestr' solutions, till convergence or for a
+    % maximum of refstepsbestr steps using a convergence tolerance as specified
+    % by scalar reftolbestr
+    
+    superbestscale = Inf;
+    if ~coder.target('MATLAB')
+        % Initializations necessary for MATLAB Ccoder
+        superbestbeta=bestbetas(1,:)';
+        superbestsubset=bestsubset(1,:);
+        weights=y;
+    end
+    
+    
+    for i=1:bestr
+        tmp = IRWLSregS(y,X,bestbetas(i,:)',psifunc,refstepsbestr,reftolbestr,bestscales(i));
+        
+        if tmp.scalerw < superbestscale
+            superbestscale = tmp.scalerw;
+            superbestbeta = tmp.betarw;
+            superbestsubset = bestsubset(i,:);
+            weights = tmp.weights;
+        end
+    end
+    residuals=(y-X*superbestbeta)/superbestscale;
+    outliers=seq( abs(residuals)>norminv(conflev) );
+    
+    if coder.target('MATLAB')
+        if singsub/nselected>0.1
+            disp('------------------------------')
+            disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
         end
     end
     
+    Residuals(:,jj)=residuals;
+    Beta(:,jj)=superbestbeta;
+    Scale(jj)=superbestscale;
+    BS(:,jj)=superbestsubset;
+    Weights(:,jj)=weights;
+    Singsub(jj)=singsub;
+    Outliers(outliers,jj)=true;
 end
 
-% perform C-steps on best 'bestr' solutions, till convergence or for a
-% maximum of refstepsbestr steps using a convergence tolerance as specified
-% by scalar reftolbestr
-
-superbestscale = Inf;
-
-for i=1:bestr
-    tmp = IRWLSregS(y,X,bestbetas(i,:)',psifunc,refstepsbestr,reftolbestr,bestscales(i));
-    
-    if tmp.scalerw < superbestscale
-        superbestscale = tmp.scalerw;
-        superbestbeta = tmp.betarw;
-        superbestsubset = bestsubset(i,:);
-        weights = tmp.weights;
-    end
+if coder.target('MATLAB')
+    % Restore the previous state of the warnings
+    warning(warnrank.state,'MATLAB:rankDeficientMatrix');
+    warning(warnsing.state,'MATLAB:singularMatrix');
+    warning(warnnear.state,'MATLAB:nearlySingularMatrix');
 end
-residuals=(y-X*superbestbeta)/superbestscale;
-outliers=seq( abs(residuals)>norminv(conflev) );
-
-if singsub/nselected>0.1
-    disp('------------------------------')
-    disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
-end
-Residuals(:,jj)=residuals;
-Beta(:,jj)=superbestbeta;
-Scale(jj)=superbestscale;
-BS(:,jj)=superbestsubset;
-Weights(:,jj)=weights;
-Singsub(jj)=singsub;
-Outliers(outliers,jj)=true;
-end
-
-% Restore the previous state of the warnings
-warning(warnrank.state,'MATLAB:rankDeficientMatrix');
-warning(warnsing.state,'MATLAB:singularMatrix');
-warning(warnnear.state,'MATLAB:nearlySingularMatrix');
 
 % Store in output structure monitored \beta, s, best subset, vector of
 % S-weights and residuals
@@ -737,24 +796,24 @@ out.rhofunc=rhofunc;
 % parameters which have been used
 % For Hampel store a vector of length 3 containing parameters a, b and c
 % For hyperbolic store the value of k= sup CVC
-if exist('rhofuncparam','var')
-    out.rhofuncparam=rhofuncparam;
+out.rhofuncparam=rhofuncparam;
+
+if options.intercept==true
+    % Store X (without the column of ones if there is an intercept)
+    out.X=X(:,2:end);
+else
+    out.X=X;
 end
+% Store response
+out.y=y;
 
-    if options.intercept==true
-        % Store X (without the column of ones if there is an intercept)
-        out.X=X(:,2:end);
-    else
-        out.X=X;
+if coder.target('MATLAB')
+    % Plot residuals as function of the break down point
+    if options.plots==1
+        laby='Scaled S residuals';
+        resfwdplot(out);
+        ylabel(laby)
     end
-    % Store response
-    out.y=y;
-
-% Plot residuals as function of the break down point
-if options.plots==1
-    laby='Scaled S residuals';
-    resfwdplot(out);
-    ylabel(laby)
 end
 
 end
@@ -822,14 +881,18 @@ end
 
 beta = initialbeta;
 scale = initialscale;
+newbeta =initialbeta;
 
-XXrho=strcat(psifunc.class,'rho');
-hrho=str2func(XXrho);
-
-
-XXwei=strcat(psifunc.class,'wei');
-hwei=str2func(XXwei);
-
+if coder.target('MATLAB')
+    
+    XXrho=strcat(psifunc.class,'rho');
+    hrho=str2func(XXrho);
+    
+    XXwei=strcat(psifunc.class,'wei');
+    hwei=str2func(XXwei);
+else
+    weights=y; % initialization of weights necessary for MATLAB coder
+end
 
 iter = 0;
 betadiff = 9999;
@@ -837,15 +900,46 @@ betadiff = 9999;
 while ( (betadiff > reftol) && (iter < refsteps) )
     iter = iter + 1;
     
-    % Solve for the scale
-    meanrho=mean(feval(hrho,res/scale,c));
-    
-    scale = scale * sqrt(meanrho / kc );
-    
-    % Compute n x 1 vector of weights (using TB)
-    
-    weights = feval(hwei,res/scale,c);
-    % weights = TBwei(res/scale,c);
+    if coder.target('MATLAB')
+        
+        % Solve for the scale
+        meanrho=mean(feval(hrho,res/scale,c));
+        scale = scale * sqrt(meanrho / kc );
+        
+        % Compute n x 1 vector of weights (using TB)
+        weights = feval(hwei,res/scale,c);
+        % weights = TBwei(res/scale,c);
+    else
+        if strcmp(psifunc.class,'TB')
+            meanrho=mean(TBrho(res./scale,c));
+            scale = scale * sqrt(meanrho / kc );
+            weights = TBwei(res/scale,c);
+            
+        elseif strcmp(psifunc.class,'OPT')
+            meanrho=mean(OPTrho(res/scale,c));
+            scale = scale * sqrt(meanrho / kc );
+            weights = OPTwei(res/scale,c);
+            
+        elseif strcmp(psifunc.class,'HA')
+            meanrho=mean(HArho(res/scale,c));
+            scale = scale * sqrt(meanrho / kc );
+            weights = HAwei(res/scale,c);
+            
+        elseif strcmp(psifunc.class,'HYP')
+            meanrho=mean(HYPrho(res/scale,c));
+            scale = scale * sqrt(meanrho / kc );
+            weights = HYPwei(res/scale,c);
+            
+        elseif strcmp(psifunc.class,'PD')
+            meanrho=PDrho(res/scale,c);
+            scale = scale * sqrt(meanrho / kc );
+            weights = PDwei(res/scale,c);
+            
+        else
+            error('FSDA:Sreg:WrongRhoFunc','Wrong rho function supplied')
+        end
+        
+    end
     
     sqweights = weights.^(1/2);
     
@@ -881,6 +975,7 @@ outIRWLS.betarw = newbeta;
 outIRWLS.scalerw = scale;
 % store final estimate of the weights for each observation
 outIRWLS.weights=weights;
+
 end
 %FScategory:REG-Regression
 
