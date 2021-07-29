@@ -45,10 +45,11 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               InitialEst.beta =  v x 1 vector (estimate of the initial regression coefficients)
 %               InitialEst.scale = scalar (estimate of the scale parameter).
 %               If InitialEst is empty (default) or InitialEst.beta
-%               program uses S estimators. In this last case it is
-%               possible to specify the options given in function Sreg.
+%               continas NaN values, program uses S estimators. In this
+%               last case it is possible to specify the options given in
+%               function Sreg. 
 %               Example - 'InitialEst',[]
-%               Data Types - struct
+%               Data Types - struct or empty value
 %
 %    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
