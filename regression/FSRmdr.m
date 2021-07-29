@@ -650,7 +650,8 @@ opts.UT =false;
 
 
 %% Start of the forward search
-if nocheck==false && rank(Xb)~=p
+% if nocheck==false && rank(Xb)~=p
+if rank(Xb)~=p
     if coder.target('MATLAB')
         warning('FSDA:FSRmdr:NoFullRank','Supplied initial subset does not produce full rank matrix');
         warning('FSDA:FSRmdr:NoFullRank','FS loop will not be performed');
