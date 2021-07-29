@@ -109,9 +109,9 @@ if length(ctuning)>1
     b =  ctuning(3)*ctuning(1);
     c =  ctuning(4)*ctuning(1);
 else
-    a = 2*ctuning;
-    b = 4*ctuning;
-    c = 8*ctuning;
+    a = 2*ctuning(1);
+    b = 4*ctuning(1);
+    c = 8*ctuning(1);
 end
 
 

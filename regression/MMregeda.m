@@ -17,40 +17,14 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
-%                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
-%                 Example - 'intercept',false
-%                 Data Types - boolean
 %
-%  InitialEst : starting values of the MM-estimator. [] (default) or structure.
-%               InitialEst must contain the following fields
-%               InitialEst.beta =  p x 1 vector (estimate of the beta)
-%               InitialEst.scale = scalar (estimate of the scale parameter).
-%               If InitialEst is empty (default)
-%               program uses S estimators. In this last case it is
-%               possible to specify the options given in function Sreg.
-%               Example - 'InitialEst',[]
-%               Data Types - struct
-%
-%  Soptions  :  options if initial estimator is S and InitialEst is empty.
-%               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
-%               Sreftolbestr, Sminsctol, Sbestr.
-%               See function Sreg.m for more details on these options.
-%               It is necessary to add to the S options the letter
-%               S at the beginning. For example, if you want to use the
-%               optimal rho function the supplied option is
-%               'Srhofunc','optimal'. For example, if you want to use 3000
-%               subsets, the supplied option is 'Snsamp',3000.
-%               Note that the rho function which is used in the MMstep is
-%               the same as the one used in the S step.
-%               Example - 'Snsamp',1000
-%               Data Types - single | double
-%
-%
-%               MM options
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar.
+%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+%               Default value is 0.975
+%                 Example - 'conflev',0.99
+%                 Data Types - double
 %
 %      eff     : nominal efficiency. Scalar or vector.
 %                Vector defining nominal efficiency (i.e. a series of numbers between
@@ -66,25 +40,24 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                 Example - 'effshape',1
 %                 Data Types - double
 %
-%     refsteps  : Maximum iterations. Scalar.
-%                 Scalar defining maximum number of iterations in the MM
-%                 loop. Default value is 100.
-%                 Example - 'refsteps',10
-%                 Data Types - double
+%  InitialEst : starting values of the MM-estimator. [] (default) or structure.
+%               InitialEst must contain the following fields
+%               InitialEst.beta =  v x 1 vector (estimate of the initial regression coefficients)
+%               InitialEst.scale = scalar (estimate of the scale parameter).
+%               If InitialEst is empty (default) or InitialEst.beta
+%               continas NaN values, program uses S estimators. In this
+%               last case it is possible to specify the options given in
+%               function Sreg. 
+%               Example - 'InitialEst',[]
+%               Data Types - struct or empty value
 %
-%       tol    : Tolerance. Scalar.
-%                 Scalar controlling tolerance in the MM loop.
-%                 Default value is 1e-7
-%                 Example - 'tol',1e-10
-%                 Data Types - double
-%
-%     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar.
-%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
-%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
-%               Default value is 0.975
-%                 Example - 'conflev',0.99
-%                 Data Types - double
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
 %               true no check is performed on matrix y and matrix X. Notice
@@ -93,6 +66,63 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
+%
+%     refsteps  : Maximum iterations. Scalar.
+%                 Scalar defining maximum number of iterations in the MM
+%                 loop. Default value is 100.
+%                 Example - 'refsteps',10
+%                 Data Types - double
+%
+%     rhofunc : rho function. String. String which specifies the rho
+%               function which must be used to weight the residuals in MM step.
+%               Possible values are
+%               'bisquare';
+%               'optimal';
+%               'hyperbolic';
+%               'hampel';
+%               'mdpd'.
+%               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
+%               See TBrho and TBpsi.
+%               'optimal' uses optimal $\rho$ and $\psi$ functions.
+%               See OPTrho and OPTpsi.
+%               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
+%               See HYPrho and HYPpsi.
+%               'hampel' uses Hampel $\rho$ and $\psi$ functions.
+%               See HArho and HApsi.
+%               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
+%               See PDrho.m and PDpsi.m.
+%               The default is bisquare
+%                 Example - 'rhofunc','optimal'
+%                 Data Types - char
+%
+%
+% rhofuncparam: Additional parameters for the specified rho function in the MM step.
+%               Scalar or vector.
+%               For hyperbolic rho function it is possible to set up the
+%               value of k = sup CVC (the default value of k is 4.5).
+%               For Hampel rho function it is possible to define parameters
+%               a, b and c (the default values are a=2, b=4, c=8)
+%                 Example - 'rhofuncparam',5
+%                 Data Types - single | double
+%  Soptions  :  options if initial estimator is S and InitialEst is empty.
+%               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
+%               Sreftolbestr, Sminsctol, Sbestr.
+%               See function Sreg.m for more details on these options.
+%               It is necessary to add to the S options the letter
+%               S at the beginning. For example, if you want to use the
+%               optimal rho function the supplied option is
+%               'Srhofunc','optimal'. For example, if you want to use 3000
+%               subsets, the supplied option is 'Snsamp',3000.
+%               Note that the rho function which is used in the MMstep is
+%               the same as the one used in the S step.
+%               Example - 'Snsamp',1000
+%               Data Types - single | double
+%
+%       tol    : Tolerance. Scalar.
+%                 Scalar controlling tolerance in the MM loop.
+%                 Default value is 1e-7
+%                 Example - 'tol',1e-10
+%                 Data Types - double
 %
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot with the robust residuals
@@ -166,13 +196,6 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %
 % Acknowledgements:
 %
-% This function follows the lines of MATLAB/R code developed during the
-% years by many authors.
-% For more details see http://www.econ.kuleuven.be/public/NDBAE06/programs/
-% and the R library robustbase http://robustbase.r-forge.r-project.org/
-% The core of these routines, e.g. the resampling approach, however, has
-% been completely redesigned, with considerable increase of the
-% computational performance.
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -186,7 +209,6 @@ function [out , varargout] = MMregeda(y,X,varargin)
 
 %{
     % MMregeda with all default options.
-    % Run this code to see the output shown in the help file
     n=200;
     p=3;
     randn('state', 123456);
@@ -201,8 +223,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 
 %{
     % MMregeda with optional input arguments.
-    % MMregeda using the hyperbolic rho function
-    % Run this code to see the output shown in the help file
+    % MMregeda using the optimal rho function
     n=200;
     p=3;
     randn('state', 123456);
@@ -212,7 +233,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out]=MMregeda(ycont,X,'Srhofunc','optimal');
+    [out]=MMregeda(ycont,X,'Srhofunc','optimal','rhofunc','optimal');
 %}
 
 %{
@@ -250,6 +271,8 @@ vvarargin=varargin;
 
 % default value of break down point
 Sbdpdef=0.5;
+% default values for msg
+Smsg=true;
 % default values of subsamples to extract
 Snsampdef=20;
 % default value of number of refining iterations (C steps) for each extracted subset
@@ -266,17 +289,27 @@ Sreftolbestrdef=1e-8;
 % both for each extracted subset and each of the best subsets
 Sminsctoldef=1e-7;
 
-% rho (psi) function which has to be used to weight the residuals
+% rho (psi) function which has to be used to weight the residuals in the S
+% step
 Srhofuncdef='bisquare';
+Srhofuncparamdef=[];
+% rho (psi) function which has to be used to weight the residuals in the MM
+% step
+rhofuncdef='bisquare';
+rhofuncparamdef=[];
+
+
 
 % default values of nominal efficiency which are used
 eff=0.5:0.01:0.99;
 
-options=struct('intercept',true,'InitialEst','','Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
+if coder.target('MATLAB')
+
+options=struct('intercept',true,'InitialEst','','Smsg',Smsg,'Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
     'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
     'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
-    'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam','','nocheck',false,'eff',eff,'effshape',0,...
-    'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0);
+    'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam',Srhofuncparamdef,'nocheck',false,'eff',eff,'effshape',0,...
+    'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'rhofunc',rhofuncdef,'rhofuncparam',rhofuncparamdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -295,6 +328,7 @@ if ~isempty(UserOptions)
         error('FSDA:MMregeda:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
+end
 
 if nargin > 2
     % Write in structure 'options' the options chosen by the user
@@ -311,22 +345,23 @@ end
 % S-estimation
 InitialEst=options.InitialEst;
 
-Srhofunc = options.Srhofunc;
-rhofunc = options.Srhofunc;
-    
-if isempty(InitialEst)
+% rho function to use in the MM step
+rhofunc = options.rhofunc;
+rhofuncparam=options.rhofuncparam;
+
+if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
     
     bdp = options.Sbdp;              % break down point
     refsteps = options.Srefsteps;    % refining steps
     bestr = options.Sbestr;          % best locs for refining steps till convergence
-    nsamp = options.Snsamp;          % subsamples to extract
+    nsamp = options.Snsamp                                                                                                                                                                          ;          % subsamples to extract
     reftol = options.Sreftol;        % tolerance for refining steps
     minsctol = options.Sminsctol;    % tolerance for finding minimum value of the scale for each subset
     refstepsbestr=options.Srefstepsbestr;  % refining steps for the best subsets
     reftolbestr=options.Sreftolbestr;      % tolerance for refining steps for the best subsets
     
-    rhofunc=options.Srhofunc;           % rho function which must be used
-    rhofuncparam=options.Srhofuncparam;    % eventual additional parameters associated to the rho function
+    Srhofunc=options.Srhofunc;           % rho function which must be used
+    Srhofuncparam=options.Srhofuncparam;    % eventual additional parameters associated to the rho function
     
     % first compute S-estimator with a fixed breakdown point
     
@@ -335,25 +370,28 @@ if isempty(InitialEst)
     if nargout==2
         [Sresult , C] = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
-            'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
-            'nocheck',true);
+            'reftolbestr',reftolbestr,'rhofunc',Srhofunc,'rhofuncparam',Srhofuncparam,...
+            'nocheck',true,'msg',Smsg,'conflev',0.95,'yxsave',false);
         
-        varargout = {C};
     else
         Sresult = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
-            'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
-            'nocheck',true);
+            'reftolbestr',reftolbestr,'rhofunc',Srhofunc,'rhofuncparam',Srhofuncparam,...
+            'nocheck',true,'msg',Smsg,'conflev',0.95,'yxsave',false);
+        C=0;
     end
-    
+
+
     bs = Sresult.beta;
     ss = Sresult.scale;
     singsub=Sresult.singsub;
 else
+    C=0;
     bs = InitialEst.beta;
     ss = InitialEst.scale;
     singsub=0;
 end
+            varargout = {C};
 
 % Asymptotic nominal efficiency (for location or shape)
 eff = options.eff;
@@ -384,7 +422,7 @@ out = struct;
 for jj=1:length(eff)
     outIRW = MMregcore(y,X,bs,ss,'eff',eff(jj),'effshape',effshape,...
         'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',0,'nocheck',true,...
-        'Srhofunc',Srhofunc);
+        'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,'yxsave',false);
     residuals=(y-X*outIRW.beta)/ss;
     Residuals(:,jj)=residuals;
     Beta(:,jj)=outIRW.beta;
@@ -410,9 +448,7 @@ out.rhofunc=rhofunc;
 % parameters which have been used
 % For Hampel store a vector of length 3 containing parameters a, b and c
 % For hyperbolic store the value of k= sup CVC
-if exist('rhofuncparam','var')
     out.rhofuncparam=rhofuncparam;
-end
 
 % Store values of efficiency
 out.eff=eff;
