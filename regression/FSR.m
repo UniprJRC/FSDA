@@ -310,7 +310,7 @@ function [out]=FSR(y,X,varargin)
 %         out:   structure which contains the following fields
 %
 % out.ListOut  = row vector containing the list of the units declared as
-%                outliers or NaN if the sample is homogeneous
+%                outliers or NaN if the sample is homogeneous. If
 % out.outliers = out.ListOut. This field is added for homogeneity with the
 %                other robust estimators and is equal to out.ListOut.
 % out.beta   =  p-by-1 vector containing the estimated regression
@@ -649,11 +649,11 @@ else
     error('FSDA:FSR:WrongInputOpt','threshoutX can be empty a scalar equal to 1 or a struct.');
 end
 
-    % Necessary for MATLAb C Coder initialization
-    % Initialize constr as a column vector of variable size whose elements
-    % are greater than n is such a way that no unit is constrained to enter the final steps
-    constr=((n+1):2*n)';
-    mdrFlag=true;
+% Necessary for MATLAb C Coder initialization
+% Initialize constr as a column vector of variable size whose elements
+% are greater than n is such a way that no unit is constrained to enter the final steps
+constr=((n+1):2*n)';
+mdrFlag=true;
 
 if coder.target('MATLAB')
     bsbstepdef=[];
@@ -704,18 +704,25 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     
     
     if size(mdr,2)<2
-        if length(mdr)>=n/2
+        if isnan(mdr)
+            % initial subset without full rank
+        elseif  length(mdr)>=n/2
             disp('More than half of the observations produce a singular X matrix')
             disp('X is badly defined')
-            disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
-            out.ListOut  = setdiff(seq,mdr(:,1));
+            disp('If you wish to run the procedure using for updating ')
+            disp('the values of beta of the last step in which there was full rank use option bsbmfullrank=false')
         else
-            disp('Bad starting point which produced a singular matrix, please restart the search from a different starting point or use option bsbmfullrank=0 ')
+            disp('Bad starting point which produced a singular matrix')
+            disp('please restart the search from a different starting point or use option bsbmfullrank=false ')
         end
+        % In this case ListOut contains the list of units which
+        % produced a singular matrix or NaN if the initial subset was not full rank.
+        % ListOut  = setdiff(seq,mdr(:,1))';
+        ListOut= mdr(:,1)';
         
         if ~coder.target('MATLAB')
             varsize=ceil(n/1000000);
-            out.ListOut=NaN(1,varsize);
+            out.ListOut=ListOut;
             out.outliers=NaN(1,varsize);
             out.mdr=NaN(1,varsize);
             out.Un=NaN(varsize,11);
@@ -730,7 +737,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
             out.class='FSR';
             return
         else
-            out.ListOut=NaN;
+            out.ListOut=ListOut;
             out.outliers=NaN;
             out.mdr = NaN;
             out.Un  = NaN;
@@ -783,22 +790,24 @@ else % initial subset is not supplied by the user
                 disp('More than half of the observations produce a singular X matrix')
                 disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
                 
-                out.ListOut = setdiff(seq,mdr(:,1))';
-                if ~coder.target('MATLAB')
-                    varsize=ceil(n/1000000);
-                    out.outliers=NaN(1,varsize);
-                    out.mdr=mdr;
-                    out.Un=NaN(varsize,11);
-                    out.nout=NaN(varsize,varsize);
-                    out.beta=NaN(varsize,1);
-                    out.scale=NaN;
-                    out.mdag=NaN(varsize,varsize);
-                    out.ListCl=NaN(1,varsize);
-                    out.VIOMout=NaN(1,varsize);
-                    out.fittedvalues=[];
-                    out.residuals=[];
-                    out.class='FSR';
-                end
+                % In this case ListOut contains the list of units which
+                % produced a singular matrix.
+                % out.ListOut = setdiff(seq,mdr(:,1))';
+                out.ListOut =mdr(:,1)';
+                
+                varsize=ceil(n/1000000);
+                out.outliers=NaN(1,varsize);
+                out.mdr=NaN(1,varsize);
+                out.Un=NaN(varsize,11);
+                out.nout=NaN(varsize,varsize);
+                out.beta=NaN(varsize,1);
+                out.scale=NaN;
+                out.mdag=NaN(varsize,varsize);
+                out.ListCl=NaN(1,varsize);
+                out.VIOMout=NaN(1,varsize);
+                out.fittedvalues=[];
+                out.residuals=[];
+                out.class='FSR';
                 return
             elseif isnan(mdr(1,1))
                 % INITIAL SUBSET WAS NOT FULL RANK
