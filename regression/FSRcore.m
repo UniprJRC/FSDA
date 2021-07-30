@@ -573,12 +573,12 @@ if isempty(bonflev)
             if size(mdr,1)>mdag-mdr(1,1)+31
                 if sum(mdr(i+1:i+31,2)<gmin(i+1:i+31,c001))>=2
                     NoFalseSig=true;  % Peak followed by dip
-                    extram2='Peak followed by dip (d_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope';
+                    extram2='Peak followed by dip (d_min is above 99.99% threshold and in the successive steps goes below 1% envelope';
                 end
             else
                 if sum(mdr(i+1:end,2) < gmin(i+1:end,c001))>=2
                     NoFalseSig=true;  %Peak followed by dip in the final part of the search';
-                    extram2='Peak followed by dip (r_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope)';
+                    extram2='Peak followed by dip (r_min is above 99.99% threshold and in the successive steps goes below 1% envelope)';
                 end
             end
             

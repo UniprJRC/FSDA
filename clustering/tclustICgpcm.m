@@ -894,8 +894,11 @@ if typeIC==0 % CLACLA
         cshbbest=NaN;
     else
         % Find best estimate of cshbbest
-        candshb=cc(cc<=cshwbest^((v-1)/v));
-        
+        % candshb=cc(cc<=cshwbest^((v-1)/v));
+                % Find best estimate of cshbbest
+        candshbINI=[1 2 4 8 16 32 64 128];
+        candshb=candshbINI(candshbINI<=cshwbest^((v-1)/v));
+
         IDXshb=zeros(n,length(candshb));
         BICshb=zeros(length(candshb),1);
         for jshb=1:length(candshb)
@@ -987,7 +990,9 @@ else  % MIXMIX or MIXCLA store IDXMIX
         cshbbest=NaN;
     else
         % Find best estimate of cshbbest
-        candshb=ccshw(ccshw<=cshwbest^((v-1)/v));
+        candshbINI=[1 2 4 8 16 32 64 128];
+        candshb=candshbINI(candshbINI<=cshwbest^((v-1)/v));
+        %candshb=ccshw(ccshw<=cshwbest^((v-1)/v));
         
         BICshb=zeros(length(candshb),1);
         IDXshb=zeros(n,length(candshb));
