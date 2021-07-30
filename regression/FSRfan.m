@@ -111,7 +111,7 @@ function [out]=FSRfan(y,X,varargin)
 %                 computed, else Least trimmed of Squares is computed.
 %                 If, lms is matrix with size
 %                 p-1+intercept-by-length(la) it contains in column
-%                 j=1,..., lenght(la) the list of units forming the initial
+%                 j=1,..., length(la) the list of units forming the initial
 %                 subset for the search associated with la(j). In this last
 %                 case previous input option nsamp is ignored.
 %                 Example - 'lms',1
