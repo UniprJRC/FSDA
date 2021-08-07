@@ -1,0 +1,298 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>mcdeda</title><meta content="refpage" name="chunktype"><meta content="function:mcdeda" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mcdeda monitors Minimum Covariance Determinant for a series of values of bdp." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">mcdeda</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example of monitoring of raw and reweighted Mahalanobis distances.</a></li><li><a class="intrnllnk" href="#Example_2">Monitoring reweighted MD using two different confidence levels for reweighting.</a></li><li><a class="intrnllnk" href="#Example_3">Example with mild contamination.</a></li><li><a class="intrnllnk" href="#Example_4">Example with strong contamination.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_bdp">bdp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bestr">bestr</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_betathresh">betathresh</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refstepsbestr">refstepsbestr</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftolbestr">reftolbestr</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_smallsamplecor">smallsamplecor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tolMCD">tolMCD</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_RAW">RAW</a></li><li><a class="intrnllnk" href="#output_argument_REW">REW</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mcdeda</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mcdeda monitors Minimum Covariance Determinant for a series of values of bdp</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">RAW=mcdeda(Y)</code><span class="syntax_example"><a class="intrnllnk" href="mcdeda.html#Example_1">example</a></span></li><li><code class="synopsis">RAW=mcdeda(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="mcdeda.html#Example_2">example</a></span></li><li><code class="synopsis">[RAW,REW]=mcdeda(___)</code><span class="syntax_example"><a class="intrnllnk" href="mcdeda.html#Example_3">example</a></span></li><li><code class="synopsis">[RAW,REW,varargout]=mcdeda(___)</code><span class="syntax_example"><a class="intrnllnk" href="mcdeda.html#Example_4">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mcdeda.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_RAW"><code>RAW</code></a>=mcdeda(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Example of monitoring of raw and reweighted Mahalanobis distances.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mcdeda.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_RAW"><code>RAW</code></a>=mcdeda(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Monitoring reweighted MD using two different confidence levels for reweighting.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mcdeda.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_RAW"><code>RAW</code></a>,<a class="intrnllnk" href="#outputarg_REW"><code>REW</code></a>]=mcdeda(___)</code></span>Example with mild contamination.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mcdeda.html#Example_4">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_RAW"><code>RAW</code></a>,<a class="intrnllnk" href="#outputarg_REW"><code>REW</code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code>varargout</code></a>]=mcdeda(___)</code></span>Example with strong contamination.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of monitoring of raw and reweighted Mahalanobis distances.</li></span></a></span></h3><div class="collapse"><p>
+     This example enables to obtain Figure 6 of CRAC2018.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y = load('geyser.txt');
+% Reweighted MD found using a confidence band for raw Mahalanobis distances
+% equal to 0.99
+conflev=0.99;
+[RAW,REW]=mcdeda(Y,'conflev',conflev,'msg',false);
+fground=struct;
+fground.funit='';
+fground.fthresh=1000;
+% Add a horizontal line corresponding to 99 per cent confidence band
+conflevplot=0.99;
+% Monitoring of raw (squared) Mahalanobis distances
+malfwdplot(RAW,'conflev',conflevplot,'fground',fground,'tag','rawMD')
+title('Raw Mahalanobis distances')
+% Monitoring of reweighted (squared) Mahalanobis distances
+malfwdplot(REW,'conflev',conflevplot,'fground',fground,'tag','rewMD')
+title('Reweighted Mahalanobis distances')
+% Comment to the two plots. The squared robust raw distances initially decrease
+% steadily. Then, at a bdp around 0.29 there is an abrupt change to a fit
+% displaying two or three large distances which remains sensibly constant
+% until the MLE is reached at bdp = 0.
+% The plot for reweighted square Mahalanobis distances is much more stable
+% than that for the crude MCD until 0.37, at which bdp there is a collapse
+% to the MLE. The right-hand parts of both panels are similar. However, the
+% distances for the crude MCD decreasing as successive observations are
+% added to the subset used in fitting. On the other hand, the reweighted
+% MCD shows three regions during which the distances are constant. In these
+% regions the effect of changing the bdp in the (raw) first stage does not
+% cause any change in the units chosen by the reweighting procedure</pre></div></div><a href='http://rosa.unipr.it/fsda/mcdeda.html#Example_1'><img vspace="5" hspace="5" src="images\mcdeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\mcdeda_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring reweighted MD using two different confidence levels for reweighting.</li></span></a></span></h3><div class="collapse"><p>
+     This example enables to obtain Figure 7 of CRAC2018.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y = load('geyser.txt');
+% Reweighted MD found using a confidence band for raw Mahalanobis distances
+% equal to 0.99
+conflev=0.95;
+[~,outrew095]=mcdeda(Y,'conflev',conflev,'msg',false);
+fground=struct;
+fground.funit='';
+fground.fthresh=1000;
+% Add a horizontal line corresponding to 99 per cent confidence band
+conflevplot=0.99;
+% Monitoring of raw (squared) Mahalanobis distances
+malfwdplot(outrew095,'conflev',conflevplot,'fground',fground,'tag','rewMDclev095')
+title('Reweighted Mahalanobis distances using conflev=0.95 for reweighting')
+conflev=0.999;
+[~,outrew0999]=mcdeda(Y,'conflev',conflev,'msg',false);
+% Monitoring of reweighted (squared) Mahalanobis distances
+malfwdplot(outrew0999,'conflev',conflevplot,'fground',fground,'tag','rewMDclev0999')
+title('Reweighted Mahalanobis distances using conflev=.999 for reweighting')
+% The monitoring approach also helps to appreciate the effect of the
+% threshold used in the reweighting step. Although the message conveyed by
+% the two plots is broadly the same, the less efficient 95 per cent
+% threshold produces a few more outliers and a neater separation between
+% the two populations, while increasing efficiency in the reweighting step
+% causes the inclusion of some contaminated units at a slightly larger bdp
+% than 0.37</pre></div></div><a href='http://rosa.unipr.it/fsda/mcdeda.html#Example_2'><img vspace="5" hspace="5" src="images\mcdeda_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\mcdeda_04.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with mild contamination.</li></span></a></span></h3><div class="collapse"><p>
+     This example enables to obtain left panel of Figure 15 of CRAC2018.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% In this simulated example there are 200 five-dimensional
+% observations, all simulated with standard normal co-ordinates. Thirty of
+% the observations had a displacement of 2.4 added to each co-ordinate. As
+% a result the outliers are grouped, with virtually no overlap with the
+% central 170 observations.
+rng('default')
+rng(100)
+n=200;
+v=5;
+Xsel=randn(n,v);
+kk=2.4;
+numcont=30;
+Xsel(1:numcont,:)=Xsel(1:numcont,:)+kk;
+group=ones(n,1);
+group(numcont+1:n)=2;
+spmplot(Xsel,group,[],'box');
+Y=Xsel;
+conflev=0.99;
+[outraw,outrew]=mcdeda(Y,'conflev',conflev,'msg',false);
+fground=struct;
+fground.funit='';
+fground.fthresh=1000;
+% Add a horizontal line corresponding to 99 per cent confidence band
+conflevplot=0.99;
+% Monitoring of raw (squared) Mahalanobis distances
+malfwdplot(outraw,'conflev',conflevplot,'fground',fground,'tag','rawMD')
+title('Raw Mahalanobis distances')
+% Monitoring of reweighted (squared) Mahalanobis distances
+malfwdplot(outrew,'conflev',conflevplot,'fground',fground,'tag','rewMD')
+title('Reweighted Mahalanobis distances')
+% The plot for the MCD is very jagged but does show the change in the
+% pattern of distances around a bdp of 0.14. The monitoring plot for the
+% reweighted MCD with a pointwise threshold of 0.99 is much the same as
+% that for the original MCD, including a dramatic change at a bdp of 0.14
+% The conclusion of this example is that most of the methods work well with
+% a light amount of contamination well separated from the main body of the
+% data. In general monitoring allows us to choose values of efficiency or
+% breakdown point that give estimators that are as efficient as possible:
+% that is, they exclude the outliers while fitting the “good”
+% observations.</pre></div></div><a href='http://rosa.unipr.it/fsda/mcdeda.html#Example_3'><img vspace="5" hspace="5" src="images\mcdeda_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\mcdeda_06.png" alt=""> <img vspace="5" hspace="5" src="images\mcdeda_07.png" alt=""> </a></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with strong contamination.</li></span></a></span></h3><div class="collapse"><p>
+     This example enables to obtain Figure 20 of CRAC2018.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% In this example there are 400 four-dimensional standard normal random
+% variables, one hundred of them being displaced by an amount 2 in each
+% dimension. There is thus some overlap between the 25 per cent of outliers
+% and the uncontaminated data.
+rng('default')
+rng(100)
+n=400;
+v=4;
+Xsel=randn(n,v);
+kk=2;
+Xsel(301:400,:)=Xsel(301:400,:)+kk;
+group=ones(n,1);
+group(301:400)=2;
+spmplot(Xsel,group);
+Y=Xsel;
+conflev=0.99;
+[outraw,outrew]=mcdeda(Y,'conflev',conflev,'msg',false);
+fground=struct;
+fground.funit='';
+fground.fthresh=1000;
+% Add a horizontal line corresponding to 99 per cent confidence band
+conflevplot=0.99;
+% Monitoring of raw (squared) Mahalanobis distances
+malfwdplot(outraw,'conflev',conflevplot,'fground',fground,'tag','rawMD')
+title('Raw Mahalanobis distances')
+% Monitoring of reweighted (squared) Mahalanobis distances
+malfwdplot(outrew,'conflev',conflevplot,'fground',fground,'tag','rewMD')
+title('Reweighted Mahalanobis distances')
+% Comment to the plots: when bdp is 50%, 64 outliers are found using
+% $\Chi^2_{4,0.99}$ (60 belong to the group of contaminated units). These
+% are shown in the plot of raw Mahalanobis distances. Reweighting the
+% output of this analysis leads to the detection of only 9 outliers (7
+% belong to the group of contaminated units) as is shown in the plot of the
+% reweighted distances. This plot shows how the distribution of distances
+% for the 100 contaminated units is changed by the parameter estimates from
+% reweighting. However, the distribution of these distances is even so
+% quite distinct from those from the uncontaminated units. This effect of
+% reweighting, which is not substantially affected by the choice of the
+% reweighting threshold, is quite different from that shown in the case of
+% lightly contaminated data, where weighted and unweighted analyses were
+% comparable. However, monitoring the MCD is still very informative. The
+% plot of raw distances shows a striking change around a bdp of 0.27 as the
+% outliers start to be included in the central part of the data. In the
+% monitoring plot for the reweighted MCD there is a change around a bdp of
+% 0.28 when some Mahalanobis distances slightly increase in magnitude. For
+% lower values of the bdp the plots in the two panels are similar; just 9
+% observations are identified as outlying.</pre></div></div><a href='http://rosa.unipr.it/fsda/mcdeda.html#Example_4'><img vspace="5" hspace="5" src="images\mcdeda_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\mcdeda_09.png" alt=""> <img vspace="5" hspace="5" src="images\mcdeda_10.png" alt=""> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containing n observations on v variables. </span>  </a><span class="example_desc">Rows of Y represent observations, and columns represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
+       since observations (rows) with missing or infinite values will
+       be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bdp',[0.5 0.4 0.3 0.2 0.1]
+</code>,<code> 'bestr',10
+</code>,<code> 'betathresh',false
+</code>,<code> 'conflev',0.99
+</code>,<code> 'msg',false
+</code>,<code> 'nocheck',true
+</code>,<code> 'nsamp',10000
+</code>,<code> 'refsteps',10
+</code>,<code> 'refstepsbestr',10
+</code>,<code> 'reftol',1e-8
+</code>,<code> 'reftolbestr',1e-8
+</code>,<code> 'smallsamplecor',true
+</code>,<code> 'tolMCD',1e-20
+</code>,<code> 'plots',1
+</code></code></span></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
+               the algorithm should resist. In this case any value greater
+               than 0 but smaller or equal than 0.5 will do fine.</p> <p>
+               The default value of bdp is a sequence from 0.5 to 0.01 with step 0.01
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',[0.5 0.4 0.3 0.2 0.1]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bestr" class="clearfix"></div><h3 id="input_argument_namevalue_bestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bestr</code> &#8212;Number of best solutions to store.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Number of "best locations"
+               to remember from the subsamples. These will be later iterated until
+               convergence (default=5)
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bestr',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_betathresh" class="clearfix"></div><h3 id="input_argument_namevalue_betathresh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>betathresh</code> &#8212;Distribution to use.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If betathresh = true the distribution which is used to
+               declare units as outliers is a mixture of Rocke scaled F
+               distribution and Beta else (default) traditional chi^2
+               distribution is used.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'betathresh',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number between 0 and 1 containing
+               confidence level which is used to declare units as outliers
+               and to perform reweighting.</p> <p>
+               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).</p><p>
+               Default value is 0.975
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Display or not messages on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If msg==true (default) messages are displayed
+               on the screen about estimated time to compute the final
+               estimator for each value of bdp else no message is
+               displayed on the screen.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;No check on input data.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check
+               is performed on matrix Y. As default nocheck=false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples.</span></a><span class="example_desc">scalar | matrix.</span></span></h3><div class="collapse">	<p><p>If nsamp is a scalar, it contains the number of subsamples
+               of size v+1 which have to be extracted (if not given,
+               default is nsamp=1000). If nsamp=0 all subsets will be
+               extracted. If nsamp is a matrix it contains in the rows the
+               indexes of the subsets which have to be extracted. nsamp in
+               this case can be conveniently generated  by function
+               subsets.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',10000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining
+               iterations in each subsample (default = 3).</p> <p>
+               refsteps = 0 means "raw-subsampling" without iterations.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refstepsbestr" class="clearfix"></div><h3 id="input_argument_namevalue_refstepsbestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refstepsbestr</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining iterations
+               for each best subset (default = 50).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refstepsbestr',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;Refining steps tolerance.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Tolerance for the refining steps.</p> <p>
+               The default value is 1e-6;</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-8
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftolbestr" class="clearfix"></div><h3 id="input_argument_namevalue_reftolbestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftolbestr</code> &#8212;Tolerance for refining steps.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of tolerance for the
+               refining steps for each of the best subsets.</p> <p>
+               The default value is 1e-8;</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftolbestr',1e-8
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_smallsamplecor" class="clearfix"></div><h3 id="input_argument_namevalue_smallsamplecor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>smallsamplecor</code> &#8212;small sample correction factor.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Boolean which defines whether to use or not small sample
+               correction factor to inflate the scale estimate.  If it is
+               equal to true the small sample correction factor is used.</p> <p>
+               The default value of smallsamplecor is true, that is the
+               correction is used. See
+               <a href="http://users.ugent.be/~svaelst/publications/corrections.pdf">http://users.ugent.be/~svaelst/publications/corrections.pdf</a>
+               for further details about the correction factor.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'smallsamplecor',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_tolMCD" class="clearfix"></div><h3 id="input_argument_namevalue_tolMCD" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tolMCD</code> &#8212;Tolerance to declare a subset as singular.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The
+               default value of tolMCD is exp(-50*v).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tolMCD',1e-20
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots is a scalar equal to 1, it generates
+               two plots of Mahalanobis distances monitoring (raw and
+               reweighted) against values of bdp.</p> <p>
+               The confidence level used to draw the confidence bands for
+               the MD is given by the input option conflev. If conflev is
+               not specified a nominal 0.975 confidence interval will be
+               used.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_RAW" class="clearfix"></div><h3 id="output_argument_RAW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>RAW</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
+<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bdp</code></td><td><p>values of bdp which have been used.</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>Confidence level that was used to declare outliers and
+                   to perform reweighting.</p></td></tr><tr valign="top"><td><code>Cov</code></td><td><p>array of size v-by-v-length(bdp) containing robust MCD
+                    estimate of covariance matrix. It is the raw MCD
+                    covariance matrix (multiplied by a finite sample
+                    correction factor and an asymptotic consistency
+                    factor).</p></td></tr><tr valign="top"><td><code>h</code></td><td><p>length(bdp)-times-1 vector. It contains for each value
+                    of bdp the number of observations that have
+                    determined the raw MCD estimator</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p>length(bdp)-times-1 vector. The determinant of the
+                   raw MCD covariance matrix.</p></td></tr><tr valign="top"><td><code>Loc</code></td><td><p>length(bdp)-times-v matrix containing raw MCD location
+                   of the data for each value of bdp</p></td></tr><tr valign="top"><td><code>MAL</code></td><td><p>n-times-length(bdp) matrix containing the estimates of the robust
+                    Mahalanobis distances (in squared units). This matrix
+                    contains the distances of each observation from the
+                    raw MCD location of the data, relative to the raw MCD
+                    scatter matrix RAW.cov</p></td></tr><tr valign="top"><td><code>Outliers</code></td><td><p>A boolean matrix of size n-by-length(bdp)
+                    containing the list of the units declared as outliers
+                    by raw MCD using confidence level specified in input
+                    scalar conflev.</p></td></tr><tr valign="top"><td><code>Weights</code></td><td><p>n x length(bdp) boolean matrix containing the
+                    estimates of the weights. Weights assume values 0
+                    (false) or 1 (true). Weight is 1 (true) if the
+                    associated observation has been used to compute
+                    centroid and covariance matrix. These weights
+                    determine which observations are used to compute the
+                    final MCD estimates. Unless there is a perfect fit
+                    sum(RAW.weights,1)=RAW.h'</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'mcdeda'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_REW" class="clearfix"></div><h3 id="output_argument_REW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>REW</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
+
+</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bdp</code></td><td><p>values of bdp which have been used.</p></td></tr><tr valign="top"><td><code>Cov</code></td><td><p>array of size v-by-v-length(bdp) containing robust
+                    covariance matrix, obtained after reweighting and
+                    multiplying by a finite sample correction factor and
+                    an asymptotic consistency factor, if the raw MCD is
+                    not singular.  Otherwise the raw MCD covariance matrix
+                    is given here.</p></td></tr><tr valign="top"><td><code>Loc</code></td><td><p>length(bdp)-times-v matrix containing robust location
+                    estimate of the data, obtained after
+                    reweighting for each value of bdp.</p></td></tr><tr valign="top"><td><code>MAL</code></td><td><p>n-times-length(bdp) matrix containing the estimates
+                    of the robust Mahalanobis distances (in squared units)
+                    each observation from the reweighted MCD location of
+                    the data, relative to the reweighted MCD scatter of
+                    the data If the reweighted MCD is singular, raw
+                    distance is given here.</p></td></tr><tr valign="top"><td><code>Outliers</code></td><td><p>A boolean matrix of size n-by-length(bdp)
+                    containing the list of the units declared as outliers
+                    by reweighted MCD using confidence level specified in
+                    input scalar conflev.</p></td></tr><tr valign="top"><td><code>Weights</code></td><td><p><p>n x 1 vector containing the estimates of the weights.</p> <p>
+                    Weights assume values 0 or 1. Weight is 0 if the
+                    associated observation has been declared outlier.</p> <p>
+                    These weights determine which observations are used to
+                    compute the final MCD estimates.</p><p>
+                    Remark: if the reweighted MCD is singular, RAW.weights
+                    is given here.</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'mcdeda'.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices
+                    of the subsamples extracted for
+                    computing the estimate.</span></a><span class="example_desc"><code>C     : </code>matrix of size nsamp-by-v</span></span></h3><div class="collapse"><p></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+ MCD computes the MCD estimator of a multivariate data set.  This
+ estimator is given by the subset of h observations with smallest
+ covariance determinant.  The MCD location estimate is then the mean of
+ those h points, and the MCD scatter estimate is their covariance matrix.</p> <p>
+ Larger values of $h$ give more efficient estimates of the parameters but
+ with lower breakdown point. In this routine we use monitoring to provide an
+ adaptive estimate of the highest value of $h$ which provides a robust fit.</p> <p>
+ Finally, we also include in this routine monitoring of the more efficient
+ reweighted MCD estimate that is computed on a second subset of $h^* &gt; h$
+ observations for which the squared robust distances computed from the raw
+ MCD estimate are below a fixed threshold, often taken from the $\chi^2_v$
+ distribution or the Beta distribution (depending on input option
+ $betathresh$).</p><p>
+
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J. (1984), Least Median of Squares Regression,
+ "Journal of the American Statistical Association", Vol. 79, pp. 871-881.</p></div><div><p>Rousseeuw, P.J. and Van Driessen, K. (1999). A fast algorithm for the
+ minimum covariance determinant estimator. Technometrics, 41:212-223.</p></div><div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+ and Methods", Wiley, New York.</p></div><div><p>Cerioli A., Riani M., Atkinson A.C., Corbellini A. (2018). "The power of
+ monitoring: how to make the most of a contaminated multivariate sample,
+ "Statistical Methods and Applications (with discussion)",
+ Vol. 27, pp. 559–587. [CRAC2018]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="mcd.html" itemprop="url"><span itemprop="name"><code>mcd</code></span></a></span> | <span itemprop="seealso"><a href="mveeda.html" itemprop="url"><span itemprop="name"><code>mveeda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
