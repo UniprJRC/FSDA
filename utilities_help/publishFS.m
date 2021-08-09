@@ -2927,14 +2927,32 @@ for i=1:nseealso
                         % Locate file using faster function (just from 2016b)
                         currentfolder=pwd;
                         cd(pathdocroot)
-                        pathExtHelpFile=dir(['**/' Seealsoitem '.html']);
-                        if isempty(pathExtHelpFile)
+                        
+                        % Locate all html documentation files
+                        % Previous instruction just tried to located
+                        % Seealsoitem
+                        % pathExtHelpFile=dir(['**/' Seealsoitem '.html']);
+                        listhtmlStruct=dir('**/*.html');
+                        listhtmlCell=struct2cell(listhtmlStruct)';
+                        % listhtmlCell is the cell which contains the list
+                        % to all documentation files
+                        listhtmlCell=listhtmlCell(:,1);
+                        % Find the indexes which contain Seealsoitem.html
+                        IndexesContStr=find(contains(listhtmlCell,[Seealsoitem '.html']),1);
+                        
+                        if isempty(IndexesContStr)
                             cd(currentfolder)
                             error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
                         end
-                        pathExtHelpFile=pathExtHelpFile(1).folder;
+                         pathExtHelpFile=listhtmlStruct(IndexesContStr).folder;
+                         % Redefine seealsoitem with the true name of heml
+                         % documentation page
+                         SeealsoitemT=listhtmlStruct(IndexesContStr).name;
+                         
                         cd(currentfolder)
-                        addSubPath=[pathExtHelpFile(length(pathdocroot)+2:end) filesep Seealsoitem '.html'];
+                        % addSubPath=[pathExtHelpFile(length(pathdocroot)+2:end) filesep Seealsoitem '.html'];
+                        % addSubPath=pathExtHelpFile;
+                        addSubPath=[pathExtHelpFile(length(pathdocroot)+2:end) filesep SeealsoitemT];
                     end
                     
                     
