@@ -267,7 +267,7 @@ out.pval=pval;
 if coder.target('MATLAB')
     if plots==1
         if ~isempty(units)
-            sel=setdiff(1:length(y),units);
+            sel=setdiffFS(1:length(y),units);
             [outsel]=addt(y(sel),X(sel,2:end),w(sel),'plots',0);
             
             plot(Aw(sel),Az(sel),'+b','MarkerSize',FontSize);
