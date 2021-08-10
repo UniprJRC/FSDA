@@ -18,33 +18,6 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Example - 'bdp',1/4
 %               Data Types - double
 %
-%      nsamp  : Number of subsamples. Scalar. Number of subsamples of size
-%               v+1 which have to be extracted (if not given, default =
-%               1000).
-%               Example - 'nsamp',10000
-%               Data Types - double
-%
-%    refsteps : Number of refining iterations. Scalar. Number of refining
-%               iterations in each subsample (default = 3).
-%               refsteps = 0 means "raw-subsampling" without iterations.
-%               Example - 'refsteps',10
-%               Data Types - double
-%
-%     reftol  : Refining steps tolerance. Scalar. Tolerance for the refining steps.
-%               The default value is 1e-6;
-%               Example - 'reftol',1e-8
-%               Data Types - double
-%
-%refstepsbestr: Number of refining iterations. Scalar. Number of refining iterations
-%               for each best subset (default = 50).
-%               Example - 'refstepsbestr',10
-%               Data Types - double
-%
-% reftolbestr : Tolerance for refining steps. Scalar. Value of tolerance for the
-%               refining steps for each of the best subsets.
-%               The default value is 1e-8;
-%               Example - 'reftolbestr',1e-8
-%               Data Types - double
 %
 %      bestr  : Number of best solutions to store. Scalar. Number of "best locations"
 %               to remember from the subsamples. These will be later iterated until
@@ -52,8 +25,17 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Example - 'bestr',10
 %               Data Types - double
 %
+%  betathresh : Distribution to use. Boolean. If betathresh = true the distribution
+%               which is used to declare units as outliers is a mixture of Rocke
+%               scaled F distribution and Beta else (default) traditional chi^2
+%               distribution is used.
+%               Example - 'betathresh',false
+%               Data Types - logical
+%
+%
 %     conflev : Confidence level. Scalar. Number between 0 and 1 containing
-%               confidence level which is used to declare units as outliers.
+%               confidence level which is used to declare units as outliers
+%               after reweighting.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
@@ -67,26 +49,92 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Example - 'conflevrew',0.99
 %               Data Types - double
 %
-%  betathresh : Distribution to use. Scalar. If betathresh = 1 the distribution
-%               which is used to declare units as outliers is a mixture of Rocke
-%               scaled F distribution and beta else (default) traditional chi^2
-%               distribution is used.
-%               Example - 'betathresh',1
+%        msg  : Display or not messages on the screen.
+%               Scalar. If msg==1 (default) messages are displayed
+%               on the screen about estimated time to compute the final
+%               estimator else no message is displayed on the screen.
+%               Example - 'msg',1
 %               Data Types - double
+%
 %
 %      nocheck: No check on input data. Scalar. If nocheck is equal to 1 no check
 %               is performed on matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
 %
+%      nsamp  : Number of subsamples. Scalar or matrix. 
+%               If nsamp is a scalar, it contains the number of subsamples of size
+%               v+1 which have to be extracted (if not given, default is
+%               nsamp=1000). If nsamp=0 all subsets will be extracted. If
+%               nsamp is a matrix it contains in the rows the indexes of
+%               the subsets which have to be extracted. nsamp in this case
+%               can be conveniently generated  by function subsets.
+%               Example - 'nsamp',10000
+%               Data Types - double
+%
+%    refsteps : Number of refining iterations. Scalar. Number of refining
+%               iterations in each subsample (default = 3).
+%               refsteps = 0 means "raw-subsampling" without iterations.
+%               Example - 'refsteps',10
+%               Data Types - double
+%
+%refstepsbestr: Number of refining iterations. Scalar. Number of refining iterations
+%               for each best subset (default = 50).
+%               Example - 'refstepsbestr',10
+%               Data Types - double
+%
+%     reftol  : Refining steps tolerance. Scalar. Tolerance for the refining steps.
+%               The default value is 1e-6;
+%               Example - 'reftol',1e-8
+%               Data Types - double
+%
+%
+% reftolbestr : Tolerance for refining steps. Scalar. Value of tolerance for the
+%               refining steps for each of the best subsets.
+%               The default value is 1e-8;
+%               Example - 'reftolbestr',1e-8
+%               Data Types - double
+%
+%
+%smallsamplecor: small sample correction factor. Boolean. Boolean which
+%               defines whether to use or not small sample correction
+%               factor to inflate the scale estimate.  If it is equal to
+%               true the small sample correction factor is used. The
+%               default value of smallsamplecor is true, that is the
+%               correction is used. See
+%               http://users.ugent.be/~svaelst/publications/corrections.pdf
+%               for further details about the correction factor. 
+%               Example - 'smallsamplecor',true 
+%               Data Types - logical
+%
+%     tolMCD  : Tolerance to declare a subset as singular. Scalar. The
+%               default value of tolMCD is exp(-50*v).
+%               Example - 'tolMCD',1e-20
+%               Data Types - double
+%
+%    ysaveRAW : save Y. boolean. Boolean that is set to true to request that the data
+%               matrix Y is saved into the output structure RAW. This feature is
+%               meant at simplifying the use of function malindexplot.
+%               Default is false, i.e. no saving is done.
+%               Example - 'ysaveRAW',true
+%               Data Types - logical
+%
+%    ysaveREW : save Y. Boolean. Boolean that is set to true to request that the data
+%               matrix Y is saved into the output structure REW. This feature is
+%               meant at simplifying the use of function malindexplot.
+%               Default is false, i.e. no saving is done.
+%               Example - 'ysaveREW',true
+%               Data Types - logical
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates:
-%               (1) a plot of Mahalanobis distances against index number. The
-%               confidence level used to draw the confidence bands for
-%               the MD is given by the input option conflev. If conflev is
-%               not specified a nominal 0.975 confidence interval will be
-%               used.
-%               (2) a scatter plot matrix with the outliers highlighted.
+%               (1) two plots of Mahalanobis distances (raw and reweighted)
+%               against index number. The confidence level used to draw the
+%               confidence bands for the MD is given by the input option
+%               conflev. If conflev is not specified a nominal 0.975
+%               confidence interval will be used.
+%               (2) two scatter plot matrices with the outliers (from raw
+%               and reweighted mcd estimators) highlighted.
 %               If plots is a structure it may contain the following fields
 %                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
@@ -97,42 +145,6 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %                       are added are Y1, ...Yv.
 %               Example - 'plots',1
 %               Data Types - double or structure
-%
-%        msg  : Display or not messages on the screen.
-%               Scalar. If msg==1 (default) messages are displayed
-%               on the screen about estimated time to compute the final
-%               estimator else no message is displayed on the screen.
-%               Example - 'msg',1
-%               Data Types - double
-%
-%     tolMCD  : Tolerance to declare a subset as singular. Scalar. The
-%               default value of tolMCD is exp(-50*v).
-%               Example - 'tolMCD',1e-20
-%               Data Types - double
-%
-%    ysaveRAW : save Y. Scalar. Scalar that is set to 1 to request that the data
-%               matrix Y is saved into the output structure RAW. This feature is
-%               meant at simplifying the use of function malindexplot.
-%               Default is 0, i.e. no saving is done.
-%               Example - 'ysaveRAW',1
-%               Data Types - double
-%
-%    ysaveREW : save Y. Scalar. Scalar that is set to 1 to request that the data
-%               matrix Y is saved into the output structure REW. This feature is
-%               meant at simplifying the use of function malindexplot.
-%               Default is 0, i.e. no saving is done.
-%               Example - 'ysaveREW',1
-%               Data Types - double
-%
-%smallsamplecor: small sample correction factor. Scalar. Scalar which
-%               defines whether to use or not small sample correction
-%               factor to inflate the scale estimate.  If it is equal to 1
-%               the small sample correction factor is used. The default
-%               value of smallsamplecor is 1, that is the correction is
-%               used. See
-%               http://users.ugent.be/~svaelst/publications/corrections.pdf
-%               for further details about the correction factor. Example -
-%               'smallsamplecor',1 Data Types - double
 %
 %  Output:
 %
@@ -416,7 +428,7 @@ tolMCDdef=eps('double');
 
 % if smallsamplecor ==1 (then small sample correction factor is applied to the
 % estimate of the scale)
-smallsamplecor=1;
+smallsamplecor=true;
 
 % store default values in the structure options
 options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
@@ -424,7 +436,7 @@ options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
     'bdp',bdpdef,'plots',0,'conflev',0.975,'conflevrew','',...
     'betathresh',0,'nocheck',0,'msg',1,'tolMCD',tolMCDdef,...
-    'ysaveRAW',0,'ysaveREW',0,'smallsamplecor',smallsamplecor);
+    'ysaveRAW',false,'ysaveREW',false,'smallsamplecor',smallsamplecor);
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
@@ -571,7 +583,7 @@ if v==1 && h~=n
     REW.cov=cov(Y(weights==1,:));
     
     cfactor = consistencyfactor(sum(weights),n,v);
-    if smallsamplecor == 1
+    if smallsamplecor == true
         cfactor = cfactor*corfactorREW(v,n,1-bdp);
     end
     
@@ -661,7 +673,19 @@ if h==n
 end
 
 %% Extract in the rows of matrix C the indexes of all required subsets
-[C,nselected] = subsets(nsamp,n,v+1,ncomb,1);
+
+if isscalar(nsamp) % nsamp
+    [C,nselected] = subsets(nsamp,n,v+1,ncomb,1);
+else
+    C=nsamp;
+    if size(C,2) ~= v+1
+        % check that the number of columns of C is v+1
+        error('FSDA:mcd:WrongC','Matrix nsamp must have %.0f columns', v+1)
+    end
+    
+    nselected=size(C,1);
+end
+
 % Store the indices in varargout
 if nargout==3
     varargout={C};
@@ -893,7 +917,7 @@ RAW.bs=superbestsubset;
 cfactor = consistencyfactor(h,n,v);
 
 % Apply small sample correction factor
-if smallsamplecor == 1
+if smallsamplecor == true
     cfactor = cfactor*corfactorRAW(v,n,1-bdp);
 end
 
@@ -915,10 +939,10 @@ md=mahalFS(Y,superbestloc,cfactor*superbestcov);
 RAW.md = md;
 
 % The first h smallest ordered Mahalanobis distances have weight equal to 1
-% [~,soridx]=sort(md);     %deleted these four lines are not necessary
-% weights=zeros(n,1);      %deleted
-% weights(soridx(1:h))=1;  %deleted
-% RAW.weights=weights;     %deleted
+ [~,soridx]=sort(md);     %deleted these four lines are not necessary
+ weights=false(n,1);      %deleted
+ weights(soridx(1:h))=true;  %deleted
+ RAW.weights=weights;     %deleted
 
 % Specify the distribution to use to compare Mahalanobis distances
 % if betathresh==1 a mixture of scaled beta and F is used
@@ -941,7 +965,7 @@ else
     weights=md<chi2inv(conflevrew,v);
 end
 
-RAW.weights=weights;
+% RAW.weights=weights;
 RAW.outliers=seq(md > thresh);
 
 %  Store confidence level
@@ -968,7 +992,7 @@ else
         cfactor=1;
     end
     
-    if smallsamplecor==1
+    if smallsamplecor==true
         % Apply small sample correction factor
         cfactor = cfactor*corfactorREW(v,n,1-bdp);
     end
@@ -1022,7 +1046,7 @@ else
     end
     
     REW.weights = weights;
-    % Store reweighted Mahalanobis distances (in square units)
+    % Store reweighted Mahalanobis distances (in squared units)
     REW.md=md;
 end
 
@@ -1264,7 +1288,7 @@ end
         slutn(1:ndup)=ay(ijk);
         initmean=slutn(floor((ndup+1)/2))/h;
         
-        if smallsamplecorfactor==1
+        if smallsamplecorfactor==true
             c1factor = corfactorRAW(1,ncas,alpha);
         end
         
