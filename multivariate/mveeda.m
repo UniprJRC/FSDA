@@ -53,31 +53,18 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %               Example - 'nocheck',1
 %               Data Types - double
 %
-%       plots : Plot on the screen. Scalar or structure.
-%               If plots is a structure or scalar equal to 1, generates:
-%               (1) a plot of Mahalanobis distances against index number. The
-%               confidence level used to draw the confidence bands for
-%               the MD is given by the input option conflev. If conflev is
-%               not specified a nominal 0.975 confidence interval will be
-%               used.
-%               (2) a scatter plot matrix with the outliers highlighted.
-%               If plots is a structure it may contain the following fields
-%                   plots.labeladd = if this option is '1', the outliers in the
-%                       spm are labelled with their unit row index. The
-%                       default value is labeladd='', i.e. no label is
-%                       added.
-%                   plots.nameY = cell array of strings containing the labels of
-%                       the variables. As default value, the labels which
-%                       are added are Y1, ...Yv.
+%       plots : Plot on the screen. Scalar.
+%               If plots is equal to 1, it generates a plot which monitors
+%               raw mve Mahalanobis distances against values of bdp.
 %               Example - 'plots',1
 %               Data Types - double or structure
 %
-%        msg  : scalar. Display or not messages
-%               on the screen. If msg==1 (default) messages are displayed
+%        msg  : boolean. Display or not messages
+%               on the screen. If msg==true (default) messages are displayed
 %               on the screen about estimated time to compute the final
 %               estimator else no message is displayed on the screen.
-%               Example - 'msg',1
-%               Data Types - double
+%               Example - 'msg',false
+%               Data Types - logical
 
 %    ysaveRAW : scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure RAW. This feature is
@@ -141,7 +128,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %     REW.Outliers = A vector containing the list of the units declared as
 %                    outliers after reweighting.
 %            REW.Y = Data matrix Y.
-%       REW.class = 'mvereda'
+%       REW.class = 'mveeda'
 %
 %  Optional Output:
 %
@@ -288,7 +275,7 @@ reftoldef=1e-6;
 bdpdef=0.5:-0.01:0.01;
 
 options=struct('nsamp',nsampdef,'bdp',bdpdef,...
-    'plots',0,'nocheck',0,'conflev',0.975,'msg',1,...
+    'plots',0,'nocheck',0,'conflev',0.975,'msg',true,...
     'ysaveRAW',0,'ysaveREW',0,'refsteps',0,'reftol',reftoldef);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -332,7 +319,7 @@ hmin=floor(2*floor((n+v+1)/2)-n+2*(n-floor((n+v+1)/2))*(0.5));
 % are extracted (that is the subsets of size v+1 which are not full rank)
 singsub=0;
 
-msg=options.msg;            % Scalar which controls the messages displayed on the screen
+msg=options.msg;            % Boolean which controls the messages displayed on the screen
 
 
 conflev = options.conflev;
@@ -487,7 +474,7 @@ for jj=1:length(bdp)
             time(i)=toc;
         elseif i==tsampling+1
             % stop sampling and print the estimated time
-            if msg==1
+            if msg==true
                 fprintf('Total estimated time to complete MVE: %5.2f seconds \n', nselected*median(time));
             end
         end
