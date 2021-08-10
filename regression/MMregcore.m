@@ -442,7 +442,7 @@ elseif strcmp(rhofunc,'hampel')
     % c2 = consistency factor for a given value of efficiency
     c=HAeff(eff,1,abc);
     
-    psifunc.c=[c,abc];
+    psifunc.c=[c;abc(:)];
     psifunc.class='HA';
     
     c=psifunc.c;
