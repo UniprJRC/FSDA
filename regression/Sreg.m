@@ -487,7 +487,7 @@ elseif strcmp(rhofunc,'hyperbolic')
 elseif strcmp(rhofunc,'hampel')
     
     if isempty(options.rhofuncparam)
-        abc=[2,4,8];
+        abc=[2;4;8];
     else
         abc=options.rhofuncparam;
     end
