@@ -94,5 +94,7 @@ aT(a)=true;
 bT(b)=true;
 % c = vector containing numbers which are inside vector a which are not present in b
 % Elements in c are sorted and contain no repetitions
-c=find(aT & ~bT);
+c=find(bitand(aT , not(bT)));
+% The instruction above is faster than the one below
+% c=find(aT & ~bT);
 end
