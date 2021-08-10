@@ -705,7 +705,7 @@ else
                         else
                             bsbx(1:size(Xbb,1))=[bsbx(1:size(Xbb,1)-1);nclx(i)];
                             Xbx=X(bsbx(1:size(Xbb,1)),:);
-                            nclx=setdiff(seq,bsbx(1:size(Xbb,1)));
+                            nclx=setdiffFS(seq,bsbx(1:size(Xbb,1)));
                             norank=1;
                             break
                         end
@@ -873,7 +873,7 @@ else
                 if ~isempty(constr) && mm<n-length(constr)-1
                     % disp(mm)
                     ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean
-                    ncl=setdiff(ncl,constr(:));
+                    ncl=setdiffFS(ncl,constr(:));
                 else
                     ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean
                 end

@@ -813,7 +813,7 @@ else % initial subset is not supplied by the user
                 % INITIAL SUBSET WAS NOT FULL RANK
                 % restart LXS without the units forming
                 % initial subset
-                bsb=setdiff(seq,outLXS.bs(:));
+                bsb=setdiffFS(seq,outLXS.bs(:));
                 [outLXS]=LXS(y(bsb),X(bsb,:),'h',h','lms',lms,'nsamp',nsamp,'nocheck',true,...
                     'msg',msg,'intercept',intercept,'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
                     'conflev',0.975,'rew',false,'yxsave',false);
@@ -825,7 +825,7 @@ else % initial subset is not supplied by the user
                 % SET OF OBSERVATIONS CONSTR <n/2  WHICH PRODUCED A SINGULAR
                 % MATRIX. IN THIS CASE NEW LXS IS BASED ON  n-constr OBSERVATIONS
                 iter=iter+1;
-                bsb=setdiff(seq,mdr(:));
+                bsb=setdiffFS(seq,mdr(:));
                 constr=mdr(:);
                 [outLXS]=LXS(y(bsb),X(bsb,:),'h',h','lms',lms,'nsamp',nsamp,'nocheck',true,...
                     'msg',msg,'intercept',intercept,'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
