@@ -192,11 +192,13 @@ function [out, varargout] = LTSts(y,varargin)
 %                       In the paper RPRH $\beta_{LS1}$ is denoted with
 %                       symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
 %                       with symbol $\delta_2$.
-%               model.ARp = scalar greater or equal than 0 which
-%                         specifies the length of the autoregressive
-%                         component. The default value of model.ARp is 0,
-%                         that is there is no autoregressive component.
-%                 Example - 'model', model
+%               model.ARp = vector with non negative integer numbers
+%                       specifying the autoregressive
+%                       components. For example: 
+%                        model.ARp=[1 2] means a AR(2) process; 
+%                        model.ARp=2 means just the lag 2 component;
+%                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
+%                        model.ARp=0 (default) means no autoregressive component.                Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default model is for monthly data with a linear
 %               trend (2 parameters) + seasonal component with just one
@@ -1264,16 +1266,26 @@ X = model.X;
 % Order of the autoregressive component
 
 ARp=model.ARp;
-ARp=ARp(1);
-if ARp>6
+lARp=length(ARp);
+
+% ARp=ARp(1);
+
+if lARp>6
     disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
-    ARp=6;
+    %  ARp=6;
 end
-if ARp>0
+ARp=ARp(:);
+
+if isscalar(ARp) && ARp(1)==0
+    % In this case there is no ARp component
+    autoRegressive=false;
+else
+    autoRegressive=true;
     % Ylagged = matrix which contains lagged values of Y
-    Ylagged=zeros(T,ARp);
-    for j=1:ARp
-        Ylagged(:,j)=[y(1:j); y(1:end-j)];
+    Ylagged=zeros(T,lARp);
+    for j=1:lARp
+        selj=ARp(j);
+        Ylagged(:,j)=[y(1:selj); y(1:end-selj)];
     end
     X=[Ylagged X];
 end
@@ -1380,7 +1392,7 @@ if varampl>0
     if coder.target('MATLAB')
         verLess2016b=verLessThanFS(9.1);
     else
-        verLess2016b=false;
+        verLess2016b=true;
     end
 else
     verLess2016b=false;
@@ -1451,27 +1463,29 @@ if lshiftYN==1
     % level shift and, if  take the one which minimizes the target
     % function (residual sum of squares/2 = negative log
     % likelihood)
-    LSH = lshift;
+    % With the instruction below we want to make sure that LSH is a row
+    % vector
+    LSH = lshift(:)';
     % total number of subsets to pass to procedure subsets
     ncombLSH=bc(T-1,pini+1);
     
 else
     LSH=0;
+    ncombLSH=0;
 end
-
-
-% ScaleLSH= estimate of the squared scale for each value of LSH which has been
-% considered
-numscale2LSH=[LSH' zeros(length(LSH),2)];
-
-% yhatrobLSH = vector of fitted values for each value of LSH
-yhatrobLSH=zeros(T,length(LSH));
-
-% ilsh is a counter which is linked to the rows of LSH
-ilsh=0;
 
 % lLSH = length of tentative level shift positions
 lLSH=length(LSH);
+
+% ScaleLSH= estimate of the squared scale for each value of LSH which has been
+% considered
+numscale2LSH=[LSH' zeros(lLSH,2)];
+
+% yhatrobLSH = vector of fitted values for each value of LSH
+yhatrobLSH=zeros(T,lLSH);
+
+% ilsh is a counter which is linked to the rows of LSH
+% ilsh=0;
 
 
 bestrdiv2=round(bestr/2);
@@ -1522,7 +1536,7 @@ WEIisum=zeros(T,lLSH);
 % WEIisumbest10 = matrix which will contain the number of times each units has
 % been included into the best h-subsets among the bestr/2 best
 WEIibest10sum=zeros(T,lLSH);
-WEIibestrdiv2=zeros(T,bestrdiv2);
+WEIibestrdiv2=zeros(T,bestr);
 
 RES = nan(T,lLSH);
 
@@ -1548,29 +1562,25 @@ if ~coder.target('MATLAB')
     bestyhattoadd=zeros(pini,pini);
     bestbetastoadd=bestyhattoadd;
     bestsubsettoadd=bestyhattoadd;
-    ncombLSH=0;
     bsb=0;
     ibest=0;
     yhatrob=0;
     weightsst=false;
     posLS=0;
     Likloc=0;
+    nselected=0;
 end
 
 
-
-for lsh=LSH
-    ilsh=ilsh+1;
+for ilsh=1:lLSH
+    lsh=LSH(ilsh);
+    % ilsh=ilsh+1;
     
     sworst = Inf;
     
-    % Xlshift = explanatory variable associated with
-    % level shift Xlshift is 0 up to lsh-1 and 1 from
-    % lsh to T
-    Xlshift= [zeros(lsh-1,1);ones(T-lsh+1,1)];
-    
     
     if ilsh>1
+        
         nsamp=nsampsubsequentsteps;
         bestrLSH=bestrdiv2;
         bestnumscale2 = Inf * ones(bestrdiv2,1);
@@ -1579,6 +1589,7 @@ for lsh=LSH
         bestsubset = zeros(bestrdiv2,pini+lshiftYN*2);
         
     else
+        
         bestbetas = zeros(bestr,p);
         bestyhat=zeros(T,bestr);
         bestsubset = zeros(bestr,pini+lshiftYN*2);
@@ -1586,7 +1597,12 @@ for lsh=LSH
         bestrLSH=bestr;
     end
     
-    if lsh>0
+    if lshiftYN==1
+        
+        % Xlshift = explanatory variable associated with
+        % level shift Xlshift is 0 up to lsh-1 and 1 from
+        % lsh to T
+        Xlshift= [zeros(lsh-1,1);ones(T-lsh+1,1)];
         
         [Cini,nselected] = subsets(nsamp,T-1,pini+1,ncombLSH,msg);
         
@@ -1615,7 +1631,6 @@ for lsh=LSH
         [Cini,nselected] = subsets(nsamp,T,pini,ncomb,msg);
         C=Cini;
     end
-    
     % Store indexes of extracted subsets if nargout is greater than 1
     if nargout>1
         Ccell{ilsh}=Cini;
@@ -1659,7 +1674,7 @@ for lsh=LSH
         % extract a subset of size p
         index = C(i,:);
         
-        if lsh==0
+        if lshiftYN==0
             Xlshift=[];
         end
         
@@ -1668,16 +1683,14 @@ for lsh=LSH
         % just on the units forming subset
         bsb=index(:);
         betaini=Xfinal(bsb,:)\yin(bsb);
-        
         % Check if betaini contains NaN
         if ~any(isnan(betaini))
-            
             % The first pini components are associated with
             % trend and seasonal (without varying
             % amplitude) and explanatory variables
             beta0(1:pini)=betaini(1:pini);
             
-            if lsh>0
+            if lshiftYN==1
                 % The last two components of beta0 are the associated with
                 % level shift. More precisely penultimate position is for the
                 % coefficient of level shift and, final position is the integer
@@ -1795,15 +1808,15 @@ for lsh=LSH
     % plot([y bestyhat(:,1)])
     
     
-    for i=1:bestr
-        yhat=bestyhatall(:,i);
-        tmp = IRWLSreg(yin,bestbetasall(i,:)',refstepsbestr,reftolbestr,h);
+    for ii=1:bestr
+        yhat=bestyhatall(:,ii);
+        tmp = IRWLSreg(yin,bestbetasall(ii,:)',refstepsbestr,reftolbestr,h);
         
         % Store information about the units forming best h subset among the
         % 10 best
-        WEIibestrdiv2(:,i)=tmp.weights;
+        WEIibestrdiv2(:,ii)=tmp.weights;
         
-        allnumscale2(i,1)=tmp.numscale2rw;
+        allnumscale2(ii,1)=tmp.numscale2rw;
         % allscales(i,2)=tmp.betarw(end);
         
         if tmp.numscale2rw < numsuperbestscale2
@@ -1811,10 +1824,10 @@ for lsh=LSH
             brob = tmp.betarw;
             % bs = superbestsubset, units forming best subset according to
             % fastlts
-            % bs = bestsubsetall(i,:);
+            % bs = bestsubsetall(ii,:);
             yhatrob=tmp.yhat;
             numsuperbestscale2=tmp.numscale2rw;
-            ibest=i;
+            ibest=ii;
             weightsst=tmp.weights;
         end
     end
@@ -1853,8 +1866,8 @@ for lsh=LSH
     NumScale2ind(:,ilsh)=numscale2ssorind(1:nbestindexes);
     
     WEIibest10sum(:,ilsh)=sum(WEIibestrdiv2,2);
-    if lsh>0 && msg ==true
-        fprintf('Level shift for t=%.0f\n',lsh)
+    if lshiftYN==1 && msg ==true
+        fprintf('Level shift for t=%.0f\n',lsh);
     end
 end
 
@@ -1885,7 +1898,7 @@ s0=sh0*factor;
 % Apply small sample correction factor of Pison et al.
 s0=s0*sqrt(corfactorRAW(1,T,h/T));
 
-if  lsh>0
+if  lshiftYN==1
     % Compute the residuals locally just changing the position of the level
     % shift
     bstar=brobbest;
@@ -2162,7 +2175,7 @@ B=[betaout sebetaout tout pval];
 
 out.B=B;
 
-if lsh>0
+if lshiftYN==1
     % Store position of level shift
     out.posLS=posLS;
 else
@@ -2272,7 +2285,7 @@ end
 
 out.class='LTSts';
 
-if lsh>0
+if lshiftYN==1
     % Store local improvement of the likelihood
     out.Likloc=Likloc;
 else
@@ -2344,7 +2357,16 @@ b_trend = ['b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'];
 b_seaso =['b_cos1  '; 'b_sin1  '; 'b_cos2  '; 'b_sin2  '; ...
     'b_cos3  '; 'b_sin3  '; 'b_cos4  '; 'b_sin4  '; ...
     'b_cos5  '; 'b_sin5  '; 'b_cos6  '];
-b_AR =    ['b_AutoR1'; 'b_AutoR2'; 'b_AutoR3'; 'b_AutoR4'; 'b_AutoR5'; 'b_AutoR6'];
+% b_AR =    ['b_AutoR1'; 'b_AutoR2'; 'b_AutoR3'; 'b_AutoR4'; 'b_AutoR5'; 'b_AutoR6'];
+
+% b_AR=char(strcat('b_auto', num2str((1:99)')));
+b_AR1=[repmat('b_auto',99,1) num2str((1:99)')];
+if autoRegressive==true
+    b_AR=b_AR1(ARp,:);
+else
+    b_AR='noauto';
+end
+
 b_X  =    ['b_explX1'; 'b_explX2'; 'b_explX3'; 'b_explX4'; 'b_explX5'; 'b_explX6'];
 b_varampl = ['b_varaml'; 'b_varam2'; 'b_varam3'];
 b_lshift  = ['b_lshift' ; 't_lshift'];
@@ -2359,8 +2381,9 @@ b_lshift  = ['b_lshift' ; 't_lshift'];
 % b_varampl = ["b_varampl"; "b_varamp2"; "b_varamp3"];
 % b_lshift  = ["b_lshift" ; "t_lshift"];
 
-if ARp>0
-    b_expl=[b_AR(1:ARp,:); b_X(1:nexpl-ARp,:)];
+if autoRegressive==true
+    b_expl=[b_AR(1:lARp,:); b_X(1:nexpl-lARp,:)];
+    b_expl=b_expl(:,1:8);
 else
     b_expl=b_X;
 end
@@ -2391,7 +2414,12 @@ end
 % if verLessThan ('matlab','8.2.0')
 % else
 % Store matrix B in table format (with labels for rows and columns)
-out.Btable=array2table(B,'RowNames',string(lab),'VariableNames',{'Coeff','SE','t','pval'});
+if coder.target('MATLAB')
+    out.Btable=array2table(B,'RowNames',string(lab)','VariableNames',{'Coeff','SE','t','pval'});
+else
+    out.Btable=array2table(B,'VariableNames',{'Coeff','SE','t','pval'});
+end
+
 % end
 
 if dispresults
@@ -2400,7 +2428,7 @@ if dispresults
     else
     end
     if lshiftYN==1
-        fprintf('Level shift position t=%.0f\n',posLS)
+        fprintf('Level shift position t=%.0f\n',posLS);
     end
 end
 
@@ -2488,7 +2516,7 @@ if coder.target('MATLAB')
         set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
     end
     
-    if plots==2 && lsh>0
+    if plots==2 && lshiftYN==1
         
         % Values of the target function for each tentative level shift position
         figure;
@@ -2908,14 +2936,14 @@ end
             %  is a real number and \beta_(npar+2) is a integer which
             %  denotes the period in which level shift shows up
             yhatlshift=beta0(npar+1)*Xlshift(bsb);
+            
+            % Fitted values from trend (yhattrend), (time varying) seasonal
+            % (yhatseaso), explanatory variables (yhatX) and level shift
+            % component (yhatlshift)
+            yhat=yhattrend+yhatseaso+yhatX+yhatlshift;
         else
-            yhatlshift=0;
+            yhat=yhattrend+yhatseaso+yhatX;
         end
-        
-        % Fitted values from trend (yhattrend), (time varying) seasonal
-        % (yhatseaso), explanatory variables (yhatX) and level shift
-        % component (yhatlshift)
-        yhat=yhattrend+yhatseaso+yhatX+yhatlshift;
         
         %         % Additional regression due to the presence of the autoregressive
         %         % component
@@ -2980,14 +3008,17 @@ end
             %  denotes the period in which level shift shows up
             
             yhatlshift=beta0(npar+1)*Xlshiftf;
+            % objhat = fitted values from trend (yhattrend), (time varying) seasonal
+            % (yhatseaso), explanatory variables (yhatX) and level shift
+            % component (yhatlshift)
+            objyhat=yhattrend+yhatseaso+yhatX+yhatlshift;
         else
-            yhatlshift=0;
+            % objhat = fitted values from trend (yhattrend), (time varying) seasonal
+            % (yhatseaso), explanatory variables (yhatX) and level shift
+            % component (yhatlshift)
+            objyhat=yhattrend+yhatseaso+yhatX;
         end
         
-        % objhat = fitted values from trend (yhattrend), (time varying) seasonal
-        % (yhatseaso), explanatory variables (yhatX) and level shift
-        % component (yhatlshift)
-        objyhat=yhattrend+yhatseaso+yhatX+yhatlshift;
     end
 
 % -------------------------------------------------------------------
@@ -3241,7 +3272,11 @@ end
     end
 
 if nargout>1
-    varargout=Ccell;
+    if coder.target('MATLAB')
+        varargout=Ccell;
+    else
+        varargout={1};
+    end
 end
 end
 
