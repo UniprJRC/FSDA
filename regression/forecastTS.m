@@ -499,7 +499,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.lshift=0;
     % Add a nonn important expl. variable
     model.X=X;
-    model.ARp=2;
+    model.ARp=[1 2];
     out=LTSts(y,'model',model,'plots',1,'dispresults',true);
     % Note that in this case all the 120 values of Xall are supplied and
     % the number of forecasts is 20
@@ -529,7 +529,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.seasonal=2;
     % No level shift
     model.lshift=0;
-    model.ARp=2;
+    model.ARp=[1 2];
     out=LTSts(y,'model',model,'plots',1,'dispresults',true);
     % Note that in this case all the 120 values of Xall are supplied and
     % the number of forecasts is 20
