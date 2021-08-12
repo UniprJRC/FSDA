@@ -31,7 +31,7 @@ function [out] = simulateTS(T,varargin)
 %                       If this field is an empty double the simulated time
 %                       series will not contain a trend. The default value
 %                       of model.trendb is [0 1] that is a slope equal to 1
-%                       and intercept equal to false.
+%                       and intercept equal to 0.
 %               model.s = scalar greater than zero which specifies the
 %                       length of the seasonal period. For monthly
 %                       data (default) s=12, for quartely data s=4, ...
@@ -94,15 +94,33 @@ function [out] = simulateTS(T,varargin)
 %                       If this field is an empty double (default) the
 %                       simulated time series will not contain explanatory
 %                       variables.
+%               model.ARIMAX = boolean variable (true/false) that specifies
+%                       the model for the AR component (when present). If
+%                       true, then the autoregressive component involves
+%                       the dependent variable, as in expression (1) of
+%                       https://it.mathworks.com/help/econ/convert-between-armax-and-regarima-models.html#btw30mu
+%                       with N(L)=1. If false, then the autoregressive
+%                       component involves the residual term, as in
+%                       expression (2) of the same page with A(L)=1. If
+%                       this field is empty or not present, the default
+%                       value is false.
+%               model.ARp = vector with non negative integer numbers
+%                       specifying the autoregressive
+%                       components. For example: 
+%                        model.ARp=[1 2] means a AR(2) process; 
+%                        model.ARp=2 means just the lag 2 component;
+%                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
+%                        model.ARp=0 (default) means no autoregressive component. 
 %               model.ARb = vector of doubles containing the beta
-%                       coefficients for the autoregressive component.
-%                       For example model.ARb = [0.5 -0.2]
-%                       generates an AR(2) time series of the
-%                       kind: $y_t = 0.5 y_{t-1} - 0.2 y_{t-2}$ + seasonal
-%                       + lshift + $\epsilon_t$.
-%                       If this field is an empty double (default) the
-%                       simulated time series will not have an
-%                       autoregressive component.
+%                       coefficients for the autoregressive component. For
+%                       example model.ARb = [0.5 -0.2] in combination with
+%                       model.ARp=[1 2] and ARIMAX=ture generates an AR(2)
+%                       time series of the kind: $y_t = 0.5 y_{t-1} - 0.2
+%                       y_{t-2}$ + seasonal + lshift + $\epsilon_t$.
+%                       model.ARb must have the same number of elements of
+%                       model.ARp. If this field is an empty double
+%                       (default) the simulated time series will not have
+%                       an autoregressive component.
 %               model.lshift = scalar greater than 0 which specifies the
 %                       position where to include a level shift component.
 %                       If this field is an empty double (default) the
@@ -115,13 +133,27 @@ function [out] = simulateTS(T,varargin)
 %                       If this field is an empty double (default) the
 %                       simulated time series will not contain a level
 %                       shift.
+%                model.sigmaeps = scalar wich defines the standard error of
+%                       the residuals. If this field is empty or not present,
+%                       the default value is [], and the standard error of 
+%                       the residuals will be calculated through the 
+%                       model.signal2noiseratio.
 %                model.signal2noiseratio = scalar wich defines the ratio
 %                       between the variance of the systematic part of the
 %                       model (signal) and the variance of the noise
 %                       (irregular model). The greater is this value, the
 %                       smaller is the effect of the irregular component.
+%                       If model.sigmaeps is not empty, the value of
+%                       model.signal2noiseratio will be ignored. If
+%                       model.sigmaeps is empty and model.ARIMAX is true,
+%                       then an algorithm will search the best value of the
+%                       standard error of the residuals that guarantees the
+%                       desired model.signal2noiseratio.
 %                       If this field is empty or not present the default
 %                       value of 1 is used.
+%               model.nsim = scalar wich defines the number of time series
+%                       to simulate. If this field is empty or not present,
+%                       the default value of 1 is used.
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default model is for monthly data with a linear
@@ -138,7 +170,7 @@ function [out] = simulateTS(T,varargin)
 %       plots : Plots on the screen. Scalar.
 %               If plots == 1 a six panel plot appears on the screen.
 %               Top left panel contains the simulated time series y.
-%               y=TR+SE+X+LS+I.
+%               y=TR+SE+X+LS+I of the first simulated time series.
 %               Top central panel contains the signal component (that is
 %               trend + seasonal + explanatory variables + level shift = TR
 %               + SE + LS + X).
@@ -149,7 +181,7 @@ function [out] = simulateTS(T,varargin)
 %               (LS).
 %               Bottom right panel contains the explanatory variable component
 %               (X) if it is present, otherwise, it contains the irregular
-%               (I) component.
+%               (I) component of the first simulation.
 %               The default value of plot is 0, that is no plot is shown on
 %               the screen.
 %                 Example - 'plots',1
@@ -193,7 +225,7 @@ function [out] = simulateTS(T,varargin)
 %         out:   structure which contains the following fields:
 %
 %                out.y = the simulated time series.
-%                   Column vector of length T, which is sum of trend +
+%                   Matrix of dimension T x nsim, which is sum of trend +
 %                   (time varying) seasonal + explanatory variables + level
 %                   shift + irregular = TR+SE+X+LS+I.
 %                out.signal = signal (TR+SE+X+LS).
@@ -216,7 +248,7 @@ function [out] = simulateTS(T,varargin)
 %                   shift component.
 %                   If there is no level shift component out.lshift=0.
 %                out.irregular = irregular component (I).
-%                   Column vector of length T which contains the irregular
+%                   Matrix of dimension T x nsim which contains the irregular
 %                   component.
 %                   When the signal to noise ratio tends to infinity the
 %                   irregular component tends to 0.
@@ -412,6 +444,7 @@ function [out] = simulateTS(T,varargin)
     model.trendb=[5,1000];
     model.seasonal='';
     model.signal2noiseratio=10;
+    model.ARp=[1 2];
     model.ARb=[0.2 0.7];
     T=100;
     out=simulateTS(T,'model',model,'plots',1);
@@ -436,6 +469,7 @@ function [out] = simulateTS(T,varargin)
     model.trendb=[5,1000];
     model.seasonal='';
     model.signal2noiseratio=10;
+    model.ARp=[1 2];
     model.ARb=[0.2 0.7];
     T=100;
     X=1e+2*randn(T,1);
@@ -474,8 +508,12 @@ modeldef.X        = [];       % no explanatory variables
 modeldef.Xb       = [];       %
 modeldef.lshift   = [];       % no level shift
 modeldef.lshiftb  = [];       %
-modeldef.ARb      = [];       % no autoregressive component
+modeldef.ARIMAX   = false;    % autoregressive component on the residuals
+modeldef.ARp      = [];       % no autoregressive component
+modeldef.ARb      = [];       % 
+modeldef.sigmaeps = [];       % std err of residuals based on signal2noiseratio
 modeldef.signal2noiseratio=1; % same variances of signal and irregular parts
+modeldef.nsim     = 1;        % simulate only 1 time series
 nocheck           = false;
 plots             = 0;
 FileNameOutput    = '';
@@ -544,8 +582,12 @@ X        = model.X;
 Xb       = model.Xb;
 lshift   = model.lshift;      % get level shift
 lshiftb  = model.lshiftb;     % get coefficient of level shift
-ARb      = model.ARb;         % order of the autoregressive component
+ARIMAX   = model.ARIMAX;      % model for AR component
+ARp      = model.ARp;         % lags of the autoregressive component
+ARb      = model.ARb;         % coefficients of the autoregressive component
+sigmaeps = model.sigmaeps;    % std err of the residuals
 signal2noiseratio=model.signal2noiseratio;
+nsim     = model.nsim;
 
 Seq = [one seq seq.^2 seq.^3];
 
@@ -567,7 +609,7 @@ if ~isempty(trend)
         
         if isempty(trendb) && ~isempty(trend)
             disp('Warning: option trend has not been specified but the beta coefficients for the trend have been specified')
-            error('FSDA:simulateTS:WrongInput','Specify the requested component togeter with the requested coefficients')
+            error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
         end
     end
     if length(trendb)~=trend+1
@@ -575,7 +617,7 @@ if ~isempty(trend)
         disp('For example: trend order equal to 0 must have just one beta coefficient.')
         disp('For example: trend order equal to 1 must have two beta coefficients.')
         disp('...')
-        error('FSDA:simulateTS:WrongInput','Specify the requested component togeter with the requested coefficients')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     else
         Xtrend = Seq(:,1:trend+1);
     end
@@ -583,7 +625,7 @@ else
     % Controls on the trend component
     if ~isempty(trendb)
         disp('Warning: option trend has been specified but the beta coefficients for the trend have not been specified')
-        error('FSDA:simulateTS:WrongInput','Specify the requested component togeter with the requested coefficients')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
     
     Xtrend=Seq(:,1);
@@ -608,30 +650,30 @@ if nocheck == false
     % Controls on the explanatory variables component
     if isempty(X) && ~isempty(Xb)
         disp('Warning: option X has not been specified but the beta coefficients for the explanatory variables have been specified')
-        error('FSDA:simulateTS:WrongInput','Specify the requested component togeter with the requested coefficients')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
     
     if isempty(Xb) && ~isempty(X)
         disp('Warning: option X has been specified but the beta coefficients for the explanatory variables have not been specified')
-        error('FSDA:simulateTS:WrongInput','Specify the requested component togeter with the requested coefficients')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
     
     if ~isempty(X) && length(Xb)~=nexpl
         % Define matrix which contains explanatory variables
         disp(['Warning: option X has been specified but the length of ' ...
-            'beta coefficients for X is not in agreeemnt'])
+            'beta coefficients for X is not in agreeement'])
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
     
     % Controls on level shift component
     if isempty(lshift) && ~isempty(lshiftb)
         disp('Warning: option lshift has not been specified but the beta coefficient for the level shift has been specified')
-        error('FSDA:simulateTS:WrongInput','Specify the requested component togeter with the requested coefficients')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
     
     if isempty(lshiftb) && ~isempty(lshift)
         disp('Warning: option lshift has been specified but the beta coefficient for the level shift has not been specified')
-        error('FSDA:simulateTS:WrongInput','Specify the requested component togeter with the requested coefficients')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
     
     if ~isempty(lshift) && lshift<=1 && lshift> T
@@ -675,20 +717,48 @@ if nocheck == false
     % Controls on the seasonal  component
     if isempty(seasonal) && ~isempty(seasonalb)
         disp('Warning: option seasonal has been specified but the beta coefficients for the seasonal have not been specified')
-        error('FSDA:simulateTS:WrongInput','Specify the requested component togeter with the requested coefficients')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
     
     if isempty(seasonalb) && ~isempty(seasonal)
         disp('Warning: option seasonal has not been specified but the beta coefficients for the seasonal have been specified')
-        error('FSDA:simulateTS:WrongInput','Specify the requested component togeter with the requested coefficients')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
     
     if ~isempty(seasonal) && length(seasonalb)~=nseaso+varampl
         % Define matrix which contains linear
         disp(['Warning: option seasonal has been specified but the length of ' ...
-            'beta coefficients for the seasonal component is not in agreeemnt'])
+            'beta coefficients for the seasonal component is not in agreeement'])
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
+end
+
+
+%% checks on the AR component
+if nocheck == false
+    % Controls on the AR component
+    if isempty(ARp) && ~isempty(ARb)
+        disp('Warning: option ARp has been specified but the beta coefficients for the autoregressive terms have not been specified')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
+    end
+    
+    if isempty(ARb) && ~isempty(ARp)
+        disp('Warning: option seasonal has not been specified but the beta coefficients for the seasonal have been specified')
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
+    end
+    
+    if ~isempty(ARp) && length(ARb)~=length(ARp)
+        % Define matrix which contains linear
+        disp(['Warning: option ARp has been specified but the length of ' ...
+            'beta coefficients for the autoregressive component is not in agreeement'])
+        error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
+    end
+end
+
+%% checks on sigmaeps and signal2noiseratio
+if ~isempty(sigmaeps) && ~isempty(signal2noiseratio)
+    disp(['Warning: both options sigmaeps and signal2noiseratio have been specified. ' ...
+        'The value of signal2noiseratio will be ignored.'])
 end
 
 %%  Define the explanatory variable associated to the level shift component
@@ -754,72 +824,107 @@ end
 % (yhatseaso), explanatory variables (yhatX) and level shift (yhatlshift)
 signal = yhattrend + yhatseaso + yhatX + yhatlshift;
 
-
-%% Standard deviation of the irregular component, based on option signal2noiseratio
-
-varsignal = var(signal);
-if varsignal>0
-    sigmaeps= sqrt(varsignal/signal2noiseratio);
-else
-    sigmaeps= sqrt(1/signal2noiseratio);
-end
-
 %% Final simulated time series y, with or without autoregressive component
-
-if ~isempty(ARb)
+if isempty(ARb)
+    % No autoregressive part
+    % Calculate the std err of the residuals (if not provided)
+    if isempty(sigmaeps)
+        varsignal = var(signal);
+        if varsignal>0
+            sigmaeps= sqrt(varsignal/signal2noiseratio);
+        else
+            sigmaeps= sqrt(1/signal2noiseratio);
+        end
+    end
+    % Simulate the irregular component
+    irregular = sigmaeps * randn(T,nsim);
+    % y is the final simulated time series (signal + irregular component)
+    y = signal*ones(1,nsim) + irregular;
+else
     % Add autoregressive part to the irregular.
-    
     % Be reasonable with the number of autoregressive components ...
     if length(ARb)>6
-        disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
+        disp('Number of autoregressive components is too big and can create model instability: it is set to 6');
+        ARp=ARp(1:6);
         ARb=ARb(1:6);
     end
-    
-    % Generates regression models with ARMA errors.
-    
-    if exist('regARIMA','file')>0
-        % Use the Econometric toolbox if present: regARIMA
-        Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
-        % arima generates ARIMAX models
-        % Mdl1 = arima('AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
-        [y , irregular] = simulate(Mdl1,T,'X',signal);
-        
-    else
-        % Simulate the data y(t) without the Econometrics toolbox.
-        % For more details see files
-        % R2019b\toolbox\econ\econ\@regARIMA\simulate.m
-        % R2019b\toolbox\econ\econ\@ARIMA\simulate.m
-        % R2019b\toolbox\econ\econ\+internal\+econ\simulateStandardizedVariates.m
-        LagsAR = 1:length(ARb);
-        LagsMA = 0;
-        coefficients = [0  ARb  1]';  % ARIMA coefficient vector
-        I      = 1;
-        maxPQ  = length(ARb);
-        Y      = zeros(1,T+maxPQ);
-        E      = Y;
-        Z      = randn(1,T);
-        E(:,(maxPQ + 1:end))=Z * sigmaeps;
-        
-        for t = (maxPQ + 1):T+maxPQ
-            data   = [I  Y(:,t - LagsAR)  E(:,t - LagsMA)];
-            Y(:,t) = data * coefficients;
+    ARb_all=zeros(1,max(ARp));
+    ARb_all(ARp)=ARb;
+    if ARIMAX==false
+        % AR components on residuals
+        % Calculate the std err of the residuals (if not provided)
+        if isempty(sigmaeps)
+            varsignal = var(signal);
+            if varsignal>0
+                sigmaeps= sqrt(varsignal/signal2noiseratio);
+            else
+                sigmaeps= sqrt(1/signal2noiseratio);
+            end
         end
-        Y = Y(:,(maxPQ + 1):T+maxPQ)';
-        irregular = E(:,(maxPQ + 1):T+maxPQ)';
-        y = signal+Y;
-        
+        if exist('regARIMA','file')>0
+            % Use the Econometric toolbox if present: regARIMA
+            Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb_all),'Beta',1,'Variance',sigmaeps^2);
+            % arima generates ARIMAX models
+            % Mdl1 = arima('AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
+            [y , irregular] = simulate(Mdl1,T,'X',signal,'NumPaths',nsim);
+        else
+            % Simulate the data y(t) without the Econometrics toolbox.
+            % For more details see files
+            % R2019b\toolbox\econ\econ\@regARIMA\simulate.m
+            % R2019b\toolbox\econ\econ\@ARIMA\simulate.m
+            % R2019b\toolbox\econ\econ\+internal\+econ\simulateStandardizedVariates.m
+            LagsAR = 1:length(ARb_all);
+            LagsMA = 0;
+            coefficients = [0  ARb_all  1];  % ARIMA coefficient vector
+            I      = ones(1,nsim);
+            maxPQ  = length(ARb_all);
+            Y      = zeros(T+maxPQ,nsim);
+            E      = Y;
+            Z      = randn(T,nsim);
+            E((maxPQ + 1:end),:)=Z * sigmaeps;
+
+            for t = (maxPQ + 1):T+maxPQ
+                data   = [I;  Y(t - LagsAR,:);  E(t - LagsMA,:)];
+                Y(t,:) = coefficients * data;
+            end
+            Y = Y(maxPQ + 1:T+maxPQ,:);
+            irregular = E(maxPQ+1:T+maxPQ,:);
+            y = signal*ones(1,nsim) + Y;   
+        end
+    else
+        % AR components on dependent variable
+        if ~isempty(sigmaeps) % sigmaeps fixed
+            [y,irregular,~]=simulateARIMAX(T,nsim,ARb_all,sigmaeps,signal);
+        else % search sigmaeps depending on signal2noiseratio
+            disp('Iterative search of sigmaeps depending on the desired signal2noise ratio.')
+            S2NR=zeros(1000,1);
+            se=zeros(1001,1);
+            se(1)=var(signal);
+            niter=0;
+            stop=0;
+            while stop==0 && niter<1000
+                niter=niter+1;
+                [y,irregular,S2NR(niter)]=simulateARIMAX(T,nsim,ARb_all,se(niter),signal);
+                if abs(S2NR(niter)-signal2noiseratio)/signal2noiseratio<1e-5
+                    stop=1;
+                    sigmaeps=se(niter);
+                else
+                    c=S2NR(niter)/signal2noiseratio;
+                    se(niter+1)=se(niter)*c;
+                end
+            end
+            if stop==1
+                disp(['After ' num2str(niter) ' iterations, the desired value of signal2noise ratio has been reached with sigmaeps = ' num2str(sigmaeps)])
+            else
+                [~,pos]=min(abs(signal2noiseratio-S2NR));
+                sigmaeps=se(pos);
+                disp(['After ' num2str(niter) ' iterations, the value of signal2noise ratio closest to the desired one is ' num2str(S2NR(pos)) ','])
+                disp(['obtained with sigmaeps = ' num2str(sigmaeps)])
+            end
+        end 
     end
-    
-else
-    % No autoregressive part
-    
-    % Simulate the irregular component
-    irregular = sigmaeps * randn(T,1);
-    
-    % y is the final simulated time series (signal + irregular component)
-    y = signal + irregular;
-    
 end
+   
 
 %% Output structure
 
@@ -853,7 +958,7 @@ end
 
 %% Create plots
 if plots==1
-    
+    % if nsim>1, we plot only the first simulated series
     % some general plot settings
     vlt15 = verLessThan('matlab', '7.15');
     %clr = 'bkrgmcy';
@@ -863,7 +968,7 @@ if plots==1
     
     if samescale
         % yscale to keep uniform across the plots
-        [minV,maxV]=minmax(y,signal,yhattrend,yhatseaso,yhatlshift,yhatX,y-signal);
+        [minV,maxV]=minmax(y(:,1),signal,yhattrend,yhatseaso,yhatlshift,yhatX,y(:,1)-signal);
     end
     
     % Minimum value for xlim
@@ -871,7 +976,7 @@ if plots==1
     
     % Time series + fitted values
     sb1 = subplot(2,3,1);
-    plot(datesnumeric,y);
+    plot(datesnumeric,y(:,1));
     if samescale, ylim([minV,maxV]); end
     xlim([minxlim,T]);
     title({'Final simulated data',''},'interpreter','none','FontSize',FontSize+2);
@@ -937,7 +1042,7 @@ if plots==1
         xlim([minxlim,T]);
         title({'Explanatory variables (X)',''},'interpreter','none','FontSize',FontSize+2);
     else
-        plot(datesnumeric,y-signal);
+        plot(datesnumeric,y(:,1)-signal);
         if samescale, ylim([minV,maxV]); end
         xlim([minxlim,T]);
         title({'Irregular (I)',''},'interpreter','none','FontSize',FontSize+2);
@@ -971,4 +1076,24 @@ end
         maxV = nanmax(minmaxout(:,2));
     end
 end
+
+
+function [Y,irregular,s2nr]=simulateARIMAX(T,nsim,ARcoeff,sigmaeps,signal)
+ARterms=zeros(length(ARcoeff),nsim);
+coefficients = [1 ARcoeff];  % ARIMA coefficient vector
+Y=zeros(T,nsim);
+Z=randn(T,nsim);
+irregular =Z*sigmaeps;
+for t = 1:T
+    data   = [signal(t)*ones(1,nsim); ARterms];
+    Y(t,:) = coefficients*data +irregular(t,:);
+    ARterms=[Y(t,:); ARterms(1:end-1,:)];
+end
+varSignal=mean(var(Y-irregular));
+varNoise=sigmaeps^2;
+s2nr=varSignal/varNoise; 
+end
+
+
+
 %FScategory:REG-Regression
