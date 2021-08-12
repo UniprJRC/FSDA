@@ -91,6 +91,7 @@ function rhoPD = PDrho(u,alpha)
 %}
 
 %% Beginning of code
+alpha=alpha(1); % MATLAB Ccoder instruction to enforce that alpha is a scalar
 rhoPD = 1-exp(-alpha*(u.^2/2));
 
 end

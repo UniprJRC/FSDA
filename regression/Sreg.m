@@ -478,7 +478,7 @@ elseif strcmp(rhofunc,'hyperbolic')
     end
     
     
-    psifunc.c1=[c,kdef,A,B,d];
+    psifunc.c1=[c;kdef;A;B;d];
     psifunc.kc1=kc;
     
     psifunc.class='HYP';
@@ -489,7 +489,7 @@ elseif strcmp(rhofunc,'hampel')
     if isempty(options.rhofuncparam)
         abc=[2;4;8];
     else
-        abc=options.rhofuncparam;
+        abc=options.rhofuncparam(:);
     end
     rhofuncparam=abc;
     
@@ -497,11 +497,11 @@ elseif strcmp(rhofunc,'hampel')
     % point
     c=HAbdp(bdp,1,abc);
     % kc = E(rho) = sup(rho)*bdp
-    kc=HArho(c*abc(3),[c, abc])*bdp;
+    kc=HArho(c*abc(3),[c; abc])*bdp;
     
     
     
-    psifunc.c1=[c,abc];
+    psifunc.c1=[c;abc];
     psifunc.kc1=kc;
     
     psifunc.class='HA';
@@ -885,7 +885,7 @@ while ( (betadiff > reftol) && (iter < refsteps) )
             weights = HYPwei(res/scale,c);
             
         elseif strcmp(psifunc.class,'PD')
-            meanrho=PDrho(res/scale,c);
+            meanrho=mean(PDrho(res/scale,c));
             scale = scale * sqrt(meanrho / kc );
             weights = PDwei(res/scale,c);
             

@@ -456,13 +456,13 @@ if isempty(bonflev)
                 
                 if msg
                     % disp(['Signal in final part of the search: step ' num2str(mdr(i,1)) ' because']);
-                    fprintf('Signal in final part of the search: step %.0f because',mdr(i,1))
+                    fprintf('Signal in final part of the search: step %.0f because',mdr(i,1));
                 end
                 
                 if condition1
                     if msg
                         % disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99%']);
-                        fprintf('\nrmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99%%',mdr(i,1),n,mdr(i+1,1),n,mdr(i-1,1),n)
+                        fprintf('\nrmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99%%',mdr(i,1),n,mdr(i+1,1),n,mdr(i-1,1),n);
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(mdr(i-1,1)) ',' int2str(n) ')>99\%$ and $r_{min}(' int2str(mdr(i+1,1)) ',' int2str(n) ')>99.9\%$'];
                     mdrsel=mdr(i-1:i+1,1:2);
@@ -471,7 +471,7 @@ if isempty(bonflev)
                 if condition2
                     if msg
                         %   disp(['rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99%']);
-                        fprintf('\nrmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99%%',mdr(i-1,1),n,mdr(i,1),n,mdr(i+1,1),n)
+                        fprintf('\nrmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99%%',mdr(i-1,1),n,mdr(i,1),n,mdr(i+1,1),n);
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(mdr(i-1,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(mdr(i+1,1)) ',' int2str(n) ')>99\%$'];
                     mdrsel=mdr(i-1:i+1,1:2);
@@ -480,7 +480,7 @@ if isempty(bonflev)
                 if condition3
                     if msg
                         % disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
-                        fprintf('\nrmin(%.0f,%.0f)>99%% at final step: Bonferroni signal in the final part of the search.',mdr(i,1),n)
+                        fprintf('\nrmin(%.0f,%.0f)>99%% at final step: Bonferroni signal in the final part of the search.',mdr(i,1),n);
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
                     mdrsel=mdr(i:i,1:2);
@@ -490,7 +490,7 @@ if isempty(bonflev)
                 if condition4
                     if msg
                         % disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.999%']);
-                        fprintf('\nrmin(%.0f,%.0f)>99.999%%',mdr(i,1),n)
+                        fprintf('\nrmin(%.0f,%.0f)>99.999%%',mdr(i,1),n);
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99.999\%$'];
                     mdrsel=mdr(i:i,1:2);
@@ -547,7 +547,7 @@ if isempty(bonflev)
         %% Stage 1b: signal validation
         if signal==1
             if msg
-                fprintf('\n-------------------\n')
+                fprintf('\n-------------------\n');
                 disp('Signal validation exceedance of upper envelopes');
             end
             % mdag is $m^\dagger$
