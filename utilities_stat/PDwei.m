@@ -148,6 +148,7 @@ function w = PDwei(u,alpha)
 
 
 %% Beginning of code
+alpha=alpha(1); % MATLAB Ccoder instruction to enforce that alpha is a scalar
 
 % normalized wights in such a way that when u=0 w=1
 w = exp(- alpha *(u.^2/2));

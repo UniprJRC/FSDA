@@ -732,7 +732,7 @@ else
                 return
                 
             else
-                fprintf('Matrix without full rank at step m= %.0f\n',mm)
+                fprintf('Matrix without full rank at step m= %.0f\n',mm);
                 disp('Estimate of \beta which is used is based on previous step with full rank')
                 b=blast;
                 % disp([mm b'])

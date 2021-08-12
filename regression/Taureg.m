@@ -555,10 +555,10 @@ elseif strcmp(rhofunc,'hyperbolic')
         kc2=HYPc(c2,1,'k',kdef,'param',[A2 B2 d2])*HYPrho(c2,[c2 kdef A2 B2 d2]);
     end
     
-    psifunc.c1=[c1,kdef,A1,B1,d1];
+    psifunc.c1=[c1;kdef;A1;B1;d1];
     psifunc.kc1=kc1;
     
-    psifunc.c2=[c2,kdef,A2,B2,d2];
+    psifunc.c2=[c2;kdef;A2;B2;d2];
     psifunc.class='HYP';
     
     c1=psifunc.c1;
@@ -589,10 +589,10 @@ elseif strcmp(rhofunc,'hampel')
     % else it is bdp2*sup(rho)
     kc2=HAc(c2,1,'param',abc)* HArho(c2*abc(3),[c2 abc]);
     
-    psifunc.c1=[c1,abc];
+    psifunc.c1=[c1;abc];
     psifunc.kc1=kc1;
     
-    psifunc.c2=[c2,abc];
+    psifunc.c2=[c2;abc];
     psifunc.class='HA';
     
     c1=psifunc.c1;

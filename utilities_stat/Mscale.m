@@ -154,7 +154,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
     c=HAbdp(bdp,1,abc);
     % kc = E(rho) = sup(rho)*bdp
     kc=HArho(c*abc(3),[c, abc])*bdp;
-    psifunc.c1=[c abc];
+    psifunc.c1=[c; abc];
     psifunc.kc1=kc;
     n=10000;
     shift=100;

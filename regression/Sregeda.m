@@ -537,7 +537,7 @@ for jj=1:length(bdp)
                 error('FSDA:Sregeda:WrongBdpHyp','Values of bdp for hyperbolic tangent estimator not supported for code generation')
             end
         end
-        psifunc.c1=[c,kdef,A,B,d];
+        psifunc.c1=[c;kdef;A;B;d];
         psifunc.kc1=kc;
         
         psifunc.class='HYP';
@@ -550,17 +550,17 @@ for jj=1:length(bdp)
         else
             abc=options.rhofuncparam;
         end
-        rhofuncparam=abc;
+        rhofuncparam=abc(:);
         
         % Compute tuning constant associated to the requested breakdown
         % point
         c=HAbdp(bdp(jj),1,abc);
         % kc = E(rho) = sup(rho)*bdp
-        kc=HArho(c*abc(3),[c, abc])*bdp(jj);
+        kc=HArho(c*abc(3),[c; abc])*bdp(jj);
         
         
         
-        psifunc.c1=[c,abc];
+        psifunc.c1=[c;abc];
         psifunc.kc1=kc;
         
         psifunc.class='HA';
@@ -931,7 +931,7 @@ while ( (betadiff > reftol) && (iter < refsteps) )
             weights = HYPwei(res/scale,c);
             
         elseif strcmp(psifunc.class,'PD')
-            meanrho=PDrho(res/scale,c);
+            meanrho=mean(PDrho(res/scale,c));
             scale = scale * sqrt(meanrho / kc );
             weights = PDwei(res/scale,c);
             

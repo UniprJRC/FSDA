@@ -2277,7 +2277,7 @@ if msg==true
         percexcl=100*singsub/nselected;
         disp('------------------------------')
         % disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
-        fprintf('Warning: Number of subsets without full rank equal to %.1f%%\n',percexcl)
+        fprintf('Warning: Number of subsets without full rank equal to %.1f%%\n',percexcl);
         
     end
 end

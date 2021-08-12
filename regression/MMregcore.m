@@ -294,7 +294,7 @@ if coder.target('MATLAB')
     end
 else
     % MATLAB c coder initialization
-    c=zeros(1,n);  %#ok<PREALL>
+    c=zeros(n,1);  %#ok<PREALL>
 end
 
 % Write in structure 'options' the options chosen by the user
@@ -423,7 +423,7 @@ elseif strcmp(rhofunc,'hyperbolic')
     end
     
     
-    psifunc.c=[c2,kdef,A2,B2,d2];
+    psifunc.c=[c2;kdef;A2;B2;d2];
     psifunc.class='HYP';
     
     c=psifunc.c;
