@@ -80,7 +80,7 @@ end
 
 if tickScaleFactor>1 || tickScaleFactor<0
     fprintf('tickScaleFactor should be between 0 and 1. Defaulting to %0.3f\n',...
-        defaultTickScale)
+        defaultTickScale);
     tickScaleFactor=defaultTickScale;
 end
 
