@@ -569,7 +569,7 @@ elseif strcmp(rhofunc,'hampel')
     if isempty(options.rhofuncparam)
         abc=[2;4;8];
     else
-        abc=options.rhofuncparam;
+        abc=options.rhofuncparam(:);
     end
     rhofuncparam=abc;
     
@@ -577,7 +577,7 @@ elseif strcmp(rhofunc,'hampel')
     % point
     c1=HAbdp(bdp,1,abc);
     % kc = E(rho) = sup(rho)*bdp
-    kc1=HArho(c1*abc(3),[c1, abc])*bdp;
+    kc1=HArho(c1*abc(3),[c1; abc])*bdp;
     
     
     % Compute tuning constant associated to the requested nominal efficiency
@@ -587,7 +587,7 @@ elseif strcmp(rhofunc,'hampel')
     % Note that given that if \rho is standardized in such a way that \rho(c)=1
     % E(rho_2) is nothing but the breakdown point associated to c2
     % else it is bdp2*sup(rho)
-    kc2=HAc(c2,1,'param',abc)* HArho(c2*abc(3),[c2 abc]);
+    kc2=HAc(c2,1,'param',abc)* HArho(c2*abc(3),[c2; abc]);
     
     psifunc.c1=[c1;abc];
     psifunc.kc1=kc1;
