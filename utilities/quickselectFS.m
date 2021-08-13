@@ -27,11 +27,13 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
 %
 % Output:
 %
-% kE : k-th order statistic. Scalar. Element in A that is larger than exactly k - 1 other elements of A.
+% kE : k-th order statistic. Scalar. Element in A that is larger than
+% exactly k - 1 other elements of A.
 %
 % Optional Output:
 %    
-%    Asor   : Sorted input. Vector. Input vector A sorted.
+%    Asor   : Partially sorted vector. Vector. Elements of input vector 
+%             A(1:k) are sorted in ascending order.
 %
 % See also:  FSMmmd
 %
@@ -141,6 +143,7 @@ end
 kE=A(k);
 
 if nargout == 2
+    A(1:k-1) = sort(A(1:k-1));
     varargout{1} = A;
 end
 
