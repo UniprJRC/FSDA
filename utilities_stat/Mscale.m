@@ -154,7 +154,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
     c=HAbdp(bdp,1,abc);
     % kc = E(rho) = sup(rho)*bdp
     kc=HArho(c*abc(3),[c, abc])*bdp;
-    psifunc.c1=[c; abc];
+    psifunc.c1=[c, abc];
     psifunc.kc1=kc;
     n=10000;
     shift=100;
@@ -170,7 +170,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
     psifunc.kc1=kc;
     sTB=Mscale(u,psifunc,3,1e-7,20);
     sMLE=std(u);
-    cate=categorical({'Robust scale (Hampel)' 'Robust scale (TB)' 'Non robust scale'})
+    cate=categorical({'Robust scale (Hampel)' 'Robust scale (TB)' 'Non robust scale'});
     bar(cate,[sHA sTB sMLE])
 %}
 
