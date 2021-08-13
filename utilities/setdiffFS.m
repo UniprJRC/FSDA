@@ -84,17 +84,20 @@ function c=setdiffFS(a,b)
     disp(array2table([tSETDIFF tSETDIFFFS],'VariableNames',{'setdiff time' 'setdiffFS time'}))
 %}
 
-
 %% Beginning of code
 
-ma=max([a(:);b(:)]);
-aT=false(ma,1);
-bT=aT;
-aT(a)=true;
-bT(b)=true;
-% c = vector containing numbers which are inside vector a which are not present in b
-% Elements in c are sorted and contain no repetitions
-c=find(bitand(aT , not(bT)));
+ma    = max([a(:);b(:)]);
+aT    = false(ma,1);
+bT    = aT;
+aT(a) = true;
+bT(b) = true;
+
+% c = vector containing numbers which are inside vector a which are not
+% present in b. Elements in c are sorted and contain no repetitions.
+c = find(bitxor(aT , bitand(aT,bT)));
 % The instruction above is faster than the one below
-% c=find(aT & ~bT);
+% c = find(bitand(aT , not(bT)));
+% The instruction above is faster than the one below
+% c = find(aT & ~bT);
+
 end
