@@ -105,7 +105,7 @@ function [h,Ntable] = balloonplot(N,varargin)
     colslab={'Wife'	'Alternating'	'Husband'	'Jointly'};
     tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
     % In this case a table is supplied
-    balloonplot(tableN)
+    balloonplot(tableN);
 %}
 
 %{
@@ -132,7 +132,7 @@ function [h,Ntable] = balloonplot(N,varargin)
     tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
     % In this case row and columns labels are supplied through options Lr
     % and Lc
-    balloonplot(N,'Lr',rowslab,'Lc',colslab)
+    balloonplot(N,'Lr',rowslab,'Lc',colslab);
 %}
 
 %{
