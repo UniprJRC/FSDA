@@ -137,7 +137,7 @@ while (position ~= k)
     end
     
     % Pivot: extension to random choice has to be studied.
-    %pivotIndex = ceil(( left + right ) / 2);
+    % pivotIndex = ceil(( left + right ) / 2);
 end
 
 kE=A(k);
