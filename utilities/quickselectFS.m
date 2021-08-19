@@ -86,6 +86,16 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
     disp([Y, Ysor])
 %}
 
+%{
+    %% quickselectFS: worst case scenario: see circshift
+    n=10;
+    Y=1:n;
+    Y = circshift(Y,-1);
+    k=n;
+    out=quickselectFS(Y,k);
+    disp(out);
+%}
+
 %% Beginning of code
 
 % Initialise the two sentinels
