@@ -133,27 +133,29 @@ function [out] = simulateTS(T,varargin)
 %                       If this field is an empty double (default) the
 %                       simulated time series will not contain a level
 %                       shift.
+%               model.nsim = scalar wich defines the number of time series
+%                       to simulate. If this field is empty or not present,
+%                       the default value of 1 is used.
+%               model.residuals = T x nsim matrix of doubles of length T 
+%                       containing the values of the residuals to use in the 
+%                       simulation. Default value is [].
 %                model.sigmaeps = scalar wich defines the standard error of
-%                       the residuals. If this field is empty or not present,
-%                       the default value is [], and the standard error of 
-%                       the residuals will be calculated through the 
-%                       model.signal2noiseratio.
+%                       the residuals. If model.residuals is not empty, the
+%                       value of model.sigmaeps will be ignored. Default
+%                       value is [].
 %                model.signal2noiseratio = scalar wich defines the ratio
 %                       between the variance of the systematic part of the
 %                       model (signal) and the variance of the noise
 %                       (irregular model). The greater is this value, the
 %                       smaller is the effect of the irregular component.
-%                       If model.sigmaeps is not empty, the value of
-%                       model.signal2noiseratio will be ignored. If
-%                       model.sigmaeps is empty and model.ARIMAX is true,
+%                       If one between model.residuals and model.sigmaeps
+%                       is not empty, the value of model.signal2noiseratio 
+%                       will be ignored. If both model.residuals and 
+%                       model.sigmaeps are empty and model.ARIMAX is true,
 %                       then an algorithm will search the best value of the
 %                       standard error of the residuals that guarantees the
-%                       desired model.signal2noiseratio.
-%                       If this field is empty or not present the default
-%                       value of 1 is used.
-%               model.nsim = scalar wich defines the number of time series
-%                       to simulate. If this field is empty or not present,
-%                       the default value of 1 is used.
+%                       desired model.signal2noiseratio. If this field is 
+%                       empty or not present the default value of 1 is used.
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default model is for monthly data with a linear
@@ -511,9 +513,10 @@ modeldef.lshiftb  = [];       %
 modeldef.ARIMAX   = false;    % autoregressive component on the residuals
 modeldef.ARp      = [];       % no autoregressive component
 modeldef.ARb      = [];       % 
-modeldef.sigmaeps = [];       % std err of residuals based on signal2noiseratio
-modeldef.signal2noiseratio=1; % same variances of signal and irregular parts
 modeldef.nsim     = 1;        % simulate only 1 time series
+modeldef.residuals= [];       % T x nsim matrix of residuals
+modeldef.sigmaeps = [];       % std err of residuals
+modeldef.signal2noiseratio=[]; % ratio between variances of signal and irregular parts
 nocheck           = false;
 plots             = 0;
 FileNameOutput    = '';
@@ -585,6 +588,7 @@ lshiftb  = model.lshiftb;     % get coefficient of level shift
 ARIMAX   = model.ARIMAX;      % model for AR component
 ARp      = model.ARp;         % lags of the autoregressive component
 ARb      = model.ARb;         % coefficients of the autoregressive component
+residuals= model.residuals;   % T x nsim matrix of residuals
 sigmaeps = model.sigmaeps;    % std err of the residuals
 signal2noiseratio=model.signal2noiseratio;
 nsim     = model.nsim;
@@ -599,7 +603,6 @@ if nocheck == false
 end
 
 %% checks on the trend component
-
 if ~isempty(trend)
     if nocheck == false
         
@@ -633,7 +636,6 @@ else
 end
 
 %% checks on the explanatory variables
-
 % Define nexpl = number of explanatory variables
 isemptyX=isempty(X);
 if isemptyX
@@ -684,7 +686,7 @@ end
 
 
 %% checks on the seasonal component
-
+if seasonal==0; seasonal=[]; end
 if ~isempty(seasonal) && seasonal >0
     sstring=num2str(seasonal);
     if seasonal>100
@@ -735,6 +737,7 @@ end
 
 
 %% checks on the AR component
+if ARp==0; ARp=[]; end
 if nocheck == false
     % Controls on the AR component
     if isempty(ARp) && ~isempty(ARb)
@@ -755,14 +758,32 @@ if nocheck == false
     end
 end
 
-%% checks on sigmaeps and signal2noiseratio
-if ~isempty(sigmaeps) && ~isempty(signal2noiseratio)
-    disp(['Warning: both options sigmaeps and signal2noiseratio have been specified. ' ...
-        'The value of signal2noiseratio will be ignored.'])
+
+%% checks on residuals definition
+if isempty(residuals)
+    if isempty(sigmaeps) && isempty(signal2noiseratio)
+        signal2noiseratio=1; % No input for residual -> default setting
+        disp(['None of the inputs for simulating residuals has been specified. ' ...
+            'The default value signal2noiseratio=1 will be considered.'])
+    elseif ~isempty(sigmaeps) && ~isempty(signal2noiseratio)
+        disp(['Warning: both sigmaeps and signal2noiseratio have been specified. ' ...
+            'The value of signal2noiseratio will be ignored.'])
+    end
+else
+    if nocheck == false
+        if size(residuals,1)~=T || size(residuals,2)~=nsim
+            disp('Warning: The residual matrix must be T x nsim')
+            error('FSDA:simulateTS:WrongInput','Specify a residual matrix with the correct dimension')
+        end
+    end
+    if ~isempty(sigmaeps) || ~isempty(signal2noiseratio)
+        disp(['Warning: even though one between sigmaeps and signal2noiseratio has been specified, ' ...
+            'only the input residuals will be considered in the simulation.'])
+    end   
 end
 
-%%  Define the explanatory variable associated to the level shift component
 
+%%  Define the explanatory variable associated to the level shift component
 if lshift>0
     % Xlshift = explanatory variable associated with level shift Xlshift is
     % 0 up to lsh-1 and 1 from lsh to T
@@ -778,7 +799,6 @@ else
 end
 
 %% Compute the underlying components of the signal of the time series
-
 % beta0 = vector which will contain all the coefficients of the model.
 % The order of the coefficients is:
 % - trend component,
@@ -827,18 +847,21 @@ signal = yhattrend + yhatseaso + yhatX + yhatlshift;
 %% Final simulated time series y, with or without autoregressive component
 if isempty(ARb)
     % No autoregressive part
-    % Calculate the std err of the residuals (if not provided)
-    if isempty(sigmaeps)
-        varsignal = var(signal);
-        if varsignal>0
-            sigmaeps= sqrt(varsignal/signal2noiseratio);
-        else
-            sigmaeps= sqrt(1/signal2noiseratio);
+    if isempty(residuals)
+        % Calculate the std err of the residuals (if not provided)
+        if isempty(sigmaeps)
+            varsignal = var(signal);
+            if varsignal>0
+                sigmaeps= sqrt(varsignal/signal2noiseratio);
+            else
+                sigmaeps= sqrt(1/signal2noiseratio);
+            end
         end
+        % Simulate the irregular component
+        residuals = sigmaeps * randn(T,nsim);
     end
-    % Simulate the irregular component
-    irregular = sigmaeps * randn(T,nsim);
     % y is the final simulated time series (signal + irregular component)
+    irregular = residuals;
     y = signal*ones(1,nsim) + irregular;
 else
     % Add autoregressive part to the irregular.
@@ -853,15 +876,17 @@ else
     if ARIMAX==false
         % AR components on residuals
         % Calculate the std err of the residuals (if not provided)
-        if isempty(sigmaeps)
-            varsignal = var(signal);
-            if varsignal>0
-                sigmaeps= sqrt(varsignal/signal2noiseratio);
-            else
-                sigmaeps= sqrt(1/signal2noiseratio);
+        if isempty(residuals)
+            if isempty(sigmaeps)
+                varsignal = var(signal);
+                if varsignal>0
+                    sigmaeps= sqrt(varsignal/signal2noiseratio);
+                else
+                    sigmaeps= sqrt(1/signal2noiseratio);
+                end
             end
         end
-        if exist('regARIMA','file')>0
+        if exist('regARIMA','file') && isempty(residuals)>0
             % Use the Econometric toolbox if present: regARIMA
             Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb_all),'Beta',1,'Variance',sigmaeps^2);
             % arima generates ARIMAX models
@@ -880,9 +905,12 @@ else
             maxPQ  = length(ARb_all);
             Y      = zeros(T+maxPQ,nsim);
             E      = Y;
-            Z      = randn(T,nsim);
-            E((maxPQ + 1:end),:)=Z * sigmaeps;
-
+            if isempty(residuals)
+                Z      = randn(T,nsim);
+                E((maxPQ + 1:end),:)=Z * sigmaeps;
+            else
+                E((maxPQ + 1:end),:)=residuals;
+            end
             for t = (maxPQ + 1):T+maxPQ
                 data   = [I;  Y(t - LagsAR,:);  E(t - LagsMA,:)];
                 Y(t,:) = coefficients * data;
@@ -893,41 +921,57 @@ else
         end
     else
         % AR components on dependent variable
-        if ~isempty(sigmaeps) % sigmaeps fixed
+        if ~isempty(residuals) % residuals provided
+            [y,irregular,~]=simulateARIMAX(T,nsim,ARb_all,residuals,signal);
+        elseif ~isempty(sigmaeps) % sigmaeps fixed
             [y,irregular,~]=simulateARIMAX(T,nsim,ARb_all,sigmaeps,signal);
         else % search sigmaeps depending on signal2noiseratio
-            disp('Iterative search of sigmaeps depending on the desired signal2noise ratio.')
-            S2NR=zeros(1000,1);
-            se=zeros(1001,1);
-            se(1)=var(signal);
-            niter=0;
-            stop=0;
-            while stop==0 && niter<1000
-                niter=niter+1;
-                [y,irregular,S2NR(niter)]=simulateARIMAX(T,nsim,ARb_all,se(niter),signal);
-                if abs(S2NR(niter)-signal2noiseratio)/signal2noiseratio<1e-5
-                    stop=1;
-                    sigmaeps=se(niter);
-                else
-                    c=S2NR(niter)/signal2noiseratio;
-                    se(niter+1)=se(niter)*c;
+            varSignal=var(signal);
+            if varSignal>eps
+                disp('Iterative search of sigmaeps depending on the desired signal2noise ratio.')
+                S2NR=zeros(1000,1);
+                se=zeros(1001,1);
+                se(1)=varSignal;
+                niter=0;
+                conv=0;
+                while conv==0 && niter<1000
+                    niter=niter+1;
+                    [y,irregular,S2NR(niter)]=simulateARIMAX(T,nsim,ARb_all,se(niter),signal);
+                    if abs(S2NR(niter)-signal2noiseratio)/signal2noiseratio<1e-5
+                        conv=1;
+                        sigmaeps=se(niter);
+                    else
+                        c=S2NR(niter)/signal2noiseratio;
+                        se(niter+1)=se(niter)*c;
+                        if se(niter+1)>10e50
+                            conv=-1;
+                        end
+                    end
                 end
-            end
-            if stop==1
-                disp(['After ' num2str(niter) ' iterations, the desired value of signal2noise ratio has been reached with sigmaeps = ' num2str(sigmaeps)])
+                if conv==1
+                    disp(['After ' num2str(niter) ' iterations, the desired value of signal2noise ratio has been reached with sigmaeps = ' num2str(sigmaeps)])
+                elseif conv==-1
+                    rows=(S2NR>eps);
+                    [~,pos]=min(abs(signal2noiseratio-S2NR(rows)));
+                    disp('Warning: the desired signal2noiseratio is too low, impossible to obtain without sigmaeps going to infinity.')
+                    disp(['The value of signal2noise ratio closest to the desired one is ' num2str(S2NR(pos)) ', obtained with sigmaeps = ' num2str(se(pos))])
+                else
+                    [~,pos]=min(abs(signal2noiseratio-S2NR));
+                    sigmaeps=se(pos);
+                    disp(['After ' num2str(niter) ' iterations, the value of signal2noise ratio closest to the desired one is ' num2str(S2NR(pos)) ','])
+                    disp(['obtained with sigmaeps = ' num2str(sigmaeps)])
+                end
             else
-                [~,pos]=min(abs(signal2noiseratio-S2NR));
-                sigmaeps=se(pos);
-                disp(['After ' num2str(niter) ' iterations, the value of signal2noise ratio closest to the desired one is ' num2str(S2NR(pos)) ','])
-                disp(['obtained with sigmaeps = ' num2str(sigmaeps)])
+                disp('The signal has no variance. Simulations are generated with sigmaeps = 1.')
+                [y,irregular,~]=simulateARIMAX(T,nsim,ARb_all,1,signal);
             end
-        end 
+        end
+        
     end
 end
    
 
 %% Output structure
-
 out=struct;
 out.y=y;
 out.signal=signal;
@@ -1078,19 +1122,24 @@ end
 end
 
 
-function [Y,irregular,s2nr]=simulateARIMAX(T,nsim,ARcoeff,sigmaeps,signal)
+function [Y,irregular,s2nr]=simulateARIMAX(T,nsim,ARcoeff,errorDef,signal)
 ARterms=zeros(length(ARcoeff),nsim);
 coefficients = [1 ARcoeff];  % ARIMA coefficient vector
 Y=zeros(T,nsim);
-Z=randn(T,nsim);
-irregular =Z*sigmaeps;
+if max(size(errorDef))==1
+    Z=randn(T,nsim);
+    irregular =Z*errorDef;
+    varNoise=errorDef^2;
+else
+    irregular=errorDef;
+    varNoise=mean(var(irregular));
+end
 for t = 1:T
     data   = [signal(t)*ones(1,nsim); ARterms];
     Y(t,:) = coefficients*data +irregular(t,:);
     ARterms=[Y(t,:); ARterms(1:end-1,:)];
 end
 varSignal=mean(var(Y-irregular));
-varNoise=sigmaeps^2;
 s2nr=varSignal/varNoise; 
 end
 
