@@ -1,0 +1,475 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>moonplot</title><meta content="refpage" name="chunktype"><meta content="function:moonplot" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="moonplot draws the Correspondence Analysis (CA) moonplot.." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">moonplot</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">moonplot with all the default options.</a></li><li><a class="intrnllnk" href="#Example_2">moonplot with option changedimsign.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_addx">addx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_addy">addy</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_changedimsign">changedimsign</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xlimx">xlimx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ylimy">ylimy</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_d1">d1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_d2">d2</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">moonplot</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">moonplot draws the Correspondence Analysis (CA) moonplot.</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">moonplot(out)</code><span class="syntax_example"><a class="intrnllnk" href="moonplot.html#Example_1">example</a></span></li><li><code class="synopsis">moonplot(out,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="moonplot.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="moonplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code>moonplot(<a class="intrnllnk" href="#inputarg_out"><code>out</code></a>)</code></span>moonplot with all the default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="moonplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code>moonplot(<a class="intrnllnk" href="#inputarg_out"><code>out</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>moonplot with option changedimsign.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> moonplot with all the default options.</li></span></a></span></h3><div class="collapse"><p>
+     Prepare the data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('mobilephone')
+N=mobilePhone;
+out=CorAna(N,'plots',0);
+moonplot(out);</pre></div></div><pre class="codeoutput">Summary
+             Singular_value     Inertia      Accounted_for    Cumulative
+             ______________    __________    _____________    __________
+
+    dim_1        0.47503          0.22565        0.65741       0.65741  
+    dim_2        0.25226         0.063636        0.18539       0.84281  
+    dim_3        0.20151         0.040605         0.1183       0.96111  
+    dim_4        0.09015        0.0081271       0.023677       0.98478  
+    dim_5       0.063381        0.0040172       0.011704       0.99649  
+    dim_6       0.028981       0.00083991       0.002447       0.99893  
+    dim_7       0.019133       0.00036609      0.0010666             1  
+
+ROW POINTS
+Results for dimension: 1
+                        Scores     CntrbPnt2In    CntrbDim2In
+                       ________    ___________    ___________
+
+    AAPTCellularOne     0.43774      0.074997       0.58204  
+    NewTel              0.70084       0.18966       0.82774  
+    OneTel              0.75509       0.29334       0.67859  
+    Optus              -0.36684      0.099393       0.80005  
+    Orange             0.080756     0.0030053      0.069512  
+    Telstra            -0.48339       0.19667       0.63237  
+    VirginMobile         0.2265      0.021753       0.23553  
+    Vodafone           -0.42388       0.12118        0.7573  
+
+Results for dimension: 2
+                        Scores     CntrbPnt2In    CntrbDim2In
+                       ________    ___________    ___________
+
+    AAPTCellularOne     0.20731     0.059649         0.13055 
+    NewTel             0.088109      0.01063        0.013083 
+    OneTel             -0.45615      0.37961         0.24765 
+    Optus              0.013396      0.00047       0.0010669 
+    Orange              0.21336     0.074391         0.48523 
+    Telstra            -0.27412      0.22427         0.20335 
+    VirginMobile         0.3793      0.21631         0.66047 
+    Vodafone            0.12041     0.034671        0.061103 
+
+COLUMN POINTS
+Results for dimension: 1
+                                     Scores     CntrbPnt2In    CntrbDim2In
+                                    ________    ___________    ___________
+
+    Bureaucratic                     -0.2099      0.010152       0.21808  
+    LowService                        0.1333     0.0044122       0.47623  
+    Friendly                        -0.13344      0.003972       0.12889  
+    LowPrices                       0.071087     0.0011218      0.023653  
+    Fashionable                     -0.13019      0.003816      0.062038  
+    UnFashionable                    0.25692      0.017084       0.55182  
+    Reliable                        -0.54443      0.062682       0.91686  
+    HereTodayGoneTomorrow              1.183       0.26211       0.75899  
+    GoodCoverage                    -0.73321      0.097851       0.82221  
+    NetworkOftenDown                  0.2291      0.016622       0.78161  
+    TheBestPhones                   -0.32977      0.022425       0.81958  
+    ConvenientlyLocatedStores       -0.62787      0.090006       0.91678  
+    HighPrices                      -0.41233      0.029157       0.43235  
+    Unreliable                       0.59274      0.082434       0.81269  
+    MeetMyCommunicationNeeds        -0.37965      0.029874       0.89117  
+    LeadersMobilePhoneTechnology    -0.43259      0.040952        0.9748  
+    ILikeThem                       -0.24443      0.014206       0.57453  
+    IHateThem                        0.27763      0.026925       0.95031  
+    DonotKnowMuchAboutThem           0.82215       0.18419       0.57997  
+
+Results for dimension: 2
+                                     Scores      CntrbPnt2In    CntrbDim2In
+                                    _________    ___________    ___________
+
+    Bureaucratic                     -0.25947      0.055008        0.33323 
+    LowService                       -0.10801      0.010272        0.31265 
+    Friendly                          0.29472      0.068702        0.62872 
+    LowPrices                         0.33385      0.087739        0.52169 
+    Fashionable                       0.39172       0.12251        0.56168 
+    UnFashionable                    -0.10432     0.0099873       0.090972 
+    Reliable                          -0.1167      0.010213       0.042129 
+    HereTodayGoneTomorrow             -0.5778       0.22171        0.18105 
+    GoodCoverage                      -0.2654      0.045464        0.10773 
+    NetworkOftenDown                 0.034508     0.0013373       0.017733 
+    TheBestPhones                    0.079656     0.0046398        0.04782 
+    ConvenientlyLocatedStores       -0.051112      0.002115      0.0060753 
+    HighPrices                       -0.26416      0.042436        0.17746 
+    Unreliable                         -0.246      0.050349        0.13998 
+    MeetMyCommunicationNeeds        0.0016326    1.9591e-06     1.6481e-05 
+    LeadersMobilePhoneTechnology    -0.028765     0.0006421      0.0043102 
+    ILikeThem                          0.1504      0.019074        0.21754 
+    IHateThem                       -0.037841     0.0017737       0.017654 
+    DonotKnowMuchAboutThem            0.50458       0.24602        0.21845 
+
+-----------------------------------------------------------
+Overview ROW POINTS
+                         Mass      Score_1     Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                       ________    ________    ________    _________    _____________    _____________    _____________    _____________
+
+    AAPTCellularOne    0.088319     0.43774     0.20731     0.029076       0.074997        0.059649          0.58204           0.13055  
+    NewTel             0.087132     0.70084    0.088109     0.051704        0.18966         0.01063          0.82774          0.013083  
+    OneTel               0.1161     0.75509    -0.45615     0.097545        0.29334         0.37961          0.67859           0.24765  
+    Optus               0.16667    -0.36684    0.013396     0.028034       0.099393         0.00047          0.80005         0.0010669  
+    Orange              0.10399    0.080756     0.21336    0.0097562      0.0030053        0.074391         0.069512           0.48523  
+    Telstra             0.18993    -0.48339    -0.27412     0.070181        0.19667         0.22427          0.63237           0.20335  
+    VirginMobile       0.095679      0.2265      0.3793     0.020841       0.021753         0.21631          0.23553           0.66047  
+    Vodafone            0.15218    -0.42388     0.12041     0.036108        0.12118        0.034671           0.7573          0.061103  
+
+Overview COLUMN POINTS
+                                      Mass      Score_1      Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                                    ________    ________    _________    _________    _____________    _____________    _____________    _____________
+
+    Bureaucratic                    0.051994     -0.2099     -0.25947     0.010505       0.010152         0.055008         0.21808           0.33323  
+    LowService                       0.05603      0.1333     -0.10801    0.0020907      0.0044122         0.010272         0.47623           0.31265  
+    Friendly                        0.050332    -0.13344      0.29472    0.0069537       0.003972         0.068702         0.12889           0.62872  
+    LowPrices                       0.050095    0.071087      0.33385     0.010702      0.0011218         0.087739        0.023653           0.52169  
+    Fashionable                     0.050807    -0.13019      0.39172      0.01388       0.003816          0.12251        0.062038           0.56168  
+    UnFashionable                   0.058405     0.25692     -0.10432    0.0069862       0.017084        0.0099873         0.55182          0.090972  
+    Reliable                        0.047721    -0.54443      -0.1167     0.015427       0.062682         0.010213         0.91686          0.042129  
+    HereTodayGoneTomorrow            0.04226       1.183      -0.5778     0.077928        0.26211          0.22171         0.75899           0.18105  
+    GoodCoverage                    0.041073    -0.73321      -0.2654     0.026855       0.097851         0.045464         0.82221           0.10773  
+    NetworkOftenDown                0.071462      0.2291     0.034508    0.0047988       0.016622        0.0013373         0.78161          0.017733  
+    TheBestPhones                   0.046534    -0.32977     0.079656    0.0061743       0.022425        0.0046398         0.81958           0.04782  
+    ConvenientlyLocatedStores       0.051519    -0.62787    -0.051112     0.022154       0.090006         0.002115         0.91678         0.0060753  
+    HighPrices                      0.038699    -0.41233     -0.26416     0.015218       0.029157         0.042436         0.43235           0.17746  
+    Unreliable                      0.052944     0.59274       -0.246     0.022889       0.082434         0.050349         0.81269           0.13998  
+    MeetMyCommunicationNeeds        0.046771    -0.37965    0.0016326    0.0075643       0.029874       1.9591e-06         0.89117        1.6481e-05  
+    LeadersMobilePhoneTechnology    0.049383    -0.43259    -0.028765      0.00948       0.040952        0.0006421          0.9748         0.0043102  
+    ILikeThem                       0.053656    -0.24443       0.1504    0.0055796       0.014206         0.019074         0.57453           0.21754  
+    IHateThem                       0.078822     0.27763    -0.037841    0.0063933       0.026925        0.0017737         0.95031          0.017654  
+    DonotKnowMuchAboutThem          0.061491     0.82215      0.50458     0.071665        0.18419          0.24602         0.57997           0.21845  
+
+-----------------------------------------------------------
+Legend
+CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension
+              The sum of the numbers in a column is equal to 1
+CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point
+              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1
+</pre><a href='http://rosa.unipr.it/fsda/moonplot.html#Example_1'><img vspace="5" hspace="5" src="images\moonplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> moonplot with option changedimsign.</li></span></a></span></h3><div class="collapse"><p>
+     Prepare the data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('mobilephone')
+N=mobilePhone;
+out=CorAna(N,'plots',0);
+% Use of option changedimsign
+moonplot(out,'changedimsign',[true false])</pre></div></div><pre class="codeoutput">Summary
+             Singular_value     Inertia      Accounted_for    Cumulative
+             ______________    __________    _____________    __________
+
+    dim_1        0.47503          0.22565        0.65741       0.65741  
+    dim_2        0.25226         0.063636        0.18539       0.84281  
+    dim_3        0.20151         0.040605         0.1183       0.96111  
+    dim_4        0.09015        0.0081271       0.023677       0.98478  
+    dim_5       0.063381        0.0040172       0.011704       0.99649  
+    dim_6       0.028981       0.00083991       0.002447       0.99893  
+    dim_7       0.019133       0.00036609      0.0010666             1  
+
+ROW POINTS
+Results for dimension: 1
+                        Scores     CntrbPnt2In    CntrbDim2In
+                       ________    ___________    ___________
+
+    AAPTCellularOne     0.43774      0.074997       0.58204  
+    NewTel              0.70084       0.18966       0.82774  
+    OneTel              0.75509       0.29334       0.67859  
+    Optus              -0.36684      0.099393       0.80005  
+    Orange             0.080756     0.0030053      0.069512  
+    Telstra            -0.48339       0.19667       0.63237  
+    VirginMobile         0.2265      0.021753       0.23553  
+    Vodafone           -0.42388       0.12118        0.7573  
+
+Results for dimension: 2
+                        Scores     CntrbPnt2In    CntrbDim2In
+                       ________    ___________    ___________
+
+    AAPTCellularOne     0.20731     0.059649         0.13055 
+    NewTel             0.088109      0.01063        0.013083 
+    OneTel             -0.45615      0.37961         0.24765 
+    Optus              0.013396      0.00047       0.0010669 
+    Orange              0.21336     0.074391         0.48523 
+    Telstra            -0.27412      0.22427         0.20335 
+    VirginMobile         0.3793      0.21631         0.66047 
+    Vodafone            0.12041     0.034671        0.061103 
+
+COLUMN POINTS
+Results for dimension: 1
+                                     Scores     CntrbPnt2In    CntrbDim2In
+                                    ________    ___________    ___________
+
+    Bureaucratic                     -0.2099      0.010152       0.21808  
+    LowService                        0.1333     0.0044122       0.47623  
+    Friendly                        -0.13344      0.003972       0.12889  
+    LowPrices                       0.071087     0.0011218      0.023653  
+    Fashionable                     -0.13019      0.003816      0.062038  
+    UnFashionable                    0.25692      0.017084       0.55182  
+    Reliable                        -0.54443      0.062682       0.91686  
+    HereTodayGoneTomorrow              1.183       0.26211       0.75899  
+    GoodCoverage                    -0.73321      0.097851       0.82221  
+    NetworkOftenDown                  0.2291      0.016622       0.78161  
+    TheBestPhones                   -0.32977      0.022425       0.81958  
+    ConvenientlyLocatedStores       -0.62787      0.090006       0.91678  
+    HighPrices                      -0.41233      0.029157       0.43235  
+    Unreliable                       0.59274      0.082434       0.81269  
+    MeetMyCommunicationNeeds        -0.37965      0.029874       0.89117  
+    LeadersMobilePhoneTechnology    -0.43259      0.040952        0.9748  
+    ILikeThem                       -0.24443      0.014206       0.57453  
+    IHateThem                        0.27763      0.026925       0.95031  
+    DonotKnowMuchAboutThem           0.82215       0.18419       0.57997  
+
+Results for dimension: 2
+                                     Scores      CntrbPnt2In    CntrbDim2In
+                                    _________    ___________    ___________
+
+    Bureaucratic                     -0.25947      0.055008        0.33323 
+    LowService                       -0.10801      0.010272        0.31265 
+    Friendly                          0.29472      0.068702        0.62872 
+    LowPrices                         0.33385      0.087739        0.52169 
+    Fashionable                       0.39172       0.12251        0.56168 
+    UnFashionable                    -0.10432     0.0099873       0.090972 
+    Reliable                          -0.1167      0.010213       0.042129 
+    HereTodayGoneTomorrow             -0.5778       0.22171        0.18105 
+    GoodCoverage                      -0.2654      0.045464        0.10773 
+    NetworkOftenDown                 0.034508     0.0013373       0.017733 
+    TheBestPhones                    0.079656     0.0046398        0.04782 
+    ConvenientlyLocatedStores       -0.051112      0.002115      0.0060753 
+    HighPrices                       -0.26416      0.042436        0.17746 
+    Unreliable                         -0.246      0.050349        0.13998 
+    MeetMyCommunicationNeeds        0.0016326    1.9591e-06     1.6481e-05 
+    LeadersMobilePhoneTechnology    -0.028765     0.0006421      0.0043102 
+    ILikeThem                          0.1504      0.019074        0.21754 
+    IHateThem                       -0.037841     0.0017737       0.017654 
+    DonotKnowMuchAboutThem            0.50458       0.24602        0.21845 
+
+-----------------------------------------------------------
+Overview ROW POINTS
+                         Mass      Score_1     Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                       ________    ________    ________    _________    _____________    _____________    _____________    _____________
+
+    AAPTCellularOne    0.088319     0.43774     0.20731     0.029076       0.074997        0.059649          0.58204           0.13055  
+    NewTel             0.087132     0.70084    0.088109     0.051704        0.18966         0.01063          0.82774          0.013083  
+    OneTel               0.1161     0.75509    -0.45615     0.097545        0.29334         0.37961          0.67859           0.24765  
+    Optus               0.16667    -0.36684    0.013396     0.028034       0.099393         0.00047          0.80005         0.0010669  
+    Orange              0.10399    0.080756     0.21336    0.0097562      0.0030053        0.074391         0.069512           0.48523  
+    Telstra             0.18993    -0.48339    -0.27412     0.070181        0.19667         0.22427          0.63237           0.20335  
+    VirginMobile       0.095679      0.2265      0.3793     0.020841       0.021753         0.21631          0.23553           0.66047  
+    Vodafone            0.15218    -0.42388     0.12041     0.036108        0.12118        0.034671           0.7573          0.061103  
+
+Overview COLUMN POINTS
+                                      Mass      Score_1      Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                                    ________    ________    _________    _________    _____________    _____________    _____________    _____________
+
+    Bureaucratic                    0.051994     -0.2099     -0.25947     0.010505       0.010152         0.055008         0.21808           0.33323  
+    LowService                       0.05603      0.1333     -0.10801    0.0020907      0.0044122         0.010272         0.47623           0.31265  
+    Friendly                        0.050332    -0.13344      0.29472    0.0069537       0.003972         0.068702         0.12889           0.62872  
+    LowPrices                       0.050095    0.071087      0.33385     0.010702      0.0011218         0.087739        0.023653           0.52169  
+    Fashionable                     0.050807    -0.13019      0.39172      0.01388       0.003816          0.12251        0.062038           0.56168  
+    UnFashionable                   0.058405     0.25692     -0.10432    0.0069862       0.017084        0.0099873         0.55182          0.090972  
+    Reliable                        0.047721    -0.54443      -0.1167     0.015427       0.062682         0.010213         0.91686          0.042129  
+    HereTodayGoneTomorrow            0.04226       1.183      -0.5778     0.077928        0.26211          0.22171         0.75899           0.18105  
+    GoodCoverage                    0.041073    -0.73321      -0.2654     0.026855       0.097851         0.045464         0.82221           0.10773  
+    NetworkOftenDown                0.071462      0.2291     0.034508    0.0047988       0.016622        0.0013373         0.78161          0.017733  
+    TheBestPhones                   0.046534    -0.32977     0.079656    0.0061743       0.022425        0.0046398         0.81958           0.04782  
+    ConvenientlyLocatedStores       0.051519    -0.62787    -0.051112     0.022154       0.090006         0.002115         0.91678         0.0060753  
+    HighPrices                      0.038699    -0.41233     -0.26416     0.015218       0.029157         0.042436         0.43235           0.17746  
+    Unreliable                      0.052944     0.59274       -0.246     0.022889       0.082434         0.050349         0.81269           0.13998  
+    MeetMyCommunicationNeeds        0.046771    -0.37965    0.0016326    0.0075643       0.029874       1.9591e-06         0.89117        1.6481e-05  
+    LeadersMobilePhoneTechnology    0.049383    -0.43259    -0.028765      0.00948       0.040952        0.0006421          0.9748         0.0043102  
+    ILikeThem                       0.053656    -0.24443       0.1504    0.0055796       0.014206         0.019074         0.57453           0.21754  
+    IHateThem                       0.078822     0.27763    -0.037841    0.0063933       0.026925        0.0017737         0.95031          0.017654  
+    DonotKnowMuchAboutThem          0.061491     0.82215      0.50458     0.071665        0.18419          0.24602         0.57997           0.21845  
+
+-----------------------------------------------------------
+Legend
+CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension
+              The sum of the numbers in a column is equal to 1
+CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point
+              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1
+</pre><a href='http://rosa.unipr.it/fsda/moonplot.html#Example_2'><img vspace="5" hspace="5" src="images\moonplot_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Structure containing the output of function CorAna. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields.<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Lr</code></td><td><p>cell of length $I$ containing the labels of
+                         active rows (i.e. the rows which participated to
+                         the fit).</p></td></tr><tr valign="top"><td><code>Lc</code></td><td><p>cell of length $J$ containing the labels of
+                         active columns (i.e. the columns which participated to
+                         the fit).</p></td></tr><tr valign="top"><td><code>n</code></td><td><p><p>Grand total. out.n is equal to sum(sum(out.N)).</p> <p>
+                         This is the number of observations.</p></p></td></tr><tr valign="top"><td><code>Dr</code></td><td><p><p>Square matrix of size $I$ containing on the
+                         diagonal the row masses.  This is matrix $D_r$.</p> <p>
+                         </p>\[
+                           D_r=diag(r)
+                         \]</p></td></tr><tr valign="top"><td><code>Dc</code></td><td><p><p>Square matrix of size $J$ containing on the
+                         diagonal the column masses. This is matrix $D_c$.</p> <p>
+                         </p>\[
+                           D_c=diag(c)
+                         \]</p></td></tr><tr valign="top"><td><code>InertiaExplained</code></td><td><p><p>matrix with 4 columnn.</p> <p>
+                         - First column contains the singular values (the
+                           sum of the squared singular values is the total
+                           inertia).</p> <p>
+                         - Second column contains the eigenvalues (the sum
+                           of the eigenvalues is the total inertia).</p> <p>
+                         - Third column contains the variance explained by
+                           each latent dimension.</p><p>
+                         - Fourth column contains the cumulative variance
+                           explained by each dimension.</p></p></td></tr><tr valign="top"><td><code>LrSup</code></td><td><p>cell containing the labels of the
+                         supplementary rows (i.e. the rows whicg did not
+                         participate to the fit).</p></td></tr><tr valign="top"><td><code>LcSup</code></td><td><p>cell containing the labels of
+                         supplementary columns (i.e. the columns which did
+                         not participate to the fit).</p></td></tr><tr valign="top"><td><code>SupRowsN</code></td><td><p>matrix of size length(LrSup)-by-c
+                         referred to supplementary rows. If there are no
+                         supplementary rows this field is not present.</p></td></tr><tr valign="top"><td><code>SupColsN</code></td><td><p><p>matlab of size r-by-length(LcSup) referred to
+                         supplementary columns.</p> <p>
+                         If there are no supplementary columns this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>RowsPriSup</code></td><td><p><p>Principal coordinates of supplementary rows.</p> <p>
+                         If there are no supplementary rows this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>RowsStaSup</code></td><td><p><p>Standard coordinates of supplementary rows.</p> <p>
+                         If there are no supplementary rows this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>RowsSymSup</code></td><td><p><p>Symmetrical coordinates of supplementary rows.</p> <p>
+                         If there are no supplementary rows this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>ColsPriSup</code></td><td><p><p>Principal coordinates of supplementary columns.</p> <p>
+                         If there are no supplementary columns this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>ColsStaSup</code></td><td><p><p>Standard coordinates of of supplementary columns.</p> <p>
+                         If there are no supplementary columns this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>ColsSymSup</code></td><td><p><p>Symmetrical coordinates of supplementary columns.</p> <p>
+                         If there are no supplementary columns this field
+                         is not present.</p></p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'plots',plots=struct; plots.colorcols='k'
+</code>,<code> 'addx',0.01
+</code>,<code> 'addy',0.01
+</code>,<code> 'changedimsign', [true false]
+</code>,<code> 'xlimx',[-1 1]
+</code>,<code> 'ylimy',[0 1]
+</code>,<code> 'd1',2
+</code>,<code> 'd2',3
+</code>,<code>'h',h1 where h1=subplot(2,1,1)
+</code></code></span></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Customize plot appearance.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is not a structure, a plot which shows the Principal
+               coordinates of rows and columns is shown on the screen. If
+               plots is a structure it may contain the following fields:</p> <p>
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>alpha</code></td><td><p><p>type of plot, scalar in the interval [0 1] or
+               a string identifying the type of coordinates to use in the
+               plot.</p> <p>
+               If $plots.alpha='rowprincipal'$ the row points are in
+                   principal coordinates and the column coordinates are
+                   standard coordinates. Distances between row points are
+                   (approximated) chi-squared distances
+                   (row-metric-preserving). The position of the row points
+                   are at the weighted average of the column points.</p> <p>
+                   Note that 'rowprincipal' can also be specified setting
+                   plots.alpha=1.</p> <p>
+               If $plots.alpha='colprincipal'$, the column
+                   coordinates are referred to as principal coordinates
+                   and the row coordinates as standard coordinates.</p> <p>
+                   Distances between column points are (approximated)
+                   chi-squared distances (column-metric-preserving). The
+                   position of the column points are at the weighted
+                   average of the row points.</p> <p>
+                   Note that 'colprincipal' can also be
+                   specified setting plots.alpha=0.</p> <p>
+               If $plots.alpha='symbiplot'$, the row and column coordinates
+                   are scaled similarly. The sum of weighted squared
+                   coordinates for each dimension is equal to the
+                   corresponding singular values. These coordinates are often
+                   called symmetrical coordinates. This representation is
+                   particularly useful if one is primarily interested in
+                   the relationships between categories of row and column
+                   variables rather than in the distances among rows or
+                   among columns. 'symbiplot' can also be specified
+                   setting plots.alpha=0.5;</p> <p>
+               If $plots.alpha='bothprincipal'$, both the rows and columns
+                   are depicted in principal coordinates. Such a plot is
+                   often referred to as a symmetrical plot or French
+                   symemtrical model. Note that such a symmetrical plot
+                   does not provide a feasible solution in the sense that
+                   it does not approximate matrix
+                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$.</p> <p>
+               If $plots.alpha='bothstandard'$, both the rows and columns
+                   are depicted in standard coordinates.</p> <p>
+               If $plots.alpha='rowgab'$, rows are in principal coordinates
+                   and columns are in standard coordinates multiplied by
+                   the mass. This biplot has been suggested by Gabriel and
+                   Odoroff (1990).</p> <p>
+               If $plots.alpha='colgab'$, columns are in principal coordinates
+                   and rows are in standard coordinates multiplied by the
+                   mass. This biplot has been suggested by Gabriel and
+                   Odoroff (1990).</p> <p>
+               If $plots.alpha='rowgreen'$, rows are in principal
+                   coordinates and columns are in standard coordinates
+                   multiplied by square root of the mass.</p> <p>
+                  This biplot has been suggested by Greenacre and
+                  incorporates the contribution of points. In this
+                  display, points that contribute very little to the
+                  solution, are close to the center of the biplot and are
+                  relatively unimportant to the interpretation. This
+                  biplot is often referred as contribution biplot because
+                  it visually shows the most contributing points
+                  (Greenacre 2006b).</p> <p>
+               If $plots.alpha='colgreen'$, columns in principal coordinates
+                   and rows in standard coordinates multiplied by the
+                   square root of the mass.</p> <p>
+                   This biplot has been suggested by Greenacre and
+                   incorporates the contribution of points. In this
+                   display, points that contribute very little to the
+                   solution, are close to the center of the biplot and are
+                   relatively unimportant to the interpretation. This
+                   biplot is often referred as contribution biplot because
+                   it shows visually the most contributing points
+                   (Greenacre 2006b).</p><p>
+               If $plots.alpha=scalar$ in the interval [0 1], row
+                   coordinates are given by $D_r^{-1/2} U \Gamma^\alpha$
+                   and column coordinates are given by $D_c^{-1/2} V
+                   \Gamma^{1-\alpha}$. Note that for any choice of $\alpha$
+                   the matrix product $ D_r^{-1/2} U \Gamma^\alpha (D_c^{-1/2} V
+                   \Gamma^{1-\alpha})^T$ optimally approximates matrix
+                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$, in the sense that the
+                   sum of squared differences between $D_r^{1/2}
+                   D_r^{-1/2} U \Gamma^\alpha (D_c^{-1/2} V
+                   \Gamma^{1-\alpha})^T D_c^{1/2}$ and
+                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$ is as small as possible.</p></p></td></tr><tr valign="top"><td><code>FontSize</code></td><td><p>scalar which specifies the font size of row
+                   labels. The default value is 10.</p></td></tr><tr valign="top"><td><code>FontSizeSup</code></td><td><p>scalar which specifies the font size of row
+                   labels of supplementary points. The default value is 10.</p></td></tr><tr valign="top"><td><code>MarkerSize</code></td><td><p>scalar which specifies the marker size
+                   of symbols associated with rows. The default
+                   value is 10.</p></td></tr><tr valign="top"><td><code>SymbolRows</code></td><td><p>character which specifies the symbol to
+                   use for row points. If this field is not present the
+                   default symbols is 'o'.</p></td></tr><tr valign="top"><td><code>SymbolRowsSup</code></td><td><p>character which specifies the symbol to
+                   use for supplementary row points. If this field is not
+                   present the default symbols is 'o'.</p></td></tr><tr valign="top"><td><code>ColorRows</code></td><td><p>character which specifies the symbol to
+                   use for row points or RGB triplet. If this field is not
+                   present the default color is 'b'.</p></td></tr><tr valign="top"><td><code>ColorCols</code></td><td><p>character which specifies the symbol to
+                   use for column points or RGB triplet. If this field is
+                   not present the default color is 'r'.</p></td></tr><tr valign="top"><td><code>ColorRowsSup</code></td><td><p>character which specifies the symbol to
+                   use for row points or RGB triplet. If this field is not
+                   present the default color is 'b'.</p></td></tr><tr valign="top"><td><code>ColorColsSup</code></td><td><p>character which specifies the symbol to
+                   use for supplementary column points or RGB triplet. If
+                   this field is not present the default color is 'r'.</p></td></tr><tr valign="top"><td><code>MarkerFaceColorRows</code></td><td><p>character which specifies the
+                   marker fill color to use for active row points or RGB
+                   triplet. If this field is not present the default color
+                   is 'auto'.</p></td></tr><tr valign="top"><td><code>MarkerFaceColorRowsSup</code></td><td><p>character which specifies the
+                   marker fill color to use for supplementary row points or RGB
+                   triplet. If this field is not present the default color
+                   is 'auto'.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',plots=struct; plots.colorcols='k'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_addx" class="clearfix"></div><h3 id="input_argument_namevalue_addx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>addx</code> &#8212;horizontal displacement for labels.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Amount of
+              horizontal displacement which has been put on the labels in the
+              plot. The defalut value of addx is 0.04.</p> <p>
+              </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'addx',0.01
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_addy" class="clearfix"></div><h3 id="input_argument_namevalue_addy" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>addy</code> &#8212;vertical displacement for labels.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Amount of
+              vertical displacement which has been put on the labels in the
+              plot. The defalut value of addy is 0.</p> <p>
+              </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'addy',0.01
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_changedimsign" class="clearfix"></div><h3 id="input_argument_namevalue_changedimsign" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>changedimsign</code> &#8212;change chosen dimension sign.</span></a><span class="example_desc">boolean vector of length 2.</span></span></h3><div class="collapse">	<p><p>Sometimes for better interpretability it is necessary to
+               change the sign of the coordinates for the chosen
+               dimension. If changedimsign(1) is true the sign of the
+               coordinates for first chosen dimension is changed. If
+               changedimsign(2) is true the sign of the coordinates for
+               first chosen dimension is changed. As default the
+               dimensions are the first and the second however, they can
+               be changed using option plots.dim. The defaul value of
+               changedimsign is [false false] that is the sign is not
+               changed.</p> <p>
+              </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'changedimsign', [true false]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_xlimx" class="clearfix"></div><h3 id="input_argument_namevalue_xlimx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlimx</code> &#8212;Min and Max of the x axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector with two
+                   elements controlling minimum and maximum
+                   of the x axis.</p> <p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlimx',[-1 1]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ylimy" class="clearfix"></div><h3 id="input_argument_namevalue_ylimy" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylimy</code> &#8212;Min and Max of the y axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector with two
+                   elements controlling minimum and
+                   maximum of the y axis.</p> <p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylimy',[0 1]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_d1" class="clearfix"></div><h3 id="input_argument_namevalue_d1" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>d1</code> &#8212;Dimension to show on the horizontal axis.</span></a><span class="example_desc">positive                 integer.</span></span></h3><div class="collapse">	<p><p>Positive integer in the range 1, 2, .., K which
+                 indicates the dimension to show on the x axis. The
+                 default value of d1 is 1.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'd1',2
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_d2" class="clearfix"></div><h3 id="input_argument_namevalue_d2" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>d2</code> &#8212;Dimension to show on the vertical axis.</span></a><span class="example_desc">positive                 integer.</span></span></h3><div class="collapse">	<p><p>Positive integer in the range 1, 2, .., K which
+                 indicates the dimension to show on the y axis. The
+                 default value of d2 is 2.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'd2',3
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;the axis handle of a figure where to send the moonplot.</span></a><span class="example_desc">this can be used to host the moonplot in a subplot of a               complex figure formed by different panels (for example a panel               with moonplot from plots.</span></span></h3><div class="collapse">	<p><p>alpha=0.2 and another
+               with moonplot from plots.alpha=0.5).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'h',h1 where h1=subplot(2,1,1)
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Axes object (supplied as a scalar)</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Benzecri, J.-P. (1992), "Correspondence Analysis Handbook", New-York,
+ Dekker.</p></div><div><p>Benzecri, J.-P. (1980), "L'analyse des donnees tome 2: l'analyse des
+ correspondances", Paris, Bordas.</p></div><div><p>Greenacre, M.J. (1993), "Correspondence Analysis in Practice", London,
+ Academic Press.</p></div><div><p>Bock, T. (2011), Improving the display of correspondence analysis using moon
+ plots, "International Journal of Market Research", Vol. 53, pp. 307-326.</p></div><div><p>Gabriel, K.R. and Odoroff, C. (1990), Biplots in biomedical research,
+ "Statistics in Medicine", Vol. 9, pp. 469-485.</p></div><div><p>Greenacre, M.J. (1993), Biplots in correspondence Analysis, "Journal of
+ Applied Statistics", Vol. 20, pp. 251-269.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="corAnaplot.html" itemprop="url"><span itemprop="name"><code>corAnaplot</code></span></a></span> | <span itemprop="seealso"><a href="corAna.html" itemprop="url"><span itemprop="name"><code>corAna</code></span></a></span> | <span itemprop="seealso"><a href="mcdCorAna.html" itemprop="url"><span itemprop="name"><code>mcdCorAna</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
