@@ -306,8 +306,8 @@ function moonplot(out,varargin)
 %{
     %% moonplot with all the default options.
     % Prepare the data.
-    load('mobilephone')
-    N=mobilePhone;
+    load('csdPerceptions')
+    N=csdPerceptions;
     out=CorAna(N,'plots',0);
     moonplot(out);
 %}
