@@ -2938,14 +2938,14 @@ for i=1:nseealso
                         % to all documentation files
                         listhtmlCell=listhtmlCell(:,1);
                         % Find the indexes which contain Seealsoitem.html
-                        IndexesContStr=find(contains(listhtmlCell,[Seealsoitem '.html']),1);
+                        IndexesContStr=find(contains(listhtmlCell,[Seealsoitem '.html'],'IgnoreCase',true),1);
                         
                         if isempty(IndexesContStr)
                             cd(currentfolder)
                             error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
                         end
                          pathExtHelpFile=listhtmlStruct(IndexesContStr).folder;
-                         % Redefine seealsoitem with the true name of heml
+                         % Redefine seealsoitem with the true name of html
                          % documentation page
                          SeealsoitemT=listhtmlStruct(IndexesContStr).name;
                          
