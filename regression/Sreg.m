@@ -473,7 +473,7 @@ elseif strcmp(rhofunc,'hyperbolic')
             % kc1 = E(rho) = sup(rho)*bdp
             kc=HYPrho(c,[c,kdef,A,B,d])*bdp;
         else
-            error('FSDA:Sreg:WrongBdpHyp','Values of bdp for hyperbolic tangent estimator not supported for code generation')
+            error('FSDA:Sreg:WrongBdpHyp','Values of bdp or of k for hyperbolic tangent estimator not supported for code generation')
         end
     end
     
