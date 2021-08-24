@@ -311,8 +311,12 @@ for j=1:nla
     
     % Subsequent outlier detection
     [~,newbsbj]=intersect(good,bs(:,j));
+
     outl=FSR(ytraj(good),X(good,:),'nocheck',1,'bonflev',bonflev,'plots',0,'msg',0,'init',ini,'lms',newbsbj);
-    
+    if isscalar(outl.mdr)
+         outl=FSR(ytraj(good),X(good,:),'nocheck',1,'bonflev',bonflev,'plots',0,'msg',0,'init',ini);
+    end
+
     LowerEnv=FSRenvmdr(n1,size(X,2)+1,'init',ini);
     % If the value of mdr is always below the lower envelope
     if sum(outl.mdr(:,2)>LowerEnv(:,2)) ==0
