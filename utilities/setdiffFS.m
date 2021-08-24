@@ -101,3 +101,4 @@ c = find(bitxor(aT , bitand(aT,bT)));
 % c = find(aT & ~bT);
 
 end
+%FScategory:UTIGEN
