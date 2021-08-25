@@ -4,7 +4,7 @@
 rhoHA=HArho(x,1);
 plot(x,rhoHA,'LineWidth',2)
 xlabel('$u$','Interpreter','Latex')
-ylabel(' Hampel $\rho(u,[2, 4, 8]) $','Interpreter','Latex','FontSize',14)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Hampel rho function using a redescending slope of -1/3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Hampel rho function using a redescending slope of -1/3. 
+ylabel(' Hampel $\rho(u,[2, 4, 8]) $','Interpreter','Latex','FontSize',14)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Hampel rho function using a redescending slope of -1/3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Hampel rho function using a redescending slope of -1/3.
 x=-9:0.1:9;
 rhoHA=HArho(x,[1,1.5,3.5,8]);
 plot(x,rhoHA)
@@ -22,7 +22,7 @@ ylabel(' Hampel $\rho(x) $','Interpreter','Latex')</pre></div></div></p></div
                 ctuning(3) = paramter b of Hampel rho (psi) function
                 ctuning(4) = paramter c of Hampel rho (psi) function
                 Remark: if length(ctuning)==1 values of a, b and c will be
-                set to a=2*ctuning b=4*ctuning c=4*ctuning 
+                set to a=2*ctuning b=4*ctuning c=4*ctuning
                 With these choices, if ctuning=1  the
                 resulting influence function is nearly identical to the
                 biweight with parameter 8.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_rhoHA" class="clearfix"></div><h3 id="output_argument_rhoHA" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhoHA</code> &#8212;Hampel rho
@@ -31,12 +31,12 @@ ylabel(' Hampel $\rho(x) $','Interpreter','Latex')</pre></div></div></p></div
  Function HArho transforms vector u as follows
 
   \[
-  HArho(u)  = \left\{   
+  HArho(u)  = \left\{
   \begin{array}{cc}
     \frac{u^2}{2} & |u| \leq a                                       \\
     a \times |u| -0.5 a^2 & a \leq |u| &lt; b                    \\
     ab-0.5a^2+0.5(c-b)a \left[ 1- \left( \frac{c-|u|}{c-b}\right)^2 \right]  & b \leq |u| &lt;  c \\
-    ab-0.5a^2+0.5(c-b)a & |u| \geq c 
+    ab-0.5a^2+0.5(c-b)a & |u| \geq c
   \end{array} \right.
  \]<p>
 
@@ -45,9 +45,9 @@ ylabel(' Hampel $\rho(x) $','Interpreter','Latex')</pre></div></div></p></div
                    $c$= ctun *ctuning(4).</p> <p>
 
              The default is
-                   $a$= 2*ctun.</p> <p> 
-                   $b$= 4*ctun.</p> <p> 
-                   $c$= 8*ctun.</p><p> 
+                   $a$= 2*ctun.</p> <p>
+                   $b$= 4*ctun.</p> <p>
+                   $c$= 8*ctun.</p><p>
 
 	It is necessary to have 0 &lt;= a &lt;= b &lt;= c
 

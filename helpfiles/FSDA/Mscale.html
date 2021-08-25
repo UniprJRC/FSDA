@@ -12,7 +12,7 @@ n=10000;
 shift=5;
 u=2*randn(n,1);
 u(1:10)=u(1:10)+shift;
-s=Mscale(u,psifunc)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Estimate of scale using Hampel rho function.</li></span></a></span></h3><div class="collapse"><p> 
+s=Mscale(u,psifunc)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Estimate of scale using Hampel rho function.</li></span></a></span></h3><div class="collapse"><p>
      M estimate of the scale using Hampel rho function with a
      value of c associated to a breakdown point of 0.5<div class="programlisting"><div class="codeinput"><pre class="matlab-code">psifunc=struct;
 psifunc.class='HA'
@@ -48,7 +48,7 @@ bdp=0.5;
 c=HAbdp(bdp,1,abc);
 % kc = E(rho) = sup(rho)*bdp
 kc=HArho(c*abc(3),[c, abc])*bdp;
-psifunc.c1=[c abc];
+psifunc.c1=[c, abc];
 psifunc.kc1=kc;
 n=10000;
 shift=100;
@@ -64,7 +64,7 @@ kc=c^2/6*bdp;
 psifunc.kc1=kc;
 sTB=Mscale(u,psifunc,3,1e-7,20);
 sMLE=std(u);
-cate=categorical({'Robust scale (Hampel)' 'Robust scale (TB)' 'Non robust scale'})
+cate=categorical({'Robust scale (Hampel)' 'Robust scale (TB)' 'Non robust scale'});
 bar(cate,[sHA sTB sMLE])</pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_u" class="clearfix"> </div> <h3 id="input_argument_u" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>u</code> &#8212; residuals or Mahalanobis distances. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>n x 1 vector which contains the (unscaled) residuals or
                Mahalanobis distances
                </p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_psifunc" class="clearfix"> </div> <h3 id="input_argument_psifunc" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>psifunc</code> &#8212; rho (psi) function. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>A structure specifying the class of rho (psi) function to use, the
@@ -80,19 +80,19 @@ bar(cate,[sHA sTB sMLE])</pre></div></div></p></div></div></div><p> </p><
                    More precisely, psifunc.c1(1) contains consistency
                    factor associated to required breakdown point or
                    nominal efficiency psifunc.c1(2:end) contain other
-                   parameters associated with the rho (psi) function.</p><p> 
+                   parameters associated with the rho (psi) function.</p><p>
                    For example, if psifunc.class='hampel', c1(2:4) must
                    contain parameters (a, b and c) of Hampel rho function.</p></p></td></tr><tr valign="top"><td><code>kc1</code></td><td><p>Expectation of rho associated with c1 to get a
                     consistent estimator at the model distribution
                     kc1=E(rho)</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong>Example - psifunc.class='TB';psifunc.c1=1.5476;psifunc.kc1=0.1996
                </p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_initialsc" class="clearfix"> </div> <h3 id="input_argument_initialsc" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>initialsc</code> &#8212; scalar. </span>  </a><span class="example_desc">The initial estimate of the scale.</span></span></h3> <div class="collapse"> <p><p>If not defined, scaled MAD of vector |u| is used.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'initialsc',0.34 
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'initialsc',0.34
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_tol" class="clearfix"> </div> <h3 id="input_argument_tol" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>tol</code> &#8212; scalar. </span>  </a><span class="example_desc">The tolerance for controlling convergence.</span></span></h3> <div class="collapse"> <p><p>If not defined, tol is fixed to 1e-7.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'tol',1e-10 
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'tol',1e-10
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_maxiter" class="clearfix"> </div> <h3 id="input_argument_maxiter" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>maxiter</code> &#8212; scalar. </span>  </a><span class="example_desc">Maximum number of iterations to find the scale.</span></span></h3> <div class="collapse"> <p><p>If not defined, maxiter is fixed to 200.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'maxiter',100 
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'maxiter',100
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_sc" class="clearfix"></div><h3 id="output_argument_sc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>sc</code> &#8212;M-estimate of the scale.</span></a><span class="example_desc">Scalar</span></span></h3><div class="collapse"><p><p>
-       Robust M estimate of scale.</p> <p> 
+       Robust M estimate of scale.</p> <p>
        This routine is called by <a href="Taureg.html">Taureg</a> and Sreg.m</p></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
  u = residuals or Mahalanobis distances
  (note that u is kept fixed in each iteration).</p> <p>

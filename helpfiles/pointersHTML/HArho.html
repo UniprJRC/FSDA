@@ -2,12 +2,12 @@
  Function HArho transforms vector u as follows
 
   \[
-  HArho(u)  = \left\{   
+  HArho(u)  = \left\{
   \begin{array}{cc}
     \frac{u^2}{2} & |u| \leq a                                       \\
     a \times |u| -0.5 a^2 & a \leq |u| &lt; b                    \\
     ab-0.5a^2+0.5(c-b)a \left[ 1- \left( \frac{c-|u|}{c-b}\right)^2 \right]  & b \leq |u| &lt;  c \\
-    ab-0.5a^2+0.5(c-b)a & |u| \geq c 
+    ab-0.5a^2+0.5(c-b)a & |u| \geq c
   \end{array} \right.
  \]
 
@@ -16,9 +16,9 @@
                    $c$= ctun *ctuning(4).
 
              The default is
-                   $a$= 2*ctun. 
-                   $b$= 4*ctun. 
-                   $c$= 8*ctun. 
+                   $a$= 2*ctun.
+                   $b$= 4*ctun.
+                   $c$= 8*ctun.
 
 	It is necessary to have 0 &lt;= a &lt;= b &lt;= c
 

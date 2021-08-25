@@ -5,7 +5,7 @@
 dt=1/n; t=0:dt:1;
 x=randn(n,1)*sqrt(dt); x=[0;cumsum(x)];
 ivar=FE_int_vol_Fejer(x,t);
-disp(['The value of the integrated variance is: ' num2str(ivar)])</pre></div></div><pre class="codeoutput">The value of the integrated variance is: 0.99327
+disp(['The value of the integrated variance is: ' num2str(ivar)])</pre></div></div><pre class="codeoutput">The value of the integrated variance is: 0.98958
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FE_int_vol_Fejer called with optional input argument N.</li></span></a></span></h3><div class="collapse"><p>
      Analysis of the change of the integrated variance estimates of a univariate 
      diffusion process as a function of the different values of the cutting frequency.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=1000;

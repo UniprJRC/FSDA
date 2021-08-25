@@ -197,7 +197,7 @@ cd(fileparts(which('docsearchFS.m')))
 % and 'write2file',false
 % [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode',false,'write2file',false);
 
-% Create HTML file containing all the items which make up the bibblography
+% Create HTML file containing all the items which make up the bibliography
 [fileBiblio,Cits]=publishBibliography(FilesIncluded,OUT);
 
 % open outfile file in web browser
