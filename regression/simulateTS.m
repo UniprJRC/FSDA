@@ -485,7 +485,7 @@ function [out] = simulateTS(T,varargin)
     model.seasonal=0;
     model.lshift=0;
     model.X=X;
-    model.ARp=3;
+    model.ARp=[1 2 3];
     out=LTSts(y,'model',model,'plots',1,'dispresults',true);
 %}
 
