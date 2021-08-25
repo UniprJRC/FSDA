@@ -50,7 +50,7 @@ FSDAproj.Name = "FSDA (Flexible Statistics Data Analysis)";
 % Check if a subfolder FSDA of current folder exists and if not download it from github
 if exist(fullfile([pwd filesep 'FSDA' filesep 'addFSDA2path.m']),'file')~=2
     try
-        !git clone https://github.com/UniprJRC/FSDA.git
+        !git clone https://github.com/UniprJRC/FSDA.git --progress
     catch
         disp('Due to network connection it was not possibe to download from')
         disp('https://github.com/UniprJRC/FSDA.git')
