@@ -50,7 +50,7 @@ Warning: Number of subsets without full rank equal to 15.4%
 Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.03 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
 </pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#Example_1'><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
@@ -109,7 +109,7 @@ namey =
 
 Total estimated time to complete LMS:  0.03 seconds 
 Total estimated time to complete LMS:  0.03 seconds 
-Total estimated time to complete LMS:  0.04 seconds 
+Total estimated time to complete LMS:  0.03 seconds 
 Total estimated time to complete LMS:  0.04 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRfan_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare BoxCox with Yeo and Johnson transformation.</li></span></a></span></h3><div class="collapse"><p>
      Store values of the score test statistic
@@ -128,13 +128,13 @@ disp('Maximum difference in absolute value')
 disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.14 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.14 seconds 
+Total estimated time to complete LMS:  0.13 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
 Total estimated time to complete LMS:  0.14 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.14 seconds 
+Total estimated time to complete LMS:  0.15 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
 Total estimated time to complete LMS:  0.14 seconds 
@@ -313,7 +313,7 @@ out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',fal
                  computed, else Least trimmed of Squares is computed.</p> <p>
                  If, lms is matrix with size
                  p-1+intercept-by-length(la) it contains in column
-                 j=1,..., lenght(la) the list of units forming the initial
+                 j=1,..., length(la) the list of units forming the initial
                  subset for the search associated with la(j). In this last
                  case previous input option nsamp is ignored.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1

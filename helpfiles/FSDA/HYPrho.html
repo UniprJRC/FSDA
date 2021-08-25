@@ -8,7 +8,7 @@ xlabel('x','Interpreter','Latex')
 ylabel(' Hyperbolic $\rho(x) $','Interpreter','Latex')</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Parameters associated to a value of bdp=1/2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">c=2.158325031399727
 k=4;
 A=0.000162707412432;
-B=0.006991738279441   
+B=0.006991738279441
 d=0.016982948780061
 x=-8:0.001:8;
 rhoHYP=HYPrho(x,[c,k,A,B,d]);
@@ -28,7 +28,7 @@ ylabel(' Hyperbolic $\rho(x) $','Interpreter','Latex')</pre></div></div></p><
                 cktuning(4)=B;</p> <p>
                 cktuning(5)=d;</p><p>
                 Remark - if length(cktuning)==2 values of A, B and d will be
-                computed automatically</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_rhoHYP" class="clearfix"></div><h3 id="output_argument_rhoHYP" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhoHYP</code> &#8212;rho function for hyperbolic tangent estimator.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p> 
+                computed automatically</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_rhoHYP" class="clearfix"></div><h3 id="output_argument_rhoHYP" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhoHYP</code> &#8212;rho function for hyperbolic tangent estimator.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p>
                 n x 1 vector which contains the hyperbolic rho
                 associated to the residuals or Mahalanobis distances for
                 the n units of the sample.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p>
@@ -38,7 +38,7 @@ ylabel(' Hyperbolic $\rho(x) $','Interpreter','Latex')</pre></div></div></p><
  estimate. This leads to the Hyperbolic Tangent $\rho$
  function, which, for suitable constants $c$, $k$, $A$, $B$ and
  $d$, is defined as
- 
+
 
  \[
   HYPrho(u) =
@@ -46,7 +46,7 @@ ylabel(' Hyperbolic $\rho(x) $','Interpreter','Latex')</pre></div></div></p><
   \begin{array}{cc}
    	 u^2/2 &	        |u| \leq d, \\
    d^2/2 -2 \frac{A}{B} \log  \left\{ \cosh \left[ 0.5 \sqrt{ \frac{(k - 1)  B^2}{A} } (c - |u|) \right] \right\} & \\
-                          +2 \frac{A}{B}\log \left\{  \cosh \left[ 0.5\sqrt{\frac{(k - 1)  B^2}{A}}(c -d)\right] \right\} &  \\		        	
+                          +2 \frac{A}{B}\log \left\{  \cosh \left[ 0.5\sqrt{\frac{(k - 1)  B^2}{A}}(c -d)\right] \right\} &  \\
                 &                               d \leq |u| &lt;  c, \\
                  d^2/2 +2 \frac{A}{B} \log \left\{ \cosh \left[ 0.5 \sqrt{ \frac{(k - 1)  B^2}{A} }(c -d) \right] \right\}	 &
                                                         |u| \geq c. \\

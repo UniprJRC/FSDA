@@ -39,7 +39,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
 </code>,<code> 'conflev',0.99
 </code>,<code> 'nocheck',1
 </code>,<code> 'plots',1
-</code>,<code> 'msg',1
+</code>,<code> 'msg',false
 </code>,<code> 'ysaveRAW',1
 </code>,<code> 'ysaveREW',1
 </code></code></span></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
@@ -64,25 +64,14 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Scalar.</span></a><span class="example_desc">if nocheck is equal to 1 no check is performed on               matrix Y.</span></span></h3><div class="collapse">	<p><p>As default nocheck=0.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:</p> <p>
-               (1) a plot of Mahalanobis distances against index number. The
-               confidence level used to draw the confidence bands for
-               the MD is given by the input option conflev. If conflev is
-               not specified a nominal 0.975 confidence interval will be
-               used.</p> <p>
-               (2) a scatter plot matrix with the outliers highlighted.</p><p>
-               If plots is a structure it may contain the following fields
-           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>labeladd</code></td><td><p>if this option is '1', the outliers in the
-                       spm are labelled with their unit row index. The
-                       default value is labeladd='', i.e. no label is
-                       added.</p></td></tr><tr valign="top"><td><code>nameY</code></td><td><p>cell array of strings containing the labels of
-                       the variables. As default value, the labels which
-                       are added are Y1, ...Yv.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double or structure</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;scalar.</span></a><span class="example_desc">display | not messages               on the screen.</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displayed
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots is equal to 1, it generates a plot which monitors
+               raw mve Mahalanobis distances against values of bdp.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double or structure</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;boolean.</span></a><span class="example_desc">display | not messages               on the screen.</span></span></h3><div class="collapse">	<p><p>If msg==true (default) messages are displayed
                on the screen about estimated time to compute the final
                estimator else no message is displayed on the screen.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ysaveRAW" class="clearfix"></div><h3 id="input_argument_namevalue_ysaveRAW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysaveRAW</code> &#8212;scalar that is set to 1 to request that the data matrix Y
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_ysaveRAW" class="clearfix"></div><h3 id="input_argument_namevalue_ysaveRAW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysaveRAW</code> &#8212;scalar that is set to 1 to request that the data matrix Y
                is saved into the output structure RAW.</span></a><span class="example_desc">this feature is               meant at simplifying the use of function malindexplot.</span></span></h3><div class="collapse">	<p><p>Default is 0, i.e. no saving is done.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ysaveRAW',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ysaveREW" class="clearfix"></div><h3 id="input_argument_namevalue_ysaveREW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysaveREW</code> &#8212;scalar that is set to 1 to request that the data matrix Y
@@ -111,7 +100,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
                     These weights determine which are the h observations
                     which have been used to compute the final MVE
                     estimates.</p></p></td></tr><tr valign="top"><td><code>Outliers</code></td><td><p>A vector containing the list of the units declared as
-                    outliers after reweighting.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'mvereda'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices
+                    outliers after reweighting.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'mveeda'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices
                     of the subsamples extracted for
                     computing the estimate.</span></a><span class="example_desc"><code>C     : </code>matrix of size nsamp-by-v</span></span></h3><div class="collapse"><p></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
  For each subset $J$ of $v+1$ observations

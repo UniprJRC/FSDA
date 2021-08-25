@@ -19,23 +19,24 @@ kk=10;
 ycont = y;
 ycont(1:kk)=ycont(1:kk)+7;
 [outS]=Sreg(ycont,X);
-out=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.88 seconds 
+out=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.61 seconds 
 
 out = 
 
   struct with fields:
 
-        class: 'MMreg'
-         beta: [4&times;1 double]
-      weights: [200&times;1 double]
-    residuals: [200&times;1 double]
-     outliers: [1 2 3 4 5 6 7 8 9 10 26 56 80 113 134 156 193]
-      conflev: 0.9750
-      rhofunc: 'bisquare'
+           class: 'MMreg'
+            beta: [4&times;1 double]
+         weights: [200&times;1 double]
+       residuals: [200&times;1 double]
+        outliers: [1 2 3 4 5 6 7 8 9 10 26 56 80 113 134 156 193]
+         conflev: 0.9750
+         rhofunc: 'bisquare'
+    rhofuncparam: []
 
 </pre><a href='http://rosa.unipr.it/fsda/MMregcore.html#Example_2'><img vspace="5" hspace="5" src="images\MMregcore_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighting the residuals with a rho function.</li></span></a></span></h3><div class="collapse"><p>
      Determine, e.g., an S estimate and extract the required arguments for the MM estimate.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% This time use a Tukey biweight for S estimation and HA rho function
-% for MM loop 
+% for MM loop
 n=200;
 p=3;
 state1=123456;
@@ -80,11 +81,11 @@ max(abs([out.beta-outMM.beta]))</pre></div></div></p></div></div></div></d
 </code>,<code> 'refsteps',10
 </code>,<code> 'tol',1e-10
 </code>,<code> 'conflev',0.99
-</code>,<code> 'rhofunc','optimal' 
-</code>,<code> 'rhofuncparam',5 
-</code>,<code> 'nocheck',true 
-</code>,<code> 'plots',0 
-</code>,<code> 'yxsave',1 
+</code>,<code> 'rhofunc','optimal'
+</code>,<code> 'rhofuncparam',5
+</code>,<code> 'nocheck',true
+</code>,<code> 'plots',0
+</code>,<code> 'yxsave',1
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
                  specified as the comma-separated pair consisting of
                  'Intercept' and either true to include or false to remove
@@ -95,7 +96,7 @@ max(abs([out.beta-outMM.beta]))</pre></div></div></p></div></div></div></d
                  Asymptotic nominal efficiency is:</p> <p>
                  $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_effshape" class="clearfix"></div><h3 id="input_argument_namevalue_effshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>effshape</code> &#8212;locacation or scale effiicency.</span></a><span class="example_desc">dummy scalar.</span></span></h3><div class="collapse">	<p>If effshape=1 efficiency refers to shape 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_effshape" class="clearfix"></div><h3 id="input_argument_namevalue_effshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>effshape</code> &#8212;locacation or scale effiicency.</span></a><span class="example_desc">dummy scalar.</span></span></h3><div class="collapse">	<p>If effshape=1 efficiency refers to shape
                 efficiency else (default) efficiency refers to location
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'effshape',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Maximum iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar defining maximum number of iterations in the MM
@@ -128,29 +129,31 @@ max(abs([out.beta-outMM.beta]))</pre></div></div></p></div></div></div></d
                'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.</p> <p>
                See <a href="PDrho.html">PDrho</a> and <a href="PDpsi.html">PDpsi</a>.</p><p>
                The default is bisquare
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofunc','optimal' 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofunc','optimal'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function.</span></a><span class="example_desc">scalar | vector | empty  value.</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the
                value of k = sup CVC (the default value of k is 4.5).</p> <p>
                For Hampel rho function it is possible to define parameters
-               a, b and c (the default values are a=2, b=4, c=8).</p><p> 
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofuncparam',5 
+               a, b and c (the default values are a=2, b=4, c=8). For the
+               other rho functions (Tuhey, PD and optimal) it is an empty
+               value.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofuncparam',5
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to
                true no check is performed on matrix y and matrix X. Notice
                that y and X are left unchanged. In other words the
                additional column of ones for the intercept is not added.</p> <p>
                As default nocheck=false.</p><p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true 
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots = 1, generates a plot with the robust residuals
                against index number. The confidence level used to draw the
                confidence bands for the residuals is given by the input
                option conflev. If conflev is not specified a nominal 0.975
                confidence interval will be used.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',0 
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_yxsave" class="clearfix"></div><h3 id="input_argument_namevalue_yxsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>yxsave</code> &#8212;the response vector y and data matrix X are saved into the output
                 structure out.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default is 0, i.e. no saving is done.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'yxsave',1 
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'yxsave',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields
-<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta</code></td><td><p>p x 1 vector. Estimate of beta coefficients after 
+<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta</code></td><td><p>p x 1 vector. Estimate of beta coefficients after
                    refsteps refining steps</p></td></tr><tr valign="top"><td><code>residuals</code></td><td><p>n x 1 vector containing the estimates of the robust
                    scaled residuals</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>A vector containing the list of the units declared as
                    outliers using confidence level specified in input
@@ -159,9 +162,9 @@ max(abs([out.beta-outMM.beta]))</pre></div></div></p></div></div></div></d
                    for the specified rho function which have been
                    used. For hyperbolic rho function the value of
                    k =sup CVC. For Hampel rho function the parameters
-                   a, b and c. This field is present only if rhofunc is
-                   'hampel' or 'hyperbolic'.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector y. The field is present only if option 
-                   yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X. The field is present only if option 
+                   a, b and c. This field is empty if rhofunc is not
+                   'hampel' or 'hyperbolic'.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector y. The field is present only if option
+                   yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X. The field is present only if option
                    yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'MMreg'</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
  It does iterative reweighted least squares (IRWLS) steps from "initial
  beta" (b0) keeping the estimate of the scale (auxscale) fixed.</p> <p>

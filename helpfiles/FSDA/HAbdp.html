@@ -18,12 +18,12 @@ disp(c);</pre></div></div><pre class="codeoutput">    0.2119
          function associated to requested breakdown point</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
  Function HApsi transforms vector u as follows.</p> <p>
   </p>\[
-  HApsi(u)  = \left\{   
+  HApsi(u)  = \left\{
   \begin{array}{cc}
     u & |u| &lt;= a                                       \\
     a \times sign(u) & a &lt;= |u| &lt; b                    \\
     a \frac{c-|u|}{c-b} \times sign(u) & b &lt;= |u| &lt;  c \\
-    0 & |u| &gt;= c 
+    0 & |u| &gt;= c
   \end{array} \right.
  \]<p>
 
@@ -32,9 +32,9 @@ disp(c);</pre></div></div><pre class="codeoutput">    0.2119
                    $c$= ctun *param(3).</p> <p>
 
              The default is
-                   $a$= 2*ctun.</p> <p> 
-                   $b$= 4*ctun.</p> <p> 
-                   $c$= 8*ctun.</p><p> 
+                   $a$= 2*ctun.</p> <p>
+                   $b$= 4*ctun.</p> <p>
+                   $c$= 8*ctun.</p><p>
 
 	It is necessary to have 0 &lt;= a &lt;= b &lt;= c
 

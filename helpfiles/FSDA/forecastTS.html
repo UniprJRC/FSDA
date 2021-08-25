@@ -205,7 +205,9 @@ model.trendb=[5,1000];
 model.seasonal=102;
 model.seasonalb=100*[2 4 0.1 8 0.001];
 model.signal2noiseratio=10;
+model.ARp=[1 2];
 model.ARb=[0.2 0.7];
+model.ARIMAX=true;
 T=100;
 out=simulateTS(T,'model',model,'plots',1);
 % Fit a model imposing linear trend, sesonal component and AR(2)
@@ -220,24 +222,27 @@ model.seasonal=102;
 model.lshift=0;
 % Add a nonn important expl. variable
 model.X=X;
-model.ARp=2;
+model.ARp=[1 2];
 out=LTSts(y,'model',model,'plots',1,'dispresults',true);
 % Note that in this case all the 120 values of Xall are supplied and
 % the number of forecasts is 20
 model.X=Xall;
-forecastTS(out,'model',model,'nfore',20)</pre></div></div><pre class="codeoutput">                  Coeff         SE          t           pval   
-                _________    ________    ________    __________
+forecastTS(out,'model',model,'nfore',20)</pre></div></div><pre class="codeoutput">Iterative search of sigmaeps depending on the desired signal2noise ratio.
+After 1000 iterations, the value of signal2noise ratio closest to the desired one is 10.0005,
+obtained with sigmaeps = 107955.6243
+                  Coeff         SE           t           pval   
+                _________    _________    ________    __________
 
-    b_trend1       1082.5      1905.7     0.56801       0.57144
-    b_trend2        137.1      81.629      1.6796      0.096506
-    b_cos1        -513.87      636.73    -0.80704       0.42177
-    b_sin1          612.4      678.81     0.90216       0.36938
-    b_cos2        -1925.1      1501.6      -1.282       0.20313
-    b_sin2        -2776.4        2084     -1.3322       0.18615
-    b_AutoR1      0.24976    0.079246      3.1517     0.0022053
-    b_AutoR2      0.61635    0.077048      7.9996    4.0843e-12
-    b_explX1      -1.9556      8.8835    -0.22014       0.82626
-    b_varaml    -0.058666    0.033078     -1.7736       0.07952
+    b_trend1       -16801        33939    -0.49503       0.62178
+    b_trend2       2117.5       953.27      2.2214      0.028835
+    b_cos1         -32427        21648     -1.4979       0.13766
+    b_sin1          51362        27551      1.8642      0.065548
+    b_cos2         6181.2        16773     0.36852       0.71335
+    b_sin2         -39328        22569     -1.7426      0.084824
+    b_auto 1      0.16847     0.064852      2.5978       0.01096
+    b_auto 2      0.64325     0.065699      9.7907    7.7762e-16
+    b_explX1       360.92       157.24      2.2954      0.024035
+    b_varaml    0.0016604    0.0088853     0.18687       0.85218
 
 
 ans = 
@@ -260,7 +265,9 @@ model.trendb=[5,0.01];
 model.seasonal=2;
 model.seasonalb=0.1*[2 4 0.1 2];
 model.signal2noiseratio=10;
+model.ARp=[1 2];
 model.ARb=[0.2 0.3];
+model.ARIMAX=true;
 T=150;
 out=simulateTS(T,'model',model,'plots',1);
 yall=out.y;
@@ -272,7 +279,7 @@ model.trend=1;
 model.seasonal=2;
 % No level shift
 model.lshift=0;
-model.ARp=2;
+model.ARp=[1 2];
 out=LTSts(y,'model',model,'plots',1,'dispresults',true);
 % Note that in this case all the 120 values of Xall are supplied and
 % the number of forecasts is 20

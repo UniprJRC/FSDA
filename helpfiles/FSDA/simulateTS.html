@@ -6,7 +6,8 @@
      A time series of 100 observations is simulated from a model which
      contains a linear trend (with slope 1 and intercept 0), no seasonal
      component, no explanatory variables and a signal to noise ratio egual
-     to 1 (the default).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=simulateTS(100,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/simulateTS.html#Example_1'><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Same as above, but without homogenizing the y-scale.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close;
+     to 1 (the default).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=simulateTS(100,'plots',1);</pre></div></div><pre class="codeoutput">None of the inputs for simulating residuals has been specified. The default value signal2noiseratio=1 will be considered.
+</pre><a href='http://rosa.unipr.it/fsda/simulateTS.html#Example_1'><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Same as above, but without homogenizing the y-scale.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close;
 out=simulateTS(100,'plots',1,'samescale',false);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with a linear time varying seasonal component.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
@@ -119,6 +120,7 @@ model.trend=1;
 model.trendb=[5,1000];
 model.seasonal='';
 model.signal2noiseratio=10;
+model.ARp=[1 2];
 model.ARb=[0.2 0.7];
 T=100;
 out=simulateTS(T,'model',model,'plots',1);
@@ -137,6 +139,7 @@ model.trend=1;
 model.trendb=[5,1000];
 model.seasonal='';
 model.signal2noiseratio=10;
+model.ARp=[1 2];
 model.ARb=[0.2 0.7];
 T=100;
 X=1e+2*randn(T,1);
@@ -173,7 +176,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                        If this field is an empty double the simulated time
                        series will not contain a trend. The default value
                        of model.trendb is [0 1] that is a slope equal to 1
-                       and intercept equal to false.</p></p></td></tr><tr valign="top"><td><code>s</code></td><td><p><p>scalar greater than zero which specifies the
+                       and intercept equal to 0.</p></p></td></tr><tr valign="top"><td><code>s</code></td><td><p><p>scalar greater than zero which specifies the
                        length of the seasonal period. For monthly
                        data (default) s=12, for quartely data s=4, ...</p> <p>
                        The default value of model.s is 12, which is for
@@ -230,15 +233,31 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                        of the kind: $ 4*randn(T,1) + 5*randn(T,1) $.</p><p>
                        If this field is an empty double (default) the
                        simulated time series will not contain explanatory
-                       variables.</p></p></td></tr><tr valign="top"><td><code>ARb</code></td><td><p><p>vector of doubles containing the beta
-                       coefficients for the autoregressive component.</p> <p>
-                       For example model.ARb = [0.5 -0.2]
-                       generates an AR(2) time series of the
-                       kind: $y_t = 0.5 y_{t-1} - 0.2 y_{t-2}$ + seasonal
-                       + lshift + $\epsilon_t$.</p><p>
-                       If this field is an empty double (default) the
-                       simulated time series will not have an
-                       autoregressive component.</p></p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>scalar greater than 0 which specifies the
+                       variables.</p></p></td></tr><tr valign="top"><td><code>ARIMAX</code></td><td><p>boolean variable (true/false) that specifies
+                       the model for the AR component (when present). If
+                       true, then the autoregressive component involves
+                       the dependent variable, as in expression (1) of
+                       <a href="https://it.mathworks.com/help/econ/convert-between-armax-and-regarima-models.html#btw30mu">https://it.mathworks.com/help/econ/convert-between-armax-and-regarima-models.html#btw30mu</a>
+                       with N(L)=1. If false, then the autoregressive
+                       component involves the residual term, as in
+                       expression (2) of the same page with A(L)=1. If
+                       this field is empty or not present, the default
+                       value is false.</p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>vector with non negative integer numbers
+                       specifying the autoregressive
+                       components. For example:</p> <p> 
+                        model.ARp=[1 2] means a AR(2) process;</p> <p> 
+                        model.ARp=2 means just the lag 2 component;</p> <p>
+                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p><p>
+                        model.ARp=0 (default) means no autoregressive component.</p></p></td></tr><tr valign="top"><td><code>ARb</code></td><td><p><p>vector of doubles containing the beta
+                       coefficients for the autoregressive component. For
+                       example model.ARb = [0.5 -0.2] in combination with
+                       model.ARp=[1 2] and ARIMAX=ture generates an AR(2)
+                       time series of the kind: $y_t = 0.5 y_{t-1} - 0.2
+                       y_{t-2}$ + seasonal + lshift + $\epsilon_t$.</p> <p>
+                       model.ARb must have the same number of elements of
+                       model.ARp. If this field is an empty double
+                       (default) the simulated time series will not have
+                       an autoregressive component.</p></p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>scalar greater than 0 which specifies the
                        position where to include a level shift component.</p> <p>
                        If this field is an empty double (default) the
                        simulated time series will not contain a level shift.</p></p></td></tr><tr valign="top"><td><code>lshiftb</code></td><td><p><p>scalar double which specifies the magnitude
@@ -248,13 +267,26 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                         $ [zeros(25,1) + 3*ones(T-25+1,1)] $.</p><p>
                        If this field is an empty double (default) the
                        simulated time series will not contain a level
-                       shift.</p></p></td></tr><tr valign="top"><td><code>signal2noiseratio</code></td><td><p><p>scalar wich defines the ratio
+                       shift.</p></p></td></tr><tr valign="top"><td><code>nsim</code></td><td><p>scalar wich defines the number of time series
+                       to simulate. If this field is empty or not present,
+                       the default value of 1 is used.</p></td></tr><tr valign="top"><td><code>residuals</code></td><td><p>T x nsim matrix of doubles of length T 
+                       containing the values of the residuals to use in the 
+                       simulation. Default value is [].</p></td></tr><tr valign="top"><td><code>sigmaeps</code></td><td><p>scalar wich defines the standard error of
+                       the residuals. If model.residuals is not empty, the
+                       value of model.sigmaeps will be ignored. Default
+                       value is [].</p></td></tr><tr valign="top"><td><code>signal2noiseratio</code></td><td><p><p>scalar wich defines the ratio
                        between the variance of the systematic part of the
                        model (signal) and the variance of the noise
                        (irregular model). The greater is this value, the
                        smaller is the effect of the irregular component.</p> <p>
-                       If this field is empty or not present the default
-                       value of 1 is used.</p> <p>
+                       If one between model.residuals and model.sigmaeps
+                       is not empty, the value of model.signal2noiseratio 
+                       will be ignored. If both model.residuals and 
+                       model.sigmaeps are empty and model.ARIMAX is true,
+                       then an algorithm will search the best value of the
+                       standard error of the residuals that guarantees the
+                       desired model.signal2noiseratio. If this field is 
+                       empty or not present the default value of 1 is used.</p> <p>
                                 Remark: the default model is for monthly data with a linear
                trend with slope 1 and intercept 0, no seasonal, no
                level shift and a signal to noise ratio equal to 1, that is
@@ -267,7 +299,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                                model.signal2noiseratio=1;</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots == 1 a six panel plot appears on the screen.</p> <p>
                Top left panel contains the simulated time series y.</p> <p>
-               y=TR+SE+X+LS+I.</p> <p>
+               y=TR+SE+X+LS+I of the first simulated time series.</p> <p>
                Top central panel contains the signal component (that is
                trend + seasonal + explanatory variables + level shift = TR
                + SE + LS + X).</p> <p>
@@ -278,7 +310,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                (LS).</p> <p>
                Bottom right panel contains the explanatory variable component
                (X) if it is present, otherwise, it contains the irregular
-               (I) component.</p> <p>
+               (I) component of the first simulation.</p> <p>
                The default value of plot is 0, that is no plot is shown on
                the screen.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
@@ -307,7 +339,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
 
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>y</code></td><td><p><p>the simulated time series.</p> <p>
-                   Column vector of length T, which is sum of trend +
+                   Matrix of dimension T x nsim, which is sum of trend +
                    (time varying) seasonal + explanatory variables + level
                    shift + irregular = TR+SE+X+LS+I.</p></p></td></tr><tr valign="top"><td><code>signal</code></td><td><p><p>signal (TR+SE+X+LS).</p> <p>
                    Column vector of length T, which is sum of trend +
@@ -324,7 +356,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                    Column vector of length T which contains the level
                    shift component.</p><p>
                    If there is no level shift component out.lshift=0.</p></p></td></tr><tr valign="top"><td><code>irregular</code></td><td><p><p>irregular component (I).</p> <p>
-                   Column vector of length T which contains the irregular
+                   Matrix of dimension T x nsim which contains the irregular
                    component.</p><p>
                    When the signal to noise ratio tends to infinity the
                    irregular component tends to 0.</p></p></td></tr><tr valign="top"><td><code>model</code></td><td><p>structure. The model used to simulate the time
