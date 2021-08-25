@@ -484,7 +484,9 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.seasonal=102;
     model.seasonalb=100*[2 4 0.1 8 0.001];
     model.signal2noiseratio=10;
+    model.ARp=[1 2];
     model.ARb=[0.2 0.7];
+    model.ARIMAX=true;
     T=100;
     out=simulateTS(T,'model',model,'plots',1);
     % Fit a model imposing linear trend, sesonal component and AR(2)
@@ -517,7 +519,9 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.seasonal=2;
     model.seasonalb=0.1*[2 4 0.1 2];
     model.signal2noiseratio=10;
+    model.ARp=[1 2];
     model.ARb=[0.2 0.3];
+    model.ARIMAX=true;
     T=150;
     out=simulateTS(T,'model',model,'plots',1);
     yall=out.y;
@@ -677,15 +681,16 @@ X = model.X;
 
 % Order of the autoregressive component
 ARp = model.ARp;
-if ARp>6
+if length(ARp)>6
     disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
-    ARp=6;
+    ARp=ARp(1:6);
 end
-if ARp>0
+if length(ARp)>1 || ARp>0
     % Ylagged = matrix which contains lagged values of Y
-    Ylagged=zeros(T,ARp);
-    for j=1:ARp
-        Ylagged(1:n,j)=[y(1:j); y(1:end-j)];
+    Ylagged=zeros(T,length(ARp));
+    for j=1:length(ARp)
+        lagj=ARp(j);
+        Ylagged(1:n,j)=[y(1:lagj); y(1:end-lagj)];
     end
     X=[Ylagged X];
 end
@@ -737,7 +742,7 @@ end
 
 
 % Autoregressive recursion
-if ARp>0
+if length(ARp)>1 || ARp>0
     % Find final fitted values
     % yFore contains in the first n positions the real values of the time
     % series and in the n+fore positions the preliminary forecasts based
@@ -749,13 +754,14 @@ if ARp>0
     yhatfinal=yhat;
     
     % Extract vector of ARp coefficients
-    bARp=betaout(ntrend+nseaso+1:ntrend+nseaso+ARp);
+    bARp=betaout(ntrend+nseaso+1:ntrend+nseaso+length(ARp));
     % For the forecast use previous estimated values if the autoregressive
     % cofficients multiply y_{n+1}, y_{n+2} ... of real values of the time
     % series if the autoregressive cofficients multiply y_{n}, y_{n-1} ..
     for i=1:nfore
-        for j=1:ARp
-            yhatfinal(n+i)=yhatfinal(n+i) +bARp(j)*yFore(n+i-j);
+        for j=1:length(ARp)
+            lagj=ARp(j);
+            yhatfinal(n+i)=yhatfinal(n+i) +bARp(j)*yFore(n+i-lagj);
         end
         yFore(n+i)=yhatfinal(n+i);
     end
@@ -771,9 +777,9 @@ if varampl==0
     J=[Xtrend Xseaso X Xlshift];
 else
     fdiffstep=[];
-    % If there is the autoregressive component the Jaobian is based on the
+    % If there is the autoregressive component the Jacobian is based on the
     % initial signal before the autoregressive recursion
-    if ARp>0
+    if length(ARp)>1 || ARp>0
         J = getjacobianFS(betaout,fdiffstep,@lik,yhatini);
     else
         J = getjacobianFS(betaout,fdiffstep,@lik,yfitFS);
