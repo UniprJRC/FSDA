@@ -365,13 +365,13 @@ Dr=out.Dr;
 Dc=out.Dc;
 n=out.n;
 
+FontName='Times';
+FontSizeAxisLabels=12;
 
 d1  = options.d1;
 d2  = options.d2;
 
 dim=[d1 d2];
-
-
 
 RowsSta=out.RowsSta;
 RowsPri=out.RowsPri;
@@ -581,11 +581,11 @@ if isstruct(plots)
         end
         
     else
-        typeR='RowsSta';        % rows are in standard coordinates
-        typeC='ColsSta';        % columns are in standard coordinates
-        titl={'Moonplot starting from rows and cols in standard coordinates'};
-        typeRSup='RowsStaSup';
-        typeCSup='ColsStaSup';
+        typeR='RowsPri';        % rows are in principal coordinates
+        typeC='ColsPri';        % columns are in principal coordinates
+        titl={'Moonplot starting from rows and cols in principal coordinates'};
+        typeRSup='RowsPriSup';
+        typeCSup='ColsPriSup';
     end
     
     
@@ -660,13 +660,6 @@ else
     titl={'Moonplot starting from rows and cols in principal coordinates'};
     
     
-    %     typeR='RowsPri';        % rows are in principal coordinates
-    %     typeC='ColsPri';        % columns are in principal coordinates
-    %     titl={'French symmetrical model: rows and cols in principal coordinates.'...
-    %         'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
-    %     typeRSup='RowsPriSup';
-    %     typeCSup='ColsPriSup';
-    
     FontSize=FontSizedef;
     FontSizeSup=FontSize;
     MarkerSize=MarkerSizedef;
@@ -689,12 +682,17 @@ end
 Carows= eval(typeR);
 Cacols= eval(typeC);
 
-% Carows=out.RowsSta;
-% Cacols=out.ColsSta;
+if isempty(h)
 
 % Create the figure that will host the moonplot
-hfig = figure('Name', 'Correspondence analysis plot', 'NumberTitle', 'off',...
+hfig = figure('Name', 'moonplot', 'NumberTitle', 'off',...
     'Tag','pl_CorAna','Position', [100 100 600 600]);
+else
+   % Note that if the figure has to be sent to h axes it is convenient to
+    % set the figure in the current axes with Visible off
+    hfig = figure('Name', 'moonplot', 'NumberTitle', 'off',...
+        'Tag','pl_CorAna','Visible','off','Position', [100 100 600 600]);   
+end
 
 % Get figure's axis
 afig = axes('Parent',hfig);
@@ -764,20 +762,23 @@ if ~isempty(LcSup)
     
     dsSup=sqrt(sum(CacolsSup(:,dim).^2,2));
     Fsize01Sup=dsSup/max(ds);
-    % FontSize in the interval [7 18]
+    % FontSizeSup not necessarily in the interval [7 18]
     FsizeSup=7+Fsize01Sup*11;
-    % The sum of squares of the rows of matrix CacolsST is 1
-    CacolsSupST=CacolsSup(:,dim)./ds;
+    % The sum of squares of the rows of matrix CacolsSupST is 1
+    CacolsSupST=CacolsSup(:,dim)./dsSup;
     
     rotatSup=atan2d(CacolsSup(:,dim(2)),CacolsSup(:,dim(1)));
     
     for i=1:length(LcSup)
         if  rotatSup(i)>-90 && rotatSup(i)<90
-            t=text(CacolsSupSupST(i,1),CacolsSupST(i,2),LcSup(i),'FontSize',FsizeSup(i),'HorizontalAlignment','left','Color',ColorColsSup);
-            t.Rotation=rotat(i);
+            t=text(CacolsSupST(i,1),CacolsSupST(i,2),LcSup(i),'FontSize',FsizeSup(i),...
+                'HorizontalAlignment','left','Color',ColorColsSup,...
+                'FontWeight','bold','FontAngle','italic','FontSmoothing',0,'BackgroundColor','g');
+            t.Rotation=rotatSup(i);
         else
-            t=text(CacolsSupST(i,1),CacolsSupST(i,2),LcSup(i),'FontSize',FsizeSup(i),'HorizontalAlignment','right','Color',ColorColsSup);
-            t.Rotation=rotat(i)-180;
+            t=text(CacolsSupST(i,1),CacolsSupST(i,2),LcSup(i),'FontSize',FsizeSup(i),...
+                'HorizontalAlignment','right','Color',ColorColsSup,'FontWeight','bold','FontAngle','italic','FontSmoothing',0);
+            t.Rotation=rotatSup(i)-180;
         end
     end
 end
@@ -792,6 +793,11 @@ if ~isempty(ylimy)
     ylim(ylimy);
 end
 
+daspect([1,1,1])
+
+% Labels for axes
+xlab=['Dimension ',sprintf('%2.0f',d1),' (',sprintf('%5.1f',InertiaExplained(d1,3)*100),'%)'];
+ylab=['Dimension ',sprintf('%2.0f',d2),' (',sprintf('%5.1f',InertiaExplained(d2,3)*100),'%)'];
 
 if ~isempty(h)
     % Eventually send the moonplot into a different figure/subplot
@@ -799,30 +805,40 @@ if ~isempty(h)
     
     set(hfigh,'Name','Moonplot','NumberTitle','off');
     set(h,'Tag','pl_subplot');
+    
+        xlabel(h,xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+    ylabel(h,ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+    title(h,titl,'Interpreter','Latex');
+
     copyobj(allchild(afig),h);
     pause(0.0000001);
-    delete(hfig);
     
-end
+    vv=axis(h);
+line(h,[vv(1);vv(2)],[0;0],'LineStyle','--')
+line(h,[0;0],[vv(3);vv(4)],'LineStyle','--')
 
+% Add cross in the origin of the axes
+text(h,0,0,'+','FontSize',20,'HorizontalAlignment','center')
 
-
-title(titl,'Interpreter','Latex');
-
-
-% Labels for axes
-% xlab=['Dimension ',sprintf('%2.0f',d1),' (',sprintf('%5.1f',InertiaExplained(d1,3)*100),'%)'];
-% xlabel(xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
-% ylab=['Dimension ',sprintf('%2.0f',d2),' (',sprintf('%5.1f',InertiaExplained(d2,3)*100),'%)'];
-% ylabel(ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
-% % Make axes equal and add cartesian axes
-% axis(gca,'equal')
+    delete(hfig);
+else
+      xlabel(xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+    ylabel(ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+    % Make axes equal and add cartesian axes
+    axis(gca,'equal')
+    vv=axis;
+    line([vv(1);vv(2)],[0;0])
+    line([0;0],[vv(3);vv(4)])
+    title(titl,'Interpreter','Latex');  
 vv=axis;
 line([vv(1);vv(2)],[0;0],'LineStyle','--')
 line([0;0],[vv(3);vv(4)],'LineStyle','--')
 
 % Add cross in the origin of the axes
 text(0,0,'+','FontSize',20,'HorizontalAlignment','center')
+end
+
+
 
 end
 %FScategory:VIS-Mult
