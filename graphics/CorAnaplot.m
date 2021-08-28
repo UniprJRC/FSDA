@@ -119,6 +119,8 @@ function CorAnaplot(out,varargin)
 %                   does not provide a feasible solution in the sense that
 %                   it does not approximate matrix
 %                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$.
+%               If $plots.alpha='bothstandard'$, both the rows and columns
+%                   are depicted in standard coordinates.
 %               If $plots.alpha='rowgab'$, rows are in principal coordinates
 %                   and columns are in standard coordinates multiplied by
 %                   the mass. This biplot has been suggested by Gabriel and
@@ -973,6 +975,13 @@ if isstruct(plots)
             typeRSup='RowsPriSup';
             typeCSup='ColsPriSup';
             
+         elseif strcmp(plots.alpha,'bothstandard')
+            typeR='RowsSta';        % rows are in standard coordinates
+            typeC='ColsSta';        % columns are in standard coordinates
+            titl={'Rows standard coordinates, and columns standard coordinates' , ...
+                '$\alpha=0$, $X=D_r^{-1/2}U $ and $G= D_c^{-1/2} V$'};
+            typeRSup='RowsStaSup';
+            typeCSup='ColsStaSup';
             
         elseif strcmp(plots.alpha,'rowgab')
             %  If plots.alpha='rowgab'  rows are in principal coordinates
@@ -1059,7 +1068,7 @@ if isstruct(plots)
                     error('FSDA:CorAnaplot:WrongInputOpt','Value of plots.alpha must lie in the interval [0 1]')
                 end
             else
-                listStrings={'rowprincipal'; 'colprincipal'; 'symbiplot'; 'bothprincipal'; 'rowgab'; 'colgab'; 'rowgreen'; 'colgreen'};
+                listStrings={'rowprincipal'; 'colprincipal'; 'symbiplot'; 'bothstandard'; 'bothprincipal'; 'rowgab'; 'colgab'; 'rowgreen'; 'colgreen'};
                 warning('FSDA:CorAnaplot:WrongInputOpt',['Input string ''' plots.alpha ''' is  not found'])
                 disp('Possible strings are')
                 disp(listStrings)
