@@ -157,6 +157,25 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 %}
 
 
+%{
+    % An exmple with the same number of units in each row and in each column.
+    n=10000;
+    % Contingency table with nrow rows and ncol columns
+    nrow=40;
+    ncol=5;
+    % n/nrow units in each row
+    nrowt=(n/nrow)*ones(nrow,1);
+    % n/ncol units in each column
+    ncolt=(n/ncol)*ones(ncol,1);
+    % Generate the contingency table
+    out=rcontFS(nrow,ncol,nrowt,ncolt);
+    % testing row and column marginals
+    assert(isequal(nrowt, sum(out.m144,2)))
+    assert(isequal(ncolt, sum(out.m144,1)'))
+    assert(isequal(nrowt, sum(out.m159,2)))
+    assert(isequal(ncolt, sum(out.m159,1)'))
+%}    
+
 %% Beginning of code
 
 algorithm='all';
