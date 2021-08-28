@@ -100,7 +100,7 @@ function CorAnaplot(out,varargin)
 %                   chi-squared distances (column-metric-preserving). The
 %                   position of the column points are at the weighted
 %                   average of the row points.
-%                   Note that 'colwprincipal' can also be
+%                   Note that 'colprincipal' can also be
 %                   specified setting plots.alpha=0.
 %               If $plots.alpha='symbiplot'$, the row and column coordinates
 %                   are scaled similarly. The sum of weighted squared
