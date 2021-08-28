@@ -1200,9 +1200,15 @@ Carows= eval(typeR);
 Cacols= eval(typeC);
 
 % Create the figure that will host the CorAnaplot
-hfig = figure('Name', 'Correspondence analysis plot', 'NumberTitle', 'off',...
-    'Tag','pl_CorAna');
-
+if isempty(h)
+    hfig = figure('Name', 'Correspondence analysis plot', 'NumberTitle', 'off',...
+        'Tag','pl_CorAna');
+else
+    % Note that if the figure has to be sent to h axes it is convenient to
+    % set the figure in the current axes with Visible off
+    hfig = figure('Name', 'Correspondence analysis plot', 'NumberTitle', 'off',...
+        'Tag','pl_CorAna','Visible','off');
+end
 % Get figure's axis
 afig = axes('Parent',hfig);
 
@@ -1479,8 +1485,8 @@ if isstruct(confellipse) || confellipse ==1
             for j=selCols
                 se=j:J:(J*(nsimul-1)+j);
                 EcoCols=Cacolsext(se,dim);
-                me=nanmean(EcoCols);
-                co=nancov(EcoCols);
+                me=mean(EcoCols,1,'omitnan');
+                co=cov(EcoCols,'partialrows');
                 [~,hColsMultinomial]=ellipse(me,co,conflev,[255 0 0]/255,AxesEllipse);
             end
             legall{1,2}=hColsMultinomial;
@@ -1491,8 +1497,9 @@ if isstruct(confellipse) || confellipse ==1
             for i=selRows
                 se=i:I:(I*(nsimul-1)+i);
                 EcoRows=Carowsext(se,dim);
-                me=nanmean(EcoRows);
-                co=nancov(EcoRows);
+                me=mean(EcoRows,1,'omitnan');
+                co=cov(EcoRows,'partialrows');
+                
                 [~,hRowsMultinomial]=ellipse(me,co,conflev,[0 0 255]/255,AxesEllipse);
             end
             legall{1,1}=hRowsMultinomial;
@@ -1534,20 +1541,21 @@ if isstruct(confellipse) || confellipse ==1
         Carowsext= eval(['outext.' typeR 'Sup']);
         Cacolsext= eval(['outext.'  typeC 'Sup']);
         
-          for i=1:length(changedimsign)
+        for i=1:length(changedimsign)
             if changedimsign(i) == true
                 Carowsext(:,dim(i))=-Carowsext(:,dim(i));
                 Cacolsext(:,dim(i))=-Cacolsext(:,dim(i));
             end
-          end
+        end
         
         hold('on')
         if ~isempty(selCols)
             for j=selCols
                 se=j:J:(J*(nsimul-1)+j);
                 EcoCols=Cacolsext(se,dim);
-                me=nanmean(EcoCols);
-                co=nancov(EcoCols);
+                me=mean(EcoCols,1,'omitnan');
+                co=cov(EcoCols,'partialrows');
+                
                 [~,hColsBootRows]=ellipse(me,co,conflev,[255 otherC 0]/255,AxesEllipse);
             end
             legall{2,2}=hColsBootRows;
@@ -1558,8 +1566,9 @@ if isstruct(confellipse) || confellipse ==1
             for i=selRows
                 se=i:I:(I*(nsimul-1)+i);
                 EcoRows=Carowsext(se,dim);
-                me=nanmean(EcoRows);
-                co=nancov(EcoRows);
+                me=mean(EcoRows,1,'omitnan');
+                co=cov(EcoRows,'partialrows');
+                
                 [~,hRowsBootRows]=ellipse(me,co,conflev,[0 otherR 255]/255,AxesEllipse);
             end
             legall{2,1}=hRowsBootRows;
@@ -1627,8 +1636,9 @@ if isstruct(confellipse) || confellipse ==1
             for j=selCols
                 se=j:J:(J*(nsimul-1)+j);
                 EcoCols=Cacolsext(se,dim);
-                me=nanmean(EcoCols);
-                co=nancov(EcoCols);
+                me=mean(EcoCols,1,'omitnan');
+                co=cov(EcoCols,'partialrows');
+                
                 [~,hColsBootCols]=ellipse(me,co,conflev,[255 2*otherC 0]/255,AxesEllipse);
             end
             legall{3,2}=hColsBootCols;
@@ -1639,8 +1649,9 @@ if isstruct(confellipse) || confellipse ==1
             for i=selRows
                 se=i:I:(I*(nsimul-1)+i);
                 EcoRows=Carowsext(se,dim);
-                me=nanmean(EcoRows);
-                co=nancov(EcoRows);
+                me=mean(EcoRows,1,'omitnan');
+                co=cov(EcoRows,'partialrows');
+                
                 [~,hRowsBootCols]=ellipse(me,co,conflev,[0 2*otherR 255]/255,AxesEllipse);
             end
             legall{3,1}=hRowsBootCols;
@@ -1689,30 +1700,47 @@ if isstruct(confellipse) || confellipse ==1
 end
 
 
+
+% Labels for axes
+xlab=['Dimension ',sprintf('%2.0f',d1),' (',sprintf('%5.1f',InertiaExplained(d1,3)*100),'%)'];
+ylab=['Dimension ',sprintf('%2.0f',d2),' (',sprintf('%5.1f',InertiaExplained(d2,3)*100),'%)'];
+
+
+
 if ~isempty(h)
     % Eventually send the CorAnaxplot into a different figure/subplot
     hfigh = get(h,'Parent');
     
-    set(hfigh,'Name','Correspondene analysis plot','NumberTitle','off');
+    set(hfigh,'Name','Correspondence analysis plot','NumberTitle','off');
     set(h,'Tag','pl_subplot');
-    copyobj(allchild(afig),h);
-    pause(0.0000001);
-    delete(hfig);
     
+    
+    xlabel(h,xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+    ylabel(h,ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+    title(h,titl,'Interpreter','Latex');
+    
+    copyobj(allchild(afig),h);
+    pause(0.000001);
+    
+    % Make axes equal and add cartesian axes
+    
+    axis(h,'equal')
+    vv=axis(h);
+    line(h,[vv(1);vv(2)],[0;0])
+    line(h,[0;0],[vv(3);vv(4)])
+    delete(hfig);
+else
+    xlabel(xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+    ylabel(ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+    % Make axes equal and add cartesian axes
+    axis(gca,'equal')
+    vv=axis;
+    line([vv(1);vv(2)],[0;0])
+    line([0;0],[vv(3);vv(4)])
+    title(titl,'Interpreter','Latex');
 end
 
-title(titl,'Interpreter','Latex');
 
-% Labels for axes
-xlab=['Dimension ',sprintf('%2.0f',d1),' (',sprintf('%5.1f',InertiaExplained(d1,3)*100),'%)'];
-xlabel(xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
-ylab=['Dimension ',sprintf('%2.0f',d2),' (',sprintf('%5.1f',InertiaExplained(d2,3)*100),'%)'];
-ylabel(ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
-% Make axes equal and add cartesian axes
-axis(gca,'equal')
-vv=axis;
-line([vv(1);vv(2)],[0;0])
-line([0;0],[vv(3);vv(4)])
 
 end
 %FScategory:VIS-Mult
