@@ -95,4 +95,4 @@ end
 % end
 
 cd(CurrentFolder)
-clearvars
+%clearvars
