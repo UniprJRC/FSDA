@@ -221,6 +221,16 @@ pointersHTMLroot=[FSDAroot filesep 'helpfiles'  filesep 'pointersHTML'];
 % Create searchable database
 builddocsearchdb(pointersHTMLroot)
 
+
+%% Step 7 Create zip file containing images of HTML files
+% zip all images files from (FSDAroot)/helpfiles/FSDA/images/
+% into (FSDAroot)/helpfiles/FSDA/FSDAweb/images.zip
+% This file will have to be sent to rosa web site
+zipfilename=[FSDAroot fsep 'helpfiles' filesep 'FSDAweb' filesep 'images.zip'];
+filenames=[FSDAroot fsep 'helpfiles' filesep 'FSDA' filesep 'images' filesep];
+zip(zipfilename,filenames);
+
+
 %% DOCUMENTATION FOR THE WEB SITE http://rosa.unipr.it
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
