@@ -21,7 +21,7 @@ function [h,Ntable] = balloonplot(N,varargin)
 %  Optional input arguments:
 %
 %      ax     :  displays the bubble chart in the target axes ax.
-%                Axes object. 
+%                Axes object.
 %                If you do not specify the axes, MATLAB plots into the
 %                current axes, or it creates an Axes object if one does
 %                not exist.
@@ -57,7 +57,7 @@ function [h,Ntable] = balloonplot(N,varargin)
 %
 %
 %  Output:
-%   
+%
 %      h :    returns the BubbleChart object. Use h to modify properties of
 %             the chart after creating it. For a list of properties, see
 %             BubbleChart Properties.
@@ -109,7 +109,7 @@ function [h,Ntable] = balloonplot(N,varargin)
 %}
 
 %{
-    % balloonplot with array input. 
+    % balloonplot with array input.
     % Load the Housetasks data (a contingency table containing the
     % frequency of execution of 13 house tasks in the couple).
     N=[156	14	2	4;
@@ -175,9 +175,9 @@ if datamatrix == true
     Lr=labelsTab(1:I,1);
     % default labels for columns of contingency table
     Lc=labelsTab(1:J,2);
-        % Make valid names
-        Lr=matlab.lang.makeValidName(Lr);
-        Lc=matlab.lang.makeValidName(Lc);
+    % Make valid names
+    Lr=matlab.lang.makeValidName(Lr);
+    Lc=matlab.lang.makeValidName(Lc);
 else
     [I,J]=size(N);
     % Size of N
@@ -211,8 +211,8 @@ if ~isempty(UserOptions)
     Lr  = options.Lr;
     Lc  = options.Lc;
     ax=options.ax;
-        Lr=matlab.lang.makeValidName(Lr);
-        Lc=matlab.lang.makeValidName(Lc);
+    Lr=matlab.lang.makeValidName(Lr);
+    Lc=matlab.lang.makeValidName(Lc);
     
 end
 
@@ -228,7 +228,7 @@ else
     else
         % Check that the length of Lr is equal to I
         if length(Lr)~=I
-            error('FSDA:CorAna:WrongInputOpt','Wrong length of row labels');
+            error('FSDA:balloonplot:WrongInputOpt','Wrong length of row labels');
         end
     end
     
@@ -237,10 +237,10 @@ else
     else
         % Check that the length of Lc is equal to J
         if length(Lc)~=J
-            error('FSDA:CorAna:WrongInputOpt','Wrong length of column labels');
+            error('FSDA:balloonplot:WrongInputOpt','Wrong length of column labels');
         end
     end
-        Ntable=array2table(N,'RowNames',Lr,'VariableNames',Lc);
+    Ntable=array2table(N,'RowNames',Lr,'VariableNames',Lc);
 end
 
 
@@ -256,7 +256,16 @@ else
     h=bubblechart(ax,xcoo,ycoo,Nvector,Nvector);
 end
 axes1=gca;
-set(axes1,'XTick',1:J,'XTickLabel',Lc,'TickLabelInterpreter','none');
+jall=1:J;
+% If there are more than 70 columns just show a sistematic sample of
+% (approximately) 70 of them
+if J<=70
+    set(axes1,'XTick',jall,'XTickLabel',Lc,'TickLabelInterpreter','none');
+else
+    step=ceil(J/70);
+    sel=1:step:J;
+    set(axes1,'XTick',jall(sel),'XTickLabel',Lc(sel),'TickLabelInterpreter','none');
+end
 set(axes1,'YTick',1:I,'YTickLabel',flip(Lr),'TickLabelInterpreter','none');
 bubblesize([3 20])
 colorbar(axes1)
