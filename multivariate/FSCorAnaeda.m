@@ -11,11 +11,18 @@ function out = FSCorAnaeda(N,varargin)
 %               structure it contains the following fields:
 %               N.N = contingency table in array format of size I-by-J.
 %               N.loc = initial location estimate for the matrix of Profile
-%               rows of the contingency table (row vector or length J).
+%                   rows of the contingency table (row vector or length J).
+%               N.weights= I x 1 vector containing the proportion of the
+%                    mass of each rows of matrix N in the computation of
+%                    the MCD estimate of location. If N.weigths(2)=0.1 it
+%                    means that row 2 of the contingency table contributed
+%                    with 10 per cent of its mass. The initial subset is
+%                    based on N.weights.
 %               Note that input structure N can be conveniently created by
 %               function mcdCorAna.
-%               If N is not a struct it is possible to specify the unitf
-%               forming initial subset with input option bsb.
+%               If N is not a struct it is possible to specify the rows
+%               of the contingency table forming initial subset with input
+%               option bsb.
 %                Data Types - single|double
 %
 % Optional input arguments:
@@ -25,7 +32,7 @@ function out = FSCorAnaeda(N,varargin)
 %              be used to initialize the forward search. If bsb is empty
 %              and required input argument is a struct N.loc will be used.
 %              If bsb is supplied and N is a struct N.loc is ignored.
-%              The default value of bsb is empty, and if N is struct
+%              The default value of bsb is empty, and if N is not a struct
 %              a random subset containing round(n/5) units will be used.
 %                 Example - 'bsb',[3 6 8 10 12 14]
 %                 Data Types - double
@@ -70,6 +77,11 @@ function out = FSCorAnaeda(N,varargin)
 %               ...;
 %               last column = units forming subset in the final step (all
 %               units).
+%               Note that the numbers inside out.BB vary in the interval [0
+%               1] and represent the proportions in which each unit is
+%               represented in the subset. 0.1 means that the associated
+%               row is represented in the subset with 10 per cent of its
+%               mass.
 %   out.mmd=    n-init-by-2 matrix which contains the monitoring of minimum
 %               MD or (m+1)th ordered MD  at each step of
 %               the forward search.
@@ -162,10 +174,25 @@ function out = FSCorAnaeda(N,varargin)
 
 % Input parameters checking
 %chkinputM does not do any check if option nocheck=1
+% Initialization of bsb as an empty vector.
+bsb=[];
 
 if isstruct(N)
     loc=N.loc;
+ 
+    % Find the contingency table associated to N.loc
+    % weights is the vector which tells us how each row of the contingency
+    % table is represented inside subset.
+    weights=N.weights;
     N=N.N;
+    % Note that some rows of Niter are equal to 0 and must be deleted.
+    Niter=N.*weights;
+    seqI=1:size(N,1);
+    % bsb contains the rows of N which had weights strictly greater than 0
+    bsbini=seqI(weights>0);
+    
+    rowstodel=sum(Niter,2)==0;
+    Niter(rowstodel,:)=[];
     Nisstruct=true;
 else
     Nisstruct=false;
@@ -197,11 +224,10 @@ ProfileRows=P./r;
 
 init1=floor(n*0.6);
 plots=0;
-bsb=[];
 
 if nargin > 1
     
-    options=struct('init',init1,'plots',plots,'msg',1,'bsb',bsb);
+    options=struct('init',init1,'plots',plots,'msg',1,'bsb',[]);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -231,6 +257,7 @@ if isempty(bsb)
         % In this case initial estimate of location is supplied in input structure RAW.loc;
         % Find vector of means inside subset
         ym=loc;
+        bsb=bsbini;
     else
         % A random subset of ini0 units will be extracted.
         indsamp=randsample(I,I);
@@ -253,6 +280,7 @@ if isempty(bsb)
 else
     % Elements of N(bsb,:) are used to find initial estimate of location
     Nini=N(bsb,:);
+    Niter=N(bsb,:);
     % ini0 is the sum of elements in the contingency table Nini
     ini0=sum(Nini,'all');
     ym=sum(Nini,1)/ini0;
@@ -314,7 +342,11 @@ for mm = ini0:n
     
     if mm>=init1
         
-        BB(bsb,mm-init1+1)=bsb;
+        % Find the proportion of units belonging to each row in the subset
+        bsbProp=sum(Niter,2)./sum(N(bsb,:),2);
+        
+        % BB(bsb,mm-init1+1)=bsb;
+        BB(bsb,mm-init1+1)=bsbProp;
         
         % Store the means
         Loc(mm-init1+1,2:end)=ym;
