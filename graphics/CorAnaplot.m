@@ -120,7 +120,9 @@ function CorAnaplot(out,varargin)
 %                   it does not approximate matrix
 %                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$.
 %               If $plots.alpha='bothstandard'$, both the rows and columns
-%                   are depicted in standard coordinates.
+%                   are depicted in standard coordinates. The standard
+%                   coordinates are the principal coordinates divided by
+%                   the corresponding singular values.
 %               If $plots.alpha='rowgab'$, rows are in principal coordinates
 %                   and columns are in standard coordinates multiplied by
 %                   the mass. This biplot has been suggested by Gabriel and
