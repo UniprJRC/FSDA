@@ -141,7 +141,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                    an asymptotic consistency factor).
 %           RAW.obj= The determinant of the raw MCD covariance matrix.
 %           RAW.bsb= k x 1 vector containing the rows of matrix N which
-%                    contributed to the computation of the MCS estimate of location
+%                    contributed to the computation of the MCD estimate of location
 %           RAW.md = I x 1 vector containing the estimates of the robust
 %                    Mahalanobis distances (in squared units). This vector
 %                    contains the distances of each observation from the
