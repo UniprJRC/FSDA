@@ -22,7 +22,7 @@ out1=rcontFS(I,J,nrowt,ncolt);
 N=out1.m144;
 RAW=mcdCorAna(N,'plots',0);
 ini=round(sum(sum(RAW.N))/4);
-out=FSCorAnaeda(RAW,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.77 seconds 
+out=FSCorAnaeda(RAW,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.11 seconds 
 Creating empirical confidence band for minimum (weighted) Mahalanobis distance
 </pre><a href='http://rosa.unipr.it/fsda/FSCorAnaeda.html#Example_2'><img vspace="5" hspace="5" src="images\FSCorAnaeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSCorAnaeda starting from a random initial subset.</li></span></a></span></h3><div class="collapse"><p>
      Generate contingency table of size 50-by-5 with total sum of n_ij=2000.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">I=50;
@@ -40,11 +40,18 @@ out=FSCorAnaeda(N,'plots',1);</pre></div></div></p></div></div></div></div
                structure it contains the following fields:</p> <p>
                N.N = contingency table in array format of size I-by-J.</p> <p>
                N.loc = initial location estimate for the matrix of Profile
-               rows of the contingency table (row vector or length J).</p> <p>
+                   rows of the contingency table (row vector or length J).</p> <p>
+               N.weights= I x 1 vector containing the proportion of the
+                    mass of each rows of matrix N in the computation of
+                    the MCD estimate of location. If N.weigths(2)=0.1 it
+                    means that row 2 of the contingency table contributed
+                    with 10 per cent of its mass. The initial subset is
+                    based on N.weights.</p> <p>
                Note that input structure N can be conveniently created by
                function mcdCorAna.</p> <p>
-               If N is not a struct it is possible to specify the unitf
-               forming initial subset with input option bsb.</p><p>
+               If N is not a struct it is possible to specify the rows
+               of the contingency table forming initial subset with input
+               option bsb.</p><p>
                 </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bsb',[3 6 8 10 12 14]
 </code>,<code> 'init',50
 </code>,<code> 'plots',0
@@ -52,7 +59,7 @@ out=FSCorAnaeda(N,'plots',1);</pre></div></div></p></div></div></div></div
 </code></code></span></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;Initial subset.</span></a><span class="example_desc">vector of positive integers containing the              indexes of the rows of the contingency table which have to              be used to initialize the forward search.</span></span></h3><div class="collapse">	<p><p>If bsb is empty
               and required input argument is a struct N.loc will be used.</p> <p>
               If bsb is supplied and N is a struct N.loc is ignored.</p> <p>
-              The default value of bsb is empty, and if N is struct
+              The default value of bsb is empty, and if N is not a struct
               a random subset containing round(n/5) units will be used.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsb',[3 6 8 10 12 14]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Point where to start monitoring required diagnostics.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Note that if init is not
@@ -77,9 +84,14 @@ out=FSCorAnaeda(N,'plots',1);</pre></div></div></p></div></div></div></div
                to the subset at each step of the forward search.</p> <p>
                1st col = indexes of the units forming subset in the
                initial step;</p> <p>
-               ...;</p><p>
+               ...;</p> <p>
                last column = units forming subset in the final step (all
-               units).</p></p></td></tr><tr valign="top"><td><code>mmd</code></td><td><p><p>n-init-by-2 matrix which contains the monitoring of minimum
+               units).</p><p>
+               Note that the numbers inside out.BB vary in the interval [0
+               1] and represent the proportions in which each unit is
+               represented in the subset. 0.1 means that the associated
+               row is represented in the subset with 10 per cent of its
+               mass.</p></p></td></tr><tr valign="top"><td><code>mmd</code></td><td><p><p>n-init-by-2 matrix which contains the monitoring of minimum
                MD or (m+1)th ordered MD  at each step of
                the forward search.</p> <p>
                1st col = fwd search index (from init to n-1);</p><p>
