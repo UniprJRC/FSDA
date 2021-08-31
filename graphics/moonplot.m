@@ -357,6 +357,25 @@ Lc=out.Lc;
 LrSup=out.LrSup;
 LcSup=out.LcSup;
 
+% Find the units which are both active and supplementary
+[bothLrLrSup,ia,indexesLrSupBoth]=intersect(Lr,LrSup);
+if ~isempty(bothLrLrSup)
+    ActiveNboth=out.N(ia,:);
+    SupNboth=out.SupRowsN(indexesLrSupBoth,:);
+    Allboth=ActiveNboth+SupNboth;
+    fracLrSupBoth=SupNboth(:,1)./Allboth(:,1);
+    seqsup=1:length(LrSup);
+    indexesLrSupNew=setdiff(seqsup,indexesLrSupBoth);
+    % The symbols of supplementary units LrSup(ib) must be a fraction equal to
+    % fracSup of the other supplementary units symbols.
+else
+    % All supplementary units are new
+    indexesLrSupNew=1:length(LrSup);
+    fracLrSupBoth=1;
+    % No supplementary unit has already been included in the active rows
+    indexesLrSupBoth=[];
+end
+
 h=options.h;
 
 InertiaExplained=out.InertiaExplained;
@@ -731,9 +750,21 @@ text(CarowsST(:,1)+addx,CarowsST(:,2)+addy,Lr,'Color',ColorRows)
 if ~isempty(LrSup)
     CarowsSup= eval(typeRSup);
     CarowsSupST=CarowsSup/sqrt(corrRows);
-    plot(afig,CarowsSupST(:,d1),CarowsSupST(:,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
+%     plot(afig,CarowsSupST(:,d1),CarowsSupST(:,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
+%         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
+%     text(CarowsSupST(:,d1)+addx , CarowsSupST(:,d2)+addy, LrSup,'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
+
+    plot(afig,CarowsSupST(indexesLrSupNew,d1),CarowsSupST(indexesLrSupNew,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
-    text(CarowsSupST(:,d1)+addx , CarowsSupST(:,d2)+addy, LrSup,'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
+    text(CarowsSupST(indexesLrSupNew,d1)+addx , CarowsSupST(indexesLrSupNew,d2)+addy, LrSup(indexesLrSupNew),'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
+    
+    for ii=1:length(indexesLrSupBoth)
+        plot(afig,CarowsSupST(indexesLrSupBoth(ii),d1),CarowsSupST(indexesLrSupBoth(ii),d2),'LineStyle','none','Marker',SymbolRowsSup ,...
+            'Color', ColorRowsSup , 'LineWidth',1,'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize*fracLrSupBoth(ii))
+        text(CarowsSupST(indexesLrSupBoth(ii),d1)+addx , CarowsSupST(indexesLrSupBoth(ii),d2)+addy, ...
+            LrSup(indexesLrSupBoth(ii)),'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup,...
+            'FontWeight','Bold')
+    end
 end
 
 % Column points (labels around the circle)
