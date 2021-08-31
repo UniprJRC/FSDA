@@ -844,6 +844,25 @@ Lc=out.Lc;
 LrSup=out.LrSup;
 LcSup=out.LcSup;
 
+% Find the units which are both active and supplementary
+[bothLrLrSup,ia,indexesLrSupBoth]=intersect(Lr,LrSup);
+if ~isempty(bothLrLrSup)
+    ActiveNboth=out.N(ia,:);
+    SupNboth=out.SupRowsN(indexesLrSupBoth,:);
+    Allboth=ActiveNboth+SupNboth;
+    fracLrSupBoth=SupNboth(:,1)./Allboth(:,1);
+    seqsup=1:length(LrSup);
+    indexesLrSupNew=setdiff(seqsup,indexesLrSupBoth);
+    % The symbols of supplementary units LrSup(ib) must be a fraction equal to
+    % fracSup of the other supplementary units symbols.
+else
+    % All supplementary units are new
+    indexesLrSupNew=1:length(LrSup);
+    fracLrSupBoth=1;
+    % No supplementary unit has already been included in the active rows
+    indexesLrSupBoth=[];
+end
+
 h=options.h;
 
 InertiaExplained=out.InertiaExplained;
@@ -977,7 +996,7 @@ if isstruct(plots)
             typeRSup='RowsPriSup';
             typeCSup='ColsPriSup';
             
-         elseif strcmp(plots.alpha,'bothstandard')
+        elseif strcmp(plots.alpha,'bothstandard')
             typeR='RowsSta';        % rows are in standard coordinates
             typeC='ColsSta';        % columns are in standard coordinates
             titl={'Rows standard coordinates, and columns standard coordinates' , ...
@@ -1246,9 +1265,25 @@ text(Cacols(:,d1)+addx , Cacols(:,d2)+addy, Lc,'Interpreter','None','FontSize',F
 % Add points and text associated to supplementary rows
 if ~isempty(LrSup)
     CarowsSup= eval(typeRSup);
-    plot(afig,CarowsSup(:,d1),CarowsSup(:,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
+    
+    %         % All supplementary units are new
+    %     indexesLrSupNew=1:length(LrSup);
+    %     fracLrSupBoth=1;
+    %     % No supplementary unit has already been included in the active rows
+    %     indexesLrSupBoth=[];
+    
+    
+    plot(afig,CarowsSup(indexesLrSupNew,d1),CarowsSup(indexesLrSupNew,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
-    text(CarowsSup(:,d1)+addx , CarowsSup(:,d2)+addy, LrSup,'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
+    text(CarowsSup(indexesLrSupNew,d1)+addx , CarowsSup(indexesLrSupNew,d2)+addy, LrSup(indexesLrSupNew),'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
+    
+    for ii=1:length(indexesLrSupBoth)
+        plot(afig,CarowsSup(indexesLrSupBoth(ii),d1),CarowsSup(indexesLrSupBoth(ii),d2),'LineStyle','none','Marker',SymbolRowsSup ,...
+            'Color', ColorRowsSup , 'LineWidth',1,'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize*fracLrSupBoth(ii))
+        text(CarowsSup(indexesLrSupBoth(ii),d1)+addx , CarowsSup(indexesLrSupBoth(ii),d2)+addy, ...
+            LrSup(indexesLrSupBoth(ii)),'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup,...
+            'FontWeight','Bold')
+    end
 end
 
 % Add points and text associated to supplementary columns
