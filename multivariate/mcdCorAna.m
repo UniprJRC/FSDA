@@ -98,6 +98,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %               Cell of length J containing the labels of the columns.
 %                   Example - 'label',{'x1' ...  'x5'}
 %                   Data Types - cell
+%
 %        msg  : Display or not messages on the screen.
 %               Scalar. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final
@@ -149,7 +150,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                    scatter matrix diag(raw MCD location)
 %     RAW.outliers = A vector containing the list of the rows declared as
 %                    outliers using confidence level specified in input
-%                    scalar conflev
+%                    scalar conflev.
 %      RAW.conflev = Confidence level that was used to declare outliers and
 %                    to do reweighting.
 %      RAW.singsub = Number of subsets without full rank. Notice that
@@ -334,7 +335,6 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 
 %{
     %% Raw and reweighted MCD.
-    % mcdCorAna with option findEmpirical.
   N=[134    76    43    50    49
     173    62    20    23    16
     67    76    48    36    23
