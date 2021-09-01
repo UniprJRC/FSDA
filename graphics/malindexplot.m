@@ -15,9 +15,9 @@ function MCDenv=malindexplot(md,v,varargin)
 %        distances have been computed (this field is compulsory is option
 %           databrush is used).
 %        md.class = this field is not compulsory. In the case of
-%        md.class='mcdCorAna' simulated envelopes are used to define the
+%           md.class='mcdCorAna' simulated envelopes are used to define the
 %           empirical quantiles. Note that if the simulated bands have been
-%           precalculated they can be passed through the seconf input
+%           precalculated they can be passed through the second input
 %           argument v.
 %                Data Types - single|double
 %
