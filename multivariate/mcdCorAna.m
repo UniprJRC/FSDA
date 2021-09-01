@@ -89,22 +89,22 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %               Example - 'plots',1
 %               Data Types - double or structure
 %
-%      Lr : row labels. Cell.
+%      Lr : row labels. Cell array.
 %               Cell of length I containing the labels of the rows.
-%                   Example - 'label',{'UK' ...  'IT'}
+%                   Example - 'Lr',{'UK' ...  'IT'}
 %                   Data Types - cell
 %
-%      Lc : column labels. Cell.
+%      Lc : column labels. Cell array.
 %               Cell of length J containing the labels of the columns.
-%                   Example - 'label',{'x1' ...  'x5'}
+%                   Example - 'Lc',{'x1' ...  'x5'}
 %                   Data Types - cell
 %
 %        msg  : Display or not messages on the screen.
-%               Scalar. If msg==1 (default) messages are displayed
+%               Boolean. If msg==true (default) messages are displayed
 %               on the screen about estimated time to compute the final
 %               estimator else no message is displayed on the screen.
-%               Example - 'msg',1
-%               Data Types - double
+%               Example - 'msg',false
+%               Data Types - logical
 %
 %     tolMCD  : Tolerance to declare a subset as singular. Scalar. The
 %               default value of tolMCD is exp(-50*v).
@@ -407,8 +407,7 @@ else
     [I,J]=size(N);
     if istable(N)
         Ntable=N;
-        Lr = Ntable.Properties.RowNames;
-        Lc = Ntable.Properties.VariableNames;
+        Lr=N.Properties.RowNames;
         N=N{:,:};
     else
         % default labels for rows of contingency table
@@ -416,7 +415,6 @@ else
         % default labels for columns of contingency table
         Lc=cellstr(strcat('c',num2str((1:J)')));
         Ntable=array2table(N,'RowNames',Lr,'VariableNames',Lc);
-        
     end
     
 end
@@ -480,7 +478,7 @@ options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'reftol',reftoldef,...
     'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
     'bdp',bdpdef,'plots',0,'conflev',conflev,...
-    'msg',1,'tolMCD',tolMCDdef,'findEmpiricalEnvelope',findEmpiricalEnvelope,'Lr',{Lr},'Lc',{Lc});
+    'msg',true,'tolMCD',tolMCDdef,'findEmpiricalEnvelope',findEmpiricalEnvelope,'Lr','','Lc','');
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
@@ -511,15 +509,22 @@ reftolbestr=options.reftolbestr;      % tolerance for refining steps for the bes
 % thought to be singular
 tolMCD=options.tolMCD;
 
-% If msg =1 the total estimated time to compute MCD is printed on the screen
+% If msg =true the total estimated time to compute MCD is printed on the screen
 msg=options.msg;
 
 % Use or not empirical envelope to detect the outliers.
 findEmpiricalEnvelope=options.findEmpiricalEnvelope;
 
 %Labels of row profiles.
-Lr = options.Lr;
-Lc = options.Lc;
+if ~isempty(options.Lr)
+    Lr = options.Lr;
+    Ntable.Properties.RowNames=Lr;
+end
+
+if ~isempty(options.Lc)
+    Lc = options.Lc;
+    Ntable.Properties.VariableNames=Lc;
+end
 
 % Initialize the matrices which contain the best "bestr" estimates of
 % location, indexes of subsets, cov matrices and objective function
@@ -567,7 +572,7 @@ conflev = options.conflev;
 %% h==n is the case in which there is no trimming (classical case)
 
 if h==n
-    if msg
+    if msg ==true
         disp(['The MCD estimates are equal to the classical estimates h=n=',num2str(h)]);
     end
     %  REW.method=char(REW.method,msgn);
@@ -633,14 +638,7 @@ else
         % - reftol = tolerance for convergence of refining iterations
         % outIRWLS = IRWLSmcd(N,ProfilesRows, rtimesn, locj, Sj, h, refsteps, reftol);
         outIRWLS = IRWLSmcd(N,ProfilesRows, rtimesn, locj, h, refsteps, reftol);
-        
-        % If the value of the objective function is smaller than tolMCD
-        % we have a perfect fit situation, that is there are h observations
-        % that lie on the hyperplane.
-        if outIRWLS.obj < tolMCD
-            return
-        end
-        
+       
         % The output of IRWLSmult is a structure containing centroid, cov
         % matrix and estimate value of the objective function (which has
         % been minimized, that is |cov|
@@ -684,7 +682,7 @@ else
             time(i)=toc;
         elseif i==tsampling+1
             % stop sampling and print the estimated time
-            if msg==1
+            if msg==true
                 fprintf('Total estimated time to complete MCD: %5.2f seconds \n', nselected*median(time));
             end
         end
@@ -695,7 +693,7 @@ else
         error('FSDA:mcdCorAna:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
     end
     
-    if singsub/nselected>0.1
+    if singsub/nselected>0.1 && msg==true
         disp('------------------------------')
         disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nsamp) '%'])
     end
@@ -790,10 +788,10 @@ if findEmpiricalEnvelope == true
         Nsim=out1.m144;
         % Nsim=out1.m159;
         if alsorew==false
-            TMP=mcdCorAna(Nsim,'plots',0,'msg',0,'bdp',h);
+            TMP=mcdCorAna(Nsim,'plots',0,'msg',false,'bdp',h);
             mmdStore(:,j)=TMP.md;
         else
-            [TMP,TMPr]=mcdCorAna(Nsim,'plots',0,'msg',0,'bdp',h);
+            [TMP,TMPr]=mcdCorAna(Nsim,'plots',0,'msg',false,'bdp',h);
             mmdStore(:,j)=TMP.md;
             mmdStoreR(:,j)=TMPr.md;
         end
