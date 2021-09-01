@@ -196,12 +196,16 @@ for i=1:length(seqCAT)
     assert(~isempty(ini),['Category: ' letterINI ' not found'])
     % pick the 2nd instance of the Category anchor because the 1st is in
     % the navigation left panel
-    ini=ini(1);
-    if strcmp(letterINI,'GUI')
+
+
+    if strcmp(letterINI,'MULT-Categorical')
         ini=ini(1);
     else
+        ini=ini(2);
         assert(length(ini)==1,['Category: ' letterINI ' is duplicated'])
     end
+    
+    
     
     fin=regexp(fstring,letterFIN);
     fin=fin(fin>ini);
