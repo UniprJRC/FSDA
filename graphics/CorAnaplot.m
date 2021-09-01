@@ -850,7 +850,9 @@ if ~isempty(bothLrLrSup)
     ActiveNboth=out.N(ia,:);
     SupNboth=out.SupRowsN(indexesLrSupBoth,:);
     Allboth=ActiveNboth+SupNboth;
-    fracLrSupBoth=SupNboth(:,1)./Allboth(:,1);
+    % Take max just in case some elements of AllBoth are equal to 0
+    % fracLrSupBoth=SupNboth(:,1)./Allboth(:,1);
+    fracLrSupBoth=max(SupNboth./Allboth,[],2);
     seqsup=1:length(LrSup);
     indexesLrSupNew=setdiff(seqsup,indexesLrSupBoth);
     % The symbols of supplementary units LrSup(ib) must be a fraction equal to
@@ -1277,12 +1279,16 @@ if ~isempty(LrSup)
         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
     text(CarowsSup(indexesLrSupNew,d1)+addx , CarowsSup(indexesLrSupNew,d2)+addy, LrSup(indexesLrSupNew),'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
     
+    try
     for ii=1:length(indexesLrSupBoth)
         plot(afig,CarowsSup(indexesLrSupBoth(ii),d1),CarowsSup(indexesLrSupBoth(ii),d2),'LineStyle','none','Marker',SymbolRowsSup ,...
             'Color', ColorRowsSup , 'LineWidth',1,'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize*fracLrSupBoth(ii))
         text(CarowsSup(indexesLrSupBoth(ii),d1)+addx , CarowsSup(indexesLrSupBoth(ii),d2)+addy, ...
             LrSup(indexesLrSupBoth(ii)),'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup,...
             'FontWeight','Bold')
+    end
+    catch
+        ddd=1;
     end
 end
 
