@@ -808,7 +808,8 @@ if ~isempty(LcSup)
             t.Rotation=rotatSup(i);
         else
             t=text(CacolsSupST(i,1),CacolsSupST(i,2),LcSup(i),'FontSize',FsizeSup(i),...
-                'HorizontalAlignment','right','Color',ColorColsSup,'FontWeight','bold','FontAngle','italic','FontSmoothing',0);
+                'HorizontalAlignment','right','Color',ColorColsSup,...
+                'FontWeight','bold','FontAngle','italic','FontSmoothing',0,'BackgroundColor','g');
             t.Rotation=rotatSup(i)-180;
         end
     end
