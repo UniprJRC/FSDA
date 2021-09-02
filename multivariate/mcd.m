@@ -564,11 +564,15 @@ if v==1 && h~=n
     % Assign weight=1 to the h units which show the smallest h squared
     % residuals
     residuals2=(Y-RAW.loc).^2;
-    
-    [sor,soridx]=sort(residuals2);
-    
-    weights=zeros(n,1);
-    weights(soridx(1:h))=1;
+
+    %{
+    [sor,soridx]=sort(residuals2);    % deleted
+    weights=zeros(n,1);               % deleted
+    weights(soridx(1:h))=1;           % deleted
+    RAW.weights=weights;              % deleted
+    %}
+    [hos , sor]= quickselectFS(residuals2,h);
+    weights = residuals2<=hos;
     RAW.weights=weights;
     
     RAW.obj=1/(h-1)*sum(sor(1:h))*prod(madY)^2;
@@ -939,10 +943,15 @@ md=mahalFS(Y,superbestloc,cfactor*superbestcov);
 RAW.md = md;
 
 % The first h smallest ordered Mahalanobis distances have weight equal to 1
- [~,soridx]=sort(md);     %deleted these four lines are not necessary
- weights=false(n,1);      %deleted
- weights(soridx(1:h))=true;  %deleted
- RAW.weights=weights;     %deleted
+%{
+[~,soridx]=sort(md);       %deleted
+weights=false(n,1);        %deleted
+weights(soridx(1:h))=true; %deleted
+RAW.weights=weights;       %deleted
+%}
+hos = quickselectFS(md,h);
+weights = md<=hos;
+RAW.weights=weights;
 
 % Specify the distribution to use to compare Mahalanobis distances
 % if betathresh==1 a mixture of scaled beta and F is used
@@ -1144,10 +1153,15 @@ end
         while ( (locdiff > reftol) && (iter < refsteps) )
             iter = iter + 1;
             
+            %{
             [~,sortdist]=sort(mahaldist);
-            
             %obs_in_set = sort(sortdist(1:h)) ;  % sort removed: it is not necessary
             obs_in_set  = sortdist(1:h) ;
+            %}
+            
+            hm = quickselectFS(mahaldist,h);
+            obs_in_set = mahaldist<=hm;
+
             newloc      = mean(Y(obs_in_set,:));
             newcov      = cov(Y(obs_in_set,:));
             obj         = det(newcov);
