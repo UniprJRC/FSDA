@@ -165,11 +165,11 @@ cd(fileparts(which('docsearchFS.m')))
 % Create HTML file containing alphabetical list of functions
 fileAlpha=publishFunctionAlpha(FilesIncluded,'CreateTxtFile',true);
 % open html file in web browser
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-alpha.html'];
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-alpha.html'];
 web(outputOFHtmlHelpFile,'-browser');
 
 fsep=filesep;
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-alpha.txt'];
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-alpha.txt'];
 % open outfile txt in web browser
 disp('Check .txt file')
 web(outputOFHtmlHelpFile,'-browser');
@@ -183,7 +183,7 @@ cd(fileparts(which('docsearchFS.m')))
 % Create HTML file containing categorical list of functions
 fileCate=publishFunctionCate(FilesIncluded);
 % open outfile file in web browser
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-cate.html'];
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-cate.html'];
 web(outputOFHtmlHelpFile,'-browser');
 
 
@@ -201,7 +201,7 @@ cd(fileparts(which('docsearchFS.m')))
 [fileBiblio,Cits]=publishBibliography(FilesIncluded,OUT);
 
 % open outfile file in web browser
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\bibliography.html'];
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'bibliography.html'];
 web(outputOFHtmlHelpFile,'-browser');
 
 %% STEP 6: create HTML pointer files
