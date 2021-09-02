@@ -18,23 +18,94 @@ document.write(headJS);
 
 <div id="doc_header_spacer" class="header">
 </div>
-<!--Include serch engine-->
+<!--Include search engine-->
 <script type="text/javascript">
 document.write(engine);
 </script>
+
+
 <!--Include left bar menu-->
 <div class="row-offcanvas row-offcanvas-left">
-	<script type="text/javascript">
-	document.write(lbarSimple);
-	</script>
-	<script type="text/javascript">
-document.write(fcate);
-</script>
-	<script src="includesFS/offcanvas.js"></script>
-</div>
+   
+    <div id='sidebar' class='sidebar-offcanvas' role='navigation'>
+		<nav class='offcanvas_nav' role='navigation'>
+			
+			<!-- 1st row -->
+
+			<ul class='nav_breadcrumb' xmlns:atict='http://www.arbortext.com/namespace/atict'>
+				<li itemprop='breadcrumb' itemscope='' itemtype='http://www.data-vocabulary.org/Breadcrumb'>
+				<a href='../documentation-center.html' itemprop='url'>
+				<span itemprop='title'>All Products</span></a></li>
+			</ul>
+			
+			<!-- 2nd row -->
+
+			<ul class='nav_disambiguation' xmlns:atict='http://www.arbortext.com/namespace/atict'>
+				<li class='product'><a href='index.html'>Flexible Statistics and 
+				Data Analysis (FSDA)</a>
+				<div class='dropdown'>
+					<span id='dropdownMenu1' class='icon-arrow-down icon_16' data-toggle='dropdown'>
+					</span>
+					<ul aria-labelledby='dropdownMenu1' class='dropdown-menu dropdown-menu-right' role='menu'>
+						<li role='presentation'>
+						<a href='examples.html' role='menuitem' tabindex='-1'>Examples</a></li>
+						<li role='presentation'>
+						<a href='function-alpha.html' role='menuitem' tabindex='-1'>
+						Functions and Other Reference</a></li>
+						<li role='presentation'>
+						<a href='release_notes.html?s_cid=doc_flyout' role='menuitem' tabindex='-1'>
+						Release Notes</a></li>
+						<li role='presentation'>
+						<a href='tutorials.html' role='menuitem' tabindex='-1'>Tutorials</a></li>
+					</ul>
+				</div>
+				</li>
+			</ul>
+
+			<!-- our content - last part -->
+			<ul class='nav_scrollspy nav' xmlns:atict='http://www.arbortext.com/namespace/atict'>
+				<li class='nav_scrollspy_function'><a href='#responsive_offcanvas'>Flexible Statistics and Data Analysis Toolbox</a></li>
+						<li id='SSPY810-article' class='nav_scrollspy_title'>On this page</li>
+						<li><a class='intrnllnk' href='#A'>A</a></li>
+						<li><a class='intrnllnk' href='#B'>B</a></li>
+						<li><a class='intrnllnk' href='#C'>C</a></li>
+						<li><a class='intrnllnk' href='#D'>D</a></li>
+						<li><a class='intrnllnk' href='#E'>E</a></li>
+						<li><a class='intrnllnk' href='#F'>F</a></li>
+						<li><a class='intrnllnk' href='#G'>G</a></li>
+						<li><a class='intrnllnk' href='#H'>H</a></li>
+						<li><a class='intrnllnk' href='#I'>I</a></li>
+						<li><a class='intrnllnk' href='#J'>J</a></li>
+						<li><a class='intrnllnk' href='#K'>K</a></li>
+						<li><a class='intrnllnk' href='#L'>L</a></li>
+						<li><a class='intrnllnk' href='#M'>M</a></li>
+						<li><a class='intrnllnk' href='#N'>N</a></li>
+						<li><a class='intrnllnk' href='#O'>O</a></li>
+						<li><a class='intrnllnk' href='#P'>P</a></li>
+						<li><a class='intrnllnk' href='#Q'>Q</a></li>
+						<li><a class='intrnllnk' href='#R'>R</a></li>
+						<li><a class='intrnllnk' href='#S'>S</a></li>
+						<li><a class='intrnllnk' href='#T'>T</a></li>
+						<li><a class='intrnllnk' href='#U'>U</a></li>
+						<li><a class='intrnllnk' href='#V'>V</a></li>
+						<li><a class='intrnllnk' href='#X'>X</a></li>
+						<li><a class='intrnllnk' href='#Y'>Y</a></li>
+						<li><a class='intrnllnk' href='#Z'>Z</a></li>
+					</ul>
+
+		</nav>
+		<script src='../includes/product/scripts/offcanvas.js'></script>
+    </div>
+
+
+
+<!-- END -->
+
+<!--Include divs before FSDA text - Needed for main page formatting -->
 <script type="text/javascript">
-document.write(divsbefore);
-</script>
+	document.write(divsbefore);
+	</script>
+
 <h1 class="r2016a" itemprop="title content"></h1>
 <div id="stats-examples" class="clearfix">
 </div>
