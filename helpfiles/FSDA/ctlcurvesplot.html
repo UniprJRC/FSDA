@@ -1,0 +1,229 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>ctlcurvesplot</title><meta content="refpage" name="chunktype"><meta content="function:ctlcurvesplot" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ctlcurvesplot plots the output of routine ctlcurves." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">ctlcurvesplot</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">ctcurves and Portofino plot for the Gyeser data with all default options.</a></li><li><a class="intrnllnk" href="#Example_2"><i>Interactive example 1.</i>
+       Example of the use of option databrush.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1"><i>Interactive example 2.</i>
+       Example of the use of option databrush.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_outCTL">outCTL</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_thresh">thresh</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tagCtl">tagCtl</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tagPortofino">tagPortofino</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datatooltip">datatooltip</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_databrush">databrush</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nameY">nameY</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">ctlcurvesplot</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">ctlcurvesplot plots the output of routine ctlcurves</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">ctlcurvesplot(outCTL)</code><span class="syntax_example"><a class="intrnllnk" href="ctlcurvesplot.html#Example_1">example</a></span></li><li><code class="synopsis">ctlcurvesplot(outCTL,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="ctlcurvesplot.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>ctlcurvesplot takes as input the output of function ctlcurves (that is
+   a series of matrices which contain the values of the CTL bands, the set
+   of tentative solutions found using the intersection of the bands, and
+   the likelihood ratio tests for testing k vs k+1 given alpha.</p> <p>
+   The plot enables interaction in the sense that, if option
+   databrush has been activated, it is possible to click on a point in the
+   plot of the ctlcurves and to see the associated classification in the
+   scatter plot matrix.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="ctlcurvesplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code>ctlcurvesplot(<a class="intrnllnk" href="#inputarg_outCTL"><code>outCTL</code></a>)</code></span>ctcurves and Portofino plot for the Gyeser data with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="ctlcurvesplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code>ctlcurvesplot(<a class="intrnllnk" href="#inputarg_outCTL"><code>outCTL</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Interactive_example
+       Example of the use of option databrush.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ctcurves and Portofino plot for the Gyeser data with all default options.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+outCTl=ctlcurves(Y,'plots',false,'nsamp',20)
+ctlcurvesplot(outCTl);</pre></div></div><pre class="codeoutput">k=1
+k=2
+k=3
+k=4
+k=5
+Bands k=1
+Bands k=2
+Bands k=3
+Bands k=4
+Bands k=5
+
+outCTl = 
+
+  struct with fields:
+
+              Mu: {5&times;6 cell}
+           Sigma: {5&times;6 cell}
+              Pi: {5&times;6 cell}
+             IDX: {5&times;6 cell}
+             CTL: [5&times;6 double]
+        BandsCTL: [5&times;6&times;60 double]
+           likLB: [5&times;6 double]
+          lik050: [5&times;6 double]
+           likUB: [5&times;6 double]
+             idx: [271&times;1 double]
+    Optimalalpha: 0.0200
+        OptimalK: 3
+         TentSol: [2&times;3 double]
+      pvalLRtest: [4&times;6 table]
+              kk: [1 2 3 4 5]
+           alpha: [0 0.0200 0.0400 0.0600 0.0800 0.1000]
+     restrfactor: 100
+               Y: [271&times;2 double]
+
+</pre><a href='http://rosa.unipr.it/fsda/ctlcurvesplot.html#Example_1'><img vspace="5" hspace="5" src="images\ctlcurvesplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\ctlcurvesplot_02.png" alt=""> <img vspace="5" hspace="5" src="images\ctlcurvesplot_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><i>Interactive example 1.</i>
+       Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   (brushing is done only once using a rectangular selection tool)
+%  Use the geyser data.
+Y=load('geyser2.txt');
+databrush=struct;
+databrush.selectionmode='Rect';
+outCTl=ctlcurves(Y,'plots',false,'nsamp',20)
+ctlcurvesplot(outCTl,'databrush',databrush);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
+       Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   (brushing is persistent)
+%  Use the geyser data.
+Y=load('geyser2.txt');
+databrush=struct;
+databrush.persist='on';
+outCTl=ctlcurves(Y,'plots',false,'nsamp',20)
+ctlcurvesplot(outCTl,'databrush',databrush);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_outCTL" class="clearfix"> </div> <h3 id="input_argument_outCTL" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>outCTL</code> &#8212; Information criterion to use. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>It contains the following fields.</p> <p>
+        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Mu</code></td><td><p>cell of size length(kk)-by-length(alpha)
+                       containing the estimate of the centroids for each
+                       value of k and each value of alpha. More precisely,
+                       suppose kk=1:4 and alpha=[0 0.05 0.1], out.Mu{2,3}
+                       is a matrix with two rows and v columns containing
+                       the estimates of the centroids obtained when
+                       alpha=0.1.</p></td></tr><tr valign="top"><td><code>Sigma</code></td><td><p>cell of size length(kk)-by-length(alpha)
+                       containing the estimate of the covariance matrices
+                       for each value of k and each value of alpha. More
+                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
+                       out.Sigma{2,3} is a 3D  array of size v-by-v-by-2
+                       containing the estimates of the covariance matrices
+                       obtained when alpha=0.1.</p></td></tr><tr valign="top"><td><code>Pi</code></td><td><p><p>cell of size length(kk)-by-length(alpha)
+                       containing the estimate of the group proportions
+                       for each value of k and each value of alpha. More
+                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
+                       out.Pi{2,3} is a 3D  array of size v-by-v-by-2
+                       containing the estimates of the covariance matrices
+                       obtained when alpha=0.1.</p> <p>
+            out.IDX   = cell of size length(kk)-by-length(alpha)
+                       containing the final assignment for each value of k
+                       and each value of alpha. More precisely, suppose
+                       kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
+                       vector of length(n) containing the containinig the
+                       assignment of each unit obtained when alpha=0.1.</p><p>
+                       Elements equal to zero denote unassigned units.</p></p></td></tr><tr valign="top"><td><code>CTL</code></td><td><p>matrix of size length(kk)-by-length(alpha)
+                       containing the values of the trimmed likelihood
+                       curves for each value of k and each value of alpha.</p></td></tr><tr valign="top"><td><code>BandsCTL</code></td><td><p>3D array of size
+                       length(kk)-by-length(alpha)-by-nsimul containing
+                       the nsimul replicates of out.CTL. This output is
+                       present only if input option bands is true or is a
+                       struct.</p></td></tr><tr valign="top"><td><code>likLB</code></td><td><p>matrix of size length(kk)-by-length(alpha)
+                       containing the lower confidence bands of the
+                       trimmed likelihood curves for each value of k and
+                       each value of alpha. This output is present only if
+                       input option bands is true or is a struct.</p></td></tr><tr valign="top"><td><code>likUB</code></td><td><p>matrix of size length(kk)-by-length(alpha)
+                       containing the upper confidence bands of the
+                       trimmed likelihood curves for each value of k and
+                       each value of alpha. This output is present only if
+                       input option bands is true or is a struct.</p></td></tr><tr valign="top"><td><code>idx</code></td><td><p>n-by-1 vector containing assignment of each unit to
+                       each of the k groups in correspodence of
+                       Optimalalpha and OptimalK. Cluster names are
+                       integer numbers from 1 to k. 0 indicates trimmed
+                       observations. This output is present only if input
+                       option bands is true or is a struct.</p></td></tr><tr valign="top"><td><code>Optimalalpha</code></td><td><p>scalar, optimal value of trimming. This
+                       output is present only if optional input argument is
+                       true.</p></td></tr><tr valign="top"><td><code>OptimalK</code></td><td><p>scalar, optimal number of clusters, stored
+                        as a positive integer value. This output is present
+                       only if optional input argument is true.</p></td></tr><tr valign="top"><td><code>TentSol</code></td><td><p>matrix with size m-by 3. Details of the ordered
+                          solutions where there was intersection between
+                          two consecutive trimmed likelihood curves. First
+                          column contains the value of k, second column
+                          the value of alpha and third column the index
+                          associated to the best value of alpha.</p></td></tr><tr valign="top"><td><code>pvalLRtest</code></td><td><p>table with size length(kk)-1-times-length(alpha)
+                           which stores the relative frequency in which
+                           the Likelihood ratio test is greater than the
+                           corresponding bootstrap test.</p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
+                       components) which have been considered. This  vector
+                       is equal to input optional argument kk if kk had been
+                       specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>vector containing the values of the trimming
+                       level which have been considered. This
+                       vector is equal to input optional argument alpha.</p></td></tr><tr valign="top"><td><code>restractor</code></td><td><p><p>scalar containing the restriction factor
+                       which has been used to compute tclust.</p> <p>
+                out.Y  = Original data matrix Y. The field is present if
+                       option Ysave is set to 1.</p></p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'thresh',0.10
+</code>,<code> 'tag','myplot'
+</code>,<code> 'tag','myplot1'
+</code>,<code> 'conflev',0.9
+</code>,<code> 'datatooltip',''
+</code>,<code> 'databrush',1
+</code>,<code> 'nameY',{'myY1', 'myY2'}
+</code></code></span></div><div class="expandableContent"><div id="inputarg_thresh" class="clearfix"></div><h3 id="input_argument_namevalue_thresh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>thresh</code> &#8212;threshold which defines where to put NaN in the
+                   out.</span></a><span class="example_desc">pvalLRtest matrix.</span></span></h3><div class="collapse">	<p><p>Scalar in the interval [0 1].</p> <p>
+                   Tne default value is 0.05. In other words the
+                   subsequent values in a particular column of
+                   out.pvalLRtest which follow a number breater than 0.05
+                   will be set to NaN.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'thresh',0.10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_tagCtl" class="clearfix"></div><h3 id="input_argument_namevalue_tagCtl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tagCtl</code> &#8212;Personalized tag for CTL curves plot.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which identifies the
+                   handle of the plot which is about to be created. The
+                   default is to use tag 'pl_Ctl' for the classification
+                   likelihood curves plot with bands.</p> <p>
+                   Note that if the program finds a plot which has a tag
+                   equal to the one specified by the user, then the output
+                   of the new plot overwrites the existing one in the same
+                   window else a new window is created.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','myplot'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_tagPortofino" class="clearfix"></div><h3 id="input_argument_namevalue_tagPortofino" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tagPortofino</code> &#8212;Personalized tag for Portofino plot.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which identifies the
+                   handle of the plot which is about to be created. The
+                   default is to use tag 'pl_Portofino' for the Portofino plot.</p> <p>
+                   Note that if the program finds a plot which has a tag
+                   equal to the one specified by the user, then the output
+                   of the new plot overwrites the existing one in the same
+                   window else a new window is created.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','myplot1'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence level of the bands.</span></a><span class="example_desc">empty value (default) | scalar.</span></span></h3><div class="collapse">	<p><p>Scalar in the interval (0 1) which contains
+                   the confidence level of the bands.</p> <p>
+                   The default is to use the confidence level taken from
+                   <a href="ctlcurves.html">ctlcurves</a> (that is 50 per cent confidence
+                   level).</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.9
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking.</span></a><span class="example_desc">empty value (default) |                   structure.</span></span></h3><div class="collapse">	<p><p>The default is datatooltip=''.</p> <p>
+                   If datatooltip = 1, the user can select with the
+                   mouse a solution in order to
+                   have the following information:</p><p>
+                   1) value of k which has been selected
+                   2) value of alpha which has been selected
+                   3) frequency distribution of the associated
+                   classification
+                   If datatooltip is a structure it may contain the
+                   following the fields
+           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>DisplayStyle</code></td><td><p><p>Determines how the data
+                       cursor displays. datatip | window.</p> <p>
+                       - datatip displays data cursor
+                       information in a small yellow text box attached to a
+                       black square marker at a data point you interactively
+                       select.</p><p>
+                       - window displays data cursor information for the
+                       data point you interactively select in a floating
+                       window within the figure.</p></p></td></tr><tr valign="top"><td><code>SnapToDataVertex</code></td><td><p><p>Specifies whether the
+                       data cursor snaps to the nearest data value or is
+                       located at the actual pointer position.  on | off.</p> <p>
+                       - on data cursor snaps to the nearest data value
+                       - off data cursor is located at the actual pointer
+                       position.</p><p>
+                   (see the MATLAB function datacursormode or the examples
+                   below). Default values are datatooltip.DisplayStyle =
+                   'Window' and datatooltip.SnapToDataVertex = 'on'.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar double or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
+                   is done. The activation of this option (databrush is a
+                   scalar or a structure) enables the user to select a set
+                   of values of ctl curves in the current plot and to see
+                   the corresponding classification highlighted in the
+                   scatter plot matrix (spm). If spm does not exist it is
+                   automatically created. Please, note that the window
+                   style of the other figures is set equal to that which
+                   contains the ctl plot. In other words, if the ctl plot
+                   is docked all the other figures will be docked too.</p> <p>
+                   DATABRUSH IS A SCALAR. If databrush is a scalar the
+                   default selection tool is a rectangular brush and it is
+                   possible to brush only once (that is persist='').</p> <p>
+                   DATABRUSH IS A STRUCTURE. If databrush is a structure,
+                   it is possible to use all optional arguments of
+                   function <a href="selectdataFS.html">selectdataFS</a> and the following optional
+                   arguments: - databrush.persist = repeated brushing
+                   enabled. Persist is an empty value or a scalar
+                     containing the strings 'on' or 'off'.</p> <p>
+                     The default value of persist is '', that is brushing
+                     is allowed only once.</p> <p>
+                     If persist is 'on' or 'off' brushing can be done as
+                     many time as the user requires.</p> <p>
+                     If persist='on' then the corresponding spmplot of the
+                     solutions currently brushed are added to those
+                     previously brushed.</p> <p>
+                     If persist='off' every time a new brush is performed
+                     scatter plot matrices corresponding to previously
+                     brushed solutions are removed.</p> <p>
+                   - dispopt = string which controls how to fill the
+                      diagonals in the scatterplot matrix of the brushed
+                      solutions. Set dispopt to 'hist' (default) to plot
+                      histograms, or 'box' to plot boxplots.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameY" class="clearfix"></div><h3 id="input_argument_namevalue_nameY" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameY</code> &#8212;variable labels.</span></a><span class="example_desc">cell array.</span></span></h3><div class="collapse">	<p><p>Cell array of strings
+                   containing the labels of the
+                   variables. As default value, the labels which are added
+                   are Y1, ..., Yv.</p> <p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameY',{'myY1', 'myY2'}
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="ctlcurves.html" itemprop="url"><span itemprop="name"><code>ctlcurves</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
