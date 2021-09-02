@@ -47,8 +47,10 @@ else
     
 end
 
-try
-    if ispc
+
+if ispc
+    
+    try
         % save currebn folder location to restore later
         oldFolder = pwd;
         
@@ -94,44 +96,45 @@ try
         
         % go back
         cd(oldFolder);
-        
-    elseif ismac
-        % MACOS, no admin privileges issues, just
-        % unzip file into outputfolder
-        unzip(url,outputfolder)
-        disp('Files correctly extracted')
-        disp('Now graphical output of the FSDA files is also visible locally')
-    else
-        % Linux OS
-        % from the terminal, type: sudo chown -R $LOGNAME: ~/MATLAB/help/
-        % under '/home/user/MATLAB/help/FSDA/images'
-        % unzip file into outputfolder
-        try
-            system('cd ~')
-            system('sudo chown -R $LOGNAME: ~/MATLAB/help/')
-            unzip(url,outputfolder)
-        catch
-            disp('Due to write permission problems zip file in:')
-            disp(url)
-            disp('could not be extracted inside folder')
-            disp(outputfolder)
-            disp('To solve the problem, please run MATLAB as administrator')
-            disp('or manually from the terminal, type: "sudo chown -R $LOGNAME: ~/MATLAB/help/", otherwise the HTML FSDA graphical output will not be visible locally')
-            warning('FSDA:dowloadGraphicalOutput:NotExtracted','Impossible to extract FSDA graphical output')
-        end
-        disp('Files correctly extracted')
-        disp('Now graphical output of the FSDA files is also visible locally')
+    catch
+        disp('Due to write permission problems zip file in:')
+        disp(url)
+        disp('could not be extracted inside folder')
+        disp(outputfolder)
+        disp('To solve the problem, please run MATLAB as administrator')
+        disp('or manually upzip the files, otherwise the HTML FSDA graphical output will not be visible locally')
+        warning('FSDA:dowloadGraphicalOutput:NotExtracted','Impossible to extract FSDA graphical output')
     end
     disp('Files correctly extracted')
     disp('Now graphical output of the FSDA files is also visible locally')
-catch
-    disp('Due to write permission problems zip file in:')
-    disp(url)
-    disp('could not be extracted inside folder')
-    disp(outputfolder)
-    disp('To solve the problem, please run MATLAB as administrator')
-    disp('or manually upzip the files, otherwise the HTML FSDA graphical output will not be visible locally')
-    warning('FSDA:dowloadGraphicalOutput:NotExtracted','Impossible to extract FSDA graphical output')
+    
+elseif ismac
+    % MACOS, no admin privileges issues, just
+    % unzip file into outputfolder
+    unzip(url,outputfolder)
+    disp('Files correctly extracted')
+    disp('Now graphical output of the FSDA files is also visible locally')
+else
+    % Linux OS
+    % from the terminal, type: sudo chown -R $LOGNAME: ~/MATLAB/help/
+    % under '/home/user/MATLAB/help/FSDA/images'
+    % unzip file into outputfolder
+    try
+        system('cd ~')
+        system('sudo chown -R $LOGNAME: ~/MATLAB/help/')
+        unzip(url,outputfolder)
+    catch
+        disp('Due to write permission problems zip file in:')
+        disp(url)
+        disp('could not be extracted inside folder')
+        disp(outputfolder)
+        disp('To solve the problem, please run MATLAB as administrator')
+        disp('or manually from the terminal, type: "sudo chown -R $LOGNAME: ~/MATLAB/help/", otherwise the HTML FSDA graphical output will not be visible locally')
+        warning('FSDA:dowloadGraphicalOutput:NotExtracted','Impossible to extract FSDA graphical output')
+    end
+    disp('Files correctly extracted')
+    disp('Now graphical output of the FSDA files is also visible locally')
+    
     
 end
 
