@@ -703,7 +703,8 @@ else
     error('FSDA:avas:WrongInputOpt','rob can only be a boolean or a struct.');
 end
 
-
+% Store original value of y because if callToFSRfan ==true y is overwritten
+yori=y;
 
 if callToFSRfan ==true
     % FSRfan and fanplot with all default options
@@ -924,13 +925,24 @@ end
 
 % Create output structure out
 out=struct;
-out.y=y;
+out.y=yori;
 out.ty=ty;
 out.X=X;
 out.tX=tX;
 out.rsq=rsq;
 out.niter=iter;
 out.outliers=outliers;
+
+tXbsb=tX(bsb,:);
+yhatbsb=sum(tXbsb,2);
+resbsb = ty(bsb) - yhatbsb;
+[~,yhatbsbsorind]=sort(yhatbsb);
+resbsbsorted=resbsb(yhatbsbsorind);
+tXbsbsorted=tXbsb(yhatbsbsorind,:);
+[pval]=dwtest(resbsbsorted,[ones(length(bsb),1) tXbsbsorted]);
+out.pvaldw=pval;
+%[pval]=dwtest(resbsb,[ones(length(bsb),1) tXbsb])
+% aa=1;
 end
 
 function [bsb,outliers,ngood]=robAVAS(ty,tX,estimatorToUse,bdp,simalpha)
