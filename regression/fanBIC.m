@@ -312,6 +312,9 @@ for j=1:nla
     % Subsequent outlier detection
     [~,newbsbj]=intersect(good,bs(:,j));
 
+    if length(newbsbj)<size(bs,1)
+       newbsbj=1;
+    end
     outl=FSR(ytraj(good),X(good,:),'nocheck',1,'bonflev',bonflev,'plots',0,'msg',0,'init',ini,'lms',newbsbj);
     if isscalar(outl.mdr)
          outl=FSR(ytraj(good),X(good,:),'nocheck',1,'bonflev',bonflev,'plots',0,'msg',0,'init',ini);
