@@ -1763,10 +1763,10 @@ Y_good  = Y(I==1,:);
 % Use tclustIC to monitor the effect of k and c, for alpha fixed
 kvec       = 2:1:5;
 cvec       = [1,4,64];
-outIC      = tclustIC(Y_good,'whichIC','MIXMIX','kk',kvec,'cc',cvec,'alpha',alpha,'plots',0);
+outIC0     = tclustIC(Y_good,'whichIC','MIXMIX','kk',kvec,'cc',cvec,'alpha',alpha,'plots',0);
 
 % Extracts a set of best relevant solutions ...
-[outIC] = tclustICsol(outIC,'whichIC','MIXMIX','plots',0,'NumberOfBestSolutions',5,'ThreshRandIndex',0.7);
+[outIC] = tclustICsol(outIC0,'whichIC','MIXMIX','plots',0,'NumberOfBestSolutions',5,'ThreshRandIndex',0.7);
 
 % ... and visualise them with the carbike plot, which highlights the most
 % relevant one in intuitive way.
