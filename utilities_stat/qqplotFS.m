@@ -143,7 +143,7 @@ function Y=qqplotFS(res,varargin)
 n=length(res);
 X=ones(n,1);
 
-options=struct('intercept',1,'X',X,'plots',0,'conflev',0.90,'nsimul',1000,...
+options=struct('intercept',true,'X',X,'plots',0,'conflev',0.90,'nsimul',1000,...
     'tag','pl_qq','h','');
 
 UserOptions=varargin(1:2:length(varargin));
@@ -188,7 +188,7 @@ xcoo = norminv(xcoo);
 % hdat = line(xcoo,sorres,'LineStyle','none','Marker','+');
 Y=[xcoo sorres];
 
-if intercept==1
+if intercept==true || intercept == 1
     X=[ones(n,1) X];
 end
 
