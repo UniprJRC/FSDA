@@ -1225,6 +1225,8 @@ elseif plots==1
     name=plotdef;
     alphasel=alphaLik;
     % ylimy='';
+else
+    % NO PLOT IS SHOWN ON THE SCREEEN
 end
 
 
@@ -1313,14 +1315,15 @@ for j=2:lalpha
 end
 out.Amon=Amon;
 
-% alphasel contains the indexes of the columns of matrix IDX which have
-% to be plotted
-% We use round(alpha*1e+7)/1e+7 to guarantee compatibility with old
-% versions of MATLAB. For the new versions the instruction would have
-% been:
-% [~,alphasel]=intersect(round(alpha,9),alphasel,'stable');
-[~,alphasel]=intersect(round(alphaLik*1e+7)/1e+7,round(alphasel*1e+7)/1e+7,'stable');
-lalphasel=length(alphasel);
+if plots~=0
+    % alphasel contains the indexes of the columns of matrix IDX which have
+    % to be plotted. We use round(alpha*1e+7)/1e+7 to guarantee
+    % compatibility with old versions of MATLAB. For the new versions the
+    % instruction would have been:
+    % [~,alphasel]=intersect(round(alpha,9),alphasel,'stable');
+    [~,alphasel]=intersect(round(alphaLik*1e+7)/1e+7,round(alphasel*1e+7)/1e+7,'stable');
+    lalphasel=length(alphasel);
+end
 
 %% Produce all necessary calculations for UnitsTrmOrChgCla plot
 IDs=[UnitsTrmOrChgCla IDX(UnitsTrmOrChgCla,:)];
@@ -1362,682 +1365,744 @@ out.UnitsTrmOrChgCla=IDt;
 
 alpha1str=num2str(alphaLik(:));
 
-%% 1 Monitor change of statistics between two consecutive values of alphaLik
+%% Monitoring plots follow
 
-namej = 'monitor';
-tit   = {'Tclustreg monitoring plot' , 'Changes between two consecutive \alpha-values'};
-tit2  = {'Tclustreg monitoring plot -- Changes between two consecutive $\alpha$-values' , ' '};
-d=find(strcmp(namej,name));
-if d>0
-    hf1 = figure('Name',namej,'Visible','off');
-    set(hf1,'Tag','tclusteda');
-    plotsname={'ARI','$\hat \beta$','$\hat \sigma^2$','$\hat \sigma^2_c$'...
-        '$\hat \mu_X$' '$\hat \Sigma_X$'};
+if plots~=0
     
-    if existXspace == true
-        nr=3;
-        nc=2;
-    else
-        nr=2;
-        nc=2;
+    %% 1 Monitor change of statistics between two consecutive values of alphaLik
+    
+    namej = 'monitor';
+    tit   = {'Tclustreg monitoring plot' , 'Changes between two consecutive \alpha-values'};
+    tit2  = {'Tclustreg monitoring plot -- Changes between two consecutive $\alpha$-values' , ' '};
+    d=find(strcmp(namej,name));
+    if d>0
+        hf1 = figure('Name',namej,'Visible','off');
+        set(hf1,'Tag','tclusteda');
+        plotsname={'ARI','$\hat \beta$','$\hat \sigma^2$','$\hat \sigma^2_c$'...
+            '$\hat \mu_X$' '$\hat \Sigma_X$'};
+        
+        if existXspace == true
+            nr=3;
+            nc=2;
+        else
+            nr=2;
+            nc=2;
+        end
+        
+        for j=1:nr*nc
+            subplot(nr,nc,j);
+            plot(Amon(:,1),Amon(:,j+1),'LineWidth',plotLineWidth);
+            set(gca,'xticklabel',[],'XGrid','on');
+            xlim([min(alphaLik),max(alphaLik)]);
+            L = get(gca,'XLim');
+            set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
+            if j>nc*(nr-1)
+                xtickangle(gca,xxTickAngleVal);
+                set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
+                xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
+            end
+            % sigma: plots 3,4,6
+            set(gca,'XDir','reverse');
+            title(plotsname{j},'interpreter','latex', 'FontSize' , subtitleSize);
+            if vafter95
+                axtoolbar('Visible','off');
+            end
+        end
+        if vafter95 == true
+            sgtitle(tit , 'FontSize' , titleSize);
+        else
+            a  = axes;
+            t1 = title(tit2, 'FontSize' , titleSize, 'FontWeight', 'normal', 'Interpreter' , 'latex');
+            a.Visible = 'off'; % set(a,'Visible','off');
+            t1.Visible = 'on'; % set(t1,'Visible','on');
+        end
+        
     end
     
-    for j=1:nr*nc
-        subplot(nr,nc,j);
-        plot(Amon(:,1),Amon(:,j+1),'LineWidth',plotLineWidth);
-        set(gca,'xticklabel',[],'XGrid','on');
-        xlim([min(alphaLik),max(alphaLik)]);
+    %% 2 Monitoring stability of classification (units plot)
+    
+    namej='UnitsTrmOrChgCla';
+    tit1 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in purple' , 'Above the horizontal line unit never classified'};
+    tit2 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in purple'};
+    
+    symbseq = {'$\clubsuit$' , '$\diamondsuit$' , '$\heartsuit$' , ...
+        '$\spadesuit$' , '$\circ$' , '$\bullet$' , ...
+        '$\nabla$' , '$\o$' , '$\copyright$' , '$*$' , '$+$'};
+    
+    d=find(strcmp(namej,name));
+    if d>0
+        
+        % permutation criterion
+        criterion = 0; % default is 0
+        switch criterion
+            case 0
+                IDtt = IDt;
+            case 1
+                IDtt = topkrows(IDt,size(IDt,1),2:size(IDt,2),'descend');
+            case 2
+                [~,indChgCla]=intersect(IDt(:,1),UnitsChgCla);
+                IDta  = IDt(indChgCla,:);
+                IDtb  = IDt(setdiff(1:size(IDt,1),indChgCla),:);
+                IDtta = topkrows(IDta,size(IDta,1),2:size(IDta,2),'descend');
+                IDttb = topkrows(IDtb,size(IDtb,1),2:size(IDtb,2),'descend');
+                IDtt  = [IDtta ; IDttb];
+            otherwise
+                IDtt = IDt;
+        end
+        
+        % Generate figure.
+        hf2=figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
+        
+        % If the reclassified units are more than thsz, resize the figure
+        sz = size(IDtt);
+        thsz = 50;
+        if sz(1)>thsz
+            current_pos = get(hf2,'Position');
+            set(hf2,'Position',[left,bottom,figureResize,figureResize].*current_pos);
+        end
+        set(hf2,'Tag','tclusteda','Resize','off');
+        
+        % x and y limits
+        xlim([0 k1+1]);
+        ylim([0 n1+1]);
+        set(gca,'XTick',0:k1+1, 'FontSize' , xyTickFontSize);
+        
+        % fill matrix
+        for j=1:k1
+            if j==1
+                % unit number
+                strj=cellstr(num2str(IDtt(:,j)));
+                if sz(1)>thsz
+                    xpos = onex-(mod(seqIDs,2)*0.5);
+                else
+                    xpos = onex;
+                end
+                h = text(xpos,seqIDs,strj,...
+                    'HorizontalAlignment','center', ...
+                    'FontSize' , matrixFont+4 , 'interpreter','none');
+                
+                [~,indredcolor]=intersect(IDtt(:,1),UnitsChgCla);
+                %col=repmat({'b'},n1,1);
+                %col(indredcolor)={'r'};
+                %col=repmat({FSColors.darkgrey.RGB},n1,1);
+                %col(indredcolor)={FSColors.purplish.RGB};
+                col=repmat({[0.4660 0.6740 0.1880]},n1,1);
+                col(indredcolor)={[0.6350 0.0780 0.1840]};
+                st=repmat({'normal'},n1,1);
+                st(indredcolor)={'normal'};
+                
+                set(h,{'Color'},col);
+                set(h,{'FontWeight'},st);
+            else
+                % classes associated to units
+                ipos = find(IDtt(:,j)>0);
+                ineg = IDtt(:,j)<=0;
+                strj = cell(size(strj));
+                strj(ipos) = cellstr(symbseq(abs(IDtt(ipos,j))));
+                % Empty spaces for trimmed units
+                strj(ineg) = {''};
+                hg = text(j*onex,seqIDs,strj,'HorizontalAlignment','center', 'FontSize' , matrixFont,'interpreter','latex');
+                colorsG = cellstr(repmat('w',size(strj)));
+                colorsG(ipos) = cellstr(clrdef(abs(IDtt(ipos,j)))');
+                set(hg,{'Color'},colorsG);
+            end
+            
+        end
+        
+        newxtcklab=cell(k1+2,1);
+        newxtcklab([1:2 k1+2])={''};
+        newxtcklab(3:k1+1)=cellstr(alpha1str);
+        set(gca,'xticklabels',newxtcklab, 'FontSize' , xyTickFontSize)
+        set(gca,'yticklabels','', 'FontSize' , xyTickFontSize)
+        
+        xlabel({'Trimming level'}, 'FontSize' , xyLabelSize);
+        ylabel({'Units trimmed at least once' , 'or which changed assignment'}, 'FontSize' , xyLabelSize);
+        
+        % Group indication in title
+        un=unique(IDtt(:,2:end));
+        un=un(un>0);
+        Gleg = strcat('G' , string(num2cell(un)) ,  '=' , symbseq(un)');
+        tit1(size(tit1,2)+1) = cellstr(strjoin(Gleg));
+        tit2(size(tit2,2)+1) = cellstr(strjoin(Gleg));
+        
+        % Add title
+        if ~isempty(unitsNeverAssigned)
+            hline=refline(0,n1-length(unitsNeverAssigned)+0.5);
+            hline.Color = 'm';
+            title(tit1 , 'FontSize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
+        else
+            title(tit2 , 'FontSize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
+        end
+        
+        pan('off');
+        if vafter95
+            axtoolbar(gca,'Visible','off');
+        end
+        %movegui(gcf,'south');
+    end
+    
+    %% 3 Monitoring  of sigma2 and sigma2corr
+    namej = 'Sigma';
+    tit   = {'Tclustreg monitoring plot' , ['Error variances for restriction factor c=' num2str(restrfact)]};
+    
+    d=find(strcmp(namej,name));
+    if d>0
+        hf4 = figure('Name',namej,'Visible','off');
+        set(hf4,'Tag','tclusteda');
+        
+        % first subplot
+        subplot(2,1,1);
+        % Sigma2y is k-by-length(alphaLik)
+        h1  = plot(alphaLik,Sigma2y','LineWidth',plotLineWidth);
+        % set the colors and linestyle
+        set(h1,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)',{'DisplayName'},legendGroups);
+        
+        xlim([min(alphaLik),max(alphaLik)])
+        % set(gca,'XTickLabel',num2str(alpha1'))
+        
         L = get(gca,'XLim');
         set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
-        if j>nc*(nr-1)
-            xtickangle(gca,xxTickAngleVal);
-            set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
-            xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
-        end
-        % sigma: plots 3,4,6
-        set(gca,'XDir','reverse');
-        title(plotsname{j},'interpreter','latex', 'FontSize' , subtitleSize);
+        set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
+        set(gca,'XDir','reverse','XGrid','on');
+        
+        xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
+        ylabel('$\hat \sigma^2_j$','Interpreter','latex', 'FontSize' , yLabelLatexSize);
+        axis('manual');
         if vafter95
             axtoolbar('Visible','off');
         end
-    end
-    if vafter95 == true
-        sgtitle(tit , 'FontSize' , titleSize);
-    else
-        a  = axes;
-        t1 = title(tit2, 'FontSize' , titleSize, 'FontWeight', 'normal', 'Interpreter' , 'latex');
-        a.Visible = 'off'; % set(a,'Visible','off');
-        t1.Visible = 'on'; % set(t1,'Visible','on');
-    end
-    
-end
-
-%% 2 Monitoring stability of classification (units plot)
-
-namej='UnitsTrmOrChgCla';
-tit1 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in purple' , 'Above the horizontal line unit never classified'};
-tit2 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in purple'};
-
-symbseq = {'$\clubsuit$' , '$\diamondsuit$' , '$\heartsuit$' , ...
-    '$\spadesuit$' , '$\circ$' , '$\bullet$' , ...
-    '$\nabla$' , '$\o$' , '$\copyright$' , '$*$' , '$+$'};
-
-d=find(strcmp(namej,name));
-if d>0
-    
-    % permutation criterion
-    criterion = 0; % default is 0
-    switch criterion
-        case 0
-            IDtt = IDt;
-        case 1
-            IDtt = topkrows(IDt,size(IDt,1),2:size(IDt,2),'descend');
-        case 2
-            [~,indChgCla]=intersect(IDt(:,1),UnitsChgCla);
-            IDta  = IDt(indChgCla,:);
-            IDtb  = IDt(setdiff(1:size(IDt,1),indChgCla),:);
-            IDtta = topkrows(IDta,size(IDta,1),2:size(IDta,2),'descend');
-            IDttb = topkrows(IDtb,size(IDtb,1),2:size(IDtb,2),'descend');
-            IDtt  = [IDtta ; IDttb];
-        otherwise
-            IDtt = IDt;
-    end
-    
-    % Generate figure.
-    hf2=figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
-    
-    % If the reclassified units are more than thsz, resize the figure
-    sz = size(IDtt);
-    thsz = 50;
-    if sz(1)>thsz
-        current_pos = get(hf2,'Position');
-        set(hf2,'Position',[left,bottom,figureResize,figureResize].*current_pos);
-    end
-    set(hf2,'Tag','tclusteda','Resize','off');
-    
-    % x and y limits
-    xlim([0 k1+1]);
-    ylim([0 n1+1]);
-    set(gca,'XTick',0:k1+1, 'FontSize' , xyTickFontSize);
-    
-    % fill matrix
-    for j=1:k1
-        if j==1
-            % unit number
-            strj=cellstr(num2str(IDtt(:,j)));
-            if sz(1)>thsz
-                xpos = onex-(mod(seqIDs,2)*0.5);
-            else
-                xpos = onex;
-            end
-            h = text(xpos,seqIDs,strj,...
-                'HorizontalAlignment','center', ...
-                'FontSize' , matrixFont+4 , 'interpreter','none');
-            
-            [~,indredcolor]=intersect(IDtt(:,1),UnitsChgCla);
-            %col=repmat({'b'},n1,1);
-            %col(indredcolor)={'r'};
-            %col=repmat({FSColors.darkgrey.RGB},n1,1);
-            %col(indredcolor)={FSColors.purplish.RGB};
-            col=repmat({[0.4660 0.6740 0.1880]},n1,1);
-            col(indredcolor)={[0.6350 0.0780 0.1840]};
-            st=repmat({'normal'},n1,1);
-            st(indredcolor)={'normal'};
-            
-            set(h,{'Color'},col);
-            set(h,{'FontWeight'},st);
-        else
-            % classes associated to units
-            ipos = find(IDtt(:,j)>0);
-            ineg = IDtt(:,j)<=0;
-            strj = cell(size(strj));
-            strj(ipos) = cellstr(symbseq(abs(IDtt(ipos,j))));
-            % Empty spaces for trimmed units
-            strj(ineg) = {''};
-            hg = text(j*onex,seqIDs,strj,'HorizontalAlignment','center', 'FontSize' , matrixFont,'interpreter','latex');
-            colorsG = cellstr(repmat('w',size(strj)));
-            colorsG(ipos) = cellstr(clrdef(abs(IDtt(ipos,j)))');
-            set(hg,{'Color'},colorsG);
-        end
         
-    end
-    
-    newxtcklab=cell(k1+2,1);
-    newxtcklab([1:2 k1+2])={''};
-    newxtcklab(3:k1+1)=cellstr(alpha1str);
-    set(gca,'xticklabels',newxtcklab, 'FontSize' , xyTickFontSize)
-    set(gca,'yticklabels','', 'FontSize' , xyTickFontSize)
-    
-    xlabel({'Trimming level'}, 'FontSize' , xyLabelSize);
-    ylabel({'Units trimmed at least once' , 'or which changed assignment'}, 'FontSize' , xyLabelSize);
-    
-    % Group indication in title
-    un=unique(IDtt(:,2:end));
-    un=un(un>0);
-    Gleg = strcat('G' , string(num2cell(un)) ,  '=' , symbseq(un)');
-    tit1(size(tit1,2)+1) = cellstr(strjoin(Gleg));
-    tit2(size(tit2,2)+1) = cellstr(strjoin(Gleg));
-    
-    % Add title
-    if ~isempty(unitsNeverAssigned)
-        hline=refline(0,n1-length(unitsNeverAssigned)+0.5);
-        hline.Color = 'm';
-        title(tit1 , 'FontSize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
-    else
-        title(tit2 , 'FontSize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
-    end
-    
-    pan('off');
-    if vafter95
-        axtoolbar(gca,'Visible','off');
-    end
-    %movegui(gcf,'south');
-end
-
-%% 3 Monitoring  of sigma2 and sigma2corr
-namej = 'Sigma';
-tit   = {'Tclustreg monitoring plot' , ['Error variances for restriction factor c=' num2str(restrfact)]};
-
-d=find(strcmp(namej,name));
-if d>0
-    hf4 = figure('Name',namej,'Visible','off');
-    set(hf4,'Tag','tclusteda');
-    
-    % first subplot
-    subplot(2,1,1);
-    % Sigma2y is k-by-length(alphaLik)
-    h1  = plot(alphaLik,Sigma2y','LineWidth',plotLineWidth);
-    % set the colors and linestyle
-    set(h1,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)',{'DisplayName'},legendGroups);
-    
-    xlim([min(alphaLik),max(alphaLik)])
-    % set(gca,'XTickLabel',num2str(alpha1'))
-    
-    L = get(gca,'XLim');
-    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
-    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
-    set(gca,'XDir','reverse','XGrid','on');
-    
-    xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
-    ylabel('$\hat \sigma^2_j$','Interpreter','latex', 'FontSize' , yLabelLatexSize);
-    axis('manual');
-    if vafter95
-        axtoolbar('Visible','off');
-    end
-    
-    % second subplot
-    subplot(2,1,2);
-    h2  = plot(alphaLik,Sigma2yc','LineWidth',plotLineWidth);
-    % set the colors and linestyle
-    set(h2,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)',{'DisplayName'},legendGroups);
-    
-    xlim([min(alphaLik),max(alphaLik)]);
-    % set(gca,'XTickLabel',num2str(alpha1'))
-    
-    L = get(gca,'XLim');
-    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
-    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
-    set(gca,'XDir','reverse','XGrid','on');
-    
-    xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
-    ylabel('$\hat \sigma^2_{cj}$','Interpreter','latex', 'FontSize' , yLabelLatexSize);
-    
-    axis('manual');
-    if vafter95
-        axtoolbar('Visible','off');
-    end
-    
-    if vafter95 == true
-        sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
-    else
-        a  = axes;
-        t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
-        a.Visible = 'off'; % set(a,'Visible','off');
-        t1.Visible = 'on'; % set(t1,'Visible','on');
-    end
-    
-    if vafter91
-        clickableMultiLegend(h1, 'FontSize' , legendSize);
-    else
-        clickableMultiLegend(h1);
-    end
-    
-end
-
-% this follows the first plot with legend to avoid the updates of all
-% existing graphics, because of the subsequent calls to legend and drawnow.
-drawnow limitrate nocallbacks;
-
-%% 4 Plot scatter with all regression lines (hyperplanes)
-namej = 'ScatterWithRegLines';
-alpha1range = ['[' num2str(max(alphaLik)) ' \; ' num2str(min(alphaLik)) ']' ];
-tit = {'Tclustreg monitoring plot' , ['$\quad mixt=' num2str(mixt) , '  \quad c_{\hat \sigma^2}='...
-    num2str(restrfact) '\quad \alpha_{Lik}=' alpha1range ...
-    '\quad \alpha_{\Sigma_X}=' num2str(alphaX) '$']};
-
-d=find(strcmp(namej,name));
-if d>0
-    
-    idx = IDX(:,1); % used for rotating colors in the plots
-    
-    if p-intercept < 2
-        % The following plots are for the bi-variate case (i.e. v=1)
+        % second subplot
+        subplot(2,1,2);
+        h2  = plot(alphaLik,Sigma2yc','LineWidth',plotLineWidth);
+        % set the colors and linestyle
+        set(h2,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)',{'DisplayName'},legendGroups);
         
-        % initialize figure
-        hf5 = figure('Name',namej,'Visible','off');
-        set(hf5,'Tag','tclusteda');
+        xlim([min(alphaLik),max(alphaLik)]);
+        % set(gca,'XTickLabel',num2str(alpha1'))
         
-        hold on;
+        L = get(gca,'XLim');
+        set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
+        set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
+        set(gca,'XDir','reverse','XGrid','on');
         
-        % plot regression lines
-        vv = [min(X(:,end)) max(X(:,end))];
+        xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
+        ylabel('$\hat \sigma^2_{cj}$','Interpreter','latex', 'FontSize' , yLabelLatexSize);
         
-        % hRegLines vector of graphic handles containing regression lines
-        hRegLines = gobjects(k,1);
-        % hText vector of graphic handles containing the labels of groups
-        hText = gobjects(k,1);
-        for jj = 1:k
-            group_label = ['Group ' num2str(jj)];
-            
-            % jj refers to groupj 1,...k
-            % jjj refers to trimming
-            if intercept==1
-                
-                for jjj=1:lalpha
-                    gr=plot(vv,Beta(jj,1,jjj)+Beta(jj,2,jjj)*vv,...
-                        'DisplayName',[group_label ' fit' ],...
-                        'Color',clrdefmap(jjj,:,jj),...
-                        'LineWidth',plotLineWidthGrad,...
-                        'LineStyle',linedef{jj});  %#ok<NASGU> clrdef(jj)
-                end
-                eval(['hRegLines(' num2str(jj) ')=gr;']);
-                
-            elseif intercept==0
-                
-                for jjj=1:lalpha
-                    gr=plot(vv,Beta(jj,1,jjj)*vv,...
-                        'DisplayName',[group_label ' fit' ],...
-                        'Color',clrdefmap(jjj,:,jj),...
-                        'LineWidth',plotLineWidthGrad,...
-                        'LineStyle',linedef{jj});  %#ok<NASGU> clrdef(jj)
-                end
-                eval(['hRegLines(' num2str(jj) ')=gr;']);
-            end
-            
-            ucg = find(idx==jj);
-            % we add a (ficticious) plot instruction with white symbols
-            texth=plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']); %#ok<NASGU>
-            text(X(ucg,end),y(ucg),num2str(jj*ones(length(ucg),1)),...
-                'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
-                'HorizontalAlignment','center','VerticalAlignment','middle',...
-                'Color',clrdef(jj), 'FontSize' , 12);
-            eval(['hText(' num2str(jj) ')=texth;']);
-        end
-        
-        % Plot the outliers (trimmed points)
-        ucg = find(idx==-1);
-        % hunitsMinus1 = graphical handle to the first level trimmed units
-        hunitsMinus1=plot(X(ucg,end),y(ucg),...
-            sym1stLevelTrimmedUnits,'color',col1stLevelTrimmedUnits,...
-            'MarkerSize',8,...
-            'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
-        
-        % Plot second level trimmed units (if there are)
-        ucg = find(idx==-2);
-        % hunitsMinus2 = graphical handle to second level trimmed units
-        hunitsMinus2=plot(X(ucg,end),y(ucg),...
-            sym2ndLevelTrimmedUnits,'color',col2ndLevelTrimmedUnits,...
-            'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
-        
-        
-        % Add clickable multilegend
-        if vafter91
-            clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
-                'Location','best','interpreter' , 'LaTex', 'FontSize' , legendSize) % ,'TextColor','r');
-        else
-            legend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
-                'Location','best')
-        end
         axis('manual');
+        if vafter95
+            axtoolbar('Visible','off');
+        end
         
-        % control of the axis limits
-        xmin = min(X(:,end)); xmax = max(X(:,end));
-        ymin = min(y); ymax = max(y);
-        deltax = (xmax - xmin) / 10;
-        deltay = (ymax - ymin) / 10;
-        
-        xlim([xmin-deltax,xmax+deltax]);
-        ylim([ymin-deltay,ymax+deltay]);
-        
-    else
-        % In this case p > 2. A standard yXplot is used.
-        
-        bunitsMinus1=sum(idx==-1)>0;
-        bunitsMinus2=sum(idx==-2)>0;
-        if bunitsMinus1 ==true && bunitsMinus2 && true
-            clrdefj=[col2ndLevelTrimmedUnits col1stLevelTrimmedUnits clrdef];
-            symdefj=[sym2ndLevelTrimmedUnits sym1stLevelTrimmedUnits symdef];
-            numsym=k+2;
-        elseif  bunitsMinus2 && true
-            clrdefj=[col2ndLevelTrimmedUnits clrdef];
-            symdefj=[sym2ndLevelTrimmedUnits symdef];
-            numsym=k+1;
-        elseif bunitsMinus1 ==true
-            clrdefj=[col1stLevelTrimmedUnits clrdef];
-            symdefj=[sym1stLevelTrimmedUnits symdef];
-            numsym=k+1;
+        if vafter95 == true
+            sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
         else
-            clrdefj=clrdef;
-            symdefj=symdef;
-            numsym=k;
+            a  = axes;
+            t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
+            a.Visible = 'off'; % set(a,'Visible','off');
+            t1.Visible = 'on'; % set(t1,'Visible','on');
         end
         
-        plo=struct;
-        plo.clr = clrdefj(1:numsym);
-        plo.sym = symdefj(1:numsym);
-        plo.labeladd = ''; %DDD
-        
-        % group names in the legend
-        group = cell(n,1);
-        for iii = 1:k
-            group(idx==iii) = {['Group ' num2str(iii)]};
+        if vafter91
+            clickableMultiLegend(h1, 'FontSize' , legendSize);
+        else
+            clickableMultiLegend(h1);
         end
-        group(idx==-1) = {'Trimmed units'};
-        group(idx==-2) = {'Trimmed units level 2'};
         
-        % yXplot
-        % Remark: it is necessary to sort idx because in this way idx=-2 (if present) is
-        % the first symbol, idx=-1 is the second ....
-        [~,indsor]=sort(idx);
-        [~,AX,~]=yXplot(y(indsor),X(indsor,:),group(indsor),plo);
-        set(gcf, 'Tag' , 'Trimmed units');
-        % Dimension of Beta is k-by-p-by-length(alpha)
-        for j = 1:length(AX)
-            % Make the axes of the panel with handle AX(i) the current axes.
-            set(gcf,'CurrentAxes',AX(j));
-            for i=1:k
+    end
+    
+    % this follows the first plot with legend to avoid the updates of all
+    % existing graphics, because of the subsequent calls to legend and drawnow.
+    drawnow limitrate nocallbacks;
+    
+    %% 4 Plot scatter with all regression lines (hyperplanes)
+    namej = 'ScatterWithRegLines';
+    alpha1range = ['[' num2str(max(alphaLik)) ' \; ' num2str(min(alphaLik)) ']' ];
+    tit = {'Tclustreg monitoring plot' , ['$\quad mixt=' num2str(mixt) , '  \quad c_{\hat \sigma^2}='...
+        num2str(restrfact) '\quad \alpha_{Lik}=' alpha1range ...
+        '\quad \alpha_{\Sigma_X}=' num2str(alphaX) '$']};
+    
+    d=find(strcmp(namej,name));
+    if d>0
+        
+        idx = IDX(:,1); % used for rotating colors in the plots
+        
+        if p-intercept < 2
+            % The following plots are for the bi-variate case (i.e. v=1)
+            
+            % initialize figure
+            hf5 = figure('Name',namej,'Visible','off');
+            set(hf5,'Tag','tclusteda');
+            
+            hold on;
+            
+            % plot regression lines
+            vv = [min(X(:,end)) max(X(:,end))];
+            
+            % hRegLines vector of graphic handles containing regression lines
+            hRegLines = gobjects(k,1);
+            % hText vector of graphic handles containing the labels of groups
+            hText = gobjects(k,1);
+            for jj = 1:k
+                group_label = ['Group ' num2str(jj)];
+                
+                % jj refers to groupj 1,...k
+                % jjj refers to trimming
                 if intercept==1
-                    indexesOtherCoef=[1 setdiff((2:p),j+1)];
-                else
-                    indexesOtherCoef=setdiff((1:p),j);
+                    
+                    for jjj=1:lalpha
+                        gr=plot(vv,Beta(jj,1,jjj)+Beta(jj,2,jjj)*vv,...
+                            'DisplayName',[group_label ' fit' ],...
+                            'Color',clrdefmap(jjj,:,jj),...
+                            'LineWidth',plotLineWidthGrad,...
+                            'LineStyle',linedef{jj});  %#ok<NASGU> clrdef(jj)
+                    end
+                    eval(['hRegLines(' num2str(jj) ')=gr;']);
+                    
+                elseif intercept==0
+                    
+                    for jjj=1:lalpha
+                        gr=plot(vv,Beta(jj,1,jjj)*vv,...
+                            'DisplayName',[group_label ' fit' ],...
+                            'Color',clrdefmap(jjj,:,jj),...
+                            'LineWidth',plotLineWidthGrad,...
+                            'LineStyle',linedef{jj});  %#ok<NASGU> clrdef(jj)
+                    end
+                    eval(['hRegLines(' num2str(jj) ')=gr;']);
                 end
                 
-                % add a refline for each value of alpha1
-                for jj=1:length(alphaLik)
-                    
-                    idxi=IDX(:,jj)==i;
-                    % Beta = k-by-p-by-length(alphaLik)
-                    meanOtherX=mean(X(idxi,indexesOtherCoef)*Beta(i,indexesOtherCoef,jj)');
-                    % hline  = refline(Beta(i,j+intercept,jj),meanOtherX);
-                    xlimits = get(AX(j),'Xlim');
-                    hline = line(xlimits , meanOtherX + Beta(i,j+intercept,jj).*xlimits);
+                ucg = find(idx==jj);
+                % we add a (ficticious) plot instruction with white symbols
+                texth=plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']); %#ok<NASGU>
+                text(X(ucg,end),y(ucg),num2str(jj*ones(length(ucg),1)),...
+                    'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
+                    'HorizontalAlignment','center','VerticalAlignment','middle',...
+                    'Color',clrdef(jj), 'FontSize' , 12);
+                eval(['hText(' num2str(jj) ')=texth;']);
+            end
             
-                    hline.Color     = clrdefmap(jj,:,i);
-                    hline.LineStyle = linedef{i};
+            % Plot the outliers (trimmed points)
+            ucg = find(idx==-1);
+            % hunitsMinus1 = graphical handle to the first level trimmed units
+            hunitsMinus1=plot(X(ucg,end),y(ucg),...
+                sym1stLevelTrimmedUnits,'color',col1stLevelTrimmedUnits,...
+                'MarkerSize',8,...
+                'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
+            
+            % Plot second level trimmed units (if there are)
+            ucg = find(idx==-2);
+            % hunitsMinus2 = graphical handle to second level trimmed units
+            hunitsMinus2=plot(X(ucg,end),y(ucg),...
+                sym2ndLevelTrimmedUnits,'color',col2ndLevelTrimmedUnits,...
+                'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
+            
+            
+            % Add clickable multilegend
+            if vafter91
+                clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
+                    'Location','best','interpreter' , 'LaTex', 'FontSize' , legendSize) % ,'TextColor','r');
+            else
+                legend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
+                    'Location','best')
+            end
+            axis('manual');
+            
+            % control of the axis limits
+            xmin = min(X(:,end)); xmax = max(X(:,end));
+            ymin = min(y); ymax = max(y);
+            deltax = (xmax - xmin) / 10;
+            deltay = (ymax - ymin) / 10;
+            
+            xlim([xmin-deltax,xmax+deltax]);
+            ylim([ymin-deltay,ymax+deltay]);
+            
+        else
+            % In this case p > 2. A standard yXplot is used.
+            
+            bunitsMinus1=sum(idx==-1)>0;
+            bunitsMinus2=sum(idx==-2)>0;
+            if bunitsMinus1 ==true && bunitsMinus2 && true
+                clrdefj=[col2ndLevelTrimmedUnits col1stLevelTrimmedUnits clrdef];
+                symdefj=[sym2ndLevelTrimmedUnits sym1stLevelTrimmedUnits symdef];
+                numsym=k+2;
+            elseif  bunitsMinus2 && true
+                clrdefj=[col2ndLevelTrimmedUnits clrdef];
+                symdefj=[sym2ndLevelTrimmedUnits symdef];
+                numsym=k+1;
+            elseif bunitsMinus1 ==true
+                clrdefj=[col1stLevelTrimmedUnits clrdef];
+                symdefj=[sym1stLevelTrimmedUnits symdef];
+                numsym=k+1;
+            else
+                clrdefj=clrdef;
+                symdefj=symdef;
+                numsym=k;
+            end
+            
+            plo=struct;
+            plo.clr = clrdefj(1:numsym);
+            plo.sym = symdefj(1:numsym);
+            plo.labeladd = ''; %DDD
+            
+            % group names in the legend
+            group = cell(n,1);
+            for iii = 1:k
+                group(idx==iii) = {['Group ' num2str(iii)]};
+            end
+            group(idx==-1) = {'Trimmed units'};
+            group(idx==-2) = {'Trimmed units level 2'};
+            
+            % yXplot
+            % Remark: it is necessary to sort idx because in this way idx=-2 (if present) is
+            % the first symbol, idx=-1 is the second ....
+            [~,indsor]=sort(idx);
+            [~,AX,~]=yXplot(y(indsor),X(indsor,:),group(indsor),plo);
+            set(gcf, 'Tag' , 'Trimmed units');
+            % Dimension of Beta is k-by-p-by-length(alpha)
+            for j = 1:length(AX)
+                % Make the axes of the panel with handle AX(i) the current axes.
+                set(gcf,'CurrentAxes',AX(j));
+                for i=1:k
+                    if intercept==1
+                        indexesOtherCoef=[1 setdiff((2:p),j+1)];
+                    else
+                        indexesOtherCoef=setdiff((1:p),j);
+                    end
+                    
+                    % add a refline for each value of alpha1
+                    for jj=1:length(alphaLik)
+                        
+                        idxi=IDX(:,jj)==i;
+                        % Beta = k-by-p-by-length(alphaLik)
+                        meanOtherX=mean(X(idxi,indexesOtherCoef)*Beta(i,indexesOtherCoef,jj)');
+                        % hline  = refline(Beta(i,j+intercept,jj),meanOtherX);
+                        xlimits = get(AX(j),'Xlim');
+                        hline = line(xlimits , meanOtherX + Beta(i,j+intercept,jj).*xlimits);
+                        
+                        hline.Color     = clrdefmap(jj,:,i);
+                        hline.LineStyle = linedef{i};
+                    end
                 end
             end
         end
-    end
-    
-    if vafter95 == true
-        sgtitle(tit, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
-        axtoolbar('Visible','off');
-    else
-        a  = axes;
-        t1 = title(tit, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
-        a.Visible = 'off'; % set(a,'Visible','off');
-        t1.Visible = 'on'; % set(t1,'Visible','on');
-    end
-    
-end
-
-
-%% 5 Monitoring of allocation (using gscatter)
-d=find(strcmp('gscatter',name));
-tit0 = {'Tclustreg monitoring plot -- allocation of units' , ...
-    'Variance Explained $\cal{V}$, for different trimming levels $\alpha$'};
-
-if d>0
-    
-    biggerfig = false;
-    % Monitoring of allocation
-    switch lalphasel
-        case 1
-            nr=1;
-            nc=1;
-        case 2
-            nr=2;
-            nc=1;
-        case {3,4}
-            nr=2;
-            nc=2;
-        case {5,6}
-            nr=3;
-            nc=2;
-        case {7,8,9}
-            nr=3;
-            nc=3;
-            biggerfig = true;
-        case {10,11,12}
-            nr=3;
-            nc=4;
-            biggerfig = true;
-        otherwise
-            nr=4;
-            nc=4;
-            biggerfig = true;
-    end
-    
-    resup=1;
-    hf6 = figure('CreateFcn',{@movegui, 'south'},'Name',['Monitoring allocation #' int2str(resup)],'Visible','off');
-    set(hf6,'Tag','tclusteda');
-    
-    if biggerfig
-        newpos = get(hf6,'Position');
-        set(hf6,'Position',[left,bottom,figureResize,figureResize].*newpos);
-    end
-    
-    if p-intercept>1
-        XLmon=zeros(p+k-1,lalphasel);
-        XLmonW=zeros(p+k-1,lalphasel);
-    end
-    
-    jk=1;
-    for j=1:lalphasel
         
-        % The monitoring must contain a maximum of 16 panels
-        % If length(alpha) is greater than 16 a new set of 16 subpanels is
-        if jk>16
-            jk=1;
-            resup=resup+1;
-            hf6b=figure('Name',['Monitoring allocation #' int2str(resup)],'Visible','off');
-            set(hf6b,'Tag','tclusteda');
-            subplot(nr,nc,jk);
+        if vafter95 == true
+            sgtitle(tit, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+            axtoolbar('Visible','off');
         else
-            subplot(nr,nc,jk);
+            a  = axes;
+            t1 = title(tit, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+            a.Visible = 'off'; % set(a,'Visible','off');
+            t1.Visible = 'on'; % set(t1,'Visible','on');
         end
         
-        idxselj=IDX(:,alphasel(j));
-        % Check if inside idxselj there are 1st or 2nd level trimmed units
-        bunitsMinus1=sum(idxselj==-1)>0;
-        bunitsMinus2=sum(idxselj==-2)>0;
-        if bunitsMinus1 ==true && bunitsMinus2 && true
-            clrdefj=[col2ndLevelTrimmedUnits col1stLevelTrimmedUnits clrdef];
-            symdefj=[sym2ndLevelTrimmedUnits sym1stLevelTrimmedUnits symdef];
-        elseif  bunitsMinus2 && true
-            clrdefj=[col2ndLevelTrimmedUnits clrdef];
-            symdefj=[sym2ndLevelTrimmedUnits symdef];
-        elseif bunitsMinus1 ==true
-            clrdefj=[col1stLevelTrimmedUnits clrdef];
-            symdefj=[sym1stLevelTrimmedUnits symdef];
-        else
-            clrdefj=clrdef;
-            symdefj=symdef;
+    end
+    
+    
+    %% 5 Monitoring of allocation (using gscatter)
+    d=find(strcmp('gscatter',name));
+    tit0 = {'Tclustreg monitoring plot -- allocation of units' , ...
+        'Variance Explained $\cal{V}$, for different trimming levels $\alpha$'};
+    
+    if d>0
+        
+        biggerfig = false;
+        % Monitoring of allocation
+        switch lalphasel
+            case 1
+                nr=1;
+                nc=1;
+            case 2
+                nr=2;
+                nc=1;
+            case {3,4}
+                nr=2;
+                nc=2;
+            case {5,6}
+                nr=3;
+                nc=2;
+            case {7,8,9}
+                nr=3;
+                nc=3;
+                biggerfig = true;
+            case {10,11,12}
+                nr=3;
+                nc=4;
+                biggerfig = true;
+            otherwise
+                nr=4;
+                nc=4;
+                biggerfig = true;
         end
         
-        if p-intercept>1 % More than one explanatory variable (excluding intercept)
-            % In this case PLS regression is used.
-            % In order to take into account group structure k-1 dummy
-            % variables are added to matrix X. Of course trimmed units for
-            % that particular value of alphaLik are excluded, but included
-            % in the gscatter plots.
-            DUM    = zeros(n,k-1);
-            for jj = 1:k-1
-                DUM(idxselj==jj,jj) = 1;
-            end
-            Xext    = [X DUM];
-            idxgt0  = idxselj>0;
-            % training set
-            ysel0   = y(idxgt0);
-            Xsel0   = Xext(idxgt0,:);
-            Xsel1   = Xext(~idxgt0,:);
-            mXsel0  = mean(Xsel0);
-            [XL,~,XS0,~,~,PCTVAR,~,stats] = plsregress(Xsel0,ysel0,1);
-            XLmon(:,j)=XL;
-            XLmonW(:,j)=stats.W;
-            
-            % Find best predictor for non trimmed (XS0) and trimmed units
-            XS1     = zeros(n,1);
-            XS1(idxgt0) = XS0;
-            % REMARK
-            % XS0chk=(Xsel0-mXsel0)*stats.W;
-            XS1(~idxgt0) = (Xsel1-mXsel0)*stats.W;
-            
-            hh = gscatter(XS1,y,idxselj,clrdefj,symdefj);
-            
-            if jk>nc*(nr-1)
-                xlabel('PLS predictor', 'FontSize' , xyLabelSize);
-            else
-                xlabel(' ');
-            end
-            if ismember(jk,1:nc:nc*nr)
-                ylabel('y', 'FontSize' , xyLabelSize);
-            else
-                ylabel(' ');
-            end
-            
-            if vafter91
-                clickableMultiLegend(hh, 'FontSize' , legendSize);
-            else
-                clickableMultiLegend(hh);
-            end
-            
-            if jk>1
-                legend hide
-            end
-            axis manual
-            alphajtxt=num2str(alphaLik(alphasel(j)));
-            title(['$\alpha$=' alphajtxt ' - $\cal{V}$=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'FontSize' , subtitleSize)
-            
-        elseif p-intercept>0  % Just one explanatory variable (excluding intercept)
-            if any(isnan(idxselj))
-                hh=scatter(X(:,end),y);
-            else
-                hh  =  gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
-            end
-            % To use line function would be much faster than gscatter
-            %             iiii = unique(idxselj);
-            %             for idx=1:numel(iiii)
-            %                 props = {'LineStyle','none','Marker',symdefj(idx),'MarkerEdge',clrdefj(idx),'MarkerSize',6};
-            %                 line([X(idxselj==iiii(idx),end),X(idxselj==iiii(idx),end)],[y(idxselj==iiii(idx)),y(idxselj==iiii(idx))],...
-            %                 props{:});
-            %             end
-            %             hhh=findobj(gcf,'Type','Line');
-            
-            if jk>nc*(nr-1)
-                xlabel('x1', 'FontSize' , xyLabelSize);
-            end
-            if ~ismember(jk,1:nc:nc*nr)
-                ylabel('', 'FontSize' , xyLabelSize);
-            end
-            
-            if vafter91
-                clickableMultiLegend(hh, 'FontSize' , legendSize);
-            else
-                clickableMultiLegend(hh);
-            end
-            if jk>1
-                legend hide
-            end
-            axis manual
-            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'FontSize' , subtitleSize)
-        else
-            % Univariate case: plot the histogram
-            histFS(y,10,idxselj,[],[],clrdefj)
-            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'FontSize' , subtitleSize)
+        resup=1;
+        hf6 = figure('CreateFcn',{@movegui, 'south'},'Name',['Monitoring allocation #' int2str(resup)],'Visible','off');
+        set(hf6,'Tag','tclusteda');
+        
+        if biggerfig
+            newpos = get(hf6,'Position');
+            set(hf6,'Position',[left,bottom,figureResize,figureResize].*newpos);
         end
-        jk=jk+1;
+        
+        if p-intercept>1
+            XLmon=zeros(p+k-1,lalphasel);
+            XLmonW=zeros(p+k-1,lalphasel);
+        end
+        
+        jk=1;
+        for j=1:lalphasel
+            
+            % The monitoring must contain a maximum of 16 panels
+            % If length(alpha) is greater than 16 a new set of 16 subpanels is
+            if jk>16
+                jk=1;
+                resup=resup+1;
+                hf6b=figure('Name',['Monitoring allocation #' int2str(resup)],'Visible','off');
+                set(hf6b,'Tag','tclusteda');
+                subplot(nr,nc,jk);
+            else
+                subplot(nr,nc,jk);
+            end
+            
+            idxselj=IDX(:,alphasel(j));
+            % Check if inside idxselj there are 1st or 2nd level trimmed units
+            bunitsMinus1=sum(idxselj==-1)>0;
+            bunitsMinus2=sum(idxselj==-2)>0;
+            if bunitsMinus1 ==true && bunitsMinus2 && true
+                clrdefj=[col2ndLevelTrimmedUnits col1stLevelTrimmedUnits clrdef];
+                symdefj=[sym2ndLevelTrimmedUnits sym1stLevelTrimmedUnits symdef];
+            elseif  bunitsMinus2 && true
+                clrdefj=[col2ndLevelTrimmedUnits clrdef];
+                symdefj=[sym2ndLevelTrimmedUnits symdef];
+            elseif bunitsMinus1 ==true
+                clrdefj=[col1stLevelTrimmedUnits clrdef];
+                symdefj=[sym1stLevelTrimmedUnits symdef];
+            else
+                clrdefj=clrdef;
+                symdefj=symdef;
+            end
+            
+            if p-intercept>1 % More than one explanatory variable (excluding intercept)
+                % In this case PLS regression is used.
+                % In order to take into account group structure k-1 dummy
+                % variables are added to matrix X. Of course trimmed units for
+                % that particular value of alphaLik are excluded, but included
+                % in the gscatter plots.
+                DUM    = zeros(n,k-1);
+                for jj = 1:k-1
+                    DUM(idxselj==jj,jj) = 1;
+                end
+                Xext    = [X DUM];
+                idxgt0  = idxselj>0;
+                % training set
+                ysel0   = y(idxgt0);
+                Xsel0   = Xext(idxgt0,:);
+                Xsel1   = Xext(~idxgt0,:);
+                mXsel0  = mean(Xsel0);
+                [XL,~,XS0,~,~,PCTVAR,~,stats] = plsregress(Xsel0,ysel0,1);
+                XLmon(:,j)=XL;
+                XLmonW(:,j)=stats.W;
+                
+                % Find best predictor for non trimmed (XS0) and trimmed units
+                XS1     = zeros(n,1);
+                XS1(idxgt0) = XS0;
+                % REMARK
+                % XS0chk=(Xsel0-mXsel0)*stats.W;
+                XS1(~idxgt0) = (Xsel1-mXsel0)*stats.W;
+                
+                hh = gscatter(XS1,y,idxselj,clrdefj,symdefj);
+                
+                if jk>nc*(nr-1)
+                    xlabel('PLS predictor', 'FontSize' , xyLabelSize);
+                else
+                    xlabel(' ');
+                end
+                if ismember(jk,1:nc:nc*nr)
+                    ylabel('y', 'FontSize' , xyLabelSize);
+                else
+                    ylabel(' ');
+                end
+                
+                if vafter91
+                    clickableMultiLegend(hh, 'FontSize' , legendSize);
+                else
+                    clickableMultiLegend(hh);
+                end
+                
+                if jk>1
+                    legend hide
+                end
+                axis manual
+                alphajtxt=num2str(alphaLik(alphasel(j)));
+                title(['$\alpha$=' alphajtxt ' - $\cal{V}$=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'FontSize' , subtitleSize)
+                
+            elseif p-intercept>0  % Just one explanatory variable (excluding intercept)
+                if any(isnan(idxselj))
+                    hh=scatter(X(:,end),y);
+                else
+                    hh  =  gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
+                end
+                % To use line function would be much faster than gscatter
+                %             iiii = unique(idxselj);
+                %             for idx=1:numel(iiii)
+                %                 props = {'LineStyle','none','Marker',symdefj(idx),'MarkerEdge',clrdefj(idx),'MarkerSize',6};
+                %                 line([X(idxselj==iiii(idx),end),X(idxselj==iiii(idx),end)],[y(idxselj==iiii(idx)),y(idxselj==iiii(idx))],...
+                %                 props{:});
+                %             end
+                %             hhh=findobj(gcf,'Type','Line');
+                
+                if jk>nc*(nr-1)
+                    xlabel('x1', 'FontSize' , xyLabelSize);
+                end
+                if ~ismember(jk,1:nc:nc*nr)
+                    ylabel('', 'FontSize' , xyLabelSize);
+                end
+                
+                if vafter91
+                    clickableMultiLegend(hh, 'FontSize' , legendSize);
+                else
+                    clickableMultiLegend(hh);
+                end
+                if jk>1
+                    legend hide
+                end
+                axis manual
+                title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'FontSize' , subtitleSize)
+            else
+                % Univariate case: plot the histogram
+                histFS(y,10,idxselj,[],[],clrdefj)
+                title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'FontSize' , subtitleSize)
+            end
+            jk=jk+1;
+        end
+        
+        if vafter95 == true
+            sgtitle(tit0, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+        else
+            a  = axes;
+            t1 = title(tit0, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+            a.Visible = 'off'; % set(a,'Visible','off');
+            t1.Visible = 'on'; % set(t1,'Visible','on');
+        end
+        
+        if p-intercept>1
+            % Undocumented store variable importance in presence of more than
+            % one explanatory variable
+            out.XLmon=XLmon;
+            out.XLmonW=XLmonW;
+        end
+        %movegui(gcf,'south');
+        
     end
     
-    if vafter95 == true
-        sgtitle(tit0, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
-    else
-        a  = axes;
-        t1 = title(tit0, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
-        a.Visible = 'off'; % set(a,'Visible','off');
-        t1.Visible = 'on'; % set(t1,'Visible','on');
+    
+    %% 6 Monitoring of beta regression coefficients (standardized)
+    namej='Beta';
+    tit = 'Tclustreg monitoring plot -- Estimated regression coefficients';
+    
+    d=find(strcmp(namej,name));
+    if d>0
+        hf7 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
+        set(hf7,'Tag','tclusteda');
+        
+        % Dimension of Beta is k-by-p-by-length(alpha)
+        % If p is 2 first column contains interecepts and second slopes
+        % Standardize Beta along the 3rd dimension
+        Betast=zscore(Beta,0,3);
+        biggerfig = false;
+        switch p
+            case 1 %p==1
+                nr=1;
+                nc=1;
+            case 2 % p==2
+                nr=2;
+                nc=1;
+            case {3,4} % p<=4
+                nr=2;
+                nc=2;
+            case {5,6} %p<=6
+                nr=3;
+                nc=2;
+                biggerfig = true;
+            case {7,8,9} % p<=9
+                nr=3;
+                nc=3;
+                biggerfig = true;
+            case {10,11,12} % p<=12
+                nr=3;
+                nc=4;
+                biggerfig = true;
+            otherwise
+                nr=4;
+                nc=4;
+                biggerfig = true;
+        end
+        if biggerfig
+            newpos = get(hf7,'Position');
+            set(hf7,'Position',[left,bottom,1.5,1.5].*newpos);
+        end
+        
+        for j=1:p
+            subplot(nr,nc,j);
+            h=plot(alphaLik(:),squeeze(Betast(:,j,:))','LineWidth',plotLineWidth);
+            % set the colors using the order in clrdef
+            set(h,{'Color'},cellstr(clrdef(1:k)'));
+            set(h,{'LineStyle'},linedef(1:k)');
+            
+            xlim([min(alphaLik),max(alphaLik)]);
+            % set(gca,'XTickLabel',num2str(alpha1'))
+            
+            L = get(gca,'XLim');
+            set(gca,'XTick',linspace(L(1),L(2),lalpha)    , 'FontSize' , xyTickFontSize);
+            set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
+            set(gca,'XDir','reverse','XGrid','on');
+            
+            if j>nc*(nr-1)
+                xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
+            end
+            ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex', 'FontSize' , yLabelLatexSize);
+            xtickangle(xxTickAngleVal);
+            
+            legend(legendGroups, 'FontSize' , legendSize);
+            legend('hide');
+            if j==1
+                legend('show');
+                if vafter91
+                    clickableMultiLegend(h, 'FontSize' , legendSize);
+                else
+                    clickableMultiLegend(h);
+                end
+            end
+            if vafter95
+                axtoolbar('Visible','off');
+            end
+            axis('manual');
+        end
+        
+        if vafter95 == true
+            sgtitle(tit , 'FontSize' , titleSize , 'FontWeight', 'normal');
+        else
+            a  = axes;
+            t1 = title(tit , 'FontSize' , titleSize , 'FontWeight', 'normal');
+            a.Visible = 'off'; % set(a,'Visible','off');
+            t1.Visible = 'on'; % set(t1,'Visible','on');
+        end
+        %movegui(gcf,'south');
+        
     end
     
-    if p-intercept>1
-        % Undocumented store variable importance in presence of more than
-        % one explanatory variable
-        out.XLmon=XLmon;
-        out.XLmonW=XLmonW;
-    end
-    %movegui(gcf,'south');
     
-end
-
-
-%% 6 Monitoring of beta regression coefficients (standardized)
-namej='Beta';
-tit = 'Tclustreg monitoring plot -- Estimated regression coefficients';
-
-d=find(strcmp(namej,name));
-if d>0
-    hf7 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
-    set(hf7,'Tag','tclusteda');
+    %% 7 Monitor group size
+    namej='Siz';
+    tit = {'Tclustreg monitoring plot' , 'Group size'};
     
-    % Dimension of Beta is k-by-p-by-length(alpha)
-    % If p is 2 first column contains interecepts and second slopes
-    % Standardize Beta along the 3rd dimension
-    Betast=zscore(Beta,0,3);
-    biggerfig = false;
-    switch p
-        case 1 %p==1
-            nr=1;
-            nc=1;
-        case 2 % p==2
-            nr=2;
-            nc=1;
-        case {3,4} % p<=4
-            nr=2;
-            nc=2;
-        case {5,6} %p<=6
-            nr=3;
-            nc=2;
-            biggerfig = true;
-        case {7,8,9} % p<=9
-            nr=3;
-            nc=3;
-            biggerfig = true;
-        case {10,11,12} % p<=12
-            nr=3;
-            nc=4;
-            biggerfig = true;
-        otherwise
-            nr=4;
-            nc=4;
-            biggerfig = true;
-    end
-    if biggerfig
-        newpos = get(hf7,'Position');
-        set(hf7,'Position',[left,bottom,1.5,1.5].*newpos);
-    end
-    
-    for j=1:p
-        subplot(nr,nc,j);
-        h=plot(alphaLik(:),squeeze(Betast(:,j,:))','LineWidth',plotLineWidth);
+    d=find(strcmp(namej,name));
+    if d>0
+        % Monitoring of group size
+        hf8 = figure('Name',namej,'Visible','off');
+        set(hf8,'Tag','tclusteda');
+        
+        h=plot(alphaLik(:),out.Nopt','LineWidth',plotLineWidth);
         % set the colors using the order in clrdef
         set(h,{'Color'},cellstr(clrdef(1:k)'));
         set(h,{'LineStyle'},linedef(1:k)');
@@ -2045,171 +2110,116 @@ if d>0
         xlim([min(alphaLik),max(alphaLik)]);
         % set(gca,'XTickLabel',num2str(alpha1'))
         
+        lalpha=length(alphaLik);
         L = get(gca,'XLim');
-        set(gca,'XTick',linspace(L(1),L(2),lalpha)    , 'FontSize' , xyTickFontSize);
+        set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
         set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
-        set(gca,'XDir','reverse','XGrid','on');
         
-        if j>nc*(nr-1)
-            xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
+        set(gca,'XDir','reverse');
+        xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
+        legend(legendGroups);
+        legend('show');
+        if vafter91
+            clickableMultiLegend(h, 'FontSize' , legendSize);
+        else
+            clickableMultiLegend(h);
         end
-        ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex', 'FontSize' , yLabelLatexSize);
-        xtickangle(xxTickAngleVal);
+        title(tit,'FontSize' , titleSize , 'FontWeight', 'normal');
         
-        legend(legendGroups, 'FontSize' , legendSize);
-        legend('hide');
-        if j==1
-            legend('show');
-            if vafter91
-                clickableMultiLegend(h, 'FontSize' , legendSize);
-            else
-                clickableMultiLegend(h);
-            end
-        end
+    end
+    
+    
+    %% 8 (ex3) Monitoring posterior probabilities
+    namej = 'PostProb';
+    tit   = {'Tclustreg monitoring plot -- Posterior probabilities'};
+    lw = 1;  % line width of all plots
+    
+    d=find(strcmp(namej,name));
+    if d>0
+        hf3 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
+        set(hf3,'Tag','tclusteda');
+        set(hf3,'Position',[left,bottom,figureResize,figureResize].*get(hf3,'Position'));
+        
+        Prob1=squeeze(Postprob(:,1,:));
+        Prob1(IDXmin0)=NaN;
+        
+        group=cell(n,1);
+        group(1:n)={'Units which never changed assignment'};
+        group(UnitsChgCla)={'Units which changed assignment'};
+        group(UnitsTrm)={'Trimmed units'};
+        
+        subplot(2,2,1);
+        parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
+        ylim([-0.05 1.05]); xlim manual;
+        xlabel('Level of trimming','FontSize',xyLabelSize);
+        ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
+        %legend('off');
+        %hlpc1 = legend('hide');
+        set(legend,'Location','best');
         if vafter95
             axtoolbar('Visible','off');
         end
-        axis('manual');
+        
+        subplot(2,2,2);
+        Prob1sel=Prob1(UnitsTrmOrChgCla,:);
+        groupsel=group(UnitsTrmOrChgCla);
+        
+        parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
+        ylim([-0.05 1.05]); xlim manual;
+        xlabel('Level of trimming','FontSize',xyLabelSize);
+        ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
+        %legend('off');
+        %hlpc2 = legend('hide');
+        set(legend,'Location','best');
+        
+        % Add the label of the units whose final post prob is intermediate
+        unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
+        text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
+            cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
+        if vafter95
+            axtoolbar('Visible','off');
+        end
+        
+        subplot(2,2,3)
+        % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
+        if vafter95
+            parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
+            set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
+            xlabel('Level of trimming');
+            ylabel('Post prob. group 1 all units');
+            legend('off');
+        end
+        
+        subplot(2,2,4)
+        if vafter95
+            parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
+                'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
+            set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
+            xlabel('Level of trimming');
+            ylabel('Post prob. group 1 selected units');
+            legend('off');
+        end
+        
+        if vafter95 == true
+            sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
+        else
+            a  = axes;
+            t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
+            a.Visible = 'off'; % set(a,'Visible','off');
+            t1.Visible = 'on'; % set(t1,'Visible','on');
+        end
+        %movegui(gcf,'south');
     end
     
-    if vafter95 == true
-        sgtitle(tit , 'FontSize' , titleSize , 'FontWeight', 'normal');
-    else
-        a  = axes;
-        t1 = title(tit , 'FontSize' , titleSize , 'FontWeight', 'normal');
-        a.Visible = 'off'; % set(a,'Visible','off');
-        t1.Visible = 'on'; % set(t1,'Visible','on');
-    end
-    %movegui(gcf,'south');
+    % make all figures visible again
+    set(findobj('Tag','tclusteda'),'Visible','on');
+    
+    % make heavy legends visible again
+    %set([hlpc1,hlpc2],'Location','best','Visible','on');
     
 end
 
-
-%% 7 Monitor group size
-namej='Siz';
-tit = {'Tclustreg monitoring plot' , 'Group size'};
-
-d=find(strcmp(namej,name));
-if d>0
-    % Monitoring of group size
-    hf8 = figure('Name',namej,'Visible','off');
-    set(hf8,'Tag','tclusteda');
-    
-    h=plot(alphaLik(:),out.Nopt','LineWidth',plotLineWidth);
-    % set the colors using the order in clrdef
-    set(h,{'Color'},cellstr(clrdef(1:k)'));
-    set(h,{'LineStyle'},linedef(1:k)');
-    
-    xlim([min(alphaLik),max(alphaLik)]);
-    % set(gca,'XTickLabel',num2str(alpha1'))
-    
-    lalpha=length(alphaLik);
-    L = get(gca,'XLim');
-    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
-    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
-    
-    set(gca,'XDir','reverse');
-    xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
-    legend(legendGroups);
-    legend('show');
-    if vafter91
-        clickableMultiLegend(h, 'FontSize' , legendSize);
-    else
-        clickableMultiLegend(h);
-    end
-    title(tit,'FontSize' , titleSize , 'FontWeight', 'normal');
-    
-end
-
-
-%% 8 (ex3) Monitoring posterior probabilities
-namej = 'PostProb';
-tit   = {'Tclustreg monitoring plot -- Posterior probabilities'};
-lw = 1;  % line width of all plots
-
-d=find(strcmp(namej,name));
-if d>0
-    hf3 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
-    set(hf3,'Tag','tclusteda');
-    set(hf3,'Position',[left,bottom,figureResize,figureResize].*get(hf3,'Position'));
-    
-    Prob1=squeeze(Postprob(:,1,:));
-    Prob1(IDXmin0)=NaN;
-    
-    group=cell(n,1);
-    group(1:n)={'Units which never changed assignment'};
-    group(UnitsChgCla)={'Units which changed assignment'};
-    group(UnitsTrm)={'Trimmed units'};
-    
-    subplot(2,2,1);
-    parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
-    ylim([-0.05 1.05]); xlim manual;
-    xlabel('Level of trimming','FontSize',xyLabelSize);
-    ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
-    %legend('off');
-    %hlpc1 = legend('hide');
-    set(legend,'Location','best');
-    if vafter95
-        axtoolbar('Visible','off');
-    end
-    
-    subplot(2,2,2);
-    Prob1sel=Prob1(UnitsTrmOrChgCla,:);
-    groupsel=group(UnitsTrmOrChgCla);
-    
-    parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
-    ylim([-0.05 1.05]); xlim manual;
-    xlabel('Level of trimming','FontSize',xyLabelSize);
-    ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
-    %legend('off');
-    %hlpc2 = legend('hide');
-    set(legend,'Location','best');
-    
-    % Add the label of the units whose final post prob is intermediate
-    unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
-    text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
-        cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
-    if vafter95
-        axtoolbar('Visible','off');
-    end
-    
-    subplot(2,2,3)
-    % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
-    if vafter95
-        parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
-        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
-        xlabel('Level of trimming');
-        ylabel('Post prob. group 1 all units');
-        legend('off');
-    end
-    
-    subplot(2,2,4)
-    if vafter95
-        parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
-            'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
-        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
-        xlabel('Level of trimming');
-        ylabel('Post prob. group 1 selected units');
-        legend('off');
-    end
-    
-    if vafter95 == true
-        sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
-    else
-        a  = axes;
-        t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
-        a.Visible = 'off'; % set(a,'Visible','off');
-        t1.Visible = 'on'; % set(t1,'Visible','on');
-    end
-    %movegui(gcf,'south');
-end
-
-% make all figures visible again
-set(findobj('Tag','tclusteda'),'Visible','on');
-
-% make heavy legends visible again
-%set([hlpc1,hlpc2],'Location','best','Visible','on');
-
+%% inner function
     function cm = cmapFS(cstart,cend,m)
         %cmapFS creates m RGB colors, with a gradient from cstart to cend
         % We use intensity colors in [0 1], not RGB values in [1 255]. So,
