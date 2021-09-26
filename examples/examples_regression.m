@@ -1686,87 +1686,86 @@ h4=subplot(2,2,4);
 laby=['MM residuals eff=' num2str(eff)];
 resindexplot(outMM95,'h',h4,'title',titl,'laby',laby,'numlab','','conflev',conflev)
 
-%% TCLUST: choice of the hyperparameters through monitoring
+%% TCLUST-REG: choice of the hyperparameters through monitoring
 %
 % This example shows how to use in an automatic way the monitoring
 % functions of FSDA associated to clustering methods (TCLUST family). In
 % the example:
-% - We start using tclustIC to monitor several choices for the number of
+% - We start using tclustregIC to monitor several choices for the number of
 %   groups and restriction factor values, fixing a reasonable trimming
-%   level (we use here a value suggested by a robust version of PCA, used
-%   for the preliminary analysis of the data).
+%   level.
 % - Then we extract a set of relevant solutions with tclustICsol and
 %   we visualize them with carbikeplot.
 % - We use the information extracted by tclustICsol to identify "the best"
 %   solution. Intuitively, the best solution corresponds to the "car" of
 %   bigger area among those represented in the carbikeplot.
-% - Given the best solution for k and c, we run tclusteda to monitor what
+% - Given the best solution for k and c, we run tclustregeda to monitor what
 %   happens for different possible trimming levels, and we choose the best
 %   solution based on the ARI indexes of the various clusterings. If the
 %   ARI indexes are similar, we choose the solution that preserves data and
 %   gives more efficiency to the estimator.
 %
-% the two datasets are taken from the Convolutional Neural Network (CNN)
-% embeddings of a set of fake and good news extracted from open sources.
-% See dataset description for details. One dataset was built for validation
-% purposes, and the other for testing. 
-load fakenews_v.txt;
-load fakenews_t.txt;
-
-Y   = fakenews_t(:,3:end);  % main data with 5 variables: the scores obtained 
-                            % by applying robPCA to the original data.
-I   = fakenews_t(:,2);      % boolean: 0 is a unit is an outlier found in 
-                            % the preliminary PCA analysis.
-G   = fakenews_t(:,1);      % boolean: 1 = fake news representation; 
-                            %          2 = non-fake text representation.
-
-% Before running tclustIC, we eliminate the outliers (I==0). In general
-% this step can be skipped.
-alpha   = sum(I==0)/length(I);  
-Y_good  = Y(I==1,:);
-
-% Use tclustIC to monitor the effect of k and c, for alpha fixed
-kvec       = 1:10;
-cvec       = [1,2,4,8,16,32,64,128];
-outIC      = tclustIC(Y_good,'whichIC','MIXMIX','kk',kvec,'cc',cvec,'alpha',alpha,'plots',0);
+% do not plot un-necessary graphics
+doPlots = false; 
+% generate data with mixsim
+rng(372,'twister');
+p=3;
+k=3;
+Q=MixSimreg(k,p,'MaxOmega',0.00001,'restrfactor',2);
+n=300;
+cont=30;
+[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib,'noiseunits',cont);
+% plot the generated data
+y(id==-1) = y(id==-1) + 2*randn(cont,1);
+yXplot(y,X,id);
+    
+% Use tclustregIC to monitor the effect of k and c, for alpha fixed (ssume
+% it is overestimated)
+alpha = 0.15;
+kvec  = 2:1:7;
+cvec  = [1,2,4,8,16,32,64];
+outIC = tclustregIC(y,X,'whichIC','CLACLA','kk',kvec,'cc',cvec,'alphaLik',alpha,'plots',0);
 
 % Extracts a set of best relevant solutions ...
-[outIC] = tclustICsol(outIC,'whichIC','MIXMIX','plots',0,'NumberOfBestSolutions',5,'ThreshRandIndex',0.7);
+[outICsol] = tclustICsol(outIC,'whichIC','CLACLA','plots',doPlots,'NumberOfBestSolutions',5,'ThreshRandIndex',0.7);
 
 % ... and visualise them with the carbike plot, which highlights the most
 % relevant one in intuitive way.
-[hcb,areas] = carbikeplot(outIC,'SpuriousSolutions',true);
+[hcb,areas] = carbikeplot(outICsol,'SpuriousSolutions',true);
 
 % Use the information extracted by tclustICsol to identify the best
 % solution.
-[truesol,~]  = ismember(outIC.MIXMIXbs(:,end),'true');
+[truesol,~]  = ismember(outICsol.CLACLAbs(:,end),'true');
 truesoli     = find(truesol);
 [amax,iamax] = max(areas(truesoli,2));
 if numel(truesoli) > 0
     if amax>0
         % take the true solution with larger area
-        kopt = outIC.MIXMIXbs{truesoli(iamax),1};  % optimal number of groups
-        copt = outIC.MIXMIXbs{truesoli(iamax),2};  % optimal nrestriction factor
+        kopt = outICsol.CLACLAbs{truesoli(iamax),1};  % optimal number of groups
+        copt = outICsol.CLACLAbs{truesoli(iamax),2};  % optimal nrestriction factor
     else
         % if areas are all zero, take the true solution with larger k
-        kopt = outIC.MIXMIXbs{truesoli(1),1};
-        copt = outIC.MIXMIXbs{truesoli(1),2};
+        kopt = outICsol.CLACLAbs{truesoli(1),1};
+        copt = outICsol.CLACLAbs{truesoli(1),2};
     end
 else
     % if there are no true solutions, take the one with larger k
-    kopt = outIC.MIXMIXbs{truesol(1),1};
-    copt = outIC.MIXMIXbs{truesol(1),2};
+    kopt = outICsol.CLACLAbs{truesol(1),1};
+    copt = outICsol.CLACLAbs{truesol(1),2};
 end
 
-% Finally, use tclusteda to monitor alpha, with k and c estimated by tclustIC
-alphavec   = 0.30:-0.02:0;
-outEDA     = tclusteda(Y,kopt,alphavec,copt,'plots',0,'numpool',8);
+% Finally, use tclustregeda to monitor alpha, with k and c estimated by tclustregIC
+alphaLikvec   = 0.15:-0.05:0;
+outEDA        = tclustregeda(y,X,kopt,copt,alphaLikvec,0,'plots',doPlots);
+
+% retrieve the optimal alpha
 [ARImax]   = max(outEDA.Amon(:,2));
 iARImax    = find(outEDA.Amon(:,2) == ARImax);
 alphaopt   = outEDA.Amon(iARImax(end),1);
 
 % clustering on the first PC scores
 % With the parameters sugggested by the monitoring the main structure of the data emerges  
-outTCLUST    = tclust(Y,kopt,alphaopt,copt,'plots',1,'nsamp',1000);
+outTCLUST    = tclustreg(y,X,kopt,copt,alphaopt,0,'plots',1);
 idxTCLUST    = outTCLUST.idx;
+
 
