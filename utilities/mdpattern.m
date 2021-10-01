@@ -1,5 +1,5 @@
 function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
-%mdpattern find missing data patterns
+%mdpattern finds and plots missing data patterns
 %
 % This function is useful for investigating any structure of missing
 % observations in the data. In specific case, the missing data pattern
@@ -189,6 +189,25 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
      [A,B]=mdpattern(TT(:,["Loss" "Customers" ]))
 %}
 
+%{
+    %% An example with 2 simulated patterns of missing values.
+    close all
+    n=10000;
+    p=10;
+    X=randn(n,p);
+    % Create first missing  data pattern
+    n1=300; n2=3;
+    rowsWithMis=randsample(n,n1);
+    colsWithMis=randsample(p,n2);
+    X(rowsWithMis,colsWithMis)=NaN;
+    % Create second missing  data pattern
+    n1=120; n2=5;
+    rowsWithMis=randsample(n,n1);
+    colsWithMis=randsample(p,n2);
+    X(rowsWithMis,colsWithMis)=NaN;
+    mdpattern(X);
+%}
+
 %% Beginning of code
 
 [n,p]=size(Y);
@@ -228,7 +247,7 @@ end
 if ~istable(Y)
     if isempty(Lc)
         % Lc=cellstr(num2str((1:p)'));
-        Lc="Y"+num2str((1:p)');
+        Lc=strrep(strcat("Y",num2str((1:p)')),' ','');
     else
         % Check that the length of Lc is equal to p
         if length(Lc)~=p
@@ -294,15 +313,16 @@ namesVariablesMisAndOut={'Mean' 'Median'   'Stdev' 'MAD'  'Count_miss' ...
 tMisAndOut=array2table(MisAndOut,"RowNames",Lc,"VariableNames",namesVariablesMisAndOut);
 
 %% dispresults and plots
-if dispresults==true
     Mispat11=num2str(Mispat{1,1});
+
+if dispresults==true
     disp('Table which shows missing values patterns')
     disp(Mispat)
     disp('0 means missing value and 1 represents non missing value')
     disp('First column contains the number of observations for each pattern')
-    disp(['For example number ' Mispat11 ' shows that the associated patterns is repeated ' Mispat11 ' times'])
-    disp('The sum of the numbers in the first column is n the total number of rows')
-    disp('La last column shows the number of variables with missing values for that particular pattern')
+    disp(['For example number ' Mispat11 ' shows that the associated pattern is repeated ' Mispat11 ' times'])
+    disp('The sum of the numbers in the first column is n, that is the total number of rows')
+    disp('The last column shows the number of variables with missing values for that particular pattern')
     disp('------------------------')
     disp('Missing value and outlier report')
     disp(tMisAndOut)
@@ -323,34 +343,35 @@ if plots==true
     set(gcf,'Name','Missing data pattern figure')
     colorbar('off')
     bubblesize([2 30])
+    fs=16;
     h=gca;
     h.YTickLabel=flip(string(Yfin(1:end-1,1)));
     h.XTickLabel=string(Yfin(end,2:end-1));
     h.FontSize=14;
     xlabel("Number of missing values for each variable")
     ylabel("Number of rows with a particular pattern")
-    fs=16;
     ax1=gca;
     ax2 = axes('Position', get(ax1, 'Position'),'Color', 'none');
     set(ax2, 'XAxisLocation', 'top','YAxisLocation','Right');
     % set the same Limits and Ticks on ax2 as on ax1;
-    set(ax2, 'XLim', get(ax1, 'XLim'),'YLim', get(ax1, 'YLim'));
+    set(ax2, 'XLim', get(ax1, 'XLim'),'YLim', get(ax1, 'YLim'),'TickDir','none');
     set(ax2, 'XTick', get(ax1, 'XTick'), 'YTick', get(ax1, 'YTick'));
     OppositeYTickLabels = string(flip(Yfin(1:end-1,end)));
     % Set the x-tick and y-tick  labels for the second axes
     set(ax2, 'XTickLabel', YsorcolsVarNames,'YTickLabel',OppositeYTickLabels,'FontSize',fs);
     % yyaxis right
     ylabel(ax2,'Number of variables with missing values')
-
+    
     % Plot explanation
-    disp('Detailed explanation of the plot')
-    disp('Top axis contains the name of the variables')
-    disp('Big circle means missing value; smaller filled dot represents non missing value')
+    disp('Detailed explanation of the "Missing data pattern figure"')
+    disp('Top axis contains the names of the variables.')
+    disp('Big circle means missing value; smaller filled dot represents non missing value.')
     disp('Left axis shows the number of observations for each pattern')
-    disp('For example number 40 shows that the associated patterns is repeated 40 times')
-    disp('The sum of the numbers on the left axis is n the total number of rows')
+    disp(['For example number ' Mispat11 ' shows that the associated pattern is repeated ' Mispat11 ' times.'])
+    disp('The sum of the numbers on the left axis is n, the total number of rows.')
     disp('Right axis counts the variables with missing values and')
-    disp('it is equal to the number of big circles in the corresponding row')
+    disp('it is equal to the number of big circles in the corresponding row.')
+    disp('The number of missing values for each variable is shown on the bottom axis.')
 
 end
 
