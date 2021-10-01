@@ -82,7 +82,7 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %                below x0.25-1.5*IQR, where IQR is the interquartile range.
 %
 %
-% See also bubbleplot, bubblesize, bubblelegend
+% See also balloonplot, bubblechart
 %
 % References:
 %
@@ -181,6 +181,12 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
      % the content of two output matrices is shown in the command window.
      dispresults=true;
      [Mispat,tMisAndOut]=mdpattern(Xtable,'plots',false,'dispresults',dispresults);
+%}
+
+%{
+     % Example of mdpattern with timetable input.
+     TT = readtimetable('outages.csv');
+     [A,B]=mdpattern(TT(:,["Loss" "Customers" ]))
 %}
 
 %% Beginning of code
