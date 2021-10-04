@@ -537,7 +537,6 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
     y(1:4)=y(1:4)+6;
     % Use 2 groups
     k = 2 ;
-
     restrfact = 5;
     % Value of trimming
     alphaLik = [0.10 0.06 0.03 0];
@@ -1315,7 +1314,7 @@ for j=2:lalpha
 end
 out.Amon=Amon;
 
-if plots~=0
+if (isnumeric(plots) && plots~=0) || isstruct(plots)
     % alphasel contains the indexes of the columns of matrix IDX which have
     % to be plotted. We use round(alpha*1e+7)/1e+7 to guarantee
     % compatibility with old versions of MATLAB. For the new versions the
@@ -1367,7 +1366,7 @@ alpha1str=num2str(alphaLik(:));
 
 %% Monitoring plots follow
 
-if plots~=0
+if (isnumeric(plots) && plots~=0) || isstruct(plots)
     
     %% 1 Monitor change of statistics between two consecutive values of alphaLik
     
