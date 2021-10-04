@@ -16,7 +16,7 @@ for i=1:length(header)
 end
 
 TableCorpus='';
-if size(corpus)<=17
+if size(corpus)<=13
     for i=1:n
         for j=1:p
             corpusij=corpus(i,j);
@@ -37,7 +37,7 @@ if size(corpus)<=17
         end
     end
 else
-    for i=1:8
+    for i=1:6
         for j=1:p
             numij=num2str(corpus(i,j));
             
@@ -62,7 +62,7 @@ else
         end
     end
     
-    for i=n-7:n
+    for i=n-5:n
         for j=1:p
             numij=num2str(corpus(i,j));
             
