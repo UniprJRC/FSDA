@@ -19,55 +19,6 @@ function resindexplot(residuals,varargin)
 %                Data Types - single|double
 %
 % Optional input arguments:
-%               h : the axis handle of a figure where to send the resindexplot.
-%                   This can be used to host the resindexplot in a subplot of a
-%                   complex figure formed by different panels (for example a panel
-%                   with residuals from a classical ols estimator and another
-%                   with residuals from a robust regression: see example
-%                   below).
-%                   Example -'h',h1 where h1=subplot(2,1,1)
-%                   Data Types - Axes object (supplied as a scalar)
-%
-%              x :  the vector to be plotted on the x-axis. Numeric vector.
-%                   As default the sequence 1:length(residuals) will be
-%                   used.
-%                   Example -'x',1:100
-%                   Data Types - double
-%
-%           labx :  a label for the x-axis. Character.  (default: '')
-%                   Example -'labx','row index'
-%                   Data Types - char
-%
-%           laby :  a label for the y-axis.  Character.  (default: '')
-%                   Example -'laby','scaled residuals'
-%                   Data Types - char
-%
-%          title :  a label containing the title of the plot.  Character.
-%                   Default value is 'Index plot of residuals'
-%                   Example -'title','scaled residuals'
-%                   Data Types - char
-%
-%          numlab:  number of points to be identified in plots.
-%                   [] | cell ({5}) default) | numeric vector | structure.
-%                   NUMLAB IS A CELL.
-%                   If numlab is a cell containing scalar k, the units
-%                   with the k largest residuals are labelled in the plots.
-%                   The default value of numlab is {5}, that is the units
-%                   with the 5 largest residuals are labelled.
-%                   For no labelling leave it empty.
-%                   NUMLAB IS A VECTOR.
-%                   If numlab is a vector, the units inside vector numlab are
-%                   labelled in the plots. 
-%                   NUMLAB IS A STRUCTURE.
-%                   If numlab is a struct it is possible to control the
-%                   size of the points identified. It contains the
-%                   following fields:
-%                   numlab.numlab = number of points to be identified (cell
-%                   or vector, see above);
-%                   numlab.FontSize = fontsize of the labels of the
-%                   points. The default value is 12.
-%                   Example -'numlab',[3,10,35]
-%                   Data Types - double
 %
 %        conflev :  confidence interval for the horizontal bands. Numeric
 %                   vector.
@@ -76,45 +27,6 @@ function resindexplot(residuals,varargin)
 %                   Example -'conflev',[0.95,0.99,0.999]
 %                   Data Types - double
 %                   Remark: confidence interval is based on the chi^2 distribution
-%
-%        FontSize:  Scalar which controls the fontsize of the labels of the
-%                   axes. Default value is 12.
-%                   Example -'Fontsize',10
-%                   Data Types - double
-%
-%     SizeAxesNum:  Scalar which controls the fontsize of the numbers of
-%                   the axes. Default value is 10.
-%                   Example -'SizeAxesNum',10
-%                   Data Types - double
-%
-%           ylimy:  Vector with two elements which controla minimum and maximum
-%                   value of the y axis. Default is '', automatic scale.
-%                   Example -'ylimy',[-5 5]
-%                   Data Types - double
-%
-%           xlimx:  Vector with two elements controlling minimum and maximum
-%                   on the x axis. Default value is '' (automatic scale).
-%                   Example -'xlimx',[-5 5]
-%                   Data Types - double
-%
-%          lwdenv:  width of the lines associated
-%                   with the envelopes. Scalar. Default is lwdenv=1.
-%                   Example -'lwdenv',2
-%                   Data Types - double
-%
-%      MarkerSize:  size of the marker in points. Scalar.
-%                   The default value for MarkerSize is 6 points (1 point =
-%                   1/72 inch).
-%                   Example -'MarkerSize',10
-%                   Data Types - double
-%
-% MarkerFaceColor:  Marker fill color.
-%                   'none' | 'auto' | RGB triplet | color string.
-%                   Fill color for markers that are closed shapes
-%                   (circle, square, diamond, pentagram, hexagram, and the
-%                   four triangles).
-%                   Example -'MarkerFaceColor','b'
-%                   Data Types - char
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
@@ -199,6 +111,47 @@ function resindexplot(residuals,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
+%        FontSize:  Scalar which controls the fontsize of the labels of the
+%                   axes. Default value is 12.
+%                   Example -'Fontsize',10
+%                   Data Types - double
+%
+%               h : the axis handle of a figure where to send the resindexplot.
+%                   This can be used to host the resindexplot in a subplot of a
+%                   complex figure formed by different panels (for example a panel
+%                   with residuals from a classical ols estimator and another
+%                   with residuals from a robust regression: see example
+%                   below).
+%                   Example -'h',h1 where h1=subplot(2,1,1)
+%                   Data Types - Axes object (supplied as a scalar)
+%
+%           labx :  a label for the x-axis. Character.  (default: '')
+%                   Example -'labx','row index'
+%                   Data Types - char
+%
+%           laby :  a label for the y-axis.  Character.  (default: '')
+%                   Example -'laby','scaled residuals'
+%                   Data Types - char
+%
+%          lwdenv:  width of the lines associated
+%                   with the envelopes. Scalar. Default is lwdenv=1.
+%                   Example -'lwdenv',2
+%                   Data Types - double
+%
+%      MarkerSize:  size of the marker in points. Scalar.
+%                   The default value for MarkerSize is 6 points (1 point =
+%                   1/72 inch).
+%                   Example -'MarkerSize',10
+%                   Data Types - double
+%
+% MarkerFaceColor:  Marker fill color.
+%                   'none' | 'auto' | RGB triplet | color string.
+%                   Fill color for markers that are closed shapes
+%                   (circle, square, diamond, pentagram, hexagram, and the
+%                   four triangles).
+%                   Example -'MarkerFaceColor','b'
+%                   Data Types - char
+%
 %       nameX   :   regressor labels. Cell array of strings of length p
 %                   containing the labels of the variables of the
 %                   regression dataset. If it is empty (default) the
@@ -212,11 +165,64 @@ function resindexplot(residuals,varargin)
 %                   Example - 'namey','response'
 %                   Data Types - char
 %
+%          numlab:  number of points to be identified in plots.
+%                   [] | cell ({5}) default) | numeric vector | structure.
+%                   NUMLAB IS A CELL.
+%                   If numlab is a cell containing scalar k, the units
+%                   with the k largest residuals are labelled in the plots.
+%                   The default value of numlab is {5}, that is the units
+%                   with the 5 largest residuals are labelled.
+%                   For no labelling leave it empty.
+%                   NUMLAB IS A VECTOR.
+%                   If numlab is a vector, the units inside vector numlab are
+%                   labelled in the plots. 
+%                   NUMLAB IS A STRUCTURE.
+%                   If numlab is a struct it is possible to control the
+%                   size of the points identified. It contains the
+%                   following fields:
+%                   numlab.numlab = number of points to be identified (cell
+%                   or vector, see above);
+%                   numlab.FontSize = fontsize of the labels of the
+%                   points. The default value is 12.
+%                   Example -'numlab',[3,10,35]
+%                   Data Types - double
+%
+%     SizeAxesNum:  Scalar which controls the fontsize of the numbers of
+%                   the axes. Default value is 10.
+%                   Example -'SizeAxesNum',10
+%                   Data Types - double
+%
 %           tag  :  Figure tag. Character.
-%                   Tag of the figure which will host the malindexplot. The
-%                   default tag is pl_resindex
+%                   Tag of the figure which will host the resindexplot. The
+%                   default tag is pl_resindex. This implies that if you
+%                   call twice function resindexplot without specifying the
+%                   tag, the second plot will overwrite the first. In order
+%                   to have to figures with resindexplot, please use option
+%                   tag.
 %                   Example - 'tag','indexPlot'
 %                   Data Types - character
+%
+%          title :  a label containing the title of the plot.  Character.
+%                   Default value is 'Index plot of residuals'
+%                   Example -'title','scaled residuals'
+%                   Data Types - char
+%
+%              x :  the vector to be plotted on the x-axis. Numeric vector.
+%                   As default the sequence 1:length(residuals) will be
+%                   used.
+%                   Example -'x',1:100
+%                   Data Types - double
+%
+%           xlimx:  Vector with two elements controlling minimum and maximum
+%                   on the x axis. Default value is '' (automatic scale).
+%                   Example -'xlimx',[-5 5]
+%                   Data Types - double
+%
+%           ylimy:  Vector with two elements which controla minimum and maximum
+%                   value of the y axis. Default is '', automatic scale.
+%                   Example -'ylimy',[-5 5]
+%                   Data Types - double
+%
 %
 % Output:
 %
@@ -374,10 +380,12 @@ if ~isempty(UserOptions)
 end
 
 
-[h, x, labx, laby, titl, numlab, conflev, FontSize, SizeAxesNum, lwdenv,MarkerSize,MarkerFaceColor] = ...
+[h, x, labx, laby, titl, numlab, conflev, FontSize, SizeAxesNum, lwdenv,...
+    MarkerSize,MarkerFaceColor,tag] = ...
     deal(options.h, options.x, options.labx, options.laby,...
     options.title, options.numlab, options.conflev,...
-    options.FontSize, options.SizeAxesNum, options.lwdenv,options.MarkerSize,options.MarkerFaceColor);
+    options.FontSize, options.SizeAxesNum, options.lwdenv,...
+    options.MarkerSize,options.MarkerFaceColor,options.tag);
 
 % conflev
 numconflev = length(conflev);
@@ -417,7 +425,7 @@ end
 
 % Create the figure that will host the resindexplot
 hfig = figure('Name', 'Residual plot', 'NumberTitle', 'off',...
-    'Tag','pl_resindex');
+    'Tag',tag);
 
 % Get figure's axis
 afig = axes('Parent',hfig);
