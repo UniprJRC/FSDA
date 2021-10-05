@@ -44,9 +44,10 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %                 Data Types - Boolean
 %
 %  dispresults :  Display results on the screen. Boolean.
-%                 If dispresults is true (default) it is possible to see on the
+%                 If dispresults is true it is possible to see on the
 %                 screen the two output tables Xpat,tMisAndOut.
-%                 Example - 'dispresults',false
+%                 The default value of dispresults is false.
+%                 Example - 'dispresults',true
 %                 Data Types - Boolean
 %
 %
@@ -59,14 +60,14 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %                matrix. The first k rows contain the patterns.
 %                The last row contains n and then the total number of
 %                missing values in each column. The first column contains
-%                information about the number of observations for each pattern. 
+%                information about the number of observations for each pattern.
 %                The columns of Mispat are sorted in non decreasing number of
 %                outliers. The last column contains the number of variables
 %                with missing values for each pattern.
 %
 %   tMisAndOut:  missing values and univariate outliers for each variable. .
 %                The rows of this table are associated with the variables.
-%                The columns are referred to a series of statistics. 
+%                The columns are referred to a series of statistics.
 %                More precisely:
 %                Columns 1:4 contain mean and median, std deviation
 %                and rescaled MAD (median absolute deviation).
@@ -86,7 +87,7 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %
 % References:
 %
-% Schafer, J.L. (1997). "Analysis of Incomplete Multivariate Data". London: Chapman & Hall. 
+% Schafer, J.L. (1997). "Analysis of Incomplete Multivariate Data". London: Chapman & Hall.
 %
 %
 % Copyright 2008-2021.
@@ -102,7 +103,7 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 
 %{
     %% mdpattern with table input.
-    % Load the nhanes data 
+    % Load the nhanes data
     % The nhanes data is a dataset with 25 observations on the following 4 variables.
     % age, Age group (1=20-39, 2=40-59, 3=60+).
     % bmi, Body mass index (kg/m**2).
@@ -139,9 +140,9 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
      [Mispat,tMisAndOut]=mdpattern(Xtable);
 %}
 
-%{ 
+%{
     %% Example of the use of options dispresults and plots.
-    % Load the nhanes data 
+    % Load the nhanes data
     % The nhanes data is a dataset with 25 observations on the following 4 variables.
     % age, Age group (1=20-39, 2=40-59, 3=60+).
     % bmi, Body mass index (kg/m**2).
@@ -175,10 +176,10 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
      3 24.9   1  NaN
      2 27.4   1 186];
      Xtable=array2table(X,VariableNames=namvar);
-     % Plot is not shown
+     % Plot is not shown.
      plots=false;
-     % option dispresults is shows and therefore a detailed explanation of
-     % the content of two output matrices is shown in the command window.
+     % option dispresults shows a detailed explanation of
+     % the content of two output matrices in the command window.
      dispresults=true;
      [Mispat,tMisAndOut]=mdpattern(Xtable,'plots',false,'dispresults',dispresults);
 %}
@@ -216,10 +217,10 @@ plots=true;
 dispresults=false;
 Lc='';
 if nargin>1
-
+    
     options=struct('Lc',Lc,'plots',plots,...
         'dispresults',dispresults);
-
+    
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         UserOptions=varargin(1:2:length(varargin));
@@ -231,7 +232,7 @@ if nargin>1
             % Check if user options are valid options
             chkoptions(options,UserOptions)
         end
-
+        
         % Write in structure 'options' the options chosen by the user
         if nargin > 2
             for i=1:2:length(varargin)
@@ -244,7 +245,7 @@ if nargin>1
     end
 end
 
-if ~istable(Y)
+if ~(istable(Y) || istimetable(Y))
     if isempty(Lc)
         % Lc=cellstr(num2str((1:p)'));
         Lc=strrep(strcat("Y",num2str((1:p)')),' ','');
@@ -256,6 +257,9 @@ if ~istable(Y)
     end
     Yd=Y;
 else
+    if istimetable(Y)
+        Y=timetable2table(Y,'ConvertRowTimes',false);
+    end
     Yd=table2array(Y);
     Lc=Y.Properties.VariableNames;
 end
@@ -302,10 +306,10 @@ for j=1:p
     ThreshSup=quart(2)+1.5*DI;
     outSUPj=sum(Yjnomiss>ThreshSup);
     outINFj=sum(Yjnomiss<ThreshInf);
-
+    
     tot=[mj medianj sigmaj madj countMissingj percMissingj outSUPj outINFj];
     MisAndOut(j,:)=tot;
-
+    
 end
 
 namesVariablesMisAndOut={'Mean' 'Median'   'Stdev' 'MAD'  'Count_miss' ...
@@ -313,7 +317,7 @@ namesVariablesMisAndOut={'Mean' 'Median'   'Stdev' 'MAD'  'Count_miss' ...
 tMisAndOut=array2table(MisAndOut,"RowNames",Lc,"VariableNames",namesVariablesMisAndOut);
 
 %% dispresults and plots
-    Mispat11=num2str(Mispat{1,1});
+Mispat11=num2str(Mispat{1,1});
 
 if dispresults==true
     disp('Table which shows missing values patterns')
@@ -326,7 +330,7 @@ if dispresults==true
     disp('------------------------')
     disp('Missing value and outlier report')
     disp(tMisAndOut)
-    disp('Columns outInf and outSup contain the number of units which are') 
+    disp('Columns outInf and outSup contain the number of units which are')
     disp('above x0.75+1.5*IQR or below x0.25-1.5*IQR, where IQR is the interquartile range')
 end
 if plots==true
@@ -354,7 +358,11 @@ if plots==true
     ax2 = axes('Position', get(ax1, 'Position'),'Color', 'none');
     set(ax2, 'XAxisLocation', 'top','YAxisLocation','Right');
     % set the same Limits and Ticks on ax2 as on ax1;
-    set(ax2, 'XLim', get(ax1, 'XLim'),'YLim', get(ax1, 'YLim'),'TickDir','none');
+    if verLessThan('matlab','9.11')
+        set(ax2, 'XLim', get(ax1, 'XLim'),'YLim', get(ax1, 'YLim'));
+    else
+        set(ax2, 'XLim', get(ax1, 'XLim'),'YLim', get(ax1, 'YLim'),'TickDir','none');
+    end
     set(ax2, 'XTick', get(ax1, 'XTick'), 'YTick', get(ax1, 'YTick'));
     OppositeYTickLabels = string(flip(Yfin(1:end-1,end)));
     % Set the x-tick and y-tick  labels for the second axes
@@ -372,7 +380,7 @@ if plots==true
     disp('Right axis counts the variables with missing values and')
     disp('it is equal to the number of big circles in the corresponding row.')
     disp('The number of missing values for each variable is shown on the bottom axis.')
-
+    
 end
 
 end
