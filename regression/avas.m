@@ -156,8 +156,8 @@ function [out]=avas(y,X,varargin)
 %           If tyinitial is not specified tyinitial is set to false and the
 %           initial value for ty are simply the standardized values.
 %           If tyinitial is true, y is transformed using best BoxCox lambda
-%           value among the five most common values of lambda (-1, -0.5, 0,
-%           0.5, 1) and routines FSRfan.m and fanBIC.m are called.
+%           value among the following values of lambda (-1, -0.8, -0.6,
+%           ..., 0.8, 1) and routines FSRfan.m and fanBIC.m are called.
 %           If tyinitial is a struct it is possible to specify in the
 %           fields la and family the values of lambda and the family to
 %           use. More precisely:
@@ -612,7 +612,8 @@ end
 if islogical(tyinitial)
     if tyinitial ==true
         callToFSRfan=true;
-        la=[-1 -0.5 0 0.5 1];
+        % la=[-1 -0.5 0 0.5 1];
+        la=-1:0.2:1;
         if min(y)>0
             family='BoxCox';
         else
@@ -627,7 +628,8 @@ elseif isstruct(tyinitial)
     if isfield(tyinitial,'la')
         la=tyinitial.la;
     else
-        la=[-1 -0.5 0 0.5 1];
+        % la=[-1 -0.5 0 0.5 1];
+        la=-1:0.2:1;
     end
     if isfield(tyinitial,'family')
         family=tyinitial.family;
@@ -708,7 +710,7 @@ yori=y;
 
 if callToFSRfan ==true
     % FSRfan and fanplot with all default options
-    [outFSR]=FSRfan(y,X,'msg',0,'la',la,'family',family,'plots',1);
+    [outFSR]=FSRfan(y,X,'msg',0,'la',la,'family',family,'plots',false);
     outLA=fanBIC(outFSR,'plots',0);
     % outLA.labest=-0.5;
     if strcmp(family,'BoxCox')
@@ -939,8 +941,20 @@ resbsb = ty(bsb) - yhatbsb;
 [~,yhatbsbsorind]=sort(yhatbsb);
 resbsbsorted=resbsb(yhatbsbsorind);
 tXbsbsorted=tXbsb(yhatbsbsorind,:);
-[pval]=dwtest(resbsbsorted,[ones(length(bsb),1) tXbsbsorted]);
-out.pvaldw=pval;
+warning('off','stats:pvaluedw:ExactUnavailable')
+[pvaldw]=dwtest(resbsbsorted,[ones(length(bsb),1) tXbsbsorted]);
+warning('on','stats:pvaluedw:ExactUnavailable')
+
+out.pvaldw=pvaldw;
+% [~,pvaljb]=jbtest(resbsbsorted,0.05,0.0001);
+warning('off','stats:jbtest:PTooSmall')
+warning('off','stats:jbtest:PTooBig')
+[~,pvaljb]=jbtest(resbsbsorted);
+warning('on','stats:jbtest:PTooSmall')
+warning('on','stats:jbtest:PTooBig')
+
+out.pvaljb=pvaljb;
+
 %[pval]=dwtest(resbsb,[ones(length(bsb),1) tXbsb])
 % aa=1;
 end
