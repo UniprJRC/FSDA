@@ -39,8 +39,14 @@ while lfinishInnerLoop==1 % Beginning of Inner Loop
         varin=false(p,1);
         varout=true(p,1);
         ChooseBestR2=true;
-        sqweights = w(bsb).^(1/2);
-        tywbsb = ty(bsb) .* sqweights;
+        wbsb=w(bsb);
+        sqweightsbsb = wbsb.^(1/2);
+        tybsb=ty(bsb);
+        tywbsb = tybsb .* sqweightsbsb;
+        tywav=(tybsb.*wbsb)/sum(wbsb);
+        tyminusav=(tybsb-tywav).*sqweightsbsb;
+        DEVtotbsb=tyminusav'*tyminusav;
+        interceptbsb=ones(length(bsb),1);
         seqp=1:p;
     else
         ChooseBestR2=false;
@@ -59,13 +65,13 @@ while lfinishInnerLoop==1 % Beginning of Inner Loop
             % included
             tXbsbVarin=tX(bsb,varin);
             for jj=1:size(tXbsbVarout,2)
-                tXjj=[tXbsbVarin tXbsbVarout(:,jj)];
-                tXjjw=tXjj(bsb,:).*sqweights;
+                tXjjbsb=[interceptbsb tXbsbVarin tXbsbVarout(:,jj)];
+                tXjjw=tXjjbsb.*sqweightsbsb;
                 % estimate of beta from weighted regression (RWLS)
                 bjj=tXjjw\tywbsb;
-                DEVres=sum(((ty(bsb)-tXjj(bsb,:)*bjj).^2).*w);
+                DEVresbsb=sum(((tybsb-tXjjbsb*bjj).^2).*wbsb);
                 % Note that ty is standardized
-                R2jj=1-DEVres/sw;
+                R2jj=1-DEVresbsb/DEVtotbsb;
                 R2cand(jj)=R2jj;
             end
             [~,indmax]=max(R2cand);
