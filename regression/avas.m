@@ -82,30 +82,30 @@ function [out]=avas(y,X,varargin)
 %           Example - 'PredictorOrderR2',true
 %           Data Types - logical
 %
-% RectAreaOutside : strategy for evaluating points that lie outside the
-%           domain of fitted values inside the routine which computes the variance stabilizing
-%           transformation (ctsub).
-%           Boolean. This options specifies the hypothesis to assume in the
+% Trapezoid : strategy for evaluating points that lie outside the
+%           domain of fitted values inside the routine which computes the
+%           variance stabilizing transformation (ctsub). Boolean. This
+%           options specifies the hypothesis to assume in the
 %           cases in which $\widehat{ty}_i^{old}<\hat y_{(1)}$ or
 %           $\widehat{ty}^{old}>\hat y_{n-k}$ where $\hat y_{(1)}$, ...,
 %           $\hat y_{(n-k)}$ are the fitted values sorted of the $n-k$
 %           units which have not been declared as outliers and
 %           $\widehat{ty}_i^{old}$ is the transformed value for unit $i$
 %           from previous iteration ($i=1, \ldots, n$).
-%           If this option is omitted or if RectAreaOutside is true
+%           If this option is omitted or if Trapezoid is false
 %           (default), we assume a rectangulat hypothesis. In
 %           other words, we assume that below $\hat y_{(1)}$ the function
 %           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$, 
 %           $|e_1|, \ldots, |e_{n-k}|$ are the smoothed residuals
 %           corresponding to ordered fitted values.
 %           Similarly, we assume that beyond $\hat y_{n-k}$ the function is
-%           constant and equal to $1/|e_{n-k}|$. If RectAreaOutside is
+%           constant and equal to $1/|e_{n-k}|$. If Trapezoid is
 %           false we assume that below $\hat y_{(1)}$ or above $\hat
 %           y_{(n-k)}$  the function is constant and equal to the mean of
 %           $\sum_{j=1}^{n-k} 1/(|e_j| (n-k))$ (trapezoidal hypothesis).
 %           Additional details are given in the More About section of this
 %           file.
-%               Example - 'RectAreaOutside',true
+%               Example - 'Trapezoid',true
 %               Data Types - logical
 %
 %   rob  : Use outlier detection in each step of the backfitting procedure.
@@ -203,6 +203,14 @@ function [out]=avas(y,X,varargin)
 %      out.outliers = k x 1 vector containing the units declared as outliers
 %           when procedure is called with input option rob set to true. If
 %           rob is false out.outliers=[].
+%      out.pvaldw  = scalar containing p-value of Durbin Watson test for
+%                    the independence of the residuals ordered by the
+%                    fitted values from the model.
+%      out.pvaljb  = scalar containing p-value of Jarque and Bera test.
+%                    This statistic uses a combination of estimated
+%                    skewness and kurtosis to test for distributional shape
+%                    of the residuals.
+%
 %
 %
 % More About:
@@ -565,7 +573,7 @@ scail=false;
 tyinitial=false;
 rob=false;
 PredictorOrderR2=false;
-RectAreaOutside=true;
+Trapezoid=false;
 
 % c span, alpha : super smoother parameters.
 % supermo=struct;
@@ -577,7 +585,7 @@ if ~isempty(UserOptions)
     
     options=struct('l',l,'delrsq',delrsq,'nterm',nterm,...
         'w',w,'maxit',maxit,'scail',scail,'tyinitial',tyinitial,'rob',rob,...
-        'PredictorOrderR2',PredictorOrderR2,'RectAreaOutside',RectAreaOutside);
+        'PredictorOrderR2',PredictorOrderR2,'Trapezoid',Trapezoid);
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -602,7 +610,7 @@ if ~isempty(UserOptions)
     tyinitial=options.tyinitial;
     rob=options.rob;
     PredictorOrderR2=options.PredictorOrderR2;
-    RectAreaOutside=options.RectAreaOutside;
+    Trapezoid=options.Trapezoid;
 end
 
 if size(w,2)>1
@@ -870,7 +878,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     
     % Compute updated transformed values
-    ty=ctsub(yhatord(1:ngood),smoothresm1Ordyhat(1:ngood),ty,RectAreaOutside);
+    ty=ctsub(yhatord(1:ngood),smoothresm1Ordyhat(1:ngood),ty,Trapezoid);
 
     wbsb=w(bsb);
     sm=sum(ty(bsb).*wbsb);
