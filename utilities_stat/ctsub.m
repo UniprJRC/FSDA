@@ -1,4 +1,4 @@
-function a=ctsub(x,y,z,RectAreaOutside)
+function a=ctsub(x,y,z,Trapezoid)
 %ctsub computes numerical integration from x(1) to z(i) of y=f(x).
 %
 %<a href="matlab: docsearchFS('ctsub')">Link to the help page for this function</a>
@@ -26,17 +26,17 @@ function a=ctsub(x,y,z,RectAreaOutside)
 %
 %  Optional input arguments:
 %
-% RectAreaOutside : strategy for evaluating $z$ points that lie outside the domain of $x$.
+%       Trapezoid : strategy for evaluating $z$ points that lie outside the domain of $x$.
 %                   Boolean. This options specifies the
 %                   hypothesis to assume for the cases in which $z(i)<x(1)$ or
 %                   $z(i)>x(n)$. If this argument is omitted or it is
-%                   true we assume a rectangular hypothesis (default). In other
+%                   false we assume a rectangular hypothesis (default). In other
 %                   words, we assume that below x(1) the function is
 %                   constant and equal to y(1). Similarly, we assume that
 %                   beyond x(n) the function is constant and equal to y(n).
 %                   Therefore for example for if $z(i)<min(x)$ the result of
 %                   the integral is  $a(i) =(z(i)-x(1))*y(1)$ (rectangular hypothesis).
-%                   If this argument is false we assume that the $y$
+%                   If this argument is true we assume that the $y$
 %                   coordinate  $z(i)$ is equal to mean(y).
 %                   Therefore for example for if $z(i)<min(x)$ the result of
 %                   the integral is  $a(i) =(z(i)-x(1))*(y(1)+mean(y))/2$
@@ -79,7 +79,7 @@ function a=ctsub(x,y,z,RectAreaOutside)
 % \]
 % is found by linear interpolation.
 %
-% If RectAreaOutside is omitted or is true, 
+% If Trapezoid is omitted or is false, 
 % when $z_i>x_n$ the function for $x >x_n$ is assumed constant and equal to
 % $y_n$ therefore, to the expression of $a_i$ computed as described above, we
 % must add $(z_i-x_n) y_n$.
@@ -89,7 +89,7 @@ function a=ctsub(x,y,z,RectAreaOutside)
 % a_i = -(x_1-z_i) y_1
 % \]
 % Note that $a_i$ in this last case (if $y_1$ is positive) becomes negative.
-% On the other hand, if RectAreaOutside is false when $z_i>x_n$ or when  $z_i<x_1$, 
+% On the other hand, if Trapezoid is false when $z_i>x_n$ or when  $z_i<x_1$, 
 % we assume $f(z_i)=\sum_{i=1}^n y_i/n$. 
 % 
 % This routine in called in every step of the outer loop by function avas.m
@@ -257,7 +257,7 @@ function a=ctsub(x,y,z,RectAreaOutside)
 %}
 
 %{
-    % Example of use of option RectAreaOutside.
+    % Example of use of option Trapezoid.
     n=10;
     x=(1:n)';
     y=3*ones(n,1);
@@ -266,9 +266,9 @@ function a=ctsub(x,y,z,RectAreaOutside)
     % The overall area in the interval [1 10] is equal to 27
     disp(['Overall area: ' num2str(ctsub(x,y,10))])
     disp('Area when x=11 using the rectangular hypothesis Hp:f(11)=5')
-    disp(ctsub(x,y,11,true))
-    disp('Area when x=11 using the trapezoidal hypothesis Hp:f(11)=3')
     disp(ctsub(x,y,11,false))
+    disp('Area when x=11 using the trapezoidal hypothesis Hp:f(11)=3')
+    disp(ctsub(x,y,11,true))
 %}
 
 % Note that trapz([1/3 pi],[sin(1/3) sin(pi)]) =
@@ -280,10 +280,10 @@ lz=length(z);
 a =zeros(lz,1);
 
 if nargin<4
-    RectAreaOutside=true;
+    Trapezoid=true;
 end
 
-if RectAreaOutside==false
+if Trapezoid==false
     if any(z<x(1) | z>x(n))
         meany=sum(y)/n;
     end
@@ -292,7 +292,7 @@ end
 for i=1:lz
     
     if(z(i)<= x(1))
-        if RectAreaOutside==true
+        if Trapezoid==true
             a(i) =(z(i)-x(1))*y(1);
         else
             a(i) =(z(i)-x(1))*(y(1) +meany)/2;
@@ -312,7 +312,7 @@ for i=1:lz
         if z(i) <= x(n)
             a(i) = a(i)+.5*(z(i)-x(j-1))*(2*y(j-1)+(z(i)-x(j-1))*(y(j)-y(j-1))/(x(j)-x(j-1)));
         else
-            if RectAreaOutside==true
+            if Trapezoid==true
                 a(i) =a(i)+(z(i)-x(n))*y(n);
             else
                 a(i) =a(i)+(z(i)-x(n))*(y(n)+meany)/2;
