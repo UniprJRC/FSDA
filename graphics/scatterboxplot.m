@@ -6,15 +6,16 @@ function h = scatterboxplot(x,y,varargin)
 %  scatterboxplot displays a 2D scatter plot with marginal boxplots. It
 %  receives data in two vectors X and Y, and puts a univariate boxplot on
 %  the horizontal and vertical axes of the plot. x and y must have the same
-%  length.
+%  length. All the name pairs in function scatterhist such as 'Location',
+%  'Group', 'PlotGroup',... can be used inside this function.
 %
 %  Required input arguments:
 %
-%   x :          Input data. Vector or 1-column matrix. The structure
-%                contains the univariate data to display in the x axis.
+%   x :          Input data. Vector or 1-column matrix. 
+%                x contains the univariate data to display in the x axis.
 %
-%   y :          Input data. Vector or 1-column matrix. The structure
-%                contains the univariate data to display in the y axis.
+%   y :          Input data. Vector or 1-column matrix. 
+%                y contains the univariate data to display in the y axis.
 %
 %  Optional input arguments:
 %
@@ -22,8 +23,17 @@ function h = scatterboxplot(x,y,varargin)
 %                 With this option scatterboxplot creates a 2D GSCATTER
 %                 plot instead of a SCATTER plot, and the marginal
 %                 boxplots are replaced by grouped boxplots.
-%                 Data Types - scalar
-%                 Example - Group,[1,1,1,2,2,2,2,2,2]
+%                 Data Types - categorical array | logical or numeric vector | character array | string array | cell array of character vectors
+%                 Example - 'Group',[1,1,1,2,2,2,2,2,2]
+%
+%  PlotGroup :  Grouped plot indicator. Character. If PlotGroup is 'on'   
+%               routine displays grouped boxplots. 
+%               This is the default if a Group parameter is specified.
+%               If PlotGroup is 'off' scatterboxplot displays boxplots of
+%               the whole data set. This is the default if a Group
+%               parameter is not specified.
+%                 Data Types - character 'on' or 'off'
+%                 Example - 'PlotGroup','on'
 %
 %
 %  Output:
@@ -53,19 +63,31 @@ function h = scatterboxplot(x,y,varargin)
 %{
     %% A 2D scatter plot with marginal boxplots. 
     n=100;
-    scatterboxplot(randn(n,1),randn(n,1))
+    scatterboxplot(randn(n,1),randn(n,1));
 %}
 %
 %{
     %% A 2D scatter plot with marginal boxplots, for grouped data.
     n=100; group=ones(n,1);
-    group(1:50)=2; scatterboxplot(randn(n,1),randn(n,1),'Group',group)
+    group(1:50)=2; scatterboxplot(randn(n,1),randn(n,1),'Group',group);
 %}
+
+%{
+    %% scatterboxplot for the stars data.
+    Y=load('stars.txt');
+    x=Y(:,1); y=Y(:,2);
+    out=FSR(y,x,'plots',0);
+    group=ones(length(x),1);
+    group(out.outliers)=2;
+    scatterboxplot(Y(:,1),Y(:,2),'Group',group);
+%}
+
 
 %% Start calling function scatterhist
 if nargin<3
     h=scatterhist(x,y);
-    group='';
+    group=[];
+    PlotGroup={'off'};
 else
     h=scatterhist(x,y,varargin{:,:});
     
@@ -74,8 +96,21 @@ else
     if sum(checkGroup)
         group = varargin(2*find(checkGroup));
     else
-        group='';
+        group=[];
     end
+
+    checkPlotGroup = strcmp(UserOptions,'PlotGroup');
+    if sum(checkPlotGroup)
+        PlotGroup = varargin(2*find(checkPlotGroup));
+    else
+        if ~isempty(group)
+        PlotGroup={'on'};
+        else
+        PlotGroup={'off'};
+        end
+    end
+
+
 end
 if iscell(group)
     group=group{:};
@@ -83,6 +118,11 @@ end
 
 hold on;
 clr = get(h(1),'colororder');
+
+if strcmp(PlotGroup{:},'off')
+    group=[];
+end
+
 boxplot(h(2),x,group,'orientation','horizontal',...
     'label','','color',clr);
 set(h(2:3),'XTickLabel','');
