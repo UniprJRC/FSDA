@@ -82,31 +82,6 @@ function [out]=avas(y,X,varargin)
 %           Example - 'PredictorOrderR2',true
 %           Data Types - logical
 %
-% Trapezoid : strategy for evaluating points that lie outside the
-%           domain of fitted values inside the routine which computes the
-%           variance stabilizing transformation (ctsub). Boolean. This
-%           options specifies the hypothesis to assume in the
-%           cases in which $\widehat{ty}_i^{old}<\hat y_{(1)}$ or
-%           $\widehat{ty}^{old}>\hat y_{n-k}$ where $\hat y_{(1)}$, ...,
-%           $\hat y_{(n-k)}$ are the fitted values sorted of the $n-k$
-%           units which have not been declared as outliers and
-%           $\widehat{ty}_i^{old}$ is the transformed value for unit $i$
-%           from previous iteration ($i=1, \ldots, n$).
-%           If this option is omitted or if Trapezoid is false
-%           (default), we assume a rectangulat hypothesis. In
-%           other words, we assume that below $\hat y_{(1)}$ the function
-%           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$, 
-%           $|e_1|, \ldots, |e_{n-k}|$ are the smoothed residuals
-%           corresponding to ordered fitted values.
-%           Similarly, we assume that beyond $\hat y_{n-k}$ the function is
-%           constant and equal to $1/|e_{n-k}|$. If Trapezoid is
-%           false we assume that below $\hat y_{(1)}$ or above $\hat
-%           y_{(n-k)}$  the function is constant and equal to the mean of
-%           $\sum_{j=1}^{n-k} 1/(|e_j| (n-k))$ (trapezoidal hypothesis).
-%           Additional details are given in the More About section of this
-%           file.
-%               Example - 'Trapezoid',true
-%               Data Types - logical
 %
 %   rob  : Use outlier detection in each step of the backfitting procedure.
 %           Boolean or struct.
@@ -151,6 +126,32 @@ function [out]=avas(y,X,varargin)
 %           4 (Nov., 1988), pp. 442-445.
 %           Example - 'scail',true
 %           Data Types - logical
+%
+% Trapezoid : strategy for evaluating points that lie outside the
+%           domain of fitted values inside the routine which computes the
+%           variance stabilizing transformation (ctsub). Boolean. This
+%           options specifies the hypothesis to assume in the
+%           cases in which $\widehat{ty}_i^{old}<\hat y_{(1)}$ or
+%           $\widehat{ty}^{old}>\hat y_{n-k}$ where $\hat y_{(1)}$, ...,
+%           $\hat y_{(n-k)}$ are the fitted values sorted of the $n-k$
+%           units which have not been declared as outliers and
+%           $\widehat{ty}_i^{old}$ is the transformed value for unit $i$
+%           from previous iteration ($i=1, \ldots, n$).
+%           If this option is omitted or if Trapezoid is false
+%           (default), we assume a rectangulat hypothesis. In
+%           other words, we assume that below $\hat y_{(1)}$ the function
+%           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$, 
+%           $|e_1|, \ldots, |e_{n-k}|$ are the smoothed residuals
+%           corresponding to ordered fitted values.
+%           Similarly, we assume that beyond $\hat y_{n-k}$ the function is
+%           constant and equal to $1/|e_{n-k}|$. If Trapezoid is
+%           false we assume that below $\hat y_{(1)}$ or above $\hat
+%           y_{(n-k)}$  the function is constant and equal to the mean of
+%           $\sum_{j=1}^{n-k} 1/(|e_j| (n-k))$ (trapezoidal hypothesis).
+%           Additional details are given in the More About section of this
+%           file.
+%               Example - 'Trapezoid',true
+%               Data Types - logical
 %
 %   tyinitial  : Initial values for the transformed response. Boolean or struct.
 %           If tyinitial is not specified tyinitial is set to false and the
