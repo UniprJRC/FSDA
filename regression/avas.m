@@ -549,7 +549,7 @@ function [out]=avas(y,X,varargin)
 %% Beginning of code
 
 if nargin <2
-    error('FSDA:ace:missingInputs','A required input argument is missing.')
+    error('FSDA:avas:missingInputs','A required input argument is missing.')
 end
 
 [n,p]=size(X);
