@@ -89,7 +89,7 @@ function a=ctsub(x,y,z,Trapezoid)
 % a_i = -(x_1-z_i) y_1
 % \]
 % Note that $a_i$ in this last case (if $y_1$ is positive) becomes negative.
-% On the other hand, if Trapezoid is false when $z_i>x_n$ or when  $z_i<x_1$, 
+% On the other hand, if Trapezoid is true when $z_i>x_n$ or when  $z_i<x_1$, 
 % we assume $f(z_i)=\sum_{i=1}^n y_i/n$. 
 % 
 % This routine in called in every step of the outer loop by function avas.m
@@ -280,10 +280,10 @@ lz=length(z);
 a =zeros(lz,1);
 
 if nargin<4
-    Trapezoid=true;
+    Trapezoid=false;
 end
 
-if Trapezoid==false
+if Trapezoid==true
     if any(z<x(1) | z>x(n))
         meany=sum(y)/n;
     end
@@ -292,7 +292,7 @@ end
 for i=1:lz
     
     if(z(i)<= x(1))
-        if Trapezoid==true
+        if Trapezoid==false
             a(i) =(z(i)-x(1))*y(1);
         else
             a(i) =(z(i)-x(1))*(y(1) +meany)/2;
@@ -312,7 +312,7 @@ for i=1:lz
         if z(i) <= x(n)
             a(i) = a(i)+.5*(z(i)-x(j-1))*(2*y(j-1)+(z(i)-x(j-1))*(y(j)-y(j-1))/(x(j)-x(j-1)));
         else
-            if Trapezoid==true
+            if Trapezoid==false
                 a(i) =a(i)+(z(i)-x(n))*y(n);
             else
                 a(i) =a(i)+(z(i)-x(n))*(y(n)+meany)/2;
