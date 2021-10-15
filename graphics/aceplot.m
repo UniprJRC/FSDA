@@ -150,7 +150,7 @@ p=size(tX,2);
 
 
 addout=~isempty(highlight);
-oneplot=true;
+oneplot=false;
 if oneplot==false
 if p<=2
     nr=2; nc=1;
