@@ -147,6 +147,11 @@ tX=out.tX;
 ty=out.ty;
 p=size(tX,2);
 
+
+
+addout=~isempty(highlight);
+oneplot=true;
+if oneplot==false
 if p<=2
     nr=2; nc=1;
 elseif p<=4
@@ -162,26 +167,25 @@ elseif p<=12
 else
     error('FSDA:aceplot:ToDo','So far not implemented for p>12')
 end
-
-addout=~isempty(highlight);
-
-for j=1:p
-    subplot(nr,nc,j)
-    plot(X(:,j),tX(:,j),'o')
-    R=rug(0.03);
-    try
-        delete(R.yRug)
-    catch
-    end
-    jstr=num2str(j);
-    ylabel(['Transformed X' jstr])
-    xlabel(['X' jstr])
-    if addout ==true
-        hold('on')
-        plot(X(highlight,j),tX(highlight,j),'ro','MarkerFaceColor','r')
-    end
-    
+else
+if p==1
+    nr=2; nc=2;
+    numbers=[4 4];
+elseif p==2
+    nr=4; nc=4;
+    numbers=[11 12; 15 16];
+elseif p==3
+    nr=6; nc=6;
+    numbers=[22:24; 28:30; 34:36];
+elseif p==4
+    nr=8; nc=8;
+    numbers=[37.5 40; 45.5 48; 53.5 56; 61.5 64];
+    % numbers=[37 48; 45.5 48; 53.5 56; 61.5 64];
+else
+error('TODO')
 end
+end
+
 
 figure
 subplot(2,2,1)
@@ -230,6 +234,41 @@ if ~isempty(ylimy)
     ylim(ylimy(3,:))
 end
 
+if oneplot==true
+else
+    figure
+end
+
+for j=1:p
+    if oneplot==true
+        jj=numbers(j,1):numbers(j,2);
+    else
+        jj=j;
+    end
+    subplot(nr,nc,jj)
+    plot(X(:,j),tX(:,j),'o')
+    %if j<p
+    a=gca;
+    a.XTickLabel='';
+    % end
+    R=rug(0.03);
+    try
+        delete(R.yRug)
+    catch
+    end
+    jstr=num2str(j);
+    if oneplot==false
+    ylabel(['Transformed X' jstr])
+    xlabel(['X' jstr])
+    else
+        ylabel(['tX' jstr])
+    end
+    if addout ==true
+        hold('on')
+        plot(X(highlight,j),tX(highlight,j),'ro','MarkerFaceColor','r')
+    end
+    
+end
 
 % Add an horizontal line at 0
 %    abline(h = 0, col = "black", lty = 2)
