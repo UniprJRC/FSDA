@@ -20,8 +20,8 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %
 % We reduce the number of analyses for investigation by removing all those
 % for which the residuals fail the Durbin-Watson and Jarque-Bera tests, at
-% the $5\%$ level (two-sided for Durbin-Watson). Unlike the Durbin-Watson
-% test, JarqueBera test uses a combination of estimated
+% the 5 per cent level (two-sided for Durbin-Watson). Unlike the
+% Durbin-Watson test, JarqueBera test uses a combination of estimated
 % skewness and kurtosis to test for distributional shape of the residuals.
 % We order the analyses by the Durbin-Watson significance level, from the
 % largest value downwards. The rays in individual plots are of equal length
@@ -131,11 +131,11 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 For example, if option PredictorOrderR2 is the only one
 %                 which is always used in the set of admissible solutions,
 %                 then column 1 is associated to PredictorOrderR2.
-%                 Sixth column contains the value of R2.
-%                 Seventh column contains the p-value of Durbin Watson
+%                 6th column contains the value of R2.
+%                 7th column contains the p-value of Durbin Watson
 %                 test.
-%                 Eight column contains the p-value of Jarque Bera test.
-%                 Ninth column contains the number of units which have not
+%                 8th column contains the p-value of Jarque Bera test.
+%                 9th column contains the number of units which have not
 %                 been declared as outliers.
 %                 10th column is a cell which contains the residuals for
 %                 the associated solution.
@@ -174,7 +174,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % variables in order to let each column of matrix X have the same weight
 % when predicting g(y).
 %
-% [3]To use option PredictorOrderR2 to completely eliminate dependence on
+% [3] To use option PredictorOrderR2 to completely eliminate dependence on
 % the order of the variables. That is, in each iteration of the backfitting
 % algorithm we impose an ordering which is based on the variable which
 % produces the highest increment of $R^2$.
@@ -183,8 +183,9 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % transformation of the response before starting the main backfitting loop.
 %
 % [5] To use option trapeziod in order to specify how to compute the
-% integral to obtain trasnformed values for the units fall outside the
-% range of integration determined by the units not declared as outliers.
+% integral to obtain transformed values for the units which fall outside
+% the range of integration determined by the units not declared as
+% outliers.
 %
 % The purpose of this routine is to apply avas with and without the five
 % options listed above. There are therefore 32 combinations of options that
@@ -222,7 +223,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 
 
 %{
-    % Example 2 in RAC (2021).
+    %% Example 2 in RAC (2021).
     % There are four explanatory variables and 151 observations with $x_1 $
     % equally spaced from 0:0.1:15. The linear model is:
     % 
@@ -301,7 +302,7 @@ maxit=20;
 %         rsq must change less than delrsq for convergence.
 nterm=3;
 w=ones(n,1);
-plots=false;
+plots=true;
 
 UserOptions=varargin(1:2:length(varargin));
 
@@ -329,6 +330,7 @@ if ~isempty(UserOptions)
     w=options.w;
     nterm=options.nterm;
     maxit=options.maxit;
+    plots=options.plots;
 
 end
 
@@ -398,57 +400,62 @@ if isempty(VALtsel)
 end
 
 if isempty(VALtsel)
+
     warning('FSDA:avasms:noGoodModel','no model satisfies the criteria of pvalues')
-end
+    BestSol=VALtsel;
+    corMatrix=[];
+else
 
-% Reorder the first five columns
-[~,sortind]=sort(sum(VALtsel{:,1:5},1),'desc');
-VALtfin=VALtsel;
-VALtfin=[VALtfin(:,sortind) VALtsel(:,6:end)];
+    % Reorder the first five columns
+    [~,sortind]=sort(sum(VALtsel{:,1:5},1),'desc');
+    VALtfin=VALtsel;
+    VALtfin=[VALtfin(:,sortind) VALtsel(:,6:end)];
 
-ord=VALtfin{:,"pvalDW"}.*VALtfin{:,"R2"}.*VALtfin{:,"nused"}; % .*VALtfin{:,"pvalJB"}
-VALtfin.ord=ord;
-[~,indsor]=sort(ord,'descend');
-BestSol=VALtfin(indsor,:);
+    ord=VALtfin{:,"pvalDW"}.*VALtfin{:,"R2"}.*VALtfin{:,"nused"}/n; % .*VALtfin{:,"pvalJB"}
+    VALtfin.ord=ord;
+    [~,indsor]=sort(ord,'descend');
+    BestSol=VALtfin(indsor,:);
 
-lab="R2="+string(num2str(BestSol{:,"R2"},3))...
-    +" n="+string(num2str(BestSol{:,"nused"}))...
-    + newline ...
-    +" dw="+string(num2str(BestSol{:,"pvalDW"},2))...
-    +" jb="+string(num2str(BestSol{:,"pvalJB"},2));
+    rowlabs="R2="+string(num2str(BestSol{:,"R2"},3))...
+        +" n="+string(num2str(BestSol{:,"nused"}))...
+        + newline ...
+        +" dw="+string(num2str(BestSol{:,"pvalDW"},2))...
+        +" jb="+string(num2str(BestSol{:,"pvalJB"},2));
 
-Rescell=BestSol{:,"res"};
-% n x numbsol
-Resarray=cell2mat(Rescell)';
-% corMatrix correlation matrix among the residuals of the solutions which
-% have been found.
-corMatrix=corr(Resarray);
+    Rescell=BestSol{:,"res"};
 
-if plots==true
-    figure
-    varlabs=BestSol.Properties.VariableNames(1:5);
-    VALtadj=BestSol{:,1:5}.*BestSol{:,"ord"};
+    Resarray=cell2mat(Rescell)';
+    % corMatrix correlation matrix among the residuals of the solutions which
+    % have been found.
+    corMatrix=corr(Resarray);
+
+    if plots==true
+        % Create the augmented star plot to show the options used in the best
+        % solutions
+        figure
+        varlabs=BestSol.Properties.VariableNames(1:5);
+        VALtadj=BestSol{:,1:5}.*BestSol{:,"ord"};
 
 
-    d = logical(eye(size(corMatrix,2)));
+        d = logical(eye(size(corMatrix,2)));
 
-    corMatrix(d)=0;
+        corMatrix(d)=0;
 
-    if size(VALtadj,1)<=8
-        glyphplotFS(VALtadj,'obslabels',lab,'varlabels',varlabs,'Standardize','matrix')
+        % Show in the plot a maximum of 8 solutions
+        maxSol=min([size(VALtadj,1),8]);
+        % call the augmented star plot
+        augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs)
+
+        % Create the heatmap of the correlation matrix of the best solutions
+        % which have been found.
         hold off
         figure
-        heatmap(corMatrix)
-
-    else
-        glyphplotFS(VALtadj(1:8,:),'obslabels',lab(1:8),'varlabels',varlabs,'Standardize','matrix')
-        hold off
-        figure
-        heatmap(corMatrix(1:8,1:8))
+        xval="Sol"+(1:maxSol)';
+        heatmap(xval,xval,corMatrix(1:maxSol,1:maxSol))
+        title('Heatmap of the correlation matrix among the best solutions')
     end
 
 end
-
 end
 
 %FScategory:REG-Transformations
