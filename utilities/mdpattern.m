@@ -365,10 +365,13 @@ if plots==true
     end
     set(ax2, 'XTick', get(ax1, 'XTick'), 'YTick', get(ax1, 'YTick'));
     OppositeYTickLabels = string(flip(Yfin(1:end-1,end)));
+    
     % Set the x-tick and y-tick  labels for the second axes
-    set(ax2, 'XTickLabel', YsorcolsVarNames,'YTickLabel',OppositeYTickLabels,'FontSize',fs);
+    set(ax2 , 'TickLength' ,[0 0] , 'XMinorTick', 'off', 'XTickLabel', YsorcolsVarNames,'YTickLabel',OppositeYTickLabels,'FontSize',fs);
     % yyaxis right
     ylabel(ax2,'Number of variables with missing values')
+    
+    linkaxes; % this is to link the limits of the top and bottom axses
     
     % Plot explanation
     disp('Detailed explanation of the "Missing data pattern figure"')
