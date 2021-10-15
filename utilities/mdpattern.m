@@ -334,28 +334,28 @@ if dispresults==true
     disp('above x0.75+1.5*IQR or below x0.25-1.5*IQR, where IQR is the interquartile range')
 end
 if plots==true
+    fs=16;
     Ysel=Yfin(1:end-1,2:end-1);
     balloonplot(~Ysel);
-    % Personalized color map of blues
-    map = [0 0 0.3
-        0 0 0.4
-        0 0 0.5
-        0 0 0.6
-        0 0 0.8
+    map = [ 0 0 0.3 ; % Personalized color map of blues
+        0 0 0.4 ;
+        0 0 0.5 ;
+        0 0 0.6 ;
+        0 0 0.8 ;
         0 0 1.0];
-    colormap(map)
-    set(gcf,'Name','Missing data pattern figure')
-    colorbar('off')
-    bubblesize([2 30])
-    fs=16;
+    colormap(map);
+    colorbar('off');
+    bubblesize([2 30]);
+    set(gcf,'Name','Missing data pattern figure');
     h=gca;
     h.YTickLabel=flip(string(Yfin(1:end-1,1)));
     h.XTickLabel=string(Yfin(end,2:end-1));
-    h.FontSize=14;
-    xlabel("Number of missing values for each variable")
-    ylabel("Number of rows with a particular pattern")
+    h.FontSize=fs;
+    xlabel("Number of missing values for each variable");
+    ylabel("Number of rows with a particular pattern");
     ax1=gca;
-    ax2 = axes('Position', get(ax1, 'Position'),'Color', 'none');
+
+    ax2 = axes('Position', get(ax1, 'Position'),'Color', 'none','XTick',[],'YTick',[]);
     set(ax2, 'XAxisLocation', 'top','YAxisLocation','Right');
     % set the same Limits and Ticks on ax2 as on ax1;
     if verLessThan('matlab','9.11')
@@ -363,11 +363,14 @@ if plots==true
     else
         set(ax2, 'XLim', get(ax1, 'XLim'),'YLim', get(ax1, 'YLim'),'TickDir','none');
     end
-    set(ax2, 'XTick', get(ax1, 'XTick'), 'YTick', get(ax1, 'YTick'));
+    set(ax2, 'XTick', get(ax1, 'XTick'), 'YTick', get(ax1, 'YTick'),'FontSize',fs);
     OppositeYTickLabels = string(flip(Yfin(1:end-1,end)));
     
     % Set the x-tick and y-tick  labels for the second axes
-    set(ax2 , 'TickLength' ,[0 0] , 'XMinorTick', 'off', 'XTickLabel', YsorcolsVarNames,'YTickLabel',OppositeYTickLabels,'FontSize',fs);
+    set(ax2 , 'TickLength' ,[0 0] , 'XMinorTick', 'off', ...
+        'XTickLabel', YsorcolsVarNames,...
+        'YTickLabel',OppositeYTickLabels);
+    
     % yyaxis right
     ylabel(ax2,'Number of variables with missing values')
     
