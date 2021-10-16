@@ -14,18 +14,18 @@ function result = verLessThanFS(vernumber)
 %
 % Required input arguments:
 %
-% vernumber :  version of MATLAB to test. scalar double or character or vector of doubles.
-%               Number containing the version of MATLAB to test again
-%               current version. If version is a character, it must be in
-%               the format major.minor.revision or major.minor.
-%               If version is a scalar double what is before the full stop is
-%               the major revision and the FIRST number after the full stop
-%               is the minor revision. If version is a vector of doubles
-%               the first element is the major revision and the second
-%               element is the minor revision.
+% vernumber :  version of MATLAB to test. character or vector of length 2.
+%               Vector if two numbers containing the version of MATLAB to
+%               test again current version or charater. If version is a
+%               character, it must be in the format major.minor.revision or
+%               major.minor. If version is a vector of length 2, the first
+%               element is the major revision and the second element is the
+%               minor revision. Note that both element must be non negative
+%               integer numbers. If version is a scalar the second element
+%               (minor revision) is set to 0.
 %               REMARK: Note that this function only considers major
 %               and minor version and not the revision version.
-%               Example - 8.3 or [8 3] or '8.3'
+%               Example - [8 3] or '8.3'
 %               Data Types - double
 %
 %
@@ -34,9 +34,9 @@ function result = verLessThanFS(vernumber)
 %
 % Output:
 %
-%    result : True or false. Boolean. result is true if the current version of
-%               version of MATLAB is older than the
-%               version specified by vernumber, and false otherwise.
+%    result : True or false. Boolean. result is true if the current version
+%               of MATLAB is older than the version specified by vernumber,
+%               and false otherwise.
 %
 %
 %  See also verLessThan.m
@@ -55,23 +55,10 @@ function result = verLessThanFS(vernumber)
 %
 % Examples
 %
-%{
-    % Test whether the current version is older than MATLAB version 8.4.
-    % In this case the input argument is a scalar double
-    numbertotest = 8.4;
-    out=verLessThanFS(numbertotest);
-    if out == true
-        disp(['current version is older than ' num2str(numbertotest)]);
-    else
-        disp(['current version is not older than ' num2str(numbertotest)]);
-    end
-%}
 
 %{
-    % In this case the input argument is a vector with two elements 
     % Test whether the current version is older than MATLAB version 9.10.
-    % Note that when the minor revision to test is greater than 2 it is necessary 
-    % to use a vector with two elements.
+    % In this case the input argument is a vector with two elements
     numbertotest = [9 10];
     out=verLessThanFS(numbertotest);
     if out == true
@@ -83,7 +70,7 @@ function result = verLessThanFS(vernumber)
 
 %{
     % Test whether the current version is older than MATLAB version 9.12
-    % In this case the input argument is a vector with two elements 
+    % In this case the input argument is character
     numbertotest = '9.11';
     out=verLessThanFS(numbertotest);
     if out == true
@@ -92,6 +79,20 @@ function result = verLessThanFS(vernumber)
         disp(['current version is not oder than ' num2str(numbertotest)]);
     end
 %}
+
+
+%{
+    % In this example the input argument is a scalar double
+    % We test whether current version is smaller than 8.0.
+    numbertotest = 8;
+    out=verLessThanFS(numbertotest);
+    if out == true
+        disp(['current version is older than ' num2str(numbertotest)]);
+    else
+        disp(['current version is not older than ' num2str(numbertotest)]);
+    end
+%}
+
 
 %% Beginning of code
 
@@ -120,21 +121,22 @@ else
 end
 
 if isnumeric(vernumber)
-    if isscalar(vernumber)
-        numberToTest(1)=floor(vernumber);
-        str = num2str(vernumber,'%0.1f'); 
-        str = str(find(str=='.')+1:end); %// keep only digits after decimal point
-        numberToTest(2)=str2double(str);
+    if all(vernumber == floor(vernumber)) && min(vernumber) >= 0
+        if length(vernumber)==1
+            numberToTest=[vernumber 0];
+        else
+            numberToTest=vernumber;
+        end
     else
-        numberToTest=vernumber;
+        error('FSDA:verLessThanFS:WrongInputOpt','The numbers must be non negative integers greater than 0.');
     end
 else
     numberToTest=getParts(vernumber);
 end
 
-if numberToTest(1) ~= doubleMatlabversion(1)     % major version
-    result = doubleMatlabversion(1) <numberToTest(1);
-else                                  % minor version
+if numberToTest(1) ~= doubleMatlabversion(1)     % major version is different
+    result = doubleMatlabversion(1) < numberToTest(1);
+else                                  % major revision is equal and we test whether minor version
     result = doubleMatlabversion(2) < numberToTest(2);
 end
 
