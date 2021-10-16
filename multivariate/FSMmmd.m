@@ -208,7 +208,7 @@ Y = chkinputM(Y,nnargin,vvarargin);
 [n,v]=size(Y);
 
 if coder.target('MATLAB')
-    verLessThan2016b=verLessThanFS(9.1);
+    verLessThan2016b=verLessThanFS('9.1');
 else
     % Do not use implicit expansion
     verLessThan2016b=true;

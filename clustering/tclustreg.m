@@ -784,7 +784,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % warning('off');
 
 % verLess2016b is true if current version is smaller than 2016b
-verLess2016b=verLessThanFS(9.1);
+verLess2016b=verLessThanFS('9.1');
 %% Input parameters checking
 
 nnargin   = nargin;

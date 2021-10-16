@@ -327,7 +327,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 % fopen() not being supported by localthreads prevent us
 % from using this code
 % 9.8 is MATLAB 2020a where  parpool('threads') was first introduced
-% numbertotest = 9.8;
+% numbertotest = '9.8';
 % MLver=verLessThanFS(numbertotest);
 %
 %
@@ -598,7 +598,7 @@ d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
     hold('off')
-    if ~verLessThanFS(9.2) % >2016b
+    if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         title('Numb obs. in agreement with the different transformations')
         h.XLabel= '\lambda_P';
@@ -614,7 +614,7 @@ namej = 'R2';
 d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
-    if ~verLessThanFS(9.2) % >2016b
+    if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         title('R2 not corrected')
         h.XLabel= '\lambda_P';
@@ -629,7 +629,7 @@ namej = 'R2c';
 d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
-    if ~verLessThanFS(9.2) % >2016b
+    if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         title('R2 corrected for truncation')
         h.XLabel= '\lambda_P';
@@ -645,7 +645,7 @@ namej = 'AGI';
 d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
-    if ~verLessThanFS(9.2) % >2016b
+    if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         % title('1/(|ScoP-ScoN|_c*|Sco|_c)')
         title(['Agreement index: best \lambda_P=' num2str(labestAGI(1)) ' best  \lambda_N=' num2str(labestAGI(2))])
@@ -664,7 +664,7 @@ if max(d)>0
     labestAGIw=Exctable{indmax,1:2};
     
     figure('Name',namej,'Visible','on');
-    if ~verLessThanFS(9.2) % >2016b
+    if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         title(['Agreement index weighted: best \lambda_P=' num2str(labestAGIw(1)) ' best  \lambda_N=' num2str(labestAGIw(2))])
         h.XLabel= '\lambda_P';
@@ -679,7 +679,7 @@ namej = 'BIC';
 d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
-    if ~verLessThanFS(9.2) % >2016b
+    if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         title(['BIC: best \lambda_P=' num2str(labestBIC(1)) ' best  \lambda_N=' num2str(labestBIC(2))])
         h.XLabel= '\lambda_P';

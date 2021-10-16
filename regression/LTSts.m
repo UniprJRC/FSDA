@@ -1390,7 +1390,7 @@ if varampl>0
     reftolALS=options.reftolALS;
     refstepsALS=options.refstepsALS;
     if coder.target('MATLAB')
-        verLess2016b=verLessThanFS(9.1);
+        verLess2016b=verLessThanFS('9.1');
     else
         verLess2016b=true;
     end

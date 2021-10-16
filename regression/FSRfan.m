@@ -505,7 +505,7 @@ function [out]=FSRfan(y,X,varargin)
 
     disp('Fit in the true scale')
     disp('R2 of the model in the true scale')
-    if verLessThanFS(8.1)
+    if verLessThanFS('8.1')
         out=regstats(y,X,'linear',{'rsquare'});
         disp(out.rsquare)
     else
@@ -525,7 +525,7 @@ function [out]=FSRfan(y,X,varargin)
 
     disp('Fit in the transformed scale')
     disp('R2 of the model in the wrong (inverse) scale')
-    if verLessThanFS(8.1)
+    if verLessThanFS('8.1')
         out=regstats(ytra,X,'linear',{'rsquare'});
         disp(out.rsquare)
     else

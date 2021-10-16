@@ -80,7 +80,7 @@ function out  = tclustICgpcm(Y, varargin)
 %                   expansion or bsxfun.  pa.userepmat =2 implies implicit
 %                   expansion, pa.userepmat=1 implies use of bsxfun. The
 %                   default is to use implicit expansion (faster)
-%                   if verLessThanFS(9.1) is false and bsxfun if MATLAB is
+%                   if verLessThanFS('9.1') is false and bsxfun if MATLAB is
 %                   older than 2016b.
 %               Data Types - struct
 %               Example - pa=struct; pa.cdet=10;

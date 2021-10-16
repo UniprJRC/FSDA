@@ -1715,7 +1715,7 @@ if isstruct(confellipse) || confellipse ==1
         'rows BootCols' 'cols BootCols'};
     legallLEG=[legall{selmethods(:)}];
     
-    if verLessThanFS(9.2)==0
+    if verLessThanFS('9.2')==0
         % hColsMultinomial hColsBootRows hColsBootCols
         legend(legallLEG,...
             legstring(selmethods(:)),'AutoUpdate','off')

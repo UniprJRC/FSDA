@@ -576,10 +576,10 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % Control variables, tolerances and internal flags
 warning('off');
 
-verbertotest = 9.5; % R2018b
+verbertotest = '9.5'; % R2018b
 vafter91=~verLessThanFS(verbertotest); % >=2018b
 
-verbertotest = 9.6; % R2019a
+verbertotest = '9.6'; % R2019a
 vafter95=~verLessThanFS(verbertotest); % >=2019a
 
 scrsz = get(groot,'ScreenSize');

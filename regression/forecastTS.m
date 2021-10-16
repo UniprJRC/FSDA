@@ -913,7 +913,7 @@ if plots==1
     plot(datesnumeric(n+1:n+nfore),confband(n+1:end,:),'Color',clr(3),'LineStyle',syb{3},'LineWidth',2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        if ~verLessThanFS(8.4)
+        if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
     end

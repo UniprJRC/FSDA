@@ -97,7 +97,7 @@ sigmaXopt = NaN(p-intercept,p-intercept,k);
 cstepopt = 0;
 
 % verLess2016b is true if current version is smaller than 2016b
-verLess2016b=verLessThanFS(9.1);
+verLess2016b=verLessThanFS('9.1');
 
 if verLess2016b == true
     userepmat=1;

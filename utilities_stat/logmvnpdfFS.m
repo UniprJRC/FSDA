@@ -350,7 +350,7 @@ if nargin==3
     % verLess2016b is a boolean which is true if current version is less then
     % 2016b
     if coder.target('MATLAB')
-        verLess2016b=verLessThanFS(9.1);
+        verLess2016b=verLessThanFS('9.1');
     else
         verLess2016b=false;
     end
@@ -380,7 +380,7 @@ else
         if coder.target('MATLAB')
             % verLess2016b is a boolean which is true if current version is less then
             % 2016b
-            verLess2016b=verLessThanFS(9.1);
+            verLess2016b=verLessThanFS('9.1');
         else
             verLess2016b=true;
         end
