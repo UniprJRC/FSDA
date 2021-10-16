@@ -2909,7 +2909,7 @@ for i=1:nseealso
                 else % reference is towards a MATLAB function or a function of another toolbox
                     pathdocroot=docroot;
                     
-                    if verLessThanFS(9.1)
+                    if verLessThanFS('9.1')
                         % Locate file using old function findFile (just up to 2016a)
                         % Find path of .html documentation file
                         pathExtHelpFile=findFile(pathdocroot,'InclFiles',[Seealsoitem '.html']);

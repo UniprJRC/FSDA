@@ -107,7 +107,7 @@ end
 
 if nargin<5
     % verLess2016b is true if current version is smaller than 2016b
-    verLess2016b=verLessThanFS(9.1);
+    verLess2016b=verLessThanFS('9.1');
 end
 
 if verLess2016b ==true

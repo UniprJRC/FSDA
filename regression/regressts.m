@@ -854,7 +854,7 @@ if plots==1
     title('Fit','interpreter','LaTex','FontSize',14)
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        if ~verLessThanFS(8.4)
+        if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
     end

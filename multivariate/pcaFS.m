@@ -274,7 +274,7 @@ labelscum=cellstr([repmat([pcnames{1} '-'],NumComponents-1,1) char(pcnames{2:end
 communcum=cumsum(loadings.^2,2);
 communwithcum=[commun communcum(:,2:end)];
 varNames=[pcnames; labelscum];
-if verLessThanFS(9.7)
+if verLessThanFS('9.7')
     varNames=matlab.lang.makeValidName(varNames);
 end
 communwithcumT=array2table(communwithcum,'RowNames',varnames,...

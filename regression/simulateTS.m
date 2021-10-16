@@ -1026,7 +1026,7 @@ if plots==1
     title({'Final simulated data',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        if ~verLessThanFS(8.4)
+        if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
     end
@@ -1038,7 +1038,7 @@ if plots==1
     title({'TR+SE+LS+X',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        if ~verLessThanFS(8.4)
+        if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
     end
@@ -1050,7 +1050,7 @@ if plots==1
     title({'Trend (TR)',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        if ~verLessThanFS(8.4)
+        if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
     end
@@ -1062,7 +1062,7 @@ if plots==1
     title({'Seasonal (SE)',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        if ~verLessThanFS(8.4)
+        if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
     end
@@ -1074,7 +1074,7 @@ if plots==1
     title({'Level shift (LS)',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        if ~verLessThanFS(8.4)
+        if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
     end
@@ -1093,7 +1093,7 @@ if plots==1
     end
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        if ~verLessThanFS(8.4)
+        if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
     end

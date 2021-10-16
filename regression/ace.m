@@ -235,7 +235,7 @@ yw=ty.*sqrtw;
 % Center X matrix
 % Initial transformation for matrix X.
 % X is transformed so that its columns are equally weighted when predicting y.
-verLess2016b=verLessThanFS(9.1);
+verLess2016b=verLessThanFS('9.1');
 if verLess2016b == false
     meX=sum(X.*w,1)/sw;
     tX=X-meX;

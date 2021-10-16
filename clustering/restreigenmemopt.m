@@ -120,10 +120,10 @@ function [out]  = restreigenmemopt(eigenvalues, niini, restr, tol, userepmat)
     k=8;
     tol=1e-8;
 
-    if verLessThanFS(9.2)== false
+    if verLessThanFS('9.2')== false
         % If MATLAB version is at least 2017a
         userepmat=2;
-    elseif verLessThanFS(8.1) == false
+    elseif verLessThanFS('8.1') == false
         % if MATLAB version is at least R2013b  
         userepmat=1;
     else

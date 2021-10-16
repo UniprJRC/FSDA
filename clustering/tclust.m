@@ -96,7 +96,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               expansion or bsxfun.  restrfactor.userepmat =2 implies implicit
 %               expansion, pa.userepmat=1 implies use of bsxfun. The
 %               default is to use implicit expansion (faster)
-%               if verLessThanFS(9.1) is false and bsxfun if MATLAB is
+%               if verLessThanFS('9.1') is false and bsxfun if MATLAB is
 %               older than 2016b.
 %               Data Types - scalar or struct
 % restrfactor.usepreviousest = boolean, which specifies if for each refining
@@ -842,7 +842,7 @@ if coder.target('MATLAB')
     % callmex is a Boolean which is equal to true if the mex file exists
     callmex=existFS('DfM');
     % verLess2016b is true if current version is smaller than 2016b
-    verLess2016b=verLessThanFS(9.1);
+    verLess2016b=verLessThanFS('9.1');
 else
     callmex=false;
     verLess2016b=true;
