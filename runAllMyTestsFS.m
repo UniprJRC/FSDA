@@ -24,6 +24,7 @@ warning('off')
 FilesIncludedAll= FilesIncluded;
 warning('on')
 disp(filesWithProblems)
+
 %% Category to test
 cat2test=getenv('CATEGORY_TO_TEST');
 disp('---------------')
@@ -31,7 +32,7 @@ disp('Test for category:')
 disp(cat2test)
 disp('---------------')
 
-% VIS GUI     MULT CLUS REG UTI
+% VIS GUI MULT CLUS REG UTI
 if strcmp(cat2test,'graphics')
     str=regexp(FilesIncluded(:,8),'VIS*');
     boo1=~cellfun(@isempty,str);
@@ -133,6 +134,8 @@ sz=[5000, 7];
 TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'double' 'double' 'cellstr' 'cellstr'},...
     'VariableNames',{'FileName' 'Category', 'Identifier' 'MeanTime' 'MedianTime'  'Code' 'TestActivity'});
 
+
+% to do: eliminate this part
 % [tmp]=publishFS('existFS', 'evalCode','false',...
 %     'write2file',false,'ErrWrngSeeAlso',false);
 % disp(tmp)
