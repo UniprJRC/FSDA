@@ -244,6 +244,7 @@ else
 end
 
 %% CircleCI 
+% todo: update this section
 
 %cd(testpath);
 %testResults = runtests([FSDAroot '/' testpath]);
