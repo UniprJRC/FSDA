@@ -334,7 +334,7 @@ if dispresults==true
     disp('above x0.75+1.5*IQR or below x0.25-1.5*IQR, where IQR is the interquartile range')
 end
 if plots==true
-    fs=16;
+    fs=14;
     Ysel=Yfin(1:end-1,2:end-1);
     balloonplot(~Ysel);
     map = [ 0 0 0.3 ; % Personalized color map of blues
