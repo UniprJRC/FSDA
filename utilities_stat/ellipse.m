@@ -8,8 +8,8 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color, axesellipse)
 %   \[
 %    (x-\mu)' \Sigma^{-1} (x-\mu) = c_{conflev}^2.
 %   \]
-%    The length of the i-th principal semiaxis $(i=1, 2)$ is $c \lambda_i$ where
-%    $\lambda_i$ is an eigenvalue of $\Sigma$.
+%    The length of the i-th principal semiaxis $(i=1, 2)$ is $c \sqrt \lambda_i$ where
+%    $\lambda_i$ is the $i$-th eigenvalue of $\Sigma$.
 %
 % Required input arguments:
 %
