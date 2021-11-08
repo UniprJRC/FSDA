@@ -26,57 +26,57 @@ function [out] = FSReda(y,X,bsb,varargin)
 %
 % Optional input arguments:
 %
-%   intercept :  Indicator for constant term. true (default) | false.
-%                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
-%                 Example - 'intercept',false
-%                 Data Types - boolean
-%
-%        init :      Search initialization. Scalar.
-%                      It specifies the point where to initialize the search
-%                       and start monitoring required diagnostics. if init is not
-%                       specified it will be set equal to :
-%                       p+1, if the sample size is smaller than 40;
-%                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%                       Example - 'init',100 starts monitoring from step m=100
-%                       Data Types - double
-%
-%      nocheck:  Check input arguments. Boolean.
-%                       If nocheck is equal to true no check is performed on
-%                       matrix y and matrix X. Notice that y and X are left
-%                       unchanged. In other words the additional column of ones for
-%                       the intercept is not added. As default nocheck=false. The
-%                       controls on h, alpha and nsamp still remain
-%                       Example - 'nocheck',true
-%                       Data Types - boolean
-%
-%        tstat:      the kind of t-statistics which have to be monitored.
-%               Character.
-%               tstat = 'trad' implies  monitoring of traditional t
-%               statistics (out.Tols). In this case the estimate of $\sigma^2$ at step m
-%               is based on $s^2_m$ (notice that $s^2_m<<\sigma^2$ when m/n is
-%               small) tstat = 'scal' (default) implies monitoring of
-%               rescaled t statistics In this case the estimate of
-%               $\sigma^2$ at step m is based on $s^2_m / var_{truncnorm(m/n)}$
-%               where $var_{truncnorm(m/n)}$ is the variance of the truncated
-%               normal distribution.
-%               Example - 'tstat','trad'
-%               Data Types - char
-%
 %  conflev:   confidence levels to be used to compute confidence interval
-%               for the elements of $\beta$ and for $\sigma^2$. Vector.
-%               The default value of conflev is [0.95 0.99] that
-%               is 95% and 99% confidence intervals are computed.
-%               Example - 'conflev',[0.90 0.93] 
-%               Data Types - double
+%             for the elements of $\beta$ and for $\sigma^2$. Vector.
+%             The default value of conflev is [0.95 0.99] that
+%             is 95% and 99% confidence intervals are computed.
+%             Example - 'conflev',[0.90 0.93] 
+%             Data Types - double
 %
-%   wREML:		compute REML weights for unit excluded from FS at each step.
-%				false (default) | true.  If weak==true REML weights are 
-%               computed.
-%				Example - 'wREML', true
-%               Data Types - boolean
+% init :      Search initialization. Scalar.
+%             It specifies the point where to initialize the search
+%             and start monitoring required diagnostics. if init is not
+%             specified it will be set equal to :
+%             p+1, if the sample size is smaller than 40;
+%             min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%             Example - 'init',100 starts monitoring from step m=100
+%             Data Types - double
+%
+% intercept : Indicator for constant term. true (default) | false.
+%             Indicator for the constant term (intercept) in the fit,
+%             specified as the comma-separated pair consisting of
+%             'Intercept' and either true to include or false to remove
+%             the constant term from the model.
+%             Example - 'intercept',false
+%             Data Types - boolean
+%
+%  nocheck:  Check input arguments. Boolean.
+%            If nocheck is equal to true no check is performed on
+%            matrix y and matrix X. Notice that y and X are left
+%            unchanged. In other words the additional column of ones for
+%            the intercept is not added. As default nocheck=false. The
+%            controls on h, alpha and nsamp still remain
+%            Example - 'nocheck',true
+%            Data Types - boolean
+%
+%  tstat:    the kind of t-statistics which have to be monitored.
+%            Character.
+%            tstat = 'trad' implies  monitoring of traditional t
+%            statistics (out.Tols). In this case the estimate of $\sigma^2$ at step m
+%            is based on $s^2_m$ (notice that $s^2_m<<\sigma^2$ when m/n is
+%            small) tstat = 'scal' (default) implies monitoring of
+%            rescaled t statistics In this case the estimate of
+%            $\sigma^2$ at step m is based on $s^2_m / var_{truncnorm(m/n)}$
+%            where $var_{truncnorm(m/n)}$ is the variance of the truncated
+%            normal distribution.
+%            Example - 'tstat','trad'
+%            Data Types - char
+%
+%   wREML:	compute REML weights for unit excluded from FS at each step.
+%			false (default) | true.  If weak==true REML weights are 
+%           computed.
+%			Example - 'wREML', true
+%           Data Types - boolean
 %
 %               Data Types - double
 % Remark:       The user should only give the input arguments that have to
