@@ -428,6 +428,7 @@ if numpool == 1
     numpool = 0;
 end
 
+progbar = [];
 
 if msg == 1 
     progbar = ProgressBar(nsimul);
