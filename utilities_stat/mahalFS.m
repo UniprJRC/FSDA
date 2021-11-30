@@ -19,7 +19,7 @@ function d = mahalFS(Y,MU,SIGMA)
 %               values will automatically be excluded from the
 %               computations.
 %                Data Types - single|double
-%        MU :   Centroid. Vector. v x 1 vector containing centroid to use
+%        MU :   Centroid. Vector.  1 x v vector containing centroid to use
 %      SIGMA:   Covariance matrix. Matrix. v x v matrix containing covariance matrix which must be used
 %       
 %
