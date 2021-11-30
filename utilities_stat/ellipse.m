@@ -8,7 +8,7 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color, axesellipse)
 %   \[
 %    (x-\mu)' \Sigma^{-1} (x-\mu) = c_{conflev}^2.
 %   \]
-%    The length of the i-th principal semiaxis $(i=1, 2)$ is $c \sqrt \lambda_i$ where
+%    The length of the i-th principal semiaxis $(i=1, 2)$ is $c_{conflev} \sqrt \lambda_i$ where
 %    $\lambda_i$ is the $i$-th eigenvalue of $\Sigma$.
 %
 % Required input arguments:
@@ -23,10 +23,16 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color, axesellipse)
 %
 % Optional input arguments:
 %
-%       conflev : Confidence level. Scalar.
-%                 Confidence level which controls the size of the ellipse.
-%                 If conflev is not specified the value
-%                 chi2inv(0.95,2) is used.
+%       conflev : Confidence level. Positive scalar.
+%                 If conflev is a empty (default) the confidence level
+%                 which controls the size of the ellipse (c_{conflev}^2= is
+%                 computed as chi2inv(0.95,2). If the data are normally
+%                 distributed the ellipse covers 95 per cent of the
+%                 observations. If conflev is a scalar smaller than 1, the
+%                 confidence level  $c_{conflev}^2$ is computed as
+%                 chi2inv(conflev,2). If conflev is a scalar greater or
+%                 equal than 1 no chi2inv is applied to conflev and
+%                 $c_{conflev}^2$=conflev.
 %                    Example - 'conflev', 0.99
 %                    Data Types - single | double
 %
@@ -168,7 +174,11 @@ end
 if nargin<3 || isempty(conflev)
     c = chi2inv(0.95,2);
 else
-    c = chi2inv(conflev,2);
+    if conflev<1
+        c = chi2inv(conflev,2);
+    else
+        c=conflev;
+    end
 end
 
 % Use default black color
@@ -231,13 +241,13 @@ Ell=bsxfun(@plus,X, mu);
 he = plot(Ell(:,1),Ell(:,2),'Color',Color,'LineWidth',LineWidth);
 
 if nargin<5 || (nargin ==5 &&   axesellipse == true)
-    
+
     % Add line associated with major axis
     ax1=[-lenax1 0; lenax1 0];
     ax1ori=ax1*Gam;
     ax1ori=bsxfun(@plus,ax1ori, mu);
     line(ax1ori(:,1),ax1ori(:,2),'Color',Color,'LineWidth',LineWidth-1,'LineStyle','--');
-    
+
     % Add line associated with minor axis
     ax2=[0 -lenax2;0  lenax2];
     ax2ori=ax2*Gam;
