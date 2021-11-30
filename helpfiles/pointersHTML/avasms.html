@@ -1,0 +1,71 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>avasms</title> <meta content="refpage" name="chunktype"><meta content="function:avasms " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="avasms Computes avas using a series of alternative options" itemprop="description" name="description" /><h1 itemprop="title">avasms</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/avasms.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/avasms.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/avasms.html">http://rosa.unipr.it/FSDA/avasms.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: avasms</em></p><P>avasms</P><P>Computes avas using a series of alternative options</P><h2>Description</h2><P>This function applies avas with a series of options and produces the
+   augmented star plot.
+
+ Below we list the five options giving an informative text description
+ followed by the optional input arguments. We also give in parenthesis, the
+ abbreviations used in the augmented star plot, where these are different.
+
+ - Robustness (rob).
+ - Remove effect of order of explanatory variables by regression (scail).
+ - Trapezoidal or rectangular rule for numerical integration in function
+   ctsub (trapezoid).
+ - Ordering inclusion of the variables in the backfitting algorithm using
+   $R^2$ values (PredictorOrderR2).
+ - Initial robust transformation of the response (tyinitial).
+
+ We reduce the number of analyses for investigation by removing all those
+ for which the residuals fail the Durbin-Watson and Jarque-Bera tests, at
+ the 5 per cent level (two-sided for Durbin-Watson). Unlike the
+ Durbin-Watson test, JarqueBera test uses a combination of estimated
+ skewness and kurtosis to test for distributional shape of the residuals.
+ We order the analyses by the Durbin-Watson significance level, from the
+ largest value downwards. The rays in individual plots are of equal length
+ for those features used in an analysis. Robustness is always plotted to
+ the East and all rays are in identical places in each plot. Information
+ in the plot is augmented by making the length of the rays for each
+ analysis reflect the properties of the analysis; they are proportional to
+ $p_{DW}$, the significance level of the Durbin-Watson test.</P><h2>More About</h2><P>
+ Routine avas, (additivity and variance stabilization) provides
+ non-parametric alternatives to the widely used Box-Cox parametric
+ transformation of the response and the Box-Tidwell family of power
+ transformations of explanatory variables. In routine avas it is possible:
+
+ [1] To use option rob in order to replace standard OLS regression with
+ robust regression in all steps of the iterative procedure. More precisely
+ using robust regression we identify a subset $S_m$ of clean observations
+ to use in the backfitting algorithm to calculate the transformations
+ $f(X)$ at each iteration, the $n-m$ outliers being ignored. We also use
+ the subset in function ctsub in the calculation of the numerical variance
+ stabilising transformation. Since different response transformations can
+ indicate different observations as outliers, the identification of
+ outliers occurs repeatedly during our robust algorithm, once per
+ iteration.
+
+ [2] To use option scail in order to linearly transform the explanatory
+ variables in order to let each column of matrix X have the same weight
+ when predicting g(y).
+
+ [3] To use option PredictorOrderR2 to completely eliminate dependence on
+ the order of the variables. That is, in each iteration of the backfitting
+ algorithm we impose an ordering which is based on the variable which
+ produces the highest increment of $R^2$.
+
+ [4] To use option tyinitial which calculates a robust parametric
+ transformation of the response before starting the main backfitting loop.
+
+ [5] To use option trapeziod in order to specify how to compute the
+ integral to obtain transformed values for the units which fall outside
+ the range of integration determined by the units not declared as
+ outliers.
+
+ The purpose of this routine is to apply avas with and without the five
+ options listed above. There are therefore 32 combinations of options that
+ could be chosen. It is not obvious that all will be necessary when
+ analysing all sets of data. This routine returns the list of options
+ which produced the best fit and provides the necessary ingredients for a
+ graphical method, the augmented star plot, to indicate which options are
+ important in a particular data analysis.
+
+</P><h2>References</h2><P>Riani M., Atkinson A.C. and Corbellini A. (2021), Robust Transformations
+ for Multiple Regression via Additivity and Variance Stabilization,
+ submitted.</P></html>

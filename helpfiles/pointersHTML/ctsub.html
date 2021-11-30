@@ -26,7 +26,7 @@
  \]
  is found by linear interpolation.
 
- If RectAreaOutside is omitted or is true, 
+ If Trapezoid is omitted or is false, 
  when $z_i&gt;x_n$ the function for $x &gt;x_n$ is assumed constant and equal to
  $y_n$ therefore, to the expression of $a_i$ computed as described above, we
  must add $(z_i-x_n) y_n$.
@@ -36,7 +36,7 @@
  a_i = -(x_1-z_i) y_1
  \]
  Note that $a_i$ in this last case (if $y_1$ is positive) becomes negative.
- On the other hand, if RectAreaOutside is false when $z_i&gt;x_n$ or when  $z_i&lt;x_1$, 
+ On the other hand, if Trapezoid is true when $z_i&gt;x_n$ or when  $z_i&lt;x_1$, 
  we assume $f(z_i)=\sum_{i=1}^n y_i/n$. 
  
  This routine in called in every step of the outer loop by function avas.m
