@@ -1,5 +1,7 @@
 %% File which automatically creates toolbox file FSDA.mltbx for fileexchange
 
+%% Beginning of code
+
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
 

@@ -5,6 +5,7 @@ function theStruct = parseXML(filename)
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code
 
 try
    tree = xmlread(filename);
