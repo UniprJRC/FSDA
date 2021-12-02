@@ -5,6 +5,7 @@ function docr=docrootFS()
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code
 
 a=ver('matlab');
 

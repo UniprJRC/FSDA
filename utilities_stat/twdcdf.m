@@ -147,6 +147,7 @@ function cdf = twdcdf(x,alpha,theta,delta)
 
 %}
 
+%% Beginning of code
 
 f= @(x) twdpdf(x,alpha,theta,delta);
 cdf = zeros(size(x));

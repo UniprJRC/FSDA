@@ -4,6 +4,7 @@ function outDiff=getWebMatlabFiles(outputOFHtmlHelpFileWeb)
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code
 
 s=ls(outputOFHtmlHelpFileWeb);
 ri=size(s,1);
