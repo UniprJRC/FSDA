@@ -6,6 +6,10 @@ function [newtX, rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outlie
 % Copyright 2008-2021.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
+
+
+%% Beginning of code
+
 n=length(ty);
 if nargin<13
     bsb=1:n;
