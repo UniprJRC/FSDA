@@ -142,7 +142,7 @@ function w = TBwei(u,c)
     ylabel('TB weight function $\psi_c(x)/x$','Interpreter','Latex','FontSize',20)
 %}
 
-%% beginning of code
+%% Beginning of code
 
 c=c(1); % MATLAB Ccoder instruction to enforce that c is a scalar
 

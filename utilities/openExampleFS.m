@@ -4,6 +4,8 @@ function openExampleFS(filename)
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code
+
     examp=which(filename);
     
     examp1=strrep(examp,'\','\\');

@@ -5,6 +5,7 @@ function newtX=backfit(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq)
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code
 
 % ($nit$ = counter for number of iterations in the inner loop).
 nit=0;

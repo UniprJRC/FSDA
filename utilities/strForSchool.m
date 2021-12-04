@@ -1,4 +1,7 @@
 function [str] = strForSchool(header, corpus, footer, classes)
+
+%% Beginning of code
+
 [n,p]=size(corpus);
 
 % classes is the string array to put in the second column of the table
