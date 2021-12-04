@@ -6,6 +6,8 @@
 % regression
 % Every subfoler contains all FSDA datasets in Excel (.xlsx) format
 
+%% Beginning of code
+
 %% Find FSDA root
 FileName='addFSDA2path';
 FullPath=which(FileName);

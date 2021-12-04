@@ -82,6 +82,7 @@ function h = scatterboxplot(x,y,varargin)
     scatterboxplot(Y(:,1),Y(:,2),'Group',group);
 %}
 
+%% Beginning of code
 
 %% Start calling function scatterhist
 if nargin<3

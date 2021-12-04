@@ -342,7 +342,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg, callmex)
     %  y is -Inf and warning is shown.
 %}
 
-%% Beginning  of code.
+%% Beginning of code
 
 %   Note that X/Sigma ~ X*inv(Sigma) ~ mrdivide(X,Sigma) are equivalent.
 

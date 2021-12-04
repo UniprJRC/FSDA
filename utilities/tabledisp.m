@@ -118,6 +118,8 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
 
 %}
 
+%% Beginning of code
+
 % default optional parameters
 if nargin == 3 && strcmp(filename,'excel')
     filename  = ['tabledisp_' filename];

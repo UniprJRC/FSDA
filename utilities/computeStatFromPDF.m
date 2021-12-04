@@ -4,6 +4,8 @@ function out = computeStatFromPDF(Namefilepdf, sessione)
 % second argument session can be E= estiva, or I= invernale or P =
 % primaverile or M= magistrale
 
+%% Beginning of code
+
 if nargin<2
     sessione='E';
 end

@@ -3,6 +3,9 @@ function webFS(varargin)
 % Documentation Location "web on Mathworks" and the user is searching for a
 % FSDA function temporarily change the Domain in order to prevent to search
 % in Mathworks web site.
+
+%% Beginning of code
+
 if verLessThanFS([9 10])
     web(varargin{:});
 else

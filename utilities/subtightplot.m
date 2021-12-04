@@ -25,6 +25,7 @@ function h=subtightplot(m,n,p,gap,marg_h,marg_w,varargin)
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code
 
 if (nargin<4) || isempty(gap),    gap=0.01;  end
 if (nargin<5) || isempty(marg_h),  marg_h=0.05;  end
