@@ -894,9 +894,9 @@ function CorAnaplot(out,varargin)
 %}
 
 %{
-    % Correspondence analysis of the clothes dataset.
-    load clothes
-    out=CorAna(clothes,'plots',0);
+    % Correspondence analysis of the car dataset.
+    load car
+    out=CorAna(car,'plots',0);
     plots=struct;
     % Color of Row labels proportional to the amount of inertia which is
     % explained by the the two latent dimensions (communalities)
