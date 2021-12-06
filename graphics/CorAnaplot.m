@@ -240,11 +240,11 @@ function CorAnaplot(out,varargin)
 %                   ColorMapLabelRows=out.OverviewRows.Properties.VariableNames{1}
 %                   it is possible to obtain a colormap where row labels
 %                   colors are proportional to the masses. If
-%                   oplots.ColorMapLabelRows='CntrbPnt2In' it is possible
+%                   plots.ColorMapLabelRows='CntrbPnt2In' it is possible
 %                   to have a colormap where row labels are proportional to
 %                   the contribution of the row points to the inertia of
 %                   the two latent dimensions. If
-%                   oplots.ColorMapLabelRows='CntrbDim2In' it is
+%                   plots.ColorMapLabelRows='CntrbDim2In' it is
 %                   possible to have a colormap of the row labels
 %                   proportional to the contribution of the two latent
 %                   dimensions to the inertia of each point
@@ -261,11 +261,11 @@ function CorAnaplot(out,varargin)
 %                   ColorMapLabelCols=out.OverviewCols.Properties.VariableNames{1}
 %                   it is possible to obtain a colormap where row labels
 %                   colors are proportional to the masses. If
-%                   oplots.ColorMapLabelCols='CntrbPnt2In' it is possible
+%                   plots.ColorMapLabelCols='CntrbPnt2In' it is possible
 %                   to have a colormap where column labels are proportional to
 %                   the contribution of the column points to the inertia of
 %                   the two latent dimensions. If
-%                   oplots.ColorMapLabelCols='CntrbDim2In' it is
+%                   plots.ColorMapLabelCols='CntrbDim2In' it is
 %                   possible to have a colormap of the column labels
 %                   proportional to the contribution of the two latent
 %                   dimensions to the inertia of each point
