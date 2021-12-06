@@ -39,7 +39,7 @@ jobs:
         tclustMULTgpcm:
           categoryName: 'tclustMULTgpcm'
   pool:
-      vmImage: 'Ubuntu 16.04'
+      vmImage: 'ubuntu-latest'
   variables:
       CATEGORY_TO_TEST: $(categoryName)
   timeoutInMinutes: 365 
