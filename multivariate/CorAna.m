@@ -484,8 +484,6 @@ function out=CorAna(N, varargin)
 %                         Eight column contains the relative
 %                         contribution of the second dimension to the
 %                         explanation of the inertia of the point.
-%                         This output is present just if your MATLAB
-%                         version is not<2013b.
 % 		out.LrSup         =  cell containing the labels of the
 %                         supplementary rows (i.e. the rows whicg did not
 %                         participate to the fit).
