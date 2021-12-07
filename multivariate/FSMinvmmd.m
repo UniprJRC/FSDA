@@ -5,12 +5,12 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %
 %  Required input arguments:
 %
-% mmd :          Distances. Matrix. n-m0 x 2 matrix. 
-%                1st col = fwd search index; 
+% mmd :          Distances. Matrix. n-m0 x 2 matrix.
+%                1st col = fwd search index;
 %                2nd col = minimum Mahalanobis distance.
 %                Data Types - single | double
-% v :            Number of variables. Scalar. 
-%                Number of variables of the underlying dataset. 
+% v :            Number of variables. Scalar.
+%                Number of variables of the underlying dataset.
 %                Data Types - single | double
 %
 %  Optional input arguments:
@@ -24,20 +24,20 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %               If plots = 1, a plot which shows the
 %               confidence level of mmd in each step is shown on the
 %               screen. Three horizontal lines associated respectively with
-%               values 0.01, 0.5 and 0.99  are added to the plot. 
-%               If plots is a structure, it may contain the following fields: 
+%               values 0.01, 0.5 and 0.99  are added to the plot.
+%               If plots is a structure, it may contain the following fields:
 %                   plots.conflev = vector containing horizontal lines associated
-%                       with confidence levels; 
+%                       with confidence levels;
 %                   plots.conflevlab = scalar if it is equal 1 labels associated with
-%                       horizontal lines are shown on the screen; 
-%                   plots.xlim = minimum and maximum on the x axis; 
-%                   plots.ylim = minimum and maximum on the y axis; 
+%                       horizontal lines are shown on the screen;
+%                   plots.xlim = minimum and maximum on the x axis;
+%                   plots.ylim = minimum and maximum on the y axis;
 %                   plots.LineWidth = Line width of the trajectory of mmd in
-%                   normal coordinates; 
+%                   normal coordinates;
 %                   plots.LineStyle = Line style of the
-%                   trajectory of mle of transformation parameters; 
-%                   plots.LineWidthEnv = Line width of the horizontal lines; 
-%                   plots.Tag = tag of the plot (default is pl_mmdinv); 
+%                   trajectory of mle of transformation parameters;
+%                   plots.LineWidthEnv = Line width of the horizontal lines;
+%                   plots.Tag = tag of the plot (default is pl_mmdinv);
 %                   plots.FontSize = font size of the text labels which identify
 %                   the trajectories
 %                 Example - 'plots',1
@@ -45,14 +45,14 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %
 %  Output:
 %
-%   mmdinv:     confidence levels plotted in normal coordinates. 
+%   mmdinv:     confidence levels plotted in normal coordinates.
 %               (n-m0) x 3 matrix (same rows of input matrix mmd).
 %               It contains information about requested
 %               confidence levels plotted in normal coordinates.
-%               1st col = fwd search index from m0 to n-1; 
-%               2nd col = confidence level of each value of mmd; 
-%               3rd col = confidence level in normal coordinates. 
-%                    50 per cent conf level becomes norminv(0.50)=0; 
+%               1st col = fwd search index from m0 to n-1;
+%               2nd col = confidence level of each value of mmd;
+%               3rd col = confidence level in normal coordinates.
+%                    50 per cent conf level becomes norminv(0.50)=0;
 %                    99 per cent conf level becomes norminv(0.99)=2.33.
 %
 %
@@ -74,7 +74,7 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 % where $C_r$ is the c.d.f. of the $\chi^2$ distribution on $r$ degrees of
 % freedom, allows for estimation from this truncated distribution,  providing an
 %  approximately unbiased estimate of $\Sigma$.
-% 
+%
 % We can treat the distribution of the rescaled deletion Mahalanobis distance
 % $c(m,n)d_{\mbox{min}}^2(m)$ as a squared deletion distance on $m-1$
 % degrees of freedom, whose distribution is (Atkinson Riani and Cerioli,
@@ -82,14 +82,14 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 % \begin{equation}\label{F}
 %   \frac{m^2-1}{m(m-v)} F_{v,m-v},
 % \end{equation}
-% 
+%
 % The distribution of the rescaled min Mahalanobis distance
 %  $c(m,n) d_{\mbox{min}}^2(m)$
 % of a subset of size $m$ constructed in such a way that
 %  the centroid and covariance matrix of the subset are taken using the
 %  units having the $m$ smallest Mahalanobis distances can be treated as
 %  the distribution of the $(m+1)$th order statistic from ($F_{v,m-v}$).
-% 
+%
 % The results of order statistics $Y_{(1)}$, $Y_{(2)}$, $\cdots$,  $Y_{(n)}$ from a sample of size $n$ from a distribution with CDF $G(y)$, state that
 % \begin{equation}
 % \label{orderstat}
@@ -97,7 +97,7 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %  \frac{m+1}{n-m} \right\}
 %  \end{equation}
 % Given that in our case $G(y)$ is the CDF of the  $F_{v,m-v}$ we can rewrite this equation  as
-% 
+%
 % \begin{eqnarray*}
 %   &&  P\{d_{\mbox{ min}}^2(m)  \leq \widehat{ d_{\mbox{min}}^2(m)} \} = \\
 %    && 1-  F_{2(n-m),2(m+1)} \left( \left( \frac{1}{  F_{v,m-v} \left( \frac{m(m-v)}{m^2-1 } c(m,n) d_{\mbox{min}}^2(m) \right)  }-1 \right) \frac{m+1}{n-m} \right)
@@ -193,21 +193,24 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %}
 
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checks
 nn=mmd(end,1)+1; % This line is introduced for publishFS
 options=struct('n',nn,'plots','');
 
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSMinvmmd:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if coder.target('MATLAB')
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:FSMinvmmd:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
 end
+
 
 if nargin>2
     for i=1:2:length(varargin)
@@ -262,28 +265,28 @@ mmdinv=[mm mmdt mmdncoord];
 %% Plotting part
 
 if ~isempty(options.plots)
-    
+
     plots=options.plots;
-    
+
     if isstruct(plots)
-        
+
         fplots=fieldnames(plots);
-        
+
         d=find(strcmp('xlim',fplots));
         if d>0
             xlimx=plots.xlim;
         else
             xlimx='';
         end
-        
-        
+
+
         d=find(strcmp('LineWidth',fplots));
         if d>0
             LineWidth=plots.LineWidth;
         else
             LineWidth=2;
         end
-        
+
         % LineWidthEnv = line width of the horizontal lines associated
         % with required confidence envelopes
         % the plot of monitoring of MLE of transformation parameters or the
@@ -295,7 +298,7 @@ if ~isempty(options.plots)
         else
             LineWidthEnv=1;
         end
-        
+
         % Specify the line type for the trajectory of mmd
         % in normal coordinate
         d=find(strcmp('LineStyle',fplots));
@@ -304,7 +307,7 @@ if ~isempty(options.plots)
         else
             LineStyle={'-'};
         end
-        
+
         % Horizontal lines associated with confidence level
         d=find(strcmp('conflev',fplots));
         if d>0
@@ -312,28 +315,28 @@ if ~isempty(options.plots)
         else
             conflev=[0.01 0.5 0.99];
         end
-        
+
         d=find(strcmp('ylim',fplots));
         if d>0
             ylimy=plots.ylim;
         else
             ylimy=[min([mmdncoord;norminv(min(conflev))]) max([mmdncoord;norminv(max(conflev))])];
         end
-        
+
         d=find(strcmp('conflevlab',fplots));
         if d>0
             conflevlab=plots.conflevlab;
         else
             conflevlab=1;
         end
-        
+
         d=find(strcmp('Tag',fplots));
         if d>0
             tag=plots.Tag;
         else
             tag='pl_mmdinv';
         end
-        
+
         % Font size for the number of the axes and the titles of the
         % axes
         d=find(strcmp('FontSize',fplots));
@@ -342,7 +345,7 @@ if ~isempty(options.plots)
         else
             FontSize=12;
         end
-        
+
         % Font size for text messages associated with the
         % labels of the horizontal lines
         d=find(strcmp('FontSizeLab',fplots));
@@ -351,9 +354,9 @@ if ~isempty(options.plots)
         else
             FontSizeLab=12;
         end
-        
+
     else
-        
+
         xlimx=[mmdinv(1,1) mmdinv(end,1)+1];
         ylimy=[min([mmdncoord;norminv(0.009)]) max([mmdncoord;norminv(0.991)])];
         LineWidth=2;
@@ -365,7 +368,7 @@ if ~isempty(options.plots)
         conflev=[0.01 0.5 0.99];
         conflevlab=1;
     end
-    
+
     % Specify where to send the output of the monitoring of mmd
     % in normal coordinates
     hmle=findobj('-depth',1,'tag',tag);
@@ -377,23 +380,23 @@ if ~isempty(options.plots)
         figure;
         set(gcf,'Name','mmd in normal coordinates');
     end
-    
+
     plot1=plot(mmdinv(:,1),mmdncoord,'LineWidth',LineWidth);
-    
+
     % Specify the line style of the trajectory of mmd in normal coordinates
     set(plot1,{'LineStyle'},LineStyle);
-    
-    
+
+
     set(gcf,'Tag',tag)
-    
+
     if ~isempty(xlimx)
         xlim(xlimx);
     end
-    
+
     if ~isempty(ylimy)
         ylim(ylimy);
     end
-    
+
     % Add horizontal lines associated with confidenve levels
     v=axis;
     ninv=norminv(conflev);
@@ -407,17 +410,17 @@ if ~isempty(options.plots)
         end
         line(v(1:2)',[ninv(i);ninv(i)],'color',col,'LineWidth',LineWidthEnv,'LineStyle','--','Tag','env');
     end
-    
+
     % add text label associated to horizontal confidence levels
     if conflevlab==1
         text(v(1)*ones(length(ninv),1),ninv+0.2,strcat(num2str(100*conflev'),'%'),...
             'FontSize',FontSizeLab,'HorizontalAlignment','Left');
     end
-    
+
     xlabel('Subset size m','FontSize',FontSize);
     ylabel('mmd in normal coordinates','FontSize',FontSize);
     set(gca,'FontSize',FontSize)
-    
+
 end
 
 end
