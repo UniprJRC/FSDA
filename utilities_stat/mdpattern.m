@@ -29,7 +29,7 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %
 %       plots : Plot on the screen. Boolean
 %               If plots = true (default), a plot which displays missing
-%               data patterns is dispalyed on the screen.
+%               data patterns is displayed on the screen.
 %               Top axis contains the name of the variables
 %               Big circle means missing value; smaller filled dot
 %               represents non missing value Left axis shows the number of
