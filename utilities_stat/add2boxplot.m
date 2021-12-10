@@ -1,12 +1,12 @@
-function addOutLabels2boxplot(Y,g)
-%addOutLabels2boxplot added labels to the boxplot figure
+function add2boxplot(Y,g)
+%add2boxplot added labels to the boxplot figure
 %
-%<a href="matlab: docsearchFS('addOutLabels2boxplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('add2boxplot')">Link to the help function</a>
 %
-% addOutLabels2boxplot assumes that one or more boxplots have been created
+% add2boxplot assumes that one or more boxplots have been created
 % using function boxplot. This function adds to the plot the labels
 % associated with the outliers. Note that Y and g must have exactly the
-% same dimensions to those called by boxplot. Note also that Y is the
+% same dimensions to those called by boxplot. Note also that if Y is the
 % associated table, the labels are referred to the rownames of Y.
 %
 %
@@ -39,7 +39,7 @@ function addOutLabels2boxplot(Y,g)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('addOutLabels2boxplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('add2boxplot')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -53,10 +53,10 @@ function addOutLabels2boxplot(Y,g)
     rng(2)
     y=randn(1300,1);
     boxplot(y)
-    addOutLabels2boxplot(y);
-    % Note that the input argument of addOutLabels2boxplot could be a table
+    add2boxplot(y);
+    % Note that the input argument of add2boxplot could be a table
     % ytable=array2table(y);
-    % addOutLabels2boxplot(ytable);
+    % add2boxplot(ytable);
 %}
 
 %{
@@ -66,7 +66,7 @@ function addOutLabels2boxplot(Y,g)
     rng(2)
     y=randn(300,5);
     boxplot(y)
-    addOutLabels2boxplot(y);
+    add2boxplot(y);
 %}
 
 %{
@@ -75,7 +75,7 @@ function addOutLabels2boxplot(Y,g)
     % grouping variable.
     load fisheriris
     boxplot(meas(:,1),species)
-    addOutLabels2boxplot(meas(:,1),species)
+    add2boxplot(meas(:,1),species)
 %}
 
 
@@ -87,7 +87,7 @@ function addOutLabels2boxplot(Y,g)
     % define the grouping variable.
     g={'zz';'bb';'cc'; 'dd'};
     boxplot(Y,g)
-    addOutLabels2boxplot(Y,g)
+    add2boxplot(Y,g)
 %}
 
 %{
@@ -96,8 +96,8 @@ function addOutLabels2boxplot(Y,g)
     load citiesItaly.mat
     Yst=citiesItaly;
     Yst{:,:}=zscore(citiesItaly{:,:});
-    boxplot(Yst{:,:},'Labels',citiesItaly.Properties.VariableNames,'Jitter',0.3);
-    addOutLabels2boxplot(Yst)
+    boxplot(Yst{:,:},'Labels',citiesItaly.Properties.VariableNames,'Jitter',0);
+    add2boxplot(Yst)
 %}
 
 %% Beginning of code
@@ -149,7 +149,13 @@ if ~isempty(outliersYcoo)
                 [Ydjsorted,indsorj]=sort(Yd(rown,j));
                 rownamj=rownam(rown);
                 rownamjsor=rownamj(indsorj);
-                text(outjXcoo+0.1,Ydjsorted,rownamjsor)
+
+                % Alternate the labels left and right
+                lrown=length(rown);
+                even=2:2:lrown;
+                odd=1:2:lrown;
+                text(outjXcoo(odd)+0.1,Ydjsorted(odd),rownamjsor(odd),'HorizontalAlignment','left')
+                text(outjXcoo(even)-0.1,Ydjsorted(even),rownamjsor(even),'HorizontalAlignment','right')
             end
 
         end
@@ -157,20 +163,29 @@ if ~isempty(outliersYcoo)
         % This is the case when second argument is present (there is a grouping variable)
         % and Y has just one column.
         if size(Yd,2)==1
+
             for j=1:length(unig)
                 booj=strcmp(g,unig(j));
+
                 Ydj=Yd(booj);
+                rownamj=rownam(booj);
                 outjYcoo=outliersYcoo{end+1-j};
                 outjXcoo=outliersXcoo{end+1-j};
                 outjXcoo=outjXcoo(:);
 
                 minc=min(abs(Ydj-outjYcoo),[],2);
                 rown=seq(minc<1e-10);
-
-                [Ydjsorted,indsorj]=sort(Ydj(rown));
-                rownamj=rownam(rown);
-                rownamjsor=rownamj(indsorj);
-                text(outjXcoo+0.1,Ydjsorted,rownamjsor)
+                if ~isempty(rown)
+                    [Ydjsorted,indsorj]=sort(Ydj(rown));
+                    rownamjsel=rownamj(rown);
+                    rownamjselsor=rownamjsel(indsorj);
+                    % Alternate the labels left and right
+                    lrown=length(rown);
+                    even=2:2:lrown;
+                    odd=1:2:lrown;
+                    text(outjXcoo(odd)+0.1,Ydjsorted(odd),rownamjselsor(odd),'HorizontalAlignment','left')
+                    text(outjXcoo(even)-0.1,Ydjsorted(even),rownamjselsor(even),'HorizontalAlignment','right')
+                end
             end
         else
             % There is a grouping variable and Y has more than one column
@@ -186,7 +201,15 @@ if ~isempty(outliersYcoo)
                 [Ydjsorted,indsorj]=sort(Ydj(rown));
                 rownamj=rownam(rown);
                 rownamjsor=rownamj(indsorj);
-                text(outjXcoo+0.1,Ydjsorted,rownamjsor)
+
+                if ~isempty(rown)
+                    % Alternate the labels left and right
+                    lrown=length(rown);
+                    even=2:2:lrown;
+                    odd=1:2:lrown;
+                    text(outjXcoo(odd)+0.1,Ydjsorted(odd),rownamjsor(odd),'HorizontalAlignment','left')
+                    text(outjXcoo(even)-0.1,Ydjsorted(even),rownamjsor(even),'HorizontalAlignment','right')
+                end
             end
         end
     end  % close if linked to the presence of classification variable
