@@ -19,36 +19,36 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 % Required input arguments:
 %
 %     lmd : Determinants. Vector.
-%            Row vector of length k containing in the j-th position
+%           Row vector of length k containing in the j-th position
 %           the estimate of lambda. In the first iteration the estiamte of
 %           \lambda_j is $|\Sigma_j|^(1/v)$, $j=1, 2, \ldots, k$ if
 %           different determinants are allowed else it is a row vector of
 %           ones.
-%    Omega : Rotation. 3D array.
+%   Omega : Rotation. 3D array.
 %           v-by-v-by-k 3D array containing in
 %           position (:,:,j) the rotation
 %           matrix $\Omega_j$ for group $j$, with $j=1, 2, \ldots, k$.
-%   SigmaB : initial unconstrained covariance matrices. v-by-v-by-k array.
-%            v-by-v-by-k array containing the k unconstrained covariance
-%            matrices for the k groups.
-%   niini  : size of the groups. Vector.
+%  SigmaB : initial unconstrained covariance matrices. v-by-v-by-k array.
+%           v-by-v-by-k array containing the k unconstrained covariance
+%           matrices for the k groups.
+%   niini : size of the groups. Vector.
 %           Row vector of length k containing the size of the groups.
-%     pa : constraining parameters. Structure. Structure containing 3 letter character specifying modeltype,
-%            number of dimensions, number of groups...
-%            pa must contain the following fields:
-%            pa.v = scalar, number of variables.
-%            pa.k = scalar, number of groups.
-%            pa.pars = type of Gaussian Parsimonious Clustering Model.
-%               A 3 letter word in the set:
-%               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
-%               'EVI','VEI','EEI','VII','EII'
-%            pa.shb = between groups shape constraint
-%            pa.shw = within groups shape constraint
-%            pa.zerotol = tolerance to decleare elements equal to 0.
-%            pa.maxiterS = maximum number of iterations in presence of
-%            varying shape matrices.
-%            pa.userepmat = scalar (if =2 implicit expansion is used)
-%                 Data Types - struct
+%      pa : constraining parameters. Structure. Structure containing 3 letter character specifying modeltype,
+%           number of dimensions, number of groups...
+%           pa must contain the following fields:
+%           pa.v = scalar, number of variables.
+%           pa.k = scalar, number of groups.
+%           pa.pars = type of Gaussian Parsimonious Clustering Model.
+%              A 3 letter word in the set:
+%              'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
+%              'EVI','VEI','EEI','VII','EII'
+%           pa.shb = between groups shape constraint
+%           pa.shw = within groups shape constraint
+%           pa.zerotol = tolerance to decleare elements equal to 0.
+%           pa.maxiterS = maximum number of iterations in presence of
+%           varying shape matrices.
+%           pa.userepmat = scalar (if =2 implicit expansion is used)
+%             Data Types - struct
 %
 %
 %  Optional input arguments:
@@ -56,7 +56,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %
 % Output:
 %
-%     GAMc : constrained shape matrix. Matrix of size v-by-k containing in
+%     GAMc: constrained shape matrix. Matrix of size v-by-k containing in
 %           column j the elements on the main diagonal of shape matrix
 %           $\Gamma_j$. The elements of GAMc satisfy the following
 %           constraints:

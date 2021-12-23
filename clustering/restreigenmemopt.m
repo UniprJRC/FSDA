@@ -14,24 +14,22 @@ function [out]  = restreigenmemopt(eigenvalues, niini, restr, tol, userepmat)
 %             of the covariance matrices of the k groups.
 %             v is the number of variables of the dataset which has to be
 %             clustered.
-%     niini: Cluster size. Vector. k x 1 vector containing the size of the k clusters
-%     restr: Restriction factor. Scalar. Scalar containing the restr parameter in tclust program.
-%            More in detail, parameter restr defines the cluster's shape
-%            restrictions, which are applied on all clusters during each
-%            iteration.
-%            Setting restr to 1, yields the strongest restriction,
-%            forcing all eigenvalues/determinants to be equal and so the
-%            method looks for similarly scattered (respectively spherical)
-%            clusters.
+%      niini: Cluster size. Vector. k x 1 vector containing the size of the k clusters
+%      restr: Restriction factor. Scalar. Scalar containing the restr parameter in tclust program.
+%             More in detail, parameter restr defines the cluster's shape
+%             restrictions, which are applied on all clusters during each iteration.
+%             Setting restr to 1, yields the strongest restriction, forcing
+%             all eigenvalues/determinants to be equal and so the method
+%             looks for similarly scattered (respectively spherical) clusters.
 %
 %  Optional input arguments:
 %
-%      tol : tolerance. Scalar defining the tolerance of the procedure.
-%            The default value is 1e-8
+%        tol: tolerance. Scalar defining the tolerance of the procedure.
+%             The default value is 1e-8
 %               Example - 'tol',[1e-18]
 %               Data Types - double
 %
-% userepmat : use repmat, bsxfun or implicit expansion. Scalar. 
+%  userepmat: use repmat, bsxfun or implicit expansion. Scalar. 
 %             If userepmat is equal to 1, function repmat is used instead
 %             of bsxfun inside the procedure. Remark: repmat is built in
 %             from MATLAB 2013b so it is faster to use repmat if the
@@ -45,10 +43,10 @@ function [out]  = restreigenmemopt(eigenvalues, niini, restr, tol, userepmat)
 %  Output:
 %
 %
-%            out      : Restricted eigenvalues. Matrix. v-by-k matrix
-%                       containing restricted eigenvalues.
-%                       The ratio between two possible elements in matrix
-%                       out is not greater than restr
+%        out: Restricted eigenvalues. Matrix. v-by-k matrix
+%             containing restricted eigenvalues.
+%             The ratio between two possible elements in matrix
+%             out is not greater than restr
 %
 % See also tclust, restrdeter, tclustreg
 %

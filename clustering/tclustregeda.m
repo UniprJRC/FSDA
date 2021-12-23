@@ -13,7 +13,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %         y : Response variable. Vector.
 %             A vector with n elements that contains the response variable.
 %             y can be either a row or a column vector.
-%             Data Types - single|double
+%               Data Types - single|double
 %
 %         X : Explanatory variables (also called 'regressors'). Matrix.
 %             Data matrix of dimension $(n \times p-1)$. Rows of X represent
@@ -21,11 +21,11 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %             (NaN's) and infinite values (Inf's) are allowed, since
 %             observations (rows) with missing or infinite values will
 %             automatically be excluded from the computations.
-%             Data Types - single|double
+%               Data Types - single|double
 %
 %         k : Number of clusters. Scalar.
 %             This is a guess on the number of data groups.
-%             Data Types - single|double
+%               Data Types - single|double
 %
 % restrfact : restriction factor for regression residuals and covariance
 %             matrices of the explanatory variables. Scalar or vector with two
@@ -38,137 +38,138 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %             variables. Note that restrfactor(2) is used just if
 %             input option $alphaX=1$, that is if constrained weighted
 %             model for X is assumed.
-%            Data Types - single|double
+%               Data Types - single|double
 %
-%     alphaLik: trimming level to monitor. Vector. Vector which specifies the
-%               values of trimming levels which have to be considered.
-%               alpha is a vector which contains decreasing elements which
-%               lie in the interval 0 and 0.5.
-%               For example if alpha=[0.1 0.05 0] tclustregeda considers these 3
-%               values of trimming level.
-%               If alphaLik=0 tclustregeda does not trim. The default for
-%               alphaLik is vector [0.1 0.05 0]. The sequence is forced to be
-%               monotonically decreasing.
-%   alphaX : Second-level trimming or constrained weighted model for X. Scalar.
-%            alphaX is a value in the interval [0 1].
-%            - If alphaX=0 there is no second-level trimming.
-%            - If alphaX is in the interval [0 0.5] it indicates the
-%               fixed proportion of units subject to second level trimming.
-%               In this case alphaX is usually smaller than alphaLik.
-%               For further details see Garcia-Escudero et. al. (2010).
-%            -  If alphaX is in the interval (0.5 1), it indicates a
-%               Bonferronized confidence level to be used to identify the
-%               units subject to second level trimming. In this case the
-%               proportion of units subject to second level trimming is not
-%               fixed a priori, but is determined adaptively.
-%               For further details see Torti et al. (2018).
-%            -  If alphaX=1, constrained weighted model for X is assumed
-%               (Gershenfeld, 1997). The CWM estimator is able to
-%               take into account different distributions for the explanatory
-%               variables across groups, so overcoming an intrinsic limitation
-%               of mixtures of regression, because they are implicitly
-%               assumed equally distributed. Note that if alphaX=1 it is
-%               also possible to apply using restrfactor(2) the constraints
-%               on the cov matrices of the explanatory variables.
-%               For further details about CWM see Garcia-Escudero et al.
-%               (2017) or Torti et al. (2018).
-%            Data Types - single|double
+%  alphaLik : trimming level to monitor. Vector. Vector which specifies the
+%             values of trimming levels which have to be considered.
+%             alpha is a vector which contains decreasing elements which
+%             lie in the interval 0 and 0.5.
+%             For example if alpha=[0.1 0.05 0] tclustregeda considers these 3
+%             values of trimming level.
+%             If alphaLik=0 tclustregeda does not trim. The default for
+%             alphaLik is vector [0.1 0.05 0]. The sequence is forced to be
+%             monotonically decreasing.
+%
+%    alphaX : Second-level trimming or constrained weighted model for X. Scalar.
+%             alphaX is a value in the interval [0 1].
+%             - If alphaX=0 there is no second-level trimming.
+%             - If alphaX is in the interval [0 0.5] it indicates the
+%                fixed proportion of units subject to second level trimming.
+%                In this case alphaX is usually smaller than alphaLik.
+%                For further details see Garcia-Escudero et. al. (2010).
+%             -  If alphaX is in the interval (0.5 1), it indicates a
+%                Bonferronized confidence level to be used to identify the
+%                units subject to second level trimming. In this case the
+%                proportion of units subject to second level trimming is not
+%                fixed a priori, but is determined adaptively.
+%                For further details see Torti et al. (2018).
+%             -  If alphaX=1, constrained weighted model for X is assumed
+%                (Gershenfeld, 1997). The CWM estimator is able to
+%                take into account different distributions for the explanatory
+%                variables across groups, so overcoming an intrinsic limitation
+%                of mixtures of regression, because they are implicitly
+%                assumed equally distributed. Note that if alphaX=1 it is
+%                also possible to apply using restrfactor(2) the constraints
+%                on the cov matrices of the explanatory variables.
+%                For further details about CWM see Garcia-Escudero et al.
+%                (2017) or Torti et al. (2018).
+%                  Data Types - single|double
 %
 %  Optional input arguments:
 %
 %     intercept : Indicator for constant term. Scalar. If 1, a model with
-%                constant term will be fitted (default), else no constant
-%                term will be included.
-%                Example - 'intercept',1
-%                Data Types - double
+%                 constant term will be fitted (default), else no constant
+%                 term will be included.
+%                   Example - 'intercept',1
+%                   Data Types - double
 %
-%       mixt  : mixture modelling or crisp assignment. Scalar.
-%               Option mixt specifies whether mixture modelling or crisp
-%               assignment approach to model based clustering must be used.
-%               In the case of mixture modelling parameter mixt also
-%               controls which is the criterior to find the untrimmed units
-%               in each step of the maximization
-%               If mixt >=1 mixture modelling is assumed else crisp
-%               assignment.
-%                In mixture modelling the likelihood is given by
-%                \[
-%                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j),
-%                \]
-%               while in crisp assignment the likelihood is given by
-%               \[
-%               \prod_{j=1}^k   \prod _{i\in R_j} \pi_j  \phi (y_i \; x_i' , \beta_j , \sigma_j),
-%               \]
-%               where $R_j$ contains the indexes of the observations which
-%               are assigned to group $j$,
-%               Remark - if mixt>=1 previous parameter equalweights is
-%               automatically set to 1.
-%               Parameter mixt also controls the criterion to select the units to trim
-%               if mixt == 2 the h units are those which give the largest
-%               contribution to the likelihood that is the h largest
-%               values of
-%               \[
+%          mixt : mixture modelling or crisp assignment. Scalar.
+%                 Option mixt specifies whether mixture modelling or crisp
+%                 assignment approach to model based clustering must be used.
+%                 In the case of mixture modelling parameter mixt also
+%                 controls which is the criterior to find the untrimmed units
+%                 in each step of the maximization
+%                 If mixt >=1 mixture modelling is assumed else crisp
+%                 assignment.
+%                 In mixture modelling the likelihood is given by
+%                 \[
+%                 \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j),
+%                 \]
+%                 while in crisp assignment the likelihood is given by
+%                 \[
+%                 \prod_{j=1}^k   \prod _{i\in R_j} \pi_j  \phi (y_i \; x_i' , \beta_j , \sigma_j),
+%                 \]
+%                 where $R_j$ contains the indexes of the observations which
+%                 are assigned to group $j$,
+%                 Remark - if mixt>=1 previous parameter equalweights is
+%                 automatically set to 1.
+%                 Parameter mixt also controls the criterion to select the units to trim
+%                 if mixt == 2 the h units are those which give the largest
+%                 contribution to the likelihood that is the h largest
+%                 values of
+%                 \[
 %                   \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j)   \qquad
 %                    i=1, 2, ..., n
-%               \]
-%               elseif mixt==1 the criterion to select the h units is
-%               exactly the same as the one which is used in crisp
-%               assignment. That is: the n units are allocated to a
-%               cluster according to criterion
-%               \[
-%                \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i \; x_i' , \beta_j , \sigma_j)
-%               \]
-%               and then these n numbers are ordered and the units
-%               associated with the largest h numbers are untrimmed.
-%               Example - 'mixt',1
-%               Data Types - single | double
+%                 \]
+%                 elseif mixt==1 the criterion to select the h units is
+%                 exactly the same as the one which is used in crisp
+%                 assignment. That is: the n units are allocated to a
+%                 cluster according to criterion
+%                 \[
+%                   \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i \; x_i' , \beta_j , \sigma_j)
+%                 \]
+%                 and then these n numbers are ordered and the units
+%                 associated with the largest h numbers are untrimmed.
+%                   Example - 'mixt',1
+%                   Data Types - single | double
 %
-%equalweights : cluster weights in the concentration and assignment steps.
-%               Logical. A logical value specifying whether cluster weights
-%               shall be considered in the concentration, assignment steps
-%               and computation of the likelihood.
-%               if equalweights = true we are (ideally) assuming equally
-%               sized groups by maximizing the likelihood. Default value
-%               false.
-%                 Example - 'equalweights',true
-%                 Data Types - Logical
+%  equalweights : cluster weights in the concentration and assignment steps.
+%                 Logical. A logical value specifying whether cluster weights
+%                 shall be considered in the concentration, assignment steps
+%                 and computation of the likelihood.
+%                 if equalweights = true we are (ideally) assuming equally
+%                 sized groups by maximizing the likelihood. Default value
+%                 false.
+%                   Example - 'equalweights',true
+%                   Data Types - Logical
 %
-%    nsamp : number of subsamples to extract.
-%            Scalar or matrix with k*p columns.
-%            If nsamp is a scalar it contains the number of subsamples
-%            which will be extracted.
-%            If nsamp=0 all subsets will be extracted.
-%            If the number of all possible subset is <300 the
-%            default is to extract all subsets, otherwise just 300.
-%            If nsamp is a matrix it contains in the rows the indexes of
-%            the subsets which have to be extracted. nsamp in this case can
-%            be conveniently generated by function subsets.
-%            nsamp must have k*p columns. The first p columns are used to
-%            estimate the regression coefficient of group 1... the last p
-%            columns are used to estimate the regression coefficient of
-%            group k.
-%             Example - 'nsamp',1000
-%             Data Types - double
+%         nsamp : number of subsamples to extract.
+%                 Scalar or matrix with k*p columns.
+%                 If nsamp is a scalar it contains the number of subsamples
+%                 which will be extracted.
+%                 If nsamp=0 all subsets will be extracted.
+%                 If the number of all possible subset is <300 the
+%                 default is to extract all subsets, otherwise just 300.
+%                 If nsamp is a matrix it contains in the rows the indexes of
+%                 the subsets which have to be extracted. nsamp in this case can
+%                 be conveniently generated by function subsets.
+%                 nsamp must have k*p columns. The first p columns are used to
+%                 estimate the regression coefficient of group 1... the last p
+%                 columns are used to estimate the regression coefficient of
+%                 group k.
+%                   Example - 'nsamp',1000
+%                   Data Types - double
 %
-% refsteps:  Number of refining iterations. Scalar. Number of refining
-%               iterations in each subsample.  Default is 10.
-%               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'refsteps',15
-%                 Data Types - single | double
+%      refsteps : Number of refining iterations. Scalar. Number of refining
+%                 iterations in each subsample.  Default is 10.
+%                 refsteps = 0 means "raw-subsampling" without iterations.
+%                   Example - 'refsteps',15
+%                   Data Types - single | double
 %
-%     reftol  : Tolerance for the refining steps. Scalar.
-%               The default value is 1e-14;
-%                 Example - 'reftol',1e-05
-%                 Data Types - single | double
+%        reftol : Tolerance for the refining steps. Scalar.
+%                 The default value is 1e-14;
+%                   Example - 'reftol',1e-05
+%                   Data Types - single | double
 %
-% commonslope  : Impose constraint of common slope regression coefficients. Boolean.
-%               If commonslope is true, the groups are forced to have the
-%               same regression coefficients (apart from the intercepts).
-%               The default value of commonslope is false;
-%                 Example - 'commonslope',true
-%                 Data Types - boolean
+%   commonslope : Impose constraint of common slope regression coefficients. Boolean.
+%                 If commonslope is true, the groups are forced to have the
+%                 same regression coefficients (apart from the intercepts).
+%                 The default value of commonslope is false;
+%                   Example - 'commonslope',true
+%                   Data Types - boolean
 %
 %
-% plots    :    Plot on the screen. Scalar structure.
+%         plots : Plot on the screen. Scalar structure.
 %
 %               Case 1: plots option used as scalar.
 %               - If plots=0, plots are not generated.
@@ -259,81 +260,79 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                   Example - 'plots', 1
 %                   Data Types - single | double | struct
 %
-%        msg  : Level of output to display. Scalar.
-%               Scalar which controls whether to display or not messages
-%               on the screen.
-%               If msg=0 nothing is displayed on the screen.
-%               If msg=1 (default) messages are displayed
-%               on the screen about estimated time to compute the estimator
-%               or the number of subsets in which there was no convergence.
-%               If msg=2 detailed messages are displayed. For example the
-%               information at iteration level.
+%           msg : Level of output to display. Scalar.
+%                 Scalar which controls whether to display or not messages
+%                 on the screen.
+%                 If msg=0 nothing is displayed on the screen.
+%                 If msg=1 (default) messages are displayed
+%                 on the screen about estimated time to compute the estimator
+%                 or the number of subsets in which there was no convergence.
+%                 If msg=2 detailed messages are displayed. For example the
+%                 information at iteration level.
 %                   Example - 'msg',1
 %                   Data Types - single | double
 %
-%      nocheck: Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
-%               vector y and matrix X.
-%               As default nocheck=0.
+%       nocheck : Check input arguments. Scalar.
+%                 If nocheck is equal to 1 no check is performed on
+%                 vector y and matrix X.
+%                 As default nocheck=0.
 %                   Example - 'nocheck',1
 %                   Data Types - single | double
 %
-%
 %RandNumbForNini: Pre-extracted random numbers to initialize proportions.
-%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
-%                random numbers which are used to initialize the
-%                proportions of the groups. This option is effective just
-%                if nsamp is a matrix which contains pre-extracted
-%                subsamples. The purpose of this option is to enable the
-%                user to replicate the results in case routine tclust is
-%                called using a parfor instruction (as it happens for
-%                example in routine IC, where tclust is called through a
-%                parfor for different values of the restriction factor).
-%                The default value of RandNumbForNini is empty that is
-%                random numbers from uniform are used.
+%                 Matrix. Matrix with size k-by-size(nsamp,1) containing the
+%                 random numbers which are used to initialize the
+%                 proportions of the groups. This option is effective just
+%                 if nsamp is a matrix which contains pre-extracted
+%                 subsamples. The purpose of this option is to enable the
+%                 user to replicate the results in case routine tclust is
+%                 called using a parfor instruction (as it happens for
+%                 example in routine IC, where tclust is called through a
+%                 parfor for different values of the restriction factor).
+%                 The default value of RandNumbForNini is empty that is
+%                 random numbers from uniform are used.
 %                   Example - 'RandNumbForNini',''
 %                   Data Types - single | double
 %
+%UnitsSameGroup : list of the units which must (whenever possible)
+%                 have a particular label. Numeric vector.  For example if
+%                 UnitsSameGroup=[20 26], means that group which contains
+%                 unit 20 is always labelled with number 1. Similarly,
+%                 the group which contains unit 26 is always labelled
+%                 with number 2, (unless it is found that unit 26 already
+%                 belongs to group 1). In general, group which contains
+%                 unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
+%                 labelled with number r (unless it is found that unit
+%                 UnitsSameGroup(r) has already been assigned to groups
+%                 1, 2, ..., r-1).
+%                   Example - 'UnitsSameGroup',[20 34]
+%                   Data Types -  integer vector
 %
-%   UnitsSameGroup :  list of the units which must (whenever possible)
-%                   have a particular label. Numeric vector.  For example if
-%                   UnitsSameGroup=[20 26], means that group which contains
-%                   unit 20 is always labelled with number 1. Similarly,
-%                   the group which contains unit 26 is always labelled
-%                   with number 2, (unless it is found that unit 26 already
-%                   belongs to group 1). In general, group which contains
-%                   unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
-%                   labelled with number r (unless it is found that unit
-%                   UnitsSameGroup(r) has already been assigned to groups
-%                   1, 2, ..., r-1).
-%                 Example - 'UnitsSameGroup',[20 34]
-%                 Data Types -  integer vector
+%       numpool : The number of parallel sessions to open. Integer. If
+%                 numpool is not defined, then it is set equal to the
+%                 number of physical cores in the computer.
+%                   Example - 'numpool',4
+%                   Data Types -  integer vector
 %
-%      numpool:     The number of parallel sessions to open. Integer. If
-%                   numpool is not defined, then it is set equal to the
-%                   number of physical cores in the computer.
-%                 Example - 'numpool',4
-%                 Data Types -  integer vector
-%
-%      cleanpool:   Function name. Scalar {0,1}. Indicated if the open pool
-%                   must be closed or not. It is useful to leave it open if
-%                   there are subsequent parallel sessions to execute, so
-%                   that to save the time required to open a new pool.
-%                 Example - 'cleanpool',true
+%     cleanpool : Function name. Scalar {0,1}. Indicated if the open pool
+%                 must be closed or not. It is useful to leave it open if
+%                 there are subsequent parallel sessions to execute, so
+%                 that to save the time required to open a new pool.
+%                   Example - 'cleanpool',true
 %                   Data Types - integer | logical
 %
-%      we: Vector of observation weights. Vector. A vector of size n-by-1
-%          containing application-specific weights that the user needs to
-%          apply to each observation. Default
-%          value is  a vector of ones.
-%            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
-%            Data Types - double
+%            we : Vector of observation weights. Vector. A vector of size n-by-1
+%                 containing application-specific weights that the user needs to
+%                 apply to each observation. Default
+%                 value is  a vector of ones.
+%                   Example - 'we',[0.2 0.2 0.2 0.2 0.2]
+%                   Data Types - double
 %
 %  Output:
 %
-%         out:   structure which contains the following fields
+%         out : structure which contains the following fields
 %
-%            out.IDX  = n-by-length(alphaLik) matrix containing assignment of each unit to
+%             out.IDX = n-by-length(alphaLik) matrix containing assignment of each unit to
 %                       each of the k groups. Cluster names are integer
 %                       numbers from 1 to k:
 %                       -1 indicates first level trimmed observations;
@@ -342,94 +341,94 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                       to alphaLik(1), second column of out.IDX refers to
 %                       alphaLik(2), ..., last column refers to alphaLik(end).
 %
-%            out.Beta  =  3D array of size k-by-p-by-length(alphaLik) containing
+%            out.Beta = 3D array of size k-by-p-by-length(alphaLik) containing
 %                       the monitoring of the regression coefficients for each value of
 %                       alphaLik. out.Beta(:,:,1), refers to alphaLik(1) ...,
 %                       out.Beta(:,:,end) refers to alphaLik(end). First row in
 %                       each slice refers to group 1, second row refers to
 %                       group 2 ...
 %
-%         out.Sigma2y  =  matrix of size k-by-length(alphaLik) containing in column
+%         out.Sigma2y = matrix of size k-by-length(alphaLik) containing in column
 %                       j, with j=1, 2, ...,  length(alphaLik), the
 %                       estimates of the k (constrained) variances of the
 %                       regressions lines (hyperplanes) associated with alphaLik(j).
 %
-%         out.Sigma2yc  =  matrix of size k-by-length(alphaLik) containing in column
+%        out.Sigma2yc = matrix of size k-by-length(alphaLik) containing in column
 %                       j, with j=1, 2, ...,  length(alphaLik), the
 %                       estimates of the k (constrained) unbiased variances of the
 %                       regressions lines (hyperplanes) associated with alphaLik(j).
 %                       In order to make the estimates of sigmas unbiased
 %                       we apply Tallis correction factor.
 %
-%         out.Nopt  =  matrix of size k-by-length(alphaLik) containing in column
+%            out.Nopt = matrix of size k-by-length(alphaLik) containing in column
 %                       j, with j=1, 2, ...,  length(alphaLik), the
 %                       sizes of the of the k groups.
 %
-%         out.Vopt  =  column vector of length(alphaLik) containing the
+%           out.Vopt = column vector of length(alphaLik) containing the
 %                      value of the target likelihod for each value of alphaLik.
 %
 %
-%         out.Amon  =  Amon stands for alphaLik monitoring. Matrix of size
+%           out.Amon = Amon stands for alphaLik monitoring. Matrix of size
 %                      (length(alphaLik)-1)-by-7 which contains for two
-%                       consecutive values of alpha the monitoring of six
-%                       quantities (change in classification, change in
-%                       betas, sigmas, correted sigmas and if cwm also
-%                       centroid and coariance in the X space.
-%                       1st col = value of alphaLik.
-%                       2nd col = ARI index.
-%                       3rd col = relative squared Euclidean distance between
-%                           two consecutive beta.
-%                       4th col = relative squared Euclidean distance between
-%                           two consecutive vectors of variances of the
-%                           errors of the k regressions.
-%                       5th col = relative squared Euclidean distance between
-%                           two consecutive vectors of correct variances of the
-%                           errors of the k regressions.
-%                       6th col = relative squared Euclidean distance between
-%                           two consecutive $\hat \mu_X$.
-%                       7th col = relative squared Euclidean distance between
-%                           two consecutive $\hat \Sigma_X$.
+%                      consecutive values of alpha the monitoring of six
+%                      quantities (change in classification, change in
+%                      betas, sigmas, correted sigmas and if cwm also
+%                      centroid and coariance in the X space.
+%                      1st col = value of alphaLik.
+%                      2nd col = ARI index.
+%                      3rd col = relative squared Euclidean distance between
+%                          two consecutive beta.
+%                      4th col = relative squared Euclidean distance between
+%                          two consecutive vectors of variances of the
+%                          errors of the k regressions.
+%                      5th col = relative squared Euclidean distance between
+%                          two consecutive vectors of correct variances of the
+%                          errors of the k regressions.
+%                      6th col = relative squared Euclidean distance between
+%                          two consecutive $\hat \mu_X$.
+%                      7th col = relative squared Euclidean distance between
+%                          two consecutive $\hat \Sigma_X$.
 %
-%            out.MU  =  3D array of size k-by-(p-1)-by-length(alphaLik) containing
-%                       the monitoring of the X centroids for each value of
-%                       alphaLik. out.MU(:,:,1), refers to alphaLik(1) ...,
-%                       out.MU(:,:,end) refers to alphaLik(end). First row in
-%                       each slice refers to group 1, second row refers to
-%                       group 2 ... This field is present only if input
-%                       option alphaX is 1.
+%             out.MU = 3D array of size k-by-(p-1)-by-length(alphaLik) containing
+%                      the monitoring of the X centroids for each value of
+%                      alphaLik. out.MU(:,:,1), refers to alphaLik(1) ...,
+%                      out.MU(:,:,end) refers to alphaLik(end). First row in
+%                      each slice refers to group 1, second row refers to
+%                      group 2 ... This field is present only if input
+%                      option alphaX is 1.
 %
-%         out.SIGMA  =  cell of length length(alphaLik) containing in element
-%                       j, with j=1, 2, ...,  length(alphaLik), the 3D array
-%                       of size (p-1)-by-(p-1)-by-k containing the k (constrained)
-%                       estimated covariance matrices of X associated with
-%                       alphaLik(j). This field is present only if input
-%                       option alphaX is 1.
+%          out.SIGMA = cell of length length(alphaLik) containing in element
+%                      j, with j=1, 2, ...,  length(alphaLik), the 3D array
+%                      of size (p-1)-by-(p-1)-by-k containing the k (constrained)
+%                      estimated covariance matrices of X associated with
+%                      alphaLik(j). This field is present only if input
+%                      option alphaX is 1.
 %
-% out.UnitsTrmOrChgCla = Matrix containing information about the
-%                       units (n1) which were trimmed or changed classification
-%                       at least once in the forward search. The size of
-%                       out.UnitsTrmOrChgCla is n1-by-length(alphaLik)+1;
-%                       1st col = list of the units which were trimmed or
-%                       changed classification at least once.
-%                       2nd col = allocation of the n1 units in step alphaLik(1)
-%                       3rd col = allocation of the n1 units in step alphaLik(2)
-%                       ...
-%                       last col = allocation of the n1 units in step alphaLik(end)
+%out.UnitsTrmOrChgCla= Matrix containing information about the
+%                      units (n1) which were trimmed or changed classification
+%                      at least once in the forward search. The size of
+%                      out.UnitsTrmOrChgCla is n1-by-length(alphaLik)+1;
+%                      1st col = list of the units which were trimmed or
+%                      changed classification at least once.
+%                      2nd col = allocation of the n1 units in step alphaLik(1)
+%                      3rd col = allocation of the n1 units in step alphaLik(2)
+%                      ...
+%                      last col = allocation of the n1 units in step alphaLik(end)
 %
-%   out.Postprob      = Posterior probabilities. 3D array of size
-%                       n-by-k-length(alphaLik) containing the monitoring
-%                       of posterior probabilities.
+%       out.Postprob = Posterior probabilities. 3D array of size
+%                      n-by-k-length(alphaLik) containing the monitoring
+%                      of posterior probabilities.
 %
-%     out.units= structure containing the following fields:
-%                       units.UnitsTrmOrChgCla=units trimmed at least onece
-%                           or changed classification at least once.
-%                       units.UnitsChgCla=units which changed
-%                           classification at least once (i.e. from group 1
-%                           to group 3 ...).
-%                       units.UnitsTrm=units trimmed at least once.
-%                       units.UnitsNeverAssigned=units never assigned
-%                           (i.e. all those which have always been trimmed by
-%                           first level or second level).
+%          out.units = structure containing the following fields:
+%                      units.UnitsTrmOrChgCla=units trimmed at least onece
+%                            or changed classification at least once.
+%                      units.UnitsChgCla=units which changed
+%                            classification at least once (i.e. from group 1
+%                            to group 3 ...).
+%                      units.UnitsTrm=units trimmed at least once.
+%                      units.UnitsNeverAssigned=units never assigned
+%                            (i.e. all those which have always been trimmed by
+%                            first level or second level).
 %
 %
 %  Optional Output:

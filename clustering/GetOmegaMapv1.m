@@ -3,50 +3,49 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMapv1(c, Pi, Mu, S, fix, 
 %
 %  Required input arguments:
 %
-%       c  : scalar, inflation parameter for covariance matrices. In the
-%            case of heterogeneous clusters scalar c is used to correct
-%            the elements of S for which the corresponding element of
-%            vector fix is 0
-%      Pi  : vector of length k containing the mixing proportions.
-%            Clearly, sum(Pi)=1.
-%      Mu  : vector of length k containing the k centers of the groups
-%       S  : vector of length k containing the variances of the k groups
-%      fix : vector of length k containing zeros or ones
-%            if fix(j) =1 cluster j does not participate to inflation or
-%            deflation. If fix=zeros(k,1) all clusters participate in
-%            inflation/deflation
-%            This parameter is used just if heterogeneous clusters are used
-%            (that is when max(S)>min(S))
-%   asympt : flag for regular or asymptotic overlap. If asypmt ==1 formula
-%            of asymptotic overlap is used. In this case
-%            the misclassification probability \omega_j|i (that is with
-%            respect to the mean and variance of group i) is
-%            computed assuming that the variance of group i goes to infinity
-%            Note that parameter asympt is set to 1 in the preliminary
-%            phase just to check whether the average or the maximum overlap
-%            can be reached.
+%            c: scalar, inflation parameter for covariance matrices. In the
+%               case of heterogeneous clusters scalar c is used to correct
+%               the elements of S for which the corresponding element of
+%               vector fix is 0
+%           Pi: vector of length k containing the mixing proportions.
+%               Clearly, sum(Pi)=1.
+%           Mu: vector of length k containing the k centers of the groups
+%            S: vector of length k containing the variances of the k groups
+%          fix: vector of length k containing zeros or ones
+%               if fix(j) =1 cluster j does not participate to inflation or
+%               deflation. If fix=zeros(k,1) all clusters participate in
+%               inflation/deflation
+%               This parameter is used just if heterogeneous clusters are used
+%               (that is when max(S)>min(S))
+%       asympt: flag for regular or asymptotic overlap. If asypmt ==1 formula
+%               of asymptotic overlap is used. In this case
+%               the misclassification probability \omega_j|i (that is with
+%               respect to the mean and variance of group i) is
+%               computed assuming that the variance of group i goes to infinity
+%               Note that parameter asympt is set to 1 in the preliminary
+%               phase just to check whether the average or the maximum overlap
+%               can be reached.
 %
 %
 %  Output:
 %
-%    OmegaMap : k-by-k matrix containing map of misclassification
+%     OmegaMap: k-by-k matrix containing map of misclassification
 %               probabilities. More precisely, OmegaMap(i,j) is the
 %               misclassification probability with respect to cluster i,
 %               (that is conditionally on x belonging to cluster i,  which
 %               is called $w_{j|i})$
 %               (i ~= j)=1, 2, ..., k
 %
-%    BarOmega : scalar associated with average overlap.
+%     BarOmega: scalar associated with average overlap.
 %               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
 %
-%    MaxOmega : scalar associated with maximum overlap. MaxOmega is the
+%     MaxOmega: scalar associated with maximum overlap. MaxOmega is the
 %               maximum of OmegaMap(i,j)+OmegaMap(j,i)
 %               (i ~= j)=1, 2, ..., k
 %
-%       rcMax : column vector of length equal to 2 containing the indexes
-%               associated with the pair of components producing the
-%               highest overlap (largest off diagonal element of matrix
-%               OmegaMap)
+%        rcMax: column vector of length equal to 2 containing the indexes
+%               associated with the pair of components producing the highest
+%               overlap (largest off diagonal element of matrix OmegaMap)
 %
 % Copyright 2008-2021.
 % Written by FSDA team

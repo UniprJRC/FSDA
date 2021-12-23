@@ -53,44 +53,43 @@ function [out] = MixSimreg(k,p,varargin)
 %
 %            k: Number of groups (components). Scalar.
 %               Desired number of groups.
-%               Data Types - int16|int32|int64|single|double
+%                 Data Types - int16|int32|int64|single|double
 %            p: Number of explanatory variables for each regression
 %               hyperplane (including intercept). Scalar.
 %               Desired number of variables.
-%               Data Types - int16|int32|int64|single|double
+%                 Data Types - int16|int32|int64|single|double
 %
 %  Optional input arguments:
 %
-%    BarOmega : Requested average overlap. Scalar. Value of desired average
+%     BarOmega: Requested average overlap. Scalar. Value of desired average
 %               overlap. The default value is ''
-%               Example - 'BarOmega',0.05 
-%               Data Types - double
+%                 Example - 'BarOmega',0.05 
+%                 Data Types - double
 %
-%    MaxOmega : Requested maximum overlap. Scalar. Value of desired maximum
+%     MaxOmega: Requested maximum overlap. Scalar. Value of desired maximum
 %               overlap. If BarOmega is empty the default value of MaxOmega
 %               is 0.15.
-%               Example - 'MaxOmega',0.05 
-%               Data Types - double
+%                 Example - 'MaxOmega',0.05 
+%                 Data Types - double
 %
-%    StdOmega : Requested std of overlap. Scalar. Value of desired standard
+%     StdOmega: Requested std of overlap. Scalar. Value of desired standard
 %               deviation of overlap.
 %               Remark 1: The probability of overlapping between two
 %               clusters $i$ and $j$ ($i \ne j=1, 2, ..., k$), called $p_{ij}$, is
 %               defined as the sum of the two misclassification
 %               probabilities $p_{ij}=w_{j|i} + w_{i|j}$.
-%
 %               Remark 2: it is possible to specify up to two values among
 %               BarOmega MaxOmega and StdOmega.
-%               Example - 'StdOmega',0.05 
-%               Data Types - double
+%                 Example - 'StdOmega',0.05 
+%                 Data Types - double
 %
-%         hom : Equal Sigmas. Scalar boolean. 
+%          hom: Equal Sigmas. Scalar boolean. 
 %               Scalar boolean which specifies if the desired clusters have
 %               to be heterogeneous or homogeneous:
 %               hom=false (default) ==> heterogeneous,
 %               hom=true            ==> homogeneous \Sigma_1 = ... = \Sigma_k
-%               Example - 'hom',false 
-%               Data Types - boolean
+%                 Example - 'hom',false 
+%                 Data Types - boolean
 %
 %  restrfactor: restriction factor. Scalar. 
 %               Scalar in the interval $[1, \infty]$ which specifies the
@@ -102,18 +101,18 @@ function [out] = MixSimreg(k,p,varargin)
 %               is not larger than restrfactor. In order to apply this
 %               restriction, which is typical of tclust.m, we call routine
 %               restreigen.m.
-%               Example - 'restrfactor',8 
-%               Data Types - double
+%                 Example - 'restrfactor',8 
+%                 Data Types - double
 %
-%       PiLow : Smallest miximg proportion. Scalar. 
+%        PiLow: Smallest miximg proportion. Scalar. 
 %               Value of the smallest mixing proportion (if 'PiLow'
 %               is not reachable with respect to k, equal proportions are
 %               taken; PiLow = 1.0 implies equal proportions by default).
 %               PiLow must be a number in the interval (0 1]
-%               Example - 'PiLow',0.1 
-%               Data Types - double
+%                 Example - 'PiLow',0.1 
+%                 Data Types - double
 %
-%    Xdistrib : distribution to use for each explanatory variable. Scalar
+%     Xdistrib: distribution to use for each explanatory variable. Scalar
 %               or structure. It specifies the distribution to use
 %               for each explanatory variable and each group. Once chosen,
 %               the distribution is fixed for each explanatory variable and
@@ -176,7 +175,7 @@ function [out] = MixSimreg(k,p,varargin)
 %                 Example - 'Xdistrib',1 
 %                 Data Types - double
 %
-% betadistrib : distribution to use for regression coefficients. 
+%  betadistrib: distribution to use for regression coefficients. 
 %               Scalar or structure. It specifies the distribution to use
 %               for each element of the vectors of regression coefficients.
 %               Scalar or structure.
@@ -224,14 +223,14 @@ function [out] = MixSimreg(k,p,varargin)
 %                 Example - 'betadistrib',1 
 %                 Data Types - double
 %
-%        resN : maximum number of attempts. Scalar integer.
+%         resN: maximum number of attempts. Scalar integer.
 %               Maximum number of mixture re-simulations to find a
 %               simulation setting with prespecified level of overlapping.
 %               The default value of resN is 100.
 %                 Example - 'resN',3 
 %                 Data Types - double
 %
-%         tol : tolerance. Vector of length 2. 
+%          tol: tolerance. Vector of length 2. 
 %               - tol(1) (which will be called tolmap) specifies
 %                 the tolerance between the requested and empirical
 %                 misclassification probabilities (default is 1e-06).
@@ -242,7 +241,7 @@ function [out] = MixSimreg(k,p,varargin)
 %                 Example - 'tol',[0.01 0.02] 
 %                 Data Types - double
 %
-%         lim : maximum number of integration terms to use inside routine
+%          lim: maximum number of integration terms to use inside routine
 %               ncx2mixtcdf. Integer. Default is 1e06.
 %                 Example - 'lim',0.001 
 %                 Data Types - double
@@ -251,7 +250,7 @@ function [out] = MixSimreg(k,p,varargin)
 %               combination of non central chi2 r.v.. This is the
 %               probability of misclassification.
 %
-%     Display : Level of display. Logical.
+%      Display: Level of display. Logical.
 %               - 'off' displays no output.
 %               - 'notify' (default) displays output if requested
 %                  overlap cannot be reached in a particular simulation.
@@ -278,7 +277,7 @@ function [out] = MixSimreg(k,p,varargin)
 %               and MaxOmega should be specified...
 %  Output:
 %
-%         out:   structure which contains the following fields
+%         out: structure which contains the following fields
 %
 %       out.OmegaMap = matrix of misclassification probabilities (k-by-k);
 %                      OmegaMap(i,j) = $w_{j|i}$ is the probability that X,
@@ -297,30 +296,29 @@ function [out] = MixSimreg(k,p,varargin)
 %                      StdOmega is the standard deviation of the k*(k-1)/2
 %                      probabilities of overlapping.
 %
-%         out.rcMax  = vector of length 2. It containes the row and column
+%          out.rcMax = vector of length 2. It containes the row and column
 %                      numbers associated with the pair of components
 %                      producing maximum overlap 'MaxOmega'
 %
-%           out.fail  = scalar, flag value. 0 indicates a successful mixture
+%           out.fail = scalar, flag value. 0 indicates a successful mixture
 %                      generation, 1 represents failure.
 %
-%            out.Pi  = vector of length k containing the mixing proportions.
+%             out.Pi = vector of length k containing the mixing proportions.
 %                      Clearly, sum(out.Pi)=1.
 %
-%            out.Mu  = vector of length k, consisting of components' mean vectors
+%             out.Mu = vector of length k, consisting of components' mean vectors
 %                      for each regression hyperplane.
 %                      out.Mu(1)=BarX'Beta(:,1) ... out.Mu(p)=BarX'Beta(:,k)
 %
-%             out.S =  k-by-1 vector containing the variances for the k
+%              out.S = k-by-1 vector containing the variances for the k
 %                      groups.
-%
-%          out.Beta = p-by-k matrix containing (in each column) the
+% 
+%           out.Beta = p-by-k matrix containing (in each column) the
 %                      regression coefficients for each group.
 %
-%         out.Xdistrib=  distribution of X which has been used (struct).
+%       out.Xdistrib = distribution of X which has been used (struct).
 %
-%       out.betadistrib = distribution of beta which has been used
-%                       (struct).
+%    out.betadistrib = distribution of beta which has been used (struct).
 %
 % See also tkmeans, tclust, tclustreg, lga, rlga, ncx2mixtcdf, restreigen
 %

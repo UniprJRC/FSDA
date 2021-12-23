@@ -16,22 +16,22 @@ function out  = tclustICgpcm(Y, varargin)
 %
 %  Required input arguments:
 %
-%            Y: Input data. Matrix. Data matrix containing n observations on v variables
-%               Rows of Y represent observations, and columns represent
-%               variables. Observations (rows) with missing (NaN) or or
-%               infinite (Inf) values will automatically be excluded from
-%               the computations.
-%                 Data Types -  double
+%        Y: Input data. Matrix. Data matrix containing n observations on v variables
+%           Rows of Y represent observations, and columns represent
+%           variables. Observations (rows) with missing (NaN) or or
+%           infinite (Inf) values will automatically be excluded from
+%           the computations.
+%             Data Types -  double
 %
 %  Optional input arguments:
 %
-%      pa  : Constraints to apply and model specification. Structure.
-%            Structure containing the following fields:
-%             pa.pars= type of Gaussian Parsimonious Clustering Model. Character.
-%               A 3 letter word in the set:
-%               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
-%               'EVI','VEI','EEI','VII','EII'.
-%               If pa is not supplied VVV model is used.
+%       pa: Constraints to apply and model specification. Structure.
+%           Structure containing the following fields:
+%           pa.pars= type of Gaussian Parsimonious Clustering Model. Character.
+%           A 3 letter word in the set:
+%             'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
+%             'EVI','VEI','EEI','VII','EII'.
+%             If pa is not supplied VVV model is used.
 %             pa.cdet = scalar o vector containing the values of the
 %               restriction factors for ratio of determinants which have to
 %               be tested. If pa.cdet=1 all determinants are forced to be
@@ -57,274 +57,272 @@ function out  = tclustICgpcm(Y, varargin)
 %               in presence of varying shape.
 %               This parameter is used by routine cpcV. The
 %               default value of pa.maxiterR is 20.
-%          pa.maxiterDSR = positive integer which specifies the maximum
+%             pa.maxiterDSR = positive integer which specifies the maximum
 %               number of iterations to obtain the requested restricted
 %               determinants, shape matrices and rotation. For all
 %               parametrizations  pa.maxiterDSR is set to 1 apart from for
 %               the specifications 'VVE', 'EVE' and 'VEE'. The default
 %               value of pa.maxiterDSR is 20.
-%           pa.tolS=tolerance to use to exit the iterative procedure for
+%             pa.tolS = tolerance to use to exit the iterative procedure for
 %               estimating the shape. Scalar. The
 %               iterative procedures stops when the relative difference of
 %               a certain output matrix is smaller than itertol in two consecutive
 %               iterations. The default value of pa.tol is 1e-12.
-%      pa.zerotol = tolerance value to declare all input values equal to 0
+%             pa.zerotol = tolerance value to declare all input values equal to 0
 %               in the eigenvalues restriction routine (file restreigen.m)
 %               or in the final reconstruction of covariance matrices.
 %               The default value of zerotol is 1e-10.
-%          pa.msg = boolean which if set equal to true enables to monitor
+%             pa.msg = boolean which if set equal to true enables to monitor
 %               the relative change of the estimates of lambda Gamma and
 %               Omega in each iteration. The defaul value of pa.msg is
 %               false, that is nothing is displayed in each iteration.
-%   pa.userepmat  = scalar, which specifies whether to use implicit
-%                   expansion or bsxfun.  pa.userepmat =2 implies implicit
-%                   expansion, pa.userepmat=1 implies use of bsxfun. The
-%                   default is to use implicit expansion (faster)
-%                   if verLessThanFS('9.1') is false and bsxfun if MATLAB is
-%                   older than 2016b.
-%               Data Types - struct
-%               Example - pa=struct; pa.cdet=10;
+%             pa.userepmat = scalar, which specifies whether to use implicit
+%               expansion or bsxfun.  pa.userepmat =2 implies implicit
+%               expansion, pa.userepmat=1 implies use of bsxfun. The
+%               default is to use implicit expansion (faster)
+%               if verLessThanFS('9.1') is false and bsxfun if MATLAB is
+%               older than 2016b.
+%             Data Types - struct
+%             Example - pa=struct; pa.cdet=10;
 %
-%           kk: number of mixture components. Integer vector. Integer
-%               vector specifying the number of mixture components
-%               (clusters) for which the BIC is to be calculated.
-%               Vector. The default value of kk is 1:5.
-%                 Example - 'kk',1:4
-%                 Data Types - int16 | int32 | single | double
+%       kk: number of mixture components. Integer vector. Integer
+%           vector specifying the number of mixture components
+%           (clusters) for which the BIC is to be calculated.
+%           Vector. The default value of kk is 1:5.
+%             Example - 'kk',1:4
+%             Data Types - int16 | int32 | single | double
 %
 %
-%      whichIC: type of information criterion. Character.
-%               Character which specifies which information criteria must
-%               be computed for each k (number of groups) and each value of
-%               the restriction factors $c_{det}$ and $c_{shw}$.
-%               Possible values for whichIC are:
-%               'MIXMIX'  = a mixture model is fitted and to
+%  whichIC: type of information criterion. Character.
+%           Character which specifies which information criteria must
+%           be computed for each k (number of groups) and each value of
+%           the restriction factors $c_{det}$ and $c_{shw}$.
+%           Possible values for whichIC are:
+%             'MIXMIX' = a mixture model is fitted and to
 %                   compute the information criterion the mixture
 %                   likelihood is used. This option corresponds to the use of
 %                   the Bayesian Information criterion (BIC). In output
 %                   structure out just the matrix out.MIXMIX is given. If
 %                   this input option is not specified, MIXMIX is assumed.
-%               'MIXCLA'  = a mixture model is fitted but to compute the
+%             'MIXCLA' = a mixture model is fitted but to compute the
 %                   information criterion the classification likelihood is
 %                   used. This option corresponds to the use of the
 %                   Integrated Complete Likelihood (ICL). In output
 %                   structure out just the matrix out.MIXCLA is given.
-%               'CLACLA' =  everything is based on the classification
+%             'CLACLA' = everything is based on the classification
 %                   likelihood. This information criterion will be called
 %                   CLA. In output structure out just the matrix out.CLACLA
 %                   is given.
-%                 Example - 'whichIC','CLACLA'
-%                 Data Types - character
+%             Example - 'whichIC','CLACLA'
+%             Data Types - character
 %
-%        alpha: global trimming level. Fraction or number of observations
-%               which have to be trimmed. alpha is a scalar between 0 and
-%               0.5 or an integer specifying the number of observations to
-%               be trimmed. If alpha = 0 all observations are considered.
-%               More in detail, if 0 < alpha < 1 clustering is based on
-%               h = fix(n*(1-alpha)) observations. Else if alpha is an
-%               integer greater than 1 clustering is based on h=n-floor(alpha).
-%               The default value of alpha which is used is 0.
-%                 Example - 'alpha',0
-%                 Data Types - single | double
+%    alpha: global trimming level. Fraction or number of observations
+%           which have to be trimmed. alpha is a scalar between 0 and
+%           0.5 or an integer specifying the number of observations to
+%           be trimmed. If alpha = 0 all observations are considered.
+%           More in detail, if 0 < alpha < 1 clustering is based on
+%           h = fix(n*(1-alpha)) observations. Else if alpha is an
+%           integer greater than 1 clustering is based on h=n-floor(alpha).
+%           The default value of alpha which is used is 0.
+%             Example - 'alpha',0
+%             Data Types - single | double
 %
-%       nsamp : number of subsamples to extract. Scalar or matrix.
-%               If nsamp is a scalar it contains the number of subsamples
-%               which will be extracted. If nsamp=0 all subsets will be
-%               extracted.
-%               Remark - if the number of all possible subset is <300 the
-%               default is to extract all subsets, otherwise just 300.
-%               - If nsamp is a matrix it contains in the rows the indexes
-%                 of the subsets which have to be extracted. nsamp in this
-%                 case can be conveniently generated  by function subsets.
-%                 nsamp can have k columns or k*(v+1) columns. If nsamp has
-%                 k columns the k initial centroids each iteration i are
-%                 given by X(nsamp(i,:),:) and the covariance matrices are
-%                 equal to the identity.
-%               - If nsamp has k*(v+1) columns the initial centroids and
-%                 covariance matrices in iteration i are computed as follows
-%                 X1=X(nsamp(i,:),:)
-%                 mean(X1(1:v+1,:)) contains the initial centroid for group 1
-%                 cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
-%                 mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
-%                 cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
-%                 ...
-%                 mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
-%                 cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
-%               REMARK - if nsamp is not a scalar option option below
-%               startv1 is ignored. More precisely if nsamp has k columns
-%               startv1=0 elseif nsamp has k*(v+1) columns option startv1=1.
-%                 Example - 'nsamp',1000
-%                 Data Types - double
+%    nsamp: number of subsamples to extract. Scalar or matrix.
+%           If nsamp is a scalar it contains the number of subsamples
+%           which will be extracted. If nsamp=0 all subsets will be
+%           extracted.
+%           Remark - if the number of all possible subset is <300 the
+%           default is to extract all subsets, otherwise just 300.
+%           - If nsamp is a matrix it contains in the rows the indexes
+%             of the subsets which have to be extracted. nsamp in this
+%             case can be conveniently generated  by function subsets.
+%             nsamp can have k columns or k*(v+1) columns. If nsamp has
+%             k columns the k initial centroids each iteration i are
+%             given by X(nsamp(i,:),:) and the covariance matrices are
+%             equal to the identity.
+%           - If nsamp has k*(v+1) columns the initial centroids and
+%             covariance matrices in iteration i are computed as follows
+%             X1=X(nsamp(i,:),:)
+%             mean(X1(1:v+1,:)) contains the initial centroid for group 1
+%             cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
+%             mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
+%             cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
+%             ...
+%             mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
+%             cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
+%            REMARK - if nsamp is not a scalar option option below
+%            startv1 is ignored. More precisely if nsamp has k columns
+%            startv1=0 elseif nsamp has k*(v+1) columns option startv1=1.
+%              Example - 'nsamp',1000
+%              Data Types - double
 %
-% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
-%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
-%                random numbers which are used to initialize the
-%                proportions of the groups. This option is effective just
-%                if nsamp is a matrix which contains pre-extracted
-%                subsamples and k is a scalar. The purpose of this option
-%                is to enable the user to replicate the results.
-%                The default value of RandNumbForNini is empty,
-%                that is random numbers from uniform are used.
+%RandNumbForNini: Pre-extracted random numbers to initialize proportions.
+%                 Matrix. Matrix with size k-by-size(nsamp,1) containing the
+%                 random numbers which are used to initialize the
+%                 proportions of the groups. This option is effective just
+%                 if nsamp is a matrix which contains pre-extracted
+%                 subsamples and k is a scalar. The purpose of this option
+%                 is to enable the user to replicate the results.
+%                 The default value of RandNumbForNini is empty,
+%                 that is random numbers from uniform are used.
 %                   Example - 'RandNumbForNini',''
 %                   Data Types - single | double
 %
-%    refsteps : Number of refining iterations. Scalar. Number of refining
-%               iterations in subsample.  Default is 15. refsteps = 0 means
-%               "raw-subsampling" without iterations.
-%                 Example - 'refsteps',10
-%                 Data Types - single | double
+%       refsteps: Number of refining iterations. Scalar. Number of refining
+%                 iterations in subsample.  Default is 15. refsteps = 0 means
+%                 "raw-subsampling" without iterations.
+%                   Example - 'refsteps',10
+%                   Data Types - single | double
 %
-%     reftol  : scalar. Default value of tolerance for the refining steps.
-%               The default value is 1e-14;
-%                 Example - 'reftol',1e-05
-%                 Data Types - single | double
+%         reftol: scalar. Default value of tolerance for the refining steps.
+%                 The default value is 1e-14;
+%                   Example - 'reftol',1e-05
+%                   Data Types - single | double
 %
-%equalweights : cluster weights in the concentration and assignment steps.
-%               Logical. A logical value specifying whether cluster weights
-%               shall be considered in the concentration, assignment steps
-%               and computation of the likelihood. The default value is false.
-%                 Example - 'equalweights',true
-%                 Data Types - Logical
+%   equalweights: cluster weights in the concentration and assignment steps.
+%                 Logical. A logical value specifying whether cluster weights
+%                 shall be considered in the concentration, assignment steps
+%                 and computation of the likelihood. The default value is false.
+%                   Example - 'equalweights',true
+%                   Data Types - Logical
 %
-%      startv1: how to initialize centroids and cov matrices. Scalar.
-%               If startv1 is 1 then initial
-%               centroids and and covariance matrices are based on (v+1)
-%               observations randomly chosen, else each centroid is
-%               initialized taking a random row of input data matrix and
-%               covariance matrices are initialized with identity matrices.
-%               Remark 1- in order to start with a routine which is in the
-%               required parameter space, eigenvalue restrictions are
-%               immediately applied. The default value of startv1 is 1.
-%               Remark 2 - option startv1 is used just if nsamp is a scalar
-%               (see for more details the help associated with nsamp).
-%                 Example - 'startv1',1
-%                 Data Types - single | double
+%        startv1: how to initialize centroids and cov matrices. Scalar.
+%                 If startv1 is 1 then initial
+%                 centroids and and covariance matrices are based on (v+1)
+%                 observations randomly chosen, else each centroid is
+%                 initialized taking a random row of input data matrix and
+%                 covariance matrices are initialized with identity matrices.
+%                 Remark 1- in order to start with a routine which is in the
+%                 required parameter space, eigenvalue restrictions are
+%                 immediately applied. The default value of startv1 is 1.
+%                 Remark 2 - option startv1 is used just if nsamp is a scalar
+%                 (see for more details the help associated with nsamp).
+%                   Example - 'startv1',1
+%                   Data Types - single | double
 %
+%          plots: Plot on the screen. Scalar. If plots = 1, three plots are produced.
+%                 The first is two panels plot. Left panel contains the
+%                 Information criterion as function of k for each value of
+%                 $c_{det}$ given the best value of $c_{shw}$ to the best
+%                 found value. The kind of information criterion which is
+%                 dispalyed depends on input option whichIC. It can be BIC
+%                 for mixture likelihood (MIXMIX) or ICL (MIXCLA) or BIC
+%                 for classification likelihood (CLACLA).
+%                 The second plot is a heatmap of the information criterion
+%                 for the values of $c_{det}$ and $c_{shw}$ which have been
+%                 considered.
+%                 The third plot is a two panels plot. The panel on the left
+%                 contains the values of IC for $c_{shb}$ given the best
+%                 values of $c_{det}$ and $c_{shw}$. This plot enables to
+%                 choose the best value of $c_{shb}$. The panel on the right
+%                 contains the values of IC in correspondence of the cases of
+%                 no rotation, equal rotation and varying rotation.
+%                 The default value of plots is 0 that is no plot is shown.
+%                   Example - 'plots',1
+%                   Data Types - single | double
 %
-%       plots : Plot on the screen. Scalar. If plots = 1, three plots are produced.
-%               The first is two panels plot. Left panel contains the
-%               Information criterion as function of k for each value of
-%               $c_{det}$ given the best value of $c_{shw}$ to the best
-%               found value. The kind of information criterion which is
-%               dispalyed depends on input option whichIC. It can be BIC
-%               for mixture likelihood (MIXMIX) or ICL (MIXCLA) or BIC
-%               for classification likelihood (CLACLA).
-%               The second plot is a heatmap of the information criterion
-%               for the values of $c_{det}$ and $c_{shw}$ which have been
-%               considered.
-%               The third plot is a two panels plot. The panel on the left
-%               contains the values of IC for $c_{shb}$ given the best
-%               values of $c_{det}$ and $c_{shw}$. This plot enables to
-%               choose the best value of $c_{shb}$. The panel on the right
-%               contains the values of IC in correspondence of the cases of
-%               no rotation, equal rotation and varying rotation.
-%               The default value of plots is 0 that is no plot is shown.
-%                 Example - 'plots',1
-%                 Data Types - single | double
+%        numpool: number of pools for parellel computing. Scalar.
+%                 If numpool > 1, the routine automatically checks if
+%                 the Parallel Computing Toolbox is installed and distributes
+%                 the random starts over numpool parallel processes. If
+%                 numpool <= 1, the random starts are run sequentially. By
+%                 default, numpool is set equal to the number of physical
+%                 cores available in the CPU (this choice may be inconvenient
+%                 if other applications are running concurrently). The same
+%                 happens if the numpool value chosen by the user exceeds the
+%                 available number of cores. REMARK 1: up to R2013b, there
+%                 was a limitation on the maximum number of cores that could
+%                 be addressed by the parallel processing toolbox (8 and,
+%                 more recently, 12). From R2014a, it is possible to run a
+%                 local cluster of more than 12 workers.
+%                 REMARK 2: Unless you adjust the cluster profile, the
+%                 default maximum number of workers is the same as the
+%                 number of computational (physical) cores on the machine.
+%                 REMARK 3: In modern computers the number of logical cores
+%                 is larger than the number of physical cores. By default,
+%                 MATLAB is not using all logical cores because, normally,
+%                 hyper-threading is enabled and some cores are reserved to
+%                 this feature.
+%                 REMARK 4: It is because of Remarks 3 that we have chosen as
+%                 default value for numpool the number of physical cores
+%                 rather than the number of logical ones. The user can
+%                 increase the number of parallel pool workers allocated to
+%                 the multiple start monitoring by:
+%                 - setting the NumWorkers option in the local cluster profile
+%                   settings to the number of logical cores (Remark 2). To do
+%                   so go on the menu "Home|Parallel|Manage Cluster Profile"
+%                   and set the desired "Number of workers to start on your
+%                   local machine".
+%                 - setting numpool to the desired number of workers;
+%                 Therefore, *if a parallel pool is not already open*,
+%                 UserOption numpool (if set) overwrites the number of
+%                 workers set in the local/current profile. Similarly, the
+%                 number of workers in the local/current profile overwrites
+%                 default value of 'numpool' obtained as feature('numCores')
+%                 (i.e. the number of physical cores).
+%                   Example - 'numpool',4
+%                   Data Types - double
 %
-%     numpool : number of pools for parellel computing. Scalar.
-%               If numpool > 1, the routine automatically checks if
-%               the Parallel Computing Toolbox is installed and distributes
-%               the random starts over numpool parallel processes. If
-%               numpool <= 1, the random starts are run sequentially. By
-%               default, numpool is set equal to the number of physical
-%               cores available in the CPU (this choice may be inconvenient
-%               if other applications are running concurrently). The same
-%               happens if the numpool value chosen by the user exceeds the
-%               available number of cores. REMARK 1: up to R2013b, there
-%               was a limitation on the maximum number of cores that could
-%               be addressed by the parallel processing toolbox (8 and,
-%               more recently, 12). From R2014a, it is possible to run a
-%               local cluster of more than 12 workers.
-%               REMARK 2: Unless you adjust the cluster profile, the
-%               default maximum number of workers is the same as the
-%               number of computational (physical) cores on the machine.
-%               REMARK 3: In modern computers the number of logical cores
-%               is larger than the number of physical cores. By default,
-%               MATLAB is not using all logical cores because, normally,
-%               hyper-threading is enabled and some cores are reserved to
-%               this feature.
-%               REMARK 4: It is because of Remarks 3 that we have chosen as
-%               default value for numpool the number of physical cores
-%               rather than the number of logical ones. The user can
-%               increase the number of parallel pool workers allocated to
-%               the multiple start monitoring by:
-%               - setting the NumWorkers option in the local cluster profile
-%                 settings to the number of logical cores (Remark 2). To do
-%                 so go on the menu "Home|Parallel|Manage Cluster Profile"
-%                 and set the desired "Number of workers to start on your
-%                 local machine".
-%               - setting numpool to the desired number of workers;
-%               Therefore, *if a parallel pool is not already open*,
-%               UserOption numpool (if set) overwrites the number of
-%               workers set in the local/current profile. Similarly, the
-%               number of workers in the local/current profile overwrites
-%               default value of 'numpool' obtained as feature('numCores')
-%               (i.e. the number of physical cores).
-%                 Example - 'numpool',4
-%                 Data Types - double
+%      cleanpool: clean pool. Scalar. cleanpool is 1 if the parallel pool has
+%                 to be cleaned after the execution of the routine. Otherwise
+%                 it is 0. The default value of cleanpool is 1. Clearly this
+%                 option has an effect just if previous option numpool is > 1.
+%                   Example - 'cleanpool',1
+%                   Data Types - single | double
 %
-%  cleanpool :  clean pool. Scalar. cleanpool is 1 if the parallel pool has
-%               to be cleaned after the execution of the routine. Otherwise
-%               it is 0. The default value of cleanpool is 1. Clearly this
-%               option has an effect just if previous option numpool is >
-%               1.
-%                 Example - 'cleanpool',1
-%                 Data Types - single | double
+%            msg: Message on the screen. Scalar. Scalar which controls whether
+%                 to display or not messages about code execution.
+%                   Example - 'msg',1
+%                   Data Types - single | double
 %
-%       msg  :  Message on the screen. Scalar. Scalar which controls whether
-%               to display or not messages about code execution.
-%                 Example - 'msg',1
-%                 Data Types - single | double
+%        nocheck: Check input arguments. Scalar. If nocheck is equal to 1
+%                 no check is performed on matrix Y. As default nocheck=0.
+%                   Example - 'nocheck',10
+%                   Data Types - single | double
 %
-%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1
-%               no check is performed on matrix Y. As default nocheck=0.
-%                 Example - 'nocheck',10
-%                 Data Types - single | double
+%          Ysave: save input matrix. Scalar. Scalar that is set to 1 to
+%                 request that the input matrix Y is saved into the output
+%                 structure out. Default is 1, that is  matrix Y is saved
+%                 inside output structure out.
+%                   Example - 'Ysave',1
+%                   Data Types - single | double
 %
-%       Ysave : save input matrix. Scalar. Scalar that is set to 1 to
-%               request that the input matrix Y is saved into the output
-%               structure out. Default is 1, that is  matrix Y is saved
-%               inside output structure out.
-%                 Example - 'Ysave',1
-%                 Data Types - single | double
+%         warmup: warming up step. Boolean. If warmup is true (default) we
+%                 investigate for each candidate value of k the 14 GPCMs and
+%                 identify the best model. If we find varying determinants
+%                 then the sequence of values of cdet is investigated else
+%                 cdet is always set to 1. Similarly, if we find a shape
+%                 different from the identity the sequence of values of cshw
+%                 is investigated else cshw is set equal to 1. Moreover in
+%                 this step we control the type of rotation. If warmp is
+%                 false we always start from VVV specificationa and we
+%                 investigate each value of cdet and cshw. On a later stage
+%                 we investigate the optimal value of cshb and the type of
+%                 rotation.
+%                   Example - 'warmup',true
+%                   Data Types - boolean
 %
-%     warmup  : warming up step. Boolean. If warmup is true (default) we
-%               investigate for each candidate value of k the 14 GPCMs and
-%               identify the best model. If we find varying determinants
-%               then the sequence of values of cdet is investigated else
-%               cdet is always set to 1. Similarly, if we find a shape
-%               different from the identity the sequence of values of cshw
-%               is investigated else cshw is set equal to 1. Moreover in
-%               this step we control the type of rotation. If warmp is
-%               false we always start from VVV specificationa and we
-%               investigate each value of cdet and cshw. On a later stage
-%               we investigate the optimal value of cshb and the type of
-%               rotation.
-%                 Example - 'warmup',true
-%                 Data Types - boolean
-%
-%   UnitsSameGroup : Units with same labels. Numeric vector.
-%                   List of the units which must (whenever possible)
-%                   have the same label.  For example if
-%                   UnitsSameGroup=[20 26], it means that group which contains
-%                   unit 20 is always labelled with number 1. Similarly,
-%                   the group which contains unit 26 is always labelled
-%                   with number 2, (unless it is found that unit 26 already
-%                   belongs to group 1). In general, group which contains
-%                   unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
-%                   labelled with number r (unless it is found that unit
-%                   UnitsSameGroup(r) has already been assigned to groups
-%                   1, 2, ..., r-1). The default value of UnitsSameGroup is
-%                   '' that is consistent labels are not imposed.
-%                 Example - 'UnitsSameGroup',[12 20]
-%                 Data Types - single | double
+% UnitsSameGroup: Units with same labels. Numeric vector.
+%                 List of the units which must (whenever possible)
+%                 have the same label.  For example if
+%                 UnitsSameGroup=[20 26], it means that group which contains
+%                 unit 20 is always labelled with number 1. Similarly,
+%                 the group which contains unit 26 is always labelled
+%                 with number 2, (unless it is found that unit 26 already
+%                 belongs to group 1). In general, group which contains
+%                 unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
+%                 labelled with number r (unless it is found that unit
+%                 UnitsSameGroup(r) has already been assigned to groups
+%                 1, 2, ..., r-1). The default value of UnitsSameGroup is
+%                 '' that is consistent labels are not imposed.
+%                   Example - 'UnitsSameGroup',[12 20]
+%                   Data Types - single | double
 %
 %
-%       Remark: The user should only give the input arguments that have to
-%               change their default value. The name of the input arguments
-%               needs to be followed by their value. The order of the input
-%               arguments is of no importance.
+%         Remark: The user should only give the input arguments that have to
+%                 change their default value. The name of the input arguments
+%                 needs to be followed by their value. The order of the input
+%                 arguments is of no importance.
 %
 %
 %  Output:
@@ -355,13 +353,12 @@ function out  = tclustICgpcm(Y, varargin)
 %                   likelihood. This output is present only if 'whichIC' is
 %                   'MIXMIX'.
 %
-%                out.MIXCLA =D array of size 5-times-8-times-8 if kk and
+%                out.MIXCLA = D array of size 5-times-8-times-8 if kk and
 %                   pa.cdet and pa.cshw are not specififed else it is a 3D
 %                   array of size
 %                   length(kk)-times-length(pa.cdet)-times-length(pa.shw)
 %                   containinig the value of ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA'.
-%
 %
 %                out.IDXMIX = 3D array of size 5-times-8--times-8 if kk and
 %                   pa.cdet and pa.cshw are not specififed else it is a 3D
@@ -411,27 +408,27 @@ function out  = tclustICgpcm(Y, varargin)
 %                   specification among the 14 GPCMs.
 %                   level which has been used.
 %
-%               out.idx  = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups. Cluster names are integer
-%                       numbers from 1 to k. 0 indicates trimmed
-%                       observations. Note that this is the assignment
+%                out.idx = n-by-1 vector containing assignment of each unit to
+%                   each of the k groups. Cluster names are integer
+%                   numbers from 1 to k. 0 indicates trimmed
+%                   observations. Note that this is the assignment
 %                       using cshb=128;
 %
-%               out.idxcshbbest  = n-by-1 vector containing assignment of
-%                       each unit to each of the k groups. Cluster names
-%                       are integer numbers from 1 to k. 0 indicates
-%                       trimmed observations. Note that this is the
-%                       assignment which used best value of cshb;
+%                out.idxcshbbest  = n-by-1 vector containing assignment of
+%                   each unit to each of the k groups. Cluster names
+%                   are integer numbers from 1 to k. 0 indicates
+%                   trimmed observations. Note that this is the
+%                   assignment which used best value of cshb;
 %
-%               out.pa = strcture containing the the gpcm parameters
+%                out.pa = strcture containing the the gpcm parameters
 %                   (pa.pars, pa.shb, pa.shw, pa.cdet) for the best model.
 %
-%                out.Y  = Original data matrix Y. The field is present if
+%                out.Y = Original data matrix Y. The field is present if
 %                   option Ysave is set to 1.
 %
-%             out.alpha = scalar. Level of trimming which has been used.
+%                out.alpha = scalar. Level of trimming which has been used.
 %
-%           out.BICshb  = value of the information criterion for each
+%                out.BICshb = value of the information criterion for each
 %                   candidate value of $c_{shb}$. Matrix with
 %                   two columns and r rows. The first column contains the
 %                   values of candidate values of $c_{shb}$ which have been
@@ -441,22 +438,22 @@ function out  = tclustICgpcm(Y, varargin)
 %                   number of candidate values of cshb which have been
 %                   considered.
 %
-%          out.IDXshb  = matrix with size n-by-r which contains the
+%                out.IDXshb = matrix with size n-by-r which contains the
 %                   classification for each candidate value of cshb. The
 %                   number of columns of this matrix is equal to the number
 %                   of rows of out.BICshb.
 %
-%           out.BICrot  = value of the information criterion for each
-%                         type or rotation. First element refers to $I$ (no
-%                         rotation) the second element refers to $E$ (equal
-%                         rotation) and the third element refers to $V$
-%                         (varying rotation).
+%                out.BICrot = value of the information criterion for each
+%                   type or rotation. First element refers to $I$ (no
+%                   rotation) the second element refers to $E$ (equal
+%                   rotation) and the third element refers to $V$
+%                   (varying rotation).
 %
-%          out.IDXrot  = matrix with size n-by-3 which contains the
-%                        classification for each type of rotation. First
-%                        column refers to $I$ (no rotation), the second
-%                        column refers to $E$ (equal rotation) and the
-%                        third column refers to $V$ (varying rotation).
+%                out.IDXrot = matrix with size n-by-3 which contains the
+%                   classification for each type of rotation. First
+%                   column refers to $I$ (no rotation), the second
+%                   column refers to $E$ (equal rotation) and the
+%                   third column refers to $V$ (varying rotation).
 %
 % See also tclustIC, tclust, tclustICsol, tclustICplot, carbikeplot
 %

@@ -15,7 +15,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %
 %  Required input arguments:
 %
-%     Y:    Input data. Matrix. Data matrix containining n observations on 
+%       Y : Input data. Matrix. Data matrix containining n observations on 
 %           v variables.
 %           Rows of Y represent observations, and columns
 %           represent variables.
@@ -23,9 +23,9 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %           since observations (rows) with missing or infinite values will
 %           automatically be excluded from the computations.
 %
-%     k:    Number of groups. Scalar. 
+%       k : Number of groups. Scalar. 
 %
-% alpha:    Global trimming level. Scalar. alpha is a scalar between 0 and 0.5. 
+%   alpha : Global trimming level. Scalar. alpha is a scalar between 0 and 0.5. 
 %           Il alpha = 0 tkmeans reduces to kmeans. 
 %
 %           
@@ -58,7 +58,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                 Example - 'weights',1
 %                 Data Types - double
 % 
-% plots    :    Plot on the screen. Scalar, character, cell or struct. 
+%       plots : Plot on the screen. Scalar, character, cell or struct. 
 %               - If plots=0 (default), plots are not generated. 
 %               - If plot=1, a plot with the classification is shown on
 %                 the screen (using the spmplot function). The plot can be:
@@ -100,11 +100,11 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                 function. This argument may also be inserted in a field 
 %                 named 'type' of a structure.
 %               REMARK - The labels=0 are automatically excluded from the 
-%                          overlaying phase, considering them as outliers.
+%                        overlaying phase, considering them as outliers.
 %                   Example - 'plots', 1
 %                   Data Types - single | double | string
 %
-%        msg  : Message on the screen. Scalar. Scalar which controls
+%         msg : Message on the screen. Scalar. Scalar which controls
 %               whether to display or not messages
 %               on the screen. If msg=1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
@@ -112,13 +112,13 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                 Example - 'msg',1
 %                 Data Types - double
 %
-%      nocheck: Check input. Scalar. If nocheck is equal to 1 no check is 
+%     nocheck : Check input. Scalar. If nocheck is equal to 1 no check is 
 %               performed on matrix Y.
 %               As default nocheck=0.
 %                 Example - 'nocheck',1
 %                 Data Types - double
 %
-%        nomes: Estimated time message. Scalar. If nomes is equal to 1 no 
+%       nomes : Estimated time message. Scalar. If nomes is equal to 1 no 
 %               message about estimated time to compute tkemans is
 %               displayed, else if nomes is equal to 0 (default), a message
 %               about estimated time is displayed.
@@ -135,12 +135,12 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 % 
 %         out:   structure which contains the following fields
 %
-%            out.idx  = n-by-1 vector containing assignment of each unit to
+%             out.idx = n-by-1 vector containing assignment of each unit to
 %                       each of the k groups. Cluster names are integer
 %                       numbers from 1 to k, 0 indicates trimmed
 %                       observations.
 %
-%            out.muopt= k-by-v matrix containing cluster centroids 
+%           out.muopt = k-by-v matrix containing cluster centroids 
 %                       locations. Robust estimate of final centroids of 
 %                       the groups.
 %
@@ -156,13 +156,13 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %               out.D = n-by-k matrix containing squared Euclidean
 %                       distances from each point to every centroid.
 %
-%            out.siz  = Matrix of size k-by-3
+%             out.siz = Matrix of size k-by-3
 %                       1st col = sequence from 0 to k
 %                       2nd col = number of observations in each cluster
 %                       3rd col = percentage of observations in each cluster
 %                       Remark: 0 denotes unassigned units.
 %
-%        out.weights  = Numerical vector of length k, containing the
+%         out.weights = Numerical vector of length k, containing the
 %                       weights of each cluster. If input option weights=1
 %                       out.weights=(1/k, ...., 1/k) else if input option
 %                       weights <> 1 out.weights=(n1/n, ..., nk/n).
@@ -173,7 +173,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %             out.obj = Scalar. Value of the objective function which is minimized 
 %                       (value of the best returned solution).
 %
-%              out.Y  = Original data matrix Y. The field is present only if option
+%               out.Y = Original data matrix Y. The field is present only if option
 %                       Ysave is set to 1.
 %
 %             out.emp = "Empirical" statistics computed on final classification. 
@@ -188,7 +188,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %
 %Optional Output:
 % 
-%       C       :   Subsamples extracted. Cell. nsamp-by-k initial subsamples extracted. 
+%       C : Subsamples extracted. Cell. nsamp-by-k initial subsamples extracted. 
 %
 %
 % More About:
@@ -774,8 +774,3 @@ end
 
 end
 %FScategory:CLUS-RobClaMULT
-
-
-
-
-

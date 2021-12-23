@@ -5,23 +5,22 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %
 %  Required input arguments:
 %
-%  k  : number of components (groups). Integer. Scalar associated to the
+%    k: number of components (groups). Integer. Scalar associated to the
 %       number of groups
 %               Data Types - int16|int32|int64|single|double
-%  v  : dimensionality (number of variables). Integer. Scalar associated to the
+%    v: dimensionality (number of variables). Integer. Scalar associated to the
 %       number of variables of the data matrix.
 %               Data Types - int16|int32|int64|single|double
-%  Pi : Mixing proportions. Vector. Vector of size k containing mixing
+%   Pi: Mixing proportions. Vector. Vector of size k containing mixing
 %       proportions. The sum of the elements of Pi is 1. 
-%  Mu : centroids. Matrix. Matrix of size k-by-v containing (in the rows) the centroids of the
+%   Mu: centroids. Matrix. Matrix of size k-by-v containing (in the rows) the centroids of the
 %       k groups. 
-%  S  : Covariance matrices. 3D array. 3D array of size v-by-v-by-k
-%       containing covariance matrices of the
-%       k groups. 
+%    S: Covariance matrices. 3D array. 3D array of size v-by-v-by-k
+%       containing covariance matrices of the k groups. 
 %
 %  Optional input arguments:
 %
-%  tol : tolerance. Scalar. Default is 1e-06.
+%  tol: tolerance. Scalar. Default is 1e-06.
 %               Optional parameters tol and lim will be used by
 %               function ncx2mixtcdf.m which computes the cdf of a linear
 %               combination of non central chi2 r.v.. This is the
@@ -29,7 +28,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %               Example - 'tol', 0.0001
 %               Data Types - double
 %
-%  lim : maximum number of integration terms. Scalar. Default is 1000000.
+%  lim: maximum number of integration terms. Scalar. Default is 1000000.
 %               Optional parameters tol and lim will be used by
 %               function ncx2mixtcdf.m which computes the cdf of a linear
 %               combination of non central chi2 r.v.. This is the
@@ -39,7 +38,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %
 % Output:
 %
-%    OmegaMap : map of misclassification probabilities. Matrix. k-by-k
+%     OmegaMap: map of misclassification probabilities. Matrix. k-by-k
 %               matrix containing map of misclassification probabilities.
 %               More precisely, OmegaMap(i,j) $(i ~= j)=1, 2, ..., k$
 %               $OmegaMap(i,j) = w_{j|i}$ is the probability that X coming
@@ -49,19 +48,19 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %               i and j is given by
 %                  $pij=pji= w_j|i + w_i|j    \qquad      i,j=1,2, ..., k$.
 %
-%    BarOmega : Average overlap. Scalar. Scalar associated with average
+%     BarOmega: Average overlap. Scalar. Scalar associated with average
 %               overlap. BarOmega is computed as
 %               sum(sum(OmegaMap))-k)/(0.5*k(k-1).
 %
-%    MaxOmega : Maximum overlap. Scalar. Scalar associated with maximum
+%     MaxOmega: Maximum overlap. Scalar. Scalar associated with maximum
 %               overlap. MaxOmega is the maximum of
 %               OmegaMap(i,j)+OmegaMap(j,i) (i ~= j)=1, 2, ..., k.
 %
-%    StdOmega : Std of overlap. Scalar. Scalar assocaited with standard
+%     StdOmega: Std of overlap. Scalar. Scalar assocaited with standard
 %               deviation of overlap (that is the standard deviation of the
 %               0.5*k(k-1) pij (probabilities of overlapping).
 %
-%       rcMax : pair with largest overlap. Vector. Column vector of length
+%        rcMax: pair with largest overlap. Vector. Column vector of length
 %               equal to 2 containing the indexes associated with the pair
 %               of components producing the highest overlap (largest off
 %               diagonal element of matrix OmegaMap).

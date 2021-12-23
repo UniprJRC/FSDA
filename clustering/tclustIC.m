@@ -74,7 +74,7 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'alpha',0
 %                 Data Types - single | double
 %
-%       nsamp : number of subsamples to extract. Scalar or matrix.
+%        nsamp: number of subsamples to extract. Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
 %               which will be extracted. If nsamp=0 all subsets will be
 %               extracted.
@@ -103,30 +103,30 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'nsamp',1000
 %                 Data Types - double
 %
-% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
-%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
-%                random numbers which are used to initialize the
-%                proportions of the groups. This option is effective just
-%                if nsamp is a matrix which contains pre-extracted
-%                subsamples and k is a scalar. The purpose of this option
-%                is to enable the user to replicate the results. 
-%                The default value of RandNumbForNini is empty,
-%                that is random numbers from uniform are used.
+%RandNumbForNini: Pre-extracted random numbers to initialize proportions.
+%                 Matrix. Matrix with size k-by-size(nsamp,1) containing the
+%                 random numbers which are used to initialize the
+%                 proportions of the groups. This option is effective just
+%                 if nsamp is a matrix which contains pre-extracted
+%                 subsamples and k is a scalar. The purpose of this option
+%                 is to enable the user to replicate the results. 
+%                 The default value of RandNumbForNini is empty,
+%                 that is random numbers from uniform are used.
 %                   Example - 'RandNumbForNini',''
 %                   Data Types - single | double
 %
-%    refsteps : Number of refining iterations. Scalar. Number of refining
+%     refsteps: Number of refining iterations. Scalar. Number of refining
 %               iterations in subsample.  Default is 15. refsteps = 0 means
 %               "raw-subsampling" without iterations.
 %                 Example - 'refsteps',10
 %                 Data Types - single | double
 %
-%     reftol  : scalar. Default value of tolerance for the refining steps.
+%       reftol: scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-14;
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
-%equalweights : cluster weights in the concentration and assignment steps.
+% equalweights: cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
 %               and computation of the likelihood. The default value is false. 
@@ -147,7 +147,7 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'startv1',1
 %                 Data Types - single | double
 %
-%     restrtype : type of restriction. Character. The type of restriction to
+%    restrtype: type of restriction. Character. The type of restriction to
 %               be applied on the cluster scatter
 %               matrices. Valid values are 'eigen' (default), or 'deter'.
 %               eigen implies restriction on the eigenvalues while deter
@@ -157,14 +157,14 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'restrtype','deter'
 %                 Data Types - char
 %
-%       plots : Plot on the screen. Scalar. If plots = 1, a plot of the
+%        plots: Plot on the screen. Scalar. If plots = 1, a plot of the
 %               BIC (MIXMIX), ICL (MIXCLA)curve and CLACLA is shown on the
 %               screen. The plots which are shown depend on the input
 %               option 'whichIC'.
 %                 Example - 'plots',1
 %                 Data Types - single | double
 %
-%     numpool : number of pools for parellel computing. Scalar. 
+%       numpoo: number of pools for parellel computing. Scalar. 
 %               If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
 %               the random starts over numpool parallel processes. If
@@ -206,15 +206,14 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'numpool',4
 %                 Data Types - double
 %
-%  cleanpool :  clean pool. Scalar. cleanpool is 1 if the parallel pool has
+%    cleanpool: clean pool. Scalar. cleanpool is 1 if the parallel pool has
 %               to be cleaned after the execution of the routine. Otherwise
 %               it is 0. The default value of cleanpool is 1. Clearly this
-%               option has an effect just if previous option numpool is >
-%               1.
+%               option has an effect just if previous option numpool is > 1.
 %                 Example - 'cleanpool',1
 %                 Data Types - single | double
 %
-%       msg  :  Message on the screen. Scalar. Scalar which controls whether
+%          msg: Message on the screen. Scalar. Scalar which controls whether
 %               to display or not messages about code execution.
 %                 Example - 'msg',1
 %                 Data Types - single | double
@@ -224,32 +223,32 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'nocheck',10
 %                 Data Types - single | double
 %
-%       Ysave : save input matrix. Scalar. Scalar that is set to 1 to
+%        Ysave: save input matrix. Scalar. Scalar that is set to 1 to
 %               request that the input matrix Y is saved into the output
 %               structure out. Default is 1, that is  matrix Y is saved
 %               inside output structure out.
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
-%   UnitsSameGroup : Units with same labels. Numeric vector.  
-%                   List of the units which must (whenever possible)
-%                   have the same label.  For example if
-%                   UnitsSameGroup=[20 26], it means that group which contains
-%                   unit 20 is always labelled with number 1. Similarly,
-%                   the group which contains unit 26 is always labelled
-%                   with number 2, (unless it is found that unit 26 already
-%                   belongs to group 1). In general, group which contains
-%                   unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
-%                   labelled with number r (unless it is found that unit
-%                   UnitsSameGroup(r) has already been assigned to groups
-%                   1, 2, ..., r-1). The default value of UnitsSameGroup is
-%                   '' that is consistent labels are not imposed.
+%UnitsSameGroup:Units with same labels. Numeric vector.  
+%               List of the units which must (whenever possible)
+%               have the same label.  For example if
+%               UnitsSameGroup=[20 26], it means that group which contains
+%               unit 20 is always labelled with number 1. Similarly,
+%               the group which contains unit 26 is always labelled
+%               with number 2, (unless it is found that unit 26 already
+%               belongs to group 1). In general, group which contains
+%               unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
+%               labelled with number r (unless it is found that unit
+%               UnitsSameGroup(r) has already been assigned to groups
+%               1, 2, ..., r-1). The default value of UnitsSameGroup is
+%               '' that is consistent labels are not imposed.
 %                 Example - 'UnitsSameGroup',[12 20]
 %                 Data Types - single | double
 %
-%       cshape :    constraint to apply to each of the shape matrices. 
-%                   Scalar greater or equal than 1. 
-%                   This options only works is 'restrtype' is 'deter'. 
+%       cshape: constraint to apply to each of the shape matrices. 
+%               Scalar greater or equal than 1. 
+%               This options only works is 'restrtype' is 'deter'. 
 %               When restrtype is deter the default value of the "shape" constraint (as
 %               defined below) applied to each group is fixed to
 %               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
@@ -785,5 +784,4 @@ out.alpha=alpha;
 % Store original matrix
 out.Y=Y;
 end
-
 %FScategory:CLUS-RobClaMULT

@@ -64,62 +64,62 @@ function out  = tclustICsolGPCM(IC,varargin)
 %                   (Information criterion) has
 %                    been computed. This input option is present only if IC
 %                    comes from tclustIC.
-%                 Data Types - struct
+%                Data Types - struct
 %
 %  Optional input arguments:
 %
 %
 % NumberOfBestSolutions: number of solutions to consider. Scalar integer
-%                       greater than 0. Number of best solutions to
-%                       extract from BIC/ICL matrix. The default value
-%                       of NumberOfBestSolutions is 5
-%                       Example - 'NumberOfBestSolutions',5
-%                       Data Types - int16 | int32 | single | double
+%                        greater than 0. Number of best solutions to
+%                        extract from BIC/ICL matrix. The default value
+%                        of NumberOfBestSolutions is 5
+%                          Example - 'NumberOfBestSolutions',5
+%                          Data Types - int16 | int32 | single | double
 %
-% ThreshRandIndex     : threshold to identify spurious solutions. Positive
-%                       scalar between 0 and 1. Scalar which specifies the
-%                       threshold of the adjusted Rnd index to use to
-%                       consider two solutions as equivalent. The default
-%                       value of ThreshRandIndex is 0.7
-%                       Example - 'ThreshRandIndex',0.8
-%                       Data Types - single | double
+%       ThreshRandIndex: threshold to identify spurious solutions. Positive
+%                        scalar between 0 and 1. Scalar which specifies the
+%                        threshold of the adjusted Rnd index to use to
+%                        consider two solutions as equivalent. The default
+%                        value of ThreshRandIndex is 0.7
+%                          Example - 'ThreshRandIndex',0.8
+%                          Data Types - single | double
 %
-%   whichIC  : character which specifies the information criterion to use
-%               to extract best solutions. Character.
-%               Possible values for whichIC are:
-%               'CLACLA' = in this case best solutions are referred to
-%                   the classification likelihood.
-%               'MIXMIX' = in this case best solutions are
-%                   referred to the mixture likelihood (BIC).
-%               'MIXCLA' = in this case best solutions are
-%                   referred to ICL.
-%               The default value of 'whichIC' is 'MIXMIX'
-%                 Example - 'whichIC','CLACLA'
-%                 Data Types - character
+%               whichIC: character which specifies the information criterion to 
+%                        use to extract best solutions. Character.
+%                        Possible values for whichIC are:
+%                        'CLACLA' = in this case best solutions are referred to
+%                        the classification likelihood.
+%                        'MIXMIX' = in this case best solutions are
+%                        referred to the mixture likelihood (BIC).
+%                        'MIXCLA' = in this case best solutions are
+%                        referred to ICL.
+%                        The default value of 'whichIC' is 'MIXMIX'
+%                          Example - 'whichIC','CLACLA'
+%                          Data Types - character
 %
-%       plots : plots of best solutions on the screen. Scalar. It specifies
-%               whether to plot on the screen the best solutions which have
-%               been found.
-%                 Example - 'plots',1
-%                 Data Types - single | double
+%                 plots: plots of best solutions on the screen. Scalar. It 
+%                        specifies whether to plot on the screen the best
+%                        solutions which have been found.
+%                          Example - 'plots',1
+%                          Data Types - single | double
 %
-% SpuriousSolutions  :  Include or nor spurious solutions in the plot. Boolean.
-%                       As default spurios solutions are shown in the plot.
-%                 Example - 'SpuriousSolutions',false
-%                 Data Types - single | double
+%     SpuriousSolutions: Include or nor spurious solutions in the plot. Boolean.
+%                        As default spurios solutions are shown in the plot.
+%                          Example - 'SpuriousSolutions',false
+%                          Data Types - single | double
 %
-%       msg  :  Message on the screen. Scalar. Scalar which controls
-%               whether to display or not messages about code execution.
-%               The default value of msg is 0, that is no message is
-%               displayed on the screen.
-%                 Example - 'msg',1
-%                 Data Types - single | double
+%                   msg: Message on the screen. Scalar. Scalar which controls
+%                        whether to display or not messages about code execution.
+%                        The default value of msg is 0, that is no message is
+%                        displayed on the screen.
+%                          Example - 'msg',1
+%                          Data Types - single | double
 %
-%     Rand   :  Index to use to compare partitions. Scalar. If Rand =1
-%               (default) the adjusted Rand index is used, else the
-%               adjusted Fowlkes and Mallows index is used
-%                 Example - 'Rand',1
-%                 Data Types - single | double
+%                  Rand: Index to use to compare partitions. Scalar. If Rand =1
+%                        (default) the adjusted Rand index is used, else the
+%                        adjusted Fowlkes and Mallows index is used
+%                          Example - 'Rand',1
+%                          Data Types - single | double
 %
 %  Output:
 %
@@ -153,75 +153,75 @@ function out  = tclustICsolGPCM(IC,varargin)
 %                   index, or the adjusted Fowlkes and Mallows index) does
 %                   not go below the threshold defined in input option
 %                   ThreshRandIndex).
-%               Remark: field out.MIXMIXbs is present only if input option
-%               'whichIC' is 'MIXMIX'.
+%                Remark: field out.MIXMIXbs is present only if input option
+%                'whichIC' is 'MIXMIX'.
 %
-%  out.MIXMIXbsari =  matrix of adjusted Rand indexes (or Fowlkes and Mallows
-%               indexes) associated with the best
+%out.MIXMIXbsari = matrix of adjusted Rand indexes (or Fowlkes and Mallows
+%                indexes) associated with the best
 %                solutions for MIXMIX. Matrix of size
 %                NumberOfBestSolutions-times-NumberOfBestSolutions whose
 %                i,j-th entry contains the adjusted Rand (or Fowlkes and Mallows) index between
 %                classification produced by solution i and solution j,
 %                $i,j=1, 2, \ldots, NumberOfBestSolutions$.
-%               Remark: field out.MIXMIXbsari is present only if 'whichIC'
-%               is 'MIXMIX'.
+%                Remark: field out.MIXMIXbsari is present only if 'whichIC'
+%                is 'MIXMIX'.
 %
 %
-%  out.MIXCLAbs = this output has the same structure as out.MIXMIXbs but
-%               it is referred to MIXCLA.
-%               Remark: field out.MIXCLAbs is present only if 'whichIC' is
-%               'MIXCLA'.
+%   out.MIXCLAbs = this output has the same structure as out.MIXMIXbs but
+%                it is referred to MIXCLA.
+%                Remark: field out.MIXCLAbs is present only if 'whichIC' is
+%                'MIXCLA'.
 %
-% out.MIXCLAbsari = this output has the same structure as out.MIXMIXbs but
-%               it is referred to MIXCLA.
-%               Remark: field out.MIXCLAbsari is present only if 'whichIC'
-%               is 'MIXCLA'.
+%out.MIXCLAbsari = this output has the same structure as out.MIXMIXbs but
+%                it is referred to MIXCLA.
+%                Remark: field out.MIXCLAbsari is present only if 'whichIC'
+%                is 'MIXCLA'.
 %
-%  out.CLACLAbs = this output has the same structure as out.MIXMIXbs but
-%               it is referred to CLACLA.
-%               Remark: field out.CLACLAbs is present only if 'whichIC' is
-%               'CLACLA'.
+%   out.CLACLAbs = this output has the same structure as out.MIXMIXbs but
+%                it is referred to CLACLA.
+%                Remark: field out.CLACLAbs is present only if 'whichIC' is
+%                'CLACLA'.
 %
-% out.CLACLAbsari = this output has the same structure as out.MIXMIXbs but
-%               it is referred to CLACLA.
-%               Remark: field out.MIXCLAbsari is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'CLACLA'
-%
-%
-% out.MIXCLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
-%               containing the allocations for MIXCLA associated with the best
-%               NumberOfBestSolutions. This field is present only if 'whichIC'
-%               is 'MIXCLA'.
-%
-% out.MIXMIXbsIDX = matrix of dimension n-by-NumberOfBestSolutions
-%               containing the allocations for MIXMIX associated with the best
-%               NumberOfBestSolutions. This field is present only if 'whichIC'
-%               is 'MIXMIX'.
-%
-% out.CLACLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
-%               containing the allocations for CLACLA associated with the
-%               best NumberOfBestSolutions. This field is present only if
-%               'whichIC' is 'CLACLA'.
+%out.CLACLAbsari = this output has the same structure as out.MIXMIXbs but
+%                it is referred to CLACLA.
+%                Remark: field out.MIXCLAbsari is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'CLACLA'
 %
 %
-%           out.kk = vector containing the values of k (number of
-%                   components) which have been considered. This  vector
-%                   is equal to input optional argument kk if kk had been
-%                   specified else it is equal to 1:5.
+%out.MIXCLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
+%                containing the allocations for MIXCLA associated with the best
+%                NumberOfBestSolutions. This field is present only if 'whichIC'
+%                is 'MIXCLA'.
 %
-%          out.ccdet = vector containing the values of cdet (values of the
-%                   restriction factor for determinants) which have been
-%                   considered. This vector is equal to input argument
-%                   IC.cdet.
+%out.MIXMIXbsIDX = matrix of dimension n-by-NumberOfBestSolutions
+%                containing the allocations for MIXMIX associated with the best
+%                NumberOfBestSolutions. This field is present only if 'whichIC'
+%                is 'MIXMIX'.
 %
-%          out.ccshw = vector containing the values of cshw (values of the
-%                   restriction factor for shape elements inside each
-%                   group) which have been considered. This vector is equal
-%                   to input argument IC.cshw.
+%out.CLACLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
+%                containing the allocations for CLACLA associated with the
+%                best NumberOfBestSolutions. This field is present only if
+%                'whichIC' is 'CLACLA'.
 %
-%          out.alpha = scalar containing the value of $\alpha$ (trimming
-%                   level) which have been considered. This
-%                   output is equal to input argument IC.alpha.
+%
+%         out.kk = vector containing the values of k (number of
+%                components) which have been considered. This  vector
+%                is equal to input optional argument kk if kk had been
+%                specified else it is equal to 1:5.
+%
+%      out.ccdet = vector containing the values of cdet (values of the
+%                restriction factor for determinants) which have been
+%                considered. This vector is equal to input argument
+%                IC.cdet.
+%
+%      out.ccshw = vector containing the values of cshw (values of the
+%                restriction factor for shape elements inside each
+%                group) which have been considered. This vector is equal
+%                to input argument IC.cshw.
+%
+%      out.alpha = scalar containing the value of $\alpha$ (trimming
+%                level) which have been considered. This
+%                output is equal to input argument IC.alpha.
 %
 % See also: tclustICgpcm, tclust, carbikeplot
 %
@@ -805,6 +805,4 @@ if plots==1
     cascade
 end
 end
-
-
 %FScategory:CLUS-RobClaMULT

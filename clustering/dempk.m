@@ -10,7 +10,7 @@ function out = dempk(Y, k, g, varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. Matrix. n x v data matrix. n observations and v
+%           Y : Input data. Matrix. n x v data matrix. n observations and v
 %               variables. Rows of Y represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
@@ -18,11 +18,11 @@ function out = dempk(Y, k, g, varargin)
 %               computations.
 %               Data Types - single | double
 %
-% k:            Number of components searched by tkmeans algorithm.
+%           k : Number of components searched by tkmeans algorithm.
 %               Integer scalar.
 %               Data Types - single | double
 %
-% g:            Merging rule. Scalar. Number of groups obtained by hierarchical
+%           g : Merging rule. Scalar. Number of groups obtained by hierarchical
 %               merging, or threshold of the pairwise overlap values (i.e.
 %               omegaStar) if 0<g<1.
 %               Data Types - single | double
@@ -30,12 +30,16 @@ function out = dempk(Y, k, g, varargin)
 %
 % Optional input arguments:
 %
-% alpha:        Global trimming level. Scalar. alpha is a scalar between 0
+%       alpha : Global trimming level. Scalar. alpha is a scalar between 0
 %               and 0.5. If alpha=0 (default) tkmeans reduces to kmeans.
 %               Example - 'alpha', 0.05
 %               Data Types - single | double
 %
-% plots    :    Plot on the screen. Scalar, char, or struct.
+%  linkagearg : Linkage used. Single linkage is the default, see the
+%               MATLAB linkage function for more general information.
+%               Example - 'linkagearg', 'weights'
+%
+%       plots : Plot on the screen. Scalar, char, or struct.
 %               - If plots=0 (default) no plot is produced.
 %               - If plots=1, the components merged are shown using the
 %               spmplot function. In particular:
@@ -81,23 +85,19 @@ function out = dempk(Y, k, g, varargin)
 %                   Example - 'plots', 1
 %                   Data Types - single | double | string
 %
-% tkmeansOpt:   tkmeans optional arguments. Structure. Empty structure (default)
+%  tkmeansOpt : tkmeans optional arguments. Structure. Empty structure (default)
 %               or structure containing optional input arguments for tkmeans.
 %               See tkmeans function.
 %               Example - 'tkmeansOpt.reftol', 0.0001
 %               Data Types - struct
 %
-% tkmeansOut:   Saving tkmeans output structure. Scalar. It is set to 1 to
+%  tkmeansOut : Saving tkmeans output structure. Scalar. It is set to 1 to
 %               save the output structure of tkmeans into the output structure
 %               of dempk. Default is 0, i.e. no saving is done.
 %               Example - 'tkmeansOut', 1
 %               Data Types - single | double
 %
-% linkagearg:   Linkage used. Single linkage is the default, see the
-%               MATLAB linkage function for more general information.
-%               Example - 'linkagearg', 'weights'
-%
-% Ysave:        Saving Y. Scalar. Scalar that is set to 1 to request that
+%       Ysave : Saving Y. Scalar. Scalar that is set to 1 to request that
 %               the input matrix Y is saved into the output structure out.
 %               Default is 0, i.e. no saving is done.
 %               Example - 'Ysave',1
@@ -105,23 +105,22 @@ function out = dempk(Y, k, g, varargin)
 %
 % Output:
 %
-%    out:   structure which contains the following fields
+%    out : structure which contains the following fields
 %
-%           out.PairOver 	= Pairwise overlap triangular matrix (sum of
-%                             misclassification probabilities) among
-%                             components found by tkmeans.
+%             out.mergID = Label for each unit. It is a vector with n
+%                          elements which assigns each unit to one of
+%                          the groups obtained according to the merging
+%                          algorithm applied.
+%                          REMARK - out.mergID=0 denotes trimmed units.
+%           out.PairOver = Pairwise overlap triangular matrix (sum of
+%                          misclassification probabilities) among
+%                          components found by tkmeans.
 %
-%           out.mergID      = Label for each unit. It is a vector with n
-%                             elements which assigns each unit to one of
-%                             the groups obtained according to the merging
-%                             algorithm applied.
-%                             REMARK - out.mergID=0 denotes trimmed units.
+%         out.tkmeansOut = Output from tkmeans function. The structure
+%                          is present if option tkmeansOut is set to 1.
 %
-%           out.tkmeansOut  = Output from tkmeans function. The structure
-%                             is present if option tkmeansOut is set to 1.
-%
-%           out.Y           = Original data matrix Y. This field is present
-%                             only if option Ysave is set to 1.
+%                  out.Y = Original data matrix Y. This field is present
+%                          only if option Ysave is set to 1.
 %
 %
 %

@@ -15,16 +15,16 @@ function [out]  = MixSim(k,v,varargin)
 %
 %  Optional input arguments:
 %
-%    BarOmega : Requested average overlap. Scalar. Value of desired average
+%     BarOmega: Requested average overlap. Scalar. Value of desired average
 %               overlap. The default value is ''
-%               Example - 'BarOmega',0.05
-%               Data Types - double
-%    MaxOmega : Requested maximum overlap. Scalar. Value of desired maximum
+%                 Example - 'BarOmega',0.05
+%                 Data Types - double
+%     MaxOmega: Requested maximum overlap. Scalar. Value of desired maximum
 %               overlap. If BarOmega is empty the default value of MaxOmega
 %               is 0.15.
-%               Example - 'MaxOmega',0.05
-%               Data Types - double
-%    StdOmega : Requested std of overlap. Scalar. Value of desired standard
+%                 Example - 'MaxOmega',0.05
+%                 Data Types - double
+%     StdOmega: Requested std of overlap. Scalar. Value of desired standard
 %               deviation of overlap.
 %               Remark1 - The probability of overlapping between two
 %               clusters $i$ and $j$, ($i \ne j =1, 2, ..., k$), called
@@ -33,9 +33,9 @@ function [out]  = MixSim(k,v,varargin)
 %               $p_ij=w_{j|i} + w_{i|j}$
 %               Remark2- it is possible to specify up to two values among
 %               BarOmega MaxOmega and StdOmega.
-%               Example - 'StdOmega',0.05
-%               Data Types - double
-%         sph : Spherical covariances. Scalar logical or structure.
+%                 Example - 'StdOmega',0.05
+%                 Data Types - double
+%          sph: Spherical covariances. Scalar logical or structure.
 %               Scalar boolean or structure which specifies covariance
 %               matrix. When sph is logical value, if:
 %               sph=false (default) ==> non-spherical clusters;
@@ -51,54 +51,53 @@ function [out]  = MixSim(k,v,varargin)
 %                specifies the type of Gaussian Parsimonious Clustering
 %                Model which needs to be generated.
 %               sph.exactrestriction = boolean. If sph.exactrestriction is
-%                true the covariance matrices have to be generated with the
-%                exact values of the restrictions specified in sph.cdet,
-%                sph.shw and sph.shb. For example if sph.pars='VVE' and
-%                sph.exactrestriction=true model with varying determinants,
-%                varying shape and varying rotation matrix is generated.
-%                The max ratio of the determinants is equal to sph.cdet.
-%                The maximum ratio between the shape elements in each group
-%                is sph.shw. The maximum ratio among the ordered elements
-%                across the groups is and sph.shb. On the other hand, if
-%                sph.exactrestriction is false and for example
-%                sph.pars='VVE' covariance matrices are generated assuming varying
-%                determinants, varying shape and equal rotation matrix and
-%                with ratio of determinants which satisfy the inequality
-%                constraint <= sph.cdet and shape matrices which satisfy
-%                the inequality constraints <= sph.shw and <= sph.shb.
-%              sph.cdet = scalar which specifies the restriction factor
+%               true the covariance matrices have to be generated with the
+%               exact values of the restrictions specified in sph.cdet,
+%               sph.shw and sph.shb. For example if sph.pars='VVE' and
+%               sph.exactrestriction=true model with varying determinants,
+%               varying shape and varying rotation matrix is generated.
+%               The max ratio of the determinants is equal to sph.cdet.
+%               The maximum ratio between the shape elements in each group
+%               is sph.shw. The maximum ratio among the ordered elements
+%               across the groups is and sph.shb. On the other hand, if
+%               sph.exactrestriction is false and for example
+%               sph.pars='VVE' covariance matrices are generated assuming varying
+%               determinants, varying shape and equal rotation matrix and
+%               with ratio of determinants which satisfy the inequality
+%               constraint <= sph.cdet and shape matrices which satisfy
+%               the inequality constraints <= sph.shw and <= sph.shb.
+%     sph.cdet = scalar which specifies the restriction factor
 %                for determinants across groups. If this field is empty or
 %                if this field is missing no contraint is imposed among
 %                determinants.
-%              sph.shw = scalar which specifies the restriction factor for
+%      sph.shw = scalar which specifies the restriction factor for
 %                shape matrices within each group. If this field is empty
 %                or if this field is missing, no contraint is imposed among
 %                the elements of each shape matrix of a particular group.
-%               sph.shb = scalar which specifies the restriction factor for
+%      sph.shb = scalar which specifies the restriction factor for
 %                shape matrices between each group. If this field is empty
 %                or if this field is missing, no contraint is imposed
-%                across the elements of each shape matrix between the
-%                groups.
-%               Example - 'sph',false
-%               Data Types - boolean
-%         hom : Equal Sigmas. Scalar logical.
+%                across the elements of each shape matrix between the groups.
+%                  Example - 'sph',false
+%                  Data Types - boolean
+%          hom: Equal Sigmas. Scalar logical.
 %               Scalar boolean which specifies heterogeneous or homogeneous
 %               clusters. This option has an effect just if previous option
 %               sph is a scalar boolean.
 %               hom=false (default) ==> heterogeneous;
 %               hom=true            ==> homogeneous $\Sigma_1 = ... =
 %               \Sigma_k$
-%               Example - 'hom',false
-%               Data Types - boolean
-%         ecc : maximum eccentricity. Scalar.
+%                 Example - 'hom',false
+%                 Data Types - boolean
+%          ecc: maximum eccentricity. Scalar.
 %               Scalar in the interval (0, 1] which defines maximum eccentricity.
 %               For example, if ecc=0.9 (default value), we require for
 %               each group that sqrt(1 - minL / maxL) <= 0.9 where minL and
 %               maxL are respectively the min and max eigenvalue of the cov
 %               matrix of a particular group. This option has an effect
 %               just if previous option sph is a scalar boolean.
-%               Example - 'ecc',0.8
-%               Data Types - double
+%                 Example - 'ecc',0.8
+%                 Data Types - double
 %  restrfactor: eigenvalue restriction factor. Scalar.
 %               Scalar in the interval [1 \infty] which specifies the
 %               maximum ratio to allow between the largest eigenvalue and
@@ -117,29 +116,28 @@ function [out]  = MixSim(k,v,varargin)
 %               restreigen.m.
 %               This option has an effect just if previous option sph is a
 %               scalar boolean.
-%               Example - 'restrfactor',8
-%               Data Types - double
-%       PiLow : Smallest mixing proportion. Scalar.
+%                 Example - 'restrfactor',8
+%                 Data Types - double
+%        PiLow: Smallest mixing proportion. Scalar.
 %               Value of the smallest mixing proportion (if 'PiLow'
 %               is not reachable with respect to k, equal proportions are
 %               taken; PiLow = 1.0 implies equal proportions by default).
-%               PiLow must be a number in the interval (0 1]. Default value
-%               0.
-%               Example - 'PiLow',0.1
-%               Data Types - double
-%         int : Simulation interval of mean vectors. vector of length 2.
+%               PiLow must be a number in the interval (0 1]. Default value 0.
+%                 Example - 'PiLow',0.1
+%                 Data Types - double
+%          int: Simulation interval of mean vectors. vector of length 2.
 %               Mean vectors are simulated uniformly on a hypercube with
 %               sides specified by int = [lower.bound, upper.bound].
 %               The default value of int is [0 1].
-%               Example - 'int',[0 2]
-%               Data Types - double
-%        resN : number of simulations. Scalar.
+%                 Example - 'int',[0 2]
+%                 Data Types - double
+%         resN: number of simulations. Scalar.
 %               Maximum number of mixture resimulations to find a
 %               similation setting with prespecified level of overlapping.
 %               The default value of resN is 100
-%               Example - 'resN',20
-%               Data Types - double
-%         tol : Tolerances. Vector of length 2.
+%                 Example - 'resN',20
+%                 Data Types - double
+%          tol: Tolerances. Vector of length 2.
 %               tol(1) (which will be called tolmap) specifies
 %               the tolerance between the requested and empirical
 %               misclassification probabilities (default is 1e-06)
@@ -147,26 +145,26 @@ function [out]  = MixSim(k,v,varargin)
 %               tolerance to use in routine ncx2mixtcdf.m (which computes cdf
 %               of linear combinations of non central chi2 distributions).
 %               The default value of tol(2) 1e-06.
-%               Example - 'tol',[1e-06 1e-08]
-%               Data Types - double
-%         lim : Precision in the calculation of probabilities of overlapping.
+%                 Example - 'tol',[1e-06 1e-08]
+%                 Data Types - double
+%          lim: Precision in the calculation of probabilities of overlapping.
 %               Scalar. Maximum number of integration terms to use inside routine
 %               ncx2mixtcdf.m. Default is 1e06.
 %               REMARK - Optional parameters tolncx2=tol(2) and lim will be
 %               used by function ncx2mixtcdf.m which computes the cdf of a
 %               linear combination of non central chi2 r.v.. This is the
 %               probability of misclassification
-%               Example - 'lim',1e6
-%               Data Types - double
-%     Display : Level of display. Character.
+%                 Example - 'lim',1e6
+%                 Data Types - double
+%      Display: Level of display. Character.
 %               'off' displays no output;
 %               'notify' (default) displays output if requested
 %               overlap cannot be reached in a particular simulation
 %               'iter' displays output at each iteration of each
 %               simulation
-%               Example - 'Display','off'
-%               Data Types - character
-%      R_seed : use random numbers from R. scalar.
+%                 Example - 'Display','off'
+%                 Data Types - character
+%       R_seed: use random numbers from R. scalar.
 %               If scalar > 0 for the seed to be used to generate random numbers
 %               in a R instance. This is used to check consistency of the
 %               results obtained with the R package MixSim. See file
@@ -174,8 +172,8 @@ function [out]  = MixSim(k,v,varargin)
 %               with R.  This option requires the installation of the
 %               R-(D)COM Interface. Default is 0, i.e. random numbers are
 %               generated by matlab.
-%               Example - 'R_seed',0
-%               Data Types - double
+%                 Example - 'R_seed',0
+%                 Data Types - double
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -192,33 +190,33 @@ function [out]  = MixSim(k,v,varargin)
 %
 %  Output:
 %
-%         out:   structure which contains the following fields
+%         out: structure which contains the following fields
 %
-%            out.Pi  = vector of length k containing mixing proportions.
-%                       sum(out.Pi)=1
-%            out.Mu  = k-by-v matrix consisting of components' mean vectors
-%                      Each row of this matrix is a centroid of a group
-%             out.S  = v-by-v-by-k array containing covariances for the k
-%                      groups
-%       out.OmegaMap = matrix of misclassification probabilities (k-by-k);
-%                      OmegaMap(i,j) = w_{j|i} is the probability that X
-%                      coming from the i-th component (group) is classified
-%                      to the j-th component.
-%       out.BarOmega = scalar. Value of average overlap.
-%                      BarOmega is computed as
-%                      (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
-%       out.MaxOmega = scalar. Value of maximum overlap. MaxOmega is the
-%                       maximum of OmegaMap(i,j)+OmegaMap(j,i)
-%                       (i ~= j)=1, 2, ..., k. In other words MaxOmega=
+%      out.BarOmega = scalar. Value of average overlap.
+%                     BarOmega is computed as
+%                     (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
+%          out.fail = scalar, flag value. 0 represents successful mixture
+%                     generation, 1 represents failure.
+%      out.MaxOmega = scalar. Value of maximum overlap. MaxOmega is the
+%                     maximum of OmegaMap(i,j)+OmegaMap(j,i)
+%                     (i ~= j)=1, 2, ..., k. In other words MaxOmega=
 %                      OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))
-%       out.StdOmega = scalar. Value of standard deviation (std) of overlap.
-%                      StdOmega is the standard deviation of k*(k-1)/2
-%                      probabilities of overlapping
-%         out.rcMax  = vector of length 2. It containes the row and column
-%                      numbers associated with  the pair of components
-%                      producing maximum overlap 'MaxOmega'
-%          out.fail  = scalar, flag value. 0 represents successful mixture
-%                      generation, 1 represents failure.
+%            out.Mu = k-by-v matrix consisting of components' mean vectors
+%                     Each row of this matrix is a centroid of a group
+%      out.OmegaMap = matrix of misclassification probabilities (k-by-k);
+%                     OmegaMap(i,j) = w_{j|i} is the probability that X
+%                     coming from the i-th component (group) is classified
+%                     to the j-th component.
+%            out.Pi = vector of length k containing mixing proportions.
+%                       sum(out.Pi)=1
+%         out.rcMax = vector of length 2. It containes the row and column
+%                     numbers associated with  the pair of components
+%                     producing maximum overlap 'MaxOmega'
+%             out.S = v-by-v-by-k array containing covariances for the k
+%                     groups
+%      out.StdOmega = scalar. Value of standard deviation (std) of overlap.
+%                     StdOmega is the standard deviation of k*(k-1)/2
+%                     probabilities of overlapping
 %
 %  More About:
 %

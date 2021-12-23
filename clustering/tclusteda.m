@@ -44,7 +44,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %
 %  Optional input arguments:
 %
-%       nsamp : Number of subsamples to extract.
+%        nsamp: Number of subsamples to extract.
 %               Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
 %               which will be extracted. If nsamp=0
@@ -75,18 +75,18 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'nsamp',1000
 %                 Data Types - double
 %
-%    refsteps : Number of refining iterations. Scalar. Number of refining
+%     refsteps: Number of refining iterations. Scalar. Number of refining
 %               iterations in each subsample. Default is 15.
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',10
 %                 Data Types - single | double
 %
-%     reftol  : Tolerance for the refining steps. Scalar.
+%       reftol: Tolerance for the refining steps. Scalar.
 %               The default value is 1e-14;
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
-%equalweights : Cluster weights in the concentration and assignment steps.
+% equalweights: Cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
 %               and computation of the likelihood.
@@ -107,12 +107,11 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                   = \sum_{j=1}^k n_j \log n_j/n + \sum_{j=1}^k \sum_{ x_i \in group_j} \log f(x_i; m_j , S_j) .
 %                 \]
 %
-%               Remark: $\sum_{j=1}^k n_j \log n_j/n$ is the so called entropy
-%               term
+%               Remark: $\sum_{j=1}^k n_j \log n_j/n$ is the so called entropy term
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
 %
-%       mixt  : Mixture modelling or crisp assignment. Scalar.
+%         mixt: Mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
 %               In the case of mixture modelling parameter mixt also
@@ -150,10 +149,10 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               \]
 %               and then these n numbers are ordered and the units
 %               associated with the largest h numbers are untrimmed.
-%                   Example - 'mixt',1
-%                   Data Types - single | double
+%                 Example - 'mixt',1
+%                 Data Types - single | double
 %
-% plots    :    Plot on the screen. Scalar structure.
+%        plots: Plot on the screen. Scalar structure.
 %
 %               Case 1: plots option used as scalar.
 %               - If plots=0,  plots are not generated.
@@ -210,10 +209,10 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                   euclidean distances (central panel), the third row is
 %                   associated with the change in covariance matrices using
 %                   squared euclidean distance (bottom panel).
-%                   Example - 'plots', 1
-%                   Data Types - single | double | struct
+%                 Example - 'plots', 1
+%                 Data Types - single | double | struct
 %
-%        msg  : Level of output to display. Scalar.
+%          msg: Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
 %               on the screen.
 %               If msg=0 nothing is displayed on the screen.
@@ -222,15 +221,15 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               or the number of subsets in which there was no convergence.
 %               If msg=2 detailed messages are displayed. For example the
 %               information at iteration level.
-%                   Example - 'msg',1
-%                   Data Types - single | double
+%                 Example - 'msg',1
+%                 Data Types - single | double
 %
 %      nocheck: Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix Y.
 %               As default nocheck=0.
-%                   Example - 'nocheck',1
-%                   Data Types - single | double
+%                 Example - 'nocheck',1
+%                 Data Types - single | double
 %
 %      startv1: How to initialize centroids and covariance matrices. Scalar.
 %               If startv1 is 1 then initial centroids and covariance
@@ -243,25 +242,25 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               immediately applied.
 %               Remark 2 - option startv1 is used just if nsamp is a scalar
 %               (see for more details the help associated with nsamp).
-%                   Example - 'startv1',1
-%                   Data Types - single | double
+%                 Example - 'startv1',1
+%                 Data Types - single | double
 %
-% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
-%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
-%                random numbers which are used to initialize the
-%                proportions of the groups. This option is effective just
-%                if nsamp is a matrix which contains pre-extracted
-%                subsamples. The purpose of this option is to enable to
-%                user to replicate the results in case routine tclust is
-%                called using a parfor instruction (as it happens for
-%                example in routine tclustIC, where tclust is called through a
-%                parfor for different values of the restriction factor).
-%                The default value of RandNumbForNini is empty that is
-%                random numbers from uniform are used.
+%RandNumbForNini: Pre-extracted random numbers to initialize proportions.
+%                 Matrix. Matrix with size k-by-size(nsamp,1) containing the
+%                 random numbers which are used to initialize the
+%                 proportions of the groups. This option is effective just
+%                 if nsamp is a matrix which contains pre-extracted
+%                 subsamples. The purpose of this option is to enable to
+%                 user to replicate the results in case routine tclust is
+%                 called using a parfor instruction (as it happens for
+%                 example in routine tclustIC, where tclust is called through a
+%                 parfor for different values of the restriction factor).
+%                 The default value of RandNumbForNini is empty that is
+%                 random numbers from uniform are used.
 %                   Example - 'RandNumbForNini',''
 %                   Data Types - single | double
 %
-%     restrtype : type of restriction. Character. The type of restriction to
+%    restrtype: type of restriction. Character. The type of restriction to
 %               be applied on the cluster scatter
 %               matrices. Valid values are 'eigen' (default), or 'deter'.
 %               eigen implies restriction on the eigenvalues while deter
@@ -269,9 +268,9 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'restrtype','deter'
 %                 Data Types - char
 %
-%       cshape :    constraint to apply to each of the shape matrices.
-%                   Scalar greater or equal than 1. This options only works
-%                   is 'restrtype' is 'deter'.
+%       cshape: constraint to apply to each of the shape matrices.
+%               Scalar greater or equal than 1. This options only works
+%               is 'restrtype' is 'deter'.
 %               When restrtype is deter the default value of the "shape"
 %               constraint (as defined below) applied to each group is fixed to
 %               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
@@ -302,60 +301,60 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'cshape',10
 %                 Data Types - single | double
 %
-%   UnitsSameGroup :  list of the units which must (whenever possible)
-%                   have a particular label. Numeric vector.  For example if
-%                   UnitsSameGroup=[20 26], means that group which contains
-%                   unit 20 is always labelled with number 1. Similarly,
-%                   the group which contains unit 26 is always labelled
-%                   with number 2, (unless it is found that unit 26 already
-%                   belongs to group 1). In general, group which contains
-%                   unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
-%                   labelled with number r (unless it is found that unit
-%                   UnitsSameGroup(r) has already been assigned to groups
-%                   1, 2, ..., r-1).
-%                 Example - 'UnitsSameGroup',[20 34]
-%                 Data Types -  integer vector
+%UnitsSameGroup: list of the units which must (whenever possible)
+%                have a particular label. Numeric vector.  For example if
+%                UnitsSameGroup=[20 26], means that group which contains
+%                unit 20 is always labelled with number 1. Similarly,
+%                the group which contains unit 26 is always labelled
+%                with number 2, (unless it is found that unit 26 already
+%                belongs to group 1). In general, group which contains
+%                unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
+%                labelled with number r (unless it is found that unit
+%                UnitsSameGroup(r) has already been assigned to groups
+%                1, 2, ..., r-1).
+%                  Example - 'UnitsSameGroup',[20 34]
+%                  Data Types -  integer vector
 %
-%      numpool:     The number of parallel sessions to open. Integer. If
-%                   numpool is not defined, then it is set equal to the
-%                   number of physical cores in the computer.
-%                 Example - 'numpool',4
-%                 Data Types -  integer vector
+%       numpool: The number of parallel sessions to open. Integer. If
+%                numpool is not defined, then it is set equal to the
+%                number of physical cores in the computer.
+%                  Example - 'numpool',4
+%                  Data Types -  integer vector
 %
-%      cleanpool:   Function name. Scalar {0,1}. Indicated if the open pool
-%                   must be closed or not. It is useful to leave it open if
-%                   there are subsequent parallel sessions to execute, so
-%                   that to save the time required to open a new pool.
-%                 Example - 'cleanpool',true
-%                   Data Types - integer | logical
+%     cleanpool: Function name. Scalar {0,1}. Indicated if the open pool
+%                must be closed or not. It is useful to leave it open if
+%                there are subsequent parallel sessions to execute, so
+%                that to save the time required to open a new pool.
+%                  Example - 'cleanpool',true
+%                  Data Types - integer | logical
 %
 %
 %  Output:
 %
-%         out:   structure which contains the following fields
+%         out: structure which contains the following fields
 %
-%            out.IDX  = n-by-length(alpha) vector containing assignment of each unit to
+%             out.IDX = n-by-length(alpha) vector containing assignment of each unit to
 %                       each of the k groups. Cluster names are integer
 %                       numbers from 1 to k. 0 indicates trimmed
 %                       observations. First column refers of out.IDX refers
 %                       to alpha(1), second column of out.IDX refers to
 %                       alpha(2), ..., last column refers to alpha(end).
 %
-%            out.MU  =  3D array of size k-by-v-by-length(alpha) containing
+%              out.MU = 3D array of size k-by-v-by-length(alpha) containing
 %                       the monitoring of the centroid for each value of
 %                       alpha. out.MU(:,:,1), refers to alpha(1) ...,
 %                       out.MU(:,:,end) refers to alpha(end). First row in
 %                       each slice refers to group 1, second row refers to
 %                       group 2 ...
 %
-%         out.SIGMA  =  cell of length length(alpha) containing in element
+%           out.SIGMA = cell of length length(alpha) containing in element
 %                       j, with j=1, 2, ...,  length(alpha), the 3D array
 %                       of size v-by-v-k containing the k (constrained)
 %                       estimated covariance matrices associated with
 %                       alpha(j).
 %
-%         out.Amon  =  Amon stands for alpha monitoring. Matrix of size
-%                      (length(alpha)-1)-by-4 which contains for two
+%            out.Amon = Amon stands for alpha monitoring. Matrix of size
+%                       (length(alpha)-1)-by-4 which contains for two
 %                       consecutive values of alpha the monitoring of three
 %                       quantities (change in classification, change in
 %                       centroid location, change in covariance location).
@@ -366,7 +365,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                       4th col = squared Euclidean distance between
 %                           covariance matrices.
 %
-%              out.Y  = Original data matrix Y.
+%               out.Y = Original data matrix Y.
 %
 %  Optional Output:
 %

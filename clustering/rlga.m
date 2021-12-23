@@ -5,11 +5,11 @@ function out = rlga(X,k,alpha,varargin)
 %
 %  Required input arguments:
 %
-%       X   : input data matrix. Matrix. Input data as matrix of size
+%         X : input data matrix. Matrix. Input data as matrix of size
 %             n-by-p
-%       k   : number of clusters. Scalar. Scalar which specifies the number
+%         k : number of clusters. Scalar. Scalar which specifies the number
 %             of clusters.
-%    alpha  : a numeric value between 0 and 0.5. Scalar. For the robust estimate
+%     alpha : a numeric value between 0 and 0.5. Scalar. For the robust estimate
 %             of RLGA, specifying the percentage of points to be trimmed.
 %             alpha must be a number in the interval [0 0.5].
 %
@@ -26,25 +26,25 @@ function out = rlga(X,k,alpha,varargin)
 %               Example - 'niter',1
 %               Data Types - double
 %
-%   showall :  Level of display. Logical. If true then display all the
-%               outcomes, not just the best one.
+%   showall : Level of display. Logical. If true then display all the
+%             outcomes, not just the best one.
 %               Example - 'showall','true'
 %               Data Types - char
 %
-%    stand  : Data standardization. Boolean. If true the X
-%               matrix is standardized using the standard deviation before
-%               fitting. Logical.
+%     stand : Data standardization. Boolean. If true the X
+%             matrix is standardized using the standard deviation before
+%             fitting. Logical.
 %               Example - 'stand','true'
 %               Data Types - char
 %
 %    silent : Text output. Logical. If true, produces no text output during
-%               processing. The default value is false.
+%             processing. The default value is false.
 %               Example - 'silent','true'
 %               Data Types - char
 %
-%    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on the
-%               screen with the final allocation (and if size(X,2)==2 with the
-%               lines associated to the groups).
+%     plots : plot on the screen. Scalar. If plots=1 a plot is showed on the
+%             screen with the final allocation (and if size(X,2)==2 with the
+%             lines associated to the groups).
 %               Example - 'plots',1
 %               Data Types - double
 %

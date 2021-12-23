@@ -23,21 +23,21 @@ function  [obj, varargout1, varargout2]=estepFS(log_lh, verLess2016b)
 %
 %  Required input arguments:
 %
-%       log_lh: n-by-p matrix containing the log of component conditional
-%               density weighted by the component probability.
-%               log_lh = log( \pi_j \phi (y_i; \; \theta_j))
+%       log_lh : n-by-p matrix containing the log of component conditional
+%                density weighted by the component probability.
+%                log_lh = log( \pi_j \phi (y_i; \; \theta_j))
 %
 % verLess2016b : bsxfun or implicit expansion. Boolean.
-%             If verLess2016b is true,
-%             bsxfun inside the procedure is used.
-%             If verLess2016b is fase, implicit expansion is used instead of
-%             bsxfun. Note that implicit expansion has been introduced only
-%             in 2017a therefore it will not work with previous releases.
-%               Example - 'userepmat',1
-%               Data Types - double%
+%                If verLess2016b is true,
+%                bsxfun inside the procedure is used.
+%                If verLess2016b is fase, implicit expansion is used instead of
+%                bsxfun. Note that implicit expansion has been introduced only
+%                in 2017a therefore it will not work with previous releases.
+%                  Example - 'userepmat',1
+%                  Data Types - double%
 %  Output:
 %
-%         obj  : scalar. Value of the log likelihood (see above) of
+%          obj : scalar. Value of the log likelihood (see above) of
 %                mixture models
 %
 %  Optional Output:

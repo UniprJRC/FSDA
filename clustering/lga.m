@@ -6,62 +6,63 @@ function out = lga(X,k,varargin)
 %
 %  Required input arguments:
 %
-%       X   : input data matrix. Matrix. Input data as matrix of size
-%            n-by-p
-%       k   : number of clusters. Scalar. Scalar which specifies the number
+%          X: input data matrix. Matrix. Input data as matrix of size
+%             n-by-p
+%          k: number of clusters. Scalar. Scalar which specifies the number
 %             of clusters.
 %
 %  Optional input arguments:
 %
 %
-%     biter : Hyperplane number. Integer. number of different starting
+%      biter: Hyperplane number. Integer. number of different starting
 %             hyperplanes to try.
 %               Example - 'biter',1
 %               Data Types - double
 %
-%     niter : Number of iterations. Positive integer. Number of iterations
+%      niter: Number of iterations. Positive integer. Number of iterations
 %             to attempt for convergence.
 %               Example - 'niter',1
 %               Data Types - double
 %
-%   showall : Type of display. Logical. If true then display all the
-%             outcomes, not just the best one.
-%               Example - 'showall','true'
-%               Data Types - char
-%
-%    stand  : Data standardization. Logical. If true standardize the X
-%             matrix with the standard deviation before fitting.
-%               Example - 'stand','true'
-%               Data Types - char
-%
-%    silent : Text ouptut. Logical. If true, produces no text output during
-%             processing. The default value is false.
-%               Example - 'silent','true'
-%               Data Types - char
-%
-%    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on
+%      plots: plot on the screen. Scalar. If plots=1 a plot is showed on
 %             the screen with the final allocation (and if size(X,2)==2
 %             with the lines associated to the groups).
 %               Example - 'plots',1
 %               Data Types - double
 %
+%    showall: Type of display. Logical. If true then display all the
+%             outcomes, not just the best one.
+%               Example - 'showall','true'
+%               Data Types - char
+%
+%     silent: Text ouptut. Logical. If true, produces no text output during
+%             processing. The default value is false.
+%               Example - 'silent','true'
+%               Data Types - char
+%
+%      stand: Data standardization. Logical. If true standardize the X
+%             matrix with the standard deviation before fitting.
+%               Example - 'stand','true'
+%               Data Types - char
+%
+%
 %  Output:
 %
-%         out:   structure which contains the following fields
+%        out: structure which contains the following fields
 %
-%             out.cluster = vector containing the cluster memberships.
-%                out.ROSS = the Residual Orthogonal Sum of Squares for the solution.
-%           out.converged = logical. True if at least one solution has converged.
-%            out.nconverg = the number of converged solutions (out of biter starts).
-%                   out.X = the (scaled if selected) dataset.
-%                   out.hpcoeff =  best hyerplane
-%              out.scaled = logical. Is the data scaled?
-%                   out.k = the number of clusters to be found.
-%               out.biter = the biter setting used.
-%               out.niter = the niter setting used.
 %               out.alpha = level of trimming. Added for consistency with
 %                           rlga. In this case out.alpha=0; 
+%               out.biter = the biter setting used.
 %               out.class = 'lga'.
+%             out.cluster = vector containing the cluster memberships.
+%           out.converged = logical. True if at least one solution has converged.
+%             out.hpcoeff =  best hyerplane
+%                   out.k = the number of clusters to be found.
+%            out.nconverg = the number of converged solutions (out of biter starts).
+%               out.niter = the niter setting used.
+%                out.ROSS = the Residual Orthogonal Sum of Squares for the solution.
+%              out.scaled = logical. Is the data scaled?
+%                   out.X = the (scaled if selected) dataset.
 %
 % See also: rlga.m
 %

@@ -8,28 +8,28 @@ function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %
 % Required input arguments:
 %
-%     lmdc  : row vector of length $k$ containing restricted determinants. More
-%             precisely, the $j$-th element of lmdc contains $\lambda_j^{1/p}$.
-%             The elements of lmdc satisfy the constraint pa.cdet in the sense that
-%             $\max(lmdc)/\min(lmdc) \leq pa.cdet^{(1/p)}. In other words, the
-%             ratio between the largest and the smallest determinant is not
-%             greater than pa.cdet. All the elements of vector lmdc are equal
-%             if modeltype is E** or if pa.cdet=1;
-%   SigmaB : p-by-p-by-k array containing the k covariance matrices for the
+%     lmdc: row vector of length $k$ containing restricted determinants. More
+%           precisely, the $j$-th element of lmdc contains $\lambda_j^{1/p}$.
+%           The elements of lmdc satisfy the constraint pa.cdet in the sense that
+%           $\max(lmdc)/\min(lmdc) \leq pa.cdet^{(1/p)}. In other words, the
+%           ratio between the largest and the smallest determinant is not
+%           greater than pa.cdet. All the elements of vector lmdc are equal
+%           if modeltype is E** or if pa.cdet=1;
+%   SigmaB: p-by-p-by-k array containing the k covariance matrices for the
 %           k groups.
-%   niini  : vector of length k containing the size of the groups.
-%     pa : structure containing: 3 letter character specifying modeltype,
-%            number of dimensions, number of groups...
-%            The fields of pars which are used in this routine are pa.p,
-%            and pa.k a
+%    niini: vector of length k containing the size of the groups.
+%       pa: structure containing: 3 letter character specifying modeltype,
+%           number of dimensions, number of groups...
+%           The fields of pars which are used in this routine are pa.p,
+%           and pa.k a
 %
 %
 % Output:
 %
-%    Omega : p-by-p-k 3D array containing the updated common rotation
-%               matrix replicated k times. Omega(:,:,j)=Omega2D with j=1,
+%    Omega: p-by-p-k 3D array containing the updated common rotation
+%           matrix replicated k times. Omega(:,:,j)=Omega2D with j=1,
 %               ..., k
-%   Omega2D : p-by-p matrix containing the updated common rotation matrix.
+%  Omega2D: p-by-p matrix containing the updated common rotation matrix.
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -73,7 +73,3 @@ for j=1:k
 end
 
 end
-
-
-
-
