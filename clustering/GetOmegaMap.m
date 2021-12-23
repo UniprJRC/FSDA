@@ -5,31 +5,30 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 %  Required input arguments:
 %
-%       c  : inflation parameter for covariance matrices. Scalar. In the
+%         c: inflation parameter for covariance matrices. Scalar. In the
 %            case of heterogeneous clusters scalar c is used to correct
 %            $li(i,j)$ and $const1(i,j)$. More precisely when hom=0:
 %            if $fix(i)=0$, $di(i,j,:)=di(i,j,:)/c^{0.5}$
 %                   (because $di(i,j,:)=\Gamma (c \Sigma_i)^{-0.5}(\mu_i-\mu_j)$
-%                    where Gamma is the matrix of eigenvectors of
-%                    $\Sigma_{j|i}$).
-%           if $fix(i)=0$ and $fix(j)=1$,  $li(i,j,:)=c li(i,j,:)$,
-%                    $const1(i,j)=const1(i,j)+v log(c)$
+%                   where Gamma is the matrix of eigenvectors of
+%                   $\Sigma_{j|i}$).
+%            if $fix(i)=0$ and $fix(j)=1$,  $li(i,j,:)=c li(i,j,:)$,
+%                   $const1(i,j)=const1(i,j)+v log(c)$
 %                   (because the eigenvalues of matrix
 %                   $\Sigma_{j|i} = (c^{0.5} \Sigma_i^{0.5}) \Sigma_j^-1
 %                   (c^{0.5} \Sigma_i^{0.5})$ are multiplied by $c$.
 %                   Similarly $log |c\Sigma_i|= c log(v) + log |\Sigma_i|$.
-%           if $fix(i)=0$  and $fix(j)=0$,  $li$ and $const1$ are not changed because
+%            if $fix(i)=0$  and $fix(j)=0$,  $li$ and $const1$ are not changed because
 %                   $\Sigma_j|i=(c^0.5 \Sigma_i^{0.5}) (c \Sigma_j) ^-1 (c^0.5
 %                   \Sigma_i^{0.5})$,
 %                   $const1(i,j)=log((Pi(j)/Pi(i))^2  c detS(i)/(c  det S(j)))$
 %               Data Types - single | double
-%       v  : number of variables. Scalar. Dimensionality of the data
-%           matrix.
+%         v: number of variables. Scalar. Dimensionality of the data matrix.
 %               Data Types - single | double
-%       k  : number of components (groups). Scalar. Scalar associated with
-%           the number of groups.
+%         k: number of components (groups). Scalar. Scalar associated with
+%            the number of groups.
 %               Data Types - single | double
-%       li : eigenvalues of matrix $Sji=\Sigma_{j|i}$. 3D array of size
+%        li: eigenvalues of matrix $Sji=\Sigma_{j|i}$. 3D array of size
 %            k-by-k-by-v. $li(i,j,:)$ is the vector which
 %            contains the eigenvalues of matrix $Sji=\Sigma_{j|i}$
 %            where $\Sigma_{j|i}  = \Sigma_i^{0.5} \Sigma_j^{-1} \Sigma_i^{0.5}$.
@@ -40,7 +39,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %            associated with $li(i,j,l)-1$ is $(li(i,j,l)
 %            di(i,j,l)/(li(i,j,l)-1))^2$
 %               Data Types - single | double
-%       di : eigenvector of matrix $\Sigma_{j|i}$. 3D array of size
+%        di: eigenvector of matrix $\Sigma_{j|i}$. 3D array of size
 %            k-by-k-by-v.
 %            $di(i,j,l)= \gamma_l' \Sigma_i^{-0.5}(\mu_i-\mu_j)$
 %            $l=1, 2, ...,v$, where $\gamma_l$ is the l-th eigenvector coming
@@ -57,26 +56,26 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %            Note that const1(j,i)=-const1(i,j). The elements on the
 %            diagonal of matrix const1 are set to 0 (in other words they
 %            are not computed).
-%           REMARK: li, di and const1 are the parameters needed for computing
-%           overlap
+%            REMARK: li, di and const1 are the parameters needed for computing
+%            overlap
 %               Data Types - single | double
-%      fix : Inflation/Deflation clusters. Vector. Vector of length k
+%       fix: Inflation/Deflation clusters. Vector. Vector of length k
 %            containing zeros or ones if fix(j) =1 cluster j does not
 %            participate to inflation or deflation. If fix=zeros(k,1) all
 %            clusters participate in inflation/deflation.
 %            REMARK: this parameter is used just if heterogeneous clusters
 %            are used.
 %               Data Types - single | double
-%      tol : overlap tolerance. Scalar. Error bound for overlap computation
+%       tol: overlap tolerance. Scalar. Error bound for overlap computation
 %            default is 1e-06
 %               Data Types - single | double
-%      lim : maximum number of integration terms. Scalar. default is 1e06.
-%               REMARK: Optional parameters tol and lim will be used by
-%               function ncx2mixtcdf.m which computes the cdf of a linear
-%               combination of non central chi2 r.v.. This is the
-%               probability of overlapping
+%       lim: maximum number of integration terms. Scalar. default is 1e06.
+%              REMARK: Optional parameters tol and lim will be used by
+%              function ncx2mixtcdf.m which computes the cdf of a linear
+%              combination of non central chi2 r.v.. This is the
+%              probability of overlapping
 %               Data Types - single | double
-%   asympt : flag for regular or asymptotic overlap. Scalar. If asympt ==1 formula
+%    asympt: flag for regular or asymptotic overlap. Scalar. If asympt ==1 formula
 %            of asymptotic overlap is used (see p. 359, paragraph starting
 %            with step 3 of Maitra and Melnikov, 2010, JCGS). In this case
 %            the misclassification probability $\omega_j|i$ (that is with
@@ -108,25 +107,24 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 %  Output:
 %
-%    OmegaMap : k-by-k matrix containing map of misclassification
-%               probabilities. More precisely, OmegaMap(i,j) is the
-%               misclassification probability with respect to cluster i,
-%               (that is conditionally on x belonging to cluster i,  which
-%               is called $w_{j|i}$)
-%               $(i ~= j)=1, 2, ..., k$.
+%    OmegaMap: k-by-k matrix containing map of misclassification
+%              probabilities. More precisely, OmegaMap(i,j) is the
+%              misclassification probability with respect to cluster i,
+%              (that is conditionally on x belonging to cluster i,  which
+%              is called $w_{j|i}$)
+%              $(i ~= j)=1, 2, ..., k$.
 %
-%    BarOmega : Average overlap. Scalar.
-%               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
+%    BarOmega: Average overlap. Scalar.
+%              BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
 %
-%    MaxOmega : Maximum overlap. Scalar. MaxOmega is the
-%               maximum of OmegaMap(i,j)+OmegaMap(j,i)
-%               $(i ~= j)=1, 2, ..., k$
+%    MaxOmega: Maximum overlap. Scalar. MaxOmega is the
+%              maximum of OmegaMap(i,j)+OmegaMap(j,i)
+%              $(i ~= j)=1, 2, ..., k$
 %
-%       rcMax : Components with highest overlap. Column vector of length
-%               equal to 2. It contains the indexes
-%               associated with the pair of components producing the
-%               highest overlap (largest off diagonal element of matrix
-%               OmegaMap).
+%       rcMax: Components with highest overlap. Column vector of length
+%              equal to 2. It contains the indexes associated
+%              with the pair of components producing the highest
+%              overlap (largest off diagonal element of matrix OmegaMap).
 %
 % See also: MixSim, ncx2mixtcdf, restreigen
 %

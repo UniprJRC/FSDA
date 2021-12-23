@@ -8,7 +8,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %         y : Response variable. Vector.
 %             A vector with n elements that contains the response variable.
 %             y can be either a row or a column vector.
-%             Data Types - single|double
+%               Data Types - single|double
 %
 %         X : Explanatory variables (also called 'regressors'). Matrix.
 %             Data matrix of dimension $(n \times p-1)$. Rows of X represent
@@ -16,11 +16,11 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %             (NaN's) and infinite values (Inf's) are allowed, since
 %             observations (rows) with missing or infinite values will
 %             automatically be excluded from the computations.
-%             Data Types - single|double
+%               Data Types - single|double
 %
 %         k : Number of clusters. Scalar.
 %             This is a guess on the number of data groups.
-%             Data Types - single|double
+%               Data Types - single|double
 %
 % restrfact : restriction factor for regression residuals and covariance
 %             matrices of the explanatory variables. Scalar or vector with two
@@ -33,363 +33,363 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %             variables. Note that restrfactor(2) is used just if
 %             input option $alphaX=1$, that is if constrained weighted
 %             model for X is assumed.
-%            Data Types - single|double
+%               Data Types - single|double
 %
-%   alphaLik : Trimming level. Scalar.
-%            alphaLik is a value between 0 and 0.5 or an  integer specifying
-%            the number of observations which have to be trimmed. If
-%            alphaLik=0 there is no trimming. More in detail, if 0<alphaLik<1
-%            clustering is based on h=fix(n*(1-alphaLik)) observations.
-%            Else if alphaLik is an integer greater than 1 clustering is
-%            based on h=n-floor(alphaLik). More in detail, likelihood
-%            contributions are sorted and the units associated with the
-%            smallest n-h contributions are trimmed.
-%            Data Types - single|double
+%  alphaLik : Trimming level. Scalar.
+%             alphaLik is a value between 0 and 0.5 or an  integer specifying
+%             the number of observations which have to be trimmed. If
+%             alphaLik=0 there is no trimming. More in detail, if 0<alphaLik<1
+%             clustering is based on h=fix(n*(1-alphaLik)) observations.
+%             Else if alphaLik is an integer greater than 1 clustering is
+%             based on h=n-floor(alphaLik). More in detail, likelihood
+%             contributions are sorted and the units associated with the
+%             smallest n-h contributions are trimmed.
+%               Data Types - single|double
 %
-%   alphaX : Second-level trimming or constrained weighted model for X. Scalar.
-%            alphaX is a value in the interval [0 1].
-%            - If alphaX=0 there is no second-level trimming.
-%            - If alphaX is in the interval [0 0.5] it indicates the
-%               fixed proportion of units subject to second level trimming.
-%               In this case alphaX is usually smaller than alphaLik.
-%               For further details see Garcia-Escudero et. al. (2010).
-%            -  If alphaX is in the interval (0.5 1), it indicates a
-%               Bonferronized confidence level to be used to identify the
-%               units subject to second level trimming. In this case the
-%               proportion of units subject to second level trimming is not
-%               fixed a priori, but is determined adaptively.
-%               For further details see Torti et al. (2018).
-%            -  If alphaX=1, constrained weighted model for X is assumed
-%               (Gershenfeld, 1997). The CWM estimator is able to
-%               take into account different distributions for the explanatory
-%               variables across groups, so overcoming an intrinsic limitation
-%               of mixtures of regression, because they are implicitly
-%               assumed equally distributed. Note that if alphaX=1 it is
-%               also possible to apply using restrfactor(2) the constraints
-%               on the cov matrices of the explanatory variables.
-%               For further details about CWM see Garcia-Escudero et al.
-%               (2017) or Torti et al. (2018).
-%            Data Types - single|double
+%    alphaX : Second-level trimming or constrained weighted model for X. Scalar.
+%             alphaX is a value in the interval [0 1].
+%             - If alphaX=0 there is no second-level trimming.
+%             - If alphaX is in the interval [0 0.5] it indicates the
+%                fixed proportion of units subject to second level trimming.
+%                In this case alphaX is usually smaller than alphaLik.
+%                For further details see Garcia-Escudero et. al. (2010).
+%             -  If alphaX is in the interval (0.5 1), it indicates a
+%                Bonferronized confidence level to be used to identify the
+%                units subject to second level trimming. In this case the
+%                proportion of units subject to second level trimming is not
+%                fixed a priori, but is determined adaptively.
+%                For further details see Torti et al. (2018).
+%             -  If alphaX=1, constrained weighted model for X is assumed
+%                (Gershenfeld, 1997). The CWM estimator is able to
+%                take into account different distributions for the explanatory
+%                variables across groups, so overcoming an intrinsic limitation
+%                of mixtures of regression, because they are implicitly
+%                assumed equally distributed. Note that if alphaX=1 it is
+%                also possible to apply using restrfactor(2) the constraints
+%                on the cov matrices of the explanatory variables.
+%                For further details about CWM see Garcia-Escudero et al.
+%                (2017) or Torti et al. (2018).
+%                  Data Types - single|double
 %
 %
 %  Optional input arguments:
 %
-%     intercept : Indicator for constant term. Scalar. If 1, a model with
+%    intercept : Indicator for constant term. Scalar. If 1, a model with
 %                constant term will be fitted (default), else no constant
 %                term will be included.
 %                Example - 'intercept',1
 %                Data Types - double
 %
-%       mixt  : mixture modelling or crisp assignment. Scalar.
-%               Option mixt specifies whether mixture modelling or crisp
-%               assignment approach to model based clustering must be used.
-%               In the case of mixture modelling parameter mixt also
-%               controls which is the criterior to find the untrimmed units
-%               in each step of the maximization
-%               If mixt >=1 mixture modelling is assumed else crisp
-%               assignment.
+%         mixt : mixture modelling or crisp assignment. Scalar.
+%                Option mixt specifies whether mixture modelling or crisp
+%                assignment approach to model based clustering must be used.
+%                In the case of mixture modelling parameter mixt also
+%                controls which is the criterior to find the untrimmed units
+%                in each step of the maximization
+%                If mixt >=1 mixture modelling is assumed else crisp
+%                assignment.
 %                In mixture modelling the likelihood is given by
 %                \[
 %                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j),
 %                \]
-%               while in crisp assignment the likelihood is given by
-%               \[
-%               \prod_{j=1}^k   \prod _{i\in R_j} \pi_j  \phi (y_i \; x_i' , \beta_j , \sigma_j),
-%               \]
-%               where $R_j$ contains the indexes of the observations which
-%               are assigned to group $j$,
-%               Remark - if mixt>=1 previous parameter equalweights is
-%               automatically set to 1.
-%               Parameter mixt also controls the criterion to select the units to trim
-%               if mixt == 2 the h units are those which give the largest
-%               contribution to the likelihood that is the h largest
-%               values of
-%               \[
-%                   \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j)   \qquad
-%                    i=1, 2, ..., n
-%               \]
-%               elseif mixt==1 the criterion to select the h units is
-%               exactly the same as the one which is used in crisp
-%               assignment. That is: the n units are allocated to a
-%               cluster according to criterion
-%               \[
-%                \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i \; x_i' , \beta_j , \sigma_j)
-%               \]
-%               and then these n numbers are ordered and the units
-%               associated with the largest h numbers are untrimmed.
-%               Example - 'mixt',1
-%               Data Types - single | double
+%                while in crisp assignment the likelihood is given by
+%                \[
+%                \prod_{j=1}^k   \prod _{i\in R_j} \pi_j  \phi (y_i \; x_i' , \beta_j , \sigma_j),
+%                \]
+%                where $R_j$ contains the indexes of the observations which
+%                are assigned to group $j$,
+%                Remark - if mixt>=1 previous parameter equalweights is
+%                automatically set to 1.
+%                Parameter mixt also controls the criterion to select the units to trim
+%                if mixt == 2 the h units are those which give the largest
+%                contribution to the likelihood that is the h largest
+%                values of
+%                \[
+%                    \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j)   \qquad
+%                     i=1, 2, ..., n
+%                \]
+%                elseif mixt==1 the criterion to select the h units is
+%                exactly the same as the one which is used in crisp
+%                assignment. That is: the n units are allocated to a
+%                cluster according to criterion
+%                \[
+%                    \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i \; x_i' , \beta_j , \sigma_j)
+%                \]
+%                and then these n numbers are ordered and the units
+%                associated with the largest h numbers are untrimmed.
+%                  Example - 'mixt',1
+%                  Data Types - single | double
 %
-%equalweights : cluster weights in the concentration and assignment steps.
-%               Logical. A logical value specifying whether cluster weights
-%               shall be considered in the concentration, assignment steps
-%               and computation of the likelihood.
-%               if equalweights = true we are (ideally) assuming equally
-%               sized groups by maximizing the likelihood. Default value
-%               false.
-%                 Example - 'equalweights',true
-%                 Data Types - Logical
+% equalweights : cluster weights in the concentration and assignment steps.
+%                Logical. A logical value specifying whether cluster weights
+%                shall be considered in the concentration, assignment steps
+%                and computation of the likelihood.
+%                if equalweights = true we are (ideally) assuming equally
+%                sized groups by maximizing the likelihood. Default value
+%                false.
+%                  Example - 'equalweights',true
+%                  Data Types - Logical
 %
-%    nsamp : number of subsamples to extract.
-%            Scalar or matrix with k*p columns.
-%            If nsamp is a scalar it contains the number of subsamples
-%            which will be extracted.
-%            If nsamp=0 all subsets will be extracted.
-%            If the number of all possible subset is <300 the
-%            default is to extract all subsets, otherwise just 300.
-%            If nsamp is a matrix it contains in the rows the indexes of
-%            the subsets which have to be extracted. nsamp in this case can
-%            be conveniently generated  by function subsets.
-%            nsamp must have k*p columns. The first p columns are used to
-%            estimate the regression coefficient of group 1... the last p
-%            columns are used to estimate the regression coefficient of
-%            group k
-%             Example - 'nsamp',1000
-%             Data Types - double
+%        nsamp : number of subsamples to extract.
+%                Scalar or matrix with k*p columns.
+%                If nsamp is a scalar it contains the number of subsamples
+%                which will be extracted.
+%                If nsamp=0 all subsets will be extracted.
+%                If the number of all possible subset is <300 the
+%                default is to extract all subsets, otherwise just 300.
+%                If nsamp is a matrix it contains in the rows the indexes of
+%                the subsets which have to be extracted. nsamp in this case can
+%                be conveniently generated  by function subsets.
+%                nsamp must have k*p columns. The first p columns are used to
+%                estimate the regression coefficient of group 1... the last p
+%                columns are used to estimate the regression coefficient of
+%                group k
+%                  Example - 'nsamp',1000
+%                  Data Types - double
 %
-% refsteps:  Number of refining iterations. Scalar. Number of refining
-%               iterations in each subsample.  Default is 10.
-%               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'refsteps',15
-%                 Data Types - single | double
+%     refsteps : Number of refining iterations. Scalar. Number of refining
+%                iterations in each subsample.  Default is 10.
+%                refsteps = 0 means "raw-subsampling" without iterations.
+%                  Example - 'refsteps',15
+%                  Data Types - single | double
 %
-%     reftol  : Tolerance for the refining steps. Scalar.
-%               The default value is 1e-14;
-%                 Example - 'reftol',1e-05
-%                 Data Types - single | double
+%       reftol : Tolerance for the refining steps. Scalar.
+%                The default value is 1e-14;
+%                  Example - 'reftol',1e-05
+%                  Data Types - single | double
 %
-% commonslope  : Impose constraint of common slope regression coefficients.
-%               Boolean.
-%               If commonslope is true, the groups are forced to have the
-%               same regression coefficients (apart from the intercepts).
-%               The default value of commonslope is false;
-%                 Example - 'commonslope',true
-%                 Data Types - boolean
+%  commonslope : Impose constraint of common slope regression coefficients.
+%                Boolean.
+%                If commonslope is true, the groups are forced to have the
+%                same regression coefficients (apart from the intercepts).
+%                The default value of commonslope is false;
+%                  Example - 'commonslope',true
+%                  Data Types - boolean
 %
-%    plots : Plot on the screen. Scalar. A flag to control the
-%            generation of the plots.
-%            If plots=1 a plot is showed on the screen with the
-%            final allocation (and if size(X,2)==2 with the lines
-%            associated to the groups)
-%            Example - 'plots',1
-%            Data Types - double
+%        plots : Plot on the screen. Scalar. A flag to control the
+%                generation of the plots.
+%                If plots=1 a plot is showed on the screen with the
+%                final allocation (and if size(X,2)==2 with the lines
+%                associated to the groups)
+%                  Example - 'plots',1
+%                  Data Types - double
 %
-%   wtrim: Application of observation weights. Scalar or structure. If
-%           wtrim is a scalar, a flag taking values
-%          in [0, 1, 2, 3, 4], to control the application of weights on the
-%          observations for betaestimation.
-%          -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
-%             algorithm reduces to the standard tclustreg algorithm.
-%          -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
-%             probability $D_i$ of equation 7 of Garcia et al. 2010 is
-%             computing by maximizing the log-likelihood contributions of
-%             the mixture model of each observation.
-%          -  If \texttt{wtrim} = 1, trimming is done by weighting the
-%             observations using values specified in vector \texttt{we}.
-%             In this case, vector \texttt{we} must be supplied by the
-%             user. For instance, \texttt{we} = $X$.
-%          -  If \texttt{wtrim} = 2, trimming is again done by weighting
-%             the observations using values specified in vector \texttt{we}.
-%             In this case, vector \texttt{we} is computed from the data as
-%             a function of the density estimate $\mbox{pdfe}$.
-%            Specifically, the weight of each observation is the
-%            probability of retaining the observation, computed as
-%            \[\mbox{pretain}_{i g} = 1 - \mbox{pdfe}_{ig}/\max_{ig}(\mbox{pdfe}_{ig})\]
-%         -  If \texttt{wtrim} = 3, trimming is again done by weighting the
-%            observations using values specified in vector \texttt{we}. In
-%            this case, each element $we_i$ of vector \texttt{we} is a
-%            Bernoulli random variable with probability of success
-%            $\mbox{pdfe}_{ig}$. In the clustering framework this is done
-%            under the constraint that no group is empty.
-%         -  If \texttt{wtrim} = 4, trimming is done with the tandem approach
-%            of Cerioli and Perrotta (2014).
-%         -  If \texttt{wtrim} = 5 (TO BE IMPLEMENTED)
-%          -  If \texttt{wtrim} = 6 (TO BE IMPLEMENTED)
-%          If wtrim is a structure, it is composed by:
-%         -  wtrim.wtype_beta: the weight for the beta estimation. It can be
-%           0, 1, 2, 3, as in the case of wtrim scalar
-%         -  wtrim.wtype_obj: the weight for the objective function. It can
-%         be:
-%             - '0': no weights in the objective function
-%             - 'Z': Bernoulli random variable with probability of success
-%            $\mbox{pdfe}_{ig}$
-%             - 'w': a function of the density estimate $\mbox{pdfe}$.
-%             - 'Zw': the product of the two above.
-%             - 'user': user weights we.
-%            Example - 'wtrim',1
-%            Data Types - double
+%        wtrim : Application of observation weights. Scalar or structure. If
+%                wtrim is a scalar, a flag taking values
+%                in [0, 1, 2, 3, 4], to control the application of weights on the
+%                observations for betaestimation.
+%                -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
+%                algorithm reduces to the standard tclustreg algorithm.
+%                -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
+%                probability $D_i$ of equation 7 of Garcia et al. 2010 is
+%                computing by maximizing the log-likelihood contributions of
+%                the mixture model of each observation.
+%                 -  If \texttt{wtrim} = 1, trimming is done by weighting the
+%                observations using values specified in vector \texttt{we}.
+%                In this case, vector \texttt{we} must be supplied by the
+%                user. For instance, \texttt{we} = $X$.
+%                -  If \texttt{wtrim} = 2, trimming is again done by weighting
+%                the observations using values specified in vector \texttt{we}.
+%                In this case, vector \texttt{we} is computed from the data as
+%                a function of the density estimate $\mbox{pdfe}$.
+%                Specifically, the weight of each observation is the
+%                probability of retaining the observation, computed as
+%                \[\mbox{pretain}_{i g} = 1 - \mbox{pdfe}_{ig}/\max_{ig}(\mbox{pdfe}_{ig})\]
+%                -  If \texttt{wtrim} = 3, trimming is again done by weighting the
+%                observations using values specified in vector \texttt{we}. In
+%                this case, each element $we_i$ of vector \texttt{we} is a
+%                Bernoulli random variable with probability of success
+%                $\mbox{pdfe}_{ig}$. In the clustering framework this is done
+%                under the constraint that no group is empty.
+%                -  If \texttt{wtrim} = 4, trimming is done with the tandem approach
+%                of Cerioli and Perrotta (2014).
+%                -  If \texttt{wtrim} = 5 (TO BE IMPLEMENTED)
+%                -  If \texttt{wtrim} = 6 (TO BE IMPLEMENTED)
+%                If wtrim is a structure, it is composed by:
+%                -  wtrim.wtype_beta: the weight for the beta estimation. It can be
+%                0, 1, 2, 3, as in the case of wtrim scalar
+%                -  wtrim.wtype_obj: the weight for the objective function. It can
+%                be:
+%                - '0': no weights in the objective function
+%                - 'Z': Bernoulli random variable with probability of success
+%                $\mbox{pdfe}_{ig}$
+%                - 'w': a function of the density estimate $\mbox{pdfe}$.
+%                - 'Zw': the product of the two above.
+%                - 'user': user weights we.
+%                  Example - 'wtrim',1
+%                  Data Types - double
 %
-%      we: Vector of observation weights. Vector. A vector of size n-by-1
-%          containing application-specific weights that the user needs to
-%          apply to each observation. Default
-%          value is  a vector of ones.
-%            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
-%            Data Types - double
+%           we : Vector of observation weights. Vector. A vector of size n-by-1
+%                containing application-specific weights that the user needs to
+%                apply to each observation. Default
+%                value is  a vector of ones.
+%                  Example - 'we',[0.2 0.2 0.2 0.2 0.2]
+%                  Data Types - double
 %
-%        cup  :  pdf upper limit. Scalar. The upper limit for the pdf used
+%          cup : pdf upper limit. Scalar. The upper limit for the pdf used
 %                to compute the retantion probability. If cup = 1
 %                (default), no upper limit is set.
-%                Data Types - scalar
-%                Example - cup, 0.8
+%                  Data Types - scalar
+%                  Example - cup, 0.8
 %
-%      pstar  :  thinning probability. Scalar. Probability with each a unit
+%        pstar : thinning probability. Scalar. Probability with each a unit
 %                enters in the thinning procedure. If pstar = 1 (default), all units
 %                enter in the thinning procedure.
-%                Data Types - scalar
-%                Example - pstar, 0.95
+%                  Data Types - scalar
+%                  Example - pstar, 0.95
 %
-%       k_dens_mixt: in the Poisson/Exponential mixture density function,
-%                    number of clusters for density mixtures. Scalar.
-%                    This is a guess on the number of data groups. Default
-%                    value is 5.
-%            Example - 'k_dens_mixt',6
-%            Data Types - single|double
+%  k_dens_mixt : in the Poisson/Exponential mixture density function,
+%                number of clusters for density mixtures. Scalar.
+%                This is a guess on the number of data groups. Default
+%                value is 5.
+%                  Example - 'k_dens_mixt',6
+%                  Data Types - single|double
 %
 %   nsamp_dens_mixt: in the Poisson/Exponential mixture density function,
 %                    number of subsamples to extract. Scalar. Default 300.
-%                    Example - 'nsamp_dens_mixt',1000
-%                    Data Types - double
+%                      Example - 'nsamp_dens_mixt',1000
+%                      Data Types - double
 %
 %refsteps_dens_mixt: in the Poisson/Exponential mixture density function,
 %                    number of refining iterations. Scalar. Number of refining
 %                    iterations in each subsample.  Default is 10.
-%                    Example - 'refsteps_dens_mixt',15
-%                    Data Types - single | double
+%                      Example - 'refsteps_dens_mixt',15
+%                      Data Types - single | double
 %
 %  method_dens_mixt: in the Poisson/Exponential mixture density function,
 %                    distribution to use. Character. If method_dens_mixt =
 %                    'P', the Poisson distribution is used, with
 %                    method_dens_mixt = 'E', the Exponential distribution
 %                    is used. Default is 'P'.
-%                    Example - 'method_dens_mixt','E'
-%                    Data Types - char
+%                      Example - 'method_dens_mixt','E'
+%                      Data Types - char
 %
-%    msg  : Level of output to display. Scalar.
-%           Scalar which controls whether to display or not messages
-%           on the screen.
-%           If msg==0 nothing is displayed on the screen.
-%           If msg==1 (default) messages are displayed
-%           on the screen about estimated time to compute the estimator
-%           or the number of subsets in which there was no convergence.
-%           If msg==2 detailed messages are displayed. For example the
-%           information at iteration level.
-%             Example - 'msg',1
-%             Data Types - single | double
+%               msg: Level of output to display. Scalar.
+%                    Scalar which controls whether to display or not messages
+%                    on the screen.
+%                    If msg==0 nothing is displayed on the screen.
+%                    If msg==1 (default) messages are displayed
+%                    on the screen about estimated time to compute the estimator
+%                    or the number of subsets in which there was no convergence.
+%                    If msg==2 detailed messages are displayed. For example the
+%                    information at iteration level.
+%                      Example - 'msg',1
+%                      Data Types - single | double
+% 
+%   RandNumbForNini: Pre-extracted random numbers to initialize proportions.
+%                    Matrix. Matrix with size k-by-size(nsamp,1) containing the
+%                    random numbers which are used to initialize the
+%                    proportions of the groups. This option is effective just
+%                    if nsamp is a matrix which contains pre-extracted
+%                    subsamples. The purpose of this option is to enable the
+%                    user to replicate the results in case routine tclust is
+%                    called using a parfor instruction (as it happens for
+%                    example in routine IC, where tclust is called through a
+%                    parfor for different values of the restriction factor).
+%                    The default value of RandNumbForNini is empty that is
+%                    random numbers from uniform are used.
+%                      Example - 'RandNumbForNini',''
+%                      Data Types - single | double
 %
-%RandNumbForNini: Pre-extracted random numbers to initialize proportions.
-%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
-%                random numbers which are used to initialize the
-%                proportions of the groups. This option is effective just
-%                if nsamp is a matrix which contains pre-extracted
-%                subsamples. The purpose of this option is to enable the
-%                user to replicate the results in case routine tclust is
-%                called using a parfor instruction (as it happens for
-%                example in routine IC, where tclust is called through a
-%                parfor for different values of the restriction factor).
-%                The default value of RandNumbForNini is empty that is
-%                random numbers from uniform are used.
-%                   Example - 'RandNumbForNini',''
-%                   Data Types - single | double
-%
-%      nocheck: Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
-%               vector y and matrix X.
-%               As default nocheck=0.
-%                   Example - 'nocheck',1
-%                   Data Types - single | double
+%           nocheck: Check input arguments. Scalar.
+%                    If nocheck is equal to 1 no check is performed on
+%                    vector y and matrix X.
+%                    As default nocheck=0.
+%                      Example - 'nocheck',1
+%                      Data Types - single | double
 %
 %  Output:
 %
-%  out :  structure containing the following fields
+%       out:  structure containing the following fields
 %
-%   out.bopt             = $(p+1) \times k$ matrix containing the regression
-%                          parameters.
+%             out.bopt = $(p+1) \times k$ matrix containing the regression
+%                        parameters.
 %
-%   out.sigma2opt       = $k$ row vector containing the estimated group
-%                          variances.
+%        out.sigma2opt = $k$ row vector containing the estimated group
+%                        variances.
 %
-%   out.sigma2opt_corr    = $k$ row vector containing the estimated group
-%                          variances corrected with  asymptotic consistency
-%                          factor.
+%   out.sigma2opt_corr = $k$ row vector containing the estimated group
+%                        variances corrected with  asymptotic consistency
+%                        factor.
 %
-%         out.muXopt= k-by-p matrix containing cluster centroid
-%                       locations. Robust estimate of final centroids of
-%                       the groups. This output is present only if input
-%                       option alphaX is 1.
+%           out.muXopt = k-by-p matrix containing cluster centroid
+%                        locations. Robust estimate of final centroids of
+%                        the groups. This output is present only if input
+%                        option alphaX is 1.
 %
-%         out.sigmaXopt= p-by-p-by-k array containing estimated constrained
-%                       covariance covariance matrices of the explanatory
-%                       variables for the k groups. This output is present
-%                       only if input option alphaX is 1.
+%        out.sigmaXopt = p-by-p-by-k array containing estimated constrained
+%                        covariance covariance matrices of the explanatory
+%                        variables for the k groups. This output is present
+%                        only if input option alphaX is 1.
 %
-%         out.cstepopt= scalar containing the concentration step where the
-%                       objective function was the largest. This is useful
-%                       when the objective function is not monotone (e.g.
-%                       with second level trimming or with thinning).
+%         out.cstepopt = scalar containing the concentration step where the
+%                        objective function was the largest. This is useful
+%                        when the objective function is not monotone (e.g.
+%                        with second level trimming or with thinning).
 %
-%         out.subsetopt= scalar containing the subset id where the
-%                       objective function was the largest.
+%        out.subsetopt = scalar containing the subset id where the
+%                        objective function was the largest.
 %
 %
-%            out.idx  = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups. Cluster names are integer
-%                       numbers from -2 to k.
-%                       -1 indicates first level trimmed units.
-%                       -2 indicates second level trimmed units.
+%              out.idx = n-by-1 vector containing assignment of each unit to
+%                        each of the k groups. Cluster names are integer
+%                        numbers from -2 to k.
+%                        -1 indicates first level trimmed units.
+%                        -2 indicates second level trimmed units.
 %
-%            out.siz  = Matrix of size k-by-3.
-%                       1st col = sequence from -2 to k;
-%                       2nd col = number of observations in each cluster;
-%                       3rd col = percentage of observations in each
-%                       cluster;
-%                       Remark: 0 denotes thinned units (if the weights
-%                       to find thinned units are 0 or 1, -1 indicates
-%                       first level trimmed units and -2 indicates second
-%                       level trimmed units).
+%              out.siz = Matrix of size k-by-3.
+%                        1st col = sequence from -2 to k;
+%                        2nd col = number of observations in each cluster;
+%                        3rd col = percentage of observations in each
+%                        cluster;
+%                        Remark: 0 denotes thinned units (if the weights
+%                        to find thinned units are 0 or 1, -1 indicates
+%                        first level trimmed units and -2 indicates second
+%                        level trimmed units).
 %
-%   out.postprobopt   = $n \times k$ matrix containing the final posterior
-%                           probabilities. out.postprobopt(i,j) contains
-%                           posterior probabilitiy of unit i from component
-%                           (cluster) j. For the trimmed units posterior
-%                           probabilities are 0. This output is always
-%                           produced (independently of the value of mixt).
+%      out.postprobopt = $n \times k$ matrix containing the final posterior
+%                        probabilities. out.postprobopt(i,j) contains
+%                        posterior probabilitiy of unit i from component
+%                        (cluster) j. For the trimmed units posterior
+%                        probabilities are 0. This output is always
+%                        produced (independently of the value of mixt).
 %
-%          out.MIXMIX = BIC which uses parameters estimated using the
-%                       mixture loglikelihood and the maximized mixture
-%                       likelihood as goodness of fit measure.
-%                       Remark: this output is present only if input option
-%                       mixt is >0.
+%           out.MIXMIX = BIC which uses parameters estimated using the
+%                        mixture loglikelihood and the maximized mixture
+%                        likelihood as goodness of fit measure.
+%                        Remark: this output is present only if input option
+%                        mixt is >0.
 %
-%          out.MIXCLA = BIC which uses the classification likelihood based on
-%                       parameters estimated using the mixture likelihood
-%                       (In some books this quantity is called ICL).
-%                       This output is present only if input option
-%                       mixt is >0.
+%           out.MIXCLA = BIC which uses the classification likelihood based on
+%                        parameters estimated using the mixture likelihood
+%                        (In some books this quantity is called ICL).
+%                        This output is present only if input option
+%                        mixt is >0.
 %
-%          out.CLACLA = BIC which uses the classification likelihood based on
-%                       parameters estimated using the classification likelihood.
-%                       Remark: this output is present only if input option
-%                       mixt is =0.
+%           out.CLACLA = BIC which uses the classification likelihood based on
+%                        parameters estimated using the classification likelihood.
+%                        Remark: this output is present only if input option
+%                        mixt is =0.
 %
-%           out.obj   = scalar containing value of the objective function.
+%              out.obj = scalar containing value of the objective function.
 %
-%          out.NlogL = Scalar. -2 log classification likelihood. In
-%                       presence of full convergence -out.NlogL/2 is equal
-%                       to out.obj.
+%            out.NlogL = Scalar. -2 log classification likelihood. In
+%                        presence of full convergence -out.NlogL/2 is equal
+%                        to out.obj.
 %
-%      out.NlogLmixt = Scalar. -2 log mixture likelihood. In
-%                      presence of full convergence -out.NlogLmixt/2 is
-%                      equal to out.obj. If input parameter mixt=0 then
-%                      out.NlogLmixt is a missing value.
+%        out.NlogLmixt = Scalar. -2 log mixture likelihood. In
+%                        presence of full convergence -out.NlogLmixt/2 is
+%                        equal to out.obj. If input parameter mixt=0 then
+%                        out.NlogLmixt is a missing value.
 %
-%               out.h = Scalar. Number of observations that have determined the
-%                       regression coefficients (number of untrimmed units).
+%                out.h = Scalar. Number of observations that have determined the
+%                        regression coefficients (number of untrimmed units).
 %
-%          out.class = 'tclustreg'.
+%            out.class = 'tclustreg'.
 %
 %  Optional Output:
 %
-%            C     : Indexes of extracted subsamples. Matrix.
+%                C : Indexes of extracted subsamples. Matrix.
 %                    Matrix of size nsamp-by-k*p containing (in the rows)
 %                    the indices of the subsamples extracted for computing
 %                    the estimate.

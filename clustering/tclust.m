@@ -30,7 +30,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               based or mixture clustering (mclust): see Matlab function
 %               gmdistribution.
 %               More in detail, if 0< alpha <1 clustering is based on
-%                h=fix(n*(1-alpha)) observations,
+%               h=fix(n*(1-alpha)) observations,
 %               else if alpha is an integer greater than 1 clustering is
 %               based on h=n-floor(alpha);
 %
@@ -84,31 +84,30 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               iterative procedures stops when the relative difference of
 %               a certain output matrix is smaller than itertol in two consecutive
 %               iterations. The default value of pa.tol is 1e-12.
-%      restrfactor.zerotol = tolerance value to declare all input values equal to 0
-%               in the eigenvalues restriction routine (file restreigen.m)
+%         restrfactor.zerotol = tolerance value to declare all input values equal 
+%               to 0 in the eigenvalues restriction routine (file restreigen.m)
 %               or in the final reconstruction of covariance matrices.
 %               The default value of zerotol is 1e-10.
-%      restrfactor.msg = boolean which if set equal to true enables to monitor
+%         restrfactor.msg = boolean which if set equal to true enables to monitor
 %               the relative change of the estimates of lambda Gamma and
 %               Omega in each iteration. The defaul value of pa.msg is
 %               false, that is nothing is displayed in each iteration.
-%   restrfactor.userepmat  = scalar, which specifies whether to use implicit
+%         restrfactor.userepmat  = scalar, which specifies whether to use implicit
 %               expansion or bsxfun.  restrfactor.userepmat =2 implies implicit
 %               expansion, pa.userepmat=1 implies use of bsxfun. The
 %               default is to use implicit expansion (faster)
 %               if verLessThanFS('9.1') is false and bsxfun if MATLAB is
 %               older than 2016b.
 %               Data Types - scalar or struct
-% restrfactor.usepreviousest = boolean, which specifies if for each refining
-%               step we use values of constrained determints and rotation
-%               matrices found in the previous refining step. Default value
-%               is true.
+%         restrfactor.usepreviousest = boolean, which specifies if for each refining
+%               step we use values of constrained determints and rotation matrices
+%               found in the previous refining step. Default value is true.
 %               Data Types - boolean
 %
 %  Optional input arguments:
 %
 %
-%       cshape  : constraint to apply to the shape matrices. Scalar greater or
+%       cshape: constraint to apply to the shape matrices. Scalar greater or
 %               equal 1. This options only works is 'restrtype' is 'deter'.
 %               When restrtype is deter the default value of the "shape"
 %               constraint (as defined below) applied to each group is
@@ -141,7 +140,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'cshape',10
 %                 Data Types - single | double
 %
-%equalweights : Cluster weights in the concentration and assignment steps.
+% equalweights: Cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
 %               and computation of the likelihood.
@@ -168,7 +167,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 Data Types - Logical
 %
 %
-%        msg  : Level of output to display. Scalar.
+%          msg: Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
 %               on the screen.
 %               If msg=0 nothing is displayed on the screen.
@@ -178,10 +177,10 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               If msg=2 detailed messages are displayed. For example the
 %               information at iteration level, and or the number of
 %               subsets in which there was no convergence.
-%                   Example - 'msg',1
-%                   Data Types - single | double
+%                 Example - 'msg',1
+%                 Data Types - single | double
 %
-%       mixt  : Mixture modelling or crisp assignment. Scalar.
+%         mixt: Mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
 %               In the case of mixture modelling parameter mixt also
@@ -219,17 +218,17 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               \]
 %               and then these n numbers are ordered and the units
 %               associated with the largest h numbers are untrimmed.
-%                   Example - 'mixt',1
-%                   Data Types - single | double
+%                 Example - 'mixt',1
+%                 Data Types - single | double
 %
 %      nocheck: Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix Y.
 %               As default nocheck=0.
-%                   Example - 'nocheck',1
-%                   Data Types - single | double
+%                 Example - 'nocheck',1
+%                 Data Types - single | double
 %
-%       nsamp : Number of subsamples to extract.
+%        nsamp: Number of subsamples to extract.
 %               Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
 %               which will be extracted. If nsamp=0
@@ -260,7 +259,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'nsamp',1000
 %                 Data Types - double
 %
-% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
+%RandNumbForNini:Pre-extracted random numbers to initialize proportions.
 %                Matrix. Matrix with size k-by-size(nsamp,1) containing the
 %                random numbers which are used to initialize the
 %                proportions of the groups. This option is effective just
@@ -272,21 +271,21 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                parfor for different values of the restriction factor).
 %                The default value of RandNumbForNini is empty that is
 %                random numbers from uniform are used.
-%                   Example - 'RandNumbForNini',''
-%                   Data Types - single | double
+%                  Example - 'RandNumbForNini',''
+%                  Data Types - single | double
 %
-%    refsteps : Number of refining iterations. Scalar. Number of refining
+%     refsteps: Number of refining iterations. Scalar. Number of refining
 %               iterations in each subsample. Default is 15.
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',10
 %                 Data Types - single | double
 %
-%     reftol  : Tolerance for the refining steps. Scalar.
+%       reftol: Tolerance for the refining steps. Scalar.
 %               The default value is 1e-14;
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
-%     restrtype : type of restriction. Character. The type of restriction to
+%    restrtype: type of restriction. Character. The type of restriction to
 %               be applied on the cluster scatter
 %               matrices. Valid values are 'eigen' (default), or 'deter'.
 %               eigen implies restriction on the eigenvalues while deter
@@ -309,10 +308,10 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               immediately applied.
 %               Remark 2 - option startv1 is used just if nsamp is a scalar
 %               (see for more details the help associated with nsamp).
-%                   Example - 'startv1',false
-%                   Data Types - logical
+%                 Example - 'startv1',false
+%                 Data Types - logical
 %
-%       Ysave : Save original input matrix. Boolean. Set Ysave to true to
+%        Ysave: Save original input matrix. Boolean. Set Ysave to true to
 %               request that the input matrix Y
 %               is saved into the output structure out. Default is false, id
 %               est no saving is done.
@@ -320,7 +319,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 Data Types - logical
 %
 %
-% plots    :    Plot on the screen. Scalar or character or structure.
+%        plots: Plot on the screen. Scalar or character or structure.
 %
 %               Case 1: plots option used as scalar.
 %               - If plots=0 (default), plots are not generated.
@@ -389,7 +388,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %  Output:
 %
-%         out:   structure which contains the following fields
+%         out : structure which contains the following fields
 %
 %            out.muopt= k-by-v matrix containing cluster centroid
 %                       locations. Robust estimate of final centroids of
@@ -398,24 +397,24 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %         out.sigmaopt= v-by-v-by-k array containing estimated constrained
 %                       covariance for the k groups.
 %
-%            out.idx  = n-by-1 vector containing assignment of each unit to
+%              out.idx= n-by-1 vector containing assignment of each unit to
 %                       each of the k groups. Cluster names are integer
 %                       numbers from 1 to k. 0 indicates trimmed
 %                       observations.
 %
-%            out.siz  = Matrix of size (k+1)-by-3.
+%              out.siz= Matrix of size (k+1)-by-3.
 %                       1st col = sequence from 0 to k;
 %                       2nd col = number of observations in each cluster;
 %                       3rd col = percentage of observations in each
 %                       cluster;
 %                       Remark: 0 denotes unassigned units.
 %
-%         out.postprob = n-by-k matrix containing posterior probabilities
+%         out.postprob= n-by-k matrix containing posterior probabilities
 %                       out.postprob(i,j) contains posterior probabilitiy of unit
 %                       i from component (cluster) j. For the trimmed units
 %                       posterior probabilities are 0.
 %
-%             out.emp = "Empirical" statistics computed on final classification.
+%              out.emp= "Empirical" statistics computed on final classification.
 %                       Scalar or structure. When convergence is reached,
 %                       out.emp=0. When convergence is not obtained, this
 %                       field is a structure which contains the statistics
@@ -425,29 +424,29 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       muemp, sigmaemp and sizemp, which are the empirical
 %                       counterparts of idx, muopt, sigmaopt and siz.
 %
-%          out.MIXMIX = BIC which uses parameters estimated using the
+%           out.MIXMIX= BIC which uses parameters estimated using the
 %                       mixture loglikelihood and the maximized mixture
 %                       likelihood as goodness of fit measure.
 %                       Remark: this output is present only  if input option
 %                       mixt is >0.
 %
-%          out.MIXCLA = BIC which uses the classification likelihood based on
+%           out.MIXCLA= BIC which uses the classification likelihood based on
 %                       parameters estimated using the mixture likelihood
 %                       (In some books this quantity is called ICL).
 %                       Remark: this output is present only if input option
 %                       mixt is >0.
 %
-%          out.CLACLA = BIC which uses the classification likelihood based on
+%           out.CLACLA= BIC which uses the classification likelihood based on
 %                       parameters estimated using the classification likelihood.
 %                       Remark: this output is present only if input option
 %                       mixt is =0.
 %
-%       out.notconver = Scalar. Number of subsets without convergence.
+%        out.notconver= Scalar. Number of subsets without convergence.
 %
-%              out.bs = k-by-1 vector containing the units forming initial
+%               out.bs= k-by-1 vector containing the units forming initial
 %                       subset associated with muopt.
 %
-%             out.obj = Scalar. Value of the objective function which is minimized
+%              out.obj= Scalar. Value of the objective function which is minimized
 %                       (value of the best returned solution).
 %                       If input option mixt >1 the likelihood which is
 %                       maximized is a mixture likelihood as follows:
@@ -465,15 +464,15 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       option equalweights is set to 0, then $\pi_j'=1$, $j=1, ...,
 %                       k$.
 %
-%          out.NlogL = Scalar. -2 classification log likelihood. In presence of full
+%            out.NlogL= Scalar. -2 classification log likelihood. In presence of full
 %                       convergence -out.NlogL/2 is equal to out.obj.
 %
-%   out.equalweights  = Logical. It is true if in the clustering procedure
+%     out.equalweights= Logical. It is true if in the clustering procedure
 %                       we (ideally) assumed equal cluster weights
 %                       else it is false if we allowed for different
 %                       cluster sizes.
 %
-%               out.h = Scalar. Number of observations that have determined the
+%                out.h= Scalar. Number of observations that have determined the
 %                       centroids (number of untrimmed units).
 %
 %          out.fullsol= Column vector of size nsamp which contains the
@@ -481,12 +480,12 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       iterative process for each extracted subsample.
 %
 %
-%              out.Y  = Original data matrix Y. The field is present only
+%                out.Y= Original data matrix Y. The field is present only
 %                       if option Ysave is set to true.
 %
 %  Optional Output:
 %
-%            C     : Indexes of extracted subsamples. Matrix.
+%                C : Indexes of extracted subsamples. Matrix.
 %                    Matrix of size nsamp-by-(v+1)*k containing (in the
 %                    rows) the indices of the subsamples extracted for
 %                    computing the estimate.

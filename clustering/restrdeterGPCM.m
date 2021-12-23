@@ -11,7 +11,7 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 %
 %  Required input arguments:
 %
-%     GAM : constrained shape matrix. 2D array.
+%      GAM: constrained shape matrix. 2D array.
 %           Matrix of size p-by-k containing in
 %           column $j$, ($j=1, 2, \ldots, k$), the elements on the main
 %           diagonal of shape matrix $\Gamma_j$. The elements of GAM
@@ -23,39 +23,39 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 %           letter of modeltype is E. All the columns of matrix GAM are
 %           equal to 1 if the second letter of modeltype is I. This matrix
 %           can be constructed from routine restrshapepars
-%           Data Types - double
-%    OMG  : costrained rotation array. 3D array. p-by-p-by-k 3D array
+%             Data Types - double
+%      OMG: costrained rotation array. 3D array. p-by-p-by-k 3D array
 %           containing in position (:,:,j) the rotation
 %           matrix $\Omega_j$ for group $j$, with $j=1, 2, \ldots, k$
-%           Data Types - double
-%   SigmaB : initial unconstrained covariance matrices. p-by-p-by-k array.
-%            p-by-p-by-k array containing the k unconstrained covariance
-%            matrices for the k groups.
-%   niini  : size of the groups. Vector.  
+%             Data Types - double
+%   SigmaB: initial unconstrained covariance matrices. p-by-p-by-k array.
+%           p-by-p-by-k array containing the k unconstrained covariance
+%           matrices for the k groups.
+%    niini: size of the groups. Vector.  
 %           Row vector of length k containing the size of the groups.
-%           Data Types - double
-%     pa : constraining parameters. Structure. Structure containing 3 letter character specifying modeltype,
-%            number of dimensions, number of groups...
-%            pa must contain the following fields: 
-%            pa.v = scalar, number of variables.
-%            pa.k = scalar, number of groups.
-%            pa.cdet = determinants constraint
-%           Data Types - double
+%             Data Types - double
+%       pa: constraining parameters. Structure. Structure containing 3 letter character specifying modeltype,
+%           number of dimensions, number of groups...
+%           pa must contain the following fields: 
+%           pa.v = scalar, number of variables.
+%           pa.k = scalar, number of groups.
+%           pa.cdet = determinants constraint
+%             Data Types - double
 % 
 %
 %  Optional input arguments:
 %
 %
-% Output:
+%   Output:
 %
-% lmdc  : restricted determinants. Vector. 
-%         Row vector of length $k$ containing restricted determinants. More
-%         precisely, the $j$-th element of lmdc contains $\lambda_j^{1/p}$.
-%         The elements of lmdc satisfy the constraint pa.cdet in the sense
-%         that $\max(lmdc) / \min(lmdc) \leq pa.cdet^{(1/p)}$. In other words,
-%         the ratio between the largest and the smallest determinant is not
-%         greater than pa.cdet. All the elements of vector lmdc are equal
-%         if modeltype is E** or if pa.cdet=1;
+%     lmdc: restricted determinants. Vector. 
+%           Row vector of length $k$ containing restricted determinants. More
+%           precisely, the $j$-th element of lmdc contains $\lambda_j^{1/p}$.
+%           The elements of lmdc satisfy the constraint pa.cdet in the sense
+%           that $\max(lmdc) / \min(lmdc) \leq pa.cdet^{(1/p)}$. In other words,
+%           the ratio between the largest and the smallest determinant is not
+%           greater than pa.cdet. All the elements of vector lmdc are equal
+%           if modeltype is E** or if pa.cdet=1;
 %
 %
 %
@@ -118,5 +118,4 @@ else
 end
 
 end
-
 %FScategory:CLUS-RobClaMULT

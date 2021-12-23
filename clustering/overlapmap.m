@@ -21,7 +21,7 @@ function [out] = overlapmap(D, varargin)
 % 
 % Required input arguments:
 % 
-%     D :       Informations to compute the overlap matrix. Structure.
+%            D: Informations to compute the overlap matrix. Structure.
 %               D is a structure which can have the following fields (not
 %               all of them are strictly required).
 %   
@@ -31,7 +31,7 @@ function [out] = overlapmap(D, varargin)
 %               elements which assigns each unit to one of the k groups.
 %               REMARK - labels<=0 denotes trimmed units.
 % 
-%       D.Y  =  Input data. Matrix. Data matrix containining n 
+%         D.Y = Input data. Matrix. Data matrix containining n 
 %               observations on v variables. Rows of Y represent
 %               observations, and columns represent variables. Missing
 %               values (NaN's) and infinite values (Inf's) are allowed,
@@ -44,7 +44,7 @@ function [out] = overlapmap(D, varargin)
 %               not specified the fields D.sigmaopt, D.muopt and D.siz are 
 %               required.
 % 
-% D.sigmaopt  = v-by-v-by-k covariance matrices of the groups.
+%  D.sigmaopt = v-by-v-by-k covariance matrices of the groups.
 %                   
 % 
 %     D.muopt = k-by-v matrix containing cluster centroid locations.
@@ -53,15 +53,14 @@ function [out] = overlapmap(D, varargin)
 %               k-by-3, where:
 %               1st col = labels of the k components.
 %               2nd col = number of observations in each component.
-%               3rd col = percentage of observations in each
-%               component.
+%               3rd col = percentage of observations in each component.
 %       REMARK: in case there is a field structure named emp containing the 
 %               same informations, these ones will be used               
 %                   Data Types - struct
 % 
 % Optional input arguments:
 % 
-% omegaStar:    Pairwise overlap threshold. Scalar. It is the value between 
+%    omegaStar: Pairwise overlap threshold. Scalar. It is the value between 
 %               pairs of components considered disjunct if their overlap is 
 %               below omegaStar. If specified, these components would be 
 %               highlighted in the overlap map with an 'X' mark. 
@@ -69,7 +68,7 @@ function [out] = overlapmap(D, varargin)
 %                   Example - 'omegaStar', 0.01
 %                   Data Types - single | double
 % 
-% plots    :    Additional plot on the screen. Scalar, char, or struct. 
+%        plots: Additional plot on the screen. Scalar, char, or struct. 
 %               This arguments requires the presence of the field D.Y. 
 %               - If plots=0 (default) no additional plot is produced.
 %               - If plots=1, at the end of the interaction with the overlap
@@ -117,45 +116,45 @@ function [out] = overlapmap(D, varargin)
 %                   Example - 'plots', 1
 %                   Data Types - single | double | string
 % 
-% userColors:     Color used for the color map. Matrix or string. Check the
-%                 colormap function for more informations.
-%                   Example - 'userColors', winter
-%                   Data Types - single | double | string
+%   userColors: Color used for the color map. Matrix or string. Check the
+%               colormap function for more informations.
+%                 Example - 'userColors', winter
+%                 Data Types - single | double | string
 % 
 % Output:
 %
-%    out:   A structure containing the following fields
+%          out: A structure containing the following fields
 % 
-%           out.Ghat        = Estimated number of clusters in the data.
+%               out.Ghat = Estimated number of clusters in the data.
 % 
-%           out.PairOver 	= Pairwise overlap triangular matrix (sum of
-%                             misclassification probabilities) among 
-%                             components found by tkmeans.
+%           out.PairOver = Pairwise overlap triangular matrix (sum of
+%                          misclassification probabilities) among 
+%                          components found by tkmeans.
 % 
-%           out.mergID      = Label for each unit. It is a vector with n 
-%                             elements which assigns each unit to one of 
-%                             the groups obtained.
-%                             REMARK - out.mergID<=0 denotes trimmed units.
+%             out.mergID = Label for each unit. It is a vector with n 
+%                          elements which assigns each unit to one of 
+%                          the groups obtained.
+%                          REMARK - out.mergID<=0 denotes trimmed units.
 % 
-%           out.merged      = Cell array containing the labels of the 
-%                             components merged together.
+%             out.merged = Cell array containing the labels of the 
+%                          components merged together.
 % 
-%           out.single      = Vector containing the labels of single clusters 
-%                             found, i.e. not merged with any other component.
+%             out.single = Vector containing the labels of single clusters 
+%                          found, i.e. not merged with any other component.
 % 
 %Optional Output:
 % 
-%   userOverlap     : Updating of the results. Structure. userOverlap 
-%                     is obtained when the interaction with the overlap 
-%                     map is closed and is added in the Workspace.
-%                     It contains the following fields, which represent
-%                     an update of their corresponding variable in 
-%                     the structure out:
-%                     - userOverlap.omegaStar = update of out.omegaStar.
-%                     - userOverlap.Ghat = update of out.Ghat.
-%                     - userOverlap.merged = update of out.merged.
-%                     - userOverlap.single = update of out.single.
-%                             
+%  userOverlap: Updating of the results. Structure. userOverlap 
+%               is obtained when the interaction with the overlap 
+%               map is closed and is added in the Workspace.
+%               It contains the following fields, which represent
+%               an update of their corresponding variable in 
+%               the structure out:
+%                - userOverlap.omegaStar = update of out.omegaStar.
+%                - userOverlap.Ghat = update of out.Ghat.
+%                - userOverlap.merged = update of out.merged.
+%                - userOverlap.single = update of out.single.
+%                            
 % 
 % More About:
 %       

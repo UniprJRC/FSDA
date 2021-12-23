@@ -11,17 +11,16 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lm
 %
 % Required input arguments:
 %
-%   SigmaB : initial unconstrained covariance matrices. p-by-p-by-k array.
+%    SigmaB: initial unconstrained covariance matrices. p-by-p-by-k array.
 %            p-by-p-by-k array containing the k covariance matrices for the
 %            k groups.
 %               Data Types - single|double
 %
-%   niini  : sizes of the groups. Vector. Vector of length k containing
-%           the size of the groups. ninini can be either a row or a columns
-%           vector.
+%     niini: sizes of the groups. Vector. Vector of length k containing the
+%            size of the groups. ninini can be either a row or a columns vector.
 %               Data Types - single|double
 %
-%      pa  : Constraints to apply and model specification. Structure.
+%        pa: Constraints to apply and model specification. Structure.
 %            Structure containing the following fields:
 %             pa.pars= type of Gaussian Parsimonious Clustering Model. Character.
 %               A 3 letter word in the set:
@@ -51,64 +50,63 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lm
 %               in presence of varying shape.
 %               This parameter is used by routine cpcV. The
 %               default value of pa.maxiterR is 20.
-%          pa.maxiterDSR = positive integer which specifies the maximum
+%             pa.maxiterDSR = positive integer which specifies the maximum
 %               number of iterations to obtain the requested restricted
 %               determinants, shape matrices and rotation. For all
 %               parametrizations  pa.maxiterDSR is set to 1 apart from for
 %               the specifications 'VVE', 'EVE' and 'VEE'. The default
 %               value of pa.maxiterDSR is 20.
-%           pa.tolS=tolerance to use to exit the iterative procedure for
+%             pa.tolS=tolerance to use to exit the iterative procedure for
 %               estimating the shape. Scalar. The
 %               iterative procedures stops when the relative difference of
 %               a certain output matrix is smaller than itertol in two consecutive
 %               iterations. The default value of pa.tol is 1e-12.
-%      pa.zerotol = tolerance value to declare all input values equal to 0
+%             pa.zerotol = tolerance value to declare all input values equal to 0
 %               in the eigenvalues restriction routine (file restreigen.m)
 %               or in the final reconstruction of covariance matrices.
 %               The default value of zerotol is 1e-10.
-%          pa.msg = boolean which if set equal to true enables to monitor
+%             pa.msg = boolean which if set equal to true enables to monitor
 %               the relative change of the estimates of lambda Gamma and
 %               Omega in each iteration. The default value of pa.msg is
 %               false, that is nothing is displayed in each iteration.
-%           pa.k  = the number of groups.
-%           pa.v  = the number of variables.
-%   pa.userepmat  = scalar, which specifies whether to use implicit
-%                   expansion or bsxfun.  pa.userepmat =2 implies implicit
-%                   expansion, pa.userepmat=1 implies use of bsxfun. The
-%                   default is to use implicit expansion (faster)
-%                   if verLessThanFS('9.1') is false and bsxfun if MATLAB is
-%                   older than 2016b.
-%               Data Types - struct
+%             pa.k  = the number of groups.
+%             pa.v  = the number of variables.
+%             pa.userepmat  = scalar, which specifies whether to use implicit
+%               expansion or bsxfun.  pa.userepmat =2 implies implicit
+%               expansion, pa.userepmat=1 implies use of bsxfun. The
+%               default is to use implicit expansion (faster)
+%               if verLessThanFS('9.1') is false and bsxfun if MATLAB is
+%               older than 2016b.
+%                 Data Types - struct
 %
-%    nocheck : check in input option pa. Boolean. Specify whether it is
-%               necessary to check the input fields in
-%               previous input option pa. If nocheck is
-%               false (default is true) no check is performed on input
-%               structure pa.
-%               Data Types - Boolean
+%   nocheck: check in input option pa. Boolean. Specify whether it is
+%            necessary to check the input fields in previous
+%            input option pa. If nocheck is false(default
+%            is true) no check is performed on input structure pa.
+%              Data Types - Boolean
 %
 %  Optional input arguments:
 %
-%     lmd  : determinants. Vector.
-%             Initial estimates of (constrained) determinants
-%                 Example - [ 2 4 6]
-%                 Data Types - double
-%      OMG : rotation matrices. p-by-p-by-k array.
-%             p-by-p-by-k array containing the preliminary estimates of the
-%             rotation matrices for the k groups. If common rotation is
-%             imposed (third letter is equal to E),
-%             OMG(:,:,1)=...=OMG(:,:,k).
-%                 Example - .5*hadamard(4)
-%                 Data Types - double
+%       lmd: determinants. Vector.
+%            Initial estimates of (constrained) determinants
+%              Example - [ 2 4 6]
+%              Data Types - double
+%       OMG: rotation matrices. p-by-p-by-k array.
+%            p-by-p-by-k array containing the preliminary estimates of the
+%            rotation matrices for the k groups. If common rotation is
+%            imposed (third letter is equal to E),
+%            OMG(:,:,1)=...=OMG(:,:,k).
+%              Example - .5*hadamard(4)
+%              Data Types - double
 %
 % Output:
 %
 %
-%    Sigma  : constrained covariance matrices. p-by-p-by-k array.
+%      Sigma: constrained covariance matrices. p-by-p-by-k array.
 %             p-by-p-by-k array containing the k covariance matrices for
 %             the k groups. See section 'More About' for the notation for
 %             the eigen-decomposition of the component covariance matrices.
-%     lmd  : restricted determinants. Vector.
+%        lmd: restricted determinants. Vector.
 %             Row vector of length $k$ containing restricted determinants.
 %             More precisely, the $j$-th element of lmd contains
 %             $\lambda_j^{1/p}$. The elements of lmd satisfy the
@@ -117,25 +115,25 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lm
 %             largest and the smallest determinant is not greater than
 %             pa.cdet. All the elements of vector lmd are equal if
 %             modeltype is E** or if pa.cdet=1.
-%      OMG : constrained rotation matrices. p-by-p-by-k array.
+%        OMG: constrained rotation matrices. p-by-p-by-k array.
 %             p-by-p-by-k array containing the k rotation matrices for
 %             the k groups. If common rotation is imposed (third letter is
 %             equal to E), OMG(:,:,1)=...=OMG(:,:,k).
-%     GAM : constrained shape matrix. 2D array.
-%           Matrix of size p-by-k containing in
-%           column j the elements on the main diagonal of shape matrix
-%           $\Gamma_j$. The elements of GAM satisfy the following
-%           constraints:
-%           The product of the elements of each column is equal to 1.
-%           The ratio among the largest elements of each column is
-%           not greater than pa.shb.
-%           The ratio among the second largest elements of each column is
-%           not greater than pa.shb.
-%           ....
-%           The ratio among the smallest elements of each column is
-%           not greater than pa.shb.
-%           The ratio of the elements of each column is not greater than
-%           pa.shw.
+%        GAM: constrained shape matrix. 2D array.
+%             Matrix of size p-by-k containing in
+%             column j the elements on the main diagonal of shape matrix
+%             $\Gamma_j$. The elements of GAM satisfy the following
+%             constraints:
+%             The product of the elements of each column is equal to 1.
+%             The ratio among the largest elements of each column is
+%             not greater than pa.shb.
+%             The ratio among the second largest elements of each column is
+%             not greater than pa.shb.
+%             ....
+%             The ratio among the smallest elements of each column is
+%             not greater than pa.shb.
+%             The ratio of the elements of each column is not greater than
+%             pa.shw.
 %
 %
 % More About:

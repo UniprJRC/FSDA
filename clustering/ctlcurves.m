@@ -19,13 +19,6 @@ function out  = ctlcurves(Y, varargin)
 %
 %  Optional input arguments:
 %
-%           kk: number of mixture components. Integer vector. Integer
-%               vector specifying the number of mixture components
-%               (clusters) for which trimmed likelihoods are calculated.
-%               Vector. The default value of kk is 1:5.
-%                 Example - 'kk',1:4
-%                 Data Types - int16 | int32 | single | double
-%
 %        alpha: trimming level to monitor. Vector. Vector which specifies the
 %               values of trimming levels which have to be considered.
 %               For example if alpha=[0 0.05 0.1] ctlcurves considers these 3
@@ -34,7 +27,100 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'alpha',[0 0.05 0.1]
 %                 Data Types -  double
 %
-%       mixt  : Mixture modelling or crisp assignment. Scalar.
+%        bands: confidence bands for the curves. boolean or struct. If
+%               bands is a scalar boolean equal to true 50 per cent
+%               confidence bands are computed (and are shown on the screen
+%               if plots=1).
+%               If bands is a struct it may contain the following fields:
+%               bands.conflev = scalar in the interval (0 1) which contains
+%                   the confidence level of the bands.
+%               bands.nsimul = number of replicates to use to create the
+%                   confidence bands. The default value of bands.nsimul is
+%                   60 in order to provide the output in a reasonal time.
+%                   Note that for stable results we recommentd a value of
+%                   bands.nsimul equal to 100.
+%               bands.valSolution = boolean which specifies if it is
+%                   necessary to perform an outlier detection procedure on
+%                   the components which have been found using optimalK and
+%                   optimal alpha. If bands.valSolution is true then units
+%                   detected as outliers in each component are assigned to
+%                   the noise group. If bands.valSolution is false
+%                   (deafult) or it is not present nothing is done.
+%               bands.LRtest =  Likelihood ratio test. Boolean. If
+%                   bands.LTtest is true (default) the
+%                   difference between the obj function for two consecutive
+%                   values of k given a particular value of alpha is computed.
+%                   The relative time in which this difference is greater than
+%                   the bootstrap difference is stored in out.pvalLRtest.
+%               bands.outliersFromUniform = way of generating the outliers in the 
+%                   bootstrap replicates. Boolean. If outliersFromUniform is true
+%                   (default) the outliers are generated using the uniform
+%                   distribution in such a way that their squared Mahalanobis
+%                   distance from the centroids of each
+%                   existing group is larger then the quantile 1-0.999 of
+%                   the Chi^2 distribution with p degrees of freedom. For
+%                   additional details see input option noiseunits of
+%                   simdataset. If outliersFromUniform is false the outliers
+%                   are the units which have been trimmed after applying
+%                   tclust for the particular combination of values of k and alpha.
+%                 Example - 'bands',true
+%                 Data Types - logical | struct
+%
+%    cleanpool: clean pool. Scalar. cleanpool is 1 if the parallel pool has
+%               to be cleaned after the execution of the routine. Otherwise
+%               it is 0. The default value of cleanpool is 0. Clearly this
+%               option has an effect just if previous option numpool is > 1.
+%                 Example - 'cleanpool',1
+%                 Data Types - single | double
+%
+%       cshape: constraint to apply to each of the shape matrices.
+%               Scalar greater or equal than 1. This options only works
+%               is 'restrtype' is 'deter'.
+%               When restrtype is deter the default value of the "shape"
+%               constraint (as defined below) applied to each group is
+%               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
+%               (virtually) affine equivariant. In other words, the
+%               decomposition or the $j$-th scatter matrix $\Sigma_j$ is
+%               \[
+%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+%               \]
+%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+%               diagonal matrix with $|\Gamma_j|=1$ and with elements
+%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+%               the eigenvalues of the $\Sigma_j$ matrix) and
+%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+%               known as "shape" matrices, because they determine the shape of the
+%               fitted cluster components. The following $k$
+%               constraints are then imposed on the shape matrices:
+%               \[
+%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+%                   c_{shape}, \text{ for } j=1,...,k,
+%               \]
+%               In particular, if we are ideally searching for spherical
+%               clusters it is necessary to set  $c_{shape}=1$. Models with
+%               variable volume and spherical clusters are handled with
+%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
+%               The $restrfactor=cshape=1$ case yields a very constrained
+%               parametrization because it implies spherical clusters with
+%               equal volumes.
+%                 Example - 'cshape',10
+%                 Data Types - single | double
+%
+% equalweights: cluster weights in the concentration and assignment steps.
+%               Logical. A logical value specifying whether cluster weights
+%               shall be considered in the concentration, assignment steps
+%               and computation of the likelihood.
+%                 Example - 'equalweights',true
+%                 Data Types - Logical
+%
+%           kk: number of mixture components. Integer vector. Integer
+%               vector specifying the number of mixture components
+%               (clusters) for which trimmed likelihoods are calculated.
+%               Vector. The default value of kk is 1:5.
+%                 Example - 'kk',1:4
+%                 Data Types - int16 | int32 | single | double
+%
+%         mixt: Mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
 %               In the case of mixture modelling parameter mixt also
@@ -43,9 +129,9 @@ function out  = ctlcurves(Y, varargin)
 %               If mixt >=1 mixture modelling is assumed else crisp
 %               assignment. The default value is mixt=0 (i.e. crisp assignment).
 %               In mixture modelling the likelihood is given by:
-%                \[
-%                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
-%                \]
+%               \[
+%               \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
+%               \]
 %               while in crisp assignment the likelihood is given by:
 %               \[
 %               \prod_{j=1}^k   \prod _{i\in R_j} \phi (y_i; \; \theta_j),
@@ -72,26 +158,20 @@ function out  = ctlcurves(Y, varargin)
 %               \]
 %               and then these n numbers are ordered and the units
 %               associated with the largest h numbers are untrimmed.
-%                   Example - 'mixt',1
-%                   Data Types - single | double
+%                 Example - 'mixt',1
+%                 Data Types - single | double
 %
+%          msg: Message on the screen. Scalar. Scalar which controls whether
+%               to display or not messages about code execution.
+%                 Example - 'msg',1
+%                 Data Types - single | double
 %
+%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1
+%               no check is performed on matrix Y. As default nocheck=0.
+%                 Example - 'nocheck',10
+%                 Data Types - single | double
 %
-%  restrfactor: Restriction factor. Scalar. Positive scalar which
-%               constrains the allowed differences
-%               among group scatters. Larger values imply larger differences of
-%               group scatters. On the other hand a value of 1 specifies the
-%               strongest restriction forcing all eigenvalues/determinants
-%               to be equal and so the method looks for similarly scattered
-%               (respectively spherical) clusters. The default is to apply
-%               restrfactor to eigenvalues. In order to apply restrfactor
-%               to determinants it is is necessary to use optional input
-%               argument cshape.
-%                 Example - 'restrfactor',12
-%                 Data Types -  double
-%
-%
-%       nsamp : number of subsamples to extract. Scalar or matrix.
+%        nsamp: number of subsamples to extract. Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
 %               which will be extracted. If nsamp=0 all subsets will be
 %               extracted.
@@ -120,94 +200,7 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'nsamp',1000
 %                 Data Types - double
 %
-%    refsteps : Number of refining iterations. Scalar. Number of refining
-%               iterations in subsample.  Default is 15. refsteps = 0 means
-%               "raw-subsampling" without iterations.
-%                 Example - 'refsteps',10
-%                 Data Types - single | double
-%
-%     reftol  : scalar. Default value of tolerance for the refining steps.
-%               The default value is 1e-14;
-%                 Example - 'reftol',1e-05
-%                 Data Types - single | double
-%
-%equalweights : cluster weights in the concentration and assignment steps.
-%               Logical. A logical value specifying whether cluster weights
-%               shall be considered in the concentration, assignment steps
-%               and computation of the likelihood.
-%                 Example - 'equalweights',true
-%                 Data Types - Logical
-%
-%      startv1: how to initialize centroids and cov matrices. Scalar.
-%               If startv1 is 1 then initial
-%               centroids and and covariance matrices are based on (v+1)
-%               observations randomly chosen, else each centroid is
-%               initialized taking a random row of input data matrix and
-%               covariance matrices are initialized with identity matrices.
-%               Remark 1- in order to start with a routine which is in the
-%               required parameter space, eigenvalue restrictions are
-%               immediately applied. The default value of startv1 is 1.
-%               Remark 2 - option startv1 is used just if nsamp is a scalar
-%               (see for more details the help associated with nsamp).
-%                 Example - 'startv1',1
-%                 Data Types - single | double
-%
-%     restrtype : type of restriction. Character. The type of restriction to
-%               be applied on the cluster scatter
-%               matrices. Valid values are 'eigen' (default), or 'deter'.
-%               eigen implies restriction on the eigenvalues while deter
-%               implies restriction on the determinants. If restrtype is
-%               'deter' it is possible to control the constraints on the
-%               shape matrices using optional input argument cshape.
-%                 Example - 'restrtype','deter'
-%                 Data Types - char
-%
-%       bands  : confidence bands for the curves. boolean or struct. If
-%               bands is a scalar boolean equal to true 50 per cent
-%               confidence bands are computed (and are shown on the screen
-%               if plots=1).
-%               If bands is a struct it may contain the following fields:
-%               bands.conflev = scalar in the interval (0 1) which contains
-%                   the confidence level of the bands.
-%               bands.nsimul = number of replicates to use to create the
-%                   confidence bands. The default value of bands.nsimul is
-%                   60 in order to provide the output in a reasonal time.
-%                   Note that for stable results we recommentd a value of
-%                   bands.nsimul equal to 100.
-%               bands.valSolution   = boolean which specifies if it is
-%                   necessary to perform an outlier detection procedure on
-%                   the components which have been found using optimalK and
-%                   optimal alpha. If bands.valSolution is true then units
-%                   detected as outliers in each component are assigned to
-%                   the noise group. If bands.valSolution is false
-%                   (deafult) or it is not present nothing is done.
-%             bands.LRtest =  Likelihood ratio test. Boolean. If
-%                   bands.LTtest is true (default) the
-%                   difference between the obj function for two consecutive
-%                   values of k given a particular value of alpha is computed.
-%                   The relative time in which this difference is greater than
-%                   the bootstrap difference is stored in out.pvalLRtest.
-%   bands.outliersFromUniform = way of generating the outliers in the bootstrap
-%                   replicates. Boolean. If outliersFromUniform is true
-%                   (default) the outliers are generated using the uniform
-%                   distribution in such a way that their squared Mahalanobis
-%                   distance from the centroids of each
-%                   existing group is larger then the quantile 1-0.999 of
-%                   the Chi^2 distribution with p degrees of freedom. For
-%                   additional details see input option noiseunits of
-%                   simdataset. If outliersFromUniform is false the outliers
-%                   are the units which have been trimmed after applying
-%                   tclust for the particular combination of values of k and alpha.
-%                 Example - 'bands',true
-%                 Data Types - logical | struct
-%
-%       plots : Plot on the screen. Scalar. If plots = 1, a plot of the
-%               CTLcurves is shown on the screen. If input option bands is
-%               not empty confidence bands are also shown.
-%                 Example - 'plots',1
-%                 Data Types - single | double
-%
-%     numpool : number of pools for parellel computing. Scalar.
+%      numpool: number of pools for parellel computing. Scalar.
 %               If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
 %               the random starts over numpool parallel processes. If
@@ -245,154 +238,151 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'numpool',4
 %                 Data Types - double
 %
-%  cleanpool :  clean pool. Scalar. cleanpool is 1 if the parallel pool has
-%               to be cleaned after the execution of the routine. Otherwise
-%               it is 0. The default value of cleanpool is 0. Clearly this
-%               option has an effect just if previous option numpool is >
-%               1.
-%                 Example - 'cleanpool',1
+%
+%        plots: Plot on the screen. Scalar. If plots = 1, a plot of the
+%               CTLcurves is shown on the screen. If input option bands is
+%               not empty confidence bands are also shown.
+%                 Example - 'plots',1
 %                 Data Types - single | double
 %
-%       msg  :  Message on the screen. Scalar. Scalar which controls whether
-%               to display or not messages about code execution.
-%                 Example - 'msg',1
+%     refsteps: Number of refining iterations. Scalar. Number of refining
+%               iterations in subsample.  Default is 15. refsteps = 0 means
+%               "raw-subsampling" without iterations.
+%                 Example - 'refsteps',10
+%                 Data Types - single | double
+%       reftol: scalar. Default value of tolerance for the refining steps.
+%               The default value is 1e-14;
+%                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
-%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1
-%               no check is performed on matrix Y. As default nocheck=0.
-%                 Example - 'nocheck',10
+%  restrfactor: Restriction factor. Scalar. Positive scalar which
+%               constrains the allowed differences
+%               among group scatters. Larger values imply larger differences of
+%               group scatters. On the other hand a value of 1 specifies the
+%               strongest restriction forcing all eigenvalues/determinants
+%               to be equal and so the method looks for similarly scattered
+%               (respectively spherical) clusters. The default is to apply
+%               restrfactor to eigenvalues. In order to apply restrfactor
+%               to determinants it is is necessary to use optional input
+%               argument cshape.
+%                 Example - 'restrfactor',12
+%                 Data Types -  double
+%    restrtype: type of restriction. Character. The type of restriction to
+%               be applied on the cluster scatter
+%               matrices. Valid values are 'eigen' (default), or 'deter'.
+%               eigen implies restriction on the eigenvalues while deter
+%               implies restriction on the determinants. If restrtype is
+%               'deter' it is possible to control the constraints on the
+%               shape matrices using optional input argument cshape.
+%                 Example - 'restrtype','deter'
+%                 Data Types - char
+%
+%      startv1: how to initialize centroids and cov matrices. Scalar.
+%               If startv1 is 1 then initial
+%               centroids and and covariance matrices are based on (v+1)
+%               observations randomly chosen, else each centroid is
+%               initialized taking a random row of input data matrix and
+%               covariance matrices are initialized with identity matrices.
+%               Remark 1- in order to start with a routine which is in the
+%               required parameter space, eigenvalue restrictions are
+%               immediately applied. The default value of startv1 is 1.
+%               Remark 2 - option startv1 is used just if nsamp is a scalar
+%               (see for more details the help associated with nsamp).
+%                 Example - 'startv1',1
 %                 Data Types - single | double
 %
-%       Ysave : save input matrix. Boolean.
+%        Ysave: save input matrix. Boolean.
 %               Boolan that is set to true to request that the input matrix Y
 %               is saved into the output structure out. Default is 1, that
 %               is  matrix Y is saved inside output structure out.
 %                 Example - 'Ysave',false
 %                 Data Types - logical
 %
-%       cshape : constraint to apply to each of the shape matrices.
-%                Scalar greater or equal than 1. This options only works
-%                is 'restrtype' is 'deter'.
-%               When restrtype is deter the default value of the "shape"
-%               constraint (as defined below) applied to each group is
-%               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
-%               (virtually) affine equivariant. In other words, the
-%               decomposition or the $j$-th scatter matrix $\Sigma_j$ is
-%               \[
-%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-%               \]
-%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
-%               diagonal matrix with $|\Gamma_j|=1$ and with elements
-%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
-%               the eigenvalues of the $\Sigma_j$ matrix) and
-%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
-%               known as "shape" matrices, because they determine the shape of the
-%               fitted cluster components. The following $k$
-%               constraints are then imposed on the shape matrices:
-%               \[
-%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
-%                   c_{shape}, \text{ for } j=1,...,k,
-%               \]
-%               In particular, if we are ideally searching for spherical
-%               clusters it is necessary to set  $c_{shape}=1$. Models with
-%               variable volume and spherical clusters are handled with
-%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
-%               The $restrfactor=cshape=1$ case yields a very constrained
-%               parametrization because it implies spherical clusters with
-%               equal volumes.
-%                 Example - 'cshape',10
-%                 Data Types - single | double
-%
-%
-%
 %  Output:
 %
-%         out:   structure which contains the following fields:
+%          out: structure which contains the following fields:
 %
-%                out.Mu = cell of size length(kk)-by-length(alpha)
-%                       containing the estimate of the centroids for each
-%                       value of k and each value of alpha. More precisely,
-%                       suppose kk=1:4 and alpha=[0 0.05 0.1], out.Mu{2,3}
-%                       is a matrix with two rows and v columns containing
-%                       the estimates of the centroids obtained when
-%                       alpha=0.1.
-%            out.Sigma = cell of size length(kk)-by-length(alpha)
-%                       containing the estimate of the covariance matrices
-%                       for each value of k and each value of alpha. More
-%                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
-%                       out.Sigma{2,3} is a 3D  array of size v-by-v-by-2
-%                       containing the estimates of the covariance matrices
-%                       obtained when alpha=0.1.
-%            out.Pi   = cell of size length(kk)-by-length(alpha)
-%                       containing the estimate of the group proportions
-%                       for each value of k and each value of alpha. More
-%                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
-%                       out.Pi{2,3} is a 3D  array of size v-by-v-by-2
-%                       containing the estimates of the covariance matrices
-%                       obtained when alpha=0.1.
-%            out.IDX   = cell of size length(kk)-by-length(alpha)
-%                       containing the final assignment for each value of k
-%                       and each value of alpha. More precisely, suppose
-%                       kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
-%                       vector of length(n) containing the containinig the
-%                       assignment of each unit obtained when alpha=0.1.
-%                       Elements equal to zero denote unassigned units.
-%           out.CTL    = matrix of size length(kk)-by-length(alpha)
-%                       containing the values of the trimmed likelihood
-%                       curves for each value of k and each value of alpha.
-%      out.BandsCTL    = 3D array of size
-%                       length(kk)-by-length(alpha)-by-nsimul containing
-%                       the nsimul replicates of out.CTL. This output is
-%                       present only if input option bands is true or is a
-%                       struct.
-%         out.likLB    =  matrix of size length(kk)-by-length(alpha)
-%                       containing the lower confidence bands of the
-%                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%         out.likUB    =  matrix of size length(kk)-by-length(alpha)
-%                       containing the upper confidence bands of the
-%                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%         out.lik050    =  matrix of size length(kk)-by-length(alpha)
-%                       containing the central confidence bands of the
-%                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%            out.idx  = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups in correspodence of
-%                       Optimalalpha and OptimalK. Cluster names are
-%                       integer numbers from 1 to k. 0 indicates trimmed
-%                       observations. This output is present only if input
-%                       option bands is true or is a struct.
-%        out.Optimalalpha = scalar, optimal value of trimming. This
-%                       output is present only if optional input argument is
-%                       true.
-%           out.OptimalK = scalar, optimal number of clusters, stored
-%                        as a positive integer value. This output is present
-%                       only if optional input argument is true.
-%           out.TentSol  = matrix with size m-by 3. Details of the ordered
-%                          solutions where there was intersection between
-%                          two consecutive trimmed likelihood curves. First
-%                          column contains the value of k, second column
-%                          the value of alpha and third column the index
-%                          associated to the best value of alpha.
-%        out.pvalLRtest =  table with size length(kk)-1-times-length(alpha)
-%                           which stores the relative frequency in which
-%                           the Likelihood ratio test is greater than the
-%                           corresponding bootstrap test.
-%                out.kk = vector containing the values of k (number of
-%                       components) which have been considered. This  vector
-%                       is equal to input optional argument kk if kk had been
-%                       specified else it is equal to 1:5.
-%                out.alpha = vector containing the values of the trimming
-%                       level which have been considered. This
-%                       vector is equal to input optional argument alpha.
-%         out.restrfactor = scalar containing the restriction factor
-%                       which has been used to compute tclust.
-%                out.Y  = Original data matrix Y. The field is present if
-%                       option Ysave is set to 1.
+%         out.alpha = vector containing the values of the trimming
+%                     level which have been considered. This
+%                     vector is equal to input optional argument alpha.
+%      out.BandsCTL = 3D array of size length(kk)-by-length(alpha)-by-nsimul
+%                     containing the nsimul replicates of out.CTL. This output is
+%                     present only if input option bands is true or is a struct.
+%           out.CTL = matrix of size length(kk)-by-length(alpha)
+%                     containing the values of the trimmed likelihood
+%                     curves for each value of k and each value of alpha.
+%           out.IDX = cell of size length(kk)-by-length(alpha)
+%                     containing the final assignment for each value of k
+%                     and each value of alpha. More precisely, suppose
+%                     kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
+%                     vector of length(n) containing the containinig the
+%                     assignment of each unit obtained when alpha=0.1.
+%           out.idx = n-by-1 vector containing assignment of each unit to
+%                     each of the k groups in correspodence of
+%                     Optimalalpha and OptimalK. Cluster names are
+%                     integer numbers from 1 to k. 0 indicates trimmed
+%                     observations. This output is present only if input
+%                     option bands is true or is a struct.
+%            out.kk = vector containing the values of k (number of
+%                     components) which have been considered. This  vector
+%                     is equal to input optional argument kk if kk had been
+%                     specified else it is equal to 1:5.
+%        out.lik050 = matrix of size length(kk)-by-length(alpha)
+%                     containing the central confidence bands of the
+%                     trimmed likelihood curves for each value of k and
+%                     each value of alpha. This output is present only if
+%                     input option bands is true or is a struct.
+%         out.likLB = matrix of size length(kk)-by-length(alpha)
+%                     containing the lower confidence bands of the
+%                     trimmed likelihood curves for each value of k and
+%                     each value of alpha. This output is present only if
+%                     input option bands is true or is a struct.
+%         out.likUB = matrix of size length(kk)-by-length(alpha)
+%                     containing the upper confidence bands of the
+%                     trimmed likelihood curves for each value of k and
+%                     each value of alpha. This output is present only if
+%                     input option bands is true or is a struct.
+%            out.Mu = cell of size length(kk)-by-length(alpha)
+%                     containing the estimate of the centroids for each
+%                     value of k and each value of alpha. More precisely,
+%                     suppose kk=1:4 and alpha=[0 0.05 0.1], out.Mu{2,3}
+%                     is a matrix with two rows and v columns containing
+%                     the estimates of the centroids obtained when
+%                     alpha=0.1.
+%  out.Optimalalpha = scalar, optimal value of trimming. This output
+%                     is present only if optional input argument is true.
+%      out.OptimalK = scalar, optimal number of clusters, stored
+%                     as a positive integer value. This output is present
+%                     only if optional input argument is true.
+%            out.Pi = cell of size length(kk)-by-length(alpha)
+%                     containing the estimate of the group proportions
+%                     for each value of k and each value of alpha. More
+%                     precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
+%                     out.Pi{2,3} is a 3D  array of size v-by-v-by-2
+%                     containing the estimates of the covariance matrices
+%                     obtained when alpha=0.1.
+%    out.pvalLRtest = table with size length(kk)-1-times-length(alpha)
+%                     which stores the relative frequency in which
+%                     the Likelihood ratio test is greater than the
+%                     corresponding bootstrap test.
+%   out.restrfactor = scalar containing the restriction factor
+%                     which has been used to compute tclust.
+%         out.Sigma = cell of size length(kk)-by-length(alpha)
+%                     containing the estimate of the covariance matrices
+%                     for each value of k and each value of alpha. More
+%                     precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
+%                     out.Sigma{2,3} is a 3D  array of size v-by-v-by-2
+%                     containing the estimates of the covariance matrices
+%                     obtained when alpha=0.1.
+%                     Elements equal to zero denote unassigned units.
+%       out.TentSol = matrix with size m-by 3. Details of the ordered
+%                     solutions where there was intersection between
+%                     two consecutive trimmed likelihood curves. First
+%                     column contains the value of k, second column
+%                     the value of alpha and third column the index
+%                     associated to the best value of alpha.
+%             out.Y = Original data matrix Y. The field is present if
+%                     option Ysave is set to 1.
 %
 % More About:
 %
@@ -943,4 +933,3 @@ end
 end
 
 %FScategory:CLUS-RobClaMULT
-

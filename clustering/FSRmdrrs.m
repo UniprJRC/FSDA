@@ -10,7 +10,7 @@ function out=FSRmdrrs(y,X,varargin)
 %
 % Required input arguments:
 %
-%    y:         Response variable. Vector. Response variable, specified as
+%            y: Response variable. Vector. Response variable, specified as
 %               a vector of length n, where n is the number of
 %               observations. Each entry in y is the response for the
 %               corresponding row of X.
@@ -18,7 +18,7 @@ function out=FSRmdrrs(y,X,varargin)
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%  X :          Predictor variables. Matrix. Matrix of explanatory
+%            X: Predictor variables. Matrix. Matrix of explanatory
 %               variables (also called 'regressors') of dimension n x (p-1)
 %               where p denotes the number of explanatory variables
 %               including the intercept.
@@ -32,123 +32,123 @@ function out=FSRmdrrs(y,X,varargin)
 %
 % Optional input arguments:
 %
-%  init :       Search initialization. Scalar.
-%               It specifies the point where to initialize the search and
-%               start monitoring required diagnostics. If it is not
-%               specified it is set equal to:
-%                   p+1, if the sample size is smaller than 40;
-%                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               Example - 'init',100 starts monitoring from step m=100
-%               Data Types - double
+%           bsbsteps: Save the units forming subsets. Vector. It specifies for
+%                     which steps of the fwd search it
+%                     is necessary to save the units forming subsets. If bsbsteps
+%                     is 0 we store the units forming subset in all steps. The
+%                     default is store the units forming subset in all steps if
+%                     n<=500, else to store the units forming subset at steps
+%                     init and steps which are multiple of 100. For example, as
+%                     default, if n=753 and init=6,
+%                     units forming subset are stored for
+%                     m=init, 100, 200, 300, 400, 500 and 600.
+%                       Example - 'bsbsteps',[100 200] stores the unis forming
+%                       subset in steps 100 and 200.
+%                       Data Types - double
+%                     REMARK: vector bsbsteps must contain numbers from init to
+%                     n. if min(bsbsteps)<init a warning message will appear on
+%                     the screen.
 %
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%          cleanpool: clean pool after execution. Boolean.
+%                     cleanpool is 1 (true) if the parallel pool has to be cleaned after
+%                     the execution of the random starts. Otherwise it is 0 (false).
+%                     The default value of cleanpool is false.
+%                     Clearly this option has an effect just if previous option
+%                     numpool is > 1.
+%                       Example - 'cleanpool',false
+%                       Data Types - boolean
 %
-%   bsbsteps :  Save the units forming subsets. Vector. It specifies for
-%               which steps of the fwd search it
-%               is necessary to save the units forming subsets. If bsbsteps
-%               is 0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
-%               n<=500, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, as
-%               default, if n=753 and init=6,
-%               units forming subset are stored for
-%               m=init, 100, 200, 300, 400, 500 and 600.
-%               Example - 'bsbsteps',[100 200] stores the unis forming
-%               subset in steps 100 and 200.
-%               Data Types - double
-%               REMARK: vector bsbsteps must contain numbers from init to
-%               n. if min(bsbsteps)<init a warning message will appear on
-%               the screen.
+%             constr: Constrained search. Vector. r x 1 vector which contains the
+%                     list of units which are forced to join the search in the
+%                     last r steps. The default is constr=''.  No constraint is
+%                     imposed.
+%                       Example - 'constr',[1:10] forces the first 10 units to join
+%                       the subset in the last 10 steps
+%                       Data Types - double
 %
-%     nsimul :  number of random starts. Scalar. The default value is200.
-%               Example - 'nsimul',300
-%               Data Types - double
+%               init: Search initialization. Scalar.
+%                     It specifies the point where to initialize the search and
+%                     start monitoring required diagnostics. If it is not
+%                     specified it is set equal to:
+%                          p+1, if the sample size is smaller than 40;
+%                          min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%                       Example - 'init',100 starts monitoring from step m=100
+%                       Data Types - double
 %
-%  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no
-%               check is performed on matrix y and matrix X. Notice that y
-%               and X are left unchanged. In other words the additioanl
-%               column of ones for the intercept is not added. As default
-%               nocheck=0. The controls on h, alpha and nsamp still remain.
-%               Example - 'nocheck',1
-%               Data Types - double
+%          intercept: Indicator for constant term. Scalar. If 1, a model with
+%                     constant term will be fitted (default), else no constant
+%                     term will be included.
+%                       Example - 'intercept',1
+%                       Data Types - double
 %
-%  constr :     Constrained search. Vector. r x 1 vector which contains the
-%               list of units which are forced to join the search in the
-%               last r steps. The default is constr=''.  No constraint is
-%               imposed.
-%               Example - 'constr',[1:10] forces the first 10 units to join
-%               the subset in the last 10 steps
-%               Data Types - double
+% internationaltrade: criterion for updating subset. Boolean.
+%                     If internationaltrade is true (default is false) residuals
+%                     which have large of the final column of X (generally
+%                     quantity) are reduced. Note that this guarantees that
+%                     leverge units which have a large value of  X will tend to
+%                     stay in the subset. This option is particularly useful in
+%                     the context of international trade data where we 
+%                     regress value (value=price*Q) on quantity (Q). In other
+%                     words, we use the residuals as if we were regressing y/X
+%                     (that is price) on the vector of ones.
+%                       Example - 'internationaltrade',true
+%                       Data Types - boolean
 %
-%  plots :      Plot on the screen. Scalar. If equal to one a plot of
-%               random starts minimum deletion residual appears  on the
-%               screen with 1%, 50% and 99% confidence bands else (default)
-%               no plot is shown.
-%               Example - 'plots',1
-%               Data Types - double
-%               Remark: the plot which is produced is very simple. In order
-%               to control a series of options in this plot and in order to
-%               connect it dynamically to the other forward plots it is
-%               necessary to use function mdrrsplot.
+%                msg: Level of output to display. Scalar.
+%                     Scalar which controls whether to display or not messages
+%                     about random start progress. More precisely, if previous
+%                     option numpool>1, then a progress bar is displayed, on
+%                     the other hand a message will be displayed on the screen
+%                     when 10%, 25%, 50%, 75% and 90% of the random starts have
+%                     been accomplished
+%                     In order to create the progress bar when nparpool>1
+%                     the program writes on a temporary .txt file in the folder
+%                     where the user is working. Therefore it is necessary to
+%                     work in a folder where the user has write permission. If this
+%                     is not the case and the user (say) is working without write
+%                     permission in folder C:\Program Files\MATLAB the following
+%                     message will appear on the screen:
+%                        Error using ProgressBar (line 57)
+%                        Do you have write permissions for C:\Program Files\MATLAB?
+%                       Example - 'msg',1
+%                       Data Types - double
 %
-%   numpool :  use parallel computing and parfor. Scalar.
-%               If numpool > 1, the routine automatically checks
-%               if the Parallel Computing Toolbox is installed and
-%               distributes the random starts over numpool parallel
-%               processes. If numpool <= 1, the random starts are run
-%               sequentially.
-%               Example - 'numpool',8
-%               Data Types - double
+%            nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no
+%                     check is performed on matrix y and matrix X. Notice that y
+%                     and X are left unchanged. In other words the additioanl
+%                     column of ones for the intercept is not added. As default
+%                     nocheck=0. The controls on h, alpha and nsamp still remain.
+%                       Example - 'nocheck',1
+%                       Data Types - double
 %
-%  cleanpool :  clean pool after execution. Boolean.
-%               cleanpool is 1 (true) if the parallel pool has to be cleaned after
-%               the execution of the random starts. Otherwise it is 0 (false).
-%               The default value of cleanpool is false.
-%               Clearly this option has an effect just if previous option
-%               numpool is > 1.
-%               Example - 'cleanpool',false
-%               Data Types - boolean
+%             nsimul: number of random starts. Scalar. The default value is200.
+%                       Example - 'nsimul',300
+%                       Data Types - double
 %
-%  msg  :       Level of output to display. Scalar.
-%               Scalar which controls whether to display or not messages
-%               about random start progress. More precisely, if previous
-%               option numpool>1, then a progress bar is displayed, on
-%               the other hand a message will be displayed on the screen
-%               when 10%, 25%, 50%, 75% and 90% of the random starts have
-%               been accomplished
-%               In order to create the progress bar when nparpool>1
-%               the program writes on a temporary .txt file in the folder
-%               where the user is working. Therefore it is necessary to
-%               work in a folder where the user has write permission. If this
-%               is not the case and the user (say) is working without write
-%               permission in folder C:\Program Files\MATLAB the following
-%               message will appear on the screen:
-%                   Error using ProgressBar (line 57)
-%                   Do you have write permissions for C:\Program Files\MATLAB?
-%               Example - 'msg',1
-%               Data Types - double
+%            numpool: use parallel computing and parfor. Scalar.
+%                     If numpool > 1, the routine automatically checks
+%                     if the Parallel Computing Toolbox is installed and
+%                     distributes the random starts over numpool parallel
+%                     processes. If numpool <= 1, the random starts are run
+%                     sequentially.
+%                       Example - 'numpool',8
+%                       Data Types - double
 %
-% internationaltrade : criterion for updating subset. Boolean.
-%               If internationaltrade is true (default is false) residuals
-%               which have large of the final column of X (generally
-%               quantity) are reduced. Note that this guarantees that
-%               leverge units which have a large value of  X will tend to
-%               stay in the subset. This option is particularly useful in
-%               the context of international trade data where we 
-%               regress value (value=price*Q) on quantity (Q). In other
-%               words, we use the residuals as if we were regressing y/X
-%               (that is price) on the vector of ones.
-%               Example - 'internationaltrade',true
-%               Data Types - boolean
+%              plots: Plot on the screen. Scalar. If equal to one a plot of
+%                     random starts minimum deletion residual appears  on the
+%                     screen with 1%, 50% and 99% confidence bands else (default)
+%                     no plot is shown.
+%                       Example - 'plots',1
+%                       Data Types - double
+%                     Remark: the plot which is produced is very simple. In order
+%                     to control a series of options in this plot and in order to
+%                     connect it dynamically to the other forward plots it is
+%                     necessary to use function mdrrsplot.
 %
-%  Remark:      The user should only give the input arguments that have to
-%               change their default value. The name of the input arguments
-%               needs to be followed by their value. The order of the input
-%               arguments is of no importance.
+%             Remark: The user should only give the input arguments that have to
+%                     change their default value. The name of the input arguments
+%                     needs to be followed by their value. The order of the input
+%                     arguments is of no importance.
 %
 %               The dataset can include missing values (NaN's) and infinite
 %               values (Inf's), since observations (rows) with missing or
@@ -157,42 +157,43 @@ function out=FSRmdrrs(y,X,varargin)
 %
 % Output:
 %
-%  out :     A structure containing the following fields:
-%     out.mdrrs:  random start minimum deletion residual. Matrix.
-%               (n-init)-by-(nsimul+1) matrix which contains the monitoring
-%               of minimum deletion residual at each step of the forward
-%               search for each random start.
-%               1st col = fwd search index (from init to n-1).
-%               2nd col = minimum deletion residual for random start 1.
-%               ...
-%               nsimul+1 col = minimum deletion residual for random start nsimul.
+%       out: A structure containing the following fields:
 %
-%      out.BBrs :  units belonging to subset. 3D array.
-%               3D array which contains the units belonging to the subset
-%               at the steps specified by input option bsbsteps.
-%               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
-%               In this case BBrs(:,:,j) with j=1, 2, ..., nsimul
-%               has the following structure:
-%               1-st row has number 1 in correspondence of the steps in
-%                   which unit 1 is included inside subset and a missing
-%                   value for the other steps;
-%               ......
-%               (n-1)-th row has number n-1 in correspondence of the steps
-%                   in which unit n-1 is included inside subset and a
-%                   missing value for the other steps;
-%               n-th row has the number n in correspondence of the steps in
-%                   which unit n is included inside subset and a missing
-%                   value for the other steps.
-%               If, on the other hand, bsbsteps is a vector which specifies
-%               the steps of the search in which it is necessary to store
-%               subset, BBrs has size n-by-length(bsbsteps)-by-nsimul.
-%               In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has
-%               the same structure as before, but now contains just
-%               length(bsbsteps) columns.
+%           out.BBrs: units belonging to subset. 3D array.
+%                     3D array which contains the units belonging to the subset
+%                     at the steps specified by input option bsbsteps.
+%                     If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
+%                     In this case BBrs(:,:,j) with j=1, 2, ..., nsimul
+%                     has the following structure:
+%                     1-st row has number 1 in correspondence of the steps in
+%                     which unit 1 is included inside subset and a missing
+%                     value for the other steps;
+%                     ......
+%                      (n-1)-th row has number n-1 in correspondence of the steps
+%                      in which unit n-1 is included inside subset and a
+%                      missing value for the other steps;
+%                      n-th row has the number n in correspondence of the steps in
+%                      which unit n is included inside subset and a missing
+%                      value for the other steps.
+%                     If, on the other hand, bsbsteps is a vector which specifies
+%                     the steps of the search in which it is necessary to store
+%                     subset, BBrs has size n-by-length(bsbsteps)-by-nsimul.
+%                     In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has
+%                     the same structure as before, but now contains just
+%                     length(bsbsteps) columns.
 %
-%         out.y = Store original response.
+%          out.mdrrs: random start minimum deletion residual. Matrix.
+%                     (n-init)-by-(nsimul+1) matrix which contains the monitoring
+%                     of minimum deletion residual at each step of the forward
+%                     search for each random start.
+%                     1st col = fwd search index (from init to n-1).
+%                     2nd col = minimum deletion residual for random start 1.
+%                     ...
+%                     nsimul+1 col = minimum deletion residual for random start nsimul.
 %
-%         out.X = Store original X matrix.
+%             out.X = Store original X matrix.
+%
+%             out.y = Store original response.
 %
 % See also:     mdrrsplot, FSRmdr, FSMmmdrs, FSMmmd
 %

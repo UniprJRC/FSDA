@@ -6,55 +6,52 @@ function [IDXrelabelled, idxMapping]  = ClusterRelabel(IDX,pivotunits)
 %
 %  Required input arguments:
 %
-%         IDX   : Assignment of units to groups for different values of c
-%                   (restriction factor) and k (number of groups). Cell.
-%                   Cell of size length(kk)-times length(cc), where kk is
-%                   the vector which contains the number of groups which
-%                   have been considered and cc is the vector which
-%                   contains the values of the restriction factor.  Each
-%                   element of the cell is a vector of length n containing
-%                   the assignment number of each unit using a particular
-%                   classification model.
+%            IDX: Assignment of units to groups for different values of c
+%                 (restriction factor) and k (number of groups). Cell.
+%                 Cell of size length(kk)-times length(cc), where kk is
+%                 the vector which contains the number of groups which
+%                 have been considered and cc is the vector which
+%                 contains the values of the restriction factor. Each
+%                 element of the cell is a vector of length n containing
+%                 the assignment number of each unit using a particular
+%                 classification model.
 %                 Data Types -  cell
 %
-%   pivotunits :  list of the units which must (whenever possible)
-%                   have the same label. Numeric vector.  For example if
-%                   pivotunits=[20 26], means that group which contains
-%                   unit 20 is always labelled with number 1. Similarly,
-%                   the group which contains unit 26 is always labelled
-%                   with number 2, (unless it is found that unit 26 already
-%                   belongs to group 1). In general, group which contains
-%                   unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
-%                   labelled with number r (unless it is found that unit
-%                   UnitsSameGroup(r) has already been assigned to groups
-%                   1, 2, ..., r-1).
+%      ivotunits: list of the units which must (whenever possible)
+%                 have the same label. Numeric vector.  For example if
+%                 pivotunits=[20 26], means that group which contains
+%                 unit 20 is always labelled with number 1. Similarly,
+%                 the group which contains unit 26 is always labelled
+%                 with number 2, (unless it is found that unit 26 already
+%                 belongs to group 1). In general, group which contains
+%                 unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
+%                 labelled with number r (unless it is found that unit
+%                 UnitsSameGroup(r) has already been assigned to groups
+%                 1, 2, ..., r-1).
 %                 Data Types -  integer vector
 %
 %  Optional input arguments:
 %
-%
-%
 %  Output:
 %
-%   IDXrelabelled  : cell with the same size as input cell IDX and with
-%                   the same meaning of input cell IDX but with consistent
-%                   labels. Cell. Group which contains unit
-%                   UnitsSameGroup(1)  is labelled with number 1. In
-%                   general. Group which contains UnitsSameGroup(r) where
-%                   r=2, ...length(kk)-1 is labelled with number r (unless
-%                   it is found that unit UnitsSameGroup(r) has already
-%                   been assigned to groups 1, 2, ..., r-1).
+%     idxMapping: indexes of the permutations associated with IDX{1,1}.
+%                 r-by-2 matrix.
+%                 Matrix of size r-by-2 which keeps track of all the
+%                 permutations which have been done. For example if
+%                 idxMapping is equal to  [3, 1; 3, 2],
+%                 it means that in the first iteration labels 1 and 3
+%                 have swapped, while in the second iteration label 3
+%                 and 2 have swapped. If no swapping was necessary
+%                 idxMapping is empty.
 %
-%   idxMapping   : indexes of the permutations associated with IDX{1,1}.
-%                       r-by-2 matrix.
-%                       Matrix of size r-by-2 which keeps track of all the
-%                       permutations which have been done. For example if
-%                       idxMapping is equal to  [3, 1; 3, 2],
-%                       it means that in the first iteration labels 1 and 3
-%                       have swapped, while in the second iteration label 3
-%                       and 2 have swapped. If no swapping was necessary
-%                       idxMapping is empty.
-%
+%  IDXrelabelled: cell with the same size as input cell IDX and with
+%                 the same meaning of input cell IDX but with consistent
+%                 labels. Cell. Group which contains unit
+%                 UnitsSameGroup(1)  is labelled with number 1. In
+%                 general. Group which contains UnitsSameGroup(r) where
+%                 r=2, ...length(kk)-1 is labelled with number r (unless
+%                 it is found that unit UnitsSameGroup(r) has already
+%                 been assigned to groups 1, 2, ..., r-1).
 %
 % See also tclustIC, tclustICplot
 %

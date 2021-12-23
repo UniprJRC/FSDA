@@ -10,25 +10,19 @@ function out=FSMmmdrs(Y,varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. Matrix.
+%           Y : Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%                Data Types - single|double
+%                 Data Types - single|double
 %
 %
 % Optional input arguments:
 %
-%       init :  scalar, specifies the point where to initialize the search
-%               and start monitoring the required diagnostics. If not
-%               specified, it is set equal to p+1.
-%                 Example - 'init',10
-%                 Data Types - double
-%
-%   bsbsteps :  vector which specifies for which steps of the fwd search it
+%    bsbsteps : vector which specifies for which steps of the fwd search it
 %               is necessary to save the units forming subset for each
 %               random start. If bsbsteps is 0 for each random start we
 %               store the units forming subset in all steps. The default is
@@ -43,35 +37,49 @@ function out=FSMmmdrs(Y,varargin)
 %               n. if min(bsbsteps)<init a warning message will appear on
 %               the screen.
 %
-%     nsimul :  scalar, number of random starts. Default value=200.
-%                 Example - 'nsimul',1000
-%                 Data Types - double
+%   cleanpool : Boolean. Cleanpool is 1 (true) if the parallel pool has to
+%               be cleaned after the execution of the random starts.
+%               Otherwise it is 0 (false). The default value of cleanpool
+%               is false. Clearly this option has an effect just if
+%               previous option numpool is > 1.
+%                 Example - 'cleanpool',1
+%                 Data Types - boolean
 %
-%   nocheck  : It controls whether to perform checks on matrix Y. Scalar.
-%                 If nocheck is equal to 1 no check is performed.
-%                 As default nocheck=0.
+%        init : scalar, specifies the point where to initialize the search
+%               and start monitoring the required diagnostics. If not
+%               specified, it is set equal to p+1.
+%                 Example - 'init',10
+%                 Data Types - double
+% 
+%         msg : Level of output to display. Scalar. Scalar which controls
+%               whether to display or not messages about random start
+%               progress. More precisely, if previous option numpool>1,
+%               then a progress bar is displayed, on the other hand a
+%               message will be displayed on the screen when 10%, 25%, 50%,
+%               75% and 90% of the random starts have been accomplished.
+%                 Example - 'msg',0
+%                 Data Types - double
+%               REMARK: in order to create the progress bar when nparpool>1
+%               the program writes on a temporary .txt file in the folder
+%               where the user is working. Therefore it is necessary to
+%               work in a folder where the user has write permission. If this
+%               is not the case and the user (say) is working without write
+%               permission in folder C:\Program Files\MATLAB the following
+%               message will appear on the screen:
+%                   Error using ProgressBar (line 57)
+%                   Do you have write permissions for C:\Program Files\MATLAB?
+%
+%     nocheck : It controls whether to perform checks on matrix Y. Scalar.
+%               If nocheck is equal to 1 no check is performed.
+%               As default nocheck=0.
 %                 Example - 'nocheck',1
 %                 Data Types - double
 %
-%      plots :  scalar. If equal to one a plot of random starts minimum
-%               Mahalanobis residual appears  on the screen with 1%, 50% and
-%               99% confidence bands else (default) no plot is shown. 
-%               The scale (ylim) for the y axis is defined as follows:
-%               ylim(2) is the maximum between the values of mmd in steps
-%               [n*0.2 n] and the final value of the 99 per cent envelope
-%               multiplied by 1.1. 
-%               ylim(1) is the minimum between the
-%               values of mmd in steps [n*0.2 n] and the 1 per cent
-%               envelope multiplied by 0.9.
-%               Example - 'plots',0
-%               Data Types - double
-%               Remark: the plot which is produced is very simple. In order
-%               to control a series of options in this plot (including the
-%               y scale) and in order to connect it dynamically to the
-%               other forward plots it is necessary to use function
-%               mmdrsplot.
+%      nsimul : scalar, number of random starts. Default value=200.
+%                 Example - 'nsimul',1000
+%                 Data Types - double
 %
-%   numpool :  scalar. If numpool > 1, the routine automatically checks
+%     numpool : scalar. If numpool > 1, the routine automatically checks
 %               if the Parallel Computing Toolbox is installed and
 %               distributes the random starts over numpool parallel
 %               processes. If numpool <= 1, the random starts are run
@@ -80,8 +88,8 @@ function out=FSMmmdrs(Y,varargin)
 %               may be inconvenient if other applications are running
 %               concurrently). The same happens if the numpool value
 %               chosen by the user exceeds the available number of cores.
-%               Example - 'numpool',8
-%               Data Types - double
+%                 Example - 'numpool',8
+%                 Data Types - double
 %               REMARK : up to R2013b, there was a limitation on the
 %               maximum number of cores that could be addressed by the
 %               parallel processing toolbox (8 and, more recently, 12).
@@ -113,33 +121,25 @@ function out=FSMmmdrs(Y,varargin)
 %               default value of 'numpool' obtained as feature('numCores')
 %               (i.e. the number of physical cores).
 %
-%  cleanpool :  Boolean. Cleanpool is 1 (true) if the parallel pool has to
-%               be cleaned after the execution of the random starts.
-%               Otherwise it is 0 (false). The default value of cleanpool
-%               is false. Clearly this option has an effect just if
-%               previous option numpool is > 1.
-%               Example - 'cleanpool',1
-%               Data Types - boolean
-%
-%       msg  :  Level of output to display. Scalar. Scalar which controls
-%               whether to display or not messages about random start
-%               progress. More precisely, if previous option numpool>1,
-%               then a progress bar is displayed, on the other hand a
-%               message will be displayed on the screen when 10%, 25%, 50%,
-%               75% and 90% of the random starts have been accomplished.
-%                 Example - 'msg',0
+%       plots : scalar. If equal to one a plot of random starts minimum
+%               Mahalanobis residual appears  on the screen with 1%, 50% and
+%               99% confidence bands else (default) no plot is shown. 
+%               The scale (ylim) for the y axis is defined as follows:
+%               ylim(2) is the maximum between the values of mmd in steps
+%               [n*0.2 n] and the final value of the 99 per cent envelope
+%               multiplied by 1.1. 
+%               ylim(1) is the minimum between the
+%               values of mmd in steps [n*0.2 n] and the 1 per cent
+%               envelope multiplied by 0.9.
+%                 Example - 'plots',0
 %                 Data Types - double
-%               REMARK: in order to create the progress bar when nparpool>1
-%               the program writes on a temporary .txt file in the folder
-%               where the user is working. Therefore it is necessary to
-%               work in a folder where the user has write permission. If this
-%               is not the case and the user (say) is working without write
-%               permission in folder C:\Program Files\MATLAB the following
-%               message will appear on the screen:
-%                   Error using ProgressBar (line 57)
-%                   Do you have write permissions for C:\Program Files\MATLAB?
+%               Remark: the plot which is produced is very simple. In order
+%               to control a series of options in this plot (including the
+%               y scale) and in order to connect it dynamically to the
+%               other forward plots it is necessary to use function
+%               mmdrsplot.
 %
-%  Remark:      The user should only give the input arguments that have to
+%      Remark : The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
 %               arguments is of no importance.
@@ -150,20 +150,11 @@ function out=FSMmmdrs(Y,varargin)
 %               computations. y can be both a row of column vector.
 %
 %
-% Output:
+%      Output:
 %
+%       out : A structure containing the following fields:
 %
-%  out :     A structure containing the following fields:
-%       out.mmdrs=  Minimum Mahalanobis distance. Matrix.
-%               (n-init)-by-(nsimul+1) matrix which contains the monitoring
-%               of minimum Mahalanobis distance at each step of the forward
-%               search for each random start.
-%               1st col = fwd search index (from init to n-1);
-%               2nd col = minimum Mahalanobis distance for random start 1;
-%               ...;
-%               nsimul+1 col = minimum deletion residual for random start nsimul.
-%
-%       out.BBrs= units belonging to the subset. 3D array.
+%    out.BBrs = units belonging to the subset. 3D array.
 %               Units belonging to the subset
 %               at the steps specified by input option bsbsteps.
 %               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
@@ -185,6 +176,15 @@ function out=FSMmmdrs(Y,varargin)
 %               In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has
 %               the same structure as before, but now contains just
 %               length(bsbsteps) columns.
+%
+%   out.mmdrs = Minimum Mahalanobis distance. Matrix.
+%               (n-init)-by-(nsimul+1) matrix which contains the monitoring
+%               of minimum Mahalanobis distance at each step of the forward
+%               search for each random start.
+%               1st col = fwd search index (from init to n-1);
+%               2nd col = minimum Mahalanobis distance for random start 1;
+%               ...;
+%               nsimul+1 col = minimum deletion residual for random start nsimul.
 %
 %       out.Y = original n-by-v input datamatrix.
 %

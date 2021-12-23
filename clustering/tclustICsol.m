@@ -56,14 +56,14 @@ function out  = tclustICsol(IC,varargin)
 %                   restriction factor) which have been considered.
 %                IC.alpha = vector containing the values of c (values of the
 %                   trimming level) which have been considered.
-%                IC.Y =  original n-times-v data matrix on which the IC
+%                IC.Y = original n-times-v data matrix on which the IC
 %                   (Information criterion) has
 %                    been computed. This input option is present only if IC
 %                    comes from tclustIC.
-%                IC.y =  original n-times-1 regression response on which the IC
+%                IC.y = original n-times-1 regression response on which the IC
 %                   (Information criterion). This input option is present
 %                   only if IC comes from tclustregIC.
-%                IC.X =  original n-times-p matrix of explanatory varaibles
+%                IC.X = original n-times-p matrix of explanatory varaibles
 %                   on which the IC (Information criterion). This input
 %                   option is present only if IC comes from tclustregIC.
 %                 Data Types - struct
@@ -72,61 +72,61 @@ function out  = tclustICsol(IC,varargin)
 %
 %
 % NumberOfBestSolutions: number of solutions to consider. Scalar integer
-%                       greater than 0. Number of best solutions to
-%                       extract from BIC/ICL matrix. The default value
-%                       of NumberOfBestSolutions is 5
-%                       Example - 'NumberOfBestSolutions',5
-%                       Data Types - int16 | int32 | single | double
+%                        greater than 0. Number of best solutions to
+%                        extract from BIC/ICL matrix. The default value
+%                        of NumberOfBestSolutions is 5
+%                          Example - 'NumberOfBestSolutions',5
+%                          Data Types - int16 | int32 | single | double
 %
-% ThreshRandIndex     : threshold to identify spurious solutions. Positive
-%                       scalar between 0 and 1. Scalar which specifies the
-%                       threshold of the adjusted Rnd index to use to
-%                       consider two solutions as equivalent. The default
-%                       value of ThreshRandIndex is 0.7
-%                       Example - 'ThreshRandIndex',0.8
-%                       Data Types - single | double
+%       ThreshRandIndex: threshold to identify spurious solutions. Positive
+%                        scalar between 0 and 1. Scalar which specifies the
+%                        threshold of the adjusted Rnd index to use to
+%                        consider two solutions as equivalent. The default
+%                        value of ThreshRandIndex is 0.7
+%                          Example - 'ThreshRandIndex',0.8
+%                          Data Types - single | double
 %
-%   whichIC  : character which specifies the information criterion to use
-%               to extract best solutions. Character.
-%               Possible values for whichIC are:
+%               whichIC: character which specifies the information criterion to use
+%                        to extract best solutions. Character.
+%                        Possible values for whichIC are:
 %               'CLACLA' = in this case best solutions are referred to
 %                   the classification likelihood.
 %               'MIXMIX' = in this case in this case best solutions are
 %                   referred to the mixture likelihood (BIC).
 %               'MIXCLA' = in this case in this case best solutions are
 %                   referred to ICL.
-%                 'ALL'  = in this case best solutions both three solutions
+%                  'ALL' = in this case best solutions both three solutions
 %                          using classification and mixture likelihood are
 %                          produced. In output structure out all the three
 %                          matrices out.MIXMIXbs, out.CLACLAbs and
 %                          out.MIXCLAbs are given.
-%               The default value of 'whichIC' is 'ALL'
-%                 Example - 'whichIC','ALL'
-%                 Data Types - character
+%                        The default value of 'whichIC' is 'ALL'
+%                          Example - 'whichIC','ALL'
+%                          Data Types - character
 %
-%       plots : plots of best solutions on the screen. Scalar. It specifies
-%               whether to plot on the screen the best solutions which have
-%               been found.
-%                 Example - 'plots',1
-%                 Data Types - single | double
+%                 plots: plots of best solutions on the screen. Scalar. It 
+%                        specifies whether to plot on the screen the best 
+%                        solutions which have been found.
+%                          Example - 'plots',1
+%                          Data Types - single | double
 %
-% SpuriousSolutions  :  Include or nor spurious solutions in the plot. Boolean.
-%                       As default spurios solutions are shown in the plot.
-%                 Example - 'SpuriousSolutions',false
-%                 Data Types - single | double
+%     SpuriousSolutions: Include or nor spurious solutions in the plot. Boolean.
+%                        As default spurios solutions are shown in the plot.
+%                          Example - 'SpuriousSolutions',false
+%                          Data Types - single | double
 %
-%       msg  :  Message on the screen. Scalar. Scalar which controls
-%               whether to display or not messages about code execution.
-%               The default value of msg is 0, that is no message is
-%               displayed on the screen.
-%                 Example - 'msg',1
-%                 Data Types - single | double
+%                   msg: Message on the screen. Scalar. Scalar which controls
+%                        whether to display or not messages about code execution.
+%                        The default value of msg is 0, that is no message is
+%                        displayed on the screen.
+%                          Example - 'msg',1
+%                          Data Types - single | double
 %
-%     Rand   :  Index to use to compare partitions. Scalar. If Rand =1
-%               (default) the adjusted Rand index is used, else the
-%               adjusted Fowlkes and Mallows index is used
-%                 Example - 'Rand',1
-%                 Data Types - single | double
+%                  Rand: Index to use to compare partitions. Scalar. If Rand =1
+%                        (default) the adjusted Rand index is used, else the
+%                        adjusted Fowlkes and Mallows index is used
+%                          Example - 'Rand',1
+%                          Data Types - single | double
 %
 %  Output:
 %
@@ -153,108 +153,107 @@ function out  = tclustICsol(IC,varargin)
 %               Remark: field out.MIXMIXbs is present only if input option
 %               'whichIC' is 'ALL' or 'whichIC' is 'MIXMIX'.
 %
-%  out.MIXMIXbsari =  matrix of adjusted Rand indexes (or Fowlkes and Mallows
-%               indexes) associated with the best
+%out.MIXMIXbsari =  matrix of adjusted Rand indexes (or Fowlkes and Mallows
+%                indexes) associated with the best
 %                solutions for MIXMIX. Matrix of size
 %                NumberOfBestSolutions-times-NumberOfBestSolutions whose
 %                i,j-th entry contains the adjusted Rand index between
 %                classification produced by solution i and solution j,
 %                $i,j=1, 2, \ldots, NumberOfBestSolutions$.
-%               Remark: field out.MIXMIXbsari is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'MIXMIX'.
+%                Remark: field out.MIXMIXbsari is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'MIXMIX'.
 %
-% out.ARIMIX = Matrix of adjusted Rand indexes between two consecutive value of c.
-%                 Matrix of size k-by-length(cc)-1. The first column
-%                 contains the ARI indexes between
-%                 with cc(2) and cc(1) given k. The second column contains
-%                 the the ARI indexes  between cc(3) and cc(2) given k.
-%                 This output is also present in table format (see below)
-%               Remark: field ARIMIX is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'
+%     out.ARIMIX = Matrix of adjusted Rand indexes between two consecutive value of c.
+%                Matrix of size k-by-length(cc)-1. The first column
+%                contains the ARI indexes between
+%                with cc(2) and cc(1) given k. The second column contains
+%                the the ARI indexes  between cc(3) and cc(2) given k.
+%                This output is also present in table format (see below)
+%                Remark: field ARIMIX is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'
 %
-% out.ARIMIXtable = Table with the same meaning of matrix ARIMIX above.
-%                 A Matlab table has also been been given to faciliate the
-%                 interpretation of the rows and columns. The Rownames of
-%                 this table correspond to the values of k which are used
-%                 and the colNames of this table contain in a dynamic way
-%                 the two values of c which are considered. For example if
-%                 the first two values of c are c=3 and c=7, the first
-%                 column name of this table is c3_v_c7 to denote that the
-%                 entry of this column are the ARI indexes between c=3 and
-%                 c=7
-%               Remark: field ARIMIXtable is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'
+%out.ARIMIXtable = Table with the same meaning of matrix ARIMIX above.
+%                A Matlab table has also been been given to faciliate the
+%                interpretation of the rows and columns. The Rownames of
+%                this table correspond to the values of k which are used
+%                and the colNames of this table contain in a dynamic way
+%                the two values of c which are considered. For example if
+%                the first two values of c are c=3 and c=7, the first
+%                column name of this table is c3_v_c7 to denote that the
+%                entry of this column are the ARI indexes between c=3 and
+%                c=7
+%                Remark: field ARIMIXtable is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'
 %
-%  out.MIXCLAbs = this output has the same structure as out.MIXMIXbs but
-%               it is referred to MIXCLA.
-%               Remark: field out.MIXCLAbs is present only if 'whichIC' is
-%               'ALL' or 'whichIC' is 'MIXCLA'.
+%   out.MIXCLAbs = this output has the same structure as out.MIXMIXbs but
+%                it is referred to MIXCLA.
+%                Remark: field out.MIXCLAbs is present only if 'whichIC' is
+%                'ALL' or 'whichIC' is 'MIXCLA'.
 %
-% out.MIXCLAbsari = this output has the same structure as out.MIXMIXbs but
-%               it is referred to MIXCLA.
-%               Remark: field out.MIXCLAbsari is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'MIXCLA'.
+% ut.MIXCLAbsari = this output has the same structure as out.MIXMIXbs but
+%                it is referred to MIXCLA.
+%                Remark: field out.MIXCLAbsari is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'MIXCLA'.
 %
-%  out.CLACLAbs = this output has the same structure as out.MIXMIXbs but
-%               it is referred to CLACLA.
-%               Remark: field out.CLACLAbs is present only if 'whichIC' is
-%               'ALL' or 'whichIC' is 'CLACLA'.
+%   out.CLACLAbs = this output has the same structure as out.MIXMIXbs but
+%                it is referred to CLACLA.
+%                Remark: field out.CLACLAbs is present only if 'whichIC' is
+%                'ALL' or 'whichIC' is 'CLACLA'.
 %
-% out.CLACLAbsari = this output has the same structure as out.MIXMIXbs but
-%               it is referred to CLACLA.
-%               Remark: field out.MIXCLAbsari is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'CLACLA'
+%out.CLACLAbsari = this output has the same structure as out.MIXMIXbs but
+%                it is referred to CLACLA.
+%                Remark: field out.MIXCLAbsari is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'CLACLA'
+% 
+%     out.ARICLA = Matrix of adjusted Rand indexes between two consecutive value of c.
+%                Matrix of size k-by-length(cc)-1. The first column
+%                contains the ARI indexes between
+%                with cc(2) and cc(1) given k. The second column contains
+%                the the ARI indexes  between cc(3) and cc(2) given k.
+%                This output is also present in table format (see below)
+%                Remark: field ARICLA is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'CLACLA'
 %
-% out.ARICLA = Matrix of adjusted Rand indexes between two consecutive value of c.
-%                 Matrix of size k-by-length(cc)-1. The first column
-%                 contains the ARI indexes between
-%                 with cc(2) and cc(1) given k. The second column contains
-%                 the the ARI indexes  between cc(3) and cc(2) given k.
-%                 This output is also present in table format (see below)
-%               Remark: field ARICLA is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'CLACLA'
+%out.ARICLAtable = Table with the same meaning of matrixo CLACLAari above.
+%                A Matlab table has also been been given to faciliate the
+%                interpretation of the rows and columns. The Rownames of
+%                this table correspond to the values of k which are used
+%                and the colNames of this table contain in a dynamic way
+%                the two adjacent values of c (\alpha) which are considered. 
+%                For example if the first two values of c are c=3 and c=7, 
+%                the first column name of this table is c3_v_c7 to denote that 
+%                the entry of this column are the ARI indexes between c=3 and
+%                c=7
+%                Remark: field ARICLAtable is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'CLACLA'
 %
-% out.ARICLAtable = Table with the same meaning of matrixo CLACLAari above.
-%                 A Matlab table has also been been given to faciliate the
-%                 interpretation of the rows and columns. The Rownames of
-%                 this table correspond to the values of k which are used
-%                 and the colNames of this table contain in a dynamic way
-%                 the two adjacent values of c (\alpha) which are considered. For example if
-%                 the first two values of c are c=3 and c=7, the first
-%                 column name of this table is c3_v_c7 to denote that the
-%                 entry of this column are the ARI indexes between c=3 and
-%                 c=7
-%               Remark: field ARICLAtable is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'CLACLA'
+%out.MIXCLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
+%                containing the allocations for MIXCLA associated with the best
+%                NumberOfBestSolutions. This field is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'MIXCLA'.
 %
-% out.MIXCLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
-%               containing the allocations for MIXCLA associated with the best
-%               NumberOfBestSolutions. This field is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'MIXCLA'.
+%out.MIXMIXbsIDX = matrix of dimension n-by-NumberOfBestSolutions
+%                containing the allocations for MIXXMIX associated with the best
+%                NumberOfBestSolutions. This field is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'MIXMIX'.
 %
-% out.MIXMIXbsIDX = matrix of dimension n-by-NumberOfBestSolutions
-%               containing the allocations for MIXXMIX associated with the best
-%               NumberOfBestSolutions. This field is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'MIXMIX'.
+%out.CLACLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
+%                containing the allocations for CLACLA associated with the best
+%                NumberOfBestSolutions. This field is present only if 'whichIC'
+%                is 'ALL' or 'whichIC' is 'CLACLA'.
 %
-% out.CLACLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
-%               containing the allocations for CLACLA associated with the best
-%               NumberOfBestSolutions. This field is present only if 'whichIC'
-%               is 'ALL' or 'whichIC' is 'CLACLA'.
+%         out.kk = vector containing the values of k (number of
+%                components) which have been considered. This  vector
+%                is equal to input optional argument kk if kk had been
+%                specified else it is equal to 1:5.
 %
+%         out.cc = vector containing the values of c (values of the
+%                restriction factor) which have been considered. This
+%                vector is equal to input argument Ic.cc.
 %
-%           out.kk = vector containing the values of k (number of
-%                   components) which have been considered. This  vector
-%                   is equal to input optional argument kk if kk had been
-%                   specified else it is equal to 1:5.
-%
-%          out.cc = vector containing the values of c (values of the
-%                   restriction factor) which have been considered. This
-%                   vector is equal to input argument Ic.cc.
-%
-%          out.alpha = vector containing the values of $\alpha$ (values of the
-%                   trimming level) which have been considered. This
-%                   vector is equal to input argument IC.alpha.
+%      out.alpha = vector containing the values of $\alpha$ (values of the
+%                trimming level) which have been considered. This
+%                vector is equal to input argument IC.alpha.
 %
 % See also: tclustIC, tclust, tclustregIC, tclustreg, carbikeplot
 %
@@ -867,5 +866,4 @@ if plots==1
     cascade
 end
 end
-
 %FScategory:CLUS-RobClaMULT

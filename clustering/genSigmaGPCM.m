@@ -15,16 +15,16 @@ function S=genSigmaGPCM(v, k, pa)
 %               Desired number of groups.
 %               Data Types - int16|int32|int64|single|double
 %
-%      pa  : Constraints to apply and model specification. Structure.
-%            Structure containing the following fields:
-%             pa.pars= type of Gaussian Parsimonious Clustering Model. Character.
+%           pa: Constraints to apply and model specification. Structure.
+%               Structure containing the following fields:
+%               pa.pars= type of Gaussian Parsimonious Clustering Model. Character.
 %               A 3 letter word in the set:
 %               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
 %               'EVI','VEI','EEI','VII','EII'.
 %               The field pa.pars is compulsory. All the other fields are
 %               non necessary. If they are not present they are set to
 %               their default values.
-%             pa.exactrestriction = boolean. If pa.exactrestriction is true
+%               pa.exactrestriction = boolean. If pa.exactrestriction is true
 %               the covariance matrices have to be generated with the exact
 %               values of the restrictions specified in pa.cdet, pa.shw and
 %               pa.swb. In order to reach this purpose, this procedure
@@ -44,14 +44,14 @@ function S=genSigmaGPCM(v, k, pa)
 %               pa.shw (if pa.shw is specififed);
 %               3) max ratio between the ordered elements of each shape
 %               matrices greater or equal than pa.shb).
-%             pa.cdet = scalar in the interval [1 Inf) which specifies the
+%               pa.cdet = scalar in the interval [1 Inf) which specifies the
 %               the restriction which has to be applied to the determinants.
 %               This field is used just if pa.exactrestriction is true.
-%             pa.shw = scalar in the interval [1 Inf) which specifies the
+%               pa.shw = scalar in the interval [1 Inf) which specifies the
 %               the restriction which has to be applied to the elements of
 %               the shape matrices inside each group.  This field is used
 %               just if pa.exactrestriction is true.
-%             pa.shb = scalar in the interval [1 Inf) which specifies the
+%               pa.shb = scalar in the interval [1 Inf) which specifies the
 %               the restriction which has to be applied to the ordered elements of
 %               the shape matrices across groups. This field is used
 %               just if pa.exactrestriction is true.
@@ -61,13 +61,10 @@ function S=genSigmaGPCM(v, k, pa)
 %  Optional input arguments:
 %
 %
-%  Output:
+%     Output:
 %
 %
-%             S  : v-by-v-by-k array containing covariances for the k
-%                  groups.
-%
-%
+%            S: v-by-v-by-k array containing covariances for the k groups.
 %
 %  More About:
 %

@@ -10,54 +10,54 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
 %
 %  Required input arguments:
 %
-%eigenvalues: Eigenvalues. Matrix. v x k matrix containing the eigenvalues
-%             of the covariance matrices of the k groups.
-%             v is the number of variables of the dataset which has to be
-%             clustered.
-%     niini: Cluster size. Column vector. k x 1 vector containing the size
-%             of the k clusters
-%     restr: Restriction factor. Scalar (default) or vector of length 2. 
-%            If restr is a scalar it defines the maximum ratio of the
-%            determinants which is allowed. In other words, we impose the
-%            constraint on the covariance matrices:
-%            \[
-%               \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
-%               |\Sigma_j|} \leq restr
-%            \]
-%           where $restr \geq 1$. In this case the "shape" constraint (as
-%           defined below) applied to each group is fixed to
-%           $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
-%           affine equivariant. In other words, the decomposition or the
-%           $j$-th scatter matrix $\Sigma_j$ is
-%           \[
-%           \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-%           \]
-%           where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
-%           diagonal matrix with $|\Gamma_j|=1$ and with elements
-%           $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
-%           the eigenvalues of the $\Sigma_j$ matrix) and
-%           $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
-%           known as "shape" matrices, because they determine the shape of the
-%           fitted cluster components. The following $k$
-%           constraints are then imposed on the shape matrices:
-%           \[
-%           \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
-%               c_{shape}, \text{ for } j=1,...,k,
-%           \]
-%           The particular case $restr=1$ forces all determinants of the
-%           scatter matrices to be equal i.e. $|\Sigma_1|=...= |\Sigma_k|$.
-%           If $restr$ is a vector of length 2 the second element refers to
-%           $c_{shape}$ of the previous equation. In other words, for example if
-%           $restr=[3, 10]$ we impose the $k+1$ constraints
-%           \[
-%               \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
-%               |\Sigma_j|} \leq restr(1)=3
-%            \]
-%           and
-%           \[
-%           \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}} \leq
-%               restr(2)=10, \text{ for } j=1,...,k,
-%           \]
+% eigenvalues: Eigenvalues. Matrix. v x k matrix containing the eigenvalues
+%              of the covariance matrices of the k groups.
+%              v is the number of variables of the dataset which has to be
+%              clustered.
+%       niini: Cluster size. Column vector. k x 1 vector containing the size
+%              of the k clusters
+%       restr: Restriction factor. Scalar (default) or vector of length 2. 
+%              If restr is a scalar it defines the maximum ratio of the
+%              determinants which is allowed. In other words, we impose the
+%              constraint on the covariance matrices:
+%              \[
+%                \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
+%                |\Sigma_j|} \leq restr
+%              \]
+%              where $restr \geq 1$. In this case the "shape" constraint (as
+%              defined below) applied to each group is fixed to
+%              $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
+%              affine equivariant. In other words, the decomposition or the
+%              $j$-th scatter matrix $\Sigma_j$ is
+%              \[
+%                \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+%              \]
+%              where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+%              diagonal matrix with $|\Gamma_j|=1$ and with elements
+%              $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+%              the eigenvalues of the $\Sigma_j$ matrix) and
+%              $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+%              known as "shape" matrices, because they determine the shape of the
+%              fitted cluster components. The following $k$
+%              constraints are then imposed on the shape matrices:
+%              \[
+%              \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+%                 c_{shape}, \text{ for } j=1,...,k,
+%              \]
+%              The particular case $restr=1$ forces all determinants of the
+%              scatter matrices to be equal i.e. $|\Sigma_1|=...= |\Sigma_k|$.
+%              If $restr$ is a vector of length 2 the second element refers to
+%              $c_{shape}$ of the previous equation. In other words, for example if
+%              $restr=[3, 10]$ we impose the $k+1$ constraints
+%              \[
+%                \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
+%                |\Sigma_j|} \leq restr(1)=3
+%              \]
+%              and
+%              \[
+%                \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}} \leq
+%                restr(2)=10, \text{ for } j=1,...,k,
+%              \]
 %
 %           Different constrained clustering problems can be defined when
 %           varying $restr(1)$ and $restr(2)$. In particular, we are
@@ -70,27 +70,27 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
 %
 %  Optional input arguments:
 %
-%      tol : tolerance. Scalar defining the tolerance of the procedure.
-%            The default value is 1e-8
-%               Example - 'tol',[1e-18] 
-%               Data Types - double
+%         tol: tolerance. Scalar defining the tolerance of the procedure.
+%              The default value is 1e-8
+%                Example - 'tol',[1e-18] 
+%                Data Types - double
 %
-% userepmat : use builtin repmat. Scalar. If userepmat is true function
-%             repmat is used instead of bsxfun inside the procedure.
-%             Remark: repmat is built in from MATLAB 2013b so it is faster
-%             to use repmat if the current version of MATLAB is >2013a
-%               Example - 'userepmat',1 
-%               Data Types - double
+%   userepmat: use builtin repmat. Scalar. If userepmat is true function
+%              repmat is used instead of bsxfun inside the procedure.
+%              Remark: repmat is built in from MATLAB 2013b so it is faster
+%              to use repmat if the current version of MATLAB is >2013a
+%                Example - 'userepmat',1 
+%                Data Types - double
 %
 %  Output:
 %
 %
-%            out      : Restricted eigenvalues which satisfy the
-%                       determinant constraint. Matrix. v-by-k matrix
-%                       containing restricted eigenvalues. 
-%                       The ratio between the determinants (that is the
-%                       product of the columns of matrix out) is not
-%                       greater than restr
+%         out: Restricted eigenvalues which satisfy the
+%              determinant constraint. Matrix. v-by-k matrix
+%              containing restricted eigenvalues. 
+%              The ratio between the determinants (that is the
+%              product of the columns of matrix out) is not
+%              greater than restr
 %
 % See also tclust, restreigen, tclustreg
 %

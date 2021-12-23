@@ -19,41 +19,41 @@ function [GAMc]  = restrshapeExact(k, v, shw, shb, verLess2016b)
 %            v: number of dimensions (variables). Scalar.
 %               Desired number of variables.
 %               Data Types - double
-%     shw  : within groups shape constraint. Scalar greater or equal 1.
-%           Constraint to impose inside each group. For example, if shw is
-%           3 the maximum ratio between the largest/smallest of each column
-%           of output matrix GAMc will be equal to 3.
-%               Data Types - double
-%     shb  : across groups shape constraint. Scalar greater or equal 1.
-%           Constraint to impose among groups. For example, if shb is 5 the
-%           maximum ratio between the largest/smallest of each row of
-%           matrix GAMc will be equal to 5. Note that shb must be smaller
-%           or equal than shw.
-%               Data Types - double
+%          shw: within groups shape constraint. Scalar greater or equal 1.
+%               Constraint to impose inside each group. For example, if shw is
+%               3 the maximum ratio between the largest/smallest of each column
+%               of output matrix GAMc will be equal to 3.
+%                 Data Types - double
+%          shb: across groups shape constraint. Scalar greater or equal 1.
+%               Constraint to impose among groups. For example, if shb is 5 the
+%               maximum ratio between the largest/smallest of each row of
+%               matrix GAMc will be equal to 5. Note that shb must be smaller
+%               or equal than shw.
+%                 Data Types - double
 %
 %
 %  Optional input arguments:
 %
 %
-% verLess2016b : is a boolean which is true if current version is less than
-%                   2016b. If this argument is omitted routine
-%                   automatically checks the MATLAB version.
-%               Example - true
-%               Data Types - double
+% verLess2016b: is a boolean which is true if current version is less than
+%               2016b. If this argument is omitted routine
+%               automatically checks the MATLAB version.
+%                 Example - true
+%                 Data Types - double
 %
 % Output:
 %
-%     GAMc : constrained shape matrix. Matrix of size v-by-k containing in
-%           column j the elements on the main diagonal of shape matrix
-%           $\Gamma_j$, $j=1, 2, \ldots, k$. The elements of GAMc satisfy
-%           the following constraints:
-%           1) the product of the elements of each column is equal to 1;.
-%           2) The maximum ratio among the largest element divided by the smallest
-%           3) element of each column is equal to shw;
-%           4) The maximum ratio among the largest element divided by the smallest
-%           element of each row is equal to shb. The tolerance of the
-%           procedure is 0.01.
-%           5) All the elements of GAMc are strictly positive.
+%         GAMc: constrained shape matrix. Matrix of size v-by-k containing in
+%               column j the elements on the main diagonal of shape matrix
+%               $\Gamma_j$, $j=1, 2, \ldots, k$. The elements of GAMc satisfy
+%               the following constraints:
+%               1) the product of the elements of each column is equal to 1;.
+%               2) The maximum ratio among the largest element divided by the smallest
+%               3) element of each column is equal to shw;
+%               4) The maximum ratio among the largest element divided by the smallest
+%               element of each row is equal to shb. The tolerance of the
+%               procedure is 0.01.
+%               5) All the elements of GAMc are strictly positive.
 %
 %
 % See also tclust, restrshapeGPCM, tclustreg

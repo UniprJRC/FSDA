@@ -58,11 +58,11 @@ function [li,di,const1]=ComputePars(v, k, Pi, Mu, S, S05, Sinv, detS)
 %                            \leq
 %               + \sum_{l=1}^p \frac{li(i,j,l) *di(i,j,l)^2}{li(i,j,l-1) (3)
 %               - \sum_{l=1}^p di(i,j,l)^2                               (4)
-%                + log const1(i,j)
-%              where U_l are non central \chi^2 r.v. with 1 degree of freedom and
-%              non centrality parameter (li(i,j,l)^2 di(i,j,l)^2/(li(i,j,l)-1)^2
-%              To be precise, sums in (1) and (3) are for l:li(i,j,l) is different from 1
-%              Similarly, sums in (2) and (4) are for l:li(i,j,l) is = 1
+%               + log const1(i,j)
+%            where U_l are non central \chi^2 r.v. with 1 degree of freedom and
+%            non centrality parameter (li(i,j,l)^2 di(i,j,l)^2/(li(i,j,l)-1)^2
+%            To be precise, sums in (1) and (3) are for l:li(i,j,l) is different from 1
+%            Similarly, sums in (2) and (4) are for l:li(i,j,l) is = 1
 %
 % Copyright 2008-2021.
 %

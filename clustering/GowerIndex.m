@@ -9,47 +9,45 @@ function [S, Stable] = GowerIndex(Y, varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. 2D array or MATLAB table .
+%            Y: Input data. 2D array or MATLAB table .
 %               n x p data matrix; n observations and p variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%                Data Types - single|double
+%                 Data Types - single|double
 %
 % Optional input arguments:
 %
-%       l :  type of variable. Vector. Vector of length p which
-%           specifies the type of variable for each column of the input
-%           matrix Y.
-%           $l(j)=1$ => $j$-th variable assumes orderable values (quantitative
-%           variable).
-%           $l(j)=2$ => $j$-th variable is binary (just values 0 and 1).
-%           $l(j)=3$ => $j$-th variable assumes categorical (unorderable) values.
-%           $j =1, 2, \ldots, p$.
-%           If l is omitted or is empty the routine automatically tries to detect the
-%           type of variable. For example, if a variable assumes just
-%           values 0 and 1  the corresponding variable is classified as
-%           binary. If a column of the input dataset assumes just integer
-%           values (without decimal points) and the number of unique
-%           elements is not greater than 20 the corresponding variable is
-%           classified as categorical,
-%           else the variable is classified as quantitative.
-%           Example - 'l',[3 3 1]
-%           Data Types - double
+%            l: type of variable. Vector. Vector of length p which
+%               specifies the type of variable for each column of the input
+%               matrix Y.
+%               $l(j)=1$ => $j$-th variable assumes orderable values (quantitative
+%               variable).
+%               $l(j)=2$ => $j$-th variable is binary (just values 0 and 1).
+%               $l(j)=3$ => $j$-th variable assumes categorical (unorderable) values.
+%               $j =1, 2, \ldots, p$.
+%               If l is omitted or is empty the routine automatically tries to detect the
+%               type of variable. For example, if a variable assumes just
+%               values 0 and 1  the corresponding variable is classified as
+%               binary. If a column of the input dataset assumes just integer
+%               values (without decimal points) and the number of unique
+%               elements is not greater than 20 the corresponding variable is
+%               classified as categorical,
+%               else the variable is classified as quantitative.
+%                 Example - 'l',[3 3 1]
+%                 Data Types - double
 %
 % Output:
 %
-%      S   :  matrix with Gower similarity coefficients. n-by-n symmetric matrix.
-%             n-by-n matrix whose i-th j-th entry contains the Gower
-%             similarity index between row i and row j of input matrix Y.
+%            S: matrix with Gower similarity coefficients. n-by-n symmetric matrix.
+%               n-by-n matrix whose i-th j-th entry contains the Gower
+%               similarity index between row i and row j of input matrix Y.
 %
-%   Stable :  matrix with Gower similarity coefficients in table format. n-by-n table.
-%             n-by-n table whose i-th j-th entry contains the Gower
-%             similarity index between row i and row j of input matrix Y.  
-%
-%
+%       Stable: matrix with Gower similarity coefficients in table format. n-by-n table.
+%               n-by-n table whose i-th j-th entry contains the Gower
+%               similarity index between row i and row j of input matrix Y.  
 %
 %
 % More About:
