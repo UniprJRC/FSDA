@@ -307,7 +307,7 @@ for j=1:p
     outSUPj=sum(Yjnomiss>ThreshSup);
     outINFj=sum(Yjnomiss<ThreshInf);
     
-    tot=[mj medianj sigmaj madj countMissingj percMissingj outSUPj outINFj];
+    tot=[mj medianj sigmaj madj countMissingj percMissingj outINFj outSUPj];
     MisAndOut(j,:)=tot;
     
 end
