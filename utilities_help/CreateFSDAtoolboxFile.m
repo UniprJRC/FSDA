@@ -213,7 +213,7 @@ toolboxFile = 'ToolboxPackagingConfiguration.prj';
 % set the version number
 previousVersion = matlab.addons.toolbox.toolboxVersion(toolboxFile,newVersion);
 
-outputFile ='FSDAtest.mltbx';
+outputFile ='FSDA.mltbx';
 matlab.addons.toolbox.packageToolbox(toolboxFile, outputFile)
 
 %% Close the project
