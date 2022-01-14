@@ -2,6 +2,10 @@
 
 %% Beginning of code
 
+% specify the version number, please use the format 'major.minor.revision'
+newVersion = '8.5.16';
+
+
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
 
@@ -153,6 +157,20 @@ addFolderIncludingChildFiles(FSDAproj,FSroot);
 % been added
 % findFile(FSDAproj,'FSDA/addFSDA2path.m')
 
+%% Create searchable database
+
+% save current path
+oldpath = path;
+addpath([FSDAProjFolder fsep 'FSDA']);
+
+FileName=[FSroot filesep 'addFSDA2path'];
+FullPath=which(FileName);
+%Navigate to the main folder of FSDA
+FSDAroot=fileparts(FullPath);
+builddocsearchdb([FSDAroot fsep 'helpfiles' fsep 'pointersHTML'])
+
+% restore previuous path
+path(oldpath);
 
 %% Add FSDA paths to the project
 pt=cell(15,1);
@@ -179,12 +197,6 @@ end
 %% Run dependency analyzer
 updateDependencies(FSDAproj);
 
-%% Create searchable database
-FileName=[FSroot filesep 'addFSDA2path'];
-FullPath=which(FileName);
-%Navigate to the main folder of FSDA
-FSDAroot=fileparts(FullPath);
-builddocsearchdb([FSDAroot fsep 'helpfiles' fsep 'pointersHTML'])
 
 %% Copy file ToolboxPackagingConfiguration.prj into FSDAProjFolder (current folder)
 copyfile([FSDAroot fsep 'utilities_help' fsep 'ToolboxPackagingConfiguration.prj'],FSDAProjFolder)
@@ -195,8 +207,14 @@ copyfile([FSDAroot fsep 'utilities_help' fsep 'ToolboxPackagingConfiguration.prj
 publish([FSDAroot filesep 'Contents.m'])
 
 %% Package toolbox and create file FSDA.mltbx
-outputFile ='FSDA.mltbx';
-matlab.addons.toolbox.packageToolbox('ToolboxPackagingConfiguration.prj', outputFile)
+
+toolboxFile = 'ToolboxPackagingConfiguration.prj';
+
+% set the version number
+previousVersion = matlab.addons.toolbox.toolboxVersion(toolboxFile,newVersion);
+
+outputFile ='FSDAtest.mltbx';
+matlab.addons.toolbox.packageToolbox(toolboxFile, outputFile)
 
 %% Close the project
 close(FSDAproj)
