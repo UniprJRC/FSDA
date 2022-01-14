@@ -145,7 +145,7 @@ delete([FSroot fsep 'CODE_OF_CONDUCT.md'])
 delete([FSroot fsep 'CONTRIBUTING.md'])
 
 delete([FSroot fsep 'requirements.txt'])
-delete([FSroot fsep 'package.json'])
+% delete([FSroot fsep 'package.json'])
 
 
 %% Add files to project
