@@ -201,6 +201,9 @@ updateDependencies(FSDAproj);
 %% Copy file ToolboxPackagingConfiguration.prj into FSDAProjFolder (current folder)
 copyfile([FSDAroot fsep 'utilities_help' fsep 'ToolboxPackagingConfiguration.prj'],FSDAProjFolder)
 
+%% Set release compatibility in ToolboxPackagingConfiguration.prj file
+setToolboxStartEnd('ToolboxPackagingConfiguration.prj')
+
 %% Publish contents file in the root inside subfolder html
 % This instruction is necessary in order to display subfolder examples in
 % Mathworks web site
