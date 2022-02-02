@@ -109,8 +109,6 @@ function setToolboxStartEnd(toolboxFile, varargin)
     disp(regexp(fstring,'<param.release.end>.*</param.release.end>','match'));
     fclose(fileID);
     % Set oldest and newest version inside ToolboxPackagingConfiguration.prj
-    % In the case the oldest version is 5 years before the currect version and
-    % end version is the current version on which MATLAB is running.
     setToolboxStartEnd(fname, 'startVersion',startVersion,'endVersion',endVersion)
     disp('Show release start and release end after calling setToolboxStartEnd')
     fileID = fopen(fname, 'r+');
@@ -183,9 +181,6 @@ elseif length(cendVersion)~=6 ||  cendVersion(1)~=82
 else
 end
 
-% error(message('MATLAB:toolbox_packaging:packaging:InvalidToolboxProjectFile',toolboxFile));
-
-
 % Get the absolute path to the file in case it was input as a relative path
 if ~java.io.File(toolboxFile).isAbsolute
     toolboxFile = fullfile(pwd,toolboxFile);
@@ -212,7 +207,7 @@ switch lower(ext)
             config.setParamAsString('param.release.start', startVersion);
             config.setParamAsString('param.release.end', endVersion);
         catch e
-            error('Unable to set start and end values');
+            error('FSDA:setToolboxStartEnd:NotRun','Unable to set start and end values');
         end
         if (~service.save(configKey))
             error(message('MATLAB:toolbox_packaging:packaging:SaveFailed', toolboxFile));

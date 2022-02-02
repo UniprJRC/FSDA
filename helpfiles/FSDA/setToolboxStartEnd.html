@@ -46,8 +46,6 @@ disp(regexp(fstring,'&lt;param.release.start&gt;.*&lt;/param.release.start&gt;',
 disp(regexp(fstring,'&lt;param.release.end&gt;.*&lt;/param.release.end&gt;','match'));
 fclose(fileID);
 % Set oldest and newest version inside ToolboxPackagingConfiguration.prj
-% In the case the oldest version is 5 years before the currect version and
-% end version is the current version on which MATLAB is running.
 setToolboxStartEnd(fname, 'startVersion',startVersion,'endVersion',endVersion)
 disp('Show release start and release end after calling setToolboxStartEnd')
 fileID = fopen(fname, 'r+');
