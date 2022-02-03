@@ -201,9 +201,6 @@ updateDependencies(FSDAproj);
 %% Copy file ToolboxPackagingConfiguration.prj into FSDAProjFolder (current folder)
 copyfile([FSDAroot fsep 'utilities_help' fsep 'ToolboxPackagingConfiguration.prj'],FSDAProjFolder)
 
-%% Set release compatibility in ToolboxPackagingConfiguration.prj file
-setToolboxStartEnd('ToolboxPackagingConfiguration.prj')
-
 %% Publish contents file in the root inside subfolder html
 % This instruction is necessary in order to display subfolder examples in
 % Mathworks web site
@@ -224,5 +221,48 @@ close(FSDAproj)
 
 % Open project
 % FSDAproj = openProject(FSDAProjFolder);
+
+%% Copy FSDA.mltbx to Github, create a new releas and tag it
+
+% copy d:\tmp\FSDA.mltbx ./bin/FSDA.mltbx
+
+FSrootGitHub = fileparts(which('docsearchFS.m'));
+
+% FSrootGitHub = 'C:\FSDA';
+
+% create 'bin' subfolder
+mkdir( [FSrootGitHub fsep 'bin']);
+
+% mkdir( [FSrootGitHub fsep '.github/workflows/']);
+
+% Copy file ToolboxPackagingConfiguration.prj into FSDAProjFolder (current folder)
+% NOT d:\tmp folder!
+
+[status,msg] = copyfile(['d:\tmp' fsep 'FSDA.mltbx'],[FSrootGitHub fsep 'bin']);
+
+!git add ./bin/FSDA.mltbx 
+% !git add ./.github/workflows/upload-artifact.yml
+% !git add ./bin/release_notes.md 
+
+!git commit -m "added last build of FSDA.mltbx" 
+!git push
+
+% tag the release and start the upload of FSDA.mltbx to release assets
+!git tag -a 8.6.08
+
+% !git tag -a v18  –m "2021b (Ver. 8.5.16)"
+!git push --tags
+
+
+% remove subfolder bin used for storing FSDA.mltbx 
+folder_to_remove=[FSrootGitHub fsep 'bin'];
+if exist(folder_to_remove,'dir') ==7
+    rmdir(folder_to_remove,'s')
+end
+
+% delete bin folder on GitHub
+!git add .
+!git commit "removed folder /bin" 
+!git push
 
 
