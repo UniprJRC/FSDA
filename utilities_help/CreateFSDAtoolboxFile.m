@@ -201,6 +201,9 @@ updateDependencies(FSDAproj);
 %% Copy file ToolboxPackagingConfiguration.prj into FSDAProjFolder (current folder)
 copyfile([FSDAroot fsep 'utilities_help' fsep 'ToolboxPackagingConfiguration.prj'],FSDAProjFolder)
 
+%% Set release compatibility in ToolboxPackagingConfiguration.prj file
+setToolboxStartEnd('ToolboxPackagingConfiguration.prj')
+
 %% Publish contents file in the root inside subfolder html
 % This instruction is necessary in order to display subfolder examples in
 % Mathworks web site
@@ -248,9 +251,10 @@ mkdir( [FSrootGitHub fsep 'bin']);
 !git push
 
 % tag the release and start the upload of FSDA.mltbx to release assets
-!git tag -a 8.6.08
+% via the Github workflow 
+eval(['!git tag -a ', newVersion])
 
-% !git tag -a v18  –m "2021b (Ver. 8.5.16)"
+% e.g. !git tag -a v18  –m "2021b (Ver. 8.5.16)"
 !git push --tags
 
 
