@@ -3,7 +3,7 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.16';
+newVersion = '8.5.17';
 
 
 % Specify folder where to create the project
@@ -238,15 +238,12 @@ mkdir( [FSrootGitHub fsep 'bin']);
 
 % mkdir( [FSrootGitHub fsep '.github/workflows/']);
 
-% Copy file ToolboxPackagingConfiguration.prj into FSDAProjFolder (current folder)
-% NOT d:\tmp folder!
+[status,msg] = copyfile([FSDAProjFolder  fsep 'FSDA.mltbx'],[FSrootGitHub fsep 'bin']);
 
-[status,msg] = copyfile(['d:\tmp' fsep 'FSDA.mltbx'],[FSrootGitHub fsep 'bin']);
+% Navigate to FSDA root (not project root)
+cd(FSrootGitHub)
 
 !git add ./bin/FSDA.mltbx 
-% !git add ./.github/workflows/upload-artifact.yml
-% !git add ./bin/release_notes.md 
-
 !git commit -m "added last build of FSDA.mltbx" 
 !git push
 
@@ -257,6 +254,7 @@ eval(['!git tag -a ', newVersion])
 % e.g. !git tag -a v18  –m "2021b (Ver. 8.5.16)"
 !git push --tags
 
+%% Optional clear the file
 
 % remove subfolder bin used for storing FSDA.mltbx 
 folder_to_remove=[FSrootGitHub fsep 'bin'];
