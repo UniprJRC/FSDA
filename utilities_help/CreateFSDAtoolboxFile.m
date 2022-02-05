@@ -263,8 +263,8 @@ if exist(folder_to_remove,'dir') ==7
 end
 
 % delete bin folder on GitHub
-!git add .
-!git commit "removed folder /bin" 
+!git rm -r ./bin
+!git commit . "removed folder /bin" 
 !git push
 
 
