@@ -257,14 +257,14 @@ eval(['!git tag -a ', newVersion])
 %% Optional clear the file
 
 % remove subfolder bin used for storing FSDA.mltbx 
-folder_to_remove=[FSrootGitHub fsep 'bin'];
-if exist(folder_to_remove,'dir') ==7
-    rmdir(folder_to_remove,'s')
-end
+% folder_to_remove=[FSrootGitHub fsep 'bin'];
+% if exist(folder_to_remove,'dir') ==7
+%     rmdir(folder_to_remove,'s')
+% end
 
 % delete bin folder on GitHub
 !git rm -r ./bin
-!git commit . "removed folder /bin" 
+!git commit . -m "removed folder /bin" 
 !git push
 
 
