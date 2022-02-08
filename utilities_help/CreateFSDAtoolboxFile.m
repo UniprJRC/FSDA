@@ -3,7 +3,7 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.17';
+newVersion = '8.5.18';
 
 
 % Specify folder where to create the project
