@@ -226,7 +226,7 @@ setToolboxStartEnd('ToolboxPackagingConfiguration.prj')
 %% Publish contents file in the root inside subfolder html
 % This instruction is necessary in order to display subfolder examples in
 % Mathworks web site
-publish([FSDAroot filesep 'Contents.m'])
+publish([FSDAroot filesep 'Contents.m']);
 
 %% Package toolbox and create file FSDA.mltbx
 
@@ -278,6 +278,8 @@ eval(['!git tag -a ', newVersion ' -m "' commentRelease '"'])
 %% delete bin folder on GitHub
 % Note that we delete the file after waiting 2 minutes just to make sure
 % that github workflow has come to an end.
+
+disp('Pausing for 2 minutes before deleting the file FSDA.mltbx from subfolder /bin on GitHub')
 pause(60*2);
 
 !git rm -r ./bin
