@@ -5,6 +5,8 @@
 % specify the version number, please use the format 'major.minor.revision'
 newVersion = '8.5.19';
 
+% Add the sentence which describes the new feature of the release
+commentRelease='Placeholder just for testing';
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
@@ -268,22 +270,15 @@ cd(FSrootGitHub)
 !git push
 
 % tag the release and start the upload of FSDA.mltbx to release assets
-% via the Github workflow
-eval(['!git tag -a ', newVersion])
+% via the Github workflow and insert comment
+eval(['!git tag -a ', newVersion ' -m "' commentRelease '"'])
 
 !git push --tags
 
-%% Optional clear the file
-
-% remove subfolder bin used for storing FSDA.mltbx
-% folder_to_remove=[FSrootGitHub fsep 'bin'];
-% if exist(folder_to_remove,'dir') ==7
-%     rmdir(folder_to_remove,'s')
-% end
-
-% delete bin folder on GitHub
-
-pause(60*4);
+%% delete bin folder on GitHub
+% Note that we delete the file after waiting 2 minutes just to make sure
+% that github workflow has come to an end.
+pause(60*2);
 
 !git rm -r ./bin
 !git commit . -m "removed folder /bin"
