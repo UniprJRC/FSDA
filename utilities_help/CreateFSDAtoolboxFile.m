@@ -3,7 +3,7 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.19';
+newVersion = '8.5.20';
 
 % Add the sentence which describes the new feature of the release
 commentRelease='Placeholder just for testing';
