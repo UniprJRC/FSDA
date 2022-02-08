@@ -3,7 +3,7 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.18';
+newVersion = '8.5.19';
 
 
 % Specify folder where to create the project
@@ -34,14 +34,33 @@ fsep=filesep;
 
 % Check if subfolder resources exists
 % If the answer is yes delete it in order to start from scratch
-if exist('resources','dir') ==7
+if isfolder('resources') == true
     rmdir('resources','s')
 end
 
-% Chceck if ProjectFileName exists
+% Check if subfolder FSDA exists
 % If the answer is yes delete it in order to start from scratch
-if exist(ProjectFileName,'file') >0
+if isfolder('FSDA') == true
+    rmdir('FSDA','s')
+end
+
+
+% Check if ProjectFileName exists
+% If the answer is yes delete it in order to start from scratch
+if isfile(ProjectFileName) == true
     delete(ProjectFileName)
+end
+
+% Check if FSDA.mltbx exists
+% If the answer is yes delete it in order to start from scratch
+if isfile('FSDA.mltbx') == true
+    delete('FSDA.mltbx')
+end
+
+% Check if ToolboxPackagingConfiguration.prj exists
+% If the answer is yes delete it in order to start from scratch
+if isfile('ToolboxPackagingConfiguration.prj') == true
+    delete('ToolboxPackagingConfiguration.prj')
 end
 
 % Create the project inside FSDAProjFolder
@@ -53,15 +72,13 @@ movefile('Blank_project.prj',ProjectFileName)
 FSDAproj.Name = "FSDA (Flexible Statistics Data Analysis)";
 
 %% CLONE FROM GIT
-% Check if a subfolder FSDA of current folder exists and if not download it from github
-if exist(fullfile([pwd filesep 'FSDA' filesep 'addFSDA2path.m']),'file')~=2
-    try
-        !git clone https://github.com/UniprJRC/FSDA.git --progress
-    catch
-        disp('Due to network connection it was not possibe to download from')
-        disp('https://github.com/UniprJRC/FSDA.git')
-        error('FSDA:CreatetoolboxFile:WrgPath','Connection problem')
-    end
+% Clone from github repo
+try
+    !git clone https://github.com/UniprJRC/FSDA.git --progress
+catch
+    disp('Due to network connection it was not possibe to download from')
+    disp('https://github.com/UniprJRC/FSDA.git')
+    error('FSDA:CreatetoolboxFile:WrgPath','Connection problem')
 end
 
 
@@ -127,7 +144,7 @@ delete([FSroot fsep 'examples' fsep 'examples_multivariate.mlx'])
 delete([FSroot fsep 'examples' fsep 'examples_regression.mlx'])
 delete([FSroot fsep 'examples' fsep 'examples_MixSim.mlx'])
 
-% file pptx which explains
+% file pptx which explains the flow chart
 delete([FSroot fsep 'utilities_help' fsep 'FlowChart.pptx'])
 
 % remove license files
@@ -243,20 +260,22 @@ mkdir( [FSrootGitHub fsep 'bin']);
 % Navigate to FSDA root (not project root)
 cd(FSrootGitHub)
 
-!git add ./bin/FSDA.mltbx 
-!git commit -m "added last build of FSDA.mltbx" 
+% Remove the cached key for 192.168.1.123 on the local machine to remove
+% warning
+!ssh-keygen -R 140.82.121.4
+!git add ./bin/FSDA.mltbx
+!git commit -m "added last build of FSDA.mltbx"
 !git push
 
 % tag the release and start the upload of FSDA.mltbx to release assets
-% via the Github workflow 
+% via the Github workflow
 eval(['!git tag -a ', newVersion])
 
-% e.g. !git tag -a v18  –m "2021b (Ver. 8.5.16)"
 !git push --tags
 
 %% Optional clear the file
 
-% remove subfolder bin used for storing FSDA.mltbx 
+% remove subfolder bin used for storing FSDA.mltbx
 % folder_to_remove=[FSrootGitHub fsep 'bin'];
 % if exist(folder_to_remove,'dir') ==7
 %     rmdir(folder_to_remove,'s')
@@ -267,7 +286,7 @@ eval(['!git tag -a ', newVersion])
 pause(60*4);
 
 !git rm -r ./bin
-!git commit . -m "removed folder /bin" 
+!git commit . -m "removed folder /bin"
 !git push
 
 
