@@ -263,6 +263,9 @@ eval(['!git tag -a ', newVersion])
 % end
 
 % delete bin folder on GitHub
+
+pause(60*4);
+
 !git rm -r ./bin
 !git commit . -m "removed folder /bin" 
 !git push
