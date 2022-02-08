@@ -15,7 +15,7 @@ distance for unit $i$ based
  where $C_r$ is the c.d.f. of the $\chi^2$ distribution on $r$ degrees of
  freedom, allows for estimation from this truncated distribution,  providing an
   approximately unbiased estimate of $\Sigma$.
- 
+
  We can treat the distribution of the rescaled deletion Mahalanobis distance
  $c(m,n)d_{\mbox{min}}^2(m)$ as a squared deletion distance on $m-1$
  degrees of freedom, whose distribution is (Atkinson Riani and Cerioli,
@@ -23,14 +23,14 @@ distance for unit $i$ based
  \begin{equation}\label{F}
    \frac{m^2-1}{m(m-v)} F_{v,m-v},
  \end{equation}
- 
+
  The distribution of the rescaled min Mahalanobis distance
   $c(m,n) d_{\mbox{min}}^2(m)$
  of a subset of size $m$ constructed in such a way that
   the centroid and covariance matrix of the subset are taken using the
   units having the $m$ smallest Mahalanobis distances can be treated as
   the distribution of the $(m+1)$th order statistic from ($F_{v,m-v}$).
- 
+
  The results of order statistics $Y_{(1)}$, $Y_{(2)}$, $\cdots$,  $Y_{(n)}$ from a sample of size $n$ from a distribution with CDF $G(y)$, state that
  \begin{equation}
  \label{orderstat}
@@ -38,7 +38,7 @@ distance for unit $i$ based
   \frac{m+1}{n-m} \right\}
   \end{equation}
  Given that in our case $G(y)$ is the CDF of the  $F_{v,m-v}$ we can rewrite this equation  as
- 
+
  \begin{eqnarray*}
    &&  P\{d_{\mbox{ min}}^2(m)  \leq \widehat{ d_{\mbox{min}}^2(m)} \} = \\
     && 1-  F_{2(n-m),2(m+1)} \left( \left( \frac{1}{  F_{v,m-v} \left( \frac{m(m-v)}{m^2-1 } c(m,n) d_{\mbox{min}}^2(m) \right)  }-1 \right) \frac{m+1}{n-m} \right)
