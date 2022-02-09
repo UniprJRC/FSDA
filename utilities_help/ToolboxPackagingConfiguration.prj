@@ -4,8 +4,8 @@
     <param.authnamewatermark />
     <param.email>FSDA@unipr.it</param.email>
     <param.company>Univ. of Parma and JRC of EC</param.company>
-    <param.summary />
-   <param.description>FSDA toolbox contains more than 300 routines to assess and understand data affected by multiple outliers. FSDA routines cover, multiple regression, multivariate data analysis, classification and transformations. FSDA also includes interactive tools for anlyzing and modeling data, learning and teaching statistics. Every .m function has its corresponding HTML page in MathWorks style (which is generated automatically). The documentation system is perfectly integrated into the MathWorks framework.</param.description>
+  <param.summary>Robust regression, robust multivariate analysis, robust classification and much more...</param.summary>
+     <param.description>FSDA toolbox contains more than 300 routines to assess and understand data affected by multiple outliers. FSDA routines cover, multiple regression, multivariate data analysis, classification and transformations. FSDA also includes interactive tools for anlyzing and modeling data, learning and teaching statistics. Every .m function has its corresponding HTML page in MathWorks style (which is generated automatically). The documentation system is perfectly integrated into the MathWorks framework.</param.description>
     <param.screenshot>${PROJECT_ROOT}\logoblue.jpg</param.screenshot>
     <param.version>1.0</param.version>
     <param.output>${PROJECT_ROOT}\FSDA.mltbx</param.output>
