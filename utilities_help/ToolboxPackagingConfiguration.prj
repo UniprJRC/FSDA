@@ -2,11 +2,11 @@
   <configuration file="D:\tmp\ToolboxPackagingConfiguration.prj" location="D:\tmp" name="ToolboxPackagingConfiguration" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>FSDA</param.appname>
     <param.authnamewatermark />
-    <param.email />
-    <param.company />
-    <param.summary />
-    <param.description />
-    <param.screenshot />
+    <param.email>FSDA@unipr.it</param.email>
+    <param.company>Univ. of Parma and JRC of EC</param.company>
+  <param.summary>Robust regression, robust multivariate analysis, robust classification and much more...</param.summary>
+     <param.description>FSDA toolbox contains more than 300 routines to assess and understand data affected by multiple outliers. FSDA routines cover, multiple regression, multivariate data analysis, classification and transformations. FSDA also includes interactive tools for anlyzing and modeling data, learning and teaching statistics. Every .m function has its corresponding HTML page in MathWorks style (which is generated automatically). The documentation system is perfectly integrated into the MathWorks framework.</param.description>
+    <param.screenshot>${PROJECT_ROOT}\logoblue.jpg</param.screenshot>
     <param.version>1.0</param.version>
     <param.output>${PROJECT_ROOT}\FSDA.mltbx</param.output>
     <param.products.name>
@@ -16,7 +16,7 @@
       <item>19</item>
     </param.products.id>
     <param.products.version>
-      <item>12.0</item>
+      <item>12.2</item>
     </param.products.version>
     <param.platforms />
     <param.guid>20669fbc-61ca-4050-bc87-575422f4c0b8</param.guid>
@@ -97,7 +97,6 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <param.company />
       <param.summary />
       <param.description />
-      <param.screenshot />
       <param.version />
       <param.output />
       <param.platforms />
@@ -131,7 +130,6 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <file>${PROJECT_ROOT}\FSDA\brushFAN.mlappinstall</file>
       <file>${PROJECT_ROOT}\FSDA\brushRES.mlappinstall</file>
       <file>${PROJECT_ROOT}\FSDA\brushROB.mlappinstall</file>
-      <file>${PROJECT_ROOT}\FSDA\builds</file>
       <file>${PROJECT_ROOT}\FSDA\clustering</file>
       <file>${PROJECT_ROOT}\FSDA\combinatorial</file>
       <file>${PROJECT_ROOT}\FSDA\Contents.m</file>
@@ -143,14 +141,14 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <file>${PROJECT_ROOT}\FSDA\FSDAdemos</file>
       <file>${PROJECT_ROOT}\FSDA\graphics</file>
       <file>${PROJECT_ROOT}\FSDA\helpfiles</file>
-      <file>${PROJECT_ROOT}\FSDA\html</file>
       <file>${PROJECT_ROOT}\FSDA\info.xml</file>
       <file>${PROJECT_ROOT}\FSDA\installFSDA.m</file>
       <file>${PROJECT_ROOT}\FSDA\installHelpFiles.m</file>
       <file>${PROJECT_ROOT}\FSDA\license.txt</file>
       <file>${PROJECT_ROOT}\FSDA\logo.png</file>
       <file>${PROJECT_ROOT}\FSDA\logo50x50.png</file>
-      <file>${PROJECT_ROOT}\FSDA\multivariate</file>
+	  <file>${PROJECT_ROOT}\FSDA\logoblue.jpg</file>
+	        <file>${PROJECT_ROOT}\FSDA\multivariate</file>
       <file>${PROJECT_ROOT}\FSDA\poster_FSDA.pdf</file>
       <file>${PROJECT_ROOT}\FSDA\regression</file>
       <file>${PROJECT_ROOT}\FSDA\runAllMyTestsFS.m</file>
@@ -167,10 +165,22 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2020b</root>
+      <root>C:\Program Files\MATLAB\R2021b</root>
       <toolboxes>
+        <toolbox name="matlabcoder" />
+        <toolbox name="gpucoder" />
         <toolbox name="neuralnetwork" />
       </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
       <toolbox>
         <neuralnetwork>
           <enabled>true</enabled>
