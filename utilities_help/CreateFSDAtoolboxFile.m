@@ -3,7 +3,7 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.20';
+newVersion = '8.5.21';
 
 % Add the sentence which describes the new feature of the release
 commentRelease='Placeholder just for testing';
@@ -84,7 +84,7 @@ catch
 end
 
 
-%% REMOVE UNNECESSARY FOLDERS
+%% REMOVE UNNECESSARY FOLDERS inside project folder
 FSroot='FSDA';
 
 % remove subfolder _automation_tools
@@ -244,7 +244,7 @@ close(FSDAproj)
 % Open project
 % FSDAproj = openProject(FSDAProjFolder);
 
-%% Copy FSDA.mltbx to Github, create a new releas and tag it
+%% Copy FSDA.mltbx to Github, create a new release and tag it
 
 % copy d:\tmp\FSDA.mltbx ./bin/FSDA.mltbx
 
