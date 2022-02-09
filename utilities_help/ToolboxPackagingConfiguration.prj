@@ -93,10 +93,6 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
     <param.additional.sw.linux.url />
     <unset>
       <param.authnamewatermark />
-      <param.email />
-      <param.company />
-      <param.summary />
-      <param.description />
       <param.version />
       <param.output />
       <param.platforms />
