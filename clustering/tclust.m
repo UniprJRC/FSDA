@@ -447,7 +447,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %              out.bs = k-by-1 vector containing the units forming initial
 %                       subset associated with muopt.
 %
-%             out.obj = Scalar. Value of the objective function which is minimized
+%             out.obj = Scalar. Value of the objective function which is maximized
 %                       (value of the best returned solution).
 %                       If input option mixt >1 the likelihood which is
 %                       maximized is a mixture likelihood as follows:
@@ -477,8 +477,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       centroids (number of untrimmed units).
 %
 %          out.fullsol= Column vector of size nsamp which contains the
-%                       value of the objective function at the end of the
-%                       iterative process for each extracted subsample.
+%                       value of the objective function (log
+%                       likelihood) at the end of the iterative process for
+%                       each extracted subsample.
 %
 %
 %              out.Y  = Original data matrix Y. The field is present only
