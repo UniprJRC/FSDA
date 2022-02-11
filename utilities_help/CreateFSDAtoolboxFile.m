@@ -282,8 +282,10 @@ eval(['!git tag -a ', newVersion ' -m "' commentRelease '"'])
 disp('Pausing for 2 minutes before deleting the file FSDA.mltbx from subfolder /bin on GitHub')
 pause(60*2);
 
+% Remove mltbx file, commit and push the new version
 !git rm -r ./bin
-!git commit . -m "removed folder /bin"
+% !git commit . -m "removed folder /bin"
+eval(['!git commit . -m "' newVersion '"'])
 !git push
 
 
