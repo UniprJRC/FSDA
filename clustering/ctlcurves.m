@@ -832,7 +832,7 @@ end
 
 
 if LRtest==true && ComputeBands ==true
-    % Valus of the difference between target function using k+1 and k
+    % Values of the difference between target function using k+1 and k
     tobs= out.CTL(2:end,:)-out.CTL(1:end-1,:);
     tboot=BandsCTLtest;
     tbootGTtobs=sum(tboot>tobs,3)/nsimul;
