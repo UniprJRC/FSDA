@@ -300,7 +300,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %      startv1: How to initialize centroids and covariance matrices. Boolean.
 %               If startv1 is true then initial centroids and covariance
-%               matrices are based on (v+1) observations randomly chosen,
+%               matrices are based on $(v+1)$ observations randomly chosen,
 %               else each centroid is initialized taking a random row of
 %               input data matrix and covariance matrices are initialized
 %               with identity matrices. The default value of startv1 is true.
@@ -310,6 +310,16 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               Remark 2 - option startv1 is used just if nsamp is a scalar
 %               (see for more details the help associated with nsamp).
 %                   Example - 'startv1',false
+%                   Data Types - logical
+%
+% startv1true1unitCentroid : How to initialize centroids when startv1 is
+%               true.  Boolean. This option takes effect just when startv1
+%               is true. When startv1true1unitCentroid is false (default)
+%               all the $(v+1)$ units are used to initialize the centroid for
+%               group $j$ ($j=1, ..., k$). When startv1true1unitCentroid is
+%               true just one of the $v+1$ extracted units is used to
+%               initialize the centroid for group $j$.
+%                   Example - 'startv1true1unitCentroid',true
 %                   Data Types - logical
 %
 %       Ysave : Save original input matrix. Boolean. Set Ysave to true to
@@ -477,7 +487,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       centroids (number of untrimmed units).
 %
 %          out.fullsol= Column vector of size nsamp which contains the
-%                       value of the objective function (log
+%                       value of the objective function (maximized log
 %                       likelihood) at the end of the iterative process for
 %                       each extracted subsample.
 %
@@ -979,6 +989,7 @@ end
 
 refstepsdef=15;
 reftoldef=1e-5;
+startv1true1unitCentroiddef=false;
 
 % tolrestreigen = tolerance to use in function restreigen
 tolrestreigen=1e-08;
@@ -990,7 +1001,9 @@ if coder.target('MATLAB')
     
     options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
         'msg',1,'Ysave',false,'refsteps',refstepsdef,'equalweights',false,...
-        'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restrtype','eigen','cshape',cshape);
+        'reftol',reftoldef,'mixt',0,'startv1',startv1def, ...
+        'restrtype','eigen','cshape',cshape,...
+        'startv1true1unitCentroid',startv1true1unitCentroiddef);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -1117,6 +1130,7 @@ refsteps=options.refsteps;
 reftol=options.reftol;
 
 RandNumbForNini=options.RandNumbForNini;
+startv1true1unitCentroid=options.startv1true1unitCentroid;
 
 if ~coder.target('MATLAB')
          niinistart=repmat(floor(h/k),k,1);
@@ -1328,7 +1342,11 @@ for i=1:nselected
             selj=index(ilow:iup);
             % cini(j,:)=mean(Y(selj,:));
             Yselj=Y(selj,:);
+            if startv1true1unitCentroid==false
             cini(j,:)=sum(Yselj)/(v+1);
+            else
+            cini(j,:)=Yselj(1,:);
+            end     
             
             if verLess2016b ==true
                 Yseljc = bsxfun(@minus,Yselj,cini(j,:));
