@@ -275,17 +275,23 @@ eval(['!git tag -a ', newVersion ' -m "' commentRelease '"'])
 
 !git push --tags
 
-%% delete bin folder on GitHub
+%% delete temporary <FSDAroot>/bin folder on GitHub
 % Note that we delete the file after waiting 2 minutes just to make sure
 % that github workflow has come to an end.
 
 disp('Pausing for 2 minutes before deleting the file FSDA.mltbx from subfolder /bin on GitHub')
 pause(60*2);
 
-% Remove mltbx file, commit and push the new version
+% Remove mltbx file
 !git rm -r ./bin
-% !git commit . -m "removed folder /bin"
-eval(['!git commit . -m "' newVersion '"'])
+
+% commit only the removal of the 'FSDA.mltbx' file just removed by 
+% the command 'git rm -r ./bin' and comment this modificantion with the
+% 3 numbers of the new version.
+eval(['!git commit -m " FSDA version ' newVersion ' now released."'])
+
+% push these modifications
 !git push
+
 
 
