@@ -189,7 +189,7 @@ else
     if numel(constcols)>1
         X(:,constcols(2:end))=[];
         if coder.target('MATLAB')
-           % disp(['Warning: columns ' num2str(constcols) ' are constant and just col ' num2str(constcols(1)) ' has been kept!']);
+           disp(['Warning: columns ' num2str(constcols) ' are constant and just col ' num2str(constcols(1)) ' has been kept!']);
         end
     end
     

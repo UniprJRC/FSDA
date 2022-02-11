@@ -383,10 +383,14 @@ end
 %% Build table
 names=["PredictorOrderR2" "rob" "scail" "iniFanPlot" "trapezoid" "R2" "pvalDW" "pvalJB" "nused"];
 VALt=array2table(VAL,'VariableNames',names);
-% Add to VALt the cell array containing the residuals for each solution
+% Add to the column the cell containing the residuals for each solution
 VALt.res=Res;
-% Add to VALt the cell array containing the output struct out for each solution
 VALt.Out=Out;
+
+% plot(VALt.R2,VALt.pvalDW,'o')
+% xlabel('R2')
+% ylabel('DW test')
+
 
 boopval=VALt.pvalDW>0.10 & VALt.pvalJB>0.10;
 VALtsel=VALt(boopval,:);
@@ -396,33 +400,29 @@ if isempty(VALtsel)
 end
 
 if isempty(VALtsel)
+
     warning('FSDA:avasms:noGoodModel','no model satisfies the criteria of pvalues')
     BestSol=VALtsel;
     corMatrix=[];
 else
-    ord=VALtsel{:,"pvalDW"}.*VALtsel{:,"R2"}.*VALtsel{:,"nused"}/n; % .*VALtfin{:,"pvalJB"}
-    Xfin=[VALtsel table(ord)];
 
-    % Reorder the first five columns of Xfin
-    [~,sortind]=sort(sum(Xfin{:,1:5},1),'desc');
-    VALtfin=[Xfin(:,sortind) Xfin(:,6:end)];
+    % Reorder the first five columns
+    [~,sortind]=sort(sum(VALtsel{:,1:5},1),'desc');
+    VALtfin=VALtsel;
+    VALtfin=[VALtfin(:,sortind) VALtsel(:,6:end)];
 
+    ord=VALtfin{:,"pvalDW"}.*VALtfin{:,"R2"}.*VALtfin{:,"nused"}/n; % .*VALtfin{:,"pvalJB"}
+    VALtfin.ord=ord;
+    [~,indsor]=sort(ord,'descend');
+    BestSol=VALtfin(indsor,:);
 
-    [~,indord]=sort(ord,'descend');
-    rowlabs="R2="+string(num2str(VALtfin{:,"R2"},3))...
-        +" n="+string(num2str(VALtfin{:,"nused"}))...
+    rowlabs="R2="+string(num2str(BestSol{:,"R2"},3))...
+        +" n="+string(num2str(BestSol{:,"nused"}))...
         + newline ...
-        +" dw="+string(num2str(VALtfin{:,"pvalDW"},2))...
-        +" jb="+string(num2str(VALtfin{:,"pvalJB"},2));
-    % Just in case there are duplicate names use matlab.lang.makeUniqueStrings
-    VALtfin.Properties.RowNames=matlab.lang.makeUniqueStrings(rowlabs);
-
-    % Reorder the rows of VALftin using indord
-    BestSol= VALtfin(indord,:);
+        +" dw="+string(num2str(BestSol{:,"pvalDW"},2))...
+        +" jb="+string(num2str(BestSol{:,"pvalJB"},2));
 
     Rescell=BestSol{:,"res"};
-    % Show in the plot a maximum of 8 solutions
-    maxSol=min([size(VALtsel,1),8]);
 
     Resarray=cell2mat(Rescell)';
     % corMatrix correlation matrix among the residuals of the solutions which
@@ -432,7 +432,19 @@ else
     if plots==true
         % Create the augmented star plot to show the options used in the best
         % solutions
-        asplot(BestSol(1:maxSol,[1:5 12]))
+        figure
+        varlabs=BestSol.Properties.VariableNames(1:5);
+        VALtadj=BestSol{:,1:5}.*BestSol{:,"ord"};
+
+
+        d = logical(eye(size(corMatrix,2)));
+
+        corMatrix(d)=0;
+
+        % Show in the plot a maximum of 8 solutions
+        maxSol=min([size(VALtadj,1),8]);
+        % call the augmented star plot
+        augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs)
 
         % Create the heatmap of the correlation matrix of the best solutions
         % which have been found.
