@@ -9,8 +9,8 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %       fields to link with monitoring plots.
 %       Vector or struct.
 %       A vector with n elements that contains the response variable or a
-%       structure containing monitoring information (see the examples).
-%       If y is a vector it can be either a row or a column vector.
+%       table with one column, or a structure containing monitoring
+%       information (see the examples).
 %
 %     INPUT ARGUMENT y IS A VECTOR:
 %
@@ -74,7 +74,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %
 %
 %
-%    X: Predictor variables. Matrix.  Matrix.  Data matrix of explanatory
+%    X: Predictor variables. 2D array or table. Data matrix of explanatory
 %       variables (also called 'regressors') of
 %       dimension nxp if the first argument is a vector. Rows of X
 %       represent observations, and columns represent variables.
@@ -712,8 +712,8 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     y(sel)=y(sel)+2;
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
-    yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on'
-    'RemoveLabels' 'off'});
+    yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on'...
+        'RemoveLabels' 'off'});
 %}
 
 
@@ -890,6 +890,24 @@ end
 % Initialize line width
 linewidthStd = 0.5;
 
+% CHeck if y and X are tables or arrays
+
+
+if istable(X)
+    nameX=X.Properties.VariableNames;
+    X=X{:,:};
+else
+    nameX=[];
+end
+
+if istable(y) 
+    namey=y.Properties.VariableNames;
+    y=y{:,1};
+else
+    namey=[];
+end
+
+
 % Check if X includes the constant term for the intercept.
 
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
@@ -913,8 +931,6 @@ siz=[];
 doleg='on';
 plo='';
 tag='pl_yX';
-namey=[];
-nameX=[];
 xlimx='';
 ylimy='';
 
