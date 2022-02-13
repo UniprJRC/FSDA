@@ -240,7 +240,7 @@ sel=51:100;
 y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
-yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on'
+yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on'...
 'RemoveLabels' 'off'});</pre></div></div></p></div></div><div id="Extraexample_16" class="example_module expandableContent"><div id="ExtraExample_16"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
      Example of persistent cumulative brushing (with persist off).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   All previous examples used a non persistent brushing (that is brushing
 %   could be done only once). The examples below use persistent brushing
@@ -328,8 +328,8 @@ Model=Model(boo,:);
 out.label=cellstr(Model);
 yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable or structure containing y, X and possibly other
        fields to link with monitoring plots. </span>  </a><span class="example_desc">Vector or struct.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable or a
-       structure containing monitoring information (see the examples).</p> <p>
-       If y is a vector it can be either a row or a column vector.</p> <p>
+       table with one column, or a structure containing monitoring
+       information (see the examples).</p> <p>
 
      INPUT ARGUMENT y IS A VECTOR:</p> <p>
 
@@ -383,7 +383,7 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
                will be labelled with the labels contained in y.label.</p><p>
 
            Note that the structure described above is automatically
-           generated from function FSReda</p></p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix.  Data matrix of explanatory
+           generated from function FSReda</p></p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">2D array or table.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
        variables (also called 'regressors') of
        dimension nxp if the first argument is a vector. Rows of X
        represent observations, and columns represent variables.</p> <p>
