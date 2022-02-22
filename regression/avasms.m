@@ -473,7 +473,9 @@ VALt.Out=Out;
 
 
 if isnumeric(critBestSol)
-    boopval=VALt.pvalDW>critBestSol & VALt.pvalJB>critBestSol;
+    pvalDW=critBestSol;
+    pvalJB=critBestSol;
+    boopval=VALt.pvalDW>pvalDW & VALt.pvalJB>pvalJB;
 elseif isstruct(critBestSol)
     if isfield(critBestSol,'pvalDW')
         pvalDW=critBestSol.pvalDW;
