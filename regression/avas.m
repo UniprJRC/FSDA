@@ -47,13 +47,13 @@ function [out]=avas(y,X,varargin)
 %           l(j)=3 => j-th variable transformation is to be monotone.
 %           l(j)=4 => j-th variable transformation is to be linear.
 %           l(j)=5 => j-th variable assumes categorical (unorderable) values.
-%           j =1, 2,..., p+1.
+%           j =1, 2,..., p.
 %           The default value of l is a vector of ones of length p,
 %           that is the procedure assumes that all the explanatory
 %           variables have orderable values (and therefore can be
-%           transformed non monothonically).
+%           transformed non monotonically).
 %           Note that in avas procedure the response is always transformed
-%           (in a monothonic way).
+%           (in a monotonic way).
 %           Example - 'l',[3 3 1]
 %           Data Types - double
 %
@@ -72,20 +72,21 @@ function [out]=avas(y,X,varargin)
 %           Data Types - double
 %
 % PredictorOrderR2 : inclusion of the variables using $R^2$. Boolean.
-%           The default backfitting algorithm of AVAS (PredictorOrderR2=false)
-%           just does one
-%           iteration over the predictors, it may not find optimal
-%           transformations and it will be dependent on the order of the
-%           predictors in X. If (PredictorOrderR2=true), in the backfitting algorithm
-%           the explanatory variables become candidate for transformation
-%           depending on their $R^2$ order of importance.
+%           The default backfitting algorithm of AVAS
+%           (PredictorOrderR2=false) just does one iteration over the
+%           predictors, it may not find optimal transformations and it will
+%           be dependent on the order of the predictors in X. If
+%           PredictorOrderR2=true, in the backfitting algorithm the
+%           explanatory variables become candidate for transformation
+%           depending on their $R^2$ order of importance. The default value
+%           of PredictorOrderR2 is false.
 %           Example - 'PredictorOrderR2',true
 %           Data Types - logical
 %
 %
 %   rob  : Use outlier detection in each step of the backfitting procedure.
 %           Boolean or struct.
-%           If rob is not specified rob is set to false and no
+%           If rob is not specified, rob is set to false and no
 %           outlier detection routine is called.
 %           If rob is true, FSR routine is called to detect outliers
 %           before calling backfitting procedure and outliers are removed.
@@ -554,13 +555,11 @@ end
 
 [n,p]=size(X);
 
-% l specifies how to transform the variables
-% The first p values of l refer to the p explanatory variables.
-% The last refers to the response
+% l specifies how to transform the explanatory variables
 % 4 = linear transformation
 % 3 = monotonic transformation
 % ........
-l=ones(p+1,1);
+l=ones(p,1);
 %  termination threshold for outer loop
 delrsq=0.01;
 % maxit = max. number of iterations for the outer loop
