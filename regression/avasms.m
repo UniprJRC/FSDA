@@ -27,7 +27,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % input argument critBestSol.
 %
 % We order the solutions by the Durbin-Watson significance level multiplied
-% by the value of R2 and by the number of units not declared as outliers
+% by the value of $R^2$ and by the number of units not declared as outliers
 % divided by n. The rays in individual plots are of equal length for those
 % features used in an analysis. All rays are in identical places in each
 % plot. Information in the plot is augmented by making the length of the
@@ -54,7 +54,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%  X :          Predictor variables. Matrix. Matrix of explanatory
+%  X:           Predictor variables. Matrix. Matrix of explanatory
 %               variables (also called 'regressors') of dimension n x (p-1)
 %               where p denotes the number of explanatory variables
 %               including the intercept.
@@ -130,7 +130,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           Example - 'nterm',5
 %           Data Types - double
 %
-%SolOrdering :criterion to order the solutions in the augmented
+% SolOrdering : criterion to order the solutions in the augmented
 %               star plot. Cell array of characters or array of strings. The
 %               elements of the cell are names of columns 6-9 of the table
 %               in output argument BestSol. More precisely these names are
@@ -149,7 +149,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %
 %       w  : weights for the observations. Vector. Row or column vector of
 %           length n containing the weights associated to each
-%           observations. If w is not specified we assum $w=1$ for $i=1,
+%           observations. If w is not specified we assume $w=1$ for $i=1,
 %           2, \ldots, n$.
 %           Example - 'w',1:n
 %           Data Types - double
@@ -170,14 +170,14 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 solutions which have been found. We define a solution as
 %                 admissible if the residuals pass the Durbin-Watson and
 %                 Jarque-Bera tests, at the 10 per cent level.
-%                 If no solution is found, than a 5 per cent thresold for both
+%                 If no solution is found, than a 5 per cent threshold for both
 %                 tests is used.
 %                 Note that in input option critBestSol it is possible to
 %                 set up different thresholds to define the admissible
 %                 solutions.
 %                 The rows of BestSol are ordered in a non increasing way
 %                 using the p-value of the Durbin Watson test (rescaled by
-%                 the value of R2 and the number of units not declared as
+%                 the value of $R^22$ and the number of units not declared as
 %                 outliers).
 %                 Colums 1-5 contain boolean information about the usage of
 %                 options PredictorOrderR2, scail, trapezoid, rob,
@@ -199,7 +199,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 11th column contains the struct out which is the
 %                 output of the call to avas.
 %                 12th column contains the numbers obtained by the product
-%                 of p-value of Durbin Watson test, the values of R2 and
+%                 of p-value of Durbin Watson test, the values of $R^2$ and
 %                 the number of units which have not been declared as
 %                 outliers. The values of this column depend on the
 %                 optional input argument SolOrdering.
