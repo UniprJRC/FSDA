@@ -20,17 +20,29 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %
 % We reduce the number of analyses for investigation by removing all those
 % for which the residuals fail the Durbin-Watson and Jarque-Bera tests, at
-% the 5 per cent level (two-sided for Durbin-Watson). Unlike the
+% the 10 per cent level (two-sided for Durbin-Watson). Unlike the
 % Durbin-Watson test, JarqueBera test uses a combination of estimated
 % skewness and kurtosis to test for distributional shape of the residuals.
-% We order the analyses by the Durbin-Watson significance level, from the
-% largest value downwards. The rays in individual plots are of equal length
-% for those features used in an analysis. Robustness is always plotted to
-% the East and all rays are in identical places in each plot. Information
-% in the plot is augmented by making the length of the rays for each
-% analysis reflect the properties of the analysis; they are proportional to
-% $p_{DW}$, the significance level of the Durbin-Watson test.
+% Note that this threshold of 10 per cent can be changed using optional
+% input argument critBestSol.
 %
+% We order the solutions by the Durbin-Watson significance level multiplied
+% by the value of R2 and by the number of units not declared as outliers
+% divided by n. The rays in individual plots are of equal length for those
+% features used in an analysis. All rays are in identical places in each
+% plot. Information in the plot is augmented by making the length of the
+% rays for each analysis reflect the properties of the analysis; they are
+% proportional to $p_{DW}$, the significance level of the Durbin-Watson
+% test. Note that the ordering in which the solution are displayed in the
+% plot can be changed using optional input argument SolutionOrdering.
+%
+% The five options start on the right and wind counterclockwise of 72
+% degrees around the circle. The ordering in which the five options are
+% displayed in the plot depends on the frequency of presence among the set
+% of the admissible solutions. For example, if robustness is the one who
+% has the highest frequency, its spoke is shown on the right (plotted to the East).
+% The second most option present is shown on the top right... and the least
+% present option is shown on the bottom right.
 %
 % Required input arguments:
 %
@@ -56,6 +68,28 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %
 %  Optional input arguments:
 %
+%  critBestSol : criterion to define the admissible solutions to retain.
+%                scalar or struct. The default value of critBestSol is 0.10
+%                that is solutions are retained if the associated residuals pass
+%                the Durbin-Watson and Jarque-Bera tests, at the 10 per
+%                cent level. For example if critBestSol is 0.01, solutions
+%                are retained if the associated residuals pass the
+%                Durbin-Watson and Jarque-Bera tests, at the 1 per cent
+%                level. If critBestSol is a scalar the p-value threshold is
+%                the same both for Durbin-Watson and Jarque-Bera test. On
+%                the other hand, if critBestSol is a struct it is possible
+%                to use a different p-value threshold for both tests. If
+%                critBestSol is a struct it may contain the following
+%                fields:
+%                critBestSol.pvalDW=threshold for the p-value of Durbin
+%                Watson test (if this field is not present default is
+%                critBestSol.pvalDW=0.10).
+%                critBestSol.pvalJB=threshold for the p-value of Jarque-Bera
+%                test (if this field is not present default is
+%                critBestSol.pvalJB=0.10).
+%           Example - 'critBestSol',0.001
+%           Data Types - double or struct.
+%
 %   delrsq : termination threshold. Scalar. Iteration (in the outer loop)
 %            stops when rsq changes less than delrsq in nterm. The default
 %            value of delrsq is 0.01.
@@ -72,11 +106,11 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           l(j)=3 => j-th variable transformation is to be monotone.
 %           l(j)=4 => j-th variable transformation is to be linear.
 %           l(j)=5 => j-th variable assumes categorical (unorderable) values.
-%           j =1, 2,..., p+1.
+%           j =1, 2,..., p.
 %           The default value of l is a vector of ones of length p,
 %           that is the procedure assumes that all the explanatory
 %           variables have orderable values (and therefore can be
-%           transformed non monothonically).
+%           transformed non monotonically).
 %           Note that in avas procedure the response is always transformed
 %           (in a monothonic way).
 %           Example - 'l',[3 3 1]
@@ -95,6 +129,22 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           loop. The default value of nterm is 3.
 %           Example - 'nterm',5
 %           Data Types - double
+%
+%SolOrdering :criterion to order the solutions in the augmented
+%               star plot. Cell array of characters or array of strings. The
+%               elements of the cell are names of columns 6-9 of the table
+%               in output argument BestSol. More precisely these names are
+%               "R2" "pvalDW" "pvalJB" "nused". For example if
+%               SolOrdering=["R2" "pvalDW"] or SolOrdering={'R2' 'pvalDW'},
+%               the ordering of the solutions is based on the product
+%               between the values of R2 and that of the p-value of DW
+%               test. If this optional input argument is not specified or
+%               it is empty the default is to use SolOrdering=["R2"
+%               "pvalDW" "nused"], that is the product of the p-value of
+%               Durbin Watson test, the value of R2 and the number of units
+%               which have not been declared as outliers.
+%           Example - SolOrdering,["R2" "pvalJB"]
+%           Data Types - Cell array of characters or array of strings
 %
 %
 %       w  : weights for the observations. Vector. Row or column vector of
@@ -119,10 +169,16 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 A table containing the details of the admissible
 %                 solutions which have been found. We define a solution as
 %                 admissible if the residuals pass the Durbin-Watson and
-%                 Jarque-Bera tests, at the 5 per cent level. The rows of
-%                 BestSol are ordered in a non increasing way using the
-%                 p-value of the Durbin Watson test (rescaled by the value
-%                 of R2 and the number of units not declared as outliers).
+%                 Jarque-Bera tests, at the 10 per cent level.
+%                 If no solution is found, than a 5 per cent thresold for both
+%                 tests is used.
+%                 Note that in input option critBestSol it is possible to
+%                 set up different thresholds to define the admissible
+%                 solutions.
+%                 The rows of BestSol are ordered in a non increasing way
+%                 using the p-value of the Durbin Watson test (rescaled by
+%                 the value of R2 and the number of units not declared as
+%                 outliers).
 %                 Colums 1-5 contain boolean information about the usage of
 %                 options PredictorOrderR2, scail, trapezoid, rob,
 %                 tyinitial. These 5 columns are ordered in non decreasing
@@ -131,12 +187,13 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 For example, if option PredictorOrderR2 is the only one
 %                 which is always used in the set of admissible solutions,
 %                 then column 1 is associated to PredictorOrderR2.
-%                 6th column contains the value of R2.
+%                 6th column contains the value of R2 (column name R2).
 %                 7th column contains the p-value of Durbin Watson
-%                 test.
-%                 8th column contains the p-value of Jarque Bera test.
+%                 test (column name pvalDW).
+%                 8th column contains the p-value of Jarque Bera test
+%                 (column name pvalJB).
 %                 9th column contains the number of units which have not
-%                 been declared as outliers.
+%                 been declared as outliers (column name nused).
 %                 10th column is a cell which contains the residuals for
 %                 the associated solution.
 %                 11th column contains the struct out which is the
@@ -144,7 +201,8 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 12th column contains the numbers obtained by the product
 %                 of p-value of Durbin Watson test, the values of R2 and
 %                 the number of units which have not been declared as
-%                 outliers.
+%                 outliers. The values of this column depend on the
+%                 optional input argument SolOrdering.
 %
 %   corMatrix  :  Correlation matrix. Correlation matrix among the
 %                 residuals associated to the admissible solutions which
@@ -200,7 +258,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % References:
 %
 %
-% Riani M., Atkinson A.C. and Corbellini A. (2021), Robust Transformations
+% Riani M., Atkinson A.C. and Corbellini A. (2022), Robust Transformations
 % for Multiple Regression via Additivity and Variance Stabilization,
 % submitted.
 % Tibshirani R. (1987), Estimating optimal transformations for regression,
@@ -223,7 +281,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 
 
 %{
-    %% Example 2 in RAC (2021).
+    %% Example 2 in RAC (2022).
     % There are four explanatory variables and 151 observations with $x_1 $
     % equally spaced from 0:0.1:15. The linear model is:
     % 
@@ -279,6 +337,26 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
     [BestSol,corMatrix]=avasms(y,X,'l',3*ones(size(X,2),1));
 %}
 
+%{
+    % Example of use of option critBestSol with marketing data.
+    load("Marketing_Data.mat")
+    Y=Marketing_Data;
+    y=Y{:,4};
+    X=Y{:,1:3};
+    % In this case the admissible solutions are defined as those which have a
+    % p-value of DW test and a p-value of JB test greater than 0.001
+     critBestSol=0.001;
+    % Note that if a different threshold for the two p-values is needed we have
+    % to define critBestSol as a struct as follows
+    %  critBestSol=struct;
+    %  critBestSol.pvalDW=0.0001;
+    %  critBestSol.pvalJB=0.001;
+    
+    % In this example it makes sense to force a monotonic transformation for the
+    % 3 explanatory variables
+    out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);
+%}
+
 %% Beginning of code
 
 if nargin <2
@@ -287,13 +365,11 @@ end
 
 [n,p]=size(X);
 
-% l specifies how to transform the variables
-% The first p values of l refer to the p explanatory variables.
-% The last refers to the response
+% ll specifies how to transform the explanatory variables
 % 4 = linear transformation
 % 3 = monotonic transformation
 % ........
-ll=ones(p+1,1);
+ll=ones(p,1);
 %  termination threshold for outer loop
 delrsq=0.01;
 % maxit = max. number of iterations for the outer loop
@@ -303,13 +379,16 @@ maxit=20;
 nterm=3;
 w=ones(n,1);
 plots=true;
+critBestSol=0.10;
+SolOrdering='';
 
 UserOptions=varargin(1:2:length(varargin));
 
+
 if ~isempty(UserOptions)
 
-    options=struct('l',ll,'delrsq',delrsq,'nterm',nterm,...
-        'w',w,'maxit',maxit,'plots',plots);
+    options=struct('critBestSol',critBestSol,'l',ll,'delrsq',delrsq,'nterm',nterm,...
+        'w',w,'maxit',maxit,'plots',plots,'SolOrdering',SolOrdering);
 
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -331,11 +410,12 @@ if ~isempty(UserOptions)
     nterm=options.nterm;
     maxit=options.maxit;
     plots=options.plots;
-
+    critBestSol=options.critBestSol;
+    SolOrdering=options.SolOrdering;
 end
 
 tyini=struct;
-tyini.la=[0 0.1 0.2 0.3 0.4 1/2];
+% tyini.la=[0 0.1 0.2 0.3 0.4 1/2];
 % tyini.la=[-1:0.1:1];
 tyini.la=-1:0.2:1; %   -0.5 0.5];
 
@@ -381,7 +461,7 @@ for i=1:length(PredictorOrderR2)
     end
 end
 %% Build table
-names=["PredictorOrderR2" "rob" "scail" "iniFanPlot" "trapezoid" "R2" "pvalDW" "pvalJB" "nused"];
+names=["PredictorOrderR2" "rob" "scail" "tyinitial" "trapezoid" "R2" "pvalDW" "pvalJB" "nused"];
 VALt=array2table(VAL,'VariableNames',names);
 % Add to the column the cell containing the residuals for each solution
 VALt.res=Res;
@@ -392,9 +472,33 @@ VALt.Out=Out;
 % ylabel('DW test')
 
 
-boopval=VALt.pvalDW>0.10 & VALt.pvalJB>0.10;
+if isnumeric(critBestSol)
+    boopval=VALt.pvalDW>critBestSol & VALt.pvalJB>critBestSol;
+elseif isstruct(critBestSol)
+    if isfield(critBestSol,'pvalDW')
+        pvalDW=critBestSol.pvalDW;
+    else
+        pvalDW=0.1;
+    end
+    if isfield(critBestSol,'pvalJB')
+        pvalJB=critBestSol.pvalJB;
+    else
+        pvalJB=0.1;
+    end
+    % Default is
+    % boopval=VALt.pvalDW>0.10 & VALt.pvalJB>0.10;
+    boopval=VALt.pvalDW>pvalDW & VALt.pvalJB>pvalJB;
+
+else
+    error('FSDA:avasms:WrongInputOpt',['critBestSol can be either a ' ...
+        'numeric scalar or a struct']);
+end
+
+
 VALtsel=VALt(boopval,:);
 if isempty(VALtsel)
+    disp(['No model found with pvalDW>' num2str(pvalDW) ' and pvalJB>'  num2str(pvalJB)])
+    disp('Setting pvalDW=0.05 and pvalJB=0.05')
     boopval=VALt.pvalDW>0.05 & VALt.pvalJB>0.05;
     VALtsel=VALt(boopval,:);
 end
@@ -411,7 +515,19 @@ else
     VALtfin=VALtsel;
     VALtfin=[VALtfin(:,sortind) VALtsel(:,6:end)];
 
-    ord=VALtfin{:,"pvalDW"}.*VALtfin{:,"R2"}.*VALtfin{:,"nused"}/n; % .*VALtfin{:,"pvalJB"}
+    if isempty(SolOrdering)
+        ord=VALtfin{:,"pvalDW"}.*VALtfin{:,"R2"}.*VALtfin{:,"nused"}/n; % .*VALtfin{:,"pvalJB"}
+    else
+        % Check that the names of SolOrdering are the names of the
+        % columns 6-9 of table VALtfin
+        chknamesSolOrdering=setdiff(SolOrdering,names(6:9));
+        if ~isempty(chknamesSolOrdering)
+            disp(['Input option SolOrdering must contain one of the following ' ...
+                'names ''R2'' ''pvalDW'' ''pvalJB'' ''nused'''])
+            error('FSDA:avasms:WrongInput','Wrong names used to identify the ordering of the admissible solutions')
+        end
+        ord=prod(VALtfin{:,SolOrdering},2)/n;
+    end
     VALtfin.ord=ord;
     [~,indsor]=sort(ord,'descend');
     BestSol=VALtfin(indsor,:);
@@ -439,7 +555,8 @@ else
 
         d = logical(eye(size(corMatrix,2)));
 
-        corMatrix(d)=0;
+        corMatrix(d)=NaN;
+
 
         % Show in the plot a maximum of 8 solutions
         maxSol=min([size(VALtadj,1),8]);
@@ -451,7 +568,7 @@ else
         hold off
         figure
         xval="Sol"+(1:maxSol)';
-        heatmap(xval,xval,corMatrix(1:maxSol,1:maxSol))
+        heatmap(xval,xval,corMatrix(1:maxSol,1:maxSol),'MissingDataColor','w')
         title('Heatmap of the correlation matrix among the best solutions')
     end
 
