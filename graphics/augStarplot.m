@@ -86,7 +86,7 @@ texth = text(ctrx,ctry-1.1*radius,obslabs(pagerows),...
     'Parent',axesh);
 set(texth,'Tag','obs label');
 
-end % glyphplot
+end 
 
 
 % -----------------------------------------
@@ -113,11 +113,15 @@ spokesy = reshape(spokesy, [3*p n]);
 % plot(axesh, tipx([1:p 1],:), tipy([1:p 1],:),'-','Color',colors(1,:),'Visible','off', plotArgs{:});
 
 hold('on')
-mycolors='rbkmc';
+mycolors=[1 0 0;  % red
+          0 0 1;   % blue
+          0 0 0;   % black
+          1 0 1;   % magenta 
+          0.4660 0.6740 0.1880]; % dark green 
 for i=1:p
     plot(axesh, ...
         spokesx(i*3-2:i*3-1,:), spokesy(i*3-2:i*3-1,:), '-', ...
-        'Color',mycolors(i), 'LineWidth',2);
+        'Color',mycolors(i,:), 'LineWidth',2);
 end
 % Add center
 plot(spokesx(1,:),spokesy(1,:),'o','MarkerFaceColor','b')
