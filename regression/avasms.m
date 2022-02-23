@@ -15,34 +15,34 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % - Trapezoidal or rectangular rule for numerical integration in function
 %   ctsub (trapezoid).
 % - Ordering inclusion of the variables in the backfitting algorithm using
-%   $R^2$ values (PredictorOrderR2).
+%   $R^2$ values (orderR2).
 % - Initial robust transformation of the response (tyinitial).
 %
 % We reduce the number of analyses for investigation by removing all those
 % for which the residuals fail the Durbin-Watson and Jarque-Bera tests, at
 % the 10 per cent level (two-sided for Durbin-Watson). Unlike the
-% Durbin-Watson test, JarqueBera test uses a combination of estimated
+% Durbin-Watson test, the Jarque-Bera test uses a combination of estimated
 % skewness and kurtosis to test for distributional shape of the residuals.
 % Note that this threshold of 10 per cent can be changed using optional
 % input argument critBestSol.
 %
 % We order the solutions by the Durbin-Watson significance level multiplied
-% by the value of $R^2$ and by the number of units not declared as outliers
-% divided by n. The rays in individual plots are of equal length for those
+% by the value of $R^2$ and by the number of units not declared as
+% outliers. The rays in individual plots are of equal length for those
 % features used in an analysis. All rays are in identical places in each
 % plot. Information in the plot is augmented by making the length of the
 % rays for each analysis reflect the properties of the analysis; they are
 % proportional to $p_{DW}$, the significance level of the Durbin-Watson
-% test. Note that the ordering in which the solution are displayed in the
+% test. Note that the ordering in which the solutions are displayed in the
 % plot can be changed using optional input argument SolutionOrdering.
 %
-% The five options start on the right and wind counterclockwise of 72
-% degrees around the circle. The ordering in which the five options are
+% The five options start on the right and wind counterclockwise in steps of
+% 72 degrees around the circle. The ordering in which the five options are
 % displayed in the plot depends on the frequency of presence among the set
 % of the admissible solutions. For example, if robustness is the one who
-% has the highest frequency, its spoke is shown on the right (plotted to the East).
-% The second most option present is shown on the top right... and the least
-% present option is shown on the bottom right.
+% has the highest frequency, its spoke is shown on the right (plotted to
+% the East). The second most present option is shown on the top right...
+% and the least present option is shown on the bottom right.
 %
 % Required input arguments:
 %
@@ -69,16 +69,17 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %  Optional input arguments:
 %
 %  critBestSol : criterion to define the admissible solutions to retain.
-%                scalar or struct. The default value of critBestSol is 0.10
+%                scalar or struct. The default value of critBestSol is
+%                0.10, 
 %                that is solutions are retained if the associated residuals pass
 %                the Durbin-Watson and Jarque-Bera tests, at the 10 per
 %                cent level. For example if critBestSol is 0.01, solutions
 %                are retained if the associated residuals pass the
 %                Durbin-Watson and Jarque-Bera tests, at the 1 per cent
 %                level. If critBestSol is a scalar the p-value threshold is
-%                the same both for Durbin-Watson and Jarque-Bera test. On
+%                the same both for Durbin-Watson and Jarque-Bera tests. On
 %                the other hand, if critBestSol is a struct it is possible
-%                to use a different p-value threshold for both tests. If
+%                to use a different p-value threshold for each test. If
 %                critBestSol is a struct it may contain the following
 %                fields:
 %                critBestSol.pvalDW=threshold for the p-value of Durbin
@@ -122,7 +123,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           Example - 'maxit',30
 %           Data Types - double
 %
-%   nterm  : minimum number of consecutive iteration below the threshold
+%   nterm  : minimum number of consecutive iterations below the threshold
 %           to terminate the outer loop. Positive scalar. This value
 %           specifies how many consecutive iterations below the threshold
 %           it is necessary to have to declare convergence in the outer
@@ -130,20 +131,20 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           Example - 'nterm',5
 %           Data Types - double
 %
-% SolOrdering : criterion to order the solutions in the augmented
+% solOrdering : criterion to order the solutions in the augmented
 %               star plot. Cell array of characters or array of strings. The
-%               elements of the cell are names of columns 6-9 of the table
-%               in output argument BestSol. More precisely these names are
-%               "R2" "pvalDW" "pvalJB" "nused". For example if
-%               SolOrdering=["R2" "pvalDW"] or SolOrdering={'R2' 'pvalDW'},
+%               elements of the cell are the names of columns 6-9 of the table
+%               in output argument BestSol. More precisely, these names are
+%               "R2" "pvalDW" "pvalJB" "nused". For example, if
+%               solOrdering=["R2" "pvalDW"] or solOrdering={'R2' 'pvalDW'},
 %               the ordering of the solutions is based on the product
 %               between the values of R2 and that of the p-value of DW
 %               test. If this optional input argument is not specified or
-%               it is empty the default is to use SolOrdering=["R2"
+%               it is empty, the default is to use solOrdering=["R2"
 %               "pvalDW" "nused"], that is the product of the p-value of
 %               Durbin Watson test, the value of R2 and the number of units
 %               which have not been declared as outliers.
-%           Example - SolOrdering,["R2" "pvalJB"]
+%           Example - solOrdering,["R2" "pvalJB"]
 %           Data Types - Cell array of characters or array of strings
 %
 %
@@ -155,10 +156,10 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           Data Types - double
 %
 %    plots : plots on the screen. Boolean. If plots is true it is possible
-%           to visualize on the screen the augmented star plot and heatmap
-%           associated to the correlation among the admissible solutions.
-%           The default value of plots is false, that is no plot is shown
-%           on the screen.
+%           to visualize on the screen the augmented star plot and the
+%           heatmap associated to the correlation among the admissible
+%           solutions. The default value of plots is false, that is no plot
+%           is shown on the screen. 
 %           Example - 'plots',true
 %           Data Types - Logical
 %
@@ -180,13 +181,13 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 the value of $R^22$ and the number of units not declared as
 %                 outliers).
 %                 Colums 1-5 contain boolean information about the usage of
-%                 options PredictorOrderR2, scail, trapezoid, rob,
+%                 options: orderR2, scail, trapezoid, rob,
 %                 tyinitial. These 5 columns are ordered in non decreasing
 %                 way depending on the frequency in which a particular
 %                 option has been used in the set of admissiable solutions.
-%                 For example, if option PredictorOrderR2 is the only one
+%                 For example, if option orderR2 is the only one
 %                 which is always used in the set of admissible solutions,
-%                 then column 1 is associated to PredictorOrderR2.
+%                 then column 1 is associated to orderR2.
 %                 6th column contains the value of R2 (column name R2).
 %                 7th column contains the p-value of Durbin Watson
 %                 test (column name pvalDW).
@@ -202,7 +203,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 of p-value of Durbin Watson test, the values of $R^2$ and
 %                 the number of units which have not been declared as
 %                 outliers. The values of this column depend on the
-%                 optional input argument SolOrdering.
+%                 optional input argument solOrdering.
 %
 %   corMatrix  :  Correlation matrix. Correlation matrix among the
 %                 residuals associated to the admissible solutions which
@@ -232,7 +233,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % variables in order to let each column of matrix X have the same weight
 % when predicting g(y).
 %
-% [3] To use option PredictorOrderR2 to completely eliminate dependence on
+% [3] To use option orderR2 to completely eliminate dependence on
 % the order of the variables. That is, in each iteration of the backfitting
 % algorithm we impose an ordering which is based on the variable which
 % produces the highest increment of $R^2$.
@@ -380,7 +381,7 @@ nterm=3;
 w=ones(n,1);
 plots=true;
 critBestSol=0.10;
-SolOrdering='';
+solOrdering='';
 
 UserOptions=varargin(1:2:length(varargin));
 
@@ -388,7 +389,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
 
     options=struct('critBestSol',critBestSol,'l',ll,'delrsq',delrsq,'nterm',nterm,...
-        'w',w,'maxit',maxit,'plots',plots,'SolOrdering',SolOrdering);
+        'w',w,'maxit',maxit,'plots',plots,'solOrdering',solOrdering);
 
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -411,7 +412,7 @@ if ~isempty(UserOptions)
     maxit=options.maxit;
     plots=options.plots;
     critBestSol=options.critBestSol;
-    SolOrdering=options.SolOrdering;
+    solOrdering=options.solOrdering;
 end
 
 tyini=struct;
@@ -425,15 +426,15 @@ iniFanPlot=rob;
 trapezoid=rob;
 
 if size(X,2)==1
-    PredictorOrderR2=false;
+    orderR2=false;
 else
-    PredictorOrderR2=rob;
+    orderR2=rob;
 end
 VAL=zeros(32,9);
 Res=cell(32,1);
 Out=Res;
 ijkl=1;
-for i=1:length(PredictorOrderR2)
+for i=1:length(orderR2)
     for j=1:2
         for k=1:2
             for l=1:2
@@ -444,13 +445,13 @@ for i=1:length(PredictorOrderR2)
                 end
                 for m=1:2
                     out=avas(y,X,'l',ll,'delrsq',delrsq,'nterm',nterm,'maxit',maxit','w',w,...
-                        'PredictorOrderR2',PredictorOrderR2(i),'rob',rob(j),'scail',scail(k),'tyinitial',tyinitial,'Trapezoid',trapezoid(m));
+                        'orderR2',orderR2(i),'rob',rob(j),'scail',scail(k),'tyinitial',tyinitial,'trapezoid',trapezoid(m));
                     if rob(j)==true && ~isempty(out.outliers)
                         nused=n-length(out.outliers);
                     else
                         nused=n;
                     end
-                    valused=[PredictorOrderR2(i) rob(j) scail(k) iniFanPlot(l) trapezoid(m) out.rsq out.pvaldw out.pvaljb nused];
+                    valused=[orderR2(i) rob(j) scail(k) iniFanPlot(l) trapezoid(m) out.rsq out.pvaldw out.pvaljb nused];
                     VAL(ijkl,:)=valused;
                     Res{ijkl}=(out.ty-sum(out.tX,2))';
                     Out{ijkl}=out;
@@ -461,7 +462,7 @@ for i=1:length(PredictorOrderR2)
     end
 end
 %% Build table
-names=["PredictorOrderR2" "rob" "scail" "tyinitial" "trapezoid" "R2" "pvalDW" "pvalJB" "nused"];
+names=["orderR2" "rob" "scail" "tyinitial" "trapezoid" "R2" "pvalDW" "pvalJB" "nused"];
 VALt=array2table(VAL,'VariableNames',names);
 % Add to the column the cell containing the residuals for each solution
 VALt.res=Res;
@@ -517,18 +518,18 @@ else
     VALtfin=VALtsel;
     VALtfin=[VALtfin(:,sortind) VALtsel(:,6:end)];
 
-    if isempty(SolOrdering)
+    if isempty(solOrdering)
         ord=VALtfin{:,"pvalDW"}.*VALtfin{:,"R2"}.*VALtfin{:,"nused"}/n; % .*VALtfin{:,"pvalJB"}
     else
-        % Check that the names of SolOrdering are the names of the
+        % Check that the names of solOrdering are the names of the
         % columns 6-9 of table VALtfin
-        chknamesSolOrdering=setdiff(SolOrdering,names(6:9));
-        if ~isempty(chknamesSolOrdering)
-            disp(['Input option SolOrdering must contain one of the following ' ...
+        chknamessolOrdering=setdiff(solOrdering,names(6:9));
+        if ~isempty(chknamessolOrdering)
+            disp(['Input option solOrdering must contain one of the following ' ...
                 'names ''R2'' ''pvalDW'' ''pvalJB'' ''nused'''])
             error('FSDA:avasms:WrongInput','Wrong names used to identify the ordering of the admissible solutions')
         end
-        ord=prod(VALtfin{:,SolOrdering},2)/n;
+        ord=prod(VALtfin{:,solOrdering},2)/n;
     end
     VALtfin.ord=ord;
     [~,indsor]=sort(ord,'descend');

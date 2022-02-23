@@ -71,16 +71,16 @@ function [out]=avas(y,X,varargin)
 %           Example - 'nterm',5
 %           Data Types - double
 %
-% PredictorOrderR2 : inclusion of the variables using $R^2$. Boolean.
+% orderR2 : inclusion of the variables using $R^2$. Boolean.
 %           The default backfitting algorithm of AVAS
-%           (PredictorOrderR2=false) just does one iteration over the
+%           (orderR2=false) just does one iteration over the
 %           predictors, it may not find optimal transformations and it will
 %           be dependent on the order of the predictors in X. If
-%           PredictorOrderR2=true, in the backfitting algorithm the
+%           orderR2=true, in the backfitting algorithm the
 %           explanatory variables become candidate for transformation
 %           depending on their $R^2$ order of importance. The default value
-%           of PredictorOrderR2 is false.
-%           Example - 'PredictorOrderR2',true
+%           of orderR2 is false.
+%           Example - 'orderR2',true
 %           Data Types - logical
 %
 %
@@ -128,7 +128,7 @@ function [out]=avas(y,X,varargin)
 %           Example - 'scail',true
 %           Data Types - logical
 %
-% Trapezoid : strategy for evaluating points that lie outside the
+% trapezoid : strategy for evaluating points that lie outside the
 %           domain of fitted values inside the routine which computes the
 %           variance stabilizing transformation (ctsub). Boolean. This
 %           options specifies the hypothesis to assume in the
@@ -138,20 +138,20 @@ function [out]=avas(y,X,varargin)
 %           units which have not been declared as outliers and
 %           $\widehat{ty}_i^{old}$ is the transformed value for unit $i$
 %           from previous iteration ($i=1, \ldots, n$).
-%           If this option is omitted or if Trapezoid is false
+%           If this option is omitted or if trapezoid is false
 %           (default), we assume a rectangulat hypothesis. In
 %           other words, we assume that below $\hat y_{(1)}$ the function
 %           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$, 
 %           $|e_1|, \ldots, |e_{n-k}|$ are the smoothed residuals
 %           corresponding to ordered fitted values.
 %           Similarly, we assume that beyond $\hat y_{n-k}$ the function is
-%           constant and equal to $1/|e_{n-k}|$. If Trapezoid is
+%           constant and equal to $1/|e_{n-k}|$. If trapezoid is
 %           false we assume that below $\hat y_{(1)}$ or above $\hat
 %           y_{(n-k)}$  the function is constant and equal to the mean of
 %           $\sum_{j=1}^{n-k} 1/(|e_j| (n-k))$ (trapezoidal hypothesis).
 %           Additional details are given in the More About section of this
 %           file.
-%               Example - 'Trapezoid',true
+%               Example - 'trapezoid',true
 %               Data Types - logical
 %
 %   tyinitial  : Initial values for the transformed response. Boolean or struct.
@@ -572,8 +572,8 @@ w=ones(n,1);
 scail=false;
 tyinitial=false;
 rob=false;
-PredictorOrderR2=false;
-Trapezoid=false;
+orderR2=false;
+trapezoid=false;
 
 % c span, alpha : super smoother parameters.
 % supermo=struct;
@@ -585,7 +585,7 @@ if ~isempty(UserOptions)
     
     options=struct('l',l,'delrsq',delrsq,'nterm',nterm,...
         'w',w,'maxit',maxit,'scail',scail,'tyinitial',tyinitial,'rob',rob,...
-        'PredictorOrderR2',PredictorOrderR2,'Trapezoid',Trapezoid);
+        'orderR2',orderR2,'trapezoid',trapezoid);
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -609,8 +609,8 @@ if ~isempty(UserOptions)
     scail=options.scail;
     tyinitial=options.tyinitial;
     rob=options.rob;
-    PredictorOrderR2=options.PredictorOrderR2;
-    Trapezoid=options.Trapezoid;
+    orderR2=options.orderR2;
+    trapezoid=options.trapezoid;
 end
 
 if size(w,2)>1
@@ -798,7 +798,7 @@ else
 end
 
 % Call backfitting algorithm to find transformed values of X
-[tX,rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outliers,PredictorOrderR2);
+[tX,rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outliers,orderR2);
 
 yspan=0;
 lfinishOuterLoop=1;
@@ -878,7 +878,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     
     % Compute updated transformed values
-    ty=ctsub(yhatord(1:ngood),smoothresm1Ordyhat(1:ngood),ty,Trapezoid);
+    ty=ctsub(yhatord(1:ngood),smoothresm1Ordyhat(1:ngood),ty,trapezoid);
 
     wbsb=w(bsb);
     sm=sum(ty(bsb).*wbsb);
@@ -906,7 +906,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % that is backfit \hat g(y) on X_1, \ldots, X_p
     % to get new tX
     
-    [tX,~]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outliers,PredictorOrderR2);
+    [tX,~]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outliers,orderR2);
     % yhat contains fitted values (not sorted)
     yhat=sum(tX,2);    % z1 is z10 in AVAS
     
