@@ -3,10 +3,15 @@ function aceplot(out,varargin)
 %
 %<a href="matlab: docsearchFS('aceplot')">Link to the help page for this function</a>
 %
-%   This function produces two figures. The first figure contains a series
-%   of panels for transformed X_j vs. X_j (with a rug plot long the tick
-%   marks), while the second figure contains: the plot of transformed y vs.
-%   y, the plot of residuals vs. fit and the plot of transformed y vs. fit.
+%   This function produces two figures. The first figure contains: the plot
+%   of transformed y vs. y (top left panel), the plot of residuals vs. fit
+%   (top right panel) and the plot of transformed y vs. fit (bottom left
+%   panel). The bottom right panel is left blank. The second figure
+%   contains a series of p panels (where p is the number of columns of X)
+%   for transformed $X_j$ (tXj)  vs. $X_j$ (with a rug plot along the tick
+%   marks). These two figures can be combined in one figure, putting the
+%   plots of tXj vs $X_j$ in the bottom right panel of the first figure
+%   using optional input argument oneplot.
 %
 % Required input arguments:
 %
@@ -30,6 +35,19 @@ function aceplot(out,varargin)
 %                 Example - 'highlight',1:10
 %                 Data Types - double
 %
+%      oneplot : combined unique plot. Boolean. If oneplot is true just one
+%                 figure is produced. The top left panel contains the plot
+%                 of transformed y vs. y, the top right panel contains the
+%                 plot of residuals vs. fit, the bottom left panel contains
+%                 the plot of transformed y vs. fit. The bottom right panel
+%                 contains a set of p subpanels (where p is the number of
+%                 columns of X) for transformed $X_j$ (tXj)  vs. $X_j$
+%                 (with a rug plot along the tick marks). If oneplot is
+%                 false (default), the p panels for transformed $X_j$ (tXj)
+%                 vs. $X_j$ are put in a separate figure.
+%                 Example - 'oneplot',true
+%                 Data Types - logical
+%
 %        ylimy  : 2D array of size 3-by-2 which specifies the
 %                lower and upper limits for the 3 plots of the second
 %                figure. The first row refers to the plot of transformed y
@@ -45,7 +63,7 @@ function aceplot(out,varargin)
 % See also: ace, smothr
 %
 % References:
-
+% 
 %
 % Breiman, L. and Friedman, J.H. (1985), Estimating optimal
 % transformations for multiple regression and correlation, "Journal of the
@@ -100,26 +118,39 @@ function aceplot(out,varargin)
     aceplot(outAC,'highlight',listout)
 %}
 
+%{
+    % Example of the of option oneplot.
+    % Load the Marketing data.
+    load('Marketing_Data')
+    y=Marketing_Data{:,4};
+    X=Marketing_Data{:,1:3};
+    % apply traditional avas (with all options set to false). 
+    % Monotonicity of the expl. variables imposed.
+    out=avas(y,X,'l',3*ones(size(X,2),1))
+    % Put the plots of transformed Xj (tXj) agains Xj in the bottom right
+    % panel
+    aceplot(out,'oneplot',true)
+%}
+
 %% Beginning of code
 
 highlight=out.outliers;
 ylimy=[];
+oneplot=false;
 if nargin >1
     UserOptions=varargin(1:2:length(varargin));
-    
-    options=struct('highlight',highlight,'ylimy',ylimy);
-    
+
+    options=struct('highlight',highlight,'ylimy',ylimy,'oneplot',oneplot);
+
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:FSReda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:aceplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)
     end
-    
-    
-    
+
     % We now overwrite inside structure options the default values with
     % those chosen by the user
     % Notice that in order to do this we use dynamic field names
@@ -128,6 +159,7 @@ if nargin >1
     end
     highlight=options.highlight;
     ylimy=options.ylimy;
+    oneplot=options.oneplot;
 end
 
 if ~isempty(ylimy)
@@ -147,43 +179,44 @@ tX=out.tX;
 ty=out.ty;
 p=size(tX,2);
 
-
-
 addout=~isempty(highlight);
-oneplot=false;
+% Organize the locations of the plots of tXj vs Xj
 if oneplot==false
-if p<=2
-    nr=2; nc=1;
-elseif p<=4
-    nr=2; nc=2;
-elseif p<=6
-    nr=3; nc=2;
-elseif p<=8
-    nr=4; nc=2;
-elseif p<=9
-    nr=3; nc=3;
-elseif p<=12
-    nr=4; nc=3;
+    if p<=2
+        nr=2; nc=1;
+    elseif p<=4
+        nr=2; nc=2;
+    elseif p<=6
+        nr=3; nc=2;
+    elseif p<=8
+        nr=4; nc=2;
+    elseif p<=9
+        nr=3; nc=3;
+    elseif p<=12
+        nr=4; nc=3;
+    else
+        error('FSDA:aceplot:TODO','So far not implemented for p>12')
+    end
 else
-    error('FSDA:aceplot:ToDo','So far not implemented for p>12')
-end
-else
-if p==1
-    nr=2; nc=2;
-    numbers=[4 4];
-elseif p==2
-    nr=4; nc=4;
-    numbers=[11 12; 15 16];
-elseif p==3
-    nr=6; nc=6;
-    numbers=[22:24; 28:30; 34:36];
-elseif p==4
-    nr=8; nc=8;
-    numbers=[37.5 40; 45.5 48; 53.5 56; 61.5 64];
-    % numbers=[37 48; 45.5 48; 53.5 56; 61.5 64];
-else
-error('TODO')
-end
+    if p==1
+        nr=2; nc=2;
+        numbers=[4 4];
+    elseif p==2
+        nr=4; nc=4;
+        numbers=[11 12; 15 16];
+    elseif p==3
+        nr=6; nc=6;
+        % numbers=[22.5 24; 28.5 30; 34.5 36];
+        numbers=[22 24; 28 30; 34 36];
+    elseif p==4
+        nr=8; nc=8;
+        numbers=[37.5 40; 45.5 48; 53.5 56; 61.5 64];
+    elseif p==5
+        nr=10; nc=10;
+        numbers=[56 60; 66 70; 76 80; 86 90; 96 100];
+    else
+        error('FSDA:aceplot:TODO','Option oneplot so far not implemented for p>5')
+    end
 end
 
 
@@ -258,16 +291,17 @@ for j=1:p
     end
     jstr=num2str(j);
     if oneplot==false
-    ylabel(['Transformed X' jstr])
-    xlabel(['X' jstr])
+        ylabel(['Transformed X' jstr])
+        xlabel(['X' jstr])
     else
         ylabel(['tX' jstr])
+        text(0.95,0.15,['X' jstr],'Units','normalized')
     end
     if addout ==true
         hold('on')
         plot(X(highlight,j),tX(highlight,j),'ro','MarkerFaceColor','r')
     end
-    
+
 end
 
 % Add an horizontal line at 0
