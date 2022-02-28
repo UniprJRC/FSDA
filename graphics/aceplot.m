@@ -197,7 +197,7 @@ if oneplot==false
     else
         error('FSDA:aceplot:TODO','So far not implemented for p>12')
     end
-else
+else % oneplot true 
     if p==1
         nr=2; nc=2;
         numbers=[4 4];
@@ -215,7 +215,7 @@ else
         nr=10; nc=10;
         numbers=[56 60; 66 70; 76 80; 86 90; 96 100];
     else
-        error('FSDA:aceplot:TODO','Option oneplot so far not implemented for p>5')
+        error('FSDA:aceplot:Wrongp','Option oneplot is implemented for p<=5')
     end
 end
 
