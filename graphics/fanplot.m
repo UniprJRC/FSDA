@@ -215,7 +215,7 @@ function brushedUnits=fanplot(out,varargin)
 %                 value.
 %
 %
-% See also: FSRfan
+% See also: FSRfan, fanBIC
 %
 % References:
 %
