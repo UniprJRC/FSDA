@@ -6,12 +6,14 @@ function aceplot(out,varargin)
 %   This function produces two figures. The first figure contains: the plot
 %   of transformed y vs. y (top left panel), the plot of residuals vs. fit
 %   (top right panel) and the plot of transformed y vs. fit (bottom left
-%   panel). The bottom right panel is left blank. The second figure
-%   contains a series of p panels (where p is the number of columns of X)
-%   for transformed $X_j$ (tXj)  vs. $X_j$ (with a rug plot along the tick
-%   marks). These two figures can be combined in one figure, putting the
-%   plots of tXj vs $X_j$ in the bottom right panel of the first figure
-%   using optional input argument oneplot.
+%   panel). The bottom right panel is left blank. This first figure is tagged pl_ty.
+%   The second figure contains a series of p panels (where p is the number
+%   of columns of X) for transformed $X_j$ (tXj)  vs. $X_j$ (with a rug
+%   plot along the tick marks). The second figure is tagged pl_tX.
+%   These two figures can be combined in one figure, putting the plots of
+%   tXj vs $X_j$ in the bottom right panel of the first figure using
+%   optional input argument oneplot. If just one figure is produced it is
+%   tagged pl_tyX.
 %
 % Required input arguments:
 %
@@ -63,7 +65,7 @@ function aceplot(out,varargin)
 % See also: ace, smothr
 %
 % References:
-% 
+%
 %
 % Breiman, L. and Friedman, J.H. (1985), Estimating optimal
 % transformations for multiple regression and correlation, "Journal of the
@@ -197,7 +199,7 @@ if oneplot==false
     else
         error('FSDA:aceplot:TODO','So far not implemented for p>12')
     end
-else % oneplot true 
+else % oneplot true
     if p==1
         nr=2; nc=2;
         numbers=[4 4];
@@ -221,6 +223,7 @@ end
 
 
 figure
+set(gcf,'Tag','pl_ty')
 subplot(2,2,1)
 plot(y,ty,'o')
 ylabel('Transformed y')
@@ -296,12 +299,20 @@ for j=1:p
     else
         ylabel(['tX' jstr])
         text(0.95,0.15,['X' jstr],'Units','normalized')
+        if j==p
+            xlabel('X')
+        end
     end
     if addout ==true
         hold('on')
         plot(X(highlight,j),tX(highlight,j),'ro','MarkerFaceColor','r')
     end
 
+end
+if oneplot==false
+    set(gcf,'Tag','pl_tX')
+else
+    set(gcf,'Tag','pl_tyX')
 end
 
 % Add an horizontal line at 0
