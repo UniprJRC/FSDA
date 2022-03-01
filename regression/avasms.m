@@ -70,12 +70,11 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %
 %  critBestSol : criterion to define the admissible solutions to retain.
 %                scalar or struct. The default value of critBestSol is
-%                0.10, 
-%                that is solutions are retained if the associated residuals pass
-%                the Durbin-Watson and Jarque-Bera tests, at the 10 per
-%                cent level. For example if critBestSol is 0.01, solutions
-%                are retained if the associated residuals pass the
-%                Durbin-Watson and Jarque-Bera tests, at the 1 per cent
+%                0.10, that is solutions are retained if the associated
+%                residuals pass the Durbin-Watson and Jarque-Bera tests, at
+%                the 10 per cent level. For example if critBestSol is 0.01,
+%                solutions are retained if the associated residuals pass
+%                the Durbin-Watson and Jarque-Bera tests, at the 1 per cent
 %                level. If critBestSol is a scalar the p-value threshold is
 %                the same both for Durbin-Watson and Jarque-Bera tests. On
 %                the other hand, if critBestSol is a struct it is possible
@@ -121,6 +120,17 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %            default maximum number of iterations before exiting the outer
 %            loop is 20.
 %           Example - 'maxit',30
+%           Data Types - double
+%
+%  maxBestSol : criterion to define the maximum number of admissible
+%               solutions to show in the augmented star plot.
+%               positive integer scalar. The default value of maxBestSol is
+%                8 that is a maximum of 8 solutions is shown in the plot. 
+%                Note that this is the upper bound among the set of the
+%                admissible solutions. If the number of admissible
+%                solutions is smaller than maxBestSol then this optional
+%                input argument is ignored.
+%           Example - 'maxBestSol',5
 %           Data Types - double
 %
 %   nterm  : minimum number of consecutive iterations below the threshold
@@ -382,14 +392,16 @@ w=ones(n,1);
 plots=true;
 critBestSol=0.10;
 solOrdering='';
+maxBestSol=8;
 
 UserOptions=varargin(1:2:length(varargin));
 
 
 if ~isempty(UserOptions)
 
-    options=struct('critBestSol',critBestSol,'l',ll,'delrsq',delrsq,'nterm',nterm,...
-        'w',w,'maxit',maxit,'plots',plots,'solOrdering',solOrdering);
+    options=struct('critBestSol',critBestSol,'l',ll,'delrsq',delrsq, ...
+        'nterm',nterm,'w',w,'maxit',maxit,'plots',plots,'solOrdering',solOrdering, ...
+        'maxBestSol',maxBestSol);
 
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -413,6 +425,7 @@ if ~isempty(UserOptions)
     plots=options.plots;
     critBestSol=options.critBestSol;
     solOrdering=options.solOrdering;
+    maxBestSol=options.maxBestSol;
 end
 
 tyini=struct;
@@ -562,7 +575,8 @@ else
 
 
         % Show in the plot a maximum of 8 solutions
-        maxSol=min([size(VALtadj,1),8]);
+        maxSol=min([size(VALtadj,1),maxBestSol]);
+
         % call the augmented star plot
         augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs)
 
