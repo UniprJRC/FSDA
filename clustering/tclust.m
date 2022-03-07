@@ -260,6 +260,33 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'nsamp',1000
 %                 Data Types - double
 %
+%    priorSol : prior solution. vector or struct.
+%               Prior solution supplied as a struct or a vector of length n
+%               which specifies who to initialize the centroids, the
+%               covariance matrices and the proportions in the iteration of
+%               the EM algorithm for the last subset which is extracted. If
+%               priorSol is a vector it must contain the positive
+%               integers associated with the units allocated to the
+%               different groups. For example if n=70 and
+%               priorSol=[ones(40,1) 2*ones(30,1)] it specifies that the
+%               last starting point among the nsamp tentative solutions must
+%               be based on a centroid, covariance matrix and sample size
+%               formed by the first 40 observations of matrix Y and the
+%               second centroid, cov matrix and sample size must be formed
+%               by the remainining 30 solutions.
+%               If priorSol is a struct it must contain the following
+%               fields.
+%               priosSol.cini = a matrix of size k-times-v containing the
+%               centroids of the k groups;
+%               priosSol.sigmaini = a 3D array of size v-by-v-by-k containing
+%               the covairiance matrices of the k groups;
+%               priorSol.niini=a vector of length k containing the sizes of
+%               the k groups.
+%               Note that this option takes effect just if input option
+%               startv1 is true.
+%                 Example - 'priorSol',[ones(50,1) 2*ones(20,1)];
+%                 Data Types - double
+%
 % RandNumbForNini: Pre-extracted random numbers to initialize proportions.
 %                Matrix. Matrix with size k-by-size(nsamp,1) containing the
 %                random numbers which are used to initialize the
@@ -308,6 +335,8 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               required parameter space, restrictions are
 %               immediately applied.
 %               Remark 2 - option startv1 is used just if nsamp is a scalar
+%               that is the indexes of the subsamples to extract are not
+%               supplied.
 %               (see for more details the help associated with nsamp).
 %                   Example - 'startv1',false
 %                   Data Types - logical
@@ -865,15 +894,15 @@ end
 startv1def=true;
 
 if coder.target('MATLAB')
-    
+
     if nargin>4
         % Check whether option nsamp exists
         chknsamp = strcmp(varargin,'nsamp');
-        
+
         % if the sum below is greater than 0 option nsamp exists
         if sum(chknsamp)>0
             nsamp=cell2mat(varargin(find(chknsamp)+1));
-            
+
             % Check if options nsamp is a scalar
             if ~isscalar(nsamp)
                 % if nsamp is not a scalar, it is a matrix which contains in
@@ -903,7 +932,7 @@ if coder.target('MATLAB')
                 % If nsamp is a scalar it simply contains the number of subsets
                 % which have to be extracted. In this case NoPriorSubsets=1
                 NoPriorSubsets=1;
-                
+
                 % In this case (nsamp is a scalar) we check whether the user has supplied option
                 % startv1
                 chkstartv1 = strcmp(varargin,'startv1');
@@ -917,7 +946,7 @@ if coder.target('MATLAB')
             % If option nsamp is not supplied then for sure there are no prior
             % subsets
             NoPriorSubsets=1;
-            
+
             % In this case (options nsamp does not exist) we check whether the
             % user has supplied option startv1
             chkstartv1 = strcmp(varargin,'startv1');
@@ -933,13 +962,13 @@ if coder.target('MATLAB')
         NoPriorSubsets=1;
         startv1=startv1def;
     end
-    
+
     % If the user has not specified prior subsets (nsamp is not a scalar) than
     % according the value of startv1 we have a different value of ncomb
     if NoPriorSubsets ==1
         % Remark: startv1 must be immediately checked because the calculation of
         % ncomb is immediately affected.
-        
+
         if startv1 ==true
             ncomb=bc(n,k*(v+1));
         else
@@ -951,9 +980,9 @@ if coder.target('MATLAB')
         end
         nsampdef=min(300,ncomb);
     end
-    
-    
-    
+
+
+
     % Default
     if nargin<3
         alpha=0.05;
@@ -964,14 +993,14 @@ if coder.target('MATLAB')
             warning('FSDA:tclust:Wrongalpha','You have not specified alpha: it is set to 0.05 by default');
         end
     end
-    
+
     if nargin<4
         restrfactor=12;
         warning('FSDA:tclust:Wrongrestrfact','You have not specified restrfactor: it is set to 12 by default');
     end
-    
+
 else
-    
+
 end
 
 % Fix alpha equal to the trimming size
@@ -990,6 +1019,7 @@ end
 refstepsdef=15;
 reftoldef=1e-5;
 startv1true1unitCentroiddef=false;
+priorSoldef=[];
 
 % tolrestreigen = tolerance to use in function restreigen
 tolrestreigen=1e-08;
@@ -998,21 +1028,21 @@ tolrestreigen=1e-08;
 cshape=10^10;
 
 if coder.target('MATLAB')
-    
+
     options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
         'msg',1,'Ysave',false,'refsteps',refstepsdef,'equalweights',false,...
         'reftol',reftoldef,'mixt',0,'startv1',startv1def, ...
         'restrtype','eigen','cshape',cshape,...
-        'startv1true1unitCentroid',startv1true1unitCentroiddef);
-    
+        'startv1true1unitCentroid',startv1true1unitCentroiddef,'priorSol',priorSoldef);
+
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        
+
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:tclust:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        
+
         % Check if all the specified optional arguments were present
         % in structure options
         % Remark: the nocheck option has already been dealt by routine
@@ -1025,21 +1055,21 @@ if coder.target('MATLAB')
         end
     end
 else
-    
+
     % ncomb=1000; % TODO
     % NoPriorSubsets=1;
     % startv1=true;
 end
 
 if nargin > 4
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     % And check if the optional user parameters are reasonable.
-    
+
     if coder.target('MATLAB')
         % Check number of subsamples to extract
         if isscalar(options.nsamp) && options.nsamp>ncomb
@@ -1071,11 +1101,11 @@ if isstruct(restrfactor)
         if ~isfield(restrfactorSTRUCT,'cdet')
             restrfactorSTRUCT.cdet=100;
         end
-        
+
         if ~isfield(restrfactorSTRUCT,'usepreviousest')
             restrfactorSTRUCT.usepreviousest=usepreviousest;
         end
-        
+
         if verLess2016b ==true
             restrfactorSTRUCT.userepmat=1;
         else
@@ -1084,14 +1114,14 @@ if isstruct(restrfactor)
     end
     restrGPCM=true;
     nocheckpa=true;
-    
+
     if restrfactorSTRUCT.cdet==1
         restrfactorSTRUCT.pars(1)='E';
     end
     if restrfactorSTRUCT.shb==1
         restrfactorSTRUCT.pars(2)='E';
     end
-    
+
 else
     restrGPCM=false;
     nocheckpa=false;
@@ -1101,12 +1131,12 @@ else
         restrfactor=1;
     else
     end
-    
+
     % Default restriction is the one based on the eigenvalues
     % restrnum=1 ==> restriction on the eigenvalues
     % restrnum=2 ==> restriction on the determinants
     % restrnum=3 ==> restriction using GPCM
-    
+
     restr=options.restrtype;
     if strcmp(restr,'eigen')
         restrnum=1;
@@ -1131,10 +1161,37 @@ reftol=options.reftol;
 
 RandNumbForNini=options.RandNumbForNini;
 startv1true1unitCentroid=options.startv1true1unitCentroid;
+priorSol=options.priorSol;
+
+if isempty(priorSol)
+    usePriorSol=false;
+else
+    if startv1==false
+        warning('FSDA:tclust:Wronginput','Given that startv1 is false option PriorSol is ignored');
+        usePriorSol=false;
+    else
+
+        usePriorSol=true;
+        if isstruct(priorSol)
+            priorSolStruct=priorSol;
+        else
+            priorSolStruct=struct;
+            priorSolStruct.cini=zeros(k,v);
+            priorSolStruct.sigmaini=zeros(v,v,k);
+            priorSolStruct.niini=zeros(k,1);
+            for i=1:k
+                Yi=Y(priorSol==i,:);
+                priorSolStruct.cini(i,:)=mean(Yi,1);
+                priorSolStruct.sigmaini(:,:,i)=cov(Yi,1);
+                priorSolStruct.niini(i)=size(Yi,1);
+            end
+        end
+    end
+end
 
 if ~coder.target('MATLAB')
-         niinistart=repmat(floor(h/k),k,1);
-   
+    niinistart=repmat(floor(h/k),k,1);
+
     if ~isscalar(nsamp)
         % if nsamp is not a scalar, it is a matrix which contains in
         % the rows the indexes of the subsets which have to be
@@ -1142,7 +1199,7 @@ if ~coder.target('MATLAB')
         [nselected,ncolC]=size(nsamp);
         % The number of rows of nsamp is the number of
         % subsets which have to be extracted
-        
+
         % If the number of columns of nsamp  is equal to v
         % then the procedure is initialized using identity matrices
         % else using covariance matrices based on the (v+1)*k units
@@ -1157,7 +1214,7 @@ if ~coder.target('MATLAB')
         ncomb=-1000; % MATLAB coder initialization
     else
         startv1=options.startv1;
-        
+
         if startv1 ==true
             ncomb=bc(n,k*(v+1));
         else
@@ -1194,7 +1251,7 @@ if coder.target('MATLAB')
 end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
-if NoPriorSubsets ==1 % nsamp 
+if NoPriorSubsets ==1 % nsamp
     if startv1 ==true && k*(v+1) < n
         [C,nselected] = subsets(nsamp,n,k*(v+1),ncomb,msg);
     else
@@ -1264,7 +1321,7 @@ U=sigmaini;
 fullsol=zeros(nselected,1);
 if coder.target('MATLAB')
     verMatlab=verLessThan('matlab','8.2.0');
-    
+
     if verMatlab ==1
         userepmat=0;
     else
@@ -1313,127 +1370,135 @@ end
 %%  Random starts
 tstart=tic;
 for i=1:nselected
-    
+
     if msg==1
         if i <= tsampling
             tstart = tic;
         end
     end
-    
+
     if msg == 2
         % disp(['Iteration ' num2str(i)])
         fprintf('Iteration %.0f\n', i);
     end
-    
+
     if startv1 ==true
-        if NoPriorNini==1
-            randk=rand(k,1);
+        
+        % Note that usePriorSol is used just if startv1 is true
+        if usePriorSol==true && i==nselected
+            cini=priorSolStruct.cini;
+            sigmaini=priorSolStruct.sigmaini;
+            niini=priorSolStruct.niini;
         else
-            randk=RandNumbForNini(:,i);
-        end
-        
-        niini=floor(h*randk/sum(randk));
-        
-        cini=zeros(k,v);
-        for j=1:k
-            ilow=(j-1)*(v+1)+1;
-            iup=j*(v+1);
-            index=C(i,:);
-            selj=index(ilow:iup);
-            % cini(j,:)=mean(Y(selj,:));
-            Yselj=Y(selj,:);
-            if startv1true1unitCentroid==false
-            cini(j,:)=sum(Yselj)/(v+1);
+            if NoPriorNini==1
+                randk=rand(k,1);
             else
-            cini(j,:)=Yselj(1,:);
-            end     
-            
-            if verLess2016b ==true
-                Yseljc = bsxfun(@minus,Yselj,cini(j,:));
-            else
-                Yseljc = Yselj-cini(j,:);
+                randk=RandNumbForNini(:,i);
             end
-            sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
-            % lines above are a faster solution for instruction below
-            % sigmaini(:,:,j)=cov(Y(selj,:));
-            
+
+            niini=floor(h*randk/sum(randk));
+            cini=zeros(k,v);
+            for j=1:k
+                ilow=(j-1)*(v+1)+1;
+                iup=j*(v+1);
+                index=C(i,:);
+                selj=index(ilow:iup);
+                % cini(j,:)=mean(Y(selj,:));
+                Yselj=Y(selj,:);
+                if startv1true1unitCentroid==false
+                    cini(j,:)=sum(Yselj)/(v+1);
+                else
+                    cini(j,:)=Yselj(1,:);
+                end
+
+                if verLess2016b ==true
+                    Yseljc = bsxfun(@minus,Yselj,cini(j,:));
+                else
+                    Yseljc = Yselj-cini(j,:);
+                end
+                sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
+                % lines above are a faster solution for instruction below
+                % sigmaini(:,:,j)=cov(Y(selj,:));
+
+                if restrGPCM == false
+                    % Eigenvalue eigenvector decomposition for group j
+                    [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                    % Store eigenvectors and eigenvalues of group j
+                    U(:,:,j)=real(Uj);
+                    Lambda_vk(:,j)=real(diag(Lambdaj)); % real is necessary for MATLAB coder
+                end
+            end
             if restrGPCM == false
-                % Eigenvalue eigenvector decomposition for group j
-                [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-                % Store eigenvectors and eigenvalues of group j
-                U(:,:,j)=real(Uj);
-                Lambda_vk(:,j)=real(diag(Lambdaj)); % real is necessary for MATLAB coder
-            end
-        end
-        if restrGPCM == false
-            if restrnum==1
-                % Restriction on the eigenvalues
-                
-                Lambda_vk(Lambda_vk<0)=0; % check on negative eigenvalues
-                
-                % Check first if the eigenvalues do not satisy the constraint
-                if  abs(max(Lambda_vk,[],'all') / min(Lambda_vk,[],'all')) > restrfactor
-                    if use_restreigen
-                        autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+                if restrnum==1
+                    % Restriction on the eigenvalues
+
+                    Lambda_vk(Lambda_vk<0)=0; % check on negative eigenvalues
+
+                    % Check first if the eigenvalues do not satisy the constraint
+                    if  abs(max(Lambda_vk,[],'all') / min(Lambda_vk,[],'all')) > restrfactor
+                        if use_restreigen
+                            autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+                        else
+                            autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
+                        end
                     else
-                        autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
+                        autovalues = Lambda_vk;
+                    end
+
+                    % Covariance matrices are reconstructed keeping into account the
+                    % constraints on the eigenvalues
+                    for j=1:k
+                        sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+
+                        % Alternative code: in principle more efficient but slower
+                        % because diag is a built in function
+                        % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+                    end
+                elseif restrnum==2
+                    Lambda_vk(Lambda_vk<0)=0;
+                    % Restrictions on the determinants
+                    autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+
+                    % Covariance matrices are reconstructed keeping into account the
+                    % constraints on the determinants
+                    for j=1:k
+                        sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+
+                        % Alternative code: in principle more efficient but slower
+                        % because diag is a built in function
+                        % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
                     end
                 else
-                    autovalues = Lambda_vk;
-                end
-                
-                % Covariance matrices are reconstructed keeping into account the
-                % constraints on the eigenvalues
-                for j=1:k
-                    sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-                    
-                    % Alternative code: in principle more efficient but slower
-                    % because diag is a built in function
-                    % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-                end
-            elseif restrnum==2
-                Lambda_vk(Lambda_vk<0)=0;
-                % Restrictions on the determinants
-                autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
-                
-                % Covariance matrices are reconstructed keeping into account the
-                % constraints on the determinants
-                for j=1:k
-                    sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-                    
-                    % Alternative code: in principle more efficient but slower
-                    % because diag is a built in function
-                    % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
                 end
             else
+                [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactorSTRUCT,nocheckpa);
             end
-        else
-            [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactorSTRUCT,nocheckpa);
         end
-        
     else
-        
+
         % initialization of niini with equal proportions
         niini=niinistart;
-        
+
         % extract a subset of size v
         index = C(i,:);
-        
+
         % cini will contain the centroids in each iteration
         cini=Y(index,:);
         % sigmaini will contain the covariance matrices in each iteration
         sigmaini=eyk;
     end
-    
+
+
+
     % sigmaopt will be final estimate of the covariance matrices
     % sigmaopt=sigmaini;
-    
+
     iter=0;
     mudiff=1e+15;
-    
+
     postprob=zeros(n,k);
     ind=zeros(n,1);
-    
+
     % refsteps "concentration" steps will be carried out
     while ( (mudiff > reftol) && (iter < refsteps) )
         iter = iter + 1;
@@ -1443,7 +1508,7 @@ for i=1:nselected
                 ll(:,j)= logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0,callmex);
             end
         else
-            
+
             % In this case we allow for different group weights or we are
             % assuming a mixture model
             for j=1:k
@@ -1453,95 +1518,95 @@ for i=1:nselected
                 % Line above is faster but equivalent to
                 % ll(:,j)= (niini(j)/h)*mvnpdf(Y,cini(j,:),sigmaini(:,:,j));
             end
-            
+
         end
-        
+
         if mixt==2
-            
+
             postprobold=postprob;
-            
+
             [~,postprob,disc]=estepFS(ll, verLess2016b);
-            
+
             % Sort the n likelihood contributions
             % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
             [~,qq]=sort(disc,'descend');
-            
+
             % qq = vector of size h which contains the indexes associated with the largest n(1-alpha)
             % (weighted) likelihood contributions
             qqunassigned=qq((h+1):n);
             qq=qq(1:h);
-            
+
             % Ytri = n(1-alpha)-by-v matrix associated with the units
             % which have the largest n(1-alpha) likelihood contributions
             Ytri=Y(qq,:);
-            
+
             postprob(qqunassigned,:)=0;
-            
+
             % M-step update of niini
             % niini = numerator of component probabilities
             niini=(sum(postprob))';
-            
+
         else
             indold=ind;
-            
+
             % In this part we select the untrimmed units.
             % They are those which have the n(1-alpha) largest values among the
             % maxima of each row of matrix ll.
             % vector disc of length(n) contains the (weighted) contribution of
             % each unit to the log likelihood.
             [disc,ind]= max(ll,[],2);
-            
+
             % Sort the n likelihood contributions
             % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
             [~,qq]=sort(disc,'descend');
-            
-            
+
+
             % qq = vector of size h which contains the indexes associated with the largest n(1-alpha)
             % (weighted) likelihood contributions
             qqunassigned=qq(h+1:end);
             qq=qq(1:h);
-            
+
             % Ytri = n(1-alpha)-by-v matrix associated with the units
             % which have the largest n(1-alpha) likelihood contributions
             Ytri=Y(qq,:);
             % Ytriind = grouping indicator vector (of size n(1-alpha))
             % associated to Ytri
             groupind=ind(qq);
-            
+
             % ind is the identifier vector
             % trimmed units have a value of ind=0
             ind(qqunassigned)=0;
         end
-        
-        
+
+
         if mixt == 1
             %  expll=exp(ll(qq,:));
             %  sumll=sum(expll,2);
             %  postprob=bsxfun(@rdivide,expll,sumll);
-            
+
             % E-step: computation of posterior probabilities for untrimmed
             % units. In the context of mixture models posterior
             % probabilities will be used to estimate new component
             % probabilities of the mixtures, new centroids and new
             % covariance matrices
-            
+
             postprobold=postprob;
             [~,postprob]=estepFS(ll, verLess2016b);
-            
+
             postprob(qqunassigned,:)=0;
-            
+
             % M-step update of niini
             % niini = numerator of component probabilities
             niini=(sum(postprob))';
-            
+
         end
-        
+
         % M-step: parameters are updated
         % Matrix cini contains estimates of the new k centroids
         % Array sigmaini contains estimates of the new covariance matrices
-        
+
         for j=1:k
-            
+
             if mixt>=1
                 if niini(j)>0
                     % Matrix cini is updated using weighted means. The weights
@@ -1553,14 +1618,14 @@ for i=1:nselected
                     else
                         cini(j,:)= sum(Y.*postprob(:,j),1)/niini(j);
                     end
-                    
+
                     if verLess2016b ==true
                         Ytric = bsxfun(@minus,Y,cini(j,:));
                     else
                         Ytric =Y-cini(j,:);
                     end
                     sqweights = postprob(:,j).^(1/2);
-                    
+
                     % Ytric = [X(:,1).*sqweights   X(:,2).*sqweights ...   X(:,end).*sqweights]
                     if verLess2016b ==true
                         Ytric = bsxfun(@times, Ytric, sqweights);
@@ -1568,11 +1633,11 @@ for i=1:nselected
                         Ytric = Ytric.*sqweights;
                     end
                     sigmaini(:,:,j) = (Ytric' * Ytric) / niini(j);
-                    
+
                     if restrGPCM == false
                         % Eigenvalue eigenvector decomposition for group j
                         [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-                        
+
                         % Store eigenvectors and eigenvalues of group j
                         U(:,:,j)=real(Uj);
                         Lambda_vk(:,j)=real(diag(Lambdaj));
@@ -1584,28 +1649,28 @@ for i=1:nselected
                         Lambda_vk(:,j)=onev1;
                     end
                 end
-                
+
             else  % This is the "crisp assignment" setting
-                
+
                 % Boolean index of units forming group j
                 groupj=groupind==j;
-                
+
                 % Size of group j
                 niini(j)=sum(groupj);
-                
+
                 % Group j values
                 Ytrij=Ytri(groupj,:);
-                
+
                 % Means of group j
                 cini(j,:)=sum(Ytrij,1)/niini(j);
-                
+
                 % niini=sum(Ytri(:,v+1)==j);
                 if niini(j)>0
                     % Covariance of group j:
                     % sigmaini(:,:,j)=cov(Ytrij);
                     % cov would recompute the sample means; code below is
                     % more efficient
-                    
+
                     % Important remark: DfM is a mex file with the compiled
                     % code of an efficient method to compute the following
                     % element by element operation:
@@ -1626,9 +1691,9 @@ for i=1:nselected
                             Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
                         end
                     end
-                    
+
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
-                    
+
                     if restrGPCM == false
                         % Eigenvalue eigenvector decomposition for group j
                         [Uj,Lambdaj] = eig(sigmaini(:,:,j));
@@ -1647,16 +1712,16 @@ for i=1:nselected
                         end
                     end
                 end
-                
+
             end
-            
+
         end
-        
+
         if restrnum==1
             % Restriction on the eigenvalues
-            
+
             Lambda_vk(Lambda_vk<0)=0; % check on negative eigenvalues
-            
+
             % Check first if the eigenvalues do not satisy the constraint
             if  abs(max(Lambda_vk,[],'all') / min(Lambda_vk,[],'all')) > restrfactor
                 if use_restreigen
@@ -1667,26 +1732,26 @@ for i=1:nselected
             else
                 autovalues = Lambda_vk;
             end
-            
+
         elseif restrnum==2
-            
+
             % Restriction on the determinants
             Lambda_vk(Lambda_vk<0)=0;
             autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
-            
+
         end
-        
+
         if restrGPCM == false
             % Covariance matrices are reconstructed keeping into account the
             % constraints of the eigenvalues
             for j=1:k
                 sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-                
+
                 % Alternative code: in principle more efficient but slower
                 % because diag is a built in function
                 % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
             end
-            
+
             % BELOW THERE IS AN ALTERNATIVE WAY OF FINDING sigmaini without the loop
             % Note that the implementation below uses mex function mtimes
             %         autov=(autovalues(:)');
@@ -1697,8 +1762,8 @@ for i=1:nselected
             %             ULambda=reshape(bsxfun(@times,reshape(U,v,v*k),autov),v,v,k);
             %         end
             %         sigmainichk=mtimesx(ULambda,U,'T');
-            
-            
+
+
             % Alternative code based on gpuArrary
             % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
         else
@@ -1711,25 +1776,25 @@ for i=1:nselected
         % Calculus of the objective function (E-step)
         % oldobj=obj;
         obj = 0;
-        
+
         if mixt>=1
-            
+
             % Likelihood for mixture modelling
-            
+
             %   log_lh is a h-by-k matrix where k is the number of Gaussian components of the mixture
             %   log_lh is the log of component conditional density weighted by the component
             %   probability.  The probability of j-th component is niini(j)/h
             %   log_lh(i,j) is log (Pr(point i|component j) * Prob( component j))
-            
+
             for j=1:k
                 log_lh(:,j)=  log(niini(j)/h)+logmvnpdfFS(Ytri,cini(j,:),sigmaini(:,:,j),Y0tmp(1:h,:),eyev,h,v,0,callmex);
             end
-            
+
             % obj contains the value of the log likelihood for mixture models
             obj=estepFS(log_lh, verLess2016b);
-            
+
         else
-            
+
             % Likelihood for  crisp clustering
             for j=1:k
                 % disp(ni)
@@ -1741,15 +1806,15 @@ for i=1:nselected
                     else
                         % niini(j)*log(niini(j)/h) is the so called entropy
                         % term which allows for different group weights
-                        
+
                         niinij=niini(j);
                         obj=obj+ niini(j)*log(niinij/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j),Y0tmp(1:niinij,:),eyev,niinij,v,0,callmex));
                     end
                 end
             end
-            
+
         end
-        
+
         if mixt>0
             % if mixt >0 stopping criterion is referred to postprob
             mudiff=sum(sum(abs(postprob-postprobold)))/n;
@@ -1759,7 +1824,7 @@ for i=1:nselected
             mudiff=sum(abs(indold-ind)>0)/n;
             % disp(mudiff)
         end
-        
+
         %disp(num2str(iter))
         %disp(mudiff)
         %
@@ -1769,16 +1834,16 @@ for i=1:nselected
         %                  disp(['Iteration ' num2str(iter)])
         %                  disp([oldobj-obj]/abs(obj))
         %                  disp('monit')
-        
+
         if iter==refsteps
             noconv=noconv+1;
         end
-        
+
     end
-    
+
     % Store value of the objective function for iteration i
     fullsol(i)=obj;
-    
+
     % Store the centroids and the value of the objective function
     if obj>=vopt
         % vopt = value of the objective function in correspondence of the
@@ -1791,16 +1856,16 @@ for i=1:nselected
         % format long;
         %disp(index)
         %disp(obj)
-        
+
         % sigmaopt
         sigmaopt=sigmaini;
-        
+
         % store the indexes of the subset which gave rise to the
         % optimal solution
         bs=index;
     end
-    
-    
+
+
     if msg==1
         if i <= tsampling
             % sampling time until step tsampling
@@ -1810,7 +1875,7 @@ for i=1:nselected
             fprintf('Total estimated time to complete tclust: %5.2f seconds \n', nselected*median(time));
         end
     end
-    
+
 end
 notconver=noconv/nselected;
 if msg==2
@@ -1827,10 +1892,10 @@ end
 
 % Procedure to order the non-empty components
 if any(any(isnan(muopt)))
-    
+
     % restore apropriate order of the components
     NanGroups = isnan(muopt(:,1)); % missing components
-    
+
     % order of the components in nopt, muopt and sigmaopt
     nopt = [nopt(~NanGroups); nopt(NanGroups)];
     muopt = [muopt(~NanGroups,:); muopt(NanGroups,:)];
@@ -1899,24 +1964,24 @@ end
 
 % Find final trimmed and untrimmed units for final classification
 if mixt>=1 % ==2
-    
+
     % Sort the n likelihood contributions
     % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
     [~,qqmixt]=sort(logpdf,'descend');
-    
+
     unassignedmixt=qqmixt(h+1:n);
     assignedmixt=qqmixt(1:h);
-    
+
     % Store in vector idx the cluster associated to the highest posterior
     % probability
     [~,idxmixt]=max(postprob,[],2);
     idxmixt(unassignedmixt)=0;
-    
+
     postprob(unassignedmixt,:)=0;
     % Remark:
     % If there was full convergence sum(logpdf(assigned)) = vopt
 else
-    
+
     unassigned=qq(h+1:n);
     % Assign observations to clusters and assign a 0 value to trimmed ones
     idx(unassigned)=0;
@@ -1929,7 +1994,7 @@ end
 if mixt>=1
     % Compute value of the maximized MiXTURE log likelihood
     [NlogLmixt]=estepFS(ll(assignedmixt,:), verLess2016b);
-    
+
     % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
     % Note that if there was convergence NlogL should be exactly equal to
     % -vopt
@@ -1963,7 +2028,7 @@ end
 
 
 if coder.target('MATLAB')
-    
+
     % siz = matrix of size k x 3,
     % 1st col = sequence from 0 to k
     % 2nd col = number of observations in each cluster
@@ -1993,10 +2058,10 @@ covunrestr=zeros(v,v,k);
 % Find number of restricted eigenvalues for each group
 constr=zeros(k,1);
 for j=1:k
-    
+
     selj=idx==j;
     nopt(j) = sum(selj);
-    
+
     if nopt(j)>v
         covj=cov(Y(selj,:));
         covunrestr(:,:,j)=covj;
@@ -2007,7 +2072,7 @@ for j=1:k
             %         catch
             %             jj=100;
             %         end
-            
+
             if v>1
                 values=sort(diag(values));
                 eigun=values./values(1);
@@ -2021,7 +2086,7 @@ for j=1:k
         end
     else
     end
-    
+
     %     eigunrestr((v*(j-1)+1):j*v)=diag(values);
     %     [~,values] = eigs(sigmaopt(:,:,j));
     %     eigrestr((v*(j-1)+1):j*v)=diag(values);
@@ -2031,24 +2096,24 @@ end
 
 if coder.target('MATLAB')
     %% Empirical quantities stored when there is no convergence
-    
+
     % unique ID found which are not outliers
     UniqID = unique(idx(idx>0));
-    
+
     if length(UniqID) ~= k
         % Compute the empirical statistics when the algorithm does not reach
         % convergence (i.e. some cluster are missing)
-        
+
         % initialize muemp and sigmaemp
         muemp    = nan(size(muopt));
         sigmaemp = nan(v,v,k);
-        
+
         % iterate for each cluster found
         for j=1:length(UniqID)
-            
+
             % assign the jj-th cluster ID
             jj = UniqID(j);
-            
+
             if sum(idx==jj)>1
                 % when more than one unit is in the jj-th cluster
                 muemp(jj,:)      = mean(Y(idx==jj,:));
@@ -2059,7 +2124,7 @@ if coder.target('MATLAB')
                 sigmaemp(:,:,jj) = 0;
             end
         end
-        
+
         % restore apropriate order of the ID
         realID = 1:k;                           % searched clusters
         NanGroups = ~ismember(realID, UniqID);  % missing clusters
@@ -2071,14 +2136,14 @@ if coder.target('MATLAB')
             UniqID(i) = UniqID(i) - sum(NanGroups(1:UniqID(i)));
             idxemp(posChang) = UniqID(i);
         end
-        
+
         % put NaN at the end of muopt, sigmaopt, siz
         muemp = [muemp(~NanGroups,:); muemp(NanGroups,:)];
         sigmaemp = cat(3, sigmaemp(:,:,~NanGroups), sigmaemp(:,:,NanGroups));
         sizemp=tabulate(idxemp);
         misSiz = k-length(UniqID) ; % missing rows in siz
         sizemp = [sizemp; nan(misSiz, 3)];
-        
+
         % Store empirical centroids, covariance matrices, mixing proportions
         % and ID
         emp = struct;
@@ -2086,10 +2151,10 @@ if coder.target('MATLAB')
         emp.muemp = muemp;
         emp.sigmaemp = sigmaemp;
         emp.sizemp = sizemp;
-        
+
         % save the structure in the structure out
         out.emp = emp;
-        
+
     else
         % assign zero to the field when convergence is obtained
         emp = 0;
@@ -2114,86 +2179,86 @@ else
         shapepar=0;
         rotpar=0;
         % nParam=npar+1;
-        
+
     elseif strcmp(modeltype,'VII')
         detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar=0;
         rotpar=0;
         % nParam=npar+k;
-        
+
     elseif strcmp(modeltype,'EEI')
         detpar=1;
         shapepar=v-1;
         rotpar=0;
         % nParam=npar+v;
-        
+
     elseif strcmp(modeltype,'VEI')
         detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar=v-1;
         rotpar=0;
         % nParam=npar+k+v-1;
-        
+
     elseif strcmp(modeltype,'EVI')
         detpar=1;
         rotpar=0;
         shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         % nParam=npar+1+k*(v-1);
-        
+
     elseif strcmp(modeltype,'VVI')
         detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0;
         % nParam=npar+k*v;
-        
+
     elseif strcmp(modeltype,'EEE')
         detpar=1;
         shapepar= (v-1);
         rotpar=0.5*v*(v-1);
         % nParam=npar+0.5*v*(v+1);
-        
+
     elseif strcmp(modeltype,'VEE')
         detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar= (v-1);
         rotpar=0.5*v*(v-1);
         % nParam=npar+k+v-1+0.5*v*(v-1);
-        
-        
+
+
     elseif strcmp(modeltype,'EVE')
         detpar=1;
         shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0.5*v*(v-1);
         % nParam=npar+1+k*(v-1)+0.5*v*(v-1);
-        
+
     elseif strcmp(modeltype,'EEV')
         detpar=1;
         shapepar= v-1;
         rotpar=0.5*k*v*(v-1);
         % nParam=npar+v+0.5*k*v*(v-1);
-        
+
     elseif strcmp(modeltype,'VVE')
         detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0.5*v*(v-1);
         % nParam=npar+k*v+0.5*v*(v-1);
-        
+
     elseif strcmp(modeltype,'VEV')
         detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar= v-1;
         rotpar=0.5*k*v*(v-1);
         % nParam=npar+k+v-1+0.5*k*v*(v-1);
-        
+
     elseif strcmp(modeltype,'EVV')
         detpar=1;
         shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0.5*k*v*(v-1);
         % nParam=npar+1+k*(v-1) +0.5*k*v*(v-1);
-        
+
     elseif strcmp(modeltype,'VVV')
         detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0.5*k*v*(v-1);
         %  nParam=npar+0.5*k*v*(v+1);
-        
+
     else
         error('FSDA:tclust:WrongModel','Wrong model for cov matrices, must be one of the 14 GPCM');
     end
@@ -2206,11 +2271,11 @@ if mixt>0
     % MIXMIX = BIC which uses parameters estimated using the mixture loglikelihood
     % and the maximized mixture likelihood as goodness of fit measure (New BIC)
     MIXMIX  = 2*NlogLmixt +nParam*logh;
-    
+
     % MIXCLA = BIC which uses the classification likelihood based on
     % parameters estimated using the mixture likelihood (New ICL)
     MIXCLA  = 2*NlogL +nParam*logh;
-    
+
     out.MIXMIX=MIXMIX;
     out.MIXCLA=MIXCLA;
     out.NlogL= 2*NlogLmixt;
@@ -2242,12 +2307,12 @@ if coder.target('MATLAB')
             warning('FSDA:tclust:WrongKObtained','The total number of estimated clusters is smaller than the number supplied')
         end
     end
-    
-    
+
+
     if min(out.siz((1+alp):end,2)< n*0.02)
         warning('FSDA:tclust:TooSmallNj','Clusters with size < n * 0.02 found - try reducing k')
     end
-    
+
     if vopt==-1e+25
         warning('FSDA:tclust:NoConvergence','The result is artificially constrained due to restr.fact = 1')
     end
@@ -2278,41 +2343,41 @@ else
 end
 
 if coder.target('MATLAB')
-    
+
     %% Create plots
     plots=options.plots;        % Plot of the resulting classification
-    
+
     % Plot the groups. Depending on v (univariate, bivariate, multivariate),
     % we generate different plot types.
     if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % integer equal to 1 or structure
             ((ischar(plots) || iscell(plots)) && max(strcmp(plots,{'contourf','contour','surf','mesh','ellipse','boxplotb'}))) || ... % char or cell of one of the specified string
             (iscell(plots) && isstruct(cell2mat(plots))) % cell containing a structure
-        
+
         % The following statement is necessary because if mixt>0
         % idx was called idxmixt;
         idx=out.idx;
-        
+
         % change the ID used if empirical values are evaluated
         if isstruct(emp)
             idx = idxemp;
         end
-        
+
         if v==1
-            
+
             % Univariate case: plot the histogram
             figure;
             histFS(Y,length(Y),idx);
-            
+
         elseif v>=2
-            
+
             % Bivariate plot, optionally with confidence ellipses, density
             % countours or bivariate boxplot
-            
+
             % extract char or struct fro the cell if needed
             if iscell(plots)
                 plots = cell2mat(plots);
             end
-            
+
             % define what to superimpose on the plot
             if ischar(plots)
                 overlay.type = plots;
@@ -2322,42 +2387,42 @@ if coder.target('MATLAB')
                 % if plots=1 do not add anything to the scatter plot
                 overlay ='';
             end
-            
+
             % exclude outliers if present (when plots is char or struct)
             if any(idx<=0) && ~isempty(overlay)
                 overlay.include = true(length(unique(idx)), 1);
                 overlay.include(unique(idx)<=0) = false;
             end
-            
+
             % differentiate for bivariate and multivariate data
             if v==2
                 undock = [2 1];
             else
                 undock = '';
             end
-            
+
             % show axes label
             plo.labeladd=1;
-            
+
             % use black color for outliers (i.e. k is the first color, used for group 0)
             if any(idx==0)
                 plo.clr = 'kbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcy';
                 plo.clr = plo.clr(1:length(unique(idx)));
             end
-            
+
             % Add Labels Names
             % [To Enhance if used we lose the labels' order, it needs to
             % change on the spmplot call idx with id]
             % id=cellstr(num2str(idx));
             % id(idx==0)=cellstr('Trimmed units');
-            
+
             % bivariate scatter
             figure;
             spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlay);
-            
+
         end
-        
-        
+
+
         % add title
         if restrGPCM==false
             str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$',restrfactor(1));
@@ -2366,7 +2431,7 @@ if coder.target('MATLAB')
             % str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$','GPCM');
         end
         title(str,'Interpreter','Latex'); % , 'fontsize', 14
-        
+
     elseif isscalar(plots) && plots == 0
         % does anything
     else

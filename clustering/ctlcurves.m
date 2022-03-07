@@ -187,6 +187,11 @@ function out  = ctlcurves(Y, varargin)
 %                   values of k given a particular value of alpha is computed.
 %                   The relative time in which this difference is greater than
 %                   the bootstrap difference is stored in out.pvalLRtest.
+%             bands.nsamp =  Number of subsamples to extract in the
+%                   bootstrap replicates. If this field is not present and
+%                   or it is empty the number of subsamples which is used
+%                   in the bootstrap replicates is equal to the one used
+%                   for real data (input option nsamp).
 %   bands.outliersFromUniform = way of generating the outliers in the bootstrap
 %                   replicates. Boolean. If outliersFromUniform is true
 %                   (default) the outliers are generated using the uniform
@@ -372,16 +377,28 @@ function out  = ctlcurves(Y, varargin)
 %           out.OptimalK = scalar, optimal number of clusters, stored
 %                        as a positive integer value. This output is present
 %                       only if optional input argument is true.
-%           out.TentSol  = matrix with size m-by 3. Details of the ordered
+%           out.TentSol  = matrix with size m-by-4. Details of the ordered
 %                          solutions where there was intersection between
 %                          two consecutive trimmed likelihood curves. First
 %                          column contains the value of k, second column
-%                          the value of alpha and third column the index
-%                          associated to the best value of alpha.
+%                          the value of alpha, third column the index
+%                          associated to the best value of alpha, fourth
+%                          colum index associated with the best value of
+%                          kk.
 %        out.pvalLRtest =  table with size length(kk)-1-times-length(alpha)
 %                           which stores the relative frequency in which
 %                           the Likelihood ratio test is greater than the
 %                           corresponding bootstrap test.
+%        out.TentSolLR  = matrix with size m-by-4. Details of the ordered
+%                          solutions using the likelihood ratio test. First
+%                          column contains the value of k, second column
+%                          the value of alpha, third column the index
+%                          associated to the best value of alpha, fourth
+%                          colum index associated with the best value of
+%                          kk.
+%        out.idxLR  = matrix with size n-by-size(out.TentSolLR,1) with the allocation
+%                     associated with the tentative solutions found in out.TentSolLR. 
+%                     First column refers to best solution ...
 %                out.kk = vector containing the values of k (number of
 %                       components) which have been considered. This  vector
 %                       is equal to input optional argument kk if kk had been
@@ -418,7 +435,7 @@ function out  = ctlcurves(Y, varargin)
 %
 % References:
 %
-% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar A., (2011), 
+% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar A., (2011),
 % "Exploring the number of groups in robust model-based
 % clustering." Statistics and Computing, Vol. 21, pp. 585-599.
 %
@@ -535,20 +552,20 @@ outliersFromUniform=true;
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    
+
     options=struct('kk',kk,'mixt',mixt,'alpha',alphaTrim,...
         'nsamp',nsamp,'plots',plots,'nocheck',0,'bands',bands, ...
         'restrfactor', restrfactor, ...
         'msg',msg,'Ysave',1,'refsteps',refsteps,'equalweights',equalweights,...
         'reftol',reftol,'startv1',startv1,'restrtype',restr,'cshape',cshape,...
         'numpool',numpool, 'cleanpool', cleanpool);
-    
-    
+
+
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:ctlcurves:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    
+
     % Check if all the specified optional arguments were present
     % in structure options
     % Remark: the nocheck option has already been dealt by routine
@@ -559,31 +576,31 @@ if ~isempty(UserOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
         error('FSDA:ctlcurves:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
-    
+
+
     restr=options.restrtype;
     alphaTrim=options.alpha;
     kk=options.kk;
     nsamp=options.nsamp;        % Number of subsets to extract
     plots=options.plots;        % Plot the ctl curves
     equalweights=options.equalweights;    % Specify if assignment must take into account the size of the groups
-    
+
     refsteps=options.refsteps;
     reftol=options.reftol;
     msg=options.msg;            % Scalar which controls the messages displayed on the screen
-    
+
     mixt=options.mixt;
     cleanpool=options.cleanpool;
     numpool=options.numpool;
     cshape=options.cshape;
     restrfactor=options.restrfactor;
     bands=options.bands;
-    
+
     % Make sure vectors kk and alphaTtrim are sorted.
     kk=sort(kk);
     alphaTrim=sort(alphaTrim);
@@ -611,9 +628,9 @@ else
 end
 
 for k=1:lkk  % loop for different values of k (number of groups)
-    
+
     seqk=kk(k);
-    
+
     % Cnsamp=subsets(nsamp,n,(v+1)*seqk);
     %seqk = number of groups to consider
     if isscalar(nsamp)
@@ -622,42 +639,42 @@ for k=1:lkk  % loop for different values of k (number of groups)
     else
         Cnsamp=nsamp;
     end
-    
+
     % For each value of k extract random numbers to initialize proportions
     % once and for all
     gRandNumbForNini=rand(seqk,nsamp);
-    
+
     if ComputeBands==true
         CnsampAll{seqk}=Cnsamp;
         gRandNumbForNiniAll{seqk}=gRandNumbForNini;
     end
-    
+
     parfor (j=1:lalpha , numpool)
-        
+
         alphaTrimj=alphaTrim(j);
-        
+
         outtc=tclust(Y,seqk,alphaTrimj,restrfactor,'nsamp',Cnsamp,'plots',0,'msg',0,'mixt',mixt, ...
             'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
             'reftol',reftol,'RandNumbForNini',gRandNumbForNini,'cshape',cshape);
-        
+
         % Store proportions
         [indice] = find(outtc.siz(:,1) >0);
         PiVal{k,j} = outtc.siz(indice,2)/sum(outtc.siz(indice,2));
-        
+
         % columns (j) = values of alpha
         % rows (k) = number of groups
-        
+
         % Store centroids
         MuVal{k,j} = outtc.muopt;
         % Store covariance matrices
         SigmaVal{k,j} = outtc.sigmaopt;
-        
+
         % Store classification
         IDX{k,j} = outtc.idx;
-        
+
         % Store objective function
         CTLVal(k,j) = outtc.obj;
-        
+
     end
     if msg==1
         disp(['k=' num2str(seqk)])
@@ -668,8 +685,11 @@ end
 gamma=0.25;
 % nsimul = default number of simulations to create the bands
 nsimul=60;
-% do not validate the components using outlier detectio procedures.
+% do not validate the components using outlier detection procedures.
 valSolution=false;
+% Initialization for number or subsets to extract when tclust is applied to
+% simulated data.
+nsampSimData=[];
 
 out=struct;
 out.Mu=MuVal;
@@ -679,31 +699,38 @@ out.IDX=IDX;
 out.CTL=CTLVal;
 
 if ComputeBands==true
-    
+    % Suppress warning on All Workers
+    parfevalOnAll(@warning,0,'off','all');
     if isstruct(bands)
-        
+
         if isfield(bands,'conflev')
             gamma=(1-bands.conflev)/2;
         end
-        
+
         if isfield(bands,'nsimul')
             nsimul=bands.nsimul;
         end
-        
+
         if isfield(bands,'valSolution')
             valSolution=bands.valSolution;
         end
-        
+
         if isfield(bands,'LRtest')
             LRtest=bands.LRtest;
         end
-        
+
         if isfield(bands,'outliersFromUniform')
             outliersFromUniform=bands.outliersFromUniform;
         end
-        
+
+        if isfield(bands,'nsamp')
+            nsampSimData=bands.nsamp;
+        else
+            nsampSimData=[];
+        end
+
     end
-    
+
     % BandsCTL is a 3D array which will contain the replicates for the
     % solutions
     BandsCTL=zeros(lkk,lalpha,nsimul);
@@ -712,29 +739,47 @@ if ComputeBands==true
     end
     % maxk = maximum allowed vector for k
     maxk=kk(end);
-    
+
     for k=1:lkk  % loop for different values of k (number of groups)
-        
+
         % Extract what depends just on k
         seqk=kk(k);
         CnsampAllk=CnsampAll{seqk};
         gRandNumbForNiniAllk=gRandNumbForNiniAll{seqk};
-        
+
+        if ~isempty(nsampSimData)
+            CnsampAllkSimData=CnsampAllk(1:nsampSimData,:);
+            gRandNumbForNiniAllkSimData=gRandNumbForNiniAllk(:,1:nsampSimData);
+        else
+            CnsampAllkSimData=CnsampAllk;
+            gRandNumbForNiniAllkSimData=gRandNumbForNiniAllk;
+        end
+
         if LRtest==true && seqk<maxk
             CnsampAllkplus1=CnsampAll{seqk+1};
             gRandNumbForNiniAllkplus1=gRandNumbForNiniAll{seqk+1};
+            if ~isempty(nsampSimData)
+                CnsampAllkplus1SimData=CnsampAllkplus1(1:nsampSimData,:);
+                gRandNumbForNiniAllkplus1SimData=gRandNumbForNiniAllkplus1(:,1:nsampSimData);
+            else
+                CnsampAllkplus1SimData=CnsampAllkplus1;
+                gRandNumbForNiniAllkplus1SimData=gRandNumbForNiniAllkplus1;
+            end
+
         else
             % parfor  needs that these variables are initialized
-            CnsampAllkplus1=1;
-            gRandNumbForNiniAllkplus1=1;
+            CnsampAllkSimData=1;
+            gRandNumbForNiniAllkplus1SimData=1;
+            CnsampAllkplus1SimData=1;
+            
         end
-        
+
         if msg==1
             disp(['Bands k=' num2str(seqk)])
         end
-        
+
         for j=1:lalpha
-            
+
             ktrue = length(PiVal{k, j});
             Mutrue = MuVal{k, j};
             Mutrue=Mutrue(1:ktrue,:);
@@ -751,8 +796,9 @@ if ComputeBands==true
             else
                 Yadd=[];
             end
-            
+
             parfor (zz = 1:nsimul, numpool)
+                % for zz = 1:nsimul
                 if outliersFromUniform == true
                     [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
                     if size(Ysim,1)<n
@@ -763,46 +809,46 @@ if ComputeBands==true
                     [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', 0);
                     Ysim=[Ysim;Yadd];
                 end
-                outtcSIM=tclust(Ysim,seqk,alphaTrimj,restrfactor,'nsamp',CnsampAllk,'plots',0,'msg',0,'mixt',mixt, ...
+                outtcSIM=tclust(Ysim,seqk,alphaTrimj,restrfactor,'nsamp',CnsampAllkSimData,'plots',0,'msg',0,'mixt',mixt, ...
                     'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-                    'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllk,'cshape',cshape);
-                
+                    'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkSimData,'cshape',cshape);
+
                 if LRtest==true  && seqk<maxk
-                    outtcSIMkplus1=tclust(Ysim,seqk+1,alphaTrimj,restrfactor,'nsamp',CnsampAllkplus1,'plots',0,'msg',0,'mixt',mixt, ...
+                    outtcSIMkplus1=tclust(Ysim,seqk+1,alphaTrimj,restrfactor,'nsamp',CnsampAllkplus1SimData,'plots',0,'msg',0,'mixt',mixt, ...
                         'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-                        'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkplus1,'cshape',cshape);
-                    BandsCTLtest(k,j,zz)=outtcSIMkplus1.obj-outtcSIM.obj
+                        'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkplus1SimData,'cshape',cshape);
+                    BandsCTLtest(k,j,zz)=outtcSIMkplus1.obj-outtcSIM.obj;
                 end
-                
+
                 BandsCTL(k, j, zz) = outtcSIM.obj;
             end
         end
     end
     out.BandsCTL=BandsCTL;
-    
-    likLB = zeros(length(kk),length(alphaTrim));
+
+    likLB = zeros(lkk,lalpha);
     lik050 = likLB;
     likUB =likLB;
-    for k=1:length(kk)  % loop for different values of k (number of groups)
-        parfor j=1:length(alphaTrim)
+    for k=1:lkk  % loop for different values of k (number of groups)
+        parfor j=1:lalpha
             likLB(k,j) = quantile(BandsCTL(k,j,:), gamma);
             lik050(k,j) = median(BandsCTL(k,j,:));
             likUB(k,j) = quantile(BandsCTL(k,j,:), 1- gamma);
         end
     end
-    
+
     out.likLB=likLB;
     out.lik050=lik050;
     out.likUB=likUB;
-    
+
     % Call routine which computes the best tentative solutions.
     [TentSol,kfin,alphafin,idxOptimal]=findOptimalSolutions(likUB,likLB,lik050,IDX,alphaTrim,lkk,kk);
-    
+
     if valSolution == true
-        % Validate the groups
+        % Validate the groups in correspondence of the best solution
         seq=1:n;
         ExtraZeros=false;
-        for jj=1:kk(kfin)
+        for jj=1:kfin
             seqjj=seq(idxOptimal==jj);
             VALjj=FSM(Y(seqjj,:),'msg',0,'plots',0);
             if ~isnan(VALjj.outliers)
@@ -816,11 +862,11 @@ if ComputeBands==true
             alphafin=sum(idxOptimal==0)/n;
         end
     end
-    
-    
+
+
     out.idx=idxOptimal;
     out.Optimalalpha=alphafin;
-    out.OptimalK=kk(kfin);
+    out.OptimalK=kfin;
     out.TentSol=TentSol;
     % Store best classification
 end
@@ -832,16 +878,48 @@ end
 
 
 if LRtest==true && ComputeBands ==true
-    % Values of the difference between target function using k+1 and k
+    % Values of the  difference between target function using k+1 and k
+    % using real data
     tobs= out.CTL(2:end,:)-out.CTL(1:end-1,:);
+
+    % tboot = values of the difference between target function using k+1
+    % and k groups for data simulated assuming k groups
     tboot=BandsCTLtest;
     tbootGTtobs=sum(tboot>tobs,3)/nsimul;
-    tbootGTtobsf=tbootGTtobs;
-    
+
     varnam=strcat('alpha=',string(alphaTrim'));
     rownam=strcat('k=',string((kk(1:end-1)')),'_vs_k=',string((kk(2:end)')));
-    out.pvalLRtest=array2table(tbootGTtobsf,'VariableNames',varnam,'RowNames',rownam);
-    
+    out.pvalLRtest=array2table(tbootGTtobs,'VariableNames',varnam,'RowNames',rownam);
+
+    TentSolLR=zeros(lkk-1,4);
+    idxLR=zeros(n,lkk-1);
+    ij=1;
+    for i=1:lkk-1
+        soli=find(tbootGTtobs(i,:)>=0.05,1);
+        if ~isempty(soli)
+            if ij==1 % Store the first solution
+                TentSolLR(ij,:)=[kk(i) alphaTrim(soli), soli i];
+                idxLR(:,ij)=IDX{i,soli};
+                ij=ij+1;
+
+                % Make sure that a different alpha is found for two consecutive solutions
+            elseif ij>1 && alphaTrim(soli)~= TentSolLR(ij-1,2)
+                TentSolLR(ij,:)=[kk(i) alphaTrim(soli), soli i];
+                idxLR(:,ij)=IDX{i,soli};
+                ij=ij+1;
+            else
+            end
+        end
+    end
+    if ij>1
+        TentSolLR=TentSolLR(1:ij-1,:);
+        idxLR=idxLR(:,1:ij-1);
+    else
+        TentSolLR=[];
+        idxLR=[];
+    end
+    out.TentSolLR=TentSolLR;
+    out.idxLR=idxLR;
 end
 
 % thresh=0.05;
@@ -897,9 +975,11 @@ function [TentSol,kfin,alphafin,idxOptimal]=findOptimalSolutions(likUB,likLB,lik
 conv=0;
 % First column of TentSol will contain the value of k while the second
 % column the associated trimming level
-% Third column is the index of the elment of alpha containing the best
+% Third column is the index of the vector alpha containing the best
 % optimal trimming level
-TentSol=zeros(lkk-1,3);
+% Fourth column is the index of the vector kk containing the best number of
+% groups
+TentSol=zeros(lkk-1,4);
 jj=1;
 
 for j = 1:lkk-1
@@ -912,19 +992,20 @@ for j = 1:lkk-1
             break
         else
         end
-        
+
     end
-    
+
     if ~isempty(alphaBest)
-        TentSol(jj,:)=[j alphaBest, jalpha];
+        TentSol(jj,:)=[kk(j) alphaBest, jalpha j];
         jj=jj+1;
     end
 end
-if TentSol(1,1)>0
+if ~isempty(TentSol) && TentSol(1,1)>0
     conv=1;
     TentSol=TentSol(1:jj-1,:);
     kfin=TentSol(1,1);
-    jalpha=TentSol(1,3);
+    jalpha=TentSol(1,3); % index of alphaTrim associated to best solution
+    jk=TentSol(1,4); % index of kk associated to best solution
     alphafin=TentSol(1,2);
 else
     TentSol=NaN;
@@ -932,7 +1013,7 @@ end
 
 
 if conv == 1
-    idxOptimal=IDX{kfin,jalpha};
+    idxOptimal=IDX{jk,jalpha};
 else
     disp('No intersection among the curves has been found for the selected trimming levels and number of groups')
     disp('Please increase k or alpha')
