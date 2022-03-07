@@ -370,7 +370,8 @@ else
         % callmex is a Boolean which is equal to true if the mex file exists
         callmex=existFS('DfM');
     end
-    
+
+% IF_FSDAR    
     if callmex==true
         % Deviations from Mu using a mex function based on C code contained in file DfM.c
         % n = scalar, number of observations (input parameter of function DfM)
@@ -392,6 +393,9 @@ else
             X0 = bsxfun(@minus,X,Mu);
         end
     end
+% ELSE_FSDAR
+%   X0 = bsxfun(@minus,X,Mu);
+% END_FSDAR
 end
 
 % Take Choleski of Sigma
