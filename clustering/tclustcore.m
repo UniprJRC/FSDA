@@ -257,11 +257,16 @@ for i=1:nselected
                     % comment the DfM line below and uncomment the bsxfun
                     % instruction above. In contexts where this is called
                     % many times, this solution is much more performant.
+                    
+% IF_FSDAR                    
                     if callmex==true
                         DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
                     else
                         Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
                     end
+% ELSE_FSDAR
+%                   Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
+% END_FSDAR
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
                     
                     % Eigenvalue eigenvector decomposition for group j

@@ -3,25 +3,28 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
 %
 %<a href="matlab: docsearchFS('quickselectFS')">Link to the help function</a>
 %
+% quickselectFS is a linear algorithm equivalent to quickselect (Hoare's
+% Find), which computes order statistics with an approach that avoids
+% recursion and repeated calls to partitioning functions.
+%
 % Required input arguments:
 %
 %   A:  a set of unique numbers. Vector. Vector containing a set of n
 %       (distinct) numbers.
 %                 Data Types - double
-%   k:  order statistic index. Scalar. An integer between 1 and n indicating the
-%       desired order statistic.
+%   k:  order statistic index. Scalar. An integer between 1 and n indicating 
+%       the desired order statistic.
 %                 Data Types - double
-%
 %
 %
 % Optional input arguments:
 %
 %  kiniindex: Index of an element in A. Scalar.
-%      The index of an element in A that is supposed to be "close"
-%      to the desired k-th order statistic. This information is used to
-%      choose the pivot so that the chance to fall into the worst case
-%      performance ($O(n^2)$) is minimized and the average case performance
-%      is maximized.
+%      The index of an element in A that is supposed to be "close" to the
+%      desired k-th order statistic. This information is used to choose the
+%      pivot so that the chance to fall into the worst case performance
+%      ($O(n^2)$) is minimized and the average case performance is
+%      maximized.
 %      Example - 'kiniindex',1 
 %      Data Types - double
 %
@@ -33,11 +36,16 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
 % Optional Output:
 %    
 %    Asor   : Partially sorted vector. Vector. Elements of input vector 
-%             A(1:k) are sorted in ascending order.
+%             A(1:k) are sorted in ascending order. Remark: this option
+%             implies the application of a sorting algorithm on part of the
+%             array, with obvious implications on performance.
 %
 % See also:  FSMmmd
 %
 % References:
+%
+% Azzini, I., Perrotta, D. and Torti, F. (2022), ﻿A practically efficient
+% and extensible fixed-pivot selection algorithm, "Submitted"
 %
 % Riani, M., Perrotta, D. and Cerioli, A. (2015), The Forward Search for
 % Very Large Datasets, "Journal of Statistical Software"
@@ -113,21 +121,24 @@ end
 % pivot is chosen at fixed position k. 
 pivotIndex = k;
 
+% The original loop was:
+% while ((left < right) && (position ~= k)) 
+% The (left < right) condition reduces the number of iterations, but the
+% gain is not compensated by the cost of the additional check. Therefore,
+% we just check that position ~= k.
 position = -999;
 while (position ~= k)
-%while ((left < right) && (position ~= k))
     
-    pivot = A(pivotIndex);
-    
-    % Swap right sentinel and pivot element
+    % Swap the right sentinel with the pivot
+    pivot    = A(pivotIndex);
     A(k)     = A(right);
     A(right) = pivot;
     
     position = left;
     for i = left:right
         if(A(i)<pivot)
-            % Swap A(i) with A(position)!
-            % A([i,position])=A([position,i]) would be more elegant but slower
+            % Swap A(i) with A(position)
+            % A([i,position])=A([position,i]) is more elegant but slower
             Ai          = A(i);
             A(i)        = A(position);
             A(position) = Ai;
@@ -142,12 +153,10 @@ while (position ~= k)
     
     if  position < k
         left  = position + 1;
-    else % this is 'elseif pos > k' as pos == k cannot hold (see 'while')
+    else % --> 'elseif pos > k' as pos == k cannot occur (see 'while')
         right = position - 1;
     end
     
-    % Pivot: extension to random choice has to be studied.
-    % pivotIndex = ceil(( left + right ) / 2);
 end
 
 kE=A(k);
