@@ -789,16 +789,17 @@ if ComputeBands==true
             alphaTrimj=alphaTrim(j);
             ngood=round(n*(1-alphaTrimj));
             nout=n-ngood;
+            idxkj=IDX{k,j};
             % if outliersFromUniform is false the outliers in the replicate
             % samples are the units which have been trimmed
             if outliersFromUniform == false
-                Yadd=Y(IDX{k,j}==0,:);
+                Yadd=Y(idxkj==0,:);
             else
                 Yadd=[];
             end
 
-            parfor (zz = 1:nsimul, numpool)
-                % for zz = 1:nsimul
+             parfor (zz = 1:nsimul, numpool)
+             %   for zz = 1:nsimul
                 if outliersFromUniform == true
                     [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
                     if size(Ysim,1)<n
@@ -811,12 +812,14 @@ if ComputeBands==true
                 end
                 outtcSIM=tclust(Ysim,seqk,alphaTrimj,restrfactor,'nsamp',CnsampAllkSimData,'plots',0,'msg',0,'mixt',mixt, ...
                     'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-                    'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkSimData,'cshape',cshape);
+                    'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkSimData,'cshape',cshape,...
+                    'priorSol',idxkj);
 
                 if LRtest==true  && seqk<maxk
                     outtcSIMkplus1=tclust(Ysim,seqk+1,alphaTrimj,restrfactor,'nsamp',CnsampAllkplus1SimData,'plots',0,'msg',0,'mixt',mixt, ...
                         'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-                        'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkplus1SimData,'cshape',cshape);
+                        'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkplus1SimData,'cshape',cshape, ...
+                        'priorSol',IDX{k+1,j});
                     BandsCTLtest(k,j,zz)=outtcSIMkplus1.obj-outtcSIM.obj;
                 end
 
