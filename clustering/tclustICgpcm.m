@@ -870,7 +870,7 @@ if typeIC==0 % CLACLA
     selIC=CLACLA;
     nameselIC='CLACLA';
     
-    [kbest, cdetbest, cshwbest, bestBIC]=selICplot(selIC,ccdet,ccshw,kk,nameselIC,plots);
+    [kbest, cdetbest, cshwbest, bestBIC]=selICplot(selIC,ccdet,ccshw,kk,nameselIC,plots,warmup);
     
     % cdetbest and cshwbest are using in the refiing step to decide about
     % the best type of rotation
@@ -969,7 +969,7 @@ else  % MIXMIX or MIXCLA store IDXMIX
     out.ccdet=ccdet;
     out.ccshw=ccshw;
     
-    [kbest, cdetbest, cshwbest, bestBIC]=selICplot(selIC,ccdet,ccshw,kk,nameselIC,plots);
+    [kbest, cdetbest, cshwbest, bestBIC]=selICplot(selIC,ccdet,ccshw,kk,nameselIC,plots,warmup);
     %    [kbest, cdetbest, cshwbest, bestBIC]=selICplot(selIC,cc,lcc,kk,lkk,nameselIC,xkk,LineWidth,slintyp,styp,legstr);
     
     pasel.cdet=cdetbest;
@@ -1129,7 +1129,7 @@ end
 
 
 
-function [kbest,cdetbest,cshwbest,BICbest]=selICplot(selIC,cdet,cshw,kk,nameselIC,plots)
+function [kbest,cdetbest,cshwbest,BICbest]=selICplot(selIC,cdet,cshw,kk,nameselIC,plots,warmup)
 
 [valmin,posmin]=min(selIC,[],'all','linear');
 [lkk,lcdet,lcshw]=size(selIC);
@@ -1218,7 +1218,25 @@ if plots==1
     
     figure
     selIC2Dbestk=squeeze(selIC(bestk,:,:));
-    heatmap(cshw,cdet,selIC2Dbestk)
+
+    if warmup==false
+        heatmap(cshw,cdet,selIC2Dbestk)
+       
+    else
+        selIC2Dbestk1=selIC2Dbestk;
+        cdet1=cdet;
+        cshw1=cshw;
+        if cdet(bestcdet)==1
+            selIC2Dbestk1=selIC2Dbestk1(1,:);
+            cdet1=1;
+        end
+        if cshw(bestcshw)==1
+            selIC2Dbestk1=selIC2Dbestk1(:,1);
+            cshw1=1;
+        end
+        heatmap(cshw1,cdet1,selIC2Dbestk1)
+    end
+
     xlabel('c_{shw}')
     ylabel('c_{det}')
     title(['Heatmap for k=' num2str(kk(bestk)) '. Best c_{shw}=' ...
