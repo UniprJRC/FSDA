@@ -1383,12 +1383,13 @@ for i=1:nselected
     end
 
     if startv1 ==true
-        
+
         % Note that usePriorSol is used just if startv1 is true
         if usePriorSol==true && i==nselected
             cini=priorSolStruct.cini;
             sigmaini=priorSolStruct.sigmaini;
             niini=priorSolStruct.niini;
+            index=[];
         else
             if NoPriorNini==1
                 randk=rand(k,1);
@@ -1861,7 +1862,8 @@ for i=1:nselected
         sigmaopt=sigmaini;
 
         % store the indexes of the subset which gave rise to the
-        % optimal solution
+        % optimal solution. Note that bs is empty if the optimal solution
+        % comes from prior solution
         bs=index;
     end
 
