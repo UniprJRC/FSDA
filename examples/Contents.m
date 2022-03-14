@@ -8,7 +8,7 @@
 %   brushRES                   - Displays a GUI which enables brushing in resfwdplot                                                           - GUI- 2021 Feb 01
 %   brushROB                   - Displays a GUI which enables brushing in resindexplot                                                         - GUI- 2021 Feb 01
 %   GUIconcentration           - Shows the necessary calculations to obtain the GINI concentration index in a GUI                              - GUI- 2021 Mar 17
-%   GUIcov                     - Shows the necessary calculations to obtain the covariance in a GUI                                            - GUI- 2021 Mar 17
+%   GUIcov                     - Shows the necessary calculations to obtain the covariance in a GUI                                            - GUI- 2021 Oct 04
 %   GUImad                     - Shows the necessary calculations to obtain MAD, S_M or S_Me in a GUI                                          - GUI- 2021 Mar 17
 %   GUIpowermean               - Shows the necessary calculations to obtain the power (generalized) mean in a GUI                              - GUI- 2021 Mar 17
 %   GUIquantile                - Shows the necessary calculations to obtain $x_z$ quantile                                                     - GUI- 2021 Mar 17

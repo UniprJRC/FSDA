@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.21';
+newVersion = '8.5.23';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='Placeholder just for testing';
+commentRelease='Added new options in aceplot';
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';

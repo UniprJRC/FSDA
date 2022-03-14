@@ -20,6 +20,6 @@
 %   suplabel                  - Places text as a title, xlabel, or ylabel on a group of subplots                                             - UTIGEN- 2021 Feb 01
 %   triu2vec                  - Extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix    - UTIGEN- 2021 Feb 01
 %   upperfracpos              - Positions two figures on the upper part of the screen                                                        - UTIGEN- 2021 Feb 01
-%   verLessThanFS             - Compares version of MATLAB to specified version number                                                       - UTIGEN- 2021 Jun 07
+%   verLessThanFS             - Compares version of MATLAB to specified version number                                                       - UTIGEN- 2021 Oct 16
 %   wraptextFS                - Formats long strings into wrapped text of specified width                                                    - UTIGEN- 2021 Feb 01
 %   zscoreFS                  - Computes (robust) standardized z scores                                                                      - UTIGEN- 2021 May 11
