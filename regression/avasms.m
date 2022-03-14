@@ -168,8 +168,10 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %    plots : plots on the screen. Boolean. If plots is true it is possible
 %           to visualize on the screen the augmented star plot and the
 %           heatmap associated to the correlation among the admissible
-%           solutions. The default value of plots is false, that is no plot
-%           is shown on the screen. 
+%           solutions. The plot which contains the augmented start plot is tagged
+%           pl_augstar, while the plot which contains the heatmap is tagged
+%           pl_heatmap. The default value of plots is false, that is no
+%           plot is shown on the screen.
 %           Example - 'plots',true
 %           Data Types - Logical
 %
@@ -579,6 +581,7 @@ else
 
         % call the augmented star plot
         augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs)
+        set(gcf,'Tag','pl_augstar')
 
         % Create the heatmap of the correlation matrix of the best solutions
         % which have been found.
@@ -587,6 +590,8 @@ else
         xval="Sol"+(1:maxSol)';
         heatmap(xval,xval,corMatrix(1:maxSol,1:maxSol),'MissingDataColor','w')
         title('Heatmap of the correlation matrix among the best solutions')
+        set(gcf,'Tag','pl_heatmap')
+
     end
 
 end

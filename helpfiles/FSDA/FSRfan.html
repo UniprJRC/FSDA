@@ -38,19 +38,19 @@ X=XX(:,1:end-1);
 % In this case we use the five most common values of lambda are considered
 [out]=FSRfan(y,X);
 fanplot(out);
-%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 15.4%
+Total estimated time to complete LMS:  0.02 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
 Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
 Total estimated time to complete LMS:  0.01 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.03 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
 </pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#Example_1'><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
@@ -107,9 +107,9 @@ namey =
 
     'Sales'
 
-Total estimated time to complete LMS:  0.03 seconds 
-Total estimated time to complete LMS:  0.03 seconds 
-Total estimated time to complete LMS:  0.03 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
+Total estimated time to complete LMS:  0.05 seconds 
 Total estimated time to complete LMS:  0.04 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRfan_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare BoxCox with Yeo and Johnson transformation.</li></span></a></span></h3><div class="collapse"><p>
      Store values of the score test statistic
@@ -125,34 +125,34 @@ X=XX(:,1:end-1);
 fanplot(outBC,'titl','Box Cox');
 fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
 disp('Maximum difference in absolute value')
-disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.14 seconds 
+disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.32 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.13 seconds 
+Total estimated time to complete LMS:  0.28 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.14 seconds 
+Total estimated time to complete LMS:  0.31 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.15 seconds 
+Total estimated time to complete LMS:  0.30 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.14 seconds 
+Total estimated time to complete LMS:  0.36 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.14 seconds 
+Total estimated time to complete LMS:  0.27 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.14 seconds 
+Total estimated time to complete LMS:  0.26 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.14 seconds 
+Total estimated time to complete LMS:  0.35 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.14 seconds 
+Total estimated time to complete LMS:  0.38 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
-Total estimated time to complete LMS:  0.14 seconds 
+Total estimated time to complete LMS:  0.22 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3%
 Maximum difference in absolute value
@@ -168,7 +168,7 @@ sig=0.5;
 y=X*beta+sig*randn(n,1);
 disp('Fit in the true scale')
 disp('R2 of the model in the true scale')
-if verLessThanFS(8.1)
+if verLessThanFS('8.1')
 out=regstats(y,X,'linear',{'rsquare'});
 disp(out.rsquare)
 else
@@ -185,7 +185,7 @@ disp('response with missing values')
 end
 disp('Fit in the transformed scale')
 disp('R2 of the model in the wrong (inverse) scale')
-if verLessThanFS(8.1)
+if verLessThanFS('8.1')
 out=regstats(ytra,X,'linear',{'rsquare'});
 disp(out.rsquare)
 else

@@ -10,21 +10,34 @@
  - Trapezoidal or rectangular rule for numerical integration in function
    ctsub (trapezoid).
  - Ordering inclusion of the variables in the backfitting algorithm using
-   $R^2$ values (PredictorOrderR2).
+   $R^2$ values (orderR2).
  - Initial robust transformation of the response (tyinitial).
 
  We reduce the number of analyses for investigation by removing all those
  for which the residuals fail the Durbin-Watson and Jarque-Bera tests, at
- the 5 per cent level (two-sided for Durbin-Watson). Unlike the
- Durbin-Watson test, JarqueBera test uses a combination of estimated
+ the 10 per cent level (two-sided for Durbin-Watson). Unlike the
+ Durbin-Watson test, the Jarque-Bera test uses a combination of estimated
  skewness and kurtosis to test for distributional shape of the residuals.
- We order the analyses by the Durbin-Watson significance level, from the
- largest value downwards. The rays in individual plots are of equal length
- for those features used in an analysis. Robustness is always plotted to
- the East and all rays are in identical places in each plot. Information
- in the plot is augmented by making the length of the rays for each
- analysis reflect the properties of the analysis; they are proportional to
- $p_{DW}$, the significance level of the Durbin-Watson test.</P><h2>More About</h2><P>
+ Note that this threshold of 10 per cent can be changed using optional
+ input argument critBestSol.
+
+ We order the solutions by the Durbin-Watson significance level multiplied
+ by the value of $R^2$ and by the number of units not declared as
+ outliers. The rays in individual plots are of equal length for those
+ features used in an analysis. All rays are in identical places in each
+ plot. Information in the plot is augmented by making the length of the
+ rays for each analysis reflect the properties of the analysis; they are
+ proportional to $p_{DW}$, the significance level of the Durbin-Watson
+ test. Note that the ordering in which the solutions are displayed in the
+ plot can be changed using optional input argument SolutionOrdering.
+
+ The five options start on the right and wind counterclockwise in steps of
+ 72 degrees around the circle. The ordering in which the five options are
+ displayed in the plot depends on the frequency of presence among the set
+ of the admissible solutions. For example, if robustness is the one who
+ has the highest frequency, its spoke is shown on the right (plotted to
+ the East). The second most present option is shown on the top right...
+ and the least present option is shown on the bottom right.</P><h2>More About</h2><P>
  Routine avas, (additivity and variance stabilization) provides
  non-parametric alternatives to the widely used Box-Cox parametric
  transformation of the response and the Box-Tidwell family of power
@@ -45,7 +58,7 @@
  variables in order to let each column of matrix X have the same weight
  when predicting g(y).
 
- [3] To use option PredictorOrderR2 to completely eliminate dependence on
+ [3] To use option orderR2 to completely eliminate dependence on
  the order of the variables. That is, in each iteration of the backfitting
  algorithm we impose an ordering which is based on the variable which
  produces the highest increment of $R^2$.
@@ -66,6 +79,6 @@
  graphical method, the augmented star plot, to indicate which options are
  important in a particular data analysis.
 
-</P><h2>References</h2><P>Riani M., Atkinson A.C. and Corbellini A. (2021), Robust Transformations
+</P><h2>References</h2><P>Riani M., Atkinson A.C. and Corbellini A. (2022), Robust Transformations
  for Multiple Regression via Additivity and Variance Stabilization,
  submitted.</P></html>

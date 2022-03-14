@@ -58,10 +58,10 @@ Summary of the exceedances
            1          99         999        9999       99999
            0          21          15           7           7
 
-</pre><a href='http://rosa.unipr.it/fsda/FSMinvmmd.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSMinvmmd_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSMinvmmd_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSMinvmmd_03.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_mmd" class="clearfix"> </div> <h3 id="input_argument_mmd" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>mmd</code> &#8212; Distances. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n-m0 x 2 matrix.</p> <p> 
-                1st col = fwd search index;</p> <p> 
+</pre><a href='http://rosa.unipr.it/fsda/FSMinvmmd.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSMinvmmd_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSMinvmmd_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSMinvmmd_03.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_mmd" class="clearfix"> </div> <h3 id="input_argument_mmd" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>mmd</code> &#8212; Distances. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n-m0 x 2 matrix.</p> <p>
+                1st col = fwd search index;</p> <p>
                 2nd col = minimum Mahalanobis distance.</p><p>
-                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_v" class="clearfix"> </div> <h3 id="input_argument_v" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>v</code> &#8212; Number of variables. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Number of variables of the underlying dataset.</p> <p> 
+                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_v" class="clearfix"> </div> <h3 id="input_argument_v" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>v</code> &#8212; Number of variables. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Number of variables of the underlying dataset.</p> <p>
                 </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'n',5
 </code>,<code> 'plots',1
 </code></code></span></div><div class="expandableContent"><div id="inputarg_n" class="clearfix"></div><h3 id="input_argument_namevalue_n" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>n</code> &#8212;It specifies the size of the sample.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If it is not specified
@@ -70,22 +70,22 @@ Summary of the exceedances
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot which shows the
                confidence level of mmd in each step is shown on the
                screen. Three horizontal lines associated respectively with
-               values 0.01, 0.5 and 0.99  are added to the plot.</p> <p> 
-               If plots is a structure, it may contain the following fields:</p><p> 
+               values 0.01, 0.5 and 0.99  are added to the plot.</p> <p>
+               If plots is a structure, it may contain the following fields:</p><p>
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>conflev</code></td><td><p>vector containing horizontal lines associated
                        with confidence levels;</p></td></tr><tr valign="top"><td><code>conflevlab</code></td><td><p>scalar if it is equal 1 labels associated with
                        horizontal lines are shown on the screen;</p></td></tr><tr valign="top"><td><code>xlim</code></td><td><p>minimum and maximum on the x axis;</p></td></tr><tr valign="top"><td><code>ylim</code></td><td><p>minimum and maximum on the y axis;</p></td></tr><tr valign="top"><td><code>LineWidth</code></td><td><p>Line width of the trajectory of mmd in
                    normal coordinates;</p></td></tr><tr valign="top"><td><code>LineStyle</code></td><td><p>Line style of the
                    trajectory of mle of transformation parameters;</p></td></tr><tr valign="top"><td><code>LineWidthEnv</code></td><td><p>Line width of the horizontal lines;</p></td></tr><tr valign="top"><td><code>Tag</code></td><td><p>tag of the plot (default is pl_mmdinv);</p></td></tr><tr valign="top"><td><code>FontSize</code></td><td><p>font size of the text labels which identify
                    the trajectories</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_mmdinv" class="clearfix"></div><h3 id="output_argument_mmdinv" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mmdinv</code> &#8212;confidence levels plotted in normal coordinates.</span></a><span class="example_desc"><code> 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_mmdinv" class="clearfix"></div><h3 id="output_argument_mmdinv" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mmdinv</code> &#8212;confidence levels plotted in normal coordinates.</span></a><span class="example_desc"><code>
                (n-m0) -by- 3 </code>matrix (same rows of input matrix mmd)</span></span></h3><div class="collapse"><p><p>
                It contains information about requested
                confidence levels plotted in normal coordinates.</p> <p>
-               1st col = fwd search index from m0 to n-1;</p> <p> 
-               2nd col = confidence level of each value of mmd;</p> <p> 
-               3rd col = confidence level in normal coordinates.</p> <p> 
-                    50 per cent conf level becomes norminv(0.50)=0;</p><p> 
+               1st col = fwd search index from m0 to n-1;</p> <p>
+               2nd col = confidence level of each value of mmd;</p> <p>
+               3rd col = confidence level in normal coordinates.</p> <p>
+                    50 per cent conf level becomes norminv(0.50)=0;</p><p>
                     99 per cent conf level becomes norminv(0.99)=2.33.</p></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
 Let $d^2_i(m )$ and  $d_{\mbox{min}}(m)$ be respectively the deletion
 distance for unit $i$ based
@@ -103,7 +103,7 @@ distance for unit $i$ based
  where $C_r$ is the c.d.f. of the $\chi^2$ distribution on $r$ degrees of
  freedom, allows for estimation from this truncated distribution,  providing an
   approximately unbiased estimate of $\Sigma$.</p> <p>
- 
+
  We can treat the distribution of the rescaled deletion Mahalanobis distance
  $c(m,n)d_{\mbox{min}}^2(m)$ as a squared deletion distance on $m-1$
  degrees of freedom, whose distribution is (Atkinson Riani and Cerioli,
@@ -111,14 +111,14 @@ distance for unit $i$ based
  \begin{equation}\label{F}
    \frac{m^2-1}{m(m-v)} F_{v,m-v},
  \end{equation}
- 
+
  The distribution of the rescaled min Mahalanobis distance
   $c(m,n) d_{\mbox{min}}^2(m)$
  of a subset of size $m$ constructed in such a way that
   the centroid and covariance matrix of the subset are taken using the
   units having the $m$ smallest Mahalanobis distances can be treated as
   the distribution of the $(m+1)$th order statistic from ($F_{v,m-v}$).</p> <p>
- 
+
  The results of order statistics $Y_{(1)}$, $Y_{(2)}$, $\cdots$,  $Y_{(n)}$ from a sample of size $n$ from a distribution with CDF $G(y)$, state that
  \begin{equation}
  \label{orderstat}
@@ -126,7 +126,7 @@ distance for unit $i$ based
   \frac{m+1}{n-m} \right\}
   \end{equation}
  Given that in our case $G(y)$ is the CDF of the  $F_{v,m-v}$ we can rewrite this equation  as
- 
+
  \begin{eqnarray*}
    &&  P\{d_{\mbox{ min}}^2(m)  \leq \widehat{ d_{\mbox{min}}^2(m)} \} = \\
     && 1-  F_{2(n-m),2(m+1)} \left( \left( \frac{1}{  F_{v,m-v} \left( \frac{m(m-v)}{m^2-1 } c(m,n) d_{\mbox{min}}^2(m) \right)  }-1 \right) \frac{m+1}{n-m} \right)

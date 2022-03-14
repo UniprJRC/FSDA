@@ -97,8 +97,7 @@ rowlab={'GB' 'SK' 'BG' 'IE' 'BE' 'ES' 'PL' 'FI' 'GR' 'HU' 'SI' 'NL' 'IT' 'RO'...
 'AT' 'FR' 'HR' 'SE' 'CZ' 'DK' 'DE' 'LT' 'PT' 'EE' 'LU' 'MT' 'LV' 'CY'};
 collab={'x1' 'x2' 'x3' 'x4' 'x5'};
 Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
-RAW=mcdCorAna(Ntable,'plots',1);</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Raw and reweighted MCD.</li></span></a></span></h3><div class="collapse"><p>
-     mcdCorAna with option findEmpirical.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[134    76    43    50    49
+RAW=mcdCorAna(Ntable,'plots',1);</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Raw and reweighted MCD.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[134    76    43    50    49
 173    62    20    23    16
 67    76    48    36    23
 11    21    31    36    52
@@ -130,7 +129,7 @@ rowlab={'GB' 'SK' 'BG' 'IE' 'BE' 'ES' 'PL' 'FI' 'GR' 'HU' 'SI' 'NL' 'IT' 'RO'...
 'AT' 'FR' 'HR' 'SE' 'CZ' 'DK' 'DE' 'LT' 'PT' 'EE' 'LU' 'MT' 'LV' 'CY'};
 collab={'x1' 'x2' 'x3' 'x4' 'x5'};
 Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
-[RAW,REW]=mcdCorAna(Ntable,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  1.25 seconds 
+[RAW,REW]=mcdCorAna(Ntable,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.54 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/mcdCorAna.html#Example_4'><img vspace="5" hspace="5" src="images\mcdCorAna_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\mcdCorAna_02.png" alt=""> <img vspace="5" hspace="5" src="images\mcdCorAna_03.png" alt=""> <img vspace="5" hspace="5" src="images\mcdCorAna_04.png" alt=""> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">2D Array or Table.</span></span></h3> <div class="collapse"> <p><p>2D array or table which contains the input contingency
                  table (say of size I-by-J) or the original data matrix X.</p> <p>
                  In this last case N=crosstab(X(:,1),X(:,2)) or
@@ -146,9 +145,9 @@ Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
 </code>,<code> 'bestr',10
 </code>,<code> 'conflev',0.99
 </code>,<code> 'plots',1
-</code>,<code> 'label',{'UK' ...  'IT'}
-</code>,<code> 'label',{'x1' ...  'x5'}
-</code>,<code> 'msg',1
+</code>,<code> 'Lr',{'UK' ...  'IT'}
+</code>,<code> 'Lc',{'x1' ...  'x5'}
+</code>,<code> 'msg',false
 </code>,<code> 'tolMCD',1e-20
 </code>,<code> 'findEmpiricalEnvelope',true
 </code></code></span></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;Breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>(Number between 0
@@ -198,15 +197,15 @@ Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
                        added.</p></td></tr><tr valign="top"><td><code>nameY</code></td><td><p>cell array of strings containing the labels of
                        the variables. As default value, the labels which
                        are added are Y1, ...Yv.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double or structure</code></p></div></div><div class="expandableContent"><div id="inputarg_Lr" class="clearfix"></div><h3 id="input_argument_namevalue_Lr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lr</code> &#8212;row labels.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p><p>Cell of length I containing the labels of the rows.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'label',{'UK' ...  'IT'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_Lc" class="clearfix"></div><h3 id="input_argument_namevalue_Lc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lc</code> &#8212;column labels.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p><p>Cell of length J containing the labels of the columns.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'label',{'x1' ...  'x5'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Display or not messages on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displayed
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double or structure</code></p></div></div><div class="expandableContent"><div id="inputarg_Lr" class="clearfix"></div><h3 id="input_argument_namevalue_Lr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lr</code> &#8212;row labels.</span></a><span class="example_desc">cell array.</span></span></h3><div class="collapse">	<p><p>Cell of length I containing the labels of the rows.</p> <p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Lr',{'UK' ...  'IT'}
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_Lc" class="clearfix"></div><h3 id="input_argument_namevalue_Lc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lc</code> &#8212;column labels.</span></a><span class="example_desc">cell array.</span></span></h3><div class="collapse">	<p><p>Cell of length J containing the labels of the columns.</p> <p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Lc',{'x1' ...  'x5'}
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Display or not messages on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If msg==true (default) messages are displayed
                on the screen about estimated time to compute the final
                estimator else no message is displayed on the screen.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tolMCD" class="clearfix"></div><h3 id="input_argument_namevalue_tolMCD" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tolMCD</code> &#8212;Tolerance to declare a subset as singular.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_tolMCD" class="clearfix"></div><h3 id="input_argument_namevalue_tolMCD" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tolMCD</code> &#8212;Tolerance to declare a subset as singular.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The
                default value of tolMCD is exp(-50*v).</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tolMCD',1e-20
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_findEmpiricalEnvelope" class="clearfix"></div><h3 id="input_argument_namevalue_findEmpiricalEnvelope" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>findEmpiricalEnvelope</code> &#8212;Empirical Confidence level.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If findEmpiricalEnvelope is true (default is false) the
@@ -225,13 +224,13 @@ Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
                     covariance matrix. It is the raw MCD covariance matrix
                     (multiplied by a finite sample correction factor and
                     an asymptotic consistency factor).</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p>The determinant of the raw MCD covariance matrix.</p></td></tr><tr valign="top"><td><code>bsb</code></td><td><p>k x 1 vector containing the rows of matrix N which
-                    contributed to the computation of the MCS estimate of location</p></td></tr><tr valign="top"><td><code>md</code></td><td><p>I x 1 vector containing the estimates of the robust
+                    contributed to the computation of the MCD estimate of location</p></td></tr><tr valign="top"><td><code>md</code></td><td><p>I x 1 vector containing the estimates of the robust
                     Mahalanobis distances (in squared units). This vector
                     contains the distances of each observation from the
                     raw MCD location of the data, relative to the raw MCD
                     scatter matrix diag(raw MCD location)</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>A vector containing the list of the rows declared as
                     outliers using confidence level specified in input
-                    scalar conflev</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>Confidence level that was used to declare outliers and
+                    scalar conflev.</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>Confidence level that was used to declare outliers and
                     to do reweighting.</p></td></tr><tr valign="top"><td><code>singsub</code></td><td><p>Number of subsets without full rank. Notice that
                     out.singsub &gt; 0.1*(number of subsamples) produces a
                     warning</p></td></tr><tr valign="top"><td><code>weights</code></td><td><p><p>I x 1 vector containing the estimates of the weights.</p> <p>

@@ -9,9 +9,7 @@ Y=load('geyser2.txt');
 nsamp=10;
 out=ctlcurves(Y,'nsamp',nsamp);
 % Show the automatic classification
-spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">Starting parallel pool (parpool) using the 'local' profile ...
-Connected to the parallel pool (number of workers: 8).
-k=1
+spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
@@ -48,13 +46,9 @@ spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">k=2
 k=3
 k=4
 Bands k=2
-</pre><pre class="codeoutput error">Unrecognized function or variable 'CnsampAllkplus1SimData'.
-
-Error in ctlcurves
-
-Error in ctlcurvestmp (line 24)
-out=ctlcurves(Y,'bands',bands,'kk',2:4,'alpha',0:0.02:0.1,'nsamp',nsamp);
-</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> An example with many groups.</li></span></a></span></h3><div class="collapse"><p>
+Bands k=3
+Bands k=4
+</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\ctlcurves_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> An example with many groups.</li></span></a></span></h3><div class="collapse"><p>
      Simulate data with 5 groups in 3 dimensions<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 k=5; v=3;
 n=200;
@@ -63,7 +57,13 @@ Y = MixSim(k, v, 'MaxOmega',0.01);
 % Just use a very small sumber of subsets for speed reasons.
 nsamp=5;
 out=ctlcurves(Y,'plots',0,'kk',4:6,'nsamp',nsamp);
-spmplot(Y,out.idx);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations
+spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">k=4
+k=5
+k=6
+Bands k=4
+Bands k=5
+Bands k=6
+</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\ctlcurves_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations
                on v variables, Rows of Y represent observations, and
                columns represent variables. Observations (rows) with
                missing (NaN) or or infinite (Inf) values will
@@ -397,7 +397,9 @@ spmplot(Y,out.idx);</pre></div></div></p></div></div></div></div></div><d
                           the value of alpha, third column the index
                           associated to the best value of alpha, fourth
                           colum index associated with the best value of
-                          kk.</p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
+                          kk.</p></td></tr><tr valign="top"><td><code>idxLR</code></td><td><p><p>matrix with size n-by-size(out.TentSolLR,1) with the allocation
+                     associated with the tentative solutions found in out.TentSolLR.</p> <p> 
+                     First column refers to best solution ...</p></p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
                        components) which have been considered. This  vector
                        is equal to input optional argument kk if kk had been
                        specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>vector containing the values of the trimming
