@@ -134,11 +134,15 @@ else
     numberToTest=getParts(vernumber);
 end
 
+% IF_FSDAR                    
 if numberToTest(1) ~= doubleMatlabversion(1)     % major version is different
     result = doubleMatlabversion(1) < numberToTest(1);
 else                                  % major revision is equal and we test whether minor version
     result = doubleMatlabversion(2) < numberToTest(2);
 end
+% ELSE_FSDAR
+%   result = false;
+% END_FSDAR
 
 
 function parts = getParts(V)
