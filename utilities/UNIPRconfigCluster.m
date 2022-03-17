@@ -26,14 +26,17 @@ function UNIPRconfigCluster(user, varargin)
 %   Toolbox plugin for MATLAB Parallel Server with Slurm" has been
 %   installed on the local computer and that the parallel computing toolbox
 %   is also installed.
-% 3) In the local computer you have mapped a network drive (the default is
-%   H) to your directory in the remote system. For example in the case
-%   of the University of Parma the remote directory (assuming the user is
+% 3) In the local computer you have mapped a network drive to
+%   your directory in the remote system. For example in the case of the
+%   University of Parma the remote directory (assuming the user is
 %   paolo.andrei) is \\sshfs\paolo.andrei@gui.hpc.unipr.it. On windows
-%   systems the software which enables to do this mapping are called
+%   systems the software which enable to do this mapping are called
 %   SSHFS-Win · SSHFS for Windows and can be downloaded from the github
 %   address https://github.com/billziss-gh/sshfs-win. The two .msi files to
-%   install are called sshfs-win-3.5.20357-x64.msi and sshfs-win-3.5.20357-x86.msi
+%   install are called sshfs-win-3.5.20357-x64.msi and
+%   sshfs-win-3.5.20357-x86.msi.
+%   Note that the default letter of the network drive is H: but it can be
+%   changed using option MapNetworkDrive
 % 4) In the remote system you have created the path ~/parallel/matlab
 % 
 % Using the varargin it is possible to specify the typical parameters
@@ -104,6 +107,13 @@ function UNIPRconfigCluster(user, varargin)
 %               Example - 'IPaddress', false
 %               Data Types - boolean or character or string containing a valid IP address
 %
+%   MapNetworkDrive : letter which identifies network drive. Character or string.
+%               Letter followed by : which identifies the mapped network
+%               drive to your directory in the remote system. The default
+%               value of MapNetworkDrive is 'H:'.
+%               Example - 'MapNetworkDrive', 'Z:'
+%               Data Types - character or string
+%
 %  Output:
 %
 % See also:     UNIPRruncluster
@@ -155,6 +165,7 @@ function UNIPRconfigCluster(user, varargin)
 %}
 
 %% Beginning of code
+
 if verLessThanFS([9 11])
     error('FSDA:ConfigClusterUNIPR:WrongMATLABVersion','At least MATLAB R2021b is needed.');
 end
@@ -331,6 +342,8 @@ clustuserpath= ['/hpc/home/' user '/parallel/matlab'];
 localuserpath=[def.MapNetworkDrive '\parallel\matlab'];
 
 c.JobStorageLocation = struct('windows', localuserpath, 'unix', clustuserpath);
+% c.JobStorageLocation = struct('windows','H:\parallel\matlab', 'unix', clustuserpath);
+
 
 winuser= getenv('username');
 c.AdditionalProperties.IdentityFile=['C:\users\' winuser '\.ssh\id_rsa'];
