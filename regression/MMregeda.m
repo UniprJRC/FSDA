@@ -45,7 +45,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               InitialEst.beta =  v x 1 vector (estimate of the initial regression coefficients)
 %               InitialEst.scale = scalar (estimate of the scale parameter).
 %               If InitialEst is empty (default) or InitialEst.beta
-%               continas NaN values, program uses S estimators. In this
+%               contains NaN values, program uses S estimators. In this
 %               last case it is possible to specify the options given in
 %               function Sreg. 
 %               Example - 'InitialEst',[]
@@ -58,6 +58,17 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                 the constant term from the model.
 %                 Example - 'intercept',false
 %                 Data Types - boolean
+%
+%        msg  : Level of output to display. Boolean. It controls whether
+%                 to display or not messages on the screen.
+%               If msg==true (default) messages are displayed
+%               on the screen about estimated time to compute the initial S estimator
+%               and the warnings about
+%               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
+%               'MATLAB:nearlySingularMatrix' are set to off.
+%               If msg is false no message is displayed on the screen
+%                 Example - 'msg',false
+%                 Data Types - logical
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
 %               true no check is performed on matrix y and matrix X. Notice
@@ -105,9 +116,9 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %  Soptions  :  options if initial estimator is S and InitialEst is empty.
-%               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
-%               Sreftolbestr, Sminsctol, Sbestr.
-%               See function Sreg.m for more details on these options.
+%               Sbestr, Sminsctol, Srhofunc, Smsg, Snsamp, Srefsteps,
+%               Sreftol, Srefstepsbestr, Sreftolbestr. See function Sreg.m
+%               for more details on these options.
 %               It is necessary to add to the S options the letter
 %               S at the beginning. For example, if you want to use the
 %               optimal rho function the supplied option is
@@ -272,7 +283,7 @@ vvarargin=varargin;
 % default value of break down point
 Sbdpdef=0.5;
 % default values for msg
-Smsg=true;
+Smsgdef=true;
 % default values of subsamples to extract
 Snsampdef=20;
 % default value of number of refining iterations (C steps) for each extracted subset
@@ -305,11 +316,12 @@ eff=0.5:0.01:0.99;
 
 if coder.target('MATLAB')
 
-options=struct('intercept',true,'InitialEst','','Smsg',Smsg,'Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
+options=struct('intercept',true,'InitialEst','','Smsg',Smsgdef,'Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
     'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
     'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
     'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam',Srhofuncparamdef,'nocheck',false,'eff',eff,'effshape',0,...
-    'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'rhofunc',rhofuncdef,'rhofuncparam',rhofuncparamdef);
+    'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'rhofunc',rhofuncdef, ...
+    'rhofuncparam',rhofuncparamdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -349,6 +361,7 @@ InitialEst=options.InitialEst;
 rhofunc = options.rhofunc;
 rhofuncparam=options.rhofuncparam;
 
+
 if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
     
     bdp = options.Sbdp;              % break down point
@@ -362,7 +375,8 @@ if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
     
     Srhofunc=options.Srhofunc;           % rho function which must be used
     Srhofuncparam=options.Srhofuncparam;    % eventual additional parameters associated to the rho function
-    
+    msg=options.Smsg;                  % message on the screen about computational time of S estimator
+
     % first compute S-estimator with a fixed breakdown point
     
     % SR is the routine which computes S estimates of beta and sigma in regression
@@ -371,13 +385,13 @@ if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
         [Sresult , C] = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
             'reftolbestr',reftolbestr,'rhofunc',Srhofunc,'rhofuncparam',Srhofuncparam,...
-            'nocheck',true,'msg',Smsg,'conflev',0.95,'yxsave',false);
+            'nocheck',true,'msg',msg,'conflev',0.95,'yxsave',false);
         
     else
         Sresult = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
             'reftolbestr',reftolbestr,'rhofunc',Srhofunc,'rhofuncparam',Srhofuncparam,...
-            'nocheck',true,'msg',Smsg,'conflev',0.95,'yxsave',false);
+            'nocheck',true,'msg',msg,'conflev',0.95,'yxsave',false);
         C=0;
     end
 

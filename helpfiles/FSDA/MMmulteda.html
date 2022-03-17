@@ -2,11 +2,13 @@
 Y=swiss_banknotes{:,:};
 Y=Y(1:100,:);
 [outMM]=MMmulteda(Y);
-malfwdplot(outMM);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.72 seconds 
+malfwdplot(outMM);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.86 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/MMmulteda.html#Example_1'><img vspace="5" hspace="5" src="images\MMmulteda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> MMmult with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y = load('geyser.txt');
-[out]=MMmulteda(Y,'conflev',0.99,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  2.77 seconds 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  3.034892e-19. 
+[out]=MMmulteda(Y,'conflev',0.99,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.09 seconds 
+Warning: Matrix is singular, close to singular or badly scaled. Results may
+be inaccurate. RCOND = NaN. 
+Warning: Matrix is singular, close to singular or badly scaled. Results may
+be inaccurate. RCOND = NaN. 
 </pre><a href='http://rosa.unipr.it/fsda/MMmulteda.html#Example_2'><img vspace="5" hspace="5" src="images\MMmulteda_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>MMmulteda with extracted subsamples in second output argument C.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
 Y=swiss_banknotes{:,:};
 Y=Y(1:100,:);
@@ -38,7 +40,7 @@ Y=Y(1:100,:);
                   If InitialEst is empty (default)
                   program uses S estimators. In this last case it is
                    possible to specify the options given in function Smult.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'InitialEst',[]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_Soptions" class="clearfix"></div><h3 id="input_argument_namevalue_Soptions" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Soptions</code> &#8212;options if initial estimator is S and InitialEst is empty.</span></a><span class="example_desc">srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,               Sreftolbestr, Sminsctol, Sbestr.</span></span></h3><div class="collapse">	<p><p>See function <a href="Smult.html">Smult</a> for more details on these options.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_Soptions" class="clearfix"></div><h3 id="input_argument_namevalue_Soptions" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Soptions</code> &#8212;options if initial estimator is S and InitialEst is empty.</span></a><span class="example_desc">sbestr,  Sminsctol, Smsg, Snsamp, Srefsteps, Srefstepsbestr,               Sreftol, Sreftolbestr, Srhofunc.</span></span></h3><div class="collapse">	<p><p>See function <a href="Smult.html">Smult</a> for more details on these options.</p> <p>
                It is necessary to add to the S options the letter
                S at the beginning. For example, if you want to use the
                optimal rho function the supplied option is
