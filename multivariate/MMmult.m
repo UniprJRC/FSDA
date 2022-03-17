@@ -28,8 +28,8 @@ function [out , varargout] = MMmult(Y,varargin)
 %               Data Types - struct
 %
 %  Soptions  :  options if initial estimator is S and InitialEst is empty.
-%               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
-%               Sreftolbestr, Sminsctol, Sbestr.
+%               Sbestr, Sminsctol, Snsamp, Srefsteps, Srefstepsbestr, 
+%               Sreftol, Sreftolbestr, Srhofunc.               .
 %               See function Smult.m for more details on these options.
 %               It is necessary to add to the S options the letter
 %               S at the beginning. For example, if you want to use the
@@ -275,8 +275,10 @@ Sreftolbestrdef=1e-8;
 % default value of tolerance for finding the minimum value of the scale 
 % both for each extracted subset and each of the best subsets
 Sminsctoldef=1e-7;
+% message about computational time of S estimators
+Smsgdef=true;
 
-options=struct('InitialEst','','Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
+options=struct('InitialEst','','Smsg',Smsgdef,'Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
     'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
     'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
     'Sbdp',Sbdpdef,...
@@ -312,18 +314,19 @@ if isempty(InitialEst)
     minsctol = options.Sminsctol;    % tolerance for finding minimum value of the scale for each subset
     refstepsbestr=options.Srefstepsbestr;  % refining steps for the best subsets 
     reftolbestr=options.Sreftolbestr;      % tolerance for refining steps for the best subsets
-    
+    msg=options.Smsg;
+
     % first compute S-estimator with a fixed breakdown point
     if nargout==2
         [Sresult , C] = Smult(Y,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
-            'reftolbestr',reftolbestr,...
+            'reftolbestr',reftolbestr,'msg',msg, ...
             'nocheck',1);
         varargout = {C};
     else
         Sresult = Smult(Y,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
-            'reftolbestr',reftolbestr,...
+            'reftolbestr',reftolbestr,'msg',msg, ...
             'nocheck',1);
     end
     
