@@ -199,7 +199,11 @@ MapNetworkDrive='H:';
 
 options = struct('NumWorkers',4, 'NumThreads', 2, ...
     'tasksxnode', 1, 'memxcpu','2G', 'IPaddress', true,...
-    'MapNetworkDrive',MapNetworkDrive);
+    'MapNetworkDrive', MapNetworkDrive);
+
+% tasksxnode may be absent for default option
+
+
 
 if ~isempty(varargin)
 
@@ -353,7 +357,7 @@ c.HasSharedFilesystem = true;
 c.NumThreads= def.NumThreads;
 
 % --partition=cpu,knl --tasks-per-node=1 --mem-per-cpu=2G
-c.AdditionalProperties.SubmitArguments = ...
+c.AdditionalProperties.AdditionalSubmitArgs = ...
     ['--partition=cpu,knl --tasks-per-node=' num2str(def.tasksxnode) ' --mem-per-cpu=' ...
     def.memxcpu];
 
