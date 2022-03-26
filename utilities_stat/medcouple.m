@@ -31,7 +31,7 @@ function [medout , varargout] = medcouple(z, mcm, wmm)
 %
 %    wmm : Scalar. Weighted Median Method. By default (wmm=0 or not specified)
 %          the weighted median is computed using function quickselectFSw,
-%          which csn compute any weighted quantile. If wmm=0 the weighted
+%          which csn compute any weighted quantile. If wmm=1 the weighted
 %          median is computed using the algorithm by Sven Haase
 %          https://it.mathworks.com/matlabcentral/fileexchange/23077-weighted-median
 %          Option wmm=2 applies the mex file quickselectFSwmex.
@@ -772,7 +772,7 @@ else
 end
 
 end
-%FScategory:UTISTAT
+
 
 
 
