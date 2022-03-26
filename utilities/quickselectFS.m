@@ -6,6 +6,9 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
 % quickselectFS is a linear algorithm equivalent to quickselect (Hoare's
 % Find), which computes order statistics with an approach that avoids
 % recursion and repeated calls to partitioning functions.
+% REMARK: we also provide the mex counterpart, quickselectFSmex; see the
+% last example to understand how it works. 
+
 %
 % Required input arguments:
 %
@@ -102,6 +105,38 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
     k=n;
     out=quickselectFS(Y,k);
     disp(out);
+%}
+
+%{
+    % Use the mex function quickselectFSmex.
+    % REMARK 1: it is necessary to pass the number of data elements.
+    % REMARK 2: if you are looking for the order statistic k, then you
+    % should pass to the function k-1, as in C the array index starts from
+    % zero. 
+    % REMARK 3: it is necessary to pass a modified copy of the data  
+    % as indicated in the example, as the function change the
+    % order of the elements in the original array (array is passed by
+    % reference).
+
+    n=1000;
+    Y=randn(n,1);
+    k=100;
+
+    [k_star,Ysor] = quickselectFS(Y,k);
+
+    % The next line is necessary to break the link between Y and the
+    % copy which will be passed by reference to quickselectFSmex.
+    Y_copy = Y; Y_copy(end+1)=999; Y_copy(end)=[]; 
+
+    outmex = quickselectFSmex(Y_copy,n,k-1);
+
+    disp('  ');
+    disp(['this is k_star      = ' num2str(k_star)]);
+    disp(['this is k_star_mex  = ' num2str(k_star)]);
+
+    % if zero, the sorted arrays are equal. 
+    sum(Y_copy - Y)
+
 %}
 
 %% Beginning of code
