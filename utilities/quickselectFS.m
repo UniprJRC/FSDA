@@ -98,7 +98,7 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
 %}
 
 %{
-    %% quickselectFS: worst case scenario: see circshift
+    %% quickselectFS: worst case scenario: see circshift.
     n=10;
     Y=1:n;
     Y = circshift(Y,-1);
