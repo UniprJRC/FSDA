@@ -94,16 +94,16 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
 % Examples:
 
 %{
-    % quickselectFSw without optional parameter p gives the weighted %
-    median. The median is 3, but the weighted one is 4, corresponding to
-    the weight 0.3.
+    %% quickselectFSw without optional parameter p.
+    % It gives the weighted median. The median is 3, but the weighted one
+    % is 4, corresponding to the weight 0.3.
     A = [1 2 3 4 5];
     W = [0.15 0.1 0.2 0.3 0.25];
     [kD, kW , kstar] = quickselectFSw(A,W);
 %}
 
 %{
-    % quickselectFSw for computing a generic weighted percentile
+    % quickselectFSw for computing a generic weighted percentile.
     A=[1 2 3 4 5];
     W=[0.15 0.1 0.2 0.3 0.25];
     perc = 25;

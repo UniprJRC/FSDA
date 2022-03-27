@@ -112,11 +112,12 @@ function [medout , varargout] = medcouple(z, mcm, wmm)
 % Examples:
 %
 %{
-    %% the fast medcouple (default) on chi2 data
+    %% the fast medcouple (default) on chi2 data.
     rng(5);
     data = chi2rnd(5,1000,1);
     mc1 = medcouple(data);
     stddev = std(data);
+    figure;
     histogram(data);
     title(['Medcouple = ' num2str(mc1) ' -- Standard deviation = ' num2str(stddev)],'FontSize',16);
 %}
@@ -129,8 +130,7 @@ function [medout , varargout] = medcouple(z, mcm, wmm)
 %}
 
 %{ 
-    %% The medcouple on small datasets
-
+    %% The medcouple on small datasets.
     % For small n, it is better to compute the the medcouple also on 
     % the reflected sample -z and return (medcouple(z) - medcouple(-z))/2;
     % To work on positive values we do this with:
@@ -145,20 +145,21 @@ function [medout , varargout] = medcouple(z, mcm, wmm)
 %} 
 
 %{
-    %% Boxplot using medcouple to adjust for skewness
-
-    orientation = 'vertical';
-    %orientation = 'horizontal';
+    %% Boxplot using medcouple to adjust for skewness.
+    % Apply to symmetric and skewed data
 
     rng(5);
 
-    % normal data
-    datain1 = 15+randn(200,1);     % a normal distribution
-    datain1 = [datain1 ; 35];      % with an outlier
+    %orientation = 'horizontal'; 
+    orientation = 'vertical'; 
+
+    % normal data with an outlier
+    datain1 = 15+randn(200,1);     
+    datain1 = [datain1 ; 35];      
  
-    % log-normal data
-    datain2 = lognrnd(0,1,200,1);  % a lognormal distribution
-    datain2 = [datain2 ; 35];      % with an outlier
+    % log-normal data with an outlier
+    datain2 = lognrnd(0,1,200,1);  
+    datain2 = [datain2 ; 35]; 
 
     k  = 1.5;
 
@@ -209,7 +210,7 @@ function [medout , varargout] = medcouple(z, mcm, wmm)
 %}
 
 %{
-    %% Assess the perfomance of the various medcouple solutions
+    %% Assess the perfomance of the various medcouple solutions.
 
     % Uses the time execution of the weighted median returned in varargout
 
