@@ -139,16 +139,16 @@ function out = GUIregress(x,y, varargin)
     %% Example of linear, exponential and power interpolation .
     % Time series of the value ​​of a commodity, in euros were as follows: (See page 269 of [MRZ])   
     y=[50496 52396 55058 56550 56275 58138 59485 61188 63989 66505];
-
+    x=1:10;
     % Analyze the trend of the company's production using a linear fit.
-    out=GUIregress([],y,'interpolant','linear','plots',true);
+    out=GUIregress(x,y,'interpolant','linear','plots',true);
 
     % Analyze the trend of the company's production using an exponential fit.
-    out=GUIregress([],y,'interpolant','exponential','plots',true);
+    out=GUIregress(x,y,'interpolant','exponential','plots',true,'timeseries',true);
 
 
     % Analyze the trend of the company's production using an power fit.
-    out=GUIregress([],y,'interpolant','power','plots',true)
+    out=GUIregress([],y,'interpolant','power','plots',true,'timeseries',true)
     
 close all
 
