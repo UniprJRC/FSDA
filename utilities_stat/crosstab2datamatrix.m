@@ -158,12 +158,12 @@ end
 % Check that the length of Lr is equal to I (number of rows of the
 % contingency table)
 if length(Lr)~=I
-    error('FSDA:crosstab2datamatrix:WrongInputOpt',['cell containing row labels must be equal to' num2str(I)]);
+    error('FSDA:crosstab2datamatrix:WrongInputOpt',['length of cell containing row labels must be equal to ' num2str(I)]);
 end
 % Check that the length of Lc is equal to J (number of columns of the
 % contingency table)
 if length(Lc)~=J
-    error('FSDA:crosstab2datamatrix:WrongInputOpt',['cell containing column labels must be equal to' num2str(J)]);
+    error('FSDA:crosstab2datamatrix:WrongInputOpt',['length of cell containing column labels must be equal to ' num2str(J)]);
 end
 
 % Reconstruct the original data matrix
