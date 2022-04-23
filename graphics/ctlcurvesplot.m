@@ -740,7 +740,7 @@ end
 
     function PrepareDatatooltip(IC)
         try
-            chkgpu=gpuDevice; %#ok<NASGU>
+            chkgpu=gpuDeviceCount;
             % datacursormode on;
             hdt = datacursormode;
             set(hdt,'Enable','on');
