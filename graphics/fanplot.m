@@ -574,7 +574,7 @@ box on
 
 if ~isempty(options.datatooltip)
     try
-        chkgpu=gpuDeviceCount; %#ok<NASGU>
+        % chkgpu=gpuDeviceCount; %#ok<NASGU>
         hdt = datacursormode;
         if ~isstruct(options.datatooltip)
             set(hdt,'DisplayStyle','window');

@@ -746,7 +746,7 @@ hmin=gcf;
 %% Set the datatooltip for the mdrplot
 if ~isempty(options.datatooltip)
     try
-        chkgpu=gpuDeviceCount; %#ok<NASGU>
+        % chkgpu=gpuDeviceCount; 
         % datacursormode on;
         hdt = datacursormode;
         set(hdt,'Enable','on');

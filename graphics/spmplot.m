@@ -1585,7 +1585,7 @@ end
 % set the options.datatooltip (enable/disable interactive data cursor mode)
 if datatooltip
     try
-        chkgpu=gpuDeviceCount; %#ok<NASGU>
+        % chkgpu=gpuDeviceCount; %#ok<NASGU>
         hdt = datacursormode;
         set(hdt,'Enable','on');
         
