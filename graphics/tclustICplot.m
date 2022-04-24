@@ -288,16 +288,16 @@ tag='';
 if nargin>1
     options=struct('whichIC',whichIC,...
         'datatooltip',datatooltip, 'tag',tag,'databrush', databrush,'nameY','');
-    
+
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        
-        
+
+
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:tclustBICsol:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        
+
         % Check if all the specified optional arguments were present
         % in structure options
         % Remark: the nocheck option has already been dealt by routine
@@ -309,14 +309,14 @@ if nargin>1
             error('FSDA:tclustICplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
     end
-    
-    
+
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
-    
+
+
     datatooltip=options.datatooltip;
     databrush=options.databrush;
     tag=options.tag;
@@ -413,7 +413,7 @@ if typeIC==0 || typeIC==3
         cmin(j)=cORalpha(posj);
         text(xkk(j),0.98,[lab num2str(cmin(j))],'Units','Normalized')
     end
-    
+
     % Set line type and markers
     set(plot1CLACLA,{'LineStyle'},slintyp(1:lcc));
     set(plot1CLACLA,{'Marker'},styp(1:lcc))
@@ -462,7 +462,7 @@ if typeIC==1 || typeIC==3
     end
     plot1MIXCLA=plot(kk',IC.MIXCLA,'LineWidth',LineWidth);
     title('MIXCLA')
-    
+
     % Add labels for the best value of c for each k
     cmin=zeros(lcc,1);
     for j=1:length(kk)
@@ -481,13 +481,13 @@ if typeIC==1 || typeIC==3
     if ~isempty(datatooltip)
         PrepareDatatooltip(IC)
     end
-    
+
 end
 
 %% Interactivity
 if isstruct(databrush)
     fdatabrush=fieldnames(databrush);
-    
+
     % persist option
     dpers=find(strcmp('persist',fdatabrush));
     if dpers>0
@@ -496,17 +496,17 @@ if isstruct(databrush)
         persist=databrush.persist;
         databrush=rmfield(databrush,'persist');
         fdatabrush=fieldnames(databrush);
-        
+
         ColorOrd=[1 0 0;0 1 1; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
         ColorOrd=repmat(ColorOrd,4,1);
     else
         persist='';
         ColorOrd=[1 0 0];
     end
-    
+
     % FlagColor option Initialize colors for the brushing option: default
     % colors are blue (unbrushed unit) and red (brushed units)
-    
+
 else
     persist='';
     ColorOrd=[1 0 0];
@@ -536,12 +536,12 @@ if ~isempty(databrush) || isstruct(databrush)
         Xcla=IC.MIXCLA;
         IDX=IC.IDXMIX;
     elseif typeIC==0
-        
+
         Xcla=IC.CLACLA;
         IDX=IC.IDXCLA;
     else
     end
-    
+
     if isempty(tag)
         set(gcf,'Tag','pl_IC');
     else
@@ -553,21 +553,21 @@ if ~isempty(databrush) || isstruct(databrush)
     elseif  isfield(IC,'y') && isfield(IC,'X')
         y=IC.y;
         X=IC.X;
-        
+
         if size(X,2)>1
             intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
             if ~isempty(intcolumn)
                 X(:,intcolumn)=[];
             end
         end
-        
+
         multivar=false;
     else
         error('FSDA:tclustICplot:InvalidArg','Input struct must contain fields ''Y'' oe fields ''y'' and ''X''')
     end
-    
+
     if isstruct(databrush)
-        
+
         if multivar == true
             % Choose what to put on the main diagonal of the spm
             d=find(strcmp('dispopt',fieldnames(databrush)),1);
@@ -581,7 +581,7 @@ if ~isempty(databrush) || isstruct(databrush)
         else
             fdatabrush=fieldnames(databrush);
         end
-        
+
         % transform the input structure databrush into a cell array
         cv=[fdatabrush struct2cell(databrush)]';
         sele=cv(:)';
@@ -595,7 +595,7 @@ if ~isempty(databrush) || isstruct(databrush)
         sele={'selectionmode' 'Rect' };
         dispopt='hist';
     end
-    
+
     if multivar==true
         % Set the labels of the axes in the spmplot which shows the brushed solutions.
         d=find(strcmp('nameY',fieldnames(IC)),1);
@@ -606,10 +606,10 @@ if ~isempty(databrush) || isstruct(databrush)
         else
             nameY=IC.nameY;
         end
-        
+
         plo=struct;
         plo.nameY=nameY;
-        
+
     else
         % Set the labels of the axes in the spmplot which shows the brushed solutions.
         d=find(strcmp('nameX',fieldnames(IC)),1);
@@ -620,70 +620,70 @@ if ~isempty(databrush) || isstruct(databrush)
         else
             nameX=IC.nameX;
         end
-        
+
         d=find(strcmp('namey',fieldnames(IC)),1);
         if  isempty(d)
             namey='y';
         else
             namey=IC.namey;
         end
-        
+
         plo=struct;
         plo.nameX=nameX;
         plo.namey=namey;
     end
-    
+
     % some local variables
     but=0; brushcum=[]; ij=1;
-    
+
     sele=[sele 'FlagColor' ColorOrd(ij,:) 'FlagMarker' char(styp(ij+1))];
-    
+
     % loop brushing
     while but<=1
-        
+
         figure(plot1);
-        
+
         % Remark: function selectdataFS cannot be used on the current
         % figure if the "selection mode" or the "zoom tool" are on. Setting
         % the plotedit mode initially to on and then to off, has the effect
         % to deselect plotedit mode.
         plotedit on
         plotedit off
-        
+
         if strcmp(persist,'on')
             % add to cell sele option FlagColor (color of selection) and
             % FlagMarker (symbol to be used for selection)
-            
+
             if ij>1
                 chkexist=find(strcmp('FlagColor',sele)==1);
                 sele{chkexist+1}=ColorOrd(ij,:);
                 sele{chkexist+3}=char(styp(ij+1));
             end
         end
-        
-        
+
+
         % CALL to selectdataFS
         disp('Select a region to brush in the IC plot');
         [~,~,pl] = selectdataFS(sele{:});
-        
+
         % exit if the ICplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)
             return
         end
-        
+
         if ~isempty(cell2mat(pl))
-            
+
             nbrush=1;
             bic=cell2mat(pl);
             disp([num2str(length(bic)) ' solution(s) have been selected'])
-            
+
         else
             disp('Wrong selection: Try again');
             disp('Select a region to brush in the IC plot');
             figure(plot1);
             nbrush='';
         end
-        
+
         %% For each brushing operation, do the following:
         if ~isempty(nbrush)
             % brushcum = - the list of selected observations in all
@@ -696,7 +696,7 @@ if ~isempty(databrush) || isstruct(databrush)
             else
                 brushcum=nbrush;
             end
-            
+
             for r=1:length(bic)
                 [Iwithk,Jwithc] = ind2sub(size(Xcla),find(Xcla==bic(r)));
                 % It is necessary to put inside the tag the word group in
@@ -715,9 +715,9 @@ if ~isempty(databrush) || isstruct(databrush)
                     yXplot(y,X,cellstr(num2str(IDX{Iwithk,Jwithc})),plo);
                 end
                 title([whichIC '=' num2str(bic(r),'%10.2f') ', k='  num2str(kk(Iwithk)) ' '  lab num2str(cORalpha(Jwithc) )])
-                
+
             end
-            
+
             %% - check condition to exit from the brush mode
             % If the option persistent is not equal off or on than get out
             % of the loop
@@ -728,19 +728,19 @@ if ~isempty(databrush) || isstruct(databrush)
                     % figures are not deleted
                     but=1;
                 end
-                
+
                 % Before waitforbuttonpress:
                 % - the IC plot is highlighted again
                 figure(plot1);
                 % - and a function to be executed on figure close is set
                 set(gcf,'CloseRequestFcn',@closereqFS);
-                
+
                 % Lay down the plots before continuing
                 position(plot1);
                 disp('Highlight the IC plot then: click on it to continue brushing or press a keyboard key to stop');
                 ss=waitforbuttonpressFS;
                 disp('------------------------');
-                
+
                 % After waitforbuttonpress:
                 % - the standard MATLAB function to be executed on figure
                 %   close is recovered
@@ -750,17 +750,17 @@ if ~isempty(databrush) || isstruct(databrush)
                 else
                     Open_spm = findobj(0, 'type', 'figure','tag','pl_yX');
                 end
-                
+
                 Open_mal = findobj(0, 'type', 'figure','tag','pl_IC');
                 if isempty(Open_mal)  % User closed the main brushing window
-                    if ~isempty(Open_spm) 
-                        delete(Open_spm); 
+                    if ~isempty(Open_spm)
+                        delete(Open_spm);
                         % just in case Open_spm has length greater than 1
                         Open_spm=Open_spm(1);
                     end % spmplot  (yXplot) is deleted
                     delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
                 end
-                
+
                 % - and the 'but' variable is set if keyboard key was
                 % pressed
                 if ss==1
@@ -775,14 +775,14 @@ if ~isempty(databrush) || isstruct(databrush)
 else
     % Apply cascade to existing plots in case databrush is not invoked
     position(0);
-    
+
 end
 
 
 
     function PrepareDatatooltip(IC)
-        % try
-            chkgpu=gpuDeviceCount; %#ok<NASGU>
+        try
+            %   chkgpu=gpuDeviceCount;
             % datacursormode on;
             hdt = datacursormode;
             set(hdt,'Enable','on');
@@ -794,14 +794,14 @@ end
                 % the properties of the data cursor
                 set(hdt,datatooltip);
             end
-            
+
             LineColor=[1 0 0];
             % Declare a custom datatooltip update function to display additional
             % information about the selected unit
             set(hdt,'UpdateFcn',{@ICplotLbl,IC,LineColor});
-        % catch
-        %     disp('No graphical device, interactive datatooltip not enabled')
-        % end
+        catch
+            disp('No graphical device, interactive datatooltip not enabled')
+        end
     end
 
     function output_txt = ICplotLbl(~,event_obj,IC,~)
@@ -829,11 +829,11 @@ end
         %
         %
         % Written by FSDA team
-        
+
         % find the plot the user has clicked on
         titl=get(gca,'title');
         titl=titl.String;
-        
+
         if strcmp(titl,'MIXMIX')
             ICsel=IC.MIXMIX;
             ICIDXsel=IC.IDXMIX;
@@ -847,48 +847,48 @@ end
             warning('FSDA:tclustICplot:InvalidArg','Supplied plot is not supported.')
             error('FSDA:tclustICplot:WrongIC','title of plot must be ''MIXMIX'' , ''MIXCLA'', ''CLACLA''')
         end
-        
-        
+
+
         if ~isempty(hTarget)
             % set old line width and old color for old selection
             set(hTarget,'LineWidth',hTargetlwd,'Color',hTargetcol);
         else
         end
-        
+
         % Store line width and color of selected trajectory
         % Notice that changing event_obj.Target in subsequent lines seems
         % to affect also hTarget
         hTarget=event_obj.Target;
         hTargetlwd=get(hTarget,'LineWidth');
         hTargetcol=get(hTarget,'Color');
-        
+
         % Increase Line width and keep line color
         set(hTarget,'LineWidth',hTargetlwd+1.5,'Color',hTargetcol);
-        
+
         pos = get(event_obj,'Position');
-        
+
         % x and y, plot coordinates of the mouse
         x1 = pos(1); y1 = pos(2);
-        
+
         % Find index to retrieve value of k (number of groups) and value of c (restriction factor)
         % Consider that find return the
         % linear indexing of matrix xydata
         idx = find(ICsel == y1,1);
-        
-        
+
+
         % Linear indexing is transformed into normal indexing using
         % function ind2sub row and column contain the column and row
         % indexed of the observation which has been selected with the mouse
         [row,col] = ind2sub(size(ICsel),idx);
-        
+
         if isempty(row)
             output_txt{1}=['no IC x,y' num2str(x1) '' num2str(y1)] ;
         else
             output_txt=cell(4,1);
-            
+
             % output_txt is what it is shown on the screen
             output_txt(1,1) = {[ titl ' equal to: ',num2str(y1,4)]};
-            
+
             if cloop== true
                 % Add information about k and c
                 output_txt{2,1} = ['k= ' num2str(x1) ', c=' num2str(IC.cc(col))];
@@ -896,15 +896,15 @@ end
                 % Add information about k and alpha
                 output_txt{2,1} = ['k= ' num2str(x1) ', alpha=' num2str(IC.alphaLik(col))];
             end
-            
-            
+
+
             output_txt{3,1} = 'Classification';
-            
+
             % Add information about the corresponding frequency
             % distribution  of associated classification
             clas=tabulate(ICIDXsel{x1,col});
             output_txt{4,1} = num2str(clas);
-            
+
             set(0,'ShowHiddenHandles','on');    % Show hidden handles
             hText = findobj('Type','text','Tag','DataTipMarker');
             set(hText,'Interpreter','latex');

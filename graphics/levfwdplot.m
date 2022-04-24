@@ -1213,7 +1213,7 @@ if ~isempty(options.datatooltip)
     hTargetlwd=[];
     hTargetcol=[];
     try
-        chkgpu=gpuDeviceCount; %#ok<NASGU>
+        % chkgpu=gpuDeviceCount; 
         % datacursormode on;
         hdt = datacursormode;
         set(hdt,'Enable','on');

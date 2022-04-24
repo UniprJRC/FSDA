@@ -740,7 +740,7 @@ end
 
     function PrepareDatatooltip(IC)
         try
-            chkgpu=gpuDeviceCount;
+            % chkgpu=gpuDeviceCount;
             % datacursormode on;
             hdt = datacursormode;
             set(hdt,'Enable','on');
