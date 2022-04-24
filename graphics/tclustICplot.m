@@ -781,7 +781,7 @@ end
 
 
     function PrepareDatatooltip(IC)
-        try
+        % try
             chkgpu=gpuDeviceCount; %#ok<NASGU>
             % datacursormode on;
             hdt = datacursormode;
@@ -799,9 +799,9 @@ end
             % Declare a custom datatooltip update function to display additional
             % information about the selected unit
             set(hdt,'UpdateFcn',{@ICplotLbl,IC,LineColor});
-        catch
-            disp('No graphical device, interactive datatooltip not enabled')
-        end
+        % catch
+        %     disp('No graphical device, interactive datatooltip not enabled')
+        % end
     end
 
     function output_txt = ICplotLbl(~,event_obj,IC,~)
