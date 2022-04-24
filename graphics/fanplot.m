@@ -574,14 +574,13 @@ box on
 
 if ~isempty(options.datatooltip)
     try
-        chkgpu=gpuDevice; %#ok<NASGU>
+        chkgpu=gpuDeviceCount; %#ok<NASGU>
         hdt = datacursormode;
         if ~isstruct(options.datatooltip)
             set(hdt,'DisplayStyle','window');
         else
             % options.databrush contains a structure where the user can set the
             % properties of the data cursor
-            % options.databrush pu� anche essere passato come cell?????????????
             set(hdt,options.datatooltip);
         end
         % Declare a custom datatip update function to display additional
