@@ -28,7 +28,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %               Data Types - struct
 %
 %  Soptions  :  options if initial estimator is S and InitialEst is empty.
-%               Sbestr, Sminsctol, Snsamp, Srefsteps, Srefstepsbestr, 
+%               Sbestr, Sminsctol, Smsg, Snsamp, Srefsteps, Srefstepsbestr, 
 %               Sreftol, Sreftolbestr, Srhofunc.               .
 %               See function Smult.m for more details on these options.
 %               It is necessary to add to the S options the letter
