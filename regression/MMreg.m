@@ -59,14 +59,6 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
-%       msg    :  Level of output to display. Scalar. It controls whether
-%                 to display or not messages on the screen
-%                 If msg==1 (default) messages are displayed on the screen about
-%                   step in which signal took place
-%                 else no message is displayed on the screen.
-%               Example - 'msg',1
-%               Data Types - double
-%
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
 %               true no check is performed on matrix y and matrix X. Notice
@@ -116,8 +108,8 @@ function [out , varargout] = MMreg(y,X,varargin)
 %
 %  Soptions  :  options to pass to Sreg for initial S estimator. Name value pairs.
 %               Options if initial estimator is S and InitialEst is empty.
-%               The options are: Snsamp,Srefsteps,Srefstepsbestr,
-%               Srhofunc,Srhofuncparam, Sreftol,Sreftolbestr, Sminsctol, Sbestr.
+%               The options are: Smsg, Snsamp,Srefsteps,Srefstepsbestr,
+%               Srhofunc, Srhofuncparam, Sreftol, Sreftolbestr, Sminsctol, Sbestr.
 %               See function Sreg.m for more details on these options.
 %               It is necessary to add to the S options the letter
 %               S at the beginning. For example, if you want to use the
@@ -374,6 +366,9 @@ Srefstepsdef=3;
 Sreftoldef=1e-6;
 % default value of number of best locs to remember
 Sbestrdef=5;
+% default value for showing output
+Smsg=true;
+
 % default value of number of refining iterations (C steps) for best subsets
 Srefstepsbestrdef=50;
 % default value of tolerance for the refining steps convergence for best subsets
@@ -388,12 +383,12 @@ rhofuncdef=Srhofuncdef;
 
 if coder.target('MATLAB')
     
-    options=struct('intercept',true,'InitialEst','','Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
+    options=struct('intercept',true,'InitialEst','','Smsg',Smsg,'Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
         'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
         'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
         'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam','','nocheck',false,'eff',0.95,'effshape',0,...
         'rhofunc',rhofuncdef,'rhofuncparam','',...
-        'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'yxsave',0,'msg',1);
+        'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'yxsave',0);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -421,8 +416,6 @@ if nargin > 2
     end
 end
 
-msg=options.msg;
-
 % intercept=options.intercept;
 
 % InitialEst = structure which contains initial estimate of beta and sigma
@@ -434,6 +427,7 @@ if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
     
     bdp = options.Sbdp;              % break down point
     refsteps = options.Srefsteps;    % refining steps
+    msg=options.Smsg;
     bestr = options.Sbestr;          % best locs for refining steps till convergence
     nsamp = options.Snsamp;          % subsamples to extract
     reftol = options.Sreftol;        % tolerance for refining steps
