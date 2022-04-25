@@ -30,7 +30,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %             for the elements of $\beta$ and for $\sigma^2$. Vector.
 %             The default value of conflev is [0.95 0.99] that
 %             is 95% and 99% confidence intervals are computed.
-%             Example - 'conflev',[0.90 0.93] 
+%             Example - 'conflev',[0.90 0.93]
 %             Data Types - double
 %
 % init :      Search initialization. Scalar.
@@ -73,7 +73,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %            Data Types - char
 %
 %   wREML:	compute REML weights for unit excluded from FS at each step.
-%			false (default) | true.  If weak==true REML weights are 
+%			false (default) | true.  If weak==true REML weights are
 %           computed.
 %			Example - 'wREML', true
 %           Data Types - boolean
@@ -133,9 +133,9 @@ function [out] = FSReda(y,X,bsb,varargin)
 %  out.Bols=        (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
-%    out.S2=       (n-init+1) x 4 matrix containing the monitoring of S2 or R2
-%               in each step of the forward search:
-%               1st col = fwd search index (from init to n);
+%    out.S2=       (n-init+1) x 5 matrix containing the monitoring of S2 or
+%                   R2, F test, in each step of the forward search: 
+%               1st col = fwd search index (from init to n); 
 %               2nd col = monitoring of S2;
 %               3rd col = monitoring of R2;
 %               4th col = monitoring of rescaled S2.
@@ -143,6 +143,8 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               estimated of $\sigma^2$ at step m is divided by the
 %               consistency factor (to make the estimate asymptotically
 %               unbiased).
+%               5th col = monitoring of F test.  Note that an asymptotic
+%               unbiased estimate of sigma2 is used.
 %   out.coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search:
 %               1st col = fwd search index (from init to n);
@@ -192,9 +194,9 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1)
 %  out.class =  'FSReda'.
-%  
+%
 %   out.wREML = Singularly optimal REML weights for the units excluded
-%               for the search at each step. 
+%               for the search at each step.
 %               Present only if wREML == true.
 %               n x (n-init+1) = matrix containing the monitoring of
 %               singlular REML weights:
@@ -463,7 +465,7 @@ if nargin<1
     % Plot of monitoring of scaled squared residuals
     resfwdplot(out1,'fground',fground)
     title('Monitoring squared scaled residuals for Stack loss dataset')
-    
+
     noargmsg = sprintf(['To use FSReda with your own data y (response vector) and X (design matrix), type:\n\n' ...
         '    [out]=LXS(y,X) \n' ...
         '    [out]=FSReda(y,X,out.bs)\n' ...
@@ -505,7 +507,7 @@ if ~isempty(UserOptions)
 end
 
 if nargin > 3
-    
+
     % We now overwrite inside structure options the default values with
     % those chosen by the user
     % Notice that in order to do this we use dynamic field names
@@ -586,7 +588,8 @@ blast=NaN(p,1);
 % 3rd col = R^2
 % 4th col = (\sum e_i^2 / (m-p)) / (consistency factor) to make the
 % estimate asymptotically unbiased
-S2=[(init:n)' NaN(n-init+1,3);];
+% 5th col = F test (based on unbiased estimate of sigma2
+S2=[(init:n)' NaN(n-init+1,4)];
 
 % mdr= (n-init) x 3 matrix
 % 1st column = fwd search index
@@ -657,8 +660,8 @@ betaINT=NaN(n-init+1,2*lconflev,p);
 sigma2INT=[(init:n)' zeros(n-init+1,2*lconflev)];
 %
 if wREML == true
-	% REML estimated weights matrix
-	wt = RES;
+    % REML estimated weights matrix
+    wt = RES;
 end
 
 % opts is a structure which contains the options to use in linsolve
@@ -673,14 +676,14 @@ if nocheck==false && rank(Xb)~=p
     % FS loop will not be performed
 else
     for mm=ini0:n
-        
+
         % if n>200 show every 100 steps the fwd search index
         if n>200
             if length(intersect(mm,seq100))==1
                 disp(['m=' int2str(mm)]);
             end
         end
-        
+
         % Implicitly control the rank of Xb checking the condition number
         % for inversion (which in the case of a rectangular matrix is
         % nothing but the rank)
@@ -692,7 +695,7 @@ else
         else
             NoRankProblem =true;
         end
-        
+
         if NoRankProblem  % rank is ok
             resBSB=yb-Xb*b;
             blast=b;   % Store correctly computed b for the case of rank problem
@@ -700,73 +703,74 @@ else
             warning('FSDA:FSReda','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
             b=blast;
         end
-        
+
         if (mm>=init)
-            
+
             % Store Units belonging to the subset
             BB(bsb,mm-init+1)=bsb;
-            
+
             if NoRankProblem
-                
+
                 % Store beta coefficients
                 Bols(mm-init+1,2:p+1)=b';
-                
-                
+
+
                 % Measure of asymmetry
                 sqb1=(sum(resBSB.^3)/mm) / (sum(resBSB.^2)/mm)^(3/2);
-                
+
                 % Measure of Kurtosis  */
                 b2=(sum(resBSB.^4)/mm) / (sum(resBSB.^2)/mm)^2;
-                
+
                 % Asymmetry test
                 nor(mm-init+1,2)=  (mm/6)*  sqb1  ^2  ;
-                
+
                 % Kurtosis test
                 nor(mm-init+1,3)=(mm/24)*((b2 -3)^2);
-                
+
                 % Normality test
                 nor(mm-init+1,4)=nor(mm-init+1,2)+nor(mm-init+1,3);
-                
+
                 % Store leverage for the units belonging to subset
                 % hi contains leverage for all units
                 % It is a proper leverage for the units belonging to susbet
                 % It is a pseudo leverage for the unit not belonging to the subset
                 mAm=Xb'*Xb;
-                
+
                 mmX=inv(mAm);
                 dmmX=diag(mmX);
                 % Notice that we could replace the following line with
                 % hi=sum((X/mAm).*X,2); but there is no gain since we need
                 % to compute dmmX=diag(mmX);
                 hi=sum((X*mmX).*X,2); %#ok<MINV>
-                
+
                 LEV(bsb,mm-init+1)=hi(bsb);
             end % no rank problem
         end
-        
+
         if (mm>p)
-            
+
             % store res. sum of squares/(mm-k)
             % Store estimate of \sigma^2 using units forming subset
             if NoRankProblem
                 Sb=(resBSB)'*(resBSB)/(mm-p);
             end
-            
+
         else
             Sb=0;
         end
-        
+
         % e= vector of residual for all units using b estimated using subset
-        e=y-X*b;
-        
+        yhat=X*b;
+        e=y-yhat;
+
         if (mm>=init)
             % Store all residuals
             RES(:,mm-init+1)=e;
-            
+
             if NoRankProblem
                 % Store S2 for the units belonging to subset
                 S2(mm-init+1,2)=Sb;
-                
+
                 % Store rescaled version of S2 in the fourth column
                 % Compute the variance of the truncated normal distribution
                 if mm<n
@@ -777,31 +781,50 @@ else
                 end
                 Sbrescaled=Sb/corr;
                 S2(mm-init+1,4)=Sbrescaled;
-                
+
+                % Store F test
+                % Compute regression sum of squares (divided by p-1)
+                yhatb=yhat(bsb);
+                if options.intercept==1
+                    yhatm=yhatb-sum(yhatb)/mm;
+                else
+                    yhatm=yhatb;
+                end
+                SSRadd=yhatm'*yhatm/(p-1);
+                S2(mm-init+1,5)=SSRadd/S2(mm-init+1,4);
+
+                % Code to check the correct implementaion of the F test
+                %                 lm=fitlm(Xb(:,2:end),yb);
+                %                 [~,F] = coefTest(lm);
+                %                 Fchk=SSRadd/S2(mm-init+1,2);
+                %                 if abs(F-Fchk)>0.1
+                %                     error('wrongFtest')
+                %                 end
+
                 % Store maximum studentized residual
                 % among the units belonging to the subset
                 msrsel=sort(abs(resBSB)./sqrt(Sb*(1-hi(bsb))));
                 msr(mm-init+1,2)=msrsel(mm);
-                
+
                 % Store R2
                 S2(mm-init+1,3)=1-var(resBSB)/var(yb);
             end
-            
+
         end
-        
+
         r(:,2)=e.^2;
-        
+
         if mm>init
-            
+
             if NoRankProblem
-                
+
                 % Store in the second column of matrix coo the Cook
                 % distance
                 bib=Bols(mm-init+1,2:p+1)-Bols(mm-init,2:p+1);
                 if S2(mm-init+1,2)>0
                     coo(mm-init,2)=bib*mAm*(bib')/(p*S2(mm-init+1,2));
                 end
-                
+
                 if length(unit)>5
                     unit=unit(1:5);
                 end
@@ -810,39 +833,39 @@ else
                 end
             end % NoRankProblem
         end
-        
+
         if mm<n
             if mm>=init
                 if NoRankProblem
                     % ord = matrix whose first col (divided by S2(i)) contains the deletion residuals
                     % for all units. For the units belonging to the subset these are proper deletion residuals
                     ord = [(r(:,2)./(1+hi)) e];
-                    
+
                     % Store minimum deletion residual in 2nd col of matrix mdr
                     selmdr=sortrows(ord(ncl,:),1);
                     mdr(mm-init+1,2)=sign(selmdr(1,2))*sqrt(selmdr(1,1)/S2(mm-init+1,2));
-                    
+
                     % Store (m+1) ordered pseudodeletion residual in 3rd col of matrix
                     % mdr
                     selmdr=sortrows(ord,1);
                     mdr(mm-init+1,3)=sign(selmdr(mm+1,2))*sqrt(selmdr(mm+1,1)/S2(mm-init+1,2));
                 end % NoRankProblem
             end
-            
+
             % store units forming old subset in vector oldbsb
             oldbsb=bsb;
-            
+
             % order the r_i and include the smallest among the units
             %  forming the group of potential outliers
             % ord=sortrows(r,2);
             [~,ord]=sort(r(:,2));
-            
+
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);
-            
+
             Xb=X(bsb,:);  % subset of X
             yb=y(bsb);    % subset of y
-            
+
             if mm>=init
                 unit=setdiff(bsb,oldbsb);
                 if length(unit)<=10
@@ -852,47 +875,47 @@ else
                     Un(mm-init+1,2:end)=unit(1:10);
                 end
             end
-            
+
             if wREML == true
                 % weighting phase for VIOM using REMLE
-                if mm>=round(n/5) && mm > init  
+                if mm>=round(n/5) && mm > init
                     % singularly optimal weights
                     sol = VIOM(y, X, setdiff(1:n, oldbsb), 'mult', 0, 'intercept',options.intercept);
                     wt(:, mm) = sol.w;
                 end
-            end	            
-            
+            end
+
             if mm < n-1
                 % ncl= units forming the new noclean
                 ncl=ord(mm+2:n,1);
             end
         end
-        
+
         if mm >= init
             if NoRankProblem
                 if strcmp(options.tstat,'scal')
-                    
+
                     Tols(mm-init+1,2:end)=sqrt(corr)*Bols(mm-init+1,2:end)./sqrt(Sb*dmmX');
-                    
+
                 elseif strcmp(options.tstat,'trad')
                     Tols(mm-init+1,2:end)=Bols(mm-init+1,2:end)./sqrt(Sb*dmmX');
                 end
-                
-                
-                
+
+
+
                 % Compute highest posterior density interval for each value of
                 % Tinvcdf = required quantiles of T distribution
                 % consider just upper quantiles due to simmetry
                 Tinvcdf=tinv(conflev,mm-p);
                 % IGinvcdf = required quantiles of Inverse Gamma distribution
                 Chi2invcdf=chi2inv([conflev 1-conflev],mm-p);
-                
+
                 c=sqrt(Sbrescaled*dmmX);
                 for j=1:lconflev
                     betaINT(mm-init+1,j*2-1:j*2,:)=[ b-Tinvcdf(j)*c  b+Tinvcdf(j)*c]';
                     sigma2INT(mm-init+1,(j*2):(j*2+1))=[Sbrescaled*(mm-p)/Chi2invcdf(j) Sbrescaled*(mm-p)/Chi2invcdf(j+lconflev)];
                 end
-                
+
             end % NoRankProblem
         end
     end
@@ -918,9 +941,9 @@ out.sigma2INT=sigma2INT;
 out.y=y;
 out.X=X;
 if wREML == true
-	wt = wt(:, 2:end);
-	wt(:, end+1) = 1;
-	out.wREML = wt;
+    wt = wt(:, 2:end);
+    wt(:, end+1) = 1;
+    out.wREML = wt;
 end
 out.class='FSReda';
 end
