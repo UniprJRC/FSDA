@@ -101,8 +101,9 @@ Un=[Unsel(1:nr,1) reshape(Unsel(:,2),nr,lla)];
 	The table shows that, for $\lambda$
 = 0.5 and 1, observation 20, the largest observation, is the last to enter
 the set used for fitting. It is the last but one (m = 47) to enter for $\lambda = 0$
-or $-0.5$ and is not in the last six for $\lambda=1$. Similarly, the four largest
-observations are the last four to enter for $\lambda = 1$ and $0.5$, but the number decreases as $\lambda$ decreases. For $\lambda = 1$ all the large observations enter earlier
+or $-0.5$ and is not in the last six for $\lambda=-1$. Similarly, the four largest
+observations are the last four to enter for $\lambda = 1$ and $0.5$, but the number decreases as $\lambda$ decreases. For $\lambda = 
+	-1$ all the large observations enter earlier
 in the search than $m = 43$. However, the next but last observation to enter
 is 11, which is the smallest. These results, which parallel those for the
 wool dataset, are both gratifying and surprising. With a simple sample it is
@@ -244,7 +245,9 @@ y1=y.^(-1);
 [out]=LXS(y1,X,'intercept',0);
 [out]=FSReda(y1,X,out.bs,'intercept',0);
 % Monitoring scaled residuals: a label is written for the residuals greater than 2
-resfwdplot(out,'selunit','2');
+fground=struct;
+fground.fthresh=2;
+resfwdplot(out,'fground',fground);
 </pre>	
 beautifully indicates the structure of the data. On this scale there are the
 four outliers, observations 6, 9, 10 and 11, which enter in the last four steps
@@ -261,7 +264,6 @@ we can clearly spot the 4 outliers.<br>
 	<p>
 	<img alt="" height="504" src="plots/transf_fsrfan09.jpg" width="1000">&nbsp;</p>
 	
-	<p><img src="plots/transf_fsrfan10.jpg"></p>
 	The detailed output which appears in the command window is shown below.
 	<p><img src="plots/transf_fsrfan11.gif"></p>
 
