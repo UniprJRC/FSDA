@@ -389,16 +389,20 @@ function out  = ctlcurves(Y, varargin)
 %                           which stores the relative frequency in which
 %                           the Likelihood ratio test is greater than the
 %                           corresponding bootstrap test.
-%        out.TentSolLR  = matrix with size m-by-4. Details of the ordered
+%        out.TentSolLR  = matrix with size m-by-6. Details of the ordered
 %                          solutions using the likelihood ratio test. First
-%                          column contains the value of k, second column
-%                          the value of alpha, third column the index
-%                          associated to the best value of alpha, fourth
-%                          colum index associated with the best value of
-%                          kk.
-%        out.idxLR  = matrix with size n-by-size(out.TentSolLR,1) with the allocation
-%                     associated with the tentative solutions found in out.TentSolLR. 
-%                     First column refers to best solution ...
+%                          column: the index number of the solution. Second
+%                          column: the value of k. Third column: the value
+%                          of alpha. Fourth column contains 1 if the
+%                          p-value beyond the threshold is always above $k$
+%                          shown in the second column for all $k^* >k$ else
+%                          it contains 0. Fourth and fifth columns contains
+%                          the index numbers of optinal input values kk and alpha.
+%      out.TentSolLRt  = table with size m-by-5 containing the same
+%                        information of array  out.TentSolLR in table format. 
+%           out.idxLR  = matrix with size n-by-size(out.TentSolLR,1) with the allocation
+%                        associated with the tentative solutions found in out.TentSolLR.
+%                        First column refers to best solution ...
 %                out.kk = vector containing the values of k (number of
 %                       components) which have been considered. This  vector
 %                       is equal to input optional argument kk if kk had been
@@ -771,7 +775,7 @@ if ComputeBands==true
             CnsampAllkSimData=1;
             gRandNumbForNiniAllkplus1SimData=1;
             CnsampAllkplus1SimData=1;
-            
+
         end
 
         if msg==1
@@ -798,8 +802,8 @@ if ComputeBands==true
                 Yadd=[];
             end
 
-             parfor (zz = 1:nsimul, numpool)
-             %   for zz = 1:nsimul
+            parfor (zz = 1:nsimul, numpool)
+                %   for zz = 1:nsimul
                 if outliersFromUniform == true
                     [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
                     if size(Ysim,1)<n
@@ -896,32 +900,70 @@ if LRtest==true && ComputeBands ==true
 
     TentSolLR=zeros(lkk-1,4);
     idxLR=zeros(n,lkk-1);
-    ij=1;
-    for i=1:lkk-1
-        soli=find(tbootGTtobs(i,:)>=0.05,1);
-        if ~isempty(soli)
-            if ij==1 % Store the first solution
-                TentSolLR(ij,:)=[kk(i) alphaTrim(soli), soli i];
-                idxLR(:,ij)=IDX{i,soli};
-                ij=ij+1;
 
-                % Make sure that a different alpha is found for two consecutive solutions
-            elseif ij>1 && alphaTrim(soli)~= TentSolLR(ij-1,2)
-                TentSolLR(ij,:)=[kk(i) alphaTrim(soli), soli i];
-                idxLR(:,ij)=IDX{i,soli};
+    crit= 0.02;
+    ij=1;
+
+    for j=1:lalpha
+        % For each value of alpha soli and indexSpuriousSolution are reset
+        indexSpuriousSolution=true;
+        soli=0;
+        while indexSpuriousSolution==true
+
+            soli=find(tbootGTtobs(soli+1:end,j)>=crit,1)+soli;
+            if ~isempty(soli)
+
+                % Store solution number, value of k, value of alpha
+                TentSolLR(ij,[1:3 5:6])=[ij kk(soli) alphaTrim(j) soli j];
+                idxLR(:,ij)=IDX{soli,j};
+
+                if soli<lkk
+
+                    % sum(tbootGTtobs(soli+1:end,j)>=crit)==lkk-soli
+                    if all(tbootGTtobs(soli+1:end,j)>=crit)
+                        TentSolLR(ij,4)=1;
+                        indexSpuriousSolution=false;
+                    else
+                        TentSolLR(ij,4)=0;
+                    end
+                    % Check whether this solution had been previously found
+                    % that is if for the same value of k  we had already
+                    % obtained the same solution
+                    if ij>1
+                        if TentSolLR(ij,2) == TentSolLR(ij-1,2) && TentSolLR(ij,4)==TentSolLR(ij-1,4)
+                            TentSolLR(ij,:)=[];
+                            idxLR(:,ij)=[];
+                            ij=ij-1;
+                        end
+                    end
+                else
+                    TentSolLR(ij,4)=1;
+                    indexSpuriousSolution=false;
+                end
+
+                % idxLR(:,ij)=IDX{i,soli};
                 ij=ij+1;
             else
+                indexSpuriousSolution=false;
             end
         end
     end
-    if ij>1
-        TentSolLR=TentSolLR(1:ij-1,:);
-        idxLR=idxLR(:,1:ij-1);
+
+    if size(TentSolLR,1)>=1
+        numsol=(1:size(TentSolLR,1))';
+        nsoleti="Sol"+numsol;
+
+        TentSolLRt=array2table(TentSolLR,'RowNames',nsoleti, ...
+            'VariableNames',{'index' 'k' 'alpha' 'Truesol' 'kindex' 'alphaindex'});
     else
         TentSolLR=[];
         idxLR=[];
     end
+
+ 
+
     out.TentSolLR=TentSolLR;
+    out.TentSolLRt=TentSolLRt;
     out.idxLR=idxLR;
 end
 
