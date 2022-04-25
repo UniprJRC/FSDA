@@ -391,15 +391,18 @@ Bands k=6
                           kk.</p></td></tr><tr valign="top"><td><code>pvalLRtest</code></td><td><p>table with size length(kk)-1-times-length(alpha)
                            which stores the relative frequency in which
                            the Likelihood ratio test is greater than the
-                           corresponding bootstrap test.</p></td></tr><tr valign="top"><td><code>TentSolLR</code></td><td><p>matrix with size m-by-4. Details of the ordered
+                           corresponding bootstrap test.</p></td></tr><tr valign="top"><td><code>TentSolLR</code></td><td><p>matrix with size m-by-6. Details of the ordered
                           solutions using the likelihood ratio test. First
-                          column contains the value of k, second column
-                          the value of alpha, third column the index
-                          associated to the best value of alpha, fourth
-                          colum index associated with the best value of
-                          kk.</p></td></tr><tr valign="top"><td><code>idxLR</code></td><td><p><p>matrix with size n-by-size(out.TentSolLR,1) with the allocation
-                     associated with the tentative solutions found in out.TentSolLR.</p> <p> 
-                     First column refers to best solution ...</p></p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
+                          column: the index number of the solution. Second
+                          column: the value of k. Third column: the value
+                          of alpha. Fourth column contains 1 if the
+                          p-value beyond the threshold is always above $k$
+                          shown in the second column for all $k^* &gt;k$ else
+                          it contains 0. Fourth and fifth columns contains
+                          the index numbers of optinal input values kk and alpha.</p></td></tr><tr valign="top"><td><code>TentSolLRt</code></td><td><p>table with size m-by-5 containing the same
+                        information of array  out.TentSolLR in table format.</p></td></tr><tr valign="top"><td><code>idxLR</code></td><td><p><p>matrix with size n-by-size(out.TentSolLR,1) with the allocation
+                        associated with the tentative solutions found in out.TentSolLR.</p> <p>
+                        First column refers to best solution ...</p></p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
                        components) which have been considered. This  vector
                        is equal to input optional argument kk if kk had been
                        specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>vector containing the values of the trimming
