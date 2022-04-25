@@ -172,6 +172,7 @@ if isempty(freq)
     % freqcum=cumsum((1/n)*ones(n,1))
     h=cdfplot(x);
     h.Color='b';
+    pause(0.0001)
     clickableMultiLegend({'Sorted values and associated quantiles'  ...
         ['Requested quantile corresponding to p=' num2str(z)] 'F(x)'},'Location','northwest');
     
