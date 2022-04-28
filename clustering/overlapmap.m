@@ -259,7 +259,7 @@ function [out] = overlapmap(D, varargin)
     n = 5000;
     % Generate 8 homogeneous spherical clusters
     rng('default') 
-    rng(10, 'twister');
+    rng(10);
     out = MixSim(k, v, 'sph', true, 'hom', true, 'int', [0 10], 'Display', ...
         'off', 'MaxOmega', 0.005, 'Display','off');
     % 5 percent noise 

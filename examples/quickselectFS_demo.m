@@ -42,6 +42,7 @@ function kE = quickselectFS_demo(A,k,kiniindex)
 %
 %{
     % quickselectFS with all default options.
+    rng('default');
     rng(12345);
     n=15;
     Y=1:n; Y=shuffling(Y);
