@@ -30,7 +30,7 @@ function out = GUIskewness(x, flag, w)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. 
+%    out = detailed output to compute the index. Table.
 %          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %
@@ -103,18 +103,18 @@ if nargin<3  % unweighted skewness
     end
     nummeanx=sum(x);
     mx=nummeanx/n;
-    
+
     header={'i' 'x_i' '(x_i-M)' '(x_i-M)^2'  '(x_i-M)^3'};
-    
+
     dev1=(x-mx);
     dev2=dev1.^2;
     dev3=dev1.^3;
     corpus=[seq, x, dev1, dev2, dev3];
     sumdev2=sum(dev2);
     sumdev3=sum(dev3);
-    
+
     footer=[NaN sum(x) 0 sumdev2 sumdev3];
-    
+
     if flag==0
         corr=sqrt(n*(n-1))/(n-2);
         strtitle='Details of skewness calculation (unbiased version) $\gamma_u(X)$';
@@ -125,10 +125,10 @@ if nargin<3  % unweighted skewness
         error(message('FSDA:GUIskewnwss:BadFlagReduction 2nd input arg must be 0 or 1'));
     end
     dim = [.2 .80 0.1 0.1];
-    
+
 else
-    
-    
+
+
     % weighted skewness
     w=w(:);
     xw=x.*w;
@@ -143,7 +143,7 @@ else
     sumdev2=sum(dev2);
     sumdev3=sum(dev3);
     footer=[NaN NaN sum(w) sum(xw) 0 sumdev2 sumdev3];
-    
+
     if flag==0
         corr=sqrt(n*(n-1))/(n-2);
         strtitle='Details of weighted skewness calculation (unbiased version) $\gamma_u(X)$';
@@ -164,6 +164,11 @@ out=array2table([corpus;footer],'VariableNames',header);
 
 fs=14;
 figure('Position',[100 100 1000 600],'Units','normalized');
+% Make sure that that figure is also visible inside .mlx files
+scatter([],[]);
+axis('off')
+set(gcf,'Visible','on')
+
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
 dim = [.7 .7 0.1 0.1];
