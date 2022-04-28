@@ -120,11 +120,15 @@ end
 str=strForSchool(header, corpus, footer);
 
 
-out=array2table([corpus;footer],'VariableNames',header);
+
 
 fs=14;
 dim = [.2 .80 0.1 0.1];
 figure('Position',[100 100 1000 600],'Units','normalized');
+% Make sure that that figure is also visible inside .mlx files
+scatter([],[]);
+axis('off')
+set(gcf,'Visible','on')
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
 dim = [.7 .7 0.1 0.1];
@@ -151,5 +155,8 @@ end
 fs1=20;
 annotation('textbox',dim,'FitBoxToText','on','String',strfin,'Interpreter','latex','FontSize',fs1);
 
+out=struct;
+out.data=array2table([corpus;footer],'VariableNames',header);
+out.var=var;
 end
 %FScategory:GUI
