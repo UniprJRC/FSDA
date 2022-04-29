@@ -180,15 +180,30 @@ addFolderIncludingChildFiles(FSDAproj,FSroot);
 
 % save current path
 oldpath = path;
-addpath([FSDAProjFolder fsep 'FSDA']);
+path2add=[FSDAProjFolder fsep 'FSDA'];
+addpath(path2add);
 
 FileName=[FSroot filesep 'addFSDA2path'];
 FullPath=which(FileName);
 %Navigate to the main folder of FSDA
 FSDAroot=fileparts(FullPath);
-builddocsearchdb([FSDAroot fsep 'helpfiles' fsep 'pointersHTML'])
+% FSDApointers = full path for folder which creates pointer files
+FSDApointers=[FSDAroot fsep 'helpfiles' fsep 'pointersHTML'];
 
-% restore previuous path
+% Starting in R2022a, the builddocsearchdb function creates the subfolder
+% helpsearch-v4 to contain the search database files. Previously,
+% builddocsearchdb created a subfolder named helpsearch-v3.
+% To ensure the documentation for FSDA toolbox is searchable in any version
+% we have to run buildocsearchdb also on R2021b
+
+% The following line assumes that the path of MATLAB 2021b is 
+% C:\Program Files\MATLAB\R2021b
+bdocsearch2021b=['eval(''addpath(''''' FSDAroot ''''');builddocsearchdb(''''' FSDApointers ''''')'')'];
+system(['"C:\Program Files\MATLAB\R2021b\bin\matlab.exe" -r ' bdocsearch2021b ])
+
+builddocsearchdb(FSDApointers);
+
+% restore previous path
 path(oldpath);
 
 %% Add FSDA paths to the project
