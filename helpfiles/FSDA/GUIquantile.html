@@ -29,24 +29,12 @@ Inf  9];
 x=[0;X(:,1)];
 freq=X(:,2);
 GUIquantile(x,0.42,'freq',freq,'DiscreteData',false,'plots',1)</pre></div></div><pre class="codeoutput">
-ans =
+ans = 
 
-  11&times;5 table
+  struct with fields:
 
-     i     x_{(i)}    n_{i}       f_i        F(x_i) 
-    ___    _______    _____    __________    _______
-
-      1        9       1787       0.12458    0.12458
-      2       15       1310      0.091327    0.21591
-      3       19        972      0.067764    0.28367
-      4       25       2753       0.19193     0.4756
-      5       35       4227       0.29469    0.77029
-      6       50       2174       0.15156    0.92185
-      7      100        920      0.064138    0.98599
-      8      150        138     0.0096207    0.99561
-      9      300         54     0.0037646    0.99937
-     10      Inf          9    0.00062744          1
-    NaN      NaN      14344             1        NaN
+        data: [11&times;5 table]
+    quantile: 23.2619
 
 </pre><a href='http://rosa.unipr.it/fsda/GUIquantile.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\GUIquantile_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\GUIquantile_02.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; vector of numeric data. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Vector containing strictly numerical data.</p> <p>
            Note that if x is referred to a continuous variable x(1)

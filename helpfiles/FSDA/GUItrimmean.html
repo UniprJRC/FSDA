@@ -14,19 +14,12 @@ out=GUItrimmean(x,25);</pre></div></div></p></div></div><div id="Extraexamp
 x=X(:,1);
 freq=X(:,2);
 GUItrimmean(x,20,freq)</pre></div></div><pre class="codeoutput">
-ans =
+ans = 
 
-  6&times;5 table
+  struct with fields:
 
-     i     x_i    n_i    n_i \; not \; trimmed    x_in_i
-    ___    ___    ___    _____________________    ______
-
-      1     22     1               0                 0  
-      2     23     4               4                92  
-      3     24     2               2                48  
-      4     25     2               2                50  
-      5     30     1               0                 0  
-    NaN    124    10               8               190  
+           data: [6&times;5 table]
+    trimmedmean: 23.7500
 
 </pre><a href='http://rosa.unipr.it/fsda/GUItrimmean.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\GUItrimmean_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison of truncated mean using original data and frequency
      distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Vector x contains the temperature (Celsius degrees) in 10 places. (See page 23 of [CMR])
