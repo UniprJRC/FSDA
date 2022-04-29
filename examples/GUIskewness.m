@@ -159,8 +159,9 @@ end
 
 str=strForSchool(header, corpus, footer);
 
+out=struct;
+out.data=array2table([corpus;footer],'VariableNames',header);
 
-out=array2table([corpus;footer],'VariableNames',header);
 
 fs=14;
 figure('Position',[100 100 1000 600],'Units','normalized');
@@ -208,6 +209,6 @@ end
 
 fs1=20;
 annotation('textbox',dim,'FitBoxToText','on','String',strfin,'Interpreter','latex','FontSize',fs1);
-
+out.gamma=Fisherind;
 end
 %FScategory:GUI

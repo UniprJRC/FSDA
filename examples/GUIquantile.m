@@ -159,6 +159,10 @@ if isempty(freq)
     xadd=[min(x);sorx];
     probadd=[0;prob];
     figure
+    % Make sure that that figure is also visible inside .mlx files
+    scatter([],[]);
+    axis('off')
+    set(gcf,'Visible','on')
     plot(xadd,probadd,'r','Marker','o')
     
     xlabel('x and requested quantile')
@@ -175,6 +179,9 @@ if isempty(freq)
     pause(0.0001)
     clickableMultiLegend({'Sorted values and associated quantiles'  ...
         ['Requested quantile corresponding to p=' num2str(z)] 'F(x)'},'Location','northwest');
+ out=struct;
+ %out.data=array2table([corpus;footer],'VariableNames',header);
+ out.quantile=quan;
     
 else
     if DiscreteData == false
@@ -211,11 +218,15 @@ else
     
     str=strForSchool(header, corpus, footer,classes);
     
-    out=array2table([corpus;footer],'VariableNames',header);
+   
     
     fs=14;
     dim = [.2 .80 0.1 0.1];
     figure('Position',[100 100 1100 600],'Units','normalized');
+    % Make sure that that figure is also visible inside .mlx files
+    scatter([],[]);
+    axis('off')
+    set(gcf,'Visible','on')
     annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
     
     dim = [.2 .9 0.1 0.1];
@@ -274,6 +285,11 @@ else
             plot([xbars;x(indexxz+2)],fcum(indexxz:indexxz+1))
         end
     end
-    
+ 
+    out=struct;
+ out.data=array2table([corpus;footer],'VariableNames',header);
+ out.quantile=xzstr;
+end
+ 
 end
 %FScategory:GUI
