@@ -288,7 +288,7 @@ else
  
     out=struct;
  out.data=array2table([corpus;footer],'VariableNames',header);
- out.quantile=xzstr;
+ out.quantile=xz;
 end
  
 end
