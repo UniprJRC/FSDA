@@ -94,7 +94,7 @@ function Ytra=Powertra(Y,la,varargin)
 % Examples:
 
 %{
-    % Transform value 1, 2, 3, 4 and 5
+    % Transform value 1, 2, 3, 4 and 5.
     y=(1:5)';
     y1=Powertra(y,0.2);
     plot(y,y1)
@@ -105,7 +105,7 @@ function Ytra=Powertra(Y,la,varargin)
 
 
 %{
-    % Comparison between Box-Cox and Yeo-Johnson transformation.
+    %% Comparison between Box-Cox and Yeo-Johnson transformation.
     close all
     y=(-2:0.1:2)';
     n=length(y);
