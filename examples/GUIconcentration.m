@@ -183,11 +183,14 @@ end
 str=strForSchool(header, corpus, footer);
 
 
-out=array2table([corpus;footer],'VariableNames',header);
 
 fs=14;
 dim = [.2 .80 0.1 0.1];
 figure('Position',[100 100 1000 600],'Units','normalized');
+% Make sure that that figure is also visible inside .mlx files
+scatter([],[]);
+axis('off')
+set(gcf,'Visible','on')
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
 dim = [.2 .9 0.1 0.1];
@@ -196,16 +199,19 @@ annotation('textbox',dim,'FitBoxToText','on','String',strtitle,'Interpreter','la
 
 dim = [.2 .05 0.1 0.1];
 
+out=struct;
 
 if approx==true
     sumf=footer(end);
     Q=1- sumf;
     strfin=[' \it R $\approx 1- \sum_{i=1}^r (q_i +q_{i-1}) f_i = 1 -'  num2str(sumf) '= ' num2str(Q) '$'];
+    out.R=Q;
 else
     % Write details to find final calculation
     finalR=((n+1)/(n-1))-(2/(n-1))*sumqcum;
     strfin=[' \it R $= \frac{n+1}{n-1} - \frac{2}{n-1} \sum_{i=1}^r q_i''  = \frac{' num2str(n+1) ...
         '}{'  num2str(n-1) '} -\frac{2}{'  num2str(n-1) '}' num2str(sumqcum) '='  num2str(finalR) '$'];
+    out.R=finalR;
 end
 
 fs1=20;
@@ -228,5 +234,8 @@ if plots==true
     xlabel('$f_i''$','Interpreter','latex','FontSize',fs1)
     ylabel('$q_i''$','Interpreter','latex','FontSize',fs1)
 end
+
+out.data=array2table([corpus;footer],'VariableNames',header);
+
 end
 %FScategory:GUI

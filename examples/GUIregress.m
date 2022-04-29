@@ -121,17 +121,19 @@ function out = GUIregress(x,y, varargin)
 %{
     %% Example of exponential interpolation.
     % The values ​​of a company's production, in millions of euros were as follows: (See page 116 of [CMR])  
+    x=1:7;
     y=[50 52 56 59 65 70 76]; 
     % Analyze the trend of the company's production using an exponential fit.
-    out=GUIregress([],y,'interpolant','exponential','plots',true);
+    out=GUIregress([],y,'interpolant','exponential','plots',true,'timeseries', true);
 %}
 
 %{
     %% Example of power interpolation.
     % The values ​​of a company's production, in millions of euros were as follows: (See page 116 of [CMR])   
+    x=1:7;
     y=[50 52 56 59 65 70 76];
     % Analyze the trend of the company's production using a power fit.
-    out=GUIregress([],y,'interpolant','power','plots',true);
+    out=GUIregress(x,y,'interpolant','power','plots',true,'timeseries', true);
 %}
 
 
@@ -141,14 +143,13 @@ function out = GUIregress(x,y, varargin)
     y=[50496 52396 55058 56550 56275 58138 59485 61188 63989 66505];
     x=1:10;
     % Analyze the trend of the company's production using a linear fit.
-    out=GUIregress(x,y,'interpolant','linear','plots',true);
+    out=GUIregress(x,y,'interpolant','linear','plots',true, 'timeseries', true);
 
     % Analyze the trend of the company's production using an exponential fit.
     out=GUIregress(x,y,'interpolant','exponential','plots',true,'timeseries',true);
 
-
     % Analyze the trend of the company's production using an power fit.
-    out=GUIregress([],y,'interpolant','power','plots',true,'timeseries',true)
+    out=GUIregress(x,y,'interpolant','power','plots',true,'timeseries',true)
     
 close all
 
@@ -164,19 +165,12 @@ close all
     % Analyze the trend of the company's production using a linear fit.
     out=GUIregress(xa,y,'interpolant','linear','plots',true, 'timeseries', true);
 
-    % Analyze the trend of the company's production using a linear fit.
-    out=GUIregress(xb,y,'interpolant','linear','plots',true, 'timeseries', true);
+    % Analyze the trend of the company's production using an exponential fit.
+    out=GUIregress(xb,y,'interpolant','exponential','plots',true, 'timeseries', true);
 
      % Analyze the trend of the company's production using a power fit.
     out=GUIregress(xa,y,'interpolant','power','plots',true, 'timeseries', true);
 
-    % Analyze the trend of the company's production using a power fit.
-    out=GUIregress([],y,'interpolant','power','plots',true, 'timeseries', true);
-
-    % Analyze the trend of the company's production using an exponential fit.
-    out=GUIregress([],y,'interpolant','exponential','plots',true, 'timeseries', true);
-    
-close all
 
 %}
 
