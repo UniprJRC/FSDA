@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.23';
+newVersion = '8.5.25';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='Added new options in aceplot';
+commentRelease='html files included in the package';
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
@@ -137,8 +137,8 @@ end
 
 %% REMOVE UNNECESSARY FILES
 
-% All png files  inside helpfiles
-delete([FSroot fsep 'helpfiles' fsep 'FSDA' fsep 'images' fsep '*.png'])
+% All png files  inside helpfiles\FSDA\images
+% delete([FSroot fsep 'helpfiles' fsep 'FSDA' fsep 'images' fsep '*.png'])
 
 % files mlx inside inside subfolder examples
 delete([FSroot fsep 'examples' fsep 'examples_categorical.mlx'])
