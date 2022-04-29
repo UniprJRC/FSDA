@@ -60,6 +60,14 @@ function Ytra=Powertra(Y,la,varargin)
 %                 Example - 'inverse',true
 %                 Data Types - Logical
 %
+% standardize : standardize the data after transformation. Logical.
+%               If standardize is true (default is false)  zero-mean,
+%               unit-variance normalization to the transformed output is
+%               applied.
+%                 Example - 'standardize',true
+%                 Data Types - Logical
+%
+%
 % Output:
 %
 %   Ytra    : n x v data matrix containing transformed observations
@@ -155,6 +163,18 @@ function Ytra=Powertra(Y,la,varargin)
     disp(max(max(abs(Y-Ychk))))
 %}
 
+%{
+    % Example of the use of optional input standardize.
+    % Mussels data.
+    load('mussels.mat');
+    Y=mussels{:,:};
+    la=[0.5 0 0.5 0 0];
+    % Transform all columns of matrix Y according to the values of la using
+    % the Box Cox transformation and standardize the data after
+    % transformation.
+    Y=Powertra(Y,la,'standardize',true);
+%}
+
 %% Beginning of code 
 
 % Input parameters checking
@@ -181,8 +201,13 @@ ColtoTra=1:v;
 % The default is to use the BoxCox family of transformations
 family='BoxCox';
 
+% If standardize is true (default is false)  zero-mean, unit-variance
+% normalization to the transformed output is applied.
+standardize=false;
+
 if nargin>2
-options=struct('ColtoTra',ColtoTra,'Jacobian',Jacobian,'family',family,'inverse',inverse);
+options=struct('ColtoTra',ColtoTra,'Jacobian',Jacobian,'family',family, ...
+    'inverse',inverse,'standardize',standardize);
 
 
 UserOptions=varargin(1:2:length(varargin));
@@ -204,6 +229,7 @@ end
     Jacobian=options.Jacobian;
     family=options.family;
     inverse=options.inverse;
+    standardize=options.standardize;
 end
 
 
@@ -219,5 +245,10 @@ else
     warning('FSDA:Powertra:WrongFamily','Transformation family which has been chosen is not supported')
     error('FSDA:Powertra:WrongFamily','Supported values are BoxCox or YaoJohnson or basicpower')
 end
+
+if standardize == true
+    Ytra=zscore(Ytra);
+end
+
 end
 %FScategory:UTISTAT
