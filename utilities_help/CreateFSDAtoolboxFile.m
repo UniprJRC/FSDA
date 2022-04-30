@@ -201,7 +201,8 @@ FSDApointers=[FSDAroot fsep 'helpfiles' fsep 'pointersHTML'];
 
 % bdocsearch2021b=['eval(''addpath(''''' FSDAroot ''''');builddocsearchdb(''''' FSDApointers ''''')'')'];
 % run builddocsearchdb and quit
-bdocsearch2021b=['eval(''addpath(''''' FSDAroot ''''');builddocsearchdb(''''' FSDApointers ''''');quit'')'];
+% bdocsearch2021b=['eval(''addpath(''''' FSDAroot ''''');builddocsearchdb(''''' FSDApointers ''''');quit'')'];
+bdocsearch2021b=['addpath(''' FSDAroot ''');builddocsearchdb(''' FSDApointers ''');quit'];
 [status]=system(['"C:\Program Files\MATLAB\R2021b\bin\matlab.exe" -nodesktop -nosplash -noFigureWindows -r ' bdocsearch2021b ]);
 
 if status~=0
