@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.25';
+newVersion = '8.5.26';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='html files included in the package';
+commentRelease='new option standardize in Powertra';
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
@@ -198,8 +198,15 @@ FSDApointers=[FSDAroot fsep 'helpfiles' fsep 'pointersHTML'];
 
 % The following line assumes that the path of MATLAB 2021b is 
 % C:\Program Files\MATLAB\R2021b
-bdocsearch2021b=['eval(''addpath(''''' FSDAroot ''''');builddocsearchdb(''''' FSDApointers ''''')'')'];
-system(['"C:\Program Files\MATLAB\R2021b\bin\matlab.exe" -r ' bdocsearch2021b ])
+
+% bdocsearch2021b=['eval(''addpath(''''' FSDAroot ''''');builddocsearchdb(''''' FSDApointers ''''')'')'];
+% run builddocsearchdb and quit
+bdocsearch2021b=['eval(''addpath(''''' FSDAroot ''''');builddocsearchdb(''''' FSDApointers ''''');quit'')'];
+[status]=system(['"C:\Program Files\MATLAB\R2021b\bin\matlab.exe" -nodesktop -nosplash -noFigureWindows -r ' bdocsearch2021b ]);
+
+if status~=0
+       error('FSDA:CreatetoolboxFile:WrgBdocSdb','Could not execute builddocsearchdb in MATLAB 2021b')
+end
 
 builddocsearchdb(FSDApointers);
 
