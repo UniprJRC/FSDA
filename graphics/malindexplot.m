@@ -488,6 +488,7 @@ if ~isempty(h)
     set(hfigh,'Name','Mahalanobis distance plot','NumberTitle','off');
     set(h,'Tag','md_subplot');
     copyobj(allchild(afig),h);
+    pause(0.0000001);
     delete(hfig);
     hline2 = findobj(h, 'Tag','conflevline');
     hlineh = flipud(hline2);
