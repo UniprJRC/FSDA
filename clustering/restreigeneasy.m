@@ -67,7 +67,7 @@ function [out]  = restreigeneasy(eigenvalues, niini, restr, tol)
 % Examples:
 %
 %{
-   %% Compiting time of three implementations of the eigenvalues restriction.
+   %% Computing time of three implementations of the eigenvalues restriction.
 
     vmin  = 300; vmax  = 300; vstep = 1; vv = vmin:vstep:vmax;
     kmin  = 4;   kmax  = 16;  kstep = 4; kk = kmin:kstep:kmax;
