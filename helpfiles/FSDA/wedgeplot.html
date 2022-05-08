@@ -14,7 +14,7 @@ model.trend=2;
 model.seasonal=0;
 % Potential level shift position is investigated in positions:
 % t=10, t=11, ..., t=T-10.
-model.lshift=10;
+model.lshift=10:n-1;
 out=LTSts(y,'model',model);
 wedgeplot(out,'transpose',true,'extradata',[y out.yhat]);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of double wedge plot in series with level shift.</li></span></a></span></h3><div class="collapse"><p>
      Analysis of contaminated airline data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load the airline data.
@@ -44,7 +44,7 @@ model=struct;
 model.trend=2;              % quadratic trend
 model.s=12;                 % monthly time series
 model.seasonal=204;         % number of harmonics
-model.lshift=40;            % position where to start monitoring level shift
+model.lshift=40:120;        % position where to start monitoring level shift
 model.X='';
 % Create structure lts specifying lts options
 lts=struct;
@@ -52,7 +52,7 @@ lts.bestr=20; % number of best solutions to bring to full convergence
 % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
 h=round(0.75*length(y));
 [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
-'lts',lts,'h',h,'plots',0,'msg',0);
+'lts',lts,'h',h,'plots',0,'msg',1);
 % Create the double wedge plot.
 wedgeplot(out);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of double wedge plot in series with level shift with option transpose.</li></span></a></span></h3><div class="collapse"><p>
      Analysis of contaminated airline data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load the airline data.
@@ -82,19 +82,100 @@ model=struct;
 model.trend=2;              % quadratic trend
 model.s=12;                 % monthly time series
 model.seasonal=204;         % number of harmonics
-model.lshift=40;            % position where to start monitoring level shift
+model.lshift=40:120;        % position where to start monitoring level shift
 model.X='';
 % Create structure lts specifying lts options
 lts=struct;
 lts.bestr=20; % number of best solutions to bring to full convergence
 % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
 [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
-'lts',lts,'plots',0,'msg',0);
+'lts',lts,'plots',0,'msg',1);
 % Create the double wedge plot.
 % Remember to remove the last column of the matrix of the residuals
 % obtained for each level shift position if you want to avoid the
 % top orange band (just execute RES(:,64)=[] before line 258).
-wedgeplot(out,'transpose',true,'extradata',[y out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/wedgeplot.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\wedgeplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same double wedge plot as before, but with the time series at the top
+wedgeplot(out,'transpose',true,'extradata',[y out.yhat]);</pre></div></div><pre class="codeoutput">Level shift for t=40
+Level shift for t=41
+Level shift for t=42
+Level shift for t=43
+Level shift for t=44
+Level shift for t=45
+Level shift for t=46
+Level shift for t=47
+Level shift for t=48
+Level shift for t=49
+Level shift for t=50
+Level shift for t=51
+Level shift for t=52
+Level shift for t=53
+Level shift for t=54
+Level shift for t=55
+Level shift for t=56
+Level shift for t=57
+Level shift for t=58
+Level shift for t=59
+Level shift for t=60
+Level shift for t=61
+Level shift for t=62
+Level shift for t=63
+Level shift for t=64
+Level shift for t=65
+Level shift for t=66
+Level shift for t=67
+Level shift for t=68
+Level shift for t=69
+Level shift for t=70
+Level shift for t=71
+Level shift for t=72
+Level shift for t=73
+Level shift for t=74
+Level shift for t=75
+Level shift for t=76
+Level shift for t=77
+Level shift for t=78
+Level shift for t=79
+Level shift for t=80
+Level shift for t=81
+Level shift for t=82
+Level shift for t=83
+Level shift for t=84
+Level shift for t=85
+Level shift for t=86
+Level shift for t=87
+Level shift for t=88
+Level shift for t=89
+Level shift for t=90
+Level shift for t=91
+Level shift for t=92
+Level shift for t=93
+Level shift for t=94
+Level shift for t=95
+Level shift for t=96
+Level shift for t=97
+Level shift for t=98
+Level shift for t=99
+Level shift for t=100
+Level shift for t=101
+Level shift for t=102
+Level shift for t=103
+Level shift for t=104
+Level shift for t=105
+Level shift for t=106
+Level shift for t=107
+Level shift for t=108
+Level shift for t=109
+Level shift for t=110
+Level shift for t=111
+Level shift for t=112
+Level shift for t=113
+Level shift for t=114
+Level shift for t=115
+Level shift for t=116
+Level shift for t=117
+Level shift for t=118
+Level shift for t=119
+Level shift for t=120
+</pre><a href='http://rosa.unipr.it/fsda/wedgeplot.html#ExtraExample_1'><img vspace="5" hspace="5" src="images/wedgeplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same double wedge plot as before, but with the time series at the top
      subplot.</li></span></a></span></h3><div class="collapse"><p> This is obtained simply by specifying extradata before transpose.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load the airline data.
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960.
 y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
@@ -122,14 +203,14 @@ model=struct;
 model.trend=2;              % quadratic trend
 model.s=12;                 % monthly time series
 model.seasonal=204;         % number of harmonics
-model.lshift=40;            % position where to start monitoring level shift
+model.lshift=40:120;        % position where to start monitoring level shift
 model.X='';
 % Create structure lts specifying lts options
 lts=struct;
 lts.bestr=20; % number of best solutions to bring to full convergence
 % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
 [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
-'lts',lts,'plots',0,'msg',0);
+'lts',lts,'plots',0,'msg',1);
 % Create the double wedge plot.
 % Remember to remove the last column of the matrix of the residuals
 % obtained for each level shift position if you want to avoid the
@@ -207,4 +288,4 @@ wedgeplot(out,'extradata',[y out.yhat],'transpose',true);</pre></div></div></p
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_hf" class="clearfix"></div><h3 id="output_argument_hf" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hf</code> &#8212;handle to the figure.</span></a><span class="example_desc">Graphics handle</span></span></h3><div class="collapse"><p> Handle to the figure
                which has just been created.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
  Monitoring of Many Time Series with Application to Fraud Detection,
- "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'FSDA/CorAnaplot.html'))" itemprop="url"><span itemprop="name"><code>plot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'curvefit/cfit.plot.html'))" itemprop="url"><span itemprop="name"><code>plot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

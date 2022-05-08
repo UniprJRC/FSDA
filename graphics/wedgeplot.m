@@ -257,7 +257,7 @@ function hf = wedgeplot(RES,varargin)
     model.trend=2;              % quadratic trend
     model.s=12;                 % monthly time series
     model.seasonal=204;         % number of harmonics
-    model.lshift=40:120;            % position where to start monitoring level shift
+    model.lshift=40:120;        % position where to start monitoring level shift
     model.X='';
     % Create structure lts specifying lts options
     lts=struct;
