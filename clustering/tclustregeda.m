@@ -1540,6 +1540,10 @@ if (isnumeric(plots) && plots~=0) || isstruct(plots)
         %movegui(gcf,'south');
     end
     
+    % this follows the first plot with legend to avoid the updates of all
+    % existing graphics, because of the subsequent calls to legend and drawnow.
+    drawnow limitrate nocallbacks;
+
     %% 3 Monitoring  of sigma2 and sigma2corr
     namej = 'Sigma';
     tit   = {'Tclustreg monitoring plot' , ['Error variances for restriction factor c=' num2str(restrfact)]};
@@ -2149,6 +2153,7 @@ if (isnumeric(plots) && plots~=0) || isstruct(plots)
         
         subplot(2,2,1);
         parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
+        drawnow limitrate nocallbacks;
         ylim([-0.05 1.05]); xlim manual;
         xlabel('Level of trimming','FontSize',xyLabelSize);
         ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
@@ -2164,6 +2169,7 @@ if (isnumeric(plots) && plots~=0) || isstruct(plots)
         groupsel=group(UnitsTrmOrChgCla);
         
         parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
+        drawnow limitrate nocallbacks;
         ylim([-0.05 1.05]); xlim manual;
         xlabel('Level of trimming','FontSize',xyLabelSize);
         ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
@@ -2183,6 +2189,7 @@ if (isnumeric(plots) && plots~=0) || isstruct(plots)
         % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
         if vafter95
             parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
+            drawnow limitrate nocallbacks;
             set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
             xlabel('Level of trimming');
             ylabel('Post prob. group 1 all units');
@@ -2193,6 +2200,7 @@ if (isnumeric(plots) && plots~=0) || isstruct(plots)
         if vafter95
             parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
                 'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
+            drawnow limitrate nocallbacks;
             set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
             xlabel('Level of trimming');
             ylabel('Post prob. group 1 selected units');
