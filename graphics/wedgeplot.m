@@ -134,7 +134,7 @@ function hf = wedgeplot(RES,varargin)
     model.seasonal=0;
     % Potential level shift position is investigated in positions:
     % t=10, t=11, ..., t=T-10.
-    model.lshift=10;
+    model.lshift=10:n-1;
     out=LTSts(y,'model',model);
     wedgeplot(out,'transpose',true,'extradata',[y out.yhat]);  
 %}
@@ -169,7 +169,7 @@ function hf = wedgeplot(RES,varargin)
     model.trend=2;              % quadratic trend
     model.s=12;                 % monthly time series
     model.seasonal=204;         % number of harmonics
-    model.lshift=40;            % position where to start monitoring level shift
+    model.lshift=40:120;        % position where to start monitoring level shift
     model.X='';
     % Create structure lts specifying lts options
     lts=struct;
@@ -177,7 +177,7 @@ function hf = wedgeplot(RES,varargin)
     % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
     h=round(0.75*length(y));
     [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
-        'lts',lts,'h',h,'plots',0,'msg',0);
+        'lts',lts,'h',h,'plots',0,'msg',1);
     % Create the double wedge plot.
     wedgeplot(out);
 %}
@@ -212,14 +212,14 @@ function hf = wedgeplot(RES,varargin)
     model.trend=2;              % quadratic trend
     model.s=12;                 % monthly time series
     model.seasonal=204;         % number of harmonics
-    model.lshift=40;            % position where to start monitoring level shift
+    model.lshift=40:120;        % position where to start monitoring level shift
     model.X='';
     % Create structure lts specifying lts options
     lts=struct;
     lts.bestr=20; % number of best solutions to bring to full convergence
     % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
     [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
-        'lts',lts,'plots',0,'msg',0);
+        'lts',lts,'plots',0,'msg',1);
     % Create the double wedge plot.
     % Remember to remove the last column of the matrix of the residuals
     % obtained for each level shift position if you want to avoid the
@@ -257,14 +257,14 @@ function hf = wedgeplot(RES,varargin)
     model.trend=2;              % quadratic trend
     model.s=12;                 % monthly time series
     model.seasonal=204;         % number of harmonics
-    model.lshift=40;            % position where to start monitoring level shift
+    model.lshift=40:120;            % position where to start monitoring level shift
     model.X='';
     % Create structure lts specifying lts options
     lts=struct;
     lts.bestr=20; % number of best solutions to bring to full convergence
     % h = dimension of the h subset (75 per cent of the data, bdp=0.25)
     [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
-        'lts',lts,'plots',0,'msg',0);
+        'lts',lts,'plots',0,'msg',1);
     % Create the double wedge plot.
     % Remember to remove the last column of the matrix of the residuals
     % obtained for each level shift position if you want to avoid the
