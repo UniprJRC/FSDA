@@ -750,7 +750,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     % tclustreg without commonslope and right number of groups
     rng(12345);
 
-    % common parameters: number of groupos overestimated
+    % common parameters: number of groups overestimated
     k = 5 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
 
 
