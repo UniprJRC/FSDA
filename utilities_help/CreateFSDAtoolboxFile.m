@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.26';
+newVersion = '8.5.27';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='new option standardize in Powertra';
+commentRelease='HTML static pages regenerated';
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
