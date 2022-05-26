@@ -43,9 +43,9 @@ step prior to the inclusion of the first outlier.</p>
 % Load Hawkins data: 128 observations and 9 explanatory variables
 load hawkins;
 % Define y
-y=hawkins.data(:,9);
+y=hawkins{:,9};
 % Define design matrix X
-X=hawkins.data(:,1:8);
+X=hawkins{:,1:8};
 % Initial starting point based on Least Trimmed Squares
 [out]=LXS(y,X,'nsamp',10000);
 % Exploratory Forward Search 
@@ -88,7 +88,12 @@ resfwdplot(out);
 <p>
 Finally we use the option databrush inside function mdrplot.</p>
 <pre class="programlisting">
-mdrplot(out,'ylimy',[1 8],'databrush',{'selectionmode','Brush','persist' 'on' 'Label' 'on' 'RemoveLabels' 'off'});
+databrush=struct;
+databrush.selectionmode='Brush'; % Brush selection
+databrush.persist='on'; % Enable repeated mouse selections
+databrush.Label='on'; % Write labels of selected steps while selecting
+databrush.RemoveLabels='off'; % Do not remove labels after selecting
+mdrplot(out,'ylimy',[1 8],'databrush',databrush);
 </pre>
 <p>
 For

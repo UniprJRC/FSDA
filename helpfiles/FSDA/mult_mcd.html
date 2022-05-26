@@ -93,7 +93,7 @@ MCD outlier detection procedure</p>
 <pre class="programlisting">
 % Load the data
 load('head');
-Y=head.data;
+Y=head{:,:};
 % Use function FSM (Forward search in multivariate analysis with automatic outlier detection purposes)
 [RAW,REW]=mcd(Y,'plots',1,'conflev',1-0.01/size(Y,1));
 </pre>
@@ -109,8 +109,8 @@ performs an automatic outlier detection procedure
 in the original scale and then in the BoxCox transformed scale.</p>
 Analysis on the original scale
 <pre class="programlisting">
-load('mussels.mat');
-Y=mussels.data;
+load('mussels');
+Y=mussels{:,:};
 [RAW,REW]=mcd(Y,'plots',1,'conflev',1-0.01/size(Y,1));
 </pre>
 <p>
@@ -128,8 +128,8 @@ produced atuomatically are shown below.</p>
 <p>
 The analysis on the transformed scale is shown below
 <pre class="programlisting">
-load('mussels.mat');
-Y=mussels.data;
+load('mussels');
+Y=mussels{:,:};
 la=[0.5 0 0.5 0 0];
 v=size(Y,2);
 Y=normBoxCox(Y,1:v,la);

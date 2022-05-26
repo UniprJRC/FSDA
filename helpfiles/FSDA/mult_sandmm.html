@@ -43,7 +43,7 @@ S outlier detection procedure</p>
 <pre class="programlisting">
 % Load the data
 load('head');
-Y=head.data;
+Y=head{:,:};
 % Use function FSM (Forward search in multivariate analysis with automatic outlier detection purposes)
 [out]=Smult(Y,'plots',1,'conflev',1-0.01/size(Y,1));
 </pre>
@@ -60,7 +60,7 @@ in the original scale and then in the BoxCox transformed scale.</p>
 Analysis on the original scale
 <pre class="programlisting">
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 [out]=Smult(Y,'plots',1,'conflev',1-0.01/size(Y,1));
 </pre>
 <p>
@@ -74,7 +74,7 @@ Y=mussels.data;
 Analysis on the transformed scale
 <pre class="programlisting">
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[0.5 0 0.5 0 0];
 v=size(Y,2);
 Y=normBoxCox(Y,1:v,la);

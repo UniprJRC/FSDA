@@ -42,9 +42,9 @@ residuals.</p>
 % Load Hawkins data: 128 observations and 9 explanatory variables
 load hawkins;
 % Define y
-y=hawkins.data(:,9);
+y=hawkins{:,9};
 % Define design matrix X
-X=hawkins.data(:,1:8);
+X=hawkins{:,1:8};
 % Initial starting point based on Least Trimmed Squares
 [out]=LXS(y,X,'nsamp',10000);
 % Exploratory Forward Search 
