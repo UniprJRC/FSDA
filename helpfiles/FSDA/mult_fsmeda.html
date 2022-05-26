@@ -72,7 +72,7 @@ distances. </p>
 
 <pre class="programlisting">
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 bs=fre(1:size(Y,2)+5,1);
@@ -99,7 +99,7 @@ Group 1 (genuine notes) and see what happens to the forward plot of
 
 <pre class="programlisting">
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 % start in the group of genuine notes
 bs=1:20;
 [out]=FSMeda(Y,bs,'init',30,'scaled',1);
@@ -141,10 +141,9 @@ Group 2 (the forgeries).
 
 <pre class="programlisting">
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
-[fre]=unibiv(Y);
-fre=sortrows(fre,[3 4]);
-bs=fre(1:size(Y,2)+5,1);
+Y=swiss_banknotes{:,:};
+% start in the group of genuine notes
+bs=101:120;
 [out]=FSMeda(Y,bs,'init',30,'scaled',1);
 malfwdplot(out);
 </pre>

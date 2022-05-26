@@ -54,9 +54,9 @@ transformed.</p>
     % Mussels data.
     % FS based on untransformed data H_0:&lambda;=1 for all variables
     load('mussels.mat');
-    Y=mussels.data;
+    Y=mussels{:,:};
     % Figure 4.18 p. 178 of ARC (2004)
-    [out]=FSMtra(Y,plotslrt',1);
+    [out]=FSMtra(Y,'plotslrt',1);
 </pre>
 <p>
 <img src="images_help/mult_fsmtra01.gif">

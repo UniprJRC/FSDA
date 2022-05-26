@@ -41,39 +41,41 @@ the yXplot and linking them to different objects of other plots.
 To show the concept we use the <a href="datasets.html">fishery data</a>,
 which is characterised by a rather complex structure affected by outliers
 and formed by a mixture of overlapping populations.
-We start from the data stored in a dataset structure<br><br>
-<p><tt>load fisheryD;</tt></p>
-<p>which contains with the following fields: </p>
+We start loading the data<br><br>
+
 <pre class="programlisting">
-get_fishery = get(fisheryD)
-    Description: &#39;&#39;
-          Units: {}
-       DimNames: {2x1 cell}
-       UserData: []
-       ObsNames: {677x1 cell}
-       VarNames: {1x7 cell}
+load fishery;
 </pre>
-The variables of the dataset, obtained by typing <tt>get_fishery.VarNames,</tt> 
-are
-<p><tt>&#39;product&#39; &#39;destination&#39; &#39;origin&#39; &#39;period&#39; &#39;value&#39; &#39;quantity&#39; &#39;estimated_price&#39; 
-&#39;cluster&#39;. </tt></p>
-<p>Let's extract from the dataset structure the two relevant numeric vectors</p>
-<p><tt>y = fisheryD.value;</tt></p>
-<p><tt>X = fisheryD.quantity;</tt></p>
+<p>Let's extract X (quantity) and y (value)</p>
+
+<pre class="programlisting">
+y = fishery.value;
+X = fishery.quantity
+</pre>
 <p>They refer to the Value (in thousands of Euros) and the Quantity (in tons) of 
 monthly flows of a fishery product imported in the Member States of the European 
 Union (variable Destination) from a third country (variable Origin). </p>
 <p>We run the forward search on these variables. </p>
-<p><tt>[out]=LXS(y,X,&#39;nsamp&#39;,1000);</tt></p>
-<p><tt>[out]=FSReda(y,X,out.bs);</tt></p>
+
+<pre class="programlisting">
+[out]=LXS(y,X,&#39;nsamp&#39;,1000);
+[out]=FSReda(y,X,out.bs);
+</pre>
 <p>and we plot, with all the default options, the value of the import flows against 
 the corresponding quantities: </p>
-<p><tt>yXplot(out);</tt></p>
+
+<pre class="programlisting">
+yXplot(out);
+</pre>
+
 <p><img alt="" height="420" src="plots/statistical_visualization_yx01.jpg" width="561"></p>
 The labeled units are clearly non homogeneous with respect to the bulk of the data.
 We can specify which relevant units should be labeled with the code: <br>
 
-<p><tt>yXplot(out,&#39;selunit&#39;,[200 212 56 284 260 44 272]); </tt></p>
+
+<pre class="programlisting">
+yXplot(out,&#39;selunit&#39;,[200 212 56 284 260 44 272]);
+</pre>
 <p><img alt="" height="420" src="plots/statistical_visualization_yx02.jpg" width="561"> </p>
 <p>To get more insights on the anomalous units we use the <tt>databrush</tt> 
 option with the <tt>persist</tt> modality. </p>
@@ -123,22 +125,10 @@ rise to the following steps (first column) and units (second column). <br>
 674 206 NaN NaN NaN NaN NaN NaN NaN NaN NaN
 675 207 NaN NaN NaN NaN NaN NaN NaN NaN NaN
 </pre>
-<p>The units are all between rows 181 and 216. By inspecting the fishery dataset 
-using the MATLAB variable editor, we can see that all these units refer to 
+<p>The units are all between rows 181 and 216. These units refer to 
 the same Member State of destination, namely MS7, which can be thus considered an 
-homogeneous sub-population of the dataset. </p>
-<p>To better look into the data it may be convenient to display the dataset into 
-a MATLAB <tt>uitable</tt>. The <tt>uitable</tt> requires data in a cell array structure, available 
-in the toolbox,
-</p><tt>load fisheryC;<br><br></tt>and few other convenient parameters
-<pre>
-colnames = get_fishery.VarNames; 
-obsnames = get_fishery.ObsNames; 
-colfmt = {&#39;char&#39; &#39;char&#39; &#39;char&#39; &#39;char&#39; &#39;numeric&#39; &#39;numeric&#39; &#39;char&#39;};
-hfigtable = figure(&#39;Position&#39;, [50, 50, 600, 460],&#39;Name&#39;, &#39;Fishery data table&#39;, &#39;NumberTitle&#39;, &#39;off&#39;, &#39;MenuBar&#39;, &#39;none&#39;);
-uitable(hfigtable, &#39;Units&#39;, &#39;normalized&#39;,&#39;Position&#39;, [0.02 0.02 0.9 0.9],&#39;Data&#39;,  fisheryC,&#39;ColumnName&#39;, colnames,&#39;ColumnFormat&#39;, colfmt)
-</pre>
-<p><img alt="" height="739" src="plots/statistical_visualization_yx05.jpg" width="683"></p>
+homogeneous sub-population of the dataset. ,&#39;Position&#39;, [0.02 0.02 0.9 0.9],&#39;Data&#39;,&nbsp; fisheryC,&#39;ColumnName&#39;, colnames,&#39;ColumnFormat&#39;, colfmt)<br> </p>
+<p>&nbsp;</p>
 <p>The table shows that the brushed units, which correspond to lines from 181 to 216, refer 
 all to 
 the same country of destination. This confirms that this 

@@ -44,7 +44,7 @@ was supported by all the data except the outliers.
 <pre class="programlisting">
 % Mussels data.
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 plotslrt=struct;
 plotslrt.ylim=[-6.2 6.2];
 [out]=FSMfan(Y,[0.5 0 0.5 0 0],'laAround',[-1 -0.5 0 1/3 0.5 1],'init',58,'plotslrt',plotslrt);
