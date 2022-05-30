@@ -325,8 +325,9 @@ function [outFORE] = forecastTS(outEST,varargin)
     outSIM=simulateTS(T,'model',modelSIM,'plots',1);
     ySIM=outSIM.y;
     % Estimate
-    %  model.lshift=5 implies that LS is investigated from position 5
-    model.lshift=5;
+    %  model.lshift=5:T-5 implies that LS is investigated from position 
+    % $5, 6, 7, ..., T-5$,
+    model.lshift=5:T-5;
     outEST=LTSts(ySIM,'model',model,'plots',1,'msg',0);
     % Forecast
     outFORE=forecastTS(outEST,'model',model,'plots',1);
@@ -358,7 +359,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
     model.seasonal=103;         % three harmonics with linear time varying seasonality
-    model.lshift=10;            % search for level shift
+    model.lshift=10:140;            % search for level shift
     out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 
     % 3 years forecasts
@@ -394,7 +395,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
     model.seasonal=0;          % no seasonal component
-    model.lshift=10;            % search for level shift
+    model.lshift=10:(length(y)-10);            % search for level shift
     out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 
     % 3 years forecasts
@@ -429,7 +430,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     modelEST=struct;
     modelEST.trend=1;
     modelEST.seasonal=103;
-    modelEST.lshift=30;
+    modelEST.lshift=30:(length(y)-30);    
     outEST=LTSts(y,'model',modelEST,'dispresults',true,'plots',0);
 
     % Forecasting
@@ -440,7 +441,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %}
 
 %{
-    % Example of foreasting in a model with explanatory variables.
+    % Example of forecasting in a model with explanatory variables.
     % Simulated data with linear trend, varying seasonal and 1
     % explanatory variable.
     rng(1000)
@@ -464,8 +465,8 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.trend=1;
     model.seasonal=102;
     % Potential level shift position is investigated in positions:
-    % t=10, t=11, ..., t=T-10.
-    model.lshift=0;
+    % t=11, t=11, ..., t=T-11.
+    model.lshift=-1;
     model.X=X;
     out=LTSts(y,'model',model,'plots',1,'dispresults',true);
     % Note that in this case all the 120 values of Xall are supplied and
