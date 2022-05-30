@@ -48,7 +48,7 @@ function out = GUIquantile(x, z, varargin)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. 
+%    out = detailed output to compute the index. Table.
 %          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %
@@ -128,7 +128,7 @@ plots=false;
 if nargin > 2
     options=struct('freq',freq,'DiscreteData',DiscreteData,...
         'plots',plots);
-    
+
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -136,12 +136,12 @@ if nargin > 2
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     freq = options.freq;
     %         if min(freq)<0 || max(freq)>=1
     %             error('FSDA:percclass:WrongInputOpt','Optional argument prt must be in the interval [0 1].');
@@ -164,7 +164,7 @@ if isempty(freq)
     axis('off')
     set(gcf,'Visible','on')
     plot(xadd,probadd,'r','Marker','o')
-    
+
     xlabel('x and requested quantile')
     ylabel('Probability')
     % plot(probadd,xadd,'r')
@@ -179,34 +179,34 @@ if isempty(freq)
     pause(0.0001)
     clickableMultiLegend({'Sorted values and associated quantiles'  ...
         ['Requested quantile corresponding to p=' num2str(z)] 'F(x)'},'Location','northwest');
- out=struct;
- %out.data=array2table([corpus;footer],'VariableNames',header);
- out.quantile=quan;
-    
+    out=struct;
+    %out.data=array2table([corpus;footer],'VariableNames',header);
+    out.quantile=quan;
+
 else
     if DiscreteData == false
         [~,indminx]=min(x(:)) ;
         xori=x;
         x(indminx)=[];
     end
-    
+
     [x,indsorx]=sort(x(:));
     k=length(x);
-    
+
     freq=freq(indsorx(1:end));
-    
+
     freq=freq(:);
     n=sum(freq);
     seq=(1:k)';
     header={'i' 'x_{(i)}' 'n_{i}' 'f_i' 'F(x_i)' };
     f=freq/n; % relative frequencies
     fcum=cumsum(f); % cumulative relative frequencies
-    
-    
+
+
     corpus=[seq, x, freq, f, fcum];
-    
+
     footer=[NaN NaN sum(freq) 1 NaN];
-    
+
     if DiscreteData == true
         strtitle='Details of quantile computation (X is discrete)';
         classes='';
@@ -214,12 +214,12 @@ else
         strtitle='Details of quantile computation (X is continuous)';
         classes=strcat(string(xori(1:end-1)),'-',string(xori(2:end)));
     end
-    
-    
+
+
     str=strForSchool(header, corpus, footer,classes);
-    
-   
-    
+
+
+
     fs=14;
     dim = [.2 .80 0.1 0.1];
     figure('Position',[100 100 1100 600],'Units','normalized');
@@ -228,20 +228,30 @@ else
     axis('off')
     set(gcf,'Visible','on')
     annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
-    
+
     dim = [.2 .9 0.1 0.1];
     fs1=20;
     annotation('textbox',dim,'FitBoxToText','on','String',strtitle,'Interpreter','latex','FontSize',fs1);
-    
-    
+
+
     if DiscreteData == true
         dim = [.2 .05 0.1 0.1];
-        indexxz=find(fcum>=z,1,'first');
         zstr=num2str(z);
-        xz=x(indexxz);
-        xzstr=num2str(xz);
-        
-        strfin=[' \it x $_{'  zstr '}= ' num2str(xz) '$'];
+        if z==0.5 && mod(n,2)==0
+            indexxz1=find(fcum>=z,1,'first');
+            indexxz2=find(fcum>z,1,'first');
+            xz=0.5*(x(indexxz1)+x(indexxz2));
+
+            xzstr=num2str(xz);
+            strfin=[' \it x $_{'  zstr '}= \frac{' num2str(x(indexxz1)) '+' num2str(x(indexxz2)) '}{2}=' num2str(xz) '$'];
+
+        else
+            indexxz=find(fcum>=z,1,'first');
+            xz=x(indexxz);
+            xzstr=num2str(xz);
+            strfin=[' \it x $_{'  zstr '}= ' num2str(xz) '$'];
+
+        end
     else
         dim = [.02 .05 0.1 0.1];
         indexxz=find(fcum<=z,1,'last');
@@ -257,10 +267,10 @@ else
         xz=reqq;
         xzstr=num2str(reqq);
     end
-    
+
     fs1=20;
     annotation('textbox',dim,'FitBoxToText','on','String',strfin,'Interpreter','latex','FontSize',fs1);
-    
+
     if plots==true
         if DiscreteData == true
             figure
@@ -270,26 +280,26 @@ else
             barVariableWidth(fcum, xori,'Color','w')
             x=xori;
         end
-        
+
         hold('on')
         xlimmin=min(x)-0.5;
         xlimmax=max(x)+0.5;
         xlim([xlimmin xlimmax])
-        
+
         plot([xz; xz; xlimmin],[0; z; z],'k--')
         text(xz, 0.05,['x_{' num2str(z) '}=' xzstr],'FontSize',16)
         xlabel('$x_i$','Interpreter','latex','FontSize',16)
         ylabel('Cumulative distribution function $F(x_i)$','Interpreter','latex','FontSize',16)
-        
+
         if DiscreteData==false
             plot([xbars;x(indexxz+2)],fcum(indexxz:indexxz+1))
         end
     end
- 
+
     out=struct;
- out.data=array2table([corpus;footer],'VariableNames',header);
- out.quantile=xz;
+    out.data=array2table([corpus;footer],'VariableNames',header);
+    out.quantile=xz;
 end
- 
+
 end
 %FScategory:GUI
