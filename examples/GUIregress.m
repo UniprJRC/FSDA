@@ -52,12 +52,19 @@ function out = GUIregress(x,y, varargin)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table.
+
+%         out:   structure which contains the following fields
+%
+%    out.tabledata = detailed output to compute the index. Table.
 %          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
-%
-%
-%
+%    out.a = intercept of linear/exponential/power regression on the original data. scalar.
+%    out.b = slope of the of linear/exponential/power regression on the original data. scalar.
+%    out.expa = intercept of the exponential/power regression on the transformed data. scalar.
+%    out.expb =  slope of the exponential regression on the transformed data. scalar.
+%    out.R2 = R squared of the regression model. scalar.
+%            When exponential/power regression is chosen, R squared is always 
+%            computed on transformed data.
 %
 % See also: GUIvar, GUImad, GUIskewness
 %
@@ -385,16 +392,19 @@ out = struct;
 out.tabledata=array2table([corpus;footer],'VariableNames',header);
 if interpType == 1
     out.a=a;
-    out.b=b;    
+    out.b=b;  
+    out.R2=R2;
 elseif interpType == 2
     out.expa=a;
     out.expb=b;
     out.a=exp(a);
     out.b=exp(b);
+    out.R2=R2;
 else    
     out.expa=a;
     out.a=exp(a);
     out.b=b;
+    out.R2=R2;
 end
 
 startIndex=regexp(str,'\cr');
