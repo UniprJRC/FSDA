@@ -18,7 +18,7 @@ function [out]=FSRaddt(y,X,varargin)
 %
 % Optional input arguments:
 %
-%    intercept :    Indicator for constant term. true (default) | false. 
+%    intercept :    Indicator for constant term. true (default) | false.
 %                   Indicator for the constant term (intercept) in the fit,
 %                    specified as the comma-separated pair consisting of
 %                   'Intercept' and either true to include or false to remove
@@ -30,7 +30,7 @@ function [out]=FSRaddt(y,X,varargin)
 %                       least trimmed squares estimator. Scalar.
 %                       h is an integer greater or
 %                       equal than [(n+size(X,2)+1)/2] but smaller then n
-%                       Example - 'h',round(n*0,75) 
+%                       Example - 'h',round(n*0,75)
 %                       Data Types - double
 %
 %       nsamp   :       Number of subsamplse which will be extracted to find the
@@ -39,7 +39,7 @@ function [out]=FSRaddt(y,X,varargin)
 %                       extracted. They will be (n choose p). Remark: if the
 %                       number of all possible subset is <1000 the default is to
 %                       extract all subsets otherwise just 1000.
-%                       Example - 'nsamp',1000 
+%                       Example - 'nsamp',1000
 %                        Data Types - double
 %
 %       lms     :      Criterion to use to find the initlal subset to
@@ -47,22 +47,22 @@ function [out]=FSRaddt(y,X,varargin)
 %                       If lms=1 (default) Least Median of Squares is
 %                       computed, else Least Trimmed of Squares is computed. else
 %                       (default) no plot is produced
-%                       Example - 'lms',1 
+%                       Example - 'lms',1
 %                       Data Types - double
 %
-%       init    :       Search initialization. Scalar. 
+%       init    :       Search initialization. Scalar.
 %                       Scalar which specifies the initial subset size to start
 %                       monitoring exceedances of minimum deletion residual, if
 %                       init is not specified it will be set equal to:
 %                       p+1, if the sample size is smaller than 40;
 %                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%                       Example - 'init',100 starts monitoring from step m=100 
+%                       Example - 'init',100 starts monitoring from step m=100
 %                       Data Types - double
 %
 %       plots   :       Plot on the screen. Scalar.
 %                       If plots=1 a plot with forward deletion
 %                        t-statistics is produced
-%                        Example - 'plots',1 
+%                        Example - 'plots',1
 %                        Data Types - double
 %
 %        nameX  :       Add variable labels in plot. Cell array of strings.
@@ -70,12 +70,12 @@ function [out]=FSRaddt(y,X,varargin)
 %                       the varibles of the regression dataset. If it is empty
 %                       (default) the sequence X1, ..., Xp will be created
 %                       automatically
-%                       Example - 'nameX',{'NameVar1','NameVar2'} 
+%                       Example - 'nameX',{'NameVar1','NameVar2'}
 %                       Data Types - cell
 %
 %       lwdenv  :       Line width for envelopes. Scalar.
 %                       Line width for envelopes based on student T (default is 2)
-%                        Example - 'lwdenv',1 
+%                        Example - 'lwdenv',1
 %                        Data Types - double
 %
 %        quant  :       Confidence quantiles for the envelopes. Vector.
@@ -87,7 +87,7 @@ function [out]=FSRaddt(y,X,varargin)
 %
 %       lwdt       :    Line width for deletion T stat. Scalar.
 %                       (default is 2)
-%                        Example - 'lwdt',1 
+%                        Example - 'lwdt',1
 %                        Data Types - double
 %
 %       nocheck :       Check input arguments. Boolean.
@@ -95,43 +95,43 @@ function [out]=FSRaddt(y,X,varargin)
 %                       matrix y and matrix X. Notice that y and X are left
 %                       unchanged. In other words the additional column of ones
 %                       for the intercept is not added. As default nocheck=false.
-%                       Example - 'nocheck',true 
+%                       Example - 'nocheck',true
 %                       Data Types - boolean
 %
 %       titl    :       a label for the title. Character.
 %                       (default: '')
-%                       Example - 'titl','Example' 
+%                       Example - 'titl','Example'
 %                       Data Types - char
 %
 %       labx    :       a label for the x-axis. Character.
 %                       (default: 'Subset size m')
-%                       Example - 'labx','Subset' 
+%                       Example - 'labx','Subset'
 %                       Data Types - char
 %
 %       laby    :       a label for the y-axis. Character.
 %                       (default: 'Deletion t statistics')
-%                       Example - 'laby','statistics' 
+%                       Example - 'laby','statistics'
 %                       Data Types - char
 %
 %     FontSize:         the font size of the labels of
 %                       the axes and of the labels inside the plot. Scalar.
 %                       Default value is 12
-%                       Example - 'FontSize',11 
+%                       Example - 'FontSize',11
 %                       Data Types - double
 %
 % SizeAxesNum:          size of the numbers of the axes. Scalar.
 %                       Default value is 10
-%                       Example - 'SizeAxesNum',11 
+%                       Example - 'SizeAxesNum',11
 %                       Data Types - double
 %
 %          ylimy:    minimum and maximum of the y axis. Vector.
 %                        Default value is '' (automatic scale)
-%                       Example - 'ylimy',[0 1] 
+%                       Example - 'ylimy',[0 1]
 %                       Data Types - double
 %
 %          xlimx:   minimum and maximum of the x axis. Vector.
 %                       Default value is '' (automatic scale)
-%                       Example - 'xlimy',[0 1] 
+%                       Example - 'xlimy',[0 1]
 %                       Data Types - double
 % Output:
 %
@@ -147,16 +147,24 @@ function [out]=FSRaddt(y,X,varargin)
 %               (p+1)th col = deletion t stat for pth explanatory variable
 %
 %  out.S2del=   (n-init+1) x (p+1) matrix containing the monitoring of
-%               deletion t stat in each step of the forward search
+%               deletion S2 stat in each step of the forward search
 %               1st col = fwd search index (from init to n)
-%               2nd col = deletion t stat for first explanatory variable
-%               3rd col = deletion t stat for second explanatory variable
+%               2nd col = estimate of $\sigma^2$ when the ordering of the
+%               units to enter the fwd search is found excluding first explanatory
+%               variable
+%               3rd col = estimate of $\sigma^2$ when the ordering of the
+%               units to enter the fwd search is found excluding second explanatory
+%               variable
 %               ...
-%               (p+1)th col = deletion t stat for pth explanatory variable
+%               (p+1)th col = estimate of $\sigma^2$ when the ordering of the
+%               units to enter the fwd search is found excluding last explanatory
+%               variable
+%
+%
 %    out.Una=   cell of size p.
 %               out.Una{i} (i=1, ..., p) is a (n-init) x 11 matrix which
 %               contains the unit(s) included in the subset at each step in
-%               the search which excludes the ith explanatory variable. 
+%               the search which excludes the ith explanatory variable.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,:) for example contains
@@ -165,7 +173,7 @@ function [out]=FSRaddt(y,X,varargin)
 %
 % See also addt
 %
-% References: 
+% References:
 %
 % Atkinson, A.C. and Riani, M. (2002b), Forward search added variable t
 % tests and the effect of masked outliers on model selection, "Biometrika",
@@ -193,25 +201,40 @@ function [out]=FSRaddt(y,X,varargin)
 %}
 
 %{
-    %%FSRaddt with optional arguments.
-    % We perform a variable selection on the 'famous' stack loss data using different transformation scales for the response.
+    %% FSRaddt with optional arguments.
+    % We perform a variable selection on the 'famous' stack loss data using
+    % different transformation scales for the response. 
     load('stack_loss');
     y=stack_loss{:,4};
     X=stack_loss{:,1:3};
-    %We start with a fan plot based on first-order model and the five most common values of ? (Figure below).
+    %We start with a fan plot based on first-order model and the five most common values of $\lambda$ (Figure below).
     [out]=FSRfan(y,X,'plots',1);
-    %The fan plot shows that the square root transformation, ?= 0.5, is supported by all the data, with the absolute value of the statistic always less than 1.5. The evidence for all other transformations depends on which observations have been deleted: the log transformation is rejected when some of the suspected outliers are introduced into the data although it is acceptable for all the data: ?= 1 is rejected as soon as any of the suspected outliers are present.
-    %Given that the transformation for the response which is chosen depends on the number of units declared as outliers we perform a variable selection using the original scale, the square root and the log transformation.
-    %Robust variable selection using original untransformed values of the response
+    % The fan plot shows that the square root transformation, lambda= 0.5,
+    % is supported by all the data, with the absolute value of the statistic
+    % always less than 1.5. The evidence for all other transformations
+    % depends on which observations have been deleted: the log transformation
+    % is rejected when some of the suspected outliers are introduced into the
+    % data although it is acceptable for all the data: ?= 1 is rejected as
+    % soon as any of the suspected outliers are present.
+    %
+    % Given that the transformation for the response which is chosen
+    % depends on the number of units declared as outliers we perform a
+    % variable selection using the original scale, the square root and the
+    % log transformation. 
+    % Robust variable selection using original
+    % untransformed values of the response
     % Monitoring of deletion t stat in the original scale
-    [out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975]);
-    %Robust variable selection using square root values
+    [out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975],'nsamp',5000);
+    % Robust variable selection using square root values
     % Monitoring of deletion t stat using transformed response based on the square root
     [out]=FSRaddt(y.^0.5,X,'plots',1,'quant',[0.025 0.975]);
-    %Robust variable selection using log transformed values of the response
+    % Robust variable selection using log transformed values of the response
     % Monitoring of deletion t stat using log transformed values
     [out]=FSRaddt(log(y),X,'plots',1,'quant',[0.025 0.975]);
-    %Conclusion: the forward analysis based on the deletion t statistics clearly reveals that variable X3, independently from the transformation which is chosen and the number of outliers which are declared, is NOT significant.
+    % Conclusion: the forward analysis based on the deletion t statistics
+    % clearly reveals that variable X3, independently from the transformation
+    % which is chosen and the number of outliers which are declared, is NOT
+    % significant.
 %}
 
 %{
@@ -250,7 +273,7 @@ function [out]=FSRaddt(y,X,varargin)
 %}
 
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 nnargin=nargin;
@@ -273,7 +296,7 @@ hdef=floor(0.5*(n+p+1));
 if n<40
     init=p+1;
 else
-    init=min(3*p+1,floor(0.5*(n+p+1)));  
+    init=min(3*p+1,floor(0.5*(n+p+1)));
 end
 
 options=struct('h',hdef,...
@@ -346,7 +369,6 @@ Tdel=[(init:n)' zeros(n-init+1,ini0)];
 % deleted
 S2del=[(init:n)' zeros(n-init+1,ini0)];
 
-
 % Una = cell which will contain the matrices Un for each deleted explanatory
 % variable
 Una=cell(ini0,1);
@@ -390,18 +412,33 @@ for i=vars
         end
 
         b=Xb\yb;
+        % e = vector of residuals for all units using b estimated using subset
+        yhat=Xred*b;
+        e=y-yhat;
 
         if (mm>=init)
-            % compute added t test
-            [outADDT]=addt(yb,Xb,wb,'intercept',false,'nocheck',true);
-            % Store added tstat
-            Tdel(mm-init+1,i)=outADDT.Tadd;
-            % store added estimate of S2
-            S2del(mm-init+1,i)=outADDT.S2add;
-        end
 
-        % e = vector of residual for all units using b estimated using subset
-        e=y-Xred*b;
+            %  % compute added t test
+            %  [outADDT]=addt(yb,Xb,wb,'intercept',false,'nocheck',true);
+            %  % Store added tstat
+            %  Tdel(mm-init+1,i)=outADDT.Tadd;
+            %  % store added estimate of S2
+            %  S2del(mm-init+1,i)=outADDT.S2add;
+
+            Xbadd=[Xb wb];
+            covb=inv(Xbadd'*Xbadd);
+            badd=Xbadd\yb;
+            yhatadd=Xbadd*badd;
+            resadd=yb-yhatadd;
+            S2add=resadd'*resadd/(mm-p);
+            Tadd=badd(end)/sqrt(S2add *covb(end,end));
+
+            % Store added tstat
+            Tdel(mm-init+1,i)=Tadd;
+            % store added estimate of S2
+            S2del(mm-init+1,i)=S2add;
+
+        end
 
         % Second column of matrix r contains squared residuals
         r(:,2)=e.^2;
@@ -533,7 +570,7 @@ if plo==1
         if isempty(figx) || figx>1
             figx=1;
         end
-        
+
         annotation(gcf,'textbox',[figx figy kx ky],'String',{[num2str(100*quant(i)) '%']},...
             'HorizontalAlignment','center',...
             'VerticalAlignment','middle',...
