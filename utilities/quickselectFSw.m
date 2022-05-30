@@ -1,5 +1,5 @@
 function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
-% quickselectFSw finds the 100*p-th weighted order statistic for 0<p<1
+% quickselectFSw finds the 100*p-th weighted order statistic for $0<p<1$
 %
 %<a href="matlab: docsearchFS('quickselectFSw')">Link to the help function</a>
 %

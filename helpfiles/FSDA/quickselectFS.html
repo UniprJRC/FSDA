@@ -8,7 +8,7 @@ k=10;
 [out]=quickselectFS(Y,k);
 % Check the result
 sorY=sort(Y);
-disp([out,sorY(k)])</pre></div></div><pre class="codeoutput">   -1.5387   -1.5387
+disp([out,sorY(k)])</pre></div></div><pre class="codeoutput">   -1.5299   -1.5299
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> quickselectFS with kiniindex supplied.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 Y=randn(n,1);
@@ -17,7 +17,7 @@ k=10;
 [out]=quickselectFS(Y,k,20);
 % Check the result
 sorY=sort(Y);
-disp([out,sorY(k)])</pre></div></div><pre class="codeoutput">   -1.6218   -1.6218
+disp([out,sorY(k)])</pre></div></div><pre class="codeoutput">   -1.6085   -1.6085
 
 </pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> quickselectFS with two output arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=10;
 Y=randn(n,1);
@@ -25,16 +25,16 @@ k=3;
 % kiniindex is supplied 
 [out,Ysor]=quickselectFS(Y,k);
 % Check the result
-disp([Y, Ysor])</pre></div></div><pre class="codeoutput">    0.9337   -1.1593
-   -0.3951   -0.8353
-    1.1332   -0.3951
-   -0.8353    0.1383
-    0.4399    0.4399
-    0.6296    0.6296
-    0.1383    0.9337
-    1.4650    1.0292
-   -1.1593    1.1332
-    1.0292    1.4650
+disp([Y, Ysor])</pre></div></div><pre class="codeoutput">   -0.9290   -2.0480
+   -1.8365   -1.8365
+    2.0429   -1.1922
+   -0.8267   -0.9290
+   -0.8403   -0.8403
+    1.9573   -0.8267
+   -1.1922    0.4189
+    0.4189    0.4323
+   -2.0480    1.9573
+    0.4323    2.0429
 
 </pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> quickselectFS: worst case scenario: see circshift.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=10;
 Y=1:n;

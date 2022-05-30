@@ -41,7 +41,7 @@ function kE = quickselectFS_demo(A,k,kiniindex)
 % Examples:
 %
 %{
-    % quickselectFS with all default options.
+    %% quickselectFS_demo with all default options.
     rng('default');
     rng(12345);
     n=15;

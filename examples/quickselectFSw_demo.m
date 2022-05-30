@@ -62,7 +62,7 @@ function [kD , kW , kstar, varargout]  = quickselectFSw_demo(D,W,p)
 % Examples:
 
 %{
-    % quickselectFSw without optional parameter p gives the weighted
+    %% quickselectFSw without optional parameter p gives the weighted
     % median. The median is 3, but the weighted one is 4, corresponding to
     % the weight 0.3.
     A = [1 2 3 4 5];

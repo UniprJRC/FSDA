@@ -3,12 +3,18 @@ root=FullPath(1:end-length('findDir.m')-1);
 list = findDir(root)</pre></div></div><pre class="codeoutput">
 list =
 
-  4&times;1 cell array
+  10&times;1 cell array
 
-    {'D:\MATLAB\FSDAgit\FSDA\utilities'              }
-    {'D:\MATLAB\FSDAgit\FSDA\utilities\privateFS'    }
-    {'D:\MATLAB\FSDAgit\FSDA\utilities\privateFS\tmp'}
-    {'D:\MATLAB\FSDAgit\FSDA\utilities\tmp'          }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities'                                                            }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\marco.riani'                                                }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\marco.riani\.matlab'                                        }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\marco.riani\.matlab\3p_cluster_jobs'                        }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\marco.riani\.matlab\3p_cluster_jobs\Mriani-HP'              }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\marco.riani\.matlab\3p_cluster_jobs\Mriani-HP\R2021b'       }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\marco.riani\.matlab\3p_cluster_jobs\Mriani-HP\R2021b\remote'}
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\privateFS'                                                  }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\privateFS\tmp'                                              }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\tmp'                                                        }
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of InclDir.</li></span></a></span></h3><div class="collapse"><p> find all subfolders inside matlab help
      documentaion which contain the string optim<div class="programlisting"><div class="codeinput"><pre class="matlab-code">pathdocroot=docroot;
