@@ -30,17 +30,17 @@ plots.cmap = autumn;
 out=tclust(Y,3,0.1,10000,'plots',plots);
 title('contourf plot with autumn colormap','interpreter','LaTex','FontSize',18);
 cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.96 seconds 
+Total estimated time to complete tclust:  0.65 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.20 seconds 
+Total estimated time to complete tclust:  0.28 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.80 seconds 
+Total estimated time to complete tclust:  0.26 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.07 seconds 
+Total estimated time to complete tclust:  0.26 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.87 seconds 
+Total estimated time to complete tclust:  0.20 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.16 seconds 
+Total estimated time to complete tclust:  0.24 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/tclust.html#Example_2'><img vspace="5" hspace="5" src="images\tclust_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_06.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 nsamp=20;
 [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
@@ -62,11 +62,11 @@ restrfactor=1;
 out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
 title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'],'interpreter','LaTex','FontSize',18)
 cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.76 seconds 
+Total estimated time to complete tclust:  0.50 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.34 seconds 
+Total estimated time to complete tclust:  0.34 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  2.50 seconds 
+Total estimated time to complete tclust:  0.25 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/tclust.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\tclust_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclust_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_09.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate
       distributions with different scales and proportions 1:2:2. One of

@@ -5,42 +5,60 @@ X=randn(n,p);
 % Uncontaminated data
 y=randn(n,1);
 [out]=FSRaddt(y,X);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSRaddt with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
-     We perform a variable selection on the 'famous' stack loss data using different transformation scales for the response.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('stack_loss');
+     We perform a variable selection on the 'famous' stack loss data using
+     different transformation scales for the response. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('stack_loss');
 y=stack_loss{:,4};
 X=stack_loss{:,1:3};
-%We start with a fan plot based on first-order model and the five most common values of ? (Figure below).
+%We start with a fan plot based on first-order model and the five most common values of $\lambda$ (Figure below).
 [out]=FSRfan(y,X,'plots',1);
-%The fan plot shows that the square root transformation, ?= 0.5, is supported by all the data, with the absolute value of the statistic always less than 1.5. The evidence for all other transformations depends on which observations have been deleted: the log transformation is rejected when some of the suspected outliers are introduced into the data although it is acceptable for all the data: ?= 1 is rejected as soon as any of the suspected outliers are present.
-%Given that the transformation for the response which is chosen depends on the number of units declared as outliers we perform a variable selection using the original scale, the square root and the log transformation.
-%Robust variable selection using original untransformed values of the response
+% The fan plot shows that the square root transformation, lambda= 0.5,
+% is supported by all the data, with the absolute value of the statistic
+% always less than 1.5. The evidence for all other transformations
+% depends on which observations have been deleted: the log transformation
+% is rejected when some of the suspected outliers are introduced into the
+% data although it is acceptable for all the data: ?= 1 is rejected as
+% soon as any of the suspected outliers are present.
+%
+% Given that the transformation for the response which is chosen
+% depends on the number of units declared as outliers we perform a
+% variable selection using the original scale, the square root and the
+% log transformation. 
+% Robust variable selection using original
+% untransformed values of the response
 % Monitoring of deletion t stat in the original scale
-[out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975]);
-%Robust variable selection using square root values
+[out]=FSRaddt(y,X,'plots',1,'quant',[0.025 0.975],'nsamp',5000);
+% Robust variable selection using square root values
 % Monitoring of deletion t stat using transformed response based on the square root
 [out]=FSRaddt(y.^0.5,X,'plots',1,'quant',[0.025 0.975]);
-%Robust variable selection using log transformed values of the response
+% Robust variable selection using log transformed values of the response
 % Monitoring of deletion t stat using log transformed values
 [out]=FSRaddt(log(y),X,'plots',1,'quant',[0.025 0.975]);
-%Conclusion: the forward analysis based on the deletion t statistics clearly reveals that variable X3, independently from the transformation which is chosen and the number of outliers which are declared, is NOT significant.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+% Conclusion: the forward analysis based on the deletion t statistics
+% clearly reveals that variable X3, independently from the transformation
+% which is chosen and the number of outliers which are declared, is NOT
+% significant.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.00 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
+Number of subsets to extract greater than (n p). It is set to (n p)
 Total estimated time to complete LMS:  0.01 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
+Number of subsets to extract greater than (n p). It is set to (n p)
 Total estimated time to complete LMS:  0.01 seconds 
+Number of subsets to extract greater than (n p). It is set to (n p)
+Total estimated time to complete LMS:  0.16 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 14.1%
+Total estimated time to complete LMS:  0.00 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 Total estimated time to complete LMS:  0.01 seconds 
-Total estimated time to complete LMS:  0.01 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 14.9%
-Total estimated time to complete LMS:  0.02 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 14.3%
-Total estimated time to complete LMS:  0.01 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
-Total estimated time to complete LMS:  0.01 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 14.9%
 </pre><a href='http://rosa.unipr.it/fsda/FSRaddt.html#Example_2'><img vspace="5" hspace="5" src="images\FSRaddt_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSRaddt with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Example of use of FSRaddt with plot of deletion t with personalized line
      width for the envelopes and personalized confidence interval.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
@@ -61,9 +79,9 @@ randn('state', 123456);
 X=randn(n,p);
 % Uncontaminated data
 y=randn(n,1);
-[out]=FSRaddt(y,X,'plots',1,'nameX',{'F1','F2','F3'},'lwdenv',3,'lwdt',4);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
-Total estimated time to complete LMS:  0.03 seconds 
+[out]=FSRaddt(y,X,'plots',1,'nameX',{'F1','F2','F3'},'lwdenv',3,'lwdt',4);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/FSRaddt.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRaddt_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
                variable. It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
@@ -73,23 +91,23 @@ Total estimated time to complete LMS:  0.03 seconds
                Missing values (NaN's) and infinite values (Inf's) are allowed,
                since observations (rows) with missing or infinite values will
                automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',false
-</code>,<code> 'h',round(n*0,75) 
-</code>,<code> 'nsamp',1000 
-</code>,<code> 'lms',1 
-</code>,<code> 'init',100 starts monitoring from step m=100 
-</code>,<code> 'plots',1 
-</code>,<code> 'nameX',{'NameVar1','NameVar2'} 
-</code>,<code> 'lwdenv',1 
+</code>,<code> 'h',round(n*0,75)
+</code>,<code> 'nsamp',1000
+</code>,<code> 'lms',1
+</code>,<code> 'init',100 starts monitoring from step m=100
+</code>,<code> 'plots',1
+</code>,<code> 'nameX',{'NameVar1','NameVar2'}
+</code>,<code> 'lwdenv',1
 </code>,<code> 'quant',[0.025 0.975]
-</code>,<code> 'lwdt',1 
-</code>,<code> 'nocheck',true 
-</code>,<code> 'titl','Example' 
-</code>,<code> 'labx','Subset' 
-</code>,<code> 'laby','statistics' 
-</code>,<code> 'FontSize',11 
-</code>,<code> 'SizeAxesNum',11 
-</code>,<code> 'ylimy',[0 1] 
-</code>,<code> 'xlimy',[0 1] 
+</code>,<code> 'lwdt',1
+</code>,<code> 'nocheck',true
+</code>,<code> 'titl','Example'
+</code>,<code> 'labx','Subset'
+</code>,<code> 'laby','statistics'
+</code>,<code> 'FontSize',11
+</code>,<code> 'SizeAxesNum',11
+</code>,<code> 'ylimy',[0 1]
+</code>,<code> 'xlimy',[0 1]
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
                     specified as the comma-separated pair consisting of
                    'Intercept' and either true to include or false to remove
@@ -98,60 +116,60 @@ Total estimated time to complete LMS:  0.03 seconds
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that have determined the
                        least trimmed squares estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>h is an integer greater or
                        equal than [(n+size(X,2)+1)/2] but smaller then n
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0,75) 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0,75)
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamplse which will be extracted to find the
                        robust estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nsamp=0 all subsets will be
                        extracted. They will be (n choose p). Remark: if the
                        number of all possible subset is &lt;1000 the default is to
                        extract all subsets otherwise just 1000.</p> <p>
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000 
+                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initlal subset to
                        initialize the search.</span></a><span class="example_desc">scalar,  vector | structure.</span></span></h3><div class="collapse">	<p>If lms=1 (default) Least Median of Squares is
                        computed, else Least Trimmed of Squares is computed. else
                        (default) no plot is produced
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which specifies the initial subset size to start
                        monitoring exceedances of minimum deletion residual, if
                        init is not specified it will be set equal to:</p> <p>
                        p+1, if the sample size is smaller than 40;</p> <p>
                        min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100 
+                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If plots=1 a plot with forward deletion
                         t-statistics is produced
-                        </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1 
+                        </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;Add variable labels in plot.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p>Cell array of strings of length p containing the labels of
                        the varibles of the regression dataset. If it is empty
                        (default) the sequence X1, ..., Xp will be created
                        automatically
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'NameVar1','NameVar2'} 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'NameVar1','NameVar2'}
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_lwdenv" class="clearfix"></div><h3 id="input_argument_namevalue_lwdenv" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lwdenv</code> &#8212;Line width for envelopes.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Line width for envelopes based on student T (default is 2)
-                        </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lwdenv',1 
+                        </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lwdenv',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_quant" class="clearfix"></div><h3 id="input_argument_namevalue_quant" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>quant</code> &#8212;Confidence quantiles for the envelopes.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Confidence quantiles for the envelopes of deletion t
                         stat. Default is [0.005 0.995] (i.e. a 99% pointwise
                        confidence interval)
                         </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'quant',[0.025 0.975]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lwdt" class="clearfix"></div><h3 id="input_argument_namevalue_lwdt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lwdt</code> &#8212;Line width for deletion T stat.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>(default is 2)
-                        </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lwdt',1 
+                        </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lwdt',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                        matrix y and matrix X. Notice that y and X are left
                        unchanged. In other words the additional column of ones
                        for the intercept is not added. As default nocheck=false.</p> <p>
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true 
+                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;a label for the title.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>(default: '')
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'titl','Example' 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'titl','Example'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labx" class="clearfix"></div><h3 id="input_argument_namevalue_labx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labx</code> &#8212;a label for the x-axis.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>(default: 'Subset size m')
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labx','Subset' 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labx','Subset'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_laby" class="clearfix"></div><h3 id="input_argument_namevalue_laby" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>laby</code> &#8212;a label for the y-axis.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>(default: 'Deletion t statistics')
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'laby','statistics' 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'laby','statistics'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_FontSize" class="clearfix"></div><h3 id="input_argument_namevalue_FontSize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>FontSize</code> &#8212;the font size of the labels of
                        the axes and of the labels inside the plot.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Default value is 12
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'FontSize',11 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'FontSize',11
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_SizeAxesNum" class="clearfix"></div><h3 id="input_argument_namevalue_SizeAxesNum" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>SizeAxesNum</code> &#8212;size of the numbers of the axes.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Default value is 10
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SizeAxesNum',11 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SizeAxesNum',11
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ylimy" class="clearfix"></div><h3 id="input_argument_namevalue_ylimy" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylimy</code> &#8212;minimum and maximum of the y axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Default value is '' (automatic scale)
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylimy',[0 1] 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylimy',[0 1]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlimx" class="clearfix"></div><h3 id="input_argument_namevalue_xlimx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlimx</code> &#8212;minimum and maximum of the x axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Default value is '' (automatic scale)
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlimy',[0 1] 
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlimy',[0 1]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Tdel</code></td><td><p><p>(n-init+1) x (p+1) matrix containing the monitoring of
                deletion t stat in each step of the forward search
                1st col = fwd search index (from init to n)
@@ -159,15 +177,21 @@ Total estimated time to complete LMS:  0.03 seconds
                3rd col = deletion t stat for second explanatory variable
                ...</p> <p>
                (p+1)th col = deletion t stat for pth explanatory variable</p></p></td></tr><tr valign="top"><td><code>S2del</code></td><td><p><p>(n-init+1) x (p+1) matrix containing the monitoring of
-               deletion t stat in each step of the forward search
+               deletion S2 stat in each step of the forward search
                1st col = fwd search index (from init to n)
-               2nd col = deletion t stat for first explanatory variable
-               3rd col = deletion t stat for second explanatory variable
+               2nd col = estimate of $\sigma^2$ when the ordering of the
+               units to enter the fwd search is found excluding first explanatory
+               variable
+               3rd col = estimate of $\sigma^2$ when the ordering of the
+               units to enter the fwd search is found excluding second explanatory
+               variable
                ...</p> <p>
-               (p+1)th col = deletion t stat for pth explanatory variable</p></p></td></tr><tr valign="top"><td><code>Una</code></td><td><p><p>cell of size p.</p> <p>
+               (p+1)th col = estimate of $\sigma^2$ when the ordering of the
+               units to enter the fwd search is found excluding last explanatory
+               variable</p></p></td></tr><tr valign="top"><td><code>Una</code></td><td><p><p>cell of size p.</p> <p>
                out.Una{i} (i=1, ..., p) is a (n-init) x 11 matrix which
                contains the unit(s) included in the subset at each step in
-               the search which excludes the ith explanatory variable.</p><p> 
+               the search which excludes the ith explanatory variable.</p><p>
                REMARK: in every step the new subset is compared with the
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one Un(1,:) for example contains
