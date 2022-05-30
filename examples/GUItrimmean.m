@@ -127,6 +127,7 @@ else
     x=xord;
     header={'i' 'x_i' 'n_i' 'n_i \; not \; trimmed'  'x_in_i'};
     freq=freq(xordind);
+    freq=freq(:);
     n=sum(freq);
     m=floor(n*(percent/100)/2);
     
