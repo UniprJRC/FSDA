@@ -162,7 +162,7 @@ if isempty(freq)
     % Make sure that that figure is also visible inside .mlx files
     scatter([],[]);
     axis('off')
-    set(gcf,'Visible','on')
+    % set(gcf,'Visible','on')
     plot(xadd,probadd,'r','Marker','o')
 
     xlabel('x and requested quantile')
@@ -226,7 +226,7 @@ else
     % Make sure that that figure is also visible inside .mlx files
     scatter([],[]);
     axis('off')
-    set(gcf,'Visible','on')
+    % set(gcf,'Visible','on')
     annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
     dim = [.2 .9 0.1 0.1];
