@@ -123,7 +123,7 @@ function out = GUIquantile(x, z, varargin)
 %% Beginning of code
 
 freq='';
-DiscreteData=false;
+DiscreteData=true;
 plots=false;
 if nargin > 2
     options=struct('freq',freq,'DiscreteData',DiscreteData,...
