@@ -3588,9 +3588,11 @@ if evalCode==true
                 
                 iniout=regexp(outstring,listExi);
                 if length(iniout)>2
-                    disp(['Duplicate name for: ' listExi ' found'])
+                   if length(regexp([listEx{:,1} listExtraEx{:,1}],listExi))>1
+                    disp(['Duplicate name for examples titled: "' listExi '" found'])
                     warning('FSDA:WrongArg','There are examples with the same title, please use a title which is unique')
                     warning('FSDA:WrongArg','Or alternatively there is an empty line before the start of the example')
+                   end
                 elseif isempty(iniout)
                     errmsg= [' Title of example \n''' listExi '''\n could not be found \n'...
                         'Probably because the string contains special characters\n' ...
