@@ -556,8 +556,8 @@ function [out]=FSRts(y,varargin)
     model1.trend=1;              % linear trend
     model1.s=12;                 % monthly time series
     model1.seasonal=104;
-    model1.lshift=10;
-    % Automatically serch for level shift and outliers
+    model1.lshift=-1;
+    % Automatically serch for outliers and level shift
     out=FSRts(y,'model',model1,'msg',0);
 %}
 
@@ -695,7 +695,7 @@ else % Initial subset is not supplied by the user
     modelmdr.B=out.B;
     
     if isfield(modelmdr,'lshift')
-        if model.lshift>0
+        if model.lshift~=0
             modelmdr.posLS=out.posLS;
         end
         modelmdr=rmfield(modelmdr,'lshift');
