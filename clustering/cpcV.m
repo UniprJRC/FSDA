@@ -8,13 +8,6 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, Wk, wk, pa)
 % Required input arguments:
 %
 %
-%     lmdc  : row vector of length $k$ containing restricted determinants. More
-%             precisely, the $j$-th element of lmdc contains $\lambda_j^{1/v}$.
-%             The elements of lmdc satisfy the constraint pa.cdet in the sense that
-%             $\max(lmdc)/\min(lmdc) \leq pa.cdet^{(1/v)}. In other words, the
-%             ratio between the largest and the smallest determinant is not
-%             greater than pa.cdet. All the elements of vector lmdc are equal
-%             if modeltype is E** or if pa.cdet=1;
 %     GAMc : constrained shape matrix. Matrix of size v-by-k containing in
 %           column j the elements on the main diagonal of shape matrix
 %           $\Gamma_j$. The elements of GAMc satisfy the following
@@ -25,14 +18,21 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, Wk, wk, pa)
 %           pa.shw. All the columns of matrix GAMc are equal if the second
 %           letter of modeltype is E. All the columns of matrix GAMc are
 %           equal to 1 if the second letter of modeltype is I.
-%   Omega2D : v-by-v matrix containing the common rotation matrix.
-%   SigmaB : v-by-v-by-k array containing the k covariance matrices for the
-%           k groups.
+%     lmdc  : row vector of length $k$ containing restricted determinants. More
+%             precisely, the $j$-th element of lmdc contains $\lambda_j^{1/v}$.
+%             The elements of lmdc satisfy the constraint pa.cdet in the sense that
+%             $\max(lmdc)/\min(lmdc) \leq pa.cdet^{(1/v)}. In other words, the
+%             ratio between the largest and the smallest determinant is not
+%             greater than pa.cdet. All the elements of vector lmdc are equal
+%             if modeltype is E** or if pa.cdet=1;
 %   niini  : vector of length k containing the size of the groups.
 %     pa : structure containing: 3 letter character specifying modeltype,
 %            number of dimensions, number of groups...
 %            The fields of pars which are used in this routine are pa.v,
-%            pa.k,  pa.maxiterR and pa.tolR
+%            pa.k,  pa.maxiterR and pa.tolR%   Omega2D : v-by-v matrix containing the common rotation matrix.
+%   SigmaB : v-by-v-by-k array containing the k covariance matrices for the
+%           k groups.
+%
 %
 % Output:
 %
