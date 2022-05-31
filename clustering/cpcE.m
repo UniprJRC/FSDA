@@ -15,13 +15,13 @@ function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %             ratio between the largest and the smallest determinant is not
 %             greater than pa.cdet. All the elements of vector lmdc are equal
 %             if modeltype is E** or if pa.cdet=1;
-%   SigmaB : p-by-p-by-k array containing the k covariance matrices for the
-%           k groups.
 %   niini  : vector of length k containing the size of the groups.
 %     pa : structure containing: 3 letter character specifying modeltype,
 %            number of dimensions, number of groups...
 %            The fields of pars which are used in this routine are pa.p,
 %            and pa.k a
+%   SigmaB : p-by-p-by-k array containing the k covariance matrices for the
+%           k groups.
 %
 %
 % Output:
