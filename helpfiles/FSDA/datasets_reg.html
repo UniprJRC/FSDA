@@ -48,15 +48,15 @@ document.write(divsbefore);
   </colgroup>
   <tbody>
     <tr valign="top">
-      <th bgcolor="#B2B2B2" valign="top" style="height: 33px">File</th>
+      <th bgcolor="#B2B2B2" valign="top" style="height: 33px; width: 799px;">File</th>
       <th bgcolor="#B2B2B2" valign="top" style="height: 33px">Description of Data Set</th>
     </tr>
     <tr>
-      <td></td>
+      <td style="width: 799px"></td>
       <td></td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>algae </tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>algae </tt></td>
       <td bgcolor="#F2F2F2">The algae dataset (from Hettich and Bay, 1999)
         contains 90 measurements at a river in some place in Europe. There are
         11 predictors. The first three are categorical: the season of the year,
@@ -69,7 +69,7 @@ document.write(divsbefore);
         outliers, i.e. observations 36 and 77. </td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>aircraft</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>aircraft</tt></td>
       <td bgcolor="#F2F2F2">The aircraft dataset (Rousseeuw and Leroy, 1987,
         page 154, table 22) contains 23 single-engine aircraft built over the
         years 1947-1979, from Office of Naval Research. The dependent variable
@@ -81,15 +81,48 @@ document.write(divsbefore);
       </td>
 	</tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>animals</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>animals</tt></td>
       <td bgcolor="#F2F2F2">The animals dataset contains Brain and Body Weights for 65 Species 
 	  of land animals. References for these dataset are contained in
 	  <a href="https://vincentarelbundock.github.io/Rdatasets/doc/robustbase/Animals2.html">
 	  https://vincentarelbundock.github.io/Rdatasets/doc/robustbase/Animals2.html</a>
       </td>
 	  </tr>
+      <tr>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>bank_data</tt></td>
+      <td bgcolor="#F2F2F2">There are 1,949 univariate observations on the 
+	  amount of money made from individual personal banking customers over a 
+	  year for an Italian bank. Because of the linking of products, it is not 
+	  straightforward for the bank to attribute the profit to individual 
+	  sources. The bank made a preliminary classification of its 700 products 
+	  into 48 macrocategories (macroservices). Among these 48 macrocategories, 
+	  the 13 most important ones according to the bank are listed below and form our set of explanatory variables. All 
+	  explanatory variables are discrete, taking values 0, 1, 2, . . . , the 
+	  number of services (inside each macroservice) that each customer has 
+	  signed up for – number of credit cards, number of domestic direct debits, 
+	  number of current accounts and so forth.
+	  The voices are:<br>
+	  - Y  = Profit/loss,<br>
+	  - X1 =  Personal loans,<br>
+	  - X2 = Financing and hire-purchase,<br>
+      - X3 = Mortgages,<br>
+      - X4 = Life insurance<br>
+      - X5 =  Share account<br>
+      - X6 =  Bond account<br>
+      - X7 = Current account<br>
+      - X8 = Salary deposits<br>
+      - X9 =  Debit cards<br>
+
+            - X10 = Credit cards<br>
+      - X11 =Telephone banking<br>
+      - X12 = Domestic direct debits<br>
+      - X13 = Money transfers.
+      </td>  
+	  
+
+      </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>Balancesheets</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>Balancesheets</tt></td>
       <td bgcolor="#F2F2F2">The Balancesheets dataset contains 6 balancesheets voices of 1405
 	  Italian capital companies extracted from the Buerau Van Dijks AIDA database.
 	  The voices are:<br>
@@ -104,9 +137,9 @@ document.write(divsbefore);
 
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>credit_card </tt></td>
-      <td bgcolor="#F2F2F2">Credit card data, introduced by Riani (2011
-        forthcoming), are formed by 1,000 observations on the most active
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>credit_card </tt></td>
+      <td bgcolor="#F2F2F2">Credit card data, introduced by Riani&nbsp; and 
+	  Atkinson (2010), are formed by 1,000 observations on the most active
         customers of an Italian bank. There is one response and nine
         explanatory variables which are: <br>
         - x1: Direct debts to the bank; <br>
@@ -127,7 +160,7 @@ document.write(divsbefore);
         outliers with reference to these significant variables. </td>
     </tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>fish</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>fish</tt></td>
       <td bgcolor="#F2F2F2">&nbsp; Two websites, 
 	  <a href="https://www.kaggle.com/aungpyaeap/fish-market">https://www.kaggle.com/aungpyaeap/fish-market</a>&nbsp; and 
 	  <a href="http://jse.amstat.org/datasets/fishcatch.txt">http://jse.amstat.org/datasets/fishcatch.txt</a>&nbsp; 
@@ -144,7 +177,7 @@ document.write(divsbefore);
 	  </td>
       </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>fishery</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>fishery</tt></td>
       <td bgcolor="#F2F2F2">Data extracted from monthly aggregates (flows) of
         trade declarations (Riani <em>et al.</em> 2008). The dataset is formed
         by 677 flows of a fishery product imported in the European Union from a
@@ -167,28 +200,28 @@ document.write(divsbefore);
         there is no subject matter classification available. </span></td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>fishery2002</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>fishery2002</tt></td>
       <td bgcolor="#F2F2F2">It has the characteristics of dataset fishery but
         it contains information on the importing Eu country (declarant) and on
         the period (date) in which the transaction took place. It referes to
         year 2002. </td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>fishery2003</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>fishery2003</tt></td>
       <td bgcolor="#F2F2F2">It has the characteristics of dataset fishery but
         it contains information on the importing Eu country (declarant) and on
         the period (date) in which the transaction took place. It referes to
         year 2003. </td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>fishery2004</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>fishery2004</tt></td>
       <td bgcolor="#F2F2F2">It has the characteristics of dataset fishery but
         it contains information on the importing Eu country (declarant) and on
         the period (date) in which the transaction took place. It referes to
         year 2004. </td>
     </tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>forbes</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>forbes</tt></td>
       <td bgcolor="#F2F2F2">Forbes' data on air pressure in the Alps and the
         boiling point of water (Weisberg, 1985). There are 17 observations on
         the boiling point of water at different pressures, obtained from
@@ -201,7 +234,7 @@ document.write(divsbefore);
         The dataset is characterized by one clear outlier. </td>
       </tr>
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>gasoline</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>gasoline</tt></td>
       <td bgcolor="#F2F2F2">The data in Table 1 Chen Lockart and Stephens (2002) 
 	  are 107 readings with response the distance driven and explanatory 
 	  variable the amount of gasoline consumed.. The variables are: <br>
@@ -211,7 +244,7 @@ document.write(divsbefore);
 	  no transformation potential. </td>
     </tr>
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>hawkins</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>hawkins</tt></td>
       <td bgcolor="#F2F2F2">Hawkins' data simulated to baffle data analysts (by
         Hawkins). There are 128 observations and eight explanatory variables.
         The scatter plot matrix of the data does not reveal an interpretable
@@ -220,7 +253,7 @@ document.write(divsbefore);
         FS it is possible to find four groups in the data.</td>
     </tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>hospitalFS</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>hospitalFS</tt></td>
       <td bgcolor="#F2F2F2">Hospital data (Neter et al., 1996). Data on the
         logged survival time of 108 patients undergoing liver surgery, together
         with four potential explanatory variables. Data are composed of 54
@@ -231,7 +264,7 @@ document.write(divsbefore);
         are significantly different. </td>
       </tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>illness07</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>illness07</tt></td>
       <td bgcolor="#F2F2F2">Kleinbaum and Kupper (1978, p.148) describe 
 	  observational data on the assessment of mental illness of 53 patients. A 
 	  psychiatrist assigns values for mental retardation and degree of distrust 
@@ -246,7 +279,7 @@ document.write(divsbefore);
 	  transformation. </td>
       </tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>Income1</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>Income1</tt></td>
       <td bgcolor="#F2F2F2">Atkinson et al. (2023) describe income data taken 
 	  from the United States Census Bureau, Annual Social and Economic Supplements (2021).	  
 	  <a href="https://www2.census.gov/programs-surveys/cps/datasets/2021/march/asecpub21csv.zip">https://www2.census.gov/programs-surveys/cps/datasets/2021/march/asecpub21csv.zip</a>&nbsp; 
@@ -258,7 +291,7 @@ document.write(divsbefore);
  	 (dollar amount).<br>The goal is to predict HTOTVAL.</td>
       </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>Income2</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>Income2</tt></td>
       <td bgcolor="#F2F2F2">Atkinson et al. (2023) describe income data.
 	  They are a sample of 200 observations of full time employees from a municipality in Northern 
 	  Italy who have declared extra income from investment sources. The variables are:
@@ -272,11 +305,11 @@ document.write(divsbefore);
  	 (Euro amount).<br>The goal is the possibility in predicting income level based on the individual’s personal information.</td>
     </tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>JohnDraper <tt>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>JohnDraper <tt>
       <td bgcolor="#F2F2F2">John and Draper (1980) present data on the subjective assessment of the thickness of pipe. Five inspectors assessed wall thickness at four different locations on the pipe. The experiment was repeated three times. The sixty responses are a multiple of the difference between the inspector's assessment and the `true' value determined by an ultrasonic reader. If both readings were available the Box-Cox transformation could be applied to all 120 readings and the difference analysed in the transformed scale. But the ultrasonic readings are no longer known.&nbsp;</td>
       </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>krafft </tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>krafft </tt></td>
       <td bgcolor="#F2F2F2">The krafft dataset (Jalali-Heravi and Knouz, 2002)
         contains the measures for 32 chemical compounds of a physical property
         called the Krafft point, together with several molecular descriptors,
@@ -286,7 +319,7 @@ document.write(divsbefore);
         sub-groups. </td>
     </tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>loyalty</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>loyalty</tt></td>
       <td bgcolor="#F2F2F2">Loyalty cards data. They contain 509 observations
         on the behavior of customers with loyalty cards from a supermarket
         chain in Northern Italy. The response (y) is the amount, in Euros,
@@ -301,7 +334,7 @@ document.write(divsbefore);
         (Atkinson and Riani, 2006).</td>
       </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>Marketing_Data</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>Marketing_Data</tt></td>
       <td bgcolor="#F2F2F2"> The advertising experiment between Social Media Budget and Sales (in
 Thousands $ ).
 200 experiments.<br>
@@ -313,7 +346,7 @@ Thousands $ ).
         (2022).</td>
     </tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>mineral</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>mineral</tt></td>
       <td bgcolor="#F2F2F2">The mineral dataset (Smith, Campbell and Lichfield,
         1984) contains the measurement of the contents (in parts per million)
         of 2 chemical elements (zinc and copper) in 53 samples of rocks in
@@ -329,7 +362,7 @@ Thousands $ ).
         indicates that the fit is not correct. </td>
       </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>ms212</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>ms212</tt></td>
       <td bgcolor="#F2F2F2">Students in an introductory statistics class at the 
 	  University of Queensland participated in a simple 
 	  experiment. They took their own pulse rate. They were then<br class="auto-style1">
@@ -347,7 +380,7 @@ Thousands $ ).
 	  http://www.statsci.org/data/oz/ms212.html</a> <br class="auto-style1"></td>
     </tr>
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>multiple_regression</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>multiple_regression</tt></td>
       <td bgcolor="#F2F2F2">Multiple regression data showing the effect of
         masking (Atkinson and Riani, 2000). There are 60 observations on a
         response y with the values of three explanatory variables. The scatter
@@ -356,7 +389,7 @@ Thousands $ ).
         However the FS finds that there are 6 masked outliers.</td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>oats</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>oats</tt></td>
       <td bgcolor="#F2F2F2">The data set oats (Scheffe, 1959, p. 138) lists the
         yield of grain for eight varieties of oats in five replications of a
         randomized-block experiment. Fitting by LS yields residuals with no
@@ -366,7 +399,7 @@ Thousands $ ).
         values have been modified (see oats_mod dataset). </td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>oats_mod</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>oats_mod</tt></td>
       <td bgcolor="#F2F2F2">It is a modification of the dataset Oats to show
         the effect of outliers on the classical procedure. As for the oats
         data, the normal Q-Q plot of t(i) show nothing suspicious. But the
@@ -374,7 +407,7 @@ Thousands $ ).
         failed to point out a departure from the model. </td>
     </tr>
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>ozone</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>ozone</tt></td>
       <td bgcolor="#F2F2F2">Ozone data: ozone concentration at Upland (CA, USA)
         as a function of eight meteorological variables (Breiman and Friedman,
         1985). Data come from the first 80 observations on a series of
@@ -393,7 +426,7 @@ Thousands $ ).
         need appropriate transformation before being analyzed. </td>
     </tr>
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>ozone_330_obs</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>ozone_330_obs</tt></td>
       <td bgcolor="#F2F2F2">They are a superset of the 80 ozone data described
         above. Through the analysis of the fan plot, the minimum deletion
         residual plot and the generalised candlestick plot, it is possible to
@@ -403,7 +436,7 @@ Thousands $ ).
     </tr>
 	
 	<tr>
-      <td bgcolor="#F2F2F2"><tt>P12119085</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>P12119085</tt></td>
       <td bgcolor="#F2F2F2">P12119085 dataset (Rousseeuw  et al. 2018) contains monthly trade volumes of imports of plants
 	  (used primarily in perfumery, pharmacy or for insecticidal, fungicidal or similar purposes)
 	  from Kenya into the UK in a four-year period. A downward level shift is evident in position
@@ -412,7 +445,7 @@ Thousands $ ).
     </tr>
 	
 	<tr>
-      <td bgcolor="#F2F2F2"><tt>P17049075</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>P17049075</tt></td>
       <td bgcolor="#F2F2F2">P17049075 dataset (Rousseeuw  et al. 2018) contains monthly trade volumes
 	  of imports of sugar from Ukraine into Lithuania in a four-year period. A downward level shift
 	  is evident in position 35.
@@ -420,7 +453,7 @@ Thousands $ ).
     </tr>
 
     <tr>
-      <td bgcolor="#F2F2F2"><tt>poison</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>poison</tt></td>
       <td bgcolor="#F2F2F2">Poison data (by Box and Cox, 1964) are about the
         time to death of animals in a 3 × 4 factorial experiment with four
         observations at each factor combination. There are no outliers or
@@ -428,7 +461,7 @@ Thousands $ ).
         part of the data by a suitable transformation. </td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>rats</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>rats</tt></td>
       <td bgcolor="#F2F2F2">The rats dataset (Bond, 1979) corresponds to an
         experiment on the speed of learning of rats. Times were recorded for a
         rat to go through a shuttlebox in successive attempts. If the time
@@ -440,7 +473,7 @@ Thousands $ ).
         between those three points and the rest. </td>
     </tr>
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>salinity</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>salinity</tt></td>
       <td bgcolor="#F2F2F2">Measurements on water in Pamlico Sound, North
         Carolina. The data are taken from Ruppert and Carroll (1980). There are
         28 observations on the salinity of water in the spring in Pamlico
@@ -460,7 +493,7 @@ Thousands $ ).
         in any way outlying or influential.</td>
     </tr>
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>stack_loss</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>stack_loss</tt></td>
       <td bgcolor="#F2F2F2">Brownlee's stack loss data on the oxidation of
         ammonia (Brownlee, 1965). There are observations from 21 days of
         operation of a plant for the oxidation of ammonia as a stage in the
@@ -481,7 +514,7 @@ Thousands $ ).
         structure in the dataset.</td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>stars</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>stars</tt></td>
       <td bgcolor="#F2F2F2"><span class="style1">The stars dataset, introduced
         by Humpreys (1978), consists of 47 observations about the light
         intensity (y2) and the superfice temperature measured in Kelin degrees
@@ -495,7 +528,7 @@ Thousands $ ).
         Rousseeuw and Leroy (1987, p. 27).</span></td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>TableF61_Greene</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>TableF61_Greene</tt></td>
       <td bgcolor="#F2F2F2"><span class="style1">The dataset (Greene 2012,
         chapter 9) contains cost data for U.S. Airlines: 90 oservations on 6
         firms for 15 Years, 1970-1984. These data are a subset of a larger data
@@ -506,13 +539,13 @@ Thousands $ ).
         capacity utilization of the fleet.</span></td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>TableF91_Greene</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>TableF91_Greene</tt></td>
       <td bgcolor="#F2F2F2"><span class="style1">The dataset (Greene 2003,
         chapter 11) gives monthly credit card expenditure for 100 individuals,
         sampled from a larger sample of 13,444 people.</span></td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>toxicity</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>toxicity</tt></td>
       <td bgcolor="#F2F2F2">The toxicity dataset (Maguna, Nunez, Okulik and
         Castro, 2003) contains the measurement of the aquatic toxicity of 38
         carboxylic acids, together with nine molecular descriptors, in order to
@@ -522,7 +555,7 @@ Thousands $ ).
         10 outliers, in particular observations 13, 23, 32, 34,35, 36. </td>
     </tr>
     <tr>
-      <td bgcolor="#F2F2F2"><tt>tradeH</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>tradeH</tt></td>
       <td bgcolor="#F2F2F2"><span class="style1">The tradeH dataset contains
         data on coalfish traded from Maldives to Italy. The two variables are
         the value (dependent variable) and quantity (independent variable)
@@ -530,7 +563,7 @@ Thousands $ ).
         heteroscedasticity.</span></td>
     </tr>
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>wool</tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>wool</tt></td>
       <td bgcolor="#F2F2F2">Number of cycles to failure of samples of worsted
         yarn in a 3<sup>3/sup> experiment (Box and Cox, 1964). The wool data
         give the number of cycles to failure of a worsted yarn under cycles of
