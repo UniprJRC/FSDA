@@ -27,22 +27,7 @@ function barVariableWidth(heights, classes, varargin)
 %                   Example - 'color',1:5
 %                   Data Types - scalar | vector | matrix | RGB triplet | 'r' | 'g' | 'b' | .
 %
-%    LineWidth :   Line Width of the vertices. Scalar.
-%                   Scalar containing the width of the lines of the
-%                   rectangles.
-%                   Example - 'LineWidth',2
-%                   Data Types - double
-%
-%
-%    FaceAlpha :   Face transparency.
-%                   1 (default) | scalar in range [0,1] | 'flat' | 'interp'.
-%                   A value of 1 is fully opaque and 0 is completely transparent.
-%                   For additional details about this option see option
-%                   FaceAlpha inside patch.
-%                   Example - 'FaceAlpha',0.8
-%                   Data Types - double
-%
-%    EdgeColor :   Edge colors.
+%         EdgeColor :   Edge colors.
 %                   [0 0 0] (default) | 'none' | 'flat' | 'interp' | RGB triplet | hexadecimal color code | 'r' | 'g' | 'b' | .
 %                   Colors of the edges of the rectangles.
 %                   For additional details about this option see option
@@ -50,11 +35,26 @@ function barVariableWidth(heights, classes, varargin)
 %                   Example - 'EdgeColor',[0 0.5 1]
 %                   Data Types -  | 'none' | 'flat' | 'interp' | RGB triplet | hexadecimal color code | 'r' | 'g' | 'b' |
 %
-%    LineStyle :   Line style.
+%         FaceAlpha :   Face transparency.
+%                   1 (default) | scalar in range [0,1] | 'flat' | 'interp'.
+%                   A value of 1 is fully opaque and 0 is completely transparent.
+%                   For additional details about this option see option
+%                   FaceAlpha inside patch.
+%                   Example - 'FaceAlpha',0.8
+%                   Data Types - double
+%
+%         LineStyle :   Line style.
 %                   '-' (default) | '--' | ':' | '-.' | 'none''
 %                   Line Style of the edges of the rectangles.
 %                   Example - 'LineStyle','--']
-%                   Data Types -  '-' (default) | '--' | ':' | '-.' | 'none''
+%                   Data Types -  '-' (default) | '--' | ':' | '-.' |
+%                   'none''
+%
+%         LineWidth :   Line Width of the vertices. Scalar.
+%                   Scalar containing the width of the lines of the
+%                   rectangles.
+%                   Example - 'LineWidth',2
+%                   Data Types - double
 %
 %  Output:
 %

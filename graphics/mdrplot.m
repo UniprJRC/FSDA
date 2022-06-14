@@ -27,85 +27,6 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
 %
 % Optional input arguments:
 %
-%       quant   :   Quantiles for which envelopes have
-%                   to be computed. Vector. The default is to produce 1%, 50% and
-%                   99% envelopes. In other words the default is
-%                   quant=[0.01;0.5;0.99];
-%                   Example - 'quant',[0.05;0.5;0.95]
-%                   Data Types - double
-%
-%       sign    :   mdr with sign. Scalar. If it is equal 1 (default) we
-%                   distinguish steps for which minimum deletion residual
-%                   was associated with positive or negative value of the
-%                   residual. Steps associated with positive values of mdr
-%                   are plotted in black, while other steps are plotted in
-%                   red.
-%                   Example - 'sign',1
-%                   Data Types - double
-%
-%       mplus1  :   plot of (m+1)th order statistic. Scalar. Scalar, which
-%                   specifies if it is necessary to plot the
-%                   curve associated with (m+1)th order statistic.
-%                   Example - 'mplus1',1
-%                   Data Types - double
-%
-%       envm    :   sample size for drawing enevlopes. Scalar. Scalar which
-%                   specifies the size of the sample which is used to
-%                   superimpose the envelope. The default is to add an
-%                   envelope based on all the observations (size n
-%                   envelope).
-%                   Example - 'envm',100
-%                   Data Types - double
-%
-%       xlimx   :   min and max for x axis. Vector. vector with two
-%                   elements controlling minimum and maximum on the x axis.
-%                   Default value is mdr(1,1)-3 and mdr(end,1)*1.3
-%                   Example - 'xlimx',[20 100]
-%                   Data Types - double
-%
-%       ylimy   :   min and max for x axis. Vector. Vector with two
-%                   elements controlling minimum and maximum on the y axis.
-%                   Default value is min(mdr(:,2)) and max(mdr(:,2));
-%                   Example - 'ylimy',[2 6]
-%                   Data Types - double
-%
-%       lwdenv  :   Line width. Scalar. Scalar which controls the width of
-%                   the lines associated with the envelopes.
-%                   Default is lwdenv=1
-%                   Example - 'lwdenv',2
-%                   Data Types - double
-%
-%       tag     :   plot handle. String. String which identifies the handle
-%                   of the plot which is about to be created. The default
-%                   is to use tag 'pl_mdr'. Notice that if the program
-%                   finds a plot which has a tag equal to the one specified
-%                   by the user, then the output of the new plot overwrites
-%                   the existing one in the same window else a new window
-%                   is created.
-%                   Example - 'tag','mymdr'
-%                   Data Types - char
-%
-%   datatooltip :   interactive clicking. Empty value (default) or
-%                   structure.
-%                   If datatooltip is not empty the user can use the mouse
-%                   in order to have information about the unit selected,
-%                   the step in which the unit enters the search and the
-%                   associated label. If datatooltip is a structure, it is
-%                   possible to control the aspect of the data cursor (see
-%                   function datacursormode for more details or the
-%                   examples below). The default options of the structure
-%                   are DisplayStyle='Window' and SnapToDataVertex='on'
-%                   Example - 'datatooltip',''
-%                   Data Types - empty value, numeric or structure
-%
-%       label   :   row labels. Cell of strings. Cell containing the labels
-%                   of the units (optional argument used when
-%                   datatooltip=1. If this field is not present labels
-%                   row1, ..., rown will be automatically created and
-%                   included in the pop up datatooltip window)
-%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell
-%
 %    databrush :    interactive mouse brushing. Empty value (default),
 %                   scalar or structure.
 %                   DATABRUSH IS AN EMPTY VALUE.
@@ -174,17 +95,63 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
+%   datatooltip :   interactive clicking. Empty value (default) or
+%                   structure.
+%                   If datatooltip is not empty the user can use the mouse
+%                   in order to have information about the unit selected,
+%                   the step in which the unit enters the search and the
+%                   associated label. If datatooltip is a structure, it is
+%                   possible to control the aspect of the data cursor (see
+%                   function datacursormode for more details or the
+%                   examples below). The default options of the structure
+%                   are DisplayStyle='Window' and SnapToDataVertex='on'
+%                   Example - 'datatooltip',''
+%                   Data Types - empty value, numeric or structure
+%
+%       envm    :   sample size for drawing enevlopes. Scalar. Scalar which
+%                   specifies the size of the sample which is used to
+%                   superimpose the envelope. The default is to add an
+%                   envelope based on all the observations (size n
+%                   envelope).
+%                   Example - 'envm',100
+%                   Data Types - double
+%
 %       FontSize:   Size of axes labels. Scalar. Scalar which controls the
 %                   fontsize of the labels of the axes.
 %                   Default value is 12.
 %                   Example - 'FontSize',14
 %                   Data Types - single | double
 %
-%    SizeAxesNum:   Size of axes numbers. Scalar which controls the
-%                   fontsize of the numbers of the axes.
-%                   Default value is 10.
-%                   Example - 'SizeAxesNum',14
+%       label   :   row labels. Cell of strings. Cell containing the labels
+%                   of the units (optional argument used when
+%                   datatooltip=1. If this field is not present labels
+%                   row1, ..., rown will be automatically created and
+%                   included in the pop up datatooltip window)
+%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
+%                   Data Types - cell
+%
+%       labx    :   x axis title. Character. A label for the x-axis
+%                   (default: 'Subset size m').
+%                   Example - 'labx','Subset size m'
+%                   Data Types - char
+%
+%       laby    :   y axis title. Character. A label for the y-axis
+%                  (default: 'Minimum deletion residual').
+%                   Example - 'laby','mdr'
+%                   Data Types - char
+%
+%       lwd     :   Curves line width. Scalar. Scalar which controls
+%                   linewidth of the curve which contains the monitoring of
+%                   minimum deletion residual.
+%                   Default line width=2
+%                   Example - 'lwd',3
 %                   Data Types - single | double
+%
+%       lwdenv  :   Line width. Scalar. Scalar which controls the width of
+%                   the lines associated with the envelopes.
+%                   Default is lwdenv=1
+%                   Example - 'lwdenv',2
+%                   Data Types - double
 %
 %       nameX   :   Regressors names. Cell array of strings. Cell array of
 %                   strings of length p containing the labels of the
@@ -199,27 +166,62 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
 %                   Example - 'namey','response label'
 %                   Data Types - char
 %
-%       lwd     :   Curves line width. Scalar. Scalar which controls
-%                   linewidth of the curve which contains the monitoring of
-%                   minimum deletion residual.
-%                   Default line width=2
-%                   Example - 'lwd',3
+%       mplus1  :   plot of (m+1)th order statistic. Scalar. Scalar, which
+%                   specifies if it is necessary to plot the
+%                   curve associated with (m+1)th order statistic.
+%                   Example - 'mplus1',1
+%                   Data Types - double
+%
+%       quant   :   Quantiles for which envelopes have
+%                   to be computed. Vector. The default is to produce 1%, 50% and
+%                   99% envelopes. In other words the default is
+%                   quant=[0.01;0.5;0.99];
+%                   Example - 'quant',[0.05;0.5;0.95]
+%                   Data Types - double
+%
+%       sign    :   mdr with sign. Scalar. If it is equal 1 (default) we
+%                   distinguish steps for which minimum deletion residual
+%                   was associated with positive or negative value of the
+%                   residual. Steps associated with positive values of mdr
+%                   are plotted in black, while other steps are plotted in
+%                   red.
+%                   Example - 'sign',1
+%                   Data Types - double
+%
+%    SizeAxesNum:   Size of axes numbers. Scalar which controls the
+%                   fontsize of the numbers of the axes.
+%                   Default value is 10.
+%                   Example - 'SizeAxesNum',14
 %                   Data Types - single | double
+%
+%       tag     :   plot handle. String. String which identifies the handle
+%                   of the plot which is about to be created. The default
+%                   is to use tag 'pl_mdr'. Notice that if the program
+%                   finds a plot which has a tag equal to the one specified
+%                   by the user, then the output of the new plot overwrites
+%                   the existing one in the same window else a new window
+%                   is created.
+%                   Example - 'tag','mymdr'
+%                   Data Types - char
 %
 %       titl    :   main title. Character.
 %                   A label for the title (default: '').
 %                   Example - 'namey','Plot title'
 %                   Data Types - char
 %
-%       labx    :   x axis title. Character. A label for the x-axis
-%                   (default: 'Subset size m').
-%                   Example - 'labx','Subset size m'
-%                   Data Types - char
+%       xlimx   :   min and max for x axis. Vector. vector with two
+%                   elements controlling minimum and maximum on the x axis.
+%                   Default value is mdr(1,1)-3 and mdr(end,1)*1.3
+%                   Example - 'xlimx',[20 100]
+%                   Data Types - double
 %
-%       laby    :   y axis title. Character. A label for the y-axis
-%                  (default: 'Minimum deletion residual').
-%                   Example - 'laby','mdr'
-%                   Data Types - char
+%       ylimy   :   min and max for x axis. Vector. Vector with two
+%                   elements controlling minimum and maximum on the y axis.
+%                   Default value is min(mdr(:,2)) and max(mdr(:,2));
+%                   Example - 'ylimy',[2 6]
+%                   Data Types - double
+%
+%
 %
 %
 %

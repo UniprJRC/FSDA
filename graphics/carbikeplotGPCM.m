@@ -110,7 +110,7 @@ function h  = carbikeplotGPCM(RelSol,varargin)
 %  Optional input arguments:
 %
 %
-% SpuriousSolutions  :  Include or nor spurious solutions. Boolean. As
+%  SpuriousSolutions  :  Include or nor spurious solutions. Boolean. As
 %                       default spurios solutions are not included into the
 %                       plot.
 %                 Example - 'SpuriousSolutions',false

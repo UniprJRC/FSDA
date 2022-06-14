@@ -99,78 +99,14 @@ function ctlcurvesplot(outCTL,varargin)
 %
 %  Optional input arguments:
 %
-%
-%
-%     thresh    :   threshold which defines where to put NaN in the
-%                   out.pvalLRtest matrix. Scalar in the interval [0 1].
-%                   Tne default value is 0.05. In other words the
-%                   subsequent values in a particular column of
-%                   out.pvalLRtest which follow a number breater than 0.05
-%                   will be set to NaN.
-%                   Example - 'thresh',0.10
-%                   Data Types - char
-%
-%    tagCtl     :   Personalized tag for CTL curves plot. String. String which identifies the
-%                   handle of the plot which is about to be created. The
-%                   default is to use tag 'pl_Ctl' for the classification
-%                   likelihood curves plot with bands.
-%                   Note that if the program finds a plot which has a tag
-%                   equal to the one specified by the user, then the output
-%                   of the new plot overwrites the existing one in the same
-%                   window else a new window is created.
-%                   Example - 'tag','myplot'
-%                   Data Types - char
-%
-% tagPortofino  :   Personalized tag for Portofino plot. String. String which identifies the
-%                   handle of the plot which is about to be created. The
-%                   default is to use tag 'pl_Portofino' for the Portofino plot.
-%                   Note that if the program finds a plot which has a tag
-%                   equal to the one specified by the user, then the output
-%                   of the new plot overwrites the existing one in the same
-%                   window else a new window is created.
-%                   Example - 'tag','myplot1'
-%                   Data Types - char
-%
-%         conflev : confidence level of the bands. Empty value (default) or scalar.
+%   conflev :       confidence level of the bands.
+%                   Empty value (default) or scalar.
 %                   Scalar in the interval (0 1) which contains
 %                   the confidence level of the bands.
 %                   The default is to use the confidence level taken from
-%                   ctlcurves.m (that is 50 per cent confidence
-%                   level).
+%                   ctlcurves.m (that is 50 per cent confidence level).
 %                   Example - 'conflev',0.9
 %                   Data Types - double
-%
-%   datatooltip :   interactive clicking. Empty value (default) or
-%                   structure. The default is datatooltip=''.
-%                   If datatooltip = 1, the user can select with the
-%                   mouse a solution in order to
-%                   have the following information:
-%                   1) value of k which has been selected
-%                   2) value of alpha which has been selected
-%                   3) frequency distribution of the associated
-%                   classification
-%                   If datatooltip is a structure it may contain the
-%                   following the fields
-%                   datatooltip.DisplayStyle = Determines how the data
-%                       cursor displays. datatip | window.
-%                       - datatip displays data cursor
-%                       information in a small yellow text box attached to a
-%                       black square marker at a data point you interactively
-%                       select.
-%                       - window displays data cursor information for the
-%                       data point you interactively select in a floating
-%                       window within the figure.
-%                   datatooltip.SnapToDataVertex=  Specifies whether the
-%                       data cursor snaps to the nearest data value or is
-%                       located at the actual pointer position.  on | off.
-%                       - on data cursor snaps to the nearest data value
-%                       - off data cursor is located at the actual pointer
-%                       position.
-%                   (see the MATLAB function datacursormode or the examples
-%                   below). Default values are datatooltip.DisplayStyle =
-%                   'Window' and datatooltip.SnapToDataVertex = 'on'.
-%                   Example - 'datatooltip',''
-%                   Data Types - scalar double or struct
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
@@ -209,12 +145,80 @@ function ctlcurvesplot(outCTL,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
+%   datatooltip :   interactive clicking. Empty value (default) or
+%                   structure. The default is datatooltip=''.
+%                   If datatooltip = 1, the user can select with the
+%                   mouse a solution in order to
+%                   have the following information:
+%                   1) value of k which has been selected
+%                   2) value of alpha which has been selected
+%                   3) frequency distribution of the associated
+%                   classification
+%                   If datatooltip is a structure it may contain the
+%                   following the fields
+%                   datatooltip.DisplayStyle = Determines how the data
+%                       cursor displays. datatip | window.
+%                       - datatip displays data cursor
+%                       information in a small yellow text box attached to a
+%                       black square marker at a data point you interactively
+%                       select.
+%                       - window displays data cursor information for the
+%                       data point you interactively select in a floating
+%                       window within the figure.
+%                   datatooltip.SnapToDataVertex=  Specifies whether the
+%                       data cursor snaps to the nearest data value or is
+%                       located at the actual pointer position.  on | off.
+%                       - on data cursor snaps to the nearest data value
+%                       - off data cursor is located at the actual pointer
+%                       position.
+%                   (see the MATLAB function datacursormode or the examples
+%                   below). Default values are datatooltip.DisplayStyle =
+%                   'Window' and datatooltip.SnapToDataVertex = 'on'.
+%                   Example - 'datatooltip',''
+%                   Data Types - scalar double or struct
+%
 %         nameY  : variable labels. Cell array. Cell array of strings
-%                   containing the labels of the
-%                   variables. As default value, the labels which are added
+%                   containing the labels of the variables. 
+%                   As default value, the labels which are added
 %                   are Y1, ..., Yv.
 %                   Example - 'nameY',{'myY1', 'myY2'}
 %                   Data Types - cell
+%
+%   tagCtl     :    Personalized tag for CTL curves plot. String. 
+%                   String which identifies the handle of the plot which is 
+%                   about to be created. The default is to use tag 'pl_Ctl'
+%                   for the classification likelihood curves plot with bands.
+%                   Note that if the program finds a plot which has a tag
+%                   equal to the one specified by the user, then the output
+%                   of the new plot overwrites the existing one in the same
+%                   window else a new window is created.
+%                   Example - 'tag','myplot'
+%                   Data Types - char
+%
+%    tagPortofino  :   Personalized tag for Portofino plot. String. 
+%                   String which identifies the handle of the plot which is
+%                   about to be created. The default is to use tag 
+%                   'pl_Portofino' for the Portofino plot.
+%                   Note that if the program finds a plot which has a tag
+%                   equal to the one specified by the user, then the output
+%                   of the new plot overwrites the existing one in the same
+%                   window else a new window is created.
+%                   Example - 'tag','myplot1'
+%                   Data Types - char
+%
+%     thresh    :   threshold which defines where to put NaN in the
+%                   out.pvalLRtest matrix. Scalar in the interval [0 1].
+%                   Tne default value is 0.05. In other words the
+%                   subsequent values in a particular column of
+%                   out.pvalLRtest which follow a number breater than 0.05
+%                   will be set to NaN.
+%                   Example - 'thresh',0.10
+%                   Data Types - char
+%
+%
+%
+%
+%
 %
 %  Output:
 %

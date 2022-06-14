@@ -25,60 +25,20 @@ function [brushedUnits,BrushedUnits]=mdrrsplot(out,varargin)
 %
 % Optional input arguments:
 %
-%       quant   :   vector containing quantiles for which envelopes have
-%                   to be computed. Vector or scalar. The default is to
-%                   produce 1%, 50% and 99% envelopes. In other words the
-%                   default is quant=[0.01;0.5;0.99];
-%               Example - 'quant',[0.01 0.99]
-%               Data Types - double
-%
-%       envm    :   Size of the sample which is
-%                   used to superimpose the envelope. Scalar. The default is to add
-%                   an envelope based on all the observations (size n
-%                   envelope).
-%               Example - 'envm',n
-%               Data Types - double
-%
-%       xlimx   :   vector with two elements controlling minimum and
-%                   maximum on the x axis. Default value is mdr(1,1)-3 and
-%                   mdr(end,1)*1.3
-%                   Example - 'xlimx',[20 100]
-%                   Data Types - double
-%
-%       ylimy   :   min and max on the y axis. Vector. Vector with two
-%                   elements controlling minimum and
-%                   maximum on the y axis. Default value is min(mdr(:,2))
-%                   and max(mdr(:,2));
-%                   Example - 'ylimy',[2 6]
-%                   Data Types - double
-%
-%       lwdenv  :   Line width of the envelopes. Scalar. Scalar which
-%                   controls the width of the lines associated
-%                   with the envelopes. Default is lwdenv=1.
-%                   Example - 'lwdenv',2
-%                   Data Types - double
-%
-%       tag     :   tag of the plot. String. String which identifies the
-%                   handle of the plot which is about to be created. The
-%                   default is to use tag 'pl_mdrrs'. Notice that if the
-%                   program finds a plot which has a tag equal to the one
-%                   specified by the user, then the output of the new plot
-%                   overwrites the existing one in the same window else a
-%                   new window is created
-%                   Example - 'tag','mymdrrs'
-%                   Data Types - char
-%
-%   datatooltip :   empty value or structure. The default is datatooltip=''
-%                   If datatooltip is not empty the user can use the mouse
-%                   in order to have information about the unit seected,
-%                   the step in which the unit enters the search and the
-%                   associated label. If datatooltip is a structure, it is
-%                   possible to control the aspect of the data cursor (see
-%                   function datacursormode for more details or the
-%                   examples below). The default options of the structure
-%                   are DisplayStyle='Window' and SnapToDataVertex='on'
-%                   Example - 'datatooltip',1
-%                   Data Types - empty value, numeric or structure
+%       ColorTrj:   Color of trajectories. Scalar. Integer which controls
+%                   the color of the trajectories. Default value is 1,
+%                   which rotates fixed colors. ColorTrj = 0 produces a
+%                   colormap proportional to sum or mdr along a relevant
+%                   part of the trajectory. ColorTrj > 1 can be used for
+%                   rotating fixed colors for the ColorTrj trajectories
+%                   with larger mdr; no more than 7 trajectories will be
+%                   considered. ColorTrj > 1 also adds a marker every 10
+%                   steps. Note that if the largest mdr are in the final
+%                   part of the search (due to a group of outliers), the
+%                   peak is not informative and it is therefore not
+%                   considered because.
+%                   Example - 'ColorTrj',0
+%                   Data Types - single | double
 %
 %    databrush :    interactive mouse brushing. Empty value (default),
 %                   scalar or structure.
@@ -123,32 +83,53 @@ function [brushedUnits,BrushedUnits]=mdrrsplot(out,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
+%   datatooltip :   empty value or structure. The default is datatooltip=''
+%                   If datatooltip is not empty the user can use the mouse
+%                   in order to have information about the unit seected,
+%                   the step in which the unit enters the search and the
+%                   associated label. If datatooltip is a structure, it is
+%                   possible to control the aspect of the data cursor (see
+%                   function datacursormode for more details or the
+%                   examples below). The default options of the structure
+%                   are DisplayStyle='Window' and SnapToDataVertex='on'
+%                   Example - 'datatooltip',1
+%                   Data Types - empty value, numeric or structure
+%
+%       envm    :   Size of the sample which is
+%                   used to superimpose the envelope. Scalar. The default is to add
+%                   an envelope based on all the observations (size n
+%                   envelope).
+%               Example - 'envm',n
+%               Data Types - double
+%
 %       FontSize:   Label font size. Scalar. Scalar which controls the
 %                   fontsize of the labels of the
 %                   axes. Default value is 12
 %                   Example - 'FontSize',14
 %                   Data Types - single | double
 %
-%       ColorTrj:   Color of trajectories. Scalar. Integer which controls
-%                   the color of the trajectories. Default value is 1,
-%                   which rotates fixed colors. ColorTrj = 0 produces a
-%                   colormap proportional to sum or mdr along a relevant
-%                   part of the trajectory. ColorTrj > 1 can be used for
-%                   rotating fixed colors for the ColorTrj trajectories
-%                   with larger mdr; no more than 7 trajectories will be
-%                   considered. ColorTrj > 1 also adds a marker every 10
-%                   steps. Note that if the largest mdr are in the final
-%                   part of the search (due to a group of outliers), the
-%                   peak is not informative and it is therefore not
-%                   considered because.
-%                   Example - 'ColorTrj',0
+%       labx    :   x axis title. Character.
+%                   A label for the x-axis (default: 'Subset size m').
+%                   Example - 'labx','Subset size m'
+%                   Data Types - char
+%
+%       laby    :   y axis title. Character. A label for the y-axis
+%                  (default: 'Minimum deletion residual').
+%                   Example - 'laby','mmd'
+%                   Data Types - char
+%
+%       lwd     :   Trajectories line width. Scalar. Scalar which controls
+%                   linewidth of the curve which contains the monitoring of
+%                   minimum deletion residual.
+%                   Default line width=2
+%                   Example - 'lwd',3
 %                   Data Types - single | double
 %
-%    SizeAxesNum:   Size of axes numbers. Scalar. Scalar which controls the
-%                   fontsize of the numbers of the axes.
-%                   Default value is 10.
-%                   Example - 'SizeAxesNum',14
-%                   Data Types - single | double
+%       lwdenv  :   Line width of the envelopes. Scalar. Scalar which
+%                   controls the width of the lines associated
+%                   with the envelopes. Default is lwdenv=1.
+%                   Example - 'lwdenv',2
+%                   Data Types - double
 %
 %       nameX   :   cell array of strings of length p containing the labels
 %                   of the varibles of the regression dataset. If it is empty
@@ -162,26 +143,46 @@ function [brushedUnits,BrushedUnits]=mdrrsplot(out,varargin)
 %                   Example - 'namey','mylabel'}
 %                   Data Types - character
 %
-%       lwd     :   Trajectories line width. Scalar. Scalar which controls
-%                   linewidth of the curve which contains the monitoring of
-%                   minimum deletion residual.
-%                   Default line width=2
-%                   Example - 'lwd',3
+%       tag     :   tag of the plot. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag 'pl_mdrrs'. Notice that if the
+%                   program finds a plot which has a tag equal to the one
+%                   specified by the user, then the output of the new plot
+%                   overwrites the existing one in the same window else a
+%                   new window is created
+%                   Example - 'tag','mymdrrs'
+%                   Data Types - char
+%
+%       quant   :   vector containing quantiles for which envelopes have
+%                   to be computed. Vector or scalar. The default is to
+%                   produce 1%, 50% and 99% envelopes. In other words the
+%                   default is quant=[0.01;0.5;0.99];
+%               Example - 'quant',[0.01 0.99]
+%               Data Types - double
+%
+%    SizeAxesNum:   Size of axes numbers. Scalar. Scalar which controls the
+%                   fontsize of the numbers of the axes.
+%                   Default value is 10.
+%                   Example - 'SizeAxesNum',14
 %                   Data Types - single | double
 %
 %       titl    :   titel label. Charater. A label for the title (default: '')
 %                   Example - 'namey','Plot title'
 %                   Data Types - char
 %
-%       labx    :   x axis title. Character.
-%                   A label for the x-axis (default: 'Subset size m').
-%                   Example - 'labx','Subset size m'
-%                   Data Types - char
+%       xlimx   :   vector with two elements controlling minimum and
+%                   maximum on the x axis. Default value is mdr(1,1)-3 and
+%                   mdr(end,1)*1.3
+%                   Example - 'xlimx',[20 100]
+%                   Data Types - double
 %
-%       laby    :   y axis title. Character. A label for the y-axis
-%                  (default: 'Minimum deletion residual').
-%                   Example - 'laby','mmd'
-%                   Data Types - char
+%       ylimy   :   min and max on the y axis. Vector. Vector with two
+%                   elements controlling minimum and
+%                   maximum on the y axis. Default value is min(mdr(:,2))
+%                   and max(mdr(:,2));
+%                   Example - 'ylimy',[2 6]
+%                   Data Types - double
+%
 %
 %
 %  Output:

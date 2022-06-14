@@ -91,8 +91,57 @@ function moonplot(out,varargin)
 %
 %  Optional input arguments:
 %
-%       plots : Customize plot appearance. Scalar or structure.
-%               If plots is not a structure, a plot which shows the Principal
+%    addx : horizontal displacement for labels. Scalar. Amount of
+%           horizontal displacement which has been put on the labels in the
+%           plot. The defalut value of addx is 0.04.
+%           Example - 'addx',0.01
+%           Data Types - double
+%
+%    addy : vertical displacement for labels. Scalar. Amount of
+%           vertical displacement which has been put on the labels in the
+%           plot. The defalut value of addy is 0.
+%           Example - 'addy',0.01
+%           Data Types - double
+%
+%   changedimsign:     change chosen dimension sign.
+%                      Boolean vector of length 2.
+%                  Sometimes for better interpretability it is necessary to
+%               change the sign of the coordinates for the chosen
+%               dimension. If changedimsign(1) is true the sign of the
+%               coordinates for first chosen dimension is changed. If
+%               changedimsign(2) is true the sign of the coordinates for
+%               first chosen dimension is changed. As default the
+%               dimensions are the first and the second however, they can
+%               be changed using option plots.dim. The defaul value of
+%               changedimsign is [false false] that is the sign is not
+%               changed.
+%              Example - 'changedimsign', [true false]
+%              Data Types - boolean
+%
+%        d1    :  Dimension to show on the horizontal axis. Positive
+%                 integer. Positive integer in the range 1, 2, .., K which
+%                 indicates the dimension to show on the x axis. The
+%                 default value of d1 is 1.
+%                 Example - 'd1',2
+%                 Data Types - single | double
+%
+%        d2    :  Dimension to show on the vertical axis. Positive
+%                 integer. Positive integer in the range 1, 2, .., K which
+%                 indicates the dimension to show on the y axis. The
+%                 default value of d2 is 2.
+%                 Example - 'd2',3
+%                 Data Types - single | double
+%
+%        h : the axis handle of a figure where to send the moonplot.
+%            This can be used to host the moonplot in a subplot of a
+%            complex figure formed by different panels (for example a panel
+%            with moonplot from plots.alpha=0.2 and another
+%            with moonplot from plots.alpha=0.5).
+%            Example -'h',h1 where h1=subplot(2,1,1)
+%            Data Types - Axes object (supplied as a scalar)
+%
+%     plots : Customize plot appearance. Scalar or structure.
+%             If plots is not a structure, a plot which shows the Principal
 %               coordinates of rows and columns is shown on the screen. If
 %               plots is a structure it may contain the following fields:
 %               plots.alpha = type of plot, scalar in the interval [0 1] or
@@ -211,33 +260,6 @@ function moonplot(out,varargin)
 %              Example - 'plots',plots=struct; plots.colorcols='k'
 %              Data Types - double
 %
-%       addx : horizontal displacement for labels. Scalar. Amount of
-%              horizontal displacement which has been put on the labels in the
-%              plot. The defalut value of addx is 0.04.
-%              Example - 'addx',0.01
-%              Data Types - double
-%
-%       addy : vertical displacement for labels. Scalar. Amount of
-%              vertical displacement which has been put on the labels in the
-%              plot. The defalut value of addy is 0.
-%              Example - 'addy',0.01
-%              Data Types - double
-%
-%changedimsign: change chosen dimension sign. Boolean vector of length 2.
-%               Sometimes for better interpretability it is necessary to
-%               change the sign of the coordinates for the chosen
-%               dimension. If changedimsign(1) is true the sign of the
-%               coordinates for first chosen dimension is changed. If
-%               changedimsign(2) is true the sign of the coordinates for
-%               first chosen dimension is changed. As default the
-%               dimensions are the first and the second however, they can
-%               be changed using option plots.dim. The defaul value of
-%               changedimsign is [false false] that is the sign is not
-%               changed.
-%              Example - 'changedimsign', [true false]
-%              Data Types - boolean
-%
-%
 %       xlimx   :   Min and Max of the x axis. Vector. Vector with two
 %                   elements controlling minimum and maximum
 %                   of the x axis.
@@ -250,27 +272,6 @@ function moonplot(out,varargin)
 %                   Example - 'ylimy',[0 1]
 %                   Data Types - double
 %
-%        d1    :  Dimension to show on the horizontal axis. Positive
-%                 integer. Positive integer in the range 1, 2, .., K which
-%                 indicates the dimension to show on the x axis. The
-%                 default value of d1 is 1.
-%                 Example - 'd1',2
-%                 Data Types - single | double
-%
-%        d2    :  Dimension to show on the vertical axis. Positive
-%                 integer. Positive integer in the range 1, 2, .., K which
-%                 indicates the dimension to show on the y axis. The
-%                 default value of d2 is 2.
-%                 Example - 'd2',3
-%                 Data Types - single | double
-%
-%           h : the axis handle of a figure where to send the moonplot.
-%               This can be used to host the moonplot in a subplot of a
-%               complex figure formed by different panels (for example a panel
-%               with moonplot from plots.alpha=0.2 and another
-%               with moonplot from plots.alpha=0.5).
-%               Example -'h',h1 where h1=subplot(2,1,1)
-%               Data Types - Axes object (supplied as a scalar)
 %
 % Output:
 %

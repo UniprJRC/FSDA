@@ -20,13 +20,6 @@ function h = waterfallchart(Y,varargin)
 %
 %  Optional input arguments:
 %
-%   SetAsTotal  : elements which which have to be set as total.
-%                  Logical or numeric index vector.
-%                  Logical or numeric index vector indicating which
-%                  elements of Y have to be set as total.
-%               Example - 'SetAsTotal',[2,3] | logical([0 1 1 0 0 0])
-%               Data Types - double | logical
-%
 %   BarWidth    : width of the bars. Scalar. A number in the interval 0 1
 %                 which specifies the width of the bars. The deafult value is 0.6.
 %                 For example if bardwidth is 0.5, than the first bar has
@@ -34,11 +27,12 @@ function h = waterfallchart(Y,varargin)
 %               Example - 'barwidth',0.7
 %               Data Types - double
 %
-%    titl     : plot title. character or cell. string containing plot title
-%                    If Y is a table, the variableName of the table is used
-%                    as title
-%               Example - 'titl',{'demographic movements'}
-%               Data Types - cell
+% DisplayValueOnTopOfPatches : display values on top of patches. Boolean.
+%               If this option is set to true, than the Y values are
+%               displayed on top of the patches. The default is false, that
+%               is values on top of the patches are not shown.
+%               Example - 'DisplayValueOnTopOfPatches',true
+%               Data Types - boolean
 %
 %    Labels     : x labels. cell. cell of length n containing the labels
 %                   for the n elements to add to the xTickLabels of the
@@ -49,18 +43,27 @@ function h = waterfallchart(Y,varargin)
 %               Example - 'labels',{'aa' 'bb' 'cc' ddf'}
 %               Data Types - cell
 %
-% DisplayValueOnTopOfPatches : display values on top of patches. Boolean.
-%               If this option is set to true, than the Y values are
-%               displayed on top of the patches. The default is false, that
-%               is values on top of the patches are not shown.
-%               Example - 'DisplayValueOnTopOfPatches',true
-%               Data Types - boolean
+%   SetAsTotal  : elements which which have to be set as total.
+%                  Logical or numeric index vector.
+%                  Logical or numeric index vector indicating which
+%                  elements of Y have to be set as total.
+%               Example - 'SetAsTotal',[2,3] | logical([0 1 1 0 0 0])
+%               Data Types - double | logical
 %
 % ShowConnectorLines : Show connector lines. Boolean.
-%               If this option is set to true (default), connector lines are shown in
+%               If this option is set to true (default), 
+%               connector lines are shown in
 %               the plots to connect the patches.
 %               Example - 'ShowConnectorLines',false
 %               Data Types - boolean
+%
+%    titl     : plot title. character or cell. string containing plot title
+%                    If Y is a table, the variableName of the table is used
+%                    as title
+%               Example - 'titl',{'demographic movements'}
+%               Data Types - cell
+%
+%
 %
 %  Output:
 %

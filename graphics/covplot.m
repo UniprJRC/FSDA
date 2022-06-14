@@ -23,36 +23,6 @@ function covplot(out,varargin)
 %
 %  Optional input arguments:
 %
-%       standard:   Appearance of the plot. Structure. Structure which
-%                   defines the appearance of the plot in terms of xlim,
-%                   ylim, axes labels and their font size style, color of
-%                   the lines, etc.
-%                   The structure contains the following fields:
-%                   standard.SizeAxesNum = scalar specifying the fontsize of the
-%                       axes numbers. Default value is 10.
-%                   standard.xlim = two elements vector with minimum and maximum of
-%                       the x axis. Default value is '' (automatic scale).
-%                   standard.ylim = two elements vector with minimum and maximum of
-%                       the y axis. Default value is '' (automatic scale).
-%                   standard.titl = a label for the title (default: '').
-%                   standard.labx = a label for the x-axis (default: 'Subset size m').
-%                   standard.laby = a label for the y-axis (default: 'Elements of
-%                       the correlation (covariance) matrix)
-%                   standard.SizeAxesLab = Scalar specifying the fontsize of the
-%                       labels of the axes. Default value is 12.
-%                   standard.LineWidth = scalar specifying line width for the
-%                       trajectories.
-%                   standard.Color = cell array of strings containing the colors to
-%                       be used for the standard units.
-%                       If length(Color)=1 the same color will be used for
-%                       all units.
-%                       If length(Color)=2 half of the trajectories will
-%                       appear with Color{1} and the other half with
-%                       Color{2}. And so on with 3 cell elements, etc.
-%                   standard.LineStyle = cell containing the line types.
-%                   Example - 'standard',standard
-%                   Data Types - structure
-%
 %         fground : Trajectories in foregroud. Structure.
 %                   Structure which defines the trajectories in foregroud,
 %                   that is which trajectories are highlighted and how
@@ -104,18 +74,8 @@ function covplot(out,varargin)
 %                       marker is used.
 %                   Example - 'fground',fground
 %                   Data Types - structure
-%
-%       tag     :   Handle of the plot. String. String which identifies the
-%                   handle of the plot which is about to be created. The
-%                   default is to use tag 'pl_cov'. Note that if the
-%                   program finds a plot which has a tag equal to the one
-%                   specified by the user, then the output of the new plot
-%                   overwrites the existing one in the same window else a
-%                   new window is created.
-%                   Example - 'tag','pl_mycov'
-%                   Data Types - string
-%
-%   datatooltip :   Information about the unit selected. Empty value or structure.
+%   datatooltip :   Information about the unit selected. 
+%                   Empty value or structure.
 %                   The default is datatooltip=1.
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
@@ -128,6 +88,48 @@ function covplot(out,varargin)
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
 %                   Example - 'datatooltip',''
 %                   Data Types - Empty value or structure.
+%
+%       standard:   Appearance of the plot. Structure. Structure which
+%                   defines the appearance of the plot in terms of xlim,
+%                   ylim, axes labels and their font size style, color of
+%                   the lines, etc.
+%                   The structure contains the following fields:
+%                   standard.SizeAxesNum = scalar specifying the fontsize of the
+%                       axes numbers. Default value is 10.
+%                   standard.xlim = two elements vector with minimum and maximum of
+%                       the x axis. Default value is '' (automatic scale).
+%                   standard.ylim = two elements vector with minimum and maximum of
+%                       the y axis. Default value is '' (automatic scale).
+%                   standard.titl = a label for the title (default: '').
+%                   standard.labx = a label for the x-axis (default: 'Subset size m').
+%                   standard.laby = a label for the y-axis (default: 'Elements of
+%                       the correlation (covariance) matrix)
+%                   standard.SizeAxesLab = Scalar specifying the fontsize of the
+%                       labels of the axes. Default value is 12.
+%                   standard.LineWidth = scalar specifying line width for the
+%                       trajectories.
+%                   standard.Color = cell array of strings containing the colors to
+%                       be used for the standard units.
+%                       If length(Color)=1 the same color will be used for
+%                       all units.
+%                       If length(Color)=2 half of the trajectories will
+%                       appear with Color{1} and the other half with
+%                       Color{2}. And so on with 3 cell elements, etc.
+%                   standard.LineStyle = cell containing the line types.
+%                   Example - 'standard',standard
+%                   Data Types - structure
+%
+%       tag     :   Handle of the plot. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag 'pl_cov'. Note that if the
+%                   program finds a plot which has a tag equal to the one
+%                   specified by the user, then the output of the new plot
+%                   overwrites the existing one in the same window else a
+%                   new window is created.
+%                   Example - 'tag','pl_mycov'
+%                   Data Types - string
+%
+%
 %
 % Output:
 %

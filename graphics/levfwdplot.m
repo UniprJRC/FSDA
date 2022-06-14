@@ -29,112 +29,6 @@ function plotopt=levfwdplot(out,varargin)
 %
 % Optional input arguments:
 %
-%           standard : appearance of the plot
-%                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. Structure.
-%                   Structure standard contains the following fields:
-%                   standard.SizeAxesNum = scalar specifying the fontsize of the
-%                       axes numbers. Default value is 10.
-%                   standard.xlim = two elements vector with minimum and maximum of
-%                       the x axis. Default value is '' (automatic scale).
-%                   standard.ylim = two elements vector with minimum and maximum of
-%                       the y axis. Default value is '' (automatic scale).
-%                   standard.titl = a label for the title (default: '').
-%                   standard.labx = a label for the x-axis (default: 'Subset size m').
-%                   standard.laby = a label for the y-axis (default:'Leverage').
-%                   standard.SizeAxesLab = Scalar specifying the fontsize of the
-%                       labels of the axes. Default value is 12.
-%                   standard.subsize = numeric vector containing the subset size
-%                       with length equal to the number of columns of
-%                       the leverage matrix. The default value of subsize
-%                       is (n-nsteps+1):n
-%                   standard.LineWidth =: scalar specifying line width for the
-%                       trajectories.
-%                   standard.Color = cell array of strings containing the colors to
-%                       be used for the highlighted units.
-%                       If length(Color)=1 the same color will be used for
-%                       all units.
-%                       If length(Color)=2 half of the trajectories will
-%                       appear with Color{1} and the other half with
-%                       Color{2}. And so on with 3 cell elements, etc.
-%                   standard.LineStyle = cell containing the line types.
-%
-%                   Remark. The default values of structure standard are:
-%                   standard.SizeAxesNum=10
-%                   standard.SizeAxesLab=12
-%                   standard.xlim='' (Automatic scale)
-%                   standard.ylim='' (Automatic scale)
-%                   standard.titl='' (empty title)
-%                   standard.labx='Subset size m'
-%                   standard.laby='Leverage'
-%                   standard.LineWidth=1
-%                   standard.Color={'b'}
-%                   standard.LineStyle={'-'}
-%
-%                   Example - 'standard.LineWidth','1'
-%                   Data Types - struct
-%
-%         fground : trajectories in foregroud.
-%                   Structure. Structure which controls which trajectories
-%                   are highlighted and how they are plotted to be
-%                   distinguishable from the others.
-%                   It is possible to control the label, the width, the
-%                   color, the line type and the marker of the highlighted
-%                   units.
-%                   Structure fground contains the following fields:
-%                   fground.fthresh = (alternative to funit) numeric vector of
-%                       length 1 or 2 which specifies the highlighted
-%                       trajectories.
-%                       -   If length(fthresh)=1 the highlighted trajectories
-%                           are those of units that after step [n/2 + 1]
-%                           have at least once a leverage bigger than
-%                           fthresh. Alternatively (if option 'xground' is
-%                           set to be 'res' by the user) the trajectories
-%                           are highlighted if throughtout the search the
-%                           units had at leat once a residual (in absolute
-%                           value) greater than fthresh.
-%                           The default value of fthresh is 2p/n for
-%                           leverage values or 2.5 for residual values.
-%                       -   If length(fthresh)=2 the highlighted trajectories
-%                           are those of units that throughtout the search
-%                           had a leverage value at leat once bigger than
-%                           fthresh(2) or smaller than fthresh(1).
-%                   fground.funit : (alternative to fthresh) vector containing the
-%                       list of the units to be highlighted. If funit is
-%                       supplied, fthresh is ignored.
-%                   fground.flabstep : numeric vector which specifies the steps of
-%                       the search where to put labels for the highlighted
-%                       trajectories (units). The default is to put the
-%                       labels at the initial and final steps of the search.
-%                       flabstep='' means no label.
-%                   fground.LineWidth : scalar specifying line width for the
-%                       highlighted trajectories (units). Default is 1.
-%                   fground.Color : cell array of strings containing the colors to
-%                       be used for the highlighted trajectories (units).
-%                       If length(scolor)==1 the same color will be used for
-%                       all highlighted units Remark: if for example
-%                       length(scolor)=2 and there are 6 highlighted units,
-%                       3 highlighted trajectories appear with
-%                       selunitcolor{1} and 3 highlighted trajectories with
-%                       selunitcolor{2}
-%                   fground.LineStyle : cell containing the line type of the highlighted
-%                       trajectories.
-%                   fground.fmark  : scalar controlling whether to plot highlighted
-%                       trajectories as markers.
-%                       if 1 each line is plotted using a different marker
-%                       else no marker is used (default).
-%
-%                   Remark. The default values of structure fground are:
-%                    fground.fthresh=2.5
-%                    fground.flabstep=[m0 n]
-%                    fground.LineWidth=1
-%                    fground.LineStyle={'-'}
-%
-%                   Remark. if fground='' no unit is highlighted and no
-%                   label is inserted into the plot.
-%                   Example - 'fground.LineWidth','1'
-%                   Data Types - struct
-%
 %         bground : trajectories in background. Structure.
 %                   Structure which specifies the trajectories in background,
 %                   i.e. the trajectories corresponding to "unimmportant"
@@ -173,57 +67,10 @@ function plotopt=levfwdplot(out,varargin)
 %                   Example - 'bground.bstyle','faint'
 %                   Data Types - struct
 %
-%                   Remark: bground='' is equivalent to bground.thresh=-Inf
-%                   that is all trajectories are considered relevant.
-%
-%      xground :    trajectories to highlight in connection with
-%                   resfwdplot. Character 'lev' (default) | 'res'.
-%                   xground = 'lev' (default).
-%                       The levfwdplot trajectories are put in foreground
-%                       or in background depending on the leverage values.
-%                   xground = 'res'.
-%                       The levfwdplot trajectories are put in foreground
-%                       or in background depending on the residual values.
-%                   See options bground.bthresh and fground.fthresh.
-%                   Example - 'xground','res'
-%                   Data Types - char
-%
-%       tag     :   Personalized tag. String. String which identifies the
-%                   handle of the plot which is about to be created. The
-%                   default is to use tag 'pl_resfwd'. Note that if the
-%                   program finds a plot which has a tag equal to the one
-%                   specified by the user, then the output of the new plot
-%                   overwrites the existing one in the same window else a
-%                   new window is created.
-%                   Example - 'tag','myplot'
-%                   Data Types - char
-%
-%   datatooltip :   interactive clicking.
-%                   Empty value or scalar (default)| structure.
-%                   The default is datatooltip=1
-%                   If datatooltip is not empty the user can use the mouse
-%                   in order to have information about the unit selected,
-%                   the step in which the unit enters the search and the
-%                   associated label. If datatooltip is a structure, it is
-%                   possible to control the aspect of the data cursor (see
-%                   function datacursormode for more details or the
-%                   examples below). The default options of the structure
-%                   are DisplayStyle='Window' and SnapToDataVertex='on'.
-%                   Example - 'datatooltip',''
-%                   Data Types - char
-%
-%       label   :   row labels. Cell of strings. Cell containing the labels
-%                   of the units (optional argument used when
-%                   datatooltip=1. If this field is not present labels
-%                   row1, ..., rown will be automatically created and
-%                   included in the pop up datatooltip window).
-%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell
-%
 %    databrush  :   interactive mouse brushing. empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
-%                   The activation of this option (databrush is a scalar or  a cell)                                                                                                                        
+%                   The activation of this option (databrush is a scalar or  a cell) 
 %                   enables the user  to select a set of trajectories in
 %                   the current plot and to see them highlighted in the y|X
 %                   plot, i.e. a matrix of scatter plots of y against each
@@ -301,16 +148,90 @@ function plotopt=levfwdplot(out,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
-%       nameX   :   Labels of the variables of the regression dataset.
-%                   Cell array of strings. If it is empty (default) the
-%                   sequence X1, ..., Xp will be created automatically.
-%                   Example - 'nameX',{'var1', var2, 'var3'}
-%                   Data Types - cell of strings
-%
-%       namey   :   label of the response. Character. Character containing
-%                   the label of the response.
-%                   Example - 'namey','response'
+%   datatooltip :   interactive clicking.
+%                   Empty value or scalar (default)| structure.
+%                   The default is datatooltip=1
+%                   If datatooltip is not empty the user can use the mouse
+%                   in order to have information about the unit selected,
+%                   the step in which the unit enters the search and the
+%                   associated label. If datatooltip is a structure, it is
+%                   possible to control the aspect of the data cursor (see
+%                   function datacursormode for more details or the
+%                   examples below). The default options of the structure
+%                   are DisplayStyle='Window' and SnapToDataVertex='on'.
+%                   Example - 'datatooltip',''
 %                   Data Types - char
+%                   Remark: bground='' is equivalent to bground.thresh=-Inf
+%                   that is all trajectories are considered relevant.
+%
+%         fground : trajectories in foregroud.
+%                   Structure. Structure which controls which trajectories
+%                   are highlighted and how they are plotted to be
+%                   distinguishable from the others.
+%                   It is possible to control the label, the width, the
+%                   color, the line type and the marker of the highlighted
+%                   units.
+%                   Structure fground contains the following fields:
+%                   fground.fthresh = (alternative to funit) numeric vector of
+%                       length 1 or 2 which specifies the highlighted
+%                       trajectories.
+%                       -   If length(fthresh)=1 the highlighted trajectories
+%                           are those of units that after step [n/2 + 1]
+%                           have at least once a leverage bigger than
+%                           fthresh. Alternatively (if option 'xground' is
+%                           set to be 'res' by the user) the trajectories
+%                           are highlighted if throughtout the search the
+%                           units had at leat once a residual (in absolute
+%                           value) greater than fthresh.
+%                           The default value of fthresh is 2p/n for
+%                           leverage values or 2.5 for residual values.
+%                       -   If length(fthresh)=2 the highlighted trajectories
+%                           are those of units that throughtout the search
+%                           had a leverage value at leat once bigger than
+%                           fthresh(2) or smaller than fthresh(1).
+%                   fground.funit : (alternative to fthresh) vector containing the
+%                       list of the units to be highlighted. If funit is
+%                       supplied, fthresh is ignored.
+%                   fground.flabstep : numeric vector which specifies the steps of
+%                       the search where to put labels for the highlighted
+%                       trajectories (units). The default is to put the
+%                       labels at the initial and final steps of the search.
+%                       flabstep='' means no label.
+%                   fground.LineWidth : scalar specifying line width for the
+%                       highlighted trajectories (units). Default is 1.
+%                   fground.Color : cell array of strings containing the colors to
+%                       be used for the highlighted trajectories (units).
+%                       If length(scolor)==1 the same color will be used for
+%                       all highlighted units Remark: if for example
+%                       length(scolor)=2 and there are 6 highlighted units,
+%                       3 highlighted trajectories appear with
+%                       selunitcolor{1} and 3 highlighted trajectories with
+%                       selunitcolor{2}
+%                   fground.LineStyle : cell containing the line type of the highlighted
+%                       trajectories.
+%                   fground.fmark  : scalar controlling whether to plot highlighted
+%                       trajectories as markers.
+%                       if 1 each line is plotted using a different marker
+%                       else no marker is used (default).
+%
+%                   Remark. The default values of structure fground are:
+%                    fground.fthresh=2.5
+%                    fground.flabstep=[m0 n]
+%                    fground.LineWidth=1
+%                    fground.LineStyle={'-'}
+%
+%                   Remark. if fground='' no unit is highlighted and no
+%                   label is inserted into the plot.
+%                   Example - 'fground.LineWidth','1'
+%                   Data Types - struct
+%
+%       label   :   row labels. Cell of strings. Cell containing the labels
+%                   of the units (optional argument used when
+%                   datatooltip=1. If this field is not present labels
+%                   row1, ..., rown will be automatically created and
+%                   included in the pop up datatooltip window).
+%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
+%                   Data Types - cell
 %
 %       msg     :   display or save used options. Scalar which controls
 %                   whether to display or to save as output the options
@@ -325,6 +246,87 @@ function plotopt=levfwdplot(out,varargin)
 %                   screen.
 %                   Example - 'msg',1
 %                   Data Types - single or double
+%
+%       nameX   :   Labels of the variables of the regression dataset.
+%                   Cell array of strings. If it is empty (default) the
+%                   sequence X1, ..., Xp will be created automatically.
+%                   Example - 'nameX',{'var1', var2, 'var3'}
+%                   Data Types - cell of strings
+%
+%       namey   :   label of the response. Character. Character containing
+%                   the label of the response.
+%                   Example - 'namey','response'
+%                   Data Types - char
+%
+%      standard :   appearance of the plot
+%                   in terms of xlim, ylim, axes labels and their font size
+%                   style, color of the lines, etc. Structure.
+%                   Structure standard contains the following fields:
+%                   standard.SizeAxesNum = scalar specifying the fontsize of the
+%                       axes numbers. Default value is 10.
+%                   standard.xlim = two elements vector with minimum and maximum of
+%                       the x axis. Default value is '' (automatic scale).
+%                   standard.ylim = two elements vector with minimum and maximum of
+%                       the y axis. Default value is '' (automatic scale).
+%                   standard.titl = a label for the title (default: '').
+%                   standard.labx = a label for the x-axis (default: 'Subset size m').
+%                   standard.laby = a label for the y-axis (default:'Leverage').
+%                   standard.SizeAxesLab = Scalar specifying the fontsize of the
+%                       labels of the axes. Default value is 12.
+%                   standard.subsize = numeric vector containing the subset size
+%                       with length equal to the number of columns of
+%                       the leverage matrix. The default value of subsize
+%                       is (n-nsteps+1):n
+%                   standard.LineWidth =: scalar specifying line width for the
+%                       trajectories.
+%                   standard.Color = cell array of strings containing the colors to
+%                       be used for the highlighted units.
+%                       If length(Color)=1 the same color will be used for
+%                       all units.
+%                       If length(Color)=2 half of the trajectories will
+%                       appear with Color{1} and the other half with
+%                       Color{2}. And so on with 3 cell elements, etc.
+%                   standard.LineStyle = cell containing the line types.
+%
+%                   Remark. The default values of structure standard are:
+%                   standard.SizeAxesNum=10
+%                   standard.SizeAxesLab=12
+%                   standard.xlim='' (Automatic scale)
+%                   standard.ylim='' (Automatic scale)
+%                   standard.titl='' (empty title)
+%                   standard.labx='Subset size m'
+%                   standard.laby='Leverage'
+%                   standard.LineWidth=1
+%                   standard.Color={'b'}
+%                   standard.LineStyle={'-'}
+%
+%                   Example - 'standard.LineWidth','1'
+%                   Data Types - struct
+%
+%      tag     :   Personalized tag. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag 'pl_resfwd'. Note that if the
+%                   program finds a plot which has a tag equal to the one
+%                   specified by the user, then the output of the new plot
+%                   overwrites the existing one in the same window else a
+%                   new window is created.
+%                   Example - 'tag','myplot'
+%                   Data Types - char
+%
+%      xground :    trajectories to highlight in connection with
+%                   resfwdplot. Character 'lev' (default) | 'res'.
+%                   xground = 'lev' (default).
+%                       The levfwdplot trajectories are put in foreground
+%                       or in background depending on the leverage values.
+%                   xground = 'res'.
+%                       The levfwdplot trajectories are put in foreground
+%                       or in background depending on the residual values.
+%                   See options bground.bthresh and fground.fthresh.
+%                   Example - 'xground','res'
+%                   Data Types - char
+%
+%
+%
 %
 % Output:
 %

@@ -15,17 +15,6 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %
 %  Optional input arguments:
 %
-%     gylab     : legend labels. String | cell of strings.
-%                 Legend labels identifying the groups of each element in y.
-%                 length(gylab) = length(unique(gy)) must hold.
-%                 If not specified, gylab is set to '' and legends are not
-%                 displayed.
-%                 If gylab = {}, default legend labels are generated.
-%                 If gylab is a cell of strings of length 3, e.g. gylab =
-%                 {'G1' 'G2' 'G3'}, such strings are used for the legends.
-%               Example - {'G1' 'G2'}
-%               Data Types - cell array of strings or char
-%
 %     ax        : plots into ax instead of gca. Axis handle. The axis handle
 %                 where to plot the grouped histogram (e.g. a traditional
 %                 histogram plot to be superimposed). Default is gca.
@@ -41,10 +30,21 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %               Example - 'rgy'
 %               Data Types - character or numeric matrix
 %
-%     W         : Weights. Vector. Vector which contains optional weights
+%     gylab     : legend labels. String | cell of strings.
+%                 Legend labels identifying the groups of each element in y.
+%                 length(gylab) = length(unique(gy)) must hold.
+%                 If not specified, gylab is set to '' and legends are not
+%                 displayed.
+%                 If gylab = {}, default legend labels are generated.
+%                 If gylab is a cell of strings of length 3, e.g. gylab =
+%                 {'G1' 'G2' 'G3'}, such strings are used for the legends.
+%               Example - {'G1' 'G2'}
+%               Data Types - cell array of strings or char
+%
+%      W         : Weights. Vector. Vector which contains optional weights
 %                 associated to the elements of y.
-%               Example - [10 20 3000]
-%               Data Types - numeric vector
+%                   Example - [10 20 3000]
+%                   Data Types - numeric vector
 %  Output:
 %
 %       ng      : number of elements in each container for each group.

@@ -125,6 +125,115 @@ function CorAnaplot(out,varargin)
 %
 %  Optional input arguments:
 %
+%       addx : horizontal displacement for labels. Scalar. Amount of
+%              horizontal displacement which has been put on the labels in the
+%              plot. The defalut value of addx is 0.04.
+%              Example - 'addx',0.01
+%              Data Types - double
+%
+%       addy : vertical displacement for labels. Scalar. Amount of
+%              vertical displacement which has been put on the labels in the
+%              plot. The defalut value of addy is 0.
+%              Example - 'addy',0.01
+%              Data Types - double
+%
+%  changedimsign: change chosen dimension sign. Boolean vector of length 2.
+%               Sometimes for better interpretability it is necessary to
+%               change the sign of the coordinates for the chosen
+%               dimension. If changedimsign(1) is true the sign of the
+%               coordinates for first chosen dimension is changed. If
+%               changedimsign(2) is true the sign of the coordinates for
+%               first chosen dimension is changed. As default the
+%               dimensions are the first and the second however, they can
+%               be changed using option plots.dim. The defaul value of
+%               changedimsign is [false false] that is the sign is not
+%               changed.
+%              Example - 'changedimsign', [true false]
+%              Data Types - boolean
+%
+%      confellipse : confidence ellipses around rows and/or columns points.
+%               Scalar or struct.
+%               If confellipse is 1, 90 per cent confidence ellipses are
+%               drawn around each row and column point based on 
+%               multinomial method.
+%               If confellipse is a struct it may contain the following
+%               fields.
+%               confellipse.conflev= number in the interval (0 1) which
+%                  defines the confidence level of each ellipse.  If this
+%                  field is not present 90 per cent confidence ellipses are
+%                  shown
+%               confellipse.method= cell which specifies the method(s) to
+%                   use to compute confidence ellipses. Possible values
+%                   are:
+%                   {'multinomial'} = in this case the original contingency
+%                   table with the active elements is taken as a reference.
+%                   Then new data tables are drawn in the following way:
+%                   $r\times c$ values are drawn from a multinomial
+%                   distribution with theoretical frequencies equals to
+%                   $n_{ij}/n$ where $n$ is the sample size.
+%                   {'bootRows'} = the values are bootstrapped row by row:
+%                   Given row i, $n_{i.}$ are extracted with repetition and
+%                   a frequency distribution is computed using classes
+%                   $[0, n_{i1}]$,$[n_{i1}, n_{i1}+n_{i2}]$, $\ldots$
+%                   $[\sum_{j=1}^{J-1} n_{ij}, \sum_{j=1}^{J} n_{ij}$.
+%                   {'bootCols'} = the values are bootstrapped column by
+%                   column. If  confellipse.method for example is
+%                   {'bootRows' 'bootCols'} two ellipses are drawn for each
+%                   point. In this case it is possible to appreciate the
+%                   stability of both methods. If this field is not
+%                   present {'multinomial'} method is used.
+%               confellipse.nsimul=scalar which defines the number of
+%                   contingency tables which have to ge generated. The
+%                   default value of confellipse.nsimul is 1000. Thus
+%                   nsimul new contingency tables are projected as
+%                   supplementary rows and/or supplementary columns.
+%               confellipse.selRows= vector which specifies for which row
+%                   points it is necessary to draw the ellipses.
+%                   confellipse.selRows either a boolean vector of length
+%                   I containing a true in correspondence of the row
+%                   elements for which the ellipse has to be drawn or a
+%                   numeric vector which contains the indexes of the units
+%                   which have to be drawn or a cell arrary containing the
+%                   names of the rows for which the ellipse has to be drawn.
+%                   For example if I=3 and the second row is
+%                   called 'row2' in order to show just the confidence
+%                   ellipse for this row it is possible to use
+%                   confellipse.selRows=[false true false], or
+%                   confellipse.selRows=2 or confellipse.selRows={'row2'}.
+%               confellipse.selCols= vector which specifies for which
+%                   column points it is necessary to draw the ellipses.
+%                   confellipse.selCols can be either a boolean vector of
+%                   length J containing a true in correspondence of the
+%                   column elements for which the ellipse has to be drawn
+%                   or a numeric vector which contains the indexes of the
+%                   columns which have to be drawn or a cell arrary
+%                   containing the names of the columns for which the
+%                   ellipse has to be drawn. For example if J=3 and one the
+%                   third column is called 'Col3' in order to show just the
+%                   confidence ellipse for this element it is possible to
+%                   use confellipse.selCols=[false false true], or
+%                   confellipse.selCols=3 or confellipse.selCols={'Col3'}.
+%               confellipse.AxesEllipse = boolean which specifies whether
+%                   it is necessary to show the major axes of the ellipse.
+%                   The default value of confellipse.AxesEllipse is true
+%                   that is the axes are shown.
+%               Example - 'confellipse', 0
+%               Data Types - scalar or struct
+%
+%        d1    :  Dimension to show on the horizontal axis. Positive
+%                 integer. Positive integer in the range 1, 2, .., K which
+%                 indicates the dimension to show on the x axis. The
+%                 default value of d1 is 1.
+%                 Example - 'd1',2
+%                 Data Types - single | double
+%
+%        d2    :  Dimension to show on the vertical axis. Positive
+%                 integer. Positive integer in the range 1, 2, .., K which
+%                 indicates the dimension to show on the y axis. The
+%                 default value of d2 is 2.
+%                 Example - 'd2',3
+%                 Data Types - single | double
+%
 %       plots : Customize plot appearance. Scalar or structure.
 %               If plots is not a structure, a plot which shows the Principal
 %               coordinates of rows and columns is shown on the screen. If
@@ -297,100 +406,6 @@ function CorAnaplot(out,varargin)
 %              Example - 'plots',plots=struct; plots.colorcols='k'
 %              Data Types - double
 %
-%       addx : horizontal displacement for labels. Scalar. Amount of
-%              horizontal displacement which has been put on the labels in the
-%              plot. The defalut value of addx is 0.04.
-%              Example - 'addx',0.01
-%              Data Types - double
-%
-%       addy : vertical displacement for labels. Scalar. Amount of
-%              vertical displacement which has been put on the labels in the
-%              plot. The defalut value of addy is 0.
-%              Example - 'addy',0.01
-%              Data Types - double
-%
-%changedimsign: change chosen dimension sign. Boolean vector of length 2.
-%               Sometimes for better interpretability it is necessary to
-%               change the sign of the coordinates for the chosen
-%               dimension. If changedimsign(1) is true the sign of the
-%               coordinates for first chosen dimension is changed. If
-%               changedimsign(2) is true the sign of the coordinates for
-%               first chosen dimension is changed. As default the
-%               dimensions are the first and the second however, they can
-%               be changed using option plots.dim. The defaul value of
-%               changedimsign is [false false] that is the sign is not
-%               changed.
-%              Example - 'changedimsign', [true false]
-%              Data Types - boolean
-%
-% confellipse : confidence ellipses around rows and/or columns points.
-%               Scalar or struct.
-%               If confellipse is 1, 90 per cent confidence ellipses are
-%               drawn around each row and column point based on multinomial method.
-%               If confellipse is a struct it may contain the following
-%               fields.
-%               confellipse.conflev= number in the interval (0 1) which
-%                   defines the confidence level of each ellipse.  If this
-%                   field is not present 90 per cent confidence ellipses are
-%                   shown
-%               confellipse.method= cell which specifies the method(s) to
-%                   use to compute confidence ellipses. Possible values
-%                   are:
-%                   {'multinomial'} = in this case the original contingency
-%                   table with the active elements is taken as a reference.
-%                   Then new data tables are drawn in the following way:
-%                   $r\times c$ values are drawn from a multinomial
-%                   distribution with theoretical frequencies equals to
-%                   $n_{ij}/n$ where $n$ is the sample size.
-%                   {'bootRows'} = the values are bootstrapped row by row:
-%                   Given row i, $n_{i.}$ are extracted with repetition and
-%                   a frequency distribution is computed using classes
-%                   $[0, n_{i1}]$,$[n_{i1}, n_{i1}+n_{i2}]$, $\ldots$
-%                   $[\sum_{j=1}^{J-1} n_{ij}, \sum_{j=1}^{J} n_{ij}$.
-%                   {'bootCols'} = the values are bootstrapped column by
-%                   column. If  confellipse.method for example is
-%                   {'bootRows' 'bootCols'} two ellipses are drawn for each
-%                   point. In this case it is possible to appreciate the
-%                   stability of both methods. If this field is not
-%                   present {'multinomial'} method is used.
-%               confellipse.nsimul=scalar which defines the number of
-%                   contingency tables which have to ge generated. The
-%                   default value of confellipse.nsimul is 1000. Thus
-%                   nsimul new contingency tables are projected as
-%                   supplementary rows and/or supplementary columns.
-%               confellipse.selRows= vector which specifies for which row
-%                   points it is necessary to draw the ellipses.
-%                   confellipse.selRows either a boolean vector of length
-%                   I containing a true in correspondence of the row
-%                   elements for which the ellipse has to be drawn or a
-%                   numeric vector which contains the indexes of the units
-%                   which have to be drawn or a cell arrary containing the
-%                   names of the rows for which the ellipse has to be drawn.
-%                   For example if I=3 and the second row is
-%                   called 'row2' in order to show just the confidence
-%                   ellipse for this row it is possible to use
-%                   confellipse.selRows=[false true false], or
-%                   confellipse.selRows=2 or confellipse.selRows={'row2'}.
-%               confellipse.selCols= vector which specifies for which
-%                   column points it is necessary to draw the ellipses.
-%                   confellipse.selCols can be either a boolean vector of
-%                   length J containing a true in correspondence of the
-%                   column elements for which the ellipse has to be drawn
-%                   or a numeric vector which contains the indexes of the
-%                   columns which have to be drawn or a cell arrary
-%                   containing the names of the columns for which the
-%                   ellipse has to be drawn. For example if J=3 and one the
-%                   third column is called 'Col3' in order to show just the
-%                   confidence ellipse for this element it is possible to
-%                   use confellipse.selCols=[false false true], or
-%                   confellipse.selCols=3 or confellipse.selCols={'Col3'}.
-%               confellipse.AxesEllipse = boolean which specifies whether
-%                   it is necessary to show the major axes of the ellipse.
-%                   The default value of confellipse.AxesEllipse is true
-%                   that is the axes are shown.
-%               Example - 'confellipse', 0
-%               Data Types - scalar or struct
-%
 %       xlimx   :   Min and Max of the x axis. Vector. Vector with two
 %                   elements controlling minimum and maximum
 %                   of the x axis.
@@ -403,27 +418,8 @@ function CorAnaplot(out,varargin)
 %                   Example - 'ylimy',[0 1]
 %                   Data Types - double
 %
-%        d1    :  Dimension to show on the horizontal axis. Positive
-%                 integer. Positive integer in the range 1, 2, .., K which
-%                 indicates the dimension to show on the x axis. The
-%                 default value of d1 is 1.
-%                 Example - 'd1',2
-%                 Data Types - single | double
 %
-%        d2    :  Dimension to show on the vertical axis. Positive
-%                 integer. Positive integer in the range 1, 2, .., K which
-%                 indicates the dimension to show on the y axis. The
-%                 default value of d2 is 2.
-%                 Example - 'd2',3
-%                 Data Types - single | double
 %
-%           h : the axis handle of a figure where to send the CorAnaplot.
-%               This can be used to host the CorAnaplot in a subplot of a
-%               complex figure formed by different panels (for example a panel
-%               with CorAnaplot from plots.alpha=0.2 and another
-%               with CorAnaplot from plots.alpha=0.5).
-%               Example -'h',h1 where h1=subplot(2,1,1)
-%               Data Types - Axes object (supplied as a scalar)
 %
 % Output:
 %
