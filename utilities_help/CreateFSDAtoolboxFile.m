@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.27';
+newVersion = '8.5.28';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='HTML static pages regenerated';
+commentRelease='New function add2boxplot added and HELP pages regenerated';
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
