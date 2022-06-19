@@ -96,6 +96,15 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Data Types - double
 %
 %
+%  restrfactor: Restriction factor. Scalar. 
+%               Positive scalar greater or equal than 1 which constrains
+%               the allowed differences of the eigenvalues of the scatter
+%               matrix in each concentration step. The default value of
+%               restrfactor is Inf, that is no constraint is imposed on the
+%               eigenvalues of the covariace matrix in each subset.
+%               Example - 'restrfactor',100
+%               Data Types - double
+%
 %smallsamplecor: small sample correction factor. Boolean. Boolean which
 %               defines whether to use or not small sample correction
 %               factor to inflate the scale estimate.  If it is equal to
@@ -430,13 +439,16 @@ tolMCDdef=eps('double');
 % estimate of the scale)
 smallsamplecor=true;
 
+restrfactordef=Inf;
+
 % store default values in the structure options
 options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'reftol',reftoldef,...
     'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
     'bdp',bdpdef,'plots',0,'conflev',0.975,'conflevrew','',...
     'betathresh',0,'nocheck',0,'msg',1,'tolMCD',tolMCDdef,...
-    'ysaveRAW',false,'ysaveREW',false,'smallsamplecor',smallsamplecor);
+    'ysaveRAW',false,'ysaveREW',false,'smallsamplecor',smallsamplecor,...
+    'restrfactor',restrfactordef);
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
@@ -471,6 +483,8 @@ tolMCD=options.tolMCD;
 
 % If msg =1 the total estimated time to compute MCD is printed on the screen
 msg=options.msg;
+
+restrfactor=options.restrfactor;
 
 % Initialize the matrices which contain the best "bestr" estimates of
 % location, indexes of subsets, cov matrices and objective function
@@ -804,7 +818,7 @@ for i = 1:nselected
     % - Sj = v x v covariance matrix
     % - refsteps = number of refining iterations
     % - reftol = tolerance for convergence of refining iterations
-    outIRWLS = IRWLSmcd(Y, locj, Sj, h, refsteps, reftol);
+    outIRWLS = IRWLSmcd(Y, locj, Sj, h, refsteps, reftol, restrfactor);
     
     % If the value of the objective function is smaller than tolMCD
     % we have a perfect fit situation, that is there are h observations
@@ -897,7 +911,7 @@ end
 % next if statement is satisfied at least once
 superbestobj = Inf;
 for i=1:bestr
-    tmp = IRWLSmcd(Y,bestlocs(i,:), bestcovs(:,:,i),h,refstepsbestr,reftolbestr);
+    tmp = IRWLSmcd(Y,bestlocs(i,:), bestcovs(:,:,i),h,refstepsbestr,reftolbestr,restrfactor);
     
     if tmp.obj < superbestobj
         superbestobj    = tmp.obj;
@@ -1110,7 +1124,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% subfunction IRWLSmcd
-    function outIRWLS = IRWLSmcd(Y, initialloc, initialcov, h, refsteps, reftol)
+    function outIRWLS = IRWLSmcd(Y, initialloc, initialcov, h, refsteps, reftol, restrfactor)
         %IRWLSmult (iterative reweighted least squares) does refsteps refining steps from initialloc
         % for refsteps times or till convergence.
         %
@@ -1149,7 +1163,12 @@ end
         
         iter = 0;
         locdiff = 9999;
-        
+        if isfinite(restrfactor)
+            userestrfactor=true;
+        else
+           userestrfactor=false;
+        end
+
         while ( (locdiff > reftol) && (iter < refsteps) )
             iter = iter + 1;
             
@@ -1164,6 +1183,14 @@ end
 
             newloc      = mean(Y(obs_in_set,:));
             newcov      = cov(Y(obs_in_set,:));
+
+            % Apply restriction factor to the covariance matrix of subset
+    if userestrfactor==true
+        [V,eige]=eig(newcov);
+        eigenew=restreigen(diag(eige),h,restrfactor);
+        newcov=V*diag(eigenew)*V';
+    end
+            
             obj         = det(newcov);
             
             % Compute MD
