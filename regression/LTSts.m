@@ -2367,7 +2367,7 @@ else
     b_AR='noauto';
 end
 
-b_X  =    ['b_explX1'; 'b_explX2'; 'b_explX3'; 'b_explX4'; 'b_explX5'; 'b_explX6'];
+b_X    =    ['b_explX1'; 'b_explX2'; 'b_explX3'; 'b_explX4'; 'b_explX5'; 'b_explX6'; 'b_explX7'; 'b_explX8'; 'b_explX9'];
 b_varampl = ['b_varaml'; 'b_varam2'; 'b_varam3'];
 b_lshift  = ['b_lshift' ; 't_lshift'];
 
