@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout on your repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       
       - name: Create Release
         id: create_release
@@ -40,6 +40,5 @@ jobs:
         with:
           #upload_url: github.event.release.upload_url
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/FSDA.mltbx
-          asset_name: FSDA.mltbx
-          asset_content_type: application/gzip
+          asset_path: ./license.txt
+          asset_name: LICENSE          
