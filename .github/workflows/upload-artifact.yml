@@ -41,4 +41,5 @@ jobs:
           #upload_url: github.event.release.upload_url
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./license.txt
-          asset_name: LICENSE          
+          asset_name: LICENSE
+          asset_content_type: text/plain
