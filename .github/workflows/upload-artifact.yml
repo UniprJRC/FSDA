@@ -74,4 +74,4 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.extract_tag.outputs.tag }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            FSDA_RELEASE: ${{ steps.extract_tag.outputs.tag }}
+            FSDA_RELEASE=${{ steps.extract_tag.outputs.tag }}
