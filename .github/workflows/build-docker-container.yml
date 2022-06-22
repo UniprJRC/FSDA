@@ -2,7 +2,7 @@
 name: "build-docker-container"
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       matlab-release:
         required: false
