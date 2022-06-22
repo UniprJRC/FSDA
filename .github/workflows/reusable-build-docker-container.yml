@@ -11,9 +11,9 @@ on:
       fsda-release:
         required: true
         type: string
+
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: josmartin/fsda
 
 jobs:
   build:
@@ -30,6 +30,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert repostitory name to lowercase
+        run: |
+          echo "IMAGE_NAME=${REPO_NAME,,}" >> ${GITHUB_ENV}
+        env:
+          REPO_NAME: ${{ github.repository }}
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
@@ -41,7 +47,7 @@ jobs:
         with:
           context: "./docker"
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.fsda-release }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.fsda-release }}-${{ inputs.matlab-release }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             FSDA_RELEASE=${{ inputs.fsda-release }}
