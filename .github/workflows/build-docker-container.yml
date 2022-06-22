@@ -23,7 +23,7 @@ jobs:
   build-docker-container:
     needs: checkout-repo
     uses: ./.github/workflows/reusable-build-docker-container.yml
-      with:
-        matlab-release: ${{ github.event.inputs.matlab-release }}
-        fsda-release: ${{ github.event.inputs.fsda-release }}
-      secrets: inherit
+    with:
+      matlab-release: ${{ github.event.inputs.matlab-release }}
+      fsda-release: ${{ github.event.inputs.fsda-release }}
+    secrets: inherit
