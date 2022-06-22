@@ -19,13 +19,6 @@ function out  = ctlcurves(Y, varargin)
 %
 %  Optional input arguments:
 %
-%           kk: number of mixture components. Integer vector. Integer
-%               vector specifying the number of mixture components
-%               (clusters) for which trimmed likelihoods are calculated.
-%               Vector. The default value of kk is 1:5.
-%                 Example - 'kk',1:4
-%                 Data Types - int16 | int32 | single | double
-%
 %        alpha: trimming level to monitor. Vector. Vector which specifies the
 %               values of trimming levels which have to be considered.
 %               For example if alpha=[0 0.05 0.1] ctlcurves considers these 3
@@ -33,6 +26,121 @@ function out  = ctlcurves(Y, varargin)
 %               The default for alpha is vector 0:0.02:0.10;
 %                 Example - 'alpha',[0 0.05 0.1]
 %                 Data Types -  double
+%
+%       bands  : confidence bands for the curves. boolean or struct. If
+%               bands is a scalar boolean equal to true 50 per cent
+%               confidence bands are computed (and are shown on the screen
+%               if plots=1).
+%               If bands is a struct it contains the following fields:
+%             bands.conflev = scalar in the interval (0 1) which contains
+%                   the confidence level of the bands.
+%             bands.nsamp =  Number of subsamples to extract in the
+%                   bootstrap replicates. If this field is not present and
+%                   or it is empty the number of subsamples which is used
+%                   in the bootstrap replicates is equal to the one used
+%                   for real data (input option nsamp).
+%             bands.nsimul = number of replicates to use to create the
+%                   confidence bands. The default value of bands.nsimul is
+%                   60 in order to provide the output in a reasonal time.
+%                   Note that for stable results we recommentd a value of
+%                   bands.nsimul equal to 100.
+%               bands.valSolution   = boolean which specifies if it is
+%                   necessary to perform an outlier detection procedure on
+%                   the components which have been found using optimalK and
+%                   optimal alpha. If bands.valSolution is true then units
+%                   detected as outliers in each component are assigned to
+%                   the noise group. If bands.valSolution is false
+%                   (deafult) or it is not present nothing is done.
+%             bands.LRtest =  Likelihood ratio test. Boolean. If
+%                   bands.LTtest is true (default) the
+%                   difference between the obj function for two consecutive
+%                   values of k given a particular value of alpha is computed.
+%                   The relative time in which this difference is greater than
+%                   the bootstrap difference is stored in out.pvalLRtest.
+%            bands.usepriorSol= Initialization of the EM for a particular subset.
+%                   boolean. If bands.usepriorSol is true, we initialize
+%                   the EM algorithm for one of the bands.nsamp subsets
+%                   with the solution which has been found with real data,
+%                   else if it is false (default) no prior information is
+%                   used in any of the extracted subsets.
+%   bands.outliersFromUniform = way of generating the outliers in the
+%                   bootstrap replicates. Boolean. If outliersFromUniform
+%                   is true (default) the outliers are generated using the
+%                   uniform distribution in such a way that their squared
+%                   Mahalanobis distance from the centroids of each
+%                   existing group is larger then the quantile 1-0.999 of
+%                   the Chi^2 distribution with p degrees of freedom. For
+%                   additional details see input option noiseunits of
+%                   simdataset. If outliersFromUniform is false the
+%                   outliers are the units which have been trimmed after
+%                   applying tclust for the particular combination of
+%                   values of k and alpha.
+%            bands.nsimulExtra =  number of replicates to use to compute the
+%                   empirical pvalue of LRtest if multiple solutions are
+%                   found given a value of alpha (default is 50).
+%            bands.nsampExtra =  number of subsamples to extract in each
+%                   replicate to compute the empirical pvalue of LRtest if
+%                   multiple solutions are found given a value of alpha
+%                   (default is 2000).
+%      bands.usepriorSolExtra= Initialization of the EM for particular subset.
+%                   boolean. If bands.usepriorSolExtra is true, we
+%                   initialize the EM algorithm for one of the
+%                   bands.nsampExtra subsets with the solution which has
+%                   been found with real data, else if it is false
+%                   (default) no prior information is used in any of the
+%                   extracted subsets.
+%                 Example - 'bands',true
+%                 Data Types - logical | struct%           kk: number of mixture components. Integer vector. Integer
+%               vector specifying the number of mixture components
+%               (clusters) for which trimmed likelihoods are calculated.
+%               Vector. The default value of kk is 1:5.
+%                 Example - 'kk',1:4
+%                 Data Types - int16 | int32 | single | double
+%
+%       cshape : constraint to apply to each of the shape matrices.
+%                Scalar greater or equal than 1. This options only works
+%                is 'restrtype' is 'deter'.
+%               When restrtype is deter the default value of the "shape"
+%               constraint (as defined below) applied to each group is
+%               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
+%               (virtually) affine equivariant. In other words, the
+%               decomposition or the $j$-th scatter matrix $\Sigma_j$ is
+%               \[
+%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+%               \]
+%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+%               diagonal matrix with $|\Gamma_j|=1$ and with elements
+%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+%               the eigenvalues of the $\Sigma_j$ matrix) and
+%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+%               known as "shape" matrices, because they determine the shape of the
+%               fitted cluster components. The following $k$
+%               constraints are then imposed on the shape matrices:
+%               \[
+%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+%                   c_{shape}, \text{ for } j=1,...,k,
+%               \]
+%               In particular, if we are ideally searching for spherical
+%               clusters it is necessary to set  $c_{shape}=1$. Models with
+%               variable volume and spherical clusters are handled with
+%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
+%               The $restrfactor=cshape=1$ case yields a very constrained
+%               parametrization because it implies spherical clusters with
+%               equal volumes.
+%                 Example - 'cshape',10
+%                 Data Types - single | double
+%
+%equalweights : cluster weights in the concentration and assignment steps.
+%               Logical. A logical value specifying whether cluster weights
+%               shall be considered in the concentration, assignment steps
+%               and computation of the likelihood.
+%                 Example - 'equalweights',true
+%                 Data Types - Logical
+%
+%       msg  :  Message on the screen. Scalar. Scalar which controls whether
+%               to display or not messages about code execution.
+%                 Example - 'msg',1
+%                 Data Types - single | double
 %
 %       mixt  : Mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
@@ -75,21 +183,10 @@ function out  = ctlcurves(Y, varargin)
 %                   Example - 'mixt',1
 %                   Data Types - single | double
 %
-%
-%
-%  restrfactor: Restriction factor. Scalar. Positive scalar which
-%               constrains the allowed differences
-%               among group scatters. Larger values imply larger differences of
-%               group scatters. On the other hand a value of 1 specifies the
-%               strongest restriction forcing all eigenvalues/determinants
-%               to be equal and so the method looks for similarly scattered
-%               (respectively spherical) clusters. The default is to apply
-%               restrfactor to eigenvalues. In order to apply restrfactor
-%               to determinants it is is necessary to use optional input
-%               argument cshape.
-%                 Example - 'restrfactor',12
-%                 Data Types -  double
-%
+%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1
+%               no check is performed on matrix Y. As default nocheck=0.
+%                 Example - 'nocheck',10
+%                 Data Types - single | double
 %
 %       nsamp : number of subsamples to extract. Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
@@ -131,12 +228,28 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
-%equalweights : cluster weights in the concentration and assignment steps.
-%               Logical. A logical value specifying whether cluster weights
-%               shall be considered in the concentration, assignment steps
-%               and computation of the likelihood.
-%                 Example - 'equalweights',true
-%                 Data Types - Logical
+%  restrfactor: Restriction factor. Scalar. Positive scalar which
+%               constrains the allowed differences
+%               among group scatters. Larger values imply larger differences of
+%               group scatters. On the other hand a value of 1 specifies the
+%               strongest restriction forcing all eigenvalues/determinants
+%               to be equal and so the method looks for similarly scattered
+%               (respectively spherical) clusters. The default is to apply
+%               restrfactor to eigenvalues. In order to apply restrfactor
+%               to determinants it is is necessary to use optional input
+%               argument cshape.
+%                 Example - 'restrfactor',12
+%                 Data Types -  double
+%
+%     restrtype : type of restriction. Character. The type of restriction to
+%               be applied on the cluster scatter
+%               matrices. Valid values are 'eigen' (default), or 'deter'.
+%               eigen implies restriction on the eigenvalues while deter
+%               implies restriction on the determinants. If restrtype is
+%               'deter' it is possible to control the constraints on the
+%               shape matrices using optional input argument cshape.
+%                 Example - 'restrtype','deter'
+%                 Data Types - char
 %
 %      startv1: how to initialize centroids and cov matrices. Scalar.
 %               If startv1 is 1 then initial
@@ -152,65 +265,15 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'startv1',1
 %                 Data Types - single | double
 %
-%     restrtype : type of restriction. Character. The type of restriction to
-%               be applied on the cluster scatter
-%               matrices. Valid values are 'eigen' (default), or 'deter'.
-%               eigen implies restriction on the eigenvalues while deter
-%               implies restriction on the determinants. If restrtype is
-%               'deter' it is possible to control the constraints on the
-%               shape matrices using optional input argument cshape.
-%                 Example - 'restrtype','deter'
-%                 Data Types - char
 %
-%       bands  : confidence bands for the curves. boolean or struct. If
-%               bands is a scalar boolean equal to true 50 per cent
-%               confidence bands are computed (and are shown on the screen
-%               if plots=1).
-%               If bands is a struct it may contain the following fields:
-%               bands.conflev = scalar in the interval (0 1) which contains
-%                   the confidence level of the bands.
-%               bands.nsimul = number of replicates to use to create the
-%                   confidence bands. The default value of bands.nsimul is
-%                   60 in order to provide the output in a reasonal time.
-%                   Note that for stable results we recommentd a value of
-%                   bands.nsimul equal to 100.
-%               bands.valSolution   = boolean which specifies if it is
-%                   necessary to perform an outlier detection procedure on
-%                   the components which have been found using optimalK and
-%                   optimal alpha. If bands.valSolution is true then units
-%                   detected as outliers in each component are assigned to
-%                   the noise group. If bands.valSolution is false
-%                   (deafult) or it is not present nothing is done.
-%             bands.LRtest =  Likelihood ratio test. Boolean. If
-%                   bands.LTtest is true (default) the
-%                   difference between the obj function for two consecutive
-%                   values of k given a particular value of alpha is computed.
-%                   The relative time in which this difference is greater than
-%                   the bootstrap difference is stored in out.pvalLRtest.
-%             bands.nsamp =  Number of subsamples to extract in the
-%                   bootstrap replicates. If this field is not present and
-%                   or it is empty the number of subsamples which is used
-%                   in the bootstrap replicates is equal to the one used
-%                   for real data (input option nsamp).
-%   bands.outliersFromUniform = way of generating the outliers in the bootstrap
-%                   replicates. Boolean. If outliersFromUniform is true
-%                   (default) the outliers are generated using the uniform
-%                   distribution in such a way that their squared Mahalanobis
-%                   distance from the centroids of each
-%                   existing group is larger then the quantile 1-0.999 of
-%                   the Chi^2 distribution with p degrees of freedom. For
-%                   additional details see input option noiseunits of
-%                   simdataset. If outliersFromUniform is false the outliers
-%                   are the units which have been trimmed after applying
-%                   tclust for the particular combination of values of k and alpha.
-%                 Example - 'bands',true
-%                 Data Types - logical | struct
-%
-%       plots : Plot on the screen. Scalar. If plots = 1, a plot of the
-%               CTLcurves is shown on the screen. If input option bands is
-%               not empty confidence bands are also shown.
-%                 Example - 'plots',1
+%  cleanpool :  clean pool. Scalar. cleanpool is 1 if the parallel pool has
+%               to be cleaned after the execution of the routine. Otherwise
+%               it is 0. The default value of cleanpool is 0. Clearly this
+%               option has an effect just if previous option numpool is >
+%               1.
+%                 Example - 'cleanpool',1
 %                 Data Types - single | double
+%
 %
 %     numpool : number of pools for parellel computing. Scalar.
 %               If numpool > 1, the routine automatically checks if
@@ -250,22 +313,10 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'numpool',4
 %                 Data Types - double
 %
-%  cleanpool :  clean pool. Scalar. cleanpool is 1 if the parallel pool has
-%               to be cleaned after the execution of the routine. Otherwise
-%               it is 0. The default value of cleanpool is 0. Clearly this
-%               option has an effect just if previous option numpool is >
-%               1.
-%                 Example - 'cleanpool',1
-%                 Data Types - single | double
-%
-%       msg  :  Message on the screen. Scalar. Scalar which controls whether
-%               to display or not messages about code execution.
-%                 Example - 'msg',1
-%                 Data Types - single | double
-%
-%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1
-%               no check is performed on matrix Y. As default nocheck=0.
-%                 Example - 'nocheck',10
+%       plots : Plot on the screen. Scalar. If plots = 1, a plot of the
+%               CTLcurves is shown on the screen. If input option bands is
+%               not empty confidence bands are also shown.
+%                 Example - 'plots',1
 %                 Data Types - single | double
 %
 %       Ysave : save input matrix. Boolean.
@@ -274,39 +325,6 @@ function out  = ctlcurves(Y, varargin)
 %               is  matrix Y is saved inside output structure out.
 %                 Example - 'Ysave',false
 %                 Data Types - logical
-%
-%       cshape : constraint to apply to each of the shape matrices.
-%                Scalar greater or equal than 1. This options only works
-%                is 'restrtype' is 'deter'.
-%               When restrtype is deter the default value of the "shape"
-%               constraint (as defined below) applied to each group is
-%               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
-%               (virtually) affine equivariant. In other words, the
-%               decomposition or the $j$-th scatter matrix $\Sigma_j$ is
-%               \[
-%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-%               \]
-%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
-%               diagonal matrix with $|\Gamma_j|=1$ and with elements
-%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
-%               the eigenvalues of the $\Sigma_j$ matrix) and
-%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
-%               known as "shape" matrices, because they determine the shape of the
-%               fitted cluster components. The following $k$
-%               constraints are then imposed on the shape matrices:
-%               \[
-%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
-%                   c_{shape}, \text{ for } j=1,...,k,
-%               \]
-%               In particular, if we are ideally searching for spherical
-%               clusters it is necessary to set  $c_{shape}=1$. Models with
-%               variable volume and spherical clusters are handled with
-%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
-%               The $restrfactor=cshape=1$ case yields a very constrained
-%               parametrization because it implies spherical clusters with
-%               equal volumes.
-%                 Example - 'cshape',10
-%                 Data Types - single | double
 %
 %
 %
@@ -396,12 +414,15 @@ function out  = ctlcurves(Y, varargin)
 %                          of alpha. Fourth column contains 1 if the
 %                          p-value beyond the threshold is always above $k$
 %                          shown in the second column for all $k^* >k$ else
-%                          it contains 0. Fourth and fifth columns contains
-%                          the index numbers of optinal input values kk and alpha.
+%                          it contains 0. Fourth and fifth columns contain
+%                          the index numbers of optimal input values kk and
+%                          alpha. Sixth column contains 1 in correspondence
+%                          of the best solution for each value of k.
 %      out.TentSolLRt  = table with size m-by-5 containing the same
-%                        information of array  out.TentSolLR in table format. 
-%           out.idxLR  = matrix with size n-by-size(out.TentSolLR,1) with the allocation
-%                        associated with the tentative solutions found in out.TentSolLR.
+%                        information of array  out.TentSolLR in table format.
+%           out.idxLR  = matrix with size n-by-size(out.TentSolLR,1) with
+%                        the allocation associated with the tentative
+%                        solutions found in out.TentSolLR.
 %                        First column refers to best solution ...
 %                out.kk = vector containing the values of k (number of
 %                       components) which have been considered. This  vector
@@ -490,6 +511,8 @@ function out  = ctlcurves(Y, varargin)
     bands.nsimul=20;
     % Exclude the units detected as outliers for each group.
     bands.valSolution=true;
+    % One of the extracted subsets is based on solutions found with real data 
+    bands.usepriorSol=true;
     % Do not compute the bootstrap likelihood ratio test
     bands.LRtest=false;
     % Just use a very small sumber of subsets for speed reasons.
@@ -733,6 +756,32 @@ if ComputeBands==true
             nsampSimData=[];
         end
 
+        if isfield(bands,'usepriorSol')
+            usepriorSol=bands.usepriorSol;
+        else
+            usepriorSol=false;
+        end
+
+        if isfield(bands,'usepriorSolExtra')
+            usepriorSolExtra=bands.usepriorSolExtra;
+        else
+            usepriorSolExtra=false;
+        end
+
+        if isfield(bands,'nsimulExtra')
+            nsimulExtra=bands.nsimulExtra;
+        else
+            nsimulExtra=50;
+        end
+
+
+        if isfield(bands,'nsampExtra')
+            nsampExtra=bands.nsampExtra;
+        else
+            nsampExtra=2000;
+        end
+    else
+        usepriorSol=false;
     end
 
     % BandsCTL is a 3D array which will contain the replicates for the
@@ -794,12 +843,25 @@ if ComputeBands==true
             ngood=round(n*(1-alphaTrimj));
             nout=n-ngood;
             idxkj=IDX{k,j};
+
+
             % if outliersFromUniform is false the outliers in the replicate
             % samples are the units which have been trimmed
             if outliersFromUniform == false
                 Yadd=Y(idxkj==0,:);
             else
                 Yadd=[];
+            end
+
+            if usepriorSol ==true
+                if seqk<maxk
+                    idxkplus1j=IDX{k+1,j};
+                else
+                    idxkplus1j=[];
+                end
+            else
+                idxkj=[];
+                idxkplus1j=[];
             end
 
             parfor (zz = 1:nsimul, numpool)
@@ -823,7 +885,7 @@ if ComputeBands==true
                     outtcSIMkplus1=tclust(Ysim,seqk+1,alphaTrimj,restrfactor,'nsamp',CnsampAllkplus1SimData,'plots',0,'msg',0,'mixt',mixt, ...
                         'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
                         'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkplus1SimData,'cshape',cshape, ...
-                        'priorSol',IDX{k+1,j});
+                        'priorSol',idxkplus1j);
                     BandsCTLtest(k,j,zz)=outtcSIMkplus1.obj-outtcSIM.obj;
                 end
 
@@ -898,7 +960,7 @@ if LRtest==true && ComputeBands ==true
     rownam=strcat('k=',string((kk(1:end-1)')),'_vs_k=',string((kk(2:end)')));
     out.pvalLRtest=array2table(tbootGTtobs,'VariableNames',varnam,'RowNames',rownam);
 
-    TentSolLR=zeros(lkk-1,4);
+    TentSolLR=zeros(lkk-1,7);
     idxLR=zeros(n,lkk-1);
 
     crit= 0.02;
@@ -908,9 +970,10 @@ if LRtest==true && ComputeBands ==true
         % For each value of alpha soli and indexSpuriousSolution are reset
         indexSpuriousSolution=true;
         soli=0;
+        increment=1;
         while indexSpuriousSolution==true
 
-            soli=find(tbootGTtobs(soli+1:end,j)>=crit,1)+soli;
+            soli=find(tbootGTtobs((soli+increment):end,j)>=crit,1)+soli+increment-1;
             if ~isempty(soli)
 
                 % Store solution number, value of k, value of alpha
@@ -925,6 +988,8 @@ if LRtest==true && ComputeBands ==true
                         indexSpuriousSolution=false;
                     else
                         TentSolLR(ij,4)=0;
+                        increment=find(tbootGTtobs(soli+1:end,j)<crit,1);
+
                     end
                     % Check whether this solution had been previously found
                     % that is if for the same value of k  we had already
@@ -950,17 +1015,127 @@ if LRtest==true && ComputeBands ==true
     end
 
     if size(TentSolLR,1)>=1
+        TentSolLR=TentSolLR(1:ij-1,:);
+
         numsol=(1:size(TentSolLR,1))';
         nsoleti="Sol"+numsol;
 
+        % FOR EACH VALUE OF ALPHA COMPUTE ADDITIONAL LIK RATIO TESTS TO FIND
+        % UNIQUE BEST SOLUTION
+        % For example suppose that for a particular alpha we found that there
+        % are the potential solutions k=3, k=6 and k=10 then LR test between
+        % k=3 and k=6 is performed, and the best among these two values of k
+        % is stored and is later tested against k=10
+        % The best value among these 3 candidates gets a value of 1 in the last
+        % column of matrix TentSolLR
+        %         nsimulExtra=50;
+        %         nsampExtra=5000;
+        %         usepriorSolExtra=false;
+
+        for j=1:lalpha
+            alphaTrimj=alphaTrim(j);
+            MultSolalpha=find(TentSolLR(:,3)==alphaTrimj);
+            kTentative=TentSolLR(MultSolalpha,2);
+            kTentativepos=TentSolLR(MultSolalpha,5);
+
+            if length(MultSolalpha)>1
+
+                indbestk=1;
+                for jjj=2:length(MultSolalpha)
+
+                    % kpos = position of first value of k to use in the additional LR test
+                    kpos=kTentativepos(jjj-1);
+                    % kH1pos = position larger value of k to use in the additional LR test
+                    kH1pos=kTentativepos(jjj);
+                    % k and kH1= true values of k  to use in the additional
+                    % LR test
+                    k=kTentative(jjj-1);
+                    kH1=kTentative(jjj);
+
+                    ktrue = length(PiVal{kpos, j});
+                    Mutrue = MuVal{kpos, j};
+                    Mutrue=Mutrue(1:ktrue,:);
+                    Sigmatrue = SigmaVal{kpos, j};
+                    Sigmatrue = Sigmatrue(:,:,1:ktrue);
+                    Pitrue=PiVal{kpos, j};
+                    alphaTrimj=alphaTrim(j);
+                    ngood=round(n*(1-alphaTrimj));
+                    nout=n-ngood;
+                    idxkj=IDX{kpos,j};
+
+                    % if outliersFromUniform is false the outliers in the replicate
+                    % samples are the units which have been trimmed
+                    if outliersFromUniform == false
+                        Yadd=Y(idxkj==0,:);
+                    else
+                        Yadd=[];
+                    end
+                    tboot=zeros(nsimulExtra,1);
+
+
+                    if usepriorSolExtra ==true
+                        idxkH1=IDX{kH1pos,j};
+                    else
+                        idxkj=[];
+                        idxkH1=[];
+                    end
+                    parfor (zz = 1:nsimulExtra, numpool)
+                        % Alternative instruction using traditional for
+                        % instead of parfor
+                        %   for zz = 1:nsimul
+                        if outliersFromUniform == true
+                            [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
+                            if size(Ysim,1)<n
+                                Yadd1=repmat(Ysim(end,:),n-size(Ysim,1),1);
+                                Ysim=[Ysim;Yadd1];
+                            end
+                        else
+                            [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', 0);
+                            Ysim=[Ysim;Yadd];
+                        end
+
+                        outtcSIM=tclust(Ysim,k,alphaTrimj,restrfactor,'plots',0,'msg',0,'mixt',mixt, ...
+                            'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                            'reftol',reftol,'cshape',cshape,...
+                            'priorSol',idxkj,'nsamp',nsampExtra);
+
+                        outtcSIMkH1=tclust(Ysim,kH1,alphaTrimj,restrfactor,'plots',0,'msg',0,'mixt',mixt, ...
+                            'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                            'reftol',reftol,'cshape',cshape, ...
+                            'priorSol',idxkH1,'nsamp',nsampExtra);
+
+                        tboot(zz)=outtcSIMkH1.obj-outtcSIM.obj;
+
+                    end
+
+
+                    tobs= out.CTL(kH1pos,j)-out.CTL(kpos,j);
+
+                    % tboot = values of the difference between target function using kH1
+                    % and k groups for data simulated assuming k groups
+                    addLRtest=sum(tboot>tobs)/nsimulExtra;
+
+                    if addLRtest>crit
+                        kTentative(jjj)=kTentative(jjj-1);
+                    else
+                        indbestk=indbestk+1;
+                    end
+                end
+                TentSolLR(MultSolalpha(indbestk),7)=1;
+            elseif length(MultSolalpha) ==1
+                TentSolLR(MultSolalpha,7)=1;
+            else
+            end
+        end
+
         TentSolLRt=array2table(TentSolLR,'RowNames',nsoleti, ...
-            'VariableNames',{'index' 'k' 'alpha' 'Truesol' 'kindex' 'alphaindex'});
+            'VariableNames',{'index' 'k' 'alpha' 'Truesol' 'kindex' 'alphaindex' 'kbestGivenalpha'});
+
     else
         TentSolLR=[];
+        TentSolLRt=[];
         idxLR=[];
     end
-
- 
 
     out.TentSolLR=TentSolLR;
     out.TentSolLRt=TentSolLRt;
