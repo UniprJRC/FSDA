@@ -13,15 +13,18 @@ on:
         type: string
 
 jobs:
-       
-  build-docker-container:
+
+  checkout-repo:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout on your repository
         uses: actions/checkout@v3
-      
-      - name: Build Docker Container
-        uses: josmartin/FSDA/.github/actions/reusable-build-docker-container.yml@master
-        with:
-          matlab-release: ${{ github.event.inputs.matlab-release }}
-          fsda-release: ${{ github.event.inputs.fsda-release }}
+
+  build-docker-container:
+    needs: checkout-repo
+    runs-on: ubuntu-latest      
+    uses: /.github/workflows/reusable-build-docker-container.yml
+      with:
+        matlab-release: ${{ github.event.inputs.matlab-release }}
+        fsda-release: ${{ github.event.inputs.fsda-release }}
+      secrets: inherit
