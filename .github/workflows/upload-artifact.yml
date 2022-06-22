@@ -57,7 +57,7 @@ jobs:
 
       - name: Extract tag from this release
         shell: bash
-        run: echo ::set-output name=tag::echo ${GITHUB_REF#refs/*/}
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
         id: extract_tag
 
       - name: Extract metadata (tags, labels) for Docker
