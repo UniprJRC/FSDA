@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Build Docker Container
-        uses: ./.github/actions/reusable-build-docker-container
+        uses: josmartin/FSDA/.github/actions/reusable-build-docker-container.yml@master
         with:
-          matlab-release: ${{ inputs.matlab-release }}
-          fsda-release: ${{ inputs.fsda-release }}
+          matlab-release: ${{ github.event.inputs.matlab-release }}
+          fsda-release: ${{ github.event.inputs.fsda-release }}
