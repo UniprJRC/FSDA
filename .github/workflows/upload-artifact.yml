@@ -14,7 +14,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: fsda
+  IMAGE_NAME: josmartin/fsda
 
 jobs:
        
