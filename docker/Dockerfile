@@ -1,8 +1,12 @@
-ARG FSDA_RELEASE
+# By default build with latest from mathworks/matlab (make sure you have docker pull'd this) - but you can over-ride
+# this (and the github workflows frequently do) so as to build with different versions of MATLAB
 ARG MATLAB_DOCKER_TAG=latest
 
 FROM mathworks/matlab:${MATLAB_DOCKER_TAG}
 
+ARG SRC_REPO=UniprJRC/FSDA
+# This argument MUST be specified in a build of this Dockerfile. See https://github.com/UniprJRC/FSDA/tags for
+# valid tags
 ARG FSDA_RELEASE
 
 USER root
@@ -26,8 +30,9 @@ RUN wget -q https://www.mathworks.com/mpm/glnxa64/mpm && \
 
 WORKDIR /opt/fsda
 # It is critical that the FSDA folder is writable by the user matlab so that the builddocsearchdb function 
-# that is run during MATLAB startup can succeed
-RUN wget -q https://github.com/josmartin/FSDA/archive/refs/tags/${FSDA_RELEASE}.tar.gz && \
+# that is run during MATLAB startup can succeed. In additon we would like to know the actual folder name
+# for the FSDA toolbox later so write this to the well-known file /opt/fsda/fsda-location.txt
+RUN wget -q https://github.com/${SRC_REPO}/archive/refs/tags/${FSDA_RELEASE}.tar.gz && \
     tar -xzf ${FSDA_RELEASE}.tar.gz  && \
     rm ${FSDA_RELEASE}.tar.gz && \
     cd FSDA-${FSDA_RELEASE} && \
@@ -36,6 +41,7 @@ RUN wget -q https://github.com/josmartin/FSDA/archive/refs/tags/${FSDA_RELEASE}.
     chown -R matlab .
 WORKDIR /
 
+# Seems to be needed for -browser version to install addons - TODO not sure why
 RUN mkdir /.Add-Ons && \
     chown -R matlab /.Add-Ons
 

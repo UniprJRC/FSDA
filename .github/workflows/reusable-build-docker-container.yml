@@ -51,4 +51,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             FSDA_RELEASE=${{ inputs.fsda-release }}
-            MATLAB_DOCKER_TAG=${{ inputs.matlab-release }}    
+            MATLAB_DOCKER_TAG=${{ inputs.matlab-release }}
+            SRC_REPO=${{ github.repository }}   
