@@ -33,8 +33,5 @@ WORKDIR /
 # One time startup.m that undertakes installation etc. of FSDA in MATLAB
 COPY startup.m /opt/matlab/${MATLAB_RELEASE}/toolbox/local
 
-# TO REMOVE
-COPY license.dat /opt/matlab/${MATLAB_RELEASE}/licenses/license.dat
-
 USER matlab
 WORKDIR /home/matlab
