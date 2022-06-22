@@ -1,0 +1,27 @@
+---
+name: "build-docker-container"
+
+on:
+  workflow_call:
+    inputs:
+      matlab-release:
+        required: false
+        type: string
+        default: latest
+      fsda-release:
+        required: true
+        type: string
+
+jobs:
+       
+  build-docker-container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout on your repository
+        uses: actions/checkout@v3
+      
+      - name: Build Docker Container
+        uses: ./github/workflow/reusable-build-docker-container
+        with:
+          matlab-release: ${{ inputs.matlab-release }}
+          fsda-release: ${{ inputs fsda-release }}

@@ -1,10 +1,19 @@
 function startup
 
-% Make sure we don't end up in another folder after running this!    
+% Setup default proxy settings based on the environment variables that
+% we will have set in the run.sh script
+host = getenv('MW_PROXY_HOST');
+port = getenv('MW_PROXY_PORT');
+if ~isempty(host) && ~isempty(port)
+    % Replace the deprecated JAVA API with a wrapper
+    matlab.net.internal.copyProxySettingsFromEnvironment();
+end
+
+% Make sure we do not end up in another folder after running this!    
 cdir = pwd;
 c = onCleanup(@() cd(cdir));
 
-FSDAroot = "/opt/fsda/FSDA-" + version('-release');
+[~, FSDAroot] = system("cat /opt/fsda/fsda-location.txt");
 cd(FSDAroot)
 
 % ALWAYS DO THE FOLLOWING
@@ -18,15 +27,19 @@ end
 
 
 
-%% 3) Launch buildocsearchdb - this just doesn't seem to work!
-% folderwithSearchableDatabase=[pwd filesep 'helpfiles' filesep 'pointersHTML'];
-% try
-%     builddocsearchdb(folderwithSearchableDatabase)
-%     disp('FSDA searchable database correctly added')
-% catch
-%     disp('Unknown error when trying to run MATLAB routine builddocsearchdb')
-%     disp(['in folder:  '  folderwithSearchableDatabase])
-% end
+%% 3) Launch buildocsearchdb - this just does not seem to work!
+if  matlab.ui.internal.hasDisplay && ...
+    matlab.internal.lang.capability.Capability.isSupported(matlab.internal.lang.capability.Capability.ModalDialogs)
+    
+    folderwithSearchableDatabase=[pwd filesep 'helpfiles' filesep 'pointersHTML'];
+    try
+        builddocsearchdb(folderwithSearchableDatabase)
+        disp('FSDA searchable database correctly added')
+    catch
+        disp('Unknown error when trying to run MATLAB routine builddocsearchdb')
+        disp(['in folder:  '  folderwithSearchableDatabase])
+    end
+end
 
 oneTimeFile = string(prefdir) + filesep + "FSDA-one-time-file";
 
@@ -53,3 +66,5 @@ catch
 end
 
 system("touch " + oneTimeFile);
+
+end
