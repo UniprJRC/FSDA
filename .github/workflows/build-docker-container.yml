@@ -13,13 +13,6 @@ on:
         type: string
 
 jobs:
-
-  checkout-repo:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout on your repository
-        uses: actions/checkout@v3
-
   build-docker-container:
     needs: checkout-repo
     uses: ./.github/workflows/reusable-build-docker-container.yml
