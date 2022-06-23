@@ -35,7 +35,7 @@ function out = dempk(Y, k, g, varargin)
 %               Example - 'alpha', 0.05
 %               Data Types - single | double
 %
-% plots    :    Plot on the screen. Scalar, char, or struct.
+% plots    :    Plot on the screen. Scalar or char or struct.
 %               - If plots=0 (default) no plot is produced.
 %               - If plots=1, the components merged are shown using the
 %               spmplot function. In particular:
@@ -76,6 +76,9 @@ function out = dempk(Y, k, g, varargin)
 %                 the bivariate boxplots for each group, using the boxplotb
 %                 function. This argument may also be inserted in a field
 %                 named 'type' of a structure.
+%                If plots is a struct it may contain the following fields:
+%                 plots.type = a char specifying the type of superimposition
+%                    Choices are 'contourf', 'contour', 'ellipse' or 'boxplotb'.
 %               REMARK - The labels<=0 are automatically excluded from the
 %                        overlaying phase, considering them as outliers.
 %                   Example - 'plots', 1
