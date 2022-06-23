@@ -510,6 +510,71 @@ function out  = tclustregIC(y,X,varargin)
     tclustICplot(out,'whichIC','MIXMIX')
 %}
 
+%{
+    % tclustregIC of fishery2003 with or without intercept.
+    clear all; close all;
+    rng(123)
+
+    intercept = 0;
+
+    load Fishery2003.mat;
+    X = Fishery2003{:,2};
+    X = X + 10^(-5) * abs(randn(size(X)));
+    y = Fishery2003{:,3};
+    y = y + 10^(-5) * abs(randn(size(y)));
+    id = Fishery2003{:,1};
+
+    % yXplot(yid,Xid);
+    
+    % Use tclustregIC to monitor the effect of k and c, for alpha reasonably fixed 
+    alpha = 0.01;
+    kvec  = 1:1:4;
+    cvec  = [1,2,4,8];
+    outIC = tclustregIC(y,X,'whichIC','CLACLA','kk',kvec,'cc',cvec,'alphaLik',alpha,'intercept',intercept,'plots',0);
+
+    % Extracts a set of best relevant solutions ...
+    [outICsol] = tclustICsol(outIC,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',5,'ThreshRandIndex',0.7);
+
+    % ... and visualise them with the carbike plot, which highlights the most
+    % relevant one in intuitive way.
+    [hcb,areas] = carbikeplot(outICsol,'SpuriousSolutions',false);
+
+    % Use the information extracted by tclustICsol to identify the best
+    % solution.
+    [truesol,~]  = ismember(outICsol.CLACLAbs(:,end),'true');
+    truesoli     = find(truesol);
+    [amax,iamax] = max(areas(truesoli,2));
+    if numel(truesoli) > 0
+        if amax>0
+            % take the true solution with larger area
+            kopt = outICsol.CLACLAbs{truesoli(iamax),1};  % optimal number of groups
+            copt = outICsol.CLACLAbs{truesoli(iamax),2};  % optimal nrestriction factor
+        else
+            % if areas are all zero, take the true solution with larger k
+            kopt = outICsol.CLACLAbs{truesoli(1),1};
+            copt = outICsol.CLACLAbs{truesoli(1),2};
+        end
+    else
+        % if there are no true solutions, take the one with larger k
+        kopt = outICsol.CLACLAbs{truesol(1),1};
+        copt = outICsol.CLACLAbs{truesol(1),2};
+    end
+
+    % Finally, use tclustregeda to monitor alpha, with k and c estimated by tclustregIC
+    alphaLikvec   = 0.05:-0.01:0;
+    outEDA        = tclustregeda(y,X,kopt,copt,alphaLikvec,0,'intercept',intercept,'plots',0);
+
+    % retrieve the optimal alpha
+    [ARImax]   = max(outEDA.Amon(:,2));
+    iARImax    = find(outEDA.Amon(:,2) == ARImax);
+    alphaopt   = outEDA.Amon(iARImax(end),1);
+
+    % final clustering % with the parameters sugggested by the monitoring
+    outTCLUST    = tclustreg(y,X,kopt,copt,alphaopt,0,'intercept',intercept,'plots',1);
+    idxTCLUST    = outTCLUST.idx;
+%}
+
+
 
 %% Beginning of code
 
@@ -619,6 +684,7 @@ if nargin > 2
     UnitsSameGroup  = options.UnitsSameGroup;
     RandNumbForNini = options.RandNumbForNini;
     commonslope    = options.commonslope;
+    intercept    = options.intercept;
 end
 
 
@@ -733,7 +799,7 @@ for k=1:lkk
                 'nsamp',Cnsamp,...
                 'plots',0,'msg',0,'mixt',2, ...
                 'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
-                'RandNumbForNini',gRandNumbForNini,'commonslope',commonslope);
+                'RandNumbForNini',gRandNumbForNini,'commonslope',commonslope,'intercept',intercept);
             
             if ~isstruct(outMixt)
                 warning('FSDA:tclustregIC:nocnvg','No convergence inside tclustreg')
@@ -759,7 +825,7 @@ for k=1:lkk
                 'nsamp',Cnsamp,...
                 'plots',0,'msg',0, ...
                 'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
-                'RandNumbForNini',gRandNumbForNini,'commonslope',commonslope);
+                'RandNumbForNini',gRandNumbForNini,'commonslope',commonslope,'intercept',intercept);
             
             if ~isstruct(outCla)
                 warning('FSDA:tclustregIC:nocnvg','No convergence inside tclustreg')
