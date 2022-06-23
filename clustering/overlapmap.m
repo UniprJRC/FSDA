@@ -69,7 +69,7 @@ function [out] = overlapmap(D, varargin)
 %                   Example - 'omegaStar', 0.01
 %                   Data Types - single | double
 %
-% plots    :    Additional plot on the screen. Scalar, char, or struct.
+% plots    :    Additional plot on the screen. Scalar, char or struct.
 %               This arguments requires the presence of the field D.Y.
 %               - If plots=0 (default) no additional plot is produced.
 %               - If plots=1, at the end of the interaction with the overlap
@@ -112,6 +112,9 @@ function [out] = overlapmap(D, varargin)
 %                 the bivariate boxplots for each group, using the boxplotb
 %                 function. This argument may also be inserted in a field
 %                 named 'type' of a structure.
+%                If plots is a struct it may contain the following fields:
+%                 plots.type = a char specifying the type of superimposition
+%                    Choices are 'contourf', 'contour', 'ellipse' or 'boxplotb'.
 %               REMARK - The labels<=0 are automatically excluded from the
 %                          overlaying phase, considering them as outliers.
 %                   Example - 'plots', 1
