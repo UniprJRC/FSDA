@@ -39,7 +39,7 @@ jobs:
         id: mltbx-check
         shell: bash
         run: |
-          echo ::set-output name=exist::((test -f ./bin/FSDA.mltbx && echo true) || echo false)
+          echo "::set-output name=exist::((test -f ./bin/FSDA.mltbx && echo true} || echo false)"
 
       - name: Upload Release Asset
         if: ${{ steps.mltbx-check.outputs.exist == true }}
