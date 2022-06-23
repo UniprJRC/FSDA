@@ -34,10 +34,10 @@ DEMP = dempk(X, k*5, g, 'plots', 'contourf');
 % merging algorithm based on the threshold value omega star
 g = 0.01;
 DEMP2 = dempk(X, k*5, g, 'plots', 'contour');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  9.52 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  8.17 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36.6667%
-Total estimated time to complete trimmed k means:  0.83 seconds 
+Total estimated time to complete trimmed k means:  0.78 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38.6667%
 </pre><a href='http://rosa.unipr.it/fsda/dempk.html#Example_1'><img vspace="5" hspace="5" src="images\dempk_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\dempk_02.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk with hierarchical merging on data obtained by
@@ -80,7 +80,7 @@ tkmeansOpt.nomes = 0;
 % saving tkmeans output
 tkmeansOut = 1;
 DEMP = dempk(X, k, g, 'tkmeansOpt', tkmeansOpt, 'plots', 'ellipse');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.35 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.26 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 21.6667%
 </pre><a href='http://rosa.unipr.it/fsda/dempk.html#Example_2'><img vspace="5" hspace="5" src="images\dempk_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\dempk_05.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_06.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk with hierarchical merging on data obtained by
@@ -116,7 +116,7 @@ k = g * 6;
 linkagearg = 'weights';
 DEMP = dempk(X, k, g, 'linkagearg', linkagearg, 'plots', 'ellipse');
 cascade;</pre></div></div><pre class="codeoutput">RUNNING TKMEANS WITH 18 COMPONENTS; THEN MERGING WITH dempk
-Total estimated time to complete trimmed k means:  0.30 seconds 
+Total estimated time to complete trimmed k means:  0.26 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 37.3333%
 </pre><a href='http://rosa.unipr.it/fsda/dempk.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\dempk_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\dempk_08.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk, both setting a threshold and performing a
@@ -154,10 +154,10 @@ DEMP = dempk(X, k, g, 'alpha', alpha, 'plots', 'contourf');
 % dempk with a threshold value and trimming equal to the level of noise
 g = 0.025;
 DEMP = dempk(X, k, g, 'alpha', alpha, 'plots', 'contourf');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  5.03 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  3.89 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38%
-Total estimated time to complete trimmed k means:  4.85 seconds 
+Total estimated time to complete trimmed k means:  3.95 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 </pre><a href='http://rosa.unipr.it/fsda/dempk.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\dempk_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\dempk_10.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_11.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using the M5 dataset and various setting for dempk, using
@@ -192,10 +192,10 @@ out = dempk(Y, k, G, 'alpha', alpha+0.04, 'tkmeansOut', 1, 'plots', 1);
 cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.11 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
-Total estimated time to complete trimmed k means:  1.67 seconds 
+Total estimated time to complete trimmed k means:  1.31 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 39%
-Total estimated time to complete trimmed k means:  1.67 seconds 
+Total estimated time to complete trimmed k means:  1.42 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38.6667%
 </pre><a href='http://rosa.unipr.it/fsda/dempk.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\dempk_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\dempk_13.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_14.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_15.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v
@@ -215,7 +215,7 @@ Warning: Number of subsets without convergence equal to 38.6667%
 </code></code></span></div><div class="expandableContent"><div id="inputarg_alpha" class="clearfix"></div><h3 id="input_argument_namevalue_alpha" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>alpha</code> &#8212;Global trimming level.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>alpha is a scalar between 0
                and 0.5. If alpha=0 (default) tkmeans reduces to kmeans.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alpha', 0.05
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar, char, | struct.</span></span></h3><div class="collapse">	<p><p>- If plots=0 (default) no plot is produced.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | char | struct.</span></span></h3><div class="collapse">	<p><p>- If plots=0 (default) no plot is produced.</p> <p>
                - If plots=1, the components merged are shown using the
                spmplot function. In particular:</p> <p>
                    * for v=1, an histogram of the univariate data.</p> <p>
@@ -255,9 +255,11 @@ Warning: Number of subsets without convergence equal to 38.6667%
                  the bivariate boxplots for each group, using the boxplotb
                  function. This argument may also be inserted in a field
                  named 'type' of a structure.</p> <p>
+                If plots is a struct it may contain the following fields:</p><p>
+         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p><p>a char specifying the type of superimposition
+                    Choices are 'contourf', 'contour', 'ellipse' or 'boxplotb'.</p> <p>
                REMARK - The labels&lt;=0 are automatically excluded from the
-                        overlaying phase, considering them as outliers.</p><p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots', 1
+                        overlaying phase, considering them as outliers.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots', 1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | string</code></p></div></div><div class="expandableContent"><div id="inputarg_tkmeansOpt" class="clearfix"></div><h3 id="input_argument_namevalue_tkmeansOpt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tkmeansOpt</code> &#8212;tkmeans optional arguments.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Empty structure (default)
                or structure containing optional input arguments for tkmeans.</p> <p>
                See tkmeans function.</p><p>
