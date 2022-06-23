@@ -1,5 +1,5 @@
 %% EXAMPLES OF ROBUST REGRESSION
-% examples_regression shows a series of analysis of regression datasets 
+% examples_regression shows a series of analysis of regression datasets
 % Copyright 2008-2021.
 % Written by FSDA team
 %
@@ -7,10 +7,10 @@
 
 %% Beginning of code
 
-%% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS) 
+%% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS)
 % Interactive_example
 clearvars;close all;
-% scatterplot of data: one point looks outlying 
+% scatterplot of data: one point looks outlying
 load('forbes.txt');
 y=forbes(:,2);
 X=forbes(:,1);
@@ -24,10 +24,10 @@ set(gcf,'Name', 'Plot of y versus X','NumberTitle', 'off')
 % Plot minimum deletion residual
 mdrplot(out,'xlimx',[6 17],'ylimy',[0 13]);
 % Now, some interactive brushing starting from the monitoring residuals
-% plot. Once a set of trajectories is highlighted in the monitoring residual plot, 
+% plot. Once a set of trajectories is highlighted in the monitoring residual plot,
 % the corresponding units are highlighted in the other plots
 databrush=struct;
-databrush.bivarfit='i1'; 
+databrush.bivarfit='i1';
 databrush.selectionmode='Rect'; % Rectangular selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -38,9 +38,9 @@ cascade;
 resfwdplot(out,'databrush',databrush);
 
 
-%% FD (Forbes data) -- EDA and Analysis using S estimators 
+%% FD (Forbes data) -- EDA and Analysis using S estimators
 % Interactive_example
-% scatterplot of data: one point looks outlying 
+% scatterplot of data: one point looks outlying
 clearvars;close all;
 load('forbes.txt');
 y=forbes(:,2);
@@ -51,13 +51,13 @@ ylabel('100 x log(pressure)')
 set(gcf,'Name', 'Plot of y versus X','NumberTitle', 'off')
 [out]=Sreg(y,X);
 
-%Remark: if you want to use MMestimators, simply replace 
+%Remark: if you want to use MMestimators, simply replace
 % [out]=Sreg(y,X);
 % with
 % [out]=MMreg(y,X);
 
 % Now, some interactive brushing starting from the index plot of residuals
-% Once a set of trajectories is highlighted in the index plot of residuals  
+% Once a set of trajectories is highlighted in the index plot of residuals
 % the corresponding units are highlighted in the scatter plot
 databrush=struct;databrush.selectionmode='Rect'; % Rectangular selection
 databrush.persist='on'; % Enable repeated mouse selections
@@ -71,7 +71,7 @@ out.y=y;
 resindexplot(out,'databrush',databrush);
 
 
-%% MR: (Multiple regression data): Forward EDA with default options for resfwdplot 
+%% MR: (Multiple regression data): Forward EDA with default options for resfwdplot
 clearvars;close all;
 
 load('multiple_regression.txt');
@@ -92,7 +92,7 @@ out1.RES=out.RES.^2;
 resfwdplot(out1);
 cascade;
 
-%% MR: (Multiple regression data): S estimators with 2 values of breakdown point 
+%% MR: (Multiple regression data): S estimators with 2 values of breakdown point
 clearvars;close all;
 
 load('multiple_regression.txt');
@@ -111,17 +111,17 @@ h1=subplot(2,1,1);
 bdp=0.25;
 [out]=Sreg(y,X,'nsamp',3000,'bdp',bdp);
 resindexplot(out,'h',h1,'conflev',conflev);
-ylabel(['Breakdown point =' num2str(bdp)]) 
+ylabel(['Breakdown point =' num2str(bdp)])
 h2=subplot(2,1,2);
 bdp=0.5;
 [out]=Sreg(y,X,'nsamp',3000,'bdp',bdp);
 resindexplot(out,'h',h2,'conflev',conflev,'numlab',{6});
-ylabel(['Breakdown point =' num2str(bdp)]) 
+ylabel(['Breakdown point =' num2str(bdp)])
 cascade;
 
 
 
-%% MR: (Multiple regression data): MM estimators with 2 values of efficiency 
+%% MR: (Multiple regression data): MM estimators with 2 values of efficiency
 clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
@@ -148,7 +148,7 @@ resindexplot(out,'h',h2,'conflev',conflev);
 ylabel(['Eff.=' num2str(eff)])
 cascade;
 
-%% MR: Forward EDA with personalized options for resfwdplot 
+%% MR: Forward EDA with personalized options for resfwdplot
 % Options for the "standard trajectories"
 clearvars;close all;
 load('multiple_regression.txt');
@@ -172,7 +172,7 @@ standard.SizeAxesLab=10;
 
 % Options for the trajectories in foreground
 fground=struct;
-fground.Color={'b'}; 
+fground.Color={'b'};
 fground.LineWidth=2;
 fground.funit=[21 47 38 31 30 9 43];
 
@@ -223,10 +223,10 @@ mdrplot(out,'ylimy',[1 4.2],'xlimx',[10 60],'FontSize',14,'SizeAxesNum',14,'lwde
 fground.flabstep='';        % without labels at steps 0 and n
 fground.fthresh=3.5^2;      % threshold which defines the trajectories in foreground
 fground.LineWidth=1.5;      % personalised linewidth for trajectories in foreground
-fground.Color={'r'};        % personalised color (red lines) for trajectories in foreground 
+fground.Color={'r'};        % personalised color (red lines) for trajectories in foreground
 
 databrush=struct;
-databrush.bivarfit=''; 
+databrush.bivarfit='';
 databrush.selectionmode='Rect'; % Rectangular selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -252,11 +252,11 @@ out1.RES=out.RES.^2;
 
 fground=struct;
 fground.fthresh=3.1^2;      % threshold which defines the trajectories in foreground
-fground.LineStyle={'--' '-.' ':'};    % different line styles for different foreground trajectories  
-fground.Color={'b';'g';'c';'m';'y';'k'};  % different colors for different foreground trajectories  
+fground.LineStyle={'--' '-.' ':'};    % different line styles for different foreground trajectories
+fground.Color={'b';'g';'c';'m';'y';'k'};  % different colors for different foreground trajectories
 
 databrush=struct;
-databrush.bivarfit=''; 
+databrush.bivarfit='';
 databrush.selectionmode='Rect'; % Rectangular selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -264,7 +264,7 @@ databrush.RemoveLabels='off'; % Do not remove labels after selection
 
 resfwdplot(out1,'fground',fground,'databrush',databrush);
 
-%% MR: Forward EDA persistent brushing with labels at specific steps (e.g. 15 and 20). 
+%% MR: Forward EDA persistent brushing with labels at specific steps (e.g. 15 and 20).
 % Interactive_example
 clearvars;close all;
 load('multiple_regression.txt');
@@ -278,9 +278,9 @@ out1=out;
 % Create scaled squared residuals
 out1.RES=out.RES.^2;
 
-fground.flabstep=[15 20]; 
+fground.flabstep=[15 20];
 databrush=struct;
-databrush.bivarfit=''; 
+databrush.bivarfit='';
 databrush.selectionmode='Lasso'; % Lasso selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -297,10 +297,10 @@ X=multiple_regression(:,1:3);
 % S regression using 10000 subsamples
 [out]=Sreg(y,X,'nsamp',10000,'yxsave',1);
 
-% index plot of residuals with option databrush 
+% index plot of residuals with option databrush
 
 databrush=struct;
-databrush.bivarfit=''; 
+databrush.bivarfit='';
 databrush.selectionmode='Rect'; % Rectangular selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -311,7 +311,7 @@ databrush.RemoveTool='on'; % Remove yellow selection after finishing brushing
 resindexplot(out,'databrush',databrush);
 
 
-%% MR: Added variable plot to show the importance of units 9 21 30 31 38 47 
+%% MR: Added variable plot to show the importance of units 9 21 30 31 38 47
 clearvars;close all;
 load('multiple_regression.txt');
 y=multiple_regression(:,4);
@@ -347,7 +347,7 @@ SizeAxesNum=15;
 mdrplot(out,'ylimy',[1 8],'xlimx',[25 128],'FontSize',fsiztitl,'SizeAxesNum',SizeAxesNum,'lwdenv',2,'quant',[0.01 0.5 0.99 0.9999]);
 
 % Plot of resfwdplot with some options for trajectories in foreground
-clear fground 
+clear fground
 fground.LineWidth=2;
 fground.flabstep='';
 fground.funit='';
@@ -370,7 +370,7 @@ standard.ylim=[-4.5 4.5];
 standard.SizeAxesNum=12;
 standard.SizeAxesLab=14;
 
-fground=struct;  
+fground=struct;
 fground.Color={'b';'g';'c';'m';'y';'k'};
 fground.flabstep=[28 80 ];
 fground.fthresh=[-3 3];
@@ -420,7 +420,7 @@ X=hawkins(:,1:8);
 [out]=FSReda(y,X,outLXS.bs);
 
 databrush=struct;
-databrush.bivarfit=''; 
+databrush.bivarfit='';
 databrush.selectionmode='Brush'; % Brush selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -441,7 +441,7 @@ X=hawkins(:,1:8);
 [out]=FSReda(y,X,outLXS.bs);
 
 databrush=struct;
-databrush.bivarfit='2'; 
+databrush.bivarfit='2';
 databrush.selectionmode='Brush'; % Brush selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -485,12 +485,12 @@ h1=subplot(2,1,1);
 bdp=0.25;
 [out]=Sreg(y,X,'nsamp',3000,'bdp',bdp);
 resindexplot(out,'h',h1,'conflev',conflev);
-ylabel(['Breakdown point =' num2str(bdp)]) 
+ylabel(['Breakdown point =' num2str(bdp)])
 h2=subplot(2,1,2);
 bdp=0.5;
 [out]=Sreg(y,X,'nsamp',3000,'bdp',bdp);
 resindexplot(out,'h',h2,'conflev',conflev);
-ylabel(['Breakdown point =' num2str(bdp)]) 
+ylabel(['Breakdown point =' num2str(bdp)])
 
 %% HD: analysis with MM estimators (using two values of efficiency)
 clearvars;close all;
@@ -508,12 +508,12 @@ h1=subplot(2,1,1);
 eff=0.85;
 [out]=MMreg(y,X,'Snsamp',3000,'eff',eff);
 resindexplot(out,'h',h1,'conflev',conflev);
-ylabel(['Efficiency =' num2str(eff)]) 
+ylabel(['Efficiency =' num2str(eff)])
 h2=subplot(2,1,2);
 eff=0.95;
 [out]=MMreg(y,X,'Snsamp',3000,'eff',eff);
 resindexplot(out,'h',h2,'conflev',conflev);
-ylabel(['Efficiency =' num2str(eff)]) 
+ylabel(['Efficiency =' num2str(eff)])
 
 
 %% HD: plot of minimum deletion residual with datatooltip
@@ -526,9 +526,9 @@ X=hawkins(:,1:8);
 [out]=FSReda(y,X,outLXS.bs);
 mdrplot(out,'ylimy',[1 8],'datatooltip',1);
 
-%% HD: Example of dynamic brushing starting highlighting from the mdrplot 
+%% HD: Example of dynamic brushing starting highlighting from the mdrplot
 % Interactive_example
-% Example of dynamic brushing starting highlighting from the mdrplot 
+% Example of dynamic brushing starting highlighting from the mdrplot
 % (that is the plot of minimum deletion residual)
 clearvars;close all;
 load('hawkins.txt');
@@ -557,7 +557,7 @@ X=wool(:,1:3);
 [out]=FSReda(y,X,out.bs);
 mdrplot(out,'ylimy',[0.5 7]);
 databrush=struct;
-databrush.bivarfit='0'; 
+databrush.bivarfit='0';
 databrush.selectionmode='Rect'; % Brush selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -645,7 +645,7 @@ X=stack_loss(:,1:3);
 [out1]=FSReda(y,X,out.bs,'init',5);
 
 databrush=struct;
-databrush.bivarfit='2'; 
+databrush.bivarfit='2';
 databrush.selectionmode='Rect'; % Brush selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -664,7 +664,7 @@ conflev = 1- 0.01/length(y);
 resindexplot(out,'conflev',conflev);
 
 
-%% SD: analysis using MM estimators 
+%% SD: analysis using MM estimators
 clearvars;close all;
 load('stack_loss.txt');
 y=stack_loss(:,4);
@@ -768,7 +768,7 @@ clearvars;close all;
 load('hospitalFS.txt');
 y1=hospitalFS(:,5);
 X=hospitalFS(:,1:4);
-[out]=LXS(y1,X,'nsamp',10000,'lms',0); 
+[out]=LXS(y1,X,'nsamp',10000,'lms',0);
 fieldnames(out)
 % [out1]=FSReda(y1,X,out.bs);
 [outFS]=FSR(y1,X,'init',20,'lms',0,'plots',2);
@@ -786,7 +786,7 @@ conflev=[0.99 1-0.01/length(y1)];
 nsamp=10000;
 % Define the main title of the plots
 titl='';
-% Define upper xlim 
+% Define upper xlim
 cc=108;
 
 % LMS with no rewighting
@@ -814,7 +814,7 @@ laby='Scaled reweighted LTS residuals';
 resindexplot(outLTSr.residuals,'h',h4,'title',titl,'laby',laby,'numlab','','conflev',conflev,'xlimx',[0 cc]);
 
 
-%% SD: analysis using S estimators with 2 values of breakdown point 
+%% SD: analysis using S estimators with 2 values of breakdown point
 clearvars;close all;
 load('hospitalFS.txt');
 y=hospitalFS(:,5);
@@ -822,23 +822,23 @@ X=hospitalFS(:,1:4);
 % Simulataneous confidence level
 conflev = 1- 0.01/length(y);
 
-% Sreg using two different level of breakdown point 
-% Using bdp=0.5 it is clear that the first 54 units have a pattern of residuals 
+% Sreg using two different level of breakdown point
+% Using bdp=0.5 it is clear that the first 54 units have a pattern of residuals
 % which is different from the remaining 54
 figure;
 h1=subplot(2,1,1);
 bdp=0.25;
 [out]=Sreg(y,X,'nsamp',3000,'bdp',bdp);
 resindexplot(out,'h',h1,'conflev',conflev);
-ylabel(['Breakdown point =' num2str(bdp)]) 
+ylabel(['Breakdown point =' num2str(bdp)])
 h2=subplot(2,1,2);
 bdp=0.5;
 [out]=Sreg(y,X,'nsamp',3000,'bdp',bdp);
 resindexplot(out,'h',h2,'conflev',conflev);
-ylabel(['Breakdown point =' num2str(bdp)]) 
+ylabel(['Breakdown point =' num2str(bdp)])
 
 
-%% SP: analysis using MM estimators 
+%% SP: analysis using MM estimators
 clearvars;close all;
 load('hospitalFS.txt');
 y=hospitalFS(:,5);
@@ -923,7 +923,7 @@ y1=y.^(0.4);
 [out]=FSReda(y1,X,out.bs);
 
 databrush=struct;
-databrush.bivarfit='2'; 
+databrush.bivarfit='2';
 databrush.selectionmode='Rect'; % Brush selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='off'; % Write labels of trajectories while selecting
@@ -1047,7 +1047,7 @@ resindexplot(out,'databrush',1,'nameX',nameX,'namey',namey1);
 
 
 
-%% SL Salinity data: fan plot  
+%% SL Salinity data: fan plot
 clearvars;close all;
 load('salinity.txt');
 y=salinity(:,4);
@@ -1087,7 +1087,7 @@ X=salinity(:,1:3);
 [out]=FSReda(y,X,out.bs);
 
 databrush=struct;
-databrush.bivarfit='0'; 
+databrush.bivarfit='0';
 databrush.selectionmode='Rect'; % Brush selection
 databrush.persist='off'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -1116,7 +1116,7 @@ figure;
 h1=subplot(2,1,1);
 [out]=MMreg(y,X,'Snsamp',3000);
 resindexplot(out,'h',h1,'conflev',conflev);
-ylabel('MM residuals') 
+ylabel('MM residuals')
 h2=subplot(2,1,2);
 [out]=Sreg(y,X,'nsamp',3000);
 resindexplot(out,'h',h2,'conflev',conflev);
@@ -1147,7 +1147,7 @@ X=[(1:length(y))' ozone(:,1:8)];
 % Interactive monitoring of the trajectories of scaled residuals using
 % persistent brushing
 databrush=struct;
-databrush.bivarfit='0'; 
+databrush.bivarfit='0';
 databrush.selectionmode='Rect'; % Brush selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
@@ -1168,11 +1168,11 @@ figure;
 h1=subplot(2,1,1);
 [outS]=Sreg(y,X,'nsamp',3000);
 resindexplot(outS,'h',h1,'conflev',conflev);
-ylabel('S residuals') 
+ylabel('S residuals')
 h2=subplot(2,1,2);
 [outMM]=MMregcore(y,X,outS.beta,outS.scale);
 resindexplot(outMM,'h',h2,'conflev',conflev);
-ylabel('MM residuals') 
+ylabel('MM residuals')
 
 
 %% FP (Fishery product): preliminary analysis
@@ -1274,7 +1274,7 @@ y1=y.^(-1);
 [out]=FSR(y1,X,'intercept',0);
 fieldnames(out)
 
-%% CD (Simulated contaminated data): EDA 
+%% CD (Simulated contaminated data): EDA
 clearvars;close all;
 n=100;
 p=5;
@@ -1525,7 +1525,7 @@ y(1:30)=y(1:30)+5;
 s=randsample(n,n);
 y=y(s);
 X=X(s,:);
- 
+
 conflev=[0.99, 1-0.01/length(y)];
 % Define the main title of the plots
 titl='';
@@ -1575,7 +1575,7 @@ y(1:30)=y(1:30)+5;
 s=randsample(n,n);
 y=y(s);
 X=X(s,:);
- 
+
 conflev=[0.99, 1-0.01/length(y)];
 % Define the main title of the plots
 titl='';
@@ -1706,7 +1706,7 @@ resindexplot(outMM95,'h',h4,'title',titl,'laby',laby,'numlab','','conflev',confl
 %   gives more efficiency to the estimator.
 %
 % do not plot un-necessary graphics
-doPlots = false; 
+doPlots = false;
 % generate data with mixsim
 rng(372,'twister');
 p=3;
@@ -1718,7 +1718,7 @@ cont=30;
 % plot the generated data
 y(id==-1) = y(id==-1) + 2*randn(cont,1);
 yXplot(y,X,id);
-    
+
 % Use tclustregIC to monitor the effect of k and c, for alpha fixed (ssume
 % it is overestimated)
 alpha = 0.15;
@@ -1764,8 +1764,71 @@ iARImax    = find(outEDA.Amon(:,2) == ARImax);
 alphaopt   = outEDA.Amon(iARImax(end),1);
 
 % clustering on the first PC scores
-% With the parameters sugggested by the monitoring the main structure of the data emerges  
+% With the parameters sugggested by the monitoring the main structure of the data emerges
 outTCLUST    = tclustreg(y,X,kopt,copt,alphaopt,0,'plots',1);
 idxTCLUST    = outTCLUST.idx;
 
+%% As above, for the Fishery2003 data
+
+% Monitoring of fishery2003 with or without intercept.
+clear all; close all;
+rng(123)
+
+intercept = 0;
+
+load Fishery2003.mat;
+X = Fishery2003{:,2};
+X = X + 10^(-5) * abs(randn(size(X)));
+y = Fishery2003{:,3};
+y = y + 10^(-5) * abs(randn(size(y)));
+id = Fishery2003{:,1};
+
+% yXplot(yid,Xid);
+
+% Use tclustregIC to monitor the effect of k and c, for alpha reasonably fixed
+alpha = 0.01;
+kvec  = 1:1:4;
+cvec  = [1,2,4,8];
+outIC = tclustregIC(y,X,'whichIC','CLACLA','kk',kvec,'cc',cvec,'alphaLik',alpha,'intercept',intercept,'plots',0);
+
+% Extracts a set of best relevant solutions ...
+[outICsol] = tclustICsol(outIC,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',5,'ThreshRandIndex',0.7);
+
+% ... and visualise them with the carbike plot, which highlights the most
+% relevant one in intuitive way.
+[hcb,areas] = carbikeplot(outICsol,'SpuriousSolutions',false);
+
+% Use the information extracted by tclustICsol to identify the best
+% solution.
+[truesol,~]  = ismember(outICsol.CLACLAbs(:,end),'true');
+truesoli     = find(truesol);
+[amax,iamax] = max(areas(truesoli,2));
+if numel(truesoli) > 0
+    if amax>0
+        % take the true solution with larger area
+        kopt = outICsol.CLACLAbs{truesoli(iamax),1};  % optimal number of groups
+        copt = outICsol.CLACLAbs{truesoli(iamax),2};  % optimal nrestriction factor
+    else
+        % if areas are all zero, take the true solution with larger k
+        kopt = outICsol.CLACLAbs{truesoli(1),1};
+        copt = outICsol.CLACLAbs{truesoli(1),2};
+    end
+else
+    % if there are no true solutions, take the one with larger k
+    kopt = outICsol.CLACLAbs{truesol(1),1};
+    copt = outICsol.CLACLAbs{truesol(1),2};
+end
+
+% Finally, use tclustregeda to monitor alpha, with k and c estimated by tclustregIC
+alphaLikvec   = 0.05:-0.01:0;
+outEDA        = tclustregeda(y,X,kopt,copt,alphaLikvec,0,'intercept',intercept,'plots',0);
+
+% retrieve the optimal alpha
+[ARImax]   = max(outEDA.Amon(:,2));
+iARImax    = find(outEDA.Amon(:,2) == ARImax);
+alphaopt   = outEDA.Amon(iARImax(end),1);
+
+% final clustering % with the parameters sugggested by the monitoring
+outTCLUST    = tclustreg(y,X,kopt,copt,alphaopt,0,'intercept',intercept,'plots',1);
+idxTCLUST    = outTCLUST.idx;
 
