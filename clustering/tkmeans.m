@@ -58,7 +58,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                 Example - 'weights',1
 %                 Data Types - double
 % 
-% plots    :    Plot on the screen. Scalar, character, cell or struct. 
+% plots    :    Plot on the screen. Scalar, char or struct.
 %               - If plots=0 (default), plots are not generated. 
 %               - If plot=1, a plot with the classification is shown on
 %                 the screen (using the spmplot function). The plot can be:
@@ -99,10 +99,13 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                 the bivariate boxplots for each group, using the boxplotb 
 %                 function. This argument may also be inserted in a field 
 %                 named 'type' of a structure.
+%                If plots is a struct it may contain the following fields:
+%                 plots.type = a char specifying the type of superimposition
+%                    Choices are 'contourf', 'contour', 'ellipse' or 'boxplotb'.
 %               REMARK - The labels=0 are automatically excluded from the 
 %                          overlaying phase, considering them as outliers.
 %                   Example - 'plots', 1
-%                   Data Types - single | double | string
+%                   Data Types - single | double | string 
 %
 %        msg  : Message on the screen. Scalar. Scalar which controls
 %               whether to display or not messages
