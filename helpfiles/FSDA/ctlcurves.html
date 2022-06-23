@@ -1,4 +1,4 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>ctlcurves</title><meta content="refpage" name="chunktype"><meta content="function:ctlcurves" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ctlcurves computes Classification Trimmed Likelihood Curves." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">ctlcurves</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example of use of ctlcurves with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of the use of options alpha, kk and bands.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">option bands passed as struct.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">An example with many groups.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_kk">kk</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mixt">mixt</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_restrfactor">restrfactor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_startv1">startv1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_restrtype">restrtype</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bands">bands</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_numpool">numpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cleanpool">cleanpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cshape">cshape</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">ctlcurves</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">ctlcurves computes Classification Trimmed Likelihood Curves</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=ctlcurves(Y)</code><span class="syntax_example"><a class="intrnllnk" href="ctlcurves.html#Example_1">example</a></span></li><li><code class="synopsis">out=ctlcurves(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="ctlcurves.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>ctlcurves applies tclust several times on a given dataset while
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>ctlcurves</title><meta content="refpage" name="chunktype"><meta content="function:ctlcurves" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ctlcurves computes Classification Trimmed Likelihood Curves." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">ctlcurves</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example of use of ctlcurves with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of the use of options alpha, kk and bands.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">option bands passed as struct.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">An example with many groups.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bands">bands</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_kk">kk</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cshape">cshape</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mixt">mixt</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_restrfactor">restrfactor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_restrtype">restrtype</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_startv1">startv1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cleanpool">cleanpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_numpool">numpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">ctlcurves</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">ctlcurves computes Classification Trimmed Likelihood Curves</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=ctlcurves(Y)</code><span class="syntax_example"><a class="intrnllnk" href="ctlcurves.html#Example_1">example</a></span></li><li><code class="synopsis">out=ctlcurves(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="ctlcurves.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>ctlcurves applies tclust several times on a given dataset while
    parameters alpha and k are altered. The resulting object gives an idea
    of the optimal trimming level and number of clusters considering a
    particular dataset.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="ctlcurves.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=ctlcurves(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Example of use of ctlcurves with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="ctlcurves.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=ctlcurves(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of the use of options alpha, kk and bands.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of ctlcurves with all default options.</li></span></a></span></h3><div class="collapse"><p>
@@ -9,7 +9,9 @@ Y=load('geyser2.txt');
 nsamp=10;
 out=ctlcurves(Y,'nsamp',nsamp);
 % Show the automatic classification
-spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">k=1
+spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">Starting parallel pool (parpool) using the 'Processes' profile ...
+Connected to the parallel pool (number of workers: 12).
+k=1
 k=2
 k=3
 k=4
@@ -35,6 +37,8 @@ bands=struct;
 bands.nsimul=20;
 % Exclude the units detected as outliers for each group.
 bands.valSolution=true;
+% One of the extracted subsets is based on solutions found with real data 
+bands.usepriorSol=true;
 % Do not compute the bootstrap likelihood ratio test
 bands.LRtest=false;
 % Just use a very small sumber of subsets for speed reasons.
@@ -68,36 +72,126 @@ Bands k=6
                columns represent variables. Observations (rows) with
                missing (NaN) or or infinite (Inf) values will
                automatically be excluded from the computations.</p> <p>
-                 </p></p> <p class="datatypelist"><strong> Data Types: </strong><code> double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'kk',1:4
-</code>,<code> 'alpha',[0 0.05 0.1]
+                 </p></p> <p class="datatypelist"><strong> Data Types: </strong><code> double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'alpha',[0 0.05 0.1]
+</code>,<code> 'bands',true
+</code>,<code> 'kk',1:4
+</code>,<code> 'cshape',10
+</code>,<code> 'equalweights',true
+</code>,<code> 'msg',1
 </code>,<code> 'mixt',1
-</code>,<code> 'restrfactor',12
+</code>,<code> 'nocheck',10
 </code>,<code> 'nsamp',1000
 </code>,<code> 'refsteps',10
 </code>,<code> 'reftol',1e-05
-</code>,<code> 'equalweights',true
-</code>,<code> 'startv1',1
+</code>,<code> 'restrfactor',12
 </code>,<code> 'restrtype','deter'
-</code>,<code> 'bands',true
-</code>,<code> 'plots',1
-</code>,<code> 'numpool',4
+</code>,<code> 'startv1',1
 </code>,<code> 'cleanpool',1
-</code>,<code> 'msg',1
-</code>,<code> 'nocheck',10
+</code>,<code> 'numpool',4
+</code>,<code> 'plots',1
 </code>,<code> 'Ysave',false
-</code>,<code> 'cshape',10
-</code></code></span></div><div class="expandableContent"><div id="inputarg_kk" class="clearfix"></div><h3 id="input_argument_namevalue_kk" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>kk</code> &#8212;number of mixture components.</span></a><span class="example_desc">integer vector.</span></span></h3><div class="collapse">	<p><p>Integer
-               vector specifying the number of mixture components
-               (clusters) for which trimmed likelihoods are calculated.</p> <p>
-               Vector. The default value of kk is 1:5.</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'kk',1:4
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>int16 | int32 | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_alpha" class="clearfix"></div><h3 id="input_argument_namevalue_alpha" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>alpha</code> &#8212;trimming level to monitor.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector which specifies the
+</code></code></span></div><div class="expandableContent"><div id="inputarg_alpha" class="clearfix"></div><h3 id="input_argument_namevalue_alpha" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>alpha</code> &#8212;trimming level to monitor.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector which specifies the
                values of trimming levels which have to be considered.</p> <p>
                For example if alpha=[0 0.05 0.1] ctlcurves considers these 3
                values of trimming level.</p> <p>
                The default for alpha is vector 0:0.02:0.10;</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alpha',[0 0.05 0.1]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> double</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;Mixture modelling or crisp assignment.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option mixt specifies whether mixture modelling or crisp
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> double</code></p></div></div><div class="expandableContent"><div id="inputarg_bands" class="clearfix"></div><h3 id="input_argument_namevalue_bands" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bands</code> &#8212;confidence bands for the curves.</span></a><span class="example_desc">boolean | struct.</span></span></h3><div class="collapse">	<p><p>If
+               bands is a scalar boolean equal to true 50 per cent
+               confidence bands are computed (and are shown on the screen
+               if plots=1).</p> <p>
+               If bands is a struct it contains the following fields:</p><p>
+     </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>conflev</code></td><td><p>scalar in the interval (0 1) which contains
+                   the confidence level of the bands.</p></td></tr><tr valign="top"><td><code>nsamp</code></td><td><p>Number of subsamples to extract in the
+                   bootstrap replicates. If this field is not present and
+                   or it is empty the number of subsamples which is used
+                   in the bootstrap replicates is equal to the one used
+                   for real data (input option nsamp).</p></td></tr><tr valign="top"><td><code>nsimul</code></td><td><p><p>number of replicates to use to create the
+                   confidence bands. The default value of bands.nsimul is
+                   60 in order to provide the output in a reasonal time.</p> <p>
+                   Note that for stable results we recommentd a value of
+                   bands.nsimul equal to 100.</p></p></td></tr><tr valign="top"><td><code>valSolution</code></td><td><p>boolean which specifies if it is
+                   necessary to perform an outlier detection procedure on
+                   the components which have been found using optimalK and
+                   optimal alpha. If bands.valSolution is true then units
+                   detected as outliers in each component are assigned to
+                   the noise group. If bands.valSolution is false
+                   (deafult) or it is not present nothing is done.</p></td></tr><tr valign="top"><td><code>LRtest</code></td><td><p><p>Likelihood ratio test. Boolean. If
+                   bands.LTtest is true (default) the
+                   difference between the obj function for two consecutive
+                   values of k given a particular value of alpha is computed.</p> <p>
+                   The relative time in which this difference is greater than
+                   the bootstrap difference is stored in out.pvalLRtest.</p></p></td></tr><tr valign="top"><td><code>usepriorSol</code></td><td><p><p>Initialization of the EM for a particular subset.</p> <p>
+                   boolean. If bands.usepriorSol is true, we initialize
+                   the EM algorithm for one of the bands.nsamp subsets
+                   with the solution which has been found with real data,
+                   else if it is false (default) no prior information is
+                   used in any of the extracted subsets.</p></p></td></tr><tr valign="top"><td><code>outliersFromUniform</code></td><td><p>way of generating the outliers in the
+                   bootstrap replicates. Boolean. If outliersFromUniform
+                   is true (default) the outliers are generated using the
+                   uniform distribution in such a way that their squared
+                   Mahalanobis distance from the centroids of each
+                   existing group is larger then the quantile 1-0.999 of
+                   the Chi^2 distribution with p degrees of freedom. For
+                   additional details see input option noiseunits of
+                   simdataset. If outliersFromUniform is false the
+                   outliers are the units which have been trimmed after
+                   applying tclust for the particular combination of
+                   values of k and alpha.</p></td></tr><tr valign="top"><td><code>nsimulExtra</code></td><td><p>number of replicates to use to compute the
+                   empirical pvalue of LRtest if multiple solutions are
+                   found given a value of alpha (default is 50).</p></td></tr><tr valign="top"><td><code>nsampExtra</code></td><td><p>number of subsamples to extract in each
+                   replicate to compute the empirical pvalue of LRtest if
+                   multiple solutions are found given a value of alpha
+                   (default is 2000).</p></td></tr><tr valign="top"><td><code>usepriorSolExtra</code></td><td><p><p>Initialization of the EM for particular subset.</p> <p>
+                   boolean. If bands.usepriorSolExtra is true, we
+                   initialize the EM algorithm for one of the
+                   bands.nsampExtra subsets with the solution which has
+                   been found with real data, else if it is false
+                   (default) no prior information is used in any of the
+                   extracted subsets.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bands',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_kk" class="clearfix"></div><h3 id="input_argument_namevalue_kk" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>kk</code> &#8212;number of mixture components.</span></a><span class="example_desc">integer vector.</span></span></h3><div class="collapse">	<p><p>Integer
+               vector specifying the number of mixture components
+               (clusters) for which trimmed likelihoods are calculated.</p> <p>
+               Vector. The default value of kk is 1:5.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'kk',1:4
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>int16 | int32 | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to each of the shape matrices.</span></a><span class="example_desc">scalar greater | equal than 1.</span></span></h3><div class="collapse">	<p><p>This options only works
+                is 'restrtype' is 'deter'.</p> <p>
+               When restrtype is deter the default value of the "shape"
+               constraint (as defined below) applied to each group is
+               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
+               (virtually) affine equivariant. In other words, the
+               decomposition or the $j$-th scatter matrix $\Sigma_j$ is
+               </p>\[
+               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+               \]<p>
+               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+               diagonal matrix with $|\Gamma_j|=1$ and with elements
+               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+               the eigenvalues of the $\Sigma_j$ matrix) and
+               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+               known as "shape" matrices, because they determine the shape of the
+               fitted cluster components. The following $k$
+               constraints are then imposed on the shape matrices:</p> <p>
+               </p>\[
+               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+                   c_{shape}, \text{ for } j=1,...,k,
+               \]<p>
+               In particular, if we are ideally searching for spherical
+               clusters it is necessary to set  $c_{shape}=1$. Models with
+               variable volume and spherical clusters are handled with
+               'restrtype' 'deter', $1&lt;restrfactor&lt;\infty$ and $cshape=1$.</p> <p>
+               The $restrfactor=cshape=1$ case yields a very constrained
+               parametrization because it implies spherical clusters with
+               equal volumes.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cshape',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_equalweights" class="clearfix"></div><h3 id="input_argument_namevalue_equalweights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>equalweights</code> &#8212;cluster weights in the concentration and assignment steps.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>A logical value specifying whether cluster weights
+               shall be considered in the concentration, assignment steps
+               and computation of the likelihood.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Message on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether
+               to display or not messages about code execution.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;Mixture modelling or crisp assignment.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option mixt specifies whether mixture modelling or crisp
                assignment approach to model based clustering must be used.</p> <p>
                In the case of mixture modelling parameter mixt also
                controls which is the criterion to find the untrimmed units
@@ -135,18 +229,10 @@ Bands k=6
                and then these n numbers are ordered and the units
                associated with the largest h numbers are untrimmed.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'mixt',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_restrfactor" class="clearfix"></div><h3 id="input_argument_namevalue_restrfactor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrfactor</code> &#8212;Restriction factor.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Positive scalar which
-               constrains the allowed differences
-               among group scatters. Larger values imply larger differences of
-               group scatters. On the other hand a value of 1 specifies the
-               strongest restriction forcing all eigenvalues/determinants
-               to be equal and so the method looks for similarly scattered
-               (respectively spherical) clusters. The default is to apply
-               restrfactor to eigenvalues. In order to apply restrfactor
-               to determinants it is is necessary to use optional input
-               argument cshape.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrfactor',12
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;number of subsamples to extract.</span></a><span class="example_desc">scalar | matrix.</span></span></h3><div class="collapse">	<p><p>If nsamp is a scalar it contains the number of subsamples
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1
+               no check is performed on matrix Y. As default nocheck=0.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;number of subsamples to extract.</span></a><span class="example_desc">scalar | matrix.</span></span></h3><div class="collapse">	<p><p>If nsamp is a scalar it contains the number of subsamples
                which will be extracted. If nsamp=0 all subsets will be
                extracted.</p> <p>
                Remark - if the number of all possible subset is &lt;300 the
@@ -178,11 +264,26 @@ Bands k=6
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',10
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;scalar.</span></a><span class="example_desc">default value of tolerance for the refining steps.</span></span></h3><div class="collapse">	<p><p>The default value is 1e-14;</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-05
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_equalweights" class="clearfix"></div><h3 id="input_argument_namevalue_equalweights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>equalweights</code> &#8212;cluster weights in the concentration and assignment steps.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>A logical value specifying whether cluster weights
-               shall be considered in the concentration, assignment steps
-               and computation of the likelihood.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div><div class="expandableContent"><div id="inputarg_startv1" class="clearfix"></div><h3 id="input_argument_namevalue_startv1" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>startv1</code> &#8212;how to initialize centroids and cov matrices.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If startv1 is 1 then initial
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_restrfactor" class="clearfix"></div><h3 id="input_argument_namevalue_restrfactor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrfactor</code> &#8212;Restriction factor.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Positive scalar which
+               constrains the allowed differences
+               among group scatters. Larger values imply larger differences of
+               group scatters. On the other hand a value of 1 specifies the
+               strongest restriction forcing all eigenvalues/determinants
+               to be equal and so the method looks for similarly scattered
+               (respectively spherical) clusters. The default is to apply
+               restrfactor to eigenvalues. In order to apply restrfactor
+               to determinants it is is necessary to use optional input
+               argument cshape.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrfactor',12
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> double</code></p></div></div><div class="expandableContent"><div id="inputarg_restrtype" class="clearfix"></div><h3 id="input_argument_namevalue_restrtype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrtype</code> &#8212;type of restriction.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>The type of restriction to
+               be applied on the cluster scatter
+               matrices. Valid values are 'eigen' (default), or 'deter'.</p> <p>
+               eigen implies restriction on the eigenvalues while deter
+               implies restriction on the determinants. If restrtype is
+               'deter' it is possible to control the constraints on the
+               shape matrices using optional input argument cshape.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrtype','deter'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_startv1" class="clearfix"></div><h3 id="input_argument_namevalue_startv1" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>startv1</code> &#8212;how to initialize centroids and cov matrices.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If startv1 is 1 then initial
                centroids and and covariance matrices are based on (v+1)
                observations randomly chosen, else each centroid is
                initialized taking a random row of input data matrix and
@@ -193,60 +294,12 @@ Bands k=6
                Remark 2 - option startv1 is used just if nsamp is a scalar
                (see for more details the help associated with nsamp).</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'startv1',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_restrtype" class="clearfix"></div><h3 id="input_argument_namevalue_restrtype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrtype</code> &#8212;type of restriction.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>The type of restriction to
-               be applied on the cluster scatter
-               matrices. Valid values are 'eigen' (default), or 'deter'.</p> <p>
-               eigen implies restriction on the eigenvalues while deter
-               implies restriction on the determinants. If restrtype is
-               'deter' it is possible to control the constraints on the
-               shape matrices using optional input argument cshape.</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrtype','deter'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_bands" class="clearfix"></div><h3 id="input_argument_namevalue_bands" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bands</code> &#8212;confidence bands for the curves.</span></a><span class="example_desc">boolean | struct.</span></span></h3><div class="collapse">	<p><p>If
-               bands is a scalar boolean equal to true 50 per cent
-               confidence bands are computed (and are shown on the screen
-               if plots=1).</p> <p>
-               If bands is a struct it may contain the following fields:</p> <p>
-               bands.conflev = scalar in the interval (0 1) which contains
-                   the confidence level of the bands.</p> <p>
-               bands.nsimul = number of replicates to use to create the
-                   confidence bands. The default value of bands.nsimul is
-                   60 in order to provide the output in a reasonal time.</p> <p>
-                   Note that for stable results we recommentd a value of
-                   bands.nsimul equal to 100.</p> <p>
-               bands.valSolution   = boolean which specifies if it is
-                   necessary to perform an outlier detection procedure on
-                   the components which have been found using optimalK and
-                   optimal alpha. If bands.valSolution is true then units
-                   detected as outliers in each component are assigned to
-                   the noise group. If bands.valSolution is false
-                   (deafult) or it is not present nothing is done.</p> <p>
-             bands.LRtest =  Likelihood ratio test. Boolean. If
-                   bands.LTtest is true (default) the
-                   difference between the obj function for two consecutive
-                   values of k given a particular value of alpha is computed.</p> <p>
-                   The relative time in which this difference is greater than
-                   the bootstrap difference is stored in out.pvalLRtest.</p> <p>
-             bands.nsamp =  Number of subsamples to extract in the
-                   bootstrap replicates. If this field is not present and
-                   or it is empty the number of subsamples which is used
-                   in the bootstrap replicates is equal to the one used
-                   for real data (input option nsamp).</p> <p>
-   bands.outliersFromUniform = way of generating the outliers in the bootstrap
-                   replicates. Boolean. If outliersFromUniform is true
-                   (default) the outliers are generated using the uniform
-                   distribution in such a way that their squared Mahalanobis
-                   distance from the centroids of each
-                   existing group is larger then the quantile 1-0.999 of
-                   the Chi^2 distribution with p degrees of freedom. For
-                   additional details see input option noiseunits of
-                   simdataset. If outliersFromUniform is false the outliers
-                   are the units which have been trimmed after applying
-                   tclust for the particular combination of values of k and alpha.</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bands',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot of the
-               CTLcurves is shown on the screen. If input option bands is
-               not empty confidence bands are also shown.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;clean pool.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>cleanpool is 1 if the parallel pool has
+               to be cleaned after the execution of the routine. Otherwise
+               it is 0. The default value of cleanpool is 0. Clearly this
+               option has an effect just if previous option numpool is &gt;</p> <p>
+               1.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cleanpool',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;number of pools for parellel computing.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If numpool &gt; 1, the routine automatically checks if
                the Parallel Computing Toolbox is installed and distributes
                the random starts over numpool parallel processes. If
@@ -282,53 +335,15 @@ Bands k=6
                default value of 'numpool' obtained as feature('numCores')
                (i.e. the number of physical cores).</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'numpool',4
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;clean pool.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>cleanpool is 1 if the parallel pool has
-               to be cleaned after the execution of the routine. Otherwise
-               it is 0. The default value of cleanpool is 0. Clearly this
-               option has an effect just if previous option numpool is &gt;</p> <p>
-               1.</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cleanpool',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Message on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether
-               to display or not messages about code execution.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1
-               no check is performed on matrix Y. As default nocheck=0.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot of the
+               CTLcurves is shown on the screen. If input option bands is
+               not empty confidence bands are also shown.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;save input matrix.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Boolan that is set to true to request that the input matrix Y
                is saved into the output structure out. Default is 1, that
                is  matrix Y is saved inside output structure out.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to each of the shape matrices.</span></a><span class="example_desc">scalar greater | equal than 1.</span></span></h3><div class="collapse">	<p><p>This options only works
-                is 'restrtype' is 'deter'.</p> <p>
-               When restrtype is deter the default value of the "shape"
-               constraint (as defined below) applied to each group is
-               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
-               (virtually) affine equivariant. In other words, the
-               decomposition or the $j$-th scatter matrix $\Sigma_j$ is
-               </p>\[
-               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-               \]<p>
-               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
-               diagonal matrix with $|\Gamma_j|=1$ and with elements
-               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
-               the eigenvalues of the $\Sigma_j$ matrix) and
-               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
-               known as "shape" matrices, because they determine the shape of the
-               fitted cluster components. The following $k$
-               constraints are then imposed on the shape matrices:</p> <p>
-               </p>\[
-               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
-                   c_{shape}, \text{ for } j=1,...,k,
-               \]<p>
-               In particular, if we are ideally searching for spherical
-               clusters it is necessary to set  $c_{shape}=1$. Models with
-               variable volume and spherical clusters are handled with
-               'restrtype' 'deter', $1&lt;restrfactor&lt;\infty$ and $cshape=1$.</p> <p>
-               The $restrfactor=cshape=1$ case yields a very constrained
-               parametrization because it implies spherical clusters with
-               equal volumes.</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cshape',10
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
 
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Mu</code></td><td><p>cell of size length(kk)-by-length(alpha)
                        containing the estimate of the centroids for each
@@ -398,8 +413,10 @@ Bands k=6
                           of alpha. Fourth column contains 1 if the
                           p-value beyond the threshold is always above $k$
                           shown in the second column for all $k^* &gt;k$ else
-                          it contains 0. Fourth and fifth columns contains
-                          the index numbers of optinal input values kk and alpha.</p></td></tr><tr valign="top"><td><code>TentSolLRt</code></td><td><p>table with size m-by-5 containing the same
+                          it contains 0. Fourth and fifth columns contain
+                          the index numbers of optimal input values kk and
+                          alpha. Sixth column contains 1 in correspondence
+                          of the best solution for each value of k.</p></td></tr><tr valign="top"><td><code>TentSolLRt</code></td><td><p>table with size m-by-5 containing the same
                         information of array  out.TentSolLR in table format.</p></td></tr><tr valign="top"><td><code>idxLR</code></td><td><p><p>matrix with size n-by-size(out.TentSolLR,1) with the allocation
                         associated with the tentative solutions found in out.TentSolLR.</p> <p>
                         First column refers to best solution ...</p></p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
