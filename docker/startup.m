@@ -27,7 +27,8 @@ end
 
 
 
-%% 3) Launch buildocsearchdb - this just does not seem to work!
+%% 3) Launch buildocsearchdb - only do this when we have a display and can see modal dialogs - these are current
+% constraints on being able to call builddocsearchdb
 if  matlab.ui.internal.hasDisplay && ...
     matlab.internal.lang.capability.Capability.isSupported(matlab.internal.lang.capability.Capability.ModalDialogs)
     

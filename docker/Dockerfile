@@ -4,7 +4,10 @@ ARG MATLAB_DOCKER_TAG=latest
 
 FROM mathworks/matlab:${MATLAB_DOCKER_TAG}
 
+# By default build from the source repository - if you happen to have forked this source respository then you should 
+# ensure you have at least released one version from your repo by tagging and commiting the tag.
 ARG SRC_REPO=UniprJRC/FSDA
+
 # This argument MUST be specified in a build of this Dockerfile. See https://github.com/UniprJRC/FSDA/tags for
 # valid tags
 ARG FSDA_RELEASE

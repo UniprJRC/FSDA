@@ -16,11 +16,13 @@ jobs:
        
   archive-build-artifacts:
     runs-on: ubuntu-latest
+    
     outputs: 
       fsda-release: ${{ steps.extract_tag.outputs.tag }}
+
     steps:
       - name: Checkout on your repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v1
       
       - name: Create Release
         id: create_release
@@ -58,7 +60,7 @@ jobs:
       - name: Extract tag from this release
         id: extract_tag
         shell: bash
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/*/}"
       
   build-docker-container:
     needs: archive-build-artifacts
