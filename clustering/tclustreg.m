@@ -1422,7 +1422,7 @@ else
         out.MIXMIX=MIXMIX;
         out.MIXCLA=MIXCLA;
         
-        % Store 2 times negative log likelihood for mixt and classification
+        % Store 2 times negative log likelihood for mixt and clas lik
         out.NlogL=2*NlogL;
         out.NlogLmixt=2*NlogLmixt;
     else
@@ -1433,8 +1433,8 @@ else
         
         out.CLACLA=CLACLA;
         
-        % Store 2 times negative log likelihood for mixt and classification
-        out.NlogL=NlogL;
+        % Store 2 times negative log likelihood for clas lik
+        out.NlogL=2*NlogL;
         out.NlogLmixt=[];
         
     end
