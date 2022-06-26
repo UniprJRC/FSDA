@@ -1,0 +1,33 @@
+{
+    "_schemaVersion": "1.0.0",
+    "FSR":
+  {
+     "inputs":
+     [
+        {"name":"y", "kind":"required", "type":["numeric","vector"], "purpose":"Response variable"},
+        {"name":"X", "kind":"required", "type":["numeric","2d"], "purpose":"Predictor variables"},
+
+        {"name":"bsbmfullrank", "kind":"namevalue", "type":["logical","scalar"],"purpose":"Dealing with singular X matrix"},
+        {"name":"bonflev", "kind":"namevalue", "type":["scalar"],"purpose":"Signal to use to identify outliers"},
+        {"name":"h", "kind":"namevalue", "type":["numeric","scalar"],"purpose":"The number of observations that have determined the least trimmed squares estimator"},
+        {"name":"init", "kind":"namevalue", "type":["numeric","scalar"], "purpose":"Search initialization"},
+        {"name":"intercept", "kind":"namevalue", "type":["logical","scalar"], "purpose":"Indicator for constant term"},
+        {"name":"lms", "kind":"namevalue", "type":[["numeric","scalar"],["numeric","vector"],["struct"]], "purpose":"Criterion to use to find the initial subset to initialize the search"},
+        {"name":"msg", "kind":"namevalue", "type":["logical","scalar"], "purpose":"Level of output to display"},
+        {"name":"nocheck", "kind":"namevalue", "type":["logical","scalar"], "purpose":"Check input arguments"},
+        {"name":"nsamp", "kind":"namevalue", "type":["scalar", ">=0"],"purpose":"Number of subsamples which will be extracted to find the robust estimator"},
+        {"name":"threshoutX", "kind":"namevalue", "type":[["numeric","scalar"],["struct"]], "purpose":"threshold to bound the effect of high leverage units"},
+        {"name":"weak", "kind":"namevalue", "type":["logical","scalar"],"purpose":"Indicator to use a different decision rule to detect the signal and flag outliers"},
+        {"name":"plots", "kind":"namevalue", "type":["numeric","scalar"], "purpose":"Plot on the screen"},
+        {"name":"bivarfit", "kind":"namevalue", "type":["char", "choices={'','1','2','0','i1','i2','i3'}"]},
+        {"name":"labeladd", "kind":"namevalue", "type":["char", "choices={'','1'}"]},
+        {"name":"multivarfit", "kind":"namevalue", "type":["char", "choices={'','1','2'}"]},
+        {"name":"nameX", "kind":"namevalue", "type":["cellstr"]},
+        {"name":"namey", "kind":"namevalue", "type":["char"]},
+        {"name":"tag", "kind":"namevalue", "type":[["char"],["cellstr"]], "purpose":"tags to the plots which are created"},
+        {"name":"xlim", "kind":"namevalue", "type":["numeric","vector","numel=2"], "purpose":"Control x scale in plot"},
+        {"name":"ylim", "kind":"namevalue", "type":["numeric","vector","numel=2"], "purpose":"Control y scale in plot"}
+         
+     ]
+  }
+}
