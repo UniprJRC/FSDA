@@ -106,11 +106,11 @@ function [out] = simulateTS(T,varargin)
 %                       value is false.
 %               model.ARp = vector with non negative integer numbers
 %                       specifying the autoregressive
-%                       components. For example: 
-%                        model.ARp=[1 2] means a AR(2) process; 
+%                       components. For example:
+%                        model.ARp=[1 2] means a AR(2) process;
 %                        model.ARp=2 means just the lag 2 component;
 %                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
-%                        model.ARp=0 (default) means no autoregressive component. 
+%                        model.ARp=0 (default) means no autoregressive component.
 %               model.ARb = vector of doubles containing the beta
 %                       coefficients for the autoregressive component. For
 %                       example model.ARb = [0.5 -0.2] in combination with
@@ -136,8 +136,8 @@ function [out] = simulateTS(T,varargin)
 %               model.nsim = scalar wich defines the number of time series
 %                       to simulate. If this field is empty or not present,
 %                       the default value of 1 is used.
-%               model.residuals = T x nsim matrix of doubles of length T 
-%                       containing the values of the residuals to use in the 
+%               model.residuals = T x nsim matrix of doubles of length T
+%                       containing the values of the residuals to use in the
 %                       simulation. Default value is [].
 %                model.sigmaeps = scalar wich defines the standard error of
 %                       the residuals. If model.residuals is not empty, the
@@ -149,12 +149,12 @@ function [out] = simulateTS(T,varargin)
 %                       (irregular model). The greater is this value, the
 %                       smaller is the effect of the irregular component.
 %                       If one between model.residuals and model.sigmaeps
-%                       is not empty, the value of model.signal2noiseratio 
-%                       will be ignored. If both model.residuals and 
+%                       is not empty, the value of model.signal2noiseratio
+%                       will be ignored. If both model.residuals and
 %                       model.sigmaeps are empty and model.ARIMAX is true,
 %                       then an algorithm will search the best value of the
 %                       standard error of the residuals that guarantees the
-%                       desired model.signal2noiseratio. If this field is 
+%                       desired model.signal2noiseratio. If this field is
 %                       empty or not present the default value of 1 is used.
 %                 Example - 'model', model
 %                 Data Types - struct
@@ -512,7 +512,7 @@ modeldef.lshift   = [];       % no level shift
 modeldef.lshiftb  = [];       %
 modeldef.ARIMAX   = false;    % autoregressive component on the residuals
 modeldef.ARp      = [];       % no autoregressive component
-modeldef.ARb      = [];       % 
+modeldef.ARb      = [];       %
 modeldef.nsim     = 1;        % simulate only 1 time series
 modeldef.residuals= [];       % T x nsim matrix of residuals
 modeldef.sigmaeps = [];       % std err of residuals
@@ -532,12 +532,12 @@ options=struct('model',modeldef,...
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    
+
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:simulateTS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    
+
     % Check if all the specified optional arguments were present in
     % structure options Remark: the nocheck option has already been dealt
     % by routine chkinputR
@@ -547,7 +547,7 @@ if ~isempty(UserOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
         error('FSDA:simulateTS:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -562,7 +562,7 @@ end
 % Default values for the optional parameters are set in structure 'options'
 if ~isequal(options.model,modeldef)
     fld=fieldnames(options.model);
-    
+
     if nocheck == false
         % Check if user options inside options.model are valid options
         chkoptions(modeldef,fld)
@@ -570,7 +570,7 @@ if ~isequal(options.model,modeldef)
     for i=1:length(fld)
         modeldef.(fld{i})=options.model.(fld{i});
     end
-    
+
 end
 
 %% Get model parameters
@@ -605,11 +605,11 @@ end
 %% checks on the trend component
 if ~isempty(trend)
     if nocheck == false
-        
+
         if isempty(intersect(trend,0:3))
             error('FSDA:LTSts:WrongInput','Trend must assume the following values: 0  1 or 2 or 3')
         end
-        
+
         if isempty(trendb) && ~isempty(trend)
             disp('Warning: option trend has not been specified but the beta coefficients for the trend have been specified')
             error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
@@ -630,7 +630,7 @@ else
         disp('Warning: option trend has been specified but the beta coefficients for the trend have not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     Xtrend=Seq(:,1);
     trendb=0;
 end
@@ -654,34 +654,34 @@ if nocheck == false
         disp('Warning: option X has not been specified but the beta coefficients for the explanatory variables have been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     if isempty(Xb) && ~isempty(X)
         disp('Warning: option X has been specified but the beta coefficients for the explanatory variables have not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     if ~isempty(X) && length(Xb)~=nexpl
         % Define matrix which contains explanatory variables
         disp(['Warning: option X has been specified but the length of ' ...
             'beta coefficients for X is not in agreeement'])
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     % Controls on level shift component
     if isempty(lshift) && ~isempty(lshiftb)
         disp('Warning: option lshift has not been specified but the beta coefficient for the level shift has been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     if isempty(lshiftb) && ~isempty(lshift)
         disp('Warning: option lshift has been specified but the beta coefficient for the level shift has not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     if ~isempty(lshift) && lshift<=1 && lshift> T
         error('FSDA:simulateTS:WrongInput','Level shift must be an interger in the range 1 T')
     end
-    
+
 end
 
 
@@ -695,11 +695,11 @@ if ~isempty(seasonal) && seasonal >0
     else
         varampl=0;
     end
-    
+
     if seasonal < 1 || seasonal >floor(s/2)
         error('FSDA:simulateTS:WrongInput',['Seasonal component must be an integer between 1 and ' num2str(floor(s/2))])
     end
-    
+
     Xseaso=zeros(T,seasonal*2);
     for j=1:seasonal
         Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
@@ -721,12 +721,12 @@ if nocheck == false
         disp('Warning: option seasonal has been specified but the beta coefficients for the seasonal have not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     if isempty(seasonalb) && ~isempty(seasonal)
         disp('Warning: option seasonal has not been specified but the beta coefficients for the seasonal have been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     if ~isempty(seasonal) && length(seasonalb)~=nseaso+varampl
         % Define matrix which contains linear
         disp(['Warning: option seasonal has been specified but the length of ' ...
@@ -744,12 +744,12 @@ if nocheck == false
         disp('Warning: option ARp has been specified but the beta coefficients for the autoregressive terms have not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     if isempty(ARb) && ~isempty(ARp)
         disp('Warning: option seasonal has not been specified but the beta coefficients for the seasonal have been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
-    
+
     if ~isempty(ARp) && length(ARb)~=length(ARp)
         % Define matrix which contains linear
         disp(['Warning: option ARp has been specified but the length of ' ...
@@ -779,7 +779,7 @@ else
     if ~isempty(sigmaeps) || ~isempty(signal2noiseratio)
         disp(['Warning: even though one between sigmaeps and signal2noiseratio has been specified, ' ...
             'only the input residuals will be considered in the simulation.'])
-    end   
+    end
 end
 
 
@@ -811,12 +811,8 @@ end
 yhattrend = Xtrend * trendb(:);
 
 if seasonal > 0
-    if seasonal < s/2
-        yhatseaso = Xseaso * seasonalb_linpart(:);
-    else
-        yhatseaso = Xseaso * seasonalb_linpart(:);   % ?????
-    end
-    
+    yhatseaso = Xseaso * seasonalb_linpart(:);
+
     if varampl > 0
         Xtre      = 1 + Seq(:,2:varampl+1)*seasonalb_nonlinpart(:);
         yhatseaso = Xtre .* yhatseaso;
@@ -917,7 +913,7 @@ else
             end
             Y = Y(maxPQ + 1:T+maxPQ,:);
             irregular = E(maxPQ+1:T+maxPQ,:);
-            y = signal*ones(1,nsim) + Y;   
+            y = signal*ones(1,nsim) + Y;
         end
     else
         % AR components on dependent variable
@@ -966,10 +962,10 @@ else
                 [y,irregular,~]=simulateARIMAX(T,nsim,ARb_all,1,signal);
             end
         end
-        
+
     end
 end
-   
+
 
 %% Output structure
 out=struct;
@@ -984,7 +980,7 @@ out.model = model;
 
 % Write to file the simulated data
 if ~isempty(FileNameOutput)
-    dlmwrite(FileNameOutput,y','delimiter',';','precision','%.6f')
+    writematrix(y,FileNameOutput,'delimiter',';')
 end
 
 % label the x axis using appropriate dates
@@ -1009,15 +1005,15 @@ if plots==1
     %syb = {'-','--','-.',':','-','--','-.'};
     FontSize    = 12;
     SizeAxesNum = 12;
-    
+
     if samescale
         % yscale to keep uniform across the plots
         [minV,maxV]=minmax(y(:,1),signal,yhattrend,yhatseaso,yhatlshift,yhatX,y(:,1)-signal);
     end
-    
+
     % Minimum value for xlim
     minxlim=0;
-    
+
     % Time series + fitted values
     sb1 = subplot(2,3,1);
     plot(datesnumeric,y(:,1));
@@ -1030,7 +1026,7 @@ if plots==1
             set(gca,'XTickLabelRotation',90);
         end
     end
-    
+
     sb2 = subplot(2,3,2);
     plot(datesnumeric,signal);
     if samescale, ylim([minV,maxV]); end
@@ -1042,7 +1038,7 @@ if plots==1
             set(gca,'XTickLabelRotation',90);
         end
     end
-    
+
     sb3 = subplot(2,3,3);
     plot(datesnumeric,yhattrend);
     if samescale, ylim([minV,maxV]); end
@@ -1054,7 +1050,7 @@ if plots==1
             set(gca,'XTickLabelRotation',90);
         end
     end
-    
+
     sb4 = subplot(2,3,4);
     plot(datesnumeric,yhatseaso);
     if samescale, ylim([minV,maxV]); end
@@ -1066,7 +1062,7 @@ if plots==1
             set(gca,'XTickLabelRotation',90);
         end
     end
-    
+
     sb5 = subplot(2,3,5);
     plot(datesnumeric,yhatlshift);
     if samescale, ylim([minV,maxV]); end
@@ -1078,7 +1074,7 @@ if plots==1
             set(gca,'XTickLabelRotation',90);
         end
     end
-    
+
     sb6 = subplot(2,3,6);
     if yhatX~=0
         plot(datesnumeric,yhatX);
@@ -1097,13 +1093,13 @@ if plots==1
             set(gca,'XTickLabelRotation',90);
         end
     end
-    
+
     if ~vlt15
         set([sb1 , sb2, sb3, sb4, sb5, sb6] ,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
     else
         set([sb1 , sb2, sb3, sb4, sb5, sb6] ,'FontSize',SizeAxesNum,'Box','on');
     end
-    
+
 end
     function [minV,maxV]=minmax(varargin)
         % returns the minimum and the maximum of all vectors in varargin,
@@ -1140,7 +1136,7 @@ for t = 1:T
     ARterms=[Y(t,:); ARterms(1:end-1,:)];
 end
 varSignal=mean(var(Y-irregular));
-s2nr=varSignal/varNoise; 
+s2nr=varSignal/varNoise;
 end
 
 
