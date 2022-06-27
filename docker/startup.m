@@ -48,22 +48,26 @@ if exist(oneTimeFile, 'file')
     return
 end
 
-%% 4) Install the apps
-try
-    matlab.apputil.install('brushRES');
-catch
-    disp('Unknown error when trying to install brushRES app')
-end
-try
-    matlab.apputil.install('brushFAN');
-catch
-    disp('Unknown error when trying to install brushFAN app')
-end
 
-try
-    matlab.apputil.install('brushROB');
-catch
-    disp('Unknown error when trying to install brushROB app')
+browserModeRunning = ~isempty(getenv('MWAPIKEY'));
+%% 4) Install the apps
+if ~browserModeRunning
+    try
+        matlab.apputil.install('brushRES');
+    catch
+        disp('Unknown error when trying to install brushRES app')
+    end
+    try
+        matlab.apputil.install('brushFAN');
+    catch
+        disp('Unknown error when trying to install brushFAN app')
+    end
+
+    try
+        matlab.apputil.install('brushROB');
+    catch
+        disp('Unknown error when trying to install brushROB app')
+    end
 end
 
 system("touch " + oneTimeFile);
