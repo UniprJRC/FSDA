@@ -23,6 +23,15 @@ function h  = funnelchart(x, varargin)
 %
 %  Optional input arguments:
 %
+% Color  :   Color of the boxes. Character | RGB triplet vector. The color
+%            specified by the user. 
+%                 Example - 'Color',[0.12 0.6 0.15]
+%                 Data Types - char | array
+%
+%   h     :   Target axes. If you do not specify the axes the plot function
+%             uses the current axes.
+%                 Example - h,ax, where ax=subplot(3,2,5);
+%                 Data Types - axes object | graphics object
 %
 % Labels  :  Box labels. character array | string array | cell array |
 %            numeric vector. Box labels, specified as the comma-separated
@@ -32,21 +41,11 @@ function h  = funnelchart(x, varargin)
 %                 Example - 'Labels',false
 %                 Data Types - char | string | cell | single | double
 %
-%
-% Color  :   Color of the boxes. Character | RGB triplet vector. The color
-%            specified by the user. 
-%                 Example - 'Color',[0.12 0.6 0.15]
-%                 Data Types - char | array
-%
 % Title  :   Title. Character array. The title of the Funnel Chart
 %            specified by the user. 
 %                 Example - 'Title','The Funnel Chart'
 %                 Data Types - char
 %
-%   h     :   Target axes. If you do not specify the axes the plot function
-%             uses the current axes.
-%                 Example - h,ax, where ax=subplot(3,2,5);
-%                 Data Types - axes object | graphics object
 %
 %  Output:
 %

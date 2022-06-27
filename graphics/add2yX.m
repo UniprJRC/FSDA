@@ -6,13 +6,7 @@ function add2yX(H,AX,BigAx,varargin)
 %
 % Required input arguments:
 %
-%            H   : handles to the lines on the graphs. 2D or 3D array. H is
-%                   an array of handles to the lines on the graphs. The
-%                   array's third dimension corresponds to groups in the
-%                   grouping variable. For more details see the output
-%                   arguments of gplotmatrix.
-%
-%           AX   : handles to the axes of the individual plots. Matrix.  AX is a
+%          AX   : handles to the axes of the individual plots. Matrix.  AX is a
 %                   matrix of handles to the axes of the individual plots.
 %                   For more details see the output arguments of gplotmatrix.
 %
@@ -20,7 +14,14 @@ function add2yX(H,AX,BigAx,varargin)
 %                   entire plot matrix. Scalar.
 %                   For more details see the output arguments of gplotmatrix.
 %
-% Optional input arguments:
+%          H   : handles to the lines on the graphs. 2D or 3D array. H is
+%                   an array of handles to the lines on the graphs. The
+%                   array's third dimension corresponds to groups in the
+%                   grouping variable. For more details see the output
+%                   arguments of gplotmatrix.
+%
+%         
+% Optional input 3  arguments:>
 %
 %           bivarfit:   Add a line fit. Char.
 %                       '0' fit a line to each group;
@@ -30,13 +31,12 @@ function add2yX(H,AX,BigAx,varargin)
 %                       ''  the default, nothing is added.
 %                       Example - 'bivarfit','1'
 %                       Data Types - char
-%
-%           multivarfit: Add a multivariate fit. Char.
-%                       '1' one multivariate fit on all units
-%                       '2' one multivariate fit on all units and one on relevant data
-%                       ''  the default, nothing is added
-%                       Example - 'multivarfit','1'
-%                       Data Types - char
+%           intercept:  Indicator for constant term. Scalar.
+%                       intercept = 1 (default) assumes the intercept for the
+%                       bivarfit and multivarfit. When intercept = 0,
+%                       the intercept is not used for the fits.
+%                       Example - 'intercept',1
+%                       Data Types - double
 %
 %           labeladd:   Add labels. Char.
 %                       '1' add labels to relevant units
@@ -44,12 +44,12 @@ function add2yX(H,AX,BigAx,varargin)
 %                       Example - 'labeladd','1'
 %                       Data Types - char
 %
-%           intercept:  Indicator for constant term. Scalar.
-%                       intercept = 1 (default) assumes the intercept for the
-%                       bivarfit and multivarfit. When intercept = 0,
-%                       the intercept is not used for the fits.
-%                       Example - 'intercept',1
-%                       Data Types - double
+%           multivarfit: Add a multivariate fit. Char.
+%                       '1' one multivariate fit on all units
+%                       '2' one multivariate fit on all units and one on relevant data
+%                       ''  the default, nothing is added
+%                       Example - 'multivarfit','1'
+%                       Data Types - char
 %
 %           userleg  :   user legend. Char.
 %               It is used to control the legend of the plot.

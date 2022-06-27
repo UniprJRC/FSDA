@@ -90,16 +90,17 @@ function [h,varargout]  = carbikeplot(RelSol,varargin)
 %  Optional input arguments:
 %
 %
-% SpuriousSolutions  :  Include or nor spurious solutions. Boolean. As
+%  minCarHeight :minimum height of the rectangles in the carbike plot.
+%                Integer. It can take values in the interval (0 1). Default value 0.1.
+%                Example - 'minCarHeight',0.3
+%                Data Types - single | double
+%
+%  SpuriousSolutions  : Include or nor spurious solutions. Boolean. As
 %                       default spurios solutions are not included into the
 %                       plot.
 %                 Example - 'SpuriousSolutions',false
 %                 Data Types - single | double
 %
-% minCarHeight       :minimum height of the rectangles in the carbike plot.
-%                   Integer. It can take values in the interval (0 1). Default value 0.1.
-%                 Example - 'minCarHeight',0.3
-%                 Data Types - single | double
 %  Output:
 %
 %         h:   graphics handle to the plot. Graphics handle. Graphics

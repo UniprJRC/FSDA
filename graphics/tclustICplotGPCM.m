@@ -42,53 +42,6 @@ function tclustICplotGPCM(IC,varargin)
 %
 %  Optional input arguments:
 %
-%
-%
-%       tag     :   Personalized tag. String. String which identifies the
-%                   handle of the plot which is about to be created. The
-%                   default is to use tag 'pl_ICgpcm'.
-%                   Note that if the program finds a plot which has a tag
-%                   equal to the one specified by the user, then the output
-%                   of the new plot overwrites the existing one in the same
-%                   window else a new window is created.
-%                   Example - 'tag','myplot'
-%                   Data Types - char
-%
-%   datatooltip :   interactive clicking. Empty value (default) or
-%                   structure. The default is datatooltip=''.
-%                   If datatooltip = 1, the user can select with the
-%                   mouse a solution in order to
-%                   have the following information:
-%                   1) value of $k$ which has been selected
-%                   2) value of $c_{det}$ which has been selected
-%                   3) value of $c_{shw}$ which has been selected
-%                   4) value of $c_{shb}$ which has been selected
-%                   5) values of the information criterion
-%                   6) frequency distribution of the associated
-%                   classification
-%                   If datatooltip is a structure it may contain the
-%                   following the fields
-%                   datatooltip.DisplayStyle = Determines how the data
-%                       cursor displays. datatip | window.
-%                       - datatip displays data cursor
-%                       information in a small yellow text box attached to a
-%                       black square marker at a data point you interactively
-%                       select.
-%                       - window displays data cursor information for the
-%                       data point you interactively select in a floating
-%                       window within the figure.
-%                   datatooltip.SnapToDataVertex=  Specifies whether the
-%                       data cursor snaps to the nearest data value or is
-%                       located at the actual pointer position.  on | off.
-%                       - on data cursor snaps to the nearest data value
-%                       - off data cursor is located at the actual pointer
-%                       position.
-%                   (see the MATLAB function datacursormode or the examples
-%                   below). Default values are datatooltip.DisplayStyle =
-%                   'Window' and datatooltip.SnapToDataVertex = 'on'.
-%                   Example - 'datatooltip',''
-%                   Data Types - scalar double or struct
-%
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done. The activation of this option
@@ -129,12 +82,58 @@ function tclustICplotGPCM(IC,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
+%   datatooltip :   interactive clicking. Empty value (default) or
+%                   structure. The default is datatooltip=''.
+%                   If datatooltip = 1, the user can select with the
+%                   mouse a solution in order to
+%                   have the following information:
+%                   1) value of $k$ which has been selected
+%                   2) value of $c_{det}$ which has been selected
+%                   3) value of $c_{shw}$ which has been selected
+%                   4) value of $c_{shb}$ which has been selected
+%                   5) values of the information criterion
+%                   6) frequency distribution of the associated
+%                   classification
+%                   If datatooltip is a structure it may contain the
+%                   following the fields
+%                   datatooltip.DisplayStyle = Determines how the data
+%                       cursor displays. datatip | window.
+%                       - datatip displays data cursor
+%                       information in a small yellow text box attached to a
+%                       black square marker at a data point you interactively
+%                       select.
+%                       - window displays data cursor information for the
+%                       data point you interactively select in a floating
+%                       window within the figure.
+%                   datatooltip.SnapToDataVertex=  Specifies whether the
+%                       data cursor snaps to the nearest data value or is
+%                       located at the actual pointer position.  on | off.
+%                       - on data cursor snaps to the nearest data value
+%                       - off data cursor is located at the actual pointer
+%                       position.
+%                   (see the MATLAB function datacursormode or the examples
+%                   below). Default values are datatooltip.DisplayStyle =
+%                   'Window' and datatooltip.SnapToDataVertex = 'on'.
+%                   Example - 'datatooltip',''
+%                   Data Types - scalar double or struct
+%
 %         nameY  : variable labels. Cell array. Cell array of strings
 %                   containing the labels of the
 %                   variables. As default value, the labels which are added
 %                   are Y1, ..., Yv.
 %                   Example - 'nameY',{'myY1', 'myY2'}
 %                   Data Types - cell
+%
+%       tag     :   Personalized tag. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag 'pl_ICgpcm'.
+%                   Note that if the program finds a plot which has a tag
+%                   equal to the one specified by the user, then the output
+%                   of the new plot overwrites the existing one in the same
+%                   window else a new window is created.
+%                   Example - 'tag','myplot'
+%                   Data Types - char
+%
 %
 %  Output:
 %

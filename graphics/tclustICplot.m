@@ -62,68 +62,8 @@ function tclustICplot(IC,varargin)
 %
 %  Optional input arguments:
 %
-%
-%   whichIC  : character which specifies the information criterion to use
-%               in the plot. Character.
-%               Possible values for whichIC are:
-%               'CLACLA' = in this case best solutions are referred to
-%                   the classification likelihood.
-%               'MIXMIX'  = in this case in this case best solutions are
-%                   referred to the mixture likelihood (BIC).
-%               'MIXCLA'  = in this case in this case best solutions are
-%                   referred to ICL.
-%               'ALL'  = in this case best solutions both three solutions using
-%                     classification and mixture likelihood are produced.
-%                   In output structure out all the three matrices
-%                   out.MIXMIXbs, out.CLACLAbs and out.MIXCLAbs are given.
-%               The default value of 'whichIC' is 'ALL'
-%                 Example - 'whichIC','ALL'
-%                 Data Types - character
-%
-%       tag     :   Personalized tag. String. String which identifies the
-%                   handle of the plot which is about to be created. The
-%                   default is to use tag 'pl_IC'.
-%                   Note that if the program finds a plot which has a tag
-%                   equal to the one specified by the user, then the output
-%                   of the new plot overwrites the existing one in the same
-%                   window else a new window is created.
-%                   Example - 'tag','myplot'
-%                   Data Types - char
-%
-%   datatooltip :   interactive clicking. Empty value (default) or
-%                   structure. The default is datatooltip=''.
-%                   If datatooltip = 1, the user can select with the
-%                   mouse a solution in order to
-%                   have the following information:
-%                   1) value of k which has been selected
-%                   2) value of c which has been selected
-%                   3) values of the information criterion
-%                   4) frequency distribution of the associated
-%                   classification
-%                   If datatooltip is a structure it may contain the
-%                   following the fields
-%                   datatooltip.DisplayStyle = Determines how the data
-%                       cursor displays. datatip | window.
-%                       - datatip displays data cursor
-%                       information in a small yellow text box attached to a
-%                       black square marker at a data point you interactively
-%                       select.
-%                       - window displays data cursor information for the
-%                       data point you interactively select in a floating
-%                       window within the figure.
-%                   datatooltip.SnapToDataVertex=  Specifies whether the
-%                       data cursor snaps to the nearest data value or is
-%                       located at the actual pointer position.  on | off.
-%                       - on data cursor snaps to the nearest data value
-%                       - off data cursor is located at the actual pointer
-%                       position.
-%                   (see the MATLAB function datacursormode or the examples
-%                   below). Default values are datatooltip.DisplayStyle =
-%                   'Window' and datatooltip.SnapToDataVertex = 'on'.
-%                   Example - 'datatooltip',''
-%                   Data Types - scalar double or struct
-%
-%    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
+%    databrush  :   interactive mouse brushing.
+%                   Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done. The activation of this option
 %                   (databrush is a scalar or a structure) enables the user
@@ -163,12 +103,73 @@ function tclustICplot(IC,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
+%   datatooltip :   interactive clicking. Empty value (default) or
+%                   structure. The default is datatooltip=''.
+%                   If datatooltip = 1, the user can select with the
+%                   mouse a solution in order to
+%                   have the following information:
+%                   1) value of k which has been selected
+%                   2) value of c which has been selected
+%                   3) values of the information criterion
+%                   4) frequency distribution of the associated
+%                   classification
+%                   If datatooltip is a structure it may contain the
+%                   following the fields
+%                   datatooltip.DisplayStyle = Determines how the data
+%                       cursor displays. datatip | window.
+%                       - datatip displays data cursor
+%                       information in a small yellow text box attached to a
+%                       black square marker at a data point you interactively
+%                       select.
+%                       - window displays data cursor information for the
+%                       data point you interactively select in a floating
+%                       window within the figure.
+%                   datatooltip.SnapToDataVertex=  Specifies whether the
+%                       data cursor snaps to the nearest data value or is
+%                       located at the actual pointer position.  on | off.
+%                       - on data cursor snaps to the nearest data value
+%                       - off data cursor is located at the actual pointer
+%                       position.
+%                   (see the MATLAB function datacursormode or the examples
+%                   below). Default values are datatooltip.DisplayStyle =
+%                   'Window' and datatooltip.SnapToDataVertex = 'on'.
+%                   Example - 'datatooltip',''
+%                   Data Types - scalar double or struct
+%
 %         nameY  : variable labels. Cell array. Cell array of strings
 %                   containing the labels of the
 %                   variables. As default value, the labels which are added
 %                   are Y1, ..., Yv.
 %                   Example - 'nameY',{'myY1', 'myY2'}
 %                   Data Types - cell
+%
+%       tag     :   Personalized tag. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag 'pl_IC'.
+%                   Note that if the program finds a plot which has a tag
+%                   equal to the one specified by the user, then the output
+%                   of the new plot overwrites the existing one in the same
+%                   window else a new window is created.
+%                   Example - 'tag','myplot'
+%                   Data Types - char
+%
+%   whichIC  : character which specifies the information criterion to use
+%               in the plot. Character.
+%               Possible values for whichIC are:
+%               'CLACLA' = in this case best solutions are referred to
+%                   the classification likelihood.
+%               'MIXMIX'  = in this case in this case best solutions are
+%                   referred to the mixture likelihood (BIC).
+%               'MIXCLA'  = in this case in this case best solutions are
+%                   referred to ICL.
+%               'ALL'  = in this case best solutions both three solutions using
+%                     classification and mixture likelihood are produced.
+%                   In output structure out all the three matrices
+%                   out.MIXMIXbs, out.CLACLAbs and out.MIXCLAbs are given.
+%               The default value of 'whichIC' is 'ALL'
+%                 Example - 'whichIC','ALL'
+%                 Data Types - character
+%
 %
 %  Output:
 %

@@ -22,77 +22,6 @@ function [brushedUnits, BrushedUnits]=mmdplot(out,varargin)
 %
 % Optional input arguments:
 %
-%  quant:    quantiles for which envelopes have
-%               to be computed. Vector.
-%               1 x k vector containing quantiles for which envelopes have
-%               to be computed. The default is to produce 1%, 50% and 99%
-%               envelopes.
-%               Example - 'quant',[0.01 0.99] 
-%               Data Types - double
-%
-%    mplus1  :  add (m+1) order statistic curve. Scalar. If mplus1=1 it
-%               is also possible to plot the curve associated with (m+1)th
-%               order statistic.
-%               The default is mplus1=0
-%               Example - 'mplus1',1 
-%               Data Types - double
-%
-%       envm    :  sample size to use. Scalar. Scalar which specifies the
-%                   size of the sample which is used to superimpose the
-%                   envelope. The default is to add an envelope based on
-%                   all the observations (size n envelope).
-%               Example - 'envm',n 
-%               Data Types - double
-%
-%       xlimx   :   min and max for x axis. Vector. vector with two
-%                   elements controlling minimum and maximum on the x axis.
-%                   Default value is mmd(1,1)-3 and mmd(end,1)*1.3
-%                   Example - 'xlimx',[20 100]
-%                   Data Types - double
-%
-%       ylimy   :   min and max for x axis. Vector. Vector with two
-%                   elements controlling minimum and maximum on the y axis.
-%                   Default value is min(mmd(:,2)) and max(mmd(:,2));
-%                   Example - 'ylimy',[2 6]
-%                   Data Types - double
-%
-%       lwdenv  :   Line width. Scalar. Scalar which controls the width of
-%                   the lines associated with the envelopes. 
-%                   Default is lwdenv=1
-%                   Example - 'lwdenv',2
-%                   Data Types - double
-%
-%       tag     :   plot handle. String. String which identifies the handle
-%                   of the plot which is about to be created. The default
-%                   is to use tag 'pl_mmd'. Notice that if the program
-%                   finds a plot which has a tag equal to the one specified
-%                   by the user, then the output of the new plot overwrites
-%                   the existing one in the same window else a new window
-%                   is created.
-%                   Example - 'tag','mymmd'
-%                   Data Types - char 
-%
-%   datatooltip :   interactive clicking. Empty value (default) or
-%                   structure. 
-%                   If datatooltip is not empty the user can use the mouse
-%                   in order to have information about the unit seected,
-%                   the step in which the unit enters the search and the
-%                   associated label. If datatooltip is a structure, it is
-%                   possible to control the aspect of the data cursor (see
-%                   function datacursormode for more details or the
-%                   examples below). The default options of the structure
-%                   are DisplayStyle='Window' and SnapToDataVertex='on'.
-%                   Example - 'datatooltip',1
-%                   Data Types - empty value, numeric or structure
-%
-%       label   :   rwo labels. Cell. Cell containing the labels of the
-%                   units (optional argument used when datatooltip=1. If
-%                   this field is not present labels row1, ..., rown will
-%                   be automatically created and included in the pop up
-%                   datatooltip window).
-%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell 
-%
 %    databrush :    interactive mouse brushing. Empty value (default),
 %                   scalar or structure.
 %                   DATABRUSH IS AN EMPTY VALUE .
@@ -138,36 +67,39 @@ function [brushedUnits, BrushedUnits]=mmdplot(out,varargin)
 %                   specify all optional arguments of function selectdataFS
 %                   inside the curly brackets of option databrush.
 %
+%   datatooltip :   interactive clicking. Empty value (default) or
+%                   structure. 
+%                   If datatooltip is not empty the user can use the mouse
+%                   in order to have information about the unit seected,
+%                   the step in which the unit enters the search and the
+%                   associated label. If datatooltip is a structure, it is
+%                   possible to control the aspect of the data cursor (see
+%                   function datacursormode for more details or the
+%                   examples below). The default options of the structure
+%                   are DisplayStyle='Window' and SnapToDataVertex='on'.
+%                   Example - 'datatooltip',1
+%                   Data Types - empty value, numeric or structure
+%
+%    envm    :  sample size to use. Scalar. Scalar which specifies the
+%               size of the sample which is used to superimpose the
+%               envelope. The default is to add an envelope based on
+%               all the observations (size n envelope).
+%               Example - 'envm',n 
+%               Data Types - double
+%
 %       FontSize:   Size of axes labels. Scalar. Scalar which controls the
 %                   fontsize of the labels of the axes. 
 %                   Default value is 12.
 %                   Example - 'FontSize',14
 %                   Data Types - single | double
 %
-%    SizeAxesNum:   Size of axes numbers. Scalar which controls the
-%                   fontsize of the numbers of the axes. 
-%                   Default value is 10.
-%                   Example - 'SizeAxesNum',14
-%                   Data Types - single | double
-%
-%       nameY   :   Regressors names. Cell array of strings. Cell array of
-%                   strings of length v containing the labels
-%                   of the varibales of the original data matrix. If it is empty
-%                 	(default) the sequence Y1, ..., Yp will be created
-%                   automatically.
-%                   Example - 'nameY',{'Age','Income','Married','Profession'}
-%                   Data Types - cell 
-%
-%       lwd     :   Curves line width. Scalar. Scalar which controls
-%                   linewidth of the curve which contains the monitoring of
-%                   minimum Mahalanobis distance.
-%                   Default line width=2
-%                   Example - 'lwd',3
-%                   Data Types - single | double 
-%
-%       titl    :   main title. Character. A label for the title (default: '')
-%                   Example - 'namey','Plot title'
-%                   Data Types - char 
+%       label   : rwo labels. Cell. Cell containing the labels of the
+%                 units (optional argument used when datatooltip=1. If
+%                 this field is not present labels row1, ..., rown will
+%                 be automatically created and included in the pop up
+%                 datatooltip window).
+%                 Example - 'label',{'Smith','Johnson','Robert','Stallone'}
+%                 Data Types - cell 
 %
 %       labx    :   x axis title. Character. A label for the x-axis
 %                  (default: 'Subset size m').
@@ -179,14 +111,84 @@ function [brushedUnits, BrushedUnits]=mmdplot(out,varargin)
 %                   Example - 'laby','mmd'
 %                   Data Types - char 
 %
-%        scaled :   scaled or unscaled envelopes. Boolean. 
-%                   (Use reference envelopes scaled or unscaled).
-%                   If scaled=1 the envelopes are produced for
-%                   scaled Mahalanobis distances (no consistency factor is
-%                   applied) else the traditional consistency factor is applied
-%                   Default is to use unscaled envelopes.
-%                   Example - 'scaled',0
+%       lwd     :   Curves line width. Scalar. Scalar which controls
+%                   linewidth of the curve which contains the monitoring of
+%                   minimum Mahalanobis distance.
+%                   Default line width=2
+%                   Example - 'lwd',3
+%                   Data Types - single | double 
+%
+%       lwdenv  :   Line width. Scalar. Scalar which controls the width of
+%                   the lines associated with the envelopes. 
+%                   Default is lwdenv=1
+%                   Example - 'lwdenv',2
+%                   Data Types - double
+%
+%    mplus1  :  add (m+1) order statistic curve. Scalar. If mplus1=1 it
+%               is also possible to plot the curve associated with (m+1)th
+%               order statistic.
+%               The default is mplus1=0
+%               Example - 'mplus1',1 
+%               Data Types - double
+%
+%    nameY   :   Regressors names. Cell array of strings. Cell array of
+%                strings of length v containing the labels
+%                of the varibales of the original data matrix. 
+%                If it is empty (default) the sequence Y1, ..., Yp 
+%                will be created automatically.
+%                Example - 'nameY',{'Age','Income','Married','Profession'}
+%                Data Types - cell 
+%
+%      quant:    quantiles for which envelopes have to be computed. Vector.
+%               1 x k vector containing quantiles for which envelopes have
+%               to be computed. The default is to produce 1%, 50% and 99%
+%               envelopes.
+%               Example - 'quant',[0.01 0.99] 
+%               Data Types - double
+%
+%     scaled :   scaled or unscaled envelopes. Boolean. 
+%                (Use reference envelopes scaled or unscaled).
+%                If scaled=1 the envelopes are produced for
+%                scaled Mahalanobis distances (no consistency factor is
+%                applied) else the traditional consistency factor is applied
+%                Default is to use unscaled envelopes.
+%                Example - 'scaled',0
+%                Data Types - char 
+%
+%    SizeAxesNum:   Size of axes numbers. Scalar which controls the
+%                   fontsize of the numbers of the axes. 
+%                   Default value is 10.
+%                   Example - 'SizeAxesNum',14
+%                   Data Types - single | double
+%
+%       tag     :   plot handle. String. String which identifies the handle
+%                   of the plot which is about to be created. The default
+%                   is to use tag 'pl_mmd'. Notice that if the program
+%                   finds a plot which has a tag equal to the one specified
+%                   by the user, then the output of the new plot overwrites
+%                   the existing one in the same window else a new window
+%                   is created.
+%                   Example - 'tag','mymmd'
 %                   Data Types - char 
+%
+%    titl    :   main title. Character. A label for the title (default: '')
+%                   Example - 'namey','Plot title'
+%                   Data Types - char 
+%
+%       xlimx   :   min and max for x axis. Vector. vector with two
+%                   elements controlling minimum and maximum on the x axis.
+%                   Default value is mmd(1,1)-3 and mmd(end,1)*1.3
+%                   Example - 'xlimx',[20 100]
+%                   Data Types - double
+%
+%       ylimy   :   min and max for x axis. Vector. Vector with two
+%                   elements controlling minimum and maximum on the y axis.
+%                   Default value is min(mmd(:,2)) and max(mmd(:,2));
+%                   Example - 'ylimy',[2 6]
+%                   Data Types - double
+%
+%
+%
 %
 %  Output:
 %

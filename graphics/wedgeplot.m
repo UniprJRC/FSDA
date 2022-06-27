@@ -18,16 +18,12 @@ function hf = wedgeplot(RES,varargin)
 %
 %       Optional input arguments:
 %
-%     transpose: option determining the posiiton of the index number or tentative
-%                level shift. Boolean. If transpose is true (default) the x-axis
-%                contains the tentative level shift position and the y-axis the
-%                index number else if it is false the axes are interchanged.
-%                When transpose is true, it is possible with option extradata to
-%                add on a separate panel a subplot of the original time series
-%                (and possibly the series of fitted values). See extradata
-%                option for details.
-%                Example - 'transpose',false
-%                Data Types - Boolean
+%      cmapname: color map. Character. Character which indicates the type of
+%                colormmap to use in the wedge plot. The accepted values are
+%                'hot', 'autumn', 'spring', 'pink', 'summer', 'winter', 'gray'.
+%                The default is 'hot'.
+%                Example - 'cmapname','summer'
+%                Data Types - Character
 %
 %   extradata :  extra data to plot in a separate panel in association to the
 %                wedge plot. Matrix. Matrix of size T-by-1 or T-by-p containing
@@ -52,13 +48,6 @@ function hf = wedgeplot(RES,varargin)
 %                Example - 'extradata', [y yhat]
 %                Data Types - double
 %
-%      cmapname: color map. Character. Character which indicates the type of
-%                colormmap to use in the wedge plot. The accepted values are
-%                'hot', 'autumn', 'spring', 'pink', 'summer', 'winter', 'gray'.
-%                The default is 'hot'.
-%                Example - 'cmapname','summer'
-%                Data Types - Character
-%
 %        labls : label of the axis which contains the level shift position.
 %                Character. Character containing the label to put on the axis
 %                which contains the level shift position. This axis could be
@@ -67,6 +56,17 @@ function hf = wedgeplot(RES,varargin)
 %                position'.
 %                Example - 'labls','Position of level shift'
 %                Data Types - Character
+%
+%     transpose: option determining the posiiton of the index number or tentative
+%                level shift. Boolean. If transpose is true (default) the x-axis
+%                contains the tentative level shift position and the y-axis the
+%                index number else if it is false the axes are interchanged.
+%                When transpose is true, it is possible with option extradata to
+%                add on a separate panel a subplot of the original time series
+%                (and possibly the series of fitted values). See extradata
+%                option for details.
+%                Example - 'transpose',false
+%                Data Types - Boolean
 %
 %        labin : label of the axis which contains the index number.
 %                Character. Character containing the label to put on the axis

@@ -33,102 +33,12 @@ function MCDenv=malindexplot(md,v,varargin)
 %
 % Optional input arguments:
 %
-%
-%               h : Where to plot. Axis hadle.
-%                   The axis handle of the Figure where to send the
-%                   malindexplot. This can be used to host the malindexplot
-%                   in a subplot of a complex figure formed by different
-%                   panels (e.g. a panel with malindexplot from a classical
-%                   mle estimator and another with Mahalanobis distances
-%                   from a robust analysis, see example below).
-%                   Example - 'h',gca
-%                   Data Types - graphics handle
-%
-%              x :  x-axis index. Vector. The vector to be plotted on the
-%                   x-axis.
-%                   Default is the sequence 1:length(md).
-%                   Example - 'x','1:100'
-%                   Data Types - numeric
-%
-%           labx :  x label. Character. A label for the x-axis (default: '').
-%                   Example - 'labx','unit number'
-%                   Data Types - character
-%
-%           laby :  y label. Character. A label for the y-axis (default: '').
-%                   Example - 'laby','MD'
-%                   Data Types - character
-%
-%          title :  plot title. Character. A label containing the title of the plot.
-%                   Default is 'Index plot of Mahalanobid distances'.
-%                   Example - 'title','Index plot of MD'
-%                   Data Types - character
-%
-%          numlab:  number of points to be labelled in the plot.
-%                   vector or cell. If numlab is a cell containing scalar k, the units
-%                   with the k largest md are labelled in the plots.
-%                   If numlab is a vector, the units indexed by the vector
-%                   are labelled in the plot.
-%                   Default is numlab={5}, that is units with the 5
-%                   largest md are labelled.
-%                   Use numlab='' for no labelling.
-%                   Example - 'numlab',{3}
-%                   Data Types - numeric vector or cell.
-%
 %        conflev :  confidence interval for the horizontal bands. Vector.
 %                   It can be a vector of different confidence level values,
 %                   e.g. [0.95,0.99,0.999]. Confidence interval is based on
 %                   the chi^2 distribution.
 %                   Example - 'conflev',0.99
 %                   Data Types - numeric
-%
-%        FontSize:  Labels font size. Scalar. Scalar which controls the
-%                   font size of the labels of the axes.
-%                   Default value is 12.
-%                   Example - 'FontSize',12
-%                   Data Types - numeric
-%
-%     SizeAxesNum:  Numbers font size. Scalar. Scalar which controls the
-%                   fontsize of the numbers of  the axes.
-%                   Default value is 10.
-%                   Example - 'SizeAxesNum',12
-%                   Data Types - numeric
-%
-%           ylimy:  ylimits. Vector. Vector with two elements controlling minimum and
-%                   maximum value of the y axis.
-%                   Default is '' (automatic scale).
-%                   Example - 'ylimiy',[-3 3]
-%                   Data Types - numeric
-%
-%           xlimx:  xlimits. Vector. Vector with two elements controlling minimum and
-%                   maximum value of the x axis.
-%                   Default is '' (automatic scale).
-%                   Example - 'xlimix',[1 30]
-%                   Data Types - numeric
-%
-%          lwdenv:  Envelope line width. Scalar. Scalar which controls the
-%                   width of the lines associated  with the envelopes.
-%                   Default is lwdenv=1.
-%                   Example - 'lwdenv',4
-%                   Data Types - numeric
-%
-%      MarkerSize:  Marker size of points. Scalar. Scalar specifying the
-%                   size of the marker in points (1 point = 1/72 inch).
-%                   Default is MarkerSize = 6.
-%                   Example - 'MarkerSize',4
-%                   Data Types - numeric
-%
-% MarkerFaceColor:  Marker fill color of points. Character or length 3 RGB
-%                   numeric vector. The fill color for markers that are closed shapes
-%                   (circle, square, diamond, pentagram, hexagram, and the
-%                   four triangles).
-%                   Example - 'MarkerFaceColor','b'
-%                   Data Types - numeric | character
-%
-%             tag:  Figure tag. Character.
-%                   Tag of the figure which will host the malindexplot.
-%                   The default tag is pl_malindex.
-%                   Example - 'tag','indexPlot'
-%                   Data Types - character
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default),
@@ -171,7 +81,57 @@ function MCDenv=malindexplot(md,v,varargin)
 %                   with previous option databrush and produce their effect
 %                   on the scatter plot matrix of the original data.
 %
-%           nameY: variables labels of the original data matrix. Cell. Cell
+%
+%        FontSize:  Labels font size. Scalar. Scalar which controls the
+%                   font size of the labels of the axes.
+%                   Default value is 12.
+%                   Example - 'FontSize',12
+%                   Data Types - numeric
+%
+%               h : Where to plot. Axis hadle.
+%                   The axis handle of the Figure where to send the
+%                   malindexplot. This can be used to host the malindexplot
+%                   in a subplot of a complex figure formed by different
+%                   panels (e.g. a panel with malindexplot from a classical
+%                   mle estimator and another with Mahalanobis distances
+%                   from a robust analysis, see example below).
+%                   Example - 'h',gca
+%                   Data Types - graphics handle
+%
+%      label : row labels. Cell.
+%               Cell of length n containing the labels of the rows.
+%                   Example - 'label',{'UK' ...  'IT'}
+%                   Data Types - cell
+%
+%           labx :  x label. Character. A label for the x-axis (default: '').
+%                   Example - 'labx','unit number'
+%                   Data Types - character
+%
+%           laby :  y label. Character. A label for the y-axis (default: '').
+%                   Example - 'laby','MD'
+%                   Data Types - character
+%
+%          lwdenv:  Envelope line width. Scalar. Scalar which controls the
+%                   width of the lines associated  with the envelopes.
+%                   Default is lwdenv=1.
+%                   Example - 'lwdenv',4
+%                   Data Types - numeric
+%
+%    MarkerFaceColor:   Marker fill color of points. 
+%                       haracter or length 3 RGB numeric vector. 
+%                       The fill color for markers that are closed shapes
+%                   (circle, square, diamond, pentagram, hexagram, and the
+%                   four triangles).
+%                   Example - 'MarkerFaceColor','b'
+%                   Data Types - numeric | character
+%
+%      MarkerSize:  Marker size of points. Scalar. Scalar specifying the
+%                   size of the marker in points (1 point = 1/72 inch).
+%                   Default is MarkerSize = 6.
+%                   Example - 'MarkerSize',4
+%                   Data Types - numeric
+%
+%     nameY: variables labels of the original data matrix. Cell. Cell
 %                array of strings containing the labels of the
 %                variables. As default value, the labels which are added
 %                are Y1, ..., Yv. This option is used just if previous
@@ -179,10 +139,53 @@ function MCDenv=malindexplot(md,v,varargin)
 %                   Example - 'nameY',{'Y_1' Y_2'}
 %                   Data Types - character
 %
-%      label : row labels. Cell.
-%               Cell of length n containing the labels of the rows.
-%                   Example - 'label',{'UK' ...  'IT'}
-%                   Data Types - cell
+%          numlab:  number of points to be labelled in the plot.
+%                   vector or cell. If numlab is a cell containing scalar k, 
+%                   the units with the k largest md are labelled in the plots.
+%                   If numlab is a vector, the units indexed by the vector
+%                   are labelled in the plot.
+%                   Default is numlab={5}, that is units with the 5
+%                   largest md are labelled.
+%                   Use numlab='' for no labelling.
+%                   Example - 'numlab',{3}
+%                   Data Types - numeric vector or cell.
+%
+%     SizeAxesNum:  Numbers font size. Scalar. Scalar which controls the
+%                   fontsize of the numbers of  the axes.
+%                   Default value is 10.
+%                   Example - 'SizeAxesNum',12
+%                   Data Types - numeric
+%
+%             tag:  Figure tag. Character.
+%                   Tag of the figure which will host the malindexplot.
+%                   The default tag is pl_malindex.
+%                   Example - 'tag','indexPlot'
+%                   Data Types - character
+%
+%          title :  plot title. Character. 
+%                   A label containing the title of the plot.
+%                   Default is 'Index plot of Mahalanobid distances'.
+%                   Example - 'title','Index plot of MD'
+%                   Data Types - character
+%
+%              x :  x-axis index. Vector. The vector to be plotted on the
+%                   x-axis.
+%                   Default is the sequence 1:length(md).
+%                   Example - 'x','1:100'
+%                   Data Types - numeric
+%
+%           xlimx:  xlimits. Vector. Vector with two elements controlling minimum and
+%                   maximum value of the x axis.
+%                   Default is '' (automatic scale).
+%                   Example - 'xlimix',[1 30]
+%                   Data Types - numeric
+%
+%           ylimy:  ylimits. Vector. Vector with two elements controlling minimum and
+%                   maximum value of the y axis.
+%                   Default is '' (automatic scale).
+%                   Example - 'ylimiy',[-3 3]
+%                   Data Types - numeric
+%
 %
 %
 %

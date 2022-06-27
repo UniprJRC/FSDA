@@ -30,8 +30,8 @@ function out = boxplotb(Y,varargin)
 %                 Remark: The default value of coeff is 1.68, that is 99%
 %                 confidence level contours are produced.
 %
-% strictlyinside: additional peeling. Scalar. If strictlyinside=1 an
-%                 additional convex hull is done on the 50% hull in order
+%           strictlyinside: additional peeling. Scalar. If strictlyinside=1
+%                 an additional convex hull is done on the 50% hull in order
 %                 to increase the robustness properties of the method. In
 %                 fact there may in general be some loss of robustness in
 %                 small samples due to the use of peeling, therefore if we
@@ -41,7 +41,7 @@ function out = boxplotb(Y,varargin)
 %                   Example - 'strictlyinside',1
 %                   Data Types - double
 %
-%       plots   : graphical output. missing value | scalar | structure. 
+%           plots   : graphical output. missing value | scalar | structure. 
 %                 This options specifies whether it
 %                 is necessary to produce the bivariate boxplot on the
 %                 screen. 
@@ -71,7 +71,7 @@ function out = boxplotb(Y,varargin)
 %                   Example - 'plots',1
 %                   Data Types - double
 %
-%        resolution : resolution to use. Scalar. Resolution which must be
+%           resolution : resolution to use. Scalar. Resolution which must be
 %                     used to produce the inner and outer spline. 
 %                     The default value of resolution is 1000, that is the
 %                     splines are plotted on the screen using

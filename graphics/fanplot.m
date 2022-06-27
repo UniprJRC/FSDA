@@ -29,35 +29,13 @@ function brushedUnits=fanplot(out,varargin)
 %
 % Optional input arguments:
 %
-%         label :   Labels. Cell array of strings. Cell containing the
-%                   labels of the units (optional argument used when
-%                   datatooltip=1). If this field is not present labels
-%                   row1, ..., rown will be automatically created and
-%                   included in the pop up datatooltip window.
-%                   Example - 'corr',1
-%                   Data Types - Cell array of strings
-%
 %       conflev :   Confidence level. Scalar or vector. Confidence level
 %                   for the bands (default is 0.99, that is we plot two
 %                   horizontal lines in correspondence of value -2.58 and
 %                   2.58).
 %                   Example - 'conflev',[0.9 0.95 0.99]
 %                   Data Types - double
-%
-%   datatooltip :   Information about the unit selected. Empty value or
-%                   structure. The default is datatooltip=''. If
-%                   datatooltip is not empty the user can use the mouse in
-%                   order to have information about the unit selected, the
-%                   step in which the unit enters the search and the
-%                   associated label. If datatooltip is a structure, it is
-%                   possible to control the aspect of the data cursor
-%                   (see function datacursormode for more details or the
-%                   examples below). The default options of the structure
-%                   are DisplayStyle='Window' and SnapToDataVertex='on'.
-%                   Example - 'datatooltip',''
-%                   Data Types - Empty value or structure
-%
-%    databrush :    Databrush options. Empty value, scalar or cell.
+%     databrush :    Databrush options. Empty value, scalar or cell.
 %                   DATABRUSH IS AN EMPTY VALUE: If databrush is an empty
 %                   value (default), no brushing is done. The activation of
 %                   this option (databrush is a scalar or a cell) enables
@@ -131,9 +109,32 @@ function brushedUnits=fanplot(out,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - Empty value, scalar or cell.
 %
-%       titl    :   Title. String. A label for the title (default: 'Fan plot')
-%                   Example - 'titl','Fan plot'
-%                   Data Types - char
+%  datatooltip :   Information about the unit selected. Empty value or
+%                   structure. The default is datatooltip=''. If
+%                   datatooltip is not empty the user can use the mouse in
+%                   order to have information about the unit selected, the
+%                   step in which the unit enters the search and the
+%                   associated label. If datatooltip is a structure, it is
+%                   possible to control the aspect of the data cursor
+%                   (see function datacursormode for more details or the
+%                   examples below). The default options of the structure
+%                   are DisplayStyle='Window' and SnapToDataVertex='on'.
+%                   Example - 'datatooltip',''
+%                   Data Types - Empty value or structure
+%
+%       FontSize:   Font size of the labels. Scalar. Scalar which controls
+%                   the font size of the labels of the axes and of the
+%                   labels inside the plot. Default value is 12.
+%                   Example - 'FontSize',12
+%                   Data Types - double
+%
+%         label :   Labels. Cell array of strings. Cell containing the
+%                   labels of the units (optional argument used when
+%                   datatooltip=1). If this field is not present labels
+%                   row1, ..., rown will be automatically created and
+%                   included in the pop up datatooltip window.
+%                   Example - 'corr',1
+%                   Data Types - Cell array of strings
 %
 %       labx    :   x-axis label. String. A label for the x-axis (default:
 %                   'Subset size m').
@@ -143,6 +144,41 @@ function brushedUnits=fanplot(out,varargin)
 %       laby    :   y-axis label. String. a label for the y-axis
 %                   (default:'Score test statistic').
 %                   Example - 'laby','Score test statistic'
+%                   Data Types - char
+%
+%       lwd     :   Linewidth. Scalar. Scalar which controls linewidth of
+%                   the curves which contain the score test.
+%                   Default line width=2.
+%                   Example - 'lwd',2
+%                   Data Types - double
+%
+%       lwdenv  :   Width of the envelope lines. Scalar. Scalar which
+%                   controls the width of the lines associated with the
+%                   envelopes. Default is lwdenv=1.
+%                   Example - 'lwdenv',1
+%                   Data Types - double
+%
+%       nameX   :   Labels of the X variables. Cell array of strings. Cell
+%                   array of strings of length p containing the labels of
+%                   the varibles of the regression dataset. If it is empty
+%                 	(default) the sequence X1, ..., Xp will be created
+%                   automatically.
+%                   Example - 'nameX',''
+%                   Data Types - Cell array of strings
+%
+%       namey   :   Labels of the y variable. String. String containing the
+%                   label of the response variable.
+%                   Example - 'namey',''
+%                   Data Types - char
+%
+%    SizeAxesNum:   Size of the numbers of the axis. Scalar. Scalar which
+%                   controls the size of the numbers of the axes.
+%                   Default value is 10.
+%                   Example - 'SizeAxesNum',10
+%                   Data Types - double
+%
+%       titl    :   Title. String. A label for the title (default: 'Fan plot')
+%                   Example - 'titl','Fan plot'
 %                   Data Types - char
 %
 %       xlimx   :   Min and Max of the x axis. Vector. Vector with two
@@ -159,52 +195,6 @@ function brushedUnits=fanplot(out,varargin)
 %                   Example - 'ylimy',[0 100]
 %                   Data Types - double
 %
-%       lwd     :   Linewidth. Scalar. Scalar which controls linewidth of
-%                   the curves which contain the score test.
-%                   Default line width=2.
-%                   Example - 'lwd',2
-%                   Data Types - double
-%
-%       lwdenv  :   Width of the envelope lines. Scalar. Scalar which
-%                   controls the width of the lines associated with the
-%                   envelopes. Default is lwdenv=1.
-%                   Example - 'lwdenv',1
-%                   Data Types - double
-%
-%       FontSize:   Font size of the labels. Scalar. Scalar which controls
-%                   the font size of the labels of the axes and of the
-%                   labels inside the plot. Default value is 12.
-%                   Example - 'FontSize',12
-%                   Data Types - double
-%
-%    SizeAxesNum:   Size of the numbers of the axis. Scalar. Scalar which
-%                   controls the size of the numbers of the axes.
-%                   Default value is 10.
-%                   Example - 'SizeAxesNum',10
-%                   Data Types - double
-%
-%       nameX   :   Labels of the X variables. Cell array of strings. Cell
-%                   array of strings of length p containing the labels of
-%                   the varibles of the regression dataset. If it is empty
-%                 	(default) the sequence X1, ..., Xp will be created
-%                   automatically.
-%                   Example - 'nameX',''
-%                   Data Types - Cell array of strings
-%
-%       namey   :   Labels of the y variable. String. String containing the
-%                   label of the response variable.
-%                   Example - 'namey',''
-%                   Data Types - char
-%
-%       tag     :   Handle of the plot. String. String which identifies the
-%                   handle of the plot which is about to be created. The
-%                   default is to use tag pl_fan. Notice that if the
-%                   program finds a plot which has a tag equal to the one
-%                   specified by the user, then the output of the new plot
-%                   overwrites the existing one in the same window else a
-%                   new window is created.
-%                   Example - 'tag','pl_mycov'
-%                   Data Types - char
 %
 %  Output:
 %

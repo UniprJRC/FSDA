@@ -8,129 +8,34 @@ function plotopt=resfwdplot(out,varargin)
 %
 %  out :  Structure containing monitoring of scaled residuals.  Structure.
 %               Structure containing the following fields.
-%   out.RES =   matrix containing the residuals monitored in each step of
-%               the forward search or any other robust procedure. Every row
-%               is associated with a residual (unit). This matrix can be
-%               created using function FSReda, Sregeda, MMregeda.
-%   out.Un  =   matrix containing the order of entry in the subset of each
-%               unit (required only when datatooltip is true or databrush
-%               is not empty).
-%     out.y  =   a vector containing the response (required only when option
-%               databrush is not empty).
-%     out.X  =   a matrix containing the explanatory variables (required
-%                only when option databrush is not empty).
+%
 %   out.Bols =   (n-init+1) x (p+1) matrix containing the estimated beta
 %               coefficients monitored in each step of the robust procedure
 %               (required only when option databrush is not empty and
 %               suboption multivarfit is not empty).
 %                Data Types - single|double
 %
+%   out.RES =   matrix containing the residuals monitored in each step of
+%               the forward search or any other robust procedure. Every row
+%               is associated with a residual (unit). This matrix can be
+%               created using function FSReda, Sregeda, MMregeda.
+%
+%   out.Un  =   matrix containing the order of entry in the subset of each
+%               unit (required only when datatooltip is true or databrush
+%               is not empty).
+%
+%     out.X  =   a matrix containing the explanatory variables (required
+%                only when option databrush is not empty).
+%
+%     out.y  = a vector containing the response (required only when option
+%               databrush is not empty).
+%
+%
+%
+%
+%
 %
 %  Optional input arguments:
-%
-%           standard : appearance of the plot
-%                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. Structure.
-%                   Structure standard contains the following fields
-%                   standard.SizeAxesNum  = scalar specifying the fontsize of the
-%                       axes numbers. Default value is 10.
-%                   standard.xlim = two elements vector with minimum and maximum of
-%                       the x axis. Default value is '' (automatic scale).
-%                   standard.ylim = two elements vector with minimum and maximum of
-%                       the y axis. Default value is '' (automatic scale).
-%                   standard.titl = a label for the title (default: '').
-%                   standard.labx = a label for the x-axis (default: 'Subset size m').
-%                   standard.laby = a label for the y-axis (default:'Scaled residuals'
-%                       or 'Scaled squared residuals').
-%                  standard. SizeAxesLab = Scalar specifying the fontsize of the
-%                       labels of the axes. Default value is 12.
-%                   standard.xvalues = vector. x axis values.
-%                       Numeric vector of length(size(out.RES,2)) controlling the x
-%                       axis coordinates. The default value of xvalues is
-%                       size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
-%                   standard.LineWidth = scalar specifying line width for the
-%                       trajectories.
-%                   standard.Color = cell array of strings containing the colors to
-%                       be used for the highlighted units.
-%                       If length(Color)=1 the same color will be used for
-%                       all units.
-%                       If length(Color)=2 half of the trajectories will
-%                       appear with Color{1} and the other half with
-%                       Color{2}. And so on with 3 cell elements, etc.
-%                   standard.LineStyle = cell containing the line types.
-%
-%                   The default values of structure standard are:
-%                   standard.SizeAxesNum=10
-%                   standard.SizeAxesLab=12
-%                   standard.xlim='' (Automatic scale)
-%                   standard.ylim='' (Automatic scale)
-%                   standard.titl='' (empty title)
-%                   standard.labx='Subset size m'
-%                   standard.laby='Scaled residuals'
-%                   standard.LineWidth=1
-%                   standard.Color={'b'}
-%                   standard.LineStyle={'-'}
-%                   standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
-%                   Example - 'standard.LineWidth','1'
-%                   Data Types - struct
-%
-%         fground : trajectories in foregroud.
-%                   Structure. Structure which controls which trajectories
-%                   are highlighted and how
-%                   they are plotted to be distinguishable from the others.
-%                   It is possible to control the label, the width, the
-%                   color, the line type and the marker of the highlighted
-%                   units. The structure fground contains the following
-%                   fields:
-%                   fground.fthresh = (alternative to funit) numeric vector of
-%                       length 1 or 2 which specifies the highlighted
-%                       trajectories.
-%                       If length(fthresh)=1 the highlighted trajectories
-%                       are those of units that throughtout the search had
-%                       at leat once a residual greater (in absolute value)
-%                       than thresh. The default value of fthresh is 2.5.
-%                       If length(fthresh)=2 the highlighted trajectories
-%                       are those of units that throughtout the search had
-%                       a residual at leat once bigger than fthresh(2) or
-%                       smaller than fthresh(1).
-%                   fground.funit = (alternative to fthresh) vector containing the
-%                       list of the units to be highlighted. If funit is
-%                       supplied, fthresh is ignored.
-%                   fground.flabstep = numeric vector which specifies the steps of
-%                       the search where to put labels for the highlighted
-%                       trajectories (units). The default is to put the
-%                       labels at the initial and final steps of the search.
-%                       fground.flabstep='' means no label.
-%                   fground.LineWidth = scalar specifying line width for the
-%                       highlighted trajectories (units). Default is 1.
-%                   fground.Color = cell array of strings containing the colors to
-%                       be used for the highlighted trajectories (units).
-%                       If length(scolor)==1 the same color will be used for
-%                       all highlighted units Remark: if for example
-%                       length(scolor)=2 and there are 6 highlighted units,
-%                       3 highlighted trajectories appear with
-%                       selunitcolor{1} and 3 highlighted trajectories with
-%                       selunitcolor{2}
-%                   fground.LineStyle = cell containing the line type of the highlighted
-%                       trajectories.
-%                   fground.fmark  = scalar controlling whether to plot highlighted
-%                       trajectories as markers.
-%                       if 1 each line is plotted using a different marker
-%                       else no marker is used (default).
-%                fground.FontSize = scalar controlling font size of the labels of
-%                       the trajectories in foreground.
-%
-%                   The default values of structure fground are:
-%                    fground.fthresh=2.5
-%                    fground.flabstep=[m0 n]
-%                    fground.LineWidth=1
-%                    fground.LineStyle={'-'}
-%                    fground.FontSize=12
-%
-%                   Example - 'fground.LineWidth','1'
-%                   Data Types - struct
-%                   Remark: if fground='' no unit is highlighted and no
-%                   label is inserted into the plot.
 %
 %         bground : characterictics of the trajectories in background.
 %                   Structure.
@@ -171,81 +76,6 @@ function plotopt=resfwdplot(out,varargin)
 %                   Data Types - struct
 %                   Remark: bground='' is equivalent to bground.thresh=-Inf
 %                   that is all trajectories are considered relevant.
-%
-%       tag     :    Personalized plot tag. String. String which identifies
-%                   the handle of the plot which
-%                   is about to be created. The default is to use tag
-%                   'pl_resfwd'. Note that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created.
-%                   Example - 'tag','myplot'
-%                   Data Types - char
-%
-%   datatooltip :   interactive clicking. Empty value, scalar or
-%                   structure.
-%                   It is inactive if it is an empty value. The default is
-%                   datatooltip = 1, i.e. the user can select with the
-%                   mouse an individual residual trajectory in order to
-%                   have information about the corresponding unit. The
-%                   information displayed depends on the estimator in use.
-%                   For example for class FSReda the information concerns
-%                   the label and the step of the search in which the unit
-%                   enters the subset. If datatooltip is a
-%                   structure it may contain the following fields
-%                   datatooltip.DisplayStyle = determines how the data cursor displays.
-%                       Possible values are 'datatip' and 'window'
-%                       (default).
-%                       'datatip' displays data cursor information in a
-%                       small yellow text box attached to a black square
-%                       marker at a data point you interactively select.
-%                       'window' displays data cursor information for the
-%                       data point you interactively select in a floating
-%                       window within the figure.
-%                   datatooltip.SnapToDataVertex = specifies whether the
-%                       data cursor snaps to the nearest data value or is
-%                       located at the actual pointer position. Possible
-%                       values are 'on' (default) and 'off'.
-%                   datatooltip.LineColor = controls the color of the
-%                       trajectory selected with the mouse. It can be an
-%                       RGB triplet of values between 0 and 1, or character
-%                       vector indicating a color name. Note that a RGB
-%                       vector can be conveniently chosen with our MATLAB
-%                       class FSColor, see documentation.
-%                   datatooltip.SubsetLinesColor = enables to control the
-%                       color of the trajectories of the units that are in
-%                       the subset at a given step of the search (if
-%                       resfwdplot is applied to an object of class
-%                       FSReda) or have a weight greater than 0.9 (if
-%                       resfwdplot is applied to an object of class LXSeda,
-%                       Sregeda and MMregeda).
-%                       This can be done (repeatedly) with a left mouse
-%                       click in proximity of the step of interest. A right
-%                       mouse click will terminate the selection by marking
-%                       with a up-arrow the step corresponding to the
-%                       highlighted lines. The highlighted lines by default
-%                       are in red, but a different color can be specified
-%                       as RGB triplet or character of color name.
-%                       Note that a RGB vector can be conveniently chosen with
-%                       our MATLAB class FSColor, see documentation.
-%                       By default SubsetLinesColor ='', i.e. the modality
-%                       is not active.
-%                       Any initialization for SubsetLinesColor which
-%                       cannot be interpreted as RGB vector will be
-%                       converted to blue, i.e. SubsetLinesColor will be
-%                       forced to be [0 0 1].
-%                       If SubsetLinesColor is not empty previous option
-%                       LineColor is overlooked.
-%                   Example - 'datatooltip',''
-%                   Data Types - empty value, scalar or struct
-%
-%       label   :   row labels. Cell of strings.
-%                   Cell containing the labels of the units (optional
-%                   argument used when datatooltip=1. If this field is not
-%                   present labels row1, ..., rown will be automatically
-%                   created and included in the pop up datatooltip window).
-%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
@@ -335,6 +165,142 @@ function plotopt=resfwdplot(out,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
+%   datatooltip :   interactive clicking. Empty value, scalar or
+%                   structure.
+%                   It is inactive if it is an empty value. The default is
+%                   datatooltip = 1, i.e. the user can select with the
+%                   mouse an individual residual trajectory in order to
+%                   have information about the corresponding unit. The
+%                   information displayed depends on the estimator in use.
+%                   For example for class FSReda the information concerns
+%                   the label and the step of the search in which the unit
+%                   enters the subset. If datatooltip is a
+%                   structure it may contain the following fields
+%                   datatooltip.DisplayStyle = 
+%                   determines how the data cursor displays.
+%                       Possible values are 'datatip' and 'window'
+%                       (default).
+%                       'datatip' displays data cursor information in a
+%                       small yellow text box attached to a black square
+%                       marker at a data point you interactively select.
+%                       'window' displays data cursor information for the
+%                       data point you interactively select in a floating
+%                       window within the figure.
+%                   datatooltip.SnapToDataVertex = specifies whether the
+%                       data cursor snaps to the nearest data value or is
+%                       located at the actual pointer position. Possible
+%                       values are 'on' (default) and 'off'.
+%                   datatooltip.LineColor = controls the color of the
+%                       trajectory selected with the mouse. It can be an
+%                       RGB triplet of values between 0 and 1, or character
+%                       vector indicating a color name. Note that a RGB
+%                       vector can be conveniently chosen with our MATLAB
+%                       class FSColor, see documentation.
+%                   datatooltip.SubsetLinesColor = enables to control the
+%                       color of the trajectories of the units that are in
+%                       the subset at a given step of the search (if
+%                       resfwdplot is applied to an object of class
+%                       FSReda) or have a weight greater than 0.9 (if
+%                       resfwdplot is applied to an object of class LXSeda,
+%                       Sregeda and MMregeda).
+%                       This can be done (repeatedly) with a left mouse
+%                       click in proximity of the step of interest. A right
+%                       mouse click will terminate the selection by marking
+%                       with a up-arrow the step corresponding to the
+%                       highlighted lines. The highlighted lines by default
+%                       are in red, but a different color can be specified
+%                       as RGB triplet or character of color name.
+%                       Note that a RGB vector can be conveniently chosen with
+%                       our MATLAB class FSColor, see documentation.
+%                       By default SubsetLinesColor ='', i.e. the modality
+%                       is not active.
+%                       Any initialization for SubsetLinesColor which
+%                       cannot be interpreted as RGB vector will be
+%                       converted to blue, i.e. SubsetLinesColor will be
+%                       forced to be [0 0 1].
+%                       If SubsetLinesColor is not empty previous option
+%                       LineColor is overlooked.
+%                   Example - 'datatooltip',''
+%                   Data Types - empty value, scalar or struct
+%
+%         fground : trajectories in foregroud.
+%                   Structure. Structure which controls which trajectories
+%                   are highlighted and how
+%                   they are plotted to be distinguishable from the others.
+%                   It is possible to control the label, the width, the
+%                   color, the line type and the marker of the highlighted
+%                   units. The structure fground contains the following
+%                   fields:
+%                   fground.fthresh = (alternative to funit) numeric vector of
+%                       length 1 or 2 which specifies the highlighted
+%                       trajectories.
+%                       If length(fthresh)=1 the highlighted trajectories
+%                       are those of units that throughtout the search had
+%                       at leat once a residual greater (in absolute value)
+%                       than thresh. The default value of fthresh is 2.5.
+%                       If length(fthresh)=2 the highlighted trajectories
+%                       are those of units that throughtout the search had
+%                       a residual at leat once bigger than fthresh(2) or
+%                       smaller than fthresh(1).
+%                   fground.funit = (alternative to fthresh) vector containing the
+%                       list of the units to be highlighted. If funit is
+%                       supplied, fthresh is ignored.
+%                   fground.flabstep = numeric vector which specifies the steps of
+%                       the search where to put labels for the highlighted
+%                       trajectories (units). The default is to put the
+%                       labels at the initial and final steps of the search.
+%                       fground.flabstep='' means no label.
+%                   fground.LineWidth = scalar specifying line width for the
+%                       highlighted trajectories (units). Default is 1.
+%                   fground.Color = cell array of strings containing the colors to
+%                       be used for the highlighted trajectories (units).
+%                       If length(scolor)==1 the same color will be used for
+%                       all highlighted units Remark: if for example
+%                       length(scolor)=2 and there are 6 highlighted units,
+%                       3 highlighted trajectories appear with
+%                       selunitcolor{1} and 3 highlighted trajectories with
+%                       selunitcolor{2}
+%                   fground.LineStyle = cell containing the line type of the highlighted
+%                       trajectories.
+%                   fground.fmark  = scalar controlling whether to plot highlighted
+%                       trajectories as markers.
+%                       if 1 each line is plotted using a different marker
+%                       else no marker is used (default).
+%                fground.FontSize = scalar controlling font size of the labels of
+%                       the trajectories in foreground.
+%
+%                   The default values of structure fground are:
+%                    fground.fthresh=2.5
+%                    fground.flabstep=[m0 n]
+%                    fground.LineWidth=1
+%                    fground.LineStyle={'-'}
+%                    fground.FontSize=12
+%
+%                   Example - 'fground.LineWidth','1'
+%                   Data Types - struct
+%                   Remark: if fground='' no unit is highlighted and no
+%                   label is inserted into the plot.
+%
+%       label   :   row labels. Cell of strings.
+%                   Cell containing the labels of the units (optional
+%                   argument used when datatooltip=1. If this field is not
+%                   present labels row1, ..., rown will be automatically
+%                   created and included in the pop up datatooltip window).
+%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
+%                   Data Types - cell
+%
+%       msg     :   display  used options. Scalar.
+%                   Scalar which controls whether to display
+%                   as output the options inside structures standard,
+%                   fground and bground which have been used to draw the
+%                   plot.
+%                   plotopt=resfwdplot(out,'msg',1) prints on the screen
+%                   the options which have been used to draw
+%                   the three types of trajectories (standard, foreground
+%                   and background).
+%                   Example - 'msg',1
+%                   Data Types - single or double
+%
 %       nameX   :  labels of the explanatory variables. Cell. Cell array of
 %                   strings of length p containing the labels
 %                   of the variables of the regression dataset. If it is
@@ -348,17 +314,62 @@ function plotopt=resfwdplot(out,varargin)
 %                   Example - 'namey','response'
 %                   Data Types - character
 %
-%       msg     :   display  used options. Scalar.
-%                   Scalar which controls whether to display
-%                   as output the options inside structures standard,
-%                   fground and bground which have been used to draw the
-%                   plot.
-%                   plotopt=resfwdplot(out,'msg',1) prints on the screen
-%                   the options which have been used to draw
-%                   the three types of trajectories (standard, foreground
-%                   and background).
-%                   Example - 'msg',1
-%                   Data Types - single or double
+%           standard : appearance of the plot
+%                   in terms of xlim, ylim, axes labels and their font size
+%                   style, color of the lines, etc. Structure.
+%                   Structure standard contains the following fields
+%                   standard.SizeAxesNum  = scalar specifying the fontsize of the
+%                       axes numbers. Default value is 10.
+%                   standard.xlim = two elements vector with minimum and maximum of
+%                       the x axis. Default value is '' (automatic scale).
+%                   standard.ylim = two elements vector with minimum and maximum of
+%                       the y axis. Default value is '' (automatic scale).
+%                   standard.titl = a label for the title (default: '').
+%                   standard.labx = a label for the x-axis (default: 'Subset size m').
+%                   standard.laby = a label for the y-axis (default:'Scaled residuals'
+%                       or 'Scaled squared residuals').
+%                  standard. SizeAxesLab = Scalar specifying the fontsize of the
+%                       labels of the axes. Default value is 12.
+%                   standard.xvalues = vector. x axis values.
+%                       Numeric vector of length(size(out.RES,2)) controlling the x
+%                       axis coordinates. The default value of xvalues is
+%                       size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
+%                   standard.LineWidth = scalar specifying line width for the
+%                       trajectories.
+%                   standard.Color = cell array of strings containing the colors to
+%                       be used for the highlighted units.
+%                       If length(Color)=1 the same color will be used for
+%                       all units.
+%                       If length(Color)=2 half of the trajectories will
+%                       appear with Color{1} and the other half with
+%                       Color{2}. And so on with 3 cell elements, etc.
+%                   standard.LineStyle = cell containing the line types.
+%
+%                   The default values of structure standard are:
+%                   standard.SizeAxesNum=10
+%                   standard.SizeAxesLab=12
+%                   standard.xlim='' (Automatic scale)
+%                   standard.ylim='' (Automatic scale)
+%                   standard.titl='' (empty title)
+%                   standard.labx='Subset size m'
+%                   standard.laby='Scaled residuals'
+%                   standard.LineWidth=1
+%                   standard.Color={'b'}
+%                   standard.LineStyle={'-'}
+%                   standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
+%                   Example - 'standard.LineWidth','1'
+%                   Data Types - struct
+%
+%       tag     :    Personalized plot tag. String. String which identifies
+%                   the handle of the plot which
+%                   is about to be created. The default is to use tag
+%                   'pl_resfwd'. Note that if the program finds a plot which
+%                   has a tag equal to the one specified by the user, then
+%                   the output of the new plot overwrites the existing one
+%                   in the same window else a new window is created.
+%                   Example - 'tag','myplot'
+%                   Data Types - char
+%
 %
 % Output:
 %

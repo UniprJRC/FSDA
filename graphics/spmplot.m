@@ -51,10 +51,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               unit (this is a necessary field if the user wants to brush
 %               the scatter plot matrix).
 %
-%       Y.Un  = matrix containing the order of entry of each unit
-%               (necessary if datatooltip is true or databrush is not
-%               empty).
-%
 %       Y.label = cell of length n containing the labels of the units.
 %               This optional argument is used in conjuction with options
 %               databrush and datatooltip.
@@ -67,6 +63,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               will be labelled with the labels contained in Y.label.
 %
 %                Data Types - single|double
+%
+%         Y.Un  = matrix containing the order of entry of each unit
+%               (necessary if datatooltip is true or databrush is not
+%               empty).
 %
 %   Optional input arguments:
 %

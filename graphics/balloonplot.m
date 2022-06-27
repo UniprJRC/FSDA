@@ -28,7 +28,7 @@ function [h,Ntable] = balloonplot(N,varargin)
 %               Example - 'ax',myaxes
 %               Data Types - Axes object
 %
-% datamatrix  : Data matrix or contingency table. Boolean. If
+%      datamatrix  : Data matrix or contingency table. Boolean. If
 %               datamatrix is true the first input argument N is forced to
 %               be interpreted as a data matrix, else if the input argument
 %               is false N is treated as a contingency table. The default
@@ -58,7 +58,7 @@ function [h,Ntable] = balloonplot(N,varargin)
 %
 %  Output:
 %
-%      h :    returns the BubbleChart object. Use h to modify properties of
+%    h :      returns the BubbleChart object. Use h to modify properties of
 %             the chart after creating it. For a list of properties, see
 %             BubbleChart Properties.
 %
