@@ -195,7 +195,7 @@ if cross==1
         % Apply the smoothing procedure for a given value of cvpsan
         % Note that smth is called with input parameter cross set to 1
         % (that is cross validation is used to find smoothed values)
-        [smo,cvrss(k)]=smth(x,y,w,cvspan(k),1);
+        [~,cvrss(k)]=smth(x,y,w,cvspan(k),1);
         
         if cvrss(k)<=cvmin
             cvmin=cvrss(k);
