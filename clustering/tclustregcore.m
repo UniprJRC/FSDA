@@ -553,10 +553,12 @@ for i =1:nselected
         end
         
         % Mean of the weights must be 1.
-        mean_wbeta = mean(webeta);
+        % mean_wbeta = mean(webeta);
+        mean_wbeta = sum(webeta)/length(webeta);
         webeta      = webeta/mean_wbeta;
         
-        mean_wobj = mean(weobj);
+        % mean_wobj = mean(weobj);
+        mean_wobj = sum(weobj)/length(weobj);
         weobj      = weobj/mean_wobj;
         
         if sum(isnan(Beta(:)))>0
