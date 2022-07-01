@@ -829,7 +829,7 @@ kc=psifunc.kc1;
 res = y - X * initialbeta;
 
 % The scaled MAD of residuals is the initial scale estimate default value
-if (nargin < 8)
+if nargin < 7
     initialscale = median(abs(res))/.6745;
 end
 
