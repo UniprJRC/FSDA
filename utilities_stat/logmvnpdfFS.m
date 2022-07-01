@@ -18,7 +18,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg, callmex)
 % gaussian distributions). The same argument above applies to scalars n
 % and d which are directly passed to the compiled mex function
 %
-%  Required input arguments:
+%   Required input arguments:
 %
 %
 % X :           Input data. Scalar, Vector or matrix.
@@ -347,20 +347,23 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg, callmex)
 %   Note that X/Sigma ~ X*inv(Sigma) ~ mrdivide(X,Sigma) are equivalent.
 
 if nargin==3
+    %% OLD VERSION: MATLAB RELEASE MONITORING
     % verLess2016b is a boolean which is true if current version is less then
     % 2016b
-    if coder.target('MATLAB')
-        verLess2016b=verLessThanFS('9.1');
-    else
-        verLess2016b=false;
-    end
     
-    if verLess2016b ==true
-        % Deviations from Mu using Matlab function bsxfun.
-        X0 = bsxfun(@minus,X,Mu);
-    else
-        X0=X-Mu;
-    end
+    %if coder.target('MATLAB')
+    %    verLess2016b=verLessThanFS('9.1');
+    %else
+    %    verLess2016b=false;
+    %end
+    %if verLess2016b ==true
+    %    % Deviations from Mu using Matlab function bsxfun.
+    %    X0 = bsxfun(@minus,X,Mu);
+    %else
+    %    X0=X-Mu;
+    %end
+
+    X0=X-Mu;
     d=size(X0,2);
     % Create an identity matrix of size d
     eyed=eye(d);
@@ -378,20 +381,22 @@ else
         % d = number of variables (input parameter of function DfM)
         DfM(X,Mu,X0,n,d);
     else
-        if coder.target('MATLAB')
-            % verLess2016b is a boolean which is true if current version is less then
-            % 2016b
-            verLess2016b=verLessThanFS('9.1');
-        else
-            verLess2016b=true;
-        end
+        %% OLD VERSION: MATLAB RELEASE MONITORING
+        %if coder.target('MATLAB')
+        %    % verLess2016b is a boolean which is true if current version is less then
+        %    % 2016b
+        %    verLess2016b=verLessThanFS('9.1');
+        %else
+        %    verLess2016b=true;
+        %end
         
-        if verLess2016b ==false
-            X0=X-Mu;
-        else
-            % Deviations from Mu using Matlab function bsxfun.
-            X0 = bsxfun(@minus,X,Mu);
-        end
+        %if verLess2016b ==false
+        %    X0=X-Mu;
+        %else
+        %    % Deviations from Mu using Matlab function bsxfun.
+        %    X0 = bsxfun(@minus,X,Mu);
+        %end
+        X0=X-Mu;
     end
 % ELSE_FSDAR
 %   X0 = bsxfun(@minus,X,Mu);
