@@ -146,7 +146,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %}
 
 %{
-    % Compare scale estimate using two differnt link functions.
+    % Compare scale estimate using two different link functions.
     psifunc=struct;
     psifunc.class='HA'
     abc=[1.5 3.5 8];
