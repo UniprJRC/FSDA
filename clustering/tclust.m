@@ -260,9 +260,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'nsamp',1000
 %                 Data Types - double
 %
-%    priorSol : prior solution. vector or struct.
+%    priorSol : prior solution. vector or struct or empty value.
 %               Prior solution supplied as a struct or a vector of length n
-%               which specifies who to initialize the centroids, the
+%               which specifies how to initialize the centroids, the
 %               covariance matrices and the proportions in the iteration of
 %               the EM algorithm for the last subset which is extracted. If
 %               priorSol is a vector it must contain the positive
@@ -276,14 +276,15 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               by the remainining 30 solutions.
 %               If priorSol is a struct it must contain the following
 %               fields.
-%               priosSol.cini = a matrix of size k-times-v containing the
+%               priorSol.cini = a matrix of size k-times-v containing the
 %               centroids of the k groups;
-%               priosSol.sigmaini = a 3D array of size v-by-v-by-k containing
-%               the covairiance matrices of the k groups;
+%               priorSol.sigmaini = a 3D array of size v-by-v-by-k containing
+%               the covariance matrices of the k groups;
 %               priorSol.niini=a vector of length k containing the sizes of
 %               the k groups.
 %               Note that this option takes effect just if input option
-%               startv1 is true.
+%               startv1 is true. The default is empty value that is no
+%               prior solution is used.
 %                 Example - 'priorSol',[ones(50,1) 2*ones(20,1)];
 %                 Data Types - double
 %
