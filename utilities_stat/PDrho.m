@@ -31,7 +31,7 @@ function rhoPD = PDrho(u,alpha)
 % function PDrho transforms vector u as follows 
 % \[
 % PDrho(u,alpha)=  1-\exp(-\alpha (u^2/2));
-%      \]
+% \]
 %  
 %
 % See also TBrho, HYPrho, HArho, OPTrho, HUrho
