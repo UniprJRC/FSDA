@@ -423,7 +423,7 @@ function [out]=FSR(y,X,varargin)
 %}
 
 %{
-    % Extract all possible subsamples in order to find susbet to initialize
+    % Extract all possible subsamples in order to find subset to initialize
     % the search.
     n=50;
     p=3;
