@@ -18,7 +18,7 @@ function rhoTB = TBrho(u,c)
 %  Output:
 %
 %
-%   rhoTB :      n x 1 vector which contains the Tukey's biweight rho
+%   rhoTB :      vector of length n which contains the Tukey's biweight rho
 %                associated to the residuals or Mahalanobis distances for
 %                the n units of the sample.
 %
