@@ -49,7 +49,7 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
 %                   Example - 'mplus1',1
 %                   Data Types - double
 %
-%       envm    :   sample size for drawing enevlopes. Scalar. Scalar which
+%       envm    :   sample size for drawing envelopes. Scalar. Scalar which
 %                   specifies the size of the sample which is used to
 %                   superimpose the envelope. The default is to add an
 %                   envelope based on all the observations (size n
@@ -74,6 +74,13 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
 %                   Default is lwdenv=1
 %                   Example - 'lwdenv',2
 %                   Data Types - double
+%
+%       ncoord  :   input out.mdr in normal coordinates. Boolean.
+%                   If ncoord=true the input matrix which contains the 
+%                   minimum deletion residual has been transformed to
+%                   normal coordinates. The default is ncoord false.
+%                   Example - 'ncoord',true
+%                   Data Types - logical
 %
 %       tag     :   plot handle. String. String which identifies the handle
 %                   of the plot which is about to be created. The default
@@ -337,6 +344,31 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
 %}
 
 %{
+    %% Example of the use of option ncoord.
+    % In this example we compare the monitoring residual plot in traditional
+    % coordinates with that in normal coordinates.
+    % load the Hospital data
+    load('hospitalFS.txt');
+    y=hospitalFS(:,5);
+    X=hospitalFS(:,1:4);
+    
+    % Set initial subset
+    bs= [ 3   11   20   23   74];
+    outFS=FSReda(y,X,bs);
+    p=size(X,2)+1;
+    quant=[0.01 0.5 0.99 0.999 0.9999];
+    mdrplot(outFS,'quant',quant,'tag','mdrorigcooed')
+    title('Monitoring of mdr in traditional coordinates')
+    
+    % Transform the values of mdr into normal coordinates
+    [MDRinv] = FSRinvmdr(abs(outFS.mdr),p);
+    outFS1=outFS;
+    outFS1.mdr=MDRinv(:,[1 3]);
+    mdrplot(outFS1,'ncoord',true,'quant',quant,'tag','mdrncoord')
+    title('Monitoring of mdr in normal coordinates')
+%}
+
+%{
     % Interactive_example
     % Input option databrush passed as scalar.
     %Example of the use of function mdrplot with databrush
@@ -425,12 +457,36 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
 
 %% Beginning of code
 
+if nargin<1
+    error('FSDA:mdrplot:missingInputs','A required input argument is missing.')
+end
+
+UserOptions=varargin(1:2:length(varargin));
+
+
 % Initialization
 brushedUnits=[];
 BrushedUnits=[];
 
+  checklms2 = strcmp(UserOptions,'ncoord');
+        if sum(checklms2)
+            lmsval = varargin(2*find(checklms2));
+            if lmsval{1}== true
+                ncoord=true;
+            else
+                ncoord=false;
+            end
+        else
+            ncoord=false;
+        end
+
+  if ncoord==true     
+% Extract mdr with sign
+mdr=out.mdr;
+  else
 % Extract the absolute value of minimum deletion residual
 mdr=abs(out.mdr);
+  end
 
 [n,p]=size(out.X);
 
@@ -445,6 +501,7 @@ mdr=abs(out.mdr);
 xl1=mdr(1,1)-3;
 xl2=mdr(end,1)*1.1;
 xlimx=[xl1 xl2];
+
 
 % Default limits for y axis
 yl1=min(mdr(:,2));
@@ -469,16 +526,11 @@ laby='Minimum deletion residual';
 %% User options
 
 options=struct('quant', quant,'sign',0,'mplus1',0,...
-    'envm',n,'xlimx',xlimx,'ylimy',ylimy,'lwd',2,'lwdenv',1,...
+    'envm',n,'ncoord',false,'xlimx',xlimx,'ylimy',ylimy,'lwd',2,'lwdenv',1,...
     'FontSize',12,'SizeAxesNum',10,'tag','pl_mdr',...
     'datatooltip','','databrush','',...
     'titl','','labx',labx,'laby',laby,'nameX','','namey','','label','');
 
-if nargin<1
-    error('FSDA:mdrplot:missingInputs','A required input argument is missing.')
-end
-
-UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -502,8 +554,6 @@ if isstruct(databrush)
     d=find(strcmp('labeladd',fdatabrush));
     if d>0
         labeladd=databrush.labeladd;
-        % labeladd=labeladd{1};
-        % options.databrush(d:d+1)=[];
         databrush=rmfield(databrush,'labeladd');
         fdatabrush=fieldnames(databrush);
     else
@@ -513,9 +563,6 @@ if isstruct(databrush)
     % bivarfit option
     d=find(strcmp('bivarfit',fdatabrush));
     if d>0
-        %         bivarfit=options.databrush(d+1);
-        %         bivarfit=bivarfit{1};
-        %         options.databrush(d:d+1)=[];
         bivarfit=databrush.bivarfit;
         databrush=rmfield(databrush,'bivarfit');
         fdatabrush=fieldnames(databrush);
@@ -526,9 +573,6 @@ if isstruct(databrush)
     % multivarfit option
     d=find(strcmp('multivarfit',fdatabrush));
     if d>0
-        %         multivarfit=options.databrush(d+1);
-        %         multivarfit=multivarfit{1};
-        %         options.databrush(d:d+1)=[];
         multivarfit=databrush.multivarfit;
         databrush=rmfield(databrush,'multivarfit');
         fdatabrush=fieldnames(databrush);
@@ -620,8 +664,12 @@ end
 set(h,'Name', 'Monitoring of Minimum deletion residual', 'NumberTitle', 'off');
 hold('all');
 
-% Theoretical envelopes for minimum deletion residual
+if ncoord==true
+qua=norminv(quant);
+gmin=[(init:n-1)' repmat(qua(:)',n-init,1)];
+else
 [gmin] = FSRenvmdr(envm,p,'prob',quant,'init',init);
+end
 
 box('on');
 
