@@ -6,8 +6,8 @@ function psix=OPTpsix(u,c)
 %
 %  Required input arguments:
 %
-%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
-%               vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. 
+%               vector of  length n containing residuals or Mahalanobis distances
 %               for the n units of the sample
 %    c :        tuning parameters. Scalar. Scalar greater than 0 which
 %               controls the robustness/efficiency of the estimator
@@ -19,7 +19,7 @@ function psix=OPTpsix(u,c)
 %  Output:
 %
 %
-%   psix  :     n x 1 vector which contains the values of the derivative of the optimal psi
+%   psix  :    vector of length n which contains the values of the derivative of the optimal psi
 %                function multiplied by u, associated to the residuals or Mahalanobis
 %                distances for the n units of the sample.
 %
@@ -77,7 +77,7 @@ function psix=OPTpsix(u,c)
 % Computes Standardized optimal psi function times x(first derivative of rho function)
 % \rho'(x) *x
 
-psix = zeros(length(u),1);
+psix = zeros(size(u));
 absx=abs(u);
 
 % r^2 /(3.25c^2) if r <=2*c

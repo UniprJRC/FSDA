@@ -76,7 +76,7 @@ function psider=OPTpsider(u,c)
 % Computes Standardized optimal psi function (first derivative of rho function)
 % \rho'(x)
 
-psider = zeros(length(u),1);
+psider = zeros(size(u));
 absx=abs(u);
 
 % 1 /(3.25c^2) if |r| <=2*c

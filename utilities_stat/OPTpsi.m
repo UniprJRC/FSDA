@@ -78,7 +78,9 @@ function psiOPT=OPTpsi(u,c)
 % Computes Standardized optimal psi function (first derivative of rho function)
 % \rho'(x)
 
-psiOPT = zeros(length(u),1);
+% psiOPT = zeros(length(u),1);
+psiOPT = zeros(size(u));
+
 absx=abs(u);
 
 % r /(3.25c^2) if r <=2*c
