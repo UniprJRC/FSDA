@@ -133,7 +133,7 @@ function [out]=FSM(Y,varargin)
 %                       envelope is resuperimposed is shown. Example if resuper =[85 87]
 %                       plots of resuperimposedenvelopes are shown at steps
 %                       m=85 and m=87;
-%                   plots.ncoord = scalar. If ncoord=1 plots are shown in normal
+%                   plots.ncoord = boolean. If ncoord=true plots are shown in normal
 %                       coordinates else (default) plots are shown in
 %                       traditional mmd coordinates;
 %                   plots.labeladd = If this option is '1', the outliers in the
