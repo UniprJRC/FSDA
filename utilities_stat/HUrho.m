@@ -67,15 +67,18 @@ function rhoHU = HUrho(u,c)
     c=1.345;
     rhoHU=HUrho(x,c);
     plot(x,rhoHU,'LineStyle','-','LineWidth',2)
-    xlabel('$u$','Interpreter','Latex')
-    ylabel('$\rho (u,1.345)$','Interpreter','Latex')
-    text(-c,0,'-c=-1.345')
-    text(c,0,'c=1.345')
+    fs=14;
+    xlabel('$u$','Interpreter','Latex','FontSize',fs)
+    ylabel('$\rho (u,1.345)$','Interpreter','Latex','FontSize',fs)
+    yc=0.13;
+    text(-c,yc,'-c=-1.345','HorizontalAlignment','right','FontSize',fs)
+    text(c,yc,'c=1.345','FontSize',fs)
     hold('on')
     plot(x,x.^2/2,'LineStyle',':','LineWidth',1.5)
     stem(c,c^2/2)
     stem(-c,c^2/2)
-
+    legend(["Huber $\rho$ function" "$u^2/2$"], ...
+        'Interpreter','latex','FontSize',16,'Location','best')    
 %}
 
 %{
