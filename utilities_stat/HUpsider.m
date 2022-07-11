@@ -68,7 +68,7 @@ function psider=HUpsider(u,c)
 %}
 
 %% Beginning of code
-psider=zeros(length(u),1);
+psider=zeros(size(u));
 psider(abs(u) < c)=1;
 end
 %FScategory:UTISTAT
