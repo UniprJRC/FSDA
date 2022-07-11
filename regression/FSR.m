@@ -196,7 +196,7 @@ function [out]=FSR(y,X,varargin)
 %       plots   : Plot on the screen. Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
 %                 residual with envelopes based on n observations and the
-%                 scatterplot matrix with the outliers highlighted is
+%                 yXplot matrix with the outliers highlighted is
 %                 produced.
 %                 If plots=2 the user can also monitor the intermediate
 %                 plots based on envelope superimposition.
