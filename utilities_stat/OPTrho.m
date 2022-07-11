@@ -5,24 +5,24 @@ function rhoOPT=OPTrho(u, c)
 %
 %  Required input arguments:
 %
-%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
-%               vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. 
+%               Vector of length n containing residuals or Mahalanobis distances
 %               for the n units of the sample
 %    c :        tuning parameter. Scalar. Scalar greater than 0 which
 %               controls the robustness/efficiency of the estimator
 %               (beta in regression or mu in the location case ...) 
 %
 %  Optional input arguments: TODO_OPTrho_INPUT_OPTIONS
-
+%
 %  Output:
 %
 %
-%   rhoOPT :      residuals after rho filter. Vector. n x 1 vector which contains the Tukey's biweight rho
-%                associated to the residuals or Mahalanobis distances for
-%                the n units of the sample
-%               Function OPTrho transforms vector u as follows 
+%   rhoOPT :      residuals after rho filter. Vector. Vector of length n which contains
+%                optima rho values associated to the residuals or
+%                Mahalanobis distances for the n units of the sample.
+%               Function OPTrho transforms vector u as follows
 %
-%               |  (1/3.25*c^2) x^2/2                                                     |x|<=2c
+%               |  1/(3.25*c^2) x^2/2                                                     |x|<=2c
 %               |   
 %   \rho(x,c) = |  (1/3.25) * (1.792 - 0.972 * (x/c)^2 + 0.432 * (x/c)^4 - 0.052 * (x/c)^6 + 0.002 * (x/c)^8)    2c<=|x|<=3c
 %               |
@@ -74,7 +74,7 @@ function rhoOPT=OPTrho(u, c)
 
 c=c(1); % MATLAB Ccoder instruction to enforce that c is a scalar
 
-rhoOPT = ones(length(u),1);
+rhoOPT = ones(size(u));
 absx=abs(u);
 
 % x^2/2 /(3.25c^2) if x <=2*c
