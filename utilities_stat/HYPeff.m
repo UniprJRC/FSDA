@@ -20,7 +20,7 @@ function [c,A,B,d] = HYPeff(eff, v, k, traceiter)
 %   k        : supremum of the change of variance curve. Scalar.
 %              $\sup CVC(psi,x) x \in R$
 %              Default value is k=4.5.
-%                 Example - 'k',5
+%                 Example - 5
 %                 Data Types - double
 %
 %  traceiter : Level of display. Scalar.
