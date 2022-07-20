@@ -50,10 +50,6 @@ function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
 % \end{array}
 %    \right.
 %  \]
-%                                                                      |t/c|>1                              
-%   Therefore, the input c for the (rho) psi function above corresponds to c/3
-%   in the rho (psi) function defined in the
-%   interval 0---2c, 2c---3c, >3c 
 %
 %
 % See also: TBc, HYPc, HAc

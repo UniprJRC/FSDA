@@ -333,9 +333,7 @@ elseif strcmp(rhofunc,'optimal')
     
     % Compute tuning constant associated to the requested nominal efficiency
     % c2 = consistency factor for a given value of efficiency
-    % Remark: given that in function OPTeff rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
-    % it is necessary to divide the output of OPTeff by 3
-    c=OPTeff(eff,1)/3;
+    c=OPTeff(eff,1); 
     
     psifunc.c=c;
     psifunc.class='OPT';
