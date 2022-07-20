@@ -439,27 +439,17 @@ elseif strcmp(rhofunc,'optimal')
     
     % Compute tuning constant associated to the requested breakdown
     % point
-    % For bdp =0.5 and optimal rho function c1=0.4046
-    % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
-    % it is necessary to divide the output of OPTbdp by 3
-    c1=OPTbdp(bdp,1)/3;
+    c1=OPTbdp(bdp,1); 
     % kc1 = E(rho) = sup(rho)*bdp
-    kc1=OPTrho(3*c1,c1)*bdp;
+    kc1=OPTrho(c1,c1)*bdp;
     
     % Compute tuning constant associated to the requested nominal efficiency
     % c2 = consistency factor for a given value of efficiency
-    % Remark: given that in function OPTeff rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
-    % it is necessary to divide the output of OPTeff by 3
-    c2=OPTeff(eff,1)/3;
+    c2=OPTeff(eff,1); 
     % b2 = E(rho_2).
     % Note that given that \rho is standardized in such a way that \rho(c)=1
     % E(rho_2) is nothing but the breakdown point associated to c2
-    kc2=OPTc(3*c2,1);
-    
-    
-    % Original precalculated values of c2 and b2 were
-    %     c2 = 1.0900;
-    %     bdp2 = 0.1278;
+    kc2=OPTc(c2,1);
     
     psifunc.c1=c1;
     psifunc.kc1=kc1;

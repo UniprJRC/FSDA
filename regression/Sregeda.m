@@ -466,12 +466,10 @@ for jj=1:length(bdp)
         
         % Compute tuning constant associated to the requested breakdown
         % point
-        % For bdp =0.5 and optimal rho function c1=0.4046
-        % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
-        % it is necessary to divide the output of OPTbdp by 3
-        c=OPTbdp(bdp(jj),1)/3;
+        % For bdp =0.5 and optimal rho function c= 1.2139
+        c=OPTbdp(bdp(jj),1);
         % kc1 = E(rho) = sup(rho)*bdp
-        kc=OPTrho(3*c,c)*bdp(jj);
+        kc=OPTrho(c,c)*bdp(jj);
         
         psifunc.c1=c;
         psifunc.kc1=kc;

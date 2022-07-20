@@ -29,7 +29,7 @@ function c = OPTbdp(bdp,v)
 %    $\rho$ function is
 %
 % \[
-% TBrho(u)= \left\{
+% OPTrho(u)= \left\{
 %    \begin{array}{lr}
 %     1.3846 \left(\frac{u}{c}\right)^2                      &                                      |\frac{u}{c}| \leq  \frac{2}{3} \\
 %    0.5514-2.6917 \left(\frac{u}{c}\right)^2 +10.7668\left(\frac{u}{c}\right)^4-11.6640\left(\frac{u}{c}\right)^6+4.0375\left(\frac{u}{c}\right)^8   & \qquad \frac{2}{3} \leq  |\frac{u}{c}|\leq  1 \\
@@ -38,9 +38,6 @@ function c = OPTbdp(bdp,v)
 %    \right.
 %  \]
 %
-%   Therefore, to obtain the value of c for the (rho) psi function defined in the
-%   interval 0---2c, 2c---3c, >3c it is necessary to divide the output of
-%   function OPTbdp by 3.
 %
 %
 % See also: TBbdp, HYPbdp, HAbdp

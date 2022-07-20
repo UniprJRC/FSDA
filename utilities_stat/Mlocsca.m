@@ -209,14 +209,14 @@ function outIRWLS = Mlocsca(y,psifunc,initialmu,initialscale,tol,maxiter)
 
 %{
     % Example of use of Mlocsca with four input arguments.
-    % M estimate of location ans scale using optimal rho function with a
+    % M estimate of location and scale using optimal rho function with a
     % value of c associated to a breakdown point of 0.3
     psifuncOPT=struct;
     psifuncOPT.class='OPT';
     bdp=0.3;
-    cOPT=OPTbdp(bdp,1)/3;
+    cOPT=OPTbdp(bdp,1);
     rhoOPTsup=OPTrho(200000,1);
-    % rhoHAsup=1;
+    % rhoOPTsup=1;
     psifuncOPT.c1=cOPT;
     % kc = E(rho) = sup(rho)*bdp
     psifuncOPT.kc1=rhoOPTsup*bdp;

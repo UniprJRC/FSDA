@@ -22,20 +22,26 @@ function rhoOPT=OPTrho(u, c)
 %                Mahalanobis distances for the n units of the sample.
 %               Function OPTrho transforms vector u as follows
 %
-%               |  1/(3.25*c^2) x^2/2                                                     |x|<=2c
-%               |   
-%   \rho(x,c) = |  (1/3.25) * (1.792 - 0.972 * (x/c)^2 + 0.432 * (x/c)^4 - 0.052 * (x/c)^6 + 0.002 * (x/c)^8)    2c<=|x|<=3c
-%               |
-%               |   1                                                                      |x|>3c                              
-%
 % 
+% More About:
 %
-%  Remark: Yohai and Zamar (1997)  showed that the $\rho$ function given above
+%  Yohai and Zamar (1997)  showed that the $\rho$ function given above
 %  is optimal in the following highly desirable sense: the final M estimate
 %  has a breakdown point of one-half and minimizes the maximum bias under
 %  contamination distributions (locally for small fraction of
 %  contamination), subject to achieving a desidered nominal asymptotic
 %  efficiency when the data are Gaussian.
+%
+% \[
+% \label{opt}
+% \rho(x) = \begin{cases}
+%  1.3846 \left( \frac{x}{c} \right)^2  \qquad |x| \leq \frac{2}{3} c \\
+%  0.5514-2.6917\left( \frac{x}{c} \right)^2+10.7668\left( \frac{x}{c} \right)^4-11.6640\left( \frac{x}{c} \right)^6+4.0375\left( \frac{x}{c} \right)^8  
+%  \qquad  \frac{2}{3} c <  |x|  \leq c 
+% \\
+% 1 \qquad                   |x| >c
+% \end{cases}
+% \]
 %
 % See also HYPrho, HArho, TBrho
 %
@@ -76,16 +82,48 @@ c=c(1); % MATLAB Ccoder instruction to enforce that c is a scalar
 
 rhoOPT = ones(size(u));
 absx=abs(u);
+u=u/c;
 
-% x^2/2 /(3.25c^2) if x <=2*c
-inds1 = absx <= 2*c;
-rhoOPT(inds1) = u(inds1).^2 / 2 / (3.25*c^2);
+%  if x <=(2/3)*c
+inds1 = absx <= (2/3)*c;
+rhoOPT(inds1) = 1.3846*u(inds1).^2;
 
-% 1/(3.25) * ( 1.792 .... +0.002 (r/c)^8 )    if    2c< |x| <3c
-inds1 = (absx > 2*c)&(absx <= 3*c);
+%  if    (2/3)*c< |x| <c
+inds1 = (absx > (2/3)*c)&(absx <= c);
 x1 = u(inds1);
-rhoOPT(inds1) = (1.792 - 0.972 * x1.^2 / c^2 + 0.432 * x1.^4 / c^4 - 0.052 * x1.^6 / c^6 + 0.002 * x1.^8 / c^8) / 3.25;
+rhoOPT(inds1) = (0.5514 -2.6917 * x1.^2  + 10.7668 * x1.^4  - 11.6640 * x1.^6  + 4.0375 * x1.^8 );
 
-% 1 if r >3*c
+% 1 if r >*c
+
+
+
+%% Old implementation in terms of 0<|u|<2c, 2c<|u|<3c, |u|>3c
+%
+%               |  1/(3.25*c^2) x^2/2                                                     |x|<=2c
+%               |   
+%   \rho(x,c) = |  (1/3.25) * (1.792 - 0.972 * (x/c)^2 + 0.432 * (x/c)^4 - 0.052 * (x/c)^6 + 0.002 * (x/c)^8)    2c<=|x|<=3c
+%               |
+%               |   1                                                                      |x|>3c                              
+%
+% c=c(1); % MATLAB Ccoder instruction to enforce that c is a scalar
+% 
+% rhoOPT = ones(size(u));
+% absx=abs(u);
+% 
+% % x^2/2 /(3.25c^2) if x <=2*c
+% inds1 = absx <= 2*c;
+% rhoOPT(inds1) = u(inds1).^2 / 2 / (3.25*c^2);
+% 
+% % 1/(3.25) * ( 1.792 .... +0.002 (r/c)^8 )    if    2c< |x| <3c
+% inds1 = (absx > 2*c)&(absx <= 3*c);
+% x1 = u(inds1);
+% rhoOPT(inds1) = (1.792 - 0.972 * x1.^2 / c^2 + 0.432 * x1.^4 / c^4 - 0.052 * x1.^6 / c^6 + 0.002 * x1.^8 / c^8) / 3.25;
+% 
+% % 1 if r >3*c
 end
+
+%% 
+
+
+
 %FScategory:UTISTAT

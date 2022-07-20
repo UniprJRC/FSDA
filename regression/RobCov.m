@@ -429,16 +429,14 @@ if  ~isempty(bdp)
         psifunc='TB';
         
     elseif strcmp(rhofunc,'optimal')
-        % Optimal rho function is strictly increasing on [0 3c] and constant (equal to 3.25c^2) on [3c \infty)
-        % E(\rho) = kc = (3.25c^2)*bdp = TBrho(3*c,c)*bdp, being kc the K of
+        % Optimal rho function is strictly increasing on [0 c] and constant [c \infty)
+        % E(\rho) = kc = sup(rho)*bdp =  being kc the K of
         % Rousseeuw and Leroy (1987)
         
         % Compute tuning constant associated to the requested breakdown
         % point
-        % For bdp =0.5 and optimal rho function c1=0.4046
-        % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
-        % it is necessary to divide the output of OPTbdp by 3
-        c=OPTbdp(bdp,1)/3;
+        % For bdp =0.5 and optimal rho function c1=1.2139
+        c=OPTbdp(bdp,1); 
         psifunc='OPT';
         
     elseif strcmp(rhofunc,'hyperbolic')
@@ -516,10 +514,8 @@ if  ~isempty(eff)
         
         
         % Compute tuning constant associated to the requested nominal efficiency
-        % c2 = consistency factor for a given value of efficiency
-        % Remark: given that in function OPTeff rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
-        % it is necessary to divide the output of OPTeff by 3
-        c=OPTeff(eff,1)/3;
+        % c = consistency factor for a given value of efficiency
+        c=OPTeff(eff,1); 
         
         psifunc='OPT';
         
