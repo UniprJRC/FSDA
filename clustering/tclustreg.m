@@ -373,6 +373,12 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %           out.obj   = scalar containing value of the objective function.
 %
+%          out.fullsol= Column vector of size nsamp which contains the
+%                       value of the objective function (maximized log
+%                       likelihood) at the end of the iterative process for
+%                       each extracted subsample. Note that
+%                       max(out.fullsol) is equal to out.obj.
+%
 %          out.NlogL = Scalar. -2 log classification likelihood. In
 %                       presence of full convergence -out.NlogL/2 is equal
 %                       to out.obj.
@@ -1287,6 +1293,7 @@ else
     %                         consistency factor and small sample correction factor
     out.sigma2opt_corr      = sigma2opt_corr;
     %    out.wbetaopt            = webetaopt;
+    out.fullsol=obj_all;
     
     if wtype_beta==5
         %TO BE IMPLEMENTED
