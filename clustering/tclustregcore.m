@@ -15,7 +15,7 @@ skipthin_th = 5;
 
 %monitors evolution of parameters in refining steps (just in case of
 %intercept through the origin and one regression coefficient)
-monitor = 0;
+monitor = false;
 
 % Prior estep before entering concentration steps loop
 warmingup=true;
@@ -76,12 +76,12 @@ nopt       = zeros(1,k);
 % postprob = (nxk) matrix of posterior probabilities of the obtimal subset
 postprobopt = zeros(n,k);
 
-if monitor == 1
+if monitor == true
     Beta_all   = NaN(k,refsteps,nselected);
     obj_all    = NaN(nselected, refsteps);
 else
     Beta_all=[];
-    obj_all =[];
+    obj_all =NaN(nselected,1);
 end
 
 % penalized objective function
@@ -548,7 +548,7 @@ for i =1:nselected
             case 6 % TO BE IMPLEMENTED
                 
         end
-        if monitor == 1
+        if monitor == true
             Beta_all(1:k,cstep) = Beta';
         end
         
@@ -1053,7 +1053,7 @@ for i =1:nselected
             %Penalization of objective function
             obj = 2*obj - ptermAIC;
         end
-        if monitor ==1
+        if monitor ==true
             %obj_all = (nselected x refsteps) vector containing the obj values
             %of all subsets and all concentration steps.
             obj_all(i,cstep) = obj;
@@ -1139,6 +1139,11 @@ for i =1:nselected
         
     end % Loop on the concentration steps
     
+    % Store final value of the objective function for subset j
+    if monitor==false
+        obj_all(i) = obj;
+    end
+
     %% -- END OF CONCENTRATION STEPS
     
     % monitor time execution
