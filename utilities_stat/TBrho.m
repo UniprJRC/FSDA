@@ -5,8 +5,8 @@ function rhoTB = TBrho(u,c)
 %
 %  Required input arguments:
 %
-%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
-%               vector containing residuals or Mahalanobis distances
+%    u:         scaled residuals or Mahalanobis distances. Vector. 
+%               Vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
 %    c :        tuning parameter. Scalar. Scalar greater than 0 which
 %               controls the robustness/efficiency of the estimator
