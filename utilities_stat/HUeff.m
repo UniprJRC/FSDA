@@ -66,9 +66,7 @@ function ceff = HUeff(eff,v,shapeeff)
     cc=[eff' zeros(length(eff),1)];
 
     for i=1:length(eff)
-        % Use exact formula for finding the value of c associated to a fixed
-        % level of shape efficiency
-        cc(i,2)=TBeff(eff(i),1);
+        cc(i,2)=HUeff(eff(i),1);
     end
     figure
     plot(cc(:,1),cc(:,2),'LineStyle','-','LineWidth',2)
