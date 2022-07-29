@@ -28,7 +28,7 @@ function [bdp,eff] = HUc(c,v)
 %
 % References:
 %
-%
+% Huber, P.J. (1981), "Robust Statistics", Wiley.
 % Huber, P.J. and Ronchetti, E.M. (2009), "Robust Statistics, 2nd Edition",
 % Wiley.
 %
