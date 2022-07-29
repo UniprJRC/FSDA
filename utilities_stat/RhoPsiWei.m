@@ -1,8 +1,6 @@
 function out = RhoPsiWei(u, v, varargin)
 %RhoPsiWei finds rho, psi, psi', w functions given bdp, or eff or tuning constant c
 %
-%
-%
 %<a href="matlab: docsearchFS('RhoPsiWei')">Link to the help function</a>
 %
 %
@@ -47,12 +45,9 @@ function out = RhoPsiWei(u, v, varargin)
 %    rhofunc : link function. String. String which specifies the rho
 %               function which must be used.
 %               Possible values are
-%               'bisquare';
-%               'optimal';
-%               'hyperbolic';
-%               'hampel';
-%               'mdpd'.
-%               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
+%               'TB' or ''biweight', 'OPT' or 'optimal', 'HYP' or 'hyperbolic';
+%               'HA' or 'hampel', 'PD' or 'mdpd', 'HU' or 'huber'.
+%               'biweight' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
 %               See OPTrho and OPTpsi.
@@ -62,6 +57,8 @@ function out = RhoPsiWei(u, v, varargin)
 %               See HArho and HApsi.
 %               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
+%               'hu' uses Hampel $\rho$ and $\psi$ functions.
+%               See HArho and HApsi.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - character
@@ -122,7 +119,7 @@ function out = RhoPsiWei(u, v, varargin)
 %                 kc1=E(rho)=sup(rho)*bdp
 %
 %
-% See also: OPTeff, HYPeff, HAeff
+% See also: TBrho, OPTeff, HYPc, PDeff, HUeff
 %
 % References:
 %
@@ -192,8 +189,10 @@ function out = RhoPsiWei(u, v, varargin)
     n=20;
     u=randn(n,1);
     rhofunc='HA';
+    rhofuncparam=[2 3 8];
+    eff=.95;
     c=0.5;
-    out=RhoPsiWei(u,1,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',[2 3 8]);
+    out=RhoPsiWei(u,1,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam);
 %}
 
 %{
@@ -236,6 +235,16 @@ function out = RhoPsiWei(u, v, varargin)
     k=4.2;
     out=RhoPsiWei(u,1,'bdp',0.2,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',k);
     out=RhoPsiWei(u,1,'c',0.2,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',k);
+%}
+
+%{
+    % Example of call to RhoPsiWei with u empty
+    % In this case fiels psi, psider, psix and wei are empty
+    n=20;
+    u=randn(n,1);
+    rhofunc='PD';
+    eff=0.9;
+    out=RhoPsiWei([],1,'eff',eff,'rhofunc',rhofunc);
 %}
 
 %% Beginning of code
@@ -297,7 +306,7 @@ else
     unonempty=true;
 end
 
-if strcmp(rhofunc,'TB')
+if strcmp(rhofunc,'TB') || strcmp(rhofunc,'biweight')
     % TUKEY BIWEIGHT
     if ~isempty(c)
         bdp=TBc(c,v);
@@ -327,7 +336,7 @@ if strcmp(rhofunc,'TB')
         out.wei=TBwei(u,c);
     end
 
-elseif strcmp(rhofunc,'OPT')
+elseif strcmp(rhofunc,'OPT') || strcmp(rhofunc,'optimal')
     % OPTIMAL
     if ~isempty(c)
         bdp=OPTc(c,v);
@@ -343,7 +352,7 @@ elseif strcmp(rhofunc,'OPT')
     out.kc1=bdp;
     out.bdp=bdp;
 
-     % Find efficiency
+    % Find efficiency
     [~,eff]=OPTc(c,v);
     out.eff=eff;
 
@@ -355,7 +364,7 @@ elseif strcmp(rhofunc,'OPT')
         out.wei=OPTwei(u,c);
     end
 
-elseif strcmp(rhofunc,'HA')
+elseif strcmp(rhofunc,'HA') || strcmp(rhofunc,'hampel')
     % HAMPEL
     out.class='HA';
     if isempty(rhofuncparam)
@@ -384,7 +393,7 @@ elseif strcmp(rhofunc,'HA')
     out.kc1=HArho(cHA*abc(3),[cHA abc])*bdp;
     out.bdp=bdp;
 
-     % Find efficiency
+    % Find efficiency
     [~,eff]=HAc(cHA,v,'param',abc);
     out.eff=eff;
 
@@ -397,7 +406,7 @@ elseif strcmp(rhofunc,'HA')
     end
 
 
-elseif strcmp(rhofunc,'HYP')
+elseif strcmp(rhofunc,'HYP') || strcmp(rhofunc,'hyperbolic')
     % HYPERBOLIC
     out.class='HYP';
 
@@ -424,7 +433,7 @@ elseif strcmp(rhofunc,'HYP')
     out.kc1=rhoHYPsup*bdp;
     out.bdp=bdp;
 
-         % Find efficiency
+    % Find efficiency
     [~,eff]=HYPc(c1(1),v,'k',k,'param',[A,B,d]);
     out.eff=eff;
 
@@ -438,7 +447,7 @@ elseif strcmp(rhofunc,'HYP')
     end
 
 
-elseif strcmp(rhofunc,'PD')
+elseif strcmp(rhofunc,'PD') || strcmp(rhofunc,'mdpd')
     % POWER DIVERGENCE
 
     if ~isempty(c)
@@ -466,6 +475,42 @@ elseif strcmp(rhofunc,'PD')
         out.psider=PDpsider(u,c);
         out.psix=PDpsix(u,c);
         out.wei=PDwei(u,c);
+    end
+
+elseif strcmp(rhofunc,'HU') || strcmp(rhofunc,'huber')
+    % HUBER
+
+    if ~isempty(c)
+        bdp=HUc(c,1);
+    elseif ~isempty(eff)
+        c=HUeff(eff,1);
+        bdp=HUc(c,1);
+    else
+        if bdp==0.5
+            c=0;
+        else
+            warning('FSDA:RhoPsiWei:WrongInputOpt','Huber link can have a bdp strictly greater than 0 only when c=0');
+            c=NaN;
+            bdp=NaN;
+        end
+    end
+
+
+    out.class='HU';
+    out.c1=c;
+    out.kc1=Inf;
+    out.bdp=bdp;
+
+    % Find efficiency
+    [~,eff]=HUc(c);
+    out.eff=eff;
+
+    if unonempty==true
+        out.rho=HUrho(u,c);
+        out.psi=HUpsi(u,c);
+        out.psider=HUpsider(u,c);
+        out.psix=HUpsix(u,c);
+        out.wei=HUwei(u,c);
     end
 else
     error('rho function not supported by code generation')
