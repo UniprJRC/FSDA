@@ -233,8 +233,8 @@ function out = RhoPsiWei(u, v, varargin)
     u=-4:0.01:4;
     rhofunc='HYP';
     k=4.2;
+    eff=0.85;
     out=RhoPsiWei(u,1,'bdp',0.2,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',k);
-    out=RhoPsiWei(u,1,'c',0.2,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',k);
 %}
 
 %{
