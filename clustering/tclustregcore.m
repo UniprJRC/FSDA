@@ -660,7 +660,11 @@ for i =1:nselected
         % qqunassigned_small = a n-by-1 Boolean vector
         % containing true for the units which
         % have to be trimmed)
-        qqunassigned_small = cumsumww <= n*alphaLik;
+        if alphaLik < 1
+            qqunassigned_small = cumsumww <= n*alphaLik;
+        else
+            qqunassigned_small = cumsumww <= alphaLik;
+        end
         
         % qqunassigned = indexes of units subject to first
         % level trimming
