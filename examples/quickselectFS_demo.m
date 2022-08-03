@@ -193,5 +193,4 @@ frecce(left,right,hhh,hl,hr,hp);
 
 
 end
-
-%FScategory:UTIGEN
+%FScategory:GUI
