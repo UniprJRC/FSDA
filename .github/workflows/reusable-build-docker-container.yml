@@ -1,0 +1,58 @@
+---
+name: "reusable-build-docker-container"
+
+on:
+  workflow_call:
+    inputs:
+      matlab-release:
+        required: false
+        type: string
+        default: latest
+      fsda-release:
+        required: true
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Checkout on your repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Define a new environment variable called IMAGE_NAME that is a lowercase version of
+      # ${{ github.repository }} - since docker cannot tolerate upper case chars in the repo or
+      # image name
+      - name: Convert repostitory name to lowercase
+        run: |
+          echo "IMAGE_NAME=${REPO_NAME,,}" >> ${GITHUB_ENV}
+        env:
+          REPO_NAME: ${{ github.repository }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: "./docker"
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.fsda-release }}-${{ inputs.matlab-release }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            FSDA_RELEASE=${{ inputs.fsda-release }}
+            MATLAB_DOCKER_TAG=${{ inputs.matlab-release }}
+            SRC_REPO=${{ github.repository }}   
