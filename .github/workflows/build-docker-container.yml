@@ -1,0 +1,26 @@
+---
+name: "build-docker-container"
+
+# To release a specific docker container using this workflow you can use the github CLI to trigger a
+# dispatch (or you can go to the action in github.com and trigger directly from there)
+#
+#    gh workflow run -F fsda-release=0.1.8 -F matlab-release=r2021b .github/workflows/build-docker-container.yml
+
+on:
+  workflow_dispatch:
+    inputs:
+      matlab-release:
+        required: false
+        type: string
+        default: latest
+      fsda-release:
+        required: true
+        type: string
+
+jobs:
+  build-docker-container:
+    uses: ./.github/workflows/reusable-build-docker-container.yml
+    with:
+      matlab-release: ${{ github.event.inputs.matlab-release }}
+      fsda-release: ${{ github.event.inputs.fsda-release }}
+    secrets: inherit
