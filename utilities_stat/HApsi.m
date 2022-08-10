@@ -12,7 +12,7 @@ function psiHA = HApsi(u, ctuning)
 %                length 4 which specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
-%                and the prefixed values of paramters a, b, c
+%                and the prefixed values of paramters a, b, c.
 %                ctuning(1) = tuning constant which will multiply
 %                parameters a, b and c of Hampel rho (psi) function
 %                ctuning(2) = paramter a of Hampel rho (psi) function
