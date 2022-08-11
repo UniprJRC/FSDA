@@ -128,7 +128,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %               See PDrho.m and PDpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
-%                 Data Types - double
+%                 Data Types - character
 %
 % rhofuncparam: Additional parameters for the specified rho function.
 %               Scalar or vector.

@@ -7,7 +7,7 @@ function psix=PDpsix(u,alpha)
 %
 %  Required input arguments:
 %
-%    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
+%    u:         scaled residuals or Mahalanobis distances. Vector. 
 %               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
 %    alpha :    tuning parameter. Scalar. Scalar in the interval (0,1] which
@@ -21,7 +21,7 @@ function psix=PDpsix(u,alpha)
 %  Output:
 %
 %
-%   psix :     n x 1 vector which contains the values of PD psi(u)*u
+%   psix :     vector which contains the values of PD psi(u)*u
 %                function associated to the residuals or Mahalanobis
 %                distances for the n units of the sample.
 %

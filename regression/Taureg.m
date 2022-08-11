@@ -43,19 +43,25 @@ function [out , varargout] = Taureg(y, X, varargin)
 %
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals.
-%               Possible values are 'bisquare',
-%               'optimal', 'hyperbolic', 'hampel'.
-%               'bisquare' uses Tukey's $\rho$ and $\psi$ functions, see
-%               TBrho and TBpsi.
-%               'optimal' uses optimal $\rho$ and $\psi$ functions, see
-%               OPTrho and OPTpsi.
-%               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions,
-%               see HYPrho and HYPpsi.
-%               'hampel' uses Hampel $\rho$ and $\psi$ functions, see HArho
-%               and HApsi.
+%               Possible values are
+%               'bisquare'
+%               'optimal'
+%               'hyperbolic'
+%               'hampel'
+%               'mdpd'.
+%               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
+%               See TBrho.m and TBpsi.m.
+%               'optimal' uses optimal $\rho$ and $\psi$ functions.
+%               See OPTrho.m and OPTpsi.m.
+%               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
+%               See HYPrho.m and HYPpsi.m.
+%               'hampel' uses Hampel $\rho$ and $\psi$ functions.
+%               See HArho.m and HApsi.m.
+%               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
+%               See PDrho.m and PDpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
-%                 Data Types - char
+%                 Data Types - character
 %
 % rhofuncparam: Additional parameters for the specified rho function.
 %               Scalar or vector.
@@ -207,7 +213,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 % References:
 %
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
-% and Methods", Wiley, New York.
+%   and Methods", Wiley, New York.
 % Salibian-Barrera, M., Willems, G. and Zamar, R.H. (2008), The fast-tau
 %   estimator for regression, "Journal of Computational and Graphical
 %   Statistics", Vol. 17, pp. 659-682. [Referred below as SBWZ08].
@@ -407,19 +413,19 @@ rhofunc=options.rhofunc;        % String which specifies the function to use to 
 psifunc=struct;
 
 if strcmp(rhofunc,'bisquare')
-    
+
     % Tukey's biweight is strictly increasing on [0 c] and constant (equal to c^2/6) on [c \infty)
     % E(\rho) = kc = (c^2/6)*bdp = TBrho(c,c)*bdp, being kc the K of Rousseeuw
     % and Leroy (1987)
-    
-    
+
+
     % Compute tuning constant associated to the requested breakdown
     % point
     % For bdp =0.5 and Tukey biweight rho function c1=1.5476
     c1=TBbdp(bdp,1);
     % kc1 = E(rho) = sup(rho)*bdp
     kc1=TBrho(c1,c1)*bdp;
-    
+
     % Compute tuning constant associated to the requested nominal efficiency
     % c2 = consistency factor for a given value of efficiency
     c2=TBeff(eff,1);
@@ -428,43 +434,43 @@ if strcmp(rhofunc,'bisquare')
     % E(rho_2) is nothing but the breakdown point associated to c2
     % else it is bdp2*sup(rho)
     kc2=TBc(c2,1)*TBrho(c2,c2);
-    
-    
+
+
     psifunc.c1=c1;
     psifunc.kc1=kc1;
     psifunc.c2=c2;
     psifunc.class='TB';
-    
+
 elseif strcmp(rhofunc,'optimal')
-    
+
     % Compute tuning constant associated to the requested breakdown
     % point
-    c1=OPTbdp(bdp,1); 
+    c1=OPTbdp(bdp,1);
     % kc1 = E(rho) = sup(rho)*bdp
     kc1=OPTrho(c1,c1)*bdp;
-    
+
     % Compute tuning constant associated to the requested nominal efficiency
     % c2 = consistency factor for a given value of efficiency
-    c2=OPTeff(eff,1); 
+    c2=OPTeff(eff,1);
     % b2 = E(rho_2).
     % Note that given that \rho is standardized in such a way that \rho(c)=1
     % E(rho_2) is nothing but the breakdown point associated to c2
     kc2=OPTc(c2,1);
-    
+
     psifunc.c1=c1;
     psifunc.kc1=kc1;
     psifunc.c2=c2;
     psifunc.class='OPT';
-    
+
 elseif strcmp(rhofunc,'hyperbolic')
-    
+
     if isempty(options.rhofuncparam)
         kdef=4.5;
     else
         kdef=options.rhofuncparam;
     end
     rhofuncparam=kdef;
-    
+
     % Use (if possible) precalculated values of c,A,b,d and kc
     if kdef == 4 && bdp==0.5
         c1 =2.158325031399727;
@@ -472,7 +478,7 @@ elseif strcmp(rhofunc,'hyperbolic')
         B1 =0.006991738279441;
         d1 =0.016982948780061;
         kc1=0.010460153813287;
-        
+
     elseif kdef == 4.5 && bdp==0.5
         c1 =2.010311082005501;
         A1 =0.008931591866092;
@@ -485,16 +491,16 @@ elseif strcmp(rhofunc,'hyperbolic')
         B1 =0.083526860351552;
         d1 =0.221246910095216;
         kc1=0.116380290077336;
-        
+
     else
-        
+
         % Compute tuning constant associated to the requested breakdown
         % point
         [c1,A1,B1,d1]=HYPbdp(bdp,1,kdef);
         % kc1 = E(rho) = sup(rho)*bdp
         kc1=HYPrho(c1,[c1,kdef,A1,B1,d1])*bdp;
     end
-    
+
     if kdef == 4 && eff==0.85
         c2 =3.212800979614258;
         A2 =0.570183575755717;
@@ -513,7 +519,7 @@ elseif strcmp(rhofunc,'hyperbolic')
         B2 =0.743433840145084;
         d2 =1.419320821762087;
         kc2=0.455326016919854;
-        
+
     elseif kdef == 4 && eff==0.95
         c2 =4.331634521484375;
         A2 =0.754327484845243;
@@ -532,9 +538,9 @@ elseif strcmp(rhofunc,'hyperbolic')
         B2 =0.882004888111327;
         d2 =1.723768949508668;
         kc2=0.483053062139011;
-        
+
     else
-        
+
         % Compute tuning constant associated to the requested nominal efficiency
         % c2 = consistency factor for a given value of efficiency
         [c2,A2,B2,d2]=HYPeff(eff,1,kdef);
@@ -544,32 +550,32 @@ elseif strcmp(rhofunc,'hyperbolic')
         % else it is bdp2*sup(rho)
         kc2=HYPc(c2,1,'k',kdef,'param',[A2 B2 d2])*HYPrho(c2,[c2 kdef A2 B2 d2]);
     end
-    
+
     psifunc.c1=[c1;kdef;A1;B1;d1];
     psifunc.kc1=kc1;
-    
+
     psifunc.c2=[c2;kdef;A2;B2;d2];
     psifunc.class='HYP';
-    
+
     c1=psifunc.c1;
     c2=psifunc.c2;
-    
+
 elseif strcmp(rhofunc,'hampel')
-    
+
     if isempty(options.rhofuncparam)
         abc=[2;4;8];
     else
         abc=options.rhofuncparam(:);
     end
     rhofuncparam=abc;
-    
+
     % Compute tuning constant associated to the requested breakdown
     % point
     c1=HAbdp(bdp,1,abc);
     % kc = E(rho) = sup(rho)*bdp
     kc1=HArho(c1*abc(3),[c1; abc])*bdp;
-    
-    
+
+
     % Compute tuning constant associated to the requested nominal efficiency
     % c2 = consistency factor for a given value of efficiency
     c2=HAeff(eff,1,abc);
@@ -578,19 +584,39 @@ elseif strcmp(rhofunc,'hampel')
     % E(rho_2) is nothing but the breakdown point associated to c2
     % else it is bdp2*sup(rho)
     kc2=HAc(c2,1,'param',abc)* HArho(c2*abc(3),[c2; abc]);
-    
+
     psifunc.c1=[c1;abc];
     psifunc.kc1=kc1;
-    
+
     psifunc.c2=[c2;abc];
     psifunc.class='HA';
-    
+
     c1=psifunc.c1;
     c2=psifunc.c2;
-    
+
+elseif strcmp(rhofunc,'mdpd')
+    c1=PDbdp(bdp);
+    % kc1 = E(rho) = sup(rho)*bdp
+    kc1=bdp;
+
+    c2=PDeff(eff);
+    % b2 = E(rho_2).
+    % Note that given that if \rho is standardized in such a way that \rho(c)=1
+    % E(rho_2) is nothing but the breakdown point associated to c2
+    % else it is bdp2*sup(rho)
+    kc2=PDc(c2);
+
+    psifunc.c1=c1;
+    psifunc.kc1=kc1;
+
+    psifunc.c2=c2;
+    psifunc.class='PD';
+
+    c2=psifunc.c2;
+
 else
     error('FSDA:Taureg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
-    
+
 end
 
 XXrho=strcat(psifunc.class,'rho');
@@ -635,21 +661,21 @@ time=zeros(tsampling,1);
 
 
 for i = 1:nselected
-    
-    
+
+
     if i <= tsampling, tic; end
-    
+
     % extract a subset of size p
     index = C(i,:);
-    
+
     Xb = X(index,:);
     yb = y(index);
-    
+
     % beta estimate
     beta = Xb\yb;
-    
+
     if ~isnan(beta(1)) && ~isinf(beta(1))
-        
+
         % do refsteps refining (concentration) steps
         if refsteps>0
             tmp = IRWLSregTau(y, X, beta, psifunc, refsteps, reftol);
@@ -662,8 +688,8 @@ for i = 1:nselected
             resrw = y - X * betarw;
             scalerw = median(abs(resrw))/.6745;
         end
-        
-        
+
+
         % To find the best estimate of the tau scale, save first the best bestr
         % scales (deriving from non singular subsets) and, from iteration
         % bestr+1 (associated to another non singular subset), replace the
@@ -676,19 +702,19 @@ for i = 1:nselected
             % smaller value of the s scale
             % but it is just necessary (not sufficient) to obtain a
             % smaller estimate of the tau scale
-            
+
             % Use function handle hrho. For example if
             % for optimal psi hrho=OPTrho
             % scaletest1 = mean(OPTrho(resrw/worsts,c1)) < kc1;
             scaletest1=mean(feval(hrho,resrw/worsts,c1))< kc1;
-            
+
             % Condition 2: equation (2.6) of SBWZ08
             % Also this condition is necessary but not sufficient
             % scaletest2 = sum(OPTrho(resrw/worsts,c2)) < sum(OPTrho(worstres/worsts,c2));
             scaletest2=sum(feval(hrho,resrw/worsts,c2))< sum(feval(hrho,worstres/worsts,c2));
-            
+
             if (scaletest1 || scaletest2)
-                
+
                 % Find M estimator of the scale using consistency factor
                 % c1 (associated to break down point)
                 news = Mscale(resrw, psifunc, scalerw, minsctol);
@@ -698,10 +724,10 @@ for i = 1:nselected
                 % necessary to divide newtau by sqrt bdp2.
                 % Note that in this case rhoOptfun uses consistency factor c2
                 % (associated to nominal asymptotic efficiency)
-                
+
                 % newtau = news * sqrt(mean(OPTrho(resrw/news,c2)));
                 newtau = news * sqrt(mean(feval(hrho,resrw/news,c2)));
-                
+
                 % Given that the two previous conditions were just necessary but not
                 % sufficient the following if is necessary
                 if newtau < worsttau
@@ -716,13 +742,13 @@ for i = 1:nselected
                 end
             end
         else
-            
+
             news = Mscale(resrw, psifunc, scalerw, minsctol);
             % news1 = minscale(resrw, c1, kc1, scalerw, minsctol);
-            
+
             % newtau = news * sqrt(mean(OPTrho(resrw/news,c2)));
             newtau = news * sqrt(mean(feval(hrho,resrw/news,c2)));
-            
+
             bestscales(ij) = news;
             besttauscales(ij) =newtau;
             bestsubset(ij,:) = index;
@@ -738,7 +764,7 @@ for i = 1:nselected
     else
         singsub=singsub+1;
     end
-    
+
     % Write total estimation time to compute final estimate
     if i <= tsampling
         % sampling time until step tsampling
@@ -749,7 +775,7 @@ for i = 1:nselected
             fprintf('Total estimated time to complete tau estimate: %5.2f seconds \n', nselected*median(time));
         end
     end
-    
+
 end
 
 % perform C-steps on best 'bestr' solutions, till convergence or for a
@@ -761,11 +787,11 @@ superbesttauscale = Inf;
 for i=1:bestr
     tmp = IRWLSregTau(y, X, bestbetas(i,:)', psifunc, refstepsbestr, reftolbestr, bestscales(i));
     resrw = y - X * tmp.betarw;
-    
+
     % tauscalerw = tmp.scalerw * sqrt(mean(OPTrho(resrw/tmp.scalerw,c2)));
     tauscalerw = tmp.scalerw * sqrt(mean(feval(hrho,resrw/tmp.scalerw,c2)));
-    
-    
+
+
     if tauscalerw < superbesttauscale
         superbesttauscale = tauscalerw;
         superbestscale=tmp.scalerw;
@@ -945,19 +971,19 @@ iter = 0;
 
 betadiff=9999;
 while (betadiff > reftol) && (iter < refsteps)
-    
+
     iter = iter + 1;
-    
+
     % One iteration for the scale
     % meanrho=mean( OPTrho(res/scale,c1) );
     meanrho=mean(feval(hrho,res/scale,c1));
-    
+
     scale = scale*sqrt( meanrho / kc1 );
-    
+
     scaledres = res/scale;
-    
+
     % Compute n x 1 vector of weights (using requested weight function)
-    
+
     % Wn_numer = \sum_{i=1}^n [ 2 \rho(x) -\psi(x)*x ]
     % \sum [ 2 \rho(scaledres) -\psi(scaledres)*scaledres ]
     % (using consistency factor c2)
@@ -965,45 +991,45 @@ while (betadiff > reftol) && (iter < refsteps)
     % sum(2*OPTrho(scaledres,c2)-OPTpsix(scaledres,c2))
     % Wn_numer = sum(WnumerOptfun(scaledres,c2));
     % Wn_numer=sum(2*OPTrho(scaledres,c2)-OPTpsix(scaledres,c2));
-    
+
     Wn_numer=sum(2*feval(hrho,scaledres,c2)-feval(hpsix,scaledres,c2));
-    
+
     % Wn_denom = \sum_{i=1}^n psi(scaledres)*scaledres
     % See denominator of equation 2.8 of Yohai and Zamar
     % Wn_denom = sum(OPTpsix(scaledres,c1));
     Wn_denom = sum(feval(hpsix,scaledres,c1));
-    
+
     Wn = Wn_numer/Wn_denom;
     % OPTwei = psi(x)/x
     % Vector weights is Wn*psi(x,c1)/x+psi(x,c2)/x
     % see page 409 YZ88 or page 664 below equation (2.1) of SBWZ08
     % weights = Wn*OPTwei(scaledres,c1)+OPTwei(scaledres,c2);
     weights = Wn*feval(hwei,scaledres,c1)+feval(hwei,scaledres,c2);
-    
-    
+
+
     sqweights = weights.^(1/2);
-    
+
     % Xw = [X(:,1) .* sqweights X(:,2) .* sqweights ... X(:,end) .* sqweights]
     Xw = bsxfun(@times, X, sqweights);
     yw = y .* sqweights;
-    
+
     % New estimate of beta from (re)weighted regression (RWLS)
     newbeta = Xw\yw;
-    
-    
+
+
     if (any(isnan(newbeta)))
         newbeta = initialbeta;
         scale = initialscale;
         weights = NaN;
         break
     end
-    
+
     %  betadiff = norm(beta - newbeta)/sqrt(p);
-    
+
     % betadiff is linked to the tolerance (specified in scalar reftol)
     betadiff = norm(beta - newbeta,1) / norm(beta,1);
-    
-    
+
+
     res = y - X * newbeta;
     beta = newbeta;
 end
