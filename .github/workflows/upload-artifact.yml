@@ -16,6 +16,10 @@ jobs:
        
   archive-build-artifacts:
     runs-on: ubuntu-latest
+    
+    outputs: 
+      fsda-release: ${{ steps.extract_tag.outputs.tag }}
+
     steps:
       - name: Checkout on your repository
         uses: actions/checkout@v1
@@ -31,7 +35,16 @@ jobs:
           draft: false
           prerelease: false
 
+      # Forks of this repo can have failed to build the MLTBX output so conditionally check for its 
+      # existence and let other steps know about this.
+      - name: Check MLTBX file exists
+        id: mltbx-check
+        shell: bash
+        run: |
+          echo "::set-output name=exist::$(test -f ./bin/FSDA.mltbx && echo true || echo false)"
+
       - name: Upload Release Asset
+        if: ${{ steps.mltbx-check.outputs.exist == 'true' }}
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
         env:
@@ -43,3 +56,16 @@ jobs:
           asset_path: ./bin/FSDA.mltbx
           asset_name: FSDA.mltbx
           asset_content_type: application/gzip
+
+      - name: Extract tag from this release
+        id: extract_tag
+        shell: bash
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/*/}"
+      
+  build-docker-container:
+    needs: archive-build-artifacts
+    uses: ./.github/workflows/reusable-build-docker-container.yml
+    with:
+      matlab-release: latest
+      fsda-release: ${{ needs.archive-build-artifacts.outputs.fsda-release }}
+    secrets: inherit

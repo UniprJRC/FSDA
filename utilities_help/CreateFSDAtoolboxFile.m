@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.29';
+newVersion = '8.5.32';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='New datasets added';
+commentRelease='Docker second test';
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
@@ -123,14 +123,20 @@ if exist(folder_to_remove,'dir') ==7
     rmdir(folder_to_remove,'s')
 end
 
-% remove subfolder .github
+% remove subfolder .circleci
 folder_to_remove=[FSroot fsep '.circleci'];
 if exist(folder_to_remove,'dir') ==7
     rmdir(folder_to_remove,'s')
 end
 
-% remove subfolder .Univ
+% remove subfolder Univ
 folder_to_remove=[FSroot fsep 'Univ'];
+if exist(folder_to_remove,'dir') ==7
+    rmdir(folder_to_remove,'s')
+end
+
+% remove subfolder docker
+folder_to_remove=[FSroot fsep 'docker'];
 if exist(folder_to_remove,'dir') ==7
     rmdir(folder_to_remove,'s')
 end

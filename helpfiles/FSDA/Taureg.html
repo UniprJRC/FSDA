@@ -16,7 +16,7 @@ y=randn(n,1);
 % Contaminated data
 ycont=y;
 ycont(1:5)=ycont(1:5)+6;
-[out]=Taureg(ycont,X,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete tau estimate:  1.98 seconds 
+[out]=Taureg(ycont,X,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete tau estimate:  2.21 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/Taureg.html#Example_2'><img vspace="5" hspace="5" src="images\Taureg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Taureg with optimal rho function.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 p=3;
 randn('state', 123456);
@@ -85,19 +85,25 @@ rhofuncparam=[1.5 3.5 8];
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofunc" class="clearfix"></div><h3 id="input_argument_namevalue_rhofunc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofunc</code> &#8212;rho function.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which specifies the rho
                function which must be used to weight the residuals.</p> <p>
-               Possible values are 'bisquare',
-               'optimal', 'hyperbolic', 'hampel'.</p> <p>
-               'bisquare' uses Tukey's $\rho$ and $\psi$ functions, see
-               TBrho and TBpsi.</p> <p>
-               'optimal' uses optimal $\rho$ and $\psi$ functions, see
-               OPTrho and OPTpsi.</p> <p>
-               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions,
-               see HYPrho and HYPpsi.</p> <p>
-               'hampel' uses Hampel $\rho$ and $\psi$ functions, see HArho
-               and HApsi.</p><p>
+               Possible values are
+               'bisquare'
+               'optimal'
+               'hyperbolic'
+               'hampel'
+               'mdpd'.</p> <p>
+               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.</p> <p>
+               See <a href="TBrho.html">TBrho</a> and <a href="TBpsi.html">TBpsi</a>.</p> <p>
+               'optimal' uses optimal $\rho$ and $\psi$ functions.</p> <p>
+               See <a href="OPTrho.html">OPTrho</a> and <a href="OPTpsi.html">OPTpsi</a>.</p> <p>
+               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.</p> <p>
+               See <a href="HYPrho.html">HYPrho</a> and <a href="HYPpsi.html">HYPpsi</a>.</p> <p>
+               'hampel' uses Hampel $\rho$ and $\psi$ functions.</p> <p>
+               See <a href="HArho.html">HArho</a> and <a href="HApsi.html">HApsi</a>.</p> <p>
+               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.</p> <p>
+               See <a href="PDrho.html">PDrho</a> and <a href="PDpsi.html">PDpsi</a>.</p><p>
                The default is bisquare
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofunc','optimal'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the
                value of k = sup CVC (the default value of k is 4.5).</p> <p>
                For Hampel rho function it is possible to define parameters
                a, b and c (the default values are a=2, b=4, c=8)
@@ -189,7 +195,7 @@ rhofuncparam=[1.5 3.5 8];
                        yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'Taureg'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices of the subsamples
                        extracted for computing the estimate (the so called
                        elemental sets).</span></a><span class="example_desc"><code>C        : </code>matrix</span></span></h3><div class="collapse"><p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
- and Methods", Wiley, New York.</p></div><div><p>Salibian-Barrera, M., Willems, G. and Zamar, R.H. (2008), The fast-tau
+   and Methods", Wiley, New York.</p></div><div><p>Salibian-Barrera, M., Willems, G. and Zamar, R.H. (2008), The fast-tau
    estimator for regression, "Journal of Computational and Graphical
    Statistics", Vol. 17, pp. 659-682. [Referred below as SBWZ08].</p></div><div><p><p>Yohai V.J. and Zamar R.H. (1988), High Breakdown-Point Estimates of
    Regression by Means of the Minimization of an Efficient Scale, "Journal
