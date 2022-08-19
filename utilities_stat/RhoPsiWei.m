@@ -68,7 +68,10 @@ function out = RhoPsiWei(u, v, varargin)
 %               For hyperbolic rho function it is possible to set up the
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
-%               a, b and c (the default values are a=2, b=4, c=8)
+%               a, b and c (the default values are a=2, b=4, c=8). For
+%               Hyperbolic link function it is possible to pass either one
+%               parameter, k (default is k=4.5) or four parameters: k, A, B
+%               and d.
 %                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %
@@ -226,6 +229,24 @@ function out = RhoPsiWei(u, v, varargin)
 %}
 
 %{
+    %% Example of calling RhoPsiWei with all parameters related to the constant: c, k, A, B and d
+    % First call RhoPsiWei with efficiency fixed and then use the
+    %   calculated constant for a second call - it will be much faster
+    n=20;
+    u=-4:0.01:4;
+    rhofunc='HYP';
+    k=4.2;
+    eff=0.9;
+    out=RhoPsiWei(u,1,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',k);
+    out1=RhoPsiWei(u,1,'c',out.c1(1),'rhofunc',rhofunc,'rhofuncparam',out.c1(2:5));
+    isequal(out.rho, out1.rho)
+    isequal(out.psi, out1.psi)
+    [bdp1, eff1]=HYPc(out.c1(1), 1, 'k', out.c1(2), 'param', out.c1(3:5));
+    isequal(out.bdp, bdp1)
+    isequal(out.eff, eff1)
+
+%}
+%{
     % Example of call to RhoPsiWei with both bdp and eff.
     % In this case, given that it is possible to supply just one between bdp,
     % eff and c the call throws an error
@@ -306,7 +327,7 @@ else
     unonempty=true;
 end
 
-if strcmp(rhofunc,'TB') || strcmp(rhofunc,'biweight')
+if strcmp(rhofunc,'TB') || strcmp(rhofunc,'biweight') || strcmp(rhofunc,'bisquare')
     % TUKEY BIWEIGHT
     if ~isempty(c)
         bdp=TBc(c,v);
@@ -410,33 +431,38 @@ elseif strcmp(rhofunc,'HYP') || strcmp(rhofunc,'hyperbolic')
     % HYPERBOLIC
     out.class='HYP';
 
+    param=[];
     if isempty(rhofuncparam)
         k=4.5;
     else
-        k=rhofuncparam;
+        k=rhofuncparam(1);
+        if length(rhofuncparam) == 4
+            param=rhofuncparam(2:4);
+        end
     end
 
     if ~isempty(c)
-        bdp=HYPc(c,v,'k',k);
+        if isempty(param)
+            [bdp, eff, A, B, d]=HYPc(c,v,'k',k);
+        else
+            [bdp, eff, A, B, d]=HYPc(c,v,'k',k, 'param', param);
+        end
     elseif ~isempty(eff)
-        ceff=HYPeff(eff,v,k);
-        bdp=HYPc(ceff,v,'k',k);
+        [c, A, B, d]=HYPeff(eff,v,k);
+        bdp=HYPc(c,v,'k',k, 'param', [A B d]);
     else
+        [c, A, B, d]=HYPbdp(bdp,v,k);
+        [~,eff]=HYPc(c,v,'k',k, 'param', [A B d]);
     end
 
 
-    [cHYP,A,B,d]=HYPbdp(bdp,1,k);
-    rhoHYPsup=HYPrho(200000,[cHYP,k,A,B,d]);
-    c1=[cHYP,k,A,B,d];
+    rhoHYPsup=HYPrho(200000,[c,k,A,B,d]);
+    c1=[c,k,A,B,d];
     out.c1=c1;
     % kc = E(rho) = sup(rho)*bdp
     out.kc1=rhoHYPsup*bdp;
     out.bdp=bdp;
-
-    % Find efficiency
-    [~,eff]=HYPc(c1(1),v,'k',k,'param',[A,B,d]);
     out.eff=eff;
-
 
     if unonempty==true
         out.rho=HYPrho(u,c1);
