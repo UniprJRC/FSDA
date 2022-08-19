@@ -48,9 +48,12 @@ function out = GUIquantile(x, z, varargin)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table.
-%          Table with n+1 rows (where n is the length of x) containing
-%          what is shown in the GUI. Last row contains the totals.
+%    out = detailed output to compute the index. struct.
+%         out.quantile = shows the value of the quantile which has been
+%         found.
+%         out.data = table with n+1 rows (where n is the length of x) containing
+%          what is shown in the GUI. Last row contains the totals. This
+%          field is present only if optional input freq is supplied.
 %
 %
 %
@@ -84,7 +87,8 @@ function out = GUIquantile(x, z, varargin)
     % freq = Number of families (in thousands).
     x=1:6;
     freq=[7910 6833 5116 4051 1088  303];
-    GUIquantile(x,0.5,'freq',freq,'DiscreteData',true)
+    out=GUIquantile(x,0.5,'freq',freq,'DiscreteData',true);
+    disp(out)
 %}
 
 
@@ -168,12 +172,23 @@ if isempty(freq)
     xlabel('x and requested quantile')
     ylabel('Probability')
     % plot(probadd,xadd,'r')
-    x=double(x);
+    if isordinal(x)
+        isord=true;
+        categx=categories(x);
+        x=double(x);
+    else
+        isord=false;
+    end
     quan=quantile(x,z);
     % interp1(probadd,xadd,0.4)
     hold('on')
     plot([quan; quan; min(x)],[0; z; z],'k--')
+    if isord==false
     text(quan, 0.05,['x_{' num2str(z) '}=' num2str(quan)],'FontSize',16)
+    else
+    text(quan, 0.05,['x_{' num2str(z) '}=' categx{quan}],'FontSize',16)
+    quan=categx{quan};
+    end
     % freqcum=cumsum((1/n)*ones(n,1))
     h=cdfplot(x);
     h.Color='b';
