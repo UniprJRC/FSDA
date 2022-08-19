@@ -12,7 +12,7 @@ function out = GUIquantile(x, z, varargin)
 %           represent the lower extreme of the first class, and the other
 %           values of x contain the upper extremes of the other
 %           classes.
-%           Data Types - double
+%           Data Types - double, ordered categorical
 %
 %     z : requested probability. Scalar.
 %           Requested probabilities for which to compute the quantile,
@@ -168,6 +168,7 @@ if isempty(freq)
     xlabel('x and requested quantile')
     ylabel('Probability')
     % plot(probadd,xadd,'r')
+    x=double(x);
     quan=quantile(x,z);
     % interp1(probadd,xadd,0.4)
     hold('on')
