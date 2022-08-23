@@ -100,6 +100,27 @@ function add2boxplot(Y,g)
     add2boxplot(Yst)
 %}
 
+%{
+    %% An example where Y is table and there are subplots.
+    load citiesItaly.mat
+    close all
+    citiesItaly{:,:}=zscore(citiesItaly{:,:});
+    
+    subplot(1,2,1)
+    Yst=citiesItaly{1:46,:};
+    Ystt=citiesItaly(1:46,:);
+    boxplot(Yst,'Labels',citiesItaly.Properties.VariableNames,'Jitter',0);
+    add2boxplot(Ystt)
+    title("Towns from north of Italy")
+
+    subplot(1,2,2)
+    Yst1=citiesItaly{47:end,:};
+    Yst1t=citiesItaly(47:end,:);
+    boxplot(Yst1,'Labels',citiesItaly.Properties.VariableNames,'Jitter',0);
+    add2boxplot(Yst1t)
+    title("Towns from center and south of Italy")
+
+%}
 %% Beginning of code
 if nargin>1
     unig=unique(g,'stable');
@@ -107,15 +128,30 @@ else
     unig='';
 end
 
-% Find in current figure the objects which are tagged as outlies
+% Find in current figure the objects which are tagged as outliers
 objOutliers = findobj(gcf,'Tag','Outliers');
 % Extract the x and y coordinates of the outliers
 outliersYcoo = get(objOutliers,'YData');
 outliersXcoo = get(objOutliers,'XData');
 
+[n,p]=size(Y);
+lunig=length(unig);
+% Just in case the user has produced many subplots it is necessary
+% to use just the information about the last length(unig) groups
+% which have been created
+if p>1
+    outliersYcoo=outliersYcoo(1:p,:);
+    outliersXcoo=outliersXcoo(1:p,:);
+else
+    if lunig>0
+        outliersYcoo=outliersYcoo(1:lunig,:);
+        outliersXcoo=outliersXcoo(1:lunig,:);
+    end
+end
+
 if ~isempty(outliersYcoo)
 
-    [n,p]=size(Y);
+
     seq=(1:n)';
     % Define the row labels to add to the plot
     % If Y is a table we add the corresponding rownames else we just add the row
@@ -160,9 +196,12 @@ if ~isempty(outliersYcoo)
 
         end
     else
+
         % This is the case when second argument is present (there is a grouping variable)
         % and Y has just one column.
+
         if size(Yd,2)==1
+
 
             for j=1:length(unig)
                 booj=strcmp(g,unig(j));
