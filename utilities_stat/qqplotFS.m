@@ -251,7 +251,7 @@ if plo==1
     laby='Studentized residuals';
     titl='';
     FontSize=12;
-    SizeAxesNum=12;
+    SizeAxesNum=9;
     
     if ~isempty(h)
         % Eventually send the resindexplot into a different figure/subplot
