@@ -15,11 +15,12 @@ function h  = funnelchart(x, varargin)
 %
 %  Required input arguments:
 %
-%           x : input data. Vector or matrix.
+%           x : input data. Vector or matrix or table.
 %                If x is a vector, a single funnel chart is displayed.
-%                If x is a matrix, the function displays one funnel chart
+%                If x is a matrix or table with multiple columns, 
+%                the function displays one funnel chart
 %                for each column of x.
-%          Data Types - double
+%          Data Types - double, table
 %
 %  Optional input arguments:
 %
@@ -34,14 +35,17 @@ function h  = funnelchart(x, varargin)
 %
 %
 % Color  :   Color of the boxes. Character | RGB triplet vector. The color
-%            specified by the user. 
+%            specified by the user.
 %                 Example - 'Color',[0.12 0.6 0.15]
 %                 Data Types - char | array
 %
-% Title  :   Title. Character array. The title of the Funnel Chart
-%            specified by the user. 
+% Title  :   Title. Character array or string array. 
+%            The overall title of the Funnel Chart
+%            specified by the user if Title is a scalar else
+%            if length(Title)=size(X,2), the title will be added 
+%            to each subplot.
 %                 Example - 'Title','The Funnel Chart'
-%                 Data Types - char
+%                 Data Types - char or string
 %
 %   h     :   Target axes. If you do not specify the axes the plot function
 %             uses the current axes.
@@ -121,6 +125,15 @@ function h  = funnelchart(x, varargin)
 
 %% Beginning of code
 
+if istable(x)
+    Labels=x.Properties.RowNames;
+    Title=x.Properties.VariableNames;
+    x=x{:,:};
+else
+    Labels=[];
+    Title=[];
+end
+
 if ~isnumeric(x)
     error('FSDA:funnelchart:WrongInput','First input argument must be numeric.');
 end
@@ -139,9 +152,10 @@ space    = 0.15;   % space between rectangles
 fontsize = 14;    % font of numbers and axes
 
 % default options
-Labels   = cellstr(num2str((1:n)'));
+if isempty(Labels)
+    Labels   = cellstr(num2str((1:n)'));
+end
 BoxColor = 'c';
-Title    = [];
 h='';
 options  = struct('Labels',{Labels},'Color',BoxColor,'Title',Title,'h',h);
 
@@ -149,12 +163,12 @@ options  = struct('Labels',{Labels},'Color',BoxColor,'Title',Title,'h',h);
 % user options
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    
+
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:funnelchart:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    
+
     % Check if all the specified optional arguments were present
     % in structure options
     % Remark: the nocheck option has already been dealt by routine
@@ -171,8 +185,8 @@ if nargin>1
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
-    end  
-    Labels    = options.Labels;  
+    end
+    Labels    = options.Labels;
     BoxColor  = options.Color;
     Title     = options.Title;
     h=options.h;
@@ -182,9 +196,9 @@ Labels = flipud(Labels(:));
 
 % Create figure
 if isempty(h)
-figure;
-h=gca;
-emptyh=true;
+    figure;
+    h=gca;
+    emptyh=true;
 else
     emptyh=false;
 end
@@ -220,7 +234,7 @@ setappdata(gcf, 'SubplotDefaultAxesLocation',[0.11,0.05,0.795,0.85]);
 kk = 1.05;
 for j=1:p
     if emptyh==true
-    h=subplot(nr,nc,j);
+        h=subplot(nr,nc,j);
     end
     % Create axes
     % axes1 = axes('Parent',figure1);
@@ -240,9 +254,14 @@ for j=1:p
     end
     set(h,'YTickLabel',Labels);
     box('on');
+    if length(Title)>1
+        title(Title(j))
+    end
 end
 
-sgtitle(Title,'FontSize',fontsize+6);
+if length(Title)==1
+    sgtitle(Title,'FontSize',fontsize+6);
+end
 
 h=gcf;
 allAxesInFigure = findall(h,'type','axes');
