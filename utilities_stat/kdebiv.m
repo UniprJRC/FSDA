@@ -497,9 +497,11 @@ if plot_contour
             mesh(xq,yq,FF,'EdgeAlpha',1,'FaceAlpha',0);
             mymap(1,:) = [1 1 1];
         case 'contour'
-            contour(xq,yq,1-FF,'Clipping','off');
+            [~,hh1] = contour(xq,yq,1-FF,'Clipping','off');
+            hh1.Annotation.LegendInformation.IconDisplayStyle = 'off';
         case 'contourf'
-            contourf(xq,yq,1-FF,'Clipping','off');
+            [~,hh2] = contourf(xq,yq,1-FF,'Clipping','off');
+            hh2.Annotation.LegendInformation.IconDisplayStyle = 'off';
     end
     
     % colormap adding a last row of ones (i.e. white background)

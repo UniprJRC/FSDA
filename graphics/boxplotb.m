@@ -11,14 +11,14 @@ function out = boxplotb(Y,varargin)
 %
 % Optional input arguments:
 %
-%           coeff : expansion factor. Scalar. 
+%           coeff : expansion factor. Scalar.
 %                  Coefficient which enables us to pass from
 %                 a contour which contains 50% of the data (hinge) to a contour
 %                 which contains a prespecified portion of the data.
 %                 Table below (taken from Zani, Riani and Corbellini, 1998,
 %                 CSDA) shows the coefficients which must be used to obtain
 %                 a theoretical threshold of 75, 90, 95 or 99 per cent in
-%                 presence of normally distributed data: 
+%                 presence of normally distributed data:
 %
 %                   confidence level 0.75 -> coefficient 0.43;
 %                   confidence level 0.90 -> coefficient 0.83;
@@ -41,21 +41,21 @@ function out = boxplotb(Y,varargin)
 %                   Example - 'strictlyinside',1
 %                   Data Types - double
 %
-%       plots   : graphical output. missing value | scalar | structure. 
+%       plots   : graphical output. missing value | scalar | structure.
 %                 This options specifies whether it
 %                 is necessary to produce the bivariate boxplot on the
-%                 screen. 
+%                 screen.
 %                 If plots is a missing value or is a scalar equal to 0 no
-%                 plot is produced. 
+%                 plot is produced.
 %                 If plots is a scalar equal to 1 (default) the bivariate
-%                 boxplot with the outliers labelled is produced. 
+%                 boxplot with the outliers labelled is produced.
 %                 If plots is a structure it may contain the following fields:
 %                    plots.ylim = vector with two elements controlling minimum and maximum
 %                       on the y axis. Default value is '' (automatic
-%                       scale). 
+%                       scale).
 %                    plots.xlim = vector with two elements controlling minimum and maximum
 %                       on the x axis. Default value is '' (automatic
-%                       scale). 
+%                       scale).
 %                    plots.labeladd = If this option is '1', the outliers in the
 %                       spm are labelled with the unit row index. The
 %                       default value is labeladd='1', i.e. the row numbers are
@@ -72,10 +72,10 @@ function out = boxplotb(Y,varargin)
 %                   Data Types - double
 %
 %        resolution : resolution to use. Scalar. Resolution which must be
-%                     used to produce the inner and outer spline. 
+%                     used to produce the inner and outer spline.
 %                     The default value of resolution is 1000, that is the
 %                     splines are plotted on the screen using
-%                     1000-by-(number of vertices of the inner hull) points. 
+%                     1000-by-(number of vertices of the inner hull) points.
 %                   Example - 'resolution',5000
 %                   Data Types - double
 %
@@ -95,18 +95,18 @@ function out = boxplotb(Y,varargin)
 %             Empty matrix: 0-by-1
 %
 %         out.cent = 2 x 1 vector containing the coordinates
-%                of the robust centroid. 
-%                cent[1] = x coordinate; 
-%                cent[2] = y coordinate. 
+%                of the robust centroid.
+%                cent[1] = x coordinate;
+%                cent[2] = y coordinate.
 %
 %          out.Spl = r-by-4 matrix containing the coordinates
 %                of the inner and outer spline. r (rows of matrix Spl) is
 %                approximately equal to the number of vertices of the inner hull
-%                multiplied by the resolution which is used. 
+%                multiplied by the resolution which is used.
 %                The first two columns refer to the (x,y) coordinates of
-%                the inner spline. 
+%                the inner spline.
 %                The last  two columns refer to the (x,y) coordinates  of the
-%                outer spline. 
+%                outer spline.
 %
 %
 % See also convhull.m, FSM.m
@@ -253,19 +253,19 @@ Ywithseq = [Y seq];
 % eliminated up to each step of the loop; The first time that the removed
 % points is greater or equal than n/2 procedure stops. In other words, loop
 % continues while n-size(Ywithseq,1)<(n/2)
-while n-length(Ywithseq)<(n/2) 
+while n-length(Ywithseq)<(n/2)
     % disp(n-length(Ywithseq))
-    
+
     K = convhull(Ywithseq(:,1),Ywithseq(:,2));
-    
+
     % sel = vector of true row coordinates of the units forming the current
     % convex hull
     sel=Ywithseq(K(1:end-1),3);
-    
+
     % Rows of matrix Ywithseq which belong to the current convex hull
     % are set to zero
     Ywithseq(K(1:end-1),:)=0;
-    
+
     % Redefine matrix Ywithseq deleting the rows which are equal to zero
     Ywithseq = Ywithseq(any(Ywithseq,2),:);
 end
@@ -273,7 +273,7 @@ end
 % if strictyinside==1 do an additional peeling
 if strictlyinside==1
     K = convhull(Ywithseq(:,1),Ywithseq(:,2));
-    
+
     % sel = vector of true row coordinates of the units forming the current
     % convex hull
     sel=Ywithseq(K(1:end-1),3);
@@ -308,47 +308,47 @@ outliers=seq(in==0);
 
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
     if isstruct(plo)
-        
+
         fplo=fieldnames(plo);
-        
+
         d=find(strcmp('xlim',fplo));
         if d>0
             xlimx=plo.xlim;
         else
             xlimx='';
         end
-        
+
         d=find(strcmp('ylim',fplo));
         if d>0
             ylimy=plo.ylim;
         else
             ylimy='';
         end
-        
-        
+
+
         d=find(strcmp('InnerColor',fplo));
         if d>0
             InnerColor=plo.InnerColor;
         else
-            
+
             InnerColor=[168/255 150/255 255/255];
         end
-        
+
         d=find(strcmp('OuterColor',fplo));
         if d>0
             OuterColor=plo.OuterColor;
         else
             OuterColor=[210/255 203/255 255/255];
         end
-        
+
         d=find(strcmp('labeladd',fplo));
         if d>0
             labeladd=plo.labeladd;
         else
             labeladd='1';
         end
-        
-        
+
+
     else
         xlimx='';
         ylimy='';
@@ -356,48 +356,60 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
         InnerColor=[168/255 150/255 255/255];
         OuterColor=[210/255 203/255 255/255];
     end
-    
-    
+
+
     hold('on')
-    
+
     % set RGB colors
-    fill(Ospl(:,1),Ospl(:,2),OuterColor)
-    fill(Inspl(:,1),Inspl(:,2),InnerColor)
-    
+    hh1=fill(Ospl(:,1),Ospl(:,2),OuterColor);
+    hh1.Annotation.LegendInformation.IconDisplayStyle = 'off';
+
+    hh2=fill(Inspl(:,1),Inspl(:,2),InnerColor);
+    hh2.Annotation.LegendInformation.IconDisplayStyle = 'off';
+
+
     sel=setdiff(seq,outliers);
     % Plot the data excluding the outliers
-    plot(Y(sel,1),Y(sel,2),'ko','MarkerFaceColor','k','Markersize',4);
+    hh6=plot(Y(sel,1),Y(sel,2),'ko','MarkerFaceColor','k','Markersize',4);
+    hh6.Annotation.LegendInformation.IconDisplayStyle = 'off';
     % Plot the outliers
-    plot(Y(outliers,1),Y(outliers,2),'*r');
+    hh7=plot(Y(outliers,1),Y(outliers,2),'*r');
+    if ~isempty(hh7)
+        hh7.Annotation.LegendInformation.IconDisplayStyle = 'off';
+    end
     
     % Plot coordinates of the 50% hull
     % plot(FiftyPerCentHull(:,1),FiftyPerCentHull(:,2),'k');
-    
+
     % Plot inner spline defining the hinge (50% of the data)
-    plot(Inspl(:,1),Inspl(:,2),'Color','k')
-    
+    hh3=plot(Inspl(:,1),Inspl(:,2),'Color','k');
+    hh3.Annotation.LegendInformation.IconDisplayStyle = 'off';
+
     % Plot coordinates of the outer spline curve
-    plot(Ospl(:,1),Ospl(:,2),'Color','k')
+    hh4=plot(Ospl(:,1),Ospl(:,2),'Color','k');
+    hh4.Annotation.LegendInformation.IconDisplayStyle = 'off';
+
     if strcmp(labeladd,'1')
         % Plot text associated with the outliers
         if sum(isnan(outliers))==0
             text(Y(outliers,1),Y(outliers,2),cellstr(num2str(outliers)))
         end
     end
-    
+
     % Plot robust centroid
-    plot(cent(1),cent(2),'r+','MarkerSize',14,'LineWidth',3)
-    
-    % Set the x and y scale 
+    hh5=plot(cent(1),cent(2),'r+','MarkerSize',14,'LineWidth',3);
+    hh5.Annotation.LegendInformation.IconDisplayStyle = 'off';
+
+    % Set the x and y scale
     if ~isempty(xlimx)
         xlim(xlimx)
     end
-    
-    % Set the x and y scale 
+
+    % Set the x and y scale
     if ~isempty(ylimy)
         ylim(ylimy)
     end
-    
+
 end
 
 
@@ -465,11 +477,11 @@ for i = 2:n-2
     for j = 1:resolution
         t=j / resolution;
         z=k;
-        
+
         X(k)=(((a3 * t + a2) * t + a1) * t + a0);
         Y(k)=(((b3 * t + b2) * t + b1) * t + b0);
         k=k+1;
-        
+
     end
 end
 % X=X(2:z - 30);
@@ -482,10 +494,10 @@ end
 
 % % local function
 % function [pointIndex]=outcor(x,y,splx,sply,cent)
-% 
+%
 % centrx=cent(1);
 % centry=cent(2);
-% 
+%
 % % sensitivity
 % eps=0.001;
 % % points length
@@ -493,14 +505,14 @@ end
 % X =zeros(nn,1);
 % % spline length
 % ll = length(splx);
-% 
+%
 % % accumulation counters
 % k = 0;
 % n = 1;
-% 
+%
 %     xa = centrx;
 %     ya = centry;
-% 
+%
 % while(n < nn)
 %     xb = x(n);
 %     yb = y(n);
