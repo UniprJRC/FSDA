@@ -108,6 +108,9 @@ function out = boxplotb(Y,varargin)
 %                The last  two columns refer to the (x,y) coordinates  of the
 %                outer spline.
 %
+%          out.handles = r-by-1 matrix containing the handles of the
+%               contours and centroid. It can be used to control the display of
+%               these objects, for example using ClickableMultiLegend. 
 %
 % See also convhull.m, FSM.m
 %
@@ -424,6 +427,9 @@ out.outliers=outliers;
 out.Spl=[Inspl Ospl];
 % fcns = localfunctions;
 % display(fcns)
+
+% the handles of the countours and centroids;
+out.handles = [hh1;hh2;hh5];
 
 end
 

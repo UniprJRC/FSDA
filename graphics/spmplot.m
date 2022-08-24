@@ -1511,7 +1511,11 @@ if ~isempty(overlay)
 
             if strcmp(type, 'contourf') || strcmp(type, 'contour')
                 % ischar(type) && max(strcmp(type,{'contourf' , 'contour' , 'surf' , 'mesh'}))  [to add 2 new options in the future]
-                % iterate through all included groups
+                
+                % get labels for display names
+                displayGroups = findobj(AX(indRows,indCols), 'type', 'line'); 
+
+                % iterate through all included groups               
                 for ii = unId(include)'
                     % plot density contours for the specified groups
                     kdebiv([dataextr{1,2}(inclId& dataextr{1,4}==ii), dataextr{1,3}(inclId& dataextr{1,4}==ii)] , ...
@@ -1524,6 +1528,10 @@ if ~isempty(overlay)
                     GetCountur(1).LineColor=clr(ii);
                     % this is to make the color of the contour lighter
                     GetCountur(1).LineColor=GetCountur(1).LineColor*(3/4);
+                    
+                     % add to the clickable legend the respective groups
+                    GetCountur(1).DisplayName=get(displayGroups(end-ii+1), 'DisplayName');
+
                 end
 
             elseif strcmp(type, 'ellipse')
@@ -1533,9 +1541,13 @@ if ~isempty(overlay)
                 % iterate through all included groups
                 for ii = unId(include)'
                     axx0 = length(findobj(AX(indRows,indCols), 'type', 'line')); % initial existing objects
-                    ellipse(mean([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
+                    [~ , he] = ellipse(mean([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
                         cov([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
-                        conflev, FSColors.darkgrey.RGB);
+                        conflev, clr(ii)); % color was FSColors.darkgrey.RGB
+                    he.Color=clr(ii);
+                    % this is to make the color of the contour lighter
+                    he.Color=he(1).Color*(3/4);
+                    he.LineWidth=1.5;
 
                     % add to the clickable legend the respective groups
                     axx = findobj(AX(indRows,indCols), 'type', 'line'); % final existing objects
@@ -1557,13 +1569,15 @@ if ~isempty(overlay)
                 % iterate through all included groups
                 for ii = unId(include)'
                     axx0 = length(findobj(AX(indRows,indCols), 'type', 'line'));    % initial existing objects
-                    boxplotb([dataextr{1,2}(inclId& dataextr{1,4}==ii), dataextr{1,3}(inclId& dataextr{1,4}==ii)], 'plots', plots);
-
+                    outbp=boxplotb([dataextr{1,2}(inclId& dataextr{1,4}==ii), dataextr{1,3}(inclId& dataextr{1,4}==ii)], 'plots', plots,'resolution',100);
                     % add the names of the respective groups (to be
                     % used in the clickable legend )
                     axx = findobj(AX(indRows,indCols), 'type', 'line');  % final existing objects
                     set(axx(1:length(axx)-axx0), 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
+                    set(outbp.handles, 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
+               
                 end
+
             end
         end
     end
