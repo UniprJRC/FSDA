@@ -239,6 +239,8 @@ Ell=bsxfun(@plus,X, mu);
 
 % hold('on')
 he = plot(Ell(:,1),Ell(:,2),'Color',Color,'LineWidth',LineWidth);
+% line below is to exclude the graphics object he from the legend 
+he.Annotation.LegendInformation.IconDisplayStyle = 'off'; 
 
 if nargin<5 || (nargin ==5 &&   axesellipse == true)
 
@@ -246,13 +248,18 @@ if nargin<5 || (nargin ==5 &&   axesellipse == true)
     ax1=[-lenax1 0; lenax1 0];
     ax1ori=ax1*Gam;
     ax1ori=bsxfun(@plus,ax1ori, mu);
-    line(ax1ori(:,1),ax1ori(:,2),'Color',Color,'LineWidth',LineWidth-1,'LineStyle','--');
+    hl1=line(ax1ori(:,1),ax1ori(:,2),'Color',Color,'LineWidth',LineWidth-1,'LineStyle','--');
+    % line below is to exclude the graphics object hl1 from the legend 
+    hl1.Annotation.LegendInformation.IconDisplayStyle = 'off'; 
 
     % Add line associated with minor axis
     ax2=[0 -lenax2;0  lenax2];
     ax2ori=ax2*Gam;
     ax2ori=bsxfun(@plus,ax2ori, mu);
-    line(ax2ori(:,1),ax2ori(:,2),'Color',Color,'LineWidth',LineWidth-1,'LineStyle','--');
+    hl2=line(ax2ori(:,1),ax2ori(:,2),'Color',Color,'LineWidth',LineWidth-1,'LineStyle','--');
+    % line below is to exclude the graphics object hl1 from the legend 
+    hl2.Annotation.LegendInformation.IconDisplayStyle = 'off'; 
+
 end
 
 % axis equal
