@@ -1579,6 +1579,8 @@ if ~isempty(overlay)
                 end
 
             end
+            %axis 'auto y';
+            %axis 'auto x';
         end
     end
 
