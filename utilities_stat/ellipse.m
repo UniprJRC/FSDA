@@ -240,7 +240,10 @@ Ell=bsxfun(@plus,X, mu);
 % hold('on')
 he = plot(Ell(:,1),Ell(:,2),'Color',Color,'LineWidth',LineWidth);
 % line below is to exclude the graphics object he from the legend 
-he.Annotation.LegendInformation.IconDisplayStyle = 'off'; 
+thelegend = get(he,'DisplaYName');
+if ~isempty(thelegend)
+    he.Annotation.LegendInformation.IconDisplayStyle = 'off'; 
+end
 
 if nargin<5 || (nargin ==5 &&   axesellipse == true)
 
