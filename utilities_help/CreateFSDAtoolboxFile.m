@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.32';
+newVersion = '8.5.34';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='Docker second test';
+commentRelease='Added new datasets';
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
