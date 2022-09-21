@@ -1,9 +1,12 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
   <configuration file="D:\tmp\ToolboxPackagingConfiguration.prj" location="D:\tmp" name="ToolboxPackagingConfiguration" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>FSDA</param.appname>
-    <param.authnamewatermark />
+    <param.authnamewatermark>FSDA team</param.authnamewatermark>
     <param.email>FSDA@unipr.it</param.email>
     <param.company>Univ. of Parma and JRC of EC</param.company>
+    <param.icons>
+      <file>${PROJECT_ROOT}\logo.png</file>
+    </param.icons>
   <param.summary>Robust regression, robust multivariate analysis, robust classification and much more...</param.summary>
      <param.description>FSDA toolbox contains more than 300 routines to assess and understand data affected by multiple outliers. FSDA routines cover, multiple regression, multivariate data analysis, classification and transformations. FSDA also includes interactive tools for anlyzing and modeling data, learning and teaching statistics. Every .m function has its corresponding HTML page in MathWorks style (which is generated automatically). The documentation system is perfectly integrated into the MathWorks framework.</param.description>
     <param.screenshot>${PROJECT_ROOT}\FSDA\logoblue.jpg</param.screenshot>
