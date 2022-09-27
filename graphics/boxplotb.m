@@ -42,7 +42,7 @@ function out = boxplotb(Y,varargin)
 %                   Data Types - double
 %
 %       plots   : graphical output. missing value | scalar | structure.
-%                 This options specifies whether it
+%                 This option specifies whether it
 %                 is necessary to produce the bivariate boxplot on the
 %                 screen.
 %                 If plots is a missing value or is a scalar equal to 0 no
@@ -56,10 +56,10 @@ function out = boxplotb(Y,varargin)
 %                    plots.xlim = vector with two elements controlling minimum and maximum
 %                       on the x axis. Default value is '' (automatic
 %                       scale).
-%                    plots.labeladd = If this option is '1', the outliers in the
-%                       spm are labelled with the unit row index. The
+%                    plots.labeladd = if this option is '1', the outliers in the
+%                       scatter plot are labelled with the unit row index. The
 %                       default value is labeladd='1', i.e. the row numbers are
-%                       added.
+%                       added. plots.labeladd='' means no labelling.
 %                    plots.InnerColor = a three element vector which specifies the
 %                       color in RGB format to fill the inner contour
 %                       (hinge). The default value of InnerColor is
@@ -69,7 +69,7 @@ function out = boxplotb(Y,varargin)
 %                       (fence). The default value of OuterColor is
 %                       OuterColor=[210/255 203/255 255/255].
 %                   Example - 'plots',1
-%                   Data Types - double
+%                   Data Types - [],double, struct
 %
 %        resolution : resolution to use. Scalar. Resolution which must be
 %                     used to produce the inner and outer spline.
