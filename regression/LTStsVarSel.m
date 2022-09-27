@@ -464,7 +464,7 @@ while AllPvalSig == 0
         LastTrendPval=0;
     end
     
-    posX=seqp(contains(rownam,'b_X'));
+    posX=seqp(contains(rownam,'b_explX'));
     if ~isempty(posX)
         % if iniloop is 0 the pval of the last expl variable is in reality
         % the pval of the level shift component and therefore it has to be
@@ -488,7 +488,7 @@ while AllPvalSig == 0
     end
     
     % tre=cellfun(@isempty,strfind(rownam,'b_varamp'));
-    posLastVarAmpl=max(seqp(contains(rownam,'b_varamp')));
+    posLastVarAmpl=max(seqp(contains(rownam,'b_varam')));
     
     if ~isempty(posLastVarAmpl)
         LastVarAmplPval=out_LTSts.Btable{posLastVarAmpl,'pval'};
