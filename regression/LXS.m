@@ -165,6 +165,24 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Example - 'rew',true
 %                 Data Types - logical
 %
+%SmallSampleCor : Small sample correction factor to control empirical size of
+%                 the test.  Scalar equal to 0 (default) or 1 or 2 or 3 or 4.
+%               - If SmallSampleCor=0 (default) no small sample correction;
+%               - If SmallSampleCor=1 in the reweighting step the nominal
+%                 threshold based on $\chi^2_{0.99}$ is multiplied by the
+%                 small sample correction factor which guarrantees that the
+%                 empirical size of the test is equal to the nominal size;
+%               - If SmallSampleCor =2 Gervini and Yohai procedure is called
+%                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
+%               - If SmallSampleCor =3 Gervini and Yohai procedure  called
+%                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
+%               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
+%                 weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
+%                 Example - 'SmallSampleCor',3
+%                 Data Types - double
+%
 %       yxsave : the response vector y and data matrix X are saved into the output
 %                structure out. Scalar.
 %               Default is 0, i.e. no saving is done.
@@ -479,7 +497,8 @@ if coder.target('MATLAB')
 
     options=struct('intercept',true,'nsamp',nsampdef,'h',hdef,'bdp',...
         bdpdef,'lms',1,'rew',false,'plots',0,'nocheck',nocheck,'nomes',false,...
-        'conflev',0.975,'conflevrew','','msg',1,'yxsave',0,'bonflevoutX','');
+        'conflev',0.975,'conflevrew','','msg',1,'yxsave',0,'bonflevoutX','',...
+        'SmallSampleCor',0);
 
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -653,6 +672,7 @@ else
     end
 end
 
+SmallSampleCor=options.SmallSampleCor; % small sample correction factor
 
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
 
@@ -972,10 +992,39 @@ if abs(s0) > 1e-7
     % you are willing to declare at least 2.5% units as outliers.
     % Remark: sqrt(chi2inv(0.975,1)) = tinv(0.9875,\infinity) = quantile
     stdres = residuals/s0;
-    weights = abs(stdres)<=quantile;
-    % weights is a boolean vector.
+    
+    % Introduction of the small sample correction factor to control empirical 
+    % size of the test.
+    
+    if SmallSampleCor==0
+        weights = abs(stdres)<=quantile;
+        % weights is a boolean vector.
+    elseif SmallSampleCor==1
+        robest='LTS';
+        eff=[];
+        rhofunc='';
+        sizesim=0;
+        Tallis=1;
+        if n<50
+            ntouse=50;
+        else
+            ntouse=n;
+        end
+        nominalbdp=1-options.h/n;
+        thresh=RobRegrSize(ntouse,p,robest,rhofunc,nominalbdp,eff,sizesim,Tallis);
+        extracoeff=sqrt(thresh/chi2inv(0.99,1));
+        weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
+    elseif  SmallSampleCor==2
+        weights=GYfilt(stdres,'iterating',false,'alpha',0.99,'centering',true,'niter',10);
+    elseif  SmallSampleCor==3
+        weights=GYfilt(stdres,'iterating',true,'alpha',0.99,'centering',true,'niter',10);
+    elseif SmallSampleCor==4
+        weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
+    else
+        error('FSDA:ltsTS:WrongInputOpt','wrong small sample cor factor')
+    end
 
-
+    
     %% Reweighting part
     rew=options.rew;            % if options.rew==true use reweighted version of LMS/LTS,
 
