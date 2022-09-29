@@ -121,7 +121,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                        model.ARp=[1 2] means a AR(2) process; 
 %                        model.ARp=2 means just the lag 2 component;
 %                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
-%                        model.ARp=0 (default) means no autoregressive component.                Example - 'model', model
+%                        model.ARp=0 (default) means no autoregressive component.
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default overparametrized model is for monthly
