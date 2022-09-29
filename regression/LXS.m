@@ -59,6 +59,13 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %
+%  conflevrew : Confidence level for use for reweighting. Scalar. Number
+%               between 0 and 1 containing confidence level which is used to do
+%               the reweighting step. Default value is the one specified in
+%               previous option conflev.
+%               Example - 'conflevrew',0.99
+%               Data Types - double
+%
 %           h : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar.
 %               The number of observations that have determined the least
@@ -157,6 +164,24 @@ function [out , varargout] = LXS(y,X,varargin)
 %               else no reweighting is performed (default).
 %                 Example - 'rew',true
 %                 Data Types - logical
+%
+%SmallSampleCor : Small sample correction factor to control empirical size of
+%                 the test.  Scalar equal to 0 (default) or 1 or 2 or 3 or 4.
+%               - If SmallSampleCor=0 (default) no small sample correction;
+%               - If SmallSampleCor=1 in the reweighting step the nominal
+%                 threshold based on $\chi^2_{0.99}$ is multiplied by the
+%                 small sample correction factor which guarrantees that the
+%                 empirical size of the test is equal to the nominal size;
+%               - If SmallSampleCor =2 Gervini and Yohai procedure is called
+%                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
+%               - If SmallSampleCor =3 Gervini and Yohai procedure  called
+%                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
+%               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
+%                 weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
+%                 Example - 'SmallSampleCor',3
+%                 Data Types - double
 %
 %       yxsave : the response vector y and data matrix X are saved into the output
 %                structure out. Scalar.
@@ -422,6 +447,20 @@ function [out , varargout] = LXS(y,X,varargin)
     title('Fit using best subset with option bonflevoutX  not empty')
 %}
 
+%{
+    % LXS with optional arguments.
+    % Compute LTS estimator, reweight and plot the residuals.
+    % Use a confidence level for reweighting using 0.99 and a simultaneous
+    % confidence interval for outlier detection
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    y(1:5)=y(1:5)+6;
+    [out]=LXS(y,X,'rew',1,'conflev',1-0.01/n,'conflevrew',0.99,'plots',1);
+%}
+
 %% Beginning of code
 
 % Input parameters checking
@@ -455,14 +494,15 @@ brob=-99*ones(p,1);
 nocheck=false;
 
 if coder.target('MATLAB')
-    
+
     options=struct('intercept',true,'nsamp',nsampdef,'h',hdef,'bdp',...
         bdpdef,'lms',1,'rew',false,'plots',0,'nocheck',nocheck,'nomes',false,...
-        'conflev',0.975,'msg',1,'yxsave',0,'bonflevoutX','');
-    
+        'conflev',0.975,'conflevrew','','msg',1,'yxsave',0,'bonflevoutX','',...
+        'SmallSampleCor',0);
+
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        
+
         % If 'lms' is part of UserOptions and it is 2 or it is a structure (fastLTS),
         % then decrease the default for nsamp (nsampdef and options.nsamp) from
         % 3000 to 1000.
@@ -474,12 +514,12 @@ if coder.target('MATLAB')
                 options.nsamp = nsampdef;
             end
         end
-        
+
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:LXS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        
+
         % Check if all the specified optional arguments were present
         % in structure options
         % Remark: the nocheck option has already been dealt by routine
@@ -497,7 +537,7 @@ if nargin > 2
     if coder.target('MATLAB')
         % Extract the names of the optional arguments
         chklist=varargin(1:2:length(varargin));
-        
+
         % Check whether the user has selected both h and bdp.
         chktrim=sum(strcmp(chklist,'h')+2*strcmp(chklist,'bdp'));
         if chktrim ==3
@@ -506,14 +546,14 @@ if nargin > 2
     else
         chktrim=1;
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     % And check if the optional user parameters are reasonable.
-    
+
     % Check h and bdp
     % The user has only specified h: no need to specify bdp.
     if chktrim==1
@@ -522,23 +562,23 @@ if nargin > 2
         elseif options.h >= n
             error('FSDA:LXS:Wrongh','h is greater or equal to the number of non-missings and non-infinites.')
         end
-        
+
         % the user has only specified bdp: h is defined accordingly
     elseif chktrim==2
         if options.bdp <= 0
             error('FSDA:LXS:WrongBdp','Attention: bdp should be larger than 0');
         end
-        
+
         % nalpha must be greater or equal than 50% of the observations
         nalpha=ceil(n*(1-options.bdp));
-        
+
         if nalpha <p+1
             error('FSDA:LXS:WrongAlpha',['Attention: the specified trimming proportion is too high.\n',...
                 'It is necessary to specify bdp in such way that n*(1-options.bdp)>=p+1.']);
         end
         options.h=nalpha;
     end
-    
+
     if isscalar(options.nsamp)
         % Check number of subsamples to extract
         if options.nsamp>ncomb
@@ -580,10 +620,10 @@ if ~isstruct(lms) && lms(1)==2
     % ij is a scalar used to ensure that the best first bestr non singular
     % subsets are stored
     ij=1;
-    
+
     % lmsopt is associated with the message about total computing time
     lmsopt=2;
-    
+
 elseif isstruct(lms)
     if coder.target('MATLAB')
         lmsdef.refsteps=3;
@@ -591,12 +631,12 @@ elseif isstruct(lms)
         lmsdef.bestr=5;
         lmsdef.refstepsbestr=50;
         lmsdef.reftolbestr=1e-8;
-        
+
         % Control the appearance of the trajectories to be highlighted
         if ~isequal(lms,lmsdef)
-            
+
             fld=fieldnames(lms);
-            
+
             % Check if user options inside options.fground are valid options
             chkoptions(lmsdef,fld)
             for i=1:length(fld)
@@ -606,18 +646,18 @@ elseif isstruct(lms)
         % For the options not set by the user use their default value
         lms=lmsdef;
     end
-    
+
     refsteps=lms.refsteps;
     reftol=lms.reftol;
     bestr=lms.bestr;
     refstepsbestr=lms.refstepsbestr;
     reftolbestr=lms.reftolbestr;
-    
+
     bestbetas = zeros(bestr,p);
     bestsubset = bestbetas;
     bestscales = Inf * ones(bestr,1);
     sworst = Inf;
-    
+
     % ij is a scalar used to ensure that the best first bestr non singular
     % subsets are stored
     ij=1;
@@ -632,6 +672,7 @@ else
     end
 end
 
+SmallSampleCor=options.SmallSampleCor; % small sample correction factor
 
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
 
@@ -676,7 +717,7 @@ bonflevoutX=options.bonflevoutX;
 if ~isempty(bonflevoutX)
     bonflevout=true;
     hdef=floor(n*0.6);
-    
+
     if options.nocheck==true
         Xwithoutint=X;
     else
@@ -692,7 +733,7 @@ if ~isempty(bonflevoutX)
     else
         critdef ='uni';
     end
-    
+
     outFSM=FSM(Xwithoutint,'plots',0,'bonflev',bonflevoutX,...
         'msg',0,'init',hdef,'crit',critdef,'m0',v+1,'rf',0.95);
     outliers=outFSM.outliers(:);
@@ -709,36 +750,36 @@ for i=1:nselected
     if i <= tsampling
         ttic = tic;
     end
-    
+
     % extract a subset of size p
     index = C(i,:);
-    
+
     if bonflevout ==true && ~isempty(intersect(index,outliers))
         b=NaN;
     else
-        
+
         Xb=X(index,:);
         yb=y(index);
-        
+
         % if rank(Xb)==p Warning: this instruction has been replaced by a
         % posteriori control on vector b
         % Compute the vector of coefficients using matrice Xb and yb
         b=Xb\yb;
     end
-    
-    
+
+
     if ~isnan(b(1)) && ~isinf(b(1))
-        
+
         if ~isstruct(lms)
             % Residuals for all observations using b based on subset
             r=y-X*b;
-            
+
             % Squared residuals for all the observations
             r2=r.^2;
-            
+
             % Ordering of squared residuals
             r2s  = sort(r2);
-            
+
             if lms==1
                 % LMS
                 rrob=r2s(h);
@@ -746,34 +787,34 @@ for i=1:nselected
                 % STANDARD LTS without concentration steps
                 rrob=sum(r2s(1:h));
             end
-            
+
             if rrob<rmin
                 % rmin = smallest ordered quantile or smallest truncated sum.
                 rmin=rrob;
-                
+
                 % brob = \beta_lms or \beta_lts
                 brob=b;
-                
+
                 % bs = units forming best subset according to lms or lts
                 bs=index;
             end
-            
-            
+
+
         else % in this case the user has chosen the FAST LTS (with concentration steps)
-            
+
             tmp = IRWLSreg(y,X,b,refsteps,reftol,h);
-            
+
             betarw = tmp.betarw;
             numscale2rw = tmp.numscale2rw;
-            
+
             if ij > bestr
-                
+
                 if numscale2rw < sworst
                     % Find position of the maximum value of previously stored
                     % best scales
-                    
+
                     [~,ind] = max(bestscales);
-                    
+
                     % Store numscale2rw, betarw and indexes of the units forming the
                     % best subset for the current iteration
                     bestscales(ind)     = numscale2rw;
@@ -791,14 +832,14 @@ for i=1:nselected
                 ij = ij+1;
                 brob(1) = 1;
             end
-            
+
         end
-        
-        
+
+
     else
         singsub=singsub+1;
     end
-    
+
     if nomes == false
         if i <= tsampling
             % sampling time until step tsampling
@@ -825,11 +866,11 @@ else
 end
 
 if isstruct(lms)
-    
+
     % perform C-steps on best 'bestr' solutions, till convergence or for a
     % maximum of refstepsbestr steps using a convergence tolerance as specified
     % by scalar reftolbestr
-    
+
     tmp = IRWLSreg(y,X,bestbetas(1,:)',refstepsbestr,reftolbestr,h);
     % sh0 = superbestscale
     sh0 = tmp.numscale2rw;
@@ -838,10 +879,10 @@ if isstruct(lms)
     % bs = superbestsubset, units forming best subset according to fastlts
     bs = bestsubset(1,:);
     superbestscale=sh0;
-    
+
     for i=2:bestr
         tmp = IRWLSreg(y,X,bestbetas(i,:)',refstepsbestr,reftolbestr,h);
-        
+
         if tmp.numscale2rw < superbestscale
             % sh0 = superbestscale
             sh0 = tmp.numscale2rw;
@@ -852,22 +893,22 @@ if isstruct(lms)
             superbestscale=sh0;
         end
     end
-    
+
     % Pass from numerator of squared estimate of the scale to proper scale
     % estimate
     sh0=sqrt(sh0/h);
 else
-    
+
     if lms==1
-        
+
         % Estimate of scale based on h-quantile of all squared residuals
         sh0=sqrt(rmin);
     else
-        
+
         % Estimate of scale based on the first h squared smallest residuals
         sh0=sqrt(rmin/h);
     end
-    
+
 end
 
 
@@ -882,10 +923,10 @@ if lmsopt==1
     % The additional factor 1+5/(n-p) was found by simulation by Rousseeuw and
     % Leroy (1987), see p. 202
     factor=1.4826*(1+5/(n-p));
-    
+
     % Apply the consistency factor to the preliminary scale estimate
     s0=sh0*factor;
-    
+
 else
     % Consistency factor based on the variance of the truncated normal distribution.
     % 1-h/n=trimming percentage
@@ -893,20 +934,20 @@ else
     a=norminv(0.5*(1+h/n));
     %factor=1/sqrt(1-(2*a.*normpdf(a))./(2*normcdf(a)-1));
     factor=1/sqrt(1-2*(n/h)*a.*normpdf(a));
-    
+
     % Note that factor=sqrt(factor1)
     %     v=1;
     %     a=chi2inv(h/n,1);
     %     factor1=(h/n)/(chi2cdf(a,1+2));
-    
+
     % Apply the asymptotic consistency factor to the preliminary scale estimate
     s0=sh0*factor;
-    
+
     % Apply small sample correction factor of Pison et al.
     if h<n
         s0=s0*sqrt(corfactorRAW(1,n,h/n));
     end
-    
+
     %         % Analysis of the small sample correction factor of Pison et al.
     %         rangen=20:100;
     %         corf=zeros(length(rangen),1);
@@ -916,25 +957,25 @@ else
     %         plot(rangen',corf)
     %         disp('s0 after')
     %         disp(s0)
-    
-    
+
+
 end
 
 
 if abs(s0) > 1e-7
-    
+
     % Assign weight=1 to the h units which show the smallest h squared
     % residuals
     [~ , indsorres2] = sort(residuals.^2);
     weights = false(n,1);
     weights(indsorres2(1:h)) = true;
-    
+
     % Initialize structure out
     out=struct;
-    
+
     % Store inside structure out, the vector of the weights
     out.weights=weights;
-    
+
     % Compute the Student T quantile threshold . If options.conflev=0.975,
     % 1.25% on the right and
     % 1.25% on the left, globally 2.5%.
@@ -944,39 +985,77 @@ if abs(s0) > 1e-7
     conflev=options.conflev;    % Confidence level which is used for outlier detection
     conflev=(conflev+1)/2;
     quantile=tinv(conflev,m);
-    
+
     % Observations with a standardized residual smaller than the quantile
     % threshold have a weight equal to 1, else the weight is equal to 0.
     % REMARK: using this threshold, even if the sample is homogeneous,
     % you are willing to declare at least 2.5% units as outliers.
     % Remark: sqrt(chi2inv(0.975,1)) = tinv(0.9875,\infinity) = quantile
     stdres = residuals/s0;
-    weights = abs(stdres)<=quantile;
-    % weights is a boolean vector.
     
+    % Introduction of the small sample correction factor to control empirical 
+    % size of the test.
+    
+    if SmallSampleCor==0
+        weights = abs(stdres)<=quantile;
+        % weights is a boolean vector.
+    elseif SmallSampleCor==1
+        robest='LTS';
+        eff=[];
+        rhofunc='';
+        sizesim=0;
+        Tallis=1;
+        if n<50
+            ntouse=50;
+        else
+            ntouse=n;
+        end
+        nominalbdp=1-options.h/n;
+        thresh=RobRegrSize(ntouse,p,robest,rhofunc,nominalbdp,eff,sizesim,Tallis);
+        extracoeff=sqrt(thresh/chi2inv(0.99,1));
+        weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
+    elseif  SmallSampleCor==2
+        weights=GYfilt(stdres,'iterating',false,'alpha',0.99,'centering',true,'niter',10);
+    elseif  SmallSampleCor==3
+        weights=GYfilt(stdres,'iterating',true,'alpha',0.99,'centering',true,'niter',10);
+    elseif SmallSampleCor==4
+        weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
+    else
+        error('FSDA:ltsTS:WrongInputOpt','wrong small sample cor factor')
+    end
+
     
     %% Reweighting part
     rew=options.rew;            % if options.rew==true use reweighted version of LMS/LTS,
-    
+
     if rew==true
-        
+
+        % confidence level used for reweighting
+        conflevrew=options.conflevrew;
+        if isempty(conflevrew)
+            conflevrew=conflev;
+        end
+        conflevrew=(conflevrew+1)/2;
+        quantile=tinv(conflevrew,m);
+        weights = abs(stdres)<=quantile;
+
         % Find new estimate of beta using only observations which have
         % weight equal to 1. Notice that new brob overwrites old brob
         % computed previously.
-        
+
         brob = X(weights==1,:) \ y(weights==1);
         % The QR decomposition is equivalent to the above but less efficient:
         % [Q,R]=qr(X(weights==1,:),0);
         % brob = R\(Q'*y(weights==1));
-        
+
         % Computation of reweighted residuals.
         residuals=y-X*brob;
         % Find new estimate of scale using only observations which have
         % weight equal to 1.
-        
+
         s0=sqrt(sum(weights.*residuals.^2)/(sum(weights)-1));
         % Compute new standardized residuals.
-        
+
         % Apply consistency factor to reweighted estimate of sigma
         hrew=sum(weights);
         if hrew<n
@@ -989,30 +1068,30 @@ if abs(s0) > 1e-7
         else
             factor=1;
         end
-        
+
         s0=s0*factor;
         stdres=residuals/s0;
-        
+
         % Declare as outliers the observations which have a standardized
         % residual greater than cutoff.
         % REMARK: while the first threshold was based on the Student T
         % (with modified degrees of freedom), in this second round the
         % threshold is based on the Normal. Notice that:
         % sqrt(chi2inv(0.975,1)) = tinv(0.9875,\infinity) = norminv(0.9875)
-        
+
         weights = abs(stdres)<=norminv(conflev);
         % The new vector of weights overwrites previous vector of weigths
         % before reweighting.
-        
+
         % Store information about reweighting
         out.rew=true;
-        
+
     else
         % The default is no reweighting
         out.rew=false;
-        
+
     end
-    
+
 else % Perfect fit
     if msg==true
         disp('Attention: there was an exact fit. Robust estimate of s^2 is <1e-7')
@@ -1020,14 +1099,14 @@ else % Perfect fit
     % There is an approximate perfect fit for the first h observations.
     % We consider as outliers all units with residual greater than 1e-7.
     weights = abs(residuals)<=1e-7;
-    
+
     % Store the weights
     out.weights=weights;
     out.rew=false;
-    
+
     % s is set to 0
     s0=0;
-    
+
     % Standardized residuals are artificially set equal to raw residuals.
     stdres=residuals;
 end
@@ -1103,9 +1182,9 @@ end
 
 %% Create plots
 if coder.target('MATLAB')
-    
+
     plots=options.plots;        % Plot of residuals equal to 1
-    
+
     % If plots is a structure, plot directly those chosen by the user;
     % elseif plots is 1 a plot or residuals against index number appears
     % else no plot is produced.
@@ -1118,12 +1197,12 @@ if coder.target('MATLAB')
         resindexplot(out.residuals,'conflev',options.conflev,'laby',laby,'numlab',out.outliers);
     else
     end
-    
+
     % Restore the previous state of the warnings
     warning(warnrank.state,'MATLAB:rankDeficientMatrix');
     warning(warnsing.state,'MATLAB:singularMatrix');
     warning(warnnear.state,'MATLAB:nearlySingularMatrix');
-    
+
 end
 
 %% The part below contains subfunctions which are used only inside this file
@@ -1206,13 +1285,13 @@ newbeta=beta; % Initialization for MATLAB Ccoder
 
 while ( (betadiff > reftol) && (iter < refsteps) )
     iter = iter + 1;
-    
+
     % i_r2s= units with smallest h squared residuals
     i_r2s = i_r2s(1:h);
     % new coefficients based on units with smallest h squared
     % residuals
     newbeta = X(i_r2s,:) \ y(i_r2s);
-    
+
     % exit from the loop if the new beta has singular values. In such a
     % case, any intermediate estimate is not reliable and we can just
     % keep the initialbeta and initial scale.
@@ -1221,10 +1300,10 @@ while ( (betadiff > reftol) && (iter < refsteps) )
         scale = initialscale;
         break
     end
-    
+
     % betadiff is linked to the tolerance (specified in scalar reftol)
     betadiff = norm(beta - newbeta,1) / norm(beta,1);
-    
+
     % update residuals
     res = y - X * newbeta;
     % Ordering of all new squared residuals
@@ -1233,7 +1312,7 @@ while ( (betadiff > reftol) && (iter < refsteps) )
     scale = sum(r2s(1:h));
     % update beta
     beta = newbeta;
-    
+
 end
 
 % store final estimate of beta
