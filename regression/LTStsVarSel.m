@@ -33,10 +33,10 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %               model.s = scalar (length of seasonal period). For monthly
 %                         data s=12 (default), for quartely data s=4, ...
 %               model.trend = scalar (order of the trend component).
-%                       trend = 0 implies no trend
-%                       trend = 1 implies linear trend with intercept (default),
-%                       trend = 2 implies quadratic trend
-%                       trend = 3 implies cubic trend
+%                       trend = 0 implies no trend,
+%                       trend = 1 implies linear trend with intercept,
+%                       trend = 2 implies quadratic trend,
+%                       trend = 3 implies cubic trend.
 %                       Admissible values for trend are, 0, 1, 2 and 3.
 %                       In the paper RPRH to denote the order of the trend
 %                       symbol A is used. If this field is not present into
@@ -46,7 +46,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                        component. Possible values for seasonal are
 %                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
 %                        For example:
-%                        if seasonal =1 (default) we have:
+%                        if seasonal =1 we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;
 %                        if seasonal =2 we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
@@ -75,45 +75,69 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                       the order of the trend of the seasonal component.
 %                       Therefore, for example, model.seasonal=201
 %                       corresponds to B=1 and G=2, while model.seasonal=3
-%                       corresponds to B=3 and G=0;
+%                       corresponds to B=3 and G=0.
+%                       If this field is not present into
+%                       input structure model, model.seasonal=303 is used.
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
-%               model.lshift = scalar greater or equal than 0 which
-%                         specifies whether it is necessary to include a
-%                         level shift component. lshift = 0 (default)
-%                         implies no level shift component. If lshift is an
-%                         interger greater then 0 then it is possible to
-%                         specify the moment to start considering level
-%                         shifts. For example if lshift =13 then the
-%                         following additional parameters are estimated
-%                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where $\beta_{LS1}$
-%                          is a real number and $\beta_{LS2}$ is an integer
-%                          which assumes values 14, 14, ..., T-13.
-%                         In general, the level shift which are considered
-%                         are referred to times (lshift+1):(T-lshift).
+%               model.lshift = scalar or vector associated to level shift
+%                       component. lshift=0 (default) implies no level
+%                       shift component.
+%                       If model.lshift is vector of positive integers,
+%                         then it is associated to the positions of level
+%                         shifts which have to be considered. The most
+%                         significant one is included in the fitted model.
+%                         For example if model.lshift =[13 20 36] a
+%                         tentative level shift is imposed in position
+%                         $t=13$, $t=20$ and $t=36$. The most significant
+%                         among these positions in included in the final
+%                         model. In other words, the following extra
+%                         parameters are added to the final model:
+%                         $\beta_{LS1}* I(t \geq \beta_{LS2})$ where
+%                         $\beta_{LS1}$ is a real number (associated with
+%                         the magnitude of the level shift) and
+%                         $\beta_{LS2}$ is an integer which assumes values
+%                         13, 20 or 36 and and $I$ denotes the indicator
+%                         function.
+%                         As a particular case, if model.lshift =13 then a
+%                         level shift in position $t=13$ is added to the
+%                         model. In other words the following additional
+%                         parameters are added: $\beta_{LS1}* I(t \geq 13)$
+%                         where $\beta_{LS1}$ is a real number and $I$
+%                         denotes the indicator function.
+%                       If lshift = -1 tentative level shifts are
+%                         considered for positions $p+1,p+2, ..., T-p$ and
+%                         the most significant one is included in the final
+%                         model ($p$ is the total number of parameters in
+%                         the fitted model). Note that lshift=-1 is not
+%                         supported for C-coder translation.
 %                       In the paper RPRH $\beta_{LS1}$ is denoted with
 %                       symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
 %                       with symbol $\delta_2$.
-%               model.ARp = scalar greater or equal than 0 which
-%                         specifies the length of the autoregressive
-%                         component. The default value of model.ARp is 0,
-%                         that is there is no autoregressive component.
+%               model.ARp = vector with non negative integer numbers
+%                       specifying the autoregressive
+%                       components. For example: 
+%                        model.ARp=[1 2] means a AR(2) process; 
+%                        model.ARp=2 means just the lag 2 component;
+%                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
+%                        model.ARp=0 (default) means no autoregressive component.
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default overparametrized model is for monthly
 %               data with a quadratic
-%               trend (3 parameters) + seasonal component with just one
-%               harmonic (2 parameters), no additional explanatory
-%               variables, no level shift and no AR component that is
+%               trend (3 parameters) + seasonal component with three
+%               harmonics which grows in a cubic way over time (9 parameters), 
+%               no additional explanatory variables, no level shift 
+%               and no AR component that is
 %                               model=struct;
 %                               model.s=12;
-%                               model.trend=1;
-%                               model.seasonal=1;
+%                               model.trend=2;
+%                               model.seasonal=303;
 %                               model.X='';
 %                               model.lshift=0;
 %                               model.ARp=0;
-%               Using the notation of the paper RPRH we have A=1, B=1; and
+%               Using the notation of the paper RPRH we have A=2, B=3; G=3; and
 %               $\delta_1=0$.
 %
 %    thPval:    threshold for pvalues. Scalar. A value between 0 and 1.
@@ -229,27 +253,24 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %
 %{
     % run LTStsVarSel with all default options.
+    
+    rng('default')
+    rng(1);
+    
     % data model
     model=struct;
     model.trend=1;                  % linear trend
     model.trendb=[0 1];             % parameters of the linear trend
     model.s=12;                     % monthly time series
-    model.seasonal=1;               % 1 harmonic with linear trend
-    model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
-    model.lshiftb=100;              % level shift amplitude
-    model.lshift= 30;               % level shift amplitude
-    model.signal2noiseratio = 100;  % signal to noise
+    model.seasonal=1;               % 1 harmonic
+    model.seasonalb=[10 10];        % parameter for one harmonic
+    model.signal2noiseratio = 100;  % signal to noise ratio
     
-    rng('default')
     n = 100;                        % sample size
-    tmp = rand(n,1);
-    model.X = tmp.*[1:n]';          % a extra covariate
-    model.Xb = 1;                   % beta coefficient of the covariate
     % generate data
     out_sim=simulateTS(n,'plots',1,'model',model);
 
     %run LTStsVarSel with all default options
-    rng(1);
     [out_model_0, out_reduced_0] = LTStsVarSel(out_sim.y);
  
     % optional: add a FS step to the LTSts estimator
@@ -259,28 +280,34 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
 %{
     % run LTStsVarSel starting from a specific over-parametrized model.
+    
+    rng('default')
+    rng(1);
+    
     % sample size
     n = 100;                       
     tmp = rand(n,1);
-     % data model
+     
+    % data model
     model=struct;
     model.trend=1;                  % linear trend
     model.trendb=[0 1];             % parameters of the linear trend
     model.s=12;                     % monthly time series
-    model.seasonal=1;               % 1 harmonic with linear trend
-    model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
+    model.seasonal=1;               % 1 harmonic
+    model.seasonalb=[10 10];        % parameter for one harmonic
     model.lshiftb=100;              % level shift amplitude
-    model.lshift= 30;               % level shift amplitude
-    model.signal2noiseratio = 100;  % signal to noise
+    model.lshift= 30;               % level shift position
+    model.signal2noiseratio = 100;  % signal to noise ratio
     model.X = tmp.*[1:n]';          % a extra covariate
     model.Xb = 1;                   % beta coefficient of the covariate
     out_sim=simulateTS(n,'plots',1,'model',model);
+    
     % complete model to be tested.
     overmodel=struct;
     overmodel.trend=2;              % quadratic trend
     overmodel.s=12;                 % monthly time series
     overmodel.seasonal=303;         % number of harmonics
-    overmodel.lshift=4;             % position where to start monitoring level shift
+    overmodel.lshift=4:n-4;         % positions of level shift which have to be considered
     overmodel.X=tmp.*[1:n]';
 
     % pval threshold
@@ -292,20 +319,33 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
 %{
     % run LTStsVarSel starting from over-parametrized model with autoregressive components.
+    
+    rng('default')
+    rng(1);
+    
     % add three autoregressive components to the complete model.
-     n = 100;                        % sample size
+    
+    n = 100;                        % sample size
     tmp = rand(n,1);
+    model=struct;
+    model.trend=1;                  % linear trend
+    model.trendb=[0 1];             % parameters of the linear trend
+    model.s=12;                     % monthly time series
+    model.seasonal=1;               % 1 harmonic
+    model.seasonalb=[10 10];
     model.X = tmp.*[1:n]';          % a extra covariate
     model.Xb = 1;                   % beta coefficient of the covariate
+    model.signal2noiseratio = 100;  % signal to noise ratio
     out_sim=simulateTS(n,'plots',1,'model',model);
+    
     % complete model to be tested.
     overmodel=struct;
     overmodel.trend=2;              % quadratic trend
     overmodel.s=12;                 % monthly time series
     overmodel.seasonal=303;         % number of harmonics
-    overmodel.lshift=4;             % position where to start monitoring level shift
+    overmodel.lshift=0;             % no level shift
     overmodel.X=tmp.*[1:n]';
-    overmodel.ARp=3;
+    overmodel.ARp=1:3;
 
     % pval threshold
     thPval=0.01;
@@ -315,16 +355,20 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
 %{
     % run LTStsVarSel with default options and return warning messages.
-        % data model
+    
+    rng('default')
+    rng(1);
+    
+    % data model
     model=struct;
     model.trend=1;                  % linear trend
     model.trendb=[0 1];             % parameters of the linear trend
     model.s=12;                     % monthly time series
-    model.seasonal=1;               % 1 harmonic with linear trend
-    model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
+    model.seasonal=1;               % 1 harmonic
+    model.seasonalb=[10 10];        % parameter for one harmonic
     model.lshiftb=100;              % level shift amplitude
-    model.lshift= 30;               % level shift amplitude
-    model.signal2noiseratio = 100;  % signal to noise
+    model.lshift= 30;               % level shift position
+    model.signal2noiseratio = 100;  % signal to noise ratio
     
     n = 100;                        % sample size
     tmp = rand(n,1);
@@ -424,7 +468,8 @@ end
 % - covariates,
 % - the largest degree component of:
 %   * trend,
-%   * amplitude of harmonics.
+%   * amplitude of harmonics,
+%   * AR component.
 %
 % Step (2b) re-estimates the model. It remove the less significant parameter
 % and re-estimates the model with LTSts. Remark: the level shift position
@@ -443,7 +488,7 @@ AllPvalSig=0;
 iniloop=1;
 
 % fwd search index
-lLSH = n-model.lshift*2;
+lLSH = length(model.lshift);
 
 % initialize a flag to check the initial presence of level shift
 lshift_present = 0;
@@ -509,7 +554,7 @@ while AllPvalSig == 0
         LastHarmonicPval=out_LTSts.LastHarmonicPval;
     end
     
-    if model.lshift>0
+    if model.lshift(1)~=0
         LevelShiftPval=out_LTSts.LevelShiftPval;
         posLS=out_LTSts.posLS;
     else
@@ -518,12 +563,12 @@ while AllPvalSig == 0
     
     %%%%%%%%%%%%%%%%%%%%%%%%%
 
-    posAR=seqp(contains(rownam,'b_AR'));
+    posAR=seqp(contains(rownam,'b_auto'));
     % Initialize pvalue of last AR component to be zero.
     LastARPval=0;
     if ~isempty(posAR)
         % Position of the last element of the AR component
-        posLastAR=max(seqp(contains(rownam,'b_AR')));
+        posLastAR=max(seqp(contains(rownam,'b_auto')));
         if posLastAR>1
             LastARPval=out_LTSts.Btable{posLastAR,'pval'};
         end
@@ -551,7 +596,7 @@ while AllPvalSig == 0
                 model.trend=model.trend-1;
             case 2
                 % elseif indmaxPvalall ==2
-                % Remove from model the last term of the seaonal component that
+                % Remove from model the last term of the seasonal component that
                 % is remove last harmonic
                 if msg==1 || plots==1
                     tmp = num2str(model.seasonal);
@@ -589,10 +634,10 @@ while AllPvalSig == 0
                 end
             case 6
                 if msg==1 || plots==1
-                    strAR=num2str(model.ARp);
+                    strAR=num2str(model.ARp(end));
                     removed = ['Removing AR component of order ' strAR];
                 end
-                model.ARp=model.ARp-1;
+                model.ARp=model.ARp(1:end-1);
             otherwise
                 %else
         end
@@ -601,7 +646,7 @@ while AllPvalSig == 0
             disp(removed)
         end
         % keep the level shift component and transfer it to X part
-        if model.lshift>0 && iniloop==1
+        if model.lshift(1)~=0 && iniloop==1
             Xls=[zeros(posLS-1,1); ones(n-posLS+1,1)];
             if ~isfield(model,'X')
                 model.X=[];
