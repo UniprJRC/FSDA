@@ -541,18 +541,7 @@ while AllPvalSig == 0
         LastVarAmplPval=0;
     end
     
-    % delete first (if necessary the time varying harmonic rather than the
-    % unique harmonic)
-    if LastVarAmplPval>0
-        LastHarmonicPval=out_LTSts.LastHarmonicPval;
-        sea=(num2str(model.seasonal));
-        if strcmp(sea(end),'1')
-            LastHarmonicPval=0;
-        else
-        end
-    else
-        LastHarmonicPval=out_LTSts.LastHarmonicPval;
-    end
+    LastHarmonicPval=out_LTSts.LastHarmonicPval;
     
     if model.lshift(1)~=0
         LevelShiftPval=out_LTSts.LevelShiftPval;
@@ -604,6 +593,15 @@ while AllPvalSig == 0
                     removed =['Removing harmonic number ' tmp];
                 end
                 model.seasonal= model.seasonal-1;
+                % If the last seasonal component has been removed and there
+                % are still terms of non linear seasonality, remove them
+                strseaso=num2str(model.seasonal);
+                if length(strseaso)==3 && strseaso(end)=='0' && LastVarAmplPval>0
+                    if msg==1 || plots==1
+                        removed = strcat(removed,['. Removing also amplitude of all orders of seas. comp.']);
+                    end
+                    model.seasonal=0;
+                end
             case 3
                 % elseif indmaxPvalall ==3
                 % Remove from model the non signif expl var
