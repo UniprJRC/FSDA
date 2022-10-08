@@ -191,13 +191,14 @@ axis('off')
 set(gcf,'Visible','on')
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
-dim = [.56 .88 0.1 0.1];
 if unweighted==true
+dim = [.56 .88 0.1 0.1];
     strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad $' ...
         '\boldmath{$M_Y$}= $\frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
 else
-    strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad $' ...
-        '\boldmath{$M_Y$}= $\frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
+dim = [.46 .90 0.09 0.09];
+    strmean=['\boldmath{$M_X$}=$\frac{ \sum_{i=1}^n x_i w_i}{\sum_{i=1}^n w_i}$   = $\frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad $' ...
+             '\boldmath{$M_Y$}=$\frac{ \sum_{i=1}^n y_i w_i}{\sum_{i=1}^n w_i}$= $\frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
     
 end
 annotation('textbox',dim,'FitBoxToText','on','String',strmean,'Interpreter','latex','FontSize',fs);
