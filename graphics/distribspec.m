@@ -21,16 +21,22 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 % Optional input arguments:
 %
-%    userColor :   The color of the shaded area.
+%    userColor :   The color of the shaded area. Character. It can be any
+%                  of the LineSpec colors properties of MATLAB plot funtion.
+%                   Example - 'userColor', 'r'
+%                   Data Types - character
 %
 % Output:
 %
-%    p:   The probability of the shaded area. Scalar in [0 1].
+%    p:   Probability covered by the shaded area. Scalar. It is a value in [0 1]. 
 %
-%    h:   A handle to the line objects.
+%    h:   Handle to the line objects. Graphic object. 
 %
 %
 % Optional Output:
+%
+%
+% References:
 %
 %
 % See also: normspec, makedist
