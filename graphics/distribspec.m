@@ -54,7 +54,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    % A Gamma with parameter values a = 3 and b = 1, in [2 3].
+    %% A Gamma with parameter values a = 3 and b = 1, in [2 3].
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [2 3];
     region = 'inside';
@@ -62,7 +62,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    % A Gamma with parameter values a = 3 and b = 1, outside [2 3].
+    %% A Gamma with parameter values a = 3 and b = 1, outside [2 3].
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [2 3];
     region = 'outside';
@@ -115,9 +115,9 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    % A Gamma and interval as above, colored in red
+    % A Gamma as above, without specification of region (default is inside)
     pd = makedist('Gamma','a',3,'b',1);
-    specs  = [-inf -1];
+    specs  = [-inf 2];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region, 'userColor','r');
 %}
@@ -182,7 +182,7 @@ if ~isempty(UserOptions)
 end
 % Write in structure 'options' the options chosen by the user
 for i=1:2:length(varargin)
-    options.varargin{i}=varargin{i+1};
+    options.(varargin{i})=varargin{i+1};
 end
 
 % Assign the values for the optional arguments
@@ -209,7 +209,7 @@ nspecfig = figure;
 nspecaxes = axes;
 set(nspecaxes, 'Parent', nspecfig);
 set(nspecaxes,'Nextplot','add');
-hh    = plot(x,y,'b-');
+hh    = plot(x,y,'k-','LineWidth',1.5);
 xlims = get(nspecaxes,'Xlim');
 
 % compute the endpoints of the spec limit lines and plot limit lines
@@ -275,17 +275,17 @@ if strcmp(region,'outside')
         strprob = ['No specs given by the user: probability is ' num2str(p)];
     else
         if lbinf
-            p = cdf(pd,-ub); % P(t > ub)
+            p = 1-cdf(pd,ub); % P(t > ub)
             strprob = ['Probability greater than upper bound is ' num2str(p)];
         elseif ubinf
             p = cdf(pd,lb); % P(t < lb)
             strprob = ['Probability smaller than lower bound is ' num2str(p)];
         else
-            p = cdf(pd,lb) + cdf(pd,-ub); % P(t < lb) + Pr(t > ub)
+            p = cdf(pd,lb) + (1-cdf(pd,ub)); % P(t < lb) + Pr(t > ub)
             strprob = ['The outside region $P(t < lb) + Pr(t > ub)$ is ' num2str(p)];
         end
     end
-else
+else  % if strcmp(region,'inside')
     if emptyspecs
         p=1;
         strprob = ['No specs given by the user: probability is ' num2str(p)];
@@ -294,7 +294,7 @@ else
             p = cdf(pd,ub); % P(t < ub)
             strprob = ['Probability lower than upper bound is ' num2str(p)];
         elseif ubinf
-            p = cdf(pd,-lb); % P(t > lb)
+            p = 1-cdf(pd,lb); % P(t > lb)
             strprob = ['Probability greater than lower bound is ' num2str(p)];
         else
             p = cdf(pd,ub) - cdf(pd,lb);  % P(lb < t < ub)
