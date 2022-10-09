@@ -32,9 +32,12 @@ function out = GUIcov(x,y,w)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. 
-%          Table with n+1 rows (where n is the length of x) containing
-%          what is shown in the GUI. Last row contains the totals.
+%    out = detailed output to compute the index. struct.
+%          Structure containing the following fields.
+%          out.data = table with n+1 rows (where n is the length of x)
+%                   containing what is shown in the GUI. 
+%                   Last row contains the totals.
+%          out.cov = scalar containing the covariance.
 %
 %
 %
