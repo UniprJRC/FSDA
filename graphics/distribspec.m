@@ -23,8 +23,13 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 %    userColor :   The color of the shaded area. Character. It can be any
 %                  of the LineSpec colors properties of MATLAB plot funtion.
+%                  It can also be a RGB triplet specification. Therefore,
+%                  user can use FSDA function FSColors to generate the
+%                  triplet.
 %                   Example - 'userColor', 'r'
 %                   Data Types - character
+%                   Example - 'userColor', FSColors.lightgrey.RGB
+%                   Data Types - 3-element array for a RGB triplet
 %
 % Output:
 %
@@ -121,11 +126,28 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    % A Gamma as above, without specification of region (default is inside)
+    % A Gamma as above, using userColor with standard one-character specification
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region, 'userColor','r');
+%}
+
+%{
+    % A Gamma as above, using userColor with RGB triplet specification
+    pd = makedist('Gamma','a',3,'b',1);
+    specs  = [-inf 2];
+    region = 'inside';
+    [p, h] = distribspec(pd, specs, region, 'userColor',[1 0.5 0.5]);
+%}
+
+%{
+    %% A Gamma as above, using userColor with RGB triplet specification returned by FSColors
+    pd = makedist('Gamma','a',3,'b',1);
+    specs  = [-inf 2];
+    region = 'inside';
+    RGB_vector = FSColors.lightgrey.RGB;
+    [p, h] = distribspec(pd, specs, region, 'userColor',RGB_vector);
 %}
 
 
