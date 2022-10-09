@@ -32,16 +32,9 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 % Optional Output:
 %
-%   xxxx     : The xxx.
-%
-% More About:
-%
-% zzzzzz
 %
 % See also: normspec, makedist
 %
-%
-% References:
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -89,7 +82,28 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     region = 'inside';
-    [p, h] = distribspec(pd, specs, region, 'userColor','r');
+    [p, h] = distribspec(pd, specs, region);
+%}
+
+%{
+    % A Gamma as above, without specification of region (default is inside)
+    pd = makedist('Gamma','a',3,'b',1);
+    specs  = [-inf 2];
+    [p, h] = distribspec(pd, specs);
+%}
+
+%{
+    % A Gamma as above, without specification of specs.
+    pd = makedist('Gamma','a',3,'b',1);
+    region = 'inside';
+    [p, h] = distribspec(pd, [], region);
+%}
+
+%{
+    % A Gamma as above, without specification of specs.
+    pd = makedist('Gamma','a',3,'b',1);
+    region = 'outside';
+    [p, h] = distribspec(pd, [], region);
 %}
 
 %{
@@ -97,15 +111,42 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf -1];
     region = 'inside';
+    [p, h] = distribspec(pd, specs, region);
+%}
+
+%{
+    % A Gamma and interval as above, colored in red
+    pd = makedist('Gamma','a',3,'b',1);
+    specs  = [-inf -1];
+    region = 'inside';
     [p, h] = distribspec(pd, specs, region, 'userColor','r');
 %}
+
+
 
 %% Beginning of code
 
 % Checking inputs and invalid arguments
 
-if nargin<3
+% the probability distribution
+if isobject(pd) && isprop(pd,'DistributionName')
+    % set of values based on the given probability density
+    prob = (0.0001:0.0004:0.9999)';
+    x = icdf(pd,prob);
+    y = pdf(pd, x);
+else
+    error('FSDA:distribspec:BadDistrib','Bad distribution object: use makedist.m to generate one');
+end
+
+if nargin<3 || isempty(region)
     region='inside';
+end
+
+if nargin<2 || isempty(specs)
+    specs=[min(x) max(x)];
+    emptyspecs = true;
+else
+    emptyspecs = false;
 end
 
 if numel(specs) ~= 2 || ~isnumeric(specs)
@@ -114,10 +155,6 @@ end
 
 if ~strcmp(region,'inside') && ~strcmp(region,'outside')
     error('FSDA:distribspec:BadRegion','The region can be either "inside" or "outside"');
-end
-
-if ~(isobject(pd) && isprop(pd,'DistributionName'))
-    error('FSDA:distribspec:BadDistrib','Bad distribution object: use makedist.m to generate one');
 end
 
 
@@ -161,16 +198,11 @@ lbinf = isinf(lb);
 ubinf = isinf(ub);
 
 if lbinf && ubinf
-    error(message('FSDA:distribspec:BadSpecsInfinite'));
+    error('FSDA:distribspec:BadSpecsInfinite','Both limits are infinite');
 end
 
 
-%% plot the distribution 
-
-% set of values based on the given probability density 
-prob = (0.0002:0.0004:0.9998)';
-x = icdf(pd,prob);
-y = pdf(pd, x);
+%% plot the distribution
 
 % initialise figure
 nspecfig = figure;
@@ -238,26 +270,36 @@ end
 
 %% compute p
 if strcmp(region,'outside')
-    if lbinf
-        p = cdf(pd,-ub); % P(t > ub)
-        strprob = ['Probability greater than upper bound is ' num2str(p)];
-    elseif ubinf
-        p = cdf(pd,lb); % P(t < lb)
-        strprob = ['Probability smaller than lower bound is ' num2str(p)];
+    if emptyspecs
+        p=0;
+        strprob = ['No specs given by the user: probability is ' num2str(p)];
     else
-        p = cdf(pd,lb) + cdf(pd,-ub); % P(t < lb) + Pr(t > ub)
-        strprob = ['Probability in the selected outside region is ' num2str(p)];
+        if lbinf
+            p = cdf(pd,-ub); % P(t > ub)
+            strprob = ['Probability greater than upper bound is ' num2str(p)];
+        elseif ubinf
+            p = cdf(pd,lb); % P(t < lb)
+            strprob = ['Probability smaller than lower bound is ' num2str(p)];
+        else
+            p = cdf(pd,lb) + cdf(pd,-ub); % P(t < lb) + Pr(t > ub)
+            strprob = ['The outside region $P(t < lb) + Pr(t > ub)$ is ' num2str(p)];
+        end
     end
 else
-    if lbinf
-        p = cdf(pd,ub); % P(t < ub)
-        strprob = ['Probability lower than upper bound is ' num2str(p)];
-    elseif ubinf
-        p = cdf(pd,-lb); % P(t > lb)
-        strprob = ['Probability greater than lower bound is ' num2str(p)];
+    if emptyspecs
+        p=1;
+        strprob = ['No specs given by the user: probability is ' num2str(p)];
     else
-        p = cdf(pd,ub) - cdf(pd,lb);  % P(lb < t < ub)
-        strprob = ['Probability in the selected region is ' num2str(p)];
+        if lbinf
+            p = cdf(pd,ub); % P(t < ub)
+            strprob = ['Probability lower than upper bound is ' num2str(p)];
+        elseif ubinf
+            p = cdf(pd,-lb); % P(t > lb)
+            strprob = ['Probability greater than lower bound is ' num2str(p)];
+        else
+            p = cdf(pd,ub) - cdf(pd,lb);  % P(lb < t < ub)
+            strprob = ['The inside region $P(lb < t < ub)$ is ' num2str(p)];
+        end
     end
 end
 
@@ -269,7 +311,7 @@ for np=1:numpar
     strpar = [strpar , char(pd.ParameterNames(np)) '=' num2str(pd.ParameterValues(np)) ' ']; %#ok<AGROW>
 end
 
-title({strpar ; strprob}, 'interpreter' , 'latex' , 'FontSize', 14);
+title({strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
 xaxis = refline(0,0);
 set(xaxis,'Color','k');
 ylabel('Density value', 'interpreter' , 'latex' , 'FontSize', 12);
