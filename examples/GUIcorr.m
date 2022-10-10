@@ -1,11 +1,7 @@
 function out = GUIcorr(x,y,w)
 %GUIcorr shows the necessary calculations to obtain the correlation in a GUI.
 %
-%
 %<a href="matlab: docsearchFS('GUIcorr')">Link to the help function</a>
-%
-%
-%
 %
 %  Required input arguments:
 %
@@ -44,7 +40,7 @@ function out = GUIcorr(x,y,w)
 %
 %
 %
-% See also: GUIcov, GUIvar, GUImad, GUIskewness
+% See also: GUIcov, GUIvar, GUImad, GUIskewness, GUIkurtosis
 %
 % References:
 % Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
