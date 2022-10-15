@@ -6,7 +6,7 @@ function y = inversegampdf(x,a,b,nocheck)
 %  Required input arguments:
 %
 %    x:         Value at which the pdf must be evaluated.
-%               Scalar, vector or matrix 3D array of the same size of x and
+%               Scalar, vector or matrix 3D array of the same size of a and
 %               b. A scalar input functions as a constant matrix of the
 %               same size as the other input.
 %               See "More About:" for details about the inverse gamma
