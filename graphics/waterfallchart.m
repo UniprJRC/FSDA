@@ -20,7 +20,7 @@ function h = waterfallchart(Y,varargin)
 %
 %  Optional input arguments:
 %
-%   SetAsTotal  : elements which which have to be set as total.
+%   SetAsTotal  : elements which have to be set as total.
 %                  Logical or numeric index vector.
 %                  Logical or numeric index vector indicating which
 %                  elements of Y have to be set as total.
