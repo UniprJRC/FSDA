@@ -180,20 +180,16 @@ nb=n(boo);
 rhob=rho(boo);
 
 y(boo) = (nb-2).*gamma(nb-1) .* ((1-rhob.^2).^((nb-1)/2)).* (1-rb.^2).^((nb-4)/2);
- y(boo) =y(boo)./ (sqrt(2*pi) .* gamma(nb-1/2) .* (1-rhob.*rb).^(nb-3/2)); % .* ...
-   y(boo) =y(boo).*(1+ 1/4*(rhob.*rb+1)./(2*nb-1) + 9/16*(rhob.*rb+1).^2 ./ (2*nb-1)./(2*nb+1));
-
-%  y1 = (n-2) * gamma(n-1) * ((1-ro.^2).^((n-1)/2)).* (1-r.^2).^((n-4)/2);
-%     y1 = y1./ (sqrt(2*pi) * gamma(n-1/2) * (1-ro.*r).^(n-3/2));
-%     y1 = y1.* (1+ 1/4*(ro.*r+1)/(2*n-1) + 9/16*(ro.*r+1).^2 / (2*n-1)/(2*n+1));
+y(boo) =y(boo)./ (sqrt(2*pi) .* gamma(nb-1/2) .* (1-rhob.*rb).^(nb-3/2)); % .* ...
+y(boo) =y(boo).*(1+ 1/4*(rhob.*rb+1)./(2*nb-1) + 9/16*(rhob.*rb+1).^2 ./ (2*nb-1)./(2*nb+1));
 
 % For the values of n greater or equal than 120
 rnb=r(~boo);
 nnb=n(~boo);
 rhonb=rho(~boo);
 y(~boo) =  (1-rhonb.^2).^((nnb-1)/2) .* (1-rnb.^2).^((nnb-4)/2).* (nnb-2);
- y(~boo) =y(~boo)./  (sqrt(2*pi) .* (1-rhonb.*rnb).^(nnb-3/2)) .* nnb.^(-1/2);
-   y(~boo) =y(~boo).*(1+ 1/4*(rhonb.*rnb+1)./(2*nnb-1) + 9/16*(rhonb.*rnb+1).^2 ./ (2*nnb-1)./(2*nnb+1));
+y(~boo) =y(~boo)./  (sqrt(2*pi) .* (1-rhonb.*rnb).^(nnb-3/2)) .* nnb.^(-1/2);
+y(~boo) =y(~boo).*(1+ 1/4*(rhonb.*rnb+1)./(2*nnb-1) + 9/16*(rhonb.*rnb+1).^2 ./ (2*nnb-1)./(2*nnb+1));
 
 % Set to 0 the density for the values of r outside the admissible range [-1
 % 1]
