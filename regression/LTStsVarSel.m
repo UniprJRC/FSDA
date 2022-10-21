@@ -541,7 +541,11 @@ while AllPvalSig == 0
         LastVarAmplPval=0;
     end
     
-    LastHarmonicPval=out_LTSts.LastHarmonicPval;
+    if ~isempty(out_LTSts.LastHarmonicPval)
+        LastHarmonicPval=out_LTSts.LastHarmonicPval;
+    else
+        LastHarmonicPval=0;
+    end
     
     if model.lshift(1)~=0
         LevelShiftPval=out_LTSts.LevelShiftPval;
