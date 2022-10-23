@@ -1,4 +1,10 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>LTStsVarSel</title><meta content="refpage" name="chunktype"><meta content="function:LTStsVarSel" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="LTStsVarSel does variable selection in the robust time series model LTSts." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">LTStsVarSel</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">run LTStsVarSel with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">run LTStsVarSel starting from a specific over-parametrized model.</a></li><li><a class="intrnllnk" href="#Example_3">run LTStsVarSel starting from over-parametrized model with autoregressive components.</a></li><li><a class="intrnllnk" href="#Example_4">run LTStsVarSel with default options and return warning messages.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_model">model</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_thPval">thPval</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_reduced_est">reduced_est</a></li><li><a class="intrnllnk" href="#output_argument_reduced_model">reduced_model</a></li><li><a class="intrnllnk" href="#output_argument_msgstr">msgstr</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">LTStsVarSel</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">LTStsVarSel does variable selection in the robust time series model LTSts</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">reduced_est=LTStsVarSel(y)</code><span class="syntax_example"><a class="intrnllnk" href="LTStsVarSel.html#Example_1">example</a></span></li><li><code class="synopsis">reduced_est=LTStsVarSel(y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="LTStsVarSel.html#Example_2">example</a></span></li><li><code class="synopsis">[reduced_est, reduced_model]=LTStsVarSel(___)</code><span class="syntax_example"><a class="intrnllnk" href="LTStsVarSel.html#Example_3">example</a></span></li><li><code class="synopsis">[reduced_est, reduced_model, msgstr]=LTStsVarSel(___)</code><span class="syntax_example"><a class="intrnllnk" href="LTStsVarSel.html#Example_4">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>LTSts requires variable selection when the optimal model parameters are
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>LTStsVarSel</title><meta content="refpage" name="chunktype"><meta content="function:LTStsVarSel" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="LTStsVarSel does variable selection in the robust time series model LTSts." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">LTStsVarSel</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">run LTStsVarSel with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">run LTStsVarSel starting from a specific over-parametrized model.</a></li><li><a class="intrnllnk" href="#Example_3">run LTStsVarSel starting from over-parametrized model with autoregressive components.</a></li><li><a class="intrnllnk" href="#Example_4">run LTStsVarSel with default options and return warning messages.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">An example of the use of option firstTestLS
+    rng('default')
+    rng(10);
+    
+     data model
+    model=struct;
+    model.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_firstTestLS">firstTestLS</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_model">model</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_thPval">thPval</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_reduced_est">reduced_est</a></li><li><a class="intrnllnk" href="#output_argument_reduced_model">reduced_model</a></li><li><a class="intrnllnk" href="#output_argument_msgstr">msgstr</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">LTStsVarSel</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">LTStsVarSel does variable selection in the robust time series model LTSts</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">reduced_est=LTStsVarSel(y)</code><span class="syntax_example"><a class="intrnllnk" href="LTStsVarSel.html#Example_1">example</a></span></li><li><code class="synopsis">reduced_est=LTStsVarSel(y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="LTStsVarSel.html#Example_2">example</a></span></li><li><code class="synopsis">[reduced_est, reduced_model]=LTStsVarSel(___)</code><span class="syntax_example"><a class="intrnllnk" href="LTStsVarSel.html#Example_3">example</a></span></li><li><code class="synopsis">[reduced_est, reduced_model, msgstr]=LTStsVarSel(___)</code><span class="syntax_example"><a class="intrnllnk" href="LTStsVarSel.html#Example_4">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>LTSts requires variable selection when the optimal model parameters are
  not known in advance. This happens in particular when the function has to
  be applied to many heterogeneous datasets in an automatic way, possibly
  on a regular basis (that is the model parameters are expected to change
@@ -8,41 +14,38 @@
  estimated model parameter, starting from an over-parametrized model. The
  model parameters are re-estimated with LTSts at each step, until all the
  p-values are below a given threshold. Then, the output is a reduced time
- series model with significant parameters only.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>=LTStsVarSel(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>run LTStsVarSel with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>=LTStsVarSel(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>run LTStsVarSel starting from a specific over-parametrized model.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>,<a class="intrnllnk" href="#outputarg_reduced_model"><code> reduced_model</code></a>]=LTStsVarSel(___)</code></span>run LTStsVarSel starting from over-parametrized model with autoregressive components.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_4">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>,<a class="intrnllnk" href="#outputarg_reduced_model"><code> reduced_model</code></a>,<a class="intrnllnk" href="#outputarg_msgstr"><code> msgstr</code></a>]=LTStsVarSel(___)</code></span>run LTStsVarSel with default options and return warning messages.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel with all default options.</li></span></a></span></h3><div class="collapse"><p>
-     data model<div class="programlisting"><div class="codeinput"><pre class="matlab-code">model=struct;
+ series model with significant parameters only.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>=LTStsVarSel(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>run LTStsVarSel with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>=LTStsVarSel(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>run LTStsVarSel starting from a specific over-parametrized model.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>,<a class="intrnllnk" href="#outputarg_reduced_model"><code> reduced_model</code></a>]=LTStsVarSel(___)</code></span>run LTStsVarSel starting from over-parametrized model with autoregressive components.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_4">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>,<a class="intrnllnk" href="#outputarg_reduced_model"><code> reduced_model</code></a>,<a class="intrnllnk" href="#outputarg_msgstr"><code> msgstr</code></a>]=LTStsVarSel(___)</code></span>run LTStsVarSel with default options and return warning messages.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel with all default options.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+rng(1);
+% data model
+model=struct;
 model.trend=1;                  % linear trend
 model.trendb=[0 1];             % parameters of the linear trend
 model.s=12;                     % monthly time series
-model.seasonal=1;               % 1 harmonic with linear trend
-model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
-model.lshiftb=100;              % level shift amplitude
-model.lshift= 30;               % level shift amplitude
-model.signal2noiseratio = 100;  % signal to noise
-rng('default')
+model.seasonal=1;               % 1 harmonic
+model.seasonalb=[10 10];        % parameter for one harmonic
+model.signal2noiseratio = 100;  % signal to noise ratio
 n = 100;                        % sample size
-tmp = rand(n,1);
-model.X = tmp.*[1:n]';          % a extra covariate
-model.Xb = 1;                   % beta coefficient of the covariate
 % generate data
 out_sim=simulateTS(n,'plots',1,'model',model);
 %run LTStsVarSel with all default options
-rng(1);
 [out_model_0, out_reduced_0] = LTStsVarSel(out_sim.y);
 % optional: add a FS step to the LTSts estimator
 % outFS = FSRts(out_sim.y,'model',out_model_0);
-% To be fixed: 'Non existent user option found-&gt; '    'ARp'</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel starting from a specific over-parametrized model.</li></span></a></span></h3><div class="collapse"><p>
-     sample size<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n = 100;                       
+% To be fixed: 'Non existent user option found-&gt; '    'ARp'</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel starting from a specific over-parametrized model.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+rng(1);
+% sample size
+n = 100;                       
 tmp = rand(n,1);
 % data model
 model=struct;
 model.trend=1;                  % linear trend
 model.trendb=[0 1];             % parameters of the linear trend
 model.s=12;                     % monthly time series
-model.seasonal=1;               % 1 harmonic with linear trend
-model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
+model.seasonal=1;               % 1 harmonic
+model.seasonalb=[10 10];        % parameter for one harmonic
 model.lshiftb=100;              % level shift amplitude
-model.lshift= 30;               % level shift amplitude
-model.signal2noiseratio = 100;  % signal to noise
+model.lshift= 30;               % level shift position
+model.signal2noiseratio = 100;  % signal to noise ratio
 model.X = tmp.*[1:n]';          % a extra covariate
 model.Xb = 1;                   % beta coefficient of the covariate
 out_sim=simulateTS(n,'plots',1,'model',model);
@@ -51,49 +54,117 @@ overmodel=struct;
 overmodel.trend=2;              % quadratic trend
 overmodel.s=12;                 % monthly time series
 overmodel.seasonal=303;         % number of harmonics
-overmodel.lshift=4;             % position where to start monitoring level shift
+overmodel.lshift=4:n-4;         % positions of level shift which have to be considered
 overmodel.X=tmp.*[1:n]';
 % pval threshold
 thPval=0.01;
-[out_model_1, out_reduced_1] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel starting from over-parametrized model with autoregressive components.</li></span></a></span></h3><div class="collapse"><p>
-     add three autoregressive components to the complete model.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n = 100;                        % sample size
+[out_model_1, out_reduced_1] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel starting from over-parametrized model with autoregressive components.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+rng(1);
+% add three autoregressive components to the complete model.
+n = 100;                        % sample size
 tmp = rand(n,1);
-model.X = tmp.*[1:n]';          % a extra covariate
-model.Xb = 1;                   % beta coefficient of the covariate
-out_sim=simulateTS(n,'plots',1,'model',model);
-% complete model to be tested.
-overmodel=struct;
-overmodel.trend=2;              % quadratic trend
-overmodel.s=12;                 % monthly time series
-overmodel.seasonal=303;         % number of harmonics
-overmodel.lshift=4;             % position where to start monitoring level shift
-overmodel.X=tmp.*[1:n]';
-overmodel.ARp=3;
-% pval threshold
-thPval=0.01;
-[out_model_2, out_reduced_2] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval);</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel with default options and return warning messages.</li></span></a></span></h3><div class="collapse"><p>
-         data model<div class="programlisting"><div class="codeinput"><pre class="matlab-code">model=struct;
+model=struct;
 model.trend=1;                  % linear trend
 model.trendb=[0 1];             % parameters of the linear trend
 model.s=12;                     % monthly time series
-model.seasonal=1;               % 1 harmonic with linear trend
-model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
+model.seasonal=1;               % 1 harmonic
+model.seasonalb=[10 10];
+model.X = tmp.*[1:n]';          % a extra covariate
+model.Xb = 1;                   % beta coefficient of the covariate
+model.signal2noiseratio = 100;  % signal to noise ratio
+out_sim=simulateTS(n,'plots',1,'model',model);
+% complete model to be tested.
+overmodel=struct;
+overmodel.trend=2;              % quadratic trend
+overmodel.s=12;                 % monthly time series
+overmodel.seasonal=303;         % number of harmonics
+overmodel.lshift=0;             % no level shift
+overmodel.X=tmp.*[1:n]';
+overmodel.ARp=1:3;
+% pval threshold
+thPval=0.01;
+[out_model_2, out_reduced_2] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval);</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel with default options and return warning messages.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+rng(1);
+% data model
+model=struct;
+model.trend=1;                  % linear trend
+model.trendb=[0 1];             % parameters of the linear trend
+model.s=12;                     % monthly time series
+model.seasonal=1;               % 1 harmonic
+model.seasonalb=[10 10];        % parameter for one harmonic
 model.lshiftb=100;              % level shift amplitude
-model.lshift= 30;               % level shift amplitude
-model.signal2noiseratio = 100;  % signal to noise
+model.lshift= 30;               % level shift position
+model.signal2noiseratio = 100;  % signal to noise ratio
 n = 100;                        % sample size
 tmp = rand(n,1);
 model.X = tmp.*[1:n]';          % a extra covariate
 model.Xb = 1;                   % beta coefficient of the covariate
 % generate data
 out_sim=simulateTS(n,'plots',1,'model',model);
-[out_model_3, out_reduced_3, messages] = LTStsVarSel(out_sim.y);</pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
-               with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
+[out_model_3, out_reduced_3, messages] = LTStsVarSel(out_sim.y);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example of the use of option firstTestLS
+    rng('default')
+    rng(10);
+    
+     data model
+    model=struct;
+    model.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+rng(10);
+% data model
+model=struct;
+model.trend=1;                  % linear trend
+model.trendb=[0 1];             % parameters of the linear trend
+model.s=12;                     % monthly time series
+model.seasonal=1;               % 1 harmonic
+model.seasonalb=[2 3];        % parameter for one harmonic
+model.lshiftb=50;              % level shift amplitude
+model.lshift= 35;               % level shift position
+model.signal2noiseratio = 30;  % signal to noise ratio
+model.ARp=1;
+model.ARb=0.9;
+n = 50;                        % sample size
+tmp = rand(n,1);
+model.X = tmp;          % a extra covariate
+model.Xb = 1;                   % beta coefficient of the covariate
+% generate data
+out_sim=simulateTS(n,'plots',1,'model',model);
+overmodel=model;
+overmodel.trend=2;              % quadratic trend
+overmodel.s=12;                 % monthly time series
+overmodel.seasonal=303;         % number of harmonics
+overmodel.lshift=-1;
+overmodel=rmfield(overmodel,"trendb");
+overmodel=rmfield(overmodel,"seasonalb");
+overmodel=rmfield(overmodel,"signal2noiseratio");
+overmodel=rmfield(overmodel,"lshiftb");
+overmodel=rmfield(overmodel,"Xb");
+overmodel=rmfield(overmodel,"ARb");
+nsamp=100;
+[out_model_3, out_reduced_3] = LTStsVarSel(out_sim.y, ...
+'model',overmodel,'nsamp',nsamp);
+compTime=toc; disp(compTime)
+disp('Final selected model without option firstTestLS')
+disp(out_model_3)
+[out_model_3N, out_reduced_3N] = LTStsVarSel(out_sim.y, ...
+'model',overmodel,'firstTestLS',true,'nsamp',nsamp);
+disp('Final selected model with option firstTestLS')
+disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+               with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'firstTestLS', false
+</code>,<code> 'model', model
+</code>,<code> 'nsamp',500
 </code>,<code> 'thPval',0.05
 </code>,<code> 'plots',1
 </code>,<code> 'msg',1
 </code>,<code> 'dispresults',true
-</code></code></span></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies the
+</code></code></span></div><div class="expandableContent"><div id="inputarg_firstTestLS" class="clearfix"></div><h3 id="input_argument_namevalue_firstTestLS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>firstTestLS</code> &#8212;initial test for presence of level shift.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>if
+               firstTestLS is true, we immediately find the position of
+               the level shift in a model which does not contain
+               autoregressive terms and the seasonal specification is 101
+               If the level shift component is significant we pass the
+               level shift component in fixed position to the variable
+               selection procedure. The default value of firstTestLS is
+               false.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'firstTestLS', false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies the
                (over-parametrized) model which will be used to initialise
                the variable selection process. The model structure is
                identical to the one defined for function LTSts: for
@@ -101,10 +172,10 @@ out_sim=simulateTS(n,'plots',1,'model',model);
 
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
                          data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
-                       trend = 0 implies no trend
-                       trend = 1 implies linear trend with intercept (default),
-                       trend = 2 implies quadratic trend
-                       trend = 3 implies cubic trend
+                       trend = 0 implies no trend,
+                       trend = 1 implies linear trend with intercept,
+                       trend = 2 implies quadratic trend,
+                       trend = 3 implies cubic trend.</p> <p>
                        Admissible values for trend are, 0, 1, 2 and 3.</p><p>
                        In the paper RPRH to denote the order of the trend
                        symbol A is used. If this field is not present into
@@ -113,7 +184,7 @@ out_sim=simulateTS(n,'plots',1,'model',model);
                         component. Possible values for seasonal are
                         $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
                         For example:</p> <p>
-                        if seasonal =1 (default) we have:</p> <p>
+                        if seasonal =1 we have:</p> <p>
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;</p> <p>
                         if seasonal =2 we have:</p> <p>
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
@@ -139,45 +210,93 @@ out_sim=simulateTS(n,'plots',1,'model',model);
                        In the paper RPRH to denote the number of
                        frequencies of the seasonal component
                        symbol B is used, while symbol G is used to denote
-                       the order of the trend of the seasonal component.</p><p>
+                       the order of the trend of the seasonal component.</p> <p>
                        Therefore, for example, model.seasonal=201
                        corresponds to B=1 and G=2, while model.seasonal=3
-                       corresponds to B=3 and G=0;</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
+                       corresponds to B=3 and G=0.</p><p>
+                       If this field is not present into
+                       input structure model, model.seasonal=303 is used.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
                          values of nexpl extra covariates which are likely
-                         to affect y.</p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>scalar greater or equal than 0 which
-                         specifies whether it is necessary to include a
-                         level shift component. lshift = 0 (default)
-                         implies no level shift component. If lshift is an
-                         interger greater then 0 then it is possible to
-                         specify the moment to start considering level
-                         shifts. For example if lshift =13 then the
-                         following additional parameters are estimated
-                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where $\beta_{LS1}$
-                          is a real number and $\beta_{LS2}$ is an integer
-                          which assumes values 14, 14, ..., T-13.</p> <p>
-                         In general, the level shift which are considered
-                         are referred to times (lshift+1):(T-lshift).</p><p>
+                         to affect y.</p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>scalar or vector associated to level shift
+                       component. lshift=0 (default) implies no level
+                       shift component.</p> <p>
+                       If model.lshift is vector of positive integers,
+                         then it is associated to the positions of level
+                         shifts which have to be considered. The most
+                         significant one is included in the fitted model.</p> <p>
+                         For example if model.lshift =[13 20 36] a
+                         tentative level shift is imposed in position
+                         $t=13$, $t=20$ and $t=36$. The most significant
+                         among these positions in included in the final
+                         model. In other words, the following extra
+                         parameters are added to the final model:</p> <p>
+                         $\beta_{LS1}* I(t \geq \beta_{LS2})$ where
+                         $\beta_{LS1}$ is a real number (associated with
+                         the magnitude of the level shift) and
+                         $\beta_{LS2}$ is an integer which assumes values
+                         13, 20 or 36 and and $I$ denotes the indicator
+                         function.</p> <p>
+                         As a particular case, if model.lshift =13 then a
+                         level shift in position $t=13$ is added to the
+                         model. In other words the following additional
+                         parameters are added: $\beta_{LS1}* I(t \geq 13)$
+                         where $\beta_{LS1}$ is a real number and $I$
+                         denotes the indicator function.</p> <p>
+                       If lshift = -1 tentative level shifts are
+                         considered for positions $p+1,p+2, ..., T-p$ and
+                         the most significant one is included in the final
+                         model ($p$ is the total number of parameters in
+                         the fitted model). Note that lshift=-1 is not
+                         supported for C-coder translation.</p><p>
                        In the paper RPRH $\beta_{LS1}$ is denoted with
                        symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
-                       with symbol $\delta_2$.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>scalar greater or equal than 0 which
-                         specifies the length of the autoregressive
-                         component. The default value of model.ARp is 0,
-                         that is there is no autoregressive component.</p> <p>
+                       with symbol $\delta_2$.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>vector with non negative integer numbers
+                       specifying the autoregressive
+                       components. For example:</p> <p>
+                        model.ARp=[1 2] means a AR(2) process;</p> <p>
+                        model.ARp=2 means just the lag 2 component;</p> <p>
+                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p> <p>
+                        model.ARp=0 (default) means no autoregressive component.</p> <p>
                                 Remark: the default overparametrized model is for monthly
                data with a quadratic
-               trend (3 parameters) + seasonal component with just one
-               harmonic (2 parameters), no additional explanatory
-               variables, no level shift and no AR component that is
+               trend (3 parameters) + seasonal component with three
+               harmonics which grows in a cubic way over time (9 parameters),
+               no additional explanatory variables, no level shift
+               and no AR component that is
                                model=struct;</p> <p>
                                model.s=12;</p> <p>
-                               model.trend=1;</p> <p>
-                               model.seasonal=1;</p> <p>
+                               model.trend=2;</p> <p>
+                               model.seasonal=303;</p> <p>
                                model.X='';</p> <p>
                                model.lshift=0;</p> <p>
                                model.ARp=0;</p><p>
-               Using the notation of the paper RPRH we have A=1, B=1; and
+               Using the notation of the paper RPRH we have A=2, B=3; G=3; and
                $\delta_1=0$.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_thPval" class="clearfix"></div><h3 id="input_argument_namevalue_thPval" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>thPval</code> &#8212;threshold for pvalues.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>A value between 0 and 1.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;number of subsamples to extract.</span></a><span class="example_desc">scalar | vector of length 2.</span></span></h3><div class="collapse">	<p><p>Vector of length 1 or 2 which controls the number of
+               subsamples which will be extracted to find the robust
+               estimator. If lshift is not equal to 0 then nsamp(1)
+               controls the number of subsets which have to be extracted
+               to find the solution for t=lshift(1). nsamp(2) controls the
+               number of subsets which have to be extracted to find the
+               solution for t=lshift(2), lshift(3), ..., lshift(end).</p> <p>
+               Note that nsamp(2) is generally smaller than nsamp(1)
+               because in order to compute the best solution for
+               t=lshift(2), lshift(3), ..., lshift(end), we use the lts.bestr/2
+               best solutions from previous t (after shifting the
+               position of the level shift in the estimator of beta). If
+               lshift is a vector of positive integers the default value
+               of nsamp is (500 250). If
+               lshift is a vector of positive integers and nsamp is supplied as a scalar the default
+               is to extract [nsamp/2] subsamples for t=lshift(1),
+               lshift(2), ... Therefore, for example, in order to extract
+               600 subsamples for t=lshift(1) and 300 subsamples for t=
+               lshift(2) ... you can use nsamp =600 or nsamp=[600 300].</p> <p>
+               The default value of nsamp is 1000;</p> <p>
+                                Remark: if nsamp=0 all subsets will be extracted.</p> <p>
+               They will be (n choose p).</p><p>
+
+</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',500
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_thPval" class="clearfix"></div><h3 id="input_argument_namevalue_thPval" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>thPval</code> &#8212;threshold for pvalues.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>A value between 0 and 1.</p> <p>
                An estimated parameter/variable is eliminated if the
                associated pvalue is below thPval. Default is thPval=0.01.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'thPval',0.05
