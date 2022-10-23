@@ -132,10 +132,13 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                       nfore is the requested number of forecasts. If this
 %                       field is an empty double (default) there is no
 %                       effect of explanatory variables.
-%               model.ARp = scalar greater or equal than 0 which
-%                         specifies the length of the autoregressive
-%                         component. The default value of model.ARp is 0,
-%                         that is there is no autoregressive component.
+%               model.ARp = vector with non negative integer numbers
+%                       specifying the autoregressive
+%                       components. For example: 
+%                        model.ARp=[1 2] means a AR(2) process; 
+%                        model.ARp=2 means just the lag 2 component;
+%                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
+%                        model.ARp=0 (default) means no autoregressive component. 
 %                 Example - 'model', model
 %                 Data Types - struct
 %
