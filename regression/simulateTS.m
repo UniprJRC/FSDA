@@ -114,7 +114,7 @@ function [out] = simulateTS(T,varargin)
 %               model.ARb = vector of doubles containing the beta
 %                       coefficients for the autoregressive component. For
 %                       example model.ARb = [0.5 -0.2] in combination with
-%                       model.ARp=[1 2] and ARIMAX=ture generates an AR(2)
+%                       model.ARp=[1 2] and ARIMAX=true generates an AR(2)
 %                       time series of the kind: $y_t = 0.5 y_{t-1} - 0.2
 %                       y_{t-2}$ + seasonal + lshift + $\epsilon_t$.
 %                       model.ARb must have the same number of elements of
