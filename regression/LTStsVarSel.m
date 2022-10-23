@@ -24,6 +24,17 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %
 %  Optional input arguments:
 %
+% firstTestLS: initial test for presence of level shift. Boolean. if
+%               firstTestLS is true, we immediately find the position of
+%               the level shift in a model which does not contain
+%               autoregressive terms and the seasonal specification is 101
+%               If the level shift component is significant we pass the
+%               level shift component in fixed position to the variable
+%               selection procedure. The default value of firstTestLS is
+%               false.
+%                 Example - 'firstTestLS', false
+%                 Data Types - logical
+%
 %    model:     model type. Structure. A structure which specifies the
 %               (over-parametrized) model which will be used to initialise
 %               the variable selection process. The model structure is
@@ -117,8 +128,8 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                       with symbol $\delta_2$.
 %               model.ARp = vector with non negative integer numbers
 %                       specifying the autoregressive
-%                       components. For example: 
-%                        model.ARp=[1 2] means a AR(2) process; 
+%                       components. For example:
+%                        model.ARp=[1 2] means a AR(2) process;
 %                        model.ARp=2 means just the lag 2 component;
 %                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
 %                        model.ARp=0 (default) means no autoregressive component.
@@ -127,8 +138,8 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %               Remark: the default overparametrized model is for monthly
 %               data with a quadratic
 %               trend (3 parameters) + seasonal component with three
-%               harmonics which grows in a cubic way over time (9 parameters), 
-%               no additional explanatory variables, no level shift 
+%               harmonics which grows in a cubic way over time (9 parameters),
+%               no additional explanatory variables, no level shift
 %               and no AR component that is
 %                               model=struct;
 %                               model.s=12;
@@ -139,6 +150,32 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                               model.ARp=0;
 %               Using the notation of the paper RPRH we have A=2, B=3; G=3; and
 %               $\delta_1=0$.
+%
+%       nsamp : number of subsamples to extract. Scalar or vector of length 2.
+%               Vector of length 1 or 2 which controls the number of
+%               subsamples which will be extracted to find the robust
+%               estimator. If lshift is not equal to 0 then nsamp(1)
+%               controls the number of subsets which have to be extracted
+%               to find the solution for t=lshift(1). nsamp(2) controls the
+%               number of subsets which have to be extracted to find the
+%               solution for t=lshift(2), lshift(3), ..., lshift(end).
+%               Note that nsamp(2) is generally smaller than nsamp(1)
+%               because in order to compute the best solution for
+%               t=lshift(2), lshift(3), ..., lshift(end), we use the lts.bestr/2
+%               best solutions from previous t (after shifting the
+%               position of the level shift in the estimator of beta). If
+%               lshift is a vector of positive integers the default value
+%               of nsamp is (500 250). If
+%               lshift is a vector of positive integers and nsamp is supplied as a scalar the default
+%               is to extract [nsamp/2] subsamples for t=lshift(1),
+%               lshift(2), ... Therefore, for example, in order to extract
+%               600 subsamples for t=lshift(1) and 300 subsamples for t=
+%               lshift(2) ... you can use nsamp =600 or nsamp=[600 300].
+%               The default value of nsamp is 1000;
+%                 Example - 'nsamp',500
+%                 Data Types - double
+%               Remark: if nsamp=0 all subsets will be extracted.
+%               They will be (n choose p).
 %
 %    thPval:    threshold for pvalues. Scalar. A value between 0 and 1.
 %               An estimated parameter/variable is eliminated if the
@@ -380,7 +417,55 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %}
 
 
-%% Beginning of code 
+%{
+    % An example of the use of option firstTestLS
+    rng('default')
+    rng(10);
+    
+    % data model
+    model=struct;
+    model.trend=1;                  % linear trend
+    model.trendb=[0 1];             % parameters of the linear trend
+    model.s=12;                     % monthly time series
+    model.seasonal=1;               % 1 harmonic
+    model.seasonalb=[2 3];        % parameter for one harmonic
+    model.lshiftb=50;              % level shift amplitude
+    model.lshift= 35;               % level shift position
+    model.signal2noiseratio = 30;  % signal to noise ratio
+    model.ARp=1;
+    model.ARb=0.9;
+    n = 50;                        % sample size
+    tmp = rand(n,1);
+    model.X = tmp;          % a extra covariate
+    model.Xb = 1;                   % beta coefficient of the covariate
+    % generate data
+    out_sim=simulateTS(n,'plots',1,'model',model);
+    
+    
+    overmodel=model;
+    overmodel.trend=2;              % quadratic trend
+    overmodel.s=12;                 % monthly time series
+    overmodel.seasonal=303;         % number of harmonics
+    overmodel.lshift=-1;
+    overmodel=rmfield(overmodel,"trendb");
+    overmodel=rmfield(overmodel,"seasonalb");
+    overmodel=rmfield(overmodel,"signal2noiseratio");
+    overmodel=rmfield(overmodel,"lshiftb");
+    overmodel=rmfield(overmodel,"Xb");
+    overmodel=rmfield(overmodel,"ARb");
+    nsamp=100;
+    [out_model_3, out_reduced_3] = LTStsVarSel(out_sim.y, ...
+        'model',overmodel,'nsamp',nsamp);
+    compTime=toc; disp(compTime)
+    disp('Final selected model without option firstTestLS')
+    disp(out_model_3)
+    [out_model_3N, out_reduced_3N] = LTStsVarSel(out_sim.y, ...
+        'model',overmodel,'firstTestLS',true,'nsamp',nsamp);
+    disp('Final selected model with option firstTestLS')
+    disp(out_model_3N)
+%}
+
+%% Beginning of code
 
 % Input parameters checking
 
@@ -389,9 +474,6 @@ warning('off','all');
 if nargin<1
     error('FSDA:LTStsVarSel:MissingInputs','Input time series is missing');
 end
-% if nargin<2
-%     error('FSDA:LTStsVarSel:MissingInputs','Provide an initial (over-parametrised) model');
-% end
 
 % Set up defaults for the over-parametrized model
 modeldef          = struct;
@@ -402,24 +484,27 @@ modeldef.X        = [];       % no extra explanatory variable
 modeldef.lshift   = 0;        % no level shift
 modeldef.ARp      = 0;        % no autoregressive component
 
+nsamp=500;
+firstTestLS=false;
+
 options=struct('model',modeldef, 'thPval', 0.01, ...
-    'plots',0,'msg',0,'dispresults',0);
+    'plots',0,'msg',0,'dispresults',0,'nsamp',nsamp,'firstTestLS',firstTestLS);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:LTSts3:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:LTStsVarSel:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    
+
     % Check if all optional arguments were present in structure options
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:LTSts:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:LTStsVarSel:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -441,15 +526,40 @@ thPval = options.thPval;
 plots  = options.plots;
 msg    = options.msg;
 dispresults = options.dispresults;
+nsamp=options.nsamp;
+firstTestLS=options.firstTestLS;
 
 %% Step 1: estimate model parameters with LTSts for the over-parametrized input model
 
 n   = size(y,1);     % number of observations in the input dataset
 h1  = round(n*0.9);  % default for h (num. obs. for the LTS estimator)
 
+% If firstTestLS is true, we immediately find the position of the level shift 
+% in a model which does not contains autoregressive terms and
+% and seasonal specification is 101
+% If the level shift component is significant we pass the level shift
+% component in fixed position to the variable selection procedure.
+if firstTestLS==true && (length(model.lshift)>1 || model.lshift(1)==-1)
+    modelINI=model;
+    modelINI.ARp=0;
+    modelINI.seasonal=101;
+    out_LTStsINI = LTSts(y,'model',modelINI,'nsamp',nsamp,'h',h1,...
+        'plots',plots,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
+    if out_LTStsINI.LevelShiftPval<thPval
+        posLS=out_LTStsINI.posLS;
+        model.lshift=out_LTStsINI.posLS;
+    else
+        model.lshift=0;
+    end
+end
+
+
 % Estimate the parameters based on initial full model
-out_LTSts = LTSts(y,'model',model,'nsamp',500,'h',h1,...
+out_LTSts = LTSts(y,'model',model,'nsamp',nsamp,'h',h1,...
     'plots',plots,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
+
+
+
 if plots
     a=gcf;
     if isfield(model,'X')
@@ -471,7 +581,7 @@ end
 %   * amplitude of harmonics,
 %   * AR component.
 %
-% Step (2b) re-estimates the model. It remove the less significant parameter
+% Step (2b) re-estimates the model. It removes the least significant parameter
 % and re-estimates the model with LTSts. Remark: the level shift position
 % is not re-estimated, but the original estimate is kept as is.
 
@@ -497,10 +607,10 @@ lshift_present = 0;
 while AllPvalSig == 0
     % The loop terminates when all p-values are smaller than thPval. In
     % this case AllPvalSig will become equal to 1
-    
+
     rownam=out_LTSts.Btable.Properties.RowNames;
     seqp=1:length(rownam);
-    
+
     % Position of the last element of the trend component
     posLastTrend=max(seqp(contains(rownam,'b_trend')));
     if posLastTrend>1
@@ -508,7 +618,7 @@ while AllPvalSig == 0
     else
         LastTrendPval=0;
     end
-    
+
     posX=seqp(contains(rownam,'b_explX'));
     if ~isempty(posX)
         % if iniloop is 0 the pval of the last expl variable is in reality
@@ -524,36 +634,36 @@ while AllPvalSig == 0
             %lsdet(1,2) = confidence level of each value of mdr.
             PvalX(end)=1-lsdet(1,2);
         end
-        
+
         [maxPvalX,posmaxPvalX]=max(PvalX);
         %posmaxPvalX=posX(posmaxPvalX);
     else
         maxPvalX=0;
         posmaxPvalX=[];
     end
-    
+
     % tre=cellfun(@isempty,strfind(rownam,'b_varamp'));
     posLastVarAmpl=max(seqp(contains(rownam,'b_varam')));
-    
+
     if ~isempty(posLastVarAmpl)
         LastVarAmplPval=out_LTSts.Btable{posLastVarAmpl,'pval'};
     else
         LastVarAmplPval=0;
     end
-    
+
     if ~isempty(out_LTSts.LastHarmonicPval)
         LastHarmonicPval=out_LTSts.LastHarmonicPval;
     else
         LastHarmonicPval=0;
     end
-    
+
     if model.lshift(1)~=0
         LevelShiftPval=out_LTSts.LevelShiftPval;
         posLS=out_LTSts.posLS;
     else
         LevelShiftPval=0;
     end
-    
+
     %%%%%%%%%%%%%%%%%%%%%%%%%
 
     posAR=seqp(contains(rownam,'b_auto'));
@@ -566,18 +676,18 @@ while AllPvalSig == 0
             LastARPval=out_LTSts.Btable{posLastAR,'pval'};
         end
     end
-    
+
     %%%%%%%%%%%%%%%%%%%%
-    
+
     % Group all p-values into a vector
     Pvalall = [LastTrendPval;...
         LastHarmonicPval;...
         maxPvalX; LastVarAmplPval;...
         LevelShiftPval; LastARPval];
-    
+
     % Start of model reduction (step 2b)
     [maxPvalall,indmaxPvalall]=max(Pvalall);
-    
+
     if maxPvalall>thPval
         switch indmaxPvalall
             case 1
@@ -602,7 +712,7 @@ while AllPvalSig == 0
                 strseaso=num2str(model.seasonal);
                 if length(strseaso)==3 && strseaso(end)=='0' && LastVarAmplPval>0
                     if msg==1 || plots==1
-                        removed = strcat(removed,['. Removing also amplitude of all orders of seas. comp.']);
+                        removed = strcat(removed,'. Removing also amplitude of all orders of seas. comp.');
                     end
                     model.seasonal=0;
                 end
@@ -643,7 +753,7 @@ while AllPvalSig == 0
             otherwise
                 %else
         end
-        
+
         if msg==1 || plots==1
             disp(removed)
         end
@@ -658,12 +768,12 @@ while AllPvalSig == 0
             model.lshift=0;
             iniloop=0;
         end
-        
+
         % Re-run the model but do not re-estimate the position of the
         % level shift
-        [out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',100,...
+        [out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',nsamp,...
             'plots',plots,'msg',msg,'dispresults',dispresults,'h',h1,'SmallSampleCor',1);
-        
+
         if plots==1
             a=gcf;
             title(a.Children(end),{['trend = ' num2str(model.trend) ...
@@ -682,7 +792,7 @@ while AllPvalSig == 0
         % stops
         AllPvalSig=1;
     end
-    
+
 end
 
 % If level shift is present and model.X is not empty, it means that the last
@@ -690,9 +800,11 @@ end
 if lshift_present > 0 && ~isempty(model.X)
     tmp = find(model.X(:,end)>0);
     model.lshift=tmp(1);
-    out_LTSts.posLS=tmp(1);
+    % out_LTSts.posLS=tmp(1);
     model.X(:,end) = [];
-    out_LTSts.Btable.Properties.RowNames(end)={'b_lshift'};
+    % out_LTSts.Btable.Properties.RowNames(end)={'b_lshift'};
+    [out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',nsamp,...
+        'plots',0,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
 end
 
 reduced_est   = model;
