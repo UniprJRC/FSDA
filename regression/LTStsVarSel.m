@@ -598,7 +598,13 @@ AllPvalSig=0;
 iniloop=1;
 
 % fwd search index
-lLSH = length(model.lshift);
+if length(lshift)==1 && lshift==-1
+    p=size(out_LTSts.Btable,1)+1;
+    lLSH=n-2*p;
+else
+    lLSH = length(model.lshift);
+end
+
 
 % initialize a flag to check the initial presence of level shift
 lshift_present = 0;
