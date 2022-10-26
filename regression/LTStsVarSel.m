@@ -598,7 +598,7 @@ AllPvalSig=0;
 iniloop=1;
 
 % fwd search index
-if length(lshift)==1 && lshift==-1
+if length(model.lshift)==1 && model.lshift==-1
     p=size(out_LTSts.Btable,1)+1;
     lLSH=n-2*p;
 else
