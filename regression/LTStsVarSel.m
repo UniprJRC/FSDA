@@ -534,7 +534,7 @@ firstTestLS=options.firstTestLS;
 n   = size(y,1);     % number of observations in the input dataset
 h1  = round(n*0.9);  % default for h (num. obs. for the LTS estimator)
 
-% If firstTestLS is true, we immediately find the position of the level shift 
+% If firstTestLS is true, we immediately find the position of the level shift
 % in a model which does not contains autoregressive terms and
 % and seasonal specification is 101
 % If the level shift component is significant we pass the level shift
@@ -805,6 +805,9 @@ if lshift_present > 0 && ~isempty(model.X)
     % out_LTSts.Btable.Properties.RowNames(end)={'b_lshift'};
     [out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',nsamp,...
         'plots',0,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
+end
+if isempty(model.ARp)
+    model.ARp = 0;
 end
 
 reduced_est   = model;
