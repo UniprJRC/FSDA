@@ -32,15 +32,15 @@ function y = corrcdf(x, rho, n, varargin)
 % Optional input arguments:
 %
 %   upper:      upper or lower tail. Scalar character. 
-%               if nargin>3  normcdf(...,'upper') computes the upper tail probability of the 
-%                normal distribution.  
+%               If the numbe of input arguments is greater than 3  
+%               corrcdf(...,'upper') computes the upper tail probability 
 %               Example - 'upper'
 %               Data Types - char
 %
 %  Output:
 %
 %    y:         CDF value. Scalar, vector or matrix or 3D array of the same size
-%               of input arguments x, rho and n. $y=\int_-1^x f_{t}(x |
+%               of input arguments x, rho and n. $y=\int_{-\infty}^x f_{t}(x |
 %               \rho,n) dt$ is the value of the cdf of the distribution of
 %               the correlation coefficient evaluated at x.
 %
@@ -48,15 +48,22 @@ function y = corrcdf(x, rho, n, varargin)
 % See also: corrpdf
 %
 %
-% https://mathworld.wolfram.com/CorrelationCoefficientBivariateNormalDistribution.html,
+% References:
+%
+% Das Gupta, S. (1980). Distribution of the Correlation Coefficient,
+% in: Fienberg, S.E., Hinkley, D.V. (eds) R.A. Fisher: An Appreciation, 
+% Lecture Notes in Statistics, vol 1. Springer, New York, NY. 
+% https://doi.org/10.1007/978-1-4612-6079-0_3
 %
 % Acknowledgements:
 %
+% For additional information see
+% https://mathworld.wolfram.com/CorrelationCoefficientBivariateNormalDistribution.html
 % This function follows the lines of MATLAB code developed by Xu Cui,
 % https://www.alivelearn.net/?p=709 Stanford University and the file
-% exchange submission Joshua Carmichael (2022). sample correlation
+% exchange submission Joshua Carmichael (2022), sample correlation
 % distribution function
-% (https://www.mathworks.com/matlabcentral/fileexchange/45785-sample-correlation-distribution-function)
+% https://www.mathworks.com/matlabcentral/fileexchange/45785-sample-correlation-distribution-function/
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -70,10 +77,9 @@ function y = corrcdf(x, rho, n, varargin)
 %
 %
 
-
 %{
     %% An example where x, rho and n are all scalars.
-    % Find Pr(r<x|rho=0.1|n=12)
+    % Find Pr(r<x|rho=0.1|n=12).
     x=0;
     rho=0.1;
     n=12;
@@ -86,7 +92,7 @@ function y = corrcdf(x, rho, n, varargin)
 %}
 
 %{
-    %% x is not scalar
+    %% x is not scalar.
     x=-1:0.01:1;
     rho=0;
     n=12;
