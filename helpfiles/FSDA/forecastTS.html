@@ -221,7 +221,7 @@ model.trend=1;
 model.seasonal=102;
 % No level shift
 model.lshift=0;
-% Add a nonn important expl. variable
+% Add a non important expl. variable
 model.X=X;
 model.ARp=[1 2];
 out=LTSts(y,'model',model,'plots',1,'dispresults',true);
@@ -255,6 +255,8 @@ ans =
         seasonal: [120&times;1 double]
                X: [100&times;10 double]
           lshift: 0
+             XAR: [120&times;1 double]
+           Xexpl: [120&times;0 double]
         confband: [120&times;2 double]
     datesnumeric: [120&times;1 double]
 
@@ -332,8 +334,8 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                            & = & \eta_i +\epsilon_i \\
                            & = & \eta(x_i,\hat \beta)+ e_i  \\
                            & = & \hat \eta_i + e_i
-                       \end{eqnarray}</p></td></tr><tr valign="top"><td><code>yhat</code></td><td><p><p>vector of fitted values after final (NLS=non linear
-                       least squares) step:</p> <p>
+                       \end{eqnarray}</p></td></tr><tr valign="top"><td><code>yhat</code></td><td><p><p>vector of n fitted values after final (NLS=non
+                       linear least squares) step:</p> <p>
                        $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$</p></p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>Final scale estimate of the residuals
                      \[
                      \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)
@@ -400,10 +402,13 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                        affect y for periods 1:(length(y)+nfore) where
                        nfore is the requested number of forecasts. If this
                        field is an empty double (default) there is no
-                       effect of explanatory variables.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p>scalar greater or equal than 0 which
-                         specifies the length of the autoregressive
-                         component. The default value of model.ARp is 0,
-                         that is there is no autoregressive component.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
+                       effect of explanatory variables.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>vector with non negative integer numbers
+                       specifying the autoregressive
+                       components. For example:</p> <p>
+                        model.ARp=[1 2] means a AR(2) process;</p> <p>
+                        model.ARp=2 means just the lag 2 component;</p> <p>
+                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p><p>
+                        model.ARp=0 (default) means no autoregressive component.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nfore" class="clearfix"></div><h3 id="input_argument_namevalue_nfore" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nfore</code> &#8212;number of forecasts.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Positive integer which defines the number of forecasts. The
                default value of nfore is 24.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nfore',12
@@ -413,9 +418,19 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.999
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots == 1 a plot with the real time series  with fitted
                values and forecasts (with confidence bands) will appear on
-               the screen.</p> <p>
+               the screen. This plot is tagged forecastTS.</p> <p>
                The default value of plot is 0, that is no plot is shown on
-               the screen.</p><p>
+               the screen.</p> <p>
+               If plots == 2 an additional plot which shows the
+               contribution of the different underlying components to
+               fitted and forecasts will also appear on the screen. This
+               plot is tagged decompTS. In other terms, in this plot we
+               show the contribution given to outFORE.signal by
+               outFORE.trend, outFORE.seasonal, outFORE.lshift,
+               outFORE.Xexpl and outFORE.XAR. In all the underlying
+               components (except trend) we impose the sum to zero
+               constraint in the period 1:Tround where
+               Tround=length(y)-mod(length(y),s);</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;Title.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>A label for the title (default: 'Double wedge
                 plot').</p> <p>
@@ -445,28 +460,33 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
 
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>signal</code></td><td><p><p>vector of length (length(y)+nfore) containing
                    predictive values in sample and out of sample.</p> <p>
-                   Predictive values = TR+SE+X+LS.</p></p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>vector of length (length(y)+nfore) containing
+                   Predictive values = TR+SE+XAR+Xexpl+LS.</p><p>
+                   Note that  outFORE.signal =outFORE.trend+outFORE.seasonal
+                   +outFORE.lshift+outFORE.Xexpl+outFORE.XAR. The single
+                   components which make up the overall estimated values
+                   are given below.</p></p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>vector of length (length(y)+nfore) containing
                    estimated trend (TR) in sample and out of sample.</p> <p>
                    If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>vector of length (length(y)+nfore) containing
                    estimated seasonal component (SE) in sample and out of sample.</p> <p>
                    If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>vector of length (length(y)+nfore) containing
                    level shift (LS) in sample and out of sample.</p> <p>
-                   If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>vector of length (length(y)+nfore)
-                   containing the effecf of the explanatory variables.</p> <p>
+                   If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>Xexpl</code></td><td><p><p>vector of length (length(y)+nfore)
+                   containing the effect of the explanatory variables (Xexpl).</p> <p>
+                   If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>XAR</code></td><td><p><p>vector of length (length(y)+nfore)
+                   containing the effect of the explanatory variables (Xexpl).</p> <p>
                    If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>confband</code></td><td><p>matrix of size (length(y)+nfore)-by-2
                    containing lower and upper confidence bands of the
                    forecasts. The confidence level of the bands is
-                   splecified is input parameter conflev. Note that the
-                   first length(y) rows of this matrix are equal to NaN.</p></td></tr><tr valign="top"><td><code>datesnumeric</code></td><td><p><p>vector of length (length(y)+nfore)
-                   containing the dates in numeric format.</p> <p>
-               outFORE.X= data matrix X containing trend, seasonal, expl and
+                   specified in input parameter conflev. Note that the
+                   first length(y) rows of this matrix are equal to NaN.</p></td></tr><tr valign="top"><td><code>datesnumeric</code></td><td><p>vector of length (length(y)+nfore)
+                   containing the dates in numeric format.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X containing trend, seasonal, expl and
                        lshift, if the model is linear or linearized
                        version of $\eta(x_i, \beta)$ if the model is non
                        linear containing in the columns partial
                        derivatives evaluated in correspondence of
                        outEST.B(:,1) with respect to each parameter. In other
                        words, the $i,j$-th element of outFORE.X is
-                       </p>\[
+                       \[
                        \frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
                        \]<p>
                        $j=1, 2, \ldots, p$, $i=1, 2, \ldots, T$.</p> <p>
@@ -475,4 +495,4 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                        The field is present only if option
                        yxsave is set to 1.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
  Monitoring of Many Time Series with Application to Fraud Detection,
- "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LTSts.html" itemprop="url"><span itemprop="name"><code>LTSts</code></span></a></span> | <span itemprop="seealso"><a href="wedgeplot.html" itemprop="url"><span itemprop="name"><code>wedgeplot</code></span></a></span> | <span itemprop="seealso"><a href="simulateTS.html" itemprop="url"><span itemprop="name"><code>simulateTS</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LTSts.html" itemprop="url"><span itemprop="name"><code>LTSts</code></span></a></span> | <span itemprop="seealso"><a href="wedgeplot.html" itemprop="url"><span itemprop="name"><code>wedgeplot</code></span></a></span> | <span itemprop="seealso"><a href="simulateTS.html" itemprop="url"><span itemprop="name"><code>simulateTS</code></span></a></span> | <span itemprop="seealso"><a href="LTStsVarSel.html" itemprop="url"><span itemprop="name"><code>LTStsVarSel</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
