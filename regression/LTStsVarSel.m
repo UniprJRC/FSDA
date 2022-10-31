@@ -454,9 +454,11 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
     overmodel=rmfield(overmodel,"Xb");
     overmodel=rmfield(overmodel,"ARb");
     nsamp=100;
+    tic;
     [out_model_3, out_reduced_3] = LTStsVarSel(out_sim.y, ...
         'model',overmodel,'nsamp',nsamp);
-    compTime=toc; disp(compTime)
+    compTime=toc; 
+    disp(compTime)
     disp('Final selected model without option firstTestLS')
     disp(out_model_3)
     [out_model_3N, out_reduced_3N] = LTStsVarSel(out_sim.y, ...
