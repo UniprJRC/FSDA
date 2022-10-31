@@ -89,6 +89,7 @@ penal_obj = 0;
 
 % current and best objective function values
 vopt = -1e+20;
+obj=vopt;
 muXopt    = NaN(k,p-intercept);
 %sigmaXopt =  X sigma.
 sigmaXopt = NaN(p-intercept,p-intercept,k);
