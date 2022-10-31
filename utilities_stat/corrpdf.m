@@ -43,15 +43,21 @@ function y = corrpdf(r, rho, n)
 %
 % References:
 %
-% https://mathworld.wolfram.com/CorrelationCoefficientBivariateNormalDistribution.html,
+% Das Gupta, S. (1980). Distribution of the Correlation Coefficient,
+% in: Fienberg, S.E., Hinkley, D.V. (eds) R.A. Fisher: An Appreciation, 
+% Lecture Notes in Statistics, vol 1. Springer, New York, NY. 
+% https://doi.org/10.1007/978-1-4612-6079-0_3
 %
 % Acknowledgements:
 %
+% For additional information see
+% https://mathworld.wolfram.com/CorrelationCoefficientBivariateNormalDistribution.html
 % This function follows the lines of MATLAB code developed by Xu Cui,
 % https://www.alivelearn.net/?p=709 Stanford University and the file
 % exchange submission Joshua Carmichael (2022). sample correlation
 % distribution function
-% (https://www.mathworks.com/matlabcentral/fileexchange/45785-sample-correlation-distribution-function)
+% https://www.mathworks.com/matlabcentral/fileexchange/45785-sample-correlation-distribution-function/
+%
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -155,6 +161,7 @@ function y = corrpdf(r, rho, n)
 %}
 
 %% Beginning of code
+
 if numel(r)>1 && numel(n)==1 &&  numel(rho)==1
     n=repmat(n,size(r));
     rho=repmat(rho,size(r));
