@@ -61,8 +61,8 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                           & = & \eta(x_i,\hat \beta)+ e_i  \\
 %                           & = & \hat \eta_i + e_i
 %                       \end{eqnarray}
-%         outEST.yhat = vector of fitted values after final (NLS=non linear
-%                       least squares) step:
+%         outEST.yhat = vector of n fitted values after final (NLS=non
+%                       linear least squares) step:
 %                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$
 %        outEST.scale = Final scale estimate of the residuals
 %                     \[
@@ -134,11 +134,11 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                       effect of explanatory variables.
 %               model.ARp = vector with non negative integer numbers
 %                       specifying the autoregressive
-%                       components. For example: 
-%                        model.ARp=[1 2] means a AR(2) process; 
+%                       components. For example:
+%                        model.ARp=[1 2] means a AR(2) process;
 %                        model.ARp=2 means just the lag 2 component;
 %                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
-%                        model.ARp=0 (default) means no autoregressive component. 
+%                        model.ARp=0 (default) means no autoregressive component.
 %                 Example - 'model', model
 %                 Data Types - struct
 %
@@ -158,9 +158,19 @@ function [outFORE] = forecastTS(outEST,varargin)
 %       plots : Plots on the screen. Scalar.
 %               If plots == 1 a plot with the real time series  with fitted
 %               values and forecasts (with confidence bands) will appear on
-%               the screen.
+%               the screen. This plot is tagged forecastTS.
 %               The default value of plot is 0, that is no plot is shown on
 %               the screen.
+%               If plots == 2 an additional plot which shows the
+%               contribution of the different underlying components to
+%               fitted and forecasts will also appear on the screen. This
+%               plot is tagged decompTS. In other terms, in this plot we
+%               show the contribution given to outFORE.signal by
+%               outFORE.trend, outFORE.seasonal, outFORE.lshift,
+%               outFORE.Xexpl and outFORE.XAR. In all the underlying
+%               components (except trend) we impose the sum to zero
+%               constraint in the period 1:Tround where
+%               Tround=length(y)-mod(length(y),s);
 %                 Example - 'plots',1
 %                 Data Types - double
 %
@@ -206,7 +216,11 @@ function [outFORE] = forecastTS(outEST,varargin)
 %
 %                outFORE.signal = vector of length (length(y)+nfore) containing
 %                   predictive values in sample and out of sample.
-%                   Predictive values = TR+SE+X+LS.
+%                   Predictive values = TR+SE+XAR+Xexpl+LS.
+%                   Note that  outFORE.signal =outFORE.trend+outFORE.seasonal
+%                   +outFORE.lshift+outFORE.Xexpl+outFORE.XAR. The single
+%                   components which make up the overall estimated values
+%                   are given below.
 %                outFORE.trend = vector of length (length(y)+nfore) containing
 %                   estimated trend (TR) in sample and out of sample.
 %                   If this component is not present, it is equal to 0.
@@ -216,13 +230,16 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                outFORE.lshift = vector of length (length(y)+nfore) containing
 %                   level shift (LS) in sample and out of sample.
 %                   If this component is not present, it is equal to 0.
-%                outFORE.X = vector of length (length(y)+nfore)
-%                   containing the effecf of the explanatory variables.
+%                outFORE.Xexpl = vector of length (length(y)+nfore)
+%                   containing the effect of the explanatory variables (Xexpl).
+%                   If this component is not present, it is equal to 0.
+%                outFORE.XAR = vector of length (length(y)+nfore)
+%                   containing the effect of the explanatory variables (Xexpl).
 %                   If this component is not present, it is equal to 0.
 %                outFORE.confband  = matrix of size (length(y)+nfore)-by-2
 %                   containing lower and upper confidence bands of the
 %                   forecasts. The confidence level of the bands is
-%                   splecified is input parameter conflev. Note that the
+%                   specified in input parameter conflev. Note that the
 %                   first length(y) rows of this matrix are equal to NaN.
 %               outFORE.datesnumeric = vector of length (length(y)+nfore)
 %                   containing the dates in numeric format.
@@ -243,7 +260,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                       yxsave is set to 1.
 %
 %
-% See also LTSts, wedgeplot, simulateTS
+% See also LTSts, wedgeplot, simulateTS, LTStsVarSel
 %
 % References:
 %
@@ -503,7 +520,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.seasonal=102;
     % No level shift
     model.lshift=0;
-    % Add a nonn important expl. variable
+    % Add a non important expl. variable
     model.X=X;
     model.ARp=[1 2];
     out=LTSts(y,'model',model,'plots',1,'dispresults',true);
@@ -577,12 +594,12 @@ options=struct('model',modeldef,...
 %% User options
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    
+
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:forecastTS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    
+
     % Check if all the specified optional arguments were present in
     % structure options Remark: the nocheck option has already been dealt
     % by routine chkinputR
@@ -592,7 +609,7 @@ if ~isempty(UserOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
         error('FSDA:forecastTS:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -610,7 +627,7 @@ end
 % 'options'
 if ~isequal(options.model,modeldef)
     fld=fieldnames(options.model);
-    
+
     if nocheck == false
         % Check if user options inside options.model are valid options
         chkoptions(modeldef,fld)
@@ -618,7 +635,7 @@ if ~isequal(options.model,modeldef)
     for i=1:length(fld)
         modeldef.(fld{i})=options.model.(fld{i});
     end
-    
+
 end
 
 model = modeldef;
@@ -660,11 +677,11 @@ if seasonal >0
     else
         varampl=0;
     end
-    
+
     if seasonal < 1 || seasonal >floor(s/2)
         error('FSDA:forecastTS:WrongInput',['Seasonal component must be an integer between 1 and ' num2str(floor(s/2))])
     end
-    
+
     Xseaso=zeros(T,seasonal*2);
     for j=1:seasonal
         Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
@@ -747,6 +764,10 @@ end
 
 % Autoregressive recursion
 if length(ARp)>1 || ARp>0
+    % Separate autoregressive and other explanatory variables component
+    yhatXAR=yhatX(:,1:ARp);
+    yhatXexpl=yhatX(:,ARp+1:end);
+
     % Find final fitted values
     % yFore contains in the first n positions the real values of the time
     % series and in the n+fore positions the preliminary forecasts based
@@ -756,11 +777,11 @@ if length(ARp)>1 || ARp>0
     yFore=yhat;
     yFore(1:n)=y;
     yhatfinal=yhat;
-    
+
     % Extract vector of ARp coefficients
     bARp=betaout(ntrend+nseaso+1:ntrend+nseaso+length(ARp));
     % For the forecast use previous estimated values if the autoregressive
-    % cofficients multiply y_{n+1}, y_{n+2} ... of real values of the time
+    % coefficients multiply y_{n+1}, y_{n+2} ... of real values of the time
     % series if the autoregressive cofficients multiply y_{n}, y_{n-1} ..
     for i=1:nfore
         for j=1:length(ARp)
@@ -769,10 +790,63 @@ if length(ARp)>1 || ARp>0
         end
         yFore(n+i)=yhatfinal(n+i);
     end
-    
+
     yhat=yhatfinal;
+else
+    % In this case there is no autoregressive part
+    yhatXAR=0;
+    yhatXexpl=yhatX;
 end
 
+% Impose the sum to 0 constraint for the different underlying components of
+% the times seris in the interval 1:n-mod(n,s). For example if n=52 and
+% s=12 (monthly time series) we impose the sum to zer constraint for the
+% underlyng components for the first 4 years. In this case n-mod(n,s)=48
+Tround=n-mod(n,s);
+
+if ~isempty(yhatseaso) && yhatseaso(1)~=0
+    yhatseasoMEAN=mean(yhatseaso(1:Tround));
+    yhatseaso=yhatseaso-yhatseasoMEAN;
+    yhatseasoFORE=yhatseaso(n+1:end);
+else
+    yhatseasoMEAN=0;
+    yhatseasoFORE=0;
+end
+
+if ~isempty(yhatXAR) && yhatXAR(1)~=0
+    yhatXARMEAN=mean(yhatXAR(1:Tround));
+    yhatXAR=yhatXAR-yhatXARMEAN;
+    ARpresent=true;
+else
+    yhatXARMEAN=0;
+    ARpresent=false;
+end
+
+if ~isempty(yhatXexpl) && yhatXexpl(1)~=0
+    yhatXexplMEAN=mean(yhatXexpl(1:Tround));
+    yhatXexpl=yhatXexpl-yhatXexplMEAN;
+    yhatXexplFORE=yhatXexpl(n+1:end);
+else
+    yhatXexplMEAN=0;
+    yhatXexplFORE=0;
+end
+
+if ~isempty(yhatlshift) && yhatlshift(1)~=0
+    yhatlshiftMEAN=mean(yhatlshift(1:Tround));
+    yhatlshift=yhatlshift-yhatlshiftMEAN;
+    yhatlshiftFORE=yhatlshift(n+1:end);
+else
+    yhatlshiftMEAN=0;
+    yhatlshiftFORE=0;
+end
+
+yhattrend=yhattrend+yhatseasoMEAN+yhatXARMEAN+yhatXexplMEAN+yhatlshiftMEAN;
+
+% The if which follows is just to insert inside yhatXAR(n+1:end) the
+% remaning part of the decomposition
+if ARpresent==true
+    yhatXAR(n+1:end)= yhat(n+1:end)-yhattrend(n+1:end)-yhatseasoFORE-yhatlshiftFORE-yhatXexplFORE;
+end
 
 % yfitFS = likyhat(betaout,Xtrendf);
 yfitFS = yhat;
@@ -807,6 +881,9 @@ outFORE.trend=yhattrend;
 outFORE.seasonal=yhatseaso;
 outFORE.X=yhatX;
 outFORE.lshift=yhatlshift;
+outFORE.XAR=yhatXAR;
+outFORE.Xexpl=yhatXexpl;
+
 outFORE.confband=confband;
 
 yhatwithbands=[yhat confband];
@@ -836,7 +913,7 @@ outFORE.datesnumeric=datesnumeric;
 outFORE.X=J(1:n,:);
 
 if dispresults
-    
+
     b_trend = {'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
     b_seaso = {'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; ...
         'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
@@ -850,7 +927,7 @@ if dispresults
     end
     b_varampl={'b_varampl'; 'b_varamp2'; 'b_varamp3'};
     b_lshift={'b_lshift'; 't_lshift'};
-    
+
     if seasonal>0
         if 2*seasonal==s
             lab=[b_trend(1:trend+1); b_seaso];
@@ -860,7 +937,7 @@ if dispresults
     else
         lab=b_trend(1:trend+1);
     end
-    
+
     if nexpl>0
         lab=[lab;b_expl(1:nexpl)];
     end
@@ -870,7 +947,7 @@ if dispresults
     if lshift>0
         lab=[lab; b_lshift(1)];
     end
-    
+
     bhat=outEST.B(:,1);
     se=outEST.B(:,2);
     tstat=outEST.B(:,3);
@@ -886,21 +963,21 @@ if dispresults
     end
 end
 
-if plots==1
-    
+if plots==1 || plots==2
+
     % some general plot settings
     vlt15 = verLessThan('matlab', '7.15');
     clr = 'bkrgmcy';
     syb = {'-','--','-.',':','-','--','-.'};
     FontSize    = 14;
     SizeAxesNum = 14;
-    
+
     % slightly increase the range of the time series axis values
     mine = min(y(:));
     maxe = max(y(:));
     deltay = (maxe-mine)*0.1;
     yaxlim = [mine - deltay ; maxe + deltay];
-    
+
     figure;
     yfore=yhat;
     % Plot original time series
@@ -910,10 +987,10 @@ if plots==1
     plot(datesnumeric(1:n),yfore(1:n),'Color',clr(2),'LineStyle',syb{2},'LineWidth',1.5);
     % plot the forecasts
     plot(datesnumeric(n+1:n+nfore),yfore(n+1:end),'Color',clr(3),'LineStyle',syb{2},'LineWidth',2);
-    
+
     % plot the signal (TR+LS+X)
     % plot(datesnumeric,outFORE.trend+outFORE.lshift+outFORE.X,'color','m')
-    
+
     plot(datesnumeric(n+1:n+nfore),confband(n+1:end,:),'Color',clr(3),'LineStyle',syb{3},'LineWidth',2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -921,29 +998,94 @@ if plots==1
             set(gca,'XTickLabelRotation',90);
         end
     end
-    ax=axis;
-    ylimits=ax(3:4);
-    line(0.5*sum(datesnumeric(n:n+1))*ones(2,1),ylimits,'color','r')
-    
+    n05=0.5*sum(datesnumeric(n:n+1));
+    xline(n05,'color','r')
+
+    % ax=axis;
+    % ylimits=ax(3:4);
+    % line(0.5*sum(datesnumeric(n:n+1))*ones(2,1),ylimits,'color','r')
+
     xlabel('Time or index number','FontSize',FontSize,'interpreter','none');
     ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
-    
+
     if ~vlt15
         set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
     else
         set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
     end
-    
+
     title(titl,'interpreter','none','FontSize',FontSize+2);
-    
+
     set(gcf,'Tag','forecastTS');
 end
 
+% if plots==2 show the decomposition of the forecasts in terms of the
+% underlying components
+if  plots==2
+    lwd=1;
+figure
+    % Plot the different components of the time series (including forecast period)
+    nexttile
+    hold('on')
+    plot(datesnumeric(1:n),y,'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
+
+    %                plot(datesnumeric, yall, 'b','LineWidth',lwd)
+    plot(datesnumeric,outFORE.signal,'k--','LineWidth',lwd)
+    plot(datesnumeric,outFORE.confband,'r--','LineWidth',lwd)
+    datetick('x','mmm-yy');
+    xline(n05)
+    title('Real and fitted values')
+    ax=axis;
+    ylimits=ax(3:4);
+    xlimits=datesnumeric([1 end]);
+    const=mean(outFORE.signal(1:n));
+    xlim(xlimits)
+    nexttile
+    % Time series decomposition
+    plot(datesnumeric,outFORE.trend,'k--','LineWidth',lwd)
+    datetick('x','mmm-yy');
+    xline(n05)
+    title('Trend')
+    ylim(ylimits)
+    xlim(xlimits)
+
+    if ~isempty(outFORE.seasonal)
+        nexttile
+        plot(datesnumeric,outFORE.seasonal,'k--','LineWidth',lwd)
+        datetick('x','mmm-yy');
+        xline(n05)
+        title('(Time varying) seasonal')
+        ylim(ylimits-const)
+        xlim(xlimits)
+    end
+
+    if length(outFORE.XAR)>1
+        nexttile
+        plot(datesnumeric,outFORE.XAR,'k--','LineWidth',lwd)
+        datetick('x','mmm-yy');
+        xline(n05)
+        title('Autoregressive component')
+        ylim(ylimits-const)
+        xlim(xlimits)
+    end
+
+    if length(outFORE.lshift)>1
+        nexttile
+        plot(datesnumeric,outFORE.lshift,'k--','LineWidth',lwd)
+        datetick('x','mmm-yy');
+        xline(n05)
+        title('Level shift component')
+        ylim(ylimits-const)
+        xlim(xlimits)
+    end
+    set(gcf,'Tag','decompTS');
+end
+
     function [yhat,yhattrend,yhatseaso,yhatX,yhatlshift]=lik(beta0)
-        
+
         yhattrend=Xtrend(bsb,:)*beta0(1:trend+1);
         npar=trend+1;
-        
+
         if seasonal >0
             if seasonal<s/2
                 yhatseaso=Xseaso(bsb,:)*beta0(npar+1:npar+seasonal*2);
@@ -952,7 +1094,7 @@ end
                 yhatseaso=Xseaso(bsb,:)*beta0(npar+1:npar+seasonal*2-1);
                 npar=npar+seasonal*2-1;
             end
-            
+
             if varampl>0
                 Xtre=1+Seq(bsb,2:varampl+1)*beta0((npar+1+nexpl):(npar+varampl+nexpl));
                 yhatseaso=Xtre.*yhatseaso;
@@ -961,7 +1103,7 @@ end
         else
             yhatseaso=0;
         end
-        
+
         if isemptyX
             yhatX=0;
         else
@@ -971,7 +1113,7 @@ end
             yhatX=X(bsb,:)*beta0(npar+1-varampl:npar+nexpl-varampl);
             npar=npar+nexpl;
         end
-        
+
         if lshift >0
             %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
             %  is a real number and \beta_(npar+2) is a integer which
@@ -980,10 +1122,10 @@ end
         else
             yhatlshift=0;
         end
-        
+
         % Fitted values from trend (yhattrend), (time varying) seasonal
-        % (yhatseaso), explanatory variables (yhatX) and level shift
-        % component (yhatlshift)
+        % (yhatseaso), explanatory variables or AR components (yhatX) and
+        % level shift component (yhatlshift)
         yhat=yhattrend+yhatseaso+yhatX+yhatlshift;
     end
 
@@ -997,11 +1139,11 @@ end
 
     function J = statjacobianFS(func, theta, DerivStep, y0)
         %STATJACOBIAN Estimate the Jacobian of a function
-        
+
         % J is a matrix with one row per observation and one column per model
         % parameter. J(i,j) is an estimate of the derivative of the i'th
         % observation with respect to the j'th parameter.
-        
+
         % For performance reasons, very little error checking is done on the input
         % arguments. This function makes the following assumptions about inputs:
         %
@@ -1051,30 +1193,30 @@ end
         %   estimate of the derivative of the model with respect to the j'th
         %   parameter, evaluated for observation i with parameter values
         %   theta(i,:), which are the parameter values for the observation.
-        
+
         % Use the appropriate class for variables.
         classname = class(theta);
-        
+
         % Handle optional arguments, starting with y0 since it will be needed to
         % determine the appropriate size for a default groups.
         if nargin < 4 || isempty(y0)
             y0 = func(theta);
         end
-        
+
         % When there is only one group, ensure that theta is a row vector so
         % that vectoriation works properly. Also ensure that the underlying
         % function is called with an input with the original size of theta.
         thetaOriginalSize = size(theta);
         theta = reshape(theta, 1, []);
-        
+
         func = @(theta) func(reshape(theta, thetaOriginalSize));
-        
+
         % All observations belong to a single group; scalar expansion allows us
         % to vectorize using a scalar index.
         rowIdx = 1;
-        
+
         [numThetaRows, numParams] = size(theta);
-        
+
         if nargin < 3 || isempty(DerivStep)
             % Best practice for forward/backward differences:
             DerivStep = repmat(sqrt(eps(classname)), 1, numParams);
@@ -1082,7 +1224,7 @@ end
         elseif isscalar(DerivStep)
             DerivStep = repmat(DerivStep, 1, numParams);
         end
-        
+
         delta = zeros(numThetaRows, numParams, classname);
         J = zeros(numel(y0), numParams, classname);
         for ii = 1:numParams
