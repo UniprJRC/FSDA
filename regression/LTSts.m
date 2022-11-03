@@ -208,7 +208,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                               model.s=12;
 %                               model.trend=1;
 %                               model.seasonal=1;
-%                               model.X='';
+%                               model.X=[];
 %                               model.lshift=0;
 %               Using the notation of the paper RPRH we have A=1, B=1; and
 %               $\delta_1=0$.
@@ -899,7 +899,7 @@ function [out, varargout] = LTSts(y,varargin)
     model.s=12;                     % monthly time series
     model.seasonal=204;             % number of harmonics
     model.lshift=41:length(y1)-40;  % position where monitoring level shift
-    model.X='';
+    model.X=[];
     % Create structure lts specifying lts options
     lshiftlocref=struct;
     % Set window length for local refinement.
@@ -949,7 +949,7 @@ function [out, varargout] = LTSts(y,varargin)
     model.s=12;                     % monthly time series
     model.seasonal=204;             % number of harmonics
     model.lshift=41:length(y1)-40;  % position where monitoring level shift
-    model.X='';
+    model.X=[];
     % Create structure lts specifying lts options
     lshiftlocref=struct;
     % Set window length for local refinement.
@@ -999,7 +999,7 @@ function [out, varargout] = LTSts(y,varargin)
     model.s=12;                     % monthly time series
     model.seasonal=204;             % number of harmonics
     model.lshift=41:length(y1)-40;  % position where monitoring level shift
-    model.X='';
+    model.X=[];
     % Create structure lts specifying lts options
     lshiftlocref=struct;
     % Set window length for local refinement.
