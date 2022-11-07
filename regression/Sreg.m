@@ -211,8 +211,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors.
-% For more details see http://www.econ.kuleuven.be/public/NDBAE06/programs/
-% and the R library robustbase http://robustbase.r-forge.r-project.org/
+% For more details see the R library robustbase http://robustbase.r-forge.r-project.org/
 % The core of these routines, e.g. the resampling approach, however, has
 % been completely redesigned, with considerable increase of the
 % computational performance.
