@@ -88,10 +88,10 @@ format short
 
 if ~isempty(FilesWithProblems)
     % Check correctness of HTML link inside each .m file
-    chkHTMLlink=cell2mat(FilesWithProblems(1:10,6));
+    chkHTMLlink=cell2mat(FilesWithProblems(:,6));
     if max(chkHTMLlink)>0
         disp('Files with wrong reference to HTML page')
-        disp(FilesWithProblems{chkHTMLlink==1,1})
+        disp([FilesWithProblems{chkHTMLlink==1,1}])
         error('FSDA:CreateFSDAhelpFiles','Files with wrong references in docsearchFS')
     end
     
