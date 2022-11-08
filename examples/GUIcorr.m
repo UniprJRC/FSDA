@@ -40,7 +40,7 @@ function out = GUIcorr(x,y,w)
 %
 %
 %
-% See also: GUIcov, GUIvar, GUImad, GUIskewness, GUIkurtosis
+% See also: GUIcov, GUIvar, GUImad, GUIskewness
 %
 % References:
 % Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
