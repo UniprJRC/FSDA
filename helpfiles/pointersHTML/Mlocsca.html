@@ -1,0 +1,54 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>Mlocsca</title> <meta content="refpage" name="chunktype"><meta content="function:Mlocsca " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="Mlocsca Computes M estimator of location and scale in univariate samples" itemprop="description" name="description" /><h1 itemprop="title">Mlocsca</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/Mlocsca.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/Mlocsca.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/Mlocsca.html">http://rosa.unipr.it/FSDA/Mlocsca.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: Mlocsca</em></p><P>Mlocsca</P><P>Computes M estimator of location and scale in univariate samples</P><h2>Description</h2><P>This routines compute simultaneous M estimates of location and scale in
+ univariate samples.</P><h2>More About</h2><P>
+
+ In the IRWLS (iterative reweighted least square) procedure the value of
+ location and the value of the scale are updated in each step. In order to
+ find simultaneous estimates of location and dispersion we need to solve
+ the system of two equations
+ \[
+ \sum_{i=1}^n \psi_\text{loc}\left( \frac{y_i - \hat{\mu}}{\hat{\sigma}}\right)  =  0
+ \]
+ \[
+ \sum_{i=1}^n \rho_\text{scale}\left( \frac{y_i - \hat{\mu}}{\hat{\sigma}}\right)  =  K.
+ \]
+
+ In the two equations above we distinguish between $\rho_\text{scale}$ used for scale estimation
+ and $\psi_\text{loc}$ and its derivatives used for location. The two need
+ not be different and are, indeed, often the same. In this routine we
+ assume that they are the same and are specified in input parameter psifunc.
+ $K$ corresponds to input parameter psifunc.kc1.
+
+ Given starting values $\hat{\mu}_0$ and $\hat{\sigma}_0$ the pair of reweighting equations moves forward from stage $k$ using the calculations
+ [1] Find the location weights
+ $ w_{i,k} = w\{(y_i - \hat{\mu}_k)/\hat{\sigma}_k\}$,
+ Note that in order to find the weights we need psifunc.c1, the tuning
+ constant associated to a nominal value of breakdown point or efficiency.
+ [2] Calculate the new location estimate as
+ \[
+ \hat{\mu}_{k+1} =
+ \sum_{i=1}^n w_{i,k}y_i / \sum_{i=1}^n w_{i,k}.
+ \]
+ The new (squared) scale estimate is
+ [3]
+ \[
+ \hat{\sigma}^2_{k+1} = \hat{\sigma}^2_k\{{1}/(n K)\}\sum_{i=1}^n
+ \rho_\text{scale}\{(y_i - \hat{\mu}_{k+1})/\hat{\sigma}_k\}.
+\]
+ Note that in order to compute $\rho_\text{scale}$ we need psifunc.c1, the
+ tuning constant associated to a nominal value of breakdown point or
+ efficiency.  $K$ corresponds to input parameter psifunc.kc1.
+ [4] Return to Step 1 until the change in the estimates defined as
+ \[
+  |\mu_{k+1}-\mu_{k}|/|\mu_{k}| +  |\sigma_{k+1}-\sigma_{k}|/\sigma_{k}
+ \]
+ is less than a
+ prespecified tolerance (optional input argument tol) or $k$
+ is equal to optional input parameter maxiter (maximum number of
+ iterations).
+
+ This alternating algorithm converges to a point with zero derivatives,
+ which may be a minimum, a maximum or a saddle point.
+
+
+</P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+ and Methods", Wiley, New York.</P></html>
