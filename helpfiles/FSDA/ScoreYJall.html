@@ -125,19 +125,15 @@ Difference between the test for positive and the test for negative
                solver is not used and the likelihood is evaluated at the
                grid of points with steps 0.01.</p> <p>
                If usefmin is a structure it may contain the following
-               fields:</p> <p>
-               usefmin.MaxIter = Maximum number of iterations (default is 1000).</p> <p>
-               usefmin.TolX   = Termination tolerance for the parameters
-                   (default is 1e-7).</p> <p>
-               usefmin.solver = name of the solver. Possible values are
+               fields:</p><p>
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MaxIter</code></td><td><p>Maximum number of iterations (default is 1000).</p></td></tr><tr valign="top"><td><code>TolX</code></td><td><p>Termination tolerance for the parameters
+                   (default is 1e-7).</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the solver. Possible values are
                    'fminsearch' (default) and 'fminunc'. fminunc needs the
-                   optimization toolbox.</p> <p>
-               usefmin.displayLevel = amount of information displayed by
+                   optimization toolbox.</p></td></tr><tr valign="top"><td><code>displayLevel</code></td><td><p>amount of information displayed by
                    the algorithm. possible values are 'off' (displays no
                    information, this is the default), 'final' (displays
                    just the final output) and 'iter' (displays iterative
-                   output to the command window).</p><p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'usefmin',true
+                   output to the command window).</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'usefmin',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                  matrix y and matrix X. Notice that y and X are left
                  unchanged. In other words the additional column of ones

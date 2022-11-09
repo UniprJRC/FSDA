@@ -19,10 +19,7 @@ title('Tukey biweight')
 subplot(2,2,2)
 % 2nd panel is optimal
 c=OPTbdp(bdp,1);
-c=c/3;
-% Remark: in this case it is necessary to multiply by 3.25*c^2 because the
-% optimal has been standardized in such a way that sup(rho(x))=1
-psiOPTder=(3.25*c^2)*OPTpsider(x,c);
+psiOPTder=OPTpsider(x,c);
 plot(x,psiOPTder)
 xlim([-4 4])
 xlabel('x','Interpreter','Latex')

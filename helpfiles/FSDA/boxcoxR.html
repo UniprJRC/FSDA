@@ -44,7 +44,7 @@ X=YY(:,[1 3]);
 out=boxcoxR(y,X,'family','YJpn','plots',1);
 % The contour plot suggestes that while positive observatios do not
 % have to transformed, negative observations have to be transformed using
-% lambda=0. For more details see Atkinson Riani and Corbellini (2020)</pre></div></div><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\boxcoxR_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\boxcoxR_03.png" alt=""> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(500)
+% lambda=0. For more details see Atkinson Riani and Corbellini (2020)</pre></div></div><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\boxcoxR_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(500)
 % Generate regression data
 outsim=simulateLM(100,'R2',0.95);
 yori = outsim.y;
@@ -69,7 +69,7 @@ disp('MLE of laPos and laNeg')
 disp(out.lahat)</pre></div></div><pre class="codeoutput">MLE of laPos and laNeg
     0.2364    0.8265
 
-</pre><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\boxcoxR_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Another example of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\boxcoxR_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Another example of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p>
      In this example we specify as solver to use fminunc<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
 % Generate regression data
 outsim=simulateLM(100,'R2',0.6);
@@ -114,7 +114,7 @@ yconttra=normYJpn(ycont,[],[lapos laneg],'inverse',true,'Jacobian',false);
 subplot(2,1,1)
 out=boxcoxR(ytra,X,'family','YJpn','plots',1);
 subplot(2,1,2)
-outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\boxcoxR_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\boxcoxR_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each element of y is the response for the
                corresponding row of X.</p> <p>
@@ -206,19 +206,15 @@ outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href
                of usefmin is false, that is the likelihood is evaluated at
                the points laseqPos and laseqNeg without the solver.</p> <p>
                If usefmin is a structure it may contain the following
-               fields:</p> <p>
-               usefmin.MaxIter = Maximum number of iterations (default is 1000).</p> <p>
-               usefmin.TolX   = Termination tolerance for the parameters
-                   (default is 1e-7).</p> <p>
-               usefmin.solver = name of the solver. Possible values are
+               fields:</p><p>
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MaxIter</code></td><td><p>Maximum number of iterations (default is 1000).</p></td></tr><tr valign="top"><td><code>TolX</code></td><td><p>Termination tolerance for the parameters
+                   (default is 1e-7).</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the solver. Possible values are
                    'fminsearch' (default) and 'fminunc'. fminunc needs the
-                   optimization toolbox.</p> <p>
-               usefmin.displayLevel = amount of information displayed by
+                   optimization toolbox.</p></td></tr><tr valign="top"><td><code>displayLevel</code></td><td><p>amount of information displayed by
                    the algorithm. possible values are 'off' (displays no
                    information, this is the default), 'final' (displays
                    just the final output) and 'iter' (displays iterative
-                   output to the command window).</p><p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'usefmin',true
+                   output to the command window).</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'usefmin',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean or struct</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>lahat</code></td><td><p><p>best estimate of lambda. Scalar or vector of length 2.</p> <p>
                out.lahat is a scalar if family is 'BoxCox' or 'YJ',
                otherwise if family is 'YJpn' it is a vector of length 2

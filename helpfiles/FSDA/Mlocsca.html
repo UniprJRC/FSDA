@@ -53,13 +53,13 @@ disp('Robust estimate of location')
 disp(out.location)
 disp('Robust estimate of scale')
 disp(out.scale)</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of Mlocsca with four input arguments.</li></span></a></span></h3><div class="collapse"><p>
-     M estimate of location ans scale using optimal rho function with a
+     M estimate of location and scale using optimal rho function with a
      value of c associated to a breakdown point of 0.3<div class="programlisting"><div class="codeinput"><pre class="matlab-code">psifuncOPT=struct;
 psifuncOPT.class='OPT';
 bdp=0.3;
-cOPT=OPTbdp(bdp,1)/3;
+cOPT=OPTbdp(bdp,1);
 rhoOPTsup=OPTrho(200000,1);
-% rhoHAsup=1;
+% rhoOPTsup=1;
 psifuncOPT.c1=cOPT;
 % kc = E(rho) = sup(rho)*bdp
 psifuncOPT.kc1=rhoOPTsup*bdp;
@@ -100,10 +100,10 @@ disp('Robust estimate of location')
 disp(outIRWLS.location)
 disp('Robust estimate of scale')
 disp(outIRWLS.scale)</pre></div></div><pre class="codeoutput">Robust estimate of location
-   5.111309094276584
+    5.0739
 
 Robust estimate of scale
-   2.971805178867255
+    3.1579
 
 </pre></p></div></div><div id="example_5" class="example_module expandableContent"><div id="Example_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of Mlocsca with six input arguments.</li></span></a></span></h3><div class="collapse"><p>
      M estimate of location and scale using hyperbolic rho function with a
