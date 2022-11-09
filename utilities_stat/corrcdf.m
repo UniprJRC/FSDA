@@ -1,5 +1,5 @@
 function y = corrcdf(x, rho, n, varargin)
-%corrpdf correlation coefficient probability density function
+%corrcdf correlation coefficient probability distribution function
 %
 % Cumulative distribution function of the correlation coefficient under the
 % null hypothesis that the n bivariate observations come from a bivariate
