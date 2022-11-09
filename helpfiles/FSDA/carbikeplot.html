@@ -43,9 +43,7 @@ ThreshRandIndex=0.8;
 NumberOfBestSolutions=5;
 [outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',NumberOfBestSolutions,'ThreshRandIndex',ThreshRandIndex);
 % Car-bike plot to show what are the most relevant solutions
-carbikeplot(outCLACLA)</pre></div></div><pre class="codeoutput">Starting parallel pool (parpool) using the 'local' profile ...
-Connected to the parallel pool (number of workers: 12).
-k=1
+carbikeplot(outCLACLA)</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
@@ -100,7 +98,7 @@ sol_areas =
     2.0000    0.0052
     2.0000    0.0062
 
-</pre><a href='http://rosa.unipr.it/fsda/carbikeplot.html#Example_2'><img vspace="5" hspace="5" src="images\carbikeplot_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>car-bike plot for the flea data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('flea.txt');
+</pre><a href='http://rosa.unipr.it/fsda/carbikeplot.html#Example_2'><img vspace="5" hspace="5" src="images\carbikeplot_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\carbikeplot_03.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>car-bike plot for the flea data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('flea.txt');
 Y=XX(:,1:end-1);
 nsamp=100;
 out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'nsamp',nsamp);

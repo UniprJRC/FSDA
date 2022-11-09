@@ -2,7 +2,7 @@
     rng(191372,'twister');
     p=3;
     k=4;
-    Q=MixSimreg(k,p,'BarOmega',0.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_alphaLik">alphaLik</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_alphaX">alphaX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cc">cc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ccSigmaX">ccSigmaX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_kk">kk</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_whichIC">whichIC</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_RandNumbForNini">RandNumbForNini</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_startv1">startv1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_numpool">numpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cleanpool">cleanpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_UnitsSameGroup">UnitsSameGroup</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_we">we</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_commonslope">commonslope</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustregIC</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustregIC computes tclustreg for different number of groups k and restriction factors c</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustregIC(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregIC.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustregIC(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregIC.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tclustregIC (where the last two letters stand for 'Information
+    Q=MixSimreg(k,p,'BarOmega',0.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">tclustregIC of fishery2003 with or without intercept.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_alphaLik">alphaLik</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_alphaX">alphaX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cc">cc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ccSigmaX">ccSigmaX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_kk">kk</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_whichIC">whichIC</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_RandNumbForNini">RandNumbForNini</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_startv1">startv1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_numpool">numpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cleanpool">cleanpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_UnitsSameGroup">UnitsSameGroup</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_we">we</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_commonslope">commonslope</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustregIC</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustregIC computes tclustreg for different number of groups k and restriction factors c</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustregIC(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregIC.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustregIC(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregIC.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tclustregIC (where the last two letters stand for 'Information
    Criterion') computes the values of BIC (MIXMIX), ICL (MIXCLA) or CLA
    (CLACLA), for different values of k (number of groups) and different
    values of c (restriction factor for the variances of the residuals),
@@ -101,7 +101,56 @@ n=200;
 yXplot(y,X,id);
 % CWM with no contrainst on cov(X)
 out = tclustregIC(y,X(:,2:end),'alphaX',1,'ccSigmaX',10^10);
-tclustICplot(out,'whichIC','MIXMIX')</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
+tclustICplot(out,'whichIC','MIXMIX')</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustregIC of fishery2003 with or without intercept.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
+rng(123)
+intercept = 0;
+load Fishery2003.mat;
+X = Fishery2003{:,2};
+X = X + 10^(-5) * abs(randn(size(X)));
+y = Fishery2003{:,3};
+y = y + 10^(-5) * abs(randn(size(y)));
+id = Fishery2003{:,1};
+% yXplot(yid,Xid);
+% Use tclustregIC to monitor the effect of k and c, for alpha reasonably fixed 
+alpha = 0.01;
+kvec  = 1:1:4;
+cvec  = [1,2,4,8];
+outIC = tclustregIC(y,X,'whichIC','CLACLA','kk',kvec,'cc',cvec,'alphaLik',alpha,'intercept',intercept,'plots',0);
+% Extracts a set of best relevant solutions ...
+[outICsol] = tclustICsol(outIC,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',5,'ThreshRandIndex',0.7);
+% ... and visualise them with the carbike plot, which highlights the most
+% relevant one in intuitive way.
+[hcb,areas] = carbikeplot(outICsol,'SpuriousSolutions',false);
+% Use the information extracted by tclustICsol to identify the best
+% solution.
+[truesol,~]  = ismember(outICsol.CLACLAbs(:,end),'true');
+truesoli     = find(truesol);
+[amax,iamax] = max(areas(truesoli,2));
+if numel(truesoli) &gt; 0
+if amax&gt;0
+% take the true solution with larger area
+kopt = outICsol.CLACLAbs{truesoli(iamax),1};  % optimal number of groups
+copt = outICsol.CLACLAbs{truesoli(iamax),2};  % optimal nrestriction factor
+else
+% if areas are all zero, take the true solution with larger k
+kopt = outICsol.CLACLAbs{truesoli(1),1};
+copt = outICsol.CLACLAbs{truesoli(1),2};
+end
+else
+% if there are no true solutions, take the one with larger k
+kopt = outICsol.CLACLAbs{truesol(1),1};
+copt = outICsol.CLACLAbs{truesol(1),2};
+end
+% Finally, use tclustregeda to monitor alpha, with k and c estimated by tclustregIC
+alphaLikvec   = 0.05:-0.01:0;
+outEDA        = tclustregeda(y,X,kopt,copt,alphaLikvec,0,'intercept',intercept,'plots',0);
+% retrieve the optimal alpha
+[ARImax]   = max(outEDA.Amon(:,2));
+iARImax    = find(outEDA.Amon(:,2) == ARImax);
+alphaopt   = outEDA.Amon(iARImax(end),1);
+% final clustering % with the parameters sugggested by the monitoring
+outTCLUST    = tclustreg(y,X,kopt,copt,alphaopt,0,'intercept',intercept,'plots',1);
+idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
              y can be either a row or a column vector.</p><p>
              </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Explanatory variables (also called 'regressors'). </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of dimension $(n \times p-1)$. Rows of X represent
              observations, and columns represent variables. Missing values

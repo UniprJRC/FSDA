@@ -58,7 +58,7 @@ ylabel('y3 = Percentage of single member families')</pre></div></div></p></di
                  Table below (taken from Zani, Riani and Corbellini, 1998,
                  CSDA) shows the coefficients which must be used to obtain
                  a theoretical threshold of 75, 90, 95 or 99 per cent in
-                 presence of normally distributed data:</p> <p> 
+                 presence of normally distributed data:</p> <p>
 
                    confidence level 0.75 -&gt; coefficient 0.43;</p> <p>
                    confidence level 0.90 -&gt; coefficient 0.83;</p> <p>
@@ -78,48 +78,50 @@ ylabel('y3 = Percentage of single member families')</pre></div></div></p></di
                  outliers it may be necessary to do an additional peeling.</p> <p>
                  The default value of strictlyinside is 0.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'strictlyinside',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;graphical output.</span></a><span class="example_desc">missing value | scalar | structure.</span></span></h3><div class="collapse">	<p><p>This options specifies whether it
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;graphical output.</span></a><span class="example_desc">missing value | scalar | structure.</span></span></h3><div class="collapse">	<p><p>This option specifies whether it
                  is necessary to produce the bivariate boxplot on the
-                 screen.</p> <p> 
+                 screen.</p> <p>
                  If plots is a missing value or is a scalar equal to 0 no
-                 plot is produced.</p> <p> 
+                 plot is produced.</p> <p>
                  If plots is a scalar equal to 1 (default) the bivariate
-                 boxplot with the outliers labelled is produced.</p> <p> 
+                 boxplot with the outliers labelled is produced.</p> <p>
                  If plots is a structure it may contain the following fields:</p><p>
             </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ylim</code></td><td><p>vector with two elements controlling minimum and maximum
                        on the y axis. Default value is '' (automatic
                        scale).</p></td></tr><tr valign="top"><td><code>xlim</code></td><td><p>vector with two elements controlling minimum and maximum
                        on the x axis. Default value is '' (automatic
-                       scale).</p></td></tr><tr valign="top"><td><code>labeladd</code></td><td><p>If this option is '1', the outliers in the
-                       spm are labelled with the unit row index. The
+                       scale).</p></td></tr><tr valign="top"><td><code>labeladd</code></td><td><p>if this option is '1', the outliers in the
+                       scatter plot are labelled with the unit row index. The
                        default value is labeladd='1', i.e. the row numbers are
-                       added.</p></td></tr><tr valign="top"><td><code>InnerColor</code></td><td><p>a three element vector which specifies the
+                       added. plots.labeladd='' means no labelling.</p></td></tr><tr valign="top"><td><code>InnerColor</code></td><td><p>a three element vector which specifies the
                        color in RGB format to fill the inner contour
                        (hinge). The default value of InnerColor is
                        InnerColor=[168/255 150/255 255/255].</p></td></tr><tr valign="top"><td><code>OuterColor</code></td><td><p>a three element vector which specifies the
                        color in RGB format to fill the outer contour
                        (fence). The default value of OuterColor is
                        OuterColor=[210/255 203/255 255/255].</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_resolution" class="clearfix"></div><h3 id="input_argument_namevalue_resolution" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resolution</code> &#8212;resolution to use.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Resolution which must be
-                     used to produce the inner and outer spline.</p> <p> 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>[],double, struct</code></p></div></div><div class="expandableContent"><div id="inputarg_resolution" class="clearfix"></div><h3 id="input_argument_namevalue_resolution" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resolution</code> &#8212;resolution to use.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Resolution which must be
+                     used to produce the inner and outer spline.</p> <p>
                      The default value of resolution is 1000, that is the
                      splines are plotted on the screen using
-                     1000-by-(number of vertices of the inner hull) points.</p><p> 
+                     1000-by-(number of vertices of the inner hull) points.</p><p>
                     </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'resolution',5000
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>outliers</code></td><td><p><p>vector containing the list of the units which lie outside the
              outer contour.</p> <p>
              REMARK: if no unit lies outside the outer spline outliers is a
              Empty matrix: 0-by-1</p></p></td></tr><tr valign="top"><td><code>cent</code></td><td><p><p>2 x 1 vector containing the coordinates
-                of the robust centroid.</p> <p> 
-                cent[1] = x coordinate;</p><p> 
+                of the robust centroid.</p> <p>
+                cent[1] = x coordinate;</p><p>
                 cent[2] = y coordinate.</p></p></td></tr><tr valign="top"><td><code>Spl</code></td><td><p><p>r-by-4 matrix containing the coordinates
                 of the inner and outer spline. r (rows of matrix Spl) is
                 approximately equal to the number of vertices of the inner hull
-                multiplied by the resolution which is used.</p> <p> 
+                multiplied by the resolution which is used.</p> <p>
                 The first two columns refer to the (x,y) coordinates of
-                the inner spline.</p><p> 
+                the inner spline.</p><p>
                 The last  two columns refer to the (x,y) coordinates  of the
-                outer spline.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Zani, S., Riani M. and Cerioli A. (1998), Robust bivariate boxplots
+                outer spline.</p></p></td></tr><tr valign="top"><td><code>handles</code></td><td><p>r-by-1 matrix containing the handles of the
+               contours and centroid. It can be used to control the display of
+               these objects, for example using ClickableMultiLegend.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Zani, S., Riani M. and Cerioli A. (1998), Robust bivariate boxplots
  and multiple outlier detection, "Computational Statistics and Data
  Analysis", Vol. 28, pp. 257-270.</p></div><div><p>Corbellini A., Riani M. and Atkinson A.C. (2015), Discussion of the
  paper 'Multivariate Functional Outlier Detection' by Hubert, Rousseeuw

@@ -251,19 +251,16 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
            fields method, bdp and alphasim the values of the estimator to
            use, the breakdown point and and confidence level to use to
            declare the outliers.</p> <p>
-           More precisely:</p> <p>
-           rob.method = character which identifies the estimator to use.</p> <p>
+           More precisely:</p><p>
+   </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>method</code></td><td><p><p>character which identifies the estimator to use.</p> <p>
                Possible values are 'FS' (Forward search estimator', 'LTS'
                (Least trimmed squares estimator), 'LMS' (Least median of
                squares), 'S' (S estimator). If this field is not specified
-               'FS' is used.</p> <p>
-           rob.bdp = a scalar in the interval (0, 0.5] which specifies
+               'FS' is used.</p></p></td></tr><tr valign="top"><td><code>bdp</code></td><td><p>a scalar in the interval (0, 0.5] which specifies
                breakdown point to use. If this field is not specified it is
-               set to 0.2.</p> <p>
-           rob.simalpha = simultaneous error rate one is willing to
+               set to 0.2.</p></td></tr><tr valign="top"><td><code>simalpha</code></td><td><p>simultaneous error rate one is willing to
                tolerate to declare the outliers. If rob.simalpha is not
-               specified it is set to 0.01.</p><p>
-           </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rob',true
+               specified it is set to 0.01.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rob',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_scail" class="clearfix"></div><h3 id="input_argument_namevalue_scail" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>scail</code> &#8212;Inizialing values for the regressors.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If scail is
            true (default value is false), a linear regression is done on
            the independent variables $X_1$, ...$X_{p-1}$ centered, using y
@@ -312,9 +309,8 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
            ..., 0.8, 1) and routines <a href="FSRfan.html">FSRfan</a> and <a href="fanBIC.html">fanBIC</a> are called.</p> <p>
            If tyinitial is a struct it is possible to specify in the
            fields la and family the values of lambda and the family to
-           use. More precisely:</p> <p>
-           tyinitial.la = values of the lambdas to consider inside FSRfan.</p> <p>
-           tyinitial.family= string which identifies the family of transformations which
+           use. More precisely:</p><p>
+   </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>la</code></td><td><p>values of the lambdas to consider inside FSRfan.</p></td></tr><tr valign="top"><td><code>family</code></td><td><p><p>string which identifies the family of transformations which
                    must be used. Character. Possible values are 'BoxCox'
                    (default), 'YJ', or 'YJpn'.</p> <p>
                    The Box-Cox family of power transformations equals
@@ -325,12 +321,11 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
                    $|y|+1$ with parameter $2-\lambda$ for $y$ negative.</p> <p>
                    Remember that BoxCox can be used just
                    if input y is positive. Yeo-Johnson family of
-                   transformations does not have this limitation.</p> <p>
+                   transformations does not have this limitation.</p><p>
                    If family is 'YJpn' Yeo-Johnson family is applied but in
                    this case it is also possible to monitor (in the output
                    arguments out.Scorep and out.Scoren) the score test
-                   respectively for positive and negative observations.</p><p>
-           </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tyinitial',true
+                   respectively for positive and negative observations.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tyinitial',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_w" class="clearfix"></div><h3 id="input_argument_namevalue_w" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>w</code> &#8212;weights for the observations.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Row or column vector of
            length n containing the weights associated to each
            observations. If w is not specified we assum $w=1$ for $i=1,

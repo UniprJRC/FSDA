@@ -9,9 +9,7 @@ Y=load('geyser2.txt');
 nsamp=10;
 out=ctlcurves(Y,'nsamp',nsamp);
 % Show the automatic classification
-spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">Starting parallel pool (parpool) using the 'Processes' profile ...
-Connected to the parallel pool (number of workers: 12).
-k=1
+spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
@@ -417,8 +415,9 @@ Bands k=6
                           the index numbers of optimal input values kk and
                           alpha. Sixth column contains 1 in correspondence
                           of the best solution for each value of k.</p></td></tr><tr valign="top"><td><code>TentSolLRt</code></td><td><p>table with size m-by-5 containing the same
-                        information of array  out.TentSolLR in table format.</p></td></tr><tr valign="top"><td><code>idxLR</code></td><td><p><p>matrix with size n-by-size(out.TentSolLR,1) with the allocation
-                        associated with the tentative solutions found in out.TentSolLR.</p> <p>
+                        information of array  out.TentSolLR in table format.</p></td></tr><tr valign="top"><td><code>idxLR</code></td><td><p><p>matrix with size n-by-size(out.TentSolLR,1) with
+                        the allocation associated with the tentative
+                        solutions found in out.TentSolLR.</p> <p>
                         First column refers to best solution ...</p></p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
                        components) which have been considered. This  vector
                        is equal to input optional argument kk if kk had been
