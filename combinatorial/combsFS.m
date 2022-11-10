@@ -43,7 +43,7 @@ function P = combsFS(v,m)
 %    Knuth, D. E. (1997). "The Art of Computer Programming", Volume 1:
 %    Fundamental Algorithms, Third ed. Addison-Wesley. [pp. 52--74].
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('combsFS')">Link to the help function</a>

@@ -30,7 +30,7 @@ function kE = quickselectFS_demo(A,k,kiniindex)
 %
 % References:
 %
-% Copyright 2008-2017.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

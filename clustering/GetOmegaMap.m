@@ -144,7 +144,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %   Davies, R. (1980), The distribution of a linear combination of
 %   chi-square random variables, Applied Statistics, 29, pp. 323-333.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

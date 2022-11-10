@@ -103,7 +103,7 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
 % [Available at
 % http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf]
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 % DETAILS. This algorithm solves the minimization problem with constraints

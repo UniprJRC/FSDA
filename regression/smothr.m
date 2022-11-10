@@ -80,7 +80,7 @@ function ysmo=smothr(l,x,y,w)
 % for Computational Statistics, Stanford University, Technical Report No. 5.
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

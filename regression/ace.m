@@ -105,7 +105,7 @@ function [out]=ace(y,X,varargin)
 % regression using the ACE algorithm, "Journal of Applied Statistics",
 % Vol. 32, pp. 243-258.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

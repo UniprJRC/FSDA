@@ -79,7 +79,7 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
 %out.sigma2= estimate of sigma2
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

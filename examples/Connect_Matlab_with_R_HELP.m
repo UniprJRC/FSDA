@@ -109,7 +109,7 @@
 %         it means that  file Testing.lic (see STEP 2 above) has not been
 %         copied
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % FSDA toolbox
 %
 %

@@ -291,7 +291,7 @@ function moonplot(out,varargin)
 % Greenacre, M.J. (1993), Biplots in correspondence Analysis, "Journal of
 % Applied Statistics", Vol. 20, pp. 251-269.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

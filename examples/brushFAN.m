@@ -29,7 +29,7 @@ function brushFAN(eventdata)
 %   Tufte E.R. (1983), "The visual display of quantitative information",
 %   Graphics Press, Cheshire.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

@@ -114,7 +114,7 @@ function smo = supsmu(x,y,varargin)
 % Univ., California.
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

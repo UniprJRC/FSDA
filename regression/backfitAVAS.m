@@ -3,7 +3,7 @@ function [newtX, rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outlie
 %
 % This funtion is not intended to be called directly
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

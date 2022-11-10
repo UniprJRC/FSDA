@@ -277,7 +277,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 % "Econometrics and Statistics". [RPRH]
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

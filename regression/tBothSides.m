@@ -211,7 +211,7 @@ function [out] = tBothSides(y, X, varargin)
 % Yeo, I.K and Johnson, R. (2000), A new family of power transformations to
 % improve normality or symmetry, "Biometrika", Vol. 87, pp. 954-959.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

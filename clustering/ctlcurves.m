@@ -464,7 +464,7 @@ function out  = ctlcurves(Y, varargin)
 % "Exploring the number of groups in robust model-based
 % clustering." Statistics and Computing, Vol. 21, pp. 585-599.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

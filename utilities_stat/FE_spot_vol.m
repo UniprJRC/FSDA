@@ -71,7 +71,7 @@ function [spotvar,tau] = FE_spot_vol(x,t, varargin)
 %
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FE_spot_vol')">Link to the help function</a>

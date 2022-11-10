@@ -51,7 +51,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 % number of multivariate outliers, "Journal of the Royal Statistical
 % Society Series B", Vol. 71, pp. 201-221.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

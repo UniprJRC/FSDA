@@ -208,7 +208,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 % Acknowledgements:
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

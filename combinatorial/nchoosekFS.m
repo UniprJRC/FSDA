@@ -40,7 +40,7 @@ function c = nchoosekFS(v,k)
 %    Riordan, J. (1958), "An Introduction to Combinatorial Analysis", 
 %    Wiley & Sons, New York.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('nchoosekFS')">Link to the help function</a>

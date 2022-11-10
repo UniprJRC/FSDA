@@ -58,7 +58,7 @@ function cdf = twdcdf(x,alpha,theta,delta)
 % Institute, Calcutta", pp. 579-604.
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

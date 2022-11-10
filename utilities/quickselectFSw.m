@@ -83,7 +83,7 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
 %   Azzini, I., Perrotta, D. and Torti, F. (2022), An efficient and
 %   extensible fixed-pivot selection algorithm, submitted.
 %
-% Copyright 2008-2022.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

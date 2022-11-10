@@ -5,7 +5,7 @@ function [dom,cellBoundaries] = m2mxdom(originalCode)
  
 % Copyright 1984-2012 The MathWorks, Inc.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 %
 %$LastChangedDate::                      $: Date of the last commit
 
