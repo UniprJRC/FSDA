@@ -101,7 +101,7 @@ function [f , F , x] = vervaatxdf(betav,nx,pascalM)
 % Scientificarum Hungarica", Vol. 6, pp 363-379.
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

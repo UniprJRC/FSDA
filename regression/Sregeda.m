@@ -209,7 +209,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 % and Methods", Wiley, New York.
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

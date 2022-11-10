@@ -60,7 +60,7 @@ function [GAMc]  = restrshapeExact(k, v, shw, shb, verLess2016b)
 %
 % References:
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

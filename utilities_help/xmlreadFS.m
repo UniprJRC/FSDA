@@ -1,7 +1,7 @@
 function out=xmlreadFS(FileName)
 % read xml file and converts it to a structure with dedicated fields
 
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

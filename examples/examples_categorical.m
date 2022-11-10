@@ -1,6 +1,6 @@
 %% EXAMPLES OF CATEGORICAL DATA ANALYSIS
 % examples_categorical shows a series of analysis of correspondence analysis datasets
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %$LastChangedDate::                      $: Date of the last commit

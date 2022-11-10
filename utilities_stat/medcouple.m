@@ -101,7 +101,7 @@ function [medout , varargout] = medcouple(z, mcm, wmm)
 % Vol. 62, pp.101-111.
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('medcouple')">Link to the help page for this function</a>

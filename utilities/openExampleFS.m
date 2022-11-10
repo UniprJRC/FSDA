@@ -1,6 +1,6 @@
 function openExampleFS(filename)
 %openExampleFS Open an example for modification and execution.
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

@@ -152,7 +152,7 @@ function [out] = simulateLM(n,varargin)
 % Festschrift in Honor of R. Dennis Cook pp 17–41.
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('simulateLM')">Link to the help function</a>

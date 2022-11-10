@@ -391,7 +391,7 @@ function [out]=FSRts(y,varargin)
 % Monitoring of Many Time Series with Application to Fraud Detection,
 % "Econometrics and Statistics". [RPRH]
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

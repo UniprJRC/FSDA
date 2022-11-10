@@ -71,7 +71,7 @@ function rhoHA = HArho(u, ctuning)
 %
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

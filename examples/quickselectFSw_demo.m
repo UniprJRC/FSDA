@@ -51,7 +51,7 @@ function [kD , kW , kstar, varargout]  = quickselectFSw_demo(D,W,p)
 %
 % References:
 %
-% Copyright 2008-2022.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

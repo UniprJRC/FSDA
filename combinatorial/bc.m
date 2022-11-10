@@ -35,7 +35,7 @@ function c = bc(n,k)
 %
 % Matlab function bc has been adapted to this toolbox by FSDA team
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

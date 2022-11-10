@@ -228,7 +228,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %   Greene W.H. (1987), Econometric Analysis, Prentice Hall. [5th edition,
 %   section 11.7.1 pp. 232-235, 7th edition, section  9.7.1 pp. 280-282].
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

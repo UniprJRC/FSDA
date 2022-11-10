@@ -69,7 +69,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %       9(1):111-113.
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

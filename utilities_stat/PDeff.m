@@ -32,7 +32,7 @@ function alpha = PDeff(eff)
 %  Regression with Density Power Divergence: Theory, Comparisons and Data
 %  Analysis, submitted.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

@@ -86,7 +86,7 @@ function [S, Stable] = GowerIndex(Y, varargin)
 % This function has been written jointly with Professor Aurea Grane',
 % Universidad Carlos III de Madrid, Statistics Department.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

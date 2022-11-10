@@ -219,7 +219,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 % Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
 % Transformation: Review and Extensions, "Statistical Science", in press.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

@@ -49,7 +49,7 @@ function h = scatterboxplot(x,y,varargin)
 %
 % References:
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

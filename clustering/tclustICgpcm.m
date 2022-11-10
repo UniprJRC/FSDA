@@ -467,7 +467,7 @@ function out  = tclustICgpcm(Y, varargin)
 % Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416,
 % https://doi.org/10.1080/10618600.2017.1390469
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

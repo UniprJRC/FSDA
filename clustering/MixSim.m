@@ -282,7 +282,7 @@ function [out]  = MixSim(k,v,varargin)
 % Eigenvalues and Eigenvectors, in Bauer, F.L. Eds, "Handbook for Automatic
 % Computation", Vol. 2, pp. 315-326, Springer.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

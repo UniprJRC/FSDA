@@ -118,7 +118,7 @@ function UNIPRconfigCluster(user, varargin)
 %
 % See also:     UNIPRruncluster
 %
-% Copyright 2008-2022.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

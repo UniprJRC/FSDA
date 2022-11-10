@@ -53,7 +53,7 @@ function Ytra=basicPower(Y,ColtoTra,la, varargin)
 % Discussion), "Journal of the Royal Statistical Society Series B", 
 % Vol. 26, pp. 211-252.
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %

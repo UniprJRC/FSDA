@@ -68,7 +68,7 @@ function Nopt = OptimalCuttingFrequency(x,t)
 %
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('OptimalCuttingFrequency')">Link to the help function</a>

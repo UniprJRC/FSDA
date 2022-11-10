@@ -1,6 +1,6 @@
 function outDiff=getWebMatlabFiles(outputOFHtmlHelpFileWeb)
 % Creates a list of html files which are inside outputOFHtmlHelpFileWeb  
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

@@ -157,7 +157,7 @@ function biplotFS(Y,varargin)
 % References:
 %
 %
-% Copyright 2008-2021.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('biplotFS')">Link to the help function</a>
