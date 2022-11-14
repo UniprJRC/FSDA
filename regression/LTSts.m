@@ -198,7 +198,16 @@ function [out, varargout] = LTSts(y,varargin)
 %                        model.ARp=[1 2] means a AR(2) process; 
 %                        model.ARp=2 means just the lag 2 component;
 %                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
-%                        model.ARp=0 (default) means no autoregressive component.                Example - 'model', model
+%                        model.ARp=0 (default) means no autoregressive component. 
+%               model.ARtentout = matrix of size r-by-2 containing the list
+%                       of the units declared as outliers (first column)
+%                       and corresponding fitted values (second column) or
+%                       empty scalar. If model.ARtentout is not empty, when
+%                       the autoregressive component is present, the y
+%                       values which are used to compute the autoregressive
+%                       component are replaced by model.tentout(:,2) for
+%                       the units contained in model.tentout(:,1)
+%                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default model is for monthly data with a linear
 %               trend (2 parameters) + seasonal component with just one
@@ -1094,8 +1103,8 @@ modeldef.seasonal=1;        % just one harmonic
 modeldef.X       =[];       % no extra explanatory variable
 modeldef.lshift  =0;        % no level shift
 modeldef.ARp     =0;        % no autoregressive component
-
-% h to be implemented for LTS
+modeldef.ARtentout =[];     % information on preliminary tentative outliers 
+                            % found using an external method. 
 
 % Set the default value for h (the default is 75 per cent of the data)
 hdef    = round(0.75*T);
@@ -1283,9 +1292,14 @@ else
     autoRegressive=true;
     % Ylagged = matrix which contains lagged values of Y
     Ylagged=zeros(T,lARp);
+    yToUseforLagged=y;
+    if ~isempty(model.ARtentout)
+        yToUseforLagged(model.ARtentout(:,1))=model.ARtentout(:,2);
+    end
+
     for j=1:lARp
         selj=ARp(j);
-        Ylagged(:,j)=[y(1:selj); y(1:end-selj)];
+        Ylagged(:,j)=[yToUseforLagged(1:selj); yToUseforLagged(1:end-selj)];
     end
     X=[Ylagged X];
 end

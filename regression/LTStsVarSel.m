@@ -27,11 +27,15 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 % firstTestLS: initial test for presence of level shift. Boolean. if
 %               firstTestLS is true, we immediately find the position of
 %               the level shift in a model which does not contain
-%               autoregressive terms and the seasonal specification is 101
-%               If the level shift component is significant we pass the
-%               level shift component in fixed position to the variable
-%               selection procedure. The default value of firstTestLS is
-%               false.
+%               autoregressive terms, the seasonal specification is 101 If
+%               the level shift component is significant we pass the level
+%               shift component in fixed position to the variable selection
+%               procedure.  Note also that the units declared as outliers
+%               with a p-value smaller than 0.001 are used to form
+%               model.ARtentout. model.ARtentout is used in the subsequent
+%               steps of the variable selection procedure, every time there
+%               is a call to LTSts with an autoregressive component. The
+%               default value of firstTestLS is false.
 %                 Example - 'firstTestLS', false
 %                 Data Types - logical
 %
@@ -133,6 +137,14 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                        model.ARp=2 means just the lag 2 component;
 %                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
 %                        model.ARp=0 (default) means no autoregressive component.
+%               model.ARtentout = matrix of size r-by-2 containing the list
+%                       of the units declared as outliers (first column)
+%                       and corresponding fitted values (second column) or
+%                       empty scalar. If model.ARtentout is not empty, when
+%                       the autoregressive component is present, the y
+%                       values which are used to compute the autoregressive
+%                       component are replaced by model.tentout(:,2) for
+%                       the units contained in model.tentout(:,1)
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default overparametrized model is for monthly
@@ -485,6 +497,7 @@ modeldef.seasonal = 303;      % three harmonics growing cubically (B=3, G=3)
 modeldef.X        = [];       % no extra explanatory variable
 modeldef.lshift   = 0;        % no level shift
 modeldef.ARp      = 0;        % no autoregressive component
+modeldef.ARtentout =[];
 
 nsamp=500;
 firstTestLS=false;
@@ -545,6 +558,7 @@ if firstTestLS==true && (length(model.lshift)>1 || model.lshift(1)==-1)
     modelINI=model;
     modelINI.ARp=0;
     modelINI.seasonal=101;
+    % Note that all the other components do not change
     out_LTStsINI = LTSts(y,'model',modelINI,'nsamp',nsamp,'h',h1,...
         'plots',plots,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
     if out_LTStsINI.LevelShiftPval<thPval
@@ -553,8 +567,14 @@ if firstTestLS==true && (length(model.lshift)>1 || model.lshift(1)==-1)
     else
         model.lshift=0;
     end
-end
 
+    % Find the observations which surely are outliers (i.e. those which
+    % have a pvalue smaller than 0.001)
+    tentOutForAR=out_LTStsINI.outliers(out_LTStsINI.outliersPval<0.001);
+    yhatout=out_LTStsINI.yhat(tentOutForAR);
+    ARtentout=[tentOutForAR yhatout];
+    model.ARtentout=ARtentout;
+end
 
 % Estimate the parameters based on initial full model
 out_LTSts = LTSts(y,'model',model,'nsamp',nsamp,'h',h1,...
@@ -672,8 +692,6 @@ while AllPvalSig == 0
         LevelShiftPval=0;
     end
 
-    %%%%%%%%%%%%%%%%%%%%%%%%%
-
     posAR=seqp(contains(rownam,'b_auto'));
     % Initialize pvalue of last AR component to be zero.
     LastARPval=0;
@@ -684,8 +702,6 @@ while AllPvalSig == 0
             LastARPval=out_LTSts.Btable{posLastAR,'pval'};
         end
     end
-
-    %%%%%%%%%%%%%%%%%%%%
 
     % Group all p-values into a vector
     Pvalall = [LastTrendPval;...
@@ -811,9 +827,34 @@ if lshift_present > 0 && ~isempty(model.X)
     % out_LTSts.posLS=tmp(1);
     model.X(:,end) = [];
     % out_LTSts.Btable.Properties.RowNames(end)={'b_lshift'};
-    [out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',nsamp,...
-        'plots',0,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
 end
+
+% Do a final refinement for the autoregressive component (if it is present)
+ARfinalrefinement=false;
+if ARfinalrefinement==true && ~isempty(model.ARp)
+    % 1) Estimate the model without the autoregressive component using final
+    % values of seasonal component, level shift and trend
+    % 2) Find the outliers and use fitted values for the units declared as
+    % outliers for the autoregressive component
+    % 3) Final call to LTSts to restimate the model adding the specification for
+    % the autoregressive component found before and using yhat for y lagged
+    % for the units declared as outliers.
+    modelfinref=model;
+    modelfinref.ARp=[];
+    [out_LTSts]=LTSts(out_LTSts.y,'model',modelfinref,'nsamp',nsamp,...
+        'plots',0,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
+
+    tentOutForAR=out_LTSts.outliers(out_LTSts.outliersPval<0.001);
+    yhatout=out_LTSts.yhat(tentOutForAR);
+    ARtentout=[tentOutForAR yhatout];
+    model.ARtentout=ARtentout;
+
+end
+
+% reestimate final model
+[out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',nsamp,...
+    'plots',0,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
+
 if isempty(model.ARp)
     model.ARp = 0;
 end
@@ -822,7 +863,7 @@ reduced_est   = model;
 reduced_model = out_LTSts;
 
 if msg==1
-    disp('The final select model has these parameters:')
+    disp('The final selected model has these parameters:')
     disp(reduced_model);
 end
 

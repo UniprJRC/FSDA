@@ -139,6 +139,14 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                        model.ARp=2 means just the lag 2 component;
 %                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
 %                        model.ARp=0 (default) means no autoregressive component.
+%               model.ARtentout = matrix of size r-by-2 containing the list
+%                       of the units declared as outliers (first column)
+%                       and corresponding fitted values (second column) or
+%                       empty scalar. If model.ARtentout is not empty, when
+%                       the autoregressive component is present, the y
+%                       values which are used to compute the autoregressive
+%                       component are replaced by model.tentout(:,2) for
+%                       the units contained in model.tentout(:,1)
 %                 Example - 'model', model
 %                 Data Types - struct
 %
@@ -577,6 +585,8 @@ modeldef.seasonal = [];
 modeldef.X        = [];       % no explanatory variables
 modeldef.lshift   = [];       % no level shift
 modeldef.ARp      = 0;        % no autoregressive component
+modeldef.ARtentout  = [];
+
 nocheck           = false;
 plots             = 1;
 FileNameOutput    = '';
@@ -707,11 +717,17 @@ if length(ARp)>6
     ARp=ARp(1:6);
 end
 if length(ARp)>1 || ARp>0
+
+       yToUseforLagged=y;
+    if ~isempty(model.ARtentout)
+        yToUseforLagged(model.ARtentout(:,1))=model.ARtentout(:,2);
+    end
+
     % Ylagged = matrix which contains lagged values of Y
     Ylagged=zeros(T,length(ARp));
     for j=1:length(ARp)
         lagj=ARp(j);
-        Ylagged(1:n,j)=[y(1:lagj); y(1:end-lagj)];
+        Ylagged(1:n,j)=[yToUseforLagged(1:lagj); yToUseforLagged(1:end-lagj)];
     end
     X=[Ylagged X];
 end
