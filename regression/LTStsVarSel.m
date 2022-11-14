@@ -734,7 +734,7 @@ while AllPvalSig == 0
                 % If the last seasonal component has been removed and there
                 % are still terms of non linear seasonality, remove them
                 strseaso=num2str(model.seasonal);
-                if length(strseaso)==3 && strseaso(end)=='0' && LastVarAmplPval>0
+                if length(strseaso)==3 && strseaso(end)=='0'
                     if msg==1 || plots==1
                         removed = strcat(removed,'. Removing also amplitude of all orders of seas. comp.');
                     end
@@ -747,6 +747,7 @@ while AllPvalSig == 0
                     if msg==1 || plots==1
                         removed ='Removing level shift component';
                     end
+                    lshift_present = 0;
                 else
                     if msg==1 || plots==1
                         removed =['Removing expl. variable number ' num2str(posmaxPvalX)];
@@ -768,6 +769,7 @@ while AllPvalSig == 0
                 if msg==1 || plots==1
                     removed ='Remove level shift component';
                 end
+                lshift_present = 0;
             case 6
                 if msg==1 || plots==1
                     strAR=num2str(model.ARp(end));
