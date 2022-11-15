@@ -1335,7 +1335,8 @@ if coder.target('MATLAB')
     % if lshift=-1, then tentative level shifts are considered for positions
     % p+1, p+2, ..., T-p-1
     if length(lshift)==1 && lshift==-1
-        lshift=(p+1):(T-p);
+        % lshift=(p+1):(T-p);
+        lshift=min([(p+1),5]):max([(T-p),T-4]);
     end
 end
 
@@ -2712,7 +2713,7 @@ end
 out.LastHarmonicPval=pval;
 
 if lshiftYN==1
-    lsdet=FSRinvmdr([length(LSH) abs(B(end,3))],p-1);
+    lsdet=FSRinvmdr([length(LSH) abs(B(end,3))],min([p-1, length(LSH)-1]));
     LevelShiftPval=1-lsdet(1,2);
     out.LevelShiftPval=LevelShiftPval;
 else
