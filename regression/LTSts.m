@@ -2713,8 +2713,12 @@ end
 out.LastHarmonicPval=pval;
 
 if lshiftYN==1
-    lsdet=FSRinvmdr([length(LSH) abs(B(end,3))],min([p-1, length(LSH)-1]));
-    LevelShiftPval=1-lsdet(1,2);
+    if length(LSH)>p-1
+        lsdet=FSRinvmdr([length(LSH) abs(B(end,3))],min([p-1, length(LSH)-1]));
+        LevelShiftPval=1-lsdet(1,2);
+    else
+        LevelShiftPval=out.B(end,4);
+    end
     out.LevelShiftPval=LevelShiftPval;
 else
     if ~coder.target('MATLAB')
