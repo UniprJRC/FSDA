@@ -543,6 +543,8 @@ msg    = options.msg;
 dispresults = options.dispresults;
 nsamp=options.nsamp;
 firstTestLS=options.firstTestLS;
+posLS=0;
+
 
 %% Step 1: estimate model parameters with LTSts for the over-parametrized input model
 
@@ -615,22 +617,6 @@ end
 % iterative procedure should stop.
 AllPvalSig=0;
 
-
-% iniloop associated with level shift, which has to be tested only once
-iniloop=1;
-
-% fwd search index
-if length(model.lshift)==1 && model.lshift==-1
-    p=size(out_LTSts.Btable,1)+1;
-    lLSH=n-2*p;
-else
-    lLSH = length(model.lshift);
-end
-
-
-% initialize a flag to check the initial presence of level shift
-lshift_present = 0;
-
 % Iterative model reduction.
 while AllPvalSig == 0
     % The loop terminates when all p-values are smaller than thPval. In
@@ -649,19 +635,8 @@ while AllPvalSig == 0
 
     posX=seqp(contains(rownam,'b_explX'));
     if ~isempty(posX)
-        % if iniloop is 0 the pval of the last expl variable is in reality
-        % the pval of the level shift component and therefore it has to be
-        % recalibrated
+        % p values of the explanatory var component
         PvalX=out_LTSts.Btable{posX,'pval'};
-        if iniloop==0
-            tstatX=out_LTSts.Btable{posX,'t'};
-            %lLSH: fwd search index
-            %abs(tstatX(end)): minimum deletion residuals
-            %size(out_LTSts.Btable,1)-1: number of explanatory variables
-            lsdet=FSRinvmdr([lLSH abs(tstatX(end))],size(out_LTSts.Btable,1)-1);
-            %lsdet(1,2) = confidence level of each value of mdr.
-            PvalX(end)=1-lsdet(1,2);
-        end
 
         [maxPvalX,posmaxPvalX]=max(PvalX);
         %posmaxPvalX=posX(posmaxPvalX);
@@ -670,7 +645,6 @@ while AllPvalSig == 0
         posmaxPvalX=[];
     end
 
-    % tre=cellfun(@isempty,strfind(rownam,'b_varamp'));
     posLastVarAmpl=max(seqp(contains(rownam,'b_varam')));
 
     if ~isempty(posLastVarAmpl)
@@ -741,18 +715,10 @@ while AllPvalSig == 0
                     model.seasonal=0;
                 end
             case 3
-                % elseif indmaxPvalall ==3
                 % Remove from model the non signif expl var
-                if posmaxPvalX==size(model.X,2) && iniloop==0
-                    if msg==1 || plots==1
-                        removed ='Removing level shift component';
-                    end
-                    lshift_present = 0;
-                else
                     if msg==1 || plots==1
                         removed =['Removing expl. variable number ' num2str(posmaxPvalX)];
                     end
-                end
                 model.X(:,posmaxPvalX)= [];
             case 4
                 % elseif indmaxPvalall ==4
@@ -769,7 +735,6 @@ while AllPvalSig == 0
                 if msg==1 || plots==1
                     removed ='Remove level shift component';
                 end
-                lshift_present = 0;
             case 6
                 if msg==1 || plots==1
                     strAR=num2str(model.ARp(end));
@@ -783,17 +748,12 @@ while AllPvalSig == 0
         if msg==1 || plots==1
             disp(removed)
         end
-        % keep the level shift component and transfer it to X part
-        if model.lshift(1)~=0 && iniloop==1
-            Xls=[zeros(posLS-1,1); ones(n-posLS+1,1)];
-            if ~isfield(model,'X')
-                model.X=[];
-            end
-            model.X=[model.X Xls];
-            lshift_present = posLS;
-            model.lshift=0;
-            iniloop=0;
-        end
+
+
+        % The instruction below should not be necessary
+%         if model.lshift(1)~=0 
+%             model.lshift=posLS;
+%         end
 
         % Re-run the model but do not re-estimate the position of the
         % level shift
@@ -805,11 +765,11 @@ while AllPvalSig == 0
             title(a.Children(end),{['trend = ' num2str(model.trend) ...
                 ', seas = ' num2str(model.seasonal) ...
                 ' every ' num2str(model.s) ...
-                ' months', ', LS = ' num2str(lshift_present), ...
+                ' months', ', LS = ' num2str(posLS), ...
                 ', X = ' num2str(size(model.X,2)-1) ],num2str(removed)});
-            if lshift_present>0
+            if model.lshift(1)~=0
                 hold on;
-                line([lshift_present lshift_present],[min(out_LTSts.y),max(out_LTSts.y)],...
+                line([posLS posLS],[min(out_LTSts.y),max(out_LTSts.y)],...
                     'Color','black','LineStyle','--','Linewidth',1);
             end
         end
@@ -819,16 +779,6 @@ while AllPvalSig == 0
         AllPvalSig=1;
     end
 
-end
-
-% If level shift is present and model.X is not empty, it means that the last
-% column of model.X is the level shift explanatory variable
-if lshift_present > 0 && ~isempty(model.X)
-    tmp = find(model.X(:,end)>0);
-    model.lshift=tmp(1);
-    % out_LTSts.posLS=tmp(1);
-    model.X(:,end) = [];
-    % out_LTSts.Btable.Properties.RowNames(end)={'b_lshift'};
 end
 
 % Do a final refinement for the autoregressive component (if it is present)
@@ -851,11 +801,11 @@ if ARfinalrefinement==true && ~isempty(model.ARp)
     ARtentout=[tentOutForAR yhatout];
     model.ARtentout=ARtentout;
 
+    % reestimate final model
+    [out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',nsamp,...
+        'plots',0,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
 end
 
-% reestimate final model
-[out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',nsamp,...
-    'plots',0,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
 
 if isempty(model.ARp)
     model.ARp = 0;
