@@ -326,8 +326,17 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                   must be closed or not. It is useful to leave it open if
 %                   there are subsequent parallel sessions to execute, so
 %                   that to save the time required to open a new pool.
-%                 Example - 'cleanpool',true
+%                   Example - 'cleanpool',true
 %                   Data Types - integer | logical
+%
+%
+%       DfMmex:    Whether to use or not the new faster DfM mlx version. If
+%                  true is supplied the new version is used. For some
+%                  specific case (e.g. translating to Python) this option 
+%                  should be set to false.
+%                  Example - 'DfMmex',true
+%                  Data Types - integer | logical
+%
 %
 %
 %  Output:
@@ -605,7 +614,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
     ylimCOV=[0 0.01];
     ylimy=[ylimARI;ylimCENT;ylimCOV];
     plots.ylimy=ylimy;
-    [outDet]=tclusteda(Y,k,alphavec,c,'restrtype',restrtype,'plots',plots,'nsamp',10000);
+    [outDet]=tclusteda(Y,k,alphavec,c,'restrtype',restrtype,'plots',plots,'nsamp',10000, 'DfMmex',true);
 %}
 
 %% Beginning of code
@@ -751,6 +760,7 @@ UnitsSameGroup='';
 RandNumbForNini='';
 % cshape. Constraint on the shape matrices inside each group which works only if restrtype is 'deter'
 cshape=10^10;
+DfMmex=true;
 
 UserOptions=varargin(1:2:length(varargin));
 
@@ -760,7 +770,7 @@ if ~isempty(UserOptions)
         'msg',1,'refsteps',refstepsdef,'equalweights',false,...
         'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restrtype','eigen',...
         'UnitsSameGroup',UnitsSameGroup,...
-        'numpool',numpool, 'cleanpool', cleanpool,'cshape',cshape);
+        'numpool',numpool, 'cleanpool', cleanpool,'cshape',cshape, 'DfMmex', DfMmex);
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -833,6 +843,7 @@ if ~isempty(UserOptions)
     
     msg=options.msg;            % Scalar which controls the messages displayed on the screen
     mixt=options.mixt;         % if options.mixt>0 mixture model is assumed
+    DfMmex=options.DfMmex;
 else
     mixt=0;
     msg=0;
@@ -840,6 +851,7 @@ else
     reftol=reftoldef;
     refsteps=refstepsdef;
     plots=1;
+    DfMmex=true;
 end
 
 
@@ -1019,9 +1031,10 @@ outcell=cell(lalpha,1);
 MU=zeros(k,v,lalpha);
 SIGMA=cell(lalpha,1);
 
-parfor (j=1:lalpha, numpool)
+%parfor (j=1:lalpha, numpool)
+for j=1:lalpha
     outj  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt, ...
-        equalweights,hh(j),nselected,k,restrnum,restrfactor,userepmat,nParam);
+        equalweights,hh(j),nselected,k,restrnum,restrfactor,userepmat,nParam, DfMmex);
     
     if nnargout==2
         outcell{j}=outj;
