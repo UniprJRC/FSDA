@@ -1,4 +1,4 @@
-function out  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrnum,restrfactor,userepmat,nParam)
+function out  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrnum,restrfactor,userepmat,nParam, DfMmex)
 % This function is called by tclusteda and it is not intended to be called directly
 
 % Copyright 2008-2023.
@@ -40,7 +40,7 @@ if isempty(Y0tmp)
     Y0tmp=zeros(n,v);
 end
 
-% Create an identity matrix which will be used in fucntion logmvnpdfFS
+% Create an identity matrix which will be used in function logmvnpdfFS
 if isempty(eyev)
     eyev=eye(v);
 end
@@ -91,14 +91,14 @@ for i=1:nselected
         if equalweights
             % In this case we are (ideally) assuming equally sized groups
             for j=1:k
-                ll(:,j)= logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0);
+                ll(:,j)= logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0,DfMmex);
             end
         else
             
             % In this case we allow for different group weights or we are
             % assuming a mixture model
             for j=1:k
-                ll(:,j)= log(niini(j)/h) +  logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0);
+                ll(:,j)= log(niini(j)/h) +  logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0,DfMmex);
                 % Line above is faster but equivalent to
                 % ll(:,j)= (niini(j)/h)*mvnpdf(Y,cini(j,:),sigmaini(:,:,j));
             end
@@ -327,7 +327,7 @@ for i=1:nselected
             %   log_lh(i,j) is log (Pr(point i|component j) * Prob( component j))
             
             for j=1:k
-                log_lh(:,j)=  log(niini(j)/h)+logmvnpdfFS(Ytri,cini(j,:),sigmaini(:,:,j),Y0tmp(1:h,:),eyev,h,v,0);
+                log_lh(:,j)=  log(niini(j)/h)+logmvnpdfFS(Ytri,cini(j,:),sigmaini(:,:,j),Y0tmp(1:h,:),eyev,h,v,0,DfMmex);
             end
             
             % obj contains the value of the log likelihood for mixture models
@@ -348,7 +348,7 @@ for i=1:nselected
                         % term which allows for different group weights
                         
                         niinij=niini(j);
-                        obj=obj+ niini(j)*log(niinij/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j),Y0tmp(1:niinij,:),eyev,niinij,v,0));
+                        obj=obj+ niini(j)*log(niinij/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j),Y0tmp(1:niinij,:),eyev,niinij,v,0,DfMmex));
                     end
                 end
             end
@@ -435,7 +435,7 @@ end
 if equalweights
     for j=1:k
         if any(~isnan(muopt(j,:)))
-            ll(:,j) = logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
+            ll(:,j) = logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0,DfMmex);
         else
             % avoid the computation for empty components and assign NaN
             ll(:,j) = NaN;
@@ -444,7 +444,7 @@ if equalweights
 else
     for j=1:k
         if any(~isnan(muopt(j,:)))
-            ll(:,j) = log(nopt(j)/h) + logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
+            ll(:,j) = log(nopt(j)/h) + logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0,DfMmex);
         else
             % avoid the computation for empty components and assign NaN
             ll(:,j) = NaN;
