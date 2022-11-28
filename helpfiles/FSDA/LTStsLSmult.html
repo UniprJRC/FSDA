@@ -21,8 +21,8 @@ pause(1);
 out2  = LTStsLSmult(yin2,'msg',true,'plots',1);
 title('P17049075_UA_LT','interpreter','none','Fontsize',20);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 1.
  Detection of multiple Level Shifts followed by variable selection on the
- dataset of example before
-  load('P17049075full.txt');  UA-LT<div class="programlisting"><div class="codeinput"><pre class="matlab-code">yin2   = P17049075full(:,2);
+ dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('P17049075full.txt'); 
+yin2   = P17049075full(:,2);
 out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
 'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
 outX = out.outX;
@@ -34,8 +34,8 @@ model.X = outX(:,3:end);
 [out_LTSts]=LTSts(yin2,'model',out_model_1,...
 'plots',1,'msg',0,'dispresults',1,'SmallSampleCor',1,'conflev',1-0.01/length(yin2));</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 2.
      Detection of multiple Level Shifts followed by variable selection on the
-     dataset of example before
-    load('P12119085full.txt');  UA-LT<div class="programlisting"><div class="codeinput"><pre class="matlab-code">yin2   = P12119085full(:,2);
+     dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('P12119085full.txt');
+yin2   = P12119085full(:,2);
 out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
 'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
 outX = out.outX;

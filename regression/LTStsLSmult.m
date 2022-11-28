@@ -229,8 +229,8 @@ function out = LTStsLSmult(y,varargin)
 %{
 % Multiple level shift and variable selection. Example 1.
 % Detection of multiple Level Shifts followed by variable selection on the
-% dataset of example before
-  load('P17049075full.txt'); % UA-LT
+% dataset of example before.
+  load('P17049075full.txt'); 
   yin2   = P17049075full(:,2);
   out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
     'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
@@ -250,8 +250,8 @@ function out = LTStsLSmult(y,varargin)
 %{
     % Multiple level shift and variable selection. Example 2.
     % Detection of multiple Level Shifts followed by variable selection on the
-    % dataset of example before
-    load('P12119085full.txt'); % UA-LT
+    % dataset of example before.
+    load('P12119085full.txt');
     yin2   = P12119085full(:,2);
     out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
             'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
