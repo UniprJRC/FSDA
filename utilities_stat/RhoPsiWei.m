@@ -255,7 +255,11 @@ function out = RhoPsiWei(u, v, varargin)
     rhofunc='HYP';
     k=4.2;
     eff=0.85;
-    out=RhoPsiWei(u,1,'bdp',0.2,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',k);
+    try
+        out=RhoPsiWei(u,1,'bdp',0.2,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',k);
+    catch
+            disp('Only a value among bdp, eff and c must be supplied')
+    end
 %}
 
 %{
