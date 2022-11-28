@@ -1156,7 +1156,7 @@ if coder.target('MATLAB')
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:LTSts3:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:LTSts:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         
         % Check if all the specified optional arguments were present in
