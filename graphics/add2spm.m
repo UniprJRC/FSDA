@@ -197,7 +197,7 @@ function add2spm(H,AX,BigAx,varargin)
     % first 5 units). The labels are taken from cell label
     add2spm(H,AX,BigAx,'labeladd','1','RowNamesLabels',label);
 %}
-    
+
 %% Beginning of code
 
 H=double(H);
@@ -240,12 +240,12 @@ if isempty(userleg)
 end
 
 % if 'userleg' is a cell of strings or a string array use such strings as user-defined legends
-if ~isempty(userleg) && (iscell(userleg) || isstring(userleg))
+if ~isempty(userleg) && (iscell(userleg) || isstring(userleg) || iscategorical(userleg))
     legnew = userleg;
 end
 
 % set the 'DisplayName' property for the two cases above
-if isempty(userleg) || (~isempty(userleg) && (iscell(userleg) || isstring(userleg)) )
+if isempty(userleg) || (~isempty(userleg) && (iscell(userleg) || isstring(userleg) || iscategorical(userleg)) )
     % the new legends
     nleg = numel(legnew);
     % modify the DisplayName field so that to hide/show the groups
@@ -260,7 +260,12 @@ if isempty(userleg) || (~isempty(userleg) && (iscell(userleg) || isstring(userle
             H(:,:,1) = ~eye(size(H,1)).*H(:,:,1);
             newH = reshape(H,numel(H)/nleg,nleg);
             for i = 1 : nleg
-                set(newH(newH(:,1)~=0,i),'DisplayName',legnew{i});
+                if iscell(legnew)
+                    set(newH(newH(:,1)~=0,i),'DisplayName',legnew{i});
+                else
+                    set(newH(newH(:,1)~=0,i),'DisplayName',string(legnew(i)));
+                end
+
             end
         case 'stairs'
             % from MATLAB R2015a, if there is more than one group, the scatter
@@ -280,13 +285,13 @@ end
 % of the current figure. The currently addressed strings/contexts are
 % 'outlier' (for outliers/normal units), 'brush' (for Brushed units 1,
 % Brushed units 2, etc.) and 'group' (for 'Group 1, Group 2, etc.).
-if ~isempty(userleg) && ((ischar(userleg) && strcmp(userleg,'1')) || isstring(userleg))
-    
+if ~isempty(userleg) && ((ischar(userleg) && strcmp(userleg,'1')) || isstring(userleg) || iscategorical(userleg))
+
     % add multilegend
     v = size(AX,2);
     leg = get(getappdata(AX(1,end),legstring),'String');
     nleg = numel(leg);
-    
+
     if ndims(H) == 3
         % The third dimension of H is to distinguish the groups. In the next
         % 'if' statement we use two equivalent ways to deal with H, considering
@@ -332,7 +337,7 @@ if ~isempty(userleg) && ((ischar(userleg) && strcmp(userleg,'1')) || isstring(us
         % In this case there are no groups in the data
         set(setdiff(H(:),diag(H)),'DisplayName','Units')
     end
-    
+
     % Get the final legends
     legnew = get(getappdata(AX(1,end),legstring),'String');
 end
@@ -389,20 +394,20 @@ if strcmp('1',labeladd)
     % We need to add objects (the labels) to the scatterplots
     fig = ancestor(BigAx,'figure');
     set(fig,'NextPlot','add');
-    
+
     % We must check if this instruction is necessary
     % set(AX,'NextPlot','add');
-    
+
     % The UserData field of the last selected group of H(:,:,end) contains
     % the indices of the last selected units.
     nbrush = get(H(end,1,end), 'UserData');
-    
+
     % Below there is an alternative inefficient code to extract brushed
     % units
     % a=findobj(H1,'Type','Line');
     % nbrush=[a.UserData];
     % nbrush=nbrush(:,1);
-    
+
     % AX has as many columns as the variables in the scatterplot data
     v = size(AX,2);
     for i = 1:v
@@ -418,7 +423,7 @@ if strcmp('1',labeladd)
                 else
                     numtext=RowNamesLabels(nbrush);
                 end
-                
+
                 htxt=text(XDataLast,YDataLast,numtext,'HorizontalAlignment', 'Center','VerticalAlignment','Top');
                 % Remark DisplayName with releases>2014a does not work
                 % anymore. It must bre replaced by String
