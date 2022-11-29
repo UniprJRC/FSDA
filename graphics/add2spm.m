@@ -239,13 +239,13 @@ if isempty(userleg)
     legnew = legplot;
 end
 
-% if 'userleg' is a cell of string, use such strings as user-defined legends
-if ~isempty(userleg) && iscell(userleg)
+% if 'userleg' is a cell of strings or a string array use such strings as user-defined legends
+if ~isempty(userleg) && (iscell(userleg) || isstring(userleg))
     legnew = userleg;
 end
 
 % set the 'DisplayName' property for the two cases above
-if isempty(userleg) || (~isempty(userleg) && iscell(userleg))
+if isempty(userleg) || (~isempty(userleg) && (iscell(userleg) || isstring(userleg)) )
     % the new legends
     nleg = numel(legnew);
     % modify the DisplayName field so that to hide/show the groups
@@ -280,7 +280,7 @@ end
 % of the current figure. The currently addressed strings/contexts are
 % 'outlier' (for outliers/normal units), 'brush' (for Brushed units 1,
 % Brushed units 2, etc.) and 'group' (for 'Group 1, Group 2, etc.).
-if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
+if ~isempty(userleg) && ((ischar(userleg) && strcmp(userleg,'1')) || isstring(userleg))
     
     % add multilegend
     v = size(AX,2);
