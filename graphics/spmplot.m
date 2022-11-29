@@ -1159,7 +1159,7 @@ else
     numtext=cellstr(num2str(seq,'%d'));
 end
 
-if iscell(group) || isstring(group)
+if iscell(group) || isstring(group) || iscategorical(group)
     groupv = zeros(numel(group),1);
     guni = unique(group,'stable');
     for ii=1:numel(guni)
