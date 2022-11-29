@@ -3,10 +3,14 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.5.38';
+newVersion = '8.6.3';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='Added GUIcorr distribspec corrpdf and corrcdf (fixed)';
+commentRelease='spmplot now accepts as classification variable a string array or a categorical array';
+
+% Additional comment to add
+% aa='<a href="http://rosa.unipr.it/FSDA/release_notes.html">For more details see page Release notes</a> '
+
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
