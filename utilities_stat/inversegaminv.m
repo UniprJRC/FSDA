@@ -1,5 +1,5 @@
 function x = inversegaminv(p,a,b,nocheck)
-%inversegampdf Inverse-gamma cumulative distribution function.
+%inversegaminv computes the inverse of the inverse-gamma cumulative distribution function.
 %
 %<a href="matlab: docsearchFS('inversegaminv')">Link to the help function</a>
 %

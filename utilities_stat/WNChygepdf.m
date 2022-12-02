@@ -1,5 +1,5 @@
 function Wpdf = WNChygepdf(X,N,K,M,W)
-%WNChygepdf returns Wallenius' non-central hypergeometric probability density values.
+%WNChygepdf returns Wallenius' non-central hypergeometric probability density function
 %
 %<a href="matlab: docsearchFS('WNChygepdf')">Link to the help function</a>
 %

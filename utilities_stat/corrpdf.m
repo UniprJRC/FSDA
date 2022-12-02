@@ -1,5 +1,5 @@
 function y = corrpdf(r, rho, n)
-%corrpdf correlation coefficient probability density function
+%corrpdf computes correlation coefficient probability density function
 %
 % Density function of the correlation coefficient under the null hypothesis
 % that the n bivariate observations come from a bivariate normal

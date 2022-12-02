@@ -1,5 +1,5 @@
 function [Wcdf] = WNChygecdf(X,N,K,M,W)
-%WNChygecdf returns Wallenius' non-central hypergeometric Cumulative Distribution Function values.
+%WNChygecdf returns Wallenius' non-central hypergeometric cumulative distribution function
 %
 %<a href="matlab: docsearchFS('WNChygecdf')">Link to the help function</a>
 %
