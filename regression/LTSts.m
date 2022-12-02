@@ -12,7 +12,7 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %    y:         Time series to analyze. Vector. A row or a column vector
 %               with T elements, which contains the time series. Note that
-%               y may contain missing values. 
+%               y may contain missing values.
 %
 %
 %  Optional input arguments:
@@ -1409,7 +1409,7 @@ if h>T-nummissing
     disp(['h=' num2str(h)])
     disp(['Number of non missing values=' num2str(T-nummissing)])
     error('FSDA:LTSts:WrongInput','h>=Number of non missing values (please increase bdp)');
-elseif h==nummissing
+elseif h==T-nummissing
     disp(['h=' num2str(h)])
     disp(['Number of non missing values=' num2str(T-nummissing)])
     warning('FSDA:LTSts:NoRob','h=Number of non missing values (estimator is not robust)');
@@ -1671,9 +1671,12 @@ for ilsh=1:lLSH
         if nummissing>0
             % Extract subsets which are not associated with missing values
             % of y
+            % Check if loop below can be avoided
             for i=1:nselected
                 Cini(i,:)=ynotmissing(Cini(i,:));
             end
+            % C1=reshape(ynotmissing(Cini),nsamp,pini);
+            %assert(max(abs(C1-double(Cini),[],'all')),"Non sono uguali")
         end
         C=Cini;
     end
