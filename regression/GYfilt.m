@@ -107,7 +107,7 @@ iterating=options.iterating;
 niter=options.niter;
 
 if centering==true
-    mu=median(x);
+    mu=median(x,'omitnan');
 else
     mu=0;
 end
