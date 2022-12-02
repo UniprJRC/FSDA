@@ -263,4 +263,4 @@ for k=1:nx
 end
 
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist

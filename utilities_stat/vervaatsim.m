@@ -362,4 +362,4 @@ end
 % perpetutiy with $\beta = 1$).
 
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist

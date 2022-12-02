@@ -686,4 +686,4 @@ if n >= 2^31 || n < -2^31
     n = mod(n+2^31,2^32) - 2^31;
 end
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist

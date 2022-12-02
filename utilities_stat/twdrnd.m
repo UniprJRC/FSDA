@@ -292,6 +292,6 @@ end
     end
 
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist
 
 

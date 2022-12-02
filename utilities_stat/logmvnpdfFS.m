@@ -427,5 +427,5 @@ else
     % y = -0.5*sum((X*inv(Sigma)).^2,2)- Const; %#ok<MINV>
 end
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist
 

@@ -100,4 +100,4 @@ Wpdf = bc1 * bc2 * d * sum1;
 
 end
 
-%FScategory:UTISTAT
+%FScategory:ProbDist

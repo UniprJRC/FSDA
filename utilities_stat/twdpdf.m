@@ -179,4 +179,4 @@ pdf(xnot0)  = exp(-theta*x(xnot0)+c) .* InfSum(x(xnot0),alpha,delta);
     end
 
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist
