@@ -11,7 +11,8 @@ function [out, varargout] = LTSts(y,varargin)
 %  Required input arguments:
 %
 %    y:         Time series to analyze. Vector. A row or a column vector
-%               with T elements, which contains the time series.
+%               with T elements, which contains the time series. Note that
+%               y may contain missing values. 
 %
 %
 %  Optional input arguments:
@@ -194,11 +195,11 @@ function [out, varargout] = LTSts(y,varargin)
 %                       with symbol $\delta_2$.
 %               model.ARp = vector with non negative integer numbers
 %                       specifying the autoregressive
-%                       components. For example: 
-%                        model.ARp=[1 2] means a AR(2) process; 
+%                       components. For example:
+%                        model.ARp=[1 2] means a AR(2) process;
 %                        model.ARp=2 means just the lag 2 component;
 %                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;
-%                        model.ARp=0 (default) means no autoregressive component. 
+%                        model.ARp=0 (default) means no autoregressive component.
 %               model.ARtentout = matrix of size r-by-2 containing the list
 %                       of the units declared as outliers (first column)
 %                       and corresponding fitted values (second column) or
@@ -1080,20 +1081,28 @@ function [out, varargout] = LTSts(y,varargin)
 
 % Input parameters checking
 
+if nargin<1
+    error('FSDA:LTSts:MissingInputs','Input time series is missing');
+end
+
 % setting global variable yin
 yin = y;
 
 % Extract size of the data
 T = length(yin);
 
+
 % seq is the vector which will contain linear time trend
 seq   = (1:T)';
 one   = ones(T,1);
 zerT1 = false(T,1);
 
-if nargin<1
-    error('FSDA:LTSts:MissingInputs','Input time series is missing');
-end
+ynotmissing=seq(~isnan(yin))';
+% nummissing = number of missing values;
+nummissing=T-length(ynotmissing);
+
+% if areMissing is true there are missing values
+areMissing=nummissing>0;
 
 % Set up values for default model
 modeldef         =struct;
@@ -1103,8 +1112,8 @@ modeldef.seasonal=1;        % just one harmonic
 modeldef.X       =[];       % no extra explanatory variable
 modeldef.lshift  =0;        % no level shift
 modeldef.ARp     =0;        % no autoregressive component
-modeldef.ARtentout =[];     % information on preliminary tentative outliers 
-                            % found using an external method. 
+modeldef.ARtentout =[];     % information on preliminary tentative outliers
+% found using an external method.
 
 % Set the default value for h (the default is 75 per cent of the data)
 hdef    = round(0.75*T);
@@ -1151,14 +1160,14 @@ if coder.target('MATLAB')
         'reftolALS',reftolALSdef,'refstepsALS',refstepsALSdef,...
         'lshiftlocref',lshiftlocrefdef,'nbestindexes',nbestindexesdef,...
         'dispresults',dispresultsdef);
-    
+
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:LTSts:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        
+
         % Check if all the specified optional arguments were present in
         % structure options Remark: the nocheck option has already been dealt
         % by routine chkinputR
@@ -1168,17 +1177,17 @@ if coder.target('MATLAB')
             disp(strcat('Non existent user option found->', char(WrongOptions{:})))
             error('FSDA:LTSts:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
-        
+
         % Extract the names of the optional arguments
         chklist=varargin(1:2:length(varargin));
-        
+
         % Check whether the user has selected both h and bdp.
         chktrim=sum(strcmp(chklist,'h')+2*strcmp(chklist,'bdp'));
         if chktrim ==3
             error('FSDA:LTSts:TooManyArgs','Both input arguments bdp and h are provided. Only one is required.')
         end
     end
-    
+
 end
 % Write in structure 'options' the options chosen by the user
 for i=1:2:length(varargin)
@@ -1192,14 +1201,14 @@ end
 if coder.target('MATLAB')
     if ~isequal(options.model,modeldef)
         fld=fieldnames(options.model);
-        
+
         % Check if user options inside options.model are valid options
         chkoptions(modeldef,fld)
         for i=1:length(fld)
             modeldef.(fld{i})=options.model.(fld{i});
         end
     end
-    
+
     model = modeldef;
 else
     model=options.model;
@@ -1248,12 +1257,12 @@ if seasonal >0
     else
         varampl=0;
     end
-    
+
     if seasonal < 1 || seasonal >floor(s/2)
         stoprint=floor(s/2);
         error('FSDA:LTSts:WrongInput','Seasonal component must be an integer between 1 and %.0f', stoprint)
     end
-    
+
     Xseaso=zeros(T,seasonal*2);
     for j=1:seasonal
         Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
@@ -1356,7 +1365,7 @@ end
 % all subsets otherwise just 10000. Notice that we use bc, a fast version
 % of nchoosek. One may also use the approximation
 % floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(pini+1))+0.5)
-ncomb=bc(T,pini);
+ncomb=bc(T-nummissing,pini);
 
 
 % And check if the optional user parameters are reasonable.
@@ -1369,14 +1378,14 @@ if chktrim==1
         error('FSDA:LTSts:WrongInput','h is greater or equal to the number of non-missings and non-infinites.')
     end
     bdp=1-options.h/T;
-    
+
     % the user has only specified bdp: h is defined accordingly
 elseif chktrim==2
     bdp=options.bdp;
     if bdp <= 0
         error('FSDA:LTSts:WrongInput','Attention: bdp should be larger than 0');
     end
-    
+
     nalpha=floor(T*(1-bdp));
     options.h=nalpha;
 else
@@ -1395,6 +1404,17 @@ end
 
 
 h=floor(options.h);         % Number of data points on which estimates are based
+
+if h>T-nummissing
+    disp(['h=' num2str(h)])
+    disp(['Number of non missing values=' num2str(T-nummissing)])
+    error('FSDA:LTSts:WrongInput','h>=Number of non missing values (please increase bdp)');
+elseif h==nummissing
+    disp(['h=' num2str(h)])
+    disp(['Number of non missing values=' num2str(T-nummissing)])
+    warning('FSDA:LTSts:NoRob','h=Number of non missing values (estimator is not robust)');
+end
+
 nsamp=options.nsamp;        % Number of subsets to extract
 nsampsubsequentsteps=round(nsamp/2);
 
@@ -1423,7 +1443,7 @@ if ~isstruct(lts) && isempty(lts)
     bestr=20;
     refstepsbestr=50;
     reftolbestr=1e-8;
-    
+
 elseif isstruct(lts)
     if coder.target('MATLAB')
         ltsdef.refsteps=2;
@@ -1431,19 +1451,19 @@ elseif isstruct(lts)
         ltsdef.bestr=20;
         ltsdef.refstepsbestr=50;
         ltsdef.reftolbestr=1e-8;
-        
+
         % Control the appearance of the trajectories to be highlighted
         if ~isequal(lts,ltsdef)
-            
+
             fld=fieldnames(lts);
-            
+
             % Check if user options inside options.fground are valid options
             chkoptions(ltsdef,fld)
             for i=1:length(fld)
                 ltsdef.(fld{i})=lts.(fld{i});
             end
         end
-        
+
         % For the options not set by the user use their default value
         lts=ltsdef;
     end
@@ -1482,8 +1502,8 @@ if lshiftYN==1
     % vector
     LSH = lshift(:)';
     % total number of subsets to pass to procedure subsets
-    ncombLSH=bc(T-1,pini+1);
-    
+    ncombLSH=bc(T-1-nummissing,pini+1);
+
 else
     LSH=0;
     ncombLSH=0;
@@ -1590,44 +1610,48 @@ end
 for ilsh=1:lLSH
     lsh=LSH(ilsh);
     % ilsh=ilsh+1;
-    
+
     sworst = Inf;
-    
-    
+
+
     if ilsh>1
-        
+
         nsamp=nsampsubsequentsteps;
         bestrLSH=bestrdiv2;
         bestnumscale2 = Inf * ones(bestrdiv2,1);
         bestbetas = zeros(bestrdiv2,p);
         bestyhat=zeros(T,bestrdiv2);
         bestsubset = zeros(bestrdiv2,pini+lshiftYN*2);
-        
+
     else
-        
+
         bestbetas = zeros(bestr,p);
         bestyhat=zeros(T,bestr);
         bestsubset = zeros(bestr,pini+lshiftYN*2);
         bestnumscale2 = Inf * ones(bestr,1);
         bestrLSH=bestr;
     end
-    
+
     if lshiftYN==1
-        
+
         % Xlshift = explanatory variable associated with
         % level shift Xlshift is 0 up to lsh-1 and 1 from
         % lsh to T
         Xlshift= [zeros(lsh-1,1);ones(T-lsh+1,1)];
-        
-        [Cini,nselected] = subsets(nsamp,T-1,pini+1,ncombLSH,msg);
-        
+
+        [Cini,nselected] = subsets(nsamp,T-1-nummissing,pini+1,ncombLSH,msg);
+
         C=[lsh*ones(nselected,1) zeros(nselected,pini+1)];
-        
-        
+
+
         % Make sure that observation lsh is always included in the subset
         % and that the subset contains at least one unit smaller than lsh
         for r=1:nselected
             Cr=Cini(r,:);
+            if nummissing>0
+                Cr=ynotmissing(Cr);
+            end
+
             % Observations greater or equal than lsh will be increased by one
             boo=Cr>=lsh;
             Cr(boo)=Cr(boo)+1;
@@ -1640,30 +1664,37 @@ for ilsh=1:lLSH
             end
             C(r,2:end)=Cr;
         end
-        
+
     else
         % If there is no level shift component
-        [Cini,nselected] = subsets(nsamp,T,pini,ncomb,msg);
+        [Cini,nselected] = subsets(nsamp,T-nummissing,pini,ncomb,msg);
+        if nummissing>0
+            % Extract subsets which are not associated with missing values
+            % of y
+            for i=1:nselected
+                Cini(i,:)=ynotmissing(Cini(i,:));
+            end
+        end
         C=Cini;
     end
     % Store indexes of extracted subsets if nargout is greater than 1
     if nargout>1
         Ccell{ilsh}=Cini;
     end
-    
+
     % yhatall= matrix which will contain fitted values for each extracted
     % subset
     % yhatall=zeros(T,nselected);
-    
+
     % WEIi = matrix which will contain indication of the units forming best
     % h subset. Each column refers to a subset
     WEIi=zeros(T,nselected);
-    
+
     % ij is a scalar used to ensure that the best first bestr solutions are
     % stored in order to be brought to full convergence
     % subsets are stored
     ij=1;
-    
+
     % Loop through all nselected subsamples
     for i=1:nselected
         % Initialize b0 as vector of zeroes for each subset
@@ -1685,14 +1716,14 @@ for ilsh=1:lLSH
         % element of vector b0) is a real number which identifies the
         % magnitude of the upward (downward) level shift (Xlshift)
         beta0=zeros(p,1);
-        
+
         % extract a subset of size p
         index = C(i,:);
-        
+
         if lshiftYN==0
             Xlshift=[];
         end
-        
+
         Xfinal=[Xsel Xlshift];
         % Preliminary OLS estimates (including tentative level shift) based
         % just on the units forming subset
@@ -1704,7 +1735,7 @@ for ilsh=1:lLSH
             % trend and seasonal (without varying
             % amplitude) and explanatory variables
             beta0(1:pini)=betaini(1:pini);
-            
+
             if lshiftYN==1
                 % The last two components of beta0 are the associated with
                 % level shift. More precisely penultimate position is for the
@@ -1712,7 +1743,7 @@ for ilsh=1:lLSH
                 % which specifies the starting point of level shift
                 beta0(end-1:end)=[betaini(end) lsh];
             end
-            
+
             if varampl>0
                 if verLess2016b==1
                     [betaout]=ALSbsxfun(beta0);
@@ -1723,12 +1754,12 @@ for ilsh=1:lLSH
                 % dd=1;
             else
                 betaout=beta0;
-                
+
                 %disp(['lsh' num2str(lsh)])
                 %disp(beta0)
                 %disp('------')
             end
-            
+
             % Compute  fitted values (for all units). Therefore recall function
             % lik but this time computed using all observations
             bsb=seq;
@@ -1738,32 +1769,32 @@ for ilsh=1:lLSH
             % iterations (concentration steps)
             lik(betaout);
             beta=betaout;
-            
+
             % 1(a) ii. -  Now apply concentration steps
             tmp = IRWLSreg(yin,beta,refsteps,reftol,h);
-            
+
             % Store weights
             WEIi(:,i)=tmp.weights;
-            
+
             % Store fitted values for each subset
             % yhatall(:,i)=tmp.yhat;
-            
+
             betarw = tmp.betarw;
             numscale2rw = tmp.numscale2rw;
-            
+
             % 1(c) Consider only the 10 subsets that yield the lowest objective
             % function so far.
             if ij > bestrLSH
-                
+
                 if numscale2rw < sworst
-                    
+
                     % Store numscale2rw, betarw and indexes of the units
                     % forming the best subset for the current iteration
-                    
+
                     % Find position of the maximum value of previously
                     % stored best numerator of squared scaled
                     [~,ind] = max(bestnumscale2);
-                    
+
                     bestnumscale2(ind) = numscale2rw;
                     bestbetas(ind,:)   = betarw';
                     bestsubset(ind,:)  = index;
@@ -1772,7 +1803,7 @@ for ilsh=1:lLSH
                     sworst             = max(bestnumscale2);
                 end
             else
-                
+
                 bestnumscale2(ij)  = numscale2rw;
                 bestbetas(ij,:) = betarw';
                 bestsubset(ij,:)= index;
@@ -1784,25 +1815,25 @@ for ilsh=1:lLSH
             end
         end
     end
-    
+
     if brob(1)==-99
         error('FSDA:LTSts:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
     else
     end
-    
+
     % Store for each tentative level shift the number of times each unit
     % belonged to the best subset
     WEIisum(:,ilsh)=sum(WEIi,2);
-    
+
     % 1 (b)
     % With the 0 subsets that yield the lowest objective function so far.
     % Apply C-steps to these until full convergence.
-    
+
     % perform C-steps on best 'bestr' solutions, till convergence or for a
     % maximum of refstepsbestr steps using a convergence tolerance as
     % specified by scalar reftolbestr
-    
-    
+
+
     % If ilsh >1 it is necessary also to consider the 10 best solutions from
     % step j-1
     if ilsh==1
@@ -1814,26 +1845,26 @@ for ilsh=1:lLSH
         bestbetasall=[bestbetas; bestbetastoadd];
         bestsubsetall=[bestsubset; bestsubsettoadd];
     end
-    
+
     % numsuperbestscale2 = numerator of estimate of super best squared
     % scale
     numsuperbestscale2 = Inf;
-    
+
     % Just to have an idea about y and yhat for a particular lsh value
     % plot([y bestyhat(:,1)])
-    
-    
+
+
     for ii=1:bestr
         yhat=bestyhatall(:,ii);
         tmp = IRWLSreg(yin,bestbetasall(ii,:)',refstepsbestr,reftolbestr,h);
-        
+
         % Store information about the units forming best h subset among the
         % 10 best
         WEIibestrdiv2(:,ii)=tmp.weights;
-        
+
         allnumscale2(ii,1)=tmp.numscale2rw;
         % allscales(i,2)=tmp.betarw(end);
-        
+
         if tmp.numscale2rw < numsuperbestscale2
             % brob = superbestbeta
             brob = tmp.betarw;
@@ -1846,7 +1877,7 @@ for ilsh=1:lLSH
             weightsst=tmp.weights;
         end
     end
-    
+
     % Store the bestrdiv2 best values of target function
     [~,numscale2ssorind]=sort(allnumscale2);
     bestyhattoadd=bestyhatall(:,numscale2ssorind(1:bestrdiv2));
@@ -1856,30 +1887,30 @@ for ilsh=1:lLSH
     % unit. Please note that betas are stored in rows therefore we have
     % to change the last column
     bestbetastoadd(:,end)=bestbetastoadd(:,end)+1;
-    
+
     bestsubsettoadd=bestsubsetall(numscale2ssorind(1:bestrdiv2),:);
-    
+
     numscale2LSH(ilsh,2:3)=[numsuperbestscale2 ibest];
     yhatrobLSH(:,ilsh)=yhatrob;
     brobLSH(:,ilsh)=brob;
-    
+
     % plot(seq,[y yhatrob])
     % title(['Level shift in step t=' num2str(LSH(ilsh))])
     ALLnumscale2(:,ilsh)=allnumscale2;
-    
+
     scaledres = (yin-yhatrob)/sqrt(numsuperbestscale2/h);
     RES(:,ilsh) = scaledres;
-    
-    
+
+
     weightsst = (weightsst | abs(scaledres)<2.58*factor);
     % disp(sum(weightsst))
     Weights(:,ilsh) = weightsst;
-    
+
     % Store the indexes among the bestr best, forming the bestrdiv2 best
     % estimates of the target function (target function = numerator of
     % squared scale)
     NumScale2ind(:,ilsh)=numscale2ssorind(1:nbestindexes);
-    
+
     WEIibest10sum(:,ilsh)=sum(WEIibestrdiv2,2);
     if lshiftYN==1 && msg ==true
         fprintf('Level shift for t=%.0f\n',lsh);
@@ -1912,26 +1943,26 @@ if  lshiftYN==1
     % Compute the residuals locally just changing the position of the level
     % shift
     bstar=brobbest;
-    
+
     lshiftlocref=options.lshiftlocref;
     if isfield(lshiftlocref,'wlength')
         k=lshiftlocref.wlength;
     else
         k=15;
     end
-    
+
     if isfield(lshiftlocref,'typeres')
         typeres=lshiftlocref.typeres;
     else
         typeres=1;
     end
-    
+
     if isfield(lshiftlocref,'huberc')
         huberc=lshiftlocref.huberc;
     else
         huberc=2;
     end
-    
+
     tloc=bstar(end)-k:bstar(end)+k;
     % Reduce width of tloc dinamically
     LSHmin=min(LSH);
@@ -1944,25 +1975,31 @@ if  lshiftYN==1
         k=k-1;
         tloc=bstar(end)-k:bstar(end)+k;
     end
-    
-    
+
+
+
     bsb=tloc(:);
+
+    if areMissing == true
+        bsb=intersect(bsb,ynotmissing);
+    end
+
     Likloc=[tloc' zeros(length(tloc),3)];
     ij=0;
-    
+
     for j=tloc(1):tloc(end)
         ij=ij+1;
         btmp=bstar;
         btmp(end)=j;
-        
+
         Xlshift= [zeros(j-1,1);ones(T-j+1,1)];
-        
+
         lik(btmp);
-        
+
         resbsb=(yin(bsb)-yhat)/sh0;
         Likloc(ij,2)=sum((HUrho(resbsb,huberc)).^2);
         Likloc(ij,3)=sum((yin(bsb)-yhat).^2);
-        
+
     end
     % Use Huberized residual sum of squares to find minimum
     [~,locmin]=min(Likloc(:,typeres+1));
@@ -2023,7 +2060,7 @@ if abs(s0) < 1e-7
             end
         end
     end
-    
+
     %weights = abs(residuals)<=1e-7;
     % stdres = residuals/s0;
 else
@@ -2042,14 +2079,14 @@ if SmallSampleCor==1
     else
         Ttouse=T;
     end
-    
+
     if bdp==-99
         bdp=1-options.h/T;
     end
     thresh=RobRegrSize(Ttouse,plinear,robest,rhofunc,bdp,eff,sizesim,Tallis);
     extracoeff=sqrt(thresh/chi2inv(0.99,1));
     weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
-    
+
 elseif  SmallSampleCor==2
     weights=GYfilt(stdres,'iterating',false,'alpha',0.99,'centering',true,'niter',10);
 elseif  SmallSampleCor==3
@@ -2096,21 +2133,21 @@ if varampl==0 && lshiftYN==0 % In this case the model is linear
     betaout = Xsel(bsb,:) \ yin(bsb);
     % update fitted values
     yhat = Xsel * betaout;
-    
+
     % find fitted values using all observations
     yhat =  Xsel * betaout;
     s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
     invXX=inv(Xsel'*Xsel);
     covB=s2*invXX; %#ok<MINV>
     Xlin=Xsel;
-    
+
 elseif   varampl==0 && lshiftYN==1
     % In this case there is just level shift however we do not redo
     % the non linear estimation but a simple LS
-    
+
     Xseldum=[Xsel Xlshift];
     betaout = Xseldum(bsb,:) \ yin(bsb);
-    
+
     % find fitted values using all observations
     yhat =  Xseldum * betaout;
     s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
@@ -2125,14 +2162,14 @@ else % model is non linear because there is time varying amplitude in seasonal c
     end
     Seqf=Seq(bsb,:);
     yf=yin(bsb);
-    
+
     % Find new estimate of scale using only observations which have
     % weight equal to 1.
     weights=false(T,1);
     weights(bsb)=true;
-    
+
     if coder.target('MATLAB')
-        
+
         if lshiftYN==1
             Xlshiftf=Xlshift(bsb);
             [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
@@ -2142,7 +2179,7 @@ else % model is non linear because there is time varying amplitude in seasonal c
             % [betaout,R,J,covB,MSE,ErrorModelInfo]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
             % Note that MSE*inv(J'*J) = covB
         end
-        
+
         % yfitFS = likyhat(betaout,Xtrendf);
         % nans=false(length(yfitFS),1);
         % sqweights=ones(length(yfitFS),1);
@@ -2166,14 +2203,14 @@ else % model is non linear because there is time varying amplitude in seasonal c
         MSE=1;
         %         MSE=(residuals'*residuals)/length(betaout);
         %         covB=MSE*inv(XlinCHK'*XlinCHK)*MSE;
-        
+
     end
     invXX=covB/MSE;
-    
+
     % Now compute again vector yhat using final vector betaout
     bsb=seq;
     lik(betaout);
-    
+
 end
 
 % Store beta standard error, t stat and p values
@@ -2191,7 +2228,7 @@ residuals=yin-yhat;
 s2full=residuals(bsbModSel)'*residuals(bsbModSel);
 
 % s0 =sqrt(MSE)
-s0=sqrt(sum(weights.*residuals.^2)/(sum(weights)-1));
+s0=sqrt(sum(weights.*residuals.^2,'omitnan')/(sum(weights)-1));
 % Compute new standardized residuals.
 
 % Apply consistency factor to reweighted estimate of sigma
@@ -2201,7 +2238,7 @@ if hrew<T
     if hrew<T/2
         hrew=T/2;
     end
-    
+
     % factor=consistencyfactor(hrew,n,1);
     a=norminv(0.5*(1+hrew/T));
     %factor=1/sqrt(1-(2*a.*normpdf(a))./(2*normcdf(a)-1));
@@ -2285,7 +2322,7 @@ if msg==true
         disp('------------------------------')
         % disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
         fprintf('Warning: Number of subsets without full rank equal to %.1f%%\n',percexcl);
-        
+
     end
 end
 
@@ -2413,19 +2450,19 @@ end
 
 if coder.target('MATLAB')
     plots=options.plots;        % Plot of residuals equal to 1
-    
+
     % plots = 1 generates a figure with two panels: one with the time series
     % and another with the residuals against index number; plots =2 produces
     % also a number of other informative plots; else no plot is produced.
     if plots>=1
-        
+
         % some general plot settings
         vlt15 = verLessThan('matlab', '7.15');
         clr = 'bkrgmcy';
         syb = {'-','--','-.',':','-','--','-.'};
         FontSize    = 14;
         SizeAxesNum = 14;
-        
+
         % slightly increase the range of the time series axis values
         mine = min(yin(:));
         maxe = max(yin(:));
@@ -2443,7 +2480,7 @@ if coder.target('MATLAB')
         plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
         hold('on');
         plot(yhat,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
-        
+
         set(htmp,'Tag','LTSts:ts');
         %xlabel('Time','FontSize',FontSize);
         ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
@@ -2456,7 +2493,7 @@ if coder.target('MATLAB')
         xticklab = get(htmp,'XTickLabel');
         set(htmp,'XTickMode','manual');
         drawnow;
-        
+
         % mark outliers with their severity
         if ~isempty(residuals)
             seq = 1:T;
@@ -2469,14 +2506,14 @@ if coder.target('MATLAB')
                 plot(seq(out.outliers(i)),yin(out.outliers(i),1),'x','LineWidth',sizeout(i),'Color','r', 'MarkerFaceColor','k');
             end
         end
-        
+
         % plot the vertical line of the level shift position and the associated
         % label on the X axis
         if isfield(out,'posLS') && ~isempty(out.posLS)
             line(out.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
             text(out.posLS , yaxlim(1) , num2str(out.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
         end
-        
+
         % Index plot of robust residuals
         h2=subplot(2,1,2);
         laby='Robust lts residuals';
@@ -2492,9 +2529,9 @@ if coder.target('MATLAB')
         end
         set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
     end
-    
+
     if plots==2 && lshiftYN==1
-        
+
         % Values of the target function for each tentative level shift position
         figure;
         boxplot(ALLnumscale2(:,1:end),LSH(1:end)','labelorientation','inline');
@@ -2514,7 +2551,7 @@ if coder.target('MATLAB')
         xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
         title('Target function values','interpreter','none','FontSize',FontSize+2);
         ylim([min(ALLnumscale2(:)), prctile(ALLnumscale2(:),90)]);
-        
+
         % Level Shift local refinement
         figure;
         sb1 = subplot(2,1,1);
@@ -2528,12 +2565,12 @@ if coder.target('MATLAB')
         ylabel('Huber rho residuals','FontSize',FontSize,'interpreter','none');
         set(gca,'Fontsize',SizeAxesNum);
         title(sb1,'Level Shift local refinement','interpreter','none','FontSize',FontSize+2);
-        
+
         %     plot(LSH,NumScale2ind','o')
         %     set(gca,'FontSize',1)
         %     ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'])
         %     xlabel('Position of level shift')
-        
+
         % Best solutions
         figure;
         one=ones(lLSH,1);
@@ -2548,7 +2585,7 @@ if coder.target('MATLAB')
         hold('on');
         plot([LSH(1) LSH(end)],bestrdiv2*ones(2,1)+0.5);
         title('Best solutions','interpreter','none','FontSize',FontSize+2);
-        
+
         % units forming best h-subset
         figure;
         plot(LSH,Weimod','ko','MarkerSize',4);
@@ -2556,7 +2593,7 @@ if coder.target('MATLAB')
         ylabel('Index number','FontSize',FontSize,'interpreter','none');
         title('o = units forming best h-subset','interpreter','none','FontSize',FontSize+2);
         set(gca,'Ytick',10:10:T,'Fontsize',SizeAxesNum);
-        
+
         % Frequency of inclusion inside subset
         figure;
         subplot(2,1,1);
@@ -2565,9 +2602,9 @@ if coder.target('MATLAB')
         %ylabel('Frequency','FontSize',FontSize);
         %xlabel('Index number','FontSize',FontSize);
         set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
-        
+
         subplot(2,1,2);
-        
+
         bar(WEIibest10sum(:,locmin)/size(bestyhatall,2));
         title(['among the ' num2str(size(bestyhatall,2)) ' best subsets'],'interpreter','none','FontSize',FontSize+2);
         %ylabel('Frequency','FontSize',FontSize);
@@ -2584,31 +2621,31 @@ pval=[];
 if seasonal>0 && seasonal<6
     % selWithoutLastHarmonic = indexes of the linear part of the model after excluding the last harmonic
     selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:size(Xsel,2)];
-    
+
     if varampl==0 && lshiftYN==0 % In this case the model is linear
         % Function lik constructs fitted values and residual sum of
         % squares
         betaout = Xsel(bsb,selWithoutLastHarmonic) \ yin(bsb);
         % update fitted values
         yhat = Xsel(:,selWithoutLastHarmonic) * betaout;
-        
+
         s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
-        
+
     elseif   varampl==0 && lshiftYN==1
         % In this case there is just level shift however we do not redo
         % the non linear estimation but a simple LS
         Xselreduced= Xsel(:,selWithoutLastHarmonic);
         Xseldum=[Xselreduced  Xlshift];
         betaout = Xseldum(bsb,:) \ yin(bsb);
-        
+
         % find fitted values using all observations
         yhat =  Xseldum * betaout;
-        
+
         s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
-        
+
     else % model is non linear because there is time varying amplitude in seasonal component
         Xtrendf=Xtrend(bsb,:);
-        
+
         % Remove the last harmonic from Xseaso
         seasonal=seasonal-1;
         if seasonal==0
@@ -2619,17 +2656,17 @@ if seasonal>0 && seasonal<6
             Xseaso=Xseaso(:,1:end-2);
             Xseasof=Xseaso(bsb,:);
         end
-        
+
         if ~isempty(X)
             Xf=X(bsb,:);
         end
         Seqf=Seq(bsb,:);
         yf=yin(bsb);
-        
+
         lasind=length(brobfinal);
-        
+
         selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
-        
+
         % If there is no seasonality it is also necessary to
         % remove the non linear part of the seasonal component
         % that is, it is necessary to select the elements of vector selWithoutLastHarmonic
@@ -2638,7 +2675,7 @@ if seasonal>0 && seasonal<6
             selWithoutLastHarmonic=setdiff(selWithoutLastHarmonic,posvarampl);
             varampl=0;
         end
-        
+
         if coder.target('MATLAB')
             if lshiftYN==1
                 Xlshiftf=Xlshift(bsb);
@@ -2654,8 +2691,8 @@ if seasonal>0 && seasonal<6
                 betaout=brobfinal(selWithoutLastHarmonic);
             end
         end
-        
-        
+
+
         lik(betaout);
         % Computation of residuals.
         residuals=yin(bsb)-yhat;
@@ -2696,7 +2733,7 @@ if coder.target('MATLAB')
 end
 
 % check about the y global variable
-if ~isequal(yin,yin)
+if ~isequaln(y,yin)
     error('FSDA:LTSts:yDiscrepancy','y should not change in this code. Please check if the global variable has been misused.');
 end
 
@@ -2713,7 +2750,7 @@ end
         % exitflag = flag which informs about convergence. exitflag =0
         % implies normal convergence, else no convergence has been obtained
         exitflag=0;
-        
+
         % Define all the relevant matrices before the loop
         Seqbsb=Seq(bsb,1);
         Xseasobsb=Xseaso(bsb,:);
@@ -2721,7 +2758,7 @@ end
         yinbsb=yin(bsb);
         indnlseaso=(trend+2+nexpl):(trend+2+nexpl+varampl-1);
         Seqbsbvarampl=Seq(bsb,2:varampl+1);
-        
+
         if isemptyX
             if lshiftYN==1
                 Xlshiftbsb=Xlshift(bsb);
@@ -2747,25 +2784,25 @@ end
                 indnlseasoc=1:trend+1+nexpl;
             end
         end
-        
+
         while ( (betadiff > reftolALS) && (iter < refstepsALS) )
             iter = iter + 1;
-            
+
             % b2378 estimate of linear part of seasonal component
             b2378=newbeta(indlinsc);
             % at= yhatseaso = fitted values for linear part of seasonal
             % component
             at=Xseasobsb*b2378;
-            
+
             % OLS to estimate coefficients of trend + expl variables + non lin coeff of
             % seasonal + coefficient of fixed level shift
             % trlshift is the matrix of explanatory variables
             XtrendXbsbXseasonXlshift(:,indnlseaso)=at.*Seqbsbvarampl;
-            
+
             % b0145 = coefficients of intercept trend + expl var + non
             % linear part of seasonal component + level shift
             b0145=XtrendXbsbXseasonXlshift\(yinbsb-at) ;
-            
+
             % Now find new coefficients of linear part of seasonal
             % component in the regression of y-trend-expl-lsihft versus
             % vector which contains non linear part of seasonal component
@@ -2773,17 +2810,17 @@ end
             % seasonal component)
             yhatnlseaso = Seqbsb + Seqbsbvarampl * b0145(indnlseaso);
             b2378 = (yhatnlseaso.*Xseasobsb) \ (yinbsb - XtrendbsbXbsbXlshiftbsb * b0145(indnlseasoc));
-            
+
             % Store new value of beta
             newbeta(indlinsc)=b2378;
             newbeta(otherind)=b0145;
-            
+
             % betadiff is linked to the tolerance (specified in scalar
             % reftol)
             betadiff = norm(oldbeta - newbeta,1) / norm(newbeta,1);
-            
+
             oldbeta=newbeta;
-            
+
             % exit from the loop if the new beta has singular values. In
             % such a case, any intermediate estimate is not reliable and we
             % can just keep the initialbeta and initial scale.
@@ -2803,16 +2840,16 @@ end
         % exitflag = flag which informs about convergence. exitflag =0
         % implies normal convergence, else no convergence has been obtained
         exitflag=0;
-        
+
         while ( (betadiff > reftolALS) && (iter < refstepsALS) )
             iter = iter + 1;
-            
+
             % b2378 estimate of linear part of seasonal component
             b2378=newbeta(indlinsc);
             % at= yhatseaso = fitted values for linear part of seasonal
             % component
             at=Xseaso(bsb,:)*b2378;
-            
+
             % OLS to estimate coefficients of trend + expl variables + non lin coeff of
             % seasonal + coefficient of fixed level shift
             % trlshift is the matrix of explanatory variables
@@ -2832,7 +2869,7 @@ end
             % b0145 = coefficients of intercept trend + expl var + non
             % linear part of seasonal component + level shift
             b0145=tr_expl_nls_lshift\(yin(bsb)-at) ;
-            
+
             % Now find new coefficients of linear part of seasonal
             % component in the regression of y-trend-expl-lsihft versus
             % vector which contains non linear part of seasonal component
@@ -2856,16 +2893,16 @@ end
                         \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-X(bsb,:)*b0145((trend+2):(trend+1+nexpl)));
                 end
             end
-            
+
             newbeta(indlinsc)=b2378;
-            
+
             newbeta(otherind)=b0145;
-            
+
             % betadiff is linked to the tolerance (specified in reftol)
             betadiff = norm(oldbeta - newbeta,1) / norm(newbeta,1);
-            
+
             oldbeta=newbeta;
-            
+
             % exit from the loop if the new beta has singular values. In
             % such a case, any intermediate estimate is not reliable and we
             % can just keep the initialbeta and initial scale.
@@ -2882,10 +2919,10 @@ end
 % global variable bsb. Note that given that yhat is global it is possible
 % to call this function to compute fitted values for the units specified in bsb
     function obj=lik(beta0)
-        
+
         yhattrend=Xtrend(bsb,:)*beta0(1:trend+1);
         npar=trend+1;
-        
+
         if seasonal >0
             if seasonal<s/2
                 yhatseaso=Xseaso(bsb,:)*beta0(npar+1:npar+seasonal*2);
@@ -2894,14 +2931,14 @@ end
                 yhatseaso=Xseaso(bsb,:)*beta0(npar+1:npar+seasonal*2-1);
                 npar=npar+seasonal*2-1;
             end
-            
+
             if varampl>0
                 Xtre=1+Seq(bsb,2:varampl+1)*beta0((npar+1+nexpl):(npar+varampl+nexpl));
                 yhatseaso=Xtre.*yhatseaso;
                 npar=npar+varampl;
             end
         end
-        
+
         if isemptyX
             yhatX=0;
         else
@@ -2911,13 +2948,13 @@ end
             yhatX=X(bsb,:)*beta0(npar+1-varampl:npar+nexpl-varampl);
             npar=npar+nexpl;
         end
-        
+
         if lshiftYN==1
             %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
             %  is a real number and \beta_(npar+2) is a integer which
             %  denotes the period in which level shift shows up
             yhatlshift=beta0(npar+1)*Xlshift(bsb);
-            
+
             % Fitted values from trend (yhattrend), (time varying) seasonal
             % (yhatseaso), explanatory variables (yhatX) and level shift
             % component (yhatlshift)
@@ -2925,7 +2962,7 @@ end
         else
             yhat=yhattrend+yhatseaso+yhatX;
         end
-        
+
         %         % Additional regression due to the presence of the autoregressive
         %         % component
         %         if ARp>0
@@ -2938,9 +2975,9 @@ end
         %             blagged=Yhatlagged\yinbsb(ARp+1:end);
         %             yhat(ARp+1:end)=Yhatlagged*blagged;
         %         end
-        
+
         % obj = sum of squares of residuals/2 = negative log likelihood
-        obj=sum((yin(bsb)-yhat).^2)/2;
+        obj=sum((yin(bsb)-yhat).^2,'omitnan')/2;
         % format long
         % disp(obj)
     end
@@ -2952,11 +2989,11 @@ end
 % routine nlinfit is invoked. Please, note the difference beween likyhat
 % and lik
     function objyhat=likyhat(beta0,Xtrendf)
-        
+
         yhattrend=Xtrendf*beta0(1:trend+1);
-        
+
         npar=trend+1;
-        
+
         if seasonal >0
             if seasonal<s/2
                 yhatseaso=Xseasof*beta0(npar+1:npar+seasonal*2);
@@ -2965,14 +3002,14 @@ end
                 yhatseaso=Xseasof*beta0(npar+1:npar+seasonal*2-1);
                 npar=npar+seasonal*2-1;
             end
-            
+
             if varampl>0
                 Xtre=1+Seqf(:,2:varampl+1)*beta0((npar+1+nexpl):(npar+varampl+nexpl));
                 yhatseaso=Xtre.*yhatseaso;
                 npar=npar+varampl;
             end
         end
-        
+
         if isemptyX
             yhatX=0;
         else
@@ -2982,12 +3019,12 @@ end
             yhatX=Xf(:,:)*beta0(npar+1-varampl:npar+nexpl-varampl);
             npar=npar+nexpl;
         end
-        
+
         if lshiftYN==1
             %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
             %  is a real number and \beta_(npar+2) is a integer which
             %  denotes the period in which level shift shows up
-            
+
             yhatlshift=beta0(npar+1)*Xlshiftf;
             % objhat = fitted values from trend (yhattrend), (time varying) seasonal
             % (yhatseaso), explanatory variables (yhatX) and level shift
@@ -2999,7 +3036,7 @@ end
             % component (yhatlshift)
             objyhat=yhattrend+yhatseaso+yhatX;
         end
-        
+
     end
 
 % -------------------------------------------------------------------
@@ -3040,25 +3077,25 @@ end
         %               from final iteration 0 for the other units.
         %   exitflag   : scalar which informs about convergence. exitflag =
         %               0 implies normal convergence
-        
+
         % For performance reasons, the output structure is created only at
         % the end
         % outIRWLS = struct('betarw',[],'yhat',[],'weights',[],'exiflag',[],'numscale2rw',[]);
-        
+
         % Residuals for the initialbeta
         res = y - yhat;
-        
+
         % Squared residuals for all the observations
         r2 = res.^2;
-        
+
         % Ordering of squared residuals
         [r2s , i_r2s] = sort(r2);
-        
+
         % ininumscale2 = initial value for trimmed sum of squares of
         % residuals
         ininumscale2  = sum(r2s(1:h));
-        
-        
+
+
         % Initialize parameters for the refining steps loop
         exitfl      =0;   newbeta=0; numscale2=0; % MATLAC C coder initialization
         iter        = 0;
@@ -3068,16 +3105,16 @@ end
         else
             beta        = initialbeta;
         end
-        
-        
+
+
         while ( (betadiff > reftol) && (iter < refsteps) )
             iter = iter + 1;
-            
+
             if constr==1
                 % Constrained sum of the smallest squared residuals
                 % Constrained in the sense that initialbeta(end) is always
                 % forced to be in the h subset
-                
+
                 % Check that unit initialbeta(end) belongs to subset in each
                 % concentration step
                 if sum(i_r2s(1:h)==initialbeta(end))==0
@@ -3093,7 +3130,7 @@ end
                 % belong to subset in each concentration step
                 booLS=sum(i_r2s(1:h)==initialbeta(end));
                 booLSprev=sum(i_r2s(1:h)==initialbeta(end)-1);
-                
+
                 if booLS ==0 && booLSprev ==0
                     bsb=[i_r2s(1:h-2); initialbeta(end)-1; initialbeta(end) ];
                 elseif booLS ==0
@@ -3106,7 +3143,7 @@ end
             else
                 bsb=i_r2s(1:h);
             end
-            
+
             if varampl==0 && lshiftYN==0 % In this case the model is linear
                 % Function lik constructs fitted values and residual sum of
                 % squares
@@ -3114,19 +3151,19 @@ end
                 % update residuals
                 yhat = Xsel * newbeta;
                 exitfl=0;
-                
+
             elseif   lshiftYN==1
-                
+
                 if varampl>0
                     % No minimization is used but just ALS
-                    
+
                     if verLess2016b==1
                         [newbeta,exitfl]=ALSbsxfun(initialbeta);
                     else
                         [newbeta,exitfl]=ALS(initialbeta);
                     end
-                    
-                    
+
+
                     % Construct vector of fitted values for all the
                     % observations
                     bsb=seq;
@@ -3147,31 +3184,31 @@ end
                     newbeta=[newb; initialbeta(end)];
                     exitfl=0;
                 end
-                
-                
+
+
             else % model is non linear because there is just the time varying amplitude in seasonal component
-                
+
                 % Use Alternative least squares to update beta (just using
                 % the units forming subset)
-                
+
                 if verLess2016b==1
                     [newbeta,exitfl]=ALSbsxfun(beta);
                 else
                     [newbeta,exitfl]=ALS(beta);
                 end
-                
-                
+
+
                 % Call lik  with bsb=seq in order to create the vector
                 % of fitted values (yhat) using all the observations
                 bsb=seq;
                 lik(newbeta);
             end
             % disp([beta newbeta])
-            
+
             % betadiff is linked to the tolerance (specified in scalar
             % reftol)
             betadiff = norm(beta - newbeta,1) / norm(beta,1);
-            
+
             % exit from the loop if new beta contains nan In
             % such a case, any intermediate estimate is not reliable and we
             % can just keep the initialbeta and initial scale.
@@ -3180,7 +3217,7 @@ end
                 numscale2 = ininumscale2;
                 break
             end
-            
+
             % update residuals
             res = y - yhat;
             r2= res.^2;
@@ -3188,18 +3225,18 @@ end
             [~ , i_r2s] = sort(r2);
             % update beta
             beta = newbeta;
-            
+
         end
-        
+
         % newbeta = the final estimate of beta to be stored in outIRWLS.betarw
         %outIRWLS.betarw = newbeta;
-        
+
         % yhat = the final fitted values for all the observations using
         % final estimate of beta, to be stored in outIRWLS.yhat
         %outIRWLS.yhat=yhat;
-        
+
         if exitfl==0
-            
+
             if constr==1
                 if sum(i_r2s(1:h)==initialbeta(end))==0
                     bsb=[i_r2s(1:h-1); initialbeta(end)];
@@ -3210,12 +3247,12 @@ end
                     % residuals
                 end
             elseif constr ==2
-                
+
                 % Force both initialbeta(end) and initialbeta(end)-1 to
                 % belong to the subset
                 booLS=sum(i_r2s(1:h)==initialbeta(end));
                 booLSprev=sum(i_r2s(1:h)==initialbeta(end)-1);
-                
+
                 if booLS ==0 && booLSprev ==0
                     bsb=[i_r2s(1:h-2); initialbeta(end)-1; initialbeta(end) ];
                 elseif booLS ==0
@@ -3229,7 +3266,7 @@ end
                 bsb=i_r2s(1:h);
             end
             numscale2 = sum(r2(bsb));
-            
+
             % numscale2 = the final estimate of trimmed sum of squares of
             % residuals, to be stored in outIRWLS.numscale2rw
             %outIRWLS.numscale2rw = numscale2;
@@ -3243,13 +3280,13 @@ end
         weights=zerT1;
         weights(bsb)=true;
         %outIRWLS.weights=weights;
-        
+
         % exitfl = the exit flag to be stored in outIRWLS.exiflag
         %outIRWLS.exiflag=exitfl;
-        
+
         % Store all output variables
         outIRWLS = struct('betarw',newbeta,'yhat',yhat,'weights',weights,'exiflag',exitfl,'numscale2rw',numscale2);
-        
+
     end
 
 if nargout>1
