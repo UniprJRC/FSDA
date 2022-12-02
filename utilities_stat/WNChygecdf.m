@@ -66,6 +66,7 @@ function [Wcdf] = WNChygecdf(X,N,K,M,W)
     disp(wcdf);
 %}
 
+%% Beginning of code
 
 Wcdf = WNChygepdf(0,N,K,M,W);
 for jn = 1:X
@@ -74,5 +75,5 @@ end
 
 end
 
-
+%FScategory:UTISTAT
 
