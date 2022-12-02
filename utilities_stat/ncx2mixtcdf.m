@@ -857,4 +857,4 @@ varargout{2}=ifault;
     end
 end
 
-%FScategory:UTISTAT
+%FScategory:ProbDist

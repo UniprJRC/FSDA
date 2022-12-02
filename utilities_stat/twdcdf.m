@@ -156,4 +156,4 @@ for j=1:length(x)
 end
 
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist
