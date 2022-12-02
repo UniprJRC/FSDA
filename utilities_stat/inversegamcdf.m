@@ -148,4 +148,4 @@ end
 % inversegamcdf(10,2,3)
 % pinvgamma(10, 2, scale = 3, log = FALSE)
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist
