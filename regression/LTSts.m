@@ -1886,9 +1886,6 @@ for ilsh=1:lLSH
     end
 end
 
-% save RES to output structure (these residuals can be used for example to
-% prouduce the double wedge plot, see function wedgeplot for more details)
-out.RES = RES;
 
 Weimod=double(Weights);
 for j=1:size(Weimod,2)
@@ -1897,8 +1894,6 @@ for j=1:size(Weimod,2)
     Weimod(~boo,j)=NaN;
 end
 
-% Store units forming best h subset
-out.Hsubset=Weimod;
 
 [~,minidx]=min(numscale2LSH(:,2));
 brobbest=brobLSH(:,minidx);
@@ -2188,16 +2183,6 @@ dfe=T-length(betaout);
 pval=2*(tcdf(-abs(tout), dfe));
 B=[betaout sebetaout tout pval];
 
-out.B=B;
-
-if lshiftYN==1
-    % Store position of level shift
-    out.posLS=posLS;
-else
-    if ~coder.target('MATLAB')
-        out.posLS=[];
-    end
-end
 
 % Computation of reweighted residuals.
 residuals=yin-yhat;
@@ -2242,139 +2227,17 @@ end
 % that: sqrt(chi2inv(0.975,1)) = tinv(0.9875,\infinity) =
 % norminv(0.9875)
 
-out.yhat=yhat;
-
-
-%% Store quantities in the out structure
-
 outliers     = abs(stdres)>norminv((conflev+1)/2);
-out.outliers = seq(outliers);
-
-%decomment the following two lines to get outlier pvalues
 p_all = normcdf(-abs(stdres));
-out.outliersPval = p_all(outliers);
 
-% Store robust estimate of s
-out.scale = s0;
-
-% Store the 20 best estimates of the scale for each tentative level shift
-% which is considered
-out.numscale2 = ALLnumscale2;
-
-% Store indices forming the bestrdiv2 best estimates of the target function
-out.BestIndexes = NumScale2ind;
-
-% Store scaled residuals
-out.residuals=stdres;
-
-% Store units forming best initial subset of p-1 observations
-out.bs=bs;
-
-% Store list of units declared as outliers
-% out.outliers=seq(weights==0);
-
-% Store confidence level which is used to draw the horizontal lines in the
-% plot
-out.conflev=options.conflev;
-
-% Store the number of observations that have determined the LTS (LMS)
-% estimator, i.e. the value of h.
-out.h=h;
-
-% Store vector of weights (values equal to 1 are associated with units
-% parteciapting to the fit)
-out.weights=weights;
-
-% Store number of singular subsets
-out.singsub=singsub;
-if msg==true
-    if singsub/nselected>0.1
-        percexcl=100*singsub/nselected;
-        disp('------------------------------')
-        % disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
-        fprintf('Warning: Number of subsets without full rank equal to %.1f%%\n',percexcl);
-        
-    end
-end
-% Store information about the class of the object
-
-out.class='LTSts';
-
-if lshiftYN==1
-    % Store local improvement of the likelihood
-    out.Likloc=Likloc;
-else
-    if ~coder.target('MATLAB')
-        out.Likloc=0;
-    end
-end
-
-% Store response
-out.y=yin;
-
-if options.yxsave == true
-    if options.intercept==true
-        % Store X (without the column of ones if there is an intercept)
-        out.X=Xlin(:,2:end);
-    else
-        out.X=Xlin;
-    end
-else
-    if ~coder.target('MATLAB')
-        out.X=[];
-    end
-end
-
-out.invXX=invXX;
 
 dispresults=options.dispresults;
-
-% b_trend = {'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
-% b_seaso = {'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; ...
-%     'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
-%     'b_cos5'; 'b_sin5'; 'b_cos6'};
-% b_AR =    {'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR6'};
-% b_X  =    {'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
-% b_varampl = {'b_varampl'; 'b_varamp2'; 'b_varamp3'};
-% b_lshift  = {'b_lshift' ; 't_lshift'};
-%
-% if ARp>0
-%      b_expl=[b_AR(1:ARp); b_X(1:nexpl-ARp)];
-% else
-%     b_expl=b_X;
-% end
-%
-% if seasonal>0
-%     if 2*seasonal==s
-%         lab=[b_trend(1:trend+1); b_seaso];
-%     else
-%         lab=[b_trend(1:trend+1); b_seaso(1:2*seasonal)];
-%     end
-% else
-%     lab=b_trend(1:trend+1);
-% end
-%
-% if nexpl>0
-%     lab=[lab;b_expl(1:nexpl)];
-% end
-% if varampl>0
-%     lab=[lab;b_varampl(1:varampl)];
-%     posvarampl=length(lab)-varampl+1:length(lab);
-% else
-%     posvarampl=[];
-% end
-% if lshiftYN==1
-%     lab=[lab; b_lshift(1)];
-% end
-
 
 b_trend = ['b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'];
 b_seaso =['b_cos1  '; 'b_sin1  '; 'b_cos2  '; 'b_sin2  '; ...
     'b_cos3  '; 'b_sin3  '; 'b_cos4  '; 'b_sin4  '; ...
     'b_cos5  '; 'b_sin5  '; 'b_cos6  '];
-% b_AR =    ['b_AutoR1'; 'b_AutoR2'; 'b_AutoR3'; 'b_AutoR4'; 'b_AutoR5'; 'b_AutoR6'];
 
-% b_AR=char(strcat('b_auto', num2str((1:99)')));
 b_AR1=[repmat('b_auto',99,1) num2str((1:99)')];
 if autoRegressive==true
     b_AR=b_AR1(ARp,:);
@@ -2385,16 +2248,6 @@ end
 b_X    =    ['b_explX1'; 'b_explX2'; 'b_explX3'; 'b_explX4'; 'b_explX5'; 'b_explX6'; 'b_explX7'; 'b_explX8'; 'b_explX9'];
 b_varampl = ['b_varaml'; 'b_varam2'; 'b_varam3'];
 b_lshift  = ['b_lshift' ; 't_lshift'];
-
-% Code generation does not support string arrays
-% b_trend = ["b_trend1"; "b_trend2"; "b_trend3"; "b_trend4"];
-% b_seaso = ["b_cos1"; "b_sin1"; "b_cos2"; "b_sin2"; ...
-%     "b_cos3"; "b_sin3"; "b_cos4"; "b_sin4"; ...
-%     "b_cos5"; "b_sin5"; "b_cos6"];
-% b_AR =    ["b_AR1"; "b_AR2"; "b_AR3"; "b_AR4"; "b_AR5"; "b_AR6"];
-% b_X  =    ["b_X1"; "b_X2"; "b_X3"; "b_X4"; "b_X5"; "b_X6"];
-% b_varampl = ["b_varampl"; "b_varamp2"; "b_varamp3"];
-% b_lshift  = ["b_lshift" ; "t_lshift"];
 
 if autoRegressive==true
     b_expl=[b_AR(1:lARp,:); b_X(1:nexpl-lARp,:)];
@@ -2426,26 +2279,135 @@ if lshiftYN==1
     lab=[lab; b_lshift(1,:)];
 end
 
-% if verLessThan ('matlab','8.2.0')
-% else
-% Store matrix B in table format (with labels for rows and columns)
-if coder.target('MATLAB')
-    out.Btable=array2table(B,'RowNames',string(lab)','VariableNames',{'Coeff','SE','t','pval'});
-else
-    out.Btable=array2table(B,'VariableNames',{'Coeff','SE','t','pval'});
+if msg==true
+    if singsub/nselected>0.1
+        percexcl=100*singsub/nselected;
+        disp('------------------------------')
+        % disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+        fprintf('Warning: Number of subsets without full rank equal to %.1f%%\n',percexcl);
+        
+    end
 end
 
-% end
+% Store matrix B in table format (with labels for rows and columns)
+if coder.target('MATLAB')
+    Btable=array2table(B,'RowNames',string(lab)','VariableNames',{'Coeff','SE','t','pval'});
+else
+    Btable=array2table(B,'VariableNames',{'Coeff','SE','t','pval'});
+end
+
 
 if dispresults
     if coder.target('MATLAB')
-        disp(out.Btable)
+        disp(Btable)
     else
     end
     if lshiftYN==1
         fprintf('Level shift position t=%.0f\n',posLS);
     end
 end
+
+%% Store quantities in the out structure
+
+% Store first the quantities whose index does not depend on the presence of missing
+% values
+
+out.B=B;
+out.Btable=Btable;
+
+
+out.invXX=invXX;
+
+% Store robust estimate of s
+out.scale = s0;
+
+% Store the 20 best estimates of the scale for each tentative level shift
+% which is considered
+out.numscale2 = ALLnumscale2;
+
+
+% Store confidence level which is used to draw the horizontal lines in the
+% plot
+out.conflev=options.conflev;
+
+% Store the number of observations that have determined the LTS (LMS)
+% estimator, i.e. the value of h.
+out.h=h;
+
+% Store number of singular subsets
+out.singsub=singsub;
+
+
+% Store information about the class of the object
+out.class='LTSts';
+
+if lshiftYN==1
+    % Store local improvement of the likelihood
+    out.Likloc=Likloc;
+else
+    if ~coder.target('MATLAB')
+        out.Likloc=0;
+    end
+end
+
+% The indexes of the quantities which follow depend on the presence of
+% missing values
+
+% save RES to output structure (these residuals can be used for example to
+% prouduce the double wedge plot, see function wedgeplot for more details)
+out.RES = RES;
+
+% Store units forming best h subset
+out.Hsubset=Weimod;
+
+if lshiftYN==1
+    % Store position of level shift
+    out.posLS=posLS;
+else
+    if ~coder.target('MATLAB')
+        out.posLS=[];
+    end
+end
+
+out.yhat=yhat;
+
+out.outliers = seq(outliers);
+
+%decomment the following two lines to get outlier pvalues
+out.outliersPval = p_all(outliers);
+
+
+% Store indices forming the bestrdiv2 best estimates of the target function
+out.BestIndexes = NumScale2ind;
+
+% Store scaled residuals
+out.residuals=stdres;
+
+% Store units forming best initial subset of p-1 observations
+out.bs=bs;
+
+% Store vector of weights (values equal to 1 are associated with units
+% parteciapting to the fit)
+out.weights=weights;
+
+
+% Store response
+out.y=yin;
+
+if options.yxsave == true
+    if options.intercept==true
+        % Store X (without the column of ones if there is an intercept)
+        out.X=Xlin(:,2:end);
+    else
+        out.X=Xlin;
+    end
+else
+    if ~coder.target('MATLAB')
+        out.X=[];
+    end
+end
+
+
 
 %% Create plots
 
