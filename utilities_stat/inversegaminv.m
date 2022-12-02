@@ -180,4 +180,4 @@ else
 end
 
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist

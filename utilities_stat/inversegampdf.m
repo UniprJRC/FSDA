@@ -191,4 +191,4 @@ y(b <= 0) = NaN;
 % dinvgamma(10, 2, scale = 3, log = FALSE)
 % inversegampdf(10,2,3)
 end
-%FScategory:UTISTAT
+%FScategory:ProbDist
