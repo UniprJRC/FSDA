@@ -1,5 +1,5 @@
 function Y=qqplotFS(res,varargin)
-%qqplot of studentized residuals with envelopes
+%qqplotFS creates qqplot of studentized residuals with envelopes
 %
 %<a href="matlab: docsearchFS('qqplotFS')">Link to the help function</a>
 %

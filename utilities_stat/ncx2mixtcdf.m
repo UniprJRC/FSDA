@@ -1,21 +1,21 @@
 function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
-%ncx2mixtcdf computs cumulative distribution function of a linear combination of non-central chi-square (+ sigma * N(0,1))
+%ncx2mixtcdf computes cumulative distribution function of a linear combination of non-central chi-square +N(0,s) 
 %
 %<a href="matlab: docsearchFS('ncx2mixtcdf')">Link to the help function</a>
 %
-%     given random variable $Q$ defined as
+%     Given random variable $Q$ defined as
 %
 %     \[  
-%     Q = \lambda_1 \chi^2_1 + \lambda_2 \chi_2 + ... + \lambda_k \chi^2_k +\sigma X_0
+%     Q = \lambda_1 \chi^2_1 + \lambda_2 \chi_2 + ... + \lambda_k \chi^2_k +\sigma Z
 %     \]
 %
 %     where $\chi^2_1, ..., \chi^2_k$ are $k$ non central chi squared random variables,
-%     with non centrality parameters $\delta_1, ..., \delta_k$ and degrees of
-%     freedom $df_1, ..., df_k$.
-%     and $X_0$ is a standard normal random variable, the purpose of this
-%     routine is to compute $F_Q(x | df, delta) = P(Q < x)$ , that is the
-%     cdf of $Q$ evaluated at $x$.
-%     --------------------------------
+%     with non centrality parameters $\delta=(\delta_1, ..., \delta_k)$ and degrees of
+%     freedom $df=(df_1, ..., df_k)$.
+%     and $Z$ is a standard normal random variable, the purpose of this
+%     routine is to compute $F_Q(x | df, delta) = P(Q < x| df, delta)$ , 
+%     that is the cdf of $Q$ evaluated at $x$.
+%
 %
 % Required input arguments:
 %

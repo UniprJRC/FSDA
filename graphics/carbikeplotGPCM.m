@@ -1,5 +1,5 @@
 function h  = carbikeplotGPCM(RelSol,varargin)
-%carbikeplot produces the carbike plot to find best relevant clustering solutions
+%carbikeplotGPCM produces the carbike plot to find best relevant clustering solutions
 %
 %<a href="matlab: docsearchFS('carbikeplotGPCM')">Link to the help function</a>
 %

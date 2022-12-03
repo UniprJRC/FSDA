@@ -1,5 +1,5 @@
 function add2boxplot(Y,g)
-%add2boxplot add labels to the boxplot figure
+%add2boxplot adds labels to the boxplot figure
 %
 %<a href="matlab: docsearchFS('add2boxplot')">Link to the help function</a>
 %
