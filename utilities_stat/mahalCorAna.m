@@ -1,5 +1,5 @@
 function d = mahalCorAna(Y,MU)
-%mahalFS computes Mahalanobis distances (in squared units) for each row of matrix Y 
+%mahalCorAna computes Mahalanobis distances (in squared units) for each row of matrix Y 
 %
 %   d = mahalCorAna(Y,MU,SIGMA) returns the Mahalanobis distance (in squared units) of
 %   each observation (point) in Y using centroid MU and covariance matrix
