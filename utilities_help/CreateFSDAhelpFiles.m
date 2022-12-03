@@ -154,6 +154,10 @@ cd(fileparts(which('docsearchFS.m')))
 [fileBiblio,Cits]=publishBibliography(FilesIncluded,OUT);
 
 % open outfile file in web browser
+FileName='addFSDA2path';
+FullPath=which(FileName);
+FSDAroot=fileparts(FullPath);
+
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'bibliography.html'];
 web(outputOFHtmlHelpFile,'-browser');
 

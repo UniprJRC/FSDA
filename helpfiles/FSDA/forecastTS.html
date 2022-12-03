@@ -408,7 +408,14 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                         model.ARp=[1 2] means a AR(2) process;</p> <p>
                         model.ARp=2 means just the lag 2 component;</p> <p>
                         model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p><p>
-                        model.ARp=0 (default) means no autoregressive component.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
+                        model.ARp=0 (default) means no autoregressive component.</p></p></td></tr><tr valign="top"><td><code>ARtentout</code></td><td><p>matrix of size r-by-2 containing the list
+                       of the units declared as outliers (first column)
+                       and corresponding fitted values (second column) or
+                       empty scalar. If model.ARtentout is not empty, when
+                       the autoregressive component is present, the y
+                       values which are used to compute the autoregressive
+                       component are replaced by model.tentout(:,2) for
+                       the units contained in model.tentout(:,1)</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nfore" class="clearfix"></div><h3 id="input_argument_namevalue_nfore" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nfore</code> &#8212;number of forecasts.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Positive integer which defines the number of forecasts. The
                default value of nfore is 24.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nfore',12

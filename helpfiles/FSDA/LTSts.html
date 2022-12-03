@@ -423,30 +423,30 @@ title(findobj(gcf,'Tag','FSRts:ts'),'P12119085, FS with default conflev');
 outLTS5 = LTSts(Y5,'model',model,'plots',1,'conflev',0.99,'msg',0);
 title(findobj(gcf,'Tag','LTSts:ts'),'P17049075, LTS with conflev=0.99');
 outFRS5 = FSRts(Y5,'model',model,'plots',1);
-title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div><pre class="codeoutput">                 Coeff      SE       t       pval
-                _______    ____    ______    ____
+title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div><pre class="codeoutput">                  Coeff         SE           t           pval   
+                _________    _________    ________    __________
 
-    b_trend1     115.27    4.51     25.59    0.00
-    b_trend2       1.59    0.27      5.80    0.00
-    b_cos1        -2.83    3.92     -0.72    0.47
-    b_sin1       -12.42    4.69     -2.65    0.01
-    b_cos2        -9.07    4.66     -1.95    0.06
-    b_sin2       -22.60    4.71     -4.80    0.00
-    b_varaml      -0.02    0.00     -3.72    0.00
-    b_lshift    -112.62    7.63    -14.76    0.00
+    b_trend1       115.27       4.5051      25.586    2.0728e-26
+    b_trend2        1.592      0.27465      5.7965    9.1325e-07
+    b_cos1        -2.8294       3.9154    -0.72265        0.4741
+    b_sin1        -12.419       4.6909     -2.6475      0.011544
+    b_cos2        -9.0708       4.6584     -1.9472      0.058559
+    b_sin2        -22.604       4.7099     -4.7992    2.2402e-05
+    b_varaml    -0.015796    0.0042445     -3.7215    0.00060891
+    b_lshift      -112.62       7.6319     -14.756    8.9212e-18
 
 Level shift position t=27
-                Coeff      SE       t       pval
-                ______    ____    ______    ____
+                  Coeff         SE           t          pval   
+                _________    _________    _______    __________
 
-    b_trend1     55.14    3.85     14.30    0.00
-    b_trend2      0.90    0.20      4.52    0.00
-    b_cos1       15.54    4.15      3.75    0.00
-    b_sin1        3.61    4.27      0.85    0.40
-    b_cos2      -32.50    4.25     -7.64    0.00
-    b_sin2      -16.06    4.31     -3.72    0.00
-    b_varaml     -0.02    0.00    -12.15    0.00
-    b_lshift    -79.41    5.70    -13.94    0.00
+    b_trend1        55.14       3.8549     14.304    2.5537e-17
+    b_trend2      0.89673      0.19848     4.5181    5.4202e-05
+    b_cos1         15.545       4.1497     3.7461    0.00056646
+    b_sin1          3.612       4.2659    0.84671        0.4022
+    b_cos2        -32.496       4.2541    -7.6387    2.4573e-09
+    b_sin2        -16.057        4.313    -3.7229    0.00060638
+    b_varaml    -0.022594    0.0018596     -12.15    5.2846e-15
+    b_lshift      -79.413       5.6981    -13.937    6.0952e-17
 
 Level shift position t=34
 Level shift for t=14
@@ -475,8 +475,8 @@ Level shift for t=35
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
-          1.00         99.00        999.00       9999.00      99999.00
-          1.00          2.00             0             0             0
+           1          99         999        9999       99999
+           1           2           0           0           0
 
 Level shift for t=14
 Level shift for t=15
@@ -504,8 +504,8 @@ Level shift for t=35
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
-          1.00         99.00        999.00       9999.00      99999.00
-             0          5.00          1.00             0             0
+           1          99         999        9999       99999
+           0           5           1           0           0
 
 </pre><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\LTSts_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_16.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_17.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_18.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_19.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_20.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series. Note that

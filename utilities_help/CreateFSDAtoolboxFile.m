@@ -3,7 +3,7 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.6.3';
+newVersion = '8.6.4';
 
 % Add the sentence which describes the new feature of the release
 commentRelease='spmplot now accepts as classification variable a string array or a categorical array';

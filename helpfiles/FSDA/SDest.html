@@ -30,7 +30,7 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(2:20,3)=100;
-[out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.21 seconds 
+[out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.22 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/SDest.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\SDest_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\SDest_05.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_06.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>SDest with with Juan and Prieto adjustment.</li></span></a></span></h3><div class="collapse"><p>
      jpcorr&gt;1. Subsamples of size equal to v+5 are initially drawn (jpcorr=5).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% In each of them, the 4 units (=jpcorr-1) having the four
 % largest MDs are then discarded from the subsample.
