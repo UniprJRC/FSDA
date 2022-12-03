@@ -107,7 +107,11 @@ u=-4:0.01:4;
 rhofunc='HYP';
 k=4.2;
 eff=0.85;
-out=RhoPsiWei(u,1,'bdp',0.2,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',k);</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of call to RhoPsiWei with u empty
+try
+out=RhoPsiWei(u,1,'bdp',0.2,'eff',eff,'rhofunc',rhofunc,'rhofuncparam',k);
+catch
+disp('Only a value among bdp, eff and c must be supplied')
+end</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of call to RhoPsiWei with u empty
      In this case fiels psi, psider, psix and wei are empty
     n=20;
     u=randn(n,1);

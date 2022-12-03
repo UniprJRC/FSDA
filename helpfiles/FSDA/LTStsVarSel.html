@@ -160,11 +160,15 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
 </code></code></span></div><div class="expandableContent"><div id="inputarg_firstTestLS" class="clearfix"></div><h3 id="input_argument_namevalue_firstTestLS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>firstTestLS</code> &#8212;initial test for presence of level shift.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>if
                firstTestLS is true, we immediately find the position of
                the level shift in a model which does not contain
-               autoregressive terms and the seasonal specification is 101
-               If the level shift component is significant we pass the
-               level shift component in fixed position to the variable
-               selection procedure. The default value of firstTestLS is
-               false.</p> <p>
+               autoregressive terms, the seasonal specification is 101 If
+               the level shift component is significant we pass the level
+               shift component in fixed position to the variable selection
+               procedure.  Note also that the units declared as outliers
+               with a p-value smaller than 0.001 are used to form
+               model.ARtentout. model.ARtentout is used in the subsequent
+               steps of the variable selection procedure, every time there
+               is a call to LTSts with an autoregressive component. The
+               default value of firstTestLS is false.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'firstTestLS', false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies the
                (over-parametrized) model which will be used to initialise
@@ -257,8 +261,15 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                        components. For example:</p> <p>
                         model.ARp=[1 2] means a AR(2) process;</p> <p>
                         model.ARp=2 means just the lag 2 component;</p> <p>
-                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p> <p>
-                        model.ARp=0 (default) means no autoregressive component.</p> <p>
+                        model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p><p>
+                        model.ARp=0 (default) means no autoregressive component.</p></p></td></tr><tr valign="top"><td><code>ARtentout</code></td><td><p><p>matrix of size r-by-2 containing the list
+                       of the units declared as outliers (first column)
+                       and corresponding fitted values (second column) or
+                       empty scalar. If model.ARtentout is not empty, when
+                       the autoregressive component is present, the y
+                       values which are used to compute the autoregressive
+                       component are replaced by model.tentout(:,2) for
+                       the units contained in model.tentout(:,1)
                                 Remark: the default overparametrized model is for monthly
                data with a quadratic
                trend (3 parameters) + seasonal component with three

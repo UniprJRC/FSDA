@@ -38,16 +38,16 @@ X=XX(:,1:end-1);
 % In this case we use the five most common values of lambda are considered
 [out]=FSRfan(y,X);
 fanplot(out);
-%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.00 seconds 
+%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
 Total estimated time to complete LMS:  0.00 seconds 
@@ -125,19 +125,16 @@ X=XX(:,1:end-1);
 fanplot(outBC,'titl','Box Cox');
 fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
 disp('Maximum difference in absolute value')
-disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
+disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.06 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.06 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.05 seconds 
@@ -146,13 +143,16 @@ Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.05 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.06 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.06 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.06 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
 Maximum difference in absolute value
