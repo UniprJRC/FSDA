@@ -1671,18 +1671,26 @@ for ilsh=1:lLSH
         if nummissing>0
             % Extract subsets which are not associated with missing values
             % of y
-            % Check if loop below can be avoided
-            for i=1:nselected
-                Cini(i,:)=ynotmissing(Cini(i,:));
-            end
-            % C1=reshape(ynotmissing(Cini),nsamp,pini);
-            %assert(max(abs(C1-double(Cini),[],'all')),"Non sono uguali")
+            Cini=double(Cini);
+
+%             Cini1=Cini;
+%             % Check if loop below can be avoided
+%             for i=1:nselected
+%                 Cini(i,:)=ynotmissing(Cini(i,:));
+%             end
+%             C1=ynotmissing(Cini1);
+%             diffC1=max(abs(C1-double(Cini)),[],'all');
+%             assert(diffC1==0,"Non sono uguali")
+
+            Cini=ynotmissing(Cini);
         end
         C=Cini;
+
+
     end
     % Store indexes of extracted subsets if nargout is greater than 1
     if nargout>1
-        Ccell{ilsh}=Cini;
+        Ccell{ilsh}=C;
     end
 
     % yhatall= matrix which will contain fitted values for each extracted
