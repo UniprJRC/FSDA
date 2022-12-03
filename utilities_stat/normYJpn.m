@@ -1,5 +1,5 @@
 function Ytra=normYJpn(Y,ColtoTra,la, varargin)
-%normYJ computes (normalized) extended Yeo-Johnson transformation
+%normYJpn computes (normalized) extended Yeo-Johnson transformation
 %
 %<a href="matlab: docsearchFS('normYJpn')">Link to the help function</a>
 %
