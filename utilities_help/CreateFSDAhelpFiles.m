@@ -75,7 +75,38 @@ force=false;
 disp('List of files which have been excluded (with path)')
 disp(FilesExcluded(:,[1 9]))
 
-%% STEP 2: create HTML for all files filtered using makecontentsFilesFS
+%% STEP 2: create categorical list of functions
+fsep=filesep;
+
+% Make sure one more time you are inside main root of FSDA
+cd(fileparts(which('docsearchFS.m')))
+% Create HTML file containing categorical list of functions
+fileCate=publishFunctionCate(FilesIncluded);
+% open outfile file in web browser
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-cate.html'];
+web(outputOFHtmlHelpFile,'-browser');
+
+%% STEP 3: create alphabetical list of functions and txt file
+fsep=filesep;
+
+% Make sure one more time you are inside main root of FSDA
+cd(fileparts(which('docsearchFS.m')))
+% Create HTML file containing alphabetical list of functions
+fileAlpha=publishFunctionAlpha(FilesIncluded,'CreateTxtFile',true);
+% open html file in web browser
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-alpha.html'];
+web(outputOFHtmlHelpFile,'-browser');
+
+fsep=filesep;
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-alpha.txt'];
+% open outfile txt in web browser
+disp('Check .txt file')
+web(outputOFHtmlHelpFile,'-browser');
+
+
+
+
+%% STEP 4: create HTML for all files filtered using makecontentsFilesFS
 
 % Make sure that the format is short
 format short
@@ -108,7 +139,48 @@ if ~isempty(FilesWithProblems)
     end
 end
 
-%% STEP 2B some documentation about FSDA html help pages
+
+%% STEP 5: create bibliography file
+fsep=filesep;
+% Make sure one more time you are inside main root of FSDA
+cd(fileparts(which('docsearchFS.m')))
+
+% Note that input OUT comes from function publishFSallFiles
+% cell OUT can also be more easily created using option 'evalCode',false
+% and 'write2file',false
+% [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode',false,'write2file',false);
+
+% Create HTML file containing all the items which make up the bibliography
+[fileBiblio,Cits]=publishBibliography(FilesIncluded,OUT);
+
+% open outfile file in web browser
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'bibliography.html'];
+web(outputOFHtmlHelpFile,'-browser');
+
+%% STEP 6: create HTML pointer files
+h=CreateFSDApointerFiles(FilesIncluded,OUT);
+if h
+    disp('Successful creation of pointer files')
+end
+
+%% STEP not compulsory: create searchable database
+% Use as folder the one which contains all pointers files
+FileName='addFSDA2path';
+FullPath=which(FileName);
+%Navigate to the main folder of FSDA
+FSDAroot=fileparts(FullPath);
+% Navigate to subfolder which contains pointerHTML
+pointersHTMLroot=[FSDAroot filesep 'helpfiles'  filesep 'pointersHTML'];
+% Create searchable database
+builddocsearchdb(pointersHTMLroot)
+
+
+%% DOCUMENTATION FOR THE WEB SITE http://rosa.unipr.it
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THE STEPS WHICH FOLLOW ARE NECESSARY TO CREATE THE DOCUMENTATION ON THE WEB
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Help pages are modular and contain portion of html code that are stored
 % in files={'headjs.js', 'engine.js','lbar.js', 'lbarsimple.js', '...'} and
 % then injected in the target html file by the document.write() JS
@@ -155,87 +227,6 @@ end
 % engine with a reference to Google Search which works mostly in the same
 % way and will not need any further modification of the html code.
 
-
-%% STEP 3: create alphabetical list of functions and txt file
-% rerun step 1 to regenerate FilesIncluded
-fsep=filesep;
-
-% Make sure one more time you are inside main root of FSDA
-cd(fileparts(which('docsearchFS.m')))
-% Create HTML file containing alphabetical list of functions
-fileAlpha=publishFunctionAlpha(FilesIncluded,'CreateTxtFile',true);
-% open html file in web browser
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-alpha.html'];
-web(outputOFHtmlHelpFile,'-browser');
-
-fsep=filesep;
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-alpha.txt'];
-% open outfile txt in web browser
-disp('Check .txt file')
-web(outputOFHtmlHelpFile,'-browser');
-
-
-%% STEP 4: create categorical list of functions
-fsep=filesep;
-
-% Make sure one more time you are inside main root of FSDA
-cd(fileparts(which('docsearchFS.m')))
-% Create HTML file containing categorical list of functions
-fileCate=publishFunctionCate(FilesIncluded);
-% open outfile file in web browser
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-cate.html'];
-web(outputOFHtmlHelpFile,'-browser');
-
-
-%% STEP 5: create bibliography file
-fsep=filesep;
-% Make sure one more time you are inside main root of FSDA
-cd(fileparts(which('docsearchFS.m')))
-
-% Note that input OUT comes from function publishFSallFiles
-% cell OUT can also be more easily created using option 'evalCode',false
-% and 'write2file',false
-% [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode',false,'write2file',false);
-
-% Create HTML file containing all the items which make up the bibliography
-[fileBiblio,Cits]=publishBibliography(FilesIncluded,OUT);
-
-% open outfile file in web browser
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'bibliography.html'];
-web(outputOFHtmlHelpFile,'-browser');
-
-%% STEP 6: create HTML pointer files
-h=CreateFSDApointerFiles(FilesIncluded,OUT);
-if h
-    disp('Successful creation of pointer files')
-end
-
-%% STEP not compulsory: create searchable database
-% Use as folder the one which contains all pointers files
-FileName='addFSDA2path';
-FullPath=which(FileName);
-%Navigate to the main folder of FSDA
-FSDAroot=fileparts(FullPath);
-% Navigate to subfolder which contains pointerHTML
-pointersHTMLroot=[FSDAroot filesep 'helpfiles'  filesep 'pointersHTML'];
-% Create searchable database
-builddocsearchdb(pointersHTMLroot)
-
-
-%% Step 7 Create zip file containing images of HTML files
-% zip all images files from (FSDAroot)/helpfiles/FSDA/images/
-% into (FSDAroot)/helpfiles/FSDA/FSDAweb/images.zip
-% This file will have to be sent to rosa web site
-zipfilename=[FSDAroot fsep 'helpfiles' filesep 'FSDAweb' filesep 'images.zip'];
-filenames=[FSDAroot fsep 'helpfiles' filesep 'FSDA' filesep 'images' filesep];
-zip(zipfilename,filenames);
-
-
-%% DOCUMENTATION FOR THE WEB SITE http://rosa.unipr.it
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% THE STEPS WHICH FOLLOW ARE NECESSARY TO CREATE THE DOCUMENTATION ON THE WEB
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% STEP 1web: create HTML to publish in rosa.unipr.it for all files filtered using makecontentsFilesFS
 
@@ -329,7 +320,7 @@ fileSitemap=cell2table(allHttpUrl);
 writetable(fileSitemap,[FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'sitemap.txt'],...
     'WriteVariableNames',false);
 
-%% Step 3 Create zip file containing images of HTML files
+%% Step 3web Create zip file containing images of HTML files
 % zip all images files from (FSDAroot)/helpfiles/FSDA/images/
 % Note that last / otherwise the files inside the zip archive will have
 % subfolder images
@@ -338,9 +329,9 @@ zipfilename=[FSDAroot fsep 'helpfiles' filesep 'FSDAweb' filesep 'images.zip'];
 filenames=[FSDAroot fsep 'helpfiles' filesep 'FSDA' filesep 'images' filesep];
 zip(zipfilename,filenames);
 
-%% Now if all was well let us do the setup.exe
+%% Now if all was well push the modification and use CreateFSDAtoolboxFile.m to create FSDA.mltbx
 disp('Congratulations the FSDA package is ready to be deployed')
-
+disp('In order to create FSDA.mltbx file please use routine  ''CreateFSDAtoolboxFile.m''')
 % Store all quantities inside structure outHELP
 outHELP=struct;
 outHELP.FilesIncluded=FilesIncluded;
