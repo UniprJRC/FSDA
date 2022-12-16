@@ -98,12 +98,11 @@ function [out]=ace(y,X,varargin)
 % References:
 %
 %
-% Breiman, L. and Friedman, J.H. (1985), Estimating optimal
-% transformations for multiple regression and correlation, "Journal of the
-% American Statistical Association", Vol. 80, pp. 580-597.
-% Wang D.  and Murphy M. (2005), Identifying nonlinear relationships
-% regression using the ACE algorithm, "Journal of Applied Statistics",
-% Vol. 32, pp. 243-258.
+% Breiman, L. and Friedman, J.H. (1985), Estimating optimal transformations
+% for multiple regression and correlation, "Journal of the American
+% Statistical Association", Vol. 80, pp. 580-597. Wang D.  and Murphy M.
+% (2005), Identifying nonlinear relationships regression using the ACE
+% algorithm, "Journal of Applied Statistics", Vol. 32, pp. 243-258.
 %
 % Copyright 2008-2023.
 % Written by FSDA team
