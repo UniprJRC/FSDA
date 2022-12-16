@@ -40,13 +40,13 @@ function [out]=FSRfan(y,X,varargin)
 %               contains the response
 %               variable.  It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
-%               variables (also called 'regressors')
-%               of dimension (n x p-1). Rows of X represent observations, and
-%               columns represent variables.
-%               Missing values (NaN's) and infinite values
-%               (Inf's) are allowed, since observations (rows) with missing or
-%               infinite values will automatically be excluded from the
-%               computations. NOTICE THAT THE INTERCEPT MUST ALWAYS BE INCLUDED.
+%               variables (also called 'regressors') of dimension (n x
+%               p-1). Rows of X represent observations, and columns
+%               represent variables. Missing values (NaN's) and infinite
+%               values (Inf's) are allowed, since observations (rows) with
+%               missing or infinite values will automatically be excluded
+%               from the computations. NOTICE THAT THE INTERCEPT MUST
+%               ALWAYS BE INCLUDED.
 %
 %  Optional input arguments:
 %
