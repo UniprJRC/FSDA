@@ -206,7 +206,7 @@ function out = LTStsLSmult(y,varargin)
 %}
 
 %{
-    % Trade data examples.
+    %% Trade data examples.
     % Two examples taken from the (extended version of the) series in:
     % Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
     % Monitoring of Many Time Series with Application to Fraud Detection,
@@ -266,6 +266,48 @@ function out = LTStsLSmult(y,varargin)
 
     [out_LTSts]=LTSts(yin2,'model',out_model_1,...
     'plots',1,'msg',0,'dispresults',1,'SmallSampleCor',1,'conflev',1-0.01/length(yin2));
+
+%}
+
+
+%{
+    % Multiple level shift and variable selection. Example 3.
+    % Simulated data with the platonic idea of multiple LS.
+    rng('default')
+
+    %data generation
+    A = [ones(1,50) 25*ones(1,50) 50*ones(1,50) 75*ones(1,50)] + rand(1,200);
+    figure;
+    plot(A,'-')
+
+    %detection of multiple LS 
+    close all
+    out = LTStsLSmult(A',...
+        'maxLS',5,'alphaLTS',0.01,...
+        'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
+    cascade
+
+    %plot LS
+    close all
+    figure;
+    plot(A,'-')
+    gc=gca;
+    ylimits = gc.YLim;
+    xlimits = gc.XLim;
+    hold on
+    for i=1:length(out.LSpos)
+        line([out.LSpos(i) out.LSpos(i)],[ylimits(1) ylimits(2)],'color','k','linewidth',1,'linestyle','--');
+    end
+    
+    %variable selection, given the multiple LS 
+    close all
+    model.trend = 2;
+    model.lshift = 0;
+    model.seasonal = 303;
+    model.X = out.outX(:,3:end);
+    
+    [out_model_1, out_reduced_1] = LTStsVarSel(A','model',model,'plots',1);
+    cascade
 
 %}
 
