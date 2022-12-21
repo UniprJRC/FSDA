@@ -1,11 +1,11 @@
 function out = GUIcorr(x,y,w)
-%GUIcorr shows the necessary calculations to obtain the correlation in a GUI.
+%GUIcorr show the necessary calculations to obtain the correlation in a GUI.
 %
 %<a href="matlab: docsearchFS('GUIcorr')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%     x : vector of numeric data or table. Vector or table.
+%     x : vectors of numeric data or table. Vector or table.
 %           Vector containing strictly numerical data. If x is table it
 %           contains the contingency table associated with the joint
 %           probability distribution. In this case, the second input
