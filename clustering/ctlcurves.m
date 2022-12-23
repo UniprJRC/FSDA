@@ -28,35 +28,34 @@ function out  = ctlcurves(Y, varargin)
 %                 Data Types -  double
 %
 %       bands  : confidence bands for the curves. boolean or struct. If
-%               bands is a scalar boolean equal to true 50 per cent
-%               confidence bands are computed (and are shown on the screen
-%               if plots=1).
-%               If bands is a struct it contains the following fields:
-%             bands.conflev = scalar in the interval (0 1) which contains
-%                   the confidence level of the bands.
-%             bands.nsamp =  Number of subsamples to extract in the
+%               bands is a scalar boolean equal to true (default), 50 per
+%               cent confidence bands are computed (and are shown on the
+%               screen if plots=1), likelihood ratio tests are also
+%               computed and the solutions found by these two methods are
+%               given. If bands is a scalar boolean equal to false, bands
+%               and likelihood ratio tests are not computed.
+%             If bands is a struct bands are computed and the structure may
+%             contain the following fields:
+%           bands.conflev = scalar in the interval (0 1) which contains
+%                   the confidence level of the bands (default is 0.5).
+%           bands.nsamp =  Number of subsamples to extract in the
 %                   bootstrap replicates. If this field is not present and
 %                   or it is empty the number of subsamples which is used
 %                   in the bootstrap replicates is equal to the one used
 %                   for real data (input option nsamp).
-%             bands.nsimul = number of replicates to use to create the
-%                   confidence bands. The default value of bands.nsimul is
+%           bands.nsimul = number of replicates to use to create the
+%                   confidence bands and likelihood ratio tests.
+%                   The default value of bands.nsimul is
 %                   60 in order to provide the output in a reasonal time.
 %                   Note that for stable results we recommentd a value of
 %                   bands.nsimul equal to 100.
-%               bands.valSolution   = boolean which specifies if it is
+%            bands.valSolution   = boolean which specifies if it is
 %                   necessary to perform an outlier detection procedure on
 %                   the components which have been found using optimalK and
 %                   optimal alpha. If bands.valSolution is true then units
 %                   detected as outliers in each component are assigned to
 %                   the noise group. If bands.valSolution is false
-%                   (deafult) or it is not present nothing is done.
-%             bands.LRtest =  Likelihood ratio test. Boolean. If
-%                   bands.LTtest is true (default) the
-%                   difference between the obj function for two consecutive
-%                   values of k given a particular value of alpha is computed.
-%                   The relative time in which this difference is greater than
-%                   the bootstrap difference is stored in out.pvalLRtest.
+%                   (default) or it is not present nothing is done.
 %            bands.usepriorSol= Initialization of the EM for a particular subset.
 %                   boolean. If bands.usepriorSol is true, we initialize
 %                   the EM algorithm for one of the bands.nsamp subsets
@@ -82,7 +81,7 @@ function out  = ctlcurves(Y, varargin)
 %                   replicate to compute the empirical pvalue of LRtest if
 %                   multiple solutions are found given a value of alpha
 %                   (default is 2000).
-%      bands.usepriorSolExtra= Initialization of the EM for particular subset.
+%           bands.usepriorSolExtra= Initialization of the EM for particular subset.
 %                   boolean. If bands.usepriorSolExtra is true, we
 %                   initialize the EM algorithm for one of the
 %                   bands.nsampExtra subsets with the solution which has
@@ -90,7 +89,9 @@ function out  = ctlcurves(Y, varargin)
 %                   (default) no prior information is used in any of the
 %                   extracted subsets.
 %                 Example - 'bands',true
-%                 Data Types - logical | struct%           kk: number of mixture components. Integer vector. Integer
+%                 Data Types - logical | struct
+%
+%           kk: number of mixture components. Integer vector. Integer
 %               vector specifying the number of mixture components
 %               (clusters) for which trimmed likelihoods are calculated.
 %               Vector. The default value of kk is 1:5.
@@ -363,39 +364,26 @@ function out  = ctlcurves(Y, varargin)
 %           out.CTL    = matrix of size length(kk)-by-length(alpha)
 %                       containing the values of the trimmed likelihood
 %                       curves for each value of k and each value of alpha.
-%      out.BandsCTL    = 3D array of size
+%                       This output (and all the other output below which
+%                       start with CTL) are present only if input option
+%                       bands is true or is a struct. All the other fields
+%                       belo
+%      out.CTLbands    = 3D array of size
 %                       length(kk)-by-length(alpha)-by-nsimul containing
-%                       the nsimul replicates of out.CTL. This output is
-%                       present only if input option bands is true or is a
-%                       struct.
-%         out.likLB    =  matrix of size length(kk)-by-length(alpha)
+%                       the nsimul replicates of out.CTL.
+%         out.CTLlikLB    =  matrix of size length(kk)-by-length(alpha)
 %                       containing the lower confidence bands of the
 %                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%         out.likUB    =  matrix of size length(kk)-by-length(alpha)
+%                       each value of alpha.
+%         out.CTLlikUB    =  matrix of size length(kk)-by-length(alpha)
 %                       containing the upper confidence bands of the
 %                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%         out.lik050    =  matrix of size length(kk)-by-length(alpha)
+%                       each value of alpha. T
+%         out.CTLlik050    =  matrix of size length(kk)-by-length(alpha)
 %                       containing the central confidence bands of the
 %                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%            out.idx  = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups in correspodence of
-%                       Optimalalpha and OptimalK. Cluster names are
-%                       integer numbers from 1 to k. 0 indicates trimmed
-%                       observations. This output is present only if input
-%                       option bands is true or is a struct.
-%        out.Optimalalpha = scalar, optimal value of trimming. This
-%                       output is present only if optional input argument is
-%                       true.
-%           out.OptimalK = scalar, optimal number of clusters, stored
-%                        as a positive integer value. This output is present
-%                       only if optional input argument is true.
-%           out.TentSol  = matrix with size m-by-4. Details of the ordered
+%                       each value of alpha.
+%      out.CTLtentSol  = matrix with size m-by-4. Details of the ordered
 %                          solutions where there was intersection between
 %                          two consecutive trimmed likelihood curves. First
 %                          column contains the value of k, second column
@@ -403,27 +391,57 @@ function out  = ctlcurves(Y, varargin)
 %                          associated to the best value of alpha, fourth
 %                          colum index associated with the best value of
 %                          kk.
-%        out.pvalLRtest =  table with size length(kk)-1-times-length(alpha)
+%       out.CTLoptimalAlpha = scalar, optimal value of trimming.
+%       out.CTLoptimalK = scalar, optimal number of clusters, stored
+%                        as a positive integer value.
+%       out.CTLoptimalIDX  = n-by-1 vector containing assignment of each unit to
+%                       each of the k groups in correspodence of
+%                       OptimalAlpha and OptimalK. Cluster names are
+%                       integer numbers from 1 to k. 0 indicates trimmed
+%                       observations. The fields which follow which start
+%                       with LRT refer to the likilhood ratio test
+%
+%        out.LRTpval =  table with size length(kk)-1-times-length(alpha)
 %                           which stores the relative frequency in which
 %                           the Likelihood ratio test is greater than the
 %                           corresponding bootstrap test.
-%        out.TentSolLR  = matrix with size m-by-6. Details of the ordered
+%                        as a positive integer value.
+%        out.LRTtentSol  = matrix with size m-by-8. Details of the ordered
 %                          solutions using the likelihood ratio test. First
-%                          column: the index number of the solution. Second
-%                          column: the value of k. Third column: the value
-%                          of alpha. Fourth column contains 1 if the
-%                          p-value beyond the threshold is always above $k$
-%                          shown in the second column for all $k^* >k$ else
-%                          it contains 0. Fourth and fifth columns contain
-%                          the index numbers of optimal input values kk and
-%                          alpha. Sixth column contains 1 in correspondence
-%                          of the best solution for each value of k.
-%      out.TentSolLRt  = table with size m-by-5 containing the same
+%                          column (index): the index number of the
+%                          solution. Second column (k): the value of k.
+%                          Third column (alpha): the value of alpha. Fourth
+%                          column (Truesol) contains 1 if the p-value
+%                          beyond the threshold is always above $k$ shown
+%                          in the second column for all $k^* >k$ else it
+%                          contains 0. Fifth and sixth columns (kindex and
+%                          alphaindex) contain the index numbers of optimal
+%                          input values kk and alpha. Seventh column
+%                          (kbestGivenalpha) contains 1 in correspondence
+%                          of the best solution for each value of k (given
+%                          alpha). Eight column (ProperSize) contains 1 if
+%                          the solution which has been found has a minimum
+%                          group size which is greater than n*max(alpha).
+%      out.LRTtentSolt  = table with size m-by-5 containing the same
 %                        information of array  out.TentSolLR in table format.
-%           out.idxLR  = matrix with size n-by-size(out.TentSolLR,1) with
+%      out.LRTtentSolIDX = matrix with size n-by-size(out.LRTtentSol,1) with
 %                        the allocation associated with the tentative
-%                        solutions found in out.TentSolLR.
-%                        First column refers to best solution ...
+%                        solutions found in out.LRTtentSol.
+%                        First column refers to solution in row 1 of out.LRTtentSol ...
+%       out.LRToptimalAlpha = scalar, optimal value of trimming.
+%       out.LRToptimalK = scalar, optimal number of clusters, stored
+%                        as a positive integer value.
+%       out.LRToptimalIDX  = n-by-1 vector containing assignment of each unit to
+%                       each of the k groups in correspodence of
+%                       OptimalAlpha and OptimalK. Cluster names are
+%                       integer numbers from 1 to k. 0 indicates trimmed
+%                       observations. The fields which follow which start
+%                       with LRT refer to the likelihood ratio test. The
+%                       optimal solution is the first for which
+%                       out.LRTtentSolt.kbestGivenalpha is 1 and
+%                       out.LRTtentSolt.ProperSize is 1.
+
+
 %                out.kk = vector containing the values of k (number of
 %                       components) which have been considered. This  vector
 %                       is equal to input optional argument kk if kk had been
@@ -485,7 +503,7 @@ function out  = ctlcurves(Y, varargin)
     nsamp=10;
     out=ctlcurves(Y,'nsamp',nsamp);
     % Show the automatic classification
-    spmplot(Y,out.idx);
+    spmplot(Y,out.LRToptimalIDX);
 %}
 
 %{
@@ -513,14 +531,12 @@ function out  = ctlcurves(Y, varargin)
     bands.valSolution=true;
     % One of the extracted subsets is based on solutions found with real data 
     bands.usepriorSol=true;
-    % Do not compute the bootstrap likelihood ratio test
-    bands.LRtest=false;
     % Just use a very small sumber of subsets for speed reasons.
     nsamp=20;
     rng(100)
     out=ctlcurves(Y,'bands',bands,'kk',2:4,'alpha',0:0.02:0.1,'nsamp',nsamp);
-    % Show final classification.
-    spmplot(Y,out.idx);
+    % Show final classification using intersection of confidence bands.
+    spmplot(Y,out.CTLoptimalIDX);
 %}
 
 %{
@@ -534,7 +550,7 @@ function out  = ctlcurves(Y, varargin)
     % Just use a very small sumber of subsets for speed reasons.
     nsamp=5;
     out=ctlcurves(Y,'plots',0,'kk',4:6,'nsamp',nsamp);
-    spmplot(Y,out.idx);
+    spmplot(Y,out.CTLoptimalIDX);
 %}
 
 
@@ -574,7 +590,6 @@ cshape=10^10;
 restrfactor=100;
 mixt=0;
 bands=true;
-LRtest=true;
 outliersFromUniform=true;
 
 UserOptions=varargin(1:2:length(varargin));
@@ -730,6 +745,20 @@ if ComputeBands==true
     parfevalOnAll(@warning,0,'off','all');
     if isstruct(bands)
 
+        % make sure that the fields which are given are admissible
+        bandsdef=struct;
+        bandsdef.conflev=[];
+        bandsdef.nsimul=[];
+        bandsdef.valSolution=[];
+        bandsdef.outliersFromUniform=[];
+        bandsdef.nsampSimData=[];
+        bandsdef.usepriorSol=[];
+        bandsdef.usepriorSolExtra=[];
+        bandsdef.nsimulExtra=[];
+        bandsdef.nsampExtra=[];
+
+        chkoptions(bandsdef,fieldnames(bands))
+
         if isfield(bands,'conflev')
             gamma=(1-bands.conflev)/2;
         end
@@ -742,9 +771,6 @@ if ComputeBands==true
             valSolution=bands.valSolution;
         end
 
-        if isfield(bands,'LRtest')
-            LRtest=bands.LRtest;
-        end
 
         if isfield(bands,'outliersFromUniform')
             outliersFromUniform=bands.outliersFromUniform;
@@ -784,12 +810,10 @@ if ComputeBands==true
         usepriorSol=false;
     end
 
-    % BandsCTL is a 3D array which will contain the replicates for the
+    % CTLbands is a 3D array which will contain the replicates for the
     % solutions
-    BandsCTL=zeros(lkk,lalpha,nsimul);
-    if LRtest==true
-        BandsCTLtest=zeros(lkk-1,lalpha,nsimul);
-    end
+    CTLbands=zeros(lkk,lalpha,nsimul);
+    BandsCTLtest=zeros(lkk-1,lalpha,nsimul);
     % maxk = maximum allowed vector for k
     maxk=kk(end);
 
@@ -808,7 +832,7 @@ if ComputeBands==true
             gRandNumbForNiniAllkSimData=gRandNumbForNiniAllk;
         end
 
-        if LRtest==true && seqk<maxk
+        if seqk<maxk
             CnsampAllkplus1=CnsampAll{seqk+1};
             gRandNumbForNiniAllkplus1=gRandNumbForNiniAll{seqk+1};
             if ~isempty(nsampSimData)
@@ -881,7 +905,7 @@ if ComputeBands==true
                     'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkSimData,'cshape',cshape,...
                     'priorSol',idxkj);
 
-                if LRtest==true  && seqk<maxk
+                if seqk<maxk
                     outtcSIMkplus1=tclust(Ysim,seqk+1,alphaTrimj,restrfactor,'nsamp',CnsampAllkplus1SimData,'plots',0,'msg',0,'mixt',mixt, ...
                         'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
                         'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkplus1SimData,'cshape',cshape, ...
@@ -889,64 +913,59 @@ if ComputeBands==true
                     BandsCTLtest(k,j,zz)=outtcSIMkplus1.obj-outtcSIM.obj;
                 end
 
-                BandsCTL(k, j, zz) = outtcSIM.obj;
+                CTLbands(k, j, zz) = outtcSIM.obj;
             end
         end
     end
-    out.BandsCTL=BandsCTL;
+    out.CTLbands=CTLbands;
 
-    likLB = zeros(lkk,lalpha);
-    lik050 = likLB;
-    likUB =likLB;
+    CTLlikLB = zeros(lkk,lalpha);
+    CTLlik050 = CTLlikLB;
+    CRLlikUB =CTLlikLB;
     for k=1:lkk  % loop for different values of k (number of groups)
         parfor j=1:lalpha
-            likLB(k,j) = quantile(BandsCTL(k,j,:), gamma);
-            lik050(k,j) = median(BandsCTL(k,j,:));
-            likUB(k,j) = quantile(BandsCTL(k,j,:), 1- gamma);
+            CTLlikLB(k,j) = quantile(CTLbands(k,j,:), gamma);
+            CTLlik050(k,j) = median(CTLbands(k,j,:));
+            CRLlikUB(k,j) = quantile(CTLbands(k,j,:), 1- gamma);
         end
     end
 
-    out.likLB=likLB;
-    out.lik050=lik050;
-    out.likUB=likUB;
+    out.CTLlikLB=CTLlikLB;
+    out.CTLlik050=CTLlik050;
+    out.CTLlikUB=CRLlikUB;
 
-    % Call routine which computes the best tentative solutions.
-    [TentSol,kfin,alphafin,idxOptimal]=findOptimalSolutions(likUB,likLB,lik050,IDX,alphaTrim,lkk,kk);
+    % Call routine which computes the best tentative solutions using method
+    % based on the intersection of confidence bands.
+    [CTLtentSol,optimalK,alphafin,CTLidxOptimal]=findOptimalSolutions(CRLlikUB,CTLlikLB,CTLlik050,IDX,alphaTrim,lkk,kk);
 
     if valSolution == true
         % Validate the groups in correspondence of the best solution
         seq=1:n;
         ExtraZeros=false;
-        for jj=1:kfin
-            seqjj=seq(idxOptimal==jj);
+        for jj=1:optimalK
+            seqjj=seq(CTLidxOptimal==jj);
             VALjj=FSM(Y(seqjj,:),'msg',0,'plots',0);
             if ~isnan(VALjj.outliers)
                 % Set to 0 the units declared as outliers in each
                 % component
-                idxOptimal(seqjj(VALjj.outliers))=0;
+                CTLidxOptimal(seqjj(VALjj.outliers))=0;
                 ExtraZeros=true;
             end
         end
         if  ExtraZeros==true
-            alphafin=sum(idxOptimal==0)/n;
+            alphafin=sum(CTLidxOptimal==0)/n;
         end
     end
 
 
-    out.idx=idxOptimal;
-    out.Optimalalpha=alphafin;
-    out.OptimalK=kfin;
-    out.TentSol=TentSol;
+    out.CTLoptimalIDX=CTLidxOptimal;
+    out.CTLoptimalAlpha=alphafin;
+    out.CTLoptimalK=optimalK;
+    out.CTLtentSol=CTLtentSol;
     % Store best classification
-end
 
-% Close pool and show messages if required
-if cleanpool==true
-    delete(gcp);
-end
+    % PART BELOW IS ASSOCIATED WITH LIKELIHOOD RATIO TEST (LRT)
 
-
-if LRtest==true && ComputeBands ==true
     % Values of the  difference between target function using k+1 and k
     % using real data
     tobs= out.CTL(2:end,:)-out.CTL(1:end-1,:);
@@ -958,10 +977,10 @@ if LRtest==true && ComputeBands ==true
 
     varnam=strcat('alpha=',string(alphaTrim'));
     rownam=strcat('k=',string((kk(1:end-1)')),'_vs_k=',string((kk(2:end)')));
-    out.pvalLRtest=array2table(tbootGTtobs,'VariableNames',varnam,'RowNames',rownam);
+    out.LRTpval=array2table(tbootGTtobs,'VariableNames',varnam,'RowNames',rownam);
 
-    TentSolLR=zeros(lkk-1,7);
-    idxLR=zeros(n,lkk-1);
+    LRTtentSol=zeros(lkk-1,8);
+    LRTtentSolIDX=zeros(n,lkk-1);
 
     crit= 0.02;
     ij=1;
@@ -977,17 +996,24 @@ if LRtest==true && ComputeBands ==true
             if ~isempty(soli)
 
                 % Store solution number, value of k, value of alpha
-                TentSolLR(ij,[1:3 5:6])=[ij kk(soli) alphaTrim(j) soli j];
-                idxLR(:,ij)=IDX{soli,j};
+                idxij=IDX{soli,j};
+                LRTtentSolIDX(:,ij)=idxij;
+                tabij=tabulate(idxij(idxij>0));
+                if min(tabij(:,2))<n*max(alphaTrim)
+                    properSize=false;
+                else
+                    properSize=true;
+                end
+                LRTtentSol(ij,[1:3 5:6 8])=[ij kk(soli) alphaTrim(j) soli j properSize];
 
                 if soli<lkk
 
                     % sum(tbootGTtobs(soli+1:end,j)>=crit)==lkk-soli
                     if all(tbootGTtobs(soli+1:end,j)>=crit)
-                        TentSolLR(ij,4)=1;
+                        LRTtentSol(ij,4)=1;
                         indexSpuriousSolution=false;
                     else
-                        TentSolLR(ij,4)=0;
+                        LRTtentSol(ij,4)=0;
                         increment=find(tbootGTtobs(soli+1:end,j)<crit,1);
 
                     end
@@ -995,14 +1021,14 @@ if LRtest==true && ComputeBands ==true
                     % that is if for the same value of k  we had already
                     % obtained the same solution
                     if ij>1
-                        if TentSolLR(ij,2) == TentSolLR(ij-1,2) && TentSolLR(ij,4)==TentSolLR(ij-1,4)
-                            TentSolLR(ij,:)=[];
-                            idxLR(:,ij)=[];
+                        if LRTtentSol(ij,2) == LRTtentSol(ij-1,2) && LRTtentSol(ij,4)==LRTtentSol(ij-1,4)
+                            LRTtentSol(ij,:)=[];
+                            LRTtentSolIDX(:,ij)=[];
                             ij=ij-1;
                         end
                     end
                 else
-                    TentSolLR(ij,4)=1;
+                    LRTtentSol(ij,4)=1;
                     indexSpuriousSolution=false;
                 end
 
@@ -1014,10 +1040,10 @@ if LRtest==true && ComputeBands ==true
         end
     end
 
-    if size(TentSolLR,1)>=1
-        TentSolLR=TentSolLR(1:ij-1,:);
+    if size(LRTtentSol,1)>=1
+        LRTtentSol=LRTtentSol(1:ij-1,:);
 
-        numsol=(1:size(TentSolLR,1))';
+        numsol=(1:size(LRTtentSol,1))';
         nsoleti="Sol"+numsol;
 
         % FOR EACH VALUE OF ALPHA COMPUTE ADDITIONAL LIK RATIO TESTS TO FIND
@@ -1027,16 +1053,16 @@ if LRtest==true && ComputeBands ==true
         % k=3 and k=6 is performed, and the best among these two values of k
         % is stored and is later tested against k=10
         % The best value among these 3 candidates gets a value of 1 in the last
-        % column of matrix TentSolLR
+        % column of matrix LRTtentSolt
         %         nsimulExtra=50;
         %         nsampExtra=5000;
         %         usepriorSolExtra=false;
 
         for j=1:lalpha
             alphaTrimj=alphaTrim(j);
-            MultSolalpha=find(TentSolLR(:,3)==alphaTrimj);
-            kTentative=TentSolLR(MultSolalpha,2);
-            kTentativepos=TentSolLR(MultSolalpha,5);
+            MultSolalpha=find(LRTtentSol(:,3)==alphaTrimj);
+            kTentative=LRTtentSol(MultSolalpha,2);
+            kTentativepos=LRTtentSol(MultSolalpha,5);
 
             if length(MultSolalpha)>1
 
@@ -1121,26 +1147,42 @@ if LRtest==true && ComputeBands ==true
                         indbestk=indbestk+1;
                     end
                 end
-                TentSolLR(MultSolalpha(indbestk),7)=1;
+                LRTtentSol(MultSolalpha(indbestk),7)=1;
             elseif length(MultSolalpha) ==1
-                TentSolLR(MultSolalpha,7)=1;
+                LRTtentSol(MultSolalpha,7)=1;
             else
             end
         end
 
-        TentSolLRt=array2table(TentSolLR,'RowNames',nsoleti, ...
-            'VariableNames',{'index' 'k' 'alpha' 'Truesol' 'kindex' 'alphaindex' 'kbestGivenalpha'});
+        LRTtentSolt=array2table(LRTtentSol,'RowNames',nsoleti, ...
+            'VariableNames',{'index' 'k' 'alpha' 'Truesol' 'kindex' 'alphaindex' 'kbestGivenalpha' 'ProperSize'});
 
     else
-        TentSolLR=[];
-        TentSolLRt=[];
-        idxLR=[];
+        LRTtentSol=[];
+        LRTtentSolt=[];
+        LRTtentSolIDX=[];
     end
 
-    out.TentSolLR=TentSolLR;
-    out.TentSolLRt=TentSolLRt;
-    out.idxLR=idxLR;
+    out.LRTtentSol=LRTtentSol;
+    out.LRTtentSolt=LRTtentSolt;
+    out.LRTtentSolIDX=LRTtentSolIDX;
+
+
+    % Find  LRToptimalK, LRToptimalAlpha and LRToptimalIDX
+    indexBestSolLRT=find(LRTtentSol(:,7)==1 & LRTtentSol(:,8)==1);
+    LRToptimalK=LRTtentSol(indexBestSolLRT,2);
+    LRToptimalAlpha=LRTtentSol(indexBestSolLRT,3);
+    LRToptimalIDX=LRTtentSolIDX(:,indexBestSolLRT);
+    out.LRToptimalK=LRToptimalK;
+    out.LRToptimalAlpha=LRToptimalAlpha;
+    out.LRToptimalIDX=LRToptimalIDX;
 end
+
+% Close pool and show messages if required
+if cleanpool==true
+    delete(gcp);
+end
+
 
 % thresh=0.05;
 % for j=1:lalpha
@@ -1172,10 +1214,10 @@ if plots==1
         LineWidth = 1;
         hold('on')
         for i = 1:length(kk)
-            plot(alphaTrim,likLB(i,:), 'LineStyle',linetype1{i}, 'Color', color{i}, 'LineWidth', LineWidth)
+            plot(alphaTrim,CTLlikLB(i,:), 'LineStyle',linetype1{i}, 'Color', color{i}, 'LineWidth', LineWidth)
             % plot(alphaTrim,lik050(i,:), 'LineStyle',linetype{i}, 'Color', color{i}, 'LineWidth', LineWidth)
-            text(alphaTrim(end),lik050(i,end),[' k = ' num2str(kk(i))],'FontSize',16, 'Color', color{i})
-            plot(alphaTrim,likUB(i,:), 'LineStyle',linetype1{i}, 'Color', color{i}, 'LineWidth', LineWidth)
+            text(alphaTrim(end),CTLlik050(i,end),[' k = ' num2str(kk(i))],'FontSize',16, 'Color', color{i})
+            plot(alphaTrim,CRLlikUB(i,:), 'LineStyle',linetype1{i}, 'Color', color{i}, 'LineWidth', LineWidth)
         end
     else
         plot(alphaTrim', CTLVal')
