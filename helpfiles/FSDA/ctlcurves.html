@@ -9,7 +9,7 @@ Y=load('geyser2.txt');
 nsamp=10;
 out=ctlcurves(Y,'nsamp',nsamp);
 % Show the automatic classification
-spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">k=1
+spmplot(Y,out.LRToptimalIDX);</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
@@ -37,20 +37,18 @@ bands.nsimul=20;
 bands.valSolution=true;
 % One of the extracted subsets is based on solutions found with real data 
 bands.usepriorSol=true;
-% Do not compute the bootstrap likelihood ratio test
-bands.LRtest=false;
 % Just use a very small sumber of subsets for speed reasons.
 nsamp=20;
 rng(100)
 out=ctlcurves(Y,'bands',bands,'kk',2:4,'alpha',0:0.02:0.1,'nsamp',nsamp);
-% Show final classification.
-spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">k=2
+% Show final classification using intersection of confidence bands.
+spmplot(Y,out.CTLoptimalIDX);</pre></div></div><pre class="codeoutput">k=2
 k=3
 k=4
 Bands k=2
 Bands k=3
 Bands k=4
-</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\ctlcurves_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\ctlcurves_03.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> An example with many groups.</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\ctlcurves_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> An example with many groups.</li></span></a></span></h3><div class="collapse"><p>
      Simulate data with 5 groups in 3 dimensions<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 k=5; v=3;
 n=200;
@@ -59,13 +57,13 @@ Y = MixSim(k, v, 'MaxOmega',0.01);
 % Just use a very small sumber of subsets for speed reasons.
 nsamp=5;
 out=ctlcurves(Y,'plots',0,'kk',4:6,'nsamp',nsamp);
-spmplot(Y,out.idx);</pre></div></div><pre class="codeoutput">k=4
+spmplot(Y,out.CTLoptimalIDX);</pre></div></div><pre class="codeoutput">k=4
 k=5
 k=6
 Bands k=4
 Bands k=5
 Bands k=6
-</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\ctlcurves_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations
+</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\ctlcurves_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations
                on v variables, Rows of Y represent observations, and
                columns represent variables. Observations (rows) with
                missing (NaN) or or infinite (Inf) values will
@@ -95,18 +93,23 @@ Bands k=6
                The default for alpha is vector 0:0.02:0.10;</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alpha',[0 0.05 0.1]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> double</code></p></div></div><div class="expandableContent"><div id="inputarg_bands" class="clearfix"></div><h3 id="input_argument_namevalue_bands" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bands</code> &#8212;confidence bands for the curves.</span></a><span class="example_desc">boolean | struct.</span></span></h3><div class="collapse">	<p><p>If
-               bands is a scalar boolean equal to true 50 per cent
-               confidence bands are computed (and are shown on the screen
-               if plots=1).</p> <p>
-               If bands is a struct it contains the following fields:</p><p>
-     </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>conflev</code></td><td><p>scalar in the interval (0 1) which contains
-                   the confidence level of the bands.</p></td></tr><tr valign="top"><td><code>nsamp</code></td><td><p>Number of subsamples to extract in the
+               bands is a scalar boolean equal to true (default), 50 per
+               cent confidence bands are computed (and are shown on the
+               screen if plots=1), likelihood ratio tests are also
+               computed and the solutions found by these two methods are
+               given. If bands is a scalar boolean equal to false, bands
+               and likelihood ratio tests are not computed.</p> <p>
+             If bands is a struct bands are computed and the structure may
+             contain the following fields:</p><p>
+   </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>conflev</code></td><td><p>scalar in the interval (0 1) which contains
+                   the confidence level of the bands (default is 0.5).</p></td></tr><tr valign="top"><td><code>nsamp</code></td><td><p>Number of subsamples to extract in the
                    bootstrap replicates. If this field is not present and
                    or it is empty the number of subsamples which is used
                    in the bootstrap replicates is equal to the one used
                    for real data (input option nsamp).</p></td></tr><tr valign="top"><td><code>nsimul</code></td><td><p><p>number of replicates to use to create the
-                   confidence bands. The default value of bands.nsimul is
-                   60 in order to provide the output in a reasonal time.</p> <p>
+                   confidence bands and likelihood ratio tests.</p> <p>
+                   The default value of bands.nsimul is
+                   60 in order to provide the output in a reasonal time.</p><p>
                    Note that for stable results we recommentd a value of
                    bands.nsimul equal to 100.</p></p></td></tr><tr valign="top"><td><code>valSolution</code></td><td><p>boolean which specifies if it is
                    necessary to perform an outlier detection procedure on
@@ -114,12 +117,7 @@ Bands k=6
                    optimal alpha. If bands.valSolution is true then units
                    detected as outliers in each component are assigned to
                    the noise group. If bands.valSolution is false
-                   (deafult) or it is not present nothing is done.</p></td></tr><tr valign="top"><td><code>LRtest</code></td><td><p><p>Likelihood ratio test. Boolean. If
-                   bands.LTtest is true (default) the
-                   difference between the obj function for two consecutive
-                   values of k given a particular value of alpha is computed.</p> <p>
-                   The relative time in which this difference is greater than
-                   the bootstrap difference is stored in out.pvalLRtest.</p></p></td></tr><tr valign="top"><td><code>usepriorSol</code></td><td><p><p>Initialization of the EM for a particular subset.</p> <p>
+                   (default) or it is not present nothing is done.</p></td></tr><tr valign="top"><td><code>usepriorSol</code></td><td><p><p>Initialization of the EM for a particular subset.</p> <p>
                    boolean. If bands.usepriorSol is true, we initialize
                    the EM algorithm for one of the bands.nsamp subsets
                    with the solution which has been found with real data,
@@ -367,58 +365,69 @@ Bands k=6
                        kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
                        vector of length(n) containing the containinig the
                        assignment of each unit obtained when alpha=0.1.</p> <p>
-                       Elements equal to zero denote unassigned units.</p></p></td></tr><tr valign="top"><td><code>CTL</code></td><td><p>matrix of size length(kk)-by-length(alpha)
+                       Elements equal to zero denote unassigned units.</p></p></td></tr><tr valign="top"><td><code>CTL</code></td><td><p><p>matrix of size length(kk)-by-length(alpha)
                        containing the values of the trimmed likelihood
-                       curves for each value of k and each value of alpha.</p></td></tr><tr valign="top"><td><code>BandsCTL</code></td><td><p>3D array of size
+                       curves for each value of k and each value of alpha.</p> <p>
+                       This output (and all the other output below which
+                       start with CTL) are present only if input option
+                       bands is true or is a struct. All the other fields
+                       belo</p></p></td></tr><tr valign="top"><td><code>CTLbands</code></td><td><p>3D array of size
                        length(kk)-by-length(alpha)-by-nsimul containing
-                       the nsimul replicates of out.CTL. This output is
-                       present only if input option bands is true or is a
-                       struct.</p></td></tr><tr valign="top"><td><code>likLB</code></td><td><p>matrix of size length(kk)-by-length(alpha)
+                       the nsimul replicates of out.CTL.</p></td></tr><tr valign="top"><td><code>CTLlikLB</code></td><td><p>matrix of size length(kk)-by-length(alpha)
                        containing the lower confidence bands of the
                        trimmed likelihood curves for each value of k and
-                       each value of alpha. This output is present only if
-                       input option bands is true or is a struct.</p></td></tr><tr valign="top"><td><code>likUB</code></td><td><p>matrix of size length(kk)-by-length(alpha)
+                       each value of alpha.</p></td></tr><tr valign="top"><td><code>CTLlikUB</code></td><td><p>matrix of size length(kk)-by-length(alpha)
                        containing the upper confidence bands of the
                        trimmed likelihood curves for each value of k and
-                       each value of alpha. This output is present only if
-                       input option bands is true or is a struct.</p></td></tr><tr valign="top"><td><code>lik050</code></td><td><p>matrix of size length(kk)-by-length(alpha)
+                       each value of alpha. T</p></td></tr><tr valign="top"><td><code>CTLlik050</code></td><td><p>matrix of size length(kk)-by-length(alpha)
                        containing the central confidence bands of the
                        trimmed likelihood curves for each value of k and
-                       each value of alpha. This output is present only if
-                       input option bands is true or is a struct.</p></td></tr><tr valign="top"><td><code>idx</code></td><td><p>n-by-1 vector containing assignment of each unit to
-                       each of the k groups in correspodence of
-                       Optimalalpha and OptimalK. Cluster names are
-                       integer numbers from 1 to k. 0 indicates trimmed
-                       observations. This output is present only if input
-                       option bands is true or is a struct.</p></td></tr><tr valign="top"><td><code>Optimalalpha</code></td><td><p>scalar, optimal value of trimming. This
-                       output is present only if optional input argument is
-                       true.</p></td></tr><tr valign="top"><td><code>OptimalK</code></td><td><p>scalar, optimal number of clusters, stored
-                        as a positive integer value. This output is present
-                       only if optional input argument is true.</p></td></tr><tr valign="top"><td><code>TentSol</code></td><td><p>matrix with size m-by-4. Details of the ordered
+                       each value of alpha.</p></td></tr><tr valign="top"><td><code>CTLtentSol</code></td><td><p>matrix with size m-by-4. Details of the ordered
                           solutions where there was intersection between
                           two consecutive trimmed likelihood curves. First
                           column contains the value of k, second column
                           the value of alpha, third column the index
                           associated to the best value of alpha, fourth
                           colum index associated with the best value of
-                          kk.</p></td></tr><tr valign="top"><td><code>pvalLRtest</code></td><td><p>table with size length(kk)-1-times-length(alpha)
+                          kk.</p></td></tr><tr valign="top"><td><code>CTLoptimalAlpha</code></td><td><p>scalar, optimal value of trimming.</p></td></tr><tr valign="top"><td><code>CTLoptimalK</code></td><td><p>scalar, optimal number of clusters, stored
+                        as a positive integer value.</p></td></tr><tr valign="top"><td><code>CTLoptimalIDX</code></td><td><p>n-by-1 vector containing assignment of each unit to
+                       each of the k groups in correspodence of
+                       OptimalAlpha and OptimalK. Cluster names are
+                       integer numbers from 1 to k. 0 indicates trimmed
+                       observations. The fields which follow which start
+                       with LRT refer to the likilhood ratio test</p></td></tr><tr valign="top"><td><code>LRTpval</code></td><td><p><p>table with size length(kk)-1-times-length(alpha)
                            which stores the relative frequency in which
                            the Likelihood ratio test is greater than the
-                           corresponding bootstrap test.</p></td></tr><tr valign="top"><td><code>TentSolLR</code></td><td><p>matrix with size m-by-6. Details of the ordered
+                           corresponding bootstrap test.</p> <p>
+                        as a positive integer value.</p></p></td></tr><tr valign="top"><td><code>LRTtentSol</code></td><td><p><p>matrix with size m-by-8. Details of the ordered
                           solutions using the likelihood ratio test. First
-                          column: the index number of the solution. Second
-                          column: the value of k. Third column: the value
-                          of alpha. Fourth column contains 1 if the
-                          p-value beyond the threshold is always above $k$
-                          shown in the second column for all $k^* &gt;k$ else
-                          it contains 0. Fourth and fifth columns contain
-                          the index numbers of optimal input values kk and
-                          alpha. Sixth column contains 1 in correspondence
-                          of the best solution for each value of k.</p></td></tr><tr valign="top"><td><code>TentSolLRt</code></td><td><p>table with size m-by-5 containing the same
-                        information of array  out.TentSolLR in table format.</p></td></tr><tr valign="top"><td><code>idxLR</code></td><td><p><p>matrix with size n-by-size(out.TentSolLR,1) with
+                          column (index): the index number of the
+                          solution. Second column (k): the value of k.</p> <p>
+                          Third column (alpha): the value of alpha. Fourth
+                          column (Truesol) contains 1 if the p-value
+                          beyond the threshold is always above $k$ shown
+                          in the second column for all $k^* &gt;k$ else it
+                          contains 0. Fifth and sixth columns (kindex and
+                          alphaindex) contain the index numbers of optimal
+                          input values kk and alpha. Seventh column
+                          (kbestGivenalpha) contains 1 in correspondence
+                          of the best solution for each value of k (given
+                          alpha). Eight column (ProperSize) contains 1 if
+                          the solution which has been found has a minimum
+                          group size which is greater than n*max(alpha).</p></p></td></tr><tr valign="top"><td><code>LRTtentSolt</code></td><td><p>table with size m-by-5 containing the same
+                        information of array  out.TentSolLR in table format.</p></td></tr><tr valign="top"><td><code>LRTtentSolIDX</code></td><td><p><p>matrix with size n-by-size(out.LRTtentSol,1) with
                         the allocation associated with the tentative
-                        solutions found in out.TentSolLR.</p> <p>
-                        First column refers to best solution ...</p></p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
+                        solutions found in out.LRTtentSol.</p> <p>
+                        First column refers to solution in row 1 of out.LRTtentSol ...</p></p></td></tr><tr valign="top"><td><code>LRToptimalAlpha</code></td><td><p>scalar, optimal value of trimming.</p></td></tr><tr valign="top"><td><code>LRToptimalK</code></td><td><p>scalar, optimal number of clusters, stored
+                        as a positive integer value.</p></td></tr><tr valign="top"><td><code>LRToptimalIDX</code></td><td><p>n-by-1 vector containing assignment of each unit to
+                       each of the k groups in correspodence of
+                       OptimalAlpha and OptimalK. Cluster names are
+                       integer numbers from 1 to k. 0 indicates trimmed
+                       observations. The fields which follow which start
+                       with LRT refer to the likelihood ratio test. The
+                       optimal solution is the first for which
+                       out.LRTtentSolt.kbestGivenalpha is 1 and
+                       out.LRTtentSolt.ProperSize is 1.</p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
                        components) which have been considered. This  vector
                        is equal to input optional argument kk if kk had been
                        specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>vector containing the values of the trimming
