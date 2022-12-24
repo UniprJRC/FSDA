@@ -1167,12 +1167,23 @@ if ComputeBands==true
     out.LRTtentSolt=LRTtentSolt;
     out.LRTtentSolIDX=LRTtentSolIDX;
 
-
     % Find  LRToptimalK, LRToptimalAlpha and LRToptimalIDX
-    indexBestSolLRT=find(LRTtentSol(:,7)==1 & LRTtentSol(:,8)==1);
-    LRToptimalK=LRTtentSol(indexBestSolLRT,2);
-    LRToptimalAlpha=LRTtentSol(indexBestSolLRT,3);
-    LRToptimalIDX=LRTtentSolIDX(:,indexBestSolLRT);
+    if ~isempty(LRTtentSol)
+        % Just in case there are multiple solutions take as optimal the one
+        % with the smallest alpha associated with a minimum group size
+        if size(LRTtentSol,1)>1
+            indexBestSolLRT=find(LRTtentSol(:,7)==1 & LRTtentSol(:,8)==1);
+        else
+            indexBestSolLRT=1;
+        end
+        LRToptimalK=LRTtentSol(indexBestSolLRT,2);
+        LRToptimalAlpha=LRTtentSol(indexBestSolLRT,3);
+        LRToptimalIDX=LRTtentSolIDX(:,indexBestSolLRT);
+    else
+        LRToptimalK=[];
+        LRToptimalAlpha=[];
+        LRToptimalIDX=[];
+    end
     out.LRToptimalK=LRToptimalK;
     out.LRToptimalAlpha=LRToptimalAlpha;
     out.LRToptimalIDX=LRToptimalIDX;
@@ -1272,7 +1283,6 @@ if ~isempty(TentSol) && TentSol(1,1)>0
 else
     TentSol=NaN;
 end
-
 
 if conv == 1
     idxOptimal=IDX{jk,jalpha};
