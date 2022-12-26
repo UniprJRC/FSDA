@@ -1170,9 +1170,15 @@ if ComputeBands==true
     % Find  LRToptimalK, LRToptimalAlpha and LRToptimalIDX
     if ~isempty(LRTtentSol)
         % Just in case there are multiple solutions take as optimal the one
-        % with the smallest alpha associated with a minimum group size
-        if size(LRTtentSol,1)>1
-            indexBestSolLRT=find(LRTtentSol(:,7)==1 & LRTtentSol(:,8)==1);
+        % with the smallest alpha associated with a minimum group size (if
+        % there is at least one soluzion which satisfies the minimum group
+        % size)
+        if size(LRTtentSol,1)>1 
+            if any(LRTtentSol(:,8))
+                indexBestSolLRT=find(LRTtentSol(:,7)==1 & LRTtentSol(:,8)==1);
+            else
+                indexBestSolLRT=1;
+            end
         else
             indexBestSolLRT=1;
         end
