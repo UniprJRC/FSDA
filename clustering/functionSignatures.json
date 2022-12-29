@@ -1,0 +1,246 @@
+{
+    "_schemaVersion": "1.0.0",
+
+    "_typedefs": {
+
+        "Bands": {
+
+            "purpose":"Struct defining confidence bands for the curves.",
+            "type":"struct",
+            "fields":[
+                {"name":"conflev", "type":["scalar", "real", ">=0", "1<="], "purpose":"scalar in the interval (0 1) which contains the confidence level of the bands."},
+                {"name":"nsamp", "type":"double", "purpose":"Number of subsamples to extract in the bootstrap replicates."},
+                {"name":"nsimul", "type":"double", "purpose":"number of replicates to use to create the confidence bands."},
+                {"name":"valSolution", "type":"logical", "purpose":"boolean which specifies if it is necessary to perform an outlier detection procedure on the components which have been found using optimalK and optimal alpha."},
+                {"name":"LRtest", "type":"logical", "purpose":"Likelihood ratio test."},
+                {"name":"usepriorSol", "type":"logical", "purpose":"Initialization of the EM for a particular subset."},
+                {"name":"outliersFromUniform", "type":"logical", "purpose":"way of generating the outliers in the bootstrap replicates."},
+                {"name":"nsimulExtra", "type":"double", "purpose":"number of replicates to use to compute the empirical pvalue of LRtest if multiple solutions are found given a value of alpha"},
+                {"name":"nsampExtra", "type":"double", "purpose":"number of subsamples to extract in each replicate to compute the empirical pvalue of LRtest if multiple solutions are found given a value of alpha"},
+                {"name":"usepriorSolExtra", "type":"logical", "purpose":"Initialization of the EM for particular subset."}
+            ]
+        },
+
+        "TkmeansOpt": {
+
+            "purpose":"tkmeans optional arguments.",
+            "type":"struct",
+            "fields": [
+                {"name":"nsamp", "type":["double", "integer"], "purpose":"Number of subsamples"},
+                {"name":"refsteps", "type":"double", "purpose":"Number of iterations."},
+                {"name":"reftol", "type":["double", "scalar"], "purpose":"Tolerance."},
+                {"name":"weights", "type":["double", "integer"], "purpose":"Cluster weights."},
+                {"name":"plots", "type":[["single"], ["double"], ["char", "choices={'contourf', 'contour', 'ellipse', 'boxplotb'}"]], "purpose":"Plot on the screen."},
+                {"name":"msg", "type":["double", "scalar"], "purpose":"Message on the screen."},
+                {"name":"nocheck", "type":["double", "scalar"], "purpose":"Check input."},
+                {"name":"nomes", "type":["double", "scalar"], "purpose":"Estimated time message."},
+                {"name":"Ysave", "type":["double", "scalar"], "purpose":"Saving Y."}
+            ]
+        },
+
+        "Pa": {
+
+            "purpose":"structure defining constraints to apply and model specification.",
+            "type":"struct",
+            "fields": [
+                {"name":"pars", "type":["char"], "purpose":"type of Gaussian Parsimonious Clustering Model."},
+                {"name":"exactrestriction", "type":"logical", "default":"'false'", "purpose":"If pa.exactrestriction is true the covariance matrices have to be generated with the exact values of the restrictions specified in pa.cdet, pa.shw and pa.swb."},
+                {"name":"cdet", "type":["numeric", "scalar", ">=1"], "purpose":"specifies the the restriction which has to be applied to the determinants."},
+                {"name":"shw", "type":["numeric", "scalar", ">=1"], "purpose":"specifies the the restriction which has to be applied to the elements of the shape matrices inside each group."},
+                {"name":"shb", "type":["numeric", "scalar", ">=1"], "purpose":"specifies the restriction which has to be applied to the ordered elements of the shape matrices across groups."}
+            ]
+        },
+
+        "Sph": {
+
+            "purpose":"Spherical covariances.",
+            "type":"struct",
+            "fields": [
+                {"name":"pars", "type":["char"], "purpose":"type of Gaussian Parsimonious Clustering Model."},
+                {"name":"exactrestriction", "type":"logical", "default":"'false'", "purpose":"If pa.exactrestriction is true the covariance matrices have to be generated with the exact values of the restrictions specified in sph.cdet, sph.shw and sph.swb."},
+                {"name":"cdet", "type":["numeric", "scalar"], "purpose":"specifies the the restriction which has to be applied to the determinants."},
+                {"name":"shw", "type":["numeric", "scalar"], "purpose":"specifies the the restriction which has to be applied to the elements of the shape matrices inside each group."},
+                {"name":"shb", "type":["numeric", "scalar"], "purpose":"specifies the restriction which has to be applied to the ordered elements of the shape matrices across groups."}
+            ]
+        }
+    },
+
+    "ClusterRelabel":
+    {
+        "inputs":
+        [
+            {"name":"IDX", "kind":"required", "type":"cell", "purpose":"Assignment of units to groups for different values of c (restriction factor) and k (number of groups)."},
+            {"name":"pivotunits", "kind":"required", "type":["numeric", "integer", "vector"], "purpose":"list of the units which must (whenever possible) have the same label." }
+        ],
+
+        "outputs":
+        [
+            {"name":"IDXrelabelled", "type":"cell", "purpose":"cell with the same size as input cell IDX and withthe same meaning of input cell IDX but with consistent labels."},
+            {"name":"idxMapping", "type":"double", "purpose":"indexes of the permutations associated with IDX{1,1}."}
+        ]
+    },
+
+    "ctlcurves":
+    {
+        "inputs":
+        [
+            {"name":"Y", "kind":"required", "type":"double", "purpose":"Data matrix containing n observations on v variables, Rows of Y represent observations, and columns represent variables."},
+            {"name":"alpha", "kind":"namevalue", "type":["double", "vector"], "purpose":"Vector which specifies the values of trimming levels which have to be considered."},
+            {"name":"bands", "kind":"namevalue", "type":[["logical"], ["struct:Bands"]], "purpose":"confidence bands for the curves."},
+            {"name":"kk", "kind":"namevalue", "type":[["int16"], ["int32"], ["single"], ["double"]], "purpose":"number of mixture components."},
+            {"name":"cshape", "kind":"namevalue", "type":[["single", ">=1"], ["double", ">=1"]], "purpose":"constraint to apply to each of the shape matrices."},
+            {"name":"equalweights", "kind":"namevalue", "type":"logical", "purpose":"cluster weights in the concentration and assignment steps."},
+            {"name":"msg", "kind":"namevalue", "type":"logical", "purpose":"display or not messages about code execution."},
+            {"name":"mixt", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Mixture modelling or crisp assignment."},
+            {"name":"nocheck", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Check input arguments."},
+            {"name":"nsamp", "kind":"namevalue", "type":"double", "purpose":"number of subsamples to extract."},
+            {"name":"refsteps", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Number of refining iterations."},
+            {"name":"reftol", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Default value of tolerance for the refining steps."},
+            {"name":"restrfactor", "kind":"namevalue", "type":["double", "positive"], "purpose":"Restriction factor."},
+            {"name":"restrtype", "kind":"namevalue", "type":["char", "choices={'eigen', 'deter'}"], "default":"'eigen'", "purpose":"type of restriction."},
+            {"name":"startv1", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"define how to initialize centroids and cov matrices."},
+            {"name":"cleanpool", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"determines if the parallel pool has to be cleaned after the execution of the routine."},
+            {"name":"numpool", "kind":"namevalue", "type":"double", "purpose":"number of pools for parellel computing."},
+            {"name":"plots", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Plot on the screen."},
+            {"name":"Ysave", "kind":"namevalue", "type":"logical", "purpose":"save input matrix."}
+        ]
+    },
+
+    "dempk":
+    {
+        "inputs":
+        [
+            {"name":"Y", "kind":"required", "type":[["single", "integer"], ["double", "integer"]], "purpose":"Input data."},
+            {"name":"k", "kind":"required", "type":[["single"], ["double"]], "purpose":"Number of components searched by tkmeans algorithm."},
+            {"name":"g", "kind":"required", "type":[["single"], ["double"]], "purpose":"Merging rule."},
+            {"name":"alpha", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Global trimming level."},
+            {"name":"plots", "kind":"namevalue", "type":[["single"], ["double"], ["char", "choices={'contourf', 'contour', 'ellipse', 'boxplotb'}"]], "purpose":"Plot on the screen."},
+            {"name":"tkmeansOpt", "kind":"namevalue", "type":"struct:TkmeansOpt", "purpose":"tkmeans optional arguments."},
+            {"name":"tkmeansOut", "kind":"namevalue", "type":[["single"], ["double"]], "default":"0", "purpose":"Saving tkmeans output structure."},
+            {"name":"linkagearg", "kind":"namevalue", "type":["char", "choices={'single', 'average', 'centroid', 'complete', 'median', 'ward', 'weighted'}"], "default":"'single'", "purpose":"Linkage used."},
+            {"name":"Ysave", "kind":"namevalue", "type":"double", "purpose":"Saving Y."}
+        ]
+    },
+
+    "FSMmmdrs":
+    {
+        "inputs":
+        [
+            {"name":"Y", "kind":"required", "type":[["single"], ["double"]], "purpose":"Input data."},
+            {"name":"init", "kind":"namevalue", "type":"double", "purpose":"specifies the point where to initialize the search and start monitoring the required diagnostics."},
+            {"name":"bsbsteps", "kind":"namevalue", "type":"double", "purpose":"vector which specifies for which steps of the fwd search it is necessary to save the units forming subset for each random start."},
+            {"name":"nsimul", "kind":"namevalue", "type":["double", "scalar"], "purpose":"number of random starts."},
+            {"name":"nocheck", "kind":"namevalue", "type":["double", "scalar"], "default":"0", "purpose":"It controls whether to perform checks on matrix Y."},
+            {"name":"plots", "kind":"namevalue", "type":["double", "scalar"], "default":"0", "purpose":"If equal to one a plot of random starts minimum Mahalanobis residual appears  on the screen with 1%, 50% and 99% confidence bands"},
+            {"name":"numpool", "kind":"namevalue", "type":["numeric", "scalar"]},
+            {"name":"cleanpool", "kind":"namevalue", "type":["numeric", "scalar"], "default":"0", "purpose":"determines if the parallel pool has to be cleaned after the execution of the random starts."},
+            {"name":"msg", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Scalar which controls whether to display or not messages about random start progress."}
+        ]
+    },
+
+    "FSRmdrrs":
+    {
+        "inputs":
+        [
+            {"name":"y", "kind":"required", "type":["numeric", "vector"], "purpose":"Response variable."},
+            {"name":"X", "kind":"required", "type":"numeric", "purpose":"Predictor variables."},
+            {"name":"init", "kind":"namevalue", "type":"double", "purpose":"Search initialization."},
+            {"name":"intercept", "kind":"namevalue", "type":"double", "default":"1", "purpose":"Indicator for constant term."},
+            {"name":"bsbsteps", "kind":"namevalue", "type":[["numeric", "scalar"], ["numeric", "vector"]], "purpose":"Save the units forming subsets."},
+            {"name":"nsimul", "kind":"namevalue", "type":["double", "scalar"], "purpose":"number of random starts."},
+            {"name":"nocheck", "kind":"namevalue", "type":["double", "scalar"], "default":"0", "purpose":"Check input arguments."},
+            {"name":"constr", "kind":"namevalue", "type":["double", "vector"], "purpose":"Constrained search."},
+            {"name":"plots", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Plot on the screen."},
+            {"name":"numpool", "kind":"namevalue", "type":"double", "purpose":"use parallel computing and parfor."},
+            {"name":"cleanpool", "kind":"namevalue", "type":"logical", "purpose":"clean pool after execution."},
+            {"name":"msg", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Scalar which controls whether to display or not messages about random start progress."},
+            {"name":"internationaltrade", "kind":"namevalue", "type":"logical", "default":"'false'", "purpose":"criterion for updating subset."}
+        ]
+    },
+
+    "genSigmaGPCM":
+    {
+        "inputs":
+        [
+            {"name":"v", "kind":"required", "type":["numeric", "scalar"], "purpose":"number of dimensions (variables)."},
+            {"name":"k", "kind":"required", "type":["numeric", "scalar"], "purpose":"number of groups (components)."},
+            {"name":"pa", "kind":"required", "type":"struct:Pa", "purpose":"Constraints to apply and model specification."}
+        ]
+    },
+
+    "GowerIndex":
+    {
+        "inputs":
+        [
+            {"name":"Y", "kind":"required", "type":[["double"], ["single"]], "purpose":"Input data."},
+            {"name":"l", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"type of variable."}
+        ],
+
+        "outputs":
+        [
+            {"name":"S", "type":"double", "purpose":"matrix with Gower similarity coefficients."},
+            {"name":"Stable", "type":"double", "purpose":"matrix with Gower similarity coefficients in table format."}
+        ]
+    },
+
+    "lga":
+    {
+
+        "inputs":
+        [
+            {"name":"X", "kind":"required", "type":"double", "purpose":"input data matrix."},
+            {"name":"k", "kind":"required", "type":["numeric", "scalar"], "purpose":"number of clusters."},
+            {"name":"biter", "kind":"namevalue", "type":["double", "integer"], "purpose":"Hyperplane number."},
+            {"name":"niter", "kind":"namevalue", "type":["double", "positive", "integer"], "purpose":"Number of iterations."},
+            {"name":"showall", "kind":"namevalue", "type":"logical", "purpose":"Type of display."},
+            {"name":"stand", "kind":"namevalue", "type":"logical", "purpose":"Data standardization."},
+            {"name":"silent", "kind":"namevalue", "type":"logical", "purpose":"Text ouptut."},
+            {"name":"plots", "kind":"namevalue", "type":["double", "scalar"], "purpose":"plot on the screen."}
+        ]
+    },
+
+    "MixSim":
+    {
+
+        "inputs":
+        [
+            {"name":"k", "kind":"required", "type":["numeric", "scalar"], "purpose":"number of groups (components)."},
+            {"name":"v", "kind":"required", "type":["numeric", "scalar"], "purpose":"number of dimensions"},
+            {"name":"BarOmega", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Requested average overlap."},
+            {"name":"MaxOmega", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Requested maximum overlap."},
+            {"name":"StdOmega", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Requested std of overlap."},
+            {"name":"sph", "kind":"namevalue", "type":["struct:Sph"], "purpose":"Spherical covariances."},
+            {"name":"PiLow", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Smallest mixing proportion."},
+            {"name":"int", "kind":"namevalue", "type":["double", "vector"], "purpose":"Simulation interval of mean vectors."},
+            {"name":"resN", "kind":"namevalue", "type":["double", "scalar"], "purpose":"number of simulations."},
+            {"name":"tol", "kind":"namevalue", "type":["double", "vector"], "purpose":"Tolerances."},
+            {"name":"lim", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Precision in the calculation of probabilities of overlapping."},
+            {"name":"Display", "kind":"namevalue", "type":["char", "choices={'off', 'notify', 'iter'}"], "default":"'notify", "purpose":"Level of display."},
+            {"name":"R_seed", "kind":"namevalue", "type":"double", "purpose":"use random numbers from R."}
+        ]
+    },
+
+    "MixSim":
+    {
+
+        "inputs":
+        [
+            {"name":"k", "kind":"required", "type":["numeric", "scalar"], "purpose":"number of groups (components)."},
+            {"name":"v", "kind":"required", "type":["numeric", "scalar"], "purpose":"number of dimensions"},
+            {"name":"BarOmega", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Requested average overlap."},
+            {"name":"MaxOmega", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Requested maximum overlap."},
+            {"name":"StdOmega", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Requested std of overlap."},
+            {"name":"sph", "kind":"namevalue", "type":"logical", "purpose":"Spherical covariances."},
+            {"name":"hom", "kind":"namevalue", "type":"logical", "purpose":"Equal Sigmas."},
+            {"name":"ecc", "kind":"namevalue", "type":["double", "scalar"], "purpose":"maximum eccentricity."},
+            {"name":"restrfactor", "kind":"namevalue", "type":["double", "scalar"], "purpose":"eigenvalue restriction factor."},
+            {"name":"PiLow", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Smallest mixing proportion."},
+            {"name":"int", "kind":"namevalue", "type":["double", "vector"], "purpose":"Simulation interval of mean vectors."},
+            {"name":"resN", "kind":"namevalue", "type":["double", "scalar"], "purpose":"number of simulations."},
+            {"name":"tol", "kind":"namevalue", "type":["double", "vector"], "purpose":"Tolerances."},
+            {"name":"lim", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Precision in the calculation of probabilities of overlapping."},
+            {"name":"Display", "kind":"namevalue", "type":["char", "choices={'off', 'notify', 'iter'}"], "default":"'notify", "purpose":"Level of display."},
+            {"name":"R_seed", "kind":"namevalue", "type":"double", "purpose":"use random numbers from R."}
+        ]
+    }
+}
