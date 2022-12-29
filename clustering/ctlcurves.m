@@ -138,10 +138,10 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
 %
-%       msg  :  Message on the screen. Scalar. Scalar which controls whether
+%       msg  :  Message on the screen. Boolean. Boolean which controls whether
 %               to display or not messages about code execution.
-%                 Example - 'msg',1
-%                 Data Types - single | double
+%                 Example - 'msg',false
+%                 Data Types - logical
 %
 %       mixt  : Mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
@@ -581,7 +581,7 @@ restr='eigen';
 plots=1;
 nsamp=500;
 kk=1:5;
-msg=1;
+msg=true;
 alphaTrim=0:0.02:0.10;
 
 cleanpool=false;
@@ -718,7 +718,7 @@ for k=1:lkk  % loop for different values of k (number of groups)
         CTLVal(k,j) = outtc.obj;
 
     end
-    if msg==1
+    if msg==true
         disp(['k=' num2str(seqk)])
     end
 end
@@ -851,7 +851,7 @@ if ComputeBands==true
 
         end
 
-        if msg==1
+        if msg==true
             disp(['Bands k=' num2str(seqk)])
         end
 
@@ -888,8 +888,8 @@ if ComputeBands==true
                 idxkplus1j=[];
             end
 
-            parfor (zz = 1:nsimul, numpool)
-                %   for zz = 1:nsimul
+            % parfor (zz = 1:nsimul, numpool)
+                  for zz = 1:nsimul
                 if outliersFromUniform == true
                     [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
                     if size(Ysim,1)<n
