@@ -3,21 +3,16 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.6.4';
+newVersion = '8.5.34';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='spmplot now accepts as classification variable a string array or a categorical array';
-
-% Additional comment to add
-% aa='<a href="http://rosa.unipr.it/FSDA/release_notes.html">For more details see page Release notes</a> '
-
+commentRelease='Added new datasets';
 
 % Specify folder where to create the project
 FSDAProjFolder='D:\tmp';
 
 % Specify name of the file which will contain the project
-ProjectFileName='FSDAproject.prj';
-
+% ProjectFileName='FSDAproject.prj';
 % If for examples FSDAProj is D:\tmp  This file will create:
 % D:\tmp\FSDAproject.prj
 % D:\tmp\ToolboxPackagingConfiguration.prj
@@ -65,17 +60,17 @@ end
 
 % Check if ToolboxPackagingConfiguration.prj exists
 % If the answer is yes delete it in order to start from scratch
-if isfile('ToolboxPackagingConfiguration.prj') == true
-    delete('ToolboxPackagingConfiguration.prj')
-end
+% if isfile('ToolboxPackagingConfiguration.prj') == true
+%     delete('ToolboxPackagingConfiguration.prj')
+% end
 
 % Create the project inside FSDAProjFolder
 % File  Blank_project.prj   will be created
-FSDAproj = matlab.project.createProject(FSDAProjFolder);
+% FSDAproj = matlab.project.createProject(FSDAProjFolder);
 % Rename file  Blank_project.prj  into ProjectFileName
-movefile('Blank_project.prj',ProjectFileName)
+% movefile('Blank_project.prj',ProjectFileName)
 % Label the project (before was "blank_project")
-FSDAproj.Name = "FSDA (Flexible Statistics Data Analysis)";
+Name = "FSDA (Flexible Statistics Data Analysis)";
 
 %% CLONE FROM GIT
 % Clone from github repo
@@ -180,7 +175,7 @@ delete([FSroot fsep 'requirements.txt'])
 %% Add files to project
 % Add all files to the project which are inside folder FSDA
 % and subfolders
-addFolderIncludingChildFiles(FSDAproj,FSroot);
+% addFolderIncludingChildFiles(FSDAproj,FSroot);
 
 % Check that for example file addFSDA2path.m in the main folder of FSDA has
 % been added
@@ -226,6 +221,7 @@ path(oldpath);
 
 %% Add FSDA paths to the project
 pt=cell(15,1);
+FSroot=FSDAroot;
 pt{1}=FSroot;
 pt{2}=[FSroot fsep 'multivariate'];
 pt{3}= [FSroot fsep 'regression'];
@@ -242,37 +238,93 @@ pt{13}= [FSroot fsep 'utilities_help'];
 pt{14}= [FSroot fsep 'examples'];
 pt{15}= [FSroot fsep 'FSDAdemos'];
 
-for i=1:length(pt)
-    folderonpath = addPath(FSDAproj,pt{i});
-end
+%for i=1:length(pt)
+%    folderonpath = addPath(FSDAproj,pt{i});
+%end
+
+
 
 %% Run dependency analyzer
-updateDependencies(FSDAproj);
+% updateDependencies(FSDAproj);
 
 
 %% Copy file ToolboxPackagingConfiguration.prj into FSDAProjFolder (current folder)
-copyfile([FSDAroot fsep 'utilities_help' fsep 'ToolboxPackagingConfiguration.prj'],FSDAProjFolder)
+%copyfile([FSDAroot fsep 'utilities_help' fsep 'ToolboxPackagingConfiguration.prj'],FSDAProjFolder)
 
 %% Set release compatibility in ToolboxPackagingConfiguration.prj file
-setToolboxStartEnd('ToolboxPackagingConfiguration.prj')
+%setToolboxStartEnd('ToolboxPackagingConfiguration.prj')
 
-%% Publish contents file in the root inside subfolder html
+% OPTS = MATLAB.ADDONS.TOOLBOX.TOOLBOXOPTIONS(PROJECTFILE)
+uuid = '8-5-34';
+toolboxFolder = FSDAroot;
+% FSDAprojFile = "D:\tmp\FSDAproject.prj";
+
+options = matlab.addons.toolbox.ToolboxOptions(toolboxFolder, uuid);
+
+% add FSDA paths
+options.ToolboxMatlabPath=pt;
+% toolbox name
+options.ToolboxName = "FSDA";
+% toolbox version
+options.ToolboxVersion=newVersion;
+% Detailed description of the toolbox.
+options.Description="Flexible Statistics and Data Analysis (FSDA) extends MATLAB for " + ...
+    "a robust analysis of data sets affected by different sources of heterogeneity. " + ...
+    "It is open source software licensed under the European Union Public Licence (EUPL). " + ...
+    "FSDA is a joint project by the University of Parma and the Joint Research Centre " + ...
+    "of the European Commission."; 
+
+% Summary description of the toolbox
+options.Summary="Flexible Statistics Data Analysis Toolbox";
+% Name of toolbox author.
+options.AuthorName= "Marco Riani";
+
+% Email address of the toolbox author.
+options.AuthorEmail = "FSDA@unipr.it";
+
+% Name of company that created the toolbox.
+options.AuthorCompany = "University of Parma (UNIPR) and Joint Research Centre of the " + ...
+    "European Commission(JRC).";
+
+ 
+% architecture support
+options.PlatformSupports.Win64 = true;
+options.PlatformSupports.Maci64 = true;
+options.PlatformSupports.Glnxa64 = true;
+options.PlatformSupports.MatlabOnline = true;
+
+% version compatibility
+options.MinimumMatlabRelease = 'R2017b';
+options.MaximumMatlabRelease = '';
+
+% Big logo
+options.ToolboxImage=[FSroot fsep 'logoblue.jpg'];
+
+% getting startup file
+options.ToolboxGettingStartedGuide=[FSroot fsep 'doc' fsep 'GettingStarted.mlx'];
+
+%%% Publish contents file in the root inside subfolder html
 % This instruction is necessary in order to display subfolder examples in
 % Mathworks web site
-publish([FSDAroot filesep 'Contents.m']);
+%publish([pwd filesep 'FSDA' fsep 'Contents.m']);
+
+% build the toolboxclear all
+matlab.addons.toolbox.packageToolbox(options);
+
+
 
 %% Package toolbox and create file FSDA.mltbx
 
-toolboxFile = 'ToolboxPackagingConfiguration.prj';
+%toolboxFile = 'ToolboxPackagingConfiguration.prj';
 
 % set the version number
-previousVersion = matlab.addons.toolbox.toolboxVersion(toolboxFile,newVersion);
+%previousVersion = matlab.addons.toolbox.toolboxVersion(toolboxFile,newVersion);
 
-outputFile ='FSDA.mltbx';
-matlab.addons.toolbox.packageToolbox(toolboxFile, outputFile)
+%outputFile ='FSDA.mltbx';
+%matlab.addons.toolbox.packageToolbox(toolboxFile, outputFile)
 
 %% Close the project
-close(FSDAproj)
+% close(FSDAproj)
 
 % Open project
 % FSDAproj = openProject(FSDAProjFolder);
