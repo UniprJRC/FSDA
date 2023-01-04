@@ -41,21 +41,21 @@ function out=pcaFS(Y,varargin)
 %                   Example - 'standardize',false
 %                   Data Types - boolean
 %
-%      plots     : plots on the screen. boolean. If plots is true (default) it is
+%      plots     : plots on the screen. Scalar. If plots is 1 (default) it is
 %                   possible to show on the screen the scree plot of the
 %                   variance explained, the plot of the loadings for the
 %                   first two PCs.
-%                   Example - 'plots',false
-%                   Data Types - boolean
+%                   Example - 'plots',0
+%                   Data Types - double
 %
-%     biplot     : launch app biplotFS. boolean. If biplot is true
+%     biplot     : launch app biplotFS. Scalar. If biplot is 1
 %                   (default) app biplotFS is automatically launched. With
 %                   this app it is possible to show in a dynamic way the
 %                   rows points (PC coordinates), the arrows, the row
 %                   labels and control with a scrolling bar the length of
 %                   the arrows and the spread of row points.
-%                   Example - 'biplot',false
-%                   Data Types - boolean
+%                   Example - 'biplot',0
+%                   Data Types - double
 %
 %
 %  dispresults   : show the results in the command window. If dispresults
@@ -151,15 +151,15 @@ function out=pcaFS(Y,varargin)
     %% use of pcaFS on the ingredients dataset.
     load hald
     % Operate on the covariance matrix.
-    out=pcaFS(ingredients,'standardize',false,'biplot',false);
+    out=pcaFS(ingredients,'standardize',false,'biplot',0);
 %}
 
 
 %% Beginning of code
 [n,v]=size(Y);
-plots=true;
+plots=1;
 standardize=true;
-biplot=true;
+biplot=1;
 dispresults=true;
 NumComponents=[];
 
@@ -314,7 +314,7 @@ if dispresults == true
     format short
 end
 
-if plots==true
+if plots==1
     
     %% Explained variance through Pareto plot
     figure('Name','Explained variance')
@@ -347,7 +347,7 @@ if plots==true
         title(['Correlations  with PC' num2str(i)])
     end
 end
-if biplot==true
+if biplot==1
     biplotAPP(Ztable,'standardize',standardize)
 end
 
