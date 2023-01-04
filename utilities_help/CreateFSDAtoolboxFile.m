@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.6.6';
+newVersion = '8.6.7';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='json files added for automatic description';
+commentRelease='json files added in additional folders';
 
 % Additional comment to add
 % aa='<a href="http://rosa.unipr.it/FSDA/release_notes.html">For more details see page Release notes</a> '
