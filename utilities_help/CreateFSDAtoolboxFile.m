@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.6.4';
+newVersion = '8.6.7';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='spmplot now accepts as classification variable a string array or a categorical array';
+commentRelease='json files added in additional folders';
 
 % Additional comment to add
 % aa='<a href="http://rosa.unipr.it/FSDA/release_notes.html">For more details see page Release notes</a> '
