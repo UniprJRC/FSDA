@@ -244,7 +244,14 @@ switch notherfigs
         displacements = 20*ones(notherfigs,notherfigs).*repmat((0:notherfigs-1)',1,notherfigs);
         posotherfigs = [scrwidth-(scrwidth/3) scrheight-scrheight/3 scrwidth/3 scrheight/3];
         posotherfigs = repmat(posotherfigs,notherfigs,1);
+        
+        if size(posotherfigs,2)<notherfigs
+            notherfigs=size(posotherfigs,2);
+            displacements=displacements(:,1:notherfigs);
+        end
+
         posotherfigs(:,1:notherfigs) = posotherfigs(:,1:notherfigs) - displacements;
+    
         cposotherfigs=num2cell(posotherfigs,2);
         % repositioning can be done just for figures and not for UIfigures
         % Given that instruction below is only supported from 2018b
