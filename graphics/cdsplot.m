@@ -39,12 +39,6 @@ function cdsplot(outms,varargin)
 %
 % Optional input arguments:
 %
-% CandleWidth: width. Scalar. Scalar defining the width of the boxes which
-%              represent central part of the candles. The default width is
-%              0.05.
-%                   Example - 'CandleWidth',0.1
-%                   Data Types - double
-%
 %      color : Color. Vector. Three elements color vector, [R G B], or a
 %              string specifying the color name. MATLAB supplies a default
 %              color if none is specified or if it is empty. The default
@@ -138,6 +132,13 @@ function cdsplot(outms,varargin)
 %              associated with the k models displayed in the candlestick
 %              plot.
 %                   Example - 'cpbrush',''
+%                   Data Types - double
+%
+% CandleWidth: width. Scalar. Scalar defining the width of the selection
+%              area in cpbrush.
+%              The default width is
+%              0.05.
+%                   Example - 'CandleWidth',0.1
 %                   Data Types - double
 %
 % Output:
