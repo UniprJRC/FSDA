@@ -1,6 +1,6 @@
-function augStarplot(X,obslabs,varlabs)
+function centers=augStarplot(X,obslabs,varlabs,BestSols)
 %augStarplot creates the Augmented star plot.
-% 
+%
 % This plot is useful to indicate which options are important in a particular
 % data analysis. The rays in individual plots
 % are of equal length for those features used in an analysis.
@@ -15,7 +15,7 @@ function augStarplot(X,obslabs,varlabs)
 %   obslabs : labels for each star. String array, character array or cell
 %             array of strings. Vector of length n containing the labels of
 %             the stars.
-% 
+%
 %   varlabs : labels for the spokes of each star. String array, character
 %             array or cell array of strings. Vector of length p containing
 %             the labels of each slike of each star.
@@ -23,6 +23,9 @@ function augStarplot(X,obslabs,varlabs)
 %
 
 %% Beginning of code
+% Create a figure to host the Augmented star plot
+h=figure;
+set(h,'Name', 'Augmented star plot', 'NumberTitle', 'off');
 
 if nargin < 1
     error(message('FSDA:augStarplot:TooFewInputs'));
@@ -78,19 +81,44 @@ end
 pagerows = 1:nglyphs;
 
 % Plot the grid of glyphs for the current page.
-plotStars(Xstd(pagerows,:),ctrx,ctry,radius,axesh,varlabs);
+centers=plotStars(Xstd(pagerows,:),ctrx,ctry,radius,axesh,varlabs);
 
 % Clipping 'on' sets the text to the axes boundaries
-texth = text(ctrx,ctry-1.1*radius,obslabs(pagerows),...
+cy=ctry-1.1*radius;
+
+% h_axes = get(gcf,'CurrentAxes');    %get axes handle.
+% axesoffsets = get(h_axes,'Position');%get axes position on the figure.
+% y_axislimits = get(gca, 'ylim');     %get axes extremeties.
+% x_axislimits = get(gca, 'xlim');     %get axes extremeties.
+%
+% %get axes length
+%
+% for i=1:length(ctrx)
+%     y_axislength_lin = abs(y_axislimits(2) - y_axislimits(1));
+%     x_axislength_lin = abs(x_axislimits(2) - x_axislimits(1));
+%     y1 = axesoffsets(2)+axesoffsets(4)*abs((cy(i)-y_axislimits(1))/y_axislength_lin);
+%     x1 = axesoffsets(1)+axesoffsets(3)*abs((ctrx(i)-x_axislimits(1))/x_axislength_lin);
+%
+%
+%     sp = uipanel('Parent',gcf,'Title','','FontSize',12,...
+%                   'Position',[x1 y1 .20 .25],'units','normalized');
+%
+%     leftAxis = axes(sp, 'Position', [0 0 1 1],'units','normalized');
+%     bar(leftAxis,BestSols{i,:})
+% end
+
+
+% add text to each star
+texth = text(ctrx,cy,obslabs(pagerows),...
     'Clipping','on', 'HorizontalAlignment','Center', ...
     'Parent',axesh);
 set(texth,'Tag','obs label');
 
-end 
+end
 
 
 % -----------------------------------------
-function plotStars(X,ctrx,ctry,radius,axesh,varlabs)
+function centers=plotStars(X,ctrx,ctry,radius,axesh,varlabs)
 %PLOTSTARS Plot a grid of stars.
 
 [n,p] = size(X);
@@ -109,15 +137,18 @@ spokesx = reshape(spokesx, [3*p n]);
 spokesy = cat(1, reshape(ctry,[1 p n]), reshape(tipy,[1 p n]), NaN(1,p,n));
 spokesy = reshape(spokesy, [3*p n]);
 
+mycolors=[1 0 0;  % red
+    0 0 1;   % blue
+    0 0 0;   % black
+    1 0 1;   % magenta
+    0.4660 0.6740 0.1880]; % dark green
+
+
 % The following line plots perimeter
 % plot(axesh, tipx([1:p 1],:), tipy([1:p 1],:),'-','Color',colors(1,:),'Visible','off', plotArgs{:});
-
+plot(axesh, tipx([1:p 1],:), tipy([1:p 1],:),'-', ...
+    'Color',mean(mycolors(:,:)),'Visible','on','LineWidth',2');
 hold('on')
-mycolors=[1 0 0;  % red
-          0 0 1;   % blue
-          0 0 0;   % black
-          1 0 1;   % magenta 
-          0.4660 0.6740 0.1880]; % dark green 
 for i=1:p
     plot(axesh, ...
         spokesx(i*3-2:i*3-1,:), spokesy(i*3-2:i*3-1,:), '-', ...
@@ -125,6 +156,9 @@ for i=1:p
 end
 % Add center
 plot(spokesx(1,:),spokesy(1,:),'o','MarkerFaceColor','b')
+
+% Store centers
+centers=[spokesx(1,:);spokesy(1,:)]';
 
 for j=1:n
     boo=abs(tipy(:,j)-spokesy(1,j))>1e-05 | abs(tipx(:,j)-spokesx(1,j));

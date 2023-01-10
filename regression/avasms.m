@@ -125,7 +125,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %  maxBestSol : criterion to define the maximum number of admissible
 %               solutions to show in the augmented star plot.
 %               positive integer scalar. The default value of maxBestSol is
-%                8 that is a maximum of 8 solutions is shown in the plot. 
+%                8 that is a maximum of 8 solutions is shown in the plot.
 %                Note that this is the upper bound among the set of the
 %                admissible solutions. If the number of admissible
 %                solutions is smaller than maxBestSol then this optional
@@ -566,7 +566,6 @@ else
     if plots==true
         % Create the augmented star plot to show the options used in the best
         % solutions
-        figure
         varlabs=BestSol.Properties.VariableNames(1:5);
         VALtadj=BestSol{:,1:5}.*BestSol{:,"ord"};
 
@@ -580,7 +579,9 @@ else
         maxSol=min([size(VALtadj,1),maxBestSol]);
 
         % call the augmented star plot
-        augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs)
+        testdata=BestSol(1:maxSol,6:9);
+        testdata{:,end}=testdata{:,end}/max(testdata{:,end});
+        augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs,testdata);
         set(gcf,'Tag','pl_augstar')
 
         % Create the heatmap of the correlation matrix of the best solutions
