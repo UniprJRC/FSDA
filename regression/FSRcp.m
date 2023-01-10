@@ -292,7 +292,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                   strings the list of models which are unacceptable.
 %                   LABout is created only if input option labout=1.
 %
-% See also: FSR, FSReda
+% See also: cdsplot, FSRms, FSR, FSReda
 %
 % References:
 %
