@@ -51,6 +51,38 @@
             ]
         },
 
+        "Pa_rdGPCM": {
+
+            "purpose":"constraining parameters",
+            "type":"struct",
+            "fields": [
+                {"name":"v", "type":["double", "scalar"], "purpose":"number of variables"},
+                {"name":"k", "type":["double", "scalar"], "purpose":"number of groups"},
+                {"name":"cdet", "type":"double", "purpose":"determinants constraint"}
+            ]
+        },
+
+        "Pa_rsGPCM": {
+            "purpose":"constraining parameters",
+            "type":"struct",
+            "fields": [
+                {"name":"pars", "type":["char"], "purpose":"type of Gaussian Parsimonious Clustering Model."},
+                {"name":"cdet", "type":["numeric", "scalar", ">=1"], "purpose":"specifies the the restriction which has to be applied to the determinants."},
+                {"name":"shw", "type":["numeric", "scalar", ">=1"], "purpose":"specifies the the restriction which has to be applied to the elements of the shape matrices inside each group."},
+                {"name":"shb", "type":["numeric", "scalar", ">=1"], "purpose":"specifies the restriction which has to be applied to the ordered elements of the shape matrices across groups."},
+                {"name":"maxiterS", "type":["numeric", "positive", "integer"], "purpose":"maximum number of iterations in presence of varying shape matrices"},
+                {"name":"maxiterR", "type":["numeric", "positive", "integer"], "purpose":"specifies the maximum number of iterations to obtain the common rotation matrix in presence of varying shape"},
+                {"name":"maxiterDSR", "type":["numeric", "positive", "integer"], "purpose":"specifies the maximum number of iterations to obtain the requested restricted determinants, shape matrices and rotation"},
+                {"name":"tolS", "type":["numeric", "scalar"], "purpose":"tolerance to use to exit the iterative procedure for estimating the shape"},
+                {"name":"zerotol", "type":["numeric", "scalar"], "purpose":"tolerance value to declare all input values equal to 0 in the eigenvalues restriction routine"},
+                {"name":"msg", "type":"logical", "purpose":"Message on the screen"},
+                {"name":"v", "type":["double", "scalar"], "purpose":"number of variables"},
+                {"name":"k", "type":["double", "scalar"], "purpose":"number of groups"},
+                {"name":"userepmat", "type":"numeric", "purpose":"use repmat, bsxfun or implicit expansion"},
+                {"name":"nocheck", "type":"logical", "purpose":"Check input"}
+            ]
+        },
+
         "Sph": {
 
             "purpose":"Spherical covariances.",
@@ -383,5 +415,132 @@
         ],
 
         "description":"Produces an interactive overlap map"
+    },
+
+    "restrdeter":
+    {
+
+        "inputs": 
+        [
+            {"name":"eigenvalues", "kind":"required", "type":"double", "purpose":"Eigenvalues"},
+            {"name":"niini", "kind":"required", "type":["double", "column"], "purpose":"Clusters size"},
+            {"name":"restr", "kind":"required", "type":[["double", "scalar"], ["double", "vector", "numel=2"]], "purpose":"Restriction factor"},
+            {"name":"tol", "kind":"namevalue", "type":["double", "scalar"], "purpose":"tolerance"},
+            {"name":"userepmat", "kind":"namevalue", "type":["double", "scalar"], "purpose":"use builtin repmat"}
+        ],
+
+        "description":"Computes determinant restriction"
+    },
+
+    "restrdeterGPCM":
+    {
+
+        "inputs":
+        [
+            {"name":"GAM", "kind":"required", "type":["double", "2d"], "purpose":"constrained shape matrix"},
+            {"name":"OMG", "kind":"required", "type":["double", "3d"], "purpose":"costrained rotation array"},
+            {"name":"SigmaB", "kind":"required", "type":"double", "purpose":"initial unconstrained covariance matrices"},
+            {"name":"niini", "kind":"required", "type":["double", "vector"], "purpose":"size of the groups"},
+            {"name":"pa", "kind":"required", "type":"struct:Pa_rdGPCM", "purpose":"constraining parameters"}
+        ],
+
+        "description":"Applies determinat restrictions for the 14 GPCM"
+    },
+
+    "restreigen":
+    {
+
+        "inputs":
+        [
+            {"name":"eigenvalues", "kind":"required", "type":"double", "purpose":"Eigenvalues"},
+            {"name":"niini", "kind":"required", "type":["double", "column"], "purpose":"Clusters size"},
+            {"name":"restr", "kind":"required", "type":["double", "scalar"], "purpose":"Restriction factor"},
+            {"name":"tol", "kind":"namevalue", "type":["double", "scalar"], "purpose":"tolerance"},
+            {"name":"userepmat", "kind":"namevalue", "type":["double", "scalar"], "purpose":"use repmat, bsxfun or implicit expansion"}
+        ],
+
+        "description":"computes eigenvalues restriction (without Dykstra algorithm)"
+    },
+
+    "restreigeneasy":
+    {
+
+        "inputs":
+        [
+            {"name":"eigenvalues", "kind":"required", "type":"double", "purpose":"Eigenvalues"},
+            {"name":"niini", "kind":"required", "type":["double", "column"], "purpose":"Clusters size"},
+            {"name":"restr", "kind":"required", "type":["double", "scalar"], "purpose":"Restriction factor"},
+            {"name":"tol", "kind":"namevalue", "type":["double", "scalar"], "purpose":"tolerance"}
+        ],
+
+        "description":"computes eigenvalues restriction (without Dykstra algorithm)"
+    },
+
+    "restreigenmemopt":
+    {
+
+        "inputs":
+        [
+            {"name":"eigenvalues", "kind":"required", "type":"double", "purpose":"Eigenvalues"},
+            {"name":"niini", "kind":"required", "type":["double", "column"], "purpose":"Clusters size"},
+            {"name":"restr", "kind":"required", "type":["double", "scalar"], "purpose":"Restriction factor"},
+            {"name":"tol", "kind":"namevalue", "type":["double", "scalar"], "purpose":"tolerance"},
+            {"name":"userepmat", "kind":"namevalue", "type":["double", "scalar"], "purpose":"use repmat, bsxfun or implicit expansion"}
+        ],
+
+        "description":"computes eigenvalues restriction (without Dykstra algorithm)"
+    },
+
+    "restrshapeExact":
+    {
+
+        "inputs":
+        [
+            {"name":"k", "kind":"required", "type":["double", "scalar"], "purpose":"number of groups"},
+            {"name":"v", "kind":"required", "type":["double", "scalar"], "purpose":"number of dimensions"},
+            {"name":"shw", "kind":"required", "type":["double", "scalar", ">=1"], "purpose":"within groups shape constraint"},
+            {"name":"shb", "kind":"required", "type":["double", "scalar", ">=1"], "purpose":"across groups shape constraint"},
+            {"name":"verLess2016b", "kind":"ordered", "type":"double", "purpose":"MATLAB version"}
+        ],
+
+        "description":"computes constrained Gamma (shape) matrix with exact constraints"
+    },
+
+    "restrshapeGPCM":
+    {
+
+        "inputs":
+        [
+            {"name":"lmd", "kind":"required", "type":["double", "vector"], "purpose":"Determinants"},
+            {"name":"Omega", "kind":"required", "type":["double", "3d"], "purpose":"Rotation"},
+            {"name":"SigmaB", "kind":"required", "type":"double", "purpose":"initial unconstrained covariance matrices"},
+            {"name":"niini", "kind":"required", "type":["double", "vector", "row"], "purpose":"size of the groups"},
+            {"name":"pa", "kind":"required", "type":"struct", "purpose":"constraining parameters"}
+        ],
+
+        "description":"produces the restricted shape matrix for the 14 GPCM"
+    },
+
+    "restrSigmaGPCM":
+    {
+
+        "inputs":
+        [
+            {"name":"SigmaB", "kind":"required", "type":["double", "single"], "purpose":"initial unconstrained covariance matrices"},
+            {"name":"niini", "kind":"required", "type":[["double", "vector", "row"], ["single", "vector", "row"]], "purpose":"size of the groups"},
+            {"name":"pa", "kind":"required", "type":"struct:Pa_rsGPCM", "purpose":"Constraints to apply and model specification"},
+            {"name":"lmd", "kind":"ordered", "type":["double", "vector"], "purpose":"determinants"},
+            {"name":"OMG", "kind":"ordered", "type":"double", "purpose":"rotation matrices"}
+        ],
+
+        "outputs":
+        [
+            {"name":"Sigma", "type":"double", "purpose":"constrained covariance matrices"},
+            {"name":"lmd", "type":["double", "vector"], "purpose":"restricted determinants"},
+            {"name":"OMG", "type":"double", "purpose":"constrained rotation matrices"},
+            {"name":"GAM", "type":["double", "2d"], "purpose":"constrained shape matrix"}
+        ],
+
+        "description":"computes constrained covariance matrices for the 14 GPCM specifications"
     }
 }
