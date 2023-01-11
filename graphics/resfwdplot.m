@@ -1482,7 +1482,7 @@ if ~isempty(datatooltip)
     hTarget=[];
     hTargetlwd=[];
     hTargetcol=[];
-    f=getfield(opengl('data'),'Software');
+    f=getfield(rendererinfo('data'),'Software');
     if ~f
         %chkgpu=gpuDevice; %#ok<NASGU>
         % datacursormode on;
