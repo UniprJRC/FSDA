@@ -50,12 +50,20 @@ function avasmsplot(BestSol,varargin)
 %  maxBestSol :  maximum number of admissible
 %               solutions to show in the augmented star plot.
 %               Missing or positive integer.
-%               if maxBestSol is missing all solutions inside input table 
+%               if maxBestSol is missing all solutions inside input table
 %               BestSol are shown in the augmented star plot.
 %               If maxBestSol is (say) 3, just the first 3 solutions
 %                are shown in in the augmented star plot.
 %           Example - 'maxBestSol',5
 %           Data Types - double
+%
+%   showBars  : show bars of labels. Boolean.  If showBars is true
+%               the values of R2, fraction of units used, pvalue of DW test
+%               and pval of normality test are shown with bars below each
+%               star, else (default) these values are shows using a
+%               textbox.
+%           Example - 'showBars',true
+%           Data Types - logical
 %
 %       tag     :    Personalized plot tag. String. String which identifies
 %                   the handle of the plot which
@@ -253,8 +261,9 @@ end
 maxBestSol=[];
 databrush='';
 tag='pl_augstarplot';
+showBars=false;
 options=struct('maxBestSol',maxBestSol,'tag',tag,...
-    'databrush',databrush);
+    'databrush',databrush,'showBars',showBars);
 
 if nargin > 1
     UserOptions=varargin(1:2:length(varargin));
@@ -273,14 +282,15 @@ if nargin > 1
     maxBestSol=options.maxBestSol;
     tag=options.tag;
     databrush=options.databrush;
+    showBars=options.showBars;
 end
 
-         % the maximum number of solutions to show is equalù
-         % to the rows of BestSol
+% the maximum number of solutions to show is equalù
+% to the rows of BestSol
 if isempty(maxBestSol)
     maxSol=size(BestSol,1);
 else
-        maxSol=min([size(BestSol,1),maxBestSol]);
+    maxSol=min([size(BestSol,1),maxBestSol]);
 end
 
 rowlabs="R2="+string(num2str(BestSol{:,"R2"},3))...
@@ -296,10 +306,14 @@ VALtadj=BestSol{1:maxSol,1:5}.*BestSol{1:maxSol,"ord"};
 % call the augmented star plot
 testdata=BestSol(1:maxSol,6:9);
 testdata{:,end}=testdata{:,end}/max(testdata{:,end});
-centers=augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs,testdata);
+if showBars==true
+    centers=augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs,testdata);
+else
+    centers=augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs);
+end
 
 set(gcf,'Tag',tag,'Name', 'Augmented star plot', 'NumberTitle', 'off')
-axis equal
+% axis equal
 
 
 %% Brush mode (call to function selectdataFS)

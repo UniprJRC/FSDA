@@ -30,6 +30,13 @@ set(h,'Name', 'Augmented star plot', 'NumberTitle', 'off');
 if nargin < 1
     error(message('FSDA:augStarplot:TooFewInputs'));
 end
+
+if nargin==4
+    showBars=true;
+else
+    showBars=false;
+end
+
 n = size(X,1);
 
 limX=[0 1];  % [min (max-min)] spoke length
@@ -85,33 +92,40 @@ centers=plotStars(Xstd(pagerows,:),ctrx,ctry,radius,axesh,varlabs);
 
 % Clipping 'on' sets the text to the axes boundaries
 cy=ctry-1.1*radius;
+h_axes = get(gcf,'CurrentAxes');    %get axes handle.
 
-% h_axes = get(gcf,'CurrentAxes');    %get axes handle.
-% axesoffsets = get(h_axes,'Position');%get axes position on the figure.
-% y_axislimits = get(gca, 'ylim');     %get axes extremeties.
-% x_axislimits = get(gca, 'xlim');     %get axes extremeties.
-%
-% %get axes length
-%
-% for i=1:length(ctrx)
-%     y_axislength_lin = abs(y_axislimits(2) - y_axislimits(1));
-%     x_axislength_lin = abs(x_axislimits(2) - x_axislimits(1));
-%     y1 = axesoffsets(2)+axesoffsets(4)*abs((cy(i)-y_axislimits(1))/y_axislength_lin);
-%     x1 = axesoffsets(1)+axesoffsets(3)*abs((ctrx(i)-x_axislimits(1))/x_axislength_lin);
-%
-%
-%     sp = uipanel('Parent',gcf,'Title','','FontSize',12,...
-%                   'Position',[x1 y1 .20 .25],'units','normalized');
-%
-%     leftAxis = axes(sp, 'Position', [0 0 1 1],'units','normalized');
-%     bar(leftAxis,BestSols{i,:})
-% end
+if showBars==true
+    axesoffsets = get(h_axes,'Position');%get axes position on the figure.
+    y_axislimits = get(gca, 'ylim');     %get axes extremeties.
+    x_axislimits = get(gca, 'xlim');     %get axes extremeties.
 
+    %get axes length
 
-% add text to each star
-texth = text(ctrx,cy,obslabs(pagerows),...
-    'Clipping','on', 'HorizontalAlignment','Center', ...
-    'Parent',axesh);
+    for i=1:length(ctrx)
+        y_axislength_lin = abs(y_axislimits(2) - y_axislimits(1));
+        x_axislength_lin = abs(x_axislimits(2) - x_axislimits(1));
+        y1 = axesoffsets(2)+axesoffsets(4)*abs((cy(i)-y_axislimits(1))/y_axislength_lin);
+        x1 = axesoffsets(1)+axesoffsets(3)*abs((ctrx(i)-x_axislimits(1))/x_axislength_lin);
+
+        sp = uipanel('Parent',gcf,'Title','','FontSize',12,...
+            'Position',[x1-0.1 y1-0.10 .20 .1],'units','normalized');
+
+        leftAxis = axes(sp, 'Position', [0 0 1 1],'units','normalized');
+        % The order is  R2       nused/n    pvalDW     pvalJB
+        bar(leftAxis,BestSols{i,[1 4 2 3]})
+        ylim([0 1])
+        texth = text(ctrx(i),cy(i)+0.1,['Sol' num2str(i)],...
+            'Clipping','on', 'VerticalAlignment','top', ...
+            'Parent',axesh);
+    end
+    % pause(0.1)
+else
+    % add text to each star
+    texth = text(ctrx,cy,obslabs(pagerows),...
+        'Clipping','on', 'HorizontalAlignment','Center', ...
+        'Parent',axesh);
+    axis(h_axes,'equal')
+end
 set(texth,'Tag','obs label');
 
 end
