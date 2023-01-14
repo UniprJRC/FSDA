@@ -28,8 +28,8 @@ fprintf(disp_string);</pre></div></div><pre class="codeoutput"> RAW NAME    |  
      Wilson  |         40  |         68  |        180  |        115  |         82  |  
       Moore  |         28  |         68  |        183  |        115  |         78  |  
      Taylor  |         31  |         66  |        132  |        118  |         86  |  
- </pre><a href='http://rosa.unipr.it/fsda/tabledisp.html#Example_1'><img vspace="5" hspace="5" src="images\tabledisp_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Dispay an array in a MATLAB annotation, with 6 digits of precision.</li></span></a></span></h3><div class="collapse"><p>
-     generate data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = randn(10,5);
+ </pre><a href='http://rosa.unipr.it/fsda/tabledisp.html#Example_1'><img vspace="5" hspace="5" src="images/tabledisp_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Dispay an array in a MATLAB annotation, with 6 digits of precision.</li></span></a></span></h3><div class="collapse"><p>
+     generate data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = 1000*randn(10,5);
 % and run tabledisp on them with the specification of the precision
 [latex_string , disp_string] = tabledisp(X,6);
 % This is to produce a latex table display in a figure
@@ -41,17 +41,17 @@ annotation(hf,'Textbox','String',latex_string,...
 % This is to display the table in the command window without disp
 fprintf(disp_string);</pre></div></div><pre class="codeoutput"> RAW NAME    |         T1  |         T2  |         T3  |         T4  |         T5  |  
 
-          1  |     1.2576  |   -0.74476  |   -0.99516  |    -1.6521  |     0.4236  |  
-          2  |    -0.6312  |   0.098491  |    0.47711  |   -0.87219  |   -0.63788  |  
-          3  |     1.1847  |     1.5016  |   -0.12363  |    -1.9042  |    0.43557  |  
-          4  |    -1.5978  |    0.30936  |   -0.54981  |    0.72029  |    -0.6593  |  
-          5  |    0.98761  |    0.70745  |   0.047755  |   -0.46666  |    0.52187  |  
-          6  |   -0.55319  |    -1.5613  |   -0.40608  |    0.43361  |   -0.58715  |  
-          7  |    0.59873  |     0.5241  |   -0.67477  |    0.00715  |   -0.12418  |  
-          8  |    -1.0191  |    0.48484  |    0.10651  |   -0.88412  |    -1.1295  |  
-          9  |    0.50836  |   -0.73552  |   -0.97003  |   -0.39182  |   -0.94616  |  
-         10  |   -0.54713  |    -2.3255  |   -0.15442  |      1.721  |    0.51804  |  
- </pre><a href='http://rosa.unipr.it/fsda/tabledisp.html#Example_2'><img vspace="5" hspace="5" src="images\tabledisp_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Dispay an array in a MATLAB annotation, and save it in a specific file.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = randn(10,5);
+          1  |   537.6671  | -1,349.8869  |   671.4971  |   888.3956  |  -102.2424  |  
+          2  |  1,833.885  | 3,034.9235  | -1,207.4869  | -1,147.0701  |   -241.447  |  
+          3  | -2,258.8469  |   725.4042  |   717.2387  | -1,068.8705  |   319.2067  |  
+          4  |   862.1733  |   -63.0549  | 1,630.2353  |  -809.4987  |   312.8586  |  
+          5  |   318.7652  |   714.7429  |   488.8938  | -2,944.2842  |  -864.8799  |  
+          6  | -1,307.6883  |  -204.9661  |  1,034.693  | 1,438.3803  |   -30.0513  |  
+          7  |   -433.592  |  -124.1443  |   726.8851  |   325.1905  |   -164.879  |  
+          8  |   342.6245  | 1,489.6976  |  -303.4409  |  -754.9283  |   627.7073  |  
+          9  | 3,578.3969  | 1,409.0345  |   293.8715  | 1,370.2985  | 1,093.2657  |  
+         10  |  2,769.437  | 1,417.1924  |  -787.2828  | -1,711.5164  | 1,109.2733  |  
+ </pre><a href='http://rosa.unipr.it/fsda/tabledisp.html#Example_2'><img vspace="5" hspace="5" src="images/tabledisp_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Dispay an array in a MATLAB annotation, and save it in a specific file.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = randn(10,5);
 % and run tabledisp on them with the specification of the precision
 [latex_string , disp_string] = tabledisp(X,2,'myfile.txt');</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Save an array in a excel file.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = randn(10,5);
 % and run tabledisp on them with the specification of the precision
@@ -75,4 +75,4 @@ fprintf(disp_string);</pre></div></div><pre class="codeoutput"> RAW NAME    |  
                           The string can be displayed in the command
                           window with fprintf(disp_string).</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Lamport, L. (1994), LATEX: a document preparation system:</p> <p>
     user's guide and reference manual. Addison-Wesley Longman Publishing
-    Co., Inc., USA.</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'imaq/disp.html'))" itemprop="url"><span itemprop="name"><code>disp</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+    Co., Inc., USA.</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'FSDA/tabledisp.html'))" itemprop="url"><span itemprop="name"><code>disp</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
