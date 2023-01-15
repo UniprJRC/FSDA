@@ -785,6 +785,10 @@ end
 
 %%  Define the explanatory variable associated to the level shift component
 if lshift>0
+    if lshift>T-1
+        disp('Warning: podition of level shift cannot be greater than T-1')
+        error('FSDA:simulateTS:WrongInput','Wrong position of level shift component')
+    end
     % Xlshift = explanatory variable associated with level shift Xlshift is
     % 0 up to lsh-1 and 1 from lsh to T
     Xlshift= [zeros(lshift-1,1);ones(T-lshift+1,1)];
@@ -991,9 +995,11 @@ if ~isempty(StartDate)
     years=years(1:T);
     months=months(1:T);
     % Convert date and time to serial date number
-    datesnumeric=datenum(years(:), months(:), 1);
+    % datesnumeric=datenum(years(:), months(:), 1);
+    datesnumeric=datetime(years(:), months(:), 1);
+    % datetime(StartDate(1),StartDate(2),1)+calmonths(0:(T-1))
 else
-    datesnumeric=(1):T;
+    datesnumeric=1:T;
 end
 
 %% Create plots
@@ -1012,86 +1018,113 @@ if plots==1
     end
 
     % Minimum value for xlim
-    minxlim=0;
+    if isempty(StartDate)
+        minxlim=1;
+        maxxlim=T;
+    else
+        minxlim=min(datesnumeric);
+        maxxlim=max(datesnumeric);
+    end
 
     % Time series + fitted values
     sb1 = subplot(2,3,1);
     plot(datesnumeric,y(:,1));
-    if samescale, ylim([minV,maxV]); end
-    xlim([minxlim,T]);
+    if samescale
+        ylim([minV,maxV]);
+    end
     title({'Final simulated data',''},'interpreter','none','FontSize',FontSize+2);
+    xlim([minxlim,maxxlim]);
     if ~isempty(StartDate)
-        datetick('x','mmm-yy');
         if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
+        datetick('x','mmm-yy','keepticks');
     end
 
     sb2 = subplot(2,3,2);
     plot(datesnumeric,signal);
-    if samescale, ylim([minV,maxV]); end
-    xlim([minxlim,T]);
+    if samescale
+        ylim([minV,maxV]);
+    end
+
     title({'TR+SE+LS+X',''},'interpreter','none','FontSize',FontSize+2);
+    xlim([minxlim,maxxlim]);
     if ~isempty(StartDate)
-        datetick('x','mmm-yy');
         if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
+        datetick('x','mmm-yy','keepticks');
     end
 
     sb3 = subplot(2,3,3);
     plot(datesnumeric,yhattrend);
-    if samescale, ylim([minV,maxV]); end
-    xlim([minxlim,T]);
+    if samescale
+        ylim([minV,maxV]);
+    end
+
     title({'Trend (TR)',''},'interpreter','none','FontSize',FontSize+2);
+    xlim([minxlim,maxxlim]);
     if ~isempty(StartDate)
-        datetick('x','mmm-yy');
         if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
+        datetick('x','mmm-yy','keepticks');
     end
 
     sb4 = subplot(2,3,4);
     plot(datesnumeric,yhatseaso);
-    if samescale, ylim([minV,maxV]); end
-    xlim([minxlim,T]);
-    title({'Seasonal (SE)',''},'interpreter','none','FontSize',FontSize+2);
-    if ~isempty(StartDate)
-        datetick('x','mmm-yy');
+    if samescale
+        ylim([minV,maxV]);
+    end
+    xlim([minxlim,maxxlim]);
+    if isdatetime(datesnumeric)
+        datetick('x','mmm-yy','keepticks');
         if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
     end
 
+    title({'Seasonal (SE)',''},'interpreter','none','FontSize',FontSize+2);
+
     sb5 = subplot(2,3,5);
     plot(datesnumeric,yhatlshift);
-    if samescale, ylim([minV,maxV]); end
-    xlim([minxlim,T]);
+    if samescale
+        ylim([minV,maxV]);
+    end
+
     title({'Level shift (LS)',''},'interpreter','none','FontSize',FontSize+2);
+    xlim([minxlim,maxxlim]);
     if ~isempty(StartDate)
-        datetick('x','mmm-yy');
         if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
+        datetick('x','mmm-yy','keepticks');
     end
 
     sb6 = subplot(2,3,6);
     if yhatX~=0
         plot(datesnumeric,yhatX);
-        if samescale, ylim([minV,maxV]); end
-        xlim([minxlim,T]);
+        if samescale
+            ylim([minV,maxV]);
+        end
+        xlim([minxlim,maxxlim]);
+
+        %  xlim([minxlim,T]);
         title({'Explanatory variables (X)',''},'interpreter','none','FontSize',FontSize+2);
     else
         plot(datesnumeric,y(:,1)-signal);
-        if samescale, ylim([minV,maxV]); end
-        xlim([minxlim,T]);
+        if samescale
+            ylim([minV,maxV]);
+        end
+        xlim([minxlim,maxxlim]);
+
         title({'Irregular (I)',''},'interpreter','none','FontSize',FontSize+2);
     end
     if ~isempty(StartDate)
-        datetick('x','mmm-yy');
         if ~verLessThanFS('8.4')
             set(gca,'XTickLabelRotation',90);
         end
+        datetick('x','mmm-yy','keepticks');
     end
 
     if ~vlt15
@@ -1112,8 +1145,8 @@ end
                 minmaxout(i1,:) = [min(p1) max(p1)];
             end
         end
-        minV = nanmin(minmaxout(:,1));
-        maxV = nanmax(minmaxout(:,2));
+        minV = min(minmaxout(:,1),[],'omitnan');
+        maxV = max(minmaxout(:,2),[],'omitnan');
     end
 end
 
