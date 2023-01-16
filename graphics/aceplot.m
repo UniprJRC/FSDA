@@ -50,7 +50,7 @@ function aceplot(out,varargin)
 %                 Example - 'oneplot',true
 %                 Data Types - logical
 %
-%      VarNames = Names of the variabiles.
+%      VarNames : Names of the variabiles.
 %                   Empty value or string array or cell array of character
 %                   vectors.
 %                 Names of variables specified as a string array or cell array
@@ -58,7 +58,7 @@ function aceplot(out,varargin)
 %                 for the columns of X first, and the name for the response
 %                 variable y last.
 %                 If VarNames is empty {'X1','X2',...,'Xp','y'} (default).
-%                 Example - 'oneplot',true
+%                 Example - 'VarNames',{'X1','X2', 'sales'}
 %                 Data Types - string array or cell array of character vector
 %
 %        ylimy  : 2D array of size 3-by-2 which specifies the
@@ -343,7 +343,7 @@ for j=1:p
             ylabel(['tX' jstr])
             text(0.95,0.15,['X' jstr],'Units','normalized')
         else
-            ylabel(["t"+VarNames(j)])
+            ylabel("t"+VarNames(j))
             text(0.95,0.15,VarNames(j),'Units','normalized')
         end
 
