@@ -1,4 +1,4 @@
-function centers=augStarplot(X,obslabs,varlabs,BestSols)
+function centers=augStarplot(X,obslabs,varlabs, varargin)
 %augStarplot creates the Augmented star plot.
 %
 % This plot is useful to indicate which options are important in a particular
@@ -21,20 +21,59 @@ function centers=augStarplot(X,obslabs,varlabs,BestSols)
 %             the labels of each slike of each star.
 %
 %
+% Optional input arguments:
+%
+%  addPolygons : polygons around the outside. Boolean.
+%               if addPolygons is true (default) , polygons around the
+%               outside of the radial lines are added to the augmented star
+%               plot. If addPolygons is false just the radial lines from
+%               the center are shows.
+%           Example - 'addPolygons',false
+%           Data Types - logical
+%
+%      BestSols :  Best solutions. table.
+%                 A table containing the details of the admissible
+%                 solutions which have been found. 
+%                 First column of BestSols contains R2       
+%                 Second column of BestSols contains nused/n    
+%                 Third column of BestSols contains  pvalDW   
+%                 Fourth column of BestSols contains  pvalJB
+%           Data Types - table
+
 
 %% Beginning of code
 % Create a figure to host the Augmented star plot
 h=figure;
 set(h,'Name', 'Augmented star plot', 'NumberTitle', 'off');
 
-if nargin < 1
+if nargin < 3
     error(message('FSDA:augStarplot:TooFewInputs'));
 end
+BestSols='';
+addPolygons=true;
 
-if nargin==4
-    showBars=true;
-else
+if nargin>3
+    options=struct('BestSols',BestSols,'addPolygons',addPolygons);
+    UserOptions=varargin(1:2:length(varargin));
+    % Check if number of supplied options is valid
+    if length(varargin) ~= 2*length(UserOptions)
+        error('FSDA:augStarplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    end
+    % Check if user options are valid options
+    chkoptions(options,UserOptions)
+
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin)
+        options.(varargin{i})=varargin{i+1};
+    end
+
+    BestSols=options.BestSols;
+    addPolygons=options.addPolygons;
+end
+if isempty(BestSols)
     showBars=false;
+else
+    showBars=true;
 end
 
 n = size(X,1);
@@ -88,7 +127,7 @@ end
 pagerows = 1:nglyphs;
 
 % Plot the grid of glyphs for the current page.
-centers=plotStars(Xstd(pagerows,:),ctrx,ctry,radius,axesh,varlabs);
+centers=plotStars(Xstd(pagerows,:),ctrx,ctry,radius,axesh,varlabs,addPolygons);
 
 % Clipping 'on' sets the text to the axes boundaries
 cy=ctry-1.1*radius;
@@ -132,7 +171,7 @@ end
 
 
 % -----------------------------------------
-function centers=plotStars(X,ctrx,ctry,radius,axesh,varlabs)
+function centers=plotStars(X,ctrx,ctry,radius,axesh,varlabs,addPolygons)
 %PLOTSTARS Plot a grid of stars.
 
 [n,p] = size(X);
@@ -158,10 +197,13 @@ mycolors=[1 0 0;  % red
     0.4660 0.6740 0.1880]; % dark green
 
 
-% The following line plots perimeter
-% plot(axesh, tipx([1:p 1],:), tipy([1:p 1],:),'-','Color',colors(1,:),'Visible','off', plotArgs{:});
-plot(axesh, tipx([1:p 1],:), tipy([1:p 1],:),'-', ...
-    'Color',mean(mycolors(:,:)),'Visible','on','LineWidth',2');
+if addPolygons==true
+    % The following line plots perimeter
+    % plot(axesh, tipx([1:p 1],:), tipy([1:p 1],:),'-','Color',colors(1,:),'Visible','off', plotArgs{:});
+    plot(axesh, tipx([1:p 1],:), tipy([1:p 1],:),'-', ...
+        'Color',mean(mycolors(:,:)),'Visible','on','LineWidth',2');
+end
+
 hold('on')
 for i=1:p
     plot(axesh, ...

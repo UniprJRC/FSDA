@@ -175,6 +175,14 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           Example - 'plots',true
 %           Data Types - Logical
 %
+%   showBars  : show bars of labels. Boolean.  If showBars is true
+%               the values of R2, fraction of units used, pvalue of DW test
+%               and pval of normality test are shown with bars below each
+%               star, else (default) these values are shows using a
+%               textbox.
+%           Example - 'showBars',true
+%           Data Types - logical
+%
 %
 % Output:
 %
@@ -395,6 +403,7 @@ plots=true;
 critBestSol=0.10;
 solOrdering='';
 maxBestSol=8;
+showBars=false;
 
 UserOptions=varargin(1:2:length(varargin));
 
@@ -403,7 +412,7 @@ if ~isempty(UserOptions)
 
     options=struct('critBestSol',critBestSol,'l',ll,'delrsq',delrsq, ...
         'nterm',nterm,'w',w,'maxit',maxit,'plots',plots,'solOrdering',solOrdering, ...
-        'maxBestSol',maxBestSol);
+        'maxBestSol',maxBestSol,'showBars',showBars);
 
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -428,6 +437,7 @@ if ~isempty(UserOptions)
     critBestSol=options.critBestSol;
     solOrdering=options.solOrdering;
     maxBestSol=options.maxBestSol;
+    showBars=options.showBars;
 end
 
 tyini=struct;
@@ -581,7 +591,13 @@ else
         % call the augmented star plot
         testdata=BestSol(1:maxSol,6:9);
         testdata{:,end}=testdata{:,end}/max(testdata{:,end});
-        augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs,testdata);
+        if showBars ==true
+            augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs, ...
+                'BestSols',testdata);
+        else
+            augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs);
+        end
+
         set(gcf,'Tag','pl_augstar')
 
         % Create the heatmap of the correlation matrix of the best solutions

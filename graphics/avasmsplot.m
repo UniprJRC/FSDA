@@ -65,6 +65,15 @@ function avasmsplot(BestSol,varargin)
 %           Example - 'showBars',true
 %           Data Types - logical
 %
+%  addPolygons : polygons around the outside. Boolean.
+%               if addPolygons is true (default) , polygons around the
+%               outside of the radial lines are added to the augmented star
+%               plot. If addPolygons is false just the radial lines from
+%               the center are shows.
+%           Example - 'addPolygons',false
+%           Data Types - logical
+%
+%
 %       tag     :    Personalized plot tag. String. String which identifies
 %                   the handle of the plot which
 %                   is about to be created. The default is to use tag
@@ -170,6 +179,33 @@ function avasmsplot(BestSol,varargin)
     avasmsplot(VALtfin,'maxBestSol',4);
 %}
 
+
+%{
+    % Example of option addPolygons.
+    close all
+    % Example from Wang and Murphy: 
+    rng('default')
+    seed=100;
+    negstate=-30;
+    n=200;
+    X1 = mtR(n,0,seed)*2-1;
+    X2 = mtR(n,0,negstate)*2-1;
+    X3 = mtR(n,0,negstate)*2-1;
+    X4 = mtR(n,0,negstate)*2-1;
+    res=mtR(n,1,negstate);
+    % Generate y
+    y = log(4 + sin(3*X1) + abs(X2) + X3.^2 + X4 + .1*res );
+    X = [X1 X2 X3 X4];
+    y([121 80 34 188 137 110 79 86 1])=1.9+randn(9,1)*0.01;
+    
+    % Automatic model selection
+    [VALtfin,Resarraychk]=avasms(y,X,'plots',0);
+    % Show just the radial lines and not the polygons around the 
+    % outside of the radial lines 
+    addPolygons=false;
+    avasmsplot(VALtfin,'maxBestSol',4,'addPolygons',false);
+%}
+
 %{
     % Example of option tag.
     close all
@@ -262,8 +298,9 @@ maxBestSol=[];
 databrush='';
 tag='pl_augstarplot';
 showBars=false;
+addPolygons=true;
 options=struct('maxBestSol',maxBestSol,'tag',tag,...
-    'databrush',databrush,'showBars',showBars);
+    'databrush',databrush,'showBars',showBars,'addPolygons',addPolygons);
 
 if nargin > 1
     UserOptions=varargin(1:2:length(varargin));
@@ -283,6 +320,7 @@ if nargin > 1
     tag=options.tag;
     databrush=options.databrush;
     showBars=options.showBars;
+    addPolygons=options.addPolygons;
 end
 
 % the maximum number of solutions to show is equalù
@@ -303,17 +341,18 @@ rowlabs=rowlabs(1:maxSol,:);
 varlabs=BestSol.Properties.VariableNames(1:5);
 VALtadj=BestSol{1:maxSol,1:5}.*BestSol{1:maxSol,"ord"};
 
-% call the augmented star plot
-testdata=BestSol(1:maxSol,6:9);
-testdata{:,end}=testdata{:,end}/max(testdata{:,end});
 if showBars==true
-    centers=augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs,testdata);
+    % call the augmented star plot
+    testdata=BestSol(1:maxSol,6:9);
+    testdata{:,end}=testdata{:,end}/max(testdata{:,end});
 else
-    centers=augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs);
+    testdata='';
 end
+% call augStarplot with options BestSols and addPolygons
+centers=augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs, ...
+    'BestSols',testdata,'addPolygons',addPolygons);
 
 set(gcf,'Tag',tag,'Name', 'Augmented star plot', 'NumberTitle', 'off')
-% axis equal
 
 
 %% Brush mode (call to function selectdataFS)
