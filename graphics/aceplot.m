@@ -50,6 +50,17 @@ function aceplot(out,varargin)
 %                 Example - 'oneplot',true
 %                 Data Types - logical
 %
+%      VarNames = Names of the variabiles.
+%                   Empty value or string array or cell array of character
+%                   vectors.
+%                 Names of variables specified as a string array or cell array
+%                 of character vectors of length p+1, including the names
+%                 for the columns of X first, and the name for the response
+%                 variable y last.
+%                 If VarNames is empty {'X1','X2',...,'Xp','y'} (default).
+%                 Example - 'oneplot',true
+%                 Data Types - string array or cell array of character vector
+%
 %        ylimy  : 2D array of size 3-by-2 which specifies the
 %                lower and upper limits for the 3 plots of the second
 %                figure. The first row refers to the plot of transformed y
@@ -139,10 +150,12 @@ function aceplot(out,varargin)
 highlight=out.outliers;
 ylimy=[];
 oneplot=false;
+VarNames='';
 if nargin >1
     UserOptions=varargin(1:2:length(varargin));
 
-    options=struct('highlight',highlight,'ylimy',ylimy,'oneplot',oneplot);
+    options=struct('highlight',highlight,'ylimy',ylimy, ...
+        'oneplot',oneplot,'VarNames',VarNames);
 
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -162,6 +175,15 @@ if nargin >1
     highlight=options.highlight;
     ylimy=options.ylimy;
     oneplot=options.oneplot;
+    VarNames=options.VarNames;
+end
+% Tranform VarNames in string array if the user has supplied a cell array
+% of characters
+if isempty(VarNames)
+    emptyVarNames=true;
+else
+    VarNames=string(VarNames);
+    emptyVarNames=false;
 end
 
 if ~isempty(ylimy)
@@ -226,9 +248,17 @@ figure
 set(gcf,'Tag','pl_ty')
 subplot(2,2,1)
 plot(y,ty,'o')
-ylabel('Transformed y')
-xlabel('y')
-title('Plot of ty vs. y')
+
+if emptyVarNames
+    ylabel('Transformed y')
+    xlabel('y')
+    title('Plot of ty vs. y')
+else
+    ylabel('Transformed y')
+    xlabel(VarNames(end))
+    title("Plot of t"+ VarNames(end)+ " vs. "+ VarNames(end))
+end
+
 if addout ==true
     hold('on')
     plot(y(highlight),ty(highlight),'ro','MarkerFaceColor','r')
@@ -258,9 +288,16 @@ end
 
 subplot(2,2,3)
 plot(yhat,ty,'o')
-title('Plot of ty vs. fit')
-ylabel('Transformed y')
 xlabel('Fitted values')
+
+if emptyVarNames
+    ylabel('Transformed y')
+    title('Plot of ty vs. fit')
+else
+    ylabel("Transformed"+ VarNames(end))
+    title("Plot of t"+ VarNames(end)+ " vs. fit")
+end
+
 if addout ==true
     hold('on')
     plot(yhat(highlight),ty(highlight),'ro','MarkerFaceColor','r')
@@ -294,11 +331,22 @@ for j=1:p
     end
     jstr=num2str(j);
     if oneplot==false
-        ylabel(['Transformed X' jstr])
-        xlabel(['X' jstr])
+        if emptyVarNames
+            ylabel(['Transformed X' jstr])
+            xlabel(['X' jstr])
+        else
+            ylabel("Transformed"+ VarNames(j))
+            xlabel(VarNames(j))
+        end
     else
-        ylabel(['tX' jstr])
-        text(0.95,0.15,['X' jstr],'Units','normalized')
+        if emptyVarNames
+            ylabel(['tX' jstr])
+            text(0.95,0.15,['X' jstr],'Units','normalized')
+        else
+            ylabel(["t"+VarNames(j)])
+            text(0.95,0.15,VarNames(j),'Units','normalized')
+        end
+
         if j==p
             xlabel('X')
         end
