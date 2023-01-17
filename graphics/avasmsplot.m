@@ -231,8 +231,9 @@ function avasmsplot(BestSol,varargin)
 %}
 
 %{
-    %Interactive_example
-    % databrush is passed as a struct.
+    %Interactive_example,
+    % databrush is passed as a scalar.
+    % In this case it is possible to brush only once.
     close all
     % Example from Wang and Murphy: 
     rng('default')
@@ -258,7 +259,7 @@ function avasmsplot(BestSol,varargin)
 %}
 
 %{
-    % Interactive_example.
+    % Interactive_example,
     % databrush is passed as a struct.
     close all
     % Example from Wang and Murphy: 
@@ -342,15 +343,13 @@ varlabs=BestSol.Properties.VariableNames(1:5);
 VALtadj=BestSol{1:maxSol,1:5}.*BestSol{1:maxSol,"ord"};
 
 if showBars==true
-    % call the augmented star plot
-    testdata=BestSol(1:maxSol,6:9);
-    testdata{:,end}=testdata{:,end}/max(testdata{:,end});
+    testdata=BestSol(1:maxSol,:);
 else
     testdata='';
 end
 % call augStarplot with options BestSols and addPolygons
 centers=augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs, ...
-    'BestSols',testdata,'addPolygons',addPolygons);
+    'BestSol',testdata,'addPolygons',addPolygons);
 
 set(gcf,'Tag',tag,'Name', 'Augmented star plot', 'NumberTitle', 'off')
 
