@@ -175,10 +175,10 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           Example - 'plots',true
 %           Data Types - Logical
 %
-%   showBars  : show bars of labels. Boolean.  If showBars is true
+%   showBars  : show bars instead of text. Boolean.  If showBars is true
 %               the values of R2, fraction of units used, pvalue of DW test
 %               and pval of normality test are shown with bars below each
-%               star, else (default) these values are shows using a
+%               star, else (default) these values are shown using a
 %               textbox.
 %           Example - 'showBars',true
 %           Data Types - logical
@@ -589,11 +589,9 @@ else
         maxSol=min([size(VALtadj,1),maxBestSol]);
 
         % call the augmented star plot
-        testdata=BestSol(1:maxSol,6:9);
-        testdata{:,end}=testdata{:,end}/max(testdata{:,end});
         if showBars ==true
             augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs, ...
-                'BestSols',testdata);
+                'BestSol',testdata);
         else
             augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs);
         end

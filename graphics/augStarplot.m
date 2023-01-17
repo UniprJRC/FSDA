@@ -31,14 +31,13 @@ function centers=augStarplot(X,obslabs,varlabs, varargin)
 %           Example - 'addPolygons',false
 %           Data Types - logical
 %
-%      BestSols :  Best solutions. table.
+%      BestSol :  Best solutions. table or empty value.
 %                 A table containing the details of the admissible
-%                 solutions which have been found. 
-%                 First column of BestSols contains R2       
-%                 Second column of BestSols contains nused/n    
-%                 Third column of BestSols contains  pvalDW   
-%                 Fourth column of BestSols contains  pvalJB
-%           Data Types - table
+%                 solutions which have been found.
+%                This is the table which is the output of the call to procedure
+%               amasms. If BestSol is empty the information about the
+%               solutions is presented using text.
+%           Data Types - table or empty
 
 
 %% Beginning of code
@@ -49,11 +48,11 @@ set(h,'Name', 'Augmented star plot', 'NumberTitle', 'off');
 if nargin < 3
     error(message('FSDA:augStarplot:TooFewInputs'));
 end
-BestSols='';
+BestSol='';
 addPolygons=true;
 
 if nargin>3
-    options=struct('BestSols',BestSols,'addPolygons',addPolygons);
+    options=struct('BestSol',BestSol,'addPolygons',addPolygons);
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -67,10 +66,10 @@ if nargin>3
         options.(varargin{i})=varargin{i+1};
     end
 
-    BestSols=options.BestSols;
+    BestSol=options.BestSol;
     addPolygons=options.addPolygons;
 end
-if isempty(BestSols)
+if isempty(BestSol)
     showBars=false;
 else
     showBars=true;
@@ -134,6 +133,16 @@ cy=ctry-1.1*radius;
 h_axes = get(gcf,'CurrentAxes');    %get axes handle.
 
 if showBars==true
+
+    % call the augmented star plot
+    testdata=BestSol(:,6:9);
+    % Find sample size
+    sampleSize=length(cell2mat(BestSol{1,'res'}));
+    % Find number of units declared as outliers for each solution
+    noutSol=sampleSize-testdata{:,"nused"};
+    % Find statistic to put in the second bar
+    testdata{:,end}=1-(1-testdata{:,"nused"}/sampleSize)*2;
+
     axesoffsets = get(h_axes,'Position');%get axes position on the figure.
     y_axislimits = get(gca, 'ylim');     %get axes extremeties.
     x_axislimits = get(gca, 'xlim');     %get axes extremeties.
@@ -151,9 +160,9 @@ if showBars==true
 
         leftAxis = axes(sp, 'Position', [0 0 1 1],'units','normalized');
         % The order is  R2       nused/n    pvalDW     pvalJB
-        bar(leftAxis,BestSols{i,[1 4 2 3]})
+        bar(leftAxis,testdata{i,[1 4 2 3]})
         ylim([0 1])
-        texth = text(ctrx(i),cy(i)+0.1,['Sol' num2str(i)],...
+        texth = text(ctrx(i),cy(i)+0.1,['Sol' num2str(i) ' k=' num2str(noutSol(i))],...
             'Clipping','on', 'VerticalAlignment','top', ...
             'Parent',axesh);
     end
@@ -163,7 +172,7 @@ else
     texth = text(ctrx,cy,obslabs(pagerows),...
         'Clipping','on', 'HorizontalAlignment','Center', ...
         'Parent',axesh);
-    axis(h_axes,'equal')
+    % axis(h_axes,'equal')
 end
 set(texth,'Tag','obs label');
 
