@@ -121,7 +121,7 @@ function out = GUIquantile(x, z, varargin)
     Inf  9];
     x=[0;X(:,1)];
     freq=X(:,2);
-    GUIquantile(x,0.42,'freq',freq,'DiscreteData',false,'plots',1)
+    out=GUIquantile(x,0.42,'freq',freq,'DiscreteData',false,'plots',1)
 %}
 
 %% Beginning of code

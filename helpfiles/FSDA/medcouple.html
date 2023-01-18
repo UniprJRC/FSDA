@@ -4,7 +4,7 @@ mc1 = medcouple(data);
 stddev = std(data);
 figure;
 histogram(data);
-title(['Medcouple = ' num2str(mc1) ' -- Standard deviation = ' num2str(stddev)],'FontSize',16);</pre></div></div><a href='http://rosa.unipr.it/fsda/medcouple.html#Example_1'><img vspace="5" hspace="5" src="images\medcouple_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(5);
+title(['Medcouple = ' num2str(mc1) ' -- Standard deviation = ' num2str(stddev)],'FontSize',16);</pre></div></div><a href='http://rosa.unipr.it/fsda/medcouple.html#Example_1'><img vspace="5" hspace="5" src="images\medcouple_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(5);
 method = 1;
 mc2 = medcouple(chi2rnd(5,1000,1),method);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The medcouple on small datasets.</li></span></a></span></h3><div class="collapse"><p>
      For small n, it is better to compute the the medcouple also on 
@@ -66,7 +66,7 @@ line([DataLimLower_1 , DataLimLower_1] , yy1,'Color','red');
 line([DataLimUpper_1 , DataLimUpper_1] , yy1,'Color','red');
 line([DataLimLower_2 , DataLimLower_2] , yy2,'Color','red');
 line([DataLimUpper_2 , DataLimUpper_2] , yy2,'Color','red');
-end</pre></div></div><a href='http://rosa.unipr.it/fsda/medcouple.html#Example_4'><img vspace="5" hspace="5" src="images\medcouple_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Assess the perfomance of the various medcouple solutions.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Uses the time execution of the weighted median returned in varargout
+end</pre></div></div><a href='http://rosa.unipr.it/fsda/medcouple.html#Example_4'><img vspace="5" hspace="5" src="images\medcouple_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Assess the perfomance of the various medcouple solutions.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Uses the time execution of the weighted median returned in varargout
 % Tm=matlab-fast-quickselectFSw; Tw=matlab-fast-whimed
 % Ts=matlab-simplified; To=matlab-octile; Tq=matlab-quantiles;
 tm=0; tmmex=0; tw=0; ts=0; to = 0; tq=0;
@@ -136,17 +136,17 @@ repetition n. 900
 repetition n. 1000
  
 OVERALL TIME EXECUTION IN 1000 MC COMPUTATION
-time using WM by Haase       = 1.3021
-time using quickselectFSw    = 0.6486
-time using quickselectFSwmex = 0.44572
-time using the naive         = 1.7836
-time using quantiles         = 0.048863
-time using octiles           = 0.11594
+time using WM by Haase       = 1.2187
+time using quickselectFSw    = 0.60887
+time using quickselectFSwmex = 0.41477
+time using the naive         = 1.756
+time using quantiles         = 0.044593
+time using octiles           = 0.10361
  
 TIME SPENT IN COMPUTING WEIGHTED AVERAGES IN A SINGLE MC COMPUTATION
-t_Haase             = 0.0008664
-t_quickselectFSw    = 0.0002574
-t_quickselectFSwmex = 8.88e-05
+t_Haase             = 0.0008534
+t_quickselectFSw    = 0.0002273
+t_quickselectFSwmex = 8.16e-05
 </pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_z" class="clearfix"> </div> <h3 id="input_argument_z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>z</code> &#8212; Uni-dimensional array. </span>  </a><span class="example_desc">The elements of the array z represent a  
         sample from a univariate distribution.</span></span></h3> <div class="collapse"> <p>They can be missing (nan)
         of infinite (inf) values, which are excluded from the computation

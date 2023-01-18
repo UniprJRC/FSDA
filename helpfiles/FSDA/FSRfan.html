@@ -38,7 +38,7 @@ X=XX(:,1:end-1);
 % In this case we use the five most common values of lambda are considered
 [out]=FSRfan(y,X);
 fanplot(out);
-%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
 Total estimated time to complete LMS:  0.00 seconds 
@@ -53,7 +53,7 @@ Warning: Number of subsets without full rank equal to 15.7%
 Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-</pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#Example_1'><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#Example_1'><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Produce a personalized fan plot with required font sizes
      for labels and axes.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('wool.txt');
 y=XX(:,end);
@@ -137,22 +137,22 @@ Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.05 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.04 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.04 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.04 seconds 
+Total estimated time to complete LMS:  0.06 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
 Maximum difference in absolute value
@@ -239,14 +239,14 @@ la=[ -0.1 0 0.1];
 scoremle= true;
 out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',false,'scoremle',true);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_8'><img vspace="5" hspace="5" src="images\FSRfan_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRfan_10.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
-               variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
-               variables (also called 'regressors')
-               of dimension (n x p-1). Rows of X represent observations, and
-               columns represent variables.</p> <p>
-               Missing values (NaN's) and infinite values
-               (Inf's) are allowed, since observations (rows) with missing or
-               infinite values will automatically be excluded from the
-               computations. NOTICE THAT THE INTERCEPT MUST ALWAYS BE INCLUDED.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'family','YJ'
+               variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p>Data matrix of explanatory
+               variables (also called 'regressors') of dimension (n x
+               p-1). Rows of X represent observations, and columns
+               represent variables. Missing values (NaN's) and infinite
+               values (Inf's) are allowed, since observations (rows) with
+               missing or infinite values will automatically be excluded
+               from the computations. NOTICE THAT THE INTERCEPT MUST
+               ALWAYS BE INCLUDED.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'family','YJ'
 </code>,<code> 'h',5
 </code>,<code> 'init',100 starts monitoring from step m=100
 </code>,<code> 'intercept',false

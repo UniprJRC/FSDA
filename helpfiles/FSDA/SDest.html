@@ -14,8 +14,8 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+4;
-[out]=SDest(Ycont,'jpcorr',1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.25 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/SDest.html#Example_2'><img vspace="5" hspace="5" src="images\SDest_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\SDest_02.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_03.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>SDest with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+[out]=SDest(Ycont,'jpcorr',1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.23 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/SDest.html#Example_2'><img vspace="5" hspace="5" src="images\SDest_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\SDest_02.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_03.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>SDest with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
 Y=randn(n,v);
@@ -30,7 +30,16 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(2:20,3)=100;
-[out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.22 seconds 
+[out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.19 seconds 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
 </pre><a href='http://rosa.unipr.it/fsda/SDest.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\SDest_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\SDest_05.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_06.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>SDest with with Juan and Prieto adjustment.</li></span></a></span></h3><div class="collapse"><p>
      jpcorr&gt;1. Subsamples of size equal to v+5 are initially drawn (jpcorr=5).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% In each of them, the 4 units (=jpcorr-1) having the four
 % largest MDs are then discarded from the subsample.
