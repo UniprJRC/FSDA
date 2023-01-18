@@ -25,29 +25,32 @@ outCTl =
 
   struct with fields:
 
-              Mu: {5&times;6 cell}
-           Sigma: {5&times;6 cell}
-              Pi: {5&times;6 cell}
-             IDX: {5&times;6 cell}
-             CTL: [5&times;6 double]
-        BandsCTL: [5&times;6&times;60 double]
-           likLB: [5&times;6 double]
-          lik050: [5&times;6 double]
-           likUB: [5&times;6 double]
-             idx: [271&times;1 double]
-    Optimalalpha: 0.0200
-        OptimalK: 3
-         TentSol: [2&times;4 double]
-      pvalLRtest: [4&times;6 table]
-       TentSolLR: [2&times;7 double]
-      TentSolLRt: [2&times;7 table]
-           idxLR: [271&times;2 double]
-              kk: [1 2 3 4 5]
-           alpha: [0 0.0200 0.0400 0.0600 0.0800 0.1000]
-     restrfactor: 100
-               Y: [271&times;2 double]
+                 Mu: {5&times;6 cell}
+              Sigma: {5&times;6 cell}
+                 Pi: {5&times;6 cell}
+                IDX: {5&times;6 cell}
+                CTL: [5&times;6 double]
+           CTLbands: [5&times;6&times;60 double]
+           CTLlikLB: [5&times;6 double]
+          CTLlik050: [5&times;6 double]
+           CTLlikUB: [5&times;6 double]
+      CTLoptimalIDX: [271&times;1 double]
+    CTLoptimalAlpha: 0.0200
+        CTLoptimalK: 3
+         CTLtentSol: [2&times;4 double]
+            LRTpval: [4&times;6 table]
+         LRTtentSol: [2&times;8 double]
+        LRTtentSolt: [2&times;8 table]
+      LRTtentSolIDX: [271&times;2 double]
+        LRToptimalK: 3
+    LRToptimalAlpha: 0.0400
+      LRToptimalIDX: [271&times;1 double]
+                 kk: [1 2 3 4 5]
+              alpha: [0 0.0200 0.0400 0.0600 0.0800 0.1000]
+        restrfactor: 100
+                  Y: [271&times;2 double]
 
-</pre><a href='http://rosa.unipr.it/fsda/ctlcurvesplot.html#Example_1'><img vspace="5" hspace="5" src="images\ctlcurvesplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\ctlcurvesplot_02.png" alt=""> <img vspace="5" hspace="5" src="images\ctlcurvesplot_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><i>Interactive example 1.</i>
+</pre><a href='http://rosa.unipr.it/fsda/ctlcurvesplot.html#Example_1'><img vspace="5" hspace="5" src="images\ctlcurvesplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\ctlcurvesplot_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><i>Interactive example 1.</i>
        Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   (brushing is done only once using a rectangular selection tool)
 %  Use the geyser data.
 Y=load('geyser2.txt');

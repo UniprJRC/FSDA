@@ -19,7 +19,7 @@ Bands k=2
 Bands k=3
 Bands k=4
 Bands k=5
-</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#Example_1'><img vspace="5" hspace="5" src="images\ctlcurves_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of options alpha, kk and bands.</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#Example_1'><img vspace="5" hspace="5" src="images\ctlcurves_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of options alpha, kk and bands.</li></span></a></span></h3><div class="collapse"><p>
      Personalized levels of trimming.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">alpha=0:0.05:0.15;
 % bands is passed as a false boolean. No bands are shown.
 bands=false;
@@ -73,7 +73,7 @@ Bands k=6
 </code>,<code> 'kk',1:4
 </code>,<code> 'cshape',10
 </code>,<code> 'equalweights',true
-</code>,<code> 'msg',1
+</code>,<code> 'msg',false
 </code>,<code> 'mixt',1
 </code>,<code> 'nocheck',10
 </code>,<code> 'nsamp',1000
@@ -184,10 +184,10 @@ Bands k=6
                shall be considered in the concentration, assignment steps
                and computation of the likelihood.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Message on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Message on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Boolean which controls whether
                to display or not messages about code execution.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;Mixture modelling or crisp assignment.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option mixt specifies whether mixture modelling or crisp
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;Mixture modelling or crisp assignment.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option mixt specifies whether mixture modelling or crisp
                assignment approach to model based clustering must be used.</p> <p>
                In the case of mixture modelling parameter mixt also
                controls which is the criterion to find the untrimmed units

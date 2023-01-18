@@ -20,7 +20,7 @@ small p=6
 small p=5
 small p=4
 small p=3
-</pre><a href='http://rosa.unipr.it/fsda/FSRms.html#Example_2'><img vspace="5" hspace="5" src="images\FSRms_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
+</pre><a href='http://rosa.unipr.it/fsda/FSRms.html#Example_2'><img vspace="5" hspace="5" src="images\FSRms_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
 X(:,end)=log(X(:,end));
 X=[(-40:39)' X];
 y=X(:,end);
@@ -40,7 +40,7 @@ outms=FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7])
 small p=6
 small p=5
 small p=4
-</pre><a href='http://rosa.unipr.it/fsda/FSRms.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSRms_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRms_03.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Considering all submodels.</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/FSRms.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSRms_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Considering all submodels.</li></span></a></span></h3><div class="collapse"><p>
      Perform robust model selection and show the generalized candlestick
      plot considering all submodels for each smallp from 2 to size(X).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
 X(:,end)=log(X(:,end));
@@ -67,11 +67,13 @@ small p=5
 small p=4
 small p=6
 small p=5
+Warning: Rank deficient, rank = 3, tol =  5.715223e-13. 
+Warning: Rank deficient, rank = 3, tol =  7.937901e-13. 
 small p=4
 small p=6
 small p=5
 small p=4
-</pre><a href='http://rosa.unipr.it/fsda/FSRms.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRms_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRms_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRms_06.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Changing confidence bands.</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/FSRms.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRms_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRms_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRms_05.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Changing confidence bands.</li></span></a></span></h3><div class="collapse"><p>
      Same options as before but using different confidence bands.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
 X(:,end)=log(X(:,end));
 X=[(-40:39)' X];

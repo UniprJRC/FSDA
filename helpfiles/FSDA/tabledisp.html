@@ -28,7 +28,7 @@ fprintf(disp_string);</pre></div></div><pre class="codeoutput"> RAW NAME    |  
      Wilson  |         40  |         68  |        180  |        115  |         82  |  
       Moore  |         28  |         68  |        183  |        115  |         78  |  
      Taylor  |         31  |         66  |        132  |        118  |         86  |  
- </pre><a href='http://rosa.unipr.it/fsda/tabledisp.html#Example_1'><img vspace="5" hspace="5" src="images/tabledisp_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Dispay an array in a MATLAB annotation, with 6 digits of precision.</li></span></a></span></h3><div class="collapse"><p>
+ </pre><a href='http://rosa.unipr.it/fsda/tabledisp.html#Example_1'><img vspace="5" hspace="5" src="images\tabledisp_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Dispay an array in a MATLAB annotation, with 6 digits of precision.</li></span></a></span></h3><div class="collapse"><p>
      generate data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = 1000*randn(10,5);
 % and run tabledisp on them with the specification of the precision
 [latex_string , disp_string] = tabledisp(X,6);
@@ -41,17 +41,17 @@ annotation(hf,'Textbox','String',latex_string,...
 % This is to display the table in the command window without disp
 fprintf(disp_string);</pre></div></div><pre class="codeoutput"> RAW NAME    |         T1  |         T2  |         T3  |         T4  |         T5  |  
 
-          1  |   537.6671  | -1,349.8869  |   671.4971  |   888.3956  |  -102.2424  |  
-          2  |  1,833.885  | 3,034.9235  | -1,207.4869  | -1,147.0701  |   -241.447  |  
-          3  | -2,258.8469  |   725.4042  |   717.2387  | -1,068.8705  |   319.2067  |  
-          4  |   862.1733  |   -63.0549  | 1,630.2353  |  -809.4987  |   312.8586  |  
-          5  |   318.7652  |   714.7429  |   488.8938  | -2,944.2842  |  -864.8799  |  
-          6  | -1,307.6883  |  -204.9661  |  1,034.693  | 1,438.3803  |   -30.0513  |  
-          7  |   -433.592  |  -124.1443  |   726.8851  |   325.1905  |   -164.879  |  
-          8  |   342.6245  | 1,489.6976  |  -303.4409  |  -754.9283  |   627.7073  |  
-          9  | 3,578.3969  | 1,409.0345  |   293.8715  | 1,370.2985  | 1,093.2657  |  
-         10  |  2,769.437  | 1,417.1924  |  -787.2828  | -1,711.5164  | 1,109.2733  |  
- </pre><a href='http://rosa.unipr.it/fsda/tabledisp.html#Example_2'><img vspace="5" hspace="5" src="images/tabledisp_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Dispay an array in a MATLAB annotation, and save it in a specific file.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = randn(10,5);
+          1  |  -642.6483  |   735.5183  |     247.94  | 1,104.9006  |  -575.9439  |  
+          2  |  -785.1733  |    39.0898  |  -401.9775  |  -898.6927  |    -238.43  |  
+          3  |   122.9279  | -1,285.6645  | 1,278.1452  | -1,514.4625  | -1,411.9044  |  
+          4  |   540.7655  | 1,003.3411  |   649.3667  |   336.7838  |  -535.8223  |  
+          5  |  -848.4028  |    98.2425  | -1,432.5479  |   667.4101  |   758.2655  |  
+          6  |   786.2817  |   -440.131  |   738.2493  | 1,079.9811  |   245.5159  |  
+          7  |   287.5322  |    611.831  |  -637.4955  |  -472.4264  | -1,345.7007  |  
+          8  |   122.4031  | 1,286.8214  | -1,861.4759  | 1,582.5452  |    160.911  |  
+          9  |   570.5593  | -1,138.2374  |  -493.8922  |   -627.858  |  -258.5461  |  
+         10  | -2,286.3383  |  -467.4951  |   -346.413  |  -652.1127  |   592.9553  |  
+ </pre><a href='http://rosa.unipr.it/fsda/tabledisp.html#Example_2'><img vspace="5" hspace="5" src="images\tabledisp_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Dispay an array in a MATLAB annotation, and save it in a specific file.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = randn(10,5);
 % and run tabledisp on them with the specification of the precision
 [latex_string , disp_string] = tabledisp(X,2,'myfile.txt');</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Save an array in a excel file.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = randn(10,5);
 % and run tabledisp on them with the specification of the precision

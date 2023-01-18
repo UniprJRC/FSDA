@@ -22,7 +22,17 @@ y=X(:,end);
 % Define X
 X=X(:,1:end-1);
 smallp=4;
-[outCp]=FSRcp(y,X,smallp,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRcp.html#Example_2'><img vspace="5" hspace="5" src="images\FSRcp_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Use labels defined by the user.</li></span></a></span></h3><div class="collapse"><p>
+[outCp]=FSRcp(y,X,smallp,'plots',1);</pre></div></div><pre class="codeoutput">Warning: Rank deficient, rank = 3, tol =  2.356428e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.868456e-11. 
+Warning: Rank deficient, rank = 3, tol =  3.410996e-11. 
+Warning: Rank deficient, rank = 3, tol =  1.420154e-11. 
+Warning: Rank deficient, rank = 3, tol =  1.852233e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.348919e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.861067e-11. 
+Warning: Rank deficient, rank = 3, tol =  3.410996e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.512148e-11. 
+Warning: Rank deficient, rank = 3, tol =  2.997602e-11. 
+</pre><a href='http://rosa.unipr.it/fsda/FSRcp.html#Example_2'><img vspace="5" hspace="5" src="images\FSRcp_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Use labels defined by the user.</li></span></a></span></h3><div class="collapse"><p>
      Extract the best models of size 4 and show the plot of Cp. All the
      default options are used, apart from labels, therefore the plot of Cp
      and the output matrix Cpmon.MAL only contains the searches associated
@@ -78,7 +88,10 @@ smallp=6;
 labels={'Time','1','2','3','4','5','6','7','8'};
 [Cpmon6]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);
 smallp=5;
-[Cpmon5]=FSRcp(y,X,smallp,'nsamp',1000,'Excl',Cpmon6.Ajout,'plots',1,'labels',labels);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRcp.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRcp_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRcp_03.png" alt=""> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Customizing the graphical options.</li></span></a></span></h3><div class="collapse"><p>
+[Cpmon5]=FSRcp(y,X,smallp,'nsamp',1000,'Excl',Cpmon6.Ajout,'plots',1,'labels',labels);</pre></div></div><pre class="codeoutput">Warning: Rank deficient, rank = 4, tol =  2.056162e-11. 
+Warning: Rank deficient, rank = 4, tol =  2.512148e-11. 
+Warning: Rank deficient, rank = 4, tol =  2.997602e-11. 
+</pre><a href='http://rosa.unipr.it/fsda/FSRcp.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRcp_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRcp_03.png" alt=""> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Customizing the graphical options.</li></span></a></span></h3><div class="collapse"><p>
      In the following example we play with the graphical options<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
 % Transform the response using logs
 X(:,end)=log(X(:,end));
@@ -315,4 +328,4 @@ smallp=5;
                    strings the list of models which are unacceptable.</p> <p>
                    LABout is created only if input option labout=1.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2008), A robust and diagnostic information
  criterion for selecting regression models, "Journal of the Japan
- Statistical Society", Vol. 38, pp. 3-14.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSR.html" itemprop="url"><span itemprop="name"><code>FSR</code></span></a></span> | <span itemprop="seealso"><a href="FSReda.html" itemprop="url"><span itemprop="name"><code>FSReda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Statistical Society", Vol. 38, pp. 3-14.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="cdsplot.html" itemprop="url"><span itemprop="name"><code>cdsplot</code></span></a></span> | <span itemprop="seealso"><a href="FSRms.html" itemprop="url"><span itemprop="name"><code>FSRms</code></span></a></span> | <span itemprop="seealso"><a href="FSR.html" itemprop="url"><span itemprop="name"><code>FSR</code></span></a></span> | <span itemprop="seealso"><a href="FSReda.html" itemprop="url"><span itemprop="name"><code>FSReda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
