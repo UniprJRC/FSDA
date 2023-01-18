@@ -36,7 +36,12 @@ function centers=augStarplot(X,obslabs,varlabs, varargin)
 %                 solutions which have been found.
 %                This is the table which is the output of the call to procedure
 %               amasms. If BestSol is empty the information about the
-%               solutions is presented using text.
+%               solutions is presented using text. If BestSol is true four
+%               bars are shown below each solution. If k is the total
+%               number of units declared as outliers the four bars
+%               represent respecetively $R^2$, $(n − 2k)/n$, $p_{DW}$ and
+%               $p_{JB}$.
+% 
 %           Data Types - table or empty
 
 
@@ -140,8 +145,8 @@ if showBars==true
     sampleSize=length(cell2mat(BestSol{1,'res'}));
     % Find number of units declared as outliers for each solution
     noutSol=sampleSize-testdata{:,"nused"};
-    % Find statistic to put in the second bar
-    testdata{:,end}=1-(1-testdata{:,"nused"}/sampleSize)*2;
+    % Find statistic to put in the second bar of the 4 bars
+    testdata{:,end}=2*testdata{:,"nused"}/sampleSize;
 
     axesoffsets = get(h_axes,'Position');%get axes position on the figure.
     y_axislimits = get(gca, 'ylim');     %get axes extremeties.
