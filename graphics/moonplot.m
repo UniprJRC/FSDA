@@ -315,9 +315,8 @@ function moonplot(out,varargin)
 %{
     %% moonplot with option changedimsign.
     % Prepare the data.
-    load('mobilephone')
-    N=mobilePhone;
-    out=CorAna(N,'plots',0);
+    load mobilephone
+    out=CorAna(mobilephone,'plots',0);
     % Use of option changedimsign
     moonplot(out,'changedimsign',[true false])
 %}
