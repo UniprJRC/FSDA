@@ -61,7 +61,11 @@ function avasmsplot(BestSol,varargin)
 %               the values of R2, fraction of units used, pvalue of DW test
 %               and pval of normality test are shown with bars below each
 %               star, else (default) these values are shows using a
-%               textbox.
+%               textbox. More precisely, If $k$ is the total
+%               number of units declared as outliers the four bars
+%               represent respectively $R^2$, $(n − 2k)/n$, $p_{DW}$ and
+%               $p_{JB}$. Note that we have $2k$ rather than $k$ because the
+%               maximum number of outliers is $[n/2]$.
 %           Example - 'showBars',true
 %           Data Types - logical
 %
