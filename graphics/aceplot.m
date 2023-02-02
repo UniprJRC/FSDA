@@ -218,8 +218,16 @@ if oneplot==false
         nr=3; nc=3;
     elseif p<=12
         nr=4; nc=3;
+    elseif p<=16
+        nr=4; nc=4;
+    elseif p<=20
+        nr=5; nc=4;
+    elseif p<=24
+        nr=6; nc=4;
+    elseif p<=30
+        nr=6; nc=5;
     else
-        error('FSDA:aceplot:TODO','So far not implemented for p>12')
+        error('FSDA:aceplot:TODO','So far not implemented for p>30')
     end
 else % oneplot true
     if p==1
