@@ -88,6 +88,13 @@ function out  = ctlcurves(Y, varargin)
 %                   been found with real data, else if it is false
 %                   (default) no prior information is used in any of the
 %                   extracted subsets.
+%            bands.crit = scalar which defines the empirical p-value which
+%                   is used to define a solution as significant and to
+%                   reject the null hypotesis of smaller groups in the
+%                   likelihood ratio test. The default value of crit is
+%                   0.02, that is when we test $k$ against $k+1$ given a certain
+%                   value of $\alpha$, if the empirical p-value is greater
+%                   than crit we accept the null hypothesis of $k$ groups.
 %                 Example - 'bands',true
 %                 Data Types - logical | struct
 %
@@ -426,22 +433,19 @@ function out  = ctlcurves(Y, varargin)
 %                        information of array  out.TentSolLR in table format.
 %      out.LRTtentSolIDX = matrix with size n-by-size(out.LRTtentSol,1) with
 %                        the allocation associated with the tentative
-%                        solutions found in out.LRTtentSol.
-%                        First column refers to solution in row 1 of out.LRTtentSol ...
+%                        solutions found in out.LRTtentSol. First column
+%                        refers to solution in row 1 of out.LRTtentSol ...
 %       out.LRToptimalAlpha = scalar, optimal value of trimming.
 %       out.LRToptimalK = scalar, optimal number of clusters, stored
 %                        as a positive integer value.
-%       out.LRToptimalIDX  = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups in correspodence of
+%       out.LRToptimalIDX  = n-by-r vector containing assignment of each unit to
+%                       each of the k groups in correspondence of
 %                       OptimalAlpha and OptimalK. Cluster names are
 %                       integer numbers from 1 to k. 0 indicates trimmed
 %                       observations. The fields which follow which start
-%                       with LRT refer to the likelihood ratio test. The
-%                       optimal solution is the first for which
-%                       out.LRTtentSolt.kbestGivenalpha is 1 and
-%                       out.LRTtentSolt.ProperSize is 1.
-
-
+%                       with LRT refer to the likelihood ratio test.
+%
+%
 %                out.kk = vector containing the values of k (number of
 %                       components) which have been considered. This  vector
 %                       is equal to input optional argument kk if kk had been
@@ -503,7 +507,7 @@ function out  = ctlcurves(Y, varargin)
     nsamp=10;
     out=ctlcurves(Y,'nsamp',nsamp);
     % Show the automatic classification
-    spmplot(Y,out.LRToptimalIDX);
+    spmplot(Y,out.LRToptimalIDX(:,1));
 %}
 
 %{
@@ -591,6 +595,8 @@ restrfactor=100;
 mixt=0;
 bands=true;
 outliersFromUniform=true;
+% crit = criterion for the LRT to accept the H0 of k groups against k+1
+crit= 0.02;
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -756,6 +762,7 @@ if ComputeBands==true
         bandsdef.usepriorSolExtra=[];
         bandsdef.nsimulExtra=[];
         bandsdef.nsampExtra=[];
+        bandsdef.crit=crit;
 
         chkoptions(bandsdef,fieldnames(bands))
 
@@ -806,6 +813,11 @@ if ComputeBands==true
         else
             nsampExtra=2000;
         end
+
+        if isfield(bands,'crit')
+            crit=bands.crit;
+        end
+
     else
         usepriorSol=false;
     end
@@ -888,8 +900,8 @@ if ComputeBands==true
                 idxkplus1j=[];
             end
 
-            % parfor (zz = 1:nsimul, numpool)
-                  for zz = 1:nsimul
+            parfor (zz = 1:nsimul, numpool)
+                %  for zz = 1:nsimul
                 if outliersFromUniform == true
                     [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
                     if size(Ysim,1)<n
@@ -982,7 +994,6 @@ if ComputeBands==true
     LRTtentSol=zeros(lkk-1,8);
     LRTtentSolIDX=zeros(n,lkk-1);
 
-    crit= 0.02;
     ij=1;
 
     for j=1:lalpha
@@ -1042,6 +1053,7 @@ if ComputeBands==true
 
     if size(LRTtentSol,1)>=1
         LRTtentSol=LRTtentSol(1:ij-1,:);
+        LRTtentSolIDX=LRTtentSolIDX(:,1:ij-1);
 
         numsol=(1:size(LRTtentSol,1))';
         nsoleti="Sol"+numsol;
@@ -1170,12 +1182,13 @@ if ComputeBands==true
     % Find  LRToptimalK, LRToptimalAlpha and LRToptimalIDX
     if ~isempty(LRTtentSol)
         % Just in case there are multiple solutions take as optimal the one
-        % with the smallest alpha associated with a minimum group size (if
-        % there is at least one soluzion which satisfies the minimum group
+        % with the smallest alpha independently of group size (if
+        % there is at least one solution which satisfies the minimum group
         % size)
-        if size(LRTtentSol,1)>1 
+        if size(LRTtentSol,1)>1
             if any(LRTtentSol(:,8))
-                indexBestSolLRT=find(LRTtentSol(:,7)==1 & LRTtentSol(:,8)==1);
+                % indexBestSolLRT=find(LRTtentSol(:,7)==1 & LRTtentSol(:,8)==1);
+                indexBestSolLRT=find(LRTtentSol(:,7)==1);
             else
                 indexBestSolLRT=1;
             end
