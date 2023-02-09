@@ -9,7 +9,7 @@ Y=load('geyser2.txt');
 nsamp=10;
 out=ctlcurves(Y,'nsamp',nsamp);
 % Show the automatic classification
-spmplot(Y,out.LRToptimalIDX);</pre></div></div><pre class="codeoutput">k=1
+spmplot(Y,out.LRToptimalIDX(:,1));</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
@@ -144,7 +144,13 @@ Bands k=6
                    bands.nsampExtra subsets with the solution which has
                    been found with real data, else if it is false
                    (default) no prior information is used in any of the
-                   extracted subsets.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bands',true
+                   extracted subsets.</p></p></td></tr><tr valign="top"><td><code>crit</code></td><td><p>scalar which defines the empirical p-value which
+                   is used to define a solution as significant and to
+                   reject the null hypotesis of smaller groups in the
+                   likelihood ratio test. The default value of crit is
+                   0.02, that is when we test $k$ against $k+1$ given a certain
+                   value of $\alpha$, if the empirical p-value is greater
+                   than crit we accept the null hypothesis of $k$ groups.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bands',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_kk" class="clearfix"></div><h3 id="input_argument_namevalue_kk" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>kk</code> &#8212;number of mixture components.</span></a><span class="example_desc">integer vector.</span></span></h3><div class="collapse">	<p><p>Integer
                vector specifying the number of mixture components
                (clusters) for which trimmed likelihoods are calculated.</p> <p>
@@ -415,19 +421,16 @@ Bands k=6
                           alpha). Eight column (ProperSize) contains 1 if
                           the solution which has been found has a minimum
                           group size which is greater than n*max(alpha).</p></p></td></tr><tr valign="top"><td><code>LRTtentSolt</code></td><td><p>table with size m-by-5 containing the same
-                        information of array  out.TentSolLR in table format.</p></td></tr><tr valign="top"><td><code>LRTtentSolIDX</code></td><td><p><p>matrix with size n-by-size(out.LRTtentSol,1) with
+                        information of array  out.TentSolLR in table format.</p></td></tr><tr valign="top"><td><code>LRTtentSolIDX</code></td><td><p>matrix with size n-by-size(out.LRTtentSol,1) with
                         the allocation associated with the tentative
-                        solutions found in out.LRTtentSol.</p> <p>
-                        First column refers to solution in row 1 of out.LRTtentSol ...</p></p></td></tr><tr valign="top"><td><code>LRToptimalAlpha</code></td><td><p>scalar, optimal value of trimming.</p></td></tr><tr valign="top"><td><code>LRToptimalK</code></td><td><p>scalar, optimal number of clusters, stored
-                        as a positive integer value.</p></td></tr><tr valign="top"><td><code>LRToptimalIDX</code></td><td><p>n-by-1 vector containing assignment of each unit to
-                       each of the k groups in correspodence of
+                        solutions found in out.LRTtentSol. First column
+                        refers to solution in row 1 of out.LRTtentSol ...</p></td></tr><tr valign="top"><td><code>LRToptimalAlpha</code></td><td><p>scalar, optimal value of trimming.</p></td></tr><tr valign="top"><td><code>LRToptimalK</code></td><td><p>scalar, optimal number of clusters, stored
+                        as a positive integer value.</p></td></tr><tr valign="top"><td><code>LRToptimalIDX</code></td><td><p>n-by-r vector containing assignment of each unit to
+                       each of the k groups in correspondence of
                        OptimalAlpha and OptimalK. Cluster names are
                        integer numbers from 1 to k. 0 indicates trimmed
                        observations. The fields which follow which start
-                       with LRT refer to the likelihood ratio test. The
-                       optimal solution is the first for which
-                       out.LRTtentSolt.kbestGivenalpha is 1 and
-                       out.LRTtentSolt.ProperSize is 1.</p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
+                       with LRT refer to the likelihood ratio test.</p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
                        components) which have been considered. This  vector
                        is equal to input optional argument kk if kk had been
                        specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>vector containing the values of the trimming
