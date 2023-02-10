@@ -184,10 +184,10 @@ if isempty(freq)
     hold('on')
     plot([quan; quan; min(x)],[0; z; z],'k--')
     if isord==false
-    text(quan, 0.05,['x_{' num2str(z) '}=' num2str(quan)],'FontSize',16)
+        text(quan, 0.05,['x_{' num2str(z) '}=' num2str(quan)],'FontSize',16)
     else
-    text(quan, 0.05,['x_{' num2str(z) '}=' categx{quan}],'FontSize',16)
-    quan=categx{quan};
+        text(quan, 0.05,['x_{' num2str(z) '}=' categx{quan}],'FontSize',16)
+        quan=categx{quan};
     end
     % freqcum=cumsum((1/n)*ones(n,1))
     h=cdfplot(x);
@@ -272,14 +272,25 @@ else
         dim = [.02 .05 0.1 0.1];
         indexxz=find(fcum<=z,1,'last');
         zstr=num2str(z);
-        xbars=x(indexxz);
-        xzstr=num2str(xbars);
-        reqq=xbars+(x(indexxz+1)-xbars)/(fcum(indexxz+1)-fcum(indexxz))*(z-fcum(indexxz));
-        % Write details to find final calculation
-        calc=[xzstr '+ \frac{' num2str(x(indexxz+1)) '-'...
-            num2str(x(indexxz)) '}{' num2str(fcum(indexxz+1)) '-' num2str(fcum(indexxz)) '}'...
-            '(' zstr '-' num2str(fcum(indexxz)) ')=' num2str(reqq) ]   ;
-        strfin=[' \it x $_{' zstr '}= \overline x_s+ \frac{\overline{\overline x}_s  -\overline x_s}{F(x_s)-F(x_{s-1})}[' zstr '-F(x_{s-1})]=' calc '$'];
+        if ~isempty(indexxz)
+
+            xbars=x(indexxz);
+            xzstr=num2str(xbars);
+            reqq=xbars+(x(indexxz+1)-xbars)/(fcum(indexxz+1)-fcum(indexxz))*(z-fcum(indexxz));
+            % Write details to find final calculation
+            calc=[xzstr '+ \frac{' num2str(x(indexxz+1)) '-'...
+                num2str(x(indexxz)) '}{' num2str(fcum(indexxz+1)) '-' num2str(fcum(indexxz)) '}'...
+                '(' zstr '-' num2str(fcum(indexxz)) ')=' num2str(reqq) ]   ;
+        else
+            xbars=xori(1);
+            xzstr=num2str(xbars);
+            reqq=xbars+(x(1)-xbars)/(fcum(1)-0)*(z-0);
+            calc=[xzstr '+ \frac{' num2str(x(1)) '-'...
+                num2str(xbars) '}{' num2str(fcum(1)) '-' num2str(0) '}'...
+                '(' zstr '-' num2str(0) ')=' num2str(reqq) ]   ;
+        end
+        strfin=[' \it x$_{' zstr '}= \overline x_s+ \frac{\overline{\overline x}_s  -\overline x_s}{F(x_s)-F(x_{s-1})}[' zstr '-F(x_{s-1})]=' calc '$'];
+
         xz=reqq;
         xzstr=num2str(reqq);
     end
