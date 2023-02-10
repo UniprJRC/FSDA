@@ -175,6 +175,25 @@ for i=1:I
     end
 end
 
+try
+na=cellfun(@str2num,X(:,1));
+ if ~any(isnan(na))
+     for i=1:size(X,1)
+         X{i,1}=na(i);
+     end
+ end
+catch
+end
+
+ try
+ na=cellfun(@str2num,X(:,2));
+ if ~any(isnan(na))
+     for i=1:size(X,1)
+         X{i,2}=na(i);
+     end
+ end
+ catch
+ end
 end
 
 %FScategory:MULT-Categorical
