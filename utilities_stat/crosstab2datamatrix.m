@@ -1,4 +1,4 @@
-function X=crosstab2datamatrix(N, varargin)
+function [X,T]=crosstab2datamatrix(N, varargin)
 %crosstab2datamatrix recreates the original data matrix X from contingency table N
 %
 %
@@ -17,7 +17,7 @@ function X=crosstab2datamatrix(N, varargin)
 %       Lr   :  Vector of row labels. Cell of length I.
 %               Cell containing the labels of the rows of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table, because in this case  Lr=N.Properties.RowNames; 
+%               table, because in this case  Lr=N.Properties.RowNames;
 %               Example - 'Lr',{'a' 'b' 'c'}
 %               Data Types - cell array of strings
 %
@@ -37,6 +37,14 @@ function X=crosstab2datamatrix(N, varargin)
 %             Original input which generated the contingency table.
 %             Note that input N can be obtained using N=crosstab(X(:,1),X(:,2));
 %
+%      T   :  Original data matrix in table format.
+%             Object of class table of size sum(N(:))-by-2
+%             containing the original data matrix.
+%             Original input which generated the contingency table.
+%             Note that input N can be obtained using N=crosstab(T{:,1},X{:,2});
+%             If the labels contained in Lr and Lr could be converted to
+%             double the columns of T contain numeric values else their
+%             class is categorical
 %
 % See also crosstab, rcontFS, CressieRead
 %
@@ -116,7 +124,7 @@ if ~isempty(UserOptions)
         % Check if user options are valid options
         chkoptions(options,UserOptions)
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     if nargin > 2
         for i=1:2:length(varargin)
@@ -166,34 +174,101 @@ if length(Lc)~=J
     error('FSDA:crosstab2datamatrix:WrongInputOpt',['length of cell containing column labels must be equal to ' num2str(J)]);
 end
 
+vartype=["double" "double"];
+
+if isnumeric(X)
+    isnumericCol1=true;
+    isnumericCol2=true;
+    Lrnumeric=Lr;
+    Lcnumeric=Lc;
+else
+    try
+        isnumericCol1=true;
+        Lrnumeric=cellfun(@str2num,Lr);
+    catch
+        isnumericCol1=false;
+        vartype(1)="categorical";
+    end
+
+    try
+        isnumericCol2=true;
+        Lcnumeric=cellfun(@str2num,Lc);
+    catch
+        vartype(2)="categorical";
+        isnumericCol2=false;
+    end
+
+end
+
+T = table('Size',size(X),'VariableTypes',vartype);
+
 % Reconstruct the original data matrix
 nij=0;
 for i=1:I
     for j=1:J
-        X(nij+1:nij+N(i,j),:)= [repmat(Lr(i),N(i,j),1) repmat(Lc(j),N(i,j),1)];
+        %  X(nij+1:nij+N(i,j),:)= [repmat(Lr(i),N(i,j),1) repmat(Lc(j),N(i,j),1)];
+        for ij=1:N(i,j)
+            if isnumericCol1
+                if iscell(X)
+                    X{nij+ij,1}= Lrnumeric(i);
+                else
+                    X(nij+ij,1)= Lrnumeric(i);
+                end
+                T{nij+ij,1}= Lrnumeric(i);
+            else
+                if iscell(X)
+                    X{nij+ij,1}=Lr{i};
+                else
+                    X(nij+ij,1)=Lr{i};
+                end
+                T{nij+ij,1}=string(Lr{i});
+            end
+            if isnumericCol2
+                if iscell(X)
+                    X{nij+ij,2}= Lcnumeric(j);
+                else
+                    X(nij+ij,2)= Lcnumeric(j);
+                end
+                T{nij+ij,2}= Lcnumeric(j);
+            else
+                X{nij+ij,2}=Lc{j};
+                T{nij+ij,2}=string(Lc{j});
+            end
+        end
         nij=nij+N(i,j);
     end
 end
 
-try
-na=cellfun(@str2num,X(:,1));
- if ~any(isnan(na))
-     for i=1:size(X,1)
-         X{i,1}=na(i);
-     end
- end
-catch
-end
+% outputtable=true;
+% if outputtable==true
+% end
+%
+% for jj=1:2
+% try
+%     na=cellfun(@str2num,X(:,jj));
+%     if ~any(isnan(na))
+%         for i=1:size(X,1)
+%             X{i,jj}=na(i);
+%             T{i,jj}=na(i);
+%         end
+%     end
+% catch
+%     T{:,jj}=X(:,jj);
+% end
+% end
 
- try
- na=cellfun(@str2num,X(:,2));
- if ~any(isnan(na))
-     for i=1:size(X,1)
-         X{i,2}=na(i);
-     end
- end
- catch
- end
+% try
+%     na=cellfun(@str2num,X(:,2));
+%     if ~any(isnan(na))
+%         for i=1:size(X,1)
+%             X{i,2}=na(i);
+%         end
+%     end
+% catch
+% end
+
+
+
 end
 
 %FScategory:MULT-Categorical
