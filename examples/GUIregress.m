@@ -699,7 +699,7 @@ if ~isempty(inferential)
 
 
 
-    strs=['\boldmath{$s= \sqrt{\frac{DEV(E)}{n-2}} $}= $\frac{' num2str(deve) '}{' num2str(lenx-2) '}=' num2str(s)  '$'];
+    strs=['\boldmath{$s= \sqrt{\frac{DEV(E)}{n-2}} $}= $\sqrt{\frac{' num2str(deve) '}{' num2str(lenx-2) '}}=' num2str(s)  '$'];
 
     strstderrb=['\boldmath{$s_b= s \sqrt{\frac{1}{\sum_{i=1}^n (x_i -M_X)^2}} = '  num2str(s)   '\sqrt{\frac{' num2str(1) '}{' num2str(sumxmx2) '}}= $ $' num2str(stderrb) '$}' ];
 
