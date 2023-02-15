@@ -23,6 +23,21 @@ function out = GUIregress(x,y, varargin)
 %
 %  Optional input arguments:
 %
+%  inferential :  this input parameter controls whether to show an additional GUI
+%                 giving all the details for the calculation of all the
+%                 inferential aspects of the linear regression model (i.e.
+%                 standard error of coefficients, t-statistics, p-values
+%                 of the t-statistics for a two-sided test with the null
+%                 hypothesis that the coefficient is zero and confidence
+%                 intervals). If inferential is empty [] (default) this
+%                 additional GUI is now shown. If inferential is a number
+%                 in the interval (0 1), this GUI is shown and the a
+%                 confidence level at inferential-per cent level is
+%                 computed. For example if inferential is 0.90 a 90 per
+%                 cent confidence interval is computed.
+%                 Example - 'inferential',0.99
+%                 Data Types - boolean
+%
 %    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
@@ -30,10 +45,11 @@ function out = GUIregress(x,y, varargin)
 %                 the constant term from the regression model.
 %                 Example - 'intercept',false
 %                 Data Types - boolean
+%
 %    timeseries : Flag indicating that data is a time series. false (default) | true.
 %                 Example - 'timeseries', true
 %                 Data Types - boolean
-
+%
 %
 %     plots    : show regression graphically. Boolean.
 %                If plots is true an additional plot which shows the (x,y)
@@ -59,16 +75,26 @@ function out = GUIregress(x,y, varargin)
 %          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %    out.a = intercept of linear/exponential/power regression on the
-%           original data. scalar. 
+%           original data. scalar.
 %     out.b = slope of the of linear/exponential/power regression on the original data. scalar.
 %    out.expa = intercept of the exponential/power regression on the
 %               transformed data. scalar. This field is present only if
 %               input option interpolant is 'exponential' or 'power'.
-%    out.expb =  slope of the exponential regression on the transformed data. scalar. 
+%    out.expb =  slope of the exponential regression on the transformed data. scalar.
 %                This field is present only if input option interpolant is 'exponential'.
 %    out.R2 = R squared of the regression model. scalar.
-%            When exponential/power regression is chosen, R squared is always 
+%            When exponential/power regression is chosen, R squared is always
 %            computed on transformed data.
+%    out.ta  = t statistic for intercept. Scalar.
+%    out.tb  = t statistic for slope. Scalar.
+%    out.confinta = confidence interval for alpha parameter. A vector of
+%            length 2 containing the extremes of confidence interval for the
+%            intercept. The default confidence level is 0.95 or it
+%            is controlled by optional input argument inferential.
+%    out.confintb = confidence interval for alpha parameter. A vector of
+%            length 2 containing the extremes of confidence interval for the
+%            slope. The default confidence level is 0.95 or it
+%            is controlled by optional input argument inferential.
 %
 % See also: GUIvar, GUImad, GUIskewness
 %
@@ -162,13 +188,13 @@ function out = GUIregress(x,y, varargin)
     % Analyze the trend of the company's production using an power fit.
     out=GUIregress(x,y,'interpolant','power','plots',true,'timeseries',true)
     
-close all
 
 %}
 
 %{
     %% Example of linear and power interpolation .
-    % Time series....,  (See ex 4,26 of [CMR])   
+    close all
+    % Time series....,  (See ex 4.26 of [CMR])   
     xb=1:8;
     xa=[1 3 5 7 9 11 13 15];
     y=[325 327 329 332 335 338 340 343];
@@ -181,10 +207,25 @@ close all
 
      % Analyze the trend of the company's production using a power fit.
     out=GUIregress(xa,y,'interpolant','power','plots',true, 'timeseries', true);
-
-
 %}
 
+%{
+    %% Use of option inferential.
+    % In a survey on pollution, we want to verify whether the content of a
+    % certain pollutant in the air, expressed in micrograms per cubic meter
+    % (Y) is linked to the number of manufacturing companies with more than
+    % 20 employees (X). The results obtained in some cities are given
+    % below:
+    x=[91 453 254 412 334 428 341 125];
+    y=[13 12 17 56 29 35 49 27];
+    out=GUIregress(x,y,'inferential',0.90,'plots',false);
+    % There is not enough evidence to state that is not 0 in the population
+    % and the estimated relationship between the two variables is
+    % significant. The value of the linear index of determination
+    % (R2=0.159) shows a very poor fit of the regression line. The
+    % estimated model is therefore of no use for interpreting the causes of
+    % pollution.
+%}
 
 %% Beginning of code
 
@@ -214,9 +255,10 @@ seq=(1:lenx)';
 intercept=true;
 plots=false;
 interpolant='linear';
+inferential=[];
 if nargin>2
     options=struct('intercept',intercept,'plots',false,...
-        'interpolant',interpolant, 'timeseries', false);
+        'interpolant',interpolant, 'timeseries', false,'inferential',inferential);
 
     % 'weights',weights,...
 
@@ -240,6 +282,7 @@ if nargin>2
     % weights=options.weights;
     interpolant=options.interpolant;
     timeseries=options.timeseries;
+    inferential=options.inferential;
 end
 
 weights=[];
@@ -330,7 +373,6 @@ if unweighted==true % unweighted regression
         else
         end
 
-
     else
         header={'i' 'x_i' 'y_i' 'x_i^2' 'x_iy_i' '\hat y_i'};
         corpus=[seq, x,y, x2, xy, yhat];
@@ -391,12 +433,13 @@ end
 str=strForSchool(header, corpus, footer);
 str1=strForSchool(header1, corpus1, footer1);
 
+
 out = struct;
 
 out.tabledata=array2table([corpus;footer],'VariableNames',header);
 if interpType == 1
     out.a=a;
-    out.b=b;  
+    out.b=b;
     out.R2=R2;
 elseif interpType == 2
     out.expa=a;
@@ -404,7 +447,7 @@ elseif interpType == 2
     out.a=exp(a);
     out.b=exp(b);
     out.R2=R2;
-else    
+else
     out.expa=a;
     out.a=exp(a);
     out.b=b;
@@ -433,15 +476,17 @@ while length(str1) >1100
     b1=b1-1;
 end
 
-% main window
-fs=14;
-dim = [.02 .850 0.1 0.1];
-h=figure('Position',[100 100 1200 700],'Units','normalized');
-h1=figure('Position',[100 100 900 700],'Units','normalized');
+% main figure
+h=figure('Position',[100 100 1200 700],'Units','normalized','Name','Parameter estimation and fitted values');
+h1=figure('Position',[100 100 900 700],'Units','normalized','Name','Deviance decomposition and R2');
 
+% Textboxes for statistics calculation
+fs=14;
+dim = [.02 .830 0.1 0.1];
 annotation(h,'textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 drawnow
 annotation(h1,'textbox',dim,'FitBoxToText','on','String',str1,'Interpreter','latex','FontSize',fs);
+
 
 if b>0
     ps='+';
@@ -596,14 +641,151 @@ else
     % TODO
 end
 
+
+% Textboxes for b= and a=
 fs1=20;
 dimbcoeff = [.01 .16 0.1 0.1];
-annotation(h,'textbox',dimbcoeff,'FitBoxToText','on','String',strbcoeff,'Interpreter','latex','FontSize',fs1);
 dimacoeff = [.01 .02 0.1 0.1];
 annotation(h,'textbox',dimacoeff,'FitBoxToText','on','String',stracoeff,'Interpreter','latex','FontSize',fs1);
 
-annotation(h1,'textbox',dimbcoeff,'FitBoxToText','on','String',strR2,'Interpreter','latex','FontSize',fs1);
-annotation(h1,'textbox',dimacoeff,'FitBoxToText','on','String',strR2bis,'Interpreter','latex','FontSize',fs1);
+annotation(h,'textbox',dimbcoeff,'FitBoxToText','on','String',strbcoeff,'Interpreter','latex','FontSize',fs1);
+
+% Textboxes for R^2
+dimR2coeff = [.01 .16 0.1 0.1];
+dimR2biscoeff = [.01 .02 0.1 0.1];
+annotation(h1,'textbox',dimR2coeff,'FitBoxToText','on','String',strR2,'Interpreter','latex','FontSize',fs1);
+annotation(h1,'textbox',dimR2biscoeff,'FitBoxToText','on','String',strR2bis,'Interpreter','latex','FontSize',fs1);
+
+xmx2=(x-mx).^2;
+sumxmx2=sum(xmx2);
+s=sqrt(deve/(lenx-2));
+stderra=s*sqrt(1/lenx+mx^2/sumxmx2);
+stderrb=s*sqrt(1/sumxmx2);
+ta=a/stderra;
+tb=b/stderrb;
+pvala=2*tcdf(abs(ta),lenx-2,'upper');
+pvalb=2*tcdf(abs(tb),lenx-2,'upper');
+alpha=1-inferential;
+tinvinf=tinv(alpha/2,lenx-2);
+tinvsup=tinv(1-alpha/2,lenx-2);
+tinfa=a+tinvinf*stderra;
+tsupa=a+tinvsup*stderra;
+tinfb=b+tinvinf*stderrb;
+tsupb=b+tinvsup*stderrb;
+
+if intercept == true
+    out.ta=ta;
+else
+    out.ta=[];
+end
+out.tb=tb;
+if intercept == true
+    out.confinta=[tinfa tsupa];
+else
+   out.confinta=[];
+end
+out.confintb=[tinfb tsupb];
+
+
+if ~isempty(inferential)
+    h2=figure('Position',[100 100 1200 700],'Units','normalized','Name','Inferential aspects');
+
+    header2={'i' '(x_i -M_X)^2'};
+    corpus2=[seq, xmx2];
+    footer2=[NaN sumxmx2];
+    str2=strForSchool(header2, corpus2, footer2);
+    annotation(h2,'textbox',dim,'FitBoxToText','on','String',str2,'Interpreter','latex','FontSize',fs);
+
+
+
+
+    strs=['\boldmath{$s= \sqrt{\frac{DEV(E)}{n-2}} $}= $\frac{' num2str(deve) '}{' num2str(lenx-2) '}=' num2str(s)  '$'];
+
+    strstderrb=['\boldmath{$s_b= s \sqrt{\frac{1}{\sum_{i=1}^n (x_i -M_X)^2}} = '  num2str(s)   '\sqrt{\frac{' num2str(1) '}{' num2str(sumxmx2) '}}= $ $' num2str(stderrb) '$}' ];
+
+    if intercept==true
+        strstderra=['\boldmath{$s_a= s \sqrt{\frac{1}{n} +\frac{\overline{x}^2}{\sum_{i=1}^n (x_i -M_X)^2}} $= $'  num2str(s)   '\sqrt{\frac{' num2str(1) '}{' num2str(lenx) '}+\frac{' num2str(mx) '^2}{' num2str(sumxmx2) '}}= $ $' ...
+            num2str(stderra) '$}' ];
+    else
+        strstderra='\boldmath{$NA$}';
+    end
+
+
+    posp=0.39;
+
+    % Root mean squared error
+    dim = [posp .9 0.1 0.1];
+    fs1=20;
+    strtitinf='$s$=Root mean squared error';
+    annotation(h2,'textbox',dim,'FitBoxToText','on','String',strtitinf,'Interpreter','latex','FontSize',fs1);
+    dimstrs = [posp .83 0.1 0.1];
+    annotation(h2,'textbox',dimstrs,'FitBoxToText','on','String',strs,'Interpreter','latex','FontSize',fs);
+
+    % Standard error section
+    rr=0.03;
+    dimstrs = [posp .70+rr 0.1 0.1];
+
+    if intercept == true
+        dimstderra = [posp .63+rr 0.1 0.1];
+        annotation(h2,'textbox',dimstderra,'FitBoxToText','on','String',strstderra,'Interpreter','latex','FontSize',fs);
+        strSE='Standard error of intercept and slope';
+    else
+        strSE='Standard error of slope';
+    end
+    dimstderrb = [posp .54+rr 0.1 0.1];
+    annotation(h2,'textbox',dimstderrb,'FitBoxToText','on','String',strstderrb,'Interpreter','latex','FontSize',fs);
+
+    annotation(h2,'textbox',dimstrs,'FitBoxToText','on','String',strSE,'Interpreter','latex','FontSize',fs1);
+
+
+    % t statistic section
+    dimstrtstat = [posp .41+rr 0.1 0.1];
+    strtstat='$t$-statistic for a two-sided test with $H_0$: coefficient is zero';
+    annotation(h2,'textbox',dimstrtstat,'FitBoxToText','on','String',strtstat,'Interpreter','latex','FontSize',fs1);
+
+    if intercept == true
+        strta=['\boldmath{$t_a= \frac{a}{s_a} = \frac{' num2str(a) '}{' num2str(stderra) '}= $ $' num2str(ta) '$}' '$\qquad p$-value=$Pr(|T({' num2str(lenx-2) '})|>|t_a|)=' num2str(pvala) '$'];
+        dimstrta = [posp .34+rr 0.1 0.1];
+        annotation(h2,'textbox',dimstrta,'FitBoxToText','on','String',strta,'Interpreter','latex','FontSize',fs);
+    end
+
+    strtb=['\boldmath{$t_b= \frac{b}{s_b} = \frac{' num2str(b) '}{' num2str(stderrb) '}= $ $' num2str(tb) '$}' '$\qquad p$-value=$Pr(|T({' num2str(lenx-2) ')}|>|t_b|)=' num2str(pvalb) '$'];
+    dimstrtb = [posp .27+rr 0.1 0.1];
+    annotation(h2,'textbox',dimstrtb,'FitBoxToText','on','String',strtb,'Interpreter','latex','FontSize',fs);
+
+    % Confidence interval section
+    dimstrconfint = [0.01 .28 0.1 0.1];
+    strconfint='Confidence intervals';
+    annotation(h2,'textbox',dimstrconfint,'FitBoxToText','on','String',strconfint,'Interpreter','latex','FontSize',fs1);
+
+    % confint for a
+    if intercept == true
+        numstrafmt=num2str(a,'%.4f');
+        numstrstderra=num2str(stderra,'%.4f');
+
+        strconfinta=['\boldmath{$Pr(a+t_{' num2str(alpha/2) '}('   num2str(lenx-2)  ') \times s_a < \alpha <a+t_{' num2str(1-alpha/2) '}('  num2str(lenx-2)  ')\times s_a $ $)=' '$}' ...
+            '\boldmath{$Pr(' numstrafmt num2str(tinvinf) '\times' numstrstderra  '<\alpha< '  numstrafmt '+' num2str(tinvsup) '\times' numstrstderra '$)= $' num2str(1-alpha) '$}'];
+        dimstrconfinta = [0.005 .20 0.1 0.1];
+        annotation(h2,'textbox',dimstrconfinta,'FitBoxToText','on','String',strconfinta,'Interpreter','latex','FontSize',fs);
+
+        dimstrconfintafin = [0.30 .15 0.1 0.1];
+        strconfintafin=['\boldmath{$Pr(' num2str(tinfa)  '< \alpha < '  num2str(tsupa) '$)= $' num2str(1-alpha) '$}'];
+        annotation(h2,'textbox',dimstrconfintafin,'FitBoxToText','on','String',strconfintafin,'Interpreter','latex','FontSize',fs1);
+    end
+
+    % confint for b
+    numstrbfmt=num2str(b,'%.4f');
+    numstrstderrb=num2str(stderrb,'%.4f');
+    strconfintb=['\boldmath{$Pr(b+t_{' num2str(alpha/2) '}('   num2str(lenx-2)  ') \times s_b < \beta <b+t_{' num2str(1-alpha/2) '}('  num2str(lenx-2)  ')\times s_b $ $)=' '$}' ...
+        '\boldmath{$Pr(' numstrbfmt num2str(tinvinf) '\times' numstrstderrb  '<\beta< '  numstrbfmt '+' num2str(tinvsup) '\times' numstrstderrb '$)= $' num2str(1-alpha) '$}'];
+    dimstrconfintb = [0.005 .05 0.1 0.1];
+    annotation(h2,'textbox',dimstrconfintb,'FitBoxToText','on','String',strconfintb,'Interpreter','latex','FontSize',fs);
+
+    dimstrconfintbfin = [0.30 .0001 0.1 0.1];
+    strconfintbfin=['\boldmath{$Pr(' num2str(tinfb)  '< \beta < '  num2str(tsupb) '$)= $' num2str(1-alpha) '$}'];
+    annotation(h2,'textbox',dimstrconfintbfin,'FitBoxToText','on','String',strconfintbfin,'Interpreter','latex','FontSize',fs1);
+
+end
 
 % Show plot of (x,y) coordinates, fitted line and residuals
 if plots==true
