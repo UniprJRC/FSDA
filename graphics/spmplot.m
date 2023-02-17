@@ -70,12 +70,20 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %   Optional input arguments:
 %
-%  group: grouping variable. Vector with n elements.
-%          group is a grouping variable defined as a categorical
-%           variable, numeric, or array of strings,
-%               or string matrix, and it must have the same number of rows
-%               as Y. This grouping variable that determines
-%               the marker and color assigned to each point.
+%
+%  colorBackground : background color of each scatter which depends on the
+%           value of the correlation coefficient. Boolean. If
+%           colorBackground is false (default), no color is applied, else a
+%           background color which depends on the value of the correlation
+%           coefficient is used.
+%                   Example - 'colorBackground',true
+%                   Data Types - logical
+%
+%   group: grouping variable. Vector with n elements.
+%          group is a grouping variable defined as a categorical variable,
+%          numeric, or array of strings, or string matrix, and it must have
+%          the same number of rows of Y. This grouping variable that
+%          determines the marker and color assigned to each point.
 %                   Example - 'group',group
 %                   Data Types - char
 %         Remark: if 'group' is used to distinguish a set of outliers from
@@ -576,10 +584,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
-    % spmplot called with name/pairs.
-    % In all previous examples spmplot was called without the
-    % name/value pairs arguments
-    % The example which follow make use of the name/value pairs arguments
+    % Another example of spmplot called with name/pairs.
+    % The example which follow make use of the name/value pairs arguments.
     close all
     load fisheriris;
     plo=struct;
@@ -890,6 +896,7 @@ if nargin>1
         undock  = '';
         tag='pl_spm';
         units='';
+        colorBackground=false;
         if length(varargin)>3
             disp('spmplot has been called in the old format without name pairs')
             disp('In this case only the first four arguments "Y,group,plo,dispopt" are considered')
@@ -922,7 +929,8 @@ if nargin>1
         one=ones(n,1);
         options=struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),...
             'selunit',selthdef,'datatooltip',0,...
-            'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', 'undock', '');
+            'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
+            'undock', '','colorBackground',false);
 
         UserOptions=varargin(1:2:length(varargin));
 
@@ -955,7 +963,7 @@ if nargin>1
         overlay=options.overlay;
         undock=options.undock;
         units=options.selunit;
-
+        colorBackground=options.colorBackground;
     end
 
 
@@ -1027,6 +1035,7 @@ else
     overlay='';
     undock='';
     units='';
+    colorBackground=false;
 end
 
 ngroups=length(unique(group));
@@ -1339,20 +1348,39 @@ set([get(BigAx,'Title'); get(BigAx,'XLabel'); get(BigAx,'YLabel')], ...
 % set the specified tag in the current plot
 set(gcf,'tag',tag)
 
-if ~isempty(units)
-    for i = 1:size(AX,2)
-        for j=1:size(AX,2)
-            if i~=j
-                set(gcf,'CurrentAxes',AX(i,j));
-                xlimits = get(AX(j,i),'Xlim');
-                ylimits = get(AX(j,i),'Ylim');
+
+if colorBackground==true
+    R=corr(Y);
+    cmapBackground=colormap("turbo");
+    % The range of correlation coefficient is mapped into [0 1]
+    % and multiplied by number of rows of cmapBackground in
+    % order to find the row of the colormap to extract
+    posBackground=max(1,ceil(size(cmapBackground,1)*(R+1)/2));
+end
+
+for i = 1:size(AX,2)
+    for j=1:size(AX,2)
+        if i~=j
+            set(gcf,'CurrentAxes',AX(i,j));
+            xlimits = get(AX(j,i),'Xlim');
+            ylimits = get(AX(j,i),'Ylim');
+            if ~isempty(units)
+
                 dx = (xlimits(2)-xlimits(1))*0.01*size(AX,2)/2;
                 dy = (ylimits(2)-ylimits(1))*0.01*size(AX,2)/2; % displacement
                 text(Y(units,j)+dy,Y(units,i)+dx,numtext(units),'HorizontalAlignment', 'Left');
             end
+
+            % Add background color
+            if colorBackground==true
+                ax=axis;
+                h = patch([ax(1:2)';ax(2);ax(1)],[ax(3);ax(3);ax(4);ax(4)],cmapBackground(posBackground(i,j),:));
+                set(h,'facealpha',0.15);
+            end
         end
     end
 end
+
 
 %% Add objects to the scatterplot matrix
 
@@ -1511,11 +1539,11 @@ if ~isempty(overlay)
 
             if strcmp(type, 'contourf') || strcmp(type, 'contour')
                 % ischar(type) && max(strcmp(type,{'contourf' , 'contour' , 'surf' , 'mesh'}))  [to add 2 new options in the future]
-                
-                % get labels for display names
-                displayGroups = findobj(AX(indRows,indCols), 'type', 'line'); 
 
-                % iterate through all included groups               
+                % get labels for display names
+                displayGroups = findobj(AX(indRows,indCols), 'type', 'line');
+
+                % iterate through all included groups
                 for ii = unId(include)'
                     % plot density contours for the specified groups
                     kdebiv([dataextr{1,2}(inclId& dataextr{1,4}==ii), dataextr{1,3}(inclId& dataextr{1,4}==ii)] , ...
@@ -1524,12 +1552,12 @@ if ~isempty(overlay)
                     % put densities in the background
                     GetCountur = get(AX(indRows,indCols),'Children');
                     uistack(GetCountur(1),'bottom');
-                    % this is to color the contour with the data color 
+                    % this is to color the contour with the data color
                     GetCountur(1).LineColor=clr(ii);
                     % this is to make the color of the contour lighter
                     GetCountur(1).LineColor=GetCountur(1).LineColor*(3/4);
-                    
-                     % add to the clickable legend the respective groups
+
+                    % add to the clickable legend the respective groups
                     GetCountur(1).DisplayName=get(displayGroups(end-ii+1), 'DisplayName');
 
                 end
@@ -1575,7 +1603,7 @@ if ~isempty(overlay)
                     axx = findobj(AX(indRows,indCols), 'type', 'line');  % final existing objects
                     set(axx(1:length(axx)-axx0), 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
                     set(outbp.handles, 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
-               
+
                 end
 
             end
