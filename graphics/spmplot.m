@@ -1425,7 +1425,7 @@ end
 
 
 if ismember(typespm,{'lower','upper'})
-                 
+
 
     if strcmp(typespm,'lower')
         justlow=true;
@@ -1451,7 +1451,7 @@ if ismember(typespm,{'lower','upper'})
                 cond=i>j;
             end
 
-            if cond ==true 
+            if cond ==true
                 set(gcf,'CurrentAxes',AX(i,j));
                 cla(gca)
 
@@ -1634,69 +1634,74 @@ if ~isempty(overlay)
                 % get labels for display names
                 displayGroups = findobj(AX(indRows,indCols), 'type', 'line');
 
-                % iterate through all included groups
-                for ii = unId(include)'
-                    % plot density contours for the specified groups
-                    kdebiv([dataextr{1,2}(inclId& dataextr{1,4}==ii), dataextr{1,3}(inclId& dataextr{1,4}==ii)] , ...
-                        'contourtype', type , 'cmap' , cmap, 'Xlim', [dataextr{1,2} dataextr{1,3}]);
+                if ~isempty(displayGroups)
+                    % iterate through all included groups
+                    for ii = unId(include)'
+                        % plot density contours for the specified groups
+                        kdebiv([dataextr{1,2}(inclId& dataextr{1,4}==ii), dataextr{1,3}(inclId& dataextr{1,4}==ii)] , ...
+                            'contourtype', type , 'cmap' , cmap, 'Xlim', [dataextr{1,2} dataextr{1,3}]);
 
-                    % put densities in the background
-                    GetCountur = get(AX(indRows,indCols),'Children');
-                    uistack(GetCountur(1),'bottom');
-                    % this is to color the contour with the data color
-                    GetCountur(1).LineColor=clr(ii);
-                    % this is to make the color of the contour lighter
-                    GetCountur(1).LineColor=GetCountur(1).LineColor*(3/4);
+                        % put densities in the background
+                        GetCountur = get(AX(indRows,indCols),'Children');
+                        uistack(GetCountur(1),'bottom');
+                        % this is to color the contour with the data color
+                        GetCountur(1).LineColor=clr(ii);
+                        % this is to make the color of the contour lighter
+                        GetCountur(1).LineColor=GetCountur(1).LineColor*(3/4);
 
-                    % add to the clickable legend the respective groups
-                    GetCountur(1).DisplayName=get(displayGroups(end-ii+1), 'DisplayName');
+                        % add to the clickable legend the respective groups
+                        GetCountur(1).DisplayName=get(displayGroups(end-ii+1), 'DisplayName');
 
+                    end
                 end
 
             elseif strcmp(type, 'ellipse')
+
                 %  plot ellipses for the specified groups
                 displayGroups = findobj(AX(indRows,indCols), 'type', 'line'); % to get labels for display names
+                if ~isempty(displayGroups)
+                    % iterate through all included groups
+                    for ii = unId(include)'
+                        axx0 = length(findobj(AX(indRows,indCols), 'type', 'line')); % initial existing objects
+                        [~ , he] = ellipse(mean([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
+                            cov([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
+                            conflev, clr(ii)); % color was FSColors.darkgrey.RGB
+                        he.Color=clr(ii);
+                        % this is to make the color of the contour lighter
+                        he.Color=he(1).Color*(3/4);
+                        he.LineWidth=1.5;
 
-                % iterate through all included groups
-                for ii = unId(include)'
-                    axx0 = length(findobj(AX(indRows,indCols), 'type', 'line')); % initial existing objects
-                    [~ , he] = ellipse(mean([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
-                        cov([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
-                        conflev, clr(ii)); % color was FSColors.darkgrey.RGB
-                    he.Color=clr(ii);
-                    % this is to make the color of the contour lighter
-                    he.Color=he(1).Color*(3/4);
-                    he.LineWidth=1.5;
-
-                    % add to the clickable legend the respective groups
-                    axx = findobj(AX(indRows,indCols), 'type', 'line'); % final existing objects
-                    % delete(axx(1:2)); % uncomment to plot ellipses without axes
-                    set(axx(1:length(axx)-axx0), 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
-                    % set(axx(1:length(axx)-axx0), 'DisplayName',
-                    % num2str(ii-(length(unId)-length(unId(include)))));
+                        % add to the clickable legend the respective groups
+                        axx = findobj(AX(indRows,indCols), 'type', 'line'); % final existing objects
+                        % delete(axx(1:2)); % uncomment to plot ellipses without axes
+                        set(axx(1:length(axx)-axx0), 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
+                        % set(axx(1:length(axx)-axx0), 'DisplayName',
+                        % num2str(ii-(length(unId)-length(unId(include)))));
+                    end
                 end
-
             elseif strcmp(type, 'boxplotb')
                 %  plot bivariate boxplot for the specified groups
                 displayGroups = findobj(AX(indRows,indCols), 'type', 'line'); % to get labels for display names
 
-                % set limits
-                plots.xlim = [min(dataextr{1,2}), max(dataextr{1,2})];
-                plots.ylim = [min(dataextr{1,3}), max(dataextr{1,3})];
-                plots.labeladd = 0;
+                if ~isempty(displayGroups)
+                    % set limits
+                    plots.xlim = [min(dataextr{1,2}), max(dataextr{1,2})];
+                    plots.ylim = [min(dataextr{1,3}), max(dataextr{1,3})];
+                    plots.labeladd = 0;
 
-                % iterate through all included groups
-                for ii = unId(include)'
-                    axx0 = length(findobj(AX(indRows,indCols), 'type', 'line'));    % initial existing objects
-                    outbp=boxplotb([dataextr{1,2}(inclId& dataextr{1,4}==ii), dataextr{1,3}(inclId& dataextr{1,4}==ii)], 'plots', plots,'resolution',100);
-                    % add the names of the respective groups (to be
-                    % used in the clickable legend )
-                    axx = findobj(AX(indRows,indCols), 'type', 'line');  % final existing objects
-                    set(axx(1:length(axx)-axx0), 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
-                    set(outbp.handles, 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
+                    % iterate through all included groups
+                    for ii = unId(include)'
+                        axx0 = length(findobj(AX(indRows,indCols), 'type', 'line'));    % initial existing objects
+                        outbp=boxplotb([dataextr{1,2}(inclId& dataextr{1,4}==ii), dataextr{1,3}(inclId& dataextr{1,4}==ii)], 'plots', plots,'resolution',100);
+                        % add the names of the respective groups (to be
+                        % used in the clickable legend )
+                        axx = findobj(AX(indRows,indCols), 'type', 'line');  % final existing objects
+                        set(axx(1:length(axx)-axx0), 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
+                        set(outbp.handles, 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
+
+                    end
 
                 end
-
             end
             %axis 'auto y';
             %axis 'auto x';
