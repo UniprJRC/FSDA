@@ -79,6 +79,16 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'colorBackground',true
 %                   Data Types - logical
 %
+% dispopt: what to put on the diagonal. Character. String which controls
+%          how to fill the diagonals in a plot of Y vs Y (main diagonal of
+%          the scatter plot matrix). Set dispopt to 'hist' (default) to
+%          plot histograms, or 'box' to plot boxplots.
+%
+%       REMARK 1: the style which is used for univariate boxplots is
+%       'traditional' if the number of groups is <=5, else it is 'compact'.
+%                   Example - 'dispopt','box'
+%                   Data Types - char
+%
 %   group: grouping variable. Vector with n elements.
 %          group is a grouping variable defined as a categorical variable,
 %          numeric, or array of strings, or string matrix, and it must have
@@ -90,6 +100,40 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         a set of good units, the id number for the outliers should be the
 %         larger (see optional field 'labeladd' of option 'plo' for details).
 %
+%   overlay :   Superimposition on the panels out of the main diagonal of
+%               the scatter matrix. Scalar, char or structure. It specifies
+%               what to add in the background for the panels specified in
+%               undock (default is for all oh them).
+%               The default value is overlay='', i.e. nothing is changed. If
+%               overlay=1 the the filled contours are added to each panel,
+%               considering all groups, as default. If overlay is a structure
+%               it may contain the following fields:
+%              overlay.type  = Type of plot to add in the background or to
+%                                superimpose. String. It can be: 'contourf',
+%                                'contour', 'ellipse' or 'boxplotb',
+%                                specifying respectively to add filled
+%                                contour (default when overlay=1), contour,
+%                                ellipses or a bivariate boxplot (see
+%                                function boxplotb.m).
+%              overlay.include = Boolean vector specifying which groups to
+%                                include in the type of plot specified in
+%                                overlay.type, the default value is a vector
+%                                of ones (i.e. all groups).
+%              overlay.cmap =  The colormap for the type 'contourf' and
+%                                'contour' is grey as default. In these case,
+%                                this field may specify the colors used for
+%                                the color map. It is a three-column matrix of
+%                                values in the range [0,1] where each row
+%                                is an RGB triplet that defines one color.
+%                                Check the colormap function for additional
+%                                informations.
+%              overlay.conflev = When the type specified is 'ellipse', the
+%                                size of the ellipses is chi2inv(0.95,2) as
+%                                default. In this case, this field may
+%                                specify a different confidence level used
+%                                and it is a value between 0 and 1.
+%                   Example - 'overlay',1
+%                   Data Types - single | double
 %
 %    plo: names, labels, colors, marker type. Empty value, scalar or structure.
 %         This options controls the names which
@@ -135,93 +179,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'plo',1
 %                   Data Types - Empty value, scalar or structure.
 %
-% dispopt: what to put on the diagonal. Character. String which controls
-%          how to fill the diagonals in a plot of Y vs Y (main diagonal of
-%          the scatter plot matrix). Set dispopt to 'hist' (default) to
-%          plot histograms, or 'box' to plot boxplots.
-%
-%       REMARK 1: the style which is used for univariate boxplots is
-%       'traditional' if the number of groups is <=5, else it is 'compact'.
-%                   Example - 'dispopt','box'
-%                   Data Types - char
-%
-%
-%   tag     :   plot tag. String. string which identifies the handle of the
-%               plot which is about to be created. The default is to use
-%               tag 'pl_spm'. Notice that if the program finds a plot which
-%               has a tag equal to the one specified by the user, then the
-%               output of the new plot overwrites the existing one in the
-%               same window else a new window is created.
-%                   Example - 'tag','myspm'
-%                   Data Types - char
-%
-%  typespm  :  type of scatter plot matrix. Character. If typespm is 'full'
-%               (default) panels above and below the main diagonal are
-%               shown. If typespm is 'lower' scatter plots are shown just
-%               below the main diagonal. The upper part of the scatter plot
-%               matrix contains the values of the correlation
-%               coefficients. If optional input argument group is present,
-%               the correlation coefficient is also computed for each group
-%               and shown in each scatter. The size of the label of the
-%               correlation coefficient reflects his magnitude (in
-%               absolute value). It typespm is 'upper' the upper part of
-%               the scatter plot matrix contains the scatters
-%               and the upper part just the values of the
-%               correlations.
-%                   Example - 'typespm','lower'
-%                   Data Types - char
-%
-%   overlay :   Superimposition on the panels out of the main diagonal of
-%               the scatter matrix. Scalar, char or structure. It specifies
-%               what to add in the background for the panels specified in
-%               undock (default is for all oh them).
-%               The default value is overlay='', i.e. nothing is changed. If
-%               overlay=1 the the filled contours are added to each panel,
-%               considering all groups, as default. If overlay is a structure
-%               it may contain the following fields:
-%              overlay.type  = Type of plot to add in the background or to
-%                                superimpose. String. It can be: 'contourf',
-%                                'contour', 'ellipse' or 'boxplotb',
-%                                specifying respectively to add filled
-%                                contour (default when overlay=1), contour,
-%                                ellipses or a bivariate boxplot (see
-%                                function boxplotb.m).
-%              overlay.include = Boolean vector specifying which groups to
-%                                include in the type of plot specified in
-%                                overlay.type, the default value is a vector
-%                                of ones (i.e. all groups).
-%              overlay.cmap =  The colormap for the type 'contourf' and
-%                                'contour' is grey as default. In these case,
-%                                this field may specify the colors used for
-%                                the color map. It is a three-column matrix of
-%                                values in the range [0,1] where each row
-%                                is an RGB triplet that defines one color.
-%                                Check the colormap function for additional
-%                                informations.
-%              overlay.conflev = When the type specified is 'ellipse', the
-%                                size of the ellipses is chi2inv(0.95,2) as
-%                                default. In this case, this field may
-%                                specify a different confidence level used
-%                                and it is a value between 0 and 1.
-%                   Example - 'overlay',1
-%                   Data Types - single | double
-%
-%   undock   :  Panel to undock and visualize separately. Matrix or logical
-%               matrix. If undock='' (default), no panel is extracted. If
-%               undock is a r-by-2 matrix, it specifies the r coordinates
-%               of the scatter plot matrix to undock and visualize
-%               separately in a bivariate plot (i.e. for panels out of the
-%               main diagonal plots) or in an univariate plot (i.e. the ones
-%               on the main diagonal). If undock is a v-by-v logical matrix,
-%               where v are the number of columns in Y, the trues of undock
-%               are undocked and visualized separately.
-%               REMARK - When used, undock automatically deletes the plots
-%               obtained by spmplots. If it is desired to keep some of them,
-%               the respective 'Tag' associated has to be changed (e.g.
-%               selecting the figure and then: set(gcf,'Tag','newTag');).
-%                   Example - 'undock', [1 1; 1 3; 3 4]
-%                   Data Types - single | double | logical
-%
 %   selunit :   unit labelling in the spmplot and in the malfwdplot.
 %               Cell array of strings or string or numeric vector for
 %               labelling units. When input argument Y is a structure
@@ -252,6 +209,47 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               input argument Y is a matrix.
 %                   Example - 'selunit','3'
 %                   Data Types - numeric or character
+%
+%   tag     :   plot tag. String. string which identifies the handle of the
+%               plot which is about to be created. The default is to use
+%               tag 'pl_spm'. Notice that if the program finds a plot which
+%               has a tag equal to the one specified by the user, then the
+%               output of the new plot overwrites the existing one in the
+%               same window else a new window is created.
+%                   Example - 'tag','myspm'
+%                   Data Types - char
+%
+%  typespm  :  type of scatter plot matrix. Character. If typespm is 'full'
+%               (default) panels above and below the main diagonal are
+%               shown. If typespm is 'lower' scatter plots are shown just
+%               below the main diagonal. The upper part of the scatter plot
+%               matrix contains the values of the correlation
+%               coefficients. If optional input argument group is present,
+%               the correlation coefficient is also computed for each group
+%               and shown in each scatter. The size of the label of the
+%               correlation coefficient reflects his magnitude (in
+%               absolute value). It typespm is 'upper' the upper part of
+%               the scatter plot matrix contains the scatters
+%               and the lower part just the values of the
+%               correlations.
+%                   Example - 'typespm','lower'
+%                   Data Types - char
+%
+%   undock   :  Panel to undock and visualize separately. Matrix or logical
+%               matrix. If undock='' (default), no panel is extracted. If
+%               undock is a r-by-2 matrix, it specifies the r coordinates
+%               of the scatter plot matrix to undock and visualize
+%               separately in a bivariate plot (i.e. for panels out of the
+%               main diagonal plots) or in an univariate plot (i.e. the ones
+%               on the main diagonal). If undock is a v-by-v logical matrix,
+%               where v are the number of columns in Y, the trues of undock
+%               are undocked and visualized separately.
+%               REMARK - When used, undock automatically deletes the plots
+%               obtained by spmplots. If it is desired to keep some of them,
+%               the respective 'Tag' associated has to be changed (e.g.
+%               selecting the figure and then: set(gcf,'Tag','newTag');).
+%                   Example - 'undock', [1 1; 1 3; 3 4]
+%                   Data Types - single | double | logical
 %
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. If datatooltip is not empty the user can use
