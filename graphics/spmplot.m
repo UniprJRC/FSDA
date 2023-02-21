@@ -159,14 +159,14 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               (default) panels above and below the main diagonal are
 %               shown. If typespm is 'lower' scatter plots are shown just
 %               below the main diagonal. The upper part of the scatter plot
-%               matrix contains the values of the correlations
+%               matrix contains the values of the correlation
 %               coefficients. If optional input argument group is present,
 %               the correlation coefficient is also computed for each group
 %               and shown in each scatter. The size of the label of the
-%               correlation coefficient reflects the his mgniture (in
-%               absolute value). It typespm is 'upper' the lower part of
-%               the scatter plot matrix contains the correlation
-%               coefficients and the upper part just the values of the
+%               correlation coefficient reflects his magnitude (in
+%               absolute value). It typespm is 'upper' the upper part of
+%               the scatter plot matrix contains the scatters
+%               and the upper part just the values of the
 %               correlations.
 %                   Example - 'typespm','lower'
 %                   Data Types - char
