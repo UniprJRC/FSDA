@@ -155,6 +155,22 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'tag','myspm'
 %                   Data Types - char
 %
+%  typespm  :  type of scatter plot matrix. Character. If typespm is 'full'
+%               (default) panels above and below the main diagonal are
+%               shown. If typespm is 'lower' scatter plots are shown just
+%               below the main diagonal. The upper part of the scatter plot
+%               matrix contains the values of the correlations
+%               coefficients. If optional input argument group is present,
+%               the correlation coefficient is also computed for each group
+%               and shown in each scatter. The size of the label of the
+%               correlation coefficient reflects the his mgniture (in
+%               absolute value). It typespm is 'upper' the lower part of
+%               the scatter plot matrix contains the correlation
+%               coefficients and the upper part just the values of the
+%               correlations.
+%                   Example - 'typespm','lower'
+%                   Data Types - char
+%
 %   overlay :   Superimposition on the panels out of the main diagonal of
 %               the scatter matrix. Scalar, char or structure. It specifies
 %               what to add in the background for the panels specified in
@@ -805,6 +821,23 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
            'databrush',{'persist','off','selectionmode' 'Rect'});
 %}
 
+%{
+    %% Example of use of option typespm.
+    % if 'typespm','lower' ('upper') just the panels below the main
+    % diagonal are shown. In the other part the correlation coefficient are
+    % shown
+    load fisheriris;
+    spmplot(meas,'group',species,'typespm','lower');
+%}
+
+%{
+    %% Example of use of option colorBackground.
+    % if 'colorBackground is true the background color of each scatter 
+    % depends on the value of the correlation coefficient 
+    load head;
+    spmplot(head,'colorBackground',true);
+%}
+
 %% Beginning of code
 
 if nargin<1
@@ -930,7 +963,7 @@ if nargin>1
         options=struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),...
             'selunit',selthdef,'datatooltip',0,...
             'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
-            'undock', '','colorBackground',false);
+            'undock', '','colorBackground',false,'typespm','full');
 
         UserOptions=varargin(1:2:length(varargin));
 
@@ -964,6 +997,7 @@ if nargin>1
         undock=options.undock;
         units=options.selunit;
         colorBackground=options.colorBackground;
+        typespm=options.typespm;
     end
 
 
@@ -1036,6 +1070,7 @@ else
     undock='';
     units='';
     colorBackground=false;
+    typespm='full';
 end
 
 ngroups=length(unique(group));
@@ -1180,6 +1215,7 @@ else
 end
 
 unigroup = 1:ngroups;
+lunigroup=length(unigroup);
 
 %% The scatterplot matrix with histograms or boxplots (on the main diagonal) generalised to groups
 
@@ -1198,8 +1234,8 @@ end
 
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
-
-for i=1:size(AX,2)
+p=size(AX,2);
+for i=1:p
     hold('on');
 
     % Add the boxplots generalised to groups. Note that we use AX(i,i)
@@ -1255,7 +1291,7 @@ for i=1:size(AX,2)
         % Now we create an axes object using axPosition.
         ax = axes('Position',axPosition);
 
-        if length(unigroup) <= 5
+        if lunigroup <= 5
             plotstyle = 'traditional';
         else
             plotstyle = 'compact';
@@ -1349,8 +1385,12 @@ set([get(BigAx,'Title'); get(BigAx,'XLabel'); get(BigAx,'YLabel')], ...
 set(gcf,'tag',tag)
 
 
-if colorBackground==true
+if colorBackground==true || ismember(typespm,{'lower','upper'})
     R=corr(Y);
+end
+
+
+if colorBackground==true
     cmapBackground=colormap("turbo");
     % The range of correlation coefficient is mapped into [0 1]
     % and multiplied by number of rows of cmapBackground in
@@ -1358,16 +1398,17 @@ if colorBackground==true
     posBackground=max(1,ceil(size(cmapBackground,1)*(R+1)/2));
 end
 
-for i = 1:size(AX,2)
-    for j=1:size(AX,2)
+for i = 1:p
+    for j=1:p
+
         if i~=j
             set(gcf,'CurrentAxes',AX(i,j));
             xlimits = get(AX(j,i),'Xlim');
             ylimits = get(AX(j,i),'Ylim');
             if ~isempty(units)
 
-                dx = (xlimits(2)-xlimits(1))*0.01*size(AX,2)/2;
-                dy = (ylimits(2)-ylimits(1))*0.01*size(AX,2)/2; % displacement
+                dx = (xlimits(2)-xlimits(1))*0.01*p/2;
+                dy = (ylimits(2)-ylimits(1))*0.01*p/2; % displacement
                 text(Y(units,j)+dy,Y(units,i)+dx,numtext(units),'HorizontalAlignment', 'Left');
             end
 
@@ -1377,10 +1418,60 @@ for i = 1:size(AX,2)
                 h = patch([ax(1:2)';ax(2);ax(1)],[ax(3);ax(3);ax(4);ax(4)],cmapBackground(posBackground(i,j),:));
                 set(h,'facealpha',0.15);
             end
+
         end
     end
 end
 
+
+if ismember(typespm,{'lower','upper'})
+                 
+
+    if strcmp(typespm,'lower')
+        justlow=true;
+        warning('off','MATLAB:handle_graphics:exceptions:SceneNode');
+    else
+        justlow=false;
+    end
+
+    if lunigroup>1
+        Rgroup=zeros(p,p,lunigroup);
+        for jj=1:lunigroup
+            Rgroup(:,:,jj)=corr(Y(groupv==jj,:));
+        end
+        Rgroupresc=8+abs(Rgroup)*15;
+    end
+
+    Rresc=8+abs(R)*15;
+    for i=1:p
+        for j=1:p
+            if justlow==true
+                cond=i<j;
+            else
+                cond=i>j;
+            end
+
+            if cond ==true 
+                set(gcf,'CurrentAxes',AX(i,j));
+                cla(gca)
+
+                if lunigroup==1
+                    text(0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                        'Units','normalized','HorizontalAlignment','center')
+                else
+                    text(0.2,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                        'Units','normalized','HorizontalAlignment','center')
+
+                    for jjj=1:lunigroup
+                        text(0.6,jjj/(lunigroup+1),num2str(Rgroup(i,j,jjj),2), ...
+                            'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj))
+                    end
+                end
+                % set(gca, 'Color', 'None')
+            end
+        end
+    end
+end
 
 %% Add objects to the scatterplot matrix
 
@@ -2026,7 +2117,7 @@ if ~isempty(databrush) || iscell(databrush)
                 % Set the legend properties of the gplotmatrix
                 if nbrush>0
                     set(H(:,:,1),'DisplayName','Unbrushed units');
-                    for brugrp = 2:length(unigroup)
+                    for brugrp = 2:lunigroup
                         set(H(1,end,brugrp),'DisplayName',['Brushed units ' num2str(brugrp-1)]);
                     end
                 else
@@ -2043,7 +2134,7 @@ if ~isempty(databrush) || iscell(databrush)
 
                 % beginning of updating boxplots or histograms
                 % on the main diagonal
-                for i=1:size(AX,2)
+                for i=1:p
                     hold('on');
 
                     if strcmp(dispopt,'hist')==1
@@ -2088,7 +2179,7 @@ if ~isempty(databrush) || iscell(databrush)
                         % get the position of AX(i,i)
                         axPosition = get(ax,'position');
 
-                        if length(unigroup) <= 5
+                        if lunigroup <= 5
                             plotstyle = 'traditional';
                         else
                             plotstyle = 'compact';
@@ -2184,14 +2275,14 @@ if ~isempty(databrush) || iscell(databrush)
                 end
 
                 if ~isempty(units)
-                    for i = 1:size(AX,2)
-                        for j=1:size(AX,2)
+                    for i = 1:p
+                        for j=1:p
                             if i~=j
                                 set(gcf,'CurrentAxes',AX(i,j));
                                 xlimits = get(AX(j,i),'Xlim');
                                 ylimits = get(AX(j,i),'Ylim');
-                                dx = (xlimits(2)-xlimits(1))*0.01*size(AX,2)/2;
-                                dy = (ylimits(2)-ylimits(1))*0.01*size(AX,2)/2; % displacement
+                                dx = (xlimits(2)-xlimits(1))*0.01*p/2;
+                                dy = (ylimits(2)-ylimits(1))*0.01*p/2; % displacement
                                 text(Y(units,j)+dy,Y(units,i)+dx,numtext(units),'HorizontalAlignment', 'Left');
                             end
                         end
@@ -2253,8 +2344,8 @@ if ~isempty(databrush) || iscell(databrush)
                 % color and with a width that is 2 points bigger than the
                 % one of the standard trajectories.
                 plot(x,residuals(nbrush,:),...
-                    strcat(clr(unigroup(length(unigroup))),...
-                    char(styp{unigroup(length(unigroup))})),...
+                    strcat(clr(unigroup(lunigroup)),...
+                    char(styp{unigroup(lunigroup)})),...
                     'LineStyle','-','MarkerSize',0.3,'tag','data_res',...
                     'LineWidth',linewidthStd+2);
 
