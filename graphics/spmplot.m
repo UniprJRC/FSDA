@@ -927,6 +927,7 @@ if nargin>1
         undock  = '';
         tag='pl_spm';
         units='';
+        typespm='full';
         colorBackground=false;
         if length(varargin)>3
             disp('spmplot has been called in the old format without name pairs')
@@ -961,7 +962,7 @@ if nargin>1
         options=struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),...
             'selunit',selthdef,'datatooltip',0,...
             'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
-            'undock', '','colorBackground',false,'typespm','full');
+            'undock', '','colorBackground',false,'typespm',typespm);
 
         UserOptions=varargin(1:2:length(varargin));
 
