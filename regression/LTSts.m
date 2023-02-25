@@ -1097,7 +1097,7 @@ seq   = (1:T)';
 one   = ones(T,1);
 zerT1 = false(T,1);
 
-ynotmissing=seq(~isnan(yin))';
+ynotmissing=seq(~isnan(yin));
 % nummissing = number of missing values;
 nummissing=T-length(ynotmissing);
 
@@ -1514,7 +1514,7 @@ lLSH=length(LSH);
 
 % ScaleLSH= estimate of the squared scale for each value of LSH which has been
 % considered
-numscale2LSH=[LSH' zeros(lLSH,2)];
+numscale2LSH=[LSH' inf(lLSH,2)];
 
 % yhatrobLSH = vector of fitted values for each value of LSH
 yhatrobLSH=zeros(T,lLSH);
@@ -1673,14 +1673,14 @@ for ilsh=1:lLSH
             % of y
             Cini=double(Cini);
 
-%             Cini1=Cini;
-%             % Check if loop below can be avoided
-%             for i=1:nselected
-%                 Cini(i,:)=ynotmissing(Cini(i,:));
-%             end
-%             C1=ynotmissing(Cini1);
-%             diffC1=max(abs(C1-double(Cini)),[],'all');
-%             assert(diffC1==0,"Non sono uguali")
+            %             Cini1=Cini;
+            %             % Check if loop below can be avoided
+            %             for i=1:nselected
+            %                 Cini(i,:)=ynotmissing(Cini(i,:));
+            %             end
+            %             C1=ynotmissing(Cini1);
+            %             diffC1=max(abs(C1-double(Cini)),[],'all');
+            %             assert(diffC1==0,"Non sono uguali")
 
             Cini=ynotmissing(Cini);
         end
@@ -1705,7 +1705,7 @@ for ilsh=1:lLSH
     % stored in order to be brought to full convergence
     % subsets are stored
     ij=1;
-
+    brob(1)=-99;
     % Loop through all nselected subsamples
     for i=1:nselected
         % Initialize b0 as vector of zeroes for each subset
@@ -1828,104 +1828,111 @@ for ilsh=1:lLSH
     end
 
     if brob(1)==-99
-        error('FSDA:LTSts:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
+        if lshiftYN ==1  && ilsh ==1
+            error('FSDA:LTSts:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
+        elseif lshiftYN ==1  && ilsh >1
+            warning('FSDA:LTSts:NoFullRank',['No subset had full rank when tentative  level shift =' num2str(LSH(ilsh))  '. Please increase the number of subsets or check your design matrix X'])
+        else
+            error('FSDA:LTSts:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
+        end
     else
-    end
 
-    % Store for each tentative level shift the number of times each unit
-    % belonged to the best subset
-    WEIisum(:,ilsh)=sum(WEIi,2);
+        % Store for each tentative level shift the number of times each unit
+        % belonged to the best subset
+        WEIisum(:,ilsh)=sum(WEIi,2);
 
-    % 1 (b)
-    % With the 0 subsets that yield the lowest objective function so far.
-    % Apply C-steps to these until full convergence.
+        % 1 (b)
+        % With the 0 subsets that yield the lowest objective function so far.
+        % Apply C-steps to these until full convergence.
 
-    % perform C-steps on best 'bestr' solutions, till convergence or for a
-    % maximum of refstepsbestr steps using a convergence tolerance as
-    % specified by scalar reftolbestr
-
-
-    % If ilsh >1 it is necessary also to consider the 10 best solutions from
-    % step j-1
-    if ilsh==1
-        bestyhatall=bestyhat;
-        bestbetasall=bestbetas;
-        bestsubsetall=bestsubset;
-    else
-        bestyhatall=[bestyhat bestyhattoadd];
-        bestbetasall=[bestbetas; bestbetastoadd];
-        bestsubsetall=[bestsubset; bestsubsettoadd];
-    end
-
-    % numsuperbestscale2 = numerator of estimate of super best squared
-    % scale
-    numsuperbestscale2 = Inf;
-
-    % Just to have an idea about y and yhat for a particular lsh value
-    % plot([y bestyhat(:,1)])
+        % perform C-steps on best 'bestr' solutions, till convergence or for a
+        % maximum of refstepsbestr steps using a convergence tolerance as
+        % specified by scalar reftolbestr
 
 
-    for ii=1:bestr
-        yhat=bestyhatall(:,ii);
-        tmp = IRWLSreg(yin,bestbetasall(ii,:)',refstepsbestr,reftolbestr,h);
+        % If ilsh >1 it is necessary also to consider the 10 best solutions from
+        % step j-1
+        if ilsh==1
+            bestyhatall=bestyhat;
+            bestbetasall=bestbetas;
+            bestsubsetall=bestsubset;
+        else
+            bestyhatall=[bestyhat bestyhattoadd];
+            bestbetasall=[bestbetas; bestbetastoadd];
+            bestsubsetall=[bestsubset; bestsubsettoadd];
+        end
 
-        % Store information about the units forming best h subset among the
-        % 10 best
-        WEIibestrdiv2(:,ii)=tmp.weights;
+        % numsuperbestscale2 = numerator of estimate of super best squared
+        % scale
+        numsuperbestscale2 = Inf;
 
-        allnumscale2(ii,1)=tmp.numscale2rw;
-        % allscales(i,2)=tmp.betarw(end);
+        % Just to have an idea about y and yhat for a particular lsh value
+        % plot([y bestyhat(:,1)])
 
-        if tmp.numscale2rw < numsuperbestscale2
-            % brob = superbestbeta
-            brob = tmp.betarw;
-            % bs = superbestsubset, units forming best subset according to
-            % fastlts
-            % bs = bestsubsetall(ii,:);
-            yhatrob=tmp.yhat;
-            numsuperbestscale2=tmp.numscale2rw;
-            ibest=ii;
-            weightsst=tmp.weights;
+
+        for ii=1:bestr
+            yhat=bestyhatall(:,ii);
+            tmp = IRWLSreg(yin,bestbetasall(ii,:)',refstepsbestr,reftolbestr,h);
+
+            % Store information about the units forming best h subset among the
+            % 10 best
+            WEIibestrdiv2(:,ii)=tmp.weights;
+
+            allnumscale2(ii,1)=tmp.numscale2rw;
+            % allscales(i,2)=tmp.betarw(end);
+
+            if tmp.numscale2rw < numsuperbestscale2
+                % brob = superbestbeta
+                brob = tmp.betarw;
+                % bs = superbestsubset, units forming best subset according to
+                % fastlts
+                % bs = bestsubsetall(ii,:);
+                yhatrob=tmp.yhat;
+                numsuperbestscale2=tmp.numscale2rw;
+                ibest=ii;
+                weightsst=tmp.weights;
+            end
+        end
+
+        % Store the bestrdiv2 best values of target function
+        [~,numscale2ssorind]=sort(allnumscale2);
+        bestyhattoadd=bestyhatall(:,numscale2ssorind(1:bestrdiv2));
+        bestbetastoadd=bestbetasall(numscale2ssorind(1:bestrdiv2),:);
+        % The last element of estimated beta coefficients is the point in
+        % which level shift takes place. This has to be increased by one
+        % unit. Please note that betas are stored in rows therefore we have
+        % to change the last column
+        bestbetastoadd(:,end)=bestbetastoadd(:,end)+1;
+
+        bestsubsettoadd=bestsubsetall(numscale2ssorind(1:bestrdiv2),:);
+
+        numscale2LSH(ilsh,2:3)=[numsuperbestscale2 ibest];
+        yhatrobLSH(:,ilsh)=yhatrob;
+        brobLSH(:,ilsh)=brob;
+
+        % plot(seq,[y yhatrob])
+        % title(['Level shift in step t=' num2str(LSH(ilsh))])
+        ALLnumscale2(:,ilsh)=allnumscale2;
+
+        scaledres = (yin-yhatrob)/sqrt(numsuperbestscale2/h);
+        RES(:,ilsh) = scaledres;
+
+
+        weightsst = (weightsst | abs(scaledres)<2.58*factor);
+        % disp(sum(weightsst))
+        Weights(:,ilsh) = weightsst;
+
+        % Store the indexes among the bestr best, forming the bestrdiv2 best
+        % estimates of the target function (target function = numerator of
+        % squared scale)
+        NumScale2ind(:,ilsh)=numscale2ssorind(1:nbestindexes);
+
+        WEIibest10sum(:,ilsh)=sum(WEIibestrdiv2,2);
+        if lshiftYN==1 && msg ==true
+            fprintf('Level shift for t=%.0f\n',lsh);
         end
     end
 
-    % Store the bestrdiv2 best values of target function
-    [~,numscale2ssorind]=sort(allnumscale2);
-    bestyhattoadd=bestyhatall(:,numscale2ssorind(1:bestrdiv2));
-    bestbetastoadd=bestbetasall(numscale2ssorind(1:bestrdiv2),:);
-    % The last element of estimated beta coefficients is the point in
-    % which level shift takes place. This has to be increased by one
-    % unit. Please note that betas are stored in rows therefore we have
-    % to change the last column
-    bestbetastoadd(:,end)=bestbetastoadd(:,end)+1;
-
-    bestsubsettoadd=bestsubsetall(numscale2ssorind(1:bestrdiv2),:);
-
-    numscale2LSH(ilsh,2:3)=[numsuperbestscale2 ibest];
-    yhatrobLSH(:,ilsh)=yhatrob;
-    brobLSH(:,ilsh)=brob;
-
-    % plot(seq,[y yhatrob])
-    % title(['Level shift in step t=' num2str(LSH(ilsh))])
-    ALLnumscale2(:,ilsh)=allnumscale2;
-
-    scaledres = (yin-yhatrob)/sqrt(numsuperbestscale2/h);
-    RES(:,ilsh) = scaledres;
-
-
-    weightsst = (weightsst | abs(scaledres)<2.58*factor);
-    % disp(sum(weightsst))
-    Weights(:,ilsh) = weightsst;
-
-    % Store the indexes among the bestr best, forming the bestrdiv2 best
-    % estimates of the target function (target function = numerator of
-    % squared scale)
-    NumScale2ind(:,ilsh)=numscale2ssorind(1:nbestindexes);
-
-    WEIibest10sum(:,ilsh)=sum(WEIibestrdiv2,2);
-    if lshiftYN==1 && msg ==true
-        fprintf('Level shift for t=%.0f\n',lsh);
-    end
 end
 
 
