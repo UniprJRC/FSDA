@@ -406,22 +406,26 @@ Bands k=6
                            the Likelihood ratio test is greater than the
                            corresponding bootstrap test.</p> <p>
                         as a positive integer value.</p></p></td></tr><tr valign="top"><td><code>LRTtentSol</code></td><td><p><p>matrix with size m-by-8. Details of the ordered
-                          solutions using the likelihood ratio test. First
-                          column (index): the index number of the
-                          solution. Second column (k): the value of k.</p> <p>
-                          Third column (alpha): the value of alpha. Fourth
-                          column (Truesol) contains 1 if the p-value
-                          beyond the threshold is always above $k$ shown
-                          in the second column for all $k^* &gt;k$ else it
-                          contains 0. Fifth and sixth columns (kindex and
-                          alphaindex) contain the index numbers of optimal
-                          input values kk and alpha. Seventh column
-                          (kbestGivenalpha) contains 1 in correspondence
-                          of the best solution for each value of k (given
-                          alpha). Eight column (ProperSize) contains 1 if
-                          the solution which has been found has a minimum
-                          group size which is greater than n*max(alpha).</p></p></td></tr><tr valign="top"><td><code>LRTtentSolt</code></td><td><p>table with size m-by-5 containing the same
-                        information of array  out.TentSolLR in table format.</p></td></tr><tr valign="top"><td><code>LRTtentSolIDX</code></td><td><p>matrix with size n-by-size(out.LRTtentSol,1) with
+                         solutions using the likelihood ratio test.</p> <p>
+                         First column (index): the index number of the
+                         solution.</p> <p>
+                         Second column (k): the value of k.</p> <p>
+                         Third column (alpha): the value of alpha.</p> <p>
+                         Fourth column (Truesol) contains 1 if the
+                         p-value beyond the threshold is always above $k$
+                         shown in the second column for all $k^* &gt;k$ else
+                         it contains 0.</p> <p>
+                         Fifth and sixth columns (kindex and
+                         alphaindex) contain the index numbers of optimal
+                         input values kk and alpha.</p> <p>
+                         Seventh column (kbestGivenalpha) contains 1 in
+                         correspondence of the best solution for each
+                         value of k (given alpha).</p><p>
+                         Eight column (ProperSize) contains 1 if
+                         the solution which has been found has a minimum
+                         group size which is greater than n*max(alpha).</p></p></td></tr><tr valign="top"><td><code>LRTtentSolt</code></td><td><p>table with the same size of LRTtentSol containing
+                        the same information of array  out.TentSolLR in
+                        table format.</p></td></tr><tr valign="top"><td><code>LRTtentSolIDX</code></td><td><p>matrix with size n-by-size(out.LRTtentSol,1) with
                         the allocation associated with the tentative
                         solutions found in out.LRTtentSol. First column
                         refers to solution in row 1 of out.LRTtentSol ...</p></td></tr><tr valign="top"><td><code>LRToptimalAlpha</code></td><td><p>scalar, optimal value of trimming.</p></td></tr><tr valign="top"><td><code>LRToptimalK</code></td><td><p>scalar, optimal number of clusters, stored
@@ -435,8 +439,11 @@ Bands k=6
                        is equal to input optional argument kk if kk had been
                        specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>vector containing the values of the trimming
                        level which have been considered. This
-                       vector is equal to input optional argument alpha.</p></td></tr><tr valign="top"><td><code>restrfactor</code></td><td><p>scalar containing the restriction factor
-                       which has been used to compute tclust.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data matrix Y. The field is present if
+                       vector is equal to input optional argument alpha.</p></td></tr><tr valign="top"><td><code>tclustPAR</code></td><td><p><p>a structure  containing all the parameters
+                       used by tclust (restrfactor, mixt, restrtype.</p> <p>
+                       refsteps, equalweights, reftol, cshape, nsamp,
+                       nsampExtra, outliersFromUniform, nsimulExtra and
+                       usepriorSolExtra).</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data matrix Y. The field is present if
                        option Ysave is set to 1.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
  These curves show the values of the trimmed classification
  (log)-likelihoods when altering the trimming proportion alpha and the

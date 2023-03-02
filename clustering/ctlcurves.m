@@ -413,24 +413,28 @@ function out  = ctlcurves(Y, varargin)
 %                           the Likelihood ratio test is greater than the
 %                           corresponding bootstrap test.
 %                        as a positive integer value.
-%        out.LRTtentSol  = matrix with size m-by-8. Details of the ordered
-%                          solutions using the likelihood ratio test. First
-%                          column (index): the index number of the
-%                          solution. Second column (k): the value of k.
-%                          Third column (alpha): the value of alpha. Fourth
-%                          column (Truesol) contains 1 if the p-value
-%                          beyond the threshold is always above $k$ shown
-%                          in the second column for all $k^* >k$ else it
-%                          contains 0. Fifth and sixth columns (kindex and
-%                          alphaindex) contain the index numbers of optimal
-%                          input values kk and alpha. Seventh column
-%                          (kbestGivenalpha) contains 1 in correspondence
-%                          of the best solution for each value of k (given
-%                          alpha). Eight column (ProperSize) contains 1 if
-%                          the solution which has been found has a minimum
-%                          group size which is greater than n*max(alpha).
-%      out.LRTtentSolt  = table with size m-by-5 containing the same
-%                        information of array  out.TentSolLR in table format.
+%       out.LRTtentSol  = matrix with size m-by-8. Details of the ordered
+%                         solutions using the likelihood ratio test.
+%                         First column (index): the index number of the
+%                         solution.
+%                         Second column (k): the value of k.
+%                         Third column (alpha): the value of alpha.
+%                         Fourth column (Truesol) contains 1 if the
+%                         p-value beyond the threshold is always above $k$
+%                         shown in the second column for all $k^* >k$ else
+%                         it contains 0.
+%                         Fifth and sixth columns (kindex and
+%                         alphaindex) contain the index numbers of optimal
+%                         input values kk and alpha.
+%                         Seventh column (kbestGivenalpha) contains 1 in
+%                         correspondence of the best solution for each
+%                         value of k (given alpha).
+%                         Eight column (ProperSize) contains 1 if
+%                         the solution which has been found has a minimum
+%                         group size which is greater than n*max(alpha).
+%      out.LRTtentSolt  = table with the same size of LRTtentSol containing
+%                        the same information of array  out.TentSolLR in
+%                        table format.
 %      out.LRTtentSolIDX = matrix with size n-by-size(out.LRTtentSol,1) with
 %                        the allocation associated with the tentative
 %                        solutions found in out.LRTtentSol. First column
@@ -444,8 +448,6 @@ function out  = ctlcurves(Y, varargin)
 %                       integer numbers from 1 to k. 0 indicates trimmed
 %                       observations. The fields which follow which start
 %                       with LRT refer to the likelihood ratio test.
-%
-%
 %                out.kk = vector containing the values of k (number of
 %                       components) which have been considered. This  vector
 %                       is equal to input optional argument kk if kk had been
@@ -453,8 +455,11 @@ function out  = ctlcurves(Y, varargin)
 %                out.alpha = vector containing the values of the trimming
 %                       level which have been considered. This
 %                       vector is equal to input optional argument alpha.
-%         out.restrfactor = scalar containing the restriction factor
-%                       which has been used to compute tclust.
+%               out.tclustPAR = a structure  containing all the parameters
+%                       used by tclust (restrfactor, mixt, restrtype.
+%                       refsteps, equalweights, reftol, cshape, nsamp,
+%                       nsampExtra, outliersFromUniform, nsimulExtra and
+%                       usepriorSolExtra).
 %                out.Y  = Original data matrix Y. The field is present if
 %                       option Ysave is set to 1.
 %
@@ -746,7 +751,17 @@ out.Pi=PiVal;
 out.IDX=IDX;
 out.CTL=CTLVal;
 
+% To decide between two alternative solutions given a certain value of
+% alpha
+nsimulExtra=50;
+nsampExtra=2000;
+
+usepriorSolExtra=false;
+
 if ComputeBands==true
+
+      usepriorSol=false;
+
     % Suppress warning on All Workers
     parfevalOnAll(@warning,0,'off','all');
     if isstruct(bands)
@@ -778,40 +793,28 @@ if ComputeBands==true
             valSolution=bands.valSolution;
         end
 
-
         if isfield(bands,'outliersFromUniform')
             outliersFromUniform=bands.outliersFromUniform;
         end
 
         if isfield(bands,'nsamp')
             nsampSimData=bands.nsamp;
-        else
-            nsampSimData=[];
         end
 
         if isfield(bands,'usepriorSol')
             usepriorSol=bands.usepriorSol;
-        else
-            usepriorSol=false;
         end
 
         if isfield(bands,'usepriorSolExtra')
             usepriorSolExtra=bands.usepriorSolExtra;
-        else
-            usepriorSolExtra=false;
         end
 
         if isfield(bands,'nsimulExtra')
             nsimulExtra=bands.nsimulExtra;
-        else
-            nsimulExtra=50;
         end
-
 
         if isfield(bands,'nsampExtra')
             nsampExtra=bands.nsampExtra;
-        else
-            nsampExtra=2000;
         end
 
         if isfield(bands,'crit')
@@ -1231,8 +1234,21 @@ end
 
 out.kk=kk;
 out.alpha=alphaTrim;
-out.restrfactor=restrfactor;
 out.Y=Y;
+tclustPAR=struct;
+tclustPAR.restrfactor=restrfactor;
+tclustPAR.mixt=mixt;
+tclustPAR.restrtype=restr;
+tclustPAR.refsteps=refsteps;
+tclustPAR.equalweights=equalweights;
+tclustPAR.reftol=reftol;
+tclustPAR.cshape=cshape;
+tclustPAR.nsamp=nsamp;
+tclustPAR.nsampExtra=nsampExtra;
+tclustPAR.outliersFromUniform=outliersFromUniform;
+tclustPAR.nsimulExtra=nsimulExtra;
+tclustPAR.usepriorSolExtra=usepriorSolExtra;
+out.tclustPAR=tclustPAR;
 
 %% Plot section
 

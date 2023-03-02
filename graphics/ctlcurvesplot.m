@@ -1,4 +1,4 @@
-function ctlcurvesplot(outCTL,varargin)
+function outCTLnew=ctlcurvesplot(outCTL,varargin)
 %ctlcurvesplot plots the output of routine ctlcurves
 %
 %<a href="matlab: docsearchFS('ctlcurvesplot')">Link to the help function</a>
@@ -14,96 +14,151 @@ function ctlcurvesplot(outCTL,varargin)
 %
 %  Required input arguments:
 %
-%           outCTL : Information criterion to use. Structure.
+%           outCTL : output structure produced by function ctlcurves. Structure.
 %                It contains the following fields.
-%                outCTL.Mu = cell of size length(kk)-by-length(alpha)
+%             outCTL.Mu = cell of size length(kk)-by-length(alpha)
 %                       containing the estimate of the centroids for each
 %                       value of k and each value of alpha. More precisely,
 %                       suppose kk=1:4 and alpha=[0 0.05 0.1], out.Mu{2,3}
 %                       is a matrix with two rows and v columns containing
 %                       the estimates of the centroids obtained when
 %                       alpha=0.1.
-%            outCTL.Sigma = cell of size length(kk)-by-length(alpha)
+%         outCTL.Sigma = cell of size length(kk)-by-length(alpha)
 %                       containing the estimate of the covariance matrices
 %                       for each value of k and each value of alpha. More
 %                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
 %                       out.Sigma{2,3} is a 3D  array of size v-by-v-by-2
 %                       containing the estimates of the covariance matrices
 %                       obtained when alpha=0.1.
-%            outCTL.Pi   = cell of size length(kk)-by-length(alpha)
+%          outCTL.Pi   = cell of size length(kk)-by-length(alpha)
 %                       containing the estimate of the group proportions
 %                       for each value of k and each value of alpha. More
 %                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
 %                       out.Pi{2,3} is a 3D  array of size v-by-v-by-2
 %                       containing the estimates of the covariance matrices
 %                       obtained when alpha=0.1.
-%            out.IDX   = cell of size length(kk)-by-length(alpha)
+%          outCTL.IDX   = cell of size length(kk)-by-length(alpha)
 %                       containing the final assignment for each value of k
 %                       and each value of alpha. More precisely, suppose
 %                       kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
 %                       vector of length(n) containing the containinig the
 %                       assignment of each unit obtained when alpha=0.1.
 %                       Elements equal to zero denote unassigned units.
-%           outCTL.CTL    = matrix of size length(kk)-by-length(alpha)
+%         outCTL.CTL    = matrix of size length(kk)-by-length(alpha)
 %                       containing the values of the trimmed likelihood
 %                       curves for each value of k and each value of alpha.
-%      outCTL.BandsCTL    = 3D array of size
+%                       This output (and all the other output below which
+%                       start with CTL) are present only if input option
+%                       bands is true or is a struct. All the other fields
+%                       belo
+%    outCTL.CTLbands    = 3D array of size
 %                       length(kk)-by-length(alpha)-by-nsimul containing
-%                       the nsimul replicates of out.CTL. This output is
-%                       present only if input option bands is true or is a
-%                       struct.
-%         outCTL.likLB    =  matrix of size length(kk)-by-length(alpha)
+%                       the nsimul replicates of out.CTL.
+%      outCTL.CTLlikLB    =  matrix of size length(kk)-by-length(alpha)
 %                       containing the lower confidence bands of the
 %                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%         outCTL.likUB    =  matrix of size length(kk)-by-length(alpha)
+%                       each value of alpha.
+%      outCTL.CTLlikUB    =  matrix of size length(kk)-by-length(alpha)
 %                       containing the upper confidence bands of the
 %                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%            outCTL.idx  = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups in correspodence of
-%                       Optimalalpha and OptimalK. Cluster names are
-%                       integer numbers from 1 to k. 0 indicates trimmed
-%                       observations. This output is present only if input
-%                       option bands is true or is a struct.
-%        outCTL.Optimalalpha = scalar, optimal value of trimming. This
-%                       output is present only if optional input argument is
-%                       true.
-%           outCTL.OptimalK = scalar, optimal number of clusters, stored
-%                        as a positive integer value. This output is present
-%                       only if optional input argument is true.
-%           outCTL.TentSol  = matrix with size m-by 3. Details of the ordered
+%                       each value of alpha. T
+%      outCTL.CTLlik050    =  matrix of size length(kk)-by-length(alpha)
+%                       containing the central confidence bands of the
+%                       trimmed likelihood curves for each value of k and
+%                       each value of alpha.
+%    outCTL.CTLtentSol  = matrix with size m-by-4. Details of the ordered
 %                          solutions where there was intersection between
 %                          two consecutive trimmed likelihood curves. First
 %                          column contains the value of k, second column
-%                          the value of alpha and third column the index
-%                          associated to the best value of alpha.
-%        outCTL.pvalLRtest =  table with size length(kk)-1-times-length(alpha)
+%                          the value of alpha, third column the index
+%                          associated to the best value of alpha, fourth
+%                          colum index associated with the best value of
+%                          kk.
+%    outCTL.CTLoptimalAlpha = scalar, optimal value of trimming.
+%     outCTL.CTLoptimalK = scalar, optimal number of clusters, stored
+%                        as a positive integer value.
+%   outCTL.CTLoptimalIDX  = n-by-1 vector containing assignment of each unit to
+%                       each of the k groups in correspodence of
+%                       OptimalAlpha and OptimalK. Cluster names are
+%                       integer numbers from 1 to k. 0 indicates trimmed
+%                       observations. The fields which follow which start
+%                       with LRT refer to the likilhood ratio test
+%
+%     outCTL.LRTpval =  table with size length(kk)-1-times-length(alpha)
 %                           which stores the relative frequency in which
 %                           the Likelihood ratio test is greater than the
 %                           corresponding bootstrap test.
-%             outCTL.kk = vector containing the values of k (number of
+%                        as a positive integer value.
+%     outCTL.LRTtentSol  = matrix with size m-by-8. Details of the ordered
+%                         solutions using the likelihood ratio test.
+%                         First column (index): the index number of the
+%                         solution.
+%                         Second column (k): the value of k.
+%                         Third column (alpha): the value of alpha.
+%                         Fourth column (Truesol) contains 1 if the
+%                         p-value beyond the threshold is always above $k$
+%                         shown in the second column for all $k^* >k$ else
+%                         it contains 0.
+%                         Fifth and sixth columns (kindex and
+%                         alphaindex) contain the index numbers of optimal
+%                         input values kk and alpha.
+%                         Seventh column (kbestGivenalpha) contains 1 in
+%                         correspondence of the best solution for each
+%                         value of k (given alpha).
+%                         Eight column (ProperSize) contains 1 if
+%                         the solution which has been found has a minimum
+%                         group size which is greater than n*max(alpha).
+%   outCTL.LRTtentSolt  = table with the same size of LRTtentSol containing
+%                        the same information of array  out.TentSolLR in
+%                        table format.
+%    outCTL.LRTtentSolIDX = matrix with size n-by-size(out.LRTtentSol,1) with
+%                        the allocation associated with the tentative
+%                        solutions found in out.LRTtentSol. First column
+%                        refers to solution in row 1 of out.LRTtentSol ...
+%    outCTL.LRToptimalAlpha = scalar, optimal value of trimming.
+%    outCTL.LRToptimalK = scalar, optimal number of clusters, stored
+%                        as a positive integer value.
+%    outCTL.LRToptimalIDX  = n-by-r vector containing assignment of each unit to
+%                       each of the k groups in correspondence of
+%                       OptimalAlpha and OptimalK. Cluster names are
+%                       integer numbers from 1 to k. 0 indicates trimmed
+%                       observations. The fields which follow which start
+%                       with LRT refer to the likelihood ratio test.
+%              outCTL.kk = vector containing the values of k (number of
 %                       components) which have been considered. This  vector
 %                       is equal to input optional argument kk if kk had been
 %                       specified else it is equal to 1:5.
-%          outCTL.alpha = vector containing the values of the trimming
+%             outCTL.alpha = vector containing the values of the trimming
 %                       level which have been considered. This
 %                       vector is equal to input optional argument alpha.
-%      outCTL.restractor = scalar containing the restriction factor
-%                       which has been used to compute tclust.
-%                out.Y  = Original data matrix Y. The field is present if
-%                       option Ysave is set to 1.
+%            outCTL.tclustPAR = a structure  containing all the parameters
+%                       used by tclust (restrfactor, mixt, restrtype.
+%                       refsteps, equalweights, reftol, cshape, nsamp,
+%                       nsampExtra, outliersFromUniform, nsimulExtra and
+%                       usepriorSolExtra).
+%             outCTL.Y  = Original data matrix Y. The field is present if
+%                       option 
 %                 Data Types - struct
 %
 %  Optional input arguments:
 %
-%
+%    crit : criterion for sgnificance. Scalar in the in interval (0 1) or
+%               empty value.
+%                Scalar which defines the p-value threshold to define a
+%                solution as significant and to reject the null hypothesis
+%                of smaller groups in the likelihood ratio test. For
+%                example when crit is 0.05 when we test $k$ against $k+1$
+%                given a certain value of $\alpha$, if the empirical
+%                p-value is greater than crit we accept the null hypothesis
+%                of $k$ groups. The default value of crit is empty, that is
+%                we do not change the tentative solutions found by
+%                producere ctlcurves.
+%                Example - 'crit',0.05
+%                Data Types - double  
 %
 %     thresh    :   threshold which defines where to put NaN in the
 %                   out.pvalLRtest matrix. Scalar in the interval [0 1].
-%                   Tne default value is 0.05. In other words the
+%                   The default value is 0.05. In other words the
 %                   subsequent values in a particular column of
 %                   out.pvalLRtest which follow a number breater than 0.05
 %                   will be set to NaN.
@@ -219,6 +274,54 @@ function ctlcurvesplot(outCTL,varargin)
 %  Output:
 %
 %
+%  outCTLnew    : structure. This structure is exactly equal to input
+%                 structure outCTL unless optional input option crit is
+%                 specfied. In this case using the new value of crit
+%                 starting from the input table of p-values outCTL.LRTpval
+%                 we can obtain a new set of tentative solutions
+%                 (outCTLnew.LRTtentSol outCTLnew.LRTtentSolt) and
+%                 associated classification (outCTLnew.LRTtentSolIDX), a
+%                 new optimal value of k (outCTLnew.LRToptimalK) a new
+%                 optimal alpha (outCTLnew.LRToptimalAlpha) a new optional
+%                 classification (outCTLnew.LRToptimalIDX). In what follows
+%                 we shows show just the fields which might change
+%   outCTLnew.LRTtentSol  = matrix with size m-by-8. Details of the ordered
+%                         solutions using the likelihood ratio test.
+%                         First column (index): the index number of the
+%                         solution.
+%                         Second column (k): the value of k.
+%                         Third column (alpha): the value of alpha.
+%                         Fourth column (Truesol) contains 1 if the
+%                         p-value beyond the threshold is always above $k$
+%                         shown in the second column for all $k^* >k$ else
+%                         it contains 0.
+%                         Fifth and sixth columns (kindex and
+%                         alphaindex) contain the index numbers of optimal
+%                         input values kk and alpha.
+%                         Seventh column (kbestGivenalpha) contains 1 in
+%                         correspondence of the best solution for each
+%                         value of k (given alpha).
+%                         Eight column (ProperSize) contains 1 if
+%                         the solution which has been found has a minimum
+%                         group size which is greater than n*max(alpha).
+% outCTLnew.LRTtentSolt  = table with the same size of LRTtentSol containing
+%                        the same information of array  out.TentSolLR in
+%                        table format.
+%  outCTLnew.LRTtentSolIDX = matrix with size n-by-size(out.LRTtentSol,1) with
+%                        the allocation associated with the tentative
+%                        solutions found in out.LRTtentSol. First column
+%                        refers to solution in row 1 of outCTLnew.LRTtentSol ...
+%  outCTLnew.LRToptimalAlpha = scalar, optimal value of trimming.
+%  outCTLnew.LRToptimalK = scalar, optimal number of clusters, stored
+%                        as a positive integer value.
+%  outCTLnew.LRToptimalIDX  = n-by-r vector containing assignment of each unit to
+%                       each of the k groups in correspondence of
+%                       OptimalAlpha and OptimalK. Cluster names are
+%                       integer numbers from 1 to k. 0 indicates trimmed
+%                       observations. The fields which follow which start
+%                       with LRT refer to the likelihood ratio test.
+
+%
 % See also: ctlcurves, tclust
 %
 % References:
@@ -234,7 +337,7 @@ function ctlcurvesplot(outCTL,varargin)
 % Examples:
 
 %{
-    %% ctcurves and Portofino plot for the Gyeser data with all default options.
+    %% ctlcurves and Portofino plot for the Gyeser data with all default options.
     Y=load('geyser2.txt');
     outCTl=ctlcurves(Y,'plots',false,'nsamp',20)
     ctlcurvesplot(outCTl);
@@ -274,20 +377,21 @@ tagCtl='tagCtl';
 tagPortofino='tagPortofino';
 thresh=0.05;
 conflev=[];
+crit=[];
 
 if nargin>1
     options=struct('datatooltip',datatooltip, 'tagCtl',tagCtl,...
         'tagPortofino',tagPortofino,'conflev',conflev,...
-        'databrush', databrush,'nameY','','thresh',thresh);
-    
+        'databrush', databrush,'nameY','','thresh',thresh,'crit',crit);
+
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        
+
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:ctlcurvesplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        
+
         % Check if all the specified optional arguments were present
         % in structure options
         % Remark: the nocheck option has already been dealt by routine
@@ -299,19 +403,20 @@ if nargin>1
             error('FSDA:ctlcurvesplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
     end
-    
-    
+
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     datatooltip=options.datatooltip;
     databrush=options.databrush;
     tagCtl=options.tagCtl;
     tagPortofino=options.tagPortofino;
     thresh=options.thresh;
     conflev=options.conflev;
+    crit=options.crit;
 end
 
 % Extract the values of k (number of groups)
@@ -342,10 +447,10 @@ if isfield(outCTL,'likLB')
         % Recall routine which computes the best tentative solutions using
         % confev just supplied
         [TentSol]=findOptimalSolutions(likUB,likLB,lik050,IDX,alpha,lkk);
-        disp(['New set of tentative solultions using conflev=' num2str(conflev)])
+        disp(['New set of tentative solutions using conflev=' num2str(conflev)])
         disp(TentSol)
     end
-    
+
 else
     ComputeBands=false;
 end
@@ -413,9 +518,14 @@ if ~isempty(datatooltip)
     PrepareDatatooltip(outCTL)
 end
 
+
+
+tbootGTtobs=outCTL.LRTpval{:,:};
+
+
 %% Create Portofino plot
 if isfield(outCTL,'pvalLRtest')
-    
+
     if isempty(tagPortofino)
         hPorto=figure;
     else
@@ -430,10 +540,9 @@ if isfield(outCTL,'pvalLRtest')
     end
     set(hPorto,'Name', 'Portofino plot', 'NumberTitle', 'off');
     hold('all');
-    
-    tbootGTtobs=outCTL.pvalLRtest{:,:};
+
     tbootGTtobsf=tbootGTtobs;
-    
+
     for j=1:lalpha
         nextj=false;
         for i=1:lkk-1
@@ -446,7 +555,7 @@ if isfield(outCTL,'pvalLRtest')
             end
         end
     end
-    
+
     tbootGTtobsf(tbootGTtobsf==0)=NaN;
     plot(alpha,tbootGTtobsf','x','LineWidth',3)
     % plot(alpha,a','LineWidth',3)
@@ -460,7 +569,7 @@ if isfield(outCTL,'pvalLRtest')
     end
     set(gca,'XTick',alpha)
     set(gca,'XDir','reverse')
-    
+
     if isempty(tagPortofino)
         set(gcf,'Tag','pl_Portofino');
     else
@@ -471,30 +580,276 @@ if isfield(outCTL,'pvalLRtest')
         outCTL.tbootGTtobsf=[tbootGTtobsf;NaN(1,lalpha)];
         PrepareDatatooltip(outCTL)
     end
-    
+
 end
+
+outCTLnew=outCTL;
+
+if ~isempty(crit)
+
+    PiVal=outCTL.Pi;
+    MuVal=outCTL.Mu;
+    SigmaVal=outCTL.Sigma;
+    IDX=outCTL.IDX;
+    alphaTrim=outCTL.alpha;
+
+    Y=outCTL.Y;
+    n=size(Y,1);
+    LRTtentSol=zeros(lkk-1,8);
+    LRTtentSolIDX=zeros(n,lkk-1);
+
+    % Recall from outCTL.tclustPAR all the parameters used by tclust
+    tclustPAR=outCTL.tclustPAR;
+    outliersFromUniform=tclustPAR.outliersFromUniform;
+    nsimulExtra=tclustPAR.nsimulExtra;
+    usepriorSolExtra=tclustPAR.usepriorSolExtra;
+    restrfactor=tclustPAR.restrfactor;
+    mixt=tclustPAR.mixt;
+    restr=tclustPAR.restrtype;
+    refsteps=tclustPAR.refsteps;
+    equalweights=tclustPAR.equalweights;
+    reftol=tclustPAR.reftol;
+    cshape=tclustPAR.cshape;
+    nsampExtra=tclustPAR.nsampExtra;
+
+
+    ij=1;
+
+    for j=1:lalpha
+        % For each value of alpha soli and indexSpuriousSolution are reset
+        indexSpuriousSolution=true;
+        soli=0;
+        increment=1;
+        while indexSpuriousSolution==true
+
+            soli=find(tbootGTtobs((soli+increment):end,j)>=crit,1)+soli+increment-1;
+            if ~isempty(soli)
+
+                % Store solution number, value of k, value of alpha
+                idxij=IDX{soli,j};
+                LRTtentSolIDX(:,ij)=idxij;
+                tabij=tabulate(idxij(idxij>0));
+                if min(tabij(:,2))<n*max(alphaTrim)
+                    properSize=false;
+                else
+                    properSize=true;
+                end
+                LRTtentSol(ij,[1:3 5:6 8])=[ij kk(soli) alphaTrim(j) soli j properSize];
+
+                if soli<lkk
+
+                    % sum(tbootGTtobs(soli+1:end,j)>=crit)==lkk-soli
+                    if all(tbootGTtobs(soli+1:end,j)>=crit)
+                        LRTtentSol(ij,4)=1;
+                        indexSpuriousSolution=false;
+                    else
+                        LRTtentSol(ij,4)=0;
+                        increment=find(tbootGTtobs(soli+1:end,j)<crit,1);
+
+                    end
+                    % Check whether this solution had been previously found
+                    % that is if for the same value of k  we had already
+                    % obtained the same solution
+                    if ij>1
+                        if LRTtentSol(ij,2) == LRTtentSol(ij-1,2) && LRTtentSol(ij,4)==LRTtentSol(ij-1,4)
+                            LRTtentSol(ij,:)=[];
+                            LRTtentSolIDX(:,ij)=[];
+                            ij=ij-1;
+                        end
+                    end
+                else
+                    LRTtentSol(ij,4)=1;
+                    indexSpuriousSolution=false;
+                end
+
+                % idxLR(:,ij)=IDX{i,soli};
+                ij=ij+1;
+            else
+                indexSpuriousSolution=false;
+            end
+        end
+    end
+
+    if size(LRTtentSol,1)>=1
+        LRTtentSol=LRTtentSol(1:ij-1,:);
+        LRTtentSolIDX=LRTtentSolIDX(:,1:ij-1);
+
+        numsol=(1:size(LRTtentSol,1))';
+        nsoleti="Sol"+numsol;
+
+        % FOR EACH VALUE OF ALPHA COMPUTE ADDITIONAL LIK RATIO TESTS TO FIND
+        % UNIQUE BEST SOLUTION
+        % For example suppose that for a particular alpha we found that there
+        % are the potential solutions k=3, k=6 and k=10 then LR test between
+        % k=3 and k=6 is performed, and the best among these two values of k
+        % is stored and is later tested against k=10
+        % The best value among these 3 candidates gets a value of 1 in the last
+        % column of matrix LRTtentSolt
+        %         nsimulExtra=50;
+        %         nsampExtra=5000;
+        %         usepriorSolExtra=false;
+
+        for j=1:lalpha
+            alphaTrimj=alphaTrim(j);
+            MultSolalpha=find(LRTtentSol(:,3)==alphaTrimj);
+            kTentative=LRTtentSol(MultSolalpha,2);
+            kTentativepos=LRTtentSol(MultSolalpha,5);
+
+            if length(MultSolalpha)>1
+
+                indbestk=1;
+                for jjj=2:length(MultSolalpha)
+
+                    % kpos = position of first value of k to use in the additional LR test
+                    kpos=kTentativepos(jjj-1);
+                    % kH1pos = position larger value of k to use in the additional LR test
+                    kH1pos=kTentativepos(jjj);
+                    % k and kH1= true values of k  to use in the additional
+                    % LR test
+                    k=kTentative(jjj-1);
+                    kH1=kTentative(jjj);
+
+                    ktrue = length(PiVal{kpos, j});
+                    Mutrue = MuVal{kpos, j};
+                    Mutrue=Mutrue(1:ktrue,:);
+                    Sigmatrue = SigmaVal{kpos, j};
+                    Sigmatrue = Sigmatrue(:,:,1:ktrue);
+                    Pitrue=PiVal{kpos, j};
+                    alphaTrimj=alphaTrim(j);
+                    ngood=round(n*(1-alphaTrimj));
+                    nout=n-ngood;
+                    idxkj=IDX{kpos,j};
+
+                    % if outliersFromUniform is false the outliers in the replicate
+                    % samples are the units which have been trimmed
+                    if outliersFromUniform == false
+                        Yadd=Y(idxkj==0,:);
+                    else
+                        Yadd=[];
+                    end
+                    tboot=zeros(nsimulExtra,1);
+
+
+                    if usepriorSolExtra ==true
+                        idxkH1=IDX{kH1pos,j};
+                    else
+                        idxkj=[];
+                        idxkH1=[];
+                    end
+                    parfor (zz = 1:nsimulExtra)
+
+                        % Alternative instruction using traditional for
+                        % instead of parfor
+                        % for zz = 1:nsimulExtra
+                        if outliersFromUniform == true
+                            [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
+                            if size(Ysim,1)<n
+                                Yadd1=repmat(Ysim(end,:),n-size(Ysim,1),1);
+                                Ysim=[Ysim;Yadd1];
+                            end
+                        else
+                            [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', 0);
+                            Ysim=[Ysim;Yadd];
+                        end
+
+                        outtcSIM=tclust(Ysim,k,alphaTrimj,restrfactor,'plots',0,'msg',0,'mixt',mixt, ...
+                            'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                            'reftol',reftol,'cshape',cshape,...
+                            'priorSol',idxkj,'nsamp',nsampExtra);
+
+                        outtcSIMkH1=tclust(Ysim,kH1,alphaTrimj,restrfactor,'plots',0,'msg',0,'mixt',mixt, ...
+                            'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                            'reftol',reftol,'cshape',cshape, ...
+                            'priorSol',idxkH1,'nsamp',nsampExtra);
+
+                        tboot(zz)=outtcSIMkH1.obj-outtcSIM.obj;
+
+                    end
+
+
+                    tobs= outCTL.CTL(kH1pos,j)-outCTL.CTL(kpos,j);
+
+                    % tboot = values of the difference between target function using kH1
+                    % and k groups for data simulated assuming k groups
+                    addLRtest=sum(tboot>tobs)/nsimulExtra;
+
+                    if addLRtest>crit
+                        kTentative(jjj)=kTentative(jjj-1);
+                    else
+                        indbestk=indbestk+1;
+                    end
+                end
+                LRTtentSol(MultSolalpha(indbestk),7)=1;
+            elseif length(MultSolalpha) ==1
+                LRTtentSol(MultSolalpha,7)=1;
+            else
+            end
+        end
+
+        LRTtentSolt=array2table(LRTtentSol,'RowNames',nsoleti, ...
+            'VariableNames',{'index' 'k' 'alpha' 'Truesol' 'kindex' 'alphaindex' 'kbestGivenalpha' 'ProperSize'});
+
+    else
+        LRTtentSol=[];
+        LRTtentSolt=[];
+        LRTtentSolIDX=[];
+    end
+
+    outCTLnew.LRTtentSol=LRTtentSol;
+    outCTLnew.LRTtentSolt=LRTtentSolt;
+    outCTLnew.LRTtentSolIDX=LRTtentSolIDX;
+
+    % Find  LRToptimalK, LRToptimalAlpha and LRToptimalIDX
+    if ~isempty(LRTtentSol)
+        % Just in case there are multiple solutions take as optimal the one
+        % with the smallest alpha independently of group size (if
+        % there is at least one solution which satisfies the minimum group
+        % size)
+        if size(LRTtentSol,1)>1
+            if any(LRTtentSol(:,8))
+                % indexBestSolLRT=find(LRTtentSol(:,7)==1 & LRTtentSol(:,8)==1);
+                indexBestSolLRT=find(LRTtentSol(:,7)==1);
+            else
+                indexBestSolLRT=1;
+            end
+        else
+            indexBestSolLRT=1;
+        end
+        LRToptimalK=LRTtentSol(indexBestSolLRT,2);
+        LRToptimalAlpha=LRTtentSol(indexBestSolLRT,3);
+        LRToptimalIDX=LRTtentSolIDX(:,indexBestSolLRT);
+    else
+        LRToptimalK=[];
+        LRToptimalAlpha=[];
+        LRToptimalIDX=[];
+    end
+    outCTLnew.LRToptimalK=LRToptimalK;
+    outCTLnew.LRToptimalAlpha=LRToptimalAlpha;
+    outCTLnew.LRToptimalIDX=LRToptimalIDX;
+end
+
 
 %% Interactivity through databrush
 if isstruct(databrush)
     fdatabrush=fieldnames(databrush);
-    
+
     % persist option
     dpers=find(strcmp('persist',fdatabrush));
     if dpers>0
         persist=databrush.persist;
         databrush=rmfield(databrush,'persist');
         fdatabrush=fieldnames(databrush);
-        
+
         ColorOrd=[1 0 0;0 1 1; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
         ColorOrd=repmat(ColorOrd,4,1);
     else
         persist='';
         ColorOrd=[1 0 0];
     end
-    
+
     % FlagColor option Initialize colors for the brushing option: default
     % colors are blue (unbrushed unit) and red (brushed units)
-    
+
 else
     persist='';
     ColorOrd=[1 0 0];
@@ -502,15 +857,15 @@ end
 
 %% Brush mode (call to function selectdataFS)
 if ~isempty(databrush) || isstruct(databrush)
-    
+
     % Define marker type
     styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
     styp=repmat(styp,ceil(lkk/length(styp)),1);
-    
+
     IDX=outCTL.IDX;
     Y=outCTL.Y;
-    
-    
+
+
     if isstruct(databrush)
         % Choose what to put on the main diagonal of the spm
         d=find(strcmp('dispopt',fieldnames(databrush)),1);
@@ -521,8 +876,8 @@ if ~isempty(databrush) || isstruct(databrush)
             databrush=rmfield(databrush,'dispopt');
             fdatabrush=fieldnames(databrush);
         end
-        
-        
+
+
         % transform the input structure databrush into a cell array
         cv=[fdatabrush struct2cell(databrush)]';
         sele=cv(:)';
@@ -536,7 +891,7 @@ if ~isempty(databrush) || isstruct(databrush)
         sele={'selectionmode' 'Rect' };
         dispopt='hist';
     end
-    
+
     % Set the labels of the axes in the spmplot which shows the brushed solutions.
     d=find(strcmp('nameY',fieldnames(outCTL)),1);
     if  isempty(d)
@@ -546,52 +901,52 @@ if ~isempty(databrush) || isstruct(databrush)
     else
         nameY=outCTL.nameY;
     end
-    
+
     plo=struct;
     plo.nameY=nameY;
-    
+
     % some local variables
     but=0; brushcum=[]; ij=1;
-    
+
     sele=[sele 'FlagColor' ColorOrd(ij,:) 'FlagMarker' char(styp(ij+1))];
-    
+
     % loop brushing
     while but<=1
-        
+
         figure(plot1);
-        
+
         % Remark: function selectdataFS cannot be used on the current
         % figure if the "selection mode" or the "zoom tool" are on. Setting
         % the plotedit mode initially to on and then to off, has the effect
         % to deselect plotedit mode.
         plotedit on
         plotedit off
-        
+
         if strcmp(persist,'on')
             % add to cell sele option FlagColor (color of selection) and
             % FlagMarker (symbol to be used for selection)
-            
+
             if ij>1
                 chkexist=find(strcmp('FlagColor',sele)==1);
                 sele{chkexist+1}=ColorOrd(ij,:);
                 sele{chkexist+3}=char(styp(ij+1));
             end
         end
-        
-        
+
+
         % CALL to selectdataFS
         disp('Select a region to brush in the ctlcurves plot');
         [pl,xselect,yselect] = selectdataFS(sele{:});
-        
+
         % exit if the ctlcurves figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)
             return
         end
-        
+
         if ~isempty(cell2mat(pl))
-            
+
             if iscell(xselect)
-                
+
                 for z=1:length(xselect)
                     if z==1
                         xselect_all=xselect{z};
@@ -605,14 +960,14 @@ if ~isempty(databrush) || isstruct(databrush)
                 xselect_all=xselect;
                 yselect_all=yselect;
             end
-            
+
             % Find unique values of alpha and k selected
             % Fist column = alpha
             % Second column = k
             % Third column = row index of selected solution
             % Fourth column = column index of selected solution
             alphak=NaN(50,4);
-            
+
             ijk=1;
             seqalpha=1:lalpha;
             seqk=1:lkk;
@@ -622,7 +977,7 @@ if ~isempty(databrush) || isstruct(databrush)
                 selalphai=seqalpha(alpha==xselect_all(i));
                 % alphai = value of alpha which has been selected
                 alphai=alpha(selalphai);
-                
+
                 selk1=likUB(:,selalphai)==yselect_all(i);
                 selk2=likLB(:,selalphai)==yselect_all(i);
                 % selki =index associated with the value of k which has been
@@ -636,18 +991,18 @@ if ~isempty(databrush) || isstruct(databrush)
             % Find the unique combinations of alpha and k
             alphak=alphak(1:ijk-1,:);
             alphak=unique(alphak,'sorted','rows');
-            
+
             nbrush=1;
             disp('Values  k and alpha selected');
             disp(array2table(alphak(:,1:2),'VariableNames',{'k','Trimming level alpha',}));
-            
+
         else
             disp('Wrong selection: Try again');
             disp('Select a region to brush in the CTL curves plot');
             figure(plot1);
             nbrush='';
         end
-        
+
         %% For each brushing operation, do the following:
         if ~isempty(nbrush)
             % brushcum = - the list of selected observations in all
@@ -660,65 +1015,65 @@ if ~isempty(databrush) || isstruct(databrush)
             else
                 brushcum=nbrush;
             end
-            
+
             for r=1:size(alphak,1)
                 Iwithk=alphak(r,3);
                 Jwitha=alphak(r,4);
                 % It is necessary to put inside the tag the word group in
                 % order to let spmplot understand that we are not dearling
                 % with brushed units but simply with groups.
-                
+
                 figure('Tag','pl_spmCTL');
                 set(gcf,'WindowStyle',get(plot1,'WindowStyle'));
                 spmplot(Y,IDX{Iwithk,Jwitha},plo,dispopt);
                 title(['CTL' num2str(likLB(Iwithk,Jwitha),'%10.2f') '-' num2str(likUB(Iwithk,Jwitha),'%10.2f') ...
                     ' k='  num2str(kk(Iwithk)) ' alpha='  num2str(alpha(Jwitha)) ])
             end
-            
+
             %% - check condition to exit from the brush mode
             % If the option persistent is not equal off or on than get out
             % of the loop
             if strcmp('on',persist) || strcmp('off',persist)
-                
+
                 if strcmp('on',persist)
                     ij=ij+1;
                     % but=1 makes that previous highlightments in other
                     % figures are not deleted
                     but=1;
                 end
-                
+
                 % Before waitforbuttonpress:
                 % - the CTL curves plot is highlighted again
                 figure(plot1);
                 % - and a function to be executed on figure close is set
                 set(gcf,'CloseRequestFcn',@closereqFS);
-                
+
                 % Lay down the plots before continuing
                 position(plot1);
                 disp('Highlight the CTL plot then: click on it to continue brushing or press a keyboard key to stop');
                 ss=waitforbuttonpressFS;
                 disp('------------------------');
-                
+
                 % After waitforbuttonpress:
                 % - the standard MATLAB function to be executed on figure
                 %   close is recovered
                 set(gcf,'CloseRequestFcn','closereq');
-                
+
                 if  strcmp('off',persist)
                     Open_spm = findobj(0, 'type', 'figure','tag','pl_spm');
                     delete(Open_spm);
                 end
-                
+
                 Open_mal = findobj(0, 'type', 'figure','tag','tagCtl');
                 if isempty(Open_mal)  % User closed the main brushing window
                     Open_spm = findobj(0, 'type', 'figure','tag','pl_spm');
-                    
+
                     if ~isempty(Open_spm)
                         delete(Open_spm);
                     end % spmplot  is deleted
                     delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
                 end
-                
+
                 % - and the 'but' variable is set if keyboard key was
                 % pressed
                 if ss==1
@@ -733,7 +1088,7 @@ if ~isempty(databrush) || isstruct(databrush)
 else
     % Apply cascade to existing plots in case databrush is not invoked
     position(0);
-    
+
 end
 
 
@@ -752,7 +1107,7 @@ end
                 % the properties of the data cursor
                 set(hdt,datatooltip);
             end
-            
+
             LineColor=[1 0 0];
             % Declare a custom datatooltip update function to display additional
             % information about the selected unit
@@ -786,11 +1141,11 @@ end
         %
         %
         % Written by FSDA team
-        
+
         % find the plot the user has clicked on
         titl=get(gca,'title');
         titl=titl.String;
-        
+
         if strcmp(titl,'Portofino plot')
             ICselB=IC.tbootGTtobsf;
             ICselU=[];
@@ -803,9 +1158,9 @@ end
                 ICselU=[];
             end
         end
-        
+
         ICIDXsel=IC.IDX;
-        
+
         if ~isempty(hTarget) && isvalid(hTarget)
             % set old line width and old color for old selection
             %             if strcmp(titl,'Portofino plot') && isfield(struct(hTarget),'FaceColor')
@@ -813,7 +1168,7 @@ end
             %             else
             %                 set(hTarget,'LineWidth',hTargetlwd,'Color',hTargetcol);
             %             end
-            
+
             try
                 set(hTarget,'LineWidth',hTargetlwd,'FaceColor',hTargetcol);
             catch
@@ -821,7 +1176,7 @@ end
             end
         else
         end
-        
+
         % Store line width and color of selected trajectory
         % Notice that changing event_obj.Target in subsequent lines seems
         % to affect also hTarget
@@ -836,17 +1191,17 @@ end
             % Increase Line width and keep line color
             set(hTarget,'LineWidth',hTargetlwd+1.5,'Color',hTargetcol);
         end
-        
-        
+
+
         pos = get(event_obj,'Position');
-        
+
         % x and y, plot coordinates of the mouse
         x1 = pos(1); y1 = pos(2);
-        
+
         % Find index to retrieve value of k (number of groups) and value of c (restriction factor)
         % Consider that find return the
         % linear indexing of matrix xydata
-        
+
         % Linear indexing is transformed into normal indexing using
         % function ind2sub row and column contain the column and row
         % indexed of the observation which has been selected with the mouse
@@ -857,28 +1212,28 @@ end
         else
             [row,col] = ind2sub(size(ICselB),idx);
         end
-        
-        
-        
+
+
+
         if isempty(row)
             output_txt{1}=['no ctl x,y' num2str(x1) '' num2str(y1)] ;
         else
             output_txt=cell(4,1);
-            
+
             % output_txt is what it is shown on the screen
             output_txt(1,1) = {[ titl ' equal to: ',num2str(y1,4)]};
-            
+
             % Add information about k and alpha
             output_txt{2,1} = ['k= ' num2str(row) ', alpha=' num2str(IC.alpha(col))];
-            
-            
+
+
             output_txt{3,1} = 'Classification';
-            
+
             % Add information about the corresponding frequency
             % distribution  of associated classification
             clas=tabulate(ICIDXsel{row,col});
             output_txt{4,1} = num2str(clas);
-            
+
             set(0,'ShowHiddenHandles','on');    % Show hidden handles
             hText = findobj('Type','text','Tag','DataTipMarker');
             set(hText,'Interpreter','latex');
@@ -907,9 +1262,9 @@ for j = 1:lkk-1
             break
         else
         end
-        
+
     end
-    
+
     if ~isempty(alphaBest)
         TentSol(jj,:)=[j alphaBest, jalpha];
         jj=jj+1;
