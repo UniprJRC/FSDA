@@ -663,7 +663,7 @@ if plots==1
     if isrow(cc)
         legstr=strcat(a, cellstr(num2str(cc')));
     else
-        legstr=strcat(a, cellstr(num2str(cc')));
+        legstr=strcat(a(:), cellstr(num2str(cc')));
     end
     xkk=0:(1/(length(kk)-1)):1;
 end

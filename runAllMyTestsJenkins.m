@@ -76,10 +76,10 @@ for i=1:nfiles
             close all
             if iEx==1
                 %Exif=[Exi,newline,'close all',newline 'save tempfileWS'];
-                Exif=[Exi,newline,'close all'];
+                Exif=[Exi,newline,'close all',newline,'save tempfileWS'];
             else
                 %Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
-                Exif=[Exi,newline,'close all'];
+                Exif=['load tempfileWS',newline,Exi,newline,'close all',newline,'save tempfileWS'];
             end
             
             % Write Exif to a file which name begins with 'text'

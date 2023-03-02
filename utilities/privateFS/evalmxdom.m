@@ -75,10 +75,10 @@ snapnow('set',data)
 
 % For consistency, set the published output to 80 columns, regardless of 
 % the current Command Window width.
-originalEightyColumns = feature('EightyColumns');
+originalEightyColumns = feature(settings);
 resetEightyColumnsObj = onCleanup(...
-    @()feature('EightyColumns',originalEightyColumns) );
-feature('EightyColumns',1)
+    @()feature(settings,originalEightyColumns) );
+feature(settings,1)
 
 % Be sure we don't capture the code itself in the output if echo is on.
 echoState = get(0,'echo');
@@ -90,7 +90,7 @@ echo off
 resetAppdataObj = onCleanup(@()rmappdata(0,tempVar));
 setappdata(0,tempVar,options.codeToEvaluate)
 
-ret = char(10);
+ret = newline;
 laste = [];
 evalstr = [ ...
     'feature(''hotlinks'',0);' ret ...
@@ -398,7 +398,7 @@ function m = formatError(laste,hotlinks)
     origHotlinks = feature('hotlinks',hotlinks);
     m = getReport(laste);
     feature('hotlinks',origHotlinks)
-    iRet = find(m==sprintf('\n'));
+    iRet = find(m==newline);
     
     % Find where the publishing stack begins in the error message.
     instrumentAndRunPos = strfind(m,'evalmxdom>instrumentAndRun');

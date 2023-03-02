@@ -377,7 +377,7 @@ a(:)={'c_{det}='};
 if isrow(cdet)
     legstrcdet=strcat(a, cellstr(num2str(cdet')));
 else
-    legstrcdet=strcat(a, cellstr(num2str(cdet')));
+    legstrcdet=strcat(a(:), cellstr(num2str(cdet')));
 end
 legend(legstrcdet,'location','best');
 
@@ -412,7 +412,7 @@ a(:)={'c_{shw}='};
 if isrow(cshw)
     legstrcshw=strcat(a, cellstr(num2str(cshw')));
 else
-    legstrcshw=strcat(a, cellstr(num2str(cshw')));
+    legstrcshw=strcat(a(:), cellstr(num2str(cshw')));
 end
 legend(legstrcshw,'location','best');
 % set(plot1,'Tag','BIC')
