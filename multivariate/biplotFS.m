@@ -97,6 +97,23 @@ function biplotFS(Y,varargin)
 % In general if $\omega$ decreases, the length of the arrows increases
 % and the coordinates of row points are squeezed towards the origin
 %
+% In the app it is also possible to color row points depending on the
+% orthogonal distance ($OD_i$) of each observation to the PCA subspace.
+% For example, if the subspace is defined by the first two principal
+% components, $OD_i$ is computed as: 
+%
+%
+% \[
+% OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
+% \]
+%
+% If optional input argument bsb or bdp is specified it is possible to have
+% in the app two tabs which enable the user to select the breakdown point
+% of the analysis of the subset size to use in the svd. The units which are
+% declared as outliers or the units outside the subset are shown in the
+% plot with filled circles.
+%
+%
 %  Required input arguments:
 %
 % Y :           Input data. 2D array or table.
@@ -109,6 +126,28 @@ function biplotFS(Y,varargin)
 %                Data Types - single|double
 %
 %  Optional input arguments:
+%
+%      bsb       : units forming subset on which to perform PCA. vector.
+%                  Vector containing the list of the untis to use to
+%                  compute the svd. The other units are projected in the
+%                  space of the first two PC. bsb can be either a numeric
+%                  vector of length m (m<=n) containin the list of the
+%                  units (e.g. 1:50) or a logical vector of length n
+%                  containing the true for the units which have to be used
+%                  in the calculation of svd. For example bsb=true(n,1),
+%                  bsb(13)=false; excludes from the svd unit number 13.
+%                  Note that if bsb is supplied bdp must be empty.
+%                 Example - 'bsb',[2 10:90 93]
+%                 Data Types - double or logical 
+%
+%         bdp :  breakdown point. Scalar.
+%               It measures the fraction of outliers the algorithm should
+%               resist. In this case any value greater than 0 but smaller
+%               or equal than 0.5 will do fine. Note that if bdp is
+%               supplied bsb must be empty.
+%                 Example - 'bdp',0.4
+%                 Data Types - double
+%
 %
 %    standardize : standardize data. boolean. Boolean which specifies
 %               whether to standardize the variables, that is we operate on
@@ -148,8 +187,12 @@ function biplotFS(Y,varargin)
 %                   Example - 'showArrows',false
 %                   Data Types - boolean
 %
-% Output:
-%
+% Output:  
+%         when the biplotAPP is closed in the base workspace a new variable
+%         called bsbfinalFromAPP is created which contains a logical vector
+%         of length n containing true for the units which have been used in
+%         the svd.
+%         
 %
 %
 % See also: pca, biplotFS
@@ -186,6 +229,5 @@ function biplotFS(Y,varargin)
 
 %% Beginning of code
   biplotAPP(Y,varargin{:})
-
 end
 %FScategory:VIS-Mult

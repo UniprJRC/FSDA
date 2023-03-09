@@ -14,11 +14,35 @@ function out=pcaFS(Y,varargin)
 %       components;
 %   5) returns the communalities for each variable with respect to the
 %       first k principal components in table format;
-%   5) calls app biplotFS which enables to obtain an interactive biplot in
+%   6) retuns the orthogonal distance ($OD_i$) of each observation to the PCA subspace.
+%   For example, if the subspace is defined by the first two principal
+%   components, $OD_i$ is computed as: 
+%   \[
+%   OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
+%   \]
+%   where z_i is the i-th row of the original centered data matrix and
+%   $V_{(2)}=(v_1 v_2)$ is the matrix of size px2 containing the first two
+%   eigenvectors of $Z'Z/(n-1)$. The observations with large $OD_i$ are not well
+%   represented in the space of the principal components.
+%   7)  returns the score distance SD_i of each observation. For in the
+%   case the subspace if the subspace is defined by the first two principal
+%   components, $OD_i$ is computed as: 
+%   \[
+%   SD_i=\sqrt{(z_i'v_1)^2/l_1+ (z_i'v_2)^2/l_2 } 
+%   \]
+%  and $l_1$ and $l_2$ are the first two eigenvalues of $Z'Z/(n-1)$
+%   8) calls app biplotFS which enables to obtain an interactive biplot in
 %      which points, rowslabels or arrows can be shown or hidden. This app
 %      also gives the possibility of controlling the length of the arrows
 %      and the position of the row points through two interactive slider
-%      bars.
+%      bars. In the app it is also possible to color row points depending
+%      on the orthogonal distance ($OD_i$) of each observation to the PCA
+%      subspace. If optional input argument bsb or bdp is specified it is
+%      possible to have in the app two tabs which enable the user to select
+%      the breakdown point of the analysis of the subset size to use in the
+%      svd. The units which are declared as outliers or the units outside
+%      the subset are shown in the plot with filled circles.
+%
 %
 %  Required input arguments:
 %
@@ -32,6 +56,27 @@ function out=pcaFS(Y,varargin)
 %                Data Types - single|double
 %
 %  Optional input arguments:
+%
+%      bsb       : units forming subset on which to perform PCA. vector.
+%                  Vector containing the list of the untis to use to
+%                  compute the svd. The other units are projected in the
+%                  space of the first two PC. bsb can be either a numeric
+%                  vector of length m (m<=n) containin the list of the
+%                  units (e.g. 1:50) or a logical vector of length n
+%                  containing the true for the units which have to be used
+%                  in the calculation of svd. For example bsb=true(n,1),
+%                  bsb(13)=false; excludes from the svd unit number 13.
+%                  Note that if bsb is supplied bdp must be empty.
+%                 Example - 'bsb',[2 10:90 93]
+%                 Data Types - double or logical 
+%
+%         bdp :  breakdown point. Scalar.
+%               It measures the fraction of outliers the algorithm should
+%               resist. In this case any value greater than 0 but smaller
+%               or equal than 0.5 will do fine. Note that if bdp is
+%               supplied bsb must be empty.
+%                 Example - 'bdp',0.4
+%                 Data Types - double
 %
 %    standardize : standardize data. boolean. Boolean which specifies
 %               whether to standardize the variables, that is we operate on
@@ -162,21 +207,24 @@ standardize=true;
 biplot=1;
 dispresults=true;
 NumComponents=[];
+bdp='';
+bsb='';
 
 if nargin>1
     options=struct('plots',plots, ...
         'standardize',standardize,'biplot', biplot,...
-        'dispresults',dispresults,'NumComponents',NumComponents);
-    
+        'dispresults',dispresults,'NumComponents',NumComponents,...
+        'bdp',bdp,'bsb',bsb);
+
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        
-        
+
+
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:pcaFS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        
+
         % Check if all the specified optional arguments were present
         % in structure options
         % Remark: the nocheck option has already been dealt by routine
@@ -188,18 +236,20 @@ if nargin>1
             error('FSDA:pcaFS:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
     end
-    
-    
+
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     plots=options.plots;
     standardize=options.standardize;
     biplot=options.biplot;
     dispresults=options.dispresults;
     NumComponents=options.NumComponents;
+    bdp=options.bdp;
+    bsb=options.bsb;
 end
 
 if istable(Y)
@@ -211,25 +261,56 @@ else
     rownames=cellstr(num2str((1:n)','%d'));
 end
 
+if ~isempty(bdp) && ~isempty(bsb)
+    error('FSDA:pcaFS:WrongInputOpt','just one between bsb and bdp has to be supplied');
+end
+
+if ~isempty(bdp)
+    outMCD=mcd(Y,'bdp',bdp,'conflev',1-0.01/n);
+    % bsb=outMCD.outliers
+    bsb=true(n,1);
+    bsb(outMCD.outliers)=false;
+    robust=true;
+elseif ~isempty(bsb)
+    if ~islogical(bsb)
+        bsbini=false(n,1);
+        bsbini(bsb)=true;
+        bsb=bsbini;
+    end
+    robust=true;
+else
+    bsb=true(n,1);
+    robust=false;
+end
+Ybsb=Y(bsb,:);
+nbsb=size(Ybsb,1);
+
+center=mean(Ybsb);
 if standardize==true
+    dispersion=std(Ybsb);
     % Create matrix of standardized data
-    Z=zscore(Y);
+    Z=(Y-center)./dispersion;
 else
     % Create matrix of deviations from the means
-    Z=Y-mean(Y);
+    Z=Y-center;
 end
+
+% [~,S,loadings]=svd(Z./sqrt(n-1),0);
+% Z=(Y-mean(Y))*loadings;
+
 Ztable=array2table(Z,'RowNames',rownames,'VariableNames',varnames);
 
 
 % Correlation (Covariance) matrix in table format
-R=cov(Z);
+Zbsb=Z(bsb,:);
+R=cov(Zbsb);
 Rtable=array2table(R,'VariableNames',varnames,'RowNames',varnames);
 
 sigmas=sqrt(diag(R));
 
 % svd on matrix Z.
-[~,Gamma,V]=svd(Z,'econ');
-Gamma=Gamma/sqrt(n-1);
+[~,Gamma,V]=svd(Zbsb,'econ');
+Gamma=Gamma/sqrt(nbsb-1);
 
 % \Gamma*\Gamma = matrice degli autovalori della matrice di correlazione
 La=Gamma.^2;
@@ -280,6 +361,16 @@ end
 communwithcumT=array2table(communwithcum,'RowNames',varnames,...
     'VariableNames',varNames);
 
+%% Orthogonal distance to PCA subspace based on k PC
+Res=Z-score*V';
+orthDist=sqrt(sum(Res.^2,2));
+
+
+%% Score distance in PCA subspace of dimension k
+larow=diag(La)';
+scoreDist=sqrt(sum(score.^2./larow,2));
+
+
 out=struct;
 out.Rtable=Rtable;
 out.explained=explained;
@@ -292,7 +383,8 @@ out.communalities=communwithcum;
 out.communalitiesT=communwithcumT;
 out.score=score;
 out.scoreT=scoreT;
-
+out.orthDist=orthDist;
+out.scoreDist=scoreDist;
 
 if dispresults == true
     format bank
@@ -302,20 +394,20 @@ if dispresults == true
         disp('Initial covariance matrix')
     end
     disp(Rtable)
-    
+
     disp('Explained variance by PCs')
     disp(explainedT)
-    
+
     disp('Loadings = correlations between variables and PCs')
     disp(loadingsT)
-    
+
     disp('Communalities')
     disp(communwithcumT)
     format short
 end
 
 if plots==1
-    
+
     %% Explained variance through Pareto plot
     figure('Name','Explained variance')
     [h,axesPareto]=pareto(explained(:,1),namerows);
@@ -326,11 +418,11 @@ if plots==1
         'Interpreter','none');
     xlabel('Principal components')
     ylabel('Explained variance (%)')
-    
+
     %% Plot loadings
     xlabels=categorical(varnames,varnames);
     figure('Name','Loadings')
-    
+
     for i=1:NumComponents
         subplot(NumComponents,1,i)
         b=bar(xlabels, loadings(:,i),'g');
@@ -348,7 +440,11 @@ if plots==1
     end
 end
 if biplot==1
+    if robust==true
+    biplotAPP(Ztable,'standardize',standardize,'bsb',bsb)
+    else
     biplotAPP(Ztable,'standardize',standardize)
+    end
 end
 
 end
