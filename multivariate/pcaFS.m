@@ -7,7 +7,7 @@ function out=pcaFS(Y,varargin)
 %   1) accepts an input X also as table;
 %   2) produces in table format the percentage of the variance explained
 %      single and cumulative of the various components and the associated
-%      scree plot in order to decide about the number of components to
+%      scree plot, in order to decide about the number of components to
 %      retain.
 %   3) returns the loadings in table format and shows them graphically.
 %   4) provides guidelines about the automatic choice of the number of
@@ -20,11 +20,12 @@ function out=pcaFS(Y,varargin)
 %   \[
 %   OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
 %   \]
-%   where z_i is the i-th row of the original centered data matrix and
-%   $V_{(2)}=(v_1 v_2)$ is the matrix of size px2 containing the first two
-%   eigenvectors of $Z'Z/(n-1)$. The observations with large $OD_i$ are not well
-%   represented in the space of the principal components.
-%   7)  returns the score distance SD_i of each observation. For example,
+%   where z_i is the i-th row of the original centered data matrix $Z$ of
+%   dimension $n \times v$ and $V_{(2)}=(v_1 v_2)$ is the matrix of size
+%   $p \times 2$ containing the first two eigenvectors of $Z'Z/(n-1)$. The
+%   observations with large $OD_i$ are not well represented in the space of
+%   the principal components.
+%   7)  returns the score distance $SD_i$ of each observation. For example,
 %   if the subspace is defined by the first two principal components,
 %   $SD_i$ is computed as:
 %   \[
@@ -37,7 +38,7 @@ function out=pcaFS(Y,varargin)
 %      and the position of the row points through two interactive slider
 %      bars. In the app it is also possible to color row points depending
 %      on the orthogonal distance ($OD_i$) of each observation to the PCA
-%      subspace. If optional input argument bsb or bdp is specified it is
+%      subspace. If optional input argument bsb or bdp is specified, it is
 %      possible to have in the app two tabs which enable the user to select
 %      the breakdown point of the analysis or the subset size to use in the
 %      svd. The units which are declared as outliers or the units outside
@@ -47,7 +48,7 @@ function out=pcaFS(Y,varargin)
 %  Required input arguments:
 %
 % Y :           Input data. 2D array or table.
-%               n x v data matrix; n observations and v variables. Rows of
+%               n x p data matrix; n observations and p variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
@@ -113,12 +114,12 @@ function out=pcaFS(Y,varargin)
 %                    Data Types - char
 %
 %  NumComponents : the number of components desired. Specified as a
-%                  scalar integer $k$ satisfying $0 < k \leq v$. When
+%                  scalar integer $k$ satisfying $0 < k \leq p$. When
 %                  specified, pcaFS returns the first $k$ columns of
 %                  out.coeff and out.score. If NumComponents is not
 %                  specified pcaFS returns the minimum number of components
 %                  which cumulatively enable to explain a percentage of
-%                  variance which is equal at least to $0.95^v$. If this
+%                  variance which is equal at least to $0.95^p$. If this
 %                  threshold is exceeded already by the first PC, pcaFS
 %                  still returns the first two PCs.
 %                   Example - 'NumComponents',2
@@ -130,23 +131,23 @@ function out=pcaFS(Y,varargin)
 %
 %         out:   structure which contains the following fields
 %
-%out.Rtable = v-by-v correlation matrix in table format.
+%out.Rtable = p-by-p correlation matrix in table format.
 %
-% out.explained = v \times 3 matrix containing respectively
+% out.explained = p \times 3 matrix containing respectively
 %                1st col = eigenvalues;
 %                2nd col = Explained Variance (in percentage)
 %                3rd col = Cumulative Explained Variance (in percentage)
 %
 %out.explainedT = the same as out.explained but in table format.
 %
-%out.coeff=  v-by-NumComponents matrix containing the ordered eigenvectors
+%out.coeff=  p-by-NumComponents matrix containing the ordered eigenvectors
 %           of the correlation (covariance matrix) in table format.
 %            First column is referred to first eigenvector ...
 %            Note that out.coeff'*out.coeff= I_NumComponents.
 %
 %out.coeffT = the same as out.coeff but in table format.
 %
-%out.loadings=v-by-NumComponents matrix containing the correlation
+%out.loadings=p-by-NumComponents matrix containing the correlation
 %             coefficients between the original variables and the first
 %             NumComponents principal components.
 %
@@ -160,7 +161,7 @@ function out=pcaFS(Y,varargin)
 %
 % out.scoreT = the same as outscore but in table format.
 %
-% out.communalities = matrix with v-by-2*NumComponents-1 columns.
+% out.communalities = matrix with p-by-2*NumComponents-1 columns.
 %               The first NumComponents columns contain the communalities
 %               (variance extracted) by the the first NumComponents
 %               principal components. Column NumComponents+1 contains the
@@ -178,14 +179,14 @@ function out=pcaFS(Y,varargin)
 %  out.scoreDist = score distance from centroid.
 %                 Column vector of length n containing the score
 %                 distance of each observation from the PCA subspace.
-%                 The analysis of out.orthDist and out.scoreDist relveals
+%                 The analysis of out.orthDist and out.scoreDist reveals
 %                 the good leverage points, the orthogonal outliers and the
 %                 bad leverage points. 
 %                 Good leverage points: points which lie close to the PCA
 %                 space but far from the regular observations. Good
 %                 leverage points have a large score distance and low
 %                 orthogonal distance. Orthogonal outliers are points which
-%                 have a large orthogonal distance to the PCA space but
+%                 have a large orthogonal distance to the PCA subspace but
 %                 cannot be seen when we look only at their projection on
 %                 the PCA subspace. Bad leverage points are points which
 %                 have a large orthogonal distance and whose projection on
