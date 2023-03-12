@@ -16,7 +16,7 @@ function out=pcaFS(Y,varargin)
 %       first k principal components in table format;
 %   6) retuns the orthogonal distance ($OD_i$) of each observation to the PCA subspace.
 %   For example, if the subspace is defined by the first two principal
-%   components, $OD_i$ is computed as: 
+%   components, $OD_i$ is computed as:
 %   \[
 %   OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
 %   \]
@@ -24,13 +24,13 @@ function out=pcaFS(Y,varargin)
 %   $V_{(2)}=(v_1 v_2)$ is the matrix of size px2 containing the first two
 %   eigenvectors of $Z'Z/(n-1)$. The observations with large $OD_i$ are not well
 %   represented in the space of the principal components.
-%   7)  returns the score distance SD_i of each observation. For in the
-%   case the subspace if the subspace is defined by the first two principal
-%   components, $OD_i$ is computed as: 
+%   7)  returns the score distance SD_i of each observation. For example,
+%   if the subspace is defined by the first two principal components,
+%   $SD_i$ is computed as:
 %   \[
-%   SD_i=\sqrt{(z_i'v_1)^2/l_1+ (z_i'v_2)^2/l_2 } 
+%   SD_i=\sqrt{(z_i'v_1)^2/l_1+ (z_i'v_2)^2/l_2 }
 %   \]
-%  and $l_1$ and $l_2$ are the first two eigenvalues of $Z'Z/(n-1)$
+%  where $l_1$ and $l_2$ are the first two eigenvalues of $Z'Z/(n-1)$.
 %   8) calls app biplotFS which enables to obtain an interactive biplot in
 %      which points, rowslabels or arrows can be shown or hidden. This app
 %      also gives the possibility of controlling the length of the arrows
@@ -39,9 +39,9 @@ function out=pcaFS(Y,varargin)
 %      on the orthogonal distance ($OD_i$) of each observation to the PCA
 %      subspace. If optional input argument bsb or bdp is specified it is
 %      possible to have in the app two tabs which enable the user to select
-%      the breakdown point of the analysis of the subset size to use in the
+%      the breakdown point of the analysis or the subset size to use in the
 %      svd. The units which are declared as outliers or the units outside
-%      the subset are shown in the plot with filled circles.
+%      the subset are shown in the biplot with filled circles.
 %
 %
 %  Required input arguments:
@@ -68,7 +68,7 @@ function out=pcaFS(Y,varargin)
 %                  bsb(13)=false; excludes from the svd unit number 13.
 %                  Note that if bsb is supplied bdp must be empty.
 %                 Example - 'bsb',[2 10:90 93]
-%                 Data Types - double or logical 
+%                 Data Types - double or logical
 %
 %         bdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers the algorithm should
@@ -105,9 +105,10 @@ function out=pcaFS(Y,varargin)
 %
 %  dispresults   : show the results in the command window. If dispresults
 %                   is true, the percentage of variance explained together
-%                   with the loadings and the criteria for deciding the
-%                   number of components to retain is shown in the command
-%                   window.
+%                   with the loadings, the criteria for deciding the number
+%                   of components to retain and the 5 units with the
+%                   largest score and orthogonal distance (combined) are
+%                   shown in the command window. 
 %                   Example - 'dispresults',false
 %                    Data Types - char
 %
@@ -169,6 +170,28 @@ function out=pcaFS(Y,varargin)
 %               components...
 %
 %  out.communalitiesT= the same as out.communalities but in table format.
+%
+%  out.orthDist = orthogonal distance from PCA subspace.
+%                 Column vector of length n containing the orthogonal
+%                 distance of each observation from the PCA subspace.
+%
+%  out.scoreDist = score distance from centroid.
+%                 Column vector of length n containing the score
+%                 distance of each observation from the PCA subspace.
+%                 The analysis of out.orthDist and out.scoreDist relveals
+%                 the good leverage points, the orthogonal outliers and the
+%                 bad leverage points. 
+%                 Good leverage points: points which lie close to the PCA
+%                 space but far from the regular observations. Good
+%                 leverage points have a large score distance and low
+%                 orthogonal distance. Orthogonal outliers are points which
+%                 have a large orthogonal distance to the PCA space but
+%                 cannot be seen when we look only at their projection on
+%                 the PCA subspace. Bad leverage points are points which
+%                 have a large orthogonal distance and whose projection on
+%                 the PCA subspace is remote from the typical projections.
+%                 These points have a large score distance and a large
+%                 orthogonal distance.
 %
 % See also: pca, biplotFS
 %
@@ -370,6 +393,12 @@ orthDist=sqrt(sum(Res.^2,2));
 larow=diag(La)';
 scoreDist=sqrt(sum(score.^2./larow,2));
 
+% Find the 5 units with the largest value of the combination between
+% orthogonal and score distance
+    DD=[orthDist,scoreDist];
+    distM=mahalFS(DD,mean(DD),cov(DD));
+    [~,indsor]=sort(distM,1,"descend");
+    selu=indsor(1:5);
 
 out=struct;
 out.Rtable=Rtable;
@@ -404,6 +433,9 @@ if dispresults == true
     disp('Communalities')
     disp(communwithcumT)
     format short
+
+    disp('Units with the 5 largest values of (combined) score and orthogonal distance')
+    disp(selu')
 end
 
 if plots==1
@@ -438,12 +470,34 @@ if plots==1
             'VerticalAlignment','bottom')
         title(['Correlations  with PC' num2str(i)])
     end
+
+    %% Plot of score distance versus orthogonal distance
+    figure('Name','OutlierMap')
+    scatterboxplot(orthDist,scoreDist)
+    xlabel('Score distance')
+    ylabel('Orth. dist. from PCA subspace')
+    text(1.01,0,['Good' newline 'leverage' newline 'points'],'Units','normalized')
+    text(-0.05,0,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','right')
+    text(0.05,-0.05,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','left')
+    text(-0.05,1.05,'Orthogonal outliers','Units','normalized','HorizontalAlignment','left')
+    text(0.95,1.05,'Bad leverage points','Units','normalized','HorizontalAlignment','right')
+    text(1.01,0.95,['Bad' newline 'leverage' newline 'points'],'Units','normalized','HorizontalAlignment','left')
+    text(orthDist(selu),scoreDist(selu),string(selu))
+    % Good leverage points: points which lie close to the PCA space but far
+    % from the regular observations.
+    % Orthogonal outliers are points which have a large orthogonal distance
+    % to the PCA space but cannot be seen when we look only at their
+    % projection on the PCA subspace.
+    % Bad leverage points are points which have a large orthogonal distance
+    % and whose projection on the PCA subspace is remote from the typical
+    % projections,
+
 end
 if biplot==1
     if robust==true
-    biplotAPP(Ztable,'standardize',standardize,'bsb',bsb)
+        biplotAPP(Ztable,'standardize',standardize,'bsb',bsb)
     else
-    biplotAPP(Ztable,'standardize',standardize)
+        biplotAPP(Ztable,'standardize',standardize)
     end
 end
 
