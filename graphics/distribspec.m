@@ -9,7 +9,15 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 % Required input arguments:
 %
-%    pd     : probability density. Object returned by makedist.
+%    pd     : can be one of the following. 
+%             - A probability density object returned by makedist.
+%             - A structure containing two fields: 
+%               (i) pd.distname, a character array with a valid distribution
+%               name (all those accepted by makedist);
+%               (ii) pd.x, a numeric vector containing the data sample 
+%               to be used to estimate the parameters of the distribution.
+%             - A numeric vector containg a sample used to fit a probability
+%               distribution object with nonparametric kernel-smoothing.
 %
 %    specs  : the lower and upper limits of the shading area. Two element
 %             vector. If there is no lower limit, then specs(1)=-Inf. If
@@ -44,7 +52,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 % References:
 %
 %
-% See also: normspec, makedist
+% See also: normspec, makedist, fitdist
 %
 %
 % Copyright 2008-2023.
