@@ -33,9 +33,9 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 % Output:
 %
-%    p:   Probability covered by the shaded area. Scalar. It is a value in [0 1]. 
+%    p:   Probability covered by the shaded area. Scalar. It is a value in [0 1].
 %
-%    h:   Handle to the line objects. Graphic object. 
+%    h:   Handle to the line objects. Graphic object.
 %
 %
 % Optional Output:
@@ -150,20 +150,73 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     [p, h] = distribspec(pd, specs, region, 'userColor',RGB_vector);
 %}
 
+%{
+    %% A sample of n=100 elements extracted from a Gamma, with distname
+    distname    = 'Gamma';
+    x           = random(distname,3,1,[100,1]);
+    pd          = struct;
+    pd.x        = x;
+    pd.distname = distname;
+    specs  = [-inf 2];
+    region = 'inside';
+    [p, h] = distribspec(pd, specs, region);
+%}
 
+%{
+    %% A sample of n=100 elements extracted from a Gamma without distname
+    x      = random('Gamma',3,1,[100,1]);
+    specs  = [-inf 2];
+    region = 'inside';
+    [p, h] = distribspec(x, specs, region);
+%}
 
 %% Beginning of code
+
+fittedUsingKernel   = false;
+fittedUsingDistname = false; 
 
 % Checking inputs and invalid arguments
 
 % the probability distribution
 if isobject(pd) && isprop(pd,'DistributionName')
-    % set of values based on the given probability density
+    % set of values based on the given probability density object
     prob = (0.0001:0.0004:0.9999)';
     x = icdf(pd,prob);
     y = pdf(pd, x);
+
+elseif isstruct(pd)
+    % do the necessary checks on the structure provided by the user
+    if ~and(isfield(pd,'distname') , isfield(pd,'x'))
+        error('FSDA:distribspec:BadFilds','Bad filds or filed names: please specify "distname" and "x".');
+    end
+    if ~any( strcmp( strtrim(makedist),strtrim(lower(pd.distname)) ) )
+        error('FSDA:distribspec:BadDistribFildNames','Bad distribution name: see makedist for a comprehensive list.');
+    end
+    if ~isnumeric(pd.x)
+        error('FSDA:distribspec:BadSampleX','Bad sample: the array x must be numeric.');
+    end
+
+    fittedUsingDistname = true; 
+
+    % set the values based on the given probability density name and sample
+    sample = pd.x; sample = sample(:); % fitdist requires x to be a column vector
+    pd = fitdist(sample,pd.distname);
+    prob = (0.0001:0.0004:0.9999)';
+    x = icdf(pd,prob);
+    y = pdf(pd, x);
+
+elseif isnumeric(pd)
+
+    fittedUsingKernel = true;
+
+    x = pd;
+    pd = fitdist(x,'Kernel');
+    prob = (0.0001:0.0004:0.9999)';
+    x = icdf(pd,prob);
+    y = pdf(pd, x);
+
 else
-    error('FSDA:distribspec:BadDistrib','Bad distribution object: use makedist.m to generate one');
+    error('FSDA:distribspec:BadDistribOption','"pd" option has been mispecified: read carefully the help.');
 end
 
 if nargin<3 || isempty(region)
@@ -333,13 +386,22 @@ end
 
 %%  Add title and labels to the plot and return the handles
 
-numpar = length(pd.ParameterNames);
-strpar = [pd.DistributionName ' with '];
-for np=1:numpar
-    strpar = [strpar , char(pd.ParameterNames(np)) '=' num2str(pd.ParameterValues(np)) ' ']; %#ok<AGROW>
+if fittedUsingKernel
+    title('Nonparametric kernel-smoothing distribution (fitdist)', 'interpreter' , 'latex' , 'FontSize', 14);
+else
+
+    numpar = length(pd.ParameterNames);
+    strpar = [pd.DistributionName ' with '];
+    for np=1:numpar
+        if fittedUsingDistname
+            strpar = [strpar , '$\hat{' char(pd.ParameterNames(np)) '}$' '=' num2str(pd.ParameterValues(np)) ' ']; %#ok<AGROW>
+        else
+            strpar = [strpar , char(pd.ParameterNames(np)) '=' num2str(pd.ParameterValues(np)) ' ']; %#ok<AGROW>
+        end
+    end
+    title({strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
 end
 
-title({strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
 xaxis = refline(0,0);
 set(xaxis,'Color','k');
 ylabel('Density value', 'interpreter' , 'latex' , 'FontSize', 12);
