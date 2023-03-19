@@ -160,6 +160,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 
 %{
     %% A sample of n=100 elements extracted from a Gamma, with distname
+    rng(12345);
     distname    = 'Gamma';
     x           = random(distname,3,1,[100,1]);
     pd          = struct;
@@ -172,6 +173,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 
 %{
     %% A sample of n=100 elements extracted from a Gamma without distname
+    rng(12345);
     x      = random('Gamma',3,1,[100,1]);
     specs  = [-inf 2];
     region = 'inside';
@@ -395,7 +397,7 @@ end
 %%  Add title and labels to the plot and return the handles
 
 if fittedUsingKernel
-    title('Nonparametric kernel-smoothing distribution (fitdist)', 'interpreter' , 'latex' , 'FontSize', 14);
+    title({'Nonparametric kernel-smoothing distribution' , 'Fit by fitdist.m with default options'}, 'interpreter' , 'latex' , 'FontSize', 14);
 else
 
     numpar = length(pd.ParameterNames);

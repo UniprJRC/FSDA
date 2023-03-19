@@ -7,6 +7,7 @@
     specs  = [-inf 2];
     region = 'inside';
     RGB_vector = FSColors.</a></li><li><a class="intrnllnk" href="#ExtraExample_10">A sample of n=100 elements extracted from a Gamma, with distname
+    rng(12345);
     distname    = 'Gamma';
     x           = random(distname,3,1,[100,1]);
     pd          = struct;
@@ -55,17 +56,20 @@ specs  = [-inf 2];
 region = 'inside';
 RGB_vector = FSColors.lightgrey.RGB;
 [p, h] = distribspec(pd, specs, region, 'userColor',RGB_vector);</pre></div></div><a href='http://rosa.unipr.it/fsda/distribspec.html#ExtraExample_9'><img vspace="5" hspace="5" src="images/distribspec_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> A sample of n=100 elements extracted from a Gamma, with distname
+    rng(12345);
     distname    = 'Gamma';
     x           = random(distname,3,1,[100,1]);
     pd          = struct;
-    pd.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">distname    = 'Gamma';
+    pd.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(12345);
+distname    = 'Gamma';
 x           = random(distname,3,1,[100,1]);
 pd          = struct;
 pd.x        = x;
 pd.distname = distname;
 specs  = [-inf 2];
 region = 'inside';
-[p, h] = distribspec(pd, specs, region);</pre></div></div><a href='http://rosa.unipr.it/fsda/distribspec.html#ExtraExample_10'><img vspace="5" hspace="5" src="images/distribspec_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x      = random('Gamma',3,1,[100,1]);
+[p, h] = distribspec(pd, specs, region);</pre></div></div><a href='http://rosa.unipr.it/fsda/distribspec.html#ExtraExample_10'><img vspace="5" hspace="5" src="images/distribspec_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(12345);
+x      = random('Gamma',3,1,[100,1]);
 specs  = [-inf 2];
 region = 'inside';
 [p, h] = distribspec(x, specs, region);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_pd" class="clearfix"> </div> <h3 id="input_argument_pd" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>pd</code> &#8212; can be one of the following. </span>  </a><span class="example_desc">- A probability density object returned by makedist.</span></span></h3> <div class="collapse"> <p><p>- A structure containing two fields:</p> <p> 
