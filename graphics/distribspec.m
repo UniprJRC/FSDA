@@ -4,8 +4,8 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 % <a href="matlab: docsearchFS('distribspec')">Link to the help function</a>
 %
 %    distribspec generalises the MATLAB function normspec.m for plotting a
-%    selected probability density function by shading the portion inside
-%    given limits.
+%    selected probability density function by shading the portion inside or
+%    outside given limits.
 %
 % Required input arguments:
 %
@@ -105,7 +105,8 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    % A Gamma as above, without specification of region (default is inside)
+    % A Gamma as above, without specification of region (default is
+    % inside).
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     [p, h] = distribspec(pd, specs);
@@ -134,7 +135,8 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    % A Gamma as above, using userColor with standard one-character specification
+    % A Gamma as above, using userColor with standard one-character
+    % specification.
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     region = 'inside';
@@ -142,7 +144,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    % A Gamma as above, using userColor with RGB triplet specification
+    % A Gamma as above, using userColor with RGB triplet specification.
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     region = 'inside';
@@ -150,7 +152,8 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    %% A Gamma as above, using userColor with RGB triplet specification returned by FSColors
+    %% A Gamma as above, using userColor with RGB triplet specification
+    % returned by FSColors.
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     region = 'inside';
@@ -159,7 +162,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    %% A sample of n=100 elements extracted from a Gamma, with distname
+    %% A sample of n=100 elements extracted from a Gamma, with distname.
     rng(12345);
     distname    = 'Gamma';
     x           = random(distname,3,1,[100,1]);
@@ -172,9 +175,9 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    %% A sample of n=100 elements extracted from a Gamma without distname
+    %% A sample of n=100 elements extracted from a T(5) without distname.
     rng(12345);
-    x      = random('Gamma',3,1,[100,1]);
+    x      = random('T',5,[100,1]);
     specs  = [-inf 2];
     region = 'inside';
     [p, h] = distribspec(x, specs, region);
