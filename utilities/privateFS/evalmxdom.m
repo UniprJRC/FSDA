@@ -73,12 +73,21 @@ data.marker = 'WDEavRCxr';
 resetSnapnowObj = onCleanup(@()snapnow('set',[]));
 snapnow('set',data)
 
+% % For consistency, set the published output to 80 columns, regardless of 
+% % the current Command Window width.
+% originalEightyColumns = feature('EightyColumns');
+% resetEightyColumnsObj = onCleanup(...
+%     @()feature('EightyColumns',originalEightyColumns) );
+% feature('EightyColumns',1)
+
 % For consistency, set the published output to 80 columns, regardless of 
 % the current Command Window width.
-originalEightyColumns = feature('EightyColumns');
-resetEightyColumnsObj = onCleanup(...
-    @()feature('EightyColumns',originalEightyColumns) );
-feature('EightyColumns',1)
+s = settings;
+originalEightyColumnsValue = s.matlab.commandwindow.UseEightyColumnDisplayWidth.ActiveValue;
+isTemporaryEightyColumnsValueSet = s.matlab.commandwindow.UseEightyColumnDisplayWidth.hasTemporaryValue;
+resetEightyColumnsObj = onCleanup(@()restoreEightyColumns(s, originalEightyColumnsValue, isTemporaryEightyColumnsValueSet));
+s.matlab.commandwindow.UseEightyColumnDisplayWidth.TemporaryValue = true;
+
 
 % Be sure we don't capture the code itself in the output if echo is on.
 echoState = get(0,'echo');
@@ -437,3 +446,14 @@ end
 function m = pm(id,varargin)
 m = message(['MATLAB:publish:' id],varargin{:});
 end
+
+function restoreEightyColumns(s, originalEightyColumnsValue, isTemporaryEightyColumnsValueSet)
+    if (isTemporaryEightyColumnsValueSet)
+        % Restore the old setting
+        s.matlab.commandwindow.UseEightyColumnDisplayWidth.TemporaryValue = originalEightyColumnsValue;
+    else
+        % Reset the setting done by this function
+        s.matlab.commandwindow.UseEightyColumnDisplayWidth.clearTemporaryValue;
+    end
+end
+
