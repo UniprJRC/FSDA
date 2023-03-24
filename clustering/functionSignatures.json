@@ -63,6 +63,7 @@
         },
 
         "Pa_rsGPCM": {
+
             "purpose":"constraining parameters",
             "type":"struct",
             "fields": [
@@ -80,6 +81,25 @@
                 {"name":"k", "type":["double", "scalar"], "purpose":"number of groups"},
                 {"name":"userepmat", "type":"numeric", "purpose":"use repmat, bsxfun or implicit expansion"},
                 {"name":"nocheck", "type":"logical", "purpose":"Check input"}
+            ]
+        },
+
+        "Pa_tclustGPCM": {
+
+            "purpose":"constraining parameters",
+            "type":"struct",
+            "fields": [
+                {"name":"pars", "type":["char"], "purpose":"type of Gaussian Parsimonious Clustering Model"},
+                {"name":"cdet", "type":["numeric", "scalar", ">=1"], "purpose":"specifies the the restriction which has to be applied to the determinants"},
+                {"name":"shw", "type":["numeric", "scalar", ">=1"], "purpose":"specifies the the restriction which has to be applied to the elements of the shape matrices inside each group"},
+                {"name":"shb", "type":["numeric", "scalar", ">=1"], "purpose":"specifies the restriction which has to be applied to the ordered elements of the shape matrices across groups"},
+                {"name":"maxiterS", "type":["numeric", "positive", "integer"], "purpose":"maximum number of iterations in presence of varying shape matrices"},
+                {"name":"maxiterR", "type":["numeric", "positive", "integer"], "purpose":"specifies the maximum number of iterations to obtain the common rotation matrix in presence of varying shape"},
+                {"name":"maxiterDSR", "type":["numeric", "positive", "integer"], "purpose":"specifies the maximum number of iterations to obtain the requested restricted determinants, shape matrices and rotation"},
+                {"name":"tolS", "type":["numeric", "scalar"], "purpose":"tolerance to use to exit the iterative procedure for estimating the shape"},
+                {"name":"zerotol", "type":["numeric", "scalar"], "purpose":"tolerance value to declare all input values equal to 0 in the eigenvalues restriction routine"},
+                {"name":"msg", "type":"logical", "purpose":"Message on the screen"},
+                {"name":"userepmat", "type":"numeric", "purpose":"use repmat, bsxfun or implicit expansion"}
             ]
         },
 
@@ -184,6 +204,16 @@
             ]
         },
 
+        "Plots_tclustregeda": {
+
+            "purpose":"optional input of tclustregeda",
+            "type":"struct",
+            "field": [
+                {"name":"name", "type":["char", "choices={'monitor', 'UnitsTrmOrChgCla', 'PostProb', 'Sigma', 'ScatterWithRegLines', 'gscatter', 'Beta', 'Siz', 'all'}"]},
+                {"name":"alphasel", "type":["numeric", "vector"], "purpose":"which values of alpha it is possible to see the classification"}
+            ]            
+        },
+
         "Noiseunits": {
 
             "purpose":"number of type of outlying observations",
@@ -226,8 +256,49 @@
                 {"name":"userepmat", "type":"numeric", "purpose":"use repmat, bsxfun or implicit expansion"},
                 {"name":"usepreviousest", "type":"logical", "purpose":"specifies if for each refining step we use values of constrained determints and rotation matrices found in the previous refining step"}
             ]
-        }
+        },
+
+        "Ic": {
+
+            "purpose":"Required input argument by tclustICsol",
+            "type":"struct",
+            "fields": [
+                {"name":"CLACLA", "type":"numeric", "purpose":"values of the penalized classification likelihood (CLA)"},
+                {"name":"IDXCLA", "type":"cell", "purpose":"assignment of each unit using the classification model"},
+                {"name":"MIXMIX", "type":"numeric", "purpose":"value of the penalized mixture likelihood (BIC)"},
+                {"name":"MIXCLA", "type":"numeric", "purpose":"value of the ICL"},
+                {"name":"IDXMIX", "type":"numeric", "purpose":"assignment of each unit using the mixture model"},
+                {"name":"kk", "type":"numeric", "purpose":"number of components"},
+                {"name":"cc", "type":"numeric", "purpose":"values of the restriction factor"},
+                {"name":"alpha", "type":"numeric", "purpose":"values of the trimming level"},
+                {"name":"Y", "type":"numeric", "purpose":"original n-times-v data matrix on which the IC (Information criterion) has been computed"},
+                {"name":"y", "type":"numeric", "purpose":"original n-times-1 regression response on which the IC (Information criterion)"},
+                {"name":"X", "type":"numeric", "purpose":"original n-times-p matrix of explanatory varaibles on which the IC (Information criterion)"}
+            ]
+        },
+
+        "Ic_GPCM": {
+
+            "purpose":"Required input argument by tclustICsolGPCM",
+            "type":"struct",
+                "fields": [
+                    {"name":"CLACLA", "type":"numeric", "purpose":"values of the penalized classification likelihood (CLA)"},
+                    {"name":"IDXCLA", "type":"cell", "purpose":"assignment of each unit using the classification model"},
+                    {"name":"MIXMIX", "type":"numeric", "purpose":"value of the penalized mixture likelihood (BIC)"},
+                    {"name":"MIXCLA", "type":"numeric", "purpose":"value of the ICL"},
+                    {"name":"IDXMIX", "type":"numeric", "purpose":"assignment of each unit using the mixture model"},
+                    {"name":"kk", "type":"numeric", "purpose":"number of components"},
+                    {"name":"ccdet", "type":"numeric", "purpose":"values of the restriction factor for ratio of determinants"},
+                    {"name":"ccshw", "type":"numeric", "purpose":"values of the restriction factor for ratio of elements of shape matrices inside each group"},
+                    {"name":"alpha", "type":"numeric", "purpose":"values of the trimming level"},
+                    {"name":"Y", "type":"numeric", "purpose":"original n-times-v data matrix on which the IC (Information criterion) has been computed"}
+                ]
+            }
+
     },
+
+    
+
 
     "ClusterRelabel":
     {
@@ -784,5 +855,202 @@
         ],
 
         "description":"Computes tclust for different number of groups k and restriction factors c"
+    },
+
+    "tclustICgpcm":
+    {
+
+        "inputs":[
+            {"name":"Y", "kind":"required", "type":"double", "purpose":"Input data"},
+            {"name":"pa", "kind":"namevalue", "type":"struct:Pa_tclustGPCM", "purpose":"Constraints to apply and model specification"},
+            {"name":"kk", "kind":"namevalue", "type":[["int16", "vector", "integer"], ["int32", "vector", "integer"], ["single", "vector", "integer"], ["double", "vector", "integer"]], "purpose":"number of mixture components"},
+            {"name":"whichIC", "kind":"namevalue", "type":["char", "choices={'MIXMIX', 'MIXCLA', 'CLACLA', 'ALL'}"], "purpose":"type of information criterion"},
+            {"name":"alpha", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Global trimming level"},
+            {"name":"nsamp", "kind":"namevalue", "type":"double", "purpose":"number of subsamples to extract"},
+            {"name":"RandNumbForNini", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Pre-extracted random numbers to initialize proportions"},
+            {"name":"refsteps", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Number of refining iterations"},
+            {"name":"reftol", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Tolerance for the refining steps"},
+            {"name":"equalweights", "kind":"namevalue", "type":"logical", "purpose":"cluster weights in the concentration and assignment steps"},
+            {"name":"startv1", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Define how to initialize centroids and cov matrices"},
+            {"name":"plots", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"plot on the screen"},
+            {"name":"numpool", "kind":"namevalue", "type":"double", "purpose":"number of pools for parellel computing"},
+            {"name":"cleanpool", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"determines if the parallel pool has to be cleaned after the execution of the routine"},
+            {"name":"msg", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Message on the screen"},
+            {"name":"nocheck", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Check input arguments"},
+            {"name":"Ysave", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Save input matrix"},
+            {"name":"warmup", "kind":"namevalue", "type":"logical", "purpose":"warming up step"},
+            {"name":"UnitsSameGroup", "kind":"namevalue", "type":[["double", "vector"], ["single", "vector"]], "purpose":"Units with same labels"}
+        ],
+
+        "description":"tclustICgpcm computes tclust for different number of groups k and restr. factors cdet and cshw"
+    },
+
+    "tclustICsol":
+    {
+
+        "inputs":[
+            {"name":"IC", "kind":"required", "type":"struct:Ic", "purpose":"Information criterion to use"},
+            {"name":"NumberOfBestSolutions", "kind":"namevalue", "type":[["int16", "scalar", "integer"], ["int32", "scalar", "integer"], ["single", "scalar", "integer"], ["double", "scalar", "integer"]], "purpose":"number of solutions to consider"},
+            {"name":"ThreshRandIndex", "kind":"namevalue", "type":[["double", "scalar", "positive"], ["single", "scalar", "positive"]], "purpose":"threshold to identify spurious solutions"},
+            {"name":"whichIC", "kind":"namevalue", "type":["char", "choices={'MIXMIX', 'MIXCLA', 'CLACLA', 'ALL'}"], "purpose":"type of information criterion"},
+            {"name":"plots", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"plot on the screen"},
+            {"name":"SpuriousSolutions", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Include or nor spurious solutions in the plot"},
+            {"name":"msg", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Message on the screen"},
+            {"name":"Rand", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Index to use to compare partitions"}
+        ],
+
+        "description":"Extracts a set of best relevant solutions"
+    },
+
+    "tclustICsolGPCM":
+    {
+
+        "inputs":[
+            {"name":"IC", "kind":"required", "type":"struct:Ic_GPCM", "purpose":"Information criterion to use"},
+            {"name":"NumberOfBestSolutions", "kind":"namevalue", "type":[["int16", "scalar", "integer"], ["int32", "scalar", "integer"], ["single", "scalar", "integer"], ["double", "scalar", "integer"]], "purpose":"number of solutions to consider"},
+            {"name":"ThreshRandIndex", "kind":"namevalue", "type":[["double", "scalar", "positive"], ["single", "scalar", "positive"]], "purpose":"threshold to identify spurious solutions"},
+            {"name":"whichIC", "kind":"namevalue", "type":["char", "choices={'MIXMIX', 'MIXCLA', 'CLACLA', 'ALL'}"], "purpose":"type of information criterion"},
+            {"name":"plots", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"plot on the screen"},
+            {"name":"SpuriousSolutions", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Include or nor spurious solutions in the plot"},
+            {"name":"msg", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Message on the screen"},
+            {"name":"Rand", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Index to use to compare partitions"}
+        ],
+
+        "description":"Extracts a set of best relevant solutions from 3D array computed using function tclustICgpcm"
+    },
+
+    "tclustreg":
+    {
+
+        "inputs":[
+            {"name":"y", "kind":"required", "type":["numeric", "vector"], "purpose":"Response variable"},
+            {"name":"X", "kind":"required", "type":"double", "purpose":"Explanatory variables"},
+            {"name":"k", "kind":"required", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"number of clusters"},
+            {"name":"restrfactor", "kind":"required", "type":["double", "positive"], "purpose":"Restriction factor for regression residuals and covariance matrices of the explanatory variables"},
+            {"name":"alphaLik", "kind":"required", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"Trimming level"},
+            {"name":"alphaX", "kind":"required", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"Second-level trimming or constrained weighted model for X"},
+            {"name":"intercept", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Indicator for constant term"},
+            {"name":"mixt", "kind":"namevalue", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"mixture modelling or crisp assignment"},
+            {"name":"equalweights", "kind":"namevalue", "type":"logical", "purpose":"cluster weights in the concentration and assignment steps"},
+            {"name":"nsamp", "kind":"namevalue", "type":"double", "purpose":"number of subsamples to extract"},
+            {"name":"refsteps", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Number of refining iterations"},
+            {"name":"reftol", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Tolerance for the refining steps"},
+            {"name":"commonslope", "kind":"namevalue", "type":"logical", "purpose":"Impose constraint of common slope regression coefficients"},
+            {"name":"plots", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Plot on the screen"},
+            {"name":"wtrim", "kind":"namevalue", "type":[["double"], ["struct"]], "purpose":"Application of observation weights"},
+            {"name":"we", "kind":"namevalue", "type":"double", "purpose":"Vector of observation weights"},
+            {"name":"cup", "kind":"namevalue", "type":["double", "scalar"], "purpose":"pdf upper limit"},
+            {"name":"pstar", "kind":"namevalue", "type":["double", "scalar"], "purpose":"thinning probability"},
+            {"name":"k_dens_mixt", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"in the Poisson/Exponential mixture density function, number of clusters for density mixtures"},
+            {"name":"nsamp_dens_mixt", "kind":"namevalue", "type":"double", "purpose":"in the Poisson/Exponential mixture density function, number of subsamples to extract"},
+            {"name":"refsteps_dens_mixt", "kind":"namevalue", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"in the Poisson/Exponential mixture density function, number of refining iterations"},
+            {"name":"method_dens_mixt", "kind":"namevalue", "type":["char", "choices={'P', 'E'}"], "purpose":"distribution to use"},
+            {"name":"msg", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Message on the screen"},
+            {"name":"RandNumbForNini", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Pre-extracted random numbers to initialize proportions"},
+            {"name":"nocheck", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Check input arguments"}
+        ],
+
+        "outputs":[
+            {"name":"out", "type":"struct", "purpose":"output structure"},
+            {"name":"C", "type":"double", "purpose":"Indexes of extracted subsamples"}
+        ],
+
+        "description":"Performs robust linear grouping analysis"
+    },
+
+    "tclustregeda":
+    {
+
+        "inputs":[
+            {"name":"y", "kind":"required", "type":[["single", "vector"], ["double", "vector"]], "purpose":"Response variable"},
+            {"name":"X", "kind":"required", "type":[["single"], ["double"]], "purpose":"Explanatory variables"},
+            {"name":"k", "kind":"required", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"number of clusters"},
+            {"name":"restrfactor", "kind":"required", "type":[["single"], ["double"]], "purpose":"Restriction factor for regression residuals and covariance matrices of the explanatory variables"},
+            {"name":"alphaLik", "kind":"required", "type":[["double", "vector"], ["single", "vector"]], "purpose":"Trimming level"},
+            {"name":"alphaX", "kind":"required", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"Second-level trimming or constrained weighted model for X"},
+            {"name":"intercept", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Indicator for constant term"},
+            {"name":"mixt", "kind":"namevalue", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"mixture modelling or crisp assignment"},
+            {"name":"equalweights", "kind":"namevalue", "type":"logical", "purpose":"cluster weights in the concentration and assignment steps"},
+            {"name":"nsamp", "kind":"namevalue", "type":"double", "purpose":"number of subsamples to extract"},
+            {"name":"refsteps", "kind":"namevalue", "type":[["single", "scalar"], ["double", "scalar"]], "purpose":"Number of refining iterations"},
+            {"name":"reftol", "kind":"namevalue", "type":[["single", "scalar"], ["double", "scalar"]], "purpose":"Tolerance for the refining steps"},
+            {"name":"commonslope", "kind":"namevalue", "type":"logical", "purpose":"Impose constraint of common slope regression coefficients"},
+            {"name":"plots", "kind":"namevalue", "type":[["struct:Plots_tclustregeda"], ["double", "scalar"], ["single", "scalar"]]},
+            {"name":"msg", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Message on the screen"},
+            {"name":"nocheck", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Check input arguments"},
+            {"name":"RandNumbForNini", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Pre-extracted random numbers to initialize proportions"},
+            {"name":"UnitsSameGroup", "kind":"namevalue", "type":["numeric", "vector", "integer"], "purpose":"list of the units which must (whenever possible) have a particular label"},
+            {"name":"numpool", "kind":"namevalue", "type":["numeric", "vector", "integer"], "purpose":"number of parallel sessions to open"},
+            {"name":"cleanpool", "kind":"namevalue", "type":["numeric", "vector", "integer"], "purpose":"determines if the parallel pool has to be cleaned"},
+            {"name":"we", "kind":"namevalue", "type":"double", "purpose":"Vector of observation weights"}
+        ],
+
+        "outputs":[
+            {"name":"out", "type":"struct", "purpose":"output structure"},
+            {"name":"outcell", "type":"cell", "purpose":"cell of length length(alpha) which contains in jth position the structure which comes out from procedure tclustreg applied to alphaLik(j), with j =1, 2, ..., length(alphaLik)"}
+        ],
+
+        "description":"Performs robust linear grouping analysis for a series of values of the trimming factor"
+    },
+
+    "tclustregIC":
+    {
+
+        "inputs":[
+            {"name":"y", "kind":"required", "type":[["single", "vector"], ["double", "vector"]], "purpose":"Response variable"},
+            {"name":"X", "kind":"required", "type":[["single"], ["double"]], "purpose":"Explanatory variables"},
+            {"name":"alphaLik", "kind":"namevalue", "type":[["double", "vector"], ["single", "vector"]], "purpose":"Trimming level"},
+            {"name":"alphaX", "kind":"namevalue", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"Second-level trimming or constrained weighted model for X"},
+            {"name":"intercept", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Indicator for constant term"},
+            {"name":"cc", "kind":"namevalue", "type":["double", "vector"], "purpose":"values of restriction factor for residual variances"},
+            {"name":"ccSigmaX", "kind":"namevalue", "type":["double", "scalar"], "purpose":"values of restriction factor for cov matrix of explanatory variables"},
+            {"name":"kk", "kind":"namevalue", "type":[["int16", "vector", "integer"], ["int32", "vector", "integer"], ["single", "vector", "integer"], ["double", "vector", "integer"]], "purpose":"number of mixture components"},
+            {"name":"whichIC", "kind":"namevalue", "type":["char", "choices={'MIXMIX', 'MIXCLA', 'CLACLA', 'ALL'}"], "purpose":"type of information criterion"},
+            {"name":"nsamp", "kind":"namevalue", "type":"double", "purpose":"number of subsamples to extract"},
+            {"name":"RandNumbForNini", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Pre-extracted random numbers to initialize proportions"},
+            {"name":"refsteps", "kind":"namevalue", "type":[["single", "scalar"], ["double", "scalar"]], "purpose":"Number of refining iterations"},
+            {"name":"reftol", "kind":"namevalue", "type":[["single", "scalar"], ["double", "scalar"]], "purpose":"Tolerance for the refining steps"},
+            {"name":"equalweights", "kind":"namevalue", "type":"logical", "purpose":"cluster weights in the concentration and assignment steps"},
+            {"name":"startv1", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Define how to initialize centroids and cov matrices"},
+            {"name":"plots", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"plot on the screen"},
+            {"name":"h", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"the axis handle of a figure where to send the IC plot"},
+            {"name":"numpool", "kind":"namevalue", "type":["numeric", "integer"], "purpose":"number of parallel sessions to open"},
+            {"name":"cleanpool", "kind":"namevalue", "type":[["single", "scalar"], ["double", "scalar"]], "purpose":"determines if the parallel pool has to be cleaned"},
+            {"name":"msg", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Message on the screen"},
+            {"name":"nocheck", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Check input arguments"},
+            {"name":"Ysave", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Save input matrix"},
+            {"name":"UnitsSameGroup", "kind":"namevalue", "type":[["double", "vector"], ["single", "vector"]], "purpose":"Units with same labels"},
+            {"name":"we", "kind":"namevalue", "type":"double", "purpose":"Vector of observation weights"},
+            {"name":"commonslope", "kind":"namevalue", "type":"logical", "purpose":"Impose constraint of common slope regression coefficients"}
+        ],
+
+        "description":"Computes tclustreg for different number of groups k and restriction factors c"
+    },
+
+    "tkmeans":
+    {
+
+    
+        "inputs":[
+            {"name":"Y", "kind":"required", "type":"numeric", "purpose":"Input data"},
+            {"name":"k", "kind":"required", "type":["numeric", "scalar"], "purpose":"Number of groups"},
+            {"name":"alpha", "kind":"required", "type":["numeric", "scalar"], "purpose":"Global trimming level"},
+            {"name":"nsamp", "kind":"namevalue", "type":"double", "purpose":"number of subsamples"},
+            {"name":"refsteps", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Number of refining iterations"},
+            {"name":"reftol", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Tolerance for the refining steps"},
+            {"name":"weights", "kind":"namevalue", "type":["double", "integer"], "purpose":"Cluster weights"},
+            {"name":"plots", "kind":"namevalue", "type":[["single", "scalar"], ["double", "scalar"], ["char", "choices={'contourf', 'contour', 'ellipse', 'boxplotb'}"], ["struct"]], "purpose":"plots on the screen"},
+            {"name":"msg", "kind":"namevalue", "type":"double", "purpose":"Message on the screen"},
+            {"name":"nocheck", "kind":"namevalue", "type":"double", "purpose":"Check input arguments"},
+            {"name":"nomes", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Estimated time message"},
+            {"name":"Ysave", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Saving Y"}
+        ],
+
+        "outputs":[
+            {"name":"out", "type":"struct", "purpose":"output structure"},
+            {"name":"C", "type":"cell", "purpose":"Subsamples extracted"}
+        ],
+
+        "description":"Computes trimmed k-means"
     }
 }
