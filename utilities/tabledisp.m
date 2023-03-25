@@ -1,4 +1,4 @@
-function [latex_string , disp_string] = tabledisp(T, precision, filename)
+function [latex_string , disp_string] = tabledisp(T, precision, stylerc, filename)
 %tabledisp displays in good format a table or array in the command line
 %
 %<a href="matlab: docsearchFS('tabledisp')">Link to the help function</a>
@@ -18,6 +18,15 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
 %               Scalar. An integer value.
 %               Example - 'precision',2
 %               Data Types - single|double
+%
+%    stylerc:   The display style of the raw and column names. Character
+%               array. It can take these values: 
+%               'b' which stands for bold; 
+%               'i' which stands for italic;
+%               'n' which stand for normal (the default).
+%               If the user mis-specify the style, 'n is used.
+%               Example - 'stylerc','b'
+%               Data Types - char
 %
 %    filename:  The name of a file where the formatted table will be saved.
 %               Array of characters. A filename without empty spaces. Note
@@ -102,10 +111,33 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
 %}
 
 %{
+    %% Dispay an array in a MATLAB annotation with bold row/column names.
+    % generate data
+    X = 1000*randn(10,5);
+    % and run tabledisp on them with the specification of the italic style
+    [latex_string , disp_string] = tabledisp(X,[],'i');
+
+    hfi = figure;
+    annotation(hfi,'Textbox','String',latex_string,...
+        'FitBoxToText','on','Interpreter','latex',...
+        'FontName',get(0,'FixedWidthFontName'),'FontSize',14,...
+        'Units','Normalized','Position',[0 0 1 1]);
+
+    % and now bold style
+    [latex_string , disp_string] = tabledisp(X,[],'b');
+
+    hfb = figure;
+    annotation(hfb,'Textbox','String',latex_string,...
+        'FitBoxToText','on','Interpreter','latex',...
+        'FontName',get(0,'FixedWidthFontName'),'FontSize',14,...
+        'Units','Normalized','Position',[0 0 1 1]);
+%}
+
+%{
     % Dispay an array in a MATLAB annotation, and save it in a specific file.
     X = randn(10,5);
     % and run tabledisp on them with the specification of the precision
-    [latex_string , disp_string] = tabledisp(X,2,'myfile.txt');
+    [latex_string , disp_string] = tabledisp(X,2,'','myfile.txt');
 
 %}
 
@@ -114,19 +146,40 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
     X = randn(10,5);
     % and run tabledisp on them with the specification of the precision
     % An excel file named tabledisp_excel.xlsx is created in the current folder.
-    [latex_string , disp_string] = tabledisp(X,2,'excel');
+    [latex_string , disp_string] = tabledisp(X,2,'','excel');
 
 %}
 
 %% Beginning of code
 
 % default optional parameters
-if nargin == 3 && strcmp(filename,'excel')
+if nargin == 4 && strcmp(filename,'excel')
     filename  = ['tabledisp_' filename];
 end
 
-if nargin < 3 || ~ischar(filename)
+if nargin < 4 || ~ischar(filename)
     filename  = '';
+end
+
+if nargin < 3 || isempty(stylerc) || ~ismember(stylerc , {'n','i','b','ib','bi'})
+    stylerc = 'n';
+end
+switch stylerc
+    case 'b'
+        stylerclatex  = '\\bf ';
+        stylerclatex2 = '\bf ';
+    case 'i'
+        stylerclatex  = '\\it ';
+        stylerclatex2 = '\it ';
+    case 'bi'
+        stylerclatex  = '\\emph\\bf ';
+        stylerclatex2 = '\emph\bf ';
+    case 'ib'
+        stylerclatex  = '\\emph\\bf ';
+        stylerclatex2 = '\emph\bf ';
+    otherwise
+        stylerclatex  = [];
+        stylerclatex2 = [];
 end
 
 if nargin < 2 || isempty(precision)
@@ -165,12 +218,19 @@ row_names = T.Properties.RowNames;
 col_names = T.Properties.VariableNames;
 
 col_specs_latex  = repmat('r',1,n_col);
-col_names_latex  = strjoin(col_names, ' & ');
+if ~isempty(stylerclatex)
+    col_names_latex  = strjoin(col_names, [' & ' stylerclatex]); %    ' & \\bf '
+    col_names_latex  = [stylerclatex2 , col_names_latex]; % note: \bf vs \\bf
+else
+    col_names_latex  = strjoin(col_names, ' & ');
+end
+
 col_names_disp   = sprintf('%10s  | ', ' RAW NAME  ', col_names{:});
 
 % arrange latex reserved characters/words
 row_names_latex = strrep(row_names,'_','\_');
 col_names_latex = strrep(col_names_latex,'_','\_');
+
 if ~isempty(row_names_latex)
     col_specs_latex  = ['r'  col_specs_latex];
     col_names_latex = [' & ' col_names_latex];
@@ -219,16 +279,20 @@ try
             if isstring(value) || ischar(value)
                 tempstring{1,col+start_col-1} = char(value);
             elseif isdatetime(value)
-                tempstring{1,col+start_col-1} = datestr(value);
+                tempstring{1,col+start_col-1} = datestr(value); %#ok<DATST> 
             else
                 tempnumber = digitGouping(round(value,precision));
                 tempstring{1,col+start_col-1} = num2str(tempnumber);
             end
         end
         if ~isempty(row_names_latex)
-            tempstring(1,1) = row_names_latex(row);
+            if ~isempty(stylerclatex)
+                tempstring(1,1) = {strjoin({stylerclatex2 , row_names_latex{row}} , {' '})};
+            else
+                tempstring(1,1) = row_names_latex(row);
+            end
         end
-        
+    
         tempstring_latex_sep = strjoin(tempstring, ' & ');
         %tempstring_disp_sep = strjoin(tempstring, ' | ');
         tempstring_disp_sep  = sprintf('%10s  | ', tempstring{:});
