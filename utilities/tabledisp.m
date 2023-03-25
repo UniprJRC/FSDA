@@ -112,25 +112,28 @@ function [latex_string , disp_string] = tabledisp(T, precision, stylerc, filenam
 
 %{
     %% Dispay an array in a MATLAB annotation with bold row/column names.
+    close all
     % generate data
     X = 1000*randn(10,5);
     % and run tabledisp on them with the specification of the italic style
-    [latex_string , disp_string] = tabledisp(X,[],'i');
+    [latex_string_i , disp_string] = tabledisp(X,[],'i');
 
     hfi = figure;
-    annotation(hfi,'Textbox','String',latex_string,...
+    annotation(hfi,'Textbox','String',latex_string_i,...
         'FitBoxToText','on','Interpreter','latex',...
         'FontName',get(0,'FixedWidthFontName'),'FontSize',14,...
         'Units','Normalized','Position',[0 0 1 1]);
 
     % and now bold style
-    [latex_string , disp_string] = tabledisp(X,[],'b');
+    [latex_string_b , disp_string] = tabledisp(X,[],'b');
 
     hfb = figure;
-    annotation(hfb,'Textbox','String',latex_string,...
+    annotation(hfb,'Textbox','String',latex_string_b,...
         'FitBoxToText','on','Interpreter','latex',...
         'FontName',get(0,'FixedWidthFontName'),'FontSize',14,...
         'Units','Normalized','Position',[0 0 1 1]);
+
+    cascade;
 %}
 
 %{
