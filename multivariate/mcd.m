@@ -165,10 +165,10 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %         RAW.h    = scalar. The number of observations that have
 %                    determined the MCD estimator
 %         RAW.loc  = 1 x v  vector containing raw MCD location of the data
-%         RAW.cov  = robust MCD estimate of
-%                    covariance matrix. It is the raw MCD covariance matrix
-%                    (multiplied by a finite sample correction factor and
-%                    an asymptotic consistency factor).
+%         RAW.cov  = robust MCD estimate of covariance matrix. 
+%                    It is the raw MCD covariance matrix (multiplied by a
+%                    finite sample correction factor and an asymptotic
+%                    consistency factor).
 %           RAW.cor= The raw MCD correlation matrix
 %           RAW.obj= The determinant of the raw MCD covariance matrix.
 %           RAW.bs = (v+1) x 1 vector containing the units forming best
@@ -1338,9 +1338,26 @@ end
     end
 
 %% consistencyfactor function
-    function rawconsfac = consistencyfactor(h,n,v)
-        a=chi2inv(h/n,v);
-        rawconsfac=(h/n)/(chi2cdf(a,v+2));
+    function rawconsfac = consistencyfactor(h,n,v,nu)
+        % The consistency factor is used to take the effect of trimming
+        % into account. 
+        if nargin<4
+            % This is the standard case, applied when uncontaminated data
+            % are assumed to come from a multivariate Normal model.
+
+            a=chi2inv(h/n,v);
+            rawconsfac=(h/n)/(chi2cdf(a,v+2));
+        else
+            % This is the case of a heavy-tail scenario, when
+            % uncontaminated data come from a multivariate Student-t
+            % distribution. From Barabesi et al. (2023), Trimming
+            % heavy-tailed multivariate data, submitted.
+
+            alpha = (n-h)/n;
+            integrand = @(u) 1 / (1 - betainv(u,v/2,nu/2));
+            theintegral = integral(integrand,0,alpha);
+            rawconsfac = ((nu-2) / (alpha*v) * theintegral - (nu - 2)/v)^(-1);
+        end
     end
 
 %% corfactorRAW function
