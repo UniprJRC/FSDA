@@ -1,4 +1,4 @@
-function [latex_string , disp_string] = tabledisp(T, precision, stylerc, filename)
+function [latex_string , disp_string , latex_string_full] = tabledisp(T, precision, stylerc, filename)
 %tabledisp displays in good format a table or array in the command line
 %
 %<a href="matlab: docsearchFS('tabledisp')">Link to the help function</a>
@@ -20,8 +20,8 @@ function [latex_string , disp_string] = tabledisp(T, precision, stylerc, filenam
 %               Data Types - single|double
 %
 %    stylerc:   The display style of the raw and column names. Character
-%               array. It can take these values: 
-%               'b' which stands for bold; 
+%               array. It can take these values:
+%               'b' which stands for bold;
 %               'i' which stands for italic;
 %               'n' which stand for normal (the default).
 %               If the user mis-specify the style, 'n is used.
@@ -38,15 +38,24 @@ function [latex_string , disp_string] = tabledisp(T, precision, stylerc, filenam
 %               Data Types - char
 %  Output:
 %
-%         latex_string :   Latex string with table display. Character array.  
+%         latex_string :   Latex string with table display. Character array.
 %                          The string can be used in uitables, annotation
 %                          statements or other matlab tools receving latex
 %                          sentences. Note that this string by default has
 %                          no \n characters, as they are not treated by the
-%                          annotation statement.
-%          disp_string :   String with table display. Character array. 
+%                          annotation statement. Note also that this string
+%                          is automatically and appropriately cut to comply
+%                          with the 1200 characters limitaion of
+%                          annotations and latex statements in graphical
+%                          objects.
+%          disp_string :   String with table display. Character array.
 %                          The string can be displayed in the command
 %                          window with fprintf(disp_string).
+%    latex_string_full :   Latex string with table display. Character array.
+%                          This is the full version of latex_string,
+%                          without the cut on 1200 characters. It is
+%                          reported in output in case there is a need to
+%                          copy-paste the full table in LaTeX documents. 
 %
 % See also: disp
 %
@@ -95,7 +104,7 @@ function [latex_string , disp_string] = tabledisp(T, precision, stylerc, filenam
 %{
     %% Dispay an array in a MATLAB annotation, with 6 digits of precision.
     % generate data
-    X = 1000*randn(10,5);
+    X = 1000*randn(15,5);
     % and run tabledisp on them with the specification of the precision
     [latex_string , disp_string] = tabledisp(X,6);
 
@@ -137,6 +146,24 @@ function [latex_string , disp_string] = tabledisp(T, precision, stylerc, filenam
 %}
 
 %{
+    %% Dispay a large table in a MATLAB annotation.
+    % generate data
+    X = 1000*randn(150,5);
+    % and run tabledisp on them with the specification of the precision
+    [latex_string , disp_string , latex_string_full] = tabledisp(X,6,'b');
+
+    % This is to produce a latex table display in a figure
+    hf = figure;
+    annotation(hf,'Textbox','String',latex_string,...
+        'FitBoxToText','on','Interpreter','latex',...
+        'FontName',get(0,'FixedWidthFontName'),'FontSize',14,...
+        'Units','Normalized','Position',[0 0 1 1]);
+
+    % This is to display the table in the command window without disp
+    fprintf(disp_string);
+%}
+
+%{
     % Dispay an array in a MATLAB annotation, and save it in a specific file.
     X = randn(10,5);
     % and run tabledisp on them with the specification of the precision
@@ -155,44 +182,41 @@ function [latex_string , disp_string] = tabledisp(T, precision, stylerc, filenam
 
 %% Beginning of code
 
-% default optional parameters
+% DEFAULT OPTIONAL PARAMETERS
+
+% filename to save output
 if nargin == 4 && strcmp(filename,'excel')
     filename  = ['tabledisp_' filename];
 end
-
 if nargin < 4 || ~ischar(filename)
     filename  = '';
 end
 
-if nargin < 3 || isempty(stylerc) || ~ismember(stylerc , {'n','i','b','ib','bi'})
+% style of the row/column names
+if nargin < 3 || isempty(stylerc) || ~ismember(stylerc , {'n','i','b'})
     stylerc = 'n';
 end
 switch stylerc
     case 'b'
-        stylerclatex  = '\\bf ';
-        stylerclatex2 = '\bf ';
+        stylerclatex  = '\\bf ';  
+        stylerclatex2 = '\bf ';   % note: \bf vs \\bf
     case 'i'
         stylerclatex  = '\\it ';
-        stylerclatex2 = '\it ';
-    case 'bi'
-        stylerclatex  = '\\emph\\bf ';
-        stylerclatex2 = '\emph\bf ';
-    case 'ib'
-        stylerclatex  = '\\emph\\bf ';
-        stylerclatex2 = '\emph\bf ';
+        stylerclatex2 = '\it ';   % note: \it vs \\it
     otherwise
         stylerclatex  = [];
         stylerclatex2 = [];
 end
 
+% precision od numbers
 if nargin < 2 || isempty(precision)
     precision = 2;
 end
-
 if nargin > 1 && ~isempty(precision) && isscalar(precision)
     precision = round(precision);
 end
 
+% check on mandatory parameter
 if nargin < 1
     error('Give me a table!');
 end
@@ -207,6 +231,7 @@ if istimetable(T)
     T = timetable2table(T);
 end
 
+% table dimensions
 n_col     = size(T,2);
 n_row     = size(T,1);
 
@@ -217,23 +242,27 @@ if ~ismember('RowNames',T.Properties.VariableNames) && isempty(T.Properties.RowN
     %T.Properties.RowNames = matlab.lang.makeValidName(string((1:size(T,1))'));
 end
 
+% get row/column names
 row_names = T.Properties.RowNames;
 col_names = T.Properties.VariableNames;
 
+% latex string initialization: add \bf and \it styles 
 col_specs_latex  = repmat('r',1,n_col);
 if ~isempty(stylerclatex)
-    col_names_latex  = strjoin(col_names, [' & ' stylerclatex]); %    ' & \\bf '
-    col_names_latex  = [stylerclatex2 , col_names_latex]; % note: \bf vs \\bf
+    col_names_latex  = strjoin(col_names, [' & ' stylerclatex]); 
+    col_names_latex  = [stylerclatex2 , col_names_latex];  % note: \bf vs \\bf
 else
     col_names_latex  = strjoin(col_names, ' & ');
 end
 
+% disp string initialization
 col_names_disp   = sprintf('%10s  | ', ' RAW NAME  ', col_names{:});
 
-% arrange latex reserved characters/words
+% latex string: arrange latex reserved characters/words
 row_names_latex = strrep(row_names,'_','\_');
 col_names_latex = strrep(col_names_latex,'_','\_');
 
+% latex string: format of the table
 if ~isempty(row_names_latex)
     col_specs_latex  = ['r'  col_specs_latex];
     col_names_latex = [' & ' col_names_latex];
@@ -259,6 +288,8 @@ latex_string = horzcat(latex_string , sprintf('%s \\\\ ', col_names_latex));
 latex_string = horzcat(latex_string , sprintf('\\hline '));
 latex_string = horzcat(latex_string , sprintf('\\hline '));
 
+latex_string_full = latex_string;
+
 % display string for the command window
 %disp_string = horzcat('\n\n' , sprintf('%s \n\n ', col_names_disp));
 disp_string = sprintf('%s \n\n ', col_names_disp);
@@ -274,7 +305,7 @@ try
         tempstring = cell(1,ns_col);
         tempstring(:) = {''};
         for col = 1:n_col
-            value = T{row,col};
+            value = T{row,col}; % content of a table cell
             while iscell(value), value = value{1,1}; end
             if ~isstring(value) && (isscalar(value) && isinf(value))
                 value = '$\infty$';
@@ -282,37 +313,64 @@ try
             if isstring(value) || ischar(value)
                 tempstring{1,col+start_col-1} = char(value);
             elseif isdatetime(value)
-                tempstring{1,col+start_col-1} = datestr(value); %#ok<DATST> 
+                tempstring{1,col+start_col-1} = datestr(value); %#ok<DATST>
             else
                 tempnumber = digitGouping(round(value,precision));
                 tempstring{1,col+start_col-1} = num2str(tempnumber);
             end
         end
+        tempstring_disp = tempstring;
         if ~isempty(row_names_latex)
             if ~isempty(stylerclatex)
                 tempstring(1,1) = {strjoin({stylerclatex2 , row_names_latex{row}} , {' '})};
             else
                 tempstring(1,1) = row_names_latex(row);
             end
+            tempstring_disp(1,1) = row_names_latex(row);
         end
-    
-        tempstring_latex_sep = strjoin(tempstring, ' & ');
+
+        tempstring_latex_sep      = strjoin(tempstring, ' & ');
+        tempstring_latex_sep_full = strjoin(tempstring, ' & ');
         %tempstring_disp_sep = strjoin(tempstring, ' | ');
-        tempstring_disp_sep  = sprintf('%10s  | ', tempstring{:});
+        tempstring_disp_sep  = sprintf('%10s  | ', tempstring_disp{:});
         %temparray = cellfun(@str2double,tempstring);
         %tempstring_disp_sep  = sprintf('% -10f  | ', temparray);
-        
-        % add the new line to the latex string
-        latex_string = horzcat(latex_string , sprintf('%s \\\\ ', tempstring_latex_sep)); %#ok<AGROW>
+
+        % Long tables: estimate how many rows can say within 1200 characters
+        if row==1
+            lrow = numel(tempstring_latex_sep);
+        else
+            lrow = mean(lrow,numel(tempstring_latex_sep));
+        end
+        rmax = min(floor(1000/lrow),n_row);
+
+        if rmax >= n_row
+            % add the new line to the latex string
+            latex_string = horzcat(latex_string , sprintf('%s \\\\ ', tempstring_latex_sep)); %#ok<AGROW>
+        else
+            if row < rmax - 4 || row == n_row - 1 || row == n_row
+                % add the new line to the latex string
+                latex_string = horzcat(latex_string , sprintf('%s \\\\ ', tempstring_latex_sep)); %#ok<AGROW>
+            end                
+            if (row == rmax - 4 || row == rmax - 3) 
+                dummy = strjoin(repmat({' : '} , 1, n_col+1), ' & ') ; % repmat('& x ' , 1, n_col);
+                latex_string = horzcat(latex_string , sprintf('%s \\\\ ', dummy)); %#ok<AGROW>
+            end
+        end
+
         % add the new line to the display string
         disp_string = horzcat(disp_string , sprintf('%s \n ', tempstring_disp_sep)); %#ok<AGROW>
-        
+
+        % create the full string in case of long tables, to be used in LaTeX documents
+        latex_string_full = horzcat(latex_string_full , sprintf('%s \\\\ ', tempstring_latex_sep_full)); %#ok<AGROW> 
+
         if fID >= 0
             % add the new line to the file
-            fprintf(fID, '%s \\\\ \n', tempstring_latex_sep);
+            fprintf(fID, '%s \\\\ \n', tempstring_latex_sep_full);
         end
-        
+
         clear temp;
+
     end
 catch
     error('Something went wrong. Note that the table should only contain chars, strings or scalars.');
@@ -321,6 +379,11 @@ end
 % Close the LaTeX string
 latex_string = horzcat(latex_string , sprintf('\\hline '));
 latex_string = horzcat(latex_string , sprintf('\\end{tabular}'));
+
+% Close the LaTeX string_full
+latex_string_full = horzcat(latex_string_full , sprintf('\\hline '));
+latex_string_full = horzcat(latex_string_full , sprintf('\\end{tabular}'));
+
 % To display the string in the command window, type:
 % fprintf(disp_string);
 
