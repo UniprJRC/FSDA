@@ -152,17 +152,19 @@ strtitle=['Details of autocorrelation $(corr(y_t,y_{t-' lagstr '}))$ calculation
 str=strForSchool(header, corpus, footer);
 
 
-% note that there is a maximum of string size of 1200 characters for the
-% LaTeX interpreter
-startIndex=regexp(str,'\cr');
-a=ceil(length(startIndex)/2);
-b=a+1;
-toinsert=['\cr ' repmat('&',1,length(header)) ' '];
-while length(str) >1150 % 1200
-    str=[str(1:startIndex(a)-2) toinsert str(startIndex(b)-1:end)];
-    a=a-1;
-    b=b-1;
-end
+% % note that there is a maximum of string size of 1200 characters for the
+% % LaTeX interpreter
+% startIndex=regexp(str,'\cr');
+% a=ceil(length(startIndex)/2);
+% b=a+1;
+% % toinsert=['\cr ' repmat('&',1,length(header)) ' '];
+% toinsert=['\\ ' repmat('&',1,length(header)) ' '];
+% 
+% while length(str) >1150 % 1200
+%     str=[str(1:startIndex(a)-2) toinsert str(startIndex(b)-1:end)];
+%     a=a-1;
+%     b=b-1;
+% end
 
 fs=14;
 dim = [.02 .80 0.1 0.1];

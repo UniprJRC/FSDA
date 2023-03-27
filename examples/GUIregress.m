@@ -454,27 +454,27 @@ else
     out.R2=R2;
 end
 
-startIndex=regexp(str,'\cr');
-a1=ceil(length(startIndex)/2);
-b1=a1+1;
-toinsert=['\cr ' repmat('&',1,length(header)) ' '];
-while length(str) >1150
-    str=[str(1:startIndex(a1)-2) toinsert str(startIndex(b1)-1:end)];
-    a1=a1-1;
-    b1=b1-1;
-end
-
-% note that there is a maximum of string size of 1200 characters for the
-% LaTeX interpreter
-startIndex=regexp(str1,'\cr');
-a1=ceil(length(startIndex)/2);
-b1=a1+1;
-toinsert=['\cr ' repmat('&',1,length(header1)) ' '];
-while length(str1) >1100
-    str1=[str1(1:startIndex(a1)-2) toinsert str1(startIndex(b1)-1:end)];
-    a1=a1-1;
-    b1=b1-1;
-end
+% startIndex=regexp(str,'\cr');
+% a1=ceil(length(startIndex)/2);
+% b1=a1+1;
+% toinsert=['\cr ' repmat('&',1,length(header)) ' '];
+% while length(str) >1150
+%     str=[str(1:startIndex(a1)-2) toinsert str(startIndex(b1)-1:end)];
+%     a1=a1-1;
+%     b1=b1-1;
+% end
+% 
+% % note that there is a maximum of string size of 1200 characters for the
+% % LaTeX interpreter
+% startIndex=regexp(str1,'\cr');
+% a1=ceil(length(startIndex)/2);
+% b1=a1+1;
+% toinsert=['\cr ' repmat('&',1,length(header1)) ' '];
+% while length(str1) >1100
+%     str1=[str1(1:startIndex(a1)-2) toinsert str1(startIndex(b1)-1:end)];
+%     a1=a1-1;
+%     b1=b1-1;
+% end
 
 % main figure
 h=figure('Position',[100 100 1200 700],'Units','normalized','Name','Parameter estimation and fitted values');
