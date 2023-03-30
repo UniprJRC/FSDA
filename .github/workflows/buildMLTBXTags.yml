@@ -37,9 +37,9 @@ jobs:
           path: release/fsda.mltbx
           
       # Create the release
-      - name: Create GitHub Release
+      - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          draft: true        
+          draft: false        
           artifacts: "release/fsda.mltbx"
           generateReleaseNotes: true
