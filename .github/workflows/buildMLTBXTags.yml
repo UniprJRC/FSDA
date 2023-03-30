@@ -22,19 +22,19 @@ jobs:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
       
-      - name: Create mtlbx
+      - name: Create MLTBX
         uses: matlab-actions/run-command@v1
         continue-on-error: true
         if: always()
         with:
-          command: matlab.addons.toolbox.packageToolbox("fsdaToolboxPackaging.prj", "fsda.mltbx")
+          command: matlab.addons.toolbox.packageToolbox("fsdaToolboxPackaging.prj", "release/fsda.mltbx")
       
       # Save the MLTBX.
-      - name: Save Packaged Toolbox
+      - name: Save MLTBX
         uses: actions/upload-artifact@v3
         with:
           name: FSDA build MLTBX
-          path: fsda.mltbx
+          path: release/fsda.mltbx
           
       # Create the release
       - name: Create GitHub Release
