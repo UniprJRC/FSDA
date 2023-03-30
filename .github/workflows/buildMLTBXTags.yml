@@ -27,7 +27,8 @@ jobs:
         continue-on-error: true
         if: always()
         with:
-          command: matlab.addons.toolbox.packageToolbox("fsdaToolboxPackaging.prj", "release/fsda.mltbx")
+          # command: matlab.addons.toolbox.packageToolbox("fsdaToolboxPackaging.prj", "release/fsda.mltbx")
+          command: run utilities_help\createFSDAToolboxActions
       
       # Save the MLTBX.
       - name: Save MLTBX
