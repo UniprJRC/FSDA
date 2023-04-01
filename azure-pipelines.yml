@@ -51,7 +51,7 @@ jobs:
           MATLAB
           Optimization_Toolbox
           Statistics_and_Machine_Learning_Toolbox
-          Parellel_Computing_Toolbox
+          Parallel_Computing_Toolbox
     - task: RunMATLABCommand@0 
       inputs:
         command: "run runAllMyTestsFS.m" 
