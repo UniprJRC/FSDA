@@ -46,7 +46,7 @@ jobs:
   steps:
     - task: InstallMATLAB@1
       inputs:
-        release: $(MATLAB_RELEASE)
+        release: R2023a
         products: |
           MATLAB
           Optimization_Toolbox
