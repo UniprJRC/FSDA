@@ -39,16 +39,21 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 % Optional input arguments:
 %
-%    userColor :   The color of the shaded area. Character. It can be any
-%                  of the LineSpec colors properties of MATLAB plot funtion.
-%                  It can also be a RGB triplet specification. Therefore,
-%                  user can use FSDA function FSColors to generate the
-%                  triplet.
+%    userColor :   The color of the shaded area. Character, 2-element 
+%                  character array, RGB triplet, 2-row RGB triplet. The
+%                  character can be any of the LineSpec colors properties
+%                  of MATLAB plot funtion. The RGB triplet specification is
+%                  defined as usual, that is with three numbers taking
+%                  values in [0 1]: to generate the triplet, the user can
+%                  use FSDA function FSColors.
 %                   Example - 'userColor', 'r'
 %                   Data Types - character
+%                   Example - 'userColor', 'rb'
+%                   Data Types - 2-character array
 %                   Example - 'userColor', FSColors.lightgrey.RGB
 %                   Data Types - 3-element array for a RGB triplet
-%
+%                   Example - 'userColor', [FSColors.lightgrey.RGB ; FSColors.grey.RGB]
+%                   Data Types - 2-row with RGB triplets
 % Output:
 %
 %    p:   Probability covered by the shaded area. Scalar. It is a value in [0 1].
@@ -162,6 +167,20 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
+    %% A Gamma using userColor with a color for each outside region
+    pd = makedist('Gamma','a',3,'b',1);
+    specs  = [2 3];
+    region = 'outside';
+    useColor = 'cg';
+    [p, h] = distribspec(pd, specs, region, 'userColor', useColor);
+
+    useColor = [1 0.5 0.5 ; 0.5 0.8 0.3];
+    [p, h] = distribspec(pd, specs, region, 'userColor', useColor);
+
+    cascade;
+%}
+
+%{
     %% A Gamma as above, using userColor with RGB triplet specification
     % returned by FSColors.
     pd = makedist('Gamma','a',3,'b',1);
@@ -206,6 +225,9 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     for i = 1:numel(u)
       fun  = @(x)integral(f,0,x)-u(i);
       X(i) = fzero(fun,0.5);
+      % The previous two lines have the solution below, but exemplify the
+      % approach for a generic function without closed formula.
+      % X(i) = -(1/lambda)*log(1-u(i)); % p. 211 Mood Graybill and Boes
     end
     
     %Same as f, but with the parameter lambda
@@ -431,7 +453,19 @@ switch region
         end
         xfill = [ll; x(k); ul];
         yfill = [yll; y(k); yul];
+
+        
+        if (ischar(userColor) && numel(userColor)>1) 
+             userColor = userColor(1);
+             warning('FSDA:distribspec:BaduserColor','userColor has more than one color specification: only the first one is used for the inside region');
+        end
+        if (isnumeric(userColor) && size(userColor,1)>1)
+            userColor = userColor(1,:);
+             warning('FSDA:distribspec:BaduserColor','userColor has more than one color specification: only the first one is used for the inside region');
+        end
+
         fill(xfill,yfill,userColor);
+
     case 'outside'
         if ubinf
             k1 = find(x < lb);
@@ -446,9 +480,30 @@ switch region
             k2=find(x > ub);
             hh1 = plot(ll,yll,'b-',ul,yul,'b-');
         end
-        xfill = [pll;  x(k1); ll          ; ul;          x(k2); pul  ];
-        yfill = [ypll; y(k1); flipud(yll) ; flipud(yul); y(k2); ypul ];
-        fill(xfill,yfill,userColor);
+        
+        % fill regions with user-defined or default color
+        if (ischar(userColor) && numel(userColor)==1) || (isnumeric(userColor) && size(userColor,1)==1)
+            xfill = [pll;  x(k1); ll          ; ul;          x(k2); pul  ];
+            yfill = [ypll; y(k1); flipud(yll) ; flipud(yul); y(k2); ypul ];
+            fill(xfill,yfill,userColor);
+        elseif (ischar(userColor) && numel(userColor)==2) || (isnumeric(userColor) && size(userColor,1)==2)
+            xfill1 = [pll;  x(k1); ll          ];
+            yfill1 = [ypll; y(k1); flipud(yll) ];
+            xfill2 = [ul;          x(k2); pul  ];
+            yfill2 = [flipud(yul); y(k2); ypul ];
+            if ischar(userColor)
+                fill(xfill1,yfill1,userColor(1));
+                fill(xfill2,yfill2,userColor(2));
+            else
+                fill(xfill1,yfill1,userColor(1,:));
+                fill(xfill2,yfill2,userColor(2,:));
+            end
+        else
+            warning('FSDA:distribspec:BaduserColor','userColor is wrong: a default is used');
+            xfill = [pll;  x(k1); ll          ; ul;          x(k2); pul  ];
+            yfill = [ypll; y(k1); flipud(yll) ; flipud(yul); y(k2); ypul ];
+            fill(xfill,yfill,'b');
+        end
 end
 
 %% compute p
