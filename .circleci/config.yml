@@ -1,9 +1,9 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
+# Use the latest 2.1 version of CircleCI pipeline process engine.  See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-# Use a package of configuration called an orb.
+# Use a package of configuration called an orb.  
 orbs:
   # Declare a dependency on the MATLAB-orb
-  matlab: mathworks/matlab@0.1
+  matlab: mathworks/matlab@dev:v1-beta # beta orb version
 jobs:
 # Name the job "testing"
   testing:
@@ -18,7 +18,13 @@ jobs:
          image: ubuntu-2004:202201-02
      steps:
         - checkout
-        - matlab/install                        # previously `wget ...`
+        - matlab/install:
+            release: R2023a
+            products: |
+              MATLAB
+              Optimization_Toolbox
+              Statistics_and_Machine_Learning_Toolbox
+              Parallel_Computing_Toolbox 
         - matlab/run-command:                   # previously `matlab -batch ...`   
             command:  
               "run runAllMyTestsFS.m"    # run the testing script: the environment variable can be retrieved using 'var=getenv('CATEGORY_TO_TEST');'
