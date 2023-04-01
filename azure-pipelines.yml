@@ -44,14 +44,14 @@ jobs:
       CATEGORY_TO_TEST: $(categoryName)
   timeoutInMinutes: 365 
   steps:
-    - task: InstallMATLAB@1 # Undocumented "version 1” beta
+    - task: InstallMATLAB@1
       inputs:
         release: $(MATLAB_RELEASE)
         products: |
-        MATLAB
-        Optimization_Toolbox
-        Statistics_and_Machine_Learning_Toolbox
-        Parellel_Computing_Toolbox
+          MATLAB
+          Optimization_Toolbox
+          Statistics_and_Machine_Learning_Toolbox
+          Parellel_Computing_Toolbox
     - task: RunMATLABCommand@0 
       inputs:
         command: "run runAllMyTestsFS.m" 
