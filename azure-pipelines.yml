@@ -47,10 +47,6 @@ jobs:
     - task: InstallMATLAB@1
       inputs:
         release: R2023a
-        products: |
-          MATLAB
-          Optimization_Toolbox
-          Statistics_and_Machine_Learning_Toolbox
     - task: RunMATLABCommand@0 
       inputs:
         command: "run runAllMyTestsFS.m" 
