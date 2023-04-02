@@ -31,7 +31,7 @@ jobs:
   variables:
       CATEGORY_TO_TEST: $(categoryName)
   steps:
-     - task: InstallMATLAB@0
+     - task: InstallMATLAB@1
       inputs:
         release: R2023a
         products: |
