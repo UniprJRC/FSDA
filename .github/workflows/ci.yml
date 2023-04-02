@@ -22,7 +22,7 @@ jobs:
       matrix:
         platform: [ubuntu-latest]
         release: [latest]
-        fxtest: [regression, regressionTS, regressionLTSts]
+        fxtest: [regression, regressionTS, regressionLTSts, regressionEXT, graphics, multivariate, multivariate-clustering, regression-clustering, mixsim, utilities, tclustMULT, tclustMULTgpcm]
 
     
     # The type of runner that the job will run on
