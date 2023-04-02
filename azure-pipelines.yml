@@ -49,6 +49,7 @@ jobs:
         release: R2023a
         products: |
           MATLAB Parallel_Computing_Toolbox
+          Statistics_and_Machine_Learning_Toolbox
     - task: RunMATLABCommand@0 
       inputs:
         command: "run runAllMyTestsFS.m" 
