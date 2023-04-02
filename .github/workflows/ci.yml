@@ -20,16 +20,16 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu-latest, windows-latest]
-        release: [R2022b, latest]
-        fxtest: [regression, regressionTS]
+        platform: [ubuntu-latest]
+        release: [latest]
+        fxtest: [regression, regressionTS, regressionLTSts]
 
     
     # The type of runner that the job will run on
     runs-on: ${{matrix.platform}}
     
     env:
-      CATEGORY_TO_TEST: regression
+      CATEGORY_TO_TEST:  ${{matrix.fxtest}}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
