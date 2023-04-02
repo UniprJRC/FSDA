@@ -1,3 +1,15 @@
+##   Build CI test and Coverage Report for FSDA Toolbox in Azure Pipeline
+#
+#  ____    ____    ____    ______      ______                ___    __                       
+# /\  _`\ /\  _`\ /\  _`\ /\  _  \    /\__  _\              /\_ \  /\ \                      
+# \ \ \L\_\ \,\L\_\ \ \/\ \ \ \L\ \   \/_/\ \/   ___     ___\//\ \ \ \ \____    ___   __  _  
+#  \ \  _\/\/_\__ \\ \ \ \ \ \  __ \     \ \ \  / __`\  / __`\\ \ \ \ \ '__`\  / __`\/\ \/'\ 
+#   \ \ \/   /\ \L\ \ \ \_\ \ \ \/\ \     \ \ \/\ \L\ \/\ \L\ \\_\ \_\ \ \L\ \/\ \L\ \/>  </ 
+#    \ \_\   \ `\____\ \____/\ \_\ \_\     \ \_\ \____/\ \____//\____\\ \_,__/\ \____//\_/\_\
+#     \/_/    \/_____/\/___/  \/_/\/_/      \/_/\/___/  \/___/ \/____/ \/___/  \/___/ \//\/_/
+#                                                                                           
+#                                                                                           
+
 jobs:
 - job: Test
   strategy:
@@ -30,32 +42,31 @@ jobs:
       vmImage: 'ubuntu-latest'
   variables:
       CATEGORY_TO_TEST: $(categoryName)
+  timeoutInMinutes: 365 
   steps:
-     - task: InstallMATLAB@1
+    - task: InstallMATLAB@1
       inputs:
         release: R2023a
         products: |
-          MATLAB
-          Optimization_Toolbox
-          Statistics_and_Machine_Learning_Toolbox
-     - task: RunMATLABCommand@0 
+          MATLAB Parallel_Computing_Toolbox
+    - task: RunMATLABCommand@0 
       inputs:
         command: "run runAllMyTestsFS.m" 
-     - task: PublishTestResults@2
+    - task: PublishTestResults@2
       condition: succeededOrFailed()
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/test-*.xml'  
-     - script: |
+    - script: |
         bash <(curl -s https://codecov.io/bash)
       displayName: 'Upload to codecov.io'
-     - task: PublishPipelineArtifact@1
+    - task: PublishPipelineArtifact@1
       condition: always()
       inputs:
         path: $(System.DefaultWorkingDirectory)/tests-$(categoryName)
         artifact: Test-$(categoryName)
-     - task: PublishCodeCoverageResults@1
-        condition: succeededOrFailed()
-        inputs:
-          codeCoverageTool: 'Cobertura'
-          summaryFileLocation: '**/coverage-*.xml'  
+    - task: PublishCodeCoverageResults@1
+      condition: succeededOrFailed()
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '**/coverage-*.xml'
