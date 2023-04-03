@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with MATLAB Actions
 
-name: MATLAB Build
+name: FSDA CI tests
 
 # Controls when the action will run. 
 on:
@@ -10,7 +10,7 @@ on:
   pull_request:
     branches: [ master ]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allows you to run this workflow manually from the Actions tab (nice)
   workflow_dispatch:
       
 
@@ -27,6 +27,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ${{matrix.platform}}
     
+    # Crucial for creating environment variables for runAllMyTestsFS.m
     env:
       CATEGORY_TO_TEST:  ${{matrix.fxtest}}
     # Steps represent a sequence of tasks that will be executed as part of the job
