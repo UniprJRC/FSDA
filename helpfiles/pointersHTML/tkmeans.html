@@ -1,22 +1,11 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tkmeans</title> <meta content="refpage" name="chunktype"><meta content="function:tkmeans " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tkmeans Computes trimmed k-means" itemprop="description" name="description" /><h1 itemprop="title">tkmeans</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tkmeans.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tkmeans.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tkmeans.html">http://rosa.unipr.it/FSDA/tkmeans.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tkmeans</em></p><P>tkmeans</P><P>Computes trimmed k-means</P><h2>Description</h2><P>tkmeans(Y, k, alpha) partitions the points in the n-by-v data matrix Y
-   into k clusters. This partition minimizes the trimmed sum, over all
-   clusters, of the within-cluster sums of point-to-cluster-centroid
-   distances.  Rows of Y correspond to points, columns correspond to
-   variables. tkmeans returns inside structure out an n-by-1 vector IDX
-   containing the cluster indices of each point.  By default, tkmeans uses
-   (squared) Euclidean distances.</P><h2>More About</h2><P>
- This iterative algorithm initializes k clusters randomly and performs
- "concentration steps" in order to improve the current cluster assignment.
- The number of maximum concentration steps to be performed is given by
- input parameter refsteps. For approximately obtaining the global optimum,
- the system is initialized nsamp times and concentration steps are
- performed until convergence or refsteps is reached. When processing more
- complex data sets higher values of nsamp and refsteps have to be
- specified (obviously implying extra computation time). However, if more
- then half of the iterations do not converge, a warning message is issued,
- indicating that nsamp has to be increased.
-
-</P><h2>References</h2><P>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
-   A General Trimming Approach to Robust Cluster Analysis. Annals
-   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
-   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tkmeans</title> <meta content="refpage" name="chunktype"><meta content="function:tkmeans " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tkmeans Computes trimmed k-means" itemprop="description" name="description" /><h1 itemprop="title">tkmeans</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tkmeans.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tkmeans.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tkmeans.html">http://rosa.unipr.it/FSDA/tkmeans.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tkmeans</em></p><P>tkmeans</P><P>Computes trimmed k-means</P><h2>Description</h2><P>tclustregIC (where the last two letters stand for 'Information
+   Criterion') computes the values of BIC (MIXMIX), ICL (MIXCLA) or CLA
+   (CLACLA), for different values of k (number of groups) and different
+   values of c (restriction factor for the variances of the residuals),
+   for a prespecified level of trimming. If Parallel Computing toolbox is
+   installed, parfor is used to compute tclustreg for different values of
+   c. In order to minimize randomness, given k, the same subsets are used
+   for each value of c.</P><h2>References</h2><P>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+ Methodologies for Clustering Linear Regression Data, "Advances in Data
+ Analysis and Classification". [doi
+ https://doi.org/10.1007/s11634-018-0331-4].</P></html>

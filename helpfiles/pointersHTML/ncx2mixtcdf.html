@@ -1,13 +1,29 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>ncx2mixtcdf</title> <meta content="refpage" name="chunktype"><meta content="function:ncx2mixtcdf " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ncx2mixtcdf Computes cumulative distribution function of a linear combination of non-central chi-square +N(0,s)" itemprop="description" name="description" /><h1 itemprop="title">ncx2mixtcdf</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/ncx2mixtcdf.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/ncx2mixtcdf.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/ncx2mixtcdf.html">http://rosa.unipr.it/FSDA/ncx2mixtcdf.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: ncx2mixtcdf</em></p><P>ncx2mixtcdf</P><P>Computes cumulative distribution function of a linear combination of non-central chi-square +N(0,s)</P><h2>Description</h2><P>Given random variable $Q$ defined as
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>ncx2mixtcdf</title> <meta content="refpage" name="chunktype"><meta content="function:ncx2mixtcdf " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ncx2mixtcdf Computes cumulative distribution function of a linear combination of non-central chi-square +N(0,s)" itemprop="description" name="description" /><h1 itemprop="title">ncx2mixtcdf</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/ncx2mixtcdf.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/ncx2mixtcdf.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/ncx2mixtcdf.html">http://rosa.unipr.it/FSDA/ncx2mixtcdf.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: ncx2mixtcdf</em></p><P>ncx2mixtcdf</P><P>Computes cumulative distribution function of a linear combination of non-central chi-square +N(0,s)</P><h2>Description</h2><P>This function creates (using iteration) a two-sided confidence intervals for the
+ noncentrality parameter of a noncentral $\chi^2$, $F$ or
+ $t$ distribution with degrees of freedom $df$, given an abscissa value $x$.
+ This function has been taken from the MATLAB toolbox 'Measures of effect
+ Size' by Harald Hentschke and  Maik C. St&uuml;ttgen.
+ https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox
+ and has been slighlty modified to be included into the FSDA
+ toolbox.</P><h2>More About</h2><P>
+ This function is used in the FSDA toolbox in function corrNominal.m to
+ find the confidence interval of Cramer's $V$ index. This index is a
+ function of the non centrality parameter associated with the $\chi^2$
+ index. Confidence intervals based on non central distributions depend on
+ the "inversion confidence interval principle" (Stiegler and Fouladi 1997,
+ pp. 237-239). The main idea is to use the observed value of a test
+ statistic (that is input x in the language of this routine) to initiate a
+ search for the lower and upper limits of to a $1-\alpha$ confidence
+ interval for the non centrality parameter (the lower and upper bound of
+ the confidence interval is given in output argument ci).
+ The confidence interval of the non centrality parameter can then be
+ converted into a confidence interval of an index which takes into account
+ the sample size (which for example can be the Cramer's $V$ index) as long
+ as the effect-size index (parameter) is a monotonic function of the non
+ centrality parameter.
+ See Smithson (2003) and "Measures of Effect Size" Toolbox for further
+ details.
 
-     \[  
-     Q = \lambda_1 \chi^2_1 + \lambda_2 \chi_2 + ... + \lambda_k \chi^2_k +\sigma Z
-     \]
-
-     where $\chi^2_1, ..., \chi^2_k$ are $k$ non central chi squared random variables,
-     with non centrality parameters $\delta=(\delta_1, ..., \delta_k)$ and degrees of
-     freedom $df=(df_1, ..., df_k)$.
-     and $Z$ is a standard normal random variable, the purpose of this
-     routine is to compute $F_Q(x | df, delta) = P(Q &lt; x| df, delta)$ , 
-     that is the cdf of $Q$ evaluated at $x$.</P><h2>References</h2><P>Davies, R. (1973), Numerical inversion of a characteristic function, 
- "Biometrika", Vol. 60, pp. 415-417.</P></html>
+</P><h2>References</h2><P>Hentschke, H. and St&uuml;ttgen, M. (2011), Comuputation of measures of effect
+ size for neuroscience data sets, "European Journal of Neuroscience", Vol.
+ 34, pp. 1887-1894.</P></html>

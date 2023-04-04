@@ -1,11 +1,34 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tclustregIC</title> <meta content="refpage" name="chunktype"><meta content="function:tclustregIC " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustregIC Computes tclustreg for different number of groups k and restriction factors c" itemprop="description" name="description" /><h1 itemprop="title">tclustregIC</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tclustregIC.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tclustregIC.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tclustregIC.html">http://rosa.unipr.it/FSDA/tclustregIC.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tclustregIC</em></p><P>tclustregIC</P><P>Computes tclustreg for different number of groups k and restriction factors c</P><h2>Description</h2><P>tclustregIC (where the last two letters stand for 'Information
-   Criterion') computes the values of BIC (MIXMIX), ICL (MIXCLA) or CLA
-   (CLACLA), for different values of k (number of groups) and different
-   values of c (restriction factor for the variances of the residuals),
-   for a prespecified level of trimming. If Parallel Computing toolbox is
-   installed, parfor is used to compute tclustreg for different values of
-   c. In order to minimize randomness, given k, the same subsets are used
-   for each value of c.</P><h2>References</h2><P>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
- Methodologies for Clustering Linear Regression Data, "Advances in Data
- Analysis and Classification". [doi
- https://doi.org/10.1007/s11634-018-0331-4].</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tclustregIC</title> <meta content="refpage" name="chunktype"><meta content="function:tclustregIC " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustregIC Computes tclustreg for different number of groups k and restriction factors c" itemprop="description" name="description" /><h1 itemprop="title">tclustregIC</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tclustregIC.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tclustregIC.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tclustregIC.html">http://rosa.unipr.it/FSDA/tclustregIC.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tclustregIC</em></p><P>tclustregIC</P><P>Computes tclustreg for different number of groups k and restriction factors c</P><h2>Description</h2><P>tclustregeda performs tclustreg for a series of values of the trimming
+   factor alpha, for given k (number of groups), restrfactor (restriction
+   factor) and alphaX (second level trimming or cluster weighted model).
+   In order to increase the speed of the computations, parfor is used.</P><h2>More About</h2><P>
+
+ This procedure extends to tclustreg the so-called monitoring approach.
+ The philosophy is to investigate how the results change as the trimming
+ proportion alpha reduces. This function enables us to monitor the change
+ in classification (measured by the ARI index) and the change in
+ regression coefficients and error variances (measured by the relative
+ squared Euclidean distances).
+ Note that there is a non-identifiability of a finite mixture distribution
+ caused by the invariance of the mixture density function to components
+ relabeling. In order to make sure that consistent labels are used for the
+ groups, between two consecutive values of alpha, we call
+ we assign label r to a group if this group shows the smallest distance
+ with group r for the previous value of alpha.
+ More precisely, once the labelling is fixed for the largest value of the
+ trimming factor supplied, if $\alpha_r$ and $\alpha_s$ denote two
+ consecutive levels of trimming ($\alpha_r&gt;\alpha_s$) and
+ \beta_{j,\alpha_r}
+given \beta_{j,\alpha_r}
+
+ In order to be consistent
+ along the different runs it is possible to specify through option
+ UnitsSameGroup the list of the units which must (whenever possible) have
+ a particular label.
+
+
+</P><h2>References</h2><P>Mayo-Iscar A. (2016), The joint role of trimming and constraints in
+ robust estimation for mixtures of gaussian factor analyzers,
+ "Computational Statistics & Data Analysis", Vol. 99, pp. 131-147.
+
+ Garcia-Escudero, L.A., Gordaliza, A., Greselin, F., Ingrassia, S. and</P></html>

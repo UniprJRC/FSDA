@@ -7,20 +7,19 @@
   \frac{b^a}{\Gamma(a)} dt
   \]
 
- inversegaminv computes the inverse of the inverse-gamma cdf with shape
- parameters in a and scale parameters in b for the corresponding
- probabilities in p. p, a, and b can be vectors, matrices, or
- multidimensional arrays that all have the same size. A scalar input is
- expanded to a constant array with the same dimensions as the other
- inputs. The parameters in a and b must all be positive, and the values in
- x must lie on the interval $[0,  \infty)$.
 
- Note that $F_{IG}(x,a,b)=\frac{\Gamma(a,b/x)}{\Gamma(\alpha)}$ therefore
+ inversegamcdf computes the inverse-gamma cdf at each of the values in x using the
+ corresponding shape parameters in a and scale parameters in b. x, a, and
+ b can be vectors, matrices, or multidimensional arrays that all have the
+ same size. A scalar input is expanded to a constant array with the same
+ dimensions as the other inputs. The parameters in a and b must all be
+ positive, and the values in x must lie on the interval $[0,  \infty)$.
+
+ Note that $F_{IG}(x,a,b)=\frac{\Gamma(a,b/x)}{\Gamma(\alpha)}$ therefore  
  Therefore, the CDF for an inverse Gamma distribution can be computed
  using the incomplete gamma function (also called regularized gamma
  function, i.e. MATLAB function gammainc) of course  keeping into account
  that we need the upper tail.
-
 
  The chief use of the inverse gamma distribution is in Bayesian
  statistics, where the distribution arises as the marginal posterior

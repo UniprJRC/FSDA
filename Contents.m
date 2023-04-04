@@ -19,20 +19,21 @@
 %
 %   Name                         - Description                                                                                                                         - Category            - Date last modified
 %-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-%   ace                          - Computes alternative conditional expectation                                                                                        - REG-Transformations - 2022 Nov 10
-%   aceplot                      - Produces the aceplot to visualize the results of ace                                                                                - VIS-Reg             - 2022 Nov 10
+%   ace                          - Computes alternative conditional expectation                                                                                        - REG-Transformations - 2022 Dec 23
+%   aceplot                      - Produces the aceplot to visualize the results of ace                                                                                - VIS-Reg             - 2023 Jan 20
 %   add2boxplot                  - Adds labels to the boxplot figure                                                                                                   - VIS-Mult            - 2022 Dec 03
 %   add2spm                      - Adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix                                       - VIS-Mult            - 2022 Nov 29
 %   add2yX                       - Adds objects (personalized clickable multilegends and text labels) to the yXplot                                                    - VIS-Reg             - 2022 Nov 10
 %   addt                         - Produces the t test for an additional explanatory variable                                                                          - REG-Regression      - 2022 Nov 10
-%   avas                         - Computes additivity and variance stabilization for regression                                                                       - REG-Transformations - 2022 Nov 10
-%   avasms                       - Computes avas using a series of alternative options                                                                                 - REG-Transformations - 2022 Nov 10
-%   balloonplot                  - Creates a balloon plot of a contingency table                                                                                       - VIS-Mult            - 2022 Nov 10
+%   avas                         - Computes additivity and variance stabilization for regression                                                                       - REG-Transformations - 2023 Jan 31
+%   avasms                       - Computes avas using a series of alternative options                                                                                 - REG-Transformations - 2023 Jan 17
+%   avasmsplot                   - Produces the augmented star plot and enables interactivity                                                                          - VIS-Reg             - 2023 Jan 18
+%   balloonplot                  - Creates a balloon plot of a contingency table                                                                                       - VIS-Mult            - 2023 Feb 22
 %   barnardtest                  - Barnard's unconditional test                                                                                                        - MULT-Categorical    - 2022 Nov 10
 %   barVariableWidth             - Produces a bar plot with different widths and colors for each bar                                                                   - VIS-Reg             - 2022 Nov 10
 %   basicPower                   - Computes the basic power transformation                                                                                             - UTISTAT             - 2022 Nov 10
 %   bc                           - Returns the Binomial coefficient                                                                                                    - UTICOMB             - 2022 Nov 10
-%   biplotFS                     - Calls biplotAPP.mlapp to show a dynamic biplot                                                                                      - VIS-Mult            - 2022 Nov 10
+%   biplotFS                     - Calls biplotAPP.mlapp to show a dynamic biplot                                                                                      - VIS-Mult            - 2023 Mar 09
 %   boxcoxR                      - Finds MLE of lambda in linear regression (and confidence interval) using Box Cox, YJ or extended YJ  transformation                 - REG-Transformations - 2022 Nov 10
 %   boxplotb                     - Computes a bivariate boxplot                                                                                                        - VIS-Mult            - 2022 Nov 10
 %   boxtest                      - Performs Box test of equality of covariance matrices                                                                                - MULT-Multivariate   - 2022 Nov 10
@@ -44,7 +45,7 @@
 %   carbikeplot                  - Produces the carbike plot to find best relevant clustering solutions                                                                - VIS-Clu             - 2022 Nov 10
 %   carbikeplotGPCM              - Produces the carbike plot to find best relevant clustering solutions                                                                - VIS-Clu             - 2022 Dec 03
 %   cascade                      - Is a third party function used in FSDA demos and examples                                                                           - UTIGEN              - 2022 Nov 10
-%   cdsplot                      - Produces the candlestick plot for robust model selection in linear regression                                                       - VIS-Reg             - 2022 Nov 10
+%   cdsplot                      - Produces the candlestick plot for robust model selection in linear regression                                                       - VIS-Reg             - 2023 Jan 10
 %   CEVmodel                     - Computes price and instantaneous variance processes from the CEV model                                                              - UTISTAT             - 2022 Nov 10
 %   clickableMultiLegend         - Hides/shows symbols inside all gplotmatrix subplots (or similar multi-plots) clicking on the legend                                 - UTIGEN              - 2022 Nov 10
 %   ClusterRelabel               - Enables to control the labels of the clusters which contain predefined units                                                        - UTISTAT             - 2022 Nov 10
@@ -57,12 +58,12 @@
 %   corrpdf                      - Computes correlation coefficient probability density function                                                                       - ProbDist            - 2022 Dec 02
 %   covplot                      - Plots the trajectories of the elements of the covariance (correlation) matrix monitored                                             - VIS-Mult            - 2022 Nov 10
 %   CressieRead                  - Computes the power divergence family                                                                                                - MULT-Categorical    - 2022 Nov 10
-%   crosstab2datamatrix          - Recreates the original data matrix X from contingency table N                                                                       - MULT-Categorical    - 2022 Nov 10
-%   ctlcurves                    - Computes Classification Trimmed Likelihood Curves                                                                                   - CLUS-RobClaMULT     - 2022 Nov 10
-%   ctlcurvesplot                - Plots the output of routine ctlcurves                                                                                               - VIS-Clu             - 2022 Nov 10
+%   crosstab2datamatrix          - Recreates the original data matrix X from contingency table N                                                                       - MULT-Categorical    - 2023 Mar 20
+%   ctlcurves                    - Computes Classification Trimmed Likelihood Curves                                                                                   - CLUS-RobClaMULT     - 2023 Mar 02
+%   ctlcurvesplot                - Plots the output of routine ctlcurves                                                                                               - VIS-Clu             - 2023 Mar 02
 %   ctsub                        - Computes numerical integration from x(1) to z(i) of y=f(x)                                                                          - UTISTAT             - 2022 Nov 10
 %   dempk                        - Performs a merging of components found by tkmeans                                                                                   - CLUS-RobClaMULT     - 2022 Nov 10
-%   distribspec                  - Plots a probability density function between specification limits                                                                   - UTISTAT             - 2022 Nov 10
+%   distribspec                  - Plots a probability density function between specification limits                                                                   - UTISTAT             - 2023 Apr 04
 %   ellipse                      - Generates an ellipse given mu (location vector) and Sigma (scatter matrix)                                                          - UTISTAT             - 2022 Nov 10
 %   estregimeTAR                 - Estimate a regression model with OLS in one of the regimes of a TAR model                                                           - REG-Regression      - 2022 Nov 10
 %   exactcdf                     - Finds exact p-values                                                                                                                - UTISTAT             - 2022 Nov 10
@@ -82,17 +83,17 @@
 %   FSCorAnaenvmmd               - Computes the empirical envelopes of Minimum MD outside subset during the search                                                     - MULT-Multivariate   - 2022 Nov 10
 %   FSM                          - Computes forward search estimator in multivariate analysis                                                                          - MULT-Multivariate   - 2022 Nov 10
 %   FSMbonfbound                 - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                          - UTISTAT             - 2022 Nov 10
-%   FSMbsb                       - Gives the units belonging to subset at step(s) msel of the forward search                                                           - MULT-Multivariate   - 2022 Nov 10
+%   FSMbsb                       - Gives the units belonging to subset at step(s) msel of the forward search                                                           - MULT-Multivariate   - 2023 Mar 08
 %   FSMeda                       - Performs forward search in multivariate analysis with exploratory data analysis purposes                                            - MULT-Multivariate   - 2022 Nov 10
 %   FSMedaeasy                   - Is exactly equal to FSMeda but it is much less efficient                                                                            - MULT-Multivariate   - 2022 Nov 10
 %   FSMenvmmd                    - Computes the theoretical envelopes of Minimum MD outside subset during the search                                                   - MULT-Multivariate   - 2022 Nov 10
 %   FSMfan                       - Computes confirmatory lrt of a suggested transformation                                                                             - MULT-Transformations- 2022 Nov 10
 %   FSMinvmmd                    - Converts values of minimum Mahalanobis distance into confidence levels                                                              - MULT-Multivariate   - 2022 Nov 10
-%   FSMmmd                       - Monitors minMD                                                                                                                      - MULT-Multivariate   - 2022 Nov 10
+%   FSMmmd                       - Monitors minMD                                                                                                                      - MULT-Multivariate   - 2023 Apr 04
 %   FSMmmdeasy                   - Is exactly equal to FSMmmd but it is much less efficient                                                                            - MULT-Multivariate   - 2022 Nov 10
 %   FSMmmdrs                     - Performs random start monitoring of minimum Mahalanobis distance                                                                    - CLUS-RobClaMULT     - 2022 Nov 10
 %   FSMtra                       - Computes MLE of transformation parameters                                                                                           - MULT-Transformations- 2022 Nov 10
-%   FSR                          - Computes forward search estimator in linear regression                                                                              - REG-Regression      - 2022 Nov 10
+%   FSR                          - Computes forward search estimator in linear regression                                                                              - REG-Regression      - 2023 Jan 31
 %   FSRaddt                      - Produces t deletion tests for each explanatory variable                                                                             - REG-ModelSelection  - 2022 Nov 10
 %   FSRB                         - Gives an automatic outlier detection procedure in Bayesian linear regression                                                        - REG-Bayes           - 2022 Nov 10
 %   FSRBbsb                      - Returns the units belonging to the subset in each step of the Bayesian forward search                                               - REG-Regression      - 2022 Nov 10
@@ -101,10 +102,10 @@
 %   FSRbonfbound                 - Computes Bonferroni bounds for each step of the search (in linear regression)                                                       - UTISTAT             - 2022 Nov 10
 %   FSRBr                        - Bayesian forward search in linear regression reweighted                                                                             - REG-Bayes           - 2022 Nov 10
 %   FSRbsb                       - Returns the units belonging to the subset in each step of the forward search                                                        - REG-Regression      - 2022 Nov 10
-%   FSRcp                        - Monitors Cp and AIC for all models of interest of size smallp                                                                       - REG-ModelSelection  - 2022 Nov 10
+%   FSRcp                        - Monitors Cp and AIC for all models of interest of size smallp                                                                       - REG-ModelSelection  - 2023 Jan 09
 %   FSReda                       - Enables to monitor several quantities in each step of the forward search                                                            - REG-Regression      - 2022 Nov 10
 %   FSRenvmdr                    - Computes the theoretical envelopes of Minimum Deletion Residual outside subset during the search                                    - REG-Regression      - 2022 Nov 10
-%   FSRfan                       - Monitors the values of the score test statistic for each lambda                                                                     - REG-Transformations - 2022 Nov 10
+%   FSRfan                       - Monitors the values of the score test statistic for each lambda                                                                     - REG-Transformations - 2022 Dec 23
 %   FSRH                         - Gives an automatic outlier detection procedure in heteroskedastic linear regression                                                 - REG-Hetero          - 2022 Nov 10
 %   FSRHbsb                      - Returns the units belonging to the subset in each step of the heteroskedastic forward search                                        - REG-Hetero          - 2022 Nov 10
 %   FSRHeda                      - Enables to monitor several quantities in each step of the forward search                                                            - REG-Hetero          - 2022 Nov 10
@@ -120,13 +121,14 @@
 %   funnelchart                  - Displays a funnel chart                                                                                                             - VIS-Mult            - 2022 Nov 10
 %   genSigmaGPCM                 - Generates covariance matrix for the 14 Gaussian Parsimonious Clustering Models                                                      - CLUS-RobClaMULT     - 2022 Nov 10
 %   GowerIndex                   - Computes matrix of similarity indexes using Gower metric                                                                            - CLUS-RobClaMULT     - 2022 Nov 10
+%   GUIautocorr                  - Shows the necessary calculations to obtain the autocorrelation in a GUI                                                             - GUI                 - 2023 Apr 04
 %   GUIconcentration             - Shows the necessary calculations to obtain the GINI concentration index in a GUI                                                    - GUI                 - 2022 Nov 10
-%   GUIcorr                      - Shows the necessary calculations to obtain the correlation in a GUI                                                                 - GUI                 - 2022 Nov 10
-%   GUIcov                       - Shows the necessary calculations to obtain the covariance in a GUI                                                                  - GUI                 - 2022 Nov 10
-%   GUImad                       - Shows the necessary calculations to obtain MAD, S_M or S_Me in a GUI                                                                - GUI                 - 2022 Nov 10
+%   GUIcorr                      - Shows the necessary calculations to obtain the correlation in a GUI                                                                 - GUI                 - 2023 Mar 24
+%   GUIcov                       - Shows the necessary calculations to obtain the covariance in a GUI                                                                  - GUI                 - 2023 Mar 27
+%   GUImad                       - Shows the necessary calculations to obtain MAD, S_M or S_Me in a GUI                                                                - GUI                 - 2023 Feb 28
 %   GUIpowermean                 - Shows the necessary calculations to obtain the power (generalized) mean in a GUI                                                    - GUI                 - 2022 Nov 10
-%   GUIquantile                  - Shows the necessary calculations to obtain $x_z$ quantile                                                                           - GUI                 - 2022 Nov 10
-%   GUIregress                   - Shows the necessary calculations to obtain simple linear regression statistics in a GUI                                             - GUI                 - 2022 Dec 03
+%   GUIquantile                  - Shows the necessary calculations to obtain $x_z$ quantile                                                                           - GUI                 - 2023 Feb 10
+%   GUIregress                   - Shows the necessary calculations to obtain simple linear regression statistics in a GUI                                             - GUI                 - 2023 Mar 27
 %   GUIskewness                  - Shows the necessary calculations to obtain the variance in a GUI                                                                    - GUI                 - 2022 Nov 10
 %   GUIstd                       - Shows the necessary calculations to obtain the standard deviation in a GUI                                                          - GUI                 - 2022 Nov 10
 %   GUItrimmean                  - Shows the necessary calculations to obtain the trimmed mean in a GUI                                                                - GUI                 - 2022 Nov 10
@@ -168,8 +170,8 @@
 %   lexunrank                    - Gives the the $k$-combination of $n$ elements of position $N$ in the lexicographic order of all combinations                        - UTICOMB             - 2022 Nov 10
 %   lga                          - Performs linear grouping analysis                                                                                                   - CLUS-RobClaREG      - 2022 Nov 10
 %   logmvnpdfFS                  - Produces log of Multivariate normal probability density function (pdf)                                                              - ProbDist            - 2022 Dec 02
-%   LTSts                        - Extends LTS estimator to time series                                                                                                - REG-Regression      - 2022 Dec 02
-%   LTStsLSmult                  - Extends LTSts to the detection of multiple Level Shifts in time series                                                              - REG-Regression      - 2022 Nov 28
+%   LTSts                        - Extends LTS estimator to time series                                                                                                - REG-Regression      - 2023 Feb 25
+%   LTStsLSmult                  - Extends LTSts to the detection of multiple Level Shifts in time series                                                              - REG-Regression      - 2022 Dec 23
 %   LTStsVarSel                  - Does variable selection in the robust time series model LTSts                                                                       - REG-Regression      - 2022 Nov 21
 %   LXS                          - Computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators                                                - REG-Regression      - 2022 Nov 21
 %   mahalCorAna                  - Computes Mahalanobis distances (in squared units) for each row of matrix Y                                                          - UTISTAT             - 2022 Dec 03
@@ -177,7 +179,7 @@
 %   makecontentsfileFS           - Extends Matlab function makecontentsfile                                                                                            - UTIHELP             - 2022 Nov 10
 %   malfwdplot                   - Plots the trajectories of scaled Mahalanobis distances along the search                                                             - VIS-Mult            - 2022 Nov 10
 %   malindexplot                 - Plots the Mahalanobis distances versus a selected variable                                                                          - VIS-Mult            - 2022 Nov 10
-%   mcd                          - Computes Minimum Covariance Determinant                                                                                             - MULT-Multivariate   - 2022 Nov 10
+%   mcd                          - Computes Minimum Covariance Determinant                                                                                             - MULT-Multivariate   - 2023 Mar 27
 %   mcdCorAna                    - Computes Minimum Covariance Determinant in correspondence analysis                                                                  - MULT-Multivariate   - 2022 Nov 10
 %   mcdeda                       - Monitors Minimum Covariance Determinant for a series of values of bdp                                                               - MULT-Multivariate   - 2022 Nov 10
 %   mdpattern                    - Finds and plots missing data patterns                                                                                               - UTISTAT             - 2022 Nov 10
@@ -199,7 +201,7 @@
 %   MMreg                        - Computes MM estimator of regression coefficients                                                                                    - REG-Regression      - 2022 Nov 10
 %   MMregcore                    - Computes MM regression estimators for a selected fixed scale                                                                        - REG-Regression      - 2022 Nov 10
 %   MMregeda                     - Computes MM estimator in linear regression for a series of values of efficiency                                                     - REG-Regression      - 2022 Nov 10
-%   moonplot                     - Draws the Correspondence Analysis (CA) moonplot                                                                                     - VIS-Mult            - 2022 Nov 10
+%   moonplot                     - Draws the Correspondence Analysis (CA) moonplot                                                                                     - VIS-Mult            - 2023 Jan 18
 %   mreadFS                      - Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files (OBSOLETE FUNCTION REPLACED BY publishFS.m) - UTIHELP             - 2022 Nov 10
 %   Mscale                       - Finds the M estimator of the scale                                                                                                  - UTISTAT             - 2022 Nov 10
 %   mtR                          - Generates the same random numbers produced by R software with Mersenne Twister mt19937ar                                            - ProbDist            - 2022 Dec 02
@@ -215,7 +217,7 @@
 %   OPTbdp                       - Finds the constant c associated to the supplied breakdown point                                                                     - UTISTAT             - 2022 Nov 10
 %   OPTc                         - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                         - UTISTAT             - 2022 Nov 10
 %   OPTeff                       - Finds the constant c which is associated to the requested efficiency                                                                - UTISTAT             - 2022 Nov 10
-%   OptimalCuttingFrequency      - Computes the optimal cutting frequency for the Fourier estimator of integrated variance                                             - UTISTAT             - 2022 Nov 10
+%   OptimalCuttingFrequency      - Computes the optimal cutting frequency for the Fourier estimator of integrated variance                                             - UTISTAT             - 2023 Apr 03
 %   OPTpsi                       - Computes psi function (derivative of rho function) for optimal weight function                                                      - UTISTAT             - 2022 Nov 10
 %   OPTpsider                    - Computes derivative of psi function (second derivative of rho function) for optimal weight function                                 - UTISTAT             - 2022 Nov 10
 %   OPTpsix                      - Computes psi function (derivative of rho function) times x                                                                          - UTISTAT             - 2022 Nov 10
@@ -223,7 +225,7 @@
 %   OPTwei                       - Computes weight function psi(u)/u for optimal weight function                                                                       - UTISTAT             - 2022 Nov 10
 %   overlap                      - Computes the exact overlap given the parameters of the mixture                                                                      - CLUS-MixSim         - 2022 Nov 10
 %   overlapmap                   - Produces an interactive overlap map                                                                                                 - CLUS-RobClaMULT     - 2022 Nov 10
-%   pcaFS                        - Performs Principal Component Analysis (PCA) on raw data                                                                             - MULT-Multivariate   - 2022 Nov 10
+%   pcaFS                        - Performs Principal Component Analysis (PCA) on raw data                                                                             - MULT-Multivariate   - 2023 Mar 15
 %   PDbdp                        - Finds the constant alpha associated to the supplied breakdown point for minimum power divergence estimator                          - UTISTAT             - 2022 Nov 10
 %   PDc                          - Computes breakdown point and efficiency associated with tuning constant alpha for minimum power divergence estimator                - UTISTAT             - 2022 Nov 10
 %   PDeff                        - Finds the constant alpha which is associated to the requested efficiency for minimum power divergence estimator                     - UTISTAT             - 2022 Nov 10
@@ -232,10 +234,10 @@
 %   PDpsix                       - Computes psi function (derivative of rho function) times x for minimum density power divergence estimator                           - UTISTAT             - 2022 Nov 10
 %   PDrho                        - Computes rho function for minimum density power divergence estimator                                                                - UTISTAT             - 2022 Nov 10
 %   PDwei                        - Computes weight function psi(u)/u for  for minimum density power divergence estimator                                               - UTISTAT             - 2022 Nov 10
-%   position                     - Controls the position of the open figures                                                                                           - UTIGEN              - 2022 Nov 10
+%   position                     - Controls the position of the open figures                                                                                           - UTIGEN              - 2023 Jan 09
 %   Powertra                     - Computes power transformation (Box-Cox or  Yeo-Johnson)                                                                             - UTISTAT             - 2022 Nov 10
 %   publishBibliography          - Enables to create web page which contains the references inside the input .m files                                                  - UTIHELP             - 2022 Nov 10
-%   publishFS                    - Enables to create automatic HELP FILES from structured .m function files                                                            - UTIHELP             - 2022 Nov 10
+%   publishFS                    - Enables to create automatic HELP FILES from structured .m function files                                                            - UTIHELP             - 2023 Jan 04
 %   publishFunctionAlpha         - Enables to create web page which contains the alphabetical list of functions                                                        - UTIHELP             - 2022 Nov 10
 %   publishFunctionCate          - Enables to create web page which contains the categorical list of functions                                                         - UTIHELP             - 2022 Nov 10
 %   Qn                           - Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)                                                      - UTISTAT             - 2022 Nov 10
@@ -254,8 +256,8 @@
 %   regressts                    - Computes estimates of regression parameters for a time series models                                                                - REG-Regression      - 2022 Nov 10
 %   removeExtraSpacesLF          - Removes extra spaces and selected carriage returns from input string                                                                - UTIGEN              - 2022 Nov 10
 %   repDupValWithMean            - Replaces values of y which have non unique elements in vector x with local means                                                    - UTIGEN              - 2022 Nov 10
-%   resfwdplot                   - Plots the trajectories of the monitored scaled (squared) residuals                                                                  - VIS-Reg             - 2022 Nov 10
-%   resindexplot                 - Plots the residuals from a regression analysis versus index number or any other variable                                            - VIS-Reg             - 2022 Nov 10
+%   resfwdplot                   - Plots the trajectories of the monitored scaled (squared) residuals                                                                  - VIS-Reg             - 2023 Jan 10
+%   resindexplot                 - Plots the residuals from a regression analysis versus index number or any other variable                                            - VIS-Reg             - 2023 Jan 09
 %   restrdeter                   - Computes determinant restriction                                                                                                    - CLUS-RobClaMULT     - 2022 Nov 10
 %   restrdeterGPCM               - Applies determinat restrictions for the 14 GPCM                                                                                     - CLUS-RobClaMULT     - 2022 Nov 10
 %   restreigen                   - Computes eigenvalues restriction (without Dykstra algorithm)                                                                        - CLUS-RobClaMULT     - 2022 Nov 10
@@ -291,18 +293,19 @@
 %   simdataset                   - Simulates and-or contaminates a dataset given the parameters of a finite mixture model with Gaussian components                     - CLUS-MixSim         - 2022 Nov 10
 %   simdatasetreg                - Simulates a regression dataset given the parameters of a mixture regression model                                                   - CLUS-MixSim         - 2022 Nov 10
 %   simulateLM                   - Simulates linear regression data with prespecified values of statistical indexes                                                    - REG-Regression      - 2022 Nov 10
-%   simulateTS                   - Simulates a time series with trend, time varying seasonal, level shift and irregular component                                      - REG-Regression      - 2022 Nov 10
+%   simulateTS                   - Simulates a time series with trend, time varying seasonal, level shift and irregular component                                      - REG-Regression      - 2023 Jan 14
 %   smothr                       - Produces smoothed values with constraints                                                                                           - REG-Transformations - 2022 Nov 10
 %   Smult                        - Computes S estimators in multivariate analysis                                                                                      - MULT-Multivariate   - 2022 Nov 10
 %   Smulteda                     - Computes S estimators in multivariate analysis for a series of values of bdp                                                        - MULT-Multivariate   - 2022 Nov 10
 %   Sn                           - Robust estimator of scale (robust version of Gini's average difference)                                                             - UTISTAT             - 2022 Nov 10
 %   SparseTableTest              - Computes independence test for large and sparse contingency tables                                                                  - MULT-Categorical    - 2022 Nov 10
-%   spmplot                      - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal and possibly robust bivariate contours  - VIS-Mult            - 2022 Nov 29
+%   spmplot                      - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal and possibly robust bivariate contours  - VIS-Mult            - 2023 Feb 22
 %   Sreg                         - Computes S estimators in linear regression                                                                                          - REG-Regression      - 2022 Nov 10
-%   Sregeda                      - Computes S estimators in linear regression for a series of values of bdp                                                            - REG-Regression      - 2022 Nov 10
+%   Sregeda                      - Computes S estimators in linear regression for a series of values of bdp                                                            - REG-Regression      - 2023 Mar 20
 %   subsets                      - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements                                    - UTICOMB             - 2022 Nov 10
 %   suplabel                     - Places text as a title, xlabel, or ylabel on a group of subplots                                                                    - UTIGEN              - 2022 Nov 10
 %   supsmu                       - Smooths scatterplots using Friedman's supersmoother algorithm                                                                       - REG-Transformations - 2022 Nov 10
+%   tabledisp                    - Displays in good format a table or array in the command line                                                                        - UTIGEN              - 2023 Mar 27
 %   tabulateFS                   - Creates frequency table of unique values of x, excluding possible 0 counts                                                          - UTISTAT             - 2022 Nov 10
 %   Taureg                       - Computes Tau estimators in linear regression                                                                                        - REG-Regression      - 2022 Nov 10
 %   TBbdp                        - Finds the constant c associated to the supplied breakdown point for Tukey's biweight                                                - UTISTAT             - 2022 Nov 10
@@ -318,7 +321,7 @@
 %   tclusteda                    - Computes tclust for a series of values of the trimming factor                                                                       - CLUS-RobClaMULT     - 2022 Nov 22
 %   tclustIC                     - Computes tclust for different number of groups k and restriction factors c                                                          - CLUS-RobClaMULT     - 2022 Nov 10
 %   tclustICgpcm                 - Computes tclust for different number of groups k and restr. factors $c_{det}$ and $c_{shw}$                                         - CLUS-RobClaMULT     - 2022 Nov 10
-%   tclustICplot                 - Plots information criterion as a function of c and k                                                                                - VIS-Clu             - 2022 Nov 26
+%   tclustICplot                 - Plots information criterion as a function of c and k                                                                                - VIS-Clu             - 2023 Jan 16
 %   tclustICplotGPCM             - Plots information criterion as a function of  $c_{det}$, $c_{shw}$,  $c_{shb}$ and $k$                                              - VIS-Clu             - 2022 Nov 10
 %   tclustICsol                  - Extracts a set of best relevant solutions                                                                                           - CLUS-RobClaMULT     - 2022 Nov 10
 %   tclustICsolGPCM              - Extracts a set of best relevant solutions from 3D array computed using function tclustICgpcm                                        - CLUS-RobClaMULT     - 2022 Nov 10
@@ -338,7 +341,7 @@
 %   vervaatxdf                   - Returns the pdf and cdf of a Vervaat perpetuity                                                                                     - ProbDist            - 2022 Dec 02
 %   VIOM                         - Computes weights estimates under Variance-Inflation Model                                                                           - REG-Regression      - 2022 Nov 10
 %   waterfallchart               - Creates a waterfall chart                                                                                                           - VIS-Mult            - 2022 Nov 10
-%   wedgeplot                    - Generates the double wedge plot of a time series                                                                                    - VIS-Reg             - 2022 Nov 10
+%   wedgeplot                    - Generates the double wedge plot of a time series                                                                                    - VIS-Reg             - 2022 Dec 23
 %   winsor                       - Returns a winsorized copy of input                                                                                                  - UTISTAT             - 2022 Nov 10
 %   WNChygecdf                   - Returns Wallenius' non-central hypergeometric cumulative distribution function                                                      - ProbDist            - 2022 Dec 02
 %   WNChygepdf                   - Returns Wallenius' non-central hypergeometric probability density function                                                          - ProbDist            - 2022 Dec 02

@@ -1,1 +1,25 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>quickselectFSw_demo</title> <meta content="refpage" name="chunktype"><meta content="function:quickselectFSw_demo " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="quickselectFSw_demo Illustrates the functioning of quickselectFSw" itemprop="description" name="description" /><h1 itemprop="title">quickselectFSw_demo</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/quickselectFSw_demo.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/quickselectFSw_demo.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/quickselectFSw_demo.html">http://rosa.unipr.it/FSDA/quickselectFSw_demo.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: quickselectFSw_demo</em></p><P>quickselectFSw_demo</P><P>Illustrates the functioning of quickselectFSw</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>quickselectFSw_demo</title> <meta content="refpage" name="chunktype"><meta content="function:quickselectFSw_demo " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="quickselectFSw_demo Illustrates the functioning of quickselectFSw" itemprop="description" name="description" /><h1 itemprop="title">quickselectFSw_demo</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/quickselectFSw_demo.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/quickselectFSw_demo.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/quickselectFSw_demo.html">http://rosa.unipr.it/FSDA/quickselectFSw_demo.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: quickselectFSw_demo</em></p><P>quickselectFSw_demo</P><P>Illustrates the functioning of quickselectFSw</P><h2>Description</h2><P>quickselectFSw generalises the calculation of the weighted median to a
+ generic percentile $100pth (0&lt;p&lt;1)$. It finds the p-th weighted order
+ statistic in the elements of a data vector $D$ considering the associated
+ weights $W$. More precisely, the algorithm finds the element $D_{k^{*}}$
+ that make the following difference as small as possible:
+ $\sum_{i=1}^{k^{*}_{p} - 1} w_{i} - \sum_{i=k^{*}_{p}+1}^{n} w_{i}$.
+ The linear algorithm used for the computation extends quickselectFS.
+ REMARK: we also provide the mex counterpart, quickselectFSwmex; see the
+ last example to understand how it works.</P><h2>More About</h2><P>
+   quickselectFSw builds on quickselectFS, the algorithm used to find
+   order statistics. Data and weights are collapsed to a single vector
+   D=[D(:),W(:)] (point 2). The core part of quickselectFS is called on D
+   assuming that the weighted percentile is in position k=ceil(n*p) (point
+   3). This step permutes vector D so that the elements in positions
+   (1:k-1,:) are smaller than the element at position k. At this point we
+   check if the array fulfills the weighted median condition by Bleich and
+   Overton (1985) (point 5). If so, we stop computation (point 6.). If
+   not, we apply again the core part of quickselectFS on either D(1:k,:)
+   with k+1, or D(k:n,:) with k-1. The iteration will remove or add
+   weights in order to approach the optimality condition (see points 7,8
+   and 9). The process is iterated till success.
+
+</P><h2>References</h2><P>Bleich, C. and Overton, M.L. (1983), A linear-time algorithm for the
+   weighted median problem. Technical Report 75, New York University,
+   Courant Institute of Mathematical Sciences.</P></html>

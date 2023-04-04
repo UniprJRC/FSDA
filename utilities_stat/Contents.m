@@ -10,7 +10,7 @@
 %   CEVmodel                - Computes price and instantaneous variance processes from the CEV model                                                              - UTISTAT         - 2022 Nov 10
 %   corrcdf                 - Computes correlation coefficient probability distribution function                                                                  - ProbDist        - 2022 Dec 02
 %   corrpdf                 - Computes correlation coefficient probability density function                                                                       - ProbDist        - 2022 Dec 02
-%   crosstab2datamatrix     - Recreates the original data matrix X from contingency table N                                                                       - MULT-Categorical- 2022 Nov 10
+%   crosstab2datamatrix     - Recreates the original data matrix X from contingency table N                                                                       - MULT-Categorical- 2023 Mar 20
 %   ctsub                   - Computes numerical integration from x(1) to z(i) of y=f(x)                                                                          - UTISTAT         - 2022 Nov 10
 %   ellipse                 - Generates an ellipse given mu (location vector) and Sigma (scatter matrix)                                                          - UTISTAT         - 2022 Nov 10
 %   exactcdf                - Finds exact p-values                                                                                                                - UTISTAT         - 2022 Nov 10
@@ -68,7 +68,7 @@
 %   OPTbdp                  - Finds the constant c associated to the supplied breakdown point                                                                     - UTISTAT         - 2022 Nov 10
 %   OPTc                    - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                         - UTISTAT         - 2022 Nov 10
 %   OPTeff                  - Finds the constant c which is associated to the requested efficiency                                                                - UTISTAT         - 2022 Nov 10
-%   OptimalCuttingFrequency - Computes the optimal cutting frequency for the Fourier estimator of integrated variance                                             - UTISTAT         - 2022 Nov 10
+%   OptimalCuttingFrequency - Computes the optimal cutting frequency for the Fourier estimator of integrated variance                                             - UTISTAT         - 2023 Apr 03
 %   OPTpsi                  - Computes psi function (derivative of rho function) for optimal weight function                                                      - UTISTAT         - 2022 Nov 10
 %   OPTpsider               - Computes derivative of psi function (second derivative of rho function) for optimal weight function                                 - UTISTAT         - 2022 Nov 10
 %   OPTpsix                 - Computes psi function (derivative of rho function) times x                                                                          - UTISTAT         - 2022 Nov 10

@@ -90,4 +90,20 @@
  Also in this case the unit circle is given and option axis equal is set. 
  
  In general if $\omega$ decreases, the length of the arrows increases
- and the coordinates of row points are squeezed towards the origin</P></html>
+ and the coordinates of row points are squeezed towards the origin
+
+ In the app it is also possible to color row points depending on the
+ orthogonal distance ($OD_i$) of each observation to the PCA subspace.
+ For example, if the subspace is defined by the first two principal
+ components, $OD_i$ is computed as: 
+
+
+ \[
+ OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
+ \]
+
+ If optional input argument bsb or bdp is specified it is possible to have
+ in the app two tabs which enable the user to select the breakdown point
+ of the analysis of the subset size to use in the svd. The units which are
+ declared as outliers or the units outside the subset are shown in the
+ plot with filled circles.</P></html>

@@ -1,15 +1,12 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>vervaatsim</title> <meta content="refpage" name="chunktype"><meta content="function:vervaatsim " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="vervaatsim Returns a Vervaat perpetuity" itemprop="description" name="description" /><h1 itemprop="title">vervaatsim</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/vervaatsim.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/vervaatsim.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/vervaatsim.html">http://rosa.unipr.it/FSDA/vervaatsim.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: vervaatsim</em></p><P>vervaatsim</P><P>Returns a Vervaat perpetuity</P><h2>Description</h2><P>This function allows to simulate exactly from a Vervaat perpetuity
- distribution with parameter $\beta \in (0,+\infty)$. The simulation
- method, by K. Cloud, M. Huber (2018), is accurate and very efficient: it
- is $\mathcal{O}(\beta \log(\beta))$, in the sense that it uses $T$
- uniform random variates, where $\mathbf{E}[T] \le \mathcal{O}(\beta
- \log(\beta))$. Therefore the algorithm is good even for $\beta \gg 1$.
- Remark: this function is recursive and cannot be easily extended to
- the generation of several vervaat numbers.
-
- The FSDA code has been translated from the R version of the authors.
- Below we give briefly some definitions, background and motivations. In
- the references, we also include several key works on the distribution.</P><h2>More About</h2><P>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>vervaatsim</title> <meta content="refpage" name="chunktype"><meta content="function:vervaatsim " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="vervaatsim Returns a Vervaat perpetuity" itemprop="description" name="description" /><h1 itemprop="title">vervaatsim</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/vervaatsim.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/vervaatsim.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/vervaatsim.html">http://rosa.unipr.it/FSDA/vervaatsim.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: vervaatsim</em></p><P>vervaatsim</P><P>Returns a Vervaat perpetuity</P><h2>Description</h2><P>This function generates random numbers from a Vervaat perpetuity
+ distribution with parameter $\beta \in (0,+\infty)$. Two alternative
+ methods are implemented. The first method calls FSDA function vervaatsim,
+ which is based on an accurate and efficient recursive simulation
+ algorithm by Cloud and Huber (2018). The second method calls FSDA
+ function vervaatxdf, which uses an algorithm by Barabesi and Pratelli
+ (2019) to generate the pdf and cdf of the distribution. Below we give
+ briefly some definitions, background, motivations and some key
+ references.</P><h2>More About</h2><P>
  A perpetuity is a random variable of the form:
  \[ Y = W_1 + W_1 \cdot W_2 + W_1 \cdot W_2 \cdot W_3 + \ldots \]
  where the $W_i$ are an independent, identically distributed (iid)

@@ -1,33 +1,2 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>regressHart</title> <meta content="refpage" name="chunktype"><meta content="function:regressHart " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="regressHart Fits a multiple linear regression model using ART heteroskedasticity" itemprop="description" name="description" /><h1 itemprop="title">regressHart</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/regressHart.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/regressHart.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/regressHart.html">http://rosa.unipr.it/FSDA/regressHart.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: regressHart</em></p><P>regressHart</P><P>Fits a multiple linear regression model using ART heteroskedasticity</P><h2>More About</h2><P>  The model is: 
-               $y=X*\beta+ \epsilon,
-               \epsilon ~ N(0, \Sigma) = N(0, \sigma^2*\Omega)$; 
-
-                   $\Omega=diag(\omega_1, ..., \omega_n)$; 
-
-                   $\omega_i=1+exp(z_i^T*\gamma)$; 
-
-                   $\Sigma=diag(\sigma_1^2, ...,
-                   \sigma_n^2)=diag(\sigma^2*\omega_1, ...,
-                   \sigma^2*\omega_n)$; 
-
-                   $var(\epsilon_i)=\sigma^2_i = \sigma^2 \omega_i \;\;\; i=1,
-                   ..., n$. 
-
-               $\beta$ = vector which contains regression parameters; 
-               $\gamma$= vector which contains skedastic parameters. 
-               REMARK 1: if $Z=log(X)$ then $1+exp(z_i^T*\gamma) =
-                         1+exp(\gamma_1)* \prod x_{ij}^{\gamma_j} \;\; j=1,
-                         ..., p-1$. 
-               REMARK2: if there is just one explanatory variable (say x)
-               which is responsible for heteroskedasticity and the model is
-               $\sigma_i=\sigma_2(1+ \theta*x_i^\alpha)$
-               then it is necessary to to supply Z as $Z=log(x)$. In this
-               case, given that the program automatically adds a column of
-               ones to Z: 
-                  $exp(Z_{1i}*\gamma_1 +Z_{2i}*\gamma_2)=
-                  exp(\gamma_1)*x_{1i}^{\gamma_2}$
-               therefore $exp(\gamma_1)$ is the estimate of $\theta$ while
-               $\gamma_2$ is the estimate of $\alpha$
-
-</P><h2>References</h2><P>Greene, W.H. (1987), "Econometric Analysis", Prentice Hall. [5th edition,
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>regressHart</title> <meta content="refpage" name="chunktype"><meta content="function:regressHart " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="regressHart Fits a multiple linear regression model using ART heteroskedasticity" itemprop="description" name="description" /><h1 itemprop="title">regressHart</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/regressHart.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/regressHart.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/regressHart.html">http://rosa.unipr.it/FSDA/regressHart.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: regressHart</em></p><P>regressHart</P><P>Fits a multiple linear regression model using ART heteroskedasticity</P><h2>References</h2><P>Greene, W.H. (1987), "Econometric Analysis", Prentice Hall. [5th edition,
  section 11.7.1 pp. 232-235, 7th edition, section  9.7.1 pp. 280-282]</P></html>

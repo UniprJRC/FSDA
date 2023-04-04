@@ -12,7 +12,7 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+3;
-RAW=mcd(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.83 seconds 
+RAW=mcd(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.57 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/mcd.html#Example_2'><img vspace="5" hspace="5" src="images\mcd_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\mcd_02.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_03.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_04.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>mcd monitoring the reweighted estimates.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
@@ -30,7 +30,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
 [RAW,REW,C]=mcd(Ycont);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> mcd applied to the aircraft data (default plots).</li></span></a></span></h3><div class="collapse"><p>
      See Pison et al. 2002, Metrika.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = load('aircraft.txt');
 Y = X(:,1:end-1);
-[RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.11 seconds 
+[RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.08 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/mcd.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\mcd_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\mcd_06.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_07.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_08.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> mcd applied to the aircraft data (plots using the scale of Pison et al).</li></span></a></span></h3><div class="collapse"><p>
      See Pison et al. 2002, Metrika.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = load('aircraft.txt');
 Y = X(:,1:end-1);
@@ -162,10 +162,10 @@ title('Corrected reweighted MCD')</pre></div></div><pre class="codeoutput">Tota
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double or structure</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_RAW" class="clearfix"></div><h3 id="output_argument_RAW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>RAW</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
 
  <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>h</code></td><td><p>scalar. The number of observations that have
-                    determined the MCD estimator</p></td></tr><tr valign="top"><td><code>loc</code></td><td><p>1 x v  vector containing raw MCD location of the data</p></td></tr><tr valign="top"><td><code>cov</code></td><td><p>robust MCD estimate of
-                    covariance matrix. It is the raw MCD covariance matrix
-                    (multiplied by a finite sample correction factor and
-                    an asymptotic consistency factor).</p></td></tr><tr valign="top"><td><code>cor</code></td><td><p>The raw MCD correlation matrix</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p>The determinant of the raw MCD covariance matrix.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>(v+1) x 1 vector containing the units forming best
+                    determined the MCD estimator</p></td></tr><tr valign="top"><td><code>loc</code></td><td><p>1 x v  vector containing raw MCD location of the data</p></td></tr><tr valign="top"><td><code>cov</code></td><td><p><p>robust MCD estimate of covariance matrix.</p> <p> 
+                    It is the raw MCD covariance matrix (multiplied by a
+                    finite sample correction factor and an asymptotic
+                    consistency factor).</p></p></td></tr><tr valign="top"><td><code>cor</code></td><td><p>The raw MCD correlation matrix</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p>The determinant of the raw MCD covariance matrix.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>(v+1) x 1 vector containing the units forming best
                     subset associated with MCD estimate of location.</p></td></tr><tr valign="top"><td><code>md</code></td><td><p>n x 1 vector containing the estimates of the robust
                     Mahalanobis distances (in squared units). This vector
                     contains the distances of each observation from the

@@ -1,35 +1,22 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>HYPrho</title> <meta content="refpage" name="chunktype"><meta content="function:HYPrho " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="HYPrho Computes rho function  using hyperbolic tangent estimator" itemprop="description" name="description" /><h1 itemprop="title">HYPrho</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/HYPrho.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/HYPrho.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/HYPrho.html">http://rosa.unipr.it/FSDA/HYPrho.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: HYPrho</em></p><P>HYPrho</P><P>Computes rho function  using hyperbolic tangent estimator</P><h2>More About</h2><P>
- Hampel et al. (1981) have introduced a rho function which
- minimizes the asymptotic variance of the regression M-estimate, subject
- to a bound on the supremum of the Change of Variance Curve of the
- estimate. This leads to the Hyperbolic Tangent $\rho$
- function, which, for suitable constants $c$, $k$, $A$, $B$ and
- $d$, is defined as
-
-
+ Function HYPpsix transforms vector $u$ as follows
+ 
  \[
-  HYPrho(u) =
+  HYPpsix(u) = 
   \left\{
-  \begin{array}{cc}
-   	 u^2/2 &	        |u| \leq d, \\
-   d^2/2 -2 \frac{A}{B} \log  \left\{ \cosh \left[ 0.5 \sqrt{ \frac{(k - 1)  B^2}{A} } (c - |u|) \right] \right\} & \\
-                          +2 \frac{A}{B}\log \left\{  \cosh \left[ 0.5\sqrt{\frac{(k - 1)  B^2}{A}}(c -d)\right] \right\} &  \\
-                &                               d \leq |u| &lt;  c, \\
-                 d^2/2 +2 \frac{A}{B} \log \left\{ \cosh \left[ 0.5 \sqrt{ \frac{(k - 1)  B^2}{A} }(c -d) \right] \right\}	 &
-                                                        |u| \geq c. \\
-   \end{array}
-   \right.
- \]
- where $0 &lt; d &lt; c$ is such that
- \[
- d = \sqrt{[A(k-1)]}\tanh [\frac{1}{2}\sqrt{\frac{(k-1)B^2}{A}}(c - d)],
- \]
- $A$ and $B$ satisfy suitable conditions, and $k$ is related to the bound
- in the Change of Variance Curve.
+    \begin{array}{cc}
+  	 u^2 &        |u| \leq  d \\
+ 
+ \sqrt{A (k - 1)}  \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) u &
+ 		         	                 d \leq |u| &lt;  c, \\
+                0 &                      |u| \geq c.
+ \end{array}
+    \right.
+  \]
+  	It is necessary to have $0 &lt; A &lt; B &lt; 2 normcdf(c)-1- 2 c normpdf(c) &lt;1$
 
- More precisely, it is necessary to have $0 &lt; A &lt; B &lt; 2 *normcdf(c)-1- 2*c*normpdf(c) &lt;1$
 
-</P><h2>References</h2><P>Hampel, F.R., Rousseeuw, P.J. and  Ronchetti E. (1981),
+</P><h2>References</h2><P>Hampel, F.R., Rousseeuw, P.J. and Ronchetti, E. (1981), 
  The Change-of-Variance Curve and Optimal Redescending M-Estimators,
- "Journal of the American Statistical Association", Vol. 76,
- pp. 643-648 [HRR]</P></html>
+ "Journal of the American Statistical Association", Vol. 76, 
+ pp. 643-648. [HRR]</P></html>

@@ -39,7 +39,8 @@ alphaX = 1;
 % panel of the gscatter plot.
 plots=struct;
 plots.name={'gscatter'};
-out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);</pre></div></div><pre class="codeoutput">
+ 75%[======================================&gt;            ]
 100%[===================================================]
 </pre><a href='http://rosa.unipr.it/fsda/tclustregeda.html#Example_2'><img vspace="5" hspace="5" src="images\tclustregeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustregeda: example with multiple explanatory variables, with yXplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X  = load('X.txt');
 y = X(:,end);

@@ -1,12 +1,12 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>HAeff</title> <meta content="refpage" name="chunktype"><meta content="function:HAeff " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="HAeff Finds the tuning constant that guarrantees a requested asymptotic efficiency" itemprop="description" name="description" /><h1 itemprop="title">HAeff</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/HAeff.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/HAeff.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/HAeff.html">http://rosa.unipr.it/FSDA/HAeff.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: HAeff</em></p><P>HAeff</P><P>Finds the tuning constant that guarrantees a requested asymptotic efficiency</P><h2>More About</h2><P>
  Function HApsi transforms vector u as follows.
   \[
-  HApsi(u)  = \left\{
+  HApsi(u)  = \left\{   
   \begin{array}{cc}
     u & |u| &lt;= a                                       \\
     a \times sign(u) & a &lt;= |u| &lt; b                    \\
     a \frac{c-|u|}{c-b} \times sign(u) & b &lt;= |u| &lt;  c \\
-    0 & |u| &gt;= c
+    0 & |u| &gt;= c 
   \end{array} \right.
  \]
 
@@ -15,14 +15,11 @@
                    $c$= ctun *param(3).
 
              The default is
-                   $a$= 2*ctun.
-                   $b$= 4*ctun.
-                   $c$= 8*ctun.
+                   $a$= 2*ctun. 
+                   $b$= 4*ctun. 
+                   $c$= 8*ctun. 
 
-	It is necessary to have 0 &lt;= a &lt;= b &lt;= c.
-
- Parameter ctun multiplies parameters (a,b,c) of Hampel estimator.
-
+	It is necessary to have 0 &lt;= a &lt;= b &lt;= c
 
 </P><h2>References</h2><P>Hoaglin, D.C., Mosteller, F., Tukey, J.W. (1982), "Understanding Robust and
  Exploratory Data Analysis", Wiley, New York.</P></html>
