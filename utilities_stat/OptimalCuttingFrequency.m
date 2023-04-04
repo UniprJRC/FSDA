@@ -5,8 +5,9 @@ function Nopt = OptimalCuttingFrequency(x,t)
 %<a href="matlab: docsearchFS('OptimalCuttingFrequency')">Link to the help function</a>
 %
 % OptimalCuttingFrequency computes the optimal cutting frequency for
-% running  the Fourier estimator of the integrated variance
-% on noisy timeseries data.
+% running  the Fourier estimator of the integrated variance on noisy
+% timeseries data. Note that this function calls function autocorr
+% which needs the Econometric toolbox.
 %
 % Required input arguments:
 %
