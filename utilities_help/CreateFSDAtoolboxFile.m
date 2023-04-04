@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.6.8';
+newVersion = '8.7.0.0';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='Added description to all datasets';
+commentRelease='FSDA 2023A (official release)';
 
 % Specify folder where to create the toolbox project
 FSDAProjFolder='D:\tmp';
@@ -269,8 +269,10 @@ options.ToolboxGettingStartedGuide=[FSroot fsep 'doc' fsep 'GettingStarted.mlx']
 %%% Publish contents file in the root inside subfolder html
 % This instruction is necessary in order to display subfolder examples in
 % Mathworks web site
-publish([pwd filesep 'FSDA' fsep 'Contents.m']);
-
+oldFolder=pwd;
+cd FSDA   
+publish('Contents.m');
+cd(oldFolder)
 
 % add gallery files
 options.AppGalleryFiles=[];
