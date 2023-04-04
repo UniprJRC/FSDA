@@ -1,17 +1,17 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>OPTpsider</title> <meta content="refpage" name="chunktype"><meta content="function:OPTpsider " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="OPTpsider Computes derivative of psi function (second derivative of rho function) for optimal weight function" itemprop="description" name="description" /><h1 itemprop="title">OPTpsider</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/OPTpsider.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/OPTpsider.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/OPTpsider.html">http://rosa.unipr.it/FSDA/OPTpsider.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: OPTpsider</em></p><P>OPTpsider</P><P>Computes derivative of psi function (second derivative of rho function) for optimal weight function</P><h2>More About</h2><P>
- Function OPTpsider transforms vector x as follows
+ function OPTpsi transforms vector u as follows
 
+ 
  \[
- \psi'(x) = \begin{cases}  \frac{2.7692}{c^2}   \qquad |x| \leq \frac{2}{3} c \\
-  -\frac{5.3834}{c^2} +\frac{3*43.0672 x^2}{c^4}   -\frac{5*69.9840 x^4}{c^6}  +\frac{7*32.3 x^6}{c^8} 
+ \psi(x) =\rho' (x) = \begin{cases}  \frac{2.7692 x}{c^2}   \qquad |x| \leq \frac{2}{3} c \\
+  -\frac{5.3834 x}{c^2} +\frac{43.0672 x^3}{c^4}   -\frac{69.9840 x^5}{c^6}  +\frac{32.3 x^7}{c^8} 
    \qquad \frac{2}{3} c &lt; |x|  \leq c   \\
    0 & \; \vert x \vert &gt; c. \end{cases}
  \]
-
-
+ 
  Remark: Optimal psi-function is almost linear around u = 0 in accordance with
  Winsor's principle that all distributions are normal in the middle.
- This means that  \psi (u)/u is approximately constant over the linear region of \psi,
+ This means that  $\psi(u)/u$ is approximately constant over the linear region of $\psi$,
  so the points in that region tend to get equal weight.
 
 </P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory

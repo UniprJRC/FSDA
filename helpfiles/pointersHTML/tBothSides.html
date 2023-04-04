@@ -1,39 +1,2 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tBothSides</title> <meta content="refpage" name="chunktype"><meta content="function:tBothSides " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tBothSides Allows users to transform both sides of a (nonlinear) regression model" itemprop="description" name="description" /><h1 itemprop="title">tBothSides</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tBothSides.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tBothSides.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tBothSides.html">http://rosa.unipr.it/FSDA/tBothSides.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tBothSides</em></p><P>tBothSides</P><P>Allows users to transform both sides of a (nonlinear) regression model</P><h2>More About</h2><P>
-
- There is sometimes a strong, often theoretically derived, relationship
- between the response and the model $\eta(x,\beta)$, combined with
- variance heterogeneity. Box-Cox transformation of the response to achieve
- stability of variance can destroy the relationship between E($Y$) and
- $\eta(x,\beta)$. For example, the kinetic models of chemistry provide
- deterministic relationships between concentrations of reactants and
- products and time and temperature. A well-known simple example is the
- Michaelis-Menten model for enzyme kinetics in which the response goes
- from zero to an asymptotic value $V_{\mbox{max}}$.  Transforming the
- response to $y^{\lambda}$ would result in a different range for the
- transformed response.
- 
- Carrol and Ruppert (1988) [Chapter~4] developed a transform both sides
- model for such problems, motivated by theoretical models for sockeye
- salmon breeding. The transformation model is
-  \begin{equation}
-  \label{BSmodel}
-  (y^{\lambda} - 1)/\lambda = \{\eta(x,\beta)^{\lambda} - 1\}/\lambda + \epsilon,
-  \end{equation}
-  where the independent errors are normally distributed. As with the
-  Box-Cox transformation, the parameters $\lambda$ and $\beta$ are found
-  by minimizing the residual sum of squares in the regression model which
-  includes the Jacobian of the transformation, again $\dot{y}$.
-  The theoretical procedure is to minimize the residual sum of squares
-  using $y(\lambda)/\dot{y}^{\lambda -1}$, or equivalently
-  $y(\lambda)/\dot{y}^{\lambda}$, as the response and the similarly
-  transformed value of $\eta$ as the model. Carroll and Ruppert comment
-  that, unless $\lambda$ is fixed, it is not possible to use standard
-  nonlinear regression routines for this minimization as such  routings
-  typically do not allow the response to depend upon unknown parameters.
-  They reformulate the problem in terms of a `pseudo model'. This is what
-  is implemented in this routine.
-
-
-
-</P><h2>References</h2><P>Box, G.E.P. and Cox, D.R. (1964), The analysis of transformations,
- Journal of the Royal Statistical Society, Vol. 26, pp. 211-252.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tBothSides</title> <meta content="refpage" name="chunktype"><meta content="function:tBothSides " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tBothSides Allows users to transform both sides of a (nonlinear) regression model" itemprop="description" name="description" /><h1 itemprop="title">tBothSides</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tBothSides.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tBothSides.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tBothSides.html">http://rosa.unipr.it/FSDA/tBothSides.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tBothSides</em></p><P>tBothSides</P><P>Allows users to transform both sides of a (nonlinear) regression model</P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+ and Methods", Wiley, New York.</P></html>

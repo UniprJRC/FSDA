@@ -5,7 +5,7 @@
 %   Name                 - Description                                                                                                     - Category       - Date last modified
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %   ClusterRelabel       - Enables to control the labels of the clusters which contain predefined units                                    - UTISTAT        - 2022 Nov 10
-%   ctlcurves            - Computes Classification Trimmed Likelihood Curves                                                               - CLUS-RobClaMULT- 2022 Nov 10
+%   ctlcurves            - Computes Classification Trimmed Likelihood Curves                                                               - CLUS-RobClaMULT- 2023 Mar 02
 %   dempk                - Performs a merging of components found by tkmeans                                                               - CLUS-RobClaMULT- 2022 Nov 10
 %   FSMmmdrs             - Performs random start monitoring of minimum Mahalanobis distance                                                - CLUS-RobClaMULT- 2022 Nov 10
 %   FSRmdrrs             - Performs random start monitoring of minimum deletion residual                                                   - CLUS-RobClaREG - 2022 Nov 10

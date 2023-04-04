@@ -1,20 +1,39 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>TBpsi</title> <meta content="refpage" name="chunktype"><meta content="function:TBpsi " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="TBpsi Computes psi function (derivative of rho function) for Tukey's biweight" itemprop="description" name="description" /><h1 itemprop="title">TBpsi</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/TBpsi.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/TBpsi.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/TBpsi.html">http://rosa.unipr.it/FSDA/TBpsi.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: TBpsi</em></p><P>TBpsi</P><P>Computes psi function (derivative of rho function) for Tukey's biweight</P><h2>More About</h2><P>
- Function TBpsi transforms vector u as follows 
 
- \[
- TBpsi(u)= \left\{
-    \begin{array}{cc}
-  (c^2/6) u[1-(u/c)^2]^2   & |u/c| \leq 1 \\
-  0                     &  |u/c|&gt;1   \\
- \end{array}
-    \right.
-  \]
- See equation (2.38) p. 29 of Maronna et al. (2006)
+ There is sometimes a strong, often theoretically derived, relationship
+ between the response and the model $\eta(x,\beta)$, combined with
+ variance heterogeneity. Box-Cox transformation of the response to achieve
+ stability of variance can destroy the relationship between E($Y$) and
+ $\eta(x,\beta)$. For example, the kinetic models of chemistry provide
+ deterministic relationships between concentrations of reactants and
+ products and time and temperature. A well-known simple example is the
+ Michaelis-Menten model for enzyme kinetics in which the response goes
+ from zero to an asymptotic value $V_{\mbox{max}}$.  Transforming the
+ response to $y^{\lambda}$ would result in a different range for the
+ transformed response.
+ 
+ Carrol and Ruppert (1988) [Chapter~4] developed a transform both sides
+ model for such problems, motivated by theoretical models for sockeye
+ salmon breeding. The transformation model is
+  \begin{equation}
+  \label{BSmodel}
+  (y^{\lambda} - 1)/\lambda = \{\eta(x,\beta)^{\lambda} - 1\}/\lambda + \epsilon,
+  \end{equation}
+  where the independent errors are normally distributed. As with the
+  Box-Cox transformation, the parameters $\lambda$ and $\beta$ are found
+  by minimizing the residual sum of squares in the regression model which
+  includes the Jacobian of the transformation, again $\dot{y}$.
+  The theoretical procedure is to minimize the residual sum of squares
+  using $y(\lambda)/\dot{y}^{\lambda -1}$, or equivalently
+  $y(\lambda)/\dot{y}^{\lambda}$, as the response and the similarly
+  transformed value of $\eta$ as the model. Carroll and Ruppert comment
+  that, unless $\lambda$ is fixed, it is not possible to use standard
+  nonlinear regression routines for this minimization as such  routings
+  typically do not allow the response to depend upon unknown parameters.
+  They reformulate the problem in terms of a `pseudo model'. This is what
+  is implemented in this routine.
 
- Remark: Tukey's biweight  psi-function is almost linear around u = 0 in accordance with
- Winsor's principle that all distributions are normal in the middle.
- This means that  \psi (u)/u is approximately constant over the linear region of \psi,
- so the points in that region tend to get equal weight.
 
-</P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
- and Methods", Wiley, New York.</P></html>
+
+</P><h2>References</h2><P>Box, G.E.P. and Cox, D.R. (1964), The analysis of transformations,
+ Journal of the Royal Statistical Society, Vol. 26, pp. 211-252.</P></html>

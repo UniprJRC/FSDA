@@ -132,21 +132,20 @@ biplotFS(citiesItaly)</pre></div></div><a href='http://rosa.unipr.it/fsda/biplo
 </code>,<code> 'standardize',false
 </code>,<code> 'showRowNames',false
 </code>,<code> 'showArrows',false
-</code></code></span></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;units forming subset on which to perform PCA.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector containing the list of the untis
-                  to use to compute the svd. The other units are projected
-                  in the space of the first two PC. bsb can be either a
-                  numeric vector of length m (m&lt;=n) containin the list of
-                  the units (e.g. 1:50) or a logical vector of length n
-                  containing the true for the units which have to be used.</p> <p>
-                  For example bsb=true(n,1), bsb(13)=false; excludes from
-                  the svd unit number 13. Note that if bsb is supplied bdp
-                  must be empty.</p><p>
+</code></code></span></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;units forming subset on which to perform PCA.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector containing the list of the untis to use to
+                  compute the svd. The other units are projected in the
+                  space of the first two PC. bsb can be either a numeric
+                  vector of length m (m&lt;=n) containin the list of the
+                  units (e.g. 1:50) or a logical vector of length n
+                  containing the true for the units which have to be used
+                  in the calculation of svd. For example bsb=true(n,1),
+                  bsb(13)=false; excludes from the svd unit number 13.</p> <p>
+                  Note that if bsb is supplied bdp must be empty.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsb',[2 10:90 93]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double or logical</code></p></div></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
-               the algorithm should resist. In this case any value greater
-               than 0 but smaller or equal than 0.5 will do fine.</p> <p>
-               Note that if bdpis supplied bsb
-                  must be empty.</p><p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double or logical</code></p></div></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers the algorithm should
+               resist. In this case any value greater than 0 but smaller
+               or equal than 0.5 will do fine. Note that if bdp is
+               supplied bsb must be empty.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',0.4
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_standardize" class="clearfix"></div><h3 id="input_argument_namevalue_standardize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>standardize</code> &#8212;standardize data.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Boolean which specifies
                whether to standardize the variables, that is we operate on
@@ -174,7 +173,7 @@ biplotFS(citiesItaly)</pre></div></div><a href='http://rosa.unipr.it/fsda/biplo
                    arrows (associated labels) labels are shown in the biplot  (default) 
                    else there are hidden.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'showArrows',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p>when the APP is closed in the base workspace a new variable
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p>when the biplotAPP is closed in the base workspace a new variable
          called bsbfinalFromAPP is created which contains a logical vector
          of length n containing true for the units which have been used in
-         the svd.</div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'deeplearning/ref/processpca.html'))" itemprop="url"><span itemprop="name"><code>pca</code></span></a></span> | <span itemprop="seealso"><a href="biplotFS.html" itemprop="url"><span itemprop="name"><code>biplotFS</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+         the svd.</div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'deeplearning/ref/neuronpca.html'))" itemprop="url"><span itemprop="name"><code>pca</code></span></a></span> | <span itemprop="seealso"><a href="biplotFS.html" itemprop="url"><span itemprop="name"><code>biplotFS</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

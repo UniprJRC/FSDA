@@ -1,31 +1,49 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tclustregeda</title> <meta content="refpage" name="chunktype"><meta content="function:tclustregeda " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustregeda Performs robust linear grouping analysis for a series of values of the trimming factor" itemprop="description" name="description" /><h1 itemprop="title">tclustregeda</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tclustregeda.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tclustregeda.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tclustregeda.html">http://rosa.unipr.it/FSDA/tclustregeda.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tclustregeda</em></p><P>tclustregeda</P><P>Performs robust linear grouping analysis for a series of values of the trimming factor</P><h2>Description</h2><P>tclustregeda performs tclustreg for a series of values of the trimming
-   factor alpha, for given k (number of groups), restrfactor (restriction
-   factor) and alphaX (second level trimming or cluster weighted model).
-   In order to increase the speed of the computations, parfor is used.</P><h2>More About</h2><P>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tclustregeda</title> <meta content="refpage" name="chunktype"><meta content="function:tclustregeda " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustregeda Performs robust linear grouping analysis for a series of values of the trimming factor" itemprop="description" name="description" /><h1 itemprop="title">tclustregeda</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tclustregeda.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tclustregeda.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tclustregeda.html">http://rosa.unipr.it/FSDA/tclustregeda.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tclustregeda</em></p><P>tclustregeda</P><P>Performs robust linear grouping analysis for a series of values of the trimming factor</P><h2>More About</h2><P>
+  Computational issues to be addressed in future releases.
+  [1]
+  FSDA function "wthin" uses the MATLAB function ksdensity. The calls to
+  ksdensity have been optimized. The only possibility to further reduce
+  time execution is to replace ksdensity with a more efficient kernel
+  density estimator.
+  [2]
+  The weighted version of tclustreg requires weighted sampling. This is
+  now implemented in randsampleFS. A computaionally more efficient
+  algorithm, based on a binary tree approach introduced by
+      Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
+      Sampling Without Replacement", SIAM Journal of Computing,
+      9(1):111-113.
+  is provided by recent releases of the MATLAB function datasample.
+  Unfortunately this function spends most of the self running time useless
+  parameter checking. To copy the function in the FSDA folder
+  FSDA/combinatorial, possibly rename it, and remove the option parameters
+  checks, is not sufficient, as datasample relies on a mex file wswor
+  which is platform dependent. The issue is usually referred to as "code
+  signature".
+  [3]
+  In the plots, the use of text to highlight the groups with their index
+  is terribly slow (more than 10 seconds to generate a scatter of 7000
+  units. ClickableMultiLegend and legend are also slow.
+  [4]
+  FSDA function restreigen could be improved. In some cases it is one of
+  the most expensive functions.
 
- This procedure extends to tclustreg the so-called monitoring approach.
- The philosophy is to investigate how the results change as the trimming
- proportion alpha reduces. This function enables us to monitor the change
- in classification (measured by the ARI index) and the change in
- regression coefficients and error variances (measured by the relative
- squared Euclidean distances).
- Note that there is a non-identifiability of a finite mixture distribution
- caused by the invariance of the mixture density function to components
- relabeling. In order to make sure that consistent labels are used for the
- groups, between two consecutive values of alpha, we call
- we assign label r to a group if this group shows the smallest distance
- with group r for the previous value of alpha.
- More precisely, once the labelling is fixed for the largest value of the
- trimming factor supplied, if $\alpha_r$ and $\alpha_s$ denote two
- consecutive levels of trimming ($\alpha_r&gt;\alpha_s$) and
- \beta_{j,\alpha_r}
-given \beta_{j,\alpha_r}
+ REMARK: trimming vs thinning
+ - trimming is the key feature of TCLUST, giving robustness to the model.
+ - thinning is a new denoising feature introduced to mitigate the
+   distorting effect of very dense data areas. It is implemented via
+   observation weighting.
+ For the sake of code readability, the relevant sections of the code are
+ identified with a "TRIMMING" or "THINNING" tag.
 
- In order to be consistent
- along the different runs it is possible to specify through option
- UnitsSameGroup the list of the units which must (whenever possible) have
- a particular label.
-
+ REMARK: the number of parameters to penalize the likelihood are given
+ below:
+ $k(p+1)$ = number of regression coefficients including the intercept.
+ $k-1$ = number of proportions -1 (because their sum is 1).
+ $(k-1)(1-1/restrfact(1))+1$ = constraints on the $\sigma^2_j$.
+ To the above parameters, if $alphaX=1$ we must add:
+ $k(p-1)p/2$ = rotation parameters for $\Sigma_X=cov(X)$.
+ $(kp-1)(1-1/restrfactor(2))+1$ = eigenvalue parameters for
+ $\Sigma_X=cov(X)$.
 
 </P><h2>References</h2><P>Mayo-Iscar A. (2016), The joint role of trimming and constraints in
  robust estimation for mixtures of gaussian factor analyzers,

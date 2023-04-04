@@ -22,7 +22,7 @@ out1=rcontFS(I,J,nrowt,ncolt);
 N=out1.m144;
 RAW=mcdCorAna(N,'plots',0);
 ini=round(sum(sum(RAW.N))/4);
-out=FSCorAnaeda(RAW,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.26 seconds 
+out=FSCorAnaeda(RAW,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.24 seconds 
 Creating empirical confidence band for minimum (weighted) Mahalanobis distance
 </pre><a href='http://rosa.unipr.it/fsda/FSCorAnaeda.html#Example_2'><img vspace="5" hspace="5" src="images\FSCorAnaeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSCorAnaeda starting from a random initial subset.</li></span></a></span></h3><div class="collapse"><p>
      Generate contingency table of size 50-by-5 with total sum of n_ij=2000.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">I=50;

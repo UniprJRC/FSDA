@@ -1,25 +1,1 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>RandIndexFS</title> <meta content="refpage" name="chunktype"><meta content="function:RandIndexFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="RandIndexFS Calculates Rand type Indices to compare two partitions" itemprop="description" name="description" /><h1 itemprop="title">RandIndexFS</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/RandIndexFS.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/RandIndexFS.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/RandIndexFS.html">http://rosa.unipr.it/FSDA/RandIndexFS.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: RandIndexFS</em></p><P>RandIndexFS</P><P>Calculates Rand type Indices to compare two partitions</P><h2>Description</h2><P>Suppose we want to compare two partitions summarized by the contingency
- table $T=[n_{ij}]$ where $i=1, 2, ..., r$ and $j=1,...,c$ and $n_{ij}$
- denotes the number of data points which are in cluster i in the first
- partition and in cluster j in the second partition. Let A denote the
- number of all pairs of data points which are either put into the same
- cluster by both partitions or put into different clusters by both
- partitions. Conversely, let D denote the number of all pairs of data
- points that are put into one cluster in one partition, but into different
- clusters by the other partition. The partitions disagree for all pairs D
- and agree for all pairs A. A+D=totcomp= total number of comparisons.
- We can measure the agreement by the Rand index A/(A+D)=A/(totcomp) which
- is invariant with respect to permutations of the columns or rows of T.
- The index has to be corrected for agreement by chance if the sizes of the
- clusters are not uniform (which is usually the case). Since the Rand
- index lies between 0 and 1, the expected value of the Rand index
- (although not a constant value) must be greater than or equal to 0. On
- the other hand, the expected value of the adjusted Rand index has value
- zero and the maximum value of the adjusted Rand index is also 1. Hence,
- there is a wider range of values that the adjusted Rand index can take
- on, thus increasing the sensitivity of the index. The formula of the
- adjusted Rand index (AR) is given below
- \[
-  AR= \frac{\mbox{RI- Expected value of RI}}{\mbox{Max Index  - Expected value of RI}}
- \]</P><h2>References</h2><P>Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
- Classification", Vol. 2, pp. 193-218.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>RandIndexFS</title> <meta content="refpage" name="chunktype"><meta content="function:RandIndexFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="RandIndexFS Calculates Rand type Indices to compare two partitions" itemprop="description" name="description" /><h1 itemprop="title">RandIndexFS</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/RandIndexFS.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/RandIndexFS.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/RandIndexFS.html">http://rosa.unipr.it/FSDA/RandIndexFS.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: RandIndexFS</em></p><P>RandIndexFS</P><P>Calculates Rand type Indices to compare two partitions</P></html>
