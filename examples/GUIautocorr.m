@@ -1,5 +1,5 @@
 function out = GUIautocorr(y, varargin)
-%GUIcorr shows the necessary calculations to obtain the autocorrelation in a GUI.
+%GUIautocorr shows the necessary calculations to obtain the autocorrelation in a GUI.
 %
 %<a href="matlab: docsearchFS('GUIautocorr')">Link to the help function</a>
 %
