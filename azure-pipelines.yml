@@ -44,7 +44,15 @@ jobs:
       CATEGORY_TO_TEST: $(categoryName)
   timeoutInMinutes: 365 
   steps:
-    - task: InstallMATLAB@0 
+    - task: InstallMATLAB@1
+      inputs:
+        release: R2023a
+        products: 
+          MATLAB
+          Parallel_Computing_Toolbox 
+          Statistics_and_Machine_Learning_Toolbox
+          Econometrics_Toolbox
+          Optimization_Toolbox
     - task: RunMATLABCommand@0 
       inputs:
         command: "run runAllMyTestsFS.m" 
@@ -66,4 +74,3 @@ jobs:
       inputs:
         codeCoverageTool: 'Cobertura'
         summaryFileLocation: '**/coverage-*.xml'
-

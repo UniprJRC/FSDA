@@ -9,12 +9,12 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 % Required input arguments:
 %
-%    pd     : can be one of the following. 
+%    pd     : can be one of the following.
 %             - A probability density object returned by makedist.
-%             - A structure containing two fields: 
+%             - A structure containing two fields:
 %               (i) pd.distname, a character array with a valid distribution
 %               name (all those accepted by makedist);
-%               (ii) pd.x, a numeric vector containing the data sample 
+%               (ii) pd.x, a numeric vector containing the data sample
 %               to be used to estimate the parameters of the distribution.
 %             - A structure containing three fields with these features:
 %               (i)  pd.distname containing the character array 'user'.
@@ -22,7 +22,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %                    expressing the probability density function;
 %               (iii) pd.usercdf containing a user defined function handle
 %                    expressing the cumulative density function;
-%               (iv) pd.x, a numeric vector containing the data sample 
+%               (iv) pd.x, a numeric vector containing the data sample
 %                    to be used to estimate the parameters of the
 %                    user-defined distribution. The estimation is done
 %                    by maximum likelihood using MATLAB function mle.
@@ -39,16 +39,21 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 % Optional input arguments:
 %
-%    userColor :   The color of the shaded area. Character. It can be any
-%                  of the LineSpec colors properties of MATLAB plot funtion.
-%                  It can also be a RGB triplet specification. Therefore,
-%                  user can use FSDA function FSColors to generate the
-%                  triplet.
+%    userColor :   The color of the shaded area. Character, 2-element
+%                  character array, RGB triplet, 2-row RGB triplet. The
+%                  character can be any of the LineSpec colors properties
+%                  of MATLAB plot funtion. The RGB triplet specification is
+%                  defined as usual, that is with three numbers taking
+%                  values in [0 1]: to generate the triplet, the user can
+%                  use FSDA function FSColors.
 %                   Example - 'userColor', 'r'
 %                   Data Types - character
+%                   Example - 'userColor', 'rb'
+%                   Data Types - 2-character array
 %                   Example - 'userColor', FSColors.lightgrey.RGB
 %                   Data Types - 3-element array for a RGB triplet
-%
+%                   Example - 'userColor', [FSColors.lightgrey.RGB ; FSColors.grey.RGB]
+%                   Data Types - 2-row with RGB triplets
 % Output:
 %
 %    p:   Probability covered by the shaded area. Scalar. It is a value in [0 1].
@@ -91,17 +96,17 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    %% A Gamma with parameter values a = 3 and b = 1, outside [2 3].
-    pd = makedist('Gamma','a',3,'b',1);
-    specs  = [2 3];
+    %% A Beta with parameter values a = 2 and b = 4, outside [0.2 0.4].
+    pd = makedist('Beta','a',2,'b',4)
+    specs  = [0.2 0.4];
     region = 'outside';
     [p, h] = distribspec(pd, specs, region);
 %}
 
 %{
-    % A Gamma with parameter values a = 3 and b = 1, in [2 inf].
-    pd = makedist('Gamma','a',3,'b',1);
-    specs  = [2 inf];
+    % A Beta with parameter values a = 2 and b = 4, in [0.4 inf].
+    pd = makedist('Beta','a',2,'b',4)
+    specs  = [0.4 inf];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region);
 %}
@@ -162,24 +167,38 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    %% A Gamma as above, using userColor with RGB triplet specification
-    % returned by FSColors.
-    pd = makedist('Gamma','a',3,'b',1);
-    specs  = [-inf 2];
+    %% A Half Normal using userColor with a color for each outside region
+    pd = makedist('HalfNormal','mu',0,'sigma',1.5)
+    specs  = [1 3];
+    region = 'outside';
+    useColor = 'cg';
+    [p, h] = distribspec(pd, specs, region, 'userColor', useColor);
+
+    useColor = [1 0.5 0.5 ; 0.5 0.8 0.3];
+    [p, h] = distribspec(pd, specs, region, 'userColor', useColor);
+
+    cascade;
+%}
+
+%{
+    %% A Half Normal using userColor with RGB triplet specification
+    % The triplet is returned by FSColors.
+    pd = makedist('HalfNormal','mu',0,'sigma',1.5)
+    specs  = [-inf 1];
     region = 'inside';
     RGB_vector = FSColors.lightgrey.RGB;
     [p, h] = distribspec(pd, specs, region, 'userColor',RGB_vector);
 %}
 
 %{
-    %% A sample of n=100 elements extracted from a Gamma, with distname.
+    %% A sample of n=100 elements extracted from a Nakagami, with distname.
     rng(12345);
-    distname    = 'Gamma';
-    x           = random(distname,3,1,[100,1]);
+    distname    = 'Nakagami';
+    x           = random(distname,0.5,1,[100,1]);
     pd          = struct;
     pd.x        = x;
     pd.distname = distname;
-    specs  = [-inf 2];
+    specs  = [-inf 1];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region);
 %}
@@ -188,29 +207,28 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     %% A sample of n=100 elements extracted from a T(5) without distname.
     rng(12345);
     x      = random('T',5,[100,1]);
-    specs  = [-inf 2];
+    specs  = [-inf 1.5];
     region = 'inside';
     [p, h] = distribspec(x, specs, region);
 %}
 
 %{
-    % A sample generated from a user-defined distribution with a given
-    % parameter lambda. 
+    %% A sample from a user-defined distribution with given parameter lambda. 
     lambda = 5;
-    f = @(data) lambda*exp(-lambda*data);
-    
+    userpdf = @(data,lambda) lambda*exp(-lambda*data);
+    usercdf = @(data,lambda) 1-exp(-lambda*data);
+
     rng(12345);
     n = 500;
     X = zeros(n,1);
     u = rand(n,1);
     for i = 1:numel(u)
-      fun  = @(x)integral(f,0,x)-u(i);
+      fun  = @(x)integral(@(x)userpdf(x,lambda),0,x) - u(i);
       X(i) = fzero(fun,0.5);
+      % The previous two lines have the solution below, but exemplify the
+      % approach for a generic function without closed formula.
+      % X(i) = -(1/lambda)*log(1-u(i)); % p. 211 Mood Graybill and Boes
     end
-    
-    %Same as f, but with the parameter lambda
-    userpdf = @(data,lambda) lambda*exp(-lambda*data);
-    usercdf = @(data,lambda) 1-exp(-lambda*data);
     
     %Estimate the parameter, lambda, of the custom distribution for the censored sample data.
     parhat = mle(X,'pdf',userpdf,'cdf',usercdf,'start',0.05);
@@ -219,43 +237,53 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     histogram(X,100,'Normalization','pdf');
     hold on
     plot(X,userpdf(X,parhat),'.')
-    title({['The sample generated by ' char(f)] , ['with $\lambda=$' num2str(lambda)]} , 'Interpreter' , 'Latex');
+    title({['The sample generated by ' char(userpdf)] , ['with $\lambda=$' num2str(lambda)]} , 'Interpreter' , 'Latex');
 
     % now, use distribspec with userpdf
-    specs  = [-inf 0.1];
+    specs  = [-inf 0.2];
     region = 'inside';
     pd          = struct;
     pd.x        = X;
     pd.distname = 'user';
-    pd.userpdf  = userpdf;
     pd.usercdf  = usercdf;
 
     [p, h] = distribspec(pd, specs, region);
+
+    rmfield(pd,'usercdf');
+    pd.userpdf  = userpdf;
+    [p, h] = distribspec(pd, specs, region);
+
     cascade;
 %}
 
 %% Beginning of code
 
 fittedUsingKernel   = false;
-fittedUsingDistname = false; 
+fittedUsingDistname = false;
 userpdf             = [];
+usercdf             = [];
+prob                = (0.0001:0.0004:0.9999)';
 
-% In the next 'if' statement: 
+%% Depending on pd, computation of x and y
+
+% In the next 'if' statement:
 % - we check inputs and invalid arguments
 % - we generate a set of quantiles and the respective x and y values for
 %   the selected distribution/data/parameters
 
 if isobject(pd) && isprop(pd,'DistributionName')
+
     % CASE 1. pd CONTAINS A PROBABILITY DISTRIBUTION OF makedist.m FUNCTION
 
     % set of values based on the given probability density object
-    prob = (0.0001:0.0004:0.9999)';
+    %prob = (0.0001:0.0004:0.9999)';
     x = icdf(pd,prob);
     y = pdf(pd, x);
 
 elseif isstruct(pd)
+
     % CASE 2. pd CONTAINS A PROBABILITY DISTRIBUTION AND A SAMPLE
-    
+
     % do the necessary checks on the structure provided by the user
     if ~and(isfield(pd,'distname') , isfield(pd,'x'))
         error('FSDA:distribspec:BadFilds','Bad filds or filed names: please specify "distname" and "x".');
@@ -267,8 +295,18 @@ elseif isstruct(pd)
             if ~isfield(pd,'userpdf') && ~isfield(pd,'usercdf')
                 error('FSDA:distribspec:BadUserDistribFild','User distribution missing: please specify your distribution as function handle.');
             else
-                userpdf = pd.userpdf;
-                usercdf = pd.usercdf;               
+                if isfield(pd,'userpdf')
+                    userpdf   = pd.userpdf;
+                    parnum_p  = nargin(userpdf)-1;
+                else
+                    parnum_p  = -1; % there is no userpdf
+                end
+                if isfield(pd,'usercdf')
+                    usercdf = pd.usercdf;
+                    parnum_c  = nargin(usercdf)-1;
+                else
+                    parnum_c  = -1; % there is no usercdf
+                end
             end
         end
     end
@@ -276,44 +314,93 @@ elseif isstruct(pd)
         error('FSDA:distribspec:BadSampleX','Bad sample: the array x must be numeric.');
     end
 
-    if isempty(userpdf)
+    if isempty(userpdf) && isempty(usercdf)
+
         % CASE 2.1: THE PROBABILITY DISTRIBUTION IS ONE OF makedist
-        
-        fittedUsingDistname = true; 
-    
+
+        fittedUsingDistname = true;
+
         % set the values based on the given probability density name and sample
         sample = pd.x; sample = sample(:); % fitdist requires x to be a column vector
         pd = fitdist(sample,pd.distname);
-        prob = (0.0001:0.0004:0.9999)';
+        %prob = (0.0001:0.0004:0.9999)';
         x = icdf(pd,prob);
         y = pdf(pd, x);
 
     else
-        % CASE 2.2: THE PROBABILITY DISTRIBUTION IS USER-DEFINED 
+
+        % CASE 2.2: THE PROBABILITY DISTRIBUTION IS USER-DEFINED
 
         sample  = pd.x; sample = sample(:);
-        prob    = (0.0001:0.0004:0.9999)';
-        parnum  = nargin(userpdf)-1; 
-        if parnum > 0
+        %prob    = (0.0001:0.0004:0.9999)';
+        parnum  = max(parnum_c,parnum_p) ; %nargin(userpdf)-1;
+
+        if parnum_c > 0 && parnum_p > 0
+            % the user has provided both the pdf and cdf
             parhat = mle(sample,'pdf',userpdf,'cdf',usercdf,'start',0.05);
             x = usercdf(prob,parhat);
             y = userpdf(x,parhat);
+
+        elseif parnum_p > 0 && parnum_c == -1
+            % the user has provided the pdf
+            parhat  = mle(sample,'pdf',userpdf,'start',0.05);
+            usercdf = @(x)integral(@(x)userpdf(x,parhat),0,x,'ArrayValued',1);
+            x = zeros(numel(prob),1);
+            for i=1:numel(prob)
+                x(i) = usercdf(prob(i));
+            end
+            y = userpdf(x,parhat);
+
+        elseif parnum_c > 0 && parnum_p == -1
+            % the user has provided the cdf
+
+            % the following statement does not work: uses the normal
+            % parhat = mle(sample,'cdf',usercdf,'start',0.05);
+
+            % workaround to find the values to be given to the cdf
+            pd = fitdist(sample,'Kernel');
+            xx = icdf(pd,sample);
+            ii = find(xx>0); % some values seem badly estimated
+            % now find the parameter(s) by minimizing the rmse
+            rmse = @(xpar)sqrt(sum((sample(ii) - usercdf(xx(ii),xpar)).^ 2));
+            parhat = fminsearch(rmse,0);
+
+            %{
+                % this might be better of the above with some tunings, but
+                % it requires the optimization toolbox 
+                parhat = lsqcurvefit(usercdf,0,xx(ii),sample(ii));
+            %}
+
+            x = zeros(numel(prob),1);
+            for i=1:numel(prob)
+                x(i) = usercdf(prob(i),parhat);
+            end
+
+            y = diff(x) ./ diff(prob);
+            x = prob(1:end-1) + diff(prob)./2;
+
+            %  plotyy(prob,usercdf(prob,5),x,y);
+
         else
+            % the user distribution has no parameters to estimate
             x = usercdf(prob);
             y = userpdf(x);
         end
+
+        % workaround to obtain a matlab distribution object, used for the plot
         pd = fitdist(x,'Kernel');
-        
+
     end
 
 elseif isnumeric(pd)
+
     %CASE 3. pd CONTAINS JUST A DATA SAMPLE
 
     fittedUsingKernel = true;
 
     x = pd;
     pd = fitdist(x,'Kernel');
-    prob = (0.0001:0.0004:0.9999)';
+    %prob = (0.0001:0.0004:0.9999)';
     x = icdf(pd,prob);
     y = pdf(pd, x);
 
@@ -341,7 +428,7 @@ if ~strcmp(region,'inside') && ~strcmp(region,'outside')
 end
 
 
-% Optional parameters
+%% Optional parameters
 
 options = struct('userColor', 'b');
 
@@ -375,8 +462,8 @@ userColor = options.userColor;
 if specs(1) > specs(2)
     specs = fliplr(specs);
 end
-lb = specs(1);
-ub = specs(2);
+lb    = specs(1);
+ub    = specs(2);
 lbinf = isinf(lb);
 ubinf = isinf(ub);
 
@@ -416,7 +503,7 @@ else
     yul = [pdf(pd, ub); 0];
 end
 
-% plot the shade area
+% fill the shade area
 switch region
     case 'inside'
         if ubinf
@@ -431,7 +518,19 @@ switch region
         end
         xfill = [ll; x(k); ul];
         yfill = [yll; y(k); yul];
+
+
+        if (ischar(userColor) && numel(userColor)>1)
+            userColor = userColor(1);
+            warning('FSDA:distribspec:BaduserColor','userColor has more than one color specification: only the first one is used for the inside region');
+        end
+        if (isnumeric(userColor) && size(userColor,1)>1)
+            userColor = userColor(1,:);
+            warning('FSDA:distribspec:BaduserColor','userColor has more than one color specification: only the first one is used for the inside region');
+        end
+
         fill(xfill,yfill,userColor);
+
     case 'outside'
         if ubinf
             k1 = find(x < lb);
@@ -446,12 +545,34 @@ switch region
             k2=find(x > ub);
             hh1 = plot(ll,yll,'b-',ul,yul,'b-');
         end
-        xfill = [pll;  x(k1); ll          ; ul;          x(k2); pul  ];
-        yfill = [ypll; y(k1); flipud(yll) ; flipud(yul); y(k2); ypul ];
-        fill(xfill,yfill,userColor);
+
+        % fill regions with user-defined or default color
+        if (ischar(userColor) && numel(userColor)==1) || (isnumeric(userColor) && size(userColor,1)==1)
+            xfill = [pll;  x(k1); ll          ; ul;          x(k2); pul  ];
+            yfill = [ypll; y(k1); flipud(yll) ; flipud(yul); y(k2); ypul ];
+            fill(xfill,yfill,userColor);
+        elseif (ischar(userColor) && numel(userColor)==2) || (isnumeric(userColor) && size(userColor,1)==2)
+            xfill1 = [pll;  x(k1); ll          ];
+            yfill1 = [ypll; y(k1); flipud(yll) ];
+            xfill2 = [ul;          x(k2); pul  ];
+            yfill2 = [flipud(yul); y(k2); ypul ];
+            if ischar(userColor)
+                fill(xfill1,yfill1,userColor(1));
+                fill(xfill2,yfill2,userColor(2));
+            else
+                fill(xfill1,yfill1,userColor(1,:));
+                fill(xfill2,yfill2,userColor(2,:));
+            end
+        else
+            warning('FSDA:distribspec:BaduserColor','userColor is wrong: a default is used');
+            xfill = [pll;  x(k1); ll          ; ul;          x(k2); pul  ];
+            yfill = [ypll; y(k1); flipud(yll) ; flipud(yul); y(k2); ypul ];
+            fill(xfill,yfill,'b');
+        end
 end
 
 %% compute p
+
 if strcmp(region,'outside')
     if emptyspecs
         p=0;
@@ -493,16 +614,25 @@ if fittedUsingKernel
     title({'Nonparametric kernel-smoothing distribution' , 'Fit by fitdist.m with default options'}, 'interpreter' , 'latex' , 'FontSize', 14);
 
 elseif ~isempty(userpdf)
-    % CASE 2.2: this is for a user-defined distribution
+    % CASE 2.2.a: this is for a user-defined distribution: pdf
     if parnum>0
         strpar = ['with mle parameter ' , '$\hat{\theta}$' '=' num2str(parhat) ' '];
     else
         strpar = '';
     end
-    title({'User-defined distribution' ; char(userpdf) ; strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
+    title({'User-defined PDF' ; char(userpdf) ; strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
+
+elseif ~isempty(usercdf)
+    % CASE 2.2.b: this is for a user-defined distribution: cdf
+    if parnum>0
+        strpar = ['with argmin(rmse) parameter ' , '$\hat{\theta}$' '=' num2str(parhat) ' '];
+    else
+        strpar = '';
+    end
+    title({'User-defined CDF' ; char(usercdf) ; strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
 
 else
-    % CASE 1 & 2.1: this is if the user has selected one of the matlab distributions 
+    % CASE 1 & 2.1: this is if the user has selected one of the matlab distributions
     numpar = length(pd.ParameterNames);
     strpar = [pd.DistributionName ' with '];
     for np=1:numpar

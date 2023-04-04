@@ -1,0 +1,104 @@
+{
+    "_schemaVersion": "1.0.0",
+
+    "bc":
+    {
+        "inputs":
+        [
+            {"name":"n", "kind":"required", "type":[["single"], ["double"]], "purpose":"Number of elements"},
+            {"name":"k", "kind":"required", "type":[["single"], ["double"]], "purpose":"Items to choose from the set of n elements"}
+        ],
+
+        "description":"Returns the Binomial coefficient"
+    },
+
+    "combsFS":
+    {
+
+        "inputs":
+        [
+            {"name":"v", "kind":"required", "type":[["single", "vector"], ["double", "vector"]], "purpose":"A vector with n elements"},
+            {"name":"m", "kind":"required", "type":[["single", "vector"], ["double", "vector"]], "purpose":"It specifies the size of the combinations"}
+        ],
+
+        "description":"Is an iterative algorithm equivalent to the MATLAB combs.m"
+    },
+
+    "lexunrank":
+    {
+
+        "inputs":
+        [
+            {"name":"n", "kind":"required", "type":[["single"], ["double"]], "purpose":"Number of elements"},
+            {"name":"k", "kind":"required", "type":[["single"], ["double"]], "purpose":"Items to choose from the set of n elements"},
+            {"name":"N", "kind":"required", "type":[["single"], ["double"]], "purpose":"Position N in the reverse co-lexicographic order of such combinations"},
+            {"name":"pascalM", "kind":"ordered", "type":[["single"], ["double"]], "purpose":"Pascal matrix"}
+        ],
+
+        "outputs":
+        [
+            {"name":"kcomb", "type":[["single"], ["double"]], "purpose":"The k-combination of n elements at position N"},
+            {"name":"calls", "type":[["single"], ["double"]], "purpose":"Binomial coefficients"}
+        ],
+
+        "description":"Gives the the k-combination of n elements of position N in the lexicographic order of all combinations"
+    },
+
+    "nchoosekFS":
+    {
+
+        "inputs":
+        [
+            {"name":"v", "kind":"required", "type":[["single", "vector"], ["double", "vector"]], "purpose":"Integer or array of non-negative integers"},
+            {"name":"k", "kind":"required", "type":[["single"], ["double"]], "purpose":"Items to choose from the set of n elements"}
+        ],
+
+        "description":"Returns the Binomial coefficient or matrix containing all combinations"
+    },
+
+    "randsampleFS":
+    {
+
+        "inputs":
+        [
+            {"name":"n", "kind":"required", "type":[["single", "scalar"], ["double", "scalar"]], "purpose":"A vector of numbers will be selected from the integers 1 to n"},
+            {"name":"k", "kind":"required", "type":[["single"], ["double"]], "purpose":"The number of elements to be selected"},
+            {"name":"method", "kind":"ordered", "type":[["single"], ["double"]], "purpose":"Sampling methods"}
+        ],
+
+        "description":"Generates a random sample of k elements from the integers 1 to n (k<=n)"
+    },
+
+    "shuffling":
+    {
+
+        "inputs":
+        [
+            {"name":"x", "kind":"required", "type":[["single"], ["double"]], "purpose":"A set of elements"}
+        ],
+
+        "description":"Does a random permutation of the elements of input vector"
+    },
+
+    "subsets":
+    {
+
+        "inputs":
+        [
+            {"name":"nsamp", "kind":"required", "type":[["single"], ["double"]], "purpose":"Number of subsamples which have to be extracted"},
+            {"name":"n", "kind":"required", "type":[["single"], ["double"]], "purpose":"Number of observations of the dataset"},
+            {"name":"p", "kind":"required", "type":[["single"], ["double"]], "purpose":"Size of the subsets"},
+            {"name":"ncomb", "kind":"ordered", "type":[["single"], ["double"]], "purpose":"scalar (n choose p)"},
+            {"name":"msg", "kind":"ordered", "type":"numeric", "purpose":"scalar which controls whether to display or not messages on the screen"},
+            {"name":"method", "kind":"ordered", "type":[["single"], ["double"]], "purpose":"Sampling methods"}
+        ],
+
+        "outputs":
+        [
+            {"name":"C", "type":[["single"], ["double"]], "purpose":"The indices of the subsets which need to be extracted"},
+            {"name":"nselected", "type":[["single"], ["double"]], "purpose":"Number of rows of matrix C"}
+        ],
+
+        "description":"Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements"
+    }
+}
