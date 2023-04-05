@@ -5,6 +5,8 @@ toolboxOption=matlab.addons.toolbox.ToolboxOptions(prjFileName);
 
 % Need to edit the line below before every release
 toolboxOption.ToolboxVersion="0.0.22";
+
+% Name for MLTBX file
 toolboxOption.OutputFile=".."+filesep+"release"+filesep+"fsda.mltbx";
 
 %Create toolbox MLTBX
