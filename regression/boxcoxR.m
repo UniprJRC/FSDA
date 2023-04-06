@@ -208,8 +208,9 @@ function out=boxcoxR(y,X, varargin)
 % Transformations for Profit and Loss Data, "Journal of the Royal
 % Statistical Society. Series C: Applied Statistics",
 % https://doi.org/10.1111/rssc.12389 [ARC]
-% Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
-% Transformation: Review and Extensions, "Statistical Science", in press.
+% Atkinson, A.C. Riani, M. and Corbellini A. (2021), The Box–Cox
+% Transformation: Review and Extensions, "Statistical Science", Vol. 36,
+% pp. 239-255, https://doi.org/10.1214/20-STS778
 %
 % Acknowledgements:
 %
