@@ -81,11 +81,14 @@ function pval=barnardtest(N,varargin)
 % References:
 %
 % Barnard, G.A. (1945), A new test for 2x2 tables, "Nature", pp. 156-177.
+%
 % Barnard, G.A. (1947), Significance tests for 2x2 tables, "Biometrika",
 % Vol. 34, pp. 123-138.
+%
 % Suissa, S. and Shuster, J.J. (1985), Exact Unconditional Sample Sizes
 % for the 2x2 Binomial Trial, "Journal of the Royal Statistical Society",
 % Ser. A, Vol. 148, pp. 317-327.
+%
 % Lin, C.Y., Yang, M.C. (2009), Improved p-value tests for comparing two
 % independent binomial proportions, "Communications in Statistics-Simulation
 % and Computation", Vol. 38, pp.78-91.

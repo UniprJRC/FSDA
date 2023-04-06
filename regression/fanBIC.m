@@ -139,13 +139,16 @@ function [out]=fanBIC(outFSRfan,varargin)
 %
 % Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
 % Analysis", Springer Verlag, New York.
+%
 % Atkinson, A.C. and Riani, M. (2002a), Tests in the fan plot for robust,
 % diagnostic transformations in regression, "Chemometrics and Intelligent
 % Laboratory Systems", Vol. 60, pp. 87-100.
+%
 % Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of
 % transformations for profit-and-loss data, Journal of the Royal
 % Statistical Society, Series C, "Applied Statistics",
 % https://doi.org/10.1111/rssc.12389
+%
 % Atkinson, A.C. Riani, M. and Corbellini A. (2021), The Box–Cox
 % Transformation: Review and Extensions, "Statistical Science", Vol. 36,
 % pp. 239-255, https://doi.org/10.1214/20-STS778

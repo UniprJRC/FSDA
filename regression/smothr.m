@@ -73,9 +73,11 @@ function ysmo=smothr(l,x,y,w)
 % Breiman, L. and Friedman, J.H. (1985), Estimating optimal transformations
 % for multiple regression and correlation, "Journal of the American
 % Statistical Association", Vol. 80, pp. 580-597.
+%
 % Wang D.  and Murphy M. (2005), Identifying nonlinear relationships
 % regression using the ACE algorithm, "Journal of Applied Statistics", Vol.
 % 32, pp. 243-258.
+%
 % Friedman, J.H. (1984), A variable span scatterplot smoother. Laboratory
 % for Computational Statistics, Stanford University, Technical Report No. 5.
 %

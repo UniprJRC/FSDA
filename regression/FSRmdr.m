@@ -231,9 +231,11 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 % Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
 % Analysis", Springer Verlag, New York.
+%
 % Atkinson, A.C. and Riani, M. (2006), Distribution theory and
 % simulations for tests of outliers in regression, "Journal of
 % Computational and Graphical Statistics", Vol. 15, pp. 460-476.
+%
 % Riani, M. and Atkinson, A.C. (2007), Fast calibrations of the forward
 % search for testing multiple outliers in regression, "Advances in Data
 % Analysis and Classification", Vol. 1, pp. 123-141.

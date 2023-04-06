@@ -48,6 +48,7 @@ function psixRK = RKpsix(u,c, M)
 %
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
+%
 % Rocke D.M. (1996), Robustness properties of S-estimators of multivariate
 % location and shape in high dimension, "The Annals of Statistics", Vol. 24,
 % pp. 1327-1345.

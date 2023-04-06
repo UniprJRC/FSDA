@@ -96,16 +96,20 @@ function ci=ncpci(x,fType,df,varargin)
 %
 % References:
 %
-% Hentschke, H. and St�ttgen, M. (2011), Comuputation of measures of effect
+% Hentschke, H. and Stuttgen, M. (2011), Comuputation of measures of effect
 % size for neuroscience data sets, "European Journal of Neuroscience", Vol.
 % 34, pp. 1887-1894.
+%
 % Smithson, M.J. (2003), "Confidence Intervals", Quantitative Applications in
 % the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. [pp. 39-41]
-% Hentschke, H. and St�ttgen, M. (2015), Measures of Effect Size Toolbox
-% Version 1.4. [Code by Harald Hentschke (University of T�bingen) and
-% Maik St�ttgen (University of Bochum)].
+%
+% Hentschke, H. and Stuttgen, M. (2015), Measures of Effect Size Toolbox
+% Version 1.4. [Code by Harald Hentschke (University of Tubingen) and
+% Maik Stuttgen (University of Bochum)].
+%
 % Steiger, J.H., and Fouladi, R.T. (1997), Noncentrality interval
 % estimation and the evaluation of statistical models. In Harlow, L.L.,
+%
 % Stanley, S., Mulaik, A. and Steiger, J.H., Eds., "What if there were no
 % significance tests?", pp. 221-257. Mahwah, NJ: Lawrence Erlbaum.
 %
@@ -113,7 +117,7 @@ function ci=ncpci(x,fType,df,varargin)
 % Acknowledgements:
 %
 % This function has been taken and adapted from the MATLAB toolbox 'Measures of effect
-% Size' by Harald Hentschke and  Maik C. St�ttgen.
+% Size' by Harald Hentschke and  Maik C. Stuttgen.
 % https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox
 %
 %

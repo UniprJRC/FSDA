@@ -61,6 +61,7 @@ function out = GUIquantile(x, z, varargin)
 % See also: GUIconcentration, GUIvar, GUIstd
 %
 % References:
+%
 % Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2023.

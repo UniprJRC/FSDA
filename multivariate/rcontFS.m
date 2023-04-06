@@ -96,6 +96,7 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 %
 % Boyett, J. (1979), Algorithm AS 144: Random R x C Tables with Given Row
 % and Column Totals, "Applied Statistics", Vol. 28, pp. 329-332.
+%
 % Patefield, M. (1981), Algorithm AS 159: An Efficient Method of Generating
 % RXC Tables with Given Row and Column Totals, "Applied Statistics", 
 % Vol. 30, pp. 91-97.

@@ -110,8 +110,10 @@ function [PD , pval] = CressieRead(N,varargin)
 % Rudas, T. (1986), A Monte Carlo Comparision of Small Sample Behaviour of
 % The Pearson, the Likelihood Ratio and the Cressie-Read Statistics,
 % "Journal Statistcal Computation and Simulation", Vol. 24, pp. 107-120.
+%
 % Read, T.R.C. and Cressie, N.A.C. (1988), "Goodness of Fit Statistics for
 % Discrete Multivariate Data", Springer Verlag.
+%
 % Ewens, W.J. and Grant, G.R. (2001), "Statistical Methods in Bioinformatics",
 % Springer Verlag.
 %

@@ -308,14 +308,18 @@ function [out, varargout] = SDest(Y,varargin)
 % References:
 %
 % Stahel, W.A. (1981), "Breakdown of covariance estimators", Research
-%        Report 31, Fachgruppe f�r Statistik, E.T.H. Z�rich, Switzerland.
+%        Report 31, Fachgruppe for Statistik, E.T.H. Zurich, Switzerland.
+%
 % Donoho, D.L. (1982), "Breakdown Properties of Multivariate Location
 %        Estimators", Ph.D. dissertation, Harvard University.
+%
 % Maronna, R.A. and Yohai, V.J. (1995), The behavior of the Stahel-Donoho
 %         robust multivariate estimator, "Journal of the American
 %         Statistical Association", Vol. 90, pp. 329-341.
+%
 % Juan J. and Prieto F.J. (1995), "Journal of Computational and Graphical
 %         Statistics", Vol. 4, pp. 319-334.
+%
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
 %         and Methods, Wiley, New York.
 %

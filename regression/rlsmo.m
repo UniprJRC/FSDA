@@ -105,6 +105,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 % 
 % Tibshirani R. (1987), Estimating optimal transformations for regression,
 % "Journal of the American Statistical Association", Vol. 83, 394-405.
+%
 %  Hastie, T., and Tibshirani, R. (1986), Generalized Additive Models (with
 %  discussion), "Statistical Science", Vol 1, pp. 297-318
 %

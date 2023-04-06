@@ -200,14 +200,18 @@ function out=boxcoxR(y,X, varargin)
 %
 % Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
 % Analysis", Springer Verlag, New York. [see pp. 83-84]
+%
 % Box, G.E.P. and Cox, D.R. (1964), The analysis of transformations,
 % Journal of the Royal Statistical Society, Vol. 26, pp. 211-252.
+%
 % Yeo, I.K and Johnson, R. (2000), A new family of power transformations to
 % improve normality or symmetry, "Biometrika", Vol. 87, pp. 954-959.
+%
 % Atkinson, A.C., Riani, M. and Corbellini C. (2019), The Analysis of
 % Transformations for Profit and Loss Data, "Journal of the Royal
 % Statistical Society. Series C: Applied Statistics",
 % https://doi.org/10.1111/rssc.12389 [ARC]
+%
 % Atkinson, A.C. Riani, M. and Corbellini A. (2021), The Box–Cox
 % Transformation: Review and Extensions, "Statistical Science", Vol. 36,
 % pp. 239-255, https://doi.org/10.1214/20-STS778

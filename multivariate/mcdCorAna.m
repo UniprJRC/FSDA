@@ -217,6 +217,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %
 % Rousseeuw, P.J. and Van Driessen, K. 1999. A fast algorithm for the
 % minimum covariance determinant estimator. Technometrics, 41:212?223.
+%
 % Greenacre, M.J. (1993), "Correspondence Analysis in Practice", London,
 % Academic Press.
 %

@@ -47,6 +47,7 @@ function out = GUIconcentration(Q, varargin)
 % See also: GUIvar, GUIstd, GUImad
 %
 % References:
+%
 % Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2023.

@@ -123,10 +123,12 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 % Yeo, I.K. and Johnson, R. (2000), A new family of power
 % transformations to improve normality or symmetry, "Biometrika", Vol. 87,
 % pp. 954-959.
+%
 % Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of
 % transformations for profit-and-loss data, Journal of the Royal
 % Statistical Society, Series C, "Applied Statistics",
 % https://doi.org/10.1111/rssc.12389
+%
 % Atkinson, A.C. Riani, M. and Corbellini A. (2021), The Box–Cox
 % Transformation: Review and Extensions, "Statistical Science", Vol. 36,
 % pp. 239-255, https://doi.org/10.1214/20-STS778

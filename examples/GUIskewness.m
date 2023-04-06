@@ -40,7 +40,9 @@ function out = GUIskewness(x, flag, w)
 % See also: GUIstd, GUImad, GUIquantile
 %
 % References:
+%
 % Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
+%
 % Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2023.

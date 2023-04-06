@@ -190,6 +190,7 @@ function [out]=FSM(Y,varargin)
 % Riani, M., Atkinson, A.C. and Cerioli, A. (2009), Finding an unknown
 % number of multivariate outliers, "Journal of the Royal Statistical
 % Society Series B", Vol. 71, pp. 201-221.
+%
 % Cerioli, A., Farcomeni, A. and Riani M. (2014), Strong consistency and
 % robustness of the Forward Search estimator of multivariate location
 % and scatter, "Journal of Multivariate Analysis", Vol. 126,
