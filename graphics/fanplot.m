@@ -29,6 +29,31 @@ function brushedUnits=fanplot(out,varargin)
 %
 % Optional input arguments:
 %
+%
+%       conflev :   Confidence level. Scalar or vector. Confidence level
+%                   for the bands (default is 0.99, that is we plot two
+%                   horizontal lines in correspondence of value -2.58 and
+%                   2.58).
+%                   Example - 'conflev',[0.9 0.95 0.99]
+%                   Data Types - double
+%
+%
+%       FontSize:   Font size of the labels. Scalar. Scalar which controls
+%                   the font size of the labels of the axes and of the
+%                   labels inside the plot. Default value is 12.
+%                   Example - 'FontSize',12
+%                   Data Types - double
+%
+%    highlight : units to highlight in the fanplot plot. Vector or empty
+%               (default). Vector containing the numbers associated to the
+%               units whose entry step has to be shown in the fanplot. More
+%               specifically, the steps in which the units inside
+%               highlight join the subset is shown in red in the
+%               trajectories of the fanplot. The default of  highlight is
+%               the empty vector [].
+%                 Example - 'highlight',[2 4 20]
+%                 Data Types - double
+%
 %         label :   Labels. Cell array of strings. Cell containing the
 %                   labels of the units (optional argument used when
 %                   datatooltip=1). If this field is not present labels
@@ -37,11 +62,73 @@ function brushedUnits=fanplot(out,varargin)
 %                   Example - 'corr',1
 %                   Data Types - Cell array of strings
 %
-%       conflev :   Confidence level. Scalar or vector. Confidence level
-%                   for the bands (default is 0.99, that is we plot two
-%                   horizontal lines in correspondence of value -2.58 and
-%                   2.58).
-%                   Example - 'conflev',[0.9 0.95 0.99]
+%       labx    :   x-axis label. String. A label for the x-axis (default:
+%                   'Subset size m').
+%                   Example - 'labx','Subset size m'
+%                   Data Types - char or string
+%
+%       laby    :   y-axis label. String. a label for the y-axis
+%                   (default:'Score test statistic').
+%                   Example - 'laby','Score test statistic'
+%                   Data Types - char or string
+%
+%       lwd     :   Linewidth. Scalar. Scalar which controls linewidth of
+%                   the curves which contain the score test.
+%                   Default line width=2.
+%                   Example - 'lwd',2
+%                   Data Types - double
+%
+%       lwdenv  :   Width of the envelope lines. Scalar. Scalar which
+%                   controls the width of the lines associated with the
+%                   envelopes. Default is lwdenv=1.
+%                   Example - 'lwdenv',1
+%                   Data Types - double
+%
+%       nameX   :   Labels of the X variables. Cell array of strings. Cell
+%                   array of strings of length p containing the labels of
+%                   the varibles of the regression dataset. If it is empty
+%                 	(default) the sequence X1, ..., Xp will be created
+%                   automatically.
+%                   Example - 'nameX',''
+%                   Data Types - Cell array of strings
+%
+%       namey   :   Labels of the y variable. String. String containing the
+%                   label of the response variable.
+%                   Example - 'namey',''
+%                   Data Types - char
+%
+%    SizeAxesNum:   Size of the numbers of the axis. Scalar. Scalar which
+%                   controls the size of the numbers of the axes.
+%                   Default value is 10.
+%                   Example - 'SizeAxesNum',10
+%                   Data Types - double
+%
+%       tag     :   Handle of the plot. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag pl_fan. Notice that if the
+%                   program finds a plot which has a tag equal to the one
+%                   specified by the user, then the output of the new plot
+%                   overwrites the existing one in the same window else a
+%                   new window is created.
+%                   Example - 'tag','pl_mycov'
+%                   Data Types - char
+%
+%       titl    :   Title. String. A label for the title (default: 'Fan plot')
+%                   Example - 'titl','Fan plot'
+%                   Data Types - char or string
+%
+%       xlimx   :   Min and Max of the x axis. Vector. Vector with two
+%                   elements controlling minimum and maximum of the x axis.
+%                   Default value is [init n].
+%                   Example - 'xlimx',[init n]
+%                   Data Types - double
+%
+%       ylimy   :   Min and Max of the y axis. Vector. Vector with two
+%                   elements controlling minimum and maximum of the y axis.
+%                   Default value for
+%                   ylimy(1)=max(min(score_test),-20). Default value for
+%                   ylimy(2)=min(max(score_test),20).
+%                   Example - 'ylimy',[0 100]
 %                   Data Types - double
 %
 %   datatooltip :   Information about the unit selected. Empty value or
@@ -131,80 +218,6 @@ function brushedUnits=fanplot(out,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - Empty value, scalar or cell.
 %
-%       titl    :   Title. String. A label for the title (default: 'Fan plot')
-%                   Example - 'titl','Fan plot'
-%                   Data Types - char
-%
-%       labx    :   x-axis label. String. A label for the x-axis (default:
-%                   'Subset size m').
-%                   Example - 'labx','Subset size m'
-%                   Data Types - char
-%
-%       laby    :   y-axis label. String. a label for the y-axis
-%                   (default:'Score test statistic').
-%                   Example - 'laby','Score test statistic'
-%                   Data Types - char
-%
-%       xlimx   :   Min and Max of the x axis. Vector. Vector with two
-%                   elements controlling minimum and maximum of the x axis.
-%                   Default value is [init n].
-%                   Example - 'xlimx',[init n]
-%                   Data Types - double
-%
-%       ylimy   :   Min and Max of the y axis. Vector. Vector with two
-%                   elements controlling minimum and maximum of the y axis.
-%                   Default value for
-%                   ylimy(1)=max(min(score_test),-20). Default value for
-%                   ylimy(2)=min(max(score_test),20).
-%                   Example - 'ylimy',[0 100]
-%                   Data Types - double
-%
-%       lwd     :   Linewidth. Scalar. Scalar which controls linewidth of
-%                   the curves which contain the score test.
-%                   Default line width=2.
-%                   Example - 'lwd',2
-%                   Data Types - double
-%
-%       lwdenv  :   Width of the envelope lines. Scalar. Scalar which
-%                   controls the width of the lines associated with the
-%                   envelopes. Default is lwdenv=1.
-%                   Example - 'lwdenv',1
-%                   Data Types - double
-%
-%       FontSize:   Font size of the labels. Scalar. Scalar which controls
-%                   the font size of the labels of the axes and of the
-%                   labels inside the plot. Default value is 12.
-%                   Example - 'FontSize',12
-%                   Data Types - double
-%
-%    SizeAxesNum:   Size of the numbers of the axis. Scalar. Scalar which
-%                   controls the size of the numbers of the axes.
-%                   Default value is 10.
-%                   Example - 'SizeAxesNum',10
-%                   Data Types - double
-%
-%       nameX   :   Labels of the X variables. Cell array of strings. Cell
-%                   array of strings of length p containing the labels of
-%                   the varibles of the regression dataset. If it is empty
-%                 	(default) the sequence X1, ..., Xp will be created
-%                   automatically.
-%                   Example - 'nameX',''
-%                   Data Types - Cell array of strings
-%
-%       namey   :   Labels of the y variable. String. String containing the
-%                   label of the response variable.
-%                   Example - 'namey',''
-%                   Data Types - char
-%
-%       tag     :   Handle of the plot. String. String which identifies the
-%                   handle of the plot which is about to be created. The
-%                   default is to use tag pl_fan. Notice that if the
-%                   program finds a plot which has a tag equal to the one
-%                   specified by the user, then the output of the new plot
-%                   overwrites the existing one in the same window else a
-%                   new window is created.
-%                   Example - 'tag','pl_mycov'
-%                   Data Types - char
 %
 %  Output:
 %
@@ -228,8 +241,9 @@ function brushedUnits=fanplot(out,varargin)
 % transformations for profit-and-loss data, Journal of the Royal
 % Statistical Society, Series C, "Applied Statistics",
 % https://doi.org/10.1111/rssc.12389
-% Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
-% Transformation: Review and Extensions, "Statistical Science", in press.
+% Atkinson, A.C. Riani, M. and Corbellini A. (2021), The Box–Cox
+% Transformation: Review and Extensions, "Statistical Science", Vol. 36,
+% pp. 239-255, https://doi.org/10.1214/20-STS778
 %
 % Copyright 2008-2023.
 % Written by FSDA team
@@ -375,6 +389,30 @@ function brushedUnits=fanplot(out,varargin)
     fanplot(out,'databrush',{'selectionmode' 'Brush' 'FlagSize' '5'},'nameX',nameX,'namey',namey)
 %}
 
+%{
+    % fanplot with option highlight (first example).
+    % load the wool data
+    XX=load('wool.txt');
+    y=XX(:,end);
+    X=XX(:,1:end-1);
+    % FSRfan and fanplot with all default options
+    [out]=FSRfan(y,X);
+    % Units 24 27 and 23 enter tha last three steps in the search with la=0.
+    % Option highlight enables us to understand when these 3 units join the
+    % subset for the other values of lambda
+    fanplot(out,'highlight',[24 27 23]);
+%}
+
+%{
+    %% fanplot with option highlight (second example).
+    load gasoline.mat
+    y=gasoline{:,2};
+    X=gasoline{:,1};
+    [out]=FSRfan(y,X,'la', [-1 0 1]);
+    % In the code below, option highlight enables us to understand when units
+    % [21 18 33 77] join the subset for the difference values of lambda
+    fanplot(out,'highlight',[ 21 18 33 77]);
+%}
 
 %% Beginning of code
 brushedUnits=[];
@@ -392,7 +430,8 @@ Sco=out.Score;
 
 %% User options
 options=struct('conflev',0.99,'titl','Fan plot','labx','Subset size m',...
-    'laby','Score test statistic','xlimx','','ylimy','','lwd',2,'lwdenv',1,'FontSize',12,'SizeAxesNum',10,...
+    'laby','Score test statistic','xlimx','','ylimy','','lwd',2,'lwdenv',1, ...
+    'FontSize',12,'SizeAxesNum',10,'highlight',[],...
     'tag','pl_fan','datatooltip','','databrush','','nameX','','namey','','label','');
 
 UserOptions=varargin(1:2:length(varargin));
@@ -455,7 +494,7 @@ if d>0
     % This option must be removed because is not an option of function
     % selectdataFS
     options.databrush(d:d+1)=[];
-    
+
     % Start highlighting with red color
     ColorOrd=[1 0 0;0 1 1; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
     ColorOrd=repmat(ColorOrd,4,1);
@@ -557,6 +596,7 @@ text(n*ones(lla,1),Sco(end,2:end)',num2str(la),'FontSize',FontSize);
 labx=options.labx;
 laby=options.laby;
 titl=options.titl;
+highlight=options.highlight;
 
 title(titl);
 
@@ -569,6 +609,92 @@ ylabel(laby,'Fontsize',FontSize);
 SizeAxesNum=options.SizeAxesNum;
 set(gca,'FontSize',SizeAxesNum)
 box on
+
+if ~isempty(highlight)
+    nbrush=highlight;
+    hold('on');
+
+    for j=1:lla
+        Un=out.Un{j};
+        % nbrush= vector which contains the brushed steps selstesp=
+        % vector which will contain the steps in which the brushed
+        % units enter the search Given nbrush, find selstesp
+        selsteps=zeros(n,11);
+        ii=0;
+        for i=1:length(nbrush)
+            idx = find(Un(:,2:end) == nbrush(i));
+
+            % Find the required row(s) of matrix Un
+            row = ind2sub(size(Un(:,2:end)),idx);
+            % when isempty(row) is true the selected unit entered the
+            % subset at step before Un(1,:), that is before the first
+            % step which has been monitored
+            if ~isempty(row)
+                % Note that mod(row,size(Un,1)) is used rather than
+                % Un(row,:) because the unit could have entered the
+                % subset together with other units (i.e. could be in a
+                % column  of matrix Un different from the second).
+                % Finally note that the expression row-1e-12 is
+                % necessary otherwise when row is= size(Un,1) then
+                % mod(row-1e-12,size(Un,1))is equal to zero
+                selsteps(ii+1:ii+length(row),:)=Un(ceil(mod(row-1e-12,size(Un,1))),:);
+                ii=ii+length(row);
+            end
+        end
+
+        selsteps=sortrows(selsteps(1:ii,:),1);
+        % m1 contains the indexes of the unique steps;
+        [~, m1]=unique(selsteps(:,1));
+        selsteps=selsteps(m1,:);
+        % Remark: selsteps=unique(selsteps,'rows') does not seem to
+        % work
+
+        disp(['Steps of entry of selected units when la= ' num2str(la(j))]);
+        disp(selsteps);
+
+        %% - highlight units in the fanplot
+
+        % Remove unnecessary rows from vector selsteps -1 is
+        % necessary because we are considering minimum outside
+        % selsteps=selsteps(:,1)-1;
+
+        xdata=out.Score(:,1)'; % x coordinates of score (steps)
+        ydata=out.Score(:,j+1)'; % y coordinates of score (values)
+
+        [c, ia, ib]=intersect(selsteps(:,1), xdata); %#ok<ASGLU>
+        % Stack together x and y coordinates
+        xx=[xdata; ydata];
+
+        % Just in case the first step of mdr is selected remove it
+        % because we also consider ib-1
+        ib=ib(ib>1);
+        % For each of the brushed units extract coordinates of mdr
+        % referred to the step before their entry and the step
+        % before
+        xxsel=xx(:,[ib-1 ib])';
+        % Sort all steps
+        xxselr=sortrows(xxsel,1);
+        % xxlim=length(nbrush);
+        xxlim=length(ib);
+        % Reshape previous matrix in such a way that the first
+        % length(nbrush) columns refer to the steps which have to
+        % be plotted and the remining columns refer to their
+        % corresponding values of mdr
+        xy=reshape(xxselr,2,2*xxlim);
+        % Add to the previous matrix a row of missing values This
+        % operation is necessary if the steps are not contiguous
+        xy=cat(1,xy,NaN*zeros(1,2*xxlim));
+
+        % Reshape the set of x and y coordinates in two column
+        % vectors Note the NaN between the steps which are not
+        % consecutive
+        xcoord=reshape(xy(:,1:xxlim),3*xxlim,1);
+        ycoord=reshape(xy(:,xxlim+1:end),3*xxlim,1);
+        plot(gca,xcoord,ycoord,'LineWidth',3.5,'color',[1 0 0],'tag','brush_mdr');
+
+    end
+    hold('off');
+end
 
 %% Set the datatooltip for the fanplot
 
@@ -597,13 +723,13 @@ hfan=gcf;
 %% Brush mode (call to function selectdataFS)
 
 if (~isempty(options.databrush) || iscell(options.databrush))
-    
+
     if isscalar(options.databrush)
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
     else
         sele=[options.databrush {'Ignore' findobj(gcf,'tag','env')}];
     end
-    
+
     % Check how the user set the option Label inside cell options.databrush
     d=find(strcmp('Label',options.databrush));
     if d>0
@@ -611,15 +737,15 @@ if (~isempty(options.databrush) || iscell(options.databrush))
     else
         Label='nolabel';
     end
-    
+
     % This option is necessary to make sure that the user selects data from
     % the plot and not from other plots
     sele=[sele 'Tag' {options.tag}];
-    
+
     % Check if X includes the constant term for the intercept. The variable
     % 'intercept' will be used later for plotting.
     intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
-    
+
     if intcolumn==1 && size(X,2)>1
         intercept=1;
         p1=1:(p-numel(intcolumn));
@@ -630,48 +756,48 @@ if (~isempty(options.databrush) || iscell(options.databrush))
         p1=1:p;
         Xsel=X;
     end
-    
+
     if isempty(options.nameX)
         nameX=cellstr(num2str(p1','X%d'));
     else
         nameX=options.nameX;
     end
-    
+
     % group = VECTOR WHICH WILL CONTAIN THE IDENTIFIER OF EACH GROUP
     % e.g. group(14)=3 means that unit 14 was selected at the third brush
     group=ones(n,1);
-    
+
     % some local variables
     but=0; brushcum=[]; ij=1;
-    
+
     sele1=sele;
-    
+
     %initialization of variable lasel. It will be a scalar associated with
     %the value of lambda which has been brushed.
     lasel='';
-    
+
     %initialization of variable it. It will be a counter identifying the
     %iteration linked to the following while statement
     it=0;
     while but<=1
         it=it+1;
         figure(hfan);
-        
+
         % Remark: function selectdataFS cannot be used on the current figure if
         % the "selection mode" or the "zoom tool" are on. Setting the
         % plotedit mode initially to on and then to off, has the effect to
         % deselect plotedit mode.
-        
+
         plotedit on
         plotedit off
-        
+
         if strcmp(persist,'off')
             % then remove from the current plot what has alredy been
             % selected
             % Remove the yellow selection in this plot if present
             a=findobj(gcf,'Tag','selected');
             delete(a);
-            
+
         elseif strcmp(persist,'on')
             %then add to the option list sele, the list of colors for the
             %brushing and selections.
@@ -683,14 +809,14 @@ if (~isempty(options.databrush) || iscell(options.databrush))
         else
             disp('To brush, with the mouse select steps in the FAN plot');
         end
-        
+
         [pl,xs,ys] = selectdataFS(sele1{:},'Label','off');
-        
+
         % exit from levfwdplot if the levfwdplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (max(pl) == -999)
             return
         end
-        
+
         % selsteps= vector which contains the list of the steps which have
         % been brushed
         % sely = corresponding values of the score test associated
@@ -702,13 +828,13 @@ if (~isempty(options.databrush) || iscell(options.databrush))
             selsteps=xs;
             sely=ys;
         end
-        
+
         lselsteps=length(selsteps);
         selindex=zeros(lselsteps,1);
-        
+
         %  find to which value of \lambda the selected steps refer to
         if ~isempty(sely)
-            
+
             % col1 is associated to the columns of \lambda which have been
             % brushed
             col1=zeros(length(sely),1);
@@ -716,50 +842,50 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 [~,col] = find(out.Score(:,2:end)==sely(i));
                 col1(i)=col;
             end
-            
+
             %list_lambda is the list of lambda trajectories that the User
             %has selected
             list_lambda=unique(col1);
             %length_list_lambda is the number of lambda trajectories that
             %the User has selected
             length_list_lambda=length(list_lambda);
-            
+
             %the for loop has been introduced because the ueser could
             %select more than one lambda trajectories
             for j =1: length_list_lambda
-                
+
                 %change_lambda=yes if the user selects a trajectory
                 %different to the one selected at step j-1
                 %change_lambda=no if the user selects the same trajectory
                 %that he has selected in the step j-1
-                
+
                 if list_lambda(j)==lasel
                     change_lambda='no';
                 else
                     change_lambda='yes';
-                    
+
                     %if the selected lambda has changed, all the existing
                     %plots will be stored in a new figure
                     h=findobj('-depth',1,'Tag','pl_yX');
                     if ~isempty(h)
-                        
+
                         %creation of a second figure which will contain a
                         %copy of the gplotmatrix, just created
                         hf2=figure;
                         figure(hf2);
                         set(hf2,'Name',['Results for lambda=' num2str(la(lasel)) ]);
-                        
+
                         %creation of subplot in figure hf2 where I want to
                         %copy the gplotmatrix of figure f1
                         s1=subplot(2,2,1);
-                        
+
                         %pos is the position of the subplot in hf2
                         pos=get(s1,'Position');
-                        
+
                         %I copy the gplotmatrix in figure hf2
                         delete(s1);
                         hax2=copyobj(AX,hf2);
-                        
+
                         sizeAX = size(AX,2);
                         if sizeAX==1
                             set(hax2, 'Position', pos);
@@ -775,8 +901,8 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                             end
                         end
                     end
-                    
-                    
+
+
                     h=findobj('-depth',1,'Tag','pl_resfwd');
                     if ~isempty(h)
                         figure(h)
@@ -789,7 +915,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                         delete(s1);
                         hax2=copyobj(hax1,hf2);
                         set(hax2, 'Position', pos);
-                        
+
                     end
                     h=findobj('-depth',1,'Tag','pl_mdr');
                     if ~isempty(h)
@@ -803,29 +929,29 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                         delete(s1);
                         hax2=copyobj(hax1,hf2);
                         set(hax2, 'Position', pos);
-                        
+
                     end
                 end
-                
+
                 % lasel = scalar associated with the j-th value of lambda
                 % selected (brushed).
                 lasel=list_lambda(j);
-                
+
                 Un=out.Un{lasel};
-                
+
                 for i=1:lselsteps
                     selindex(i)=find(Un(:,1)==selsteps(i));
                 end
-                
-                
+
+
                 % Find the units which entered the search in the brushed steps
                 Unsel=Un(selindex,2:end);
-                
+
                 % nbrush= vector which contains the list of the selected units
                 nbrush=Unsel(~isnan(Unsel));
-                
+
                 h=findobj('-depth',1,'Tag','pl_yX');
-                
+
                 if (~isempty(h))
                     % delete from the current figure all graphics objects
                     % whose handles are not hidden
@@ -834,7 +960,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     % current figure make it visible, and raise it above
                     % all other figures on the screen.
                     figure(h);
-                    
+
                 else
                     % create a new figure
                     hh=figure;
@@ -843,7 +969,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     % monitoring residual plot
                     set(hh,'WindowStyle',get(hfan,'WindowStyle'));
                 end
-                
+
                 if strcmp(persist,'on') && strcmp(change_lambda,'no')
                     %if persist is on and the selected trajectory is the
                     %same selected at step j-1 then brushcum is the list of
@@ -861,15 +987,15 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     brushcum=nbrush;
                     group=ones(n,1);
                 end
-                
+
                 %group is a vector of length equal to the number of input
                 %onservations. The unselected observations are represented
                 %with ones. The selected observations with ij+1.
                 group(nbrush)=ij+1;
-                
+
                 %unigroup is the list of groups.
                 unigroup=unique(group);
-                
+
                 % la(lasel) is the value of lambda selected
                 if la(lasel) ==0
                     % Create label for transformed response
@@ -880,7 +1006,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     end
                     % Create transformed response
                     y1=log(y);
-                    
+
                 else
                     % Create label for transformed response
                     if isempty(options.namey)
@@ -888,33 +1014,33 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     else
                         namey=char([options.namey '^{' num2str(la(lasel)) '}']);
                     end
-                    
+
                     % Create transformed response
                     y1=y.^la(lasel);
                 end
-                
+
                 %% Run the forward search using the selected value of \lambda
-                
+
                 % i.e. use transformed response which is contained in
                 % vector y1
                 [oute] = FSReda(y1,X,out.bs(:,lasel),'nocheck',1);
-                
+
                 %% Display the yXplot with the corresponding groups of units highlighted
                 [H,AX,BigAx] = gplotmatrix(Xsel,y1,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
                 set(gcf,'Name',['Scatter plot matrix y^' num2str(la(lasel))  '|X with different symbols for brushed units']);
                 set(gcf,'tag','pl_yX');
                 %set(gcf,'Name',['yXplot: results for lambda=' num2str(la(lasel)) ]); %DDD
-                
+
                 if nbrush>0
                     set(H(:,:,1),'DisplayName','Unbrushed units');
                     set(H(:,:,2),'DisplayName','Brushed units');
                 else
                     set(H,'DisplayName',' Units');
                 end
-                
+
                 set(AX,'FontSize',FontSize)
                 % Extract Xlabel and set the font
-                
+
                 xlab=get(AX,'Xlabel');
                 if iscell(xlab)
                     for jj=1:length(xlab)
@@ -923,7 +1049,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 else
                     set(xlab,'FontSize',SizeAxesNum)
                 end
-                
+
                 % Extract ylabel
                 ylab=get(AX,'Ylabel');
                 if iscell(ylab)
@@ -933,34 +1059,34 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 else
                     set(ylab,'FontSize',SizeAxesNum)
                 end
-                
+
                 % save the indices of the last selected units (nbrush) to the
                 % 'UserData' field of the last selected group of H(:,:,end)
                 set(H(:,:,end), 'UserData' , nbrush);
-                
+
                 % The following line adds objects to the panels of the yX
                 % add2yX(H,AX,BigAx,oute,group,nbrush,bivarfit,multivarfit,labeladd)
                 add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
-                
-                
+
+
                 for mfc=1:length(unigroup)
                     set(findobj(gcf,'marker',char(styp(unigroup(mfc)))),'MarkerFaceColor',clr(unigroup(mfc)));
                 end
-                
+
                 set(gcf,'Name',['Scatter plot matrix y^' num2str(la(lasel))  '|X with different symbols for brushed units']);
-                
-                
+
+
                 % Assign to this figure tag pl_yX
                 %set(gcf,'tag','pl_yX');
-                
-                
+
+
                 %% Highlight brushed trajectories also in the resfwdplot, if it is open
-                
+
                 if (ij==1 ||  strcmp(change_lambda,'yes'))
                     % the plot of scaled residuals has to be completely
                     % recreated when the User has selected a lambda trajectory
                     % different from the one selected at step j-1
-                    
+
                     fground=struct;
                     fground.funit=nbrush;
                     fground.Color={'b'};
@@ -969,7 +1095,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     standard.SizeAxesLab=FontSize;
                     standard.SizeAxesNum=SizeAxesNum;
                     resfwdplot(oute,'standard',standard,'fground',fground)
-                    
+
                     %                         % Check if options label is on or off
                     %                     if strcmp(Label,'on')==1
                     %                         resfwdplot(oute,'selunit',nbrush,'selunitcolor',{'b'},'selunitbold',1.5,'FontSize',FontSize,'SizeAxesNum',SizeAxesNum, 'selunittype',{'-'});
@@ -978,43 +1104,43 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     %                     end
                     %
                 end
-                
+
                 % Now check if the figure which monitors the residuals is open.
                 h=findobj('-depth',1,'Tag','pl_resfwd');
                 set(h,'Name',strcat('Monitoring of Scaled Residuals for lambda=',num2str(la(lasel))));
                 if (~isempty(h))
-                    
+
                     % make figure which contains monitoring scaled residuals
                     % become the current figure
                     figure(h);
-                    
+
                     % if but=0 then it is necessary to remove previous
                     % highlightments (even if persist='on')
                     if (strcmp(persist,'off') || but==0 )
-                        
+
                         % If set of values has already been highlighted in the
                         %monitoring residuals plot, remove it
                         a=findobj(h,'Tag','brush_res');
                         delete(a);
-                        
+
                         % Remove the yellow selection in this plot if present
                         a=findobj(h,'Tag','selected');
                         delete(a);
                     end
-                    
+
                     % get the x and y coordinates of the monitoring of the
                     % scaled residuals
                     a=findobj(h,'tag','data_res');
-                    
+
                     abrush=get(a(n+1-nbrush),'ydata');
                     if iscell(abrush)
                         ycoord=cell2mat(abrush); % y coordinates of scaled residuals (values)
                     else
                         ycoord=abrush; % y coordinates of scaled residual (value)
                     end
-                    
+
                     xcoord=get(a(1),'Xdata'); % x coordinates of mdr (steps)
-                    
+
                     hold('on');
                     % Highlight the curve in the monitoring residuals plot
                     if (strcmp('on',persist))
@@ -1032,41 +1158,41 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     end
                     hold('off');
                 end
-                
+
                 disp('Brushed steps');
                 disp(selsteps);
-                
+
                 disp('Associated brushed units');
                 disp(nbrush);
-                
+
                 disp('Steps of entry of brushed units');
                 disp(Un(selindex,:));
-                
-                
+
+
                 %% Highlight brushed trajectories also in the mdrplot, if it is open
-                
+
                 % Default limits for x axis
                 h=findobj('-depth',1,'Tag','pl_mdr');
-                
+
                 %the mdrplot has to be completely recreated if
                 % 1 persist is off
                 % 2 persist is on but we are in the first iteration
                 if strcmp('off',persist) || (strcmp('on',persist)&& it==1)
                     mdrplot(oute,'quant', [0.01;0.5;0.99],'sign',0,'mplus1',0,'envm',n,'tag','pl_mdr','databrush','');
-                    
+
                     % Now check if the figure containing minimum deletion
                     % residual is open. If it is, units are brushed in this
                     % plot too
                     h=findobj('-depth',1,'Tag','pl_mdr');
                     set(h,'Name',['Monitoring of Minimum deletion residual for lambda=' num2str(la(lasel)) ])
                 else
-                    
+
                     % the mdrplot has also to be completly created if persist is
                     % on and we are not in the first iteration but the user has
                     % selected a new lambda trajectory
                     if strcmp(change_lambda,'yes') &&  it>1
                         mdrplot(oute,'quant', [0.01;0.5;0.99],'sign',0,'mplus1',0,'envm',n,'tag','pl_mdr','databrush','');
-                        
+
                         % Now check if the figure containing minimum deletion
                         % residual is open.
                         % If it is, units are brushed in this plot too
@@ -1075,63 +1201,63 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     end
                 end
                 if (~isempty(h))
-                    
+
                     % Remove unnecessary rows from vector selsteps -1 is
                     % necessary because we are considering minimum outside
                     selsteps=selsteps(:,1)-1;
-                    
+
                     % make figure which contains mdr become the current figure
                     figure(h);
-                    
+
                     % Condition || but==0 if but=0 then it is necessary to
                     % remove previous highlightments (even if persist='on')
                     if strcmp(persist,'off') || but==0
-                        
+
                         % If set of values has already been highlighted in the
                         % mdr plot, remove it
                         a=findobj(h,'Tag','brush_mdr');
                         delete(a);
-                        
+
                         % Remove the yellow selection in this plot if present
                         a=findobj(gcf,'Tag','selected');
                         delete(a);
                     end
-                    
+
                     % get the x and y coordinates of mdr
                     a=findobj(h,'tag','data_mdr');
                     xdata=get(a,'Xdata'); % x coordinates of mdr (steps)
                     ydata=get(a,'ydata'); % y coordinates of mdr (values)
-                    
+
                     [~,~, ib]=intersect(selsteps, xdata);
-                    
+
                     % Stack together x and y coordinates
                     xx=[xdata; ydata];
-                    
+
                     % Just in case the first step of mdr is selected remove it
                     % because we also consider ib-1
                     ib=ib(ib>1);
-                    
+
                     % For each of the brushed units extract coordinates of mdr
                     % referred to the step before their entry and the step
                     % before
                     xxsel=xx(:,[ib-1 ib])';
-                    
+
                     % Sort all steps
                     xxselr=sortrows(xxsel,1);
-                    
+
                     % xxlim=length(nbrush);
                     xxlim=length(ib);
-                    
+
                     % Reshape previous matrix in such a way that the first
                     % length(nbrush) columns refer to the steps which have to
                     % be plotted and the remining columns refer to their
                     % corresponding values of mdr
                     xy=reshape(xxselr,2,2*xxlim);
-                    
+
                     % Add to the previous matrix a row of missing values
                     % This operation is necessary if the steps are not contiguous
                     xy=cat(1,xy,NaN*zeros(1,2*xxlim));
-                    
+
                     % Reshape the set of x and y coordinates in two column
                     % vectors
                     % Notice the NaN between the steps which are not consecutive
@@ -1139,7 +1265,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     ycoord=reshape(xy(:,xxlim+1:end),3*xxlim,1);
                     hold('on');
                     if strcmp('on',persist)
-                        
+
                         % If necessary it isalso possible to specify a line
                         %style for the brushed steps
                         % 'LineStyle',stypbrushed{ij},
@@ -1151,31 +1277,31 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     hold('off');
                 end
             end
-            
+
             % If the option persistent is not equal off or on than get out
             % of the loop
             if strcmp('on',persist) || strcmp('off',persist)
-                
+
                 % variable ij is linked to the highlighting color
                 if strcmp('on',persist)
                     ij=ij+1;
-                    
+
                     % Set but=1 so that previous highlightments in other
                     % figures are not deleted
                     but=1;
                 end
-                
+
                 % Before waitforbuttonpress:
                 % - the fanplot is highlighted again
                 figure(hfan);
-                
+
                 % Lay down the plots before continuing
                 position(hfan);
                 % position;
-                
+
                 % - and a function to be executed on figure close is set
                 set(gcf,'CloseRequestFcn',@closereqFS);
-                
+
                 disp('Press a mouse key to continue brushing, a keyboard key to stop')
                 ss=waitforbuttonpressFS;
                 disp('------------------------')
@@ -1192,7 +1318,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
             end % close condition associated with persist 'on' or persist 'off'
         end % close condition associated with sely
     end % close brushing loop
-        brushedUnits=brushcum;
+    brushedUnits=brushcum;
 end % close options.databrush
 
     function output_txt = fanplotLbl(~,event_obj,out)
@@ -1243,42 +1369,42 @@ end % close options.databrush
         %
         % Written by FSDA team
         %
-        
+
         %%
         pos = get(event_obj,'Position');
-        
+
         % x and y, plot coordinates of the mouse
         x = pos(1); y = pos(2);
-        
+
         % output_txt is what it is shown on the screen
         output_txt = {['Value of the score test=',num2str(y)]};
-        
+
         % Add information abou the step of the search which is under investigation
         output_txt{end+1} = ['Step m=' num2str(x)];
-        
+
         % If structure out does not contain labels for the rows then
         % labels row1....rown are added automatically
         if isempty(intersect('label',fieldnames(out)))
-            
+
             % Find n=number of units
             % cUn=cell2mat(out.Un(1));
             % n=cUn(end,1);
             out.label=cellstr(num2str((1:n)','row%d'));
         end
-        
+
         % Add information about the unit(s) and the selected steps they entered the
         % search
-        
+
         [~,col] = find(out.Score(:,2:end)==y);
         Un=out.Un{col};
         idx = find(Un(:,1)==x,1);
         sel=Un(idx,2:end);
-        
+
         % Add information about the corresponding row label of what has been
         % selected
         output_txt{end+1} = ['H\_0:' '$$\lambda =$$' num2str(out.la(col))];
         output_txt{end+1} = ['Unit(s) entered in step ' num2str(x) '='  num2str(sel(~isnan(sel)))];
-        
+
     end
 
 
