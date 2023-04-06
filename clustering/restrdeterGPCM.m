@@ -64,10 +64,15 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 %
 % References:
 %
-%   Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2019),
-%   Robust parsimonious clustering models. Submitted.
-%
-%
+%   Garcia-Escudero L.A., Mayo-Iscar, A. and Riani M. (2020). Model-based
+%   clustering with determinant-and-shape constraint, Statistics and
+%   Computing, vol. 30, pp. 1363–1380,
+%   https://link.springer.com/article/10.1007/s11222-020-09950-w
+%     
+%   Garcia-Escudero L.A., Mayo-Iscar, A. and Riani M. (2022). Constrained
+%   parsimonious model-based clustering, Statistics and Computing, vol. 32,
+%   https://doi.org/10.1007/s11222-021-10061-3
+% 
 % Copyright 2008-2023.
 % Written by FSDA team
 %
