@@ -31,8 +31,8 @@ function aceplot(out,varargin)
 %
 % Optional input arguments:
 %
-%    highlight : units to highliight in the plot. Vector. Vector contaning
-%               the numbers associate to the units to highlight in the plots.
+%    highlight : units to highlight in the plot. Vector. Vector containing
+%               the numbers associated to the units to highlight in the plots.
 %               The default is to highlight the units inside out.outliers.
 %                 Example - 'highlight',1:10
 %                 Data Types - double
@@ -343,7 +343,9 @@ for j=1:p
             ylabel(['Transformed X' jstr])
             xlabel(['X' jstr])
         else
-            ylabel("Transformed"+ VarNames(j))
+            ylabel(""+ VarNames(j))
+                ylabel({'Transformed' char(VarNames(j))})
+
             xlabel(VarNames(j))
         end
     else
