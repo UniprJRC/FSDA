@@ -169,6 +169,7 @@ function [out]=regressHart(y,X,Z,varargin)
 %
 % Greene, W.H. (1987), "Econometric Analysis", Prentice Hall. [5th edition,
 % section 11.7.1 pp. 232-235, 7th edition, section  9.7.1 pp. 280-282]
+%
 % Atkinson, A.C., Riani, M. and Torti, F. (2016), Robust methods for
 % heteroskedastic regression, "Computational Statistics and Data Analysis",
 % Vol. 104, pp. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 [ART]

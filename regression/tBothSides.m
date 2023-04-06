@@ -206,8 +206,10 @@ function [out] = tBothSides(y, X, varargin)
 %
 % Box, G.E.P. and Cox, D.R. (1964), The analysis of transformations,
 % Journal of the Royal Statistical Society, Vol. 26, pp. 211-252.
+%
 % Carroll, R.J. and Ruppert, D. (1988), Transformation and Weighting in
 % Regression, London: Chapman and Hall.
+%
 % Yeo, I.K and Johnson, R. (2000), A new family of power transformations to
 % improve normality or symmetry, "Biometrika", Vol. 87, pp. 954-959.
 %

@@ -79,14 +79,18 @@ function y = randsampleFS(n,k,method)
 % Fisher, R.A. and Yates, F. (1948), "Statistical tables
 % for biological, agricultural and medical research (3rd ed.)",
 % Oliver & Boyd, pp. 26-27. [For Method 1]
+%
 % Cochran, W.G. (1977), "Sampling techniques (Third ed.)", Wiley. [For
 % Method 2]
+%
 % Knuth, D.E. (1997), "The Art of Computer Programming, Volume 2:
 % Seminumerical Algorithms, Third Edition" Addison-Wesley, pp. 10-26. [For
 % Method 3. For details see: Section 3.2.1: The Linear Congruential Method]
+%
 % Efraimidis, P.S. and Spirakis, P.G. (2006), Weighted random sampling with
 % a reservoir, "Information Processing Letters", Vol. 97, pp. 181-185. [For
 % Weighted Sampling Without Replacement]
+%
 % Wong, C.K. and Easton, M.C. (1980), An Efficient Method for Weighted
 % Sampling Without Replacement, "SIAM Journal of Computing", Vol. 9, pp. 111-113.
 %

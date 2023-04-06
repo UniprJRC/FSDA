@@ -509,7 +509,7 @@ function out=publishFS(file,varargin)
 %         [7] A line which starts with string "References:" must be present.
 %         The year of each reference must be enclosed in round parenthesis.
 %         PublishFS decides that a new reference starts if a new line contains
-%         symbol "(" + "a sequence of 4 or 5 characthers identifying the year
+%         symbol "(" + "a sequence of 4 or 5 characters identifying the year
 %         because the reference can be for example 2003 or 2003a" + symbol ")"
 %         For example, an acceptable format for the two references below is:
 %
@@ -2774,7 +2774,9 @@ else
     begref=0;
     endref=0;
     begreftoaddtmp='';
+    initiallineWithnoParenthesis=false;
     for i=1:length(findnewline)-1
+
         % Find candidate for beginning of a reference
         candiniref=fstringsel(findnewline(i):findnewline(i+1));
         % findref=regexp(candiniref,'\(....\)','once');
@@ -2783,12 +2785,19 @@ else
         findref=regexp(candiniref,'\(.{4,5}\)','once');
 
         if ~isempty(findref) && begref==0
-            begreftoadd=findnewline(i);
+            if initiallineWithnoParenthesis == true
+                begreftoadd=findnewline(i-1);
+                initiallineWithnoParenthesis=false;
+            else
+                begreftoadd=findnewline(i);
+            end
             begref=1;
-        elseif ~isempty(findref) && begref==1
+        elseif (~isempty(findref) && begref==1) || (strcmp(strtrim(candiniref),'%') && begref==1)
             endreftoadd=findnewline(i)-1;
             begreftoaddtmp=findnewline(i);
             endref=1;
+        elseif length(candiniref)>70 && isempty(findref) && begref==0
+            initiallineWithnoParenthesis=true;
         else
         end
 
@@ -2805,7 +2814,7 @@ else
             ref2add=strtrim(ref2add);
             refsargs{ij}=ref2add;
             ij=ij+1;
-            % begref=0;
+            begref=0;
             endref=0;
             begreftoadd=begreftoaddtmp;
         end
@@ -3882,21 +3891,29 @@ newlinewithFullStop=regexp(descrlong,'\.\s*\r');
 % 1) "one space" and then "pp."
 % 2) i.e.
 % 3) i. e.
-% 4) "one space" and then Vol.
-% 5) "one space" and then vol.
+% 4) "one space" and then vol. or Vol.
+% 5) "one space" and then (XXXX) or "one space" and then (XXXXX)
 [ppwithfullstop]=regexp(descrlong,'\spp\.\s*\r')+3;
 [iewithfullstop]=regexp(descrlong,'i\.e.\s*\r')+3;
 [ispaceewithfullstop]=regexp(descrlong,'i\.\se.\s*\r')+4;
 [volwithfullstop]=regexp(descrlong,'\s[v-V]ol\.s*\r')+4;
+[authnamewithfullstop]=regexp(descrlong,'[A-Z]\.\s*\r\s*\(.{4,5}\)')+1;
 
-exceptions=[ppwithfullstop iewithfullstop ispaceewithfullstop volwithfullstop];
+exceptions=[ppwithfullstop iewithfullstop ispaceewithfullstop 
+    volwithfullstop authnamewithfullstop];
 newlinewithFullStop=setdiff(newlinewithFullStop,exceptions);
 
 
 % Find all lines which terminate with symbol : or with symbol ;
-newlinewithColon=regexp(descrlong,'\:\s*\r');
+newlinewithColon=regexp(descrlong,'(?<=^\sin)\:\s*\r');
+% [authnamewithfullstop]=regexp(descrlong,'[A-Z]\.\s*\r\s*\(.{4,5}\)')+1;
+
+
 newlinewithSemiColon=regexp(descrlong,'\;\s*\r');
 newl=sort([newlinewithColon newlinewithSemiColon newlinewithFullStop]);
+
+
+
 if ~isempty(newl)
     descrlongHTML=['<p>' descrlong(1:newl(1))];
     if length(newl)==1

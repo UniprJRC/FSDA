@@ -69,6 +69,7 @@ function out = GUImad(x, flag,w, varargin)
 % See also: GUIstd, GUIvar, GUItrimmean
 %
 % References:
+%
 % Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2023.

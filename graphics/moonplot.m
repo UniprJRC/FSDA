@@ -280,14 +280,19 @@ function moonplot(out,varargin)
 % References:
 % Benzecri, J.-P. (1992), "Correspondence Analysis Handbook", New-York,
 % Dekker.
+%
 % Benzecri, J.-P. (1980), "L'analyse des donnees tome 2: l'analyse des
 % correspondances", Paris, Bordas.
+%
 % Greenacre, M.J. (1993), "Correspondence Analysis in Practice", London,
 % Academic Press.
+%
 % Bock, T. (2011), Improving the display of correspondence analysis using moon
 % plots, "International Journal of Market Research", Vol. 53, pp. 307-326.
+%
 % Gabriel, K.R. and Odoroff, C. (1990), Biplots in biomedical research,
 % "Statistics in Medicine", Vol. 9, pp. 469-485.
+%
 % Greenacre, M.J. (1993), Biplots in correspondence Analysis, "Journal of
 % Applied Statistics", Vol. 20, pp. 251-269.
 %

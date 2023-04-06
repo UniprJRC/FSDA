@@ -47,6 +47,7 @@ function w = TBwei(u,c)
 %
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
+%
 % Riani, M., Cerioli, A. and Torti, F. (2014), On consistency factors and
 % efficiency of robust S-estimators, "TEST", Vol. 23, pp. 356-387.
 % http://dx.doi.org/10.1007/s11749-014-0357-7

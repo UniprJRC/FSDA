@@ -282,8 +282,10 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % Riani M., Atkinson A.C. and Corbellini A. (2022), Robust Transformations
 % for Multiple Regression via Additivity and Variance Stabilization,
 % submitted.
+%
 % Tibshirani R. (1987), Estimating optimal transformations for regression,
 % "Journal of the American Statistical Association", Vol. 83, 394-405.
+%
 % Wang D.  and Murphy M. (2005), Identifying nonlinear relationships
 % regression using the ACE algorithm, "Journal of Applied Statistics",
 % Vol. 32, pp. 243-258.

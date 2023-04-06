@@ -135,9 +135,11 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 % References:
 % Chaloner, K. and Brant, R. (1988), A Bayesian Approach to Outlier
 % Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.
+%
 % Riani, M., Corbellini, A. and Atkinson, A.C. (2018), Very Robust Bayesian
 % Regression for Fraud Detection, "International Statistical Review",
 % http://dx.doi.org/10.1111/insr.12247
+%
 % Atkinson, A.C., Corbellini, A. and Riani, M., (2017), Robust Bayesian
 % Regression with the Forward Search: Theory and Data Analysis, "Test",
 % Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6

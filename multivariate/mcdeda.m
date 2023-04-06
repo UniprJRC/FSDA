@@ -234,10 +234,13 @@ function [RAW,REW,varargout] = mcdeda(Y,varargin)
 %
 % Rousseeuw, P.J. (1984), Least Median of Squares Regression,
 % "Journal of the American Statistical Association", Vol. 79, pp. 871-881.
+%
 % Rousseeuw, P.J. and Van Driessen, K. (1999). A fast algorithm for the
 % minimum covariance determinant estimator. Technometrics, 41:212-223.
+%
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
+%
 % Cerioli A., Riani M., Atkinson A.C., Corbellini A. (2018). "The power of
 % monitoring: how to make the most of a contaminated multivariate sample,
 % "Statistical Methods and Applications (with discussion)",

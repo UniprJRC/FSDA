@@ -344,7 +344,7 @@ function [out]=FSR(y,X,varargin)
 % out.ListCl  = (n-m) x 1 vector of non-outlying units.
 %               This field is present only if weak = true.
 %
-% See also: FSReda, LXS.m
+% See referencealso: FSReda, LXS.m
 %
 % References:
 %

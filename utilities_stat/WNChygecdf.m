@@ -32,6 +32,7 @@ function [Wcdf] = WNChygecdf(X,N,K,M,W)
 % See also WNChygepdf, randsampleFS.m, subsets.m
 %
 % References:
+%
 % Fog, A. (2008), Calculation Methods for Wallenius' Noncentral Hypergeometric
 % Distribution, "Communications in Statistics - Simulation and
 % Computation", Vol. 37, pp. 258-273.

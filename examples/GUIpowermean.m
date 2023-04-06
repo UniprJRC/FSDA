@@ -45,6 +45,7 @@ function out = GUIpowermean(x, s, w)
 % See also: GUIvar, GUIstd, GUIquantile, GUIconcentration
 %
 % References:
+%
 % Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
 %
 %

@@ -37,6 +37,7 @@ function x = shuffling(x)
 %
 % Knuth, D.E. (1969), "The Art of Computer Programming volume 2,
 % Seminumerical algorithms", Reading, MA: Addison-Wesley, pp. 124-125.
+%
 % Fisher, R.A. and Yates, F. (1948), "Statistical tables for biological,
 % agricultural and medical research (3rd ed.)", Oliver & Boyd, pp. 26-27.
 %

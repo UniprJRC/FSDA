@@ -252,6 +252,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %
 % Franses and van Dijk (2000), "Nonlinear Time Series Models in Empirical Finance",
 %    Cambridge: Cambridge University Press.
+%
 % Grossi, L. and Nan, F. (2019), Robust forecasting of electricity prices:
 %    simulations, models and the impact of renewable sources, "Technological
 %    Forecasting & Social Change", Vol. 141, pp. 305-318.

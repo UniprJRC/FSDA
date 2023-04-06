@@ -407,8 +407,7 @@ function out  = tclustregIC(y,X,varargin)
 %
 % Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
 % Methodologies for Clustering Linear Regression Data, "Advances in Data
-% Analysis and Classification". [doi
-% https://doi.org/10.1007/s11634-018-0331-4].
+% Analysis and Classification". [doi https://doi.org/10.1007/s11634-018-0331-4].
 %
 % Copyright 2008-2023.
 % Written by FSDA team

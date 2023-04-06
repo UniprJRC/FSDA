@@ -76,6 +76,7 @@ function [S, Stable] = GowerIndex(Y, varargin)
 %
 % Gower, J. C. (1971), "A general coefficient of similarity and some of its
 % properties", Biometrics, pp. 857-871.
+%
 % Grane', A., and Romera R. (2018), "On Visualizing Mixed-Type Data: A
 % Joint Metric Approach to Profile Construction and Outlier Detection",
 % Sociological Methods & Research, Vol. 47, pp. 207-239
