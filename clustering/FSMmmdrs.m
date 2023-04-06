@@ -196,9 +196,11 @@ function out=FSMmmdrs(Y,varargin)
 % Searches with Envelopes for Detecting Clusters in Multivariate Data,
 % in: Zani S., Cerioli A., Riani M., Vichi M., Eds., "Data Analysis,
 % Classification and the Forward Search", pp. 163-172, Springer Verlag.
+%
 % Atkinson, A.C. and Riani, M., (2007), Exploratory Tools for Clustering
 % Multivariate Data, "Computational Statistics & Data Analysis", Vol. 52,
 % pp. 272-285, doi:10.1016/j.csda.2006.12.034
+%
 % Riani, M., Cerioli, A., Atkinson, A.C., Perrotta, D. and Torti, F. (2008),
 % Fitting Mixtures of Regression Lines with the Forward Search, in:
 % "Mining Massive Data Sets for Security", F. Fogelman-Soulie et al. Eds.,

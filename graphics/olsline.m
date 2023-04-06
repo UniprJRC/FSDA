@@ -20,10 +20,10 @@ function h = olsline(varargin)
 %
 % References:
 %
-%   Riani M., Cerioli A., Perrotta D., Torti F. (2008). Fitting Mixtures of
-%   Regression Lines with the Forward Search. Mining Massive Data Sets for
-%   Security F. Fogelman-Souli et al. EDS. (pp. 271-286). IOS Press,
-%   Amsterdam (The Netherlands).
+% Riani M., Cerioli A., Perrotta D., Torti F. (2008). Fitting Mixtures of
+% Regression Lines with the Forward Search. Mining Massive Data Sets for
+% Security F. Fogelman-Souli et al. EDS., pp. 271-286, IOS Press,
+% Amsterdam (The Netherlands).
 %
 %
 %
