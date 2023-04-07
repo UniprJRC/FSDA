@@ -338,6 +338,12 @@ for ii = 2:size(uniquesTab,1)
     strInsert = [strInsert '<p>' refText '</p>' newline]; %#ok<AGROW>
 end
 
+% Insert hypertextual link to all http or https references
+% pos=regexp(strInsert,'(https?://(?:\w*[\.-]*/*)*)','match')
+% strInsert=regexprep(strInsert,'(https?://(?:\w*[\.-]*/*)*)','<a href="$1">$1</a>');
+
+strInsert=regexprep(strInsert,'(https?://(?:\w*[\.-]*/*)*)','<a href="$1">$1</a>');
+
 strInsert = [strInsert '<p><hr /> <center><i>This page has been automatically generated' ...
     ' by our routine <a href="publishBibliography.html">publishBibliography</a></i> </center></p>' newline];
 
@@ -416,7 +422,7 @@ References=References(1:j-1,:);
 end
 
 function d = wfEdits(S1,S2)
-% Wagner�Fischer algorithm to calculate the edit distance / Levenshtein distance.
+% Wagner-Fischer algorithm to calculate the edit distance / Levenshtein distance.
 %
 N1 = 1+numel(S1);
 N2 = 1+numel(S2);
