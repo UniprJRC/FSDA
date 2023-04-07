@@ -98,9 +98,11 @@ function [res] = mdpd(y, alpha, varargin)
 %  Basu, A., Harris, I.R., Hjort, N.L. and Jones, M.C., (1998), Robust
 %  and efficient estimation by minimizing a density power divergence,
 %  Biometrika, 85, pp. 549-559.
+%
 %  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
 %  Regression with Density Power Divergence: Theory, Comparisons and Data
-%  Analysis, submitted.
+%  Analysis, Entropy, Vol. 22, 399. 
+%  https://www.mdpi.com/1099-4300/22/4/399 
 %
 %
 % Copyright 2008-2023.

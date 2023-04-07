@@ -487,7 +487,7 @@ function out  = ctlcurves(Y, varargin)
 %
 % References:
 %
-% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar A., (2011),
+% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar A., (2011),
 % "Exploring the number of groups in robust model-based
 % clustering." Statistics and Computing, Vol. 21, pp. 585-599.
 %
