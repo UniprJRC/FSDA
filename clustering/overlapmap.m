@@ -183,8 +183,9 @@ function [out] = overlapmap(D, varargin)
 %
 % References:
 %
-%   Melnykov, V., Michael, S. (2017), "Clustering large datasets by merging
-%   K-means solutions". Submitted.
+%   Melnykov, V., Michael, S. (2020), Clustering Large Datasets by Merging
+%   K-Means Solutions, Journal of Classification, Vol. 37, pp. 97–123,
+%   https://doi.org/10.1007/s00357-019-09314-8
 %
 %   Melnykov, V. (2016), Merging Mixture Components for Clustering Through
 %   Pairwise Overlap, "Journal of Computational and Graphical Statistics",

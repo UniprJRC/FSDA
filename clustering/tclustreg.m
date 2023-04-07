@@ -471,9 +471,10 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % Lines with High Density Regions. Advances in Data Analysis and
 % Classification, Vol. 8, pp. 5-26.
 %
-% Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+% Torti F., Perrotta D., Riani, M. and Cerioli A. (2019). Assessing Robust
 % Methodologies for Clustering Linear Regression Data, "Advances in Data
-% Analysis and Classification".
+% Analysis and Classification", Vol. 13, pp. 227–257,
+% https://doi.org/10.1007/s11634-018-0331-4
 %
 % Copyright 2008-2023.
 % Written by FSDA team

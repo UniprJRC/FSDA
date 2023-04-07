@@ -142,7 +142,7 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %
 % Atkinson, A.C., Corbellini, A. and Riani, M., (2017), Robust Bayesian
 % Regression with the Forward Search: Theory and Data Analysis, "Test",
-% Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6
+% Vol. 26, pp. 869-886, https://doi.org/10.1007/s11749-017-0542-6
 %
 % Copyright 2008-2023.
 % Written by FSDA team

@@ -24,7 +24,8 @@ function alpha = PDbdp(bdp)
 % 
 %  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
 %  Regression with Density Power Divergence: Theory, Comparisons and Data
-%  Analysis, submitted.
+%  Analysis, Entropy, Vol. 22, 399. 
+%  https://www.mdpi.com/1099-4300/22/4/399 
 %
 % Copyright 2008-2023.
 % Written by FSDA team

@@ -346,15 +346,16 @@ function [out] = MixSimreg(k,p,varargin)
 % Eigenvalues and Eigenvectors, in Bauer, F.L. Eds, "Handbook for Automatic
 % Computation", Vol. 2, pp. 315-326, Springer.
 %
-%   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
-%   A General Trimming Approach to Robust Cluster Analysis. Annals
-%   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
-%   http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf].
+% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+% A General Trimming Approach to Robust Cluster Analysis. Annals
+% of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
+% http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf].
 %
-% Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+% Torti F., Perrotta D., Riani, M. and Cerioli A. (2019). Assessing Robust
 % Methodologies for Clustering Linear Regression Data, "Advances in Data
-% Analysis and Classification". [doi https://doi.org/10.1007/s11634-018-0331-4].
-
+% Analysis and Classification", Vol. 13, pp. 227–257,
+% https://doi.org/10.1007/s11634-018-0331-4
+%
 % Copyright 2008-2023.
 % Written by FSDA team
 %
