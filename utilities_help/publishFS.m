@@ -3990,7 +3990,7 @@ if ~isempty(IniRefhttp)
             namehttp=namehttp(1:end-4);
         end
 
-        % If namehttp ends with namehttp is . or , or / or ] or a combination of
+        % If namehttp ends with . or , or / or ] or a combination of
         % these characters remove them
         extrasp=0;
 
