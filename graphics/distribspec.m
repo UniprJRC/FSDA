@@ -27,7 +27,29 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %                    user-defined distribution. The estimation is done
 %                    by maximum likelihood using MATLAB function mle.
 %             - A numeric vector containg a sample used to fit a probability
-%               distribution object with nonparametric kernel-smoothing.
+%               distribution object with nonparametric kernel-smoothing.             
+%             Other optional fields can be set to help improving the speed
+%             and quality of the results obtained for user-defined
+%             distributions.
+%             In particular, when a data sample is provided in pd.x, the  
+%             user can add to structue pd additional fields to control the
+%             estimation of the distribution parameters made by distribspec 
+%             using matlab function mle:
+%             - pd.mleStart, used as initial parameter values. The choice
+%               of the starting point is often crucial for the convergence
+%               of mle. If the initial parameter values are far from the
+%               true maximum likelihood estimate, we can obtain underflow 
+%               in the distribution functions and infinite loglikelihoods. 
+%               A reasonable choice for the initial value of a location
+%               parameter could be pd.mleStart = mean(pd.x). Similarily,
+%               for a scale parameter we could set pd.mleStart = std(pd.x).
+%             - pd.mleLowerBound, which indicates Lower bounds for
+%               distribution parameters. For example, if we trust
+%               pd.mleStart, we could set pd.mleLowerBound = pd.mleStart/2.
+%             - pd.mleUpperBound, which indicates teh  Upper bounds for
+%               distribution parameters. Along the previous case, we could 
+%               set pd.mleUpperBound = pd.mleStart*2;
+%
 %
 %    specs  : the lower and upper limits of the shading area. Two element
 %             vector. If there is no lower limit, then specs(1)=-Inf. If
@@ -54,6 +76,20 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %                   Data Types - 3-element array for a RGB triplet
 %                   Example - 'userColor', [FSColors.lightgrey.RGB ; FSColors.grey.RGB]
 %                   Data Types - 2-row with RGB triplets
+%
+%   evalPoints :    Evaluation points. Scalar. Number of points where the
+%                   the pdf is evaluated and plotted. Default is 1000. The
+%                   default is ok for most cases. However, when distribspec
+%                   appears too slow, try reducing the number of evaluation
+%                   points. If on the contrary the plot looks not
+%                   sufficiently smooth, increase the number of evaluation
+%                   points.
+%                   Example - 'evalPoints', 1
+%                   Data Types - scalar
+%                   Example - 'evalPoints', [1.5 3.2]
+%                   Data Types - array
+%
+%
 % Output:
 %
 %    p:   Probability covered by the shaded area. Scalar. It is a value in [0 1].
@@ -64,10 +100,13 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 % Optional Output:
 %
 %
+% More About:  See https://www.mathworks.com/help/stats/fitting-custom-univariate-distributions-part-2.html
+%              And see also: normspec, makedist, fitdist, mle
+%
 % References:
 %
 %
-% See also: normspec, makedist, fitdist
+% See also: 
 %
 %
 % Copyright 2008-2023.
@@ -96,8 +135,8 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    %% A Beta with parameter values a = 2 and b = 4, outside [0.2 0.4].
-    pd = makedist('Beta','a',2,'b',4)
+    % A Beta with parameter values a = 2 and b = 4, outside [0.2 0.4].
+    pd = makedist('Beta','a',2,'b',4);
     specs  = [0.2 0.4];
     region = 'outside';
     [p, h] = distribspec(pd, specs, region);
@@ -105,7 +144,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 
 %{
     % A Beta with parameter values a = 2 and b = 4, in [0.4 inf].
-    pd = makedist('Beta','a',2,'b',4)
+    pd = makedist('Beta','a',2,'b',4);
     specs  = [0.4 inf];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region);
@@ -117,25 +156,33 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     specs  = [-inf 2];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region);
-%}
 
-%{
-    % A Gamma as above, without specification of region (default is
-    % inside).
+    % Without specification of region the default is inside, therefore,
+    % the output is identical
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     [p, h] = distribspec(pd, specs);
+    
+    cascade;
 %}
 
 %{
     % A Gamma as above, without specification of specs: returns an error.
     pd = makedist('Gamma','a',3,'b',1);
     region = 'inside';
-    [p, h] = distribspec(pd, [], region);
+    try
+        [p, h] = distribspec(pd, [], region);
+    catch
+        disp(sprintf('%s\n\n%s\n%s',...
+            'Without specification of specs, distribspec returned this error:' , ...
+            'Error using distribspec' , ...
+            'Please provide valid lower and upper limits for the area to highlight'));
+    end
 %}
 
 %{
-    % A Gamma with parameter values a = 3 and b = 1, up to -1.
+    % A Gamma with parameter values a = 3 and b = 1, up to -1. Nothing is
+    % colored.
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf -1];
     region = 'inside';
@@ -149,19 +196,19 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     specs  = [-inf 2];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region, 'userColor','r');
-%}
-
-%{
-    % A Gamma as above, using userColor with RGB triplet specification.
+    
+    % same, but using userColor with RGB triplet specification.
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region, 'userColor',[1 0.5 0.5]);
+    
+    cascade;
 %}
 
 %{
     %% A Half Normal using userColor with a color for each outside region
-    pd = makedist('HalfNormal','mu',0,'sigma',1.5)
+    pd = makedist('HalfNormal','mu',0,'sigma',1.5);
     specs  = [1 3];
     region = 'outside';
     useColor = 'cg';
@@ -174,7 +221,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    %% A Half Normal using userColor with RGB triplet specification
+    % A Half Normal using userColor with RGB triplet specification
     % The triplet is returned by FSColors.
     pd = makedist('HalfNormal','mu',0,'sigma',1.5);
     specs  = [-inf 1];
@@ -205,8 +252,31 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     [p, h] = distribspec(x, specs, region);
 %}
 
+%{ 
+    % Data from user-defined distribution, Benford (non-parametric)
+    % no parameters to estimate
+
+    userpdf = @(n) log10(1 + 1./n);
+    usercdf = @(n) log10(1 + n);
+
+    % random sample from Benford
+    n = 5000;
+    u = rand(n,1);
+    X = 10.^u;
+    
+    % Apply distribspec with userpdf
+    specs  = [-inf 5];
+    region = 'inside';
+    pd          = struct;
+    pd.x        = X;
+    pd.distname = 'user';
+    pd.userpdf  = userpdf;
+
+    [p, h] = distribspec(pd, specs, region);   
+%}
+
 %{
-    %% A sample from a user-defined distribution with given parameter lambda. 
+    % Data from user-defined distribution, negative exponential with one parameter 
     lambda = 5;
     userpdf = @(data,lambda) lambda*exp(-lambda*data);
     usercdf = @(data,lambda) 1-exp(-lambda*data);
@@ -216,7 +286,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     X = zeros(n,1);
     u = rand(n,1);
     for i = 1:numel(u)
-      fun  = @(x)integral(@(x)userpdf(x,lambda),0,x) - u(i);
+      fun  = @(x)integral(@(x)userpdf(x,lambda),eps,x) - u(i);
       X(i) = fzero(fun,0.5);
       % The previous two lines have the solution below, but exemplify the
       % approach for a generic function without closed formula.
@@ -259,57 +329,87 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     cascade;
 %}
 
-
 %{
-    %  Pareto Distribution: a user-defined pdf with two parameters
-
-    % https://www.mathworks.com/help/stats/fitting-custom-univariate-distributions-part-2.html
-
-    gam     = 2; 
-    k       = 4;
-    userpdf = @(x) (2*4^2) ./ (x.^(2+1));
-    usercdf = @(x, gam, k) 1 - (k./x).^gam;
+    %% Reducing the number of evaluation points 
+    % Data from user-defined distribution: Pareto (two parameters). This
+    % takes a while to complete, because of difficult integration (the
+    % function has singularities). Therefore, we reduce the ealuation
+    % points only to 50. In this case, being the function very smooth in
+    % the region of interest, the quality is not affected.
     
+    alpha0  = 2; 
+    xm0     = 4;
+    
+    % data
     rng(12345);
     n = 500;
     X = zeros(n,1);
     u = rand(n,1);
     for i = 1:numel(u)
-      X(i) = gam*(1-u(i)).^(-1/k);
+      X(i) = alpha0*(1-u(i)).^(-1/xm0);
     end
 
-    % Use distribspec with userpdf
-    specs  = [3 4];
+    % heaviside function
+    hvsd = @(y) [0.5*(y == 0) + (y > 0)];
+    userpdf0 = @(x) hvsd(x-xm0) .* (alpha0*4^alpha0) ./ (x.^(alpha0+1));
+    fplot(userpdf0);
+    xlim([-5 20]);
+    title({'Pareto distribution' , '$ hvsd(x-xm_{0}) \cdot (\alpha_{0} \cdot 4^{\alpha_{0}}) / (x^{\alpha_{0}+1})$' } , 'Interpreter','latex' , 'Fontsize' , 20);
+    
+    userpdf = @(x, alpha) hvsd(x-4) .* ((alpha*4^alpha) ./ (x.^(alpha+1)));
+    %userpdf = @(x, alpha, xm) hvsd(x-xm) .* ((alpha*xm^alpha) ./ (x.^(alpha+1)));
+    %usercdf = @(x, alpha, xm) hvsd(x-xm) .* (1 - (xm./x).^alpha);
+
+    % Apply distribspec with userpdf
+    specs  = [5 10];
     region = 'inside';
     pd          = struct;
     pd.x        = X;
     pd.distname = 'user';
     pd.userpdf  = userpdf;
+    pd.mleStart = mean(pd.x);
+    pd.mleLowerBound = pd.mleStart/2;
+    pd.mleUpperBound = pd.mleStart*2;
 
-    [p, h] = distribspec(pd, specs, region);
+    [p, h] = distribspec(pd, specs, region, 'evalPoints', 50);
 
+    cascade;
 %}
 
 %{
-    userpdf = @(n) log10(1 + 1./n);
-    usercdf = @(n) log10(1 + n);
-
-    n = 5000;
-    u = rand(n,1);
-    X = 10.^u;
+    %% User-defined pdf based on a default matlab distribution  
+    % Here the user takes one of the functions in makedist, possibly
+    % changing the number of parameters.
     
-    % Use distribspec with userpdf
-    specs  = [2 4];
+    alpha0  = 2; 
+    xm0     = 4;
+
+    X = wblrnd(1,1,[1000,1]) + 10;
+    histogram(X,'Normalization','pdf');
+    title({'A sample from the weibull' , '$a=1, b=1, c=10$'},'Fontsize',20,'Interpreter','latex');
+
+    % A Weibull distribution with an extra parameter c
+    userpdf = @(x,a,b,c) wblpdf(x-c,a,b);
+
+    % Apply distribspec with userpdf
+    specs  = [11 12];
     region = 'inside';
     pd          = struct;
     pd.x        = X;
     pd.distname = 'user';
     pd.userpdf  = userpdf;
+    pd.mleStart = [5 5 5];
+    pd.mleLowerBound = [0 0 -Inf];
+    pd.mleUpperBound = [Inf Inf min(X)];
 
-    [p, h] = distribspec(pd, specs, region);
+    % MLE parameters. The scale and shape parameters must be positive,
+    % and the location parameter must be smaller than the minimum of the
+    % sample data.
 
-    
+    [p, h] = distribspec(pd, specs, region, 'evalPoints', 100);
+    cascade
 %}
+
 
 %% Beginning of code
 
@@ -317,12 +417,24 @@ fittedUsingKernel   = false;
 fittedUsingDistname = false;
 userpdf             = [];
 usercdf             = [];
-prob                = (0.0001:0.0004:0.9999)';
 
+%% Main parameters
+
+if nargin<3 || isempty(region)
+    region='inside';
+end
+
+if numel(specs) ~= 2 || ~isnumeric(specs)
+    error('FSDA:distribspec:BadSpecsSize','Please provide valid lower and upper limits for the area to highlight');
+end
+
+if ~strcmp(region,'inside') && ~strcmp(region,'outside')
+    error('FSDA:distribspec:BadRegion','The region can be either "inside" or "outside"');
+end
 
 %% Optional parameters
 
-options = struct('userColor', 'b');
+options = struct('userColor', 'b', 'evalPoints', 1000);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -348,44 +460,16 @@ for i=1:2:length(varargin)
 end
 
 % Assign the values for the optional arguments
-userColor = options.userColor;
+userColor  = options.userColor;
+evalPoints = options.evalPoints;
 
+% Evaluation points
+prob = linspace(0.001,0.999,evalPoints)';
 
-if nargin<3 || isempty(region)
-    region='inside';
-end
+%% Checks on the structure provided by the user
 
-if numel(specs) ~= 2 || ~isnumeric(specs)
-    error('FSDA:distribspec:BadSpecsSize','Please provide valid lower and upper limits for the area to highlight');
-end
+if isstruct(pd)
 
-if ~strcmp(region,'inside') && ~strcmp(region,'outside')
-    error('FSDA:distribspec:BadRegion','The region can be either "inside" or "outside"');
-end
-
-
-
-%% Depending on pd, computation of x and y
-
-% In the next 'if' statement:
-% - we check inputs and invalid arguments
-% - we generate a set of quantiles and the respective x and y values for
-%   the selected distribution/data/parameters
-
-if isobject(pd) && isprop(pd,'DistributionName')
-
-    % CASE 1. pd CONTAINS A PROBABILITY DISTRIBUTION OF makedist.m FUNCTION
-
-    % set of values based on the given probability density object
-    x = icdf(pd,prob);
-    y = pdf(pd, x);
-    % plot(x,y,'-')
-
-elseif isstruct(pd)
-
-    % CASE 2. pd CONTAINS A PROBABILITY DISTRIBUTION AND A SAMPLE
-
-    % do the necessary checks on the structure provided by the user
     if ~and(isfield(pd,'distname') , isfield(pd,'x'))
         error('FSDA:distribspec:BadFilds','Bad filds or filed names: please specify "distname" and "x".');
     end
@@ -411,13 +495,47 @@ elseif isstruct(pd)
                 end
                 % parameters of the cdf/pdf
                 parnum = max(parnum_c,parnum_p) ;
-
+                
+                if ~isfield(pd,'mleStart')
+                    pd.mleStart = repmat(0.5,parnum,1);
+                end
+                if ~isfield(pd,'mleLowerBound')
+                    pd.mleLowerBound = [];
+                end
+                if ~isfield(pd,'mleUpperBound')
+                    pd.mleUpperBound = [];
+                end
             end
         end
     end
     if ~isnumeric(pd.x)
         error('FSDA:distribspec:BadSampleX','Bad sample: the array x must be numeric.');
     end
+end
+
+isuserdistrib = false;
+
+%% Depending on pd, computation of x and y
+
+% In the next 'if' statement:
+% - we check inputs and invalid arguments
+% - compute the x and y values for predefined quantiles and the
+%   selected distribution/data/parameters
+
+if isobject(pd) && isprop(pd,'DistributionName')
+
+    % CASE 1. pd CONTAINS A PROBABILITY DISTRIBUTION OF makedist.m FUNCTION
+
+    % set of values based on the given probability density object created
+    % by the user outside distribspec
+    x = icdf(pd,prob);
+    y = pdf(pd, x);
+
+    % plot(x,y,'-')
+
+elseif isstruct(pd)
+
+    % CASE 2. pd CONTAINS A PROBABILITY DISTRIBUTION AND A SAMPLE
 
     if isempty(userpdf) && isempty(usercdf)
 
@@ -430,11 +548,16 @@ elseif isstruct(pd)
         pd = fitdist(sample,pd.distname);
         x = icdf(pd,prob);
         y = pdf(pd, x);
+        
         % plot(x,y,'-')
 
     else
 
         % CASE 2.2: THE PROBABILITY DISTRIBUTION IS USER-DEFINED
+        
+        isuserdistrib = true;
+        mleOpt        = statset('FunValCheck','off');
+        %fminuncOpt    = optimset('Display','off','MaxIter',10000,'TolX',10^-30,'TolFun',10^-30);
 
         % The available sample
         sample = pd.x;
@@ -443,11 +566,11 @@ elseif isstruct(pd)
         % Parameter estimation
         if parnum_c > 0 && parnum_p > 0
             % Both pdf and cdf are specified
-            parhat = mle(sample,'pdf',userpdf,'cdf',usercdf,'start',0.05);
+            parhat = mle(sample,'pdf',userpdf,'cdf',usercdf,'start',pd.mleStart,'LowerBound',pd.mleLowerBound,'UpperBound',pd.mleUpperBound,'Options',mleOpt);
 
         elseif parnum_p > 0 && parnum_c == -1
             % The pdf is specified
-            parhat  = mle(sample,'pdf',userpdf,'start',0.5);
+            parhat   = mle(sample,'pdf',userpdf,'start',pd.mleStart,'LowerBound',pd.mleLowerBound,'UpperBound',pd.mleUpperBound,'Options',mleOpt);
 
         elseif parnum_c > 0 && parnum_p == -1
             % The cdf is specified (mle does not work)
@@ -468,13 +591,28 @@ elseif isstruct(pd)
 
         end
 
+        % Computation of the x and y values 
         if parnum_c > 0 && parnum_p > 0
             % The user has provided both the pdf and cdf
 
             % Compute the ICDF from the CDF
-            userICDF = @(p) fzero( @(pp)usercdf(pp,parhat) - p , 0);
+            switch parnum
+                case 1
+                    userICDF = @(p) fzero( @(pp)usercdf(pp,parhat) - p , 0);
+                case 2
+                    userICDF = @(p) fzero( @(pp)usercdf(pp,parhat(1),parhat(2)) - p , 0);
+                case 3
+                    userICDF = @(p) fzero( @(pp)usercdf(pp,parhat(1),parhat(2),parhat(3)) - p , 0);
+            end
             x = arrayfun(userICDF,prob);
-            y = userpdf(x,parhat);
+            switch parnum
+                case 1
+                    y = userpdf(x,parhat);
+                case 2
+                    y = userpdf(x,parhat(1),parhat(2));
+                case 3
+                    y = userpdf(x,parhat(1),parhat(2),parhat(3));
+            end
 
             % arrayfun replaces the following loop:
             %x = zeros(numel(prob),1);
@@ -488,20 +626,43 @@ elseif isstruct(pd)
             % the user has provided the pdf
 
             % Compute the CDF from the userpdf
-            userCDF = @(x)integral(@(x)userpdf(x,parhat),0,x,'ArrayValued',1);
-
-            % Compute the ICDF from the CDF
-            userICDF = @(p) fzero( @(pp)userCDF(pp) - p , 0);
-
+            switch parnum
+                case 1
+                    userCDF = @(x)integral(@(x)userpdf(x,parhat),eps,x,'ArrayValued',1);
+                case 2
+                    userCDF = @(x)integral(@(x)userpdf(x,parhat(1),parhat(2)),eps,x,'ArrayValued',1);
+                case 3
+                    userCDF = @(x)integral(@(x)userpdf(x,parhat(1),parhat(2),parhat(3)),eps,x,'ArrayValued',1);
+            end
+            % Compute the ICDF from the CDF 
+            initialGuess = eps; % check first if initialGuess leads to a finite value for the integrand 
+            fzeroOpt = optimset('MaxFunEvals',100,'MaxIter',100);
+            userICDF = @(p) fzero( @(pp)userCDF(pp) - p , initialGuess, fzeroOpt);
             x = arrayfun(userICDF,prob);
-            y = userpdf(x,parhat);
+            switch parnum
+                case 1
+                    y = userpdf(x,parhat);
+                case 2
+                    y = userpdf(x,parhat(1),parhat(2));
+                case 3
+                    y = userpdf(x,parhat(1),parhat(2),parhat(3));
+            end
 
             % plot(x,y,'-')
 
         elseif parnum_c > 0 && parnum_p == -1
             % the user has provided the cdf
 
-            userICDF = @(p) fzero( @(pp)usercdf(pp,parhat) - p , 0);
+            initialGuess = 0; % check first if initialGuess leads to a finite value for the integrand
+            switch parnum
+                case 1
+                    userICDF = @(p) fzero( @(pp)usercdf(pp,parhat) - p , initialGuess);
+                case 2
+                    userICDF = @(p) fzero( @(pp)usercdf(pp,parhat(1),parhat(2)) - p , initialGuess);
+                case 3
+                    userICDF = @(p) fzero( @(pp)usercdf(pp,parhat(1),parhat(2),parhat(3)) - p , initialGuess);
+            end
+                    
             x = arrayfun(userICDF,prob);
 
             % Workaround for the above
@@ -515,7 +676,14 @@ elseif isstruct(pd)
             % Compute the pdf values as d(CDF) / d(x)
             h = 1e-9;
             %complex step differention: imag(f(x+h*1i)/h);
-            y = imag(usercdf(prob+h*1i,parhat) / h);
+            switch parnum
+                case 1
+                    y = imag(usercdf(prob+h*1i,parhat) / h);
+                case 2
+                    y = imag(usercdf(prob+h*1i,parhat(1),parhat(2)) / h);
+                case 3
+                    y = imag(usercdf(prob+h*1i,parhat(1),parhat(2),parhat(3)) / h);
+            end
 
             % there are other ways to differentiate:
             %y0 = diff([eps ; usercdf(prob,parhat)]) ./ diff([eps ; prob]);
@@ -546,18 +714,17 @@ elseif isstruct(pd)
 
             y = userpdf(x);
 
-            %             % Compute the CDF from the userpdf: we use the compact version below
-            %             usercdf = @(x)integral(@(x)userpdf(x),0,x,'ArrayValued',1);
-            %
-            %             % Compute the ICDF from the CDF, as in the previous case
-            %             userICDF = @(p) fzero( @(pp)usercdf(pp) - p , 0.5);
-            %
-            %             x = zeros(numel(prob),1);
-            %             for i=1:numel(prob)
-            %                 x(i) = userICDF(prob(i));
-            %             end
-            %             y = userpdf(x);
-            % Compute the CDF from the userpdf
+            % % Compute the CDF from the userpdf: we use the compact version below
+            % usercdf = @(x)integral(@(x)userpdf(x),eps,x,'ArrayValued',1);
+            % 
+            % % Compute the ICDF from the CDF, as in the previous case
+            % userICDF = @(p) fzero( @(pp)usercdf(pp) - p , 0.5);
+            % 
+            % x = zeros(numel(prob),1);
+            % for i=1:numel(prob)
+            %     x(i) = userICDF(prob(i));
+            % end
+            % y = userpdf(x);
 
             % plot(x,y,'-')
         end
@@ -587,7 +754,7 @@ elseif isnumeric(pd)
     else
         pd = fitdist(x,'Kernel');
     end
-    %prob = (0.0001:0.0004:0.9999)';
+
     x = icdf(pd,prob);
     y = pdf(pd, x);
 
@@ -597,10 +764,7 @@ end
 
 
 %% set upper and lower bound
-% if nargin<3 || isempty(region)
-%     region='inside';
-% end
-%
+
 if nargin<2 || isempty(specs)
     specs=[min(x) max(x)];
     emptyspecs = true;
@@ -621,14 +785,6 @@ if lbinf && ubinf
     error('FSDA:distribspec:BadSpecsInfinite','Both limits are infinite');
 end
 
-
-% if numel(specs) ~= 2 || ~isnumeric(specs)
-%     error('FSDA:distribspec:BadSpecsSize','The lower and upper limits of the shading area are badly specified');
-% end
-%
-% if ~strcmp(region,'inside') && ~strcmp(region,'outside')
-%     error('FSDA:distribspec:BadRegion','The region can be either "inside" or "outside"');
-% end
 
 %% compute p
 
@@ -675,17 +831,34 @@ nspecaxes = axes;
 set(nspecaxes, 'Parent', nspecfig);
 set(nspecaxes,'Nextplot','add');
 hh    = plot(x,y,'k-','LineWidth',1.5);
+
+if exist('sample','var')
+    xlim([min(x) , (max(x)+max(sample))/2]);
+end
 xlims = get(nspecaxes,'Xlim');
 
 % compute the endpoints of the spec limit lines and plot limit lines
-pll =  [xlims(1);xlims(1)];
+pll =  [max(xlims(1),min(x));max(xlims(1),min(x))];
 ypll = [0;eps];
 if lbinf
     ll =  pll;
     yll = ypll;
 else
     ll =  [lb; lb];
-    yll = [0; pdf(pd, lb)];  % DDD [0; userpdf(lb)]
+    if isuserdistrib
+        switch parnum
+            case 0
+                yll = [0; userpdf(lb)];
+            case 1
+                yll = [0; userpdf(lb,parhat)]; 
+            case 2
+                yll = [0; userpdf(lb,parhat(1),parhat(2))]; 
+            case 3
+                yll = [0; userpdf(lb,parhat(1),parhat(2),parhat(3))]; 
+        end
+    else
+        yll = [0; pdf(pd, lb)];  
+    end
 end
 
 pul =  [xlims(2);xlims(2)];
@@ -695,7 +868,29 @@ if ubinf
     yul = ypul;
 else
     ul  = [ub; ub];
-    yul = [pdf(pd, ub); 0];  % DDD [userpdf(ub); 0]
+    if isuserdistrib
+        if parnum==0
+            yul = [userpdf(ub); 0];  
+        else
+            if parnum_p > 0
+                % the user has provided a pdf
+                switch parnum
+                    case 1
+                        yul = [userpdf(ub,parhat); 0]; 
+                    case 2
+                        yul = [userpdf(ub,parhat(1),parhat(2)); 0];                         
+                    case 3
+                        yul = [userpdf(ub,parhat(1),parhat(2),parhat(3)); 0]; 
+                end
+            else
+                % the user has provided a cdf only
+                [~, indexOfMinDist] = min(abs(x-ub));
+                yul = [y(indexOfMinDist); 0]; 
+            end
+        end
+    else
+        yul = [pdf(pd, ub); 0];  
+    end
 end
 
 % fill the shade area
@@ -778,7 +973,7 @@ elseif ~isempty(userpdf)
     else
         strpar = '';
     end
-    title({'User-defined PDF' ; char(userpdf) ; strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
+    title({'User-defined PDF' ; ['$' char(userpdf) '$'] ; strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
 
 elseif ~isempty(usercdf)
     % CASE 2.2.b: this is for a user-defined distribution: cdf
@@ -787,7 +982,7 @@ elseif ~isempty(usercdf)
     else
         strpar = '';
     end
-    title({'User-defined CDF' ; char(usercdf) ; strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
+    title({'User-defined CDF' ; ['$' char(usercdf) '$'] ; strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
 
 else
     % CASE 1 & 2.1: this is if the user has selected one of the matlab distributions
