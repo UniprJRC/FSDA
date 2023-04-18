@@ -17,9 +17,8 @@
 
 This project hosts the source code to the [original MATLAB FileExchange project](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda) and is place of active development.
 
-<p align="center">
-<a href="http://rosa.unipr.it/FSDA/guide.html"><img src="http://rosa.unipr.it/FSDA/demos/index.jpg" width="800"></a>
-</p>
+[![FSDA Toolbox](helpfiles/FSDA/images/index.jpg)](http://rosa.unipr.it/FSDA/guide.html)
+
 
 
 FSDA Toolbox™ provides statisticians, engineers, scientists, researchers, financial analysts with a comprehensive set of tools to assess and understand their data. Flexible Statistics Data Analysis Toolbox™ software includes functions and interactive tools for analyzing and modeling data, learning and teaching statistics.
@@ -32,7 +31,7 @@ All Flexible Statistics Data Analysis Toolbox™ functions are written in the op
 
 
  For the details about the functions present in FSDA you can browse the categorial and alphabetical list of functions of the toolbox inside MATLAB (once FSDA is installed) or at the web addresses 
- http://rosa.unipr.it/FSDA/function-cate.html and http://rosa.unipr.it/FSDA/function-alpha.html
+ [http://rosa.unipr.it/FSDA/function-cate.html](http://rosa.unipr.it/FSDA/function-cate.html) and [http://rosa.unipr.it/FSDA/function-alpha.html](http://rosa.unipr.it/FSDA/function-alpha.html)
 
 
 
@@ -48,24 +47,23 @@ Can be used to identify sub-groups in heterogeneous data.
 
 FSDA is developed for wide applicability. For its capacity to address problems focusing on anomalies in the data, it is expected that it will be used in applications such as anti-fraud, detection of computer network intrusions, e-commerce and credit cards frauds, customer and market segmentation, detection of spurious signals in data acquisition systems, in chemometrics (a wide field covering biochemistry, medicine, biology and chemical engineering), in issues related to the production of official statistics (e.g. imputation and data quality checks), and so on.
 
-For more information see the Wiki page at https://github.com/UniprJRC/FSDA/wiki
+For more information see the Wiki page at [https://github.com/UniprJRC/FSDA/wiki](https://github.com/UniprJRC/FSDA/wiki)
 
 #### Ways to familiarize with the FSDA toolbox 
 
 
 * Run the examples contained in files examples_regression.m or examples_multivariate.m or examples_categorical.m.  Notice that all examples are organized in cells
 * Run the GUIs in the FSDA Matlab help pages. 
-  For a preview see http://rosa.unipr.it/FSDA/examples.html
-  <p align="center">
- <a href="http://rosa.unipr.it/FSDA/examples.html"><img src="http://rosa.unipr.it/FSDA/demos/examples.jpg" width="760"></a>
-  </p>
+  For a preview see [http://rosa.unipr.it/FSDA/examples.html](http://rosa.unipr.it/FSDA/examples.html)
+
+  [![FSDA Examples](helpfiles/FSDA/images/examples.jpg)](http://rosa.unipr.it/FSDA/examples.html)
 
 
 * Watch the videos in the Examples section of the FSDA Matlab help pages 
-For a preview see http://rosa.unipr.it/fsda_video.html
+For a preview see [http://rosa.unipr.it/fsda_video.html](http://rosa.unipr.it/fsda_video.html)
 
-* Read section "Introduction to robust statistics" or "Technical introduction to Robust Statistics" in the FSDA Matlab help pages. For a preview see http://rosa.unipr.it/FSDA/tutorials.html
-   <p align="center">
-   <a href="http://rosa.unipr.it/FSDA/tutorials.html"><img src="http://rosa.unipr.it/FSDA/demos/tutorials.jpg" width="760"></a>
-   </p>
+* Read section "Introduction to robust statistics" or "Technical introduction to Robust Statistics" in the FSDA Matlab help pages. For a preview see [http://rosa.unipr.it/FSDA/tutorials.html](http://rosa.unipr.it/FSDA/tutorials.html)
 
+  [![FSDA Tutorials](helpfiles/FSDA/images/tutorials.jpg)](http://rosa.unipr.it/FSDA/tutorials.html)
+
+   
