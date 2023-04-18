@@ -1,5 +1,5 @@
 function brushedUnits=fanplot(out,varargin)
-%fanplot plots the fan plot for transformation in linear regression
+%fanplot plots the fan plot for transformation in linear regression or deletion t stat
 %
 %<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
 %
@@ -13,8 +13,13 @@ function brushedUnits=fanplot(out,varargin)
 %               ...;
 %               last col  =  value of the score test in each step
 %               of the fwd search for la(end).
-%       out.la   =  vector containing the values of lambda for which fan plot
-%               is constructed.
+%               Remark: note that out.Score can be replaced by out.Tdel if
+%               the input comes from routine FSRaddt.
+%       out.la   =  vector containing the values of transformation
+%               parameter lambda which have been used inside routine FSRfan
+%               or the numbers associated to the columns of matrix out.X
+%               for which deletion t stats have computed by routine
+%               FSRaddt.
 %       out.bs   =  matrix of size p x length(la) containing the units forming
 %               the initial subset for each value of lambda.
 %      out. Un   =  cell of size length(la). out.Un{i} is a (n-init) x 11
@@ -44,13 +49,15 @@ function brushedUnits=fanplot(out,varargin)
 %                   Example - 'FontSize',12
 %                   Data Types - double
 %
-%    highlight : units to highlight in the fanplot plot. Vector or empty
-%               (default). Vector containing the numbers associated to the
-%               units whose entry step has to be shown in the fanplot. More
-%               specifically, the steps in which the units inside
-%               highlight join the subset is shown in red in the
-%               trajectories of the fanplot. The default of  highlight is
-%               the empty vector [].
+%    highlight : units to highlight in the fanplot plot. Vector or 2D array or empty
+%               (default). If highlight is a vector it contains numbers
+%               associated to the units whose entry step has to be shown in
+%               trajectories of the fanplot. More specifically, the steps
+%               in which the units inside highlight join the subset is
+%               shown in red in the trajectories of the fanplot. The
+%               default of  highlight is the empty vector []. If highlight
+%               is a matrix it contains in column j the units whose entry
+%               step has to be shown in the j-th trajectory of the fanplot.
 %                 Example - 'highlight',[2 4 20]
 %                 Data Types - double
 %
@@ -417,6 +424,33 @@ function brushedUnits=fanplot(out,varargin)
     fanplot(out,'highlight',[ 21 18 33 77]);
 %}
 
+%{
+    % Example of option highlight when highlight is a 2D array.
+    load('loyalty.txt');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    % la = vector contanining the most common values of the transformation
+    % parameter lambda
+    la=[0 0.5 1];
+    [outFSRfan]=FSRfan(y,X,'la',la);
+    
+    % Store the units declares as outliers for the 3 values of lambda
+    Highl=NaN(250,5);
+    
+    for j=1:length(la)
+        if abs(la(j))>1e-06
+            outlaj=FSR(y.^la(j),X,'msg',0,'plots',0);
+        else
+            outlaj=FSR(log(y),X,'msg',0,'plots',0);
+        end
+        oultlj=outlaj.outliers;
+        Highl(1:length(oultlj),j)=oultlj;
+    end
+    % Highlight in red inside the fanplot the steps of entry of the units
+    % declared as outliers for the different trajectories of lambda
+    fanplot(outFSRfan,'highlight',Highl,'ylimy',[-50 20],'xlimx',[300 510])
+%}
+
 %% Beginning of code
 brushedUnits=[];
 
@@ -428,12 +462,21 @@ close(findobj('type','figure','Tag','pl_mdr'));
 
 y=out.y;
 X=out.X;
-Sco=out.Score;
 [n,p]=size(X);
+
+if isfield(out,'Score')
+    fanplotScore=true;
+    Sco=out.Score;
+    laby='Score test statistic';
+else
+    fanplotScore=false;
+    Sco=out.Tdel;
+    laby='Deletion t statistics';
+end
 
 %% User options
 options=struct('conflev',0.99,'titl','Fan plot','labx','Subset size m',...
-    'laby','Score test statistic','xlimx','','ylimy','','lwd',2,'lwdenv',1, ...
+    'laby',laby,'xlimx','','ylimy','','lwd',2,'lwdenv',1, ...
     'FontSize',12,'SizeAxesNum',10,'highlight',[],...
     'tag','pl_fan','datatooltip','','databrush','','nameX','','namey','','label','');
 
@@ -534,9 +577,16 @@ if (~isempty(h))
 else
     figure;
 end
-set(gcf,'Name',['Fanplot for lambda=' mat2str(out.la) ]);
 
-la=out.la;
+if fanplotScore==true
+    set(gcf,'Name',['Fanplot for lambda=' mat2str(out.la) ]);
+
+    la=string(out.la(:));
+else
+    % Extract the variables for which deletion tstat have been computed
+    % Note that there is -1 because intercept is present in out.X
+    la="X"+string(out.la(:)-1);
+end
 lla=length(la);
 
 % lwd = line width of the trajectories which contain the score test
@@ -575,17 +625,27 @@ lwdenv=options.lwdenv;
 conflev=options.conflev;
 
 rangeaxis=axis;
-quant = sqrt(chi2inv(conflev,1));
-numconflev=length(conflev);
-V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
-QUANT=[[quant;quant],[ -quant;-quant]];
-% Assign to the confidence lines Tag env so that they cannot be selected
-% with options databrush
-line(V, QUANT,'LineWidth',lwdenv,'color','r','Tag','env');
 
-if size(la,2)>1
-    la=la';
+if fanplotScore==true
+    quant = sqrt(chi2inv(conflev,1));
+    numconflev=length(conflev);
+    V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
+    QUANT=[[quant;quant],[ -quant;-quant]];
+    % Assign to the confidence lines Tag env so that they cannot be selected
+    % with options databrush
+    line(V, QUANT,'LineWidth',lwdenv,'color','r','Tag','env');
+
+else
+    conflev=(1+conflev)/2;
+    Tdelenv=tinv(repmat(conflev,length(Sco(:,1)),1),repmat(Sco(:,1),1,length(conflev))-p);
+
+    for i=1:length(conflev)
+        % Superimpose chosen envelopes
+        line(Sco(:,[1 1]),[-Tdelenv(:,i) Tdelenv(:,i)],'LineWidth',lwdenv,'color','r','Tag','env');
+    end
 end
+
+
 
 % SET SOME FIGURE PROPERTIES OF THE FANPLOT
 
@@ -593,7 +653,7 @@ end
 FontSize =options.FontSize;
 
 % Add labels at the end of the search
-text(n*ones(lla,1),Sco(end,2:end)',num2str(la),'FontSize',FontSize);
+text(n*ones(lla,1),Sco(end,2:end)',la,'FontSize',FontSize);
 
 % Main title of the plot and labels for the axes
 labx=options.labx;
@@ -614,10 +674,17 @@ set(gca,'FontSize',SizeAxesNum)
 box on
 
 if ~isempty(highlight)
-    nbrush=highlight;
+    if isvector(highlight)
+        nBrush=repmat(highlight(:),1,lla);
+    else
+        nBrush=highlight;
+    end
+
     hold('on');
 
     for j=1:lla
+        nbrush=rmmissing(nBrush(:,j));
+
         Un=out.Un{j};
         % nbrush= vector which contains the brushed steps selstesp=
         % vector which will contain the steps in which the brushed
@@ -649,10 +716,15 @@ if ~isempty(highlight)
         % m1 contains the indexes of the unique steps;
         [~, m1]=unique(selsteps(:,1));
         selsteps=selsteps(m1,:);
-        % Remark: selsteps=unique(selsteps,'rows') does not seem to
-        % work
+        selsteps=rmmissing(selsteps,2,'MinNumMissing',size(selsteps,1));
 
-        disp(['Steps of entry of selected units when la= ' num2str(la(j))]);
+        % remove the columns of selsteps which contain just NaN
+
+        if fanplotScore==true
+            disp("Steps of entry of selected units when la= "+la(j));
+        else
+            disp("Steps of entry of selected units in deletion t tstat for "+la(j));
+        end
         disp(selsteps);
 
         %% - highlight units in the fanplot
@@ -661,8 +733,8 @@ if ~isempty(highlight)
         % necessary because we are considering minimum outside
         % selsteps=selsteps(:,1)-1;
 
-        xdata=out.Score(:,1)'; % x coordinates of score (steps)
-        ydata=out.Score(:,j+1)'; % y coordinates of score (values)
+        xdata=Sco(:,1)'; % x coordinates of score (steps)
+        ydata=Sco(:,j+1)'; % y coordinates of score (values)
 
         [c, ia, ib]=intersect(selsteps(:,1), xdata); %#ok<ASGLU>
         % Stack together x and y coordinates
@@ -842,7 +914,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
             % brushed
             col1=zeros(length(sely),1);
             for i=1:length(sely)
-                [~,col] = find(out.Score(:,2:end)==sely(i));
+                [~,col] = find(Sco(:,2:end)==sely(i));
                 col1(i)=col;
             end
 
@@ -1398,7 +1470,7 @@ end % close options.databrush
         % Add information about the unit(s) and the selected steps they entered the
         % search
 
-        [~,col] = find(out.Score(:,2:end)==y);
+        [~,col] = find(Sco(:,2:end)==y);
         Un=out.Un{col};
         idx = find(Un(:,1)==x,1);
         sel=Un(idx,2:end);
