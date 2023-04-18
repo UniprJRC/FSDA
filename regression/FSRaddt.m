@@ -18,13 +18,22 @@ function [out]=FSRaddt(y,X,varargin)
 %
 % Optional input arguments:
 %
+%    DataVars  :    Variables for which t deletion tests have to be
+%                   computed. Vector of positive integers or []. Columns of
+%                   matrix X for which t deletion tests need to be
+%                   computed. The default is empty, that is forward
+%                   deletion t tests are computed for all the columns of
+%                   matrix X.
+%                    Example - 'DataVars',[2 4]
+%                    Data Types - double
+%
 %    intercept :    Indicator for constant term. true (default) | false.
 %                   Indicator for the constant term (intercept) in the fit,
 %                    specified as the comma-separated pair consisting of
 %                   'Intercept' and either true to include or false to remove
 %                   the constant term from the model.
-%                    Example - 'intercept',false
-%                    Data Types - boolean
+%                   Example - 'intercept',false
+%                   Data Types - boolean
 %
 %           h   :      The number of observations that have determined the
 %                       least trimmed squares estimator. Scalar.
@@ -80,8 +89,8 @@ function [out]=FSRaddt(y,X,varargin)
 %
 %        quant  :       Confidence quantiles for the envelopes. Vector.
 %                       Confidence quantiles for the envelopes of deletion t
-%                        stat. Default is [0.005 0.995] (i.e. a 99% pointwise
-%                       confidence interval)
+%                        stat. Default is [0.005 0.995] (i.e. a 99 per cent
+%                        pointwise confidence interval)
 %                        Example - 'quant',[0.025 0.975]
 %                        Data Types - double
 %
@@ -160,16 +169,32 @@ function [out]=FSRaddt(y,X,varargin)
 %               units to enter the fwd search is found excluding last explanatory
 %               variable
 %
+%  out.bs     = matrix of size p x length(DataVars) containing the units forming
+%               the initial subset of length p for the searches associated
+%               with the deletion t statistics.
 %
-%    out.Una=   cell of size p.
-%               out.Una{i} (i=1, ..., p) is a (n-init) x 11 matrix which
-%               contains the unit(s) included in the subset at each step in
-%               the search which excludes the ith explanatory variable.
+%    out.Un=   cell of length  length(DataVars).
+%               out.Un{i} (i=1, ..., ength(DataVars)) is a (n-init) x 11
+%               matrix which contains the unit(s) included in the subset at
+%               each step in the search which excludes the ith explanatory
+%               variable.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,:) for example contains
 %               the unit included in step init+1 ... Un(end,2) contains the
 %               units included in the final step of the search
+%
+%  out.y      = A vector with n elements that contains the response
+%               variable which has been used
+%
+%  out.X      = Data matrix of explanatory variables
+%               which has been used (it also contains the column of ones if
+%               input option intercept was missing or equal to 1)
+%
+%  out.la     = Vector containing the numbers associated to matrix out.X for
+%               which deletion t stat have been computed. For example is
+%               the intercept is present and input option DataVars was
+%               equal to [1 3], out.la=[2 4],  
 %
 % See also addt
 %
@@ -275,6 +300,7 @@ function [out]=FSRaddt(y,X,varargin)
 
 %% Beginning of code
 
+
 % Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
@@ -299,10 +325,14 @@ else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
 
+DataVars='';
+
 options=struct('h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',0,...
     'init',init,'nameX','','lwdenv',2,'quant',[0.005 0.995],'lwdt',2,'xlimx','','ylimy','',...
-    'titl','','labx','Subset size m','laby','Deletion t statistics','FontSize',12,'SizeAxesNum',10,'nocheck',false,'intercept',true);
+    'titl','','labx','Subset size m','laby','Deletion t statistics', ...
+    'FontSize',12,'SizeAxesNum',10,'nocheck',false,'intercept',true, ...
+    'DataVars', DataVars);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -326,13 +356,24 @@ h=options.h;
 lms=options.lms;
 plo=options.plots;
 nsamp=options.nsamp;
+DataVars=options.DataVars;
 
 % intcolumn = the index of the first constant column found in X, or empty.
 % Used here to check if X includes the constant term for the intercept.
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0, 1);
 
 %vars: list of the variables
-vars=1:p; vars(intcolumn)=[];
+vars=1:p; 
+
+% Remove from vars the column of ones
+vars(intcolumn)=[];
+
+% The columns of matrix X for which to compute tstat are those specified by
+% vector DataVars
+if ~isempty(DataVars)
+    vars=vars(DataVars);
+end
+
 ini0=length(vars);
 
 
@@ -377,6 +418,8 @@ Una=cell(ini0,1);
 %  included.
 Uni = cat(2 , (init+1:n)' , NaN(n-init,10));
 
+% binit = units forming intial subset
+binit=zeros(p,ini0);
 
 j=0;
 % A different forward search for each variable which is excluded
@@ -411,6 +454,14 @@ for i=vars
             end
         end
 
+        if mm==p
+            % Store units forminng subset for each value of deletion tstat
+            % when m= number of columns of matrix X (including the
+            % constant)
+             binit(:,j)=bsb;
+        end
+
+
         b=Xb\yb;
         % e = vector of residuals for all units using b estimated using subset
         yhat=Xred*b;
@@ -434,9 +485,9 @@ for i=vars
             Tadd=badd(end)/sqrt(S2add *covb(end,end));
 
             % Store added tstat
-            Tdel(mm-init+1,i)=Tadd;
+            Tdel(mm-init+1,j+1)=Tadd;
             % store added estimate of S2
-            S2del(mm-init+1,i)=S2add;
+            S2del(mm-init+1,j+1)=S2add;
 
         end
 
@@ -484,7 +535,11 @@ end
 
 out.Tdel=Tdel;
 out.S2del=S2del;
-out.Una=Una;
+out.Un=Una;
+out.y=y;
+out.X=X;
+out.la=vars;
+out.bs=binit;
 
 if plo==1
 
@@ -494,7 +549,7 @@ if plo==1
     % Specify the line type for the units inside vector units
     slin={'-';'--';':';'-.'};
     slin=repmat(slin,ceil(p/4),1);
-    set(plot1,{'LineStyle'},slin(1:p-1));
+    set(plot1,{'LineStyle'},slin(1:j));
 
 
     % Main title of the plot and labels for the axes
