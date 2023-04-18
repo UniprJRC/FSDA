@@ -17,7 +17,7 @@
 
 This project hosts the source code to the [original MATLAB FileExchange project](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda) and is place of active development.
 
-[![FSDA Toolbox](helpfiles/FSDA/images/index.jpg)](http://rosa.unipr.it/FSDA/guide.html)
+[![FSDA Toolbox](helpfiles/FSDA/images/githubimgindex.jpg)](http://rosa.unipr.it/FSDA/guide.html)
 
 
 
@@ -56,7 +56,7 @@ For more information see the Wiki page at [https://github.com/UniprJRC/FSDA/wiki
 * Run the GUIs in the FSDA Matlab help pages. 
   For a preview see [http://rosa.unipr.it/FSDA/examples.html](http://rosa.unipr.it/FSDA/examples.html)
 
-  [![FSDA Examples](helpfiles/FSDA/images/examples.jpg)](http://rosa.unipr.it/FSDA/examples.html)
+  [![FSDA Examples](helpfiles/FSDA/images/githubimgexamples.jpg)](http://rosa.unipr.it/FSDA/examples.html)
 
 
 * Watch the videos in the Examples section of the FSDA Matlab help pages 
@@ -64,6 +64,6 @@ For a preview see [http://rosa.unipr.it/fsda_video.html](http://rosa.unipr.it/fs
 
 * Read section "Introduction to robust statistics" or "Technical introduction to Robust Statistics" in the FSDA Matlab help pages. For a preview see [http://rosa.unipr.it/FSDA/tutorials.html](http://rosa.unipr.it/FSDA/tutorials.html)
 
-  [![FSDA Tutorials](helpfiles/FSDA/images/tutorials.jpg)](http://rosa.unipr.it/FSDA/tutorials.html)
+  [![FSDA Tutorials](helpfiles/FSDA/images/githubimgtutorials.jpg)](http://rosa.unipr.it/FSDA/tutorials.html)
 
    
