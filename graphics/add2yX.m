@@ -168,7 +168,7 @@ function add2yX(H,AX,BigAx,varargin)
     add2yX(H,AX,BigAx,'bivarfit','0')
 %}
 
-%{ 
+%{
     %% Example of use of option 'labeladd' combined with 'RowNamesLabels'.
     close all;
     n=8;
@@ -202,7 +202,7 @@ if nargin>3
     % user options
     options= struct('intercept',1,'bivarfit','','multivarfit','','labeladd','',...
         'userleg','','RowNamesLabels',RowNamesLabels);
-    
+
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -215,7 +215,7 @@ if nargin>3
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     intercept   = options.intercept;
     bivarfit    = options.bivarfit;
     multivarfit = options.multivarfit;
@@ -387,7 +387,7 @@ intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
 
 if isempty(userleg) || (~isempty(userleg) && iscell(userleg))
     nleg = numel(legnew);
-    
+
     for i = 1 : nleg
         HH = H(:,:,i) ;
         set(HH(:),'DisplayName',legnew{i});
@@ -402,12 +402,12 @@ end
 % 'outlier' (for outliers/normal units), 'brush' (for Brushed units 1,
 % Brushed units 2, etc.) and 'group' (for 'Group 1, Group 2, etc.).
 if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
-    
+
     % add multilegend
     v = size(AX,2);
     leg = get(getappdata(AX(1,end),legstring),'String');
     nleg = numel(leg);
-    
+
     if ndims(H) == 3
         % The third dimension of H is to distinguish the groups. In the next
         % 'if' statement we use two equivalent ways to deal with H, considering
@@ -423,8 +423,8 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
             % Assign to this figure a name
             set(gcf,'Name','yXplot with groups highlighted');
             % Reset the handles of the main diagonal (histograms) to zero.
-            
-            
+
+
             % Now reshape the handles array to make it more manageable: while H
             % is a 3-dimensional array with the third dimension associated to
             % the groups, newH is 2-dimensional with columns associated to the
@@ -455,7 +455,7 @@ if ~isempty(userleg) && ischar(userleg) && strcmp(userleg,'1')
         % In this case there are no groups in the data
         set(setdiff(H(:),diag(H)),'DisplayName','Units')
     end
-    
+
     % Get the final legends
     legnew = get(getappdata(AX(1,end),legstring),'String');
 end
@@ -472,10 +472,10 @@ if ~isempty(legnew)
     % For example it may happen that
     % legnew = {'Unbrushed units'    'Brushed units 1'} and
     % {hLines.DisplayName} is  {'Brushed units 1'    'Unbrushed units'}
-    
+
     % For retrocompatibility with older version of MATLAB instead of using
     % hNames={hLines.DisplayName}; we use
-    
+
     if nleg>1
         hNames=get(hLines,'DisplayName');
         sorindlegnew=zeros(nleg,1);
@@ -488,7 +488,7 @@ if ~isempty(legnew)
     else
         clickableMultiLegend(hLines, legnew{:})
     end
-    
+
 end
 
 
@@ -508,7 +508,7 @@ for i = 1:length(AX)
     set(fig,'CurrentAxes',AX(i));
     % Remark: axes(AX(i)) would also do the job, but would
     % restack the axes above all other axes in the figure.
-    
+
     % Fit least square line(s) to the scatterplot AX(i).
     switch bivarfit
         case ''
@@ -548,16 +548,36 @@ for i = 1:length(AX)
                 %do nothing: no line is fit
             end
     end
-    
+
     % Add the labels for the last selected group.
     if strcmp('1',labeladd) && ngroups > 1
-        xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
-        dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
+        xlimits = get(AX(i),'Xlim'); 
         
-        % Add text labels with the same color of brushed units 
-        text(Xilast(:,i) + dx,ylast + dy,numtext,'HorizontalAlignment', 'Left','FontSize',FontSizelabeladd,'Color',get(H(1,i,end),'Color'));
+        % ylimits = get(AX(i),'Ylim');
+        % dx = (xlimits(2)-xlimits(1))*0.01*length(AX);
+        % dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
+
+        dx = (xlimits(2)-xlimits(1))*0.01*length(AX)/3;
+        % dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/5; % displacement
+
+        % Add text labels with the same color of brushed units
+        % text(Xilast(:,i) + dx,ylast + dy,numtext,'HorizontalAlignment', 'Left','FontSize',FontSizelabeladd,'Color',get(H(1,i,end),'Color'));
+
+        % Order ylast in order to put labels both on the left and on the right
+        [ylastsor,indsorj]=sort(ylast);
+        Xilastsor=Xilast(indsorj,i);
+        numtextsor=numtext(indsorj);
+
+        % Alternate the labels left and right
+        lrown=length(ylastsor);
+        even=2:2:lrown;
+        odd=1:2:lrown;
+        text(Xilastsor(odd) ,ylastsor(odd),numtextsor(odd),'HorizontalAlignment','left','FontSize',FontSizelabeladd,'Color',get(H(1,i,end),'Color'));
+        text(Xilastsor(even) -dx,ylastsor(even),numtextsor(even),'HorizontalAlignment','right','FontSize',FontSizelabeladd,'Color',get(H(1,i,end),'Color'));
+
+
     end
-    
+
     % Add to each plot AX(i) the line(s) based on the hyperplane fit to y|X
     switch multivarfit
         case {'1' , '2'}
@@ -571,7 +591,7 @@ for i = 1:length(AX)
             end
             % The mean value of the columns of matrix X using all the units
             meaot=mean(X(:,indcoef))*coef(indcoef);
-            
+
             coef(intcolumn)=[]; % the other coefficients
             xlimits = get(AX(i),'Xlim');
             hline1 = line(xlimits , meaot + coef(i).*xlimits);
@@ -583,7 +603,7 @@ for i = 1:length(AX)
                 meaot=mean(Xgood(:,indcoef))*coef(indcoef); %Mean of all other variables considering just good units
                 coef(intcolumn)=[];
                 hline2 = line(xlimits , meaot  + coef(i).*xlimits);
-                
+
                 %'fit on unbrushed units of y|X'
                 set(hline2,'Color',get(H(1,i,1),'Color'),'LineWidth',2,'LineStyle','--',...
                     'DisplayName',['multivarfit on ' DisplayNameFirst]);
