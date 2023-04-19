@@ -635,6 +635,7 @@ options=struct('alphaLik',alphaLik,'alphaX',alphaX,'cc',ccsigmay,...
     'numpool',numpool, 'cleanpool', cleanpool,...
     'intercept',intercept,'h','','commonslope',commonslope);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

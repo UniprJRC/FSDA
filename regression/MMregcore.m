@@ -283,6 +283,7 @@ if coder.target('MATLAB')
         'plots',0,'nocheck',false,'yxsave',0,'intercept',true);
     
     % check user options and update structure options
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

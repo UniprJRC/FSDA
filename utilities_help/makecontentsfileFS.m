@@ -191,6 +191,7 @@ options=struct('NameOutputFile',NameOutputFile,'dirpath',dirpath,...
     'force',force,'FilterOutFileName',FilterOutFileName,'msg',msg,...
     'FilterFileContent',FilterFileContent,'printOutputCell',printOutputCell);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

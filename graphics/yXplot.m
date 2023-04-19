@@ -987,6 +987,7 @@ if nargin>2
             'tag','pl_yX','namey','','nameX','','xlimx',xlimx,'ylimy',ylimy,...
             'datatooltip',0,'databrush','');
         
+        [varargin{:}] = convertStringsToChars(varargin{:});
         UserOptions=varargin(1:2:length(varargin));
         if ~isempty(UserOptions)
             

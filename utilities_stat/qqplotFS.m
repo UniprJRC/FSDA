@@ -146,6 +146,7 @@ X=ones(n,1);
 options=struct('intercept',true,'X',X,'plots',0,'conflev',0.90,'nsimul',1000,...
     'tag','pl_qq','h','');
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

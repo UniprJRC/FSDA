@@ -466,6 +466,7 @@ options=struct('nocheck',0,'intercept',true,'h',hdef,...
     'ignore',1,'ExclThresh',0.99999,...
     'plots',0,'rl',0.4,'quant',[0.025 0.975],'LineWidth',0.5,'CandleWidth',0.05,'xlimx','','ylimy','');
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

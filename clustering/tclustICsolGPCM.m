@@ -330,6 +330,7 @@ if nargin>1
         'NumberOfBestSolutions',NumberOfBestSolutions, ...
         'ThreshRandIndex', ThreshRandIndex,'msg',msg,'Rand',Rand);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         

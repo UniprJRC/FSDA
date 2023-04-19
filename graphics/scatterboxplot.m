@@ -92,6 +92,7 @@ if nargin<3
 else
     h=scatterhist(x,y,varargin{:,:});
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     checkGroup = strcmp(UserOptions,'Group');
     if sum(checkGroup)

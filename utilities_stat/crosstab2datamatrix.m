@@ -115,7 +115,7 @@ options=struct('Lr',Lr,'Lc',Lc);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    UserOptions=varargin(1:2:length(varargin));
+    [varargin{:}] = convertStringsToChars(varargin{:});
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)

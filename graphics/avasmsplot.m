@@ -308,6 +308,7 @@ options=struct('maxBestSol',maxBestSol,'tag',tag,...
     'databrush',databrush,'showBars',showBars,'addPolygons',addPolygons);
 
 if nargin > 1
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)

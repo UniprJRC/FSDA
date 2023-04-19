@@ -264,6 +264,7 @@ if nargin>2
 
     % 'weights',weights,...
 
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

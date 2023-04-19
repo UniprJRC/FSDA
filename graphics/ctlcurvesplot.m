@@ -384,6 +384,7 @@ if nargin>1
         'tagPortofino',tagPortofino,'conflev',conflev,...
         'databrush', databrush,'nameY','','thresh',thresh,'crit',crit);
 
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
 

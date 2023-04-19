@@ -500,6 +500,7 @@ if coder.target('MATLAB')
         'conflev',0.975,'conflevrew','','msg',1,'yxsave',0,'bonflevoutX','',...
         'SmallSampleCor',0);
 
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
 

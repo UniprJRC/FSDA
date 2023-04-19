@@ -132,6 +132,7 @@ end
 if nargin>2
     options=struct('N',N,'M',M);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         

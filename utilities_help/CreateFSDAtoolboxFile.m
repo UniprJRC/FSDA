@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.7.0.0';
+newVersion = '8.7.0.2';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='FSDA 2023A (official release)';
+commentRelease='added to project contents file in subfolder html';
 
 % Specify folder where to create the toolbox project
 FSDAProjFolder='D:\tmp';
@@ -149,6 +149,14 @@ delete([FSroot fsep 'CONTRIBUTING.md'])
 delete([FSroot fsep 'requirements.txt'])
 % delete([FSroot fsep 'package.json'])
 
+%% Publish contents file in the root inside subfolder html
+% This instruction is necessary in order to display subfolder examples in
+% Mathworks web site
+oldFolder=pwd;
+cd FSDA   
+publish('Contents.m');
+cd(oldFolder)
+
 
 %% Create searchable database
 
@@ -198,9 +206,11 @@ path(oldpath);
 %
 % uuid = java.util.UUID.randomUUID
 %
-% the 1st one is just for testing purposes
-% uuid = 'acf4e02a-356d-456a-861f-e5b16b9b8af1';
-uuid = ['FSDA-' 'sf35e0367-67f2-4d07-b9c4-918f72033a65'];
+% uuid identified of FSDA
+uuid = '20669fbc-61ca-4050-bc87-575422f4c0b8';
+% Note that when matlab.addons.toolbox.ToolboxOptions the files attached to
+% the project are automatically added inside 
+% options.Toolboxfiles 
 options = matlab.addons.toolbox.ToolboxOptions(FSDAroot, uuid);
 
 % add FSDA paths
@@ -265,14 +275,6 @@ options.ToolboxImageFile=[FSroot fsep 'logoblue.jpg'];
 
 % add getting startup file
 options.ToolboxGettingStartedGuide=[FSroot fsep 'doc' fsep 'GettingStarted.mlx'];
-
-%%% Publish contents file in the root inside subfolder html
-% This instruction is necessary in order to display subfolder examples in
-% Mathworks web site
-oldFolder=pwd;
-cd FSDA   
-publish('Contents.m');
-cd(oldFolder)
 
 % add gallery files
 options.AppGalleryFiles=[];

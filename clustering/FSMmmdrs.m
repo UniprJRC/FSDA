@@ -373,6 +373,7 @@ options   = struct('init',initdef,'plots',0,'nocheck',0,'msg',1,...
     'nsimul',nsimuldef,'numpool',numpool, 'cleanpool', false, ...
     'bsbsteps',bsbstepdef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

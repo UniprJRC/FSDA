@@ -589,6 +589,7 @@ options=struct('nsamp',nsampdef,'model',modeldef,'lms',1,'plots',1,...
     'msg',1,'nocheck',false,'bonflev','',...
     'bsbmfullrank',1,'tag',tagdef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

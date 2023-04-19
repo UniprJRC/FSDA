@@ -964,6 +964,7 @@ if nargin>1
             'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
             'undock', '','colorBackground',false,'typespm','full');
 
+        [varargin{:}] = convertStringsToChars(varargin{:});
         UserOptions=varargin(1:2:length(varargin));
 
         % Check if number of supplied options is valid

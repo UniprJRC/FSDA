@@ -159,6 +159,7 @@ ErrWrngSeeAlso=true;
 msg=true;
 
 if nargin>1
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     checklms2 = strcmp(UserOptions,'webhelp');
     if sum(checklms2)
@@ -183,6 +184,7 @@ if nargin>1
        'webhelp',webhelp,'outputDir',outputDir,'imagesDir',imagesDir,...
        'ErrWrngSeeAlso',ErrWrngSeeAlso,'msg',msg);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

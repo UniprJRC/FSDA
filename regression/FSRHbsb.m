@@ -246,6 +246,7 @@ bsbstepdef='';
 options=struct('intercept',true,'init',initdef,'plots',0,'nocheck',false,'msg',1,...
     'constr','','modeltype','art','gridsearch',0,'bsbsteps',bsbstepdef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

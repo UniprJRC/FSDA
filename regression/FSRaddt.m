@@ -334,6 +334,7 @@ options=struct('h',hdef,...
     'FontSize',12,'SizeAxesNum',10,'nocheck',false,'intercept',true, ...
     'DataVars', DataVars);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

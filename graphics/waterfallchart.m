@@ -185,6 +185,7 @@ options=struct('ShowConnectorLines',ShowConnectorLines,...
     'SetAsTotal',SetAsTotal,'BarWidth',BarWidth,'Labels',Labels,...
     'titl',titl,'DisplayValueOnTopOfPatches',DisplayValueOnTopOfPatches);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

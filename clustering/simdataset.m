@@ -520,6 +520,7 @@ Rseeddef        = 0;
 options=struct('noisevars',noisevarsdef,'noiseunits',noiseunitsdef,...
     'lambda',lambdadef,'R_seed', Rseeddef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

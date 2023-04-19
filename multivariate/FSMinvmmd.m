@@ -201,6 +201,7 @@ nn=mmd(end,1)+1; % This line is introduced for publishFS
 options=struct('n',nn,'plots','');
 
 if coder.target('MATLAB')
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

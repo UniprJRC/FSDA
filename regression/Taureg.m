@@ -359,6 +359,7 @@ options=struct('intercept',true,'nsamp',nsampdef,'refsteps',refstepsdef,...
     'plots',0,'conflev',0.975,'nocheck',false,'msg',1,'yxsave',0);
 
 % check user options and update structure options
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

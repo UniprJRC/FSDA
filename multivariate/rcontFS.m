@@ -183,6 +183,7 @@ algorithm='all';
 nocheck=0;
 options=struct('algorithm',algorithm,'nocheck',nocheck);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     UserOptions=varargin(1:2:length(varargin));

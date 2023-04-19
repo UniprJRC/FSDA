@@ -185,12 +185,14 @@ prec=1e-6;
 confLevel=.95;
 doAnimate=false;
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
     options=struct('prec',prec,...
         'confLevel',confLevel,'doAnimate',false);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

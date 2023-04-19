@@ -173,6 +173,7 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 %% Beginning of code
 options=struct('c',4,'shapeeff',0);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

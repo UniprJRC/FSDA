@@ -189,6 +189,7 @@ if nargin<2
         error('FSDA:FSMmmdeasy:missingInputs','Initial subset is missing')
 end
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

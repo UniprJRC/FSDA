@@ -237,6 +237,7 @@ if coder.target('MATLAB')
         options=struct('la',la,'nocheck',false,'intercept',false,'scoremle',scoremle,...
             'usefmin',usefmin);
         
+        [varargin{:}] = convertStringsToChars(varargin{:});
         UserOptions=varargin(1:2:length(varargin));
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)

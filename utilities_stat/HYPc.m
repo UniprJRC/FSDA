@@ -145,6 +145,7 @@ function [bdp,eff,A,B,d] = HYPc(c,v,varargin)
 %% Beginning of code
 options=struct('k',4.5,'shapeeff',0,'param','');
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

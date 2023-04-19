@@ -107,6 +107,7 @@ if nargin > 1
     options=struct('freq',freq,'ExactFormula',ExactFormula,...
         'plots',plots);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)

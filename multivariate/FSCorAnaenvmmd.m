@@ -123,6 +123,7 @@ nsimul=200;
 if nargin>1
     options=struct('init',m0,'prob',prob,'nsimul',nsimul);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)

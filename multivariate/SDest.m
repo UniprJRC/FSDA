@@ -456,6 +456,7 @@ options=struct('nsamp',nsampdef,'weight','mcd',...
     'projloc','median','projscale','mad');
 
 % check user options and update structure options
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

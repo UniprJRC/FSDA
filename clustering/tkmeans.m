@@ -341,6 +341,7 @@ options=struct('nsamp',nsampdef,'plots',0,'nocheck',0,'nomes',0,...
     'msg',1,'Ysave',0,'refsteps',refstepsdef,'weights',0,...
     'reftol',reftoldef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

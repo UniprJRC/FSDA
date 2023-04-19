@@ -368,6 +368,7 @@ if length(outFSRfan.la)>1
 end
 
 scoremle=false;
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 
 

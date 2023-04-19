@@ -366,6 +366,7 @@ function [out] = overlapmap(D, varargin)
 % creating option structure
 options = struct('omegaStar', 0, 'plots', 0, 'userColors', autumn);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

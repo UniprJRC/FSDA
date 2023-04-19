@@ -245,6 +245,7 @@ test=0;
 options=struct('intercept',true,'maxiter',maxiterdef,'type','art',...
     'initialbeta','','initialgamma','','tol',toldef,'nocheck',false,'msgiter',0,'test',test);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

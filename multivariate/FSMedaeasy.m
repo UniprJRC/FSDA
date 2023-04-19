@@ -310,6 +310,7 @@ one=ones(n,1);
 hdef=floor(n*0.6);
 options=struct('init',hdef,'plots',0,'msg',1,'scaled',0,'nocheck',0);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

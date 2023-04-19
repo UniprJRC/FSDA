@@ -231,6 +231,7 @@ options=struct('CandleWidth',CandleWidthdef,...
     'LineWidth',0.5,'lablast',0,'laboutl',0,'labbold','',...
     'xlimx','','ylimy','','label',1,'quant',[0.025 0.975],'labenv',0);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

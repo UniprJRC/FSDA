@@ -110,6 +110,7 @@ niterdef=10;
 options=struct('biter',biterdef,'niter',niterdef,'showall',false,...
     'stand',true,'silent',false,'plots',1);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

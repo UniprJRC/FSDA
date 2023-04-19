@@ -580,6 +580,7 @@ trapezoid=false;
 % supermo=struct;
 
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 
 if ~isempty(UserOptions)

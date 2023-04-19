@@ -177,6 +177,7 @@ if nargin>2
     options=struct('Color',Color,'LineWidth',LineWidth,'FaceAlpha',FaceAlpha,...
         'EdgeColor',EdgeColor,'LineStyle',LineStyle);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

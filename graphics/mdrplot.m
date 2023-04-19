@@ -461,6 +461,7 @@ if nargin<1
     error('FSDA:mdrplot:missingInputs','A required input argument is missing.')
 end
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 
 

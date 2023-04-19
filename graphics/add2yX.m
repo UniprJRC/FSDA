@@ -203,6 +203,7 @@ if nargin>3
     options= struct('intercept',1,'bivarfit','','multivarfit','','labeladd','',...
         'userleg','','RowNamesLabels',RowNamesLabels);
 
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

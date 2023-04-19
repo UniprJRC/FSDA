@@ -480,6 +480,7 @@ options=struct('conflev',0.99,'titl','Fan plot','labx','Subset size m',...
     'FontSize',12,'SizeAxesNum',10,'highlight',[],...
     'tag','pl_fan','datatooltip','','databrush','','nameX','','namey','','label','');
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

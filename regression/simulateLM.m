@@ -277,6 +277,7 @@ options=struct('R2',R2,...
 %% User options
 
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

@@ -1036,6 +1036,7 @@ if coder.target('MATLAB')
         'restrtype','eigen','cshape',cshape,...
         'startv1true1unitCentroid',startv1true1unitCentroiddef,'priorSol',priorSoldef);
 
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
 

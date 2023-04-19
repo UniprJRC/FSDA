@@ -289,6 +289,7 @@ options=struct('bsb',bsb,'init',initdef,'intercept',true,...
     'plots',0,'nocheck',false,'msg',1,'bsbsteps',bsbstepdef);
 
 if nargin > 7
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

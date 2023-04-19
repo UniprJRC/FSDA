@@ -153,6 +153,7 @@ ylimy=[];
 oneplot=false;
 VarNames='';
 if nargin >1
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
 
     options=struct('highlight',highlight,'ylimy',ylimy, ...

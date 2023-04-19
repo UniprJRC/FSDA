@@ -59,6 +59,7 @@ write2file=true;
 if nargin>1
     options=struct('write2file',write2file);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

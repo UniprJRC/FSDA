@@ -436,6 +436,7 @@ end
 
 options = struct('userColor', 'b', 'evalPoints', 1000);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
 

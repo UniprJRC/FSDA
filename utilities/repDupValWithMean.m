@@ -250,6 +250,7 @@ consec=false;
 if nargin > 2
 options=struct('w',w,'consec',consec);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

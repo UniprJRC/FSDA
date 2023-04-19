@@ -655,6 +655,7 @@ verMatlab=verLessThan('matlab','8.3.0');
 % last case the contingency table is built using the first two columns of the
 % input dataset).
 if ~isempty(varargin)
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     checkdatamatrix = strcmp(UserOptions,'datamatrix');
     if sum(checkdatamatrix)
@@ -716,6 +717,7 @@ d2=2;
 options=struct('Lr',{Lr},'Lc',{Lc},'k',k,'Sup',Sup,'plots',plots,'datamatrix',false,...
     'dispresults',dispresults,'d1',d1,'d2',d2);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     UserOptions=varargin(1:2:length(varargin));

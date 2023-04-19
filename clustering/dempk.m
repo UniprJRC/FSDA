@@ -382,6 +382,7 @@ Y = chkinputM(Y,nnargin,vvarargin);
 options = struct('alpha', 0, 'plots', 0, 'tkmeansOut', 0, ...
     'tkmeansOpt', struct(), 'linkagearg', 'single', 'Ysave', 0);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

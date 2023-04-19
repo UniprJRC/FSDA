@@ -448,6 +448,7 @@ options=struct('intercept',intercept,'la',la,'modelfun',modelfun,...
     'prolik',prolik,'dispresults',dispresults);
 
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
