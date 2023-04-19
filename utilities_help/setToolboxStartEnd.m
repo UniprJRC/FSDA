@@ -134,6 +134,7 @@ endVersion='';
 if nargin>1
     options=struct('startVersion',startVersion,'endVersion',endVersion);
 
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

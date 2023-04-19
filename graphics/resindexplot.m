@@ -363,6 +363,7 @@ options=struct('h','','x',1:n,'labx','','laby','','numlab',numlabdef,'conflev',0
     'xlimx','','ylimy','','lwdenv',1,'MarkerSize',6,'MarkerFaceColor','w',...
     'databrush','','tag','pl_resindex','nameX','','namey','');
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

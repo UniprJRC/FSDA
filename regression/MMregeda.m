@@ -323,6 +323,7 @@ options=struct('intercept',true,'InitialEst','','Smsg',Smsgdef,'Snsamp',Snsampde
     'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'rhofunc',rhofuncdef, ...
     'rhofuncparam',rhofuncparamdef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

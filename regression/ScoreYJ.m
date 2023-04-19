@@ -149,6 +149,7 @@ if coder.target('MATLAB')
     if nargin>2
         options=struct('Lik',Likboo,'la',la,'nocheck',false,'intercept',false); % ,'mingreater0',mingreater0);
         
+        [varargin{:}] = convertStringsToChars(varargin{:});
         UserOptions=varargin(1:2:length(varargin));
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)

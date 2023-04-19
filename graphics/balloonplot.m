@@ -148,6 +148,7 @@ function [h,Ntable] = balloonplot(N,varargin)
 % last case the contingency table is built using the first two columns of the
 % input dataset).
 if ~isempty(varargin)
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     checkdatamatrix = strcmp(UserOptions,'datamatrix');
     if sum(checkdatamatrix)
@@ -190,6 +191,7 @@ ax='';
 options=struct('Lr',{Lr},'Lc',{Lc},'datamatrix',false,...
     'ax',ax);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     UserOptions=varargin(1:2:length(varargin));

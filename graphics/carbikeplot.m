@@ -206,6 +206,7 @@ minCarHeight=0.1;
 if nargin>1
     options=struct('SpuriousSolutions',SpuriousSolutions,'minCarHeight',minCarHeight);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         

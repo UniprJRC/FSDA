@@ -486,6 +486,7 @@ if nargin>3
         'theta0',theta0,'dispresults',dispresults,'conflev',conflev,...
         'plots',plots,'yxsave',yxsave,'MaxIter',MaxIter,'TolX',TolX);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));   
     
     % Check if number of supplied options is valid

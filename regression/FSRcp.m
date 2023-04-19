@@ -473,6 +473,7 @@ options=struct('intercept',1,'h',hdef,...
     'titl','','labx','Subset size m','laby','',...
     'xlimx','','ylimy','','lwd',2,'lwdenv',1,'FontSize',12,'SizeAxesNum',10,'nocheck',false);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

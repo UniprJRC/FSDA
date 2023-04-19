@@ -285,6 +285,7 @@ bsbstepdef='';
 options=struct('init',init,'nocheck',false,'plots',0,...
     'bsbmfullrank',1,'bsbsteps',bsbstepdef,'model',modeldef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

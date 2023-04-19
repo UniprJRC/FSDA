@@ -113,6 +113,7 @@ inverse=false;
 if nargin>3
     options=struct('inverse',inverse);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

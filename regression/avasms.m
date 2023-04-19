@@ -407,6 +407,7 @@ solOrdering='';
 maxBestSol=8;
 showBars=false;
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 
 

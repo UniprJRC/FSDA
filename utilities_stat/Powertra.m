@@ -210,6 +210,7 @@ options=struct('ColtoTra',ColtoTra,'Jacobian',Jacobian,'family',family, ...
     'inverse',inverse,'standardize',standardize);
 
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

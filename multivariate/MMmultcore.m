@@ -191,6 +191,7 @@ options=struct('refsteps',refstepsdef,'reftol',reftoldef,...
     'plots',0,'nocheck',0,'ysave',0);
 
 % check user options and update structure options
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

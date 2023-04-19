@@ -271,6 +271,7 @@ if nargin>2
         'theta0',theta0,'conflev',conflev,...
         'plots',plots);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     
     

@@ -600,6 +600,7 @@ options=struct('init',hdef,'bsb','','ColToTra','','la0','','onelambda',0,'rf',0.
     'prolik','','plotsmle','','plotslrt','','family',family);
 
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

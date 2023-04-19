@@ -279,6 +279,7 @@ options=struct('extradata',[],'cmapname','hot',...
     'titl','Double wedge plot',...
     'FontSize',14,'SizeAxesNum',14,'transpose',true);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

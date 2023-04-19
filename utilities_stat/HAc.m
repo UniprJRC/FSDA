@@ -117,6 +117,7 @@ function [bdp,eff] = HAc(ctun,v,varargin)
 abcdef=[2 4 8];
 options=struct('shapeeff',0,'param',abcdef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

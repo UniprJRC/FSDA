@@ -150,6 +150,7 @@ options=struct('rf',rfdef,'plots',0,'textlab',0,...
 
 % Input parameters checking
 if coder.target('MATLAB')
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

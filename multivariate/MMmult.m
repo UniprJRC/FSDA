@@ -285,6 +285,7 @@ options=struct('InitialEst','','Smsg',Smsgdef,'Snsamp',Snsampdef,'Srefsteps',Sre
     'nocheck',0,'eff',0.95,'effshape',0,'refsteps',100,'tol',1e-7,...
     'conflev',0.975,'plots',0,'ysave',0);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

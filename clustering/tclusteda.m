@@ -762,6 +762,7 @@ RandNumbForNini='';
 cshape=10^10;
 DfMmex=true;
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 
 if ~isempty(UserOptions)

@@ -587,6 +587,7 @@ if coder.target('MATLAB')
         'msg',1,'nocheck',false,'intercept',true,'bonflev',[],...
         'bsbmfullrank',1,'threshoutX','','weak',false,'tag',tagdef);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

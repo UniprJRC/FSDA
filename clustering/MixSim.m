@@ -431,6 +431,7 @@ options=struct('R_seed', Rseeddef, 'BarOmega',BarOmegadef,'MaxOmega',MaxOmegadef
     'sph',false,'hom',false,'ecc',eccdef,'PiLow',PiLowdef,...
     'int',intdef,'resN',resNdef,'tol',toldef,'lim',limdef,'restrfactor',restrfactordef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

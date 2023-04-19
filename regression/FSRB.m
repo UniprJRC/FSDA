@@ -753,6 +753,7 @@ options=struct('plots',1,'init',init,...
     'xlim','','ylim','','nameX','','namey','','msg',1, ...
     'nocheck',false,'intercept',true,'bonflev','', 'bayes',bayesdef,'tag',tagdef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

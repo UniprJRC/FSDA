@@ -196,6 +196,7 @@ SpuriousSolutions=false;
 if nargin>1
     options=struct('SpuriousSolutions',SpuriousSolutions);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         

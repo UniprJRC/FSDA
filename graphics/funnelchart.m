@@ -161,6 +161,7 @@ options  = struct('Labels',{Labels},'Color',BoxColor,'Title',Title,'h',h);
 
 
 % user options
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
 

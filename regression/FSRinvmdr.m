@@ -181,6 +181,7 @@ n=mdr(end,1)+1;
 if coder.target('MATLAB')
     options=struct('n',n,'plots','');
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

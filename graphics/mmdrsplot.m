@@ -410,6 +410,7 @@ if nargin<1
     error('FSDA:mmdrsplot:missingInputs','A required input argument is missing.')
 end
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

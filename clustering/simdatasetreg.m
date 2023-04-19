@@ -637,6 +637,7 @@ lambdadef='';
 options=struct('noisevars',noisevarsdef,'noiseunits',noiseunitsdef,...
     'lambda',lambdadef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

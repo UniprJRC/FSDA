@@ -134,6 +134,7 @@ if nargin > 2
     options=struct('freq',freq,'DiscreteData',DiscreteData,...
         'plots',plots);
 
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)

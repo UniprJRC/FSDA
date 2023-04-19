@@ -495,6 +495,7 @@ options=struct('kk',kk,'cc',cc,'whichIC',whichIC,'alpha',alpha,'nsamp',nsamp,'pl
     'UnitsSameGroup',UnitsSameGroup,'RandNumbForNini',RandNumbForNini,...
     'numpool',numpool, 'cleanpool', cleanpool);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

@@ -322,6 +322,7 @@ options=struct('msg',false,'plots',0,'maxLS',5,'alphaLTS',0.05,'bdp',0.1,...
     'alphaLS',0.01,'thresLS',20,'startLS',3,'sampleLS',[],'model',model);
 
 
+  [varargin{:}] = convertStringsToChars(varargin{:});
   UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

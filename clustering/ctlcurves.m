@@ -603,6 +603,7 @@ outliersFromUniform=true;
 % crit = criterion for the LRT to accept the H0 of k groups against k+1
 crit= 0.02;
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
 

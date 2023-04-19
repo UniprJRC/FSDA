@@ -240,6 +240,7 @@ if nargin>1
         'dispresults',dispresults,'NumComponents',NumComponents,...
         'bdp',bdp,'bsb',bsb);
 
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
 

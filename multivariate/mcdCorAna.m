@@ -374,6 +374,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %% Beginning of code
 
 if ~isempty(varargin)
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     checkdatamatrix = strcmp(UserOptions,'datamatrix');
     if sum(checkdatamatrix)
@@ -482,6 +483,7 @@ options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'msg',true,'tolMCD',tolMCDdef,'findEmpiricalEnvelope',findEmpiricalEnvelope,'Lr','','Lc','');
 
 % check user options and update structure options
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

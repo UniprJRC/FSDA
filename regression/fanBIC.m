@@ -210,6 +210,7 @@ family='YJ';
 plots=1;
 tag='pl_fanBIC';
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 
 

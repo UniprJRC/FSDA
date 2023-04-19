@@ -964,6 +964,7 @@ end
 
 %get optional user options
 if nargin>1
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     
     % Check if number of supplied options is valid

@@ -299,6 +299,7 @@ options=struct('nsamp',nsampdef,'bdp',bdpdef,...
     'plots',0,'nocheck',0,'conflev',0.975,'msg',1,...
     'ysaveRAW',0,'ysaveREW',0,'refsteps',0,'reftol',reftoldef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     

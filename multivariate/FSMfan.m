@@ -442,6 +442,7 @@ options=struct('rf',0.9,'init',hdef,'ColToComp','','laAround',-1:0.5:1,'signlr',
     'plotslrt','','family',family);
 
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

@@ -229,6 +229,7 @@ if nargin>1
     options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir,...
         'imagesDir',imagesDir,'write2file',true,'ErrWrngSeeAlso',ErrWrngSeeAlso);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

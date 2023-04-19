@@ -337,6 +337,7 @@ MarkerSizedef=10;
 options=struct('plots',1,'xlimx','','ylimy','','changedimsign',[false false],...
     'addy',0,'addx',0.04,'d1',1,'d2',2,'h','');
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

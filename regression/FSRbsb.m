@@ -240,6 +240,7 @@ if coder.target('MATLAB')
     options=struct('intercept',true,'init',init,'nocheck',false,'plots',0,...
         'bsbsteps',bsbstepdef,'msg',true);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

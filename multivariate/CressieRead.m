@@ -194,6 +194,7 @@ verMatlab=verLessThan('matlab','8.2.0');
 % last case the contigency table is built using the first tow columns of the
 % input dataset).
 if ~isempty(varargin)
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     checkdatamatrix = strcmp(UserOptions,'datamatrix');
     if sum(checkdatamatrix)
@@ -230,8 +231,8 @@ end
 la=2/3;
 options=struct('la',la,'datamatrix',false);
 
-% UserOptions=varargin(1:2:length(varargin));
 if ~isempty(varargin)
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

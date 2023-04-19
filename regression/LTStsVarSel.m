@@ -505,6 +505,7 @@ firstTestLS=false;
 options=struct('model',modeldef, 'thPval', 0.01, ...
     'plots',0,'msg',0,'dispresults',0,'nsamp',nsamp,'firstTestLS',firstTestLS);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

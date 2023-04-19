@@ -257,6 +257,7 @@ options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'bdp',bdpdef,'plots',0,'conflev',0.975,'nocheck',0,'msg',1,'ysave',0);
 
 % check user options and update structure options
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

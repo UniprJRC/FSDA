@@ -83,6 +83,7 @@ niterdef=10;
 if coder.target('MATLAB')
     options=struct('alpha',alphadef,'centering',centering,'iterating',iterating,'niter',niterdef);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

@@ -390,6 +390,7 @@ if coder.target('MATLAB')
         'rhofunc',rhofuncdef,'rhofuncparam','',...
         'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'yxsave',0);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         

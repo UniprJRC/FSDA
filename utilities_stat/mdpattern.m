@@ -221,6 +221,7 @@ if nargin>1
     options=struct('Lc',Lc,'plots',plots,...
         'dispresults',dispresults);
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         UserOptions=varargin(1:2:length(varargin));

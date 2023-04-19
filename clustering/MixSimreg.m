@@ -671,6 +671,7 @@ options=struct( 'BarOmega',BarOmegadef,'MaxOmega',MaxOmegadef,...
     'hom',false,'PiLow',PiLowdef,'betadistrib', 1,'Xdistrib',1, ...
     'resN',resNdef,'tol',toldef,'lim',limdef,'restrfactor',restrfactordef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

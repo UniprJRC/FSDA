@@ -641,6 +641,7 @@ titl='Fan plot';
 
 if coder.target('MATLAB')
     
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         

@@ -276,6 +276,7 @@ function out = RhoPsiWei(u, v, varargin)
 
 if nargin > 2
     % Check that maximum one input between bdp, eff and c has been supplied
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
 
     checkbdp = strcmp(UserOptions,'bdp');

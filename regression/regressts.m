@@ -452,6 +452,7 @@ options=struct('model',modeldef,'nocheck',false,'dispresults',dispresultsdef,...
     'StartDate',StartDate,'bsb',bsbini,'plots',0,...
     'smallsamplecor',false,'asymptcor',false);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

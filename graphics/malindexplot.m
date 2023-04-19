@@ -342,6 +342,7 @@ options=struct('h','','x',1:n,'labx','','laby','','numlab',{{5}},'conflev',0.975
     'databrush','','tag','pl_malindex','nameY','','label','');
 
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

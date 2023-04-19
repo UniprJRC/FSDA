@@ -162,6 +162,7 @@ if nargin>3
         'trsh', 0, 'trim', trim, 'cook', cook);
     
     % Check if number of supplied options is valid
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:VIOM:WrongInput','wrong input for VIOM.');

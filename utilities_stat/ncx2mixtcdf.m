@@ -192,6 +192,7 @@ toldef=1e-8;
 options=struct('sigma',sigmadef,'lim',limdef,'tol',toldef);
 
 % check user options and update structure options
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

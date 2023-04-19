@@ -602,6 +602,7 @@ options=struct('model',modeldef,...
 
 
 %% User options
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
 

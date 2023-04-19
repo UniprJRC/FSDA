@@ -766,6 +766,7 @@ conflevdef=[0.95 0.99];
 options=struct('intercept',true,'init',init,'bayes',bayesdef,'bsb',bsb,...
     'nocheck',false,'conflev',conflevdef);
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

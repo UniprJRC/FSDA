@@ -89,6 +89,7 @@ function list = findDir(root,varargin)
 % Assign input arguments.
 options=struct('InclDir',{''},'ExclDir',{''});
 
+[varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid

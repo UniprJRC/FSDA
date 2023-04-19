@@ -753,6 +753,7 @@ FileWithFullPath=which('docsearchFS.m');
 [pathFSDAstr]=fileparts(FileWithFullPath);
 
 if nargin>1
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     checklms2 = strcmp(UserOptions,'webhelp');
     if sum(checklms2)
@@ -789,6 +790,7 @@ if nargin>1
     options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir, ...
         'imagesDir',imagesDir,'write2file',true,'webhelp',false,'ErrWrngSeeAlso',ErrWrngSeeAlso);
 
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid

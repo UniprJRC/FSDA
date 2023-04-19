@@ -207,6 +207,7 @@ RowNamesLabels='';
 
 if nargin>1
     options=struct('labeladd',labeladd,'userleg',userleg,'RowNamesLabels',RowNamesLabels);
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     % Write in structure 'options' the options chosen by the user
     if ~isempty(UserOptions)
