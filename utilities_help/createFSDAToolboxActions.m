@@ -1,13 +1,17 @@
+function createFSDAToolboxActions(verNumber)
 % This file is meant to run on a Linux node in GitHub Actions
-prjFileName=".."+filesep+"/fsdaToolboxPackaging.prj";
+% Execute the code from project root
+% The code also assumes that there is a fsdaToolboxPackaging.prj at the
+% project root.
+% Input:
+%   verNumber- string in major.minor.bugfix format
+prjFileName=fullfile("fsdaToolboxPackaging.prj");
 toolboxOption=matlab.addons.toolbox.ToolboxOptions(prjFileName);
-% toolboxOption.Identifier="fsdaToolbox.UParma";
 
-% Need to edit the line below before every release
-toolboxOption.ToolboxVersion="0.0.22";
+% Update the version number
+toolboxOption.ToolboxVersion=verNumber;
 
 % Name for MLTBX file
-toolboxOption.OutputFile=".."+filesep+"release"+filesep+"fsda.mltbx";
-
+toolboxOption.OutputFile=fullfile("release", "fsda.mltbx");
 %Create toolbox MLTBX
 matlab.addons.toolbox.packageToolbox(toolboxOption);
