@@ -28,7 +28,7 @@ jobs:
         if: always()
         with:
           # command: matlab.addons.toolbox.packageToolbox("fsdaToolboxPackaging.prj", "release/fsda.mltbx")
-          command: addpath("utilities_help");createFSDAToolboxActions("${{  github.ref_name }}$)
+          command: addpath("utilities_help");createFSDAToolboxActions("${{  github.ref_name }}$")
       
       # Save the MLTBX.
       - name: Save MLTBX
