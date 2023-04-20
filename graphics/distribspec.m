@@ -94,19 +94,17 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 %    p:   Probability covered by the shaded area. Scalar. It is a value in [0 1].
 %
-%    h:   Handle to the line objects. Graphic object.
+%    h:   Handle to the line objects. Graphic object. Graphic handle.
 %
-%
-% Optional Output:
 %
 %
 % More About:  See https://www.mathworks.com/help/stats/fitting-custom-univariate-distributions-part-2.html
-%              And see also: normspec, makedist, fitdist, mle
+%              
+%
+%
+% See also: normspec, makedist, fitdist, mle
 %
 % References:
-%
-%
-% See also: 
 %
 %
 % Copyright 2008-2023.
@@ -135,6 +133,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
+    % TODO.
     % A Beta with parameter values a = 2 and b = 4, outside [0.2 0.4].
     pd = makedist('Beta','a',2,'b',4);
     specs  = [0.2 0.4];
@@ -143,6 +142,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
+    % TODO1.
     % A Beta with parameter values a = 2 and b = 4, in [0.4 inf].
     pd = makedist('Beta','a',2,'b',4);
     specs  = [0.4 inf];
@@ -151,6 +151,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
+    % TODO2.
     % A Gamma with parameter values a = 3 and b = 1, up to 2.
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
@@ -167,6 +168,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
+    % TODO3.
     % A Gamma as above, without specification of specs: returns an error.
     pd = makedist('Gamma','a',3,'b',1);
     region = 'inside';
@@ -181,8 +183,9 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
-    % A Gamma with parameter values a = 3 and b = 1, up to -1. Nothing is
-    % colored.
+    % TODO4.
+    % A Gamma with parameter values a = 3 and b = 1, up to -1. 
+    % Nothing is colored.
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf -1];
     region = 'inside';
@@ -190,6 +193,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 %{
+    % TODO5;
     % A Gamma as above, using userColor with standard one-character
     % specification.
     pd = makedist('Gamma','a',3,'b',1);
@@ -355,7 +359,8 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     fplot(userpdf0);
     xlim([-5 20]);
     title({'Pareto distribution' , '$ hvsd(x-xm_{0}) \cdot (\alpha_{0} \cdot 4^{\alpha_{0}}) / (x^{\alpha_{0}+1})$' } , 'Interpreter','latex' , 'Fontsize' , 20);
-    
+    drawnow;
+
     userpdf = @(x, alpha) hvsd(x-4) .* ((alpha*4^alpha) ./ (x.^(alpha+1)));
     %userpdf = @(x, alpha, xm) hvsd(x-xm) .* ((alpha*xm^alpha) ./ (x.^(alpha+1)));
     %usercdf = @(x, alpha, xm) hvsd(x-xm) .* (1 - (xm./x).^alpha);
