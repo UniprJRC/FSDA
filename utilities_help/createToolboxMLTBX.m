@@ -1,4 +1,4 @@
-function createFSDAToolboxActions(verNumber)
+function createToolboxMLTBX(verNumber)
 % This file is meant to run on a Linux node in GitHub Actions
 % Execute the code from project root
 % The code also assumes that there is a fsdaToolboxPackaging.prj at the
