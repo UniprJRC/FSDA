@@ -1,6 +1,6 @@
-# This is a workflow for building the MLTBX artifact and release it on GitHub
+# This is a workflow to build toolbox MLTBX and release it on GitHub
 
-name: Build MLTBX tag triggered
+name: Tag triggered MLTBX build
 
 # Start the workflow when a tag is created.
 on:
@@ -10,8 +10,8 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "MLTBXBuild"
-  MLTBXBuildTag:
-    # The type of runner that the job will run on
+  MLTBXBuild:
+    # The type of runner that the job will run on, we use ubuntu
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -24,10 +24,9 @@ jobs:
       
       - name: Create MLTBX
         uses: matlab-actions/run-command@v1
-        continue-on-error: true
+        continue-on-error: false
         if: always()
         with:
-          # command: matlab.addons.toolbox.packageToolbox("fsdaToolboxPackaging.prj", "release/fsda.mltbx")
           command: addpath("utilities_help");createToolboxMLTBX("${{  github.ref_name }}")
       
       # Save the MLTBX.
