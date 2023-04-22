@@ -89,7 +89,6 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %                   Example - 'evalPoints', [1.5 3.2]
 %                   Data Types - array
 %
-%
 % Output:
 %
 %    p:   Probability covered by the shaded area. Scalar. It is a value in [0 1].
@@ -97,10 +96,8 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %    h:   Handle to the line objects. Graphic object. Graphic handle.
 %
 %
-%
-% More About:  See https://www.mathworks.com/help/stats/fitting-custom-univariate-distributions-part-2.html
+% More About: See https://www.mathworks.com/help/stats/fitting-custom-univariate-distributions-part-2.html
 %              
-%
 %
 % See also: normspec, makedist, fitdist, mle
 %
@@ -117,42 +114,53 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 % Examples:
 %
 %{
+    % Use with makedist, default settings.
     % A standard normal distribution in [-1 1].
-    pd     = makedist('Normal','mu',0,'sigma',1);
+    pd     = makedist('Normal');
     specs  = [-1 1];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region);
+    drawnow;
 %}
 
 %{
-    %% A Gamma with parameter values a = 3 and b = 1, in [2 3].
+    %% Use with makedist, region inside.
+    % A Gamma with parameter values a = 3 and b = 1, in [2 3].
+    close all
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [2 3];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region);
+    drawnow;
 %}
 
 %{
-    % TODO.
+    % Use with makedist, region outside.
     % A Beta with parameter values a = 2 and b = 4, outside [0.2 0.4].
+    close all
     pd = makedist('Beta','a',2,'b',4);
     specs  = [0.2 0.4];
     region = 'outside';
     [p, h] = distribspec(pd, specs, region);
+    drawnow;
 %}
 
 %{
-    % TODO1.
+    % Use with makedist, specs with inf.
     % A Beta with parameter values a = 2 and b = 4, in [0.4 inf].
+    close all
     pd = makedist('Beta','a',2,'b',4);
     specs  = [0.4 inf];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region);
+    drawnow;
 %}
 
 %{
-    % TODO2.
+    % Use with makedist, specs with -inf.
+    
     % A Gamma with parameter values a = 3 and b = 1, up to 2.
+    close all
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     region = 'inside';
@@ -165,11 +173,13 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     [p, h] = distribspec(pd, specs);
     
     cascade;
+    drawnow;
 %}
 
 %{
-    % TODO3.
+    % Use with makedist, no specs.
     % A Gamma as above, without specification of specs: returns an error.
+    close all
     pd = makedist('Gamma','a',3,'b',1);
     region = 'inside';
     try
@@ -180,22 +190,27 @@ function [p, h] = distribspec(pd, specs, region, varargin)
             'Error using distribspec' , ...
             'Please provide valid lower and upper limits for the area to highlight'));
     end
+    drawnow;
 %}
 
 %{
-    % TODO4.
+    % Use with makedist, specs outside support.
     % A Gamma with parameter values a = 3 and b = 1, up to -1. 
     % Nothing is colored.
+    close all
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf -1];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region);
+    drawnow;
 %}
 
 %{
-    % TODO5;
+    % Use with makedist, using userColor.
+
     % A Gamma as above, using userColor with standard one-character
     % specification.
+    close all
     pd = makedist('Gamma','a',3,'b',1);
     specs  = [-inf 2];
     region = 'inside';
@@ -208,10 +223,13 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     [p, h] = distribspec(pd, specs, region, 'userColor',[1 0.5 0.5]);
     
     cascade;
+    drawnow;
 %}
 
 %{
-    %% A Half Normal using userColor with a color for each outside region
+    %% Use with makedist, using userColor for each outside region.
+
+    close all
     pd = makedist('HalfNormal','mu',0,'sigma',1.5);
     specs  = [1 3];
     region = 'outside';
@@ -222,20 +240,28 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     [p, h] = distribspec(pd, specs, region, 'userColor', useColor);
 
     cascade;
+    drawnow;
 %}
 
 %{
-    % A Half Normal using userColor with RGB triplet specification
+    % Use with makedist, using userColor with RGB triplet. 
+
+    % A Half Normal using userColor with RGB triplet specification.
     % The triplet is returned by FSColors.
+    close all
     pd = makedist('HalfNormal','mu',0,'sigma',1.5);
     specs  = [-inf 1];
     region = 'inside';
     RGB_vector = FSColors.lightgrey.RGB;
     [p, h] = distribspec(pd, specs, region, 'userColor',RGB_vector);
+    drawnow;
 %}
 
 %{
-    %% A sample of n=100 elements extracted from a Nakagami, with distname.
+    %% Use with distname. 
+
+    % A sample of n=100 elements extracted from a Nakagami.
+    close all
     rng(12345);
     distname    = 'Nakagami';
     x           = random(distname,0.5,1,[100,1]);
@@ -245,18 +271,26 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     specs  = [-inf 1];
     region = 'inside';
     [p, h] = distribspec(pd, specs, region);
+    drawnow;
 %}
 
 %{
-    %% A sample of n=100 elements extracted from a T(5) without distname.
+    %% Use with a sample only. 
+
+    % A sample of n=100 elements extracted from a T(5) without distname.
+    close all
     rng(12345);
     x      = random('T',5,[100,1]);
     specs  = [-inf 1.5];
     region = 'inside';
     [p, h] = distribspec(x, specs, region);
+    drawnow;
 %}
 
 %{ 
+    % Sample from non-parametric used-defined distribution.
+
+    close all
     % Data from user-defined distribution, Benford (non-parametric)
     % no parameters to estimate
 
@@ -277,10 +311,14 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     pd.userpdf  = userpdf;
 
     [p, h] = distribspec(pd, specs, region);   
+    drawnow;
 %}
 
 %{
+    %% Sample from parametric used-defined distribution.
+
     % Data from user-defined distribution, negative exponential with one parameter 
+    close all
     lambda = 5;
     userpdf = @(data,lambda) lambda*exp(-lambda*data);
     usercdf = @(data,lambda) 1-exp(-lambda*data);
@@ -331,16 +369,19 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     [p, h] = distribspec(pd, specs, region);
 
     cascade;
+    drawnow;
 %}
 
 %{
-    %% Reducing the number of evaluation points 
+    %% User-defined function, with reduced number of evaluation points.
+
     % Data from user-defined distribution: Pareto (two parameters). This
     % takes a while to complete, because of difficult integration (the
     % function has singularities). Therefore, we reduce the ealuation
     % points only to 50. In this case, being the function very smooth in
     % the region of interest, the quality is not affected.
     
+    close all
     alpha0  = 2; 
     xm0     = 4;
     
@@ -376,16 +417,20 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     pd.mleLowerBound = pd.mleStart/2;
     pd.mleUpperBound = pd.mleStart*2;
 
+    figure;
     [p, h] = distribspec(pd, specs, region, 'evalPoints', 50);
 
     cascade;
+    drawnow;
 %}
 
 %{
-    %% User-defined pdf based on a default matlab distribution  
+    %% User-defined function starting from a default matlab distribution.
+
     % Here the user takes one of the functions in makedist, possibly
     % changing the number of parameters.
     
+    close all
     alpha0  = 2; 
     xm0     = 4;
 
@@ -410,9 +455,11 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     % MLE parameters. The scale and shape parameters must be positive,
     % and the location parameter must be smaller than the minimum of the
     % sample data.
-
+    
+    figure;
     [p, h] = distribspec(pd, specs, region, 'evalPoints', 100);
     cascade
+    drawnow;
 %}
 
 
