@@ -116,6 +116,18 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Example - 'smallsamplecor',true 
 %               Data Types - logical
 %
+%     modelT  : controls how the consistency factor is applied to account 
+%               for the effect of trimming. Scalar. It is empty for the
+%               classic case when uncontaminated data are assumed to come
+%               from a normal distribution (default). If on the other hand
+%               the data are heavy-tailed and can be modelled by a
+%               Student-t distribution, modelT takes a positive value
+%               representing the degrees of freedom of the t-distribution;
+%               if modelT is zero, then the degrees of freedom are
+%               estimated from the data (to be implemented).
+%               Example - 'modelT',5
+%               Data Types - double
+%
 %     tolMCD  : Tolerance to declare a subset as singular. Scalar. The
 %               default value of tolMCD is exp(-50*v).
 %               Example - 'tolMCD',1e-20
@@ -289,6 +301,12 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % latter being singular (as it should be), as well as the equation of the
 % hyperplane.
 %
+%
+% About the modelT option. It applies a consistency factor derived for
+% continuous Student-t data, to account for havy-tails distributions. The
+% derivation of the factor is discussed by Barabesi et al. (2023), Trimming
+% heavy-tailed multivariate data, submitted.
+%
 % See also: mve.m
 %
 % References:
@@ -400,6 +418,27 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 
 %}
 
+%{
+    %% mcd with data from the Student-t model.
+    randn('state', 123456);
+    n  = 100;
+    v  = 3;
+    nu = 5;
+    
+    % sample from the T
+    Yt = random('T',nu,[n,v]); 
+    Yn = random('Normal',0,1,[n,v]); 
+
+    Y = Yt;
+
+    % mcd with the T-model
+    RAWt = mcd(Y,'modelT',nu,'plots',1);
+
+    % mcd with the Normal-model
+    RAWn = mcd(Y,'plots',1);
+
+%}
+
 %% Beginning of code
 
 [n, v]=size(Y);
@@ -449,7 +488,7 @@ options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'bdp',bdpdef,'plots',0,'conflev',0.975,'conflevrew','',...
     'betathresh',0,'nocheck',0,'msg',1,'tolMCD',tolMCDdef,...
     'ysaveRAW',false,'ysaveREW',false,'smallsamplecor',smallsamplecor,...
-    'restrfactor',restrfactordef);
+    'restrfactor',restrfactordef,'modelT',[]);
 
 % check user options and update structure options
 [varargin{:}] = convertStringsToChars(varargin{:});
@@ -486,7 +525,17 @@ tolMCD=options.tolMCD;
 % If msg =1 the total estimated time to compute MCD is printed on the screen
 msg=options.msg;
 
+%  Restriction factor applied to the covariance matrix of subsets
 restrfactor=options.restrfactor;
+
+% Consistency factor. options.modelT is empty for the multivariate
+% Normal model; it is positive number if it represents the degrees of
+% freedom of a Student-T distribution.
+nuT = options.modelT;
+if  nuT<=0
+    warning('FSDA:mcd:consistency','Estimation of the number of degrees of freedom for the t-model is not yet implemented: we use the normal model.');
+    nuT = [];
+end
 
 % Initialize the matrices which contain the best "bestr" estimates of
 % location, indexes of subsets, cov matrices and objective function
@@ -575,7 +624,7 @@ if v==1 && h~=n
     
     REW.method=sprintf('\nUnivariate location and scale estimation.');
     
-    [RAW.loc,RAW.cov]=mcduni(Y,h,1-bdp,smallsamplecor);
+    [RAW.loc,RAW.cov]=mcduni(Y,h,1-bdp,smallsamplecor,nuT);
     
     % Assign weight=1 to the h units which show the smallest h squared
     % residuals
@@ -602,7 +651,7 @@ if v==1 && h~=n
     REW.loc=mean(Y(weights==1,:));
     REW.cov=cov(Y(weights==1,:));
     
-    cfactor = consistencyfactor(sum(weights),n,v);
+    cfactor = consistencyfactor(sum(weights),n,v,nuT); %remove nuT?
     if smallsamplecor == true
         cfactor = cfactor*corfactorREW(v,n,1-bdp);
     end
@@ -934,7 +983,7 @@ RAW.bs=superbestsubset;
 
 % cfactor: if we multiply the raw MCD covariance matrix by factor, we obtain
 % consistency when the data come from a multivariate normal distribution.
-cfactor = consistencyfactor(h,n,v);
+cfactor = consistencyfactor(h,n,v,nuT);
 
 % Apply small sample correction factor
 if smallsamplecor == true
@@ -1007,12 +1056,12 @@ REW.cov=cov(Y(weights==1,:));
 if betathresh==1
     % Consistency factor based on nominal trimming of conflevrew
     hh=floor(n*conflevrew);
-    cfactor = consistencyfactor(hh,n,v);
+    cfactor = consistencyfactor(hh,n,v,nuT); %remove nuT?
 else
     % Apply consistency factor to reweighted estimate of covariance
     hrew=sum(weights);
     if hrew<n
-        cfactor=consistencyfactor(hrew,n,v);
+        cfactor=consistencyfactor(hrew,n,v,nuT); %remove nuT?
     else
         cfactor=1;
     end
@@ -1299,7 +1348,7 @@ end
     end
 
 %% mcduni function
-    function [initmean,initcov] = mcduni(y,h,alpha,smallsamplecorfactor)
+    function [initmean,initcov] = mcduni(y,h,alpha,smallsamplecorfactor,nuT)
         
         ncas=length(y);
         len=ncas-h+1;
@@ -1335,7 +1384,7 @@ end
             c1factor = corfactorRAW(1,ncas,alpha);
         end
         
-        c1factor = c1factor * consistencyfactor(h,ncas,1);
+        c1factor = c1factor * consistencyfactor(h,ncas,1,nuT);
         initcov  = c1factor * sqmin/(h-1);
     end
 
@@ -1343,7 +1392,7 @@ end
     function rawconsfac = consistencyfactor(h,n,v,nu)
         % The consistency factor is used to take the effect of trimming
         % into account. 
-        if nargin<4
+        if nargin<4 || isempty(nu)
             % This is the standard case, applied when uncontaminated data
             % are assumed to come from a multivariate Normal model.
 
@@ -1356,7 +1405,7 @@ end
             % heavy-tailed multivariate data, submitted.
 
             alpha = (n-h)/n;
-            integrand = @(u) 1 / (1 - betainv(u,v/2,nu/2));
+            integrand = @(u) 1 ./ (1 - betainv(u,v/2,nu/2));
             theintegral = integral(integrand,0,alpha);
             rawconsfac = ((nu-2) / (alpha*v) * theintegral - (nu - 2)/v)^(-1);
         end
