@@ -41,6 +41,6 @@ jobs:
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          draft: false        
+          draft: true        
           artifacts: "release/fsda.mltbx"
           generateReleaseNotes: true
