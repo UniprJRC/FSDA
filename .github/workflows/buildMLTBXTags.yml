@@ -12,7 +12,7 @@ on:
 jobs:
   # This workflow contains a single job called "MLTBXBuild"
   MLTBXBuild:
-    # The type of runner that the job will run on, we use ubuntu
+    # The type of runner that the job will run on, we use Ubuntu
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
