@@ -15,5 +15,5 @@ toolboxOption.ToolboxVersion = verNumber;
 
 % Name for MLTBX file
 toolboxOption.OutputFile = fullfile("release", "fsda.mltbx");
-%Create toolbox MLTBX
+% Create toolbox MLTBX
 matlab.addons.toolbox.packageToolbox(toolboxOption);
