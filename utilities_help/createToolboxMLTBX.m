@@ -1,4 +1,5 @@
 function createToolboxMLTBX(toolboxVersion)
+%Package toolbox as MLTBX file
 % This file is meant to run on a Linux node in GitHub Actions
 % Execute the code from project root
 % The code also assumes that there is a fsdaToolboxPackaging.prj at the
@@ -8,12 +9,12 @@ function createToolboxMLTBX(toolboxVersion)
 % Copyright 2023 The MathWorks, Inc.
 
 prjFileName = "fsdaToolboxPackaging.prj";
-toolboxOption = matlab.addons.toolbox.ToolboxOptions(prjFileName);
+packagingData = matlab.addons.toolbox.ToolboxOptions(prjFileName);
 
 % Update the version number
-toolboxOption.ToolboxVersion = toolboxVersion;
+packagingData.ToolboxVersion = toolboxVersion;
 
 % Name for MLTBX file
-toolboxOption.OutputFile = fullfile("release", "fsda.mltbx");
+packagingData.OutputFile = fullfile("release", "fsda.mltbx");
 % Create toolbox MLTBX
-matlab.addons.toolbox.packageToolbox(toolboxOption);
+matlab.addons.toolbox.packageToolbox(packagingData);
