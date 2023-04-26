@@ -6,7 +6,7 @@ function createToolboxMLTBX(verNumber)
 % Input:
 %   verNumber- string in major.minor.bugfix format
 % Copyright 2023 The MathWorks, Inc.
-prjFileName=fullfile("fsdaToolboxPackaging.prj");
+prjFileName="fsdaToolboxPackaging.prj";
 toolboxOption=matlab.addons.toolbox.ToolboxOptions(prjFileName);
 
 % Update the version number
