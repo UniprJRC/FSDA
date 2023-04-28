@@ -23,20 +23,20 @@ function out = GUIregress(x,y, varargin)
 %
 %  Optional input arguments:
 %
-%  inferential :  this input parameter controls whether to show an additional GUI
-%                 giving all the details for the calculation of all the
-%                 inferential aspects of the linear regression model (i.e.
-%                 standard error of coefficients, t-statistics, p-values
-%                 of the t-statistics for a two-sided test with the null
-%                 hypothesis that the coefficient is zero and confidence
-%                 intervals). If inferential is empty [] (default) this
-%                 additional GUI is now shown. If inferential is a number
-%                 in the interval (0 1), this GUI is shown and the a
-%                 confidence level at inferential-per cent level is
-%                 computed. For example if inferential is 0.90 a 90 per
-%                 cent confidence interval is computed.
+%  inferential :  this input parameter controls whether to show an
+%                 additional GUI giving all the details for the calculation
+%                 of all the inferential aspects of the linear regression
+%                 model (i.e. standard error of coefficients, t-statistics,
+%                 p-values of the t-statistics for a two-sided test with
+%                 the null hypothesis that the coefficient is zero and
+%                 confidence intervals). If inferential is empty []
+%                 (default) this additional GUI is now shown. If
+%                 inferential is a number in the interval (0 1), this GUI
+%                 is shown and the a confidence level at inferential-per
+%                 cent level is computed. For example if inferential is
+%                 0.90 a 90 per cent confidence interval is computed.
 %                 Example - 'inferential',0.99
-%                 Data Types - boolean
+%                 Data Types - double or empty value
 %
 %    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
@@ -194,7 +194,7 @@ function out = GUIregress(x,y, varargin)
 %}
 
 %{
-    %% Example of linear and power interpolation .
+    %% Example of linear and power interpolation.
     close all
     % Time series....,  (See ex 4.26 of [CMR])   
     xb=1:8;
@@ -286,6 +286,10 @@ if nargin>2
     interpolant=options.interpolant;
     timeseries=options.timeseries;
     inferential=options.inferential;
+end
+
+if  inferential <=0 || inferential >=1
+    error('FSDA:GUIregress:WrongInputOpt','Inferential must be an empty value or a number in the interval (0,1).');
 end
 
 weights=[];
@@ -466,7 +470,7 @@ end
 %     a1=a1-1;
 %     b1=b1-1;
 % end
-% 
+%
 % % note that there is a maximum of string size of 1200 characters for the
 % % LaTeX interpreter
 % startIndex=regexp(str1,'\cr');
@@ -685,7 +689,7 @@ out.tb=tb;
 if intercept == true
     out.confinta=[tinfa tsupa];
 else
-   out.confinta=[];
+    out.confinta=[];
 end
 out.confintb=[tinfb tsupb];
 
