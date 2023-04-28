@@ -1,14 +1,15 @@
-function createToolboxMLTBX(prjFileName, toolboxVersion)
+function createToolboxMLTBX(prjFile, toolboxVersion)
 %Package toolbox as MLTBX file.
-%   createToolboxMLTBX(toolboxVersion) builds the MLTBX file and saves it in the 
-%   release folder. Input toolboxVersion is a string of the form Major.Minor.Bug.Build.
+%   createToolboxMLTBX(prjFile, toolboxVersion) builds the MLTBX file and saves 
+%   it in the release folder. Input prjFile is the file name of the toolbox
+%   packaging PRJ file and toolboxVersion is a string of the form Major.Minor.Bug.Build.
 
 %   Copyright 2023 The MathWorks, Inc.
 
-if isfile(prjFileName)
-    packagingData = matlab.addons.toolbox.ToolboxOptions(prjFileName);
+if isfile(prjFile)
+    packagingData = matlab.addons.toolbox.ToolboxOptions(prjFile);
 else
-    msg="Unable to find file " + "'" + prjFileName+ "'";
+    msg="Unable to find file " + "'" + prjFile+ "'";
     error(msg);
 end
 
