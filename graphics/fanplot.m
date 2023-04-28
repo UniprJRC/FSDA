@@ -138,18 +138,18 @@ function brushedUnits=fanplot(out,varargin)
 %                   Example - 'ylimy',[0 100]
 %                   Data Types - double
 %
-%   datatooltip :   Information about the unit selected. Empty value or
-%                   structure. The default is datatooltip=''. If
+%   datatooltip :   Information about the unit selected. Empty value,
+%                   scalar or structure. The default is datatooltip=''. If
 %                   datatooltip is not empty the user can use the mouse in
 %                   order to have information about the unit selected, the
 %                   step in which the unit enters the search and the
 %                   associated label. If datatooltip is a structure, it is
-%                   possible to control the aspect of the data cursor
-%                   (see function datacursormode for more details or the
+%                   possible to control the aspect of the data cursor (see
+%                   function datacursormode for more details or the
 %                   examples below). The default options of the structure
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'.
-%                   Example - 'datatooltip',''
-%                   Data Types - Empty value or structure
+%                   Example - 'datatooltip',1
+%                   Data Types - Empty value, scalar or structure
 %
 %    databrush :    Databrush options. Empty value, scalar or cell.
 %                   DATABRUSH IS AN EMPTY VALUE: If databrush is an empty
@@ -235,7 +235,7 @@ function brushedUnits=fanplot(out,varargin)
 %                 value.
 %
 %
-% See also: FSRfan, fanBIC
+% See also: FSRfan, fanBIC, FSRaddt
 %
 % References:
 %
@@ -322,7 +322,7 @@ function brushedUnits=fanplot(out,varargin)
     [out]=FSRfan(y,X,'la',la);
     fanplot(out,'databrush',{ 'bivarfit' '2' 'Label' 'on' 'RemoveLabels' 'off'});
 %}
-%
+
 %{
     %Interactive_example
     %FSRfan and fanplot with databrush  and selectionmode options.
@@ -339,7 +339,7 @@ function brushedUnits=fanplot(out,varargin)
     fanplot(out,'databrush',{'selectionmode' 'Lasso' 'persist' 'off'})
     fanplot(out,'databrush',{'selectionmode' 'Rect' 'persist' 'on'})
 %}
-%
+
 %{
     %fanplot with datatooltip passed as scalar.
     %That is using default options for datacursor (i.e. DisplayStyle=window).
@@ -350,7 +350,7 @@ function brushedUnits=fanplot(out,varargin)
     [out]=FSRfan(y,X,'la',la);
     fanplot(out,'datatooltip',1);
 %}
-%
+
 %{
    % Construct fan plot specifying the confidence level and the xlimits.
     load('loyalty.txt');
@@ -360,7 +360,7 @@ function brushedUnits=fanplot(out,varargin)
     [out]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'nsamp',20000);
     fanplot(out,'xlimx',[100 300],'conflev',0.95);
 %}
-%
+
 %{
     %Interactive_example
     %Example of the use of multivarfit and xlimx.
@@ -371,7 +371,7 @@ function brushedUnits=fanplot(out,varargin)
     [outs]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'nsamp',20000);
     fanplot(outs,'xlimx',[10 520],'databrush',{'selectionmode' 'Brush' 'multivarfit' '2'})
 %}
-%
+
 %{
     %Interactive_example
     %Example of the use of FlagSize, namey, namex, lwd,FontSize, SizeAxesNum.
@@ -387,15 +387,17 @@ function brushedUnits=fanplot(out,varargin)
      fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
      'multivarfit' '2' 'FlagSize' '5'})
 %}
-%
+
 %{
     %Interactive_example
     % Only one brush specifying labels for y and X.
-    load('loyalty.txt');
-    y=loyalty(:,4);
-    X=loyalty(:,1:3);
+    load loyalty.mat
+    y=loyalty{:,4};
+    X=loyalty{:,1:3};
     la=[-1 -0.5 0 0.5 1];
     [out]=FSRfan(y,X,'la',la);
+    namey=loyalty.Properties.VariableNames{4};
+    nameX=loyalty.Properties.VariableNames(1:3);
     fanplot(out,'databrush',{'selectionmode' 'Brush' 'FlagSize' '5'},'nameX',nameX,'namey',namey)
 %}
 
@@ -448,7 +450,7 @@ function brushedUnits=fanplot(out,varargin)
     end
     % Highlight in red inside the fanplot the steps of entry of the units
     % declared as outliers for the different trajectories of lambda
-    fanplot(outFSRfan,'highlight',Highl,'ylimy',[-50 20],'xlimx',[300 510])
+    fanplot(outFSRfan,'highlight',Highl,'ylimy',[-50 20],'xlimx',[30 510]);
 %}
 
 %% Beginning of code
@@ -581,12 +583,13 @@ end
 
 if fanplotScore==true
     set(gcf,'Name',['Fanplot for lambda=' mat2str(out.la) ]);
-
-    la=string(out.la(:));
+    la=out.la(:);
+    las=string(la);
 else
     % Extract the variables for which deletion tstat have been computed
     % Note that there is -1 because intercept is present in out.X
-    la="X"+string(out.la(:)-1);
+    las="X"+string(out.la(:)-1);
+    la=las;
 end
 lla=length(la);
 
@@ -654,7 +657,7 @@ end
 FontSize =options.FontSize;
 
 % Add labels at the end of the search
-text(n*ones(lla,1),Sco(end,2:end)',la,'FontSize',FontSize);
+text(n*ones(lla,1),Sco(end,2:end)',las,'FontSize',FontSize);
 
 % Main title of the plot and labels for the axes
 labx=options.labx;
@@ -722,9 +725,9 @@ if ~isempty(highlight)
         % remove the columns of selsteps which contain just NaN
 
         if fanplotScore==true
-            disp("Steps of entry of selected units when la= "+la(j));
+            disp("Steps of entry of selected units when la= "+las(j));
         else
-            disp("Steps of entry of selected units in deletion t tstat for "+la(j));
+            disp("Steps of entry of selected units in deletion t tstat for "+las(j));
         end
         disp(selsteps);
 
@@ -776,7 +779,6 @@ end
 
 if ~isempty(options.datatooltip)
     try
-        % chkgpu=gpuDeviceCount; %#ok<NASGU>
         hdt = datacursormode;
         if ~isstruct(options.datatooltip)
             set(hdt,'DisplayStyle','window');
@@ -1072,29 +1074,37 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 %unigroup is the list of groups.
                 unigroup=unique(group);
 
-                % la(lasel) is the value of lambda selected
-                if la(lasel) ==0
-                    % Create label for transformed response
-                    if isempty(options.namey)
-                        namey=char('log(y)');
-                    else
-                        namey=char(['log(' options.namey ')']);
-                    end
-                    % Create transformed response
-                    y1=log(y);
+                if fanplotScore==true
+                    % la(lasel) is the value of lambda selected
+                    if la(lasel) ==0
+                        % Create label for transformed response
+                        if isempty(options.namey)
+                            namey=char('log(y)');
+                        else
+                            namey=char(['log(' options.namey ')']);
+                        end
+                        % Create transformed response
+                        y1=log(y);
 
+                    else
+                        % Create label for transformed response
+                        if isempty(options.namey)
+                            namey=char(['y^{' num2str(la(lasel)) '}']);
+                        else
+                            namey=char([options.namey '^{' num2str(la(lasel)) '}']);
+                        end
+
+                        % Create transformed response
+                        y1=y.^la(lasel);
+                    end
                 else
-                    % Create label for transformed response
+                    y1=y;
                     if isempty(options.namey)
-                        namey=char(['y^{' num2str(la(lasel)) '}']);
+                        namey='y';
                     else
-                        namey=char([options.namey '^{' num2str(la(lasel)) '}']);
+                        namey=char(options.namey);
                     end
-
-                    % Create transformed response
-                    y1=y.^la(lasel);
                 end
-
                 %% Run the forward search using the selected value of \lambda
 
                 % i.e. use transformed response which is contained in
@@ -1103,7 +1113,12 @@ if (~isempty(options.databrush) || iscell(options.databrush))
 
                 %% Display the yXplot with the corresponding groups of units highlighted
                 [H,AX,BigAx] = gplotmatrix(Xsel,y1,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
-                set(gcf,'Name',['Scatter plot matrix y^' num2str(la(lasel))  '|X with different symbols for brushed units']);
+
+                if fanplotScore==true
+                    set(gcf,'Name',['Scatter plot matrix y^' num2str(la(lasel))  '|X with different symbols for brushed units']);
+                else
+                    set(gcf,'Name','Scatter plot matrix y|X with different symbols for brushed units');
+                end
                 set(gcf,'tag','pl_yX');
                 %set(gcf,'Name',['yXplot: results for lambda=' num2str(la(lasel)) ]); %DDD
 
@@ -1452,9 +1467,13 @@ end % close options.databrush
         % x and y, plot coordinates of the mouse
         x = pos(1); y = pos(2);
 
-        % output_txt is what it is shown on the screen
-        output_txt = {['Value of the score test=',num2str(y)]};
+        if fanplotScore ==true
 
+            % output_txt is what it is shown on the screen
+            output_txt = {['Value of the score test=',num2str(y)]};
+        else
+            output_txt = {['Value of the deletion t test=',num2str(y)]};
+        end
         % Add information abou the step of the search which is under investigation
         output_txt{end+1} = ['Step m=' num2str(x)];
 
@@ -1478,7 +1497,12 @@ end % close options.databrush
 
         % Add information about the corresponding row label of what has been
         % selected
-        output_txt{end+1} = ['H\_0:' '$$\lambda =$$' num2str(out.la(col))];
+        if fanplotScore ==true
+            output_txt{end+1} = ['H_0: \lambda =' num2str(out.la(col))];
+        else
+            output_txt{end+1} = ['H_0: \beta_' num2str(out.la(col)-1) '=0'];
+        end
+
         output_txt{end+1} = ['Unit(s) entered in step ' num2str(x) '='  num2str(sel(~isnan(sel)))];
 
     end
