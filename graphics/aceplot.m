@@ -50,6 +50,14 @@ function aceplot(out,varargin)
 %                 Example - 'oneplot',true
 %                 Data Types - logical
 %
+%       notitle : no title in the plots. Boolean. 
+%                 If notitle is true the title in each panel is removed.
+%                 Note that the xlabel and ylabel in the various panels
+%                 will still be present. The default is nottitle equal to
+%                 false. 
+%                 Example - 'notitle',true
+%                 Data Types - logical
+%
 %      VarNames : Names of the variabiles.
 %                   Empty value or string array or cell array of character
 %                   vectors.
@@ -152,12 +160,13 @@ highlight=out.outliers;
 ylimy=[];
 oneplot=false;
 VarNames='';
+notitle=false;
 if nargin >1
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
 
     options=struct('highlight',highlight,'ylimy',ylimy, ...
-        'oneplot',oneplot,'VarNames',VarNames);
+        'oneplot',oneplot,'VarNames',VarNames,'notitle',notitle);
 
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -178,6 +187,7 @@ if nargin >1
     ylimy=options.ylimy;
     oneplot=options.oneplot;
     VarNames=options.VarNames;
+    notitle=options.notitle;
 end
 % Tranform VarNames in string array if the user has supplied a cell array
 % of characters
@@ -269,6 +279,10 @@ else
     title("Plot of t"+ VarNames(end)+ " vs. "+ VarNames(end))
 end
 
+if notitle ==true
+    title('')
+end
+
 if addout ==true
     hold('on')
     plot(y(highlight),ty(highlight),'ro','MarkerFaceColor','r')
@@ -283,7 +297,10 @@ res = ty - yhat;
 subplot(2,2,2)
 plot(yhat,res,'o')
 refline(0,0)
+if notitle==false
 title('Plot of residuals vs. fit')
+end
+
 ylabel('Residuals')
 xlabel('Fitted values')
 if addout ==true
@@ -304,8 +321,12 @@ if emptyVarNames
     ylabel('Transformed y')
     title('Plot of ty vs. fit')
 else
-    ylabel("Transformed"+ VarNames(end))
+    ylabel("Transformed "+ VarNames(end))
     title("Plot of t"+ VarNames(end)+ " vs. fit")
+end
+
+if notitle ==true
+    title('')
 end
 
 if addout ==true
