@@ -429,13 +429,13 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
     Yt = random('T',nu,[n,v]); 
     Yn = random('Normal',0,1,[n,v]); 
 
-    Y = Yt;
+    Y = Yn;
 
     % mcd with the T-model
-    RAWt = mcd(Y,'modelT',nu,'plots',1);
+    %RAWt = mcd(Y,'modelT',nu,'plots',1);
 
     % mcd with the Normal-model
-    RAWn = mcd(Y,'plots',1);
+     RAWn = mcd(Y,'plots',1);
 
 %}
 
@@ -577,7 +577,14 @@ z=zeros(1,v);
 weights=zeros(1,n);
 seq=1:n;
 conflev = options.conflev;
-thresh=chi2inv(conflev,v);
+
+thresh = msdcutoff(conflev,v,nuT);
+% if isempty(nuT)
+%     thresh=chi2inv(conflev,v);      
+% else
+%     thresh = (1 - betainv(conflev,v/2,nuT/2))^(-1);
+%     thresh = (thresh - 1) * (nuT -2);
+% end
 
 %% Standardization of the data with medians and mads
 
@@ -1032,11 +1039,19 @@ if betathresh==1
     % Compare md with the scaled F distribution of Hardin and Rocke (2005)
     [~,dfhr,~]=rockecs(n,v,h);
     xcor=(dfhr-v+1)/(v*dfhr);
-    thresh=finv(conflevrew,v,dfhr-v+1)/xcor;
+    thresh=finv(conflevrew,v,dfhr-v+1)/xcor;    % DDD to be studied
     weights=md<thresh;
-else
-    % Compare md with the chi2 distribution
-    weights=md<chi2inv(conflevrew,v);
+else                                            
+    % if isempty(nuT)
+    %     % Compare md with the chi2 distribution
+    %     weights=md<chi2inv(conflevrew,v);           
+    % else
+    %     threshtmp = (1 - betainv(conflevrew,v/2,nuT/2))^(-1);
+    %     threshtmp = (threshtmp - 1) * (nuT -2);
+    %     weights=md<threshtmp;   
+    % end
+    weights = md<msdcutoff(conflevrew,v,nuT);
+
 end
 
 % RAW.weights=weights;
@@ -1136,7 +1151,7 @@ plo=options.plots;
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
     
     laby='Raw MCD Mahalanobis distances';
-    malindexplot(RAW.md,v,'conflev',conflev,'laby',laby,'numlab',RAW.outliers,'tag','rawmcd');
+    malindexplot(RAW.md,v,'conflev',conflev,'laby',laby,'numlab',RAW.outliers,'tag','rawmcd','modelT',nuT);
     
     figure('Tag','pl_spm_outliers');
     group=ones(n,1);
@@ -1147,7 +1162,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
     set(gcf,'Name',' Raw MCD: scatter plot matrix with outliers highlighted');
     
     laby='Reweighted MCD Mahalanobis distances';
-    malindexplot(REW.md,v,'conflev',conflev,'laby',laby,'numlab',REW.outliers,'tag','rewmcd');
+    malindexplot(REW.md,v,'conflev',conflev,'laby',laby,'numlab',REW.outliers,'tag','rewmcd','modelT',nuT);
     
     figure('Tag','pl_spm_outliers');
     group=ones(n,1);
@@ -1405,6 +1420,7 @@ end
             % heavy-tailed multivariate data, submitted.
 
             alpha = (n-h)/n;
+            alpha = (1-alpha); 
             integrand = @(u) 1 ./ (1 - betainv(u,v/2,nu/2));
             theintegral = integral(integrand,0,alpha);
             rawconsfac = ((nu-2) / (alpha*v) * theintegral - (nu - 2)/v)^(-1);

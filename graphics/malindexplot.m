@@ -34,6 +34,18 @@ function MCDenv=malindexplot(md,v,varargin)
 % Optional input arguments:
 %
 %
+%     modelT  : controls how the consistency factor is applied to account 
+%               for the effect of trimming. Scalar. It is empty for the
+%               classic case when uncontaminated data are assumed to come
+%               from a normal distribution (default). If on the other hand
+%               the data are heavy-tailed and can be modelled by a
+%               Student-t distribution, modelT takes a positive value
+%               representing the degrees of freedom of the t-distribution;
+%               if modelT is zero, then the degrees of freedom are
+%               estimated from the data (to be implemented).
+%               Example - 'modelT',5
+%               Data Types - double
+%
 %               h : Where to plot. Axis hadle.
 %                   The axis handle of the Figure where to send the
 %                   malindexplot. This can be used to host the malindexplot
@@ -336,7 +348,7 @@ md = md(:);
 n=length(md);
 
 % Set standard options
-options=struct('h','','x',1:n,'labx','','laby','','numlab',{{5}},'conflev',0.975,...
+options=struct('modelT',[],'h','','x',1:n,'labx','','laby','','numlab',{{5}},'conflev',0.975,...
     'title','Index plot of Mahalanobis distances','FontSize',12,'SizeAxesNum',10,...
     'xlimx','','ylimy','','lwdenv',1,'MarkerSize',6,'MarkerFaceColor','w',...
     'databrush','','tag','pl_malindex','nameY','','label','');
@@ -359,12 +371,20 @@ if ~isempty(UserOptions)
     
 end
 
-[h, x, labx, laby, titl, numlab, conflev, FontSize, SizeAxesNum, ...
+[nuT, h, x, labx, laby, titl, numlab, conflev, FontSize, SizeAxesNum, ...
     lwdenv,MarkerSize,MarkerFaceColor] = deal(...
-    options.h, options.x, options.labx, options.laby,...
+    options.modelT, options.h, options.x, options.labx, options.laby,...
     options.title, options.numlab, options.conflev,...
     options.FontSize, options.SizeAxesNum, options.lwdenv,...
     options.MarkerSize,options.MarkerFaceColor);
+
+% Consistency factor. options.modelT is empty for the multivariate
+% Normal model; it is positive number if it represents the degrees of
+% freedom of a Student-T distribution.
+if  nuT<=0
+    warning('FSDA:mcd:consistency','Estimation of the number of degrees of freedom for the t-model is not yet implemented: we use the normal model.');
+    nuT = [];
+end
 
 % conflev
 numconflev = length(conflev);
@@ -426,7 +446,8 @@ V=[rangeaxis(1);rangeaxis(2)];
 
 if isempty(class)
     if isscalar(v)
-        quant = chi2inv(conflev,v);
+        % quant = chi2inv(conflev,v); % replaced to account for Student-T case
+        quant = msdcutoff(conflev,v,nuT);
         QUANT=[quant;quant];
         
         % plot the confidence bands
