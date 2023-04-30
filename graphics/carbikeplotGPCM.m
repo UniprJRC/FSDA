@@ -114,7 +114,7 @@ function h  = carbikeplotGPCM(RelSol,varargin)
 %                       default spurios solutions are not included into the
 %                       plot.
 %                 Example - 'SpuriousSolutions',false
-%                 Data Types - single | double
+%                 Data Types - logical
 %
 %
 %  Output:
