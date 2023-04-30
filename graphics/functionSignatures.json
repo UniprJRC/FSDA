@@ -1,0 +1,194 @@
+{
+    "_schemaVersion": "1.0.0",
+
+    "_typedefs": {
+
+        "Plots_boxplotb": {
+
+            "purpose":"Structure required as input by boxplotb",
+            "type":"struct",
+            "fields":[
+                {"name":"ylim", "type":["numeric", "vector"], "purpose":"minimum and maximum on the y axis"},
+                {"name":"xlim", "type":["numeric", "vector"], "purpose":"minimum and maximum on the x axis"},
+                {"name":"labeladd", "type":["numeric", "scalar"], "purpose":"label the outliers"},
+                {"name":"InnerColor", "type":["numeric", "vector", "ncols=3"], "purpose":"color in RGB format to fill the inner contour"},
+                {"name":"OuterColor", "type":["numeric", "vector", "ncols=3"], "purpose":"color in RGB format to fill the inner contour"}
+            ]
+        },
+
+        "relSol": {
+
+            "purpose":"Structure required as input by carbikeplot",
+            "type":"struct",
+            "field":[
+                {"name":"MIXMIXbs", "type":"cell", "purpose":"details of the best solutions for MIXMIX"},
+                {"name":"MIXMIXbsari", "type":"double", "purpose":"adjusted Rand indexes associated with the best solutions for MIXMIX"},
+                {"name":"MIXCLAbs", "type":"cell", "purpose":"details of the best solutions for MIXCLA"},
+                {"name":"MIXCLAbsari", "type":"double", "purpose":"adjusted Rand indexes associated with the best solutions for MIXCLA"},
+                {"name":"CLACLAbs", "type":"cell", "purpose":"details of the best solutions for CLACLA"},
+                {"name":"CLACLAbsari", "type":"double", "purpose":"adjusted Rand indexes associated with the best solutions for CLACLA"},
+                {"name":"kk", "type":["double", "vector"], "purpose":"vector containing the values of k which have been considered"},
+                {"name":"cc", "type":["double", "vector"], "purpose":" scalar or vector containing the values of c which have been considered"}
+            ]
+        },
+
+        "relSolGPCM": {
+
+            "purpose":"Structure required as input by carbikeplotGPCM",
+            "type":"struct",
+            "field":[
+                {"name":"MIXMIXbs", "type":"cell", "purpose":"details of the best solutions for MIXMIX"},
+                {"name":"MIXMIXbsari", "type":"double", "purpose":"adjusted Rand indexes associated with the best solutions for MIXMIX"},
+                {"name":"MIXCLAbs", "type":"cell", "purpose":"details of the best solutions for MIXCLA"},
+                {"name":"MIXCLAbsari", "type":"double", "purpose":"adjusted Rand indexes associated with the best solutions for MIXCLA"},
+                {"name":"CLACLAbs", "type":"cell", "purpose":"details of the best solutions for CLACLA"},
+                {"name":"CLACLAbsari", "type":"double", "purpose":"adjusted Rand indexes associated with the best solutions for CLACLA"},
+                {"name":"kk", "type":["double", "vector"], "purpose":"vector containing the values of k which have been considered"},
+                {"name":"ccdet", "type":["double", "vector"], "purpose":"vector containing the values of cdet which have been considered"},
+                {"name":"ccshw", "type":["double", "vector"], "purpose":"vector containing the values of cshw which have been considered"},
+                {"name":"alpha", "type":["double", "scalar"], "purpose":"scalar containing the value of alpha which has been considered."}
+            ]
+        }
+    },
+   
+    "aceplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct", "purpose":"Structure containing the output coming from ace procedure"},
+            {"name":"highlight", "kind":"namevalue", "type":["double", "vector"], "purpose":"Units to highliight in the plot"},
+            {"name":"oneplot", "kind":"namevalue", "type":"logical", "purpose":"Combined unique plot"},
+            {"name":"VarNames", "kind":"namevalue", "type":[["string"], ["cell"]], "purpose":"Names of the variabiles"},
+            {"name":"ylimy", "kind":"namevalue", "type":[["double"], ["single"]], "purpose":"2D array of size 3-by-2 which specifies the lower and upper limits for the 3 plots of the second figure"}
+        ],
+
+        "description":"Produces the aceplot to visualize the results of ace"
+    },
+
+    "add2spm":
+    {
+        "inputs":
+        [
+            {"name":"H", "kind":"required", "type":[["2d"], ["3d"]], "purpose":"Handles to the lines on the graphs"},
+            {"name":"AX", "kind":"required", "type":"numeric", "purpose":"Handles to the axes of the individual plots"},
+            {"name":"BigAx", "kind":"required", "type":["numeric", "scalar"], "purpose":"Handle to big (invisible) axes framing the entire plot matrix"},
+            {"name":"labeladd", "kind":"namevalue", "type":"char", "purpose":"Add labels for a group of units"},
+            {"name":"userleg", "kind":"namevalue", "type":"char", "purpose":"User legend"},
+            {"name":"RowNamesLabels", "kind":"namevalue", "type":"cell", "purpose":"cell of length n, where n is the number of points in each scatter, containing the labels of the units"}
+        ],
+
+        "description":"Adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix"
+    },
+
+    "add2yX":
+    {
+        "inputs":
+        [
+            {"name":"H", "kind":"required", "type":[["2d"], ["3d"]], "purpose":"Handles to the lines on the graphs"},
+            {"name":"AX", "kind":"required", "type":"numeric", "purpose":"Handles to the axes of the individual plots"},
+            {"name":"BigAx", "kind":"required", "type":["numeric", "scalar"], "purpose":"Handle to big (invisible) axes framing the entire plot matrix"},
+            {"name":"bivarfit", "kind":"namevalue", "type":["char", "choices={'0', '1', '2', ''}"], "purpose":"Add a line fit"},
+            {"name":"multivarfit", "kind":"namevalue", "type":["char", "choices={'1', '2', ''}"], "purpose":"Add a multivariate fit"},
+            {"name":"labeladd", "kind":"namevalue", "type":["char", "choices={'1', ''}"], "purpose":"Add labels"},
+            {"name":"intercept", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Indicator for constant term"},
+            {"name":"userleg", "kind":"namevalue", "type":["char", "choices={'0', '1'}"], "purpose":"user legend"},
+            {"name":"RowNamesLabels", "kind":"namevalue", "type":"cell", "purpose":"labels of the units"}
+        ],
+
+        "description":"Adds objects (personalized clickable multilegends and text labels) to the yXplot"
+    },
+
+    "avasmsplot":
+    {
+        "inputs":
+        [
+            {"name":"BestSol", "kind":"required", "type":"table", "purpose":"Best solutions"},
+            {"name":"maxBestSol", "kind":"namevalue", "type":["double", "positive", "integer"], "purpose":"maximum number of admissible solutions to show in the augmented star plot"},
+            {"name":"showBars", "kind":"namevalue", "type":"logical", "purpose":"show bars of labels"},
+            {"name":"addPolygons", "kind":"namevalue", "type":"logical", "purpose":"polygons around the outside"},
+            {"name":"tag", "kind":"namevalue", "type":"char", "purpose":"Personalized plot tag"},
+            {"name":"databrush", "kind":"namevalue", "type":[["single"], ["double"], ["struct"]], "purpose":"interactive mouse brushing"}
+        ],
+
+        "description":"Produces the augmented star plot and enables interactivity"
+    },
+
+    "balloonplot":
+    {
+        "inputs":
+        [
+            {"name":"N", "kind":"required", "type":[["table"], ["2d"]], "purpose":"input contingency table (say of size I-by-J) or the original data matrix X"},
+            {"name":"ax", "kind":"namevalue", "type":"matlab.graphics.axis.Axes", "purpose":"displays the bubble chart in the target axes ax"},
+            {"name":"datamatrix", "kind":"namevalue", "type":"logical", "purpose":"Data matrix or contingency table"},
+            {"name":"Lr", "kind":"namevalue", "type":"cell", "purpose":"Vector of row labels"},
+            {"name":"Lc", "kind":"namevalue", "type":"cell", "purpose":"Vector of column labels"}
+        ],
+
+        "outputs":
+        [
+            {"name":"h", "type":"bubblechart", "purpose":"returns the BubbleChart object"},
+            {"name":"Ntable", "type":"table", "purpose":"This is tha table which has been used to build the balloonplot"}
+        ],
+
+        "description":"Creates a balloon plot of a contingency table"
+    },
+
+    "barVariableWidth":
+    {
+        "inputs":
+        [
+            {"name":"heights", "kind":"required", "type":["numeric", "vector"], "purpose":"y-coordinates"},
+            {"name":"classes", "kind":"required", "type":["numeric", "vector"], "purpose":"classes of the frequency distribution"},
+            {"name":"Color", "kind":"namevalue", "type":[["numeric", "scalar"], ["double", "vector"], ["double"], ["char", "choices={'r','g','b'}"], ["numeric", "vector", "ncols=3", ">=0", "<=1"]]},
+            {"name":"LineWidth", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Line Width of the vertices"},
+            {"name":"FaceAlpha", "kind":"namevalue", "type":[["double", "scalar", ">=0", "<=1"], ["char", "choices={'flat', 'interp'}"]], "purpose":"Face transparency"},
+            {"name":"EdgeColor", "kind":"namevalue", "type":[["char", "choices={'flat', 'interp'}"], ["numeric", "vector", "ncols=3", ">=0", "<=1"], ["char", "choices={'r','g','b'}"], ["char"]]},
+            {"name":"LineStyle", "kind":"namevalue", "type":["char", "choices={'-', '--', ':', '-.', 'none'}"]}
+        ],
+
+        "description":"Produces a bar plot with different widths and colors for each bar"
+    },
+
+    "boxplotb":
+    {
+        "inputs":
+        [
+            {"name":"Y", "kind":"required", "type":["numeric"], "purpose":"Observations"},
+            {"name":"coeff", "kind":"namevalue", "type":["double", "scalar"], "purpose":"expansion factor"},
+            {"name":"strictlyinside", "kind":"namevalue", "type":["double", "scalar"], "purpose":"additional peeling"},
+            {"name":"plots", "kind":"namevalue", "type":[["double", "scalar"], ["struct:Plots_boxplotb"]]},
+            {"name":"resolution", "kind":"namevalue", "type":["double", "scalar"], "purpose":"resolution to use"}
+        ],
+
+        "description":"Computes a bivariate boxplot"
+    },
+
+    "carbikeplot":
+    {
+        "inputs":
+        [
+            {"name":"RelSol", "kind":"required", "type":"struct:relSol", "purpose":"Relevant solutions produced by function tclustICsol"},
+            {"name":"SpuriousSolutions", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Include or nor spurious solutions"},
+            {"name":"minCarHeight", "kind":"namevalue", "type":[["single", ">=0", "<=1"], ["double", ">=0", "<=1"]], "purpose":"minimum height of the rectangles in the carbike plot"}
+        ],
+
+        "outputs":
+        [
+            {"name":"h", "type":"handle", "purpose":"graphics handle to the plot"},
+            {"name":"area", "type":"double", "purpose":"RelSol x 2 array reporting information on the relevance of the RelSol solutions"}
+        ],
+
+        "description":"produces the carbike plot to find best relevant clustering solutions"
+    },
+
+    "carbikeplotGPCM":
+    {
+        "inputs":
+        [
+            {"name":"RelSol", "kind":"required", "type":"struct:relSolGPCM", "purpose":"Relevant solutions produced by function tclustICsolGPCM"},
+            {"name":"SpuriousSolutions", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Include or nor spurious solutions"}
+        ],
+        
+        "description":"Produces the carbike plot to find best relevant clustering solutions"
+    }
+}
