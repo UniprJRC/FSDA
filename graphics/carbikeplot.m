@@ -97,7 +97,8 @@ function [h,varargout]  = carbikeplot(RelSol,varargin)
 %                 Data Types - logical
 %
 % minCarHeight       :minimum height of the rectangles in the carbike plot.
-%                   Integer. It can take values in the interval (0 1). Default value 0.1.
+%                   Positive numeric value. It can take values in the
+%                   interval (0 1). Default value 0.1.
 %                 Example - 'minCarHeight',0.3
 %                 Data Types - single | double
 %  Output:
