@@ -288,7 +288,7 @@ if nargin>2
     inferential=options.inferential;
 end
 
-if  inferential <=0 || inferential >=1
+if  ~isempty(inferential) && (inferential <=0 || inferential >=1)
     error('FSDA:GUIregress:WrongInputOpt','Inferential must be an empty value or a number in the interval (0,1).');
 end
 
