@@ -44,7 +44,7 @@ function cutoff = msdcutoff(conflev,v,nu)
 % squared distance (MSD) of $x$ from $\mu$ is $D^{2}=(x − \mu)^{t}
 % \Sigma^{-1} (x − \mu)$. When $x$ is from a $v$-dimensional multivariate
 % normal with known mean and covariance, the population MSD is distributed
-% as a chi-squared $\Chi_{v}^{2}$ random variable with $\nu$ degrees of
+% as a chi-squared $\chi_{v}^{2}$ random variable with $\nu$ degrees of
 % freedom (Mardia et al, 1979). Then, to test the deviation of an
 % observation from the multivariate normal assumption we can compare its
 % MSD with an appropriate quantile of the chi-squared distribution: the
