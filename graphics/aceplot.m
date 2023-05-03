@@ -72,11 +72,11 @@ function aceplot(out,varargin)
 %        ylimy  : 2D array of size 3-by-2 which specifies the
 %                lower and upper limits for the 3 plots of the second
 %                figure. The first row refers to the plot of transformed y
-%                vs. y, the second row refers to the plot of residuals vs.
-%                fit and the third row to the the plot of transformed y vs.
-%                fit. The default value of ylimy is [], that is automtic
-%                scale is used.
-%                   Example - 'plots', [-3 3; -2 2; -2 2]
+%                versus y, the second row refers to the plot of residuals
+%                versus fit and the third row to the the plot of
+%                transformed y versus fit. The default value of ylimy is
+%                [], that is automatic scale is used.
+%                   Example - 'ylimy', [-3 3; -2 2; -2 2]
 %                   Data Types - single | double
 %
 % Output:
