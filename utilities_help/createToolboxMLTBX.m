@@ -1,8 +1,8 @@
 function createToolboxMLTBX(prjFile, toolboxVersion)
 %Package toolbox as MLTBX file.
 %   createToolboxMLTBX(prjFile, toolboxVersion) builds the MLTBX file and saves 
-%   it in the release folder. Input prjFile is the file name of the toolbox
-%   packaging PRJ file and toolboxVersion is a string of the form Major.Minor.Bug.Build.
+%   it in the release folder. Input prjFile is the name of the toolbox
+%   packaging file and toolboxVersion is a string of the form Major.Minor.Bug.Build.
 
 %   Copyright 2023 The MathWorks, Inc.
 
