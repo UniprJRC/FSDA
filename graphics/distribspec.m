@@ -230,6 +230,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     %% Use with makedist, using userColor for each outside region.
 
     close all
+    rng('default')
     pd = makedist('HalfNormal','mu',0,'sigma',1.5);
     specs  = [1 3];
     region = 'outside';
