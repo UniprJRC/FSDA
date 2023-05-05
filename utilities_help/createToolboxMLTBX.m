@@ -11,11 +11,6 @@ else
     error(msg);
 end
 
-% Check if toolboxVersion is a string
-% if ~isstring(toolboxVersion)
-%     error("Toolbox version must be a string.");
-% end
-
 % Update the version number
 packagingData.ToolboxVersion = toolboxVersion;
 
