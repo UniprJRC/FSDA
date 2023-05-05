@@ -1,4 +1,3 @@
-# Copyright 2023 The MathWorks, Inc.
 # This is a GitHub Action workflow to build toolbox MLTBX and release it on GitHub
 
 name: Tag triggered MLTBX build
