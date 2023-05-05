@@ -9,7 +9,7 @@ function createToolboxMLTBX(prjFile, toolboxVersion)
 if isfile(prjFile)
     packagingData = matlab.addons.toolbox.ToolboxOptions(prjFile);
 else
-    msg="Unable to find file " + "'" + prjFile+ "'";
+    msg = "Unable to find file " + "'" + prjFile+ "'";
     error(msg);
 end
 
