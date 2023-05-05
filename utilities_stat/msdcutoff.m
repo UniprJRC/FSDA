@@ -51,7 +51,7 @@ function cutoff = msdcutoff(conflev,v,nu)
 % observation will be considered an outlier if the associated $D^{2}$ value
 % is larger than the critical value of the chi-squared distribution. There
 % are known limitations to the application of this cut-off, for example
-% when the sample is high dimensional and its size is not sufficinetly
+% when the sample is high dimensional and its size is not sufficiently
 % high. In this case the distribution of the sample MSD is a scaled Beta
 % distribution (Gnanadesikan and Kettenring, 1972). For continuous
 % Student-t samples, which account for heavy-tailed distributions, the

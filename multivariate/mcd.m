@@ -429,13 +429,13 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
     Yt = random('T',nu,[n,v]); 
     Yn = random('Normal',0,1,[n,v]); 
 
-    Y = Yn;
+    Y = Yt;
 
     % mcd with the T-model
-    %RAWt = mcd(Y,'modelT',nu,'plots',1);
+    RAWt = mcd(Y,'modelT',nu,'plots',1);
 
     % mcd with the Normal-model
-     RAWn = mcd(Y,'plots',1);
+    % RAWn = mcd(Y,'plots',1);
 
 %}
 
