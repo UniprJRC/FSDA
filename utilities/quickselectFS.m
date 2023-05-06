@@ -47,8 +47,9 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
 %
 % References:
 %
-% Azzini, I., Perrotta, D. and Torti, F. (2022), ﻿A practically efficient
-% and extensible fixed-pivot selection algorithm, "Submitted"
+% Azzini, I., Perrotta, D. and Torti, F. (2023), ﻿A practically efficient
+% fixed-pivot selection algorithm and its extensible MATLAB suite,
+% "arXiv, stat.ME, eprint 2302.05705"
 %
 % Riani, M., Perrotta, D. and Cerioli, A. (2015), The Forward Search for
 % Very Large Datasets, "Journal of Statistical Software"
