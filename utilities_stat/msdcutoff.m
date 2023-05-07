@@ -105,6 +105,38 @@ function cutoff = msdcutoff(conflev,v,nu)
     cutoffT = msdcutoff(conflev,v,nu);
 %}
 
+%{
+    %% cutoff values for robust squared Mahalanobis distances.
+    
+    n  = 100;
+    v  = 3;
+    nu = 5;
+    conflev = 0.975;
+
+    % sample from the T
+    Yt = random('T',nu,[n,v]); 
+    Yn = random('Normal',0,1,[n,v]); 
+
+    % mcd with the T-model
+    RAWt = mcd(Yt,'modelT',nu,'plots',0);
+
+    % mcd with the Normal-model
+    RAWn = mcd(Yn,'plots',0);
+
+    % T-cutoff
+    cutoffT = msdcutoff(conflev,v,nu);
+
+    % Normal-cutoff
+    cutoffN = msdcutoff(conflev,v);
+
+    plot(1:n,RAWt.md,'xr' , 1:n,RAWn.md,'ob'); 
+    hold on;
+    line([1 , n] , [cutoffT , cutoffT] , 'Color', 'r');
+    line([1 , n] , [cutoffN , cutoffN] , 'Color', 'b');
+    legend({'Student-t','Normal','cutoff-t','cutoff Normal'});
+
+%}
+
 if nargin < 3 || isempty(nu)
     cutoff=chi2inv(conflev,v);
 else
