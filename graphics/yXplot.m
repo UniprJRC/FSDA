@@ -1013,8 +1013,12 @@ if nargin>2
         units=options.selunit;
         tag=options.tag;
         plo=options.plo;
-        nameX=options.nameX;
-        namey=options.namey;
+        if isempty(nameX)
+            nameX=options.nameX;
+        end
+        if isempty(namey)
+            namey=options.namey;
+        end
         xlimx=options.xlimx;
         ylimy=options.ylimy;
         
