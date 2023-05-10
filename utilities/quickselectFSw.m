@@ -80,8 +80,9 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
 %   weighted median problem. Technical Report 75, New York University,
 %   Courant Institute of Mathematical Sciences.
 %
-% Azzini, I., Perrotta, D. and Torti, F. (2022), ﻿A practically efficient
-% and extensible fixed-pivot selection algorithm, "Submitted".
+%   Azzini, I., Perrotta, D. and Torti, F. (2023), ﻿A practically efficient
+%   fixed-pivot selection algorithm and its extensible MATLAB suite,
+%   "arXiv, stat.ME, eprint 2302.05705"
 %
 % Copyright 2008-2023.
 % Written by FSDA team

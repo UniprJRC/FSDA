@@ -30,6 +30,10 @@ function kE = quickselectFS_demo(A,k,kiniindex)
 %
 % References:
 %
+%   Azzini, I., Perrotta, D. and Torti, F. (2023), ﻿A practically efficient
+%   fixed-pivot selection algorithm and its extensible MATLAB suite,
+%   "arXiv, stat.ME, eprint 2302.05705"
+%
 % Copyright 2008-2023.
 % Written by FSDA team
 %

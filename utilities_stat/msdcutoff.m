@@ -51,7 +51,7 @@ function cutoff = msdcutoff(conflev,v,nu)
 % observation will be considered an outlier if the associated $D^{2}$ value
 % is larger than the critical value of the chi-squared distribution. There
 % are known limitations to the application of this cut-off, for example
-% when the sample is high dimensional and its size is not sufficinetly
+% when the sample is high dimensional and its size is not sufficiently
 % high. In this case the distribution of the sample MSD is a scaled Beta
 % distribution (Gnanadesikan and Kettenring, 1972). For continuous
 % Student-t samples, which account for heavy-tailed distributions, the
@@ -103,6 +103,38 @@ function cutoff = msdcutoff(conflev,v,nu)
     v  = 3;
     nu = 5;
     cutoffT = msdcutoff(conflev,v,nu);
+%}
+
+%{
+    %% cutoff values for robust squared Mahalanobis distances.
+    
+    n  = 100;
+    v  = 3;
+    nu = 5;
+    conflev = 0.975;
+
+    % sample from the T
+    Yt = random('T',nu,[n,v]); 
+    Yn = random('Normal',0,1,[n,v]); 
+
+    % mcd with the T-model
+    RAWt = mcd(Yt,'modelT',nu,'plots',0);
+
+    % mcd with the Normal-model
+    RAWn = mcd(Yn,'plots',0);
+
+    % T-cutoff
+    cutoffT = msdcutoff(conflev,v,nu);
+
+    % Normal-cutoff
+    cutoffN = msdcutoff(conflev,v);
+
+    plot(1:n,RAWt.md,'xr' , 1:n,RAWn.md,'ob'); 
+    hold on;
+    line([1 , n] , [cutoffT , cutoffT] , 'Color', 'r');
+    line([1 , n] , [cutoffN , cutoffN] , 'Color', 'b');
+    legend({'Student-t','Normal','cutoff-t','cutoff Normal'});
+
 %}
 
 if nargin < 3 || isempty(nu)
