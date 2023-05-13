@@ -38,15 +38,15 @@ function out=regressH(y,X,Z,varargin)
 %
 %  Optional input arguments:
 %
-%   type:       Parametric function to be used in the skedastic equation.
-%               String.
-%               If type is 'arc' (default) than the skedastic function is
+%   typeH:      Parametric function to be used in the skedastic equation.
+%               Character or string.
+%               If typeH is 'arc' (default) than the skedastic function is
 %               modelled as follows
 %               \[
 %               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
 %                           \cdots + \gamma_{r} Z(i,r)))
 %               \]
-%               on the other hand, if type is 'har' then traditional
+%               on the other hand, if typeH is 'har' then traditional
 %               formulation due to Harvey is used as follows
 %               \[
 %               \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +
@@ -57,7 +57,7 @@ function out=regressH(y,X,Z,varargin)
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%               Example - 'type','har' 
+%               Example - 'typeH','har' 
 %               Data Types - string
 %
 % intercept :   Indicator for constant term. true (default) | false. 
@@ -127,6 +127,8 @@ function out=regressH(y,X,Z,varargin)
 %                       scedastic coeff; 
 %                       3rd col = t tests of the estimates of scedastic
 %                       coeff.
+%       out.typeH = character containg 'art' or 'har' depending on the type
+%                   of heteroskedasticity which has been used. 
 %              out.WA = scalar. Wald test
 %              out.LR = scalar. Likelihood ratio test
 %              out.LM = scalar. Lagrange multiplier test
@@ -187,7 +189,7 @@ function out=regressH(y,X,Z,varargin)
     n=size(Y,1);
     X=[Q Q.^2 Pfuel];
     y=log(Y(:,3));
-    out=regressH(y,X,Loadfactor,'type','har');
+    out=regressH(y,X,Loadfactor,'typeH','har');
 %}
 
 %{
@@ -227,7 +229,7 @@ function out=regressH(y,X,Z,varargin)
     disp('Multiplicative Heteroskedasticity Model')
     % The variables which enter the skedastic function are Income and
     % Income square (that is columns 3 and 4 of matrix X)
-    out=regressH(y,X,[3 4],'msgiter',0,'type','har');
+    out=regressH(y,X,[3 4],'msgiter',0,'typeH','har');
 
     % Plot OLS residuals againt Income (This is nothing but Figure 11.1 of
     % Green (5th edition) p. 216)
@@ -266,21 +268,21 @@ function out=regressH(y,X,Z,varargin)
     y=y(sel);
 
     % Compare output from Harvey's model with the one of ART
-    outHAR=regressH(y,X,[3 4],'msgiter',1,'type','har');
-    outART=regressH(y,X,[3 4],'msgiter',1,'type','art');
+    outHAR=regressH(y,X,[3 4],'msgiter',1,'typeH','har');
+    outART=regressH(y,X,[3 4],'msgiter',1,'typeH','art');
 
 %}
 
 %% Beginning of code
 
 if nargin>3
-    options=struct('type','art','intercept',true,'maxiter',100,...
+    options=struct('typeH','art','intercept',true,'maxiter',100,...
         'initialbeta','','initialgamma','','tol',1e-7); %#ok<NASGU>
 
 % check if input option type exists
     chklist=varargin(1:2:length(varargin));
     
-    chktype = find(strcmpi('type',chklist)); 
+    chktype = find(strcmpi('typeH',chklist)); 
     if ~isempty(chktype) && strcmp(varargin{2*chktype},'har') ==1
         out=regressHhar(y,X,Z,varargin{:});
     else

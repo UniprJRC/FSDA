@@ -71,22 +71,22 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
-% modeltype:    Parametric function to be used in the skedastic equation.
+%    typeH:    Parametric function to be used in the skedastic equation.
 %               String.
-%               If modeltype is 'arc' (default) than the skedastic function is
+%               If typeH is 'art' (default) than the skedastic function is
 %               modelled as follows
 %               \[
 %               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
 %                           \cdots + \gamma_{r} Z(i,r)))
 %               \]
-%               on the other hand, if modeltype is 'har' then traditional
+%               on the other hand, if typeH is 'har' then traditional
 %               formulation due to Harvey is used as follows
 %               \[
 %               \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +
 %                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
 %                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
 %               \]
-%               Example - 'modeltype','har'
+%               Example - 'typeH','har'
 %               Data Types - string
 %
 %  nocheck:   Check input arguments. Boolean.
@@ -244,7 +244,7 @@ end
 bsbstepdef='';
 
 options=struct('intercept',true,'init',initdef,'plots',0,'nocheck',false,'msg',1,...
-    'constr','','modeltype','art','gridsearch',0,'bsbsteps',bsbstepdef);
+    'constr','','typeH','art','gridsearch',0,'bsbsteps',bsbstepdef);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -311,9 +311,9 @@ if gridsearch==1 && size(Z,2)>1
     gridsearch=0;
 end
 
-modeltype=options.modeltype;
+typeH=options.typeH;
 
-if strcmp(modeltype,'art') ==1
+if strcmp(typeH,'art') ==1
     art=1;
 else
     art=0;

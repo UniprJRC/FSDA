@@ -1305,9 +1305,9 @@ if ndecl>0
                 % Call procedure FSRHbsb
                 Z=INP.Z;
                 gridsearch=options.gridsearch;
-                modeltype=options.modeltype;
+                typeH=options.typeH;
                 [Un,BB] = FSRHbsb(y,X,Z,bsb,'intercept',intercept,'init',n-ndecl,...
-                    'gridsearch',gridsearch,'modeltype',modeltype,'nocheck',true,'msg',0);
+                    'gridsearch',gridsearch,'typeH',typeH,'nocheck',true,'msg',0);
             elseif strcmp(model,'B')
                 % Call procedure FSRBbsb
                 beta0=INP.beta0;

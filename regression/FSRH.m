@@ -57,23 +57,23 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
-% modeltype:    Parametric function to be used in the skedastic equation.
-%               String.
-%               If modeltype is 'arc' (default) than the skedastic function is
+%  typeH:    Parametric function to be used in the skedastic equation.
+%               Character or String.
+%               If typeH is 'art' (default) than the skedastic function is
 %               modelled as follows
 %               \[
 %               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
 %                           \cdots + \gamma_{r} Z(i,r)))
 %               \]
-%               on the other hand, if modeltype is 'har' then traditional
+%               on the other hand, if typeH is 'har' then traditional
 %               formulation due to Harvey is used as follows
 %               \[
 %               \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +
 %                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
 %                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
 %               \]
-%               Example - 'modeltype','har' 
-%               Data Types - string
+%               Example - 'typeH','har' 
+%               Data Types - character or string
 %
 %           h   : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar.
@@ -434,7 +434,7 @@ options=struct('h',hdef,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
     'msg',1,'nocheck',false,'intercept',true,'bonflev','',...
-    'bsbmfullrank',1,'gridsearch',0,'modeltype','art','tag',tagdef);
+    'bsbmfullrank',1,'gridsearch',0,'typeH','art','tag',tagdef);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -462,7 +462,7 @@ nsamp=options.nsamp;
 msg=options.msg;
 bsbmfullrank=options.bsbmfullrank;
 gridsearch=options.gridsearch;
-modeltype=options.modeltype;
+typeH=options.typeH;
 
 %% Start of the forward search
 
@@ -484,7 +484,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',true,'msg',msg,'modeltype',modeltype,'gridsearch',gridsearch);
+    [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',true,'msg',msg,'typeH',typeH,'gridsearch',gridsearch);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2
@@ -523,7 +523,7 @@ else % initial subset is not supplied by the user
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
         [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',true,...
-            'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'modeltype',modeltype,'gridsearch',gridsearch);
+            'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'typeH',typeH,'gridsearch',gridsearch);
         
         % If FSRmdr run without problems, mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
@@ -603,7 +603,7 @@ INP.S2=S2(:,1:2);
 
 out.mdr=mdr;
 out.Un=Un;
-  out.class  =  'FSRH';
+out.class  =  'FSRH';
   
 % out.Hetero=Hetero;
 % out.S2=S2;
