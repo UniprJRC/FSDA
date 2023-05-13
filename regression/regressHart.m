@@ -437,7 +437,7 @@ Beta(:,2)=sqrt(newsigma2*diag(inv(Xw'*Xw)));
 % Compute t-stat of beta coefficients
 Beta(:,3)=Beta(:,1)./Beta(:,2);
 out.Beta=Beta;
-out.BetaOLD=newbeta;
+% out.BetaOLD=newbeta;
 out.sigma2=newsigma2;
 
 % Store parameters of scedastic function with associated standard errors

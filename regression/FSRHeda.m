@@ -100,22 +100,22 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       Example - 'gridsearch',1
 %                       Data Types - double
 %
-% modeltype:    Parametric function to be used in the skedastic equation.
+%     typeH:    Parametric function to be used in the skedastic equation.
 %                       String.
-%                       If modeltype is 'arc' (default) than the skedastic function is
+%                       If typeH is 'art' (default) than the skedastic function is
 %                       modelled as follows
 %                       \[
 %                       \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
 %                           \cdots + \gamma_{r} Z(i,r)))
 %                       \]
-%                        on the other hand, if modeltype is 'har' then traditional
+%                        on the other hand, if typeH is 'har' then traditional
 %                       formulation due to Harvey is used as follows
 %                       \[
 %                       \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +
 %                           \gamma_{r} Z(i,r)) =\sigma^2 \exp(\gamma_1
 %                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
 %                       \]
-%                       Example - 'modeltype','har'
+%                       Example - 'typeH','har'
 %                       Data Types - string
 %
 %  constr :         units which are forced to join the search in the last r steps. Vector.
@@ -253,6 +253,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               input option intercept was missing or equal to true).
 %     out.Z=   Predictor variables in the scedastic equation.
 %   out.class =  'FSRHeda'.
+%   out.typeH = 'art' or 'har';
 %
 %
 % See also FSRH.m, FSRHmdr.m, FSReda.m
@@ -430,7 +431,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     % init = point to start monitoring diagnostics along the FS
     init=450;
     [outLXS]=LXS(y,X,'nsamp',10000);
-    outEDA=FSRHeda(y,X,log(X),outLXS.bs,'conflev',[0.95 0.99],'init',init,'modeltype','har');
+    outEDA=FSRHeda(y,X,log(X),outLXS.bs,'conflev',[0.95 0.99],'init',init,'typeH','har');
     p=size(X,2)+1;
     % Set font size, line width and line style
     figure;
@@ -512,7 +513,7 @@ end
 
 conflevdef = [0.95 0.99];
 options = struct('intercept',true,'init',init,'tstat','scal',...
-    'nocheck',false,'conflev',conflevdef,'gridsearch',0,'modeltype','art', 'constr', '');
+    'nocheck',false,'conflev',conflevdef,'gridsearch',0,'typeH','art', 'constr', '');
 
 UserOptions = varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -703,9 +704,9 @@ if gridsearch == 1 && size(Z,2) > 1
     gridsearch = 0;
 end
 
-modeltype = options.modeltype;
+typeH = options.typeH;
 
-if strcmp(modeltype,'art') == 1
+if strcmp(typeH,'art') == 1
     art = 1;
 else
     art = 0;
@@ -1038,6 +1039,7 @@ out.Z                =Z;
 out.Hetero       = Hetero;
 out.WEI           = WEI;
 out.class          ='FSRHeda';
+out.typeH=typeH;
 end
 
 %FScategory:REG-Hetero
