@@ -220,6 +220,7 @@ function outFORE=forecastH(y,X,Z,varargin)
     sel=y>0;
     X=X(sel,:);
     y=y(sel);
+    close all
     disp('Multiplicative Heteroskedasticity Model')
     % Plot of forecasts against column 4
     out=forecastH(y,X,[3 4],'typeH','har','selcolX',4);     
@@ -440,7 +441,7 @@ else
     plot(XWord,upconfordW,'k')
 end
 xlabel(['Variable ' num2str(selcolX)])
-
+hold('off')
 
 % Store the fitted values and confidence bands
 
