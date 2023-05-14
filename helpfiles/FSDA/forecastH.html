@@ -49,6 +49,7 @@ y=data(:,5); % Monthly expenditure
 sel=y&gt;0;
 X=X(sel,:);
 y=y(sel);
+close all
 disp('Multiplicative Heteroskedasticity Model')
 % Plot of forecasts against column 4
 out=forecastH(y,X,[3 4],'typeH','har','selcolX',4);</pre></div></div><pre class="codeoutput">Multiplicative Heteroskedasticity Model
