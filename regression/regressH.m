@@ -282,11 +282,15 @@ if nargin>3
 % check if input option type exists
     chklist=varargin(1:2:length(varargin));
     
-    chktype = find(strcmpi('typeH',chklist)); 
-    if ~isempty(chktype) && strcmp(varargin{2*chktype},'har') ==1
-        out=regressHhar(y,X,Z,varargin{:});
+    chktypeH = find(strcmpi('typeH',chklist)); 
+    % remove from varargin1 option typeH if it exists
+    varargin1=varargin;
+    varargin1([chktypeH*2-1 chktypeH*2])=[];
+
+    if ~isempty(chktypeH) && strcmp(varargin{2*chktypeH},'har') ==1
+        out=regressHhar(y,X,Z,varargin1{:});
     else
-        out=regressHart(y,X,Z,varargin{:});
+        out=regressHart(y,X,Z,varargin1{:});
     end
 else
      out=regressHart(y,X,Z);
