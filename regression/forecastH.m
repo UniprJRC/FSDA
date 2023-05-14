@@ -223,7 +223,9 @@ function outFORE=forecastH(y,X,Z,varargin)
     close all
     disp('Multiplicative Heteroskedasticity Model')
     % Plot of forecasts against column 4
+    warning('off')
     out=forecastH(y,X,[3 4],'typeH','har','selcolX',4);     
+    warning('on')
 %}
 
 %% Beginning of code

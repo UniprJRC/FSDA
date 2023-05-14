@@ -52,44 +52,9 @@ y=y(sel);
 close all
 disp('Multiplicative Heteroskedasticity Model')
 % Plot of forecasts against column 4
-out=forecastH(y,X,[3 4],'typeH','har','selcolX',4);</pre></div></div><pre class="codeoutput">Multiplicative Heteroskedasticity Model
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Rank deficient, rank = 3, tol =  3.099319e-12. 
-Warning: Matrix is singular to working precision. 
+warning('off')
+out=forecastH(y,X,[3 4],'typeH','har','selcolX',4);     
+warning('on')</pre></div></div><pre class="codeoutput">Multiplicative Heteroskedasticity Model
 </pre><a href='http://rosa.unipr.it/fsda/forecastH.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\forecastH_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
