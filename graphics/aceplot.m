@@ -31,6 +31,17 @@ function aceplot(out,varargin)
 %
 % Optional input arguments:
 %
+%
+%    DataVars  :    Variables for which $g(X_j)$ against $X_j$ has to be
+%                   shown. Vector of positive integers or []. Columns of
+%                   matrix X for which the plot of transformed value against
+%                   original values needs to be
+%                   computed. The default is empty, that is the plots
+%                   are shown for all the columns of
+%                   matrix X.
+%                    Example - 'DataVars',[2 4]
+%                    Data Types - double
+%
 %    highlight : units to highlight in the plot. Vector. Vector containing
 %               the numbers associated to the units to highlight in the plots.
 %               The default is to highlight the units inside out.outliers.
@@ -50,11 +61,11 @@ function aceplot(out,varargin)
 %                 Example - 'oneplot',true
 %                 Data Types - logical
 %
-%       notitle : no title in the plots. Boolean. 
+%       notitle : no title in the plots. Boolean.
 %                 If notitle is true the title in each panel is removed.
 %                 Note that the xlabel and ylabel in the various panels
 %                 will still be present. The default is nottitle equal to
-%                 false. 
+%                 false.
 %                 Example - 'notitle',true
 %                 Data Types - logical
 %
@@ -161,12 +172,14 @@ ylimy=[];
 oneplot=false;
 VarNames='';
 notitle=false;
+DataVars=[];
 if nargin >1
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
 
     options=struct('highlight',highlight,'ylimy',ylimy, ...
-        'oneplot',oneplot,'VarNames',VarNames,'notitle',notitle);
+        'oneplot',oneplot,'VarNames',VarNames, ...
+        'DataVars',DataVars,'notitle',notitle);
 
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -188,6 +201,7 @@ if nargin >1
     oneplot=options.oneplot;
     VarNames=options.VarNames;
     notitle=options.notitle;
+    DataVars=options.DataVars;
 end
 % Tranform VarNames in string array if the user has supplied a cell array
 % of characters
@@ -216,46 +230,54 @@ ty=out.ty;
 p=size(tX,2);
 
 addout=~isempty(highlight);
+
+if isempty(DataVars)
+    selXvars=1:p;
+else
+    selXvars=DataVars;
+end
+pused=length(selXvars);
+
 % Organize the locations of the plots of tXj vs Xj
 if oneplot==false
-    if p<=2
+    if pused<=2
         nr=2; nc=1;
-    elseif p<=4
+    elseif pused<=4
         nr=2; nc=2;
-    elseif p<=6
+    elseif pused<=6
         nr=3; nc=2;
-    elseif p<=8
+    elseif pused<=8
         nr=4; nc=2;
-    elseif p<=9
+    elseif pused<=9
         nr=3; nc=3;
-    elseif p<=12
+    elseif pused<=12
         nr=4; nc=3;
-    elseif p<=16
+    elseif pused<=16
         nr=4; nc=4;
-    elseif p<=20
+    elseif pused<=20
         nr=5; nc=4;
-    elseif p<=24
+    elseif pused<=24
         nr=6; nc=4;
-    elseif p<=30
+    elseif pused<=30
         nr=6; nc=5;
     else
         error('FSDA:aceplot:TODO','So far not implemented for p>30')
     end
 else % oneplot true
-    if p==1
+    if pused==1
         nr=2; nc=2;
         numbers=[4 4];
-    elseif p==2
+    elseif pused==2
         nr=4; nc=4;
         numbers=[11 12; 15 16];
-    elseif p==3
+    elseif pused==3
         nr=6; nc=6;
         % numbers=[22.5 24; 28.5 30; 34.5 36];
         numbers=[22 24; 28 30; 34 36];
-    elseif p==4
+    elseif pused==4
         nr=8; nc=8;
         numbers=[37.5 40; 45.5 48; 53.5 56; 61.5 64];
-    elseif p==5
+    elseif pused==5
         nr=10; nc=10;
         numbers=[56 60; 66 70; 76 80; 86 90; 96 100];
     else
@@ -298,7 +320,7 @@ subplot(2,2,2)
 plot(yhat,res,'o')
 refline(0,0)
 if notitle==false
-title('Plot of residuals vs. fit')
+    title('Plot of residuals vs. fit')
 end
 
 ylabel('Residuals')
@@ -343,12 +365,15 @@ else
     figure
 end
 
-for j=1:p
+
+ij=1;
+for j=selXvars
     if oneplot==true
-        jj=numbers(j,1):numbers(j,2);
+        jj=numbers(ij,1):numbers(ij,2);
     else
-        jj=j;
+        jj=ij;
     end
+    ij=ij+1;
     subplot(nr,nc,jj)
     plot(X(:,j),tX(:,j),'o')
     %if j<p
@@ -367,7 +392,7 @@ for j=1:p
             xlabel(['X' jstr])
         else
             ylabel(""+ VarNames(j))
-                ylabel({'Transformed' char(VarNames(j))})
+            ylabel({'Transformed' char(VarNames(j))})
 
             xlabel(VarNames(j))
         end
@@ -380,7 +405,7 @@ for j=1:p
             text(0.95,0.15,VarNames(j),'Units','normalized')
         end
 
-        if j==p
+        if j==selXvars(end)
             xlabel('X')
         end
     end
