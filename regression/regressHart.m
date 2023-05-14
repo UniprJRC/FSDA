@@ -121,6 +121,8 @@ function [out]=regressHart(y,X,Z,varargin)
 %                       coeff. 
 %          out.sigma2 = scalar. Estimate of $\sigma^2$ (sum of squares of
 %                       residuals divided by n in the transformed scale)
+%          out.typeH  = 'art'. This output is necessary if function
+%                       forecastH is called.
 %              out.WA = scalar. Wald test
 %              out.LR = scalar. Likelihood ratio test
 %              out.LM = scalar. Lagrange multiplier test
@@ -242,7 +244,7 @@ toldef=1e-08;
 %toldef=1e-13;
 test=0;
 
-options=struct('intercept',true,'maxiter',maxiterdef,'type','art',...
+options=struct('intercept',true,'maxiter',maxiterdef,...
     'initialbeta','','initialgamma','','tol',toldef,'nocheck',false,'msgiter',0,'test',test);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
@@ -439,6 +441,8 @@ Beta(:,3)=Beta(:,1)./Beta(:,2);
 out.Beta=Beta;
 % out.BetaOLD=newbeta;
 out.sigma2=newsigma2;
+% store type of H
+out.typeH='art';
 
 % Store parameters of scedastic function with associated standard errors
 Gamma=zeros(length(newgamma),3);

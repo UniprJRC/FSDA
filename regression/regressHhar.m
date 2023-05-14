@@ -107,7 +107,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               values of maximized log likelihood are given. The default
 %               is false, that is no test is computed.
 %               Example - 'test',false
-%               Data Types - double
+%               Data Types - boolean
 %
 %  Output:
 %
@@ -130,6 +130,8 @@ function [out]=regressHhar(y,X,Z,varargin)
 %                       \[ 
 %                       \hat \sigma^2= \exp(\gamma_1) 
 %                       \]
+%          out.typeH  = 'har'. This output is necessary if function
+%                       forecastH is called.
 %              out.WA = scalar. Wald test. This field is present only if
 %                       input option test is true.
 %              out.LR = scalar. Likelihood ratio test. This field is
@@ -221,7 +223,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               (namely gamma(2)) is the estimate of $\alpha$
 %
 %
-% See also regressHart, regressH
+% See also regressHart, regressH, forecastH
 %
 % References:
 %
@@ -317,7 +319,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % Estimate a multiplicative heteroscedastic model and print the
     % estimates of regression and scedastic parameters together with LM, LR
     % and Wald test
-    out=regressHhar(y,X,Loadfactor,'msgiter',1,'test',1);
+    out=regressHhar(y,X,Loadfactor,'msgiter',1,'test',true);
 %}
 
 %{
@@ -547,8 +549,10 @@ Gamma(:,3)=Gamma(:,1)./Gamma(:,2);
 out.Gamma=Gamma;
 out.alpha=out.Gamma(end,1);
 out.sigma2=exp(out.Gamma(1,1));
+% store type of H
+out.typeH='har';
 
-if test==1
+if test==true
     % Wald test
     % This test is computed extracting from the full parameter vector \gamma
     % and its estimated asymptotic covariance matrix, the subvector \hat alpha
@@ -623,7 +627,7 @@ if msgiter ==1
         disp('Scedastic parameters gamma')
         disp('Coeff.   SE ')
         disp(Gamma)
-        if test==1
+        if test==true
             disp('Tests')
             disp(['Likelihood ratio test    (LR)=' num2str(LR)])
             disp(['Lagrange multiplier test (LM)=' num2str(LM)])

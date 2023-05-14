@@ -180,7 +180,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %    out.S2=    (n-init+1) x 4 matrix containing the monitoring of S2 or R2
 %               in each step of the forward search:
 %               1st col = fwd search index (from init to n);
-%               2nd col = monitoring of S2;
+%               2nd col = monitoring of unbiased S2;
 %               3rd col = monitoring of R2;
 %               4th col = monitoring of rescaled S2. In this case the
 %               estimate of $\sigma^2$ at step m is divided by the
