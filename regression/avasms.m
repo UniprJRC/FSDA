@@ -602,14 +602,15 @@ else
         set(gcf,'Tag','pl_augstar')
 
         % Create the heatmap of the correlation matrix of the best solutions
-        % which have been found.
-        hold off
-        figure
-        xval="Sol"+(1:maxSol)';
-        heatmap(xval,xval,corMatrix(1:maxSol,1:maxSol),'MissingDataColor','w')
-        title('Heatmap of the correlation matrix among the best solutions')
-        set(gcf,'Tag','pl_heatmap')
-
+        % which have been found (just if maxSol>1)
+        if maxSol>1
+            hold off
+            figure
+            xval="Sol"+(1:maxSol)';
+            heatmap(xval,xval,corMatrix(1:maxSol,1:maxSol),'MissingDataColor','w')
+            title('Heatmap of the correlation matrix among the best solutions')
+            set(gcf,'Tag','pl_heatmap')
+        end
     end
 
 end
