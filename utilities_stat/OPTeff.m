@@ -5,7 +5,7 @@ function ceff = OPTeff(eff,v)
 %
 %  Required input arguments:
 %
-%    eff:       required efficienty. Scalar.
+%    eff:       required efficiency. Scalar.
 %               Scalar which contains the required efficiency (of location
 %               or scale estimator).
 %               Generally eff=0.85, 0.9 or 0.95

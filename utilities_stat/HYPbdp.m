@@ -113,7 +113,7 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 %}
 
 %{
-    % Efficienty monitoring.
+    % Efficiency monitoring.
     % Analysis of efficiency and of paramters A, B abd k as function of bdp
     % for a given value of sup CVC=4
     seqi=0.1:0.1:0.5;
