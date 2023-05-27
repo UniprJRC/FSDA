@@ -11,7 +11,7 @@ if verLessThanFS([9 10])
 else
     s=settings;
     try
-        PersonalvalueDOC=s.matlab.help.DocCenterLocation21a.PersonalValue;
+        PersonalvalueDOC=s.matlab.help.DocLocation.PersonalValue;
     catch
         PersonalvalueDOC='WEB';
     end
