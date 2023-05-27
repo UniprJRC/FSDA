@@ -66,13 +66,13 @@ function [bdp,eff,approxsheff] = TBc(c,v,shapeeff)
 %{
     %Tbc with 2 output arguments.
     [bdp,eff]=TBc(2,1)
-    disp('Break down point and efficienty')
+    disp('Break down point and efficiency')
     disp(bdp)
     disp(eff)
 %}
 
 %{
-    % Find also approximate value of scale efficienty (for R comparability).
+    % Find also approximate value of scale efficiency (for R comparability).
     [bdp,eff,approxeff]=TBc(2,2,1)
 %}
 

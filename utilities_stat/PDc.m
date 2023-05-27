@@ -54,7 +54,7 @@ function [bdp,eff] = PDc(alpha)
     %PDc with 2 output arguments.
     alpha=1;
     [bdp,eff]=PDc(alpha)
-    disp('Break down point and efficienty')
+    disp('Break down point and efficiency')
     disp(['alpha=' num2str(alpha)])
     disp(['bdp=' num2str(bdp)])
     disp(['eff=' num2str(eff)])

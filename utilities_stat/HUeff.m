@@ -8,7 +8,7 @@ function ceff = HUeff(eff,v,shapeeff)
 %
 %  Required input arguments:
 %
-%    eff:       required efficienty. Scalar.
+%    eff:       required efficiency. Scalar.
 %               Scalar which contains the required efficiency (of location
 %               or scale estimator).
 %               Data Types - single|double

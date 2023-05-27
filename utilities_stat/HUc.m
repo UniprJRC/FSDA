@@ -20,7 +20,7 @@ function [bdp,eff] = HUc(c,v)
 %
 %     bdp      :  breakdown point. Breakdown point associated to the supplied
 %                 value(s) of c. bdp has the same dimension of c.
-%     eff      :  asymptocic efficienty. Efficiency associated to the supplied
+%     eff      :  asymptocic efficiency. Efficiency associated to the supplied
 %                 value(s) of c. eff has the same dimension of c.
 %
 %
@@ -53,7 +53,7 @@ function [bdp,eff] = HUc(c,v)
 %{
     %HUc with 2 output arguments.
     [bdp,eff]=HUc(2,1)
-    disp('Break down point and efficienty')
+    disp('Break down point and efficiency')
     disp(bdp)
     disp(eff)
 %}
