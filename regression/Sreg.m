@@ -115,7 +115,8 @@ function [out , varargout] = Sreg(y,X,varargin)
 %               'optimal';
 %               'hyperbolic';
 %               'hampel';
-%               'mdpd'.
+%               'mdpd';
+%               'AS'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
@@ -126,6 +127,8 @@ function [out , varargout] = Sreg(y,X,varargin)
 %               See HArho and HApsi.
 %               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
+%               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
+%               See ASrho.m and ASpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - character
@@ -515,7 +518,19 @@ elseif strcmp(rhofunc,'mdpd')
     psifunc.kc1=kc;
     psifunc.class='PD';
     rhofuncparam=[];
+
+elseif strcmp(rhofunc,'AS')
+      
+    c=ASbdp(bdp,1);
+    % kc1 = E(rho) = sup(rho)*bdp
+    kc=2*c*bdp;
     
+    psifunc.c1=c;
+    psifunc.kc1=kc;
+    psifunc.class='AS';
+    
+    rhofuncparam=[];
+
 else
     error('FSDA:Sreg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'' ,''mpdp''')
 end
@@ -885,6 +900,11 @@ while ( (betadiff > reftol) && (iter < refsteps) )
             meanrho=mean(PDrho(res/scale,c));
             scale = scale * sqrt(meanrho / kc );
             weights = PDwei(res/scale,c);
+
+        elseif strcmp(psifunc.class,'AS')
+            meanrho=mean(ASrho(res/scale,c));
+            scale = scale * sqrt(meanrho / kc );
+            weights = ASwei(res/scale,c);
             
         else
             error('FSDA:Sreg:WrongRhoFunc','Wrong rho function supplied')
