@@ -61,7 +61,8 @@ function rhoAS = ASrho(u,c)
     %% Plot of rho function.
     close all
     x=-7:0.01:7;
-    rhoAS=ASrho(x,2);
+    c=2;
+    rhoAS=ASrho(x,c);
     plot(x,rhoAS,'LineWidth',2)
     xlabel('$u$','Interpreter','Latex')
     ylabel('$\rho (u,2)$','Interpreter','Latex')
@@ -69,7 +70,6 @@ function rhoAS = ASrho(u,c)
     text(+c*pi+0.5,2*c-0.1,'2*c')
     title('$\rho (u,c)$','Interpreter','Latex')
     hold('on')
-    c=2;
     stem(c*pi,2*c,'LineStyle',':','LineWidth',1)
     stem(-c*pi,2*c,'LineStyle',':','LineWidth',1)
     text(c*pi-0.8,0.1,'c \pi')
