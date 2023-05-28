@@ -82,6 +82,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               'hyperbolic';
 %               'hampel';
 %               'mdpd'.
+%               'AS'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
@@ -92,6 +93,8 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               See HArho and HApsi.
 %               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
+%               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
+%               See ASrho.m and ASpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - char
@@ -342,6 +345,37 @@ function [out , varargout] = MMreg(y,X,varargin)
     ycont(1:5)=ycont(1:5)+6;
     % mdpd is used both in the S and in MM step.
     [out]=MMreg(ycont,X,'Srhofunc','mdpd','rhofunc','mdpd','plots',1);
+%}
+
+
+%{
+    %% Comparison of TB, PD and Andrew's sine estimator.
+    n=200;
+    p=3;
+    rng('default')
+    rng(100);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    h1=subplot(3,1,1);
+    % TB  is used both in the S and in MM step.
+    [outTB]=MMreg(ycont,X,'plots',0);
+    resindexplot(outTB,'h',h1)
+    title('Tukey''s biweight link')
+    % mdpd is used both in the S and in MM step.
+    [outmdpd]=MMreg(ycont,X,'Srhofunc','mdpd','rhofunc','mdpd','plots',0);
+    h2=subplot(3,1,2);
+    resindexplot(outmdpd,'h',h2)
+    title('Power divergence link')
+    
+    % AS is used both in the S and in MM step.
+    [outAS]=MMreg(ycont,X,'Srhofunc','AS','rhofunc','AS','plots',0);
+    h3=subplot(3,1,3);
+    resindexplot(outAS,'h',h3)
+    title('Andrew''s sine link')
 %}
 
 %% Beginning of code

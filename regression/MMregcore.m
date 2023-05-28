@@ -72,6 +72,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               'hyperbolic';
 %               'hampel';
 %               'mdpd'.
+%               'AS'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
@@ -82,6 +83,8 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               See HArho and HApsi.
 %               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
+%               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
+%               See ASrho.m and ASpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - char
@@ -274,14 +277,14 @@ rhofuncdef='bisquare';
 Srhofuncdef=rhofuncdef;
 
 if coder.target('MATLAB')
-    
+
     % store default values in the structure options
     options=struct('refsteps',refstepsdef,'reftol',reftoldef,...
         'eff',effdef,'effshape',effshapedef,'conflev',0.975,...
         'rhofunc',rhofuncdef,'rhofuncparam','',...
         'Srhofunc',Srhofuncdef,'Srhofuncparam','',...
         'plots',0,'nocheck',false,'yxsave',0,'intercept',true);
-    
+
     % check user options and update structure options
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -314,7 +317,7 @@ rhofunc = options.rhofunc;  % String which specifies the function to use to weig
 psifunc=struct;
 
 if strcmp(rhofunc,'bisquare')
-    
+
     % Compute tuning constant associated to the requested nominal efficiency
     % c = consistency factor for a given value of efficiency
     if effshape==1
@@ -323,26 +326,26 @@ if strcmp(rhofunc,'bisquare')
         c=TBeff(eff,1);
     end
     %TODO:MMregcore:shapeff
-    
+
     psifunc.c=c;
     psifunc.class='TB';
-    
+
     rhofuncparam=[];
-    
+
 elseif strcmp(rhofunc,'optimal')
-    
-    
+
+
     % Compute tuning constant associated to the requested nominal efficiency
     % c2 = consistency factor for a given value of efficiency
-    c=OPTeff(eff,1); 
-    
+    c=OPTeff(eff,1);
+
     psifunc.c=c;
     psifunc.class='OPT';
-    
+
     rhofuncparam=[];
-    
+
 elseif strcmp(rhofunc,'hyperbolic')
-    
+
     if isempty(options.rhofuncparam)
         kdef=4.5;
     else
@@ -350,8 +353,8 @@ elseif strcmp(rhofunc,'hyperbolic')
         kdef=kdef(1); % Instruction necessary for Ccoder
     end
     rhofuncparam=kdef;
-    
-        % Use (if possible) precalculated values of c,A,b,d and kc
+
+    % Use (if possible) precalculated values of c,A,b,d and kc
     EFF=0.5:0.01:0.99;
     KDEF=[4 4.5 5];
     [diffeff,inddiffeff]=min(abs(eff-EFF));
@@ -360,58 +363,58 @@ elseif strcmp(rhofunc,'hyperbolic')
         % Load precalculated values of tuning constants
         Mat=coder.load('Hyp_BdpEff.mat','MatEFF');
         row=Mat.MatEFF(inddiffeff,2:end,inddiffk);
-        c2=row(1); A2=row(3); B2=row(4); d2=row(5); 
-        
-%     if kdef == 4 && eff==0.85
-%         c2 =3.212800979614258;
-%         A2 =0.570183575755717;
-%         B2 =0.696172437281084;
-%         d2 =1.205900263786317;
-%     elseif kdef == 4.5 && eff==0.85
-%         c2 =3.032387733459473;
-%         A2 =0.615717108822885;
-%         B2 = 0.723435958485131;
-%         d2 =1.321987605094910;
-%     elseif kdef == 5 && eff==0.85
-%         c2 =2.911890029907227;
-%         A2 =0.650228046997054;
-%         B2 =0.743433840145084;
-%         d2 =1.419320821762087;
-%         
-%     elseif kdef == 4 && eff==0.90
-%         c2 =3.544333040714264;
-%         A2 =0.655651252372878;
-%         B2 =0.768170638356071;
-%         d2 =1.330560147762300;
-%     elseif kdef == 4.5 && eff==0.90
-%         c2 =3.313891947269440;
-%         A2 =0.697965573395585;
-%         B2 =0.792571144662011;
-%         d2 =1.452220833301545;
-%     elseif kdef == 5 && eff==0.90
-%         c2 =3.167660615756176;
-%         A2 =0.729727894789617;
-%         B2 =0.810404284656104;
-%         d2 =1.5553258180618305;
-%         
-%     elseif kdef == 4 && eff==0.95
-%         c2 =4.331634521484375;
-%         A2 =0.754327484845243;
-%         B2 =0.846528826589308;
-%         d2 =1.480099129676819;
-%     elseif kdef == 4.5 && eff==0.95
-%         c2 =3.866390228271484;
-%         A2 =0.791281464739131;
-%         B2 =0.867016329355630;
-%         d2 =1.610621500015260;
-%     elseif kdef == 5 && eff==0.95
-%         c2 =3.629499435424805;
-%         A2 =0.818876452066880;
-%         B2 =0.882004888111327;
-%         d2 =1.723768949508668;
-        
+        c2=row(1); A2=row(3); B2=row(4); d2=row(5);
+
+        %     if kdef == 4 && eff==0.85
+        %         c2 =3.212800979614258;
+        %         A2 =0.570183575755717;
+        %         B2 =0.696172437281084;
+        %         d2 =1.205900263786317;
+        %     elseif kdef == 4.5 && eff==0.85
+        %         c2 =3.032387733459473;
+        %         A2 =0.615717108822885;
+        %         B2 = 0.723435958485131;
+        %         d2 =1.321987605094910;
+        %     elseif kdef == 5 && eff==0.85
+        %         c2 =2.911890029907227;
+        %         A2 =0.650228046997054;
+        %         B2 =0.743433840145084;
+        %         d2 =1.419320821762087;
+        %
+        %     elseif kdef == 4 && eff==0.90
+        %         c2 =3.544333040714264;
+        %         A2 =0.655651252372878;
+        %         B2 =0.768170638356071;
+        %         d2 =1.330560147762300;
+        %     elseif kdef == 4.5 && eff==0.90
+        %         c2 =3.313891947269440;
+        %         A2 =0.697965573395585;
+        %         B2 =0.792571144662011;
+        %         d2 =1.452220833301545;
+        %     elseif kdef == 5 && eff==0.90
+        %         c2 =3.167660615756176;
+        %         A2 =0.729727894789617;
+        %         B2 =0.810404284656104;
+        %         d2 =1.5553258180618305;
+        %
+        %     elseif kdef == 4 && eff==0.95
+        %         c2 =4.331634521484375;
+        %         A2 =0.754327484845243;
+        %         B2 =0.846528826589308;
+        %         d2 =1.480099129676819;
+        %     elseif kdef == 4.5 && eff==0.95
+        %         c2 =3.866390228271484;
+        %         A2 =0.791281464739131;
+        %         B2 =0.867016329355630;
+        %         d2 =1.610621500015260;
+        %     elseif kdef == 5 && eff==0.95
+        %         c2 =3.629499435424805;
+        %         A2 =0.818876452066880;
+        %         B2 =0.882004888111327;
+        %         d2 =1.723768949508668;
+
     else
-        
+
         if coder.target('MATLAB')
             % Compute tuning constant associated to the requested nominal efficiency
             % c2 = consistency factor for a given value of efficiency
@@ -420,47 +423,59 @@ elseif strcmp(rhofunc,'hyperbolic')
             error('FSDA:MMregcore:WrongBdpEff','Values of eff for hyperbolic tangent estimator not supported for code generation')
         end
     end
-    
-    
+
+
     psifunc.c=[c2;kdef;A2;B2;d2];
     psifunc.class='HYP';
-    
+
     c=psifunc.c;
-    
+
 elseif strcmp(rhofunc,'hampel')
-    
+
     if isempty(options.rhofuncparam)
         abc=[2;4;8];
     else
         abc=options.rhofuncparam;
     end
     rhofuncparam=abc;
-    
-    
+
+
     % Compute tuning constant associated to the requested nominal efficiency
     % c2 = consistency factor for a given value of efficiency
     c=HAeff(eff,1,abc);
-    
+
     psifunc.c=[c;abc(:)];
     psifunc.class='HA';
-    
+
     c=psifunc.c;
-    
+
 elseif strcmp(rhofunc,'mdpd')
     % Compute tuning constant associated to the requested nominal efficiency
     % c = consistency factor for a given value of efficiency
     c=PDeff(eff);
-    
+
     psifunc.c=c;
     psifunc.class='PD';
-    
+
     c=psifunc.c;
-    
+
     rhofuncparam=[];
-    
+
+elseif strcmp(rhofunc,'AS')
+    % Compute tuning constant associated to the requested nominal efficiency
+    % c = consistency factor for a given value of efficiency
+    c=ASeff(eff,1);
+
+    psifunc.c=c;
+    psifunc.class='AS';
+
+    c=psifunc.c;
+
+    rhofuncparam=[];
+
 else
     error('FSDA:MMregcore:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'', ''mdpd''')
-    
+
 end
 
 if coder.target('MATLAB')
@@ -478,32 +493,35 @@ while (iter <= refsteps) && (crit > reftol)
     if n1 ~= 0
         r1(tmp) = epsf;
     end
-    
+
     % w is the weight vector \psi(x)/x Each observations receives a
     % weight. Units associated to outliers tend to have 0 weight
-    
+
     % OLD INSTRUCTION
     % w=TBwei(r1,c);
-    
+
     if coder.target('MATLAB')
         % Compute weights for prespecified rho function
         w=feval(hwei,r1,c);
     else
         if strcmp(psifunc.class,'TB')
             w = TBwei(r1,c);
-            
+
         elseif strcmp(psifunc.class,'OPT')
             w = OPTwei(r1,c);
-            
+
         elseif strcmp(psifunc.class,'HA')
             w = HAwei(r1,c);
-            
+
         elseif strcmp(psifunc.class,'HYP')
             w = HYPwei(r1,c);
-            
+
         elseif strcmp(psifunc.class,'PD')
             w = PDwei(r1,c);
-            
+
+        elseif strcmp(psifunc.class,'AS')
+            w = ASwei(r1,c);
+
         else
             error('FSDA:MMregcore:WrongRhoFunc','Wrong rho function supplied')
         end
@@ -516,7 +534,7 @@ while (iter <= refsteps) && (crit > reftol)
     % b2 = inv(X'W*X)*X'W*y where W=w*ones(1,k)
     b2=Xw\Yw;
     % disp([b2-b22])
-    
+
     d=b2-b1;
     crit=max(abs(d));
     iter=iter+1;
