@@ -1,5 +1,5 @@
 function psiderAS=ASpsider(u,c)
-%ASpsider computes derivative of psi function (second derivative of rho function) or Andrew's sine function  
+%ASpsider computes derivative of psi function (second derivative of rho function) for Andrew's sine function  
 %
 %<a href="matlab: docsearchFS('ASpsider')">Link to the help function</a>
 %
@@ -31,7 +31,7 @@ function psiderAS=ASpsider(u,c)
 % \[
 % ASpsi(u)= \left\{
 %    \begin{array}{cc}
-%   (1/c) cos(u/c)      & |u/c| \leq \pi \\
+%   (1/c) \cos(u/c)      & |u/c| \leq \pi \\
 %  0                     &  |u/c|> \pi   \\
 % \end{array}
 %    \right.
@@ -42,7 +42,7 @@ function psiderAS=ASpsider(u,c)
 % This means that  $\psi (u)/u$ is approximately constant over the linear region of $\psi$,
 % so the points in that region tend to get equal weight.
 %
-% See also HUpsider, HYPpsider, HApsider, OPTpsider
+% See also HUpsider, HYPpsider, HApsider, OPTpsider, TBpsider, PDpsider
 %
 %
 % References:

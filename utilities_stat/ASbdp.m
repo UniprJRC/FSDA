@@ -1,5 +1,5 @@
 function c = ASbdp(bdp,v)
-%TBbdp finds the constant c associated to the supplied breakdown point for Andrew's sine function
+%ASbdp finds the constant c associated to the supplied breakdown point for Andrew's sine function
 % The constant is found through a dichotomic search
 %
 %

@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.7.0.2';
+newVersion = '8.7.0.7';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='added to project contents file in subfolder html';
+commentRelease='Added new function txmerge';
 
 % Specify folder where to create the toolbox project
 FSDAProjFolder='D:\tmp';
@@ -146,7 +146,13 @@ delete([FSroot fsep '404.md'])
 delete([FSroot fsep 'CODE_OF_CONDUCT.md'])
 delete([FSroot fsep 'CONTRIBUTING.md'])
 
-delete([FSroot fsep 'requirements.txt'])
+delete([FSroot fsep 'helpfiles' filesep 'FSDA' filesep 'images' filesep 'githubimgexamples.jpg'])
+delete([FSroot fsep 'helpfiles' filesep 'FSDA' filesep 'images' filesep 'githubimgindex.jpg'])
+delete([FSroot fsep 'helpfiles' filesep 'FSDA' filesep 'images' filesep 'githubimgtutorials.jpg'])
+
+
+delete([FSroot fsep 'installationNotes.pdf'])
+
 % delete([FSroot fsep 'package.json'])
 
 %% Publish contents file in the root inside subfolder html
@@ -307,7 +313,9 @@ cd(FSrootGitHub)
 % warning
 !ssh-keygen -R 140.82.121.4
 !git add ./bin/FSDA.mltbx
-!git commit -m "added last build of FSDA.mltbx"
+% !git commit -m "added last build of FSDA.mltbx"
+eval(['!git commit -m "' commentRelease '"'])
+
 !git push
 
 % tag the release and start the upload of FSDA.mltbx to release assets

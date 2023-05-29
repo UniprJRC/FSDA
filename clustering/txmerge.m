@@ -1,5 +1,5 @@
 function out = txmerge(Y, k, g, varargin)
-% txmerge performs a (hierarchical) merging of the inflated number of components found by tkmeans or TCLUST
+% txmerge performs a (hierarchical) merging of the inflated number of components found by tkmeans or tclust
 %
 % <a href="matlab: docsearchFS('txmerge')">Link to the help function</a>
 %
