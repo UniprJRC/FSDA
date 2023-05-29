@@ -158,7 +158,7 @@ function out=FSRmdrrs(y,X,varargin)
 % Output:
 %
 %  out :     A structure containing the following fields:
-%     out.mdrrs:  random start minimum deletion residual. Matrix.
+%     out.mdrrs = random start minimum deletion residual. Matrix.
 %               (n-init)-by-(nsimul+1) matrix which contains the monitoring
 %               of minimum deletion residual at each step of the forward
 %               search for each random start.
@@ -167,7 +167,7 @@ function out=FSRmdrrs(y,X,varargin)
 %               ...
 %               nsimul+1 col = minimum deletion residual for random start nsimul.
 %
-%      out.BBrs :  units belonging to subset. 3D array.
+%      out.BBrs =  units belonging to subset. 3D array.
 %               3D array which contains the units belonging to the subset
 %               at the steps specified by input option bsbsteps.
 %               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
@@ -189,6 +189,8 @@ function out=FSRmdrrs(y,X,varargin)
 %               In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has
 %               the same structure as before, but now contains just
 %               length(bsbsteps) columns.
+%
+% out.internationaltrade = Store criterion used to update subset.
 %
 %         out.y = Store original response.
 %
@@ -224,6 +226,7 @@ function out=FSRmdrrs(y,X,varargin)
 %
 
 %{
+    %% Random start for a simulated example with two small groups.
     % An example with simulated data with regression lines
     % with roughly the same number of observations.
     close all
@@ -248,7 +251,7 @@ function out=FSRmdrrs(y,X,varargin)
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current computer)
     % and pool is not cleaned after % the execution of the random starts
-    [out]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);
+    [out]=FSRmdrrs(y,X,'constr','','nsimul',50,'init',10,'plots',1,'cleanpool',false);
     disp('The two peaks in the trajectories of minimum deletion residual (mdr).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')
@@ -256,6 +259,7 @@ function out=FSRmdrrs(y,X,varargin)
 %}
 
 %{
+    % Random start for a simulated example with two groups.
     % Same example as before but now the values of n1 and n2 (size of the
     % two groups) have been increased. In this case it is possible to see
     % that there are two trajectories of minimum deletion residual which go
@@ -292,6 +296,7 @@ function out=FSRmdrrs(y,X,varargin)
 %}
 
 %{
+    % Two groups of unbalanced size.
     % Same example as before but now there is one group which has a size
     % much greater than the other (n1=60 and n2=150). In this case it is
     % possible to see that there is a trajectory of minimum deletion
@@ -338,7 +343,8 @@ function out=FSRmdrrs(y,X,varargin)
 %}
 
 %{
-    % Random start for fishery dataset: two regression structures,
+    % Random start for fishery dataset.
+    % There are two regression structures,
     % difficult to identify because of a dense area.
     load('fishery.txt');
     y=fishery(:,2);
