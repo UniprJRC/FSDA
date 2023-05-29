@@ -160,7 +160,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %      out.fittedvalues =   n x 1 vector containing the fitted values.
 %                           out.residuals=(y-X*out.beta)/out.auxscale
 %       out.weights     =   n x 1 vector. Weights assigned to each observation
-%       out.Sbeta       :   p x 1 vector containing S estimate of regression
+%       out.Sbeta       =   p x 1 vector containing S estimate of regression
 %                           coefficients (or supplied initial external
 %                           estimate of regression coefficients, if option
 %                           InitialEst is not empty)
@@ -168,7 +168,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                           preliminary part. Notice that
 %                           out.singsub > 0.1*(number of subsamples)
 %                           produces a warning
-%       out.outliers    :   1 x k vectors containing the outliers which
+%       out.outliers    =   1 x k vectors containing the outliers which
 %                           have been found
 %       out.conflev     =   Confidence level that was used to declare outliers
 %           out.rhofuncS =   string identifying the rho function which has been
@@ -183,9 +183,9 @@ function [out , varargout] = MMreg(y,X,varargin)
 %      out.rhofuncparam =   vector which contains the additional parameters
 %                           for the specified rho function which have been
 %                           used in the MM loop.
-%            out.y      =   response vector Y. The field is present if option
+%            out.y      =   response vector Y. The field is present only if option
 %                           yxsave is set to 1.
-%            out.X      =   data matrix X. The field is present if option
+%            out.X      =   data matrix X. The field is present only if option
 %                           yxsave is set to 1.
 %       out.class       =   'MMreg'
 %
@@ -331,25 +331,11 @@ function [out , varargout] = MMreg(y,X,varargin)
     max(abs([out.beta-outMM.beta]))
 %}
 
-%{
-    %%  Example of the use of Power Divergence estimator.
-    n=200;
-    p=3;
-    rng('default')
-    rng(100);
-    X=randn(n,p);
-    % Uncontaminated data
-    y=randn(n,1);
-    % Contaminated data
-    ycont=y;
-    ycont(1:5)=ycont(1:5)+6;
-    % mdpd is used both in the S and in MM step.
-    [out]=MMreg(ycont,X,'Srhofunc','mdpd','rhofunc','mdpd','plots',1);
-%}
 
 
 %{
     %% Comparison of TB, PD and Andrew's sine estimator.
+    close all
     n=200;
     p=3;
     rng('default')
@@ -360,6 +346,7 @@ function [out , varargout] = MMreg(y,X,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
+    close all
     h1=subplot(3,1,1);
     % TB  is used both in the S and in MM step.
     [outTB]=MMreg(ycont,X,'plots',0);
@@ -376,6 +363,22 @@ function [out , varargout] = MMreg(y,X,varargin)
     h3=subplot(3,1,3);
     resindexplot(outAS,'h',h3)
     title('Andrew''s sine link')
+%}
+
+%{
+    %%  Example of the use of Power Divergence estimator.
+    n=200;
+    p=3;
+    rng('default')
+    rng(100);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    % mdpd is used both in the S and in MM step.
+    [out]=MMreg(ycont,X,'Srhofunc','mdpd','rhofunc','mdpd','plots',1);
 %}
 
 %% Beginning of code
