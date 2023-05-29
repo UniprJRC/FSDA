@@ -249,6 +249,7 @@ function [out , varargout] = Taureg(y, X, varargin)
     % Taureg with all default options.
     n=200;
     p=3;
+    rng('default')
     randn('state', 123456);
     X=randn(n,p);
     % Uncontaminated data
@@ -321,6 +322,8 @@ function [out , varargout] = Taureg(y, X, varargin)
     %% Taureg: comparison between bisquare, power divergence and Andrew's sine rho function.
     n=200;
     p=3;
+    close all
+    rng('default')
     rng(123456)
     X=randn(n,p);
     % Uncontaminated data
@@ -328,13 +331,13 @@ function [out , varargout] = Taureg(y, X, varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    h1=subplot(3,1,1);
     [out]=Taureg(ycont,X,'plots',0,'rhofunc','bisquare');
+    h1=subplot(3,1,1);
     resindexplot(out,'h',h1)
     title('Tukey''s bisquare rho function')
     
-    h2=subplot(3,1,2);
     [out]=Taureg(ycont,X,'plots',0,'rhofunc','mdpd');
+    h2=subplot(3,1,2);
     resindexplot(out,'h',h2)
     title('Power divergence rho function')
 %}
