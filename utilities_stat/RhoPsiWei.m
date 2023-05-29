@@ -46,7 +46,7 @@ function out = RhoPsiWei(u, v, varargin)
 %               function which must be used.
 %               Possible values are
 %               'TB' or ''biweight', 'OPT' or 'optimal', 'HYP' or 'hyperbolic';
-%               'HA' or 'hampel', 'PD' or 'mdpd', 'HU' or 'huber'.
+%               'HA' or 'hampel', 'PD' or 'mdpd', 'HU' or 'huber', 'AS'.
 %               'biweight' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
@@ -59,6 +59,8 @@ function out = RhoPsiWei(u, v, varargin)
 %               See PDrho.m and PDpsi.m.
 %               'hu' uses Hampel $\rho$ and $\psi$ functions.
 %               See HArho and HApsi.
+%               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
+%               See ASrho.m and ASpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - character
@@ -122,7 +124,7 @@ function out = RhoPsiWei(u, v, varargin)
 %                 kc1=E(rho)=sup(rho)*bdp
 %
 %
-% See also: TBrho, OPTeff, HYPc, PDeff, HUeff
+% See also: TBrho, OPTeff, HYPc, PDeff, HUeff, ASeff
 %
 % References:
 %
@@ -151,7 +153,6 @@ function out = RhoPsiWei(u, v, varargin)
 
 %{
     %% Example of call to RhoPsiWei with bdp prespecified.
-    % In this case TB link is invoved with the bdp specified as input
     n=20;
     u=randn(n,1);
     out=RhoPsiWei(u,1,'bdp',0.1);
@@ -159,7 +160,6 @@ function out = RhoPsiWei(u, v, varargin)
 
 %{
     %% Example of call to RhoPsiWei with bdp and rhofunc prespecified.
-    % In this case TB link is invoved with the bdp specified as input
     n=20;
     u=randn(n,1);
     rhofunc='PD';
@@ -168,7 +168,6 @@ function out = RhoPsiWei(u, v, varargin)
 
 %{
     %% Example of call to RhoPsiWei with eff and rhofunc prespecified.
-    % In this case TB link is invoved with the bdp specified as input
     n=20;
     u=randn(n,1);
     rhofunc='OPT';
@@ -178,7 +177,6 @@ function out = RhoPsiWei(u, v, varargin)
 
 %{
     %% Example of call to RhoPsiWei with c prespecified.
-    % In this case TB link is invoved with the bdp specified as input
     n=20;
     u=randn(n,1);
     rhofunc='HA';
@@ -188,7 +186,6 @@ function out = RhoPsiWei(u, v, varargin)
 
 %{
     %% Example of call to RhoPsiWei with c prespecified, and personalized input parameters for HA link.
-    % In this case TB link is invoved with the bdp specified as input
     n=20;
     u=randn(n,1);
     rhofunc='HA';
@@ -200,7 +197,6 @@ function out = RhoPsiWei(u, v, varargin)
 
 %{
     %% Example of call to RhoPsiWei with eff prespecified, and personalized input parameters fpr HYP link.
-    % In this case TB link is invoved with the bdp specified as input
     n=20;
     u=-4:0.01:4;
     rhofunc='HYP';
@@ -543,6 +539,37 @@ elseif strcmp(rhofunc,'HU') || strcmp(rhofunc,'huber')
         out.psix=HUpsix(u,c);
         out.wei=HUwei(u,c);
     end
+
+elseif strcmp(rhofunc,'AS') 
+    % ANDREW'S SINE FUNCTION
+
+    if ~isempty(c)
+        bdp=ASc(c,1);
+    elseif ~isempty(eff)
+        ceff=ASeff(eff,1);
+        bdp=ASc(ceff,1);
+    else
+    end
+
+
+    out.class='AS';
+    c=ASbdp(bdp,1);
+    out.c1=c;
+    out.kc1=bdp*2*c;
+    out.bdp=bdp;
+
+    % Find efficiency
+    [~,eff]=PDc(c,1);
+    out.eff=eff;
+
+    if unonempty==true
+        out.rho=ASrho(u,c);
+        out.psi=ASpsi(u,c);
+        out.psider=ASpsider(u,c);
+        out.psix=ASpsix(u,c);
+        out.wei=ASwei(u,c);
+    end
+
 else
     error('rho function not supported by code generation')
 end
