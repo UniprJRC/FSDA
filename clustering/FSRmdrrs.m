@@ -355,8 +355,9 @@ function out=FSRmdrrs(y,X,varargin)
 %}
 
 %{
-    % Random start for fishery dataset: just store information about the
-    % units forming subset for each random start at specified steps
+    % Random start for fishery dataset (with options). 
+    % Just store information about the units forming subset for 
+    % each random start at specified steps
     load('fishery.txt');
     y=fishery(:,2);
     X=fishery(:,1);
