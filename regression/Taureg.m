@@ -48,7 +48,8 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               'optimal'
 %               'hyperbolic'
 %               'hampel'
-%               'mdpd'.
+%               'mdpd';
+%               'AS'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho.m and TBpsi.m.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
@@ -59,6 +60,8 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               See HArho.m and HApsi.m.
 %               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
+%               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
+%               See ASrho.m and ASpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - character
@@ -312,6 +315,28 @@ function [out , varargout] = Taureg(y, X, varargin)
     ycont(1:5)=ycont(1:5)+6;
     rhofuncparam=[1.5 3.5 8];
     [out]=Taureg(ycont,X,'plots',1,'rhofunc','hampel','rhofuncparam',rhofuncparam);
+%}
+
+%{
+    %% Taureg: comparison between bisquare, power divergence and Andrew's sine rho function.
+    n=200;
+    p=3;
+    rng(123456)
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    h1=subplot(3,1,1);
+    [out]=Taureg(ycont,X,'plots',0,'rhofunc','bisquare');
+    resindexplot(out,'h',h1)
+    title('Tukey''s bisquare rho function')
+    
+    h2=subplot(3,1,2);
+    [out]=Taureg(ycont,X,'plots',0,'rhofunc','mdpd');
+    resindexplot(out,'h',h2)
+    title('Power divergence rho function')
 %}
 
 %% Beginning of code
@@ -617,9 +642,26 @@ elseif strcmp(rhofunc,'mdpd')
 
     c2=psifunc.c2;
 
-else
-    error('FSDA:Taureg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
+elseif strcmp(rhofunc,'AS')
+    c1=ASbdp(bdp,1);
+    % kc1 = E(rho) = sup(rho)*bdp
+    kc1=bdp*2*c1;
 
+    c2=ASeff(eff,1);
+    % b2 = E(rho_2).
+    % bdp2*sup(rho)
+    kc2=ASc(c2)*2*c2;
+
+    psifunc.c1=c1;
+    psifunc.kc1=kc1;
+
+    psifunc.c2=c2;
+    psifunc.class='AS';
+
+    c2=psifunc.c2;
+
+else
+    error('FSDA:Taureg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'', ''mdpd'', ''AS''')
 end
 
 XXrho=strcat(psifunc.class,'rho');
@@ -900,7 +942,7 @@ function outIRWLS = IRWLSregTau(y, X, initialbeta, psifunc, refsteps, reftol, in
 %                    nominal efficiency
 %               class = string identyfing the rho (psi) function to use.
 %                    Admissible values for class are 'bisquare', 'optimal'
-%                    'hyperbolic' and 'hampel'
+%                    'hyperbolic', 'hampel', 'mdpd' and 'AS'
 %               Remark: if class is 'hyperbolic' it is also necessary to
 %                   specify parameters k (sup CVC), A, B and d
 %               Remark: if class is 'hampel' it is also necessary to
