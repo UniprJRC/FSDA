@@ -1,6 +1,5 @@
 function out = txmerge(Y, k, g, varargin)
-% txmerge performs a (hierarchical) merging of the inflated number of 
-% components found by tkmeans or TCLUST
+% txmerge performs a (hierarchical) merging of the inflated number of components found by tkmeans or TCLUST
 %
 % <a href="matlab: docsearchFS('txmerge')">Link to the help function</a>
 %
@@ -70,43 +69,38 @@ function out = txmerge(Y, k, g, varargin)
 %                   * for v=2, a bivariate scatterplot.
 %                   * for v>2, a scatterplot matrix.
 %               When v>=2 plots offers the following additional features
-%               (for v=1 the behaviour is forced to be as for plots=1):
-%               - plots='contourf' adds in the background of the bivariate
+%               (for v=1 the behaviour is forced to be as for plots=1).
+%               If plots is a char it may contain the words 'contourf',
+%               'contour' 'ellipse'  and 'boxplotb'. For the documentation
+%               of these option see below the case when plots is a structure
+%               If plots is a structure it may contain the following fields:
+%               plots.type= Type of plot to add in the background or to
+%                 superimpose. It can be: 'contourf', 'contour',
+%                 'ellipse' or 'boxplotb', specifying respectively to add
+%                 filled contour (default when overlay=1), contour,
+%                 ellipses or a bivariate boxplot (see function
+%                 boxplotb.m). 
+%               - plots.type='contourf' adds in the background of the bivariate
 %                 scatterplots a filled contour plot. The colormap of the
 %                 filled contour is based on grey levels as default.
-%                 This argument may also be inserted in a field named 'type'
-%                 of a structure. In the latter case it is possible to
-%                 specify the additional field 'cmap', which changes the
-%                 default colors of the color map used. The field 'cmap'
-%                 may be a three-column matrix of values in the range [0,1]
-%                 where each row is an RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
-%               - plots='contour' adds in the background of the bivariate
+%               - plots.type='contour' adds in the background of the bivariate
 %                 scatterplots a contour plot. The colormap of the contour
-%                 is based on grey levels as default. This argument may
-%                 also be inserted in a field named 'type' of a structure.
-%                 In the latter case it is possible to specify the additional
-%                 field 'cmap', which changes the default colors of the
-%                 color map used. The field 'cmap' may be a three-column
-%                 matrix of values in the range [0,1] where each row is an
-%                 RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
-%               - plots='ellipse' superimposes confidence ellipses to
+%                 is based on grey levels as default. 
+%               - plots.type='ellipse' superimposes confidence ellipses to
 %                 each group in the bivariate scatterplots. The size of the
 %                 ellipse is chi2inv(0.95,2), i.e. the confidence level used
-%                 by default is 95%. This argument may also be inserted in
-%                 a field named 'type' of a structure. In the latter case it
-%                 is possible to specify the additional field 'conflev',
-%                 which specifies the confidence level to use and it is a
-%                 value between 0 and 1.
-%               - plots='boxplotb' superimposes on the bivariate scatterplots
+%                 by default is 95%.
+%               - plots.type='boxplotb' superimposes on the bivariate scatterplots
 %                 the bivariate boxplots for each group, using the boxplotb
-%                 function. This argument may also be inserted in a field
-%                 named 'type' of a structure.
+%                 function.
+%              plots.cmap = colors to use. Three-column matrix of values in
+%                 the range [0,1] where each row is an RGB triplet that
+%                 defines one color. Check the colormap function for
+%                 additional information.
 %               REMARK - The labels<=0 are automatically excluded from the
 %                        overlaying phase, considering them as outliers.
 %                   Example - 'plots', 1
-%                   Data Types - single | double | string
+%                   Data Types - double | struct
 %
 %   txOpt:      tkmeans/TCLUST optional arguments. Structure. Empty structure 
 %               (default) or structure containing optional input arguments 
@@ -139,8 +133,8 @@ function out = txmerge(Y, k, g, varargin)
 %                             algorithm applied.
 %                             REMARK - out.mergID=0 denotes trimmed units.
 %
-%           out.txOut       = Output from tkmeans function. The structure
-%                             is present if option txOut is set to 1.
+%           out.txOut       = Output from tkmeans function. This structure
+%                             is present only if option txOut is set to 1.
 %
 %           out.Y           = Original data matrix Y. This field is present
 %                             only if option Ysave is set to 1.
@@ -152,7 +146,7 @@ function out = txmerge(Y, k, g, varargin)
 %
 % References:
 %
-%   Insolia, L., Perrotta, D. (2023). Tk-Merge: Computationally Efficient 
+%   Insolia, L., Perrotta, D. (2023), Tk-Merge: Computationally Efficient 
 %   Robust Clustering Under General Assumptions. Advances in Intelligent 
 %   Systems and Computing, vol 1433. Springer, Cham. 
 %
@@ -174,16 +168,16 @@ function out = txmerge(Y, k, g, varargin)
     n = 5000;
     % Generate homogeneous and spherical clusters
     rng(100, 'twister');
-    out = MixSim(k, v, 'sph', true, 'hom', true, 'int', [0 10], 'Display', 'off', 'BarOmega', 0.05, 'Display','off');
+    outMS = MixSim(k, v, 'sph', true, 'hom', true, 'int', [0 10], 'Display', 'off', 'BarOmega', 0.05, 'Display','off');
     % Simulating data
-    [X, id] = simdataset(n, out.Pi, out.Mu, out.S);
+    [X, id] = simdataset(n, outMS.Pi, outMS.Mu, outMS.S);
     % Plotting data
     gscatter(X(:,1), X(:,2), id);
     str = sprintf('Simulated data with %d groups in %d dimensions and %d units', k, v, n);
     title(str,'Interpreter','Latex');
     % merging algorithm based on hierarchical clustering
     g = 3;
-    txsol = txmerge(X, k*5, g, 'dist', 1, 'plots', 'contourf');
+    out = txmerge(X, k*5, g, 'dist', 1, 'plots', 'contourf');
 %}
 
 %{
@@ -201,10 +195,10 @@ function out = txmerge(Y, k, g, varargin)
     maxOm = 0.005;
     % Generate heterogeneous and elliptical clusters
     rng(500, 'twister');
-    out = MixSim(g, v, 'sph', false, 'restrfactor', restr, 'int', [0 10], ...
+    outMS = MixSim(g, v, 'sph', false, 'restrfactor', restr, 'int', [0 10], ...
         'Display', 'off', 'MaxOmega', maxOm, 'Display','off');
     % Simulating data
-    [X, id] = simdataset(n, out.Pi, out.Mu, out.S);
+    [X, id] = simdataset(n, outMS.Pi, outMS.Mu, outMS.S);
     % Plotting data
     gg = gscatter(X(:,1), X(:,2), id);
     str = sprintf('Simulated data with %d groups in %d dimensions and %d \nunits, with restriction factor %d and maximum overlap %.2f', ...
@@ -245,10 +239,10 @@ function out = txmerge(Y, k, g, varargin)
     maxOm = 0.005;
     % Generate heterogeneous and elliptical clusters
     rng(500, 'twister');
-    out = MixSim(g, v, 'sph', false, 'restrfactor', restr, 'int', [0 10], ...
+    outMS = MixSim(g, v, 'sph', false, 'restrfactor', restr, 'int', [0 10], ...
         'Display', 'off', 'MaxOmega', maxOm, 'Display','off');
     % Simulating data
-    [X, id] = simdataset(n, out.Pi, out.Mu, out.S);
+    [X, id] = simdataset(n, outMS.Pi, outMS.Mu, outMS.S);
     % Plotting data
     gg = gscatter(X(:,1), X(:,2), id);
     str = sprintf('Simulated data with %d groups in %d dimensions and %d \nunits, with restriction factor %d and maximum overlap %.2f', ...
@@ -281,10 +275,10 @@ function out = txmerge(Y, k, g, varargin)
     maxOm = 0.005;
     % Generate heterogeneous and elliptical clusters
     rng(500, 'twister');
-    out = MixSim(g, v, 'sph', false, 'restrfactor', restr, 'int', [0 10], ...
+    outMS = MixSim(g, v, 'sph', false, 'restrfactor', restr, 'int', [0 10], ...
         'Display', 'off', 'MaxOmega', maxOm, 'Display','off');
     % Simulating data
-    [X,id] = simdataset(n, out.Pi, out.Mu, out.S, 'noiseunits', noise);
+    [X,id] = simdataset(n, outMS.Pi, outMS.Mu, outMS.S, 'noiseunits', noise);
     % Plotting data
     gg = gscatter(X(:,1), X(:,2), id);
     str = sprintf('Simulating %d groups in %d dimensions and %d units with %d%s \nuniform noise, setting a restriction factor %d and maximum overlap %.2f', ...
