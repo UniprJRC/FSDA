@@ -47,11 +47,11 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               If InitialEst is empty (default) or InitialEst.beta
 %               contains NaN values, program uses S estimators. In this
 %               last case it is possible to specify the options given in
-%               function Sreg. 
+%               function Sreg.
 %               Example - 'InitialEst',[]
 %               Data Types - struct or empty value
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -91,7 +91,8 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               'optimal';
 %               'hyperbolic';
 %               'hampel';
-%               'mdpd'.
+%               'mdpd';
+%               'AS'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
@@ -102,6 +103,8 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               See HArho and HApsi.
 %               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
+%               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
+%               See ASrho.m and ASpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - char
@@ -271,7 +274,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
     resfwdplot(out)
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 nnargin=nargin;
@@ -316,31 +319,31 @@ eff=0.5:0.01:0.99;
 
 if coder.target('MATLAB')
 
-options=struct('intercept',true,'InitialEst','','Smsg',Smsgdef,'Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
-    'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
-    'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
-    'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam',Srhofuncparamdef,'nocheck',false,'eff',eff,'effshape',0,...
-    'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'rhofunc',rhofuncdef, ...
-    'rhofuncparam',rhofuncparamdef);
+    options=struct('intercept',true,'InitialEst','','Smsg',Smsgdef,'Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
+        'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
+        'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
+        'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam',Srhofuncparamdef,'nocheck',false,'eff',eff,'effshape',0,...
+        'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'rhofunc',rhofuncdef, ...
+        'rhofuncparam',rhofuncparamdef);
 
-[varargin{:}] = convertStringsToChars(varargin{:});
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:MMreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    [varargin{:}] = convertStringsToChars(varargin{:});
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:MMreg:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+
+        % Check if all the specified optional arguments were present
+        % in structure options
+        inpchk=isfield(options,UserOptions);
+        WrongOptions=UserOptions(inpchk==0);
+        if ~isempty(WrongOptions)
+            disp(strcat('Non existent user option found->', char(WrongOptions{:})))
+            error('FSDA:MMregeda:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        end
     end
-    
-    % Check if all the specified optional arguments were present
-    % in structure options
-    inpchk=isfield(options,UserOptions);
-    WrongOptions=UserOptions(inpchk==0);
-    if ~isempty(WrongOptions)
-        disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:MMregeda:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
-    end
-end
 end
 
 if nargin > 2
@@ -364,7 +367,7 @@ rhofuncparam=options.rhofuncparam;
 
 
 if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
-    
+
     bdp = options.Sbdp;              % break down point
     refsteps = options.Srefsteps;    % refining steps
     bestr = options.Sbestr;          % best locs for refining steps till convergence
@@ -373,13 +376,13 @@ if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
     minsctol = options.Sminsctol;    % tolerance for finding minimum value of the scale for each subset
     refstepsbestr=options.Srefstepsbestr;  % refining steps for the best subsets
     reftolbestr=options.Sreftolbestr;      % tolerance for refining steps for the best subsets
-    
+
     Srhofunc=options.Srhofunc;           % rho function which must be used
     Srhofuncparam=options.Srhofuncparam;    % eventual additional parameters associated to the rho function
     msg=options.Smsg;                  % message on the screen about computational time of S estimator
 
     % first compute S-estimator with a fixed breakdown point
-    
+
     % SR is the routine which computes S estimates of beta and sigma in regression
     % Note that intercept is taken care of by chkinputR call.
     if nargout==2
@@ -387,7 +390,7 @@ if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
             'reftolbestr',reftolbestr,'rhofunc',Srhofunc,'rhofuncparam',Srhofuncparam,...
             'nocheck',true,'msg',msg,'conflev',0.95,'yxsave',false);
-        
+
     else
         Sresult = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
@@ -406,7 +409,7 @@ else
     ss = InitialEst.scale;
     singsub=0;
 end
-            varargout = {C};
+varargout = {C};
 
 % Asymptotic nominal efficiency (for location or shape)
 eff = options.eff;
@@ -463,7 +466,7 @@ out.rhofunc=rhofunc;
 % parameters which have been used
 % For Hampel store a vector of length 3 containing parameters a, b and c
 % For hyperbolic store the value of k= sup CVC
-    out.rhofuncparam=rhofuncparam;
+out.rhofuncparam=rhofuncparam;
 
 % Store values of efficiency
 out.eff=eff;

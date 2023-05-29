@@ -18,7 +18,8 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %               psifunc.class = string identyfing the rho (psi) function to use.
 %                    Admissible values for class are 'bisquare' (TB),
 %                    'optimal', (OPT) 'hyperbolic' (HYP), 'hampel' (HA)
-%                    'power divergence' (PD)
+%                    'power divergence' (PD) and 'Andrew's sine function0
+%                    (AS).
 %               psifunc.c1 = consistency factor (and other parameters)
 %                   associated to required breakdown point or nominal
 %                   efficiency.
@@ -223,7 +224,10 @@ while  (( loop < maxiter ) && (err > tol))
             
         elseif strcmp(psifunc.class,'PD')
             scnew = sc*sqrt( mean(PDrho(u/sc,c)) / kc);
-            
+
+        elseif strcmp(psifunc.class,'AS')
+            scnew = sc*sqrt( mean(ASrho(u/sc,c)) / kc);
+
         else
             error('rho function not supported by code generation')
         end

@@ -474,7 +474,7 @@ elseif strcmp(rhofunc,'AS')
     rhofuncparam=[];
 
 else
-    error('FSDA:MMregcore:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'', ''mdpd''')
+    error('FSDA:MMregcore:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'', ''mdpd'', ''AS''')
 
 end
 
