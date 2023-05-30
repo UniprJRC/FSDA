@@ -1,4 +1,6 @@
-% This file copies the HTML files which are in subfolder
+function status = installHelpFiles()
+
+% This file tries to copy the HTML files which are in subfolder
 %       (FSDA path)/helpfiles/FSDA
 % inside
 %       (MATLAB docroot)/help/FSDA
@@ -7,6 +9,10 @@
 % administrator privileges (or to run MATLAB with administrator privileges)
 %
 
+% status — Command exit status (boolean)
+% Copy status, indicating if the attempt to move the file or folder is
+% successful, returned as 0 or 1. If the attempt is successful, the value
+% of status is 1. Otherwise, the value is 0.
 
 %% Beginning of code
 
@@ -56,10 +62,10 @@ try
         pause(5);
         % delete temporary file copy_FSDA_help_files.bat
         delete copy_FSDA_help_files.bat
-        
+        status=1;
     else
         % Mac users
-        [status,msg]=copyfile(source,destination,'f');
+        [status,~]=copyfile(source,destination,'f');
         if status ==1
             disp('HTML FSDA documentation files correctly copied')
         else
@@ -77,22 +83,9 @@ catch
     disp([pwd filesep source])
     disp('to:')
     disp(destination)
+    status=0;
 end
-
-% Create searchable databaset (not necessary)
-% subPointersFolder=[filesep 'helpfiles' filesep 'pointersHTML'];
-% folderwithSearchableDatabase=[FSDAroot subPointersFolder];
-%
-%
-% % Launch buildocsearchdb
-% % run builddocsearchdb in subfolder pointersHTML
-% try
-%     builddocsearchdb(folderwithSearchableDatabase)
-%     disp('FSDA searchable database correctly added')
-% catch
-%     disp('Unknown error when trying to run MATLAB routine builddocsearchdb')
-%     disp(['in folder:  '  folderwithSearchableDatabase])
-% end
 
 cd(CurrentFolder)
 %clearvars
+end
