@@ -241,7 +241,7 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>int16 | int32 | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;type of information criterion.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character which specifies which information criteria must
                be computed for each k (number of groups) and each value of
                the restriction factor (c).</p> <p>
-               Possible values for whichIC are:</p> <p>
+               Possible values for whichIC are:
                'MIXMIX'  = a mixture model is fitted and to
                    compute the information criterion the mixture
                    likelihood is used. This option corresponds to the use of
@@ -350,7 +350,7 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
                default value for numpool the number of physical cores
                rather than the number of logical ones. The user can
                increase the number of parallel pool workers allocated to
-               the multiple start monitoring by:</p> <p>
+               the multiple start monitoring by:
                - setting the NumWorkers option in the local cluster profile
                  settings to the number of logical cores (Remark 2). To do
                  so go on the menu "Home|Parallel|Manage Cluster Profile"
@@ -409,9 +409,9 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
                same regression coefficients (apart from the intercepts).</p> <p>
                The default value of commonslope is false;</p><p> 
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'commonslope',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:
 
-        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p>matrix of size 5-times-8 if kk and ccsigmay are not
+        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p>matrix of size 5-times-8 if kk and ccsigmay are not
                    specififed else it is a matrix of size length(kk)-times
                    length(cc) containinig the value of the penalized
                    classification likelihood. This output is present only
@@ -457,7 +457,7 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
                    been used in the likelidood (it stores the values of input alphaLik).</p></td></tr><tr valign="top"><td><code>alphaX</code></td><td><p>scalar containing information about
                    second-level trimming or constrained weighted model for X.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>Original data matrix of explanatory variables.</p> <p>
                 The field is present if option Ysave is set to 1.</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>Original vector containing the response
-                    The field is present if option Ysave is set to 1.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+                    The field is present if option Ysave is set to 1.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2019). Assessing Robust
  Methodologies for Clustering Linear Regression Data, "Advances in Data
- Analysis and Classification". [doi
- <a href="https://doi.org/10.1007/s11634-018-0331-4">https://doi.org/10.1007/s11634-018-0331-4</a>].</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span> | <span itemprop="seealso"><a href="tclustICplot.html" itemprop="url"><span itemprop="name"><code>tclustICplot</code></span></a></span> | <span itemprop="seealso"><a href="carbikeplot.html" itemprop="url"><span itemprop="name"><code>carbikeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Analysis and Classification", Vol. 13, pp. 227–257,
+ <a href="https://doi.org/10.1007/s11634-018-0331-4">https://doi.org/10.1007/s11634-018-0331-4</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span> | <span itemprop="seealso"><a href="tclustICplot.html" itemprop="url"><span itemprop="name"><code>tclustICplot</code></span></a></span> | <span itemprop="seealso"><a href="carbikeplot.html" itemprop="url"><span itemprop="name"><code>carbikeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

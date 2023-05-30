@@ -11,9 +11,9 @@ out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'mixt',2);
 % Comparison with robust linear grouping
 out = rlga(X,k,alpha2);
 cascade;</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclustreg:  1.48 seconds 
+Total estimated time to complete tclustreg:  1.59 seconds 
 MixLik with untrimmed units selected using h largest lik contributions
-Total estimated time to complete tclustreg:  1.37 seconds 
+Total estimated time to complete tclustreg:  1.17 seconds 
 RLGA Algorithm k =2 biter =7 niter =10
 Finished.
 </pre><a href='http://rosa.unipr.it/fsda/tclustreg.html#Example_1'><img vspace="5" hspace="5" src="images\tclustreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustreg_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_04.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustreg of fishery data 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
@@ -391,11 +391,11 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
             of Cerioli and Perrotta (2014).</p> <p>
          -  If \texttt{wtrim} = 5 (TO BE IMPLEMENTED)
           -  If \texttt{wtrim} = 6 (TO BE IMPLEMENTED)
-          If wtrim is a structure, it is composed by:</p> <p>
+          If wtrim is a structure, it is composed by:
          -  wtrim.wtype_beta: the weight for the beta estimation. It can be
            0, 1, 2, 3, as in the case of wtrim scalar
          -  wtrim.wtype_obj: the weight for the objective function. It can
-         be:</p> <p>
+         be:
              - '0': no weights in the objective function
              - 'Z': Bernoulli random variable with probability of success
             $\mbox{pdfe}_{ig}$
@@ -553,26 +553,26 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
  identified with a "TRIMMING" or "THINNING" tag.</p> <p>
 
  REMARK: the number of parameters to penalize the likelihood are given
- below:</p> <p>
+ below:
  $k(p+1)$ = number of regression coefficients including the intercept.</p> <p>
  $k-1$ = number of proportions -1 (because their sum is 1).</p> <p>
  $(k-1)(1-1/restrfact(1))+1$ = constraints on the $\sigma^2_j$.</p> <p>
- To the above parameters, if $alphaX=1$ we must add:</p> <p>
+ To the above parameters, if $alphaX=1$ we must add:
  $k(p-1)p/2$ = rotation parameters for $\Sigma_X=cov(X)$.</p> <p>
  $(kp-1)(1-1/restrfactor(2))+1$ = eigenvalue parameters for
  $\Sigma_X=cov(X)$.</p><p>
 
-</p><hr></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Mayo-Iscar A. (2016), The joint role of trimming and constraints in
+</p><hr></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S., and
+ Mayo-Iscar A. (2016), The joint role of trimming and constraints in
  robust estimation for mixtures of gaussian factor analyzers,
- "Computational Statistics & Data Analysis", Vol. 99, pp. 131-147.</p> <p>
-
- Garcia-Escudero, L.A., Gordaliza, A., Greselin, F., Ingrassia, S. and</p></p></div><div><p><p>Mayo-Iscar, A. (2017), Robust estimation of mixtures of regressions with
+ "Computational Statistics & Data Analysis", Vol. 99, pp. 131-147.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza, A., Greselin, F., Ingrassia, S. and
+ Mayo-Iscar, A. (2017), Robust estimation of mixtures of regressions with
  random covariates, via trimming and constraints, "Statistics and
- Computing", Vol. 27, pp. 377-402.</p> <p>
-
- Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R.</p></p></div><div><p>(2010), Robust clusterwise linear regression through trimming,
+ Computing", Vol. 27, pp. 377-402.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R.
+ (2010), Robust clusterwise linear regression through trimming,
  "Computational Statistics and Data Analysis", Vol. 54, pp.3057-3069.</p></div><div><p>Cerioli, A. and Perrotta, D. (2014). Robust Clustering Around Regression
  Lines with High Density Regions. Advances in Data Analysis and
- Classification, Vol. 8, pp. 5-26.</p></div><div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+ Classification, Vol. 8, pp. 5-26.</p></div><div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2019). Assessing Robust
  Methodologies for Clustering Linear Regression Data, "Advances in Data
- Analysis and Classification".</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="rlga.html" itemprop="url"><span itemprop="name"><code>rlga</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Analysis and Classification", Vol. 13, pp. 227–257,
+ <a href="https://doi.org/10.1007/s11634-018-0331-4">https://doi.org/10.1007/s11634-018-0331-4</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="rlga.html" itemprop="url"><span itemprop="name"><code>rlga</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

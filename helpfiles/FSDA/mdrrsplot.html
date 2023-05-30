@@ -25,7 +25,12 @@ title('ColorTrj = 2 -- highlight the 2 trj with max mdr','FontSize',16,'Interpre
 % now with trajectories with marker symbols
 mdrrsplot(out,'ColorTrj',3,'tag','ColorTrj_3');
 title('ColorTrj = 3 -- highlight the 3 trj with max mdr','FontSize',16,'Interpreter','Latex');
-cascade;</pre></div></div><a href='http://rosa.unipr.it/fsda/mdrrsplot.html#Example_1'><img vspace="5" hspace="5" src="images\mdrrsplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\mdrrsplot_02.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_03.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_04.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_05.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mdrrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p>
+cascade;</pre></div></div><pre class="codeoutput">Simul nr. 30 n=200
+Simul nr. 75 n=200
+Simul nr. 150 n=200
+Simul nr. 225 n=200
+Total time required by the multiple start monitoring: 1.922 seconds
+</pre><a href='http://rosa.unipr.it/fsda/mdrrsplot.html#Example_1'><img vspace="5" hspace="5" src="images\mdrrsplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\mdrrsplot_02.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_03.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_04.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_05.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mdrrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p>
      tclustreg of contaminated X data using all default options.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
 % The dataset presents two parallel components without contamination.
 X  = load('X.txt');
@@ -196,7 +201,7 @@ databrush.selectionmode='Rect'
                    If databrush is a structure, it is
                    possible to use all optional arguments
                    of function <a href="selectdataFS.html">selectdataFS</a> and the following optional
-                   argument:</p> <p>
+                   argument:
                   persist. Persist is an empty value or a scalar
                    containing the strings 'on' or 'off' If persist = 'on'
                    or 'off' brusing can be done as many time as the user

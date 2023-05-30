@@ -93,6 +93,35 @@ function [bdp,eff,A,B,d] = HYPc(c,v,varargin)
 % Examples:
 
 %{
+    % HYPc will all the default options.
+    % Just find bdp.
+    bdp=HYPc(2.5,1);
+    disp('bdp associated with c=2.5 in regression')
+    disp(bdp)
+%}
+
+%{
+    % HYPc will all the default options (2).
+    % Find both bdp and eff.
+    [bdp,eff]=HYPc(2.5,1);
+    disp('bdp associated with c=2.5 in regression')
+    disp(bdp)
+    disp('eff associated with c=2.5 in regression')
+    disp(eff)
+%}
+
+
+%{
+    % HYPc will all the default options (3).
+    % Find bdp, eff, A, B and d.
+    [bdp,eff,A,B,d]=HYPc(2.5,1);
+    disp('bdp associated with c=2.5 in regression')
+    disp(bdp)
+    disp('eff associated with c=2.5 in regression')
+    disp(eff)
+%}
+
+%{
     %Analysis of breakdown point and asymptotic efficiency
     %at the normal distribution as a function of c in regression.
     cc=2:0.1:6;

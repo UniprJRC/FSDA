@@ -1,26 +1,27 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>HArho</title> <meta content="refpage" name="chunktype"><meta content="function:HArho " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="HArho Computes rho function  using Hampel proposal" itemprop="description" name="description" /><h1 itemprop="title">HArho</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/HArho.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/HArho.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/HArho.html">http://rosa.unipr.it/FSDA/HArho.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: HArho</em></p><P>HArho</P><P>Computes rho function  using Hampel proposal</P><h2>More About</h2><P>
- Function HApsix transforms vector u as follows
+ Function HArho transforms vector u as follows
 
   \[
-  HApsi(u)  = \left\{   
+  HArho(u)  = \left\{
   \begin{array}{cc}
-    u^2 & |u| &lt;= a                                       \\
-    a \times sign(u)u & a &lt;= |u| &lt; b                    \\
-    a \frac{c-|u|}{c-b} \times sign(u)\times u & b &lt;= |u| &lt;  c \\
-    0 & |u| &gt;= c 
+    \frac{u^2}{2} & |u| \leq a                                       \\
+    a \times |u| -0.5 a^2 & a \leq |u| &lt; b                    \\
+    ab-0.5a^2+0.5(c-b)a \left[ 1- \left( \frac{c-|u|}{c-b}\right)^2 \right]  & b \leq |u| &lt;  c \\
+    ab-0.5a^2+0.5(c-b)a & |u| \geq c
   \end{array} \right.
  \]
 
-             where $a$= ctuning(2) *ctuning(1).
-                   $b$= ctuning(3) *ctuning(1).
-                   $c$= ctuning(4) *ctuning(1).
-              
-             The default (if input ctuning is a scalar) is  
-                   $a$= 2*ctuning.
-                   $b$= 4*ctuning.
-                   $c$= 8*ctuning.
+             where $a$= ctun *ctuning(2).
+                   $b$= ctun *ctuning(3).
+                   $c$= ctun *ctuning(4).
 
-	It is necessary to have 0 &lt;= $a$ &lt;= $b$ &lt;= $c$
+             The default is
+                   $a$= 2*ctun.
+                   $b$= 4*ctun.
+                   $c$= 8*ctun.
+
+	It is necessary to have 0 &lt;= a &lt;= b &lt;= c
+
 
 </P><h2>References</h2><P>Hoaglin, D.C., Mosteller, F., Tukey, J.W. (1982), "Understanding Robust and
  Exploratory Data Analysis", Wiley, New York.</P></html>

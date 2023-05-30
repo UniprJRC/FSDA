@@ -341,7 +341,7 @@ spmplot(meas,'group',species,'typespm','lower');</pre></div></div><a href='http
 spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_18'><img vspace="5" hspace="5" src="images\spmplot_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; data matrix (2D array or table) containing n observations on v variables
          or a structure 'out' coming from function FSMeda. </span>  </a><span class="example_desc">Matrix or
          struct.</span></span></h3> <div class="collapse"> <p><p>If Y is a 2D array or table, varargin can be either a sequence of name/value
-     pairs, detailed below, or one of the following explicit assignments:</p> <p>
+     pairs, detailed below, or one of the following explicit assignments:
 
        spmplot(Y,group);</p> <p>
 
@@ -357,7 +357,7 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
      program expects a sequence of name/value pairs.</p> <p>
 
   If first input Y is a structure (generally created by function FSMeda),
-  then this structure must have the following fields:</p> <p>
+  then this structure must have the following fields:
 
        Required fields in input structure Y.</p><p>
 </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Y</code></td><td><p><p>a data matrix of size n-by-v.</p> <p>
@@ -431,7 +431,7 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
                The default value is overlay='', i.e. nothing is changed. If
                overlay=1 the the filled contours are added to each panel,
                considering all groups, as default. If overlay is a structure
-               it may contain the following fields:</p><p>
+               it may contain the following fields:
       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p>Type of plot to add in the background or to
                                 superimpose. String. It can be: 'contourf',
                                 'contour', 'ellipse' or 'boxplotb',
@@ -480,7 +480,7 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
                 circle, the second with a plus, and the third with a 'x'.</p> <p>
                 This is obtained with the assignment plo.sym = 'o+x'
                 or equivalently with plo.sym = {'o' '+' 'x'}.</p> <p>
-                By default the sequence of marker types is:</p> <p>
+                By default the sequence of marker types is:
                 '+';'o';'*';'x';'s';'d';'^';'v';'&gt;';'&lt;';'p';'h';'.'
          plo.siz: scalar, a marker size to use for all plots. By default the
                 marker size depends on the number of plots and the size of
@@ -551,12 +551,12 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
                the respective 'Tag' associated has to be changed (e.g.</p> <p>
                selecting the figure and then: set(gcf,'Tag','newTag');).</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'undock', [1 1; 1 3; 3 4]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | logical</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking.</span></a><span class="example_desc">empty value (default) |                   structure.</span></span></h3><div class="collapse">	<p><p>If datatooltip is not empty the user can use
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | logical</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking.</span></a><span class="example_desc">empty value (default) |                   structure.</span></span></h3><div class="collapse">	<p>If datatooltip is not empty the user can use
                    the mouse in order to have information about the unit
                    selected, the step in which the unit enters the search
                    and the associated label. If datatooltip is a
-                   structure, it may contain the following fields:</p> <p>
-           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>DisplayStyle</code></td><td><p>Determines how the data
+                   structure, it may contain the following fields:
+           <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>DisplayStyle</code></td><td><p>Determines how the data
                    cursor displays.</p></td></tr><tr valign="top"><td><code>SnapToDataVertex</code></td><td><p>Specifies whether the
                    data cursor snaps to the nearest data value or is
                    located at the actual pointer position. The default
@@ -573,7 +573,7 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
                    done by brushing. If the malfwdplot does not exist it
                    is automatically created.</p> <p>
                    In addition, brushed units can be highlighted in the
-                   other following plots (only if they are already open):</p> <p>
+                   other following plots (only if they are already open):
                    - minimum Mahalanobis distance plot;</p> <p>
                    Remark. the window style of the other figures is set
                    equal to that which contains the spmplot. In other
@@ -586,7 +586,7 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
                    DATABRUSH IS A CELL.</p> <p>
                    If databrush is a cell, it is possible to use all
                    optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
-                   following optional argument:</p> <p>
+                   following optional argument:
                    - persist = Persistent brushing.</p> <p>
                      Persist is an empty value or a scalar
                      containing the strings 'on' or 'off'.</p> <p>
@@ -632,14 +632,14 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_H" class="clearfix"></div><h3 id="output_argument_H" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>H</code> &#8212;array of handles H to the plotted points.</span></a><span class="example_desc">3D array</span></span></h3><div class="collapse"><p> See
                    gplotmatrix for further details.</p></div></div><div class="expandableContent"><div id="outputarg_AX" class="clearfix"></div><h3 id="output_argument_AX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>AX</code> &#8212;handles to the individual subaxes.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p> See
                    gplotmatrix for further details.</p></div></div><div class="expandableContent"><div id="outputarg_BigAx" class="clearfix"></div><h3 id="output_argument_BigAx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BigAx</code> &#8212;handle to big (invisible) axes framing the subaxes.</span></a><span class="example_desc">Scalar</span></span></h3><div class="collapse"><p> See gplotmatrix for further details.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
-   spmplot has the same output of gplotmatrix in the statistics toolbox:</p> <p>
+   spmplot has the same output of gplotmatrix in the statistics toolbox:
    [H,AX,BigAx] = spmplot(...) returns an array of handles H to the
    plotted points; a matrix AX of handles to the individual subaxes; and a
    handle BIGAX to big (invisible) axes framing the subaxes.  The third
    dimension of H corresponds to groups in G. AX contains one extra row of
    handles to invisible axes in which the histograms are plotted. BigAx is
    left as the CurrentAxes so that a subsequent TITLE, XLABEL, or YLABEL
-   will be centered with respect to the matrix of axes.</p><p>
+   will be centered with respect to the matrix of axes.</p> <p>
 
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/gplotmatrix.html'))" itemprop="url"><span itemprop="name"><code>gplotmatrix</code></span></a></span> | <span itemprop="seealso"><a href="yXplot.html" itemprop="url"><span itemprop="name"><code>yXplot</code></span></a></span> | <span itemprop="seealso"><a href="boxplotb.html" itemprop="url"><span itemprop="name"><code>boxplotb</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

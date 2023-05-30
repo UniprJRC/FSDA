@@ -19,7 +19,12 @@ kk=10;
 ycont = y;
 ycont(1:kk)=ycont(1:kk)+7;
 [outS]=Sreg(ycont,X);
-out=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.98 seconds 
+out=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
+RANDN to use legacy random number generators.  This syntax is not recommended.
+See &lt;a href="matlab:helpview([docroot
+'\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged
+Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old syntax. 
+Total estimated time to complete S estimate:  1.09 seconds 
 
 out = 
 

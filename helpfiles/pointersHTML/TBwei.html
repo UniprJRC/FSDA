@@ -1,18 +1,21 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>TBwei</title> <meta content="refpage" name="chunktype"><meta content="function:TBwei " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="TBwei Computes weight function psi(u)/u for Tukey's biweight" itemprop="description" name="description" /><h1 itemprop="title">TBwei</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/TBwei.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/TBwei.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/TBwei.html">http://rosa.unipr.it/FSDA/TBwei.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: TBwei</em></p><P>TBwei</P><P>Computes weight function psi(u)/u for Tukey's biweight</P><h2>More About</h2><P>
-
- function TBrho transforms vector u as follows 
+ Function TBwei transforms vector u as follows 
  \[
- TBrho(u)= \left\{
+ TBwei(u)= \left\{
     \begin{array}{cc}
-  (c^2/6) \left\{ 1-[1-(u/c)^2]^3 \right\}  &  |u/c| \leq 1  \\
-  (c^2/6)                      &  |u/c| &gt;1   \\
+  (c^2/6) \psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 &  |u/c| \leq 1 \\
+  0                                                    &  |u/c|&gt;1   \\
  \end{array}
     \right.
   \]
-  
- See equation (2.37) p. 29 of Maronna et al. (2006).
- Remark: equation (2.37) is written in standardized terms in such a way
- that $\rho(c)=1$, so it is the previous expression divided by $(c^2/6)$
+
+ See p. 30 of Maronna et al. (2006)
+
+
+ Remark: Tukey's biweight  psi-function is almost linear around u = 0 in accordance with
+ Winsor's principle that all distributions are normal in the middle.
+ This means that  $\psi (u)/u$ is approximately constant over the linear region of $\psi$,
+ so the points in that region tend to get equal weight.
 
 </P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
  and Methods", Wiley, New York.</P></html>

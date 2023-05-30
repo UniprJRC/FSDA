@@ -88,7 +88,8 @@ function w = PDwei(u,alpha)
 
 
 %{
-    %% Compare five different weight functions in each of them eff is 95 per cent.
+    %% Compare five different weight functions.
+    % In each of them eff is 95 per cent.
     % Initialize graphical parameters.
     FontSize=14;
     x=-6:0.01:6;

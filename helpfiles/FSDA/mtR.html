@@ -308,7 +308,7 @@ assert(isequal(round(rn3,7), round(expectedRes,7)), 'Error: MATLAB did not outpu
                    normal.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Rstate" class="clearfix"> </div> <h3 id="input_argument_Rstate" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Rstate</code> &#8212; The R state. </span>  </a><span class="example_desc">Positive scalar, negative scalar, empty scalar,
                or a 626-element int32 vector.</span></span></h3> <div class="collapse"> <p><p>Stream or seed used to
                initialize the random number generation in MATLAB.</p> <p>
-               If Rstate is a negative scalar, then nothing is done:</p> <p>
+               If Rstate is a negative scalar, then nothing is done:
                   the state and seed are the current MATLAB ones.</p> <p>
                   This option is useful to continue a simulation,
                   possibly intialized in previous steps from a R state.</p> <p>
@@ -341,7 +341,7 @@ assert(isequal(round(rn3,7), round(expectedRes,7)), 'Error: MATLAB did not outpu
    represent the type of normal generator, starting at 0.</p> <p>
 
    The approach followed in this FSDA function to grant compatibility
-   of random numbers generated in MATLAB and R relies on two key steps:</p> <p>
+   of random numbers generated in MATLAB and R relies on two key steps:
    - The state of the random number stream created in MATLAB is replaced
      with the stream received from R as imput argument. This step requires
      recasting the stream from the signed integers used by R and the
@@ -353,7 +353,7 @@ assert(isequal(round(rn3,7), round(expectedRes,7)), 'Error: MATLAB did not outpu
      MATLAB default, which is the ziggurat algorithm.</p> <p>
 
    The approach is applied in two possible ways, depending on user's
-   input (Rstate argument):</p> <p>
+   input (Rstate argument):
    - In the first option, the R seed is given as input and the
      corresponding R, and then MATLAB, states are generated;</p> <p>
    - In the second option, a valid R state is given as input and the
@@ -366,22 +366,20 @@ assert(isequal(round(rn3,7), round(expectedRes,7)), 'Error: MATLAB did not outpu
      specification.</p> <p>
 
    Our solution grants retrocompatibility up to R2012a. Note the key
-   changes in the syntax of MATLAB's RNG start-up:</p> <p>
-   - prior to R2008b the setting was:</p> <p>
+   changes in the syntax of MATLAB's RNG start-up:
+   - prior to R2008b the setting was:
      rand('seed',0).</p> <p>
-   - from R2008b:</p> <p>
+   - from R2008b:
      stream = RandStream('mt19937ar','Seed',5489);</p> <p>
      RandStream.setGlobalStream(stream).</p> <p>
-   - from R2011a the current setting was adopted:</p> <p>
+   - from R2011a the current setting was adopted:
      rng default.</p><p>
 
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Matsumoto, M. and Nishimura, T. (2000), Mersenne Twister: A
     623-Dimensionally Equidistributed Uniform Pseudorandom Number
     Generator, "ACM Transactions on Modeling and Computer Simulation",
-    Vol. 8, pp. 3-30.</p></div><div><p>Marsaglia, G. and Tsang, W.W. (2000), The ziggurat method for
-    generating random variables, "Journal of Statistical Software", Vol. 5,
-    pp. 1-7.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
+    Vol. 8, pp. 3-30.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
 
    The function has been written with the key contribution of Dr Peter
    Perkins, statistician at The Mathworks with recognised competence in

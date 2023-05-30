@@ -169,7 +169,7 @@ function outFORE=forecastH(y,X,Z,varargin)
     outl=[225   660];
     bsb(outl)=[];
     % call of forecastH with option bsb
-    fore=forecastH(y,X,Z,'bsb',bsb);
+    outFORE=forecastH(y,X,Z,'bsb',bsb);
 %}
 
 %{

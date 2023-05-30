@@ -32,8 +32,8 @@
   The diagonal elements of OmegaMap are equal to 1.</p> <p>
   The average overlap (BarOmega, in the code) is defined as the sum of the
   off diagonal elements of OmegaMap (containing the misclassification
-  probabilities) divided by $k*(k-1)/2$.</p> <p>
-  The maximum overlap (MaxOmega, in the code) is defined as:</p><p>
+  probabilities) divided by $k*(k-1)/2$.</p><p>
+  The maximum overlap (MaxOmega, in the code) is defined as:
      </p>\[       \max (w_{j|i} + w_{i|j})  \qquad i \ne j=1,2, ..., k   \]<p>
 
   The probability of overlapping $w_{j|i}$ is nothing but the cdf of a linear
@@ -279,11 +279,11 @@ title('Three components with different Tweedie-distributed explanatory variables
                Remark 2: it is possible to specify up to two values among
                BarOmega MaxOmega and StdOmega.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'StdOmega',0.05 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_hom" class="clearfix"></div><h3 id="input_argument_namevalue_hom" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hom</code> &#8212;Equal Sigmas.</span></a><span class="example_desc">scalar boolean.</span></span></h3><div class="collapse">	<p><p>Scalar boolean which specifies if the desired clusters have
-               to be heterogeneous or homogeneous:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_hom" class="clearfix"></div><h3 id="input_argument_namevalue_hom" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hom</code> &#8212;Equal Sigmas.</span></a><span class="example_desc">scalar boolean.</span></span></h3><div class="collapse">	<p>Scalar boolean which specifies if the desired clusters have
+               to be heterogeneous or homogeneous:
                hom=false (default) ==&gt; heterogeneous,
                hom=true            ==&gt; homogeneous \Sigma_1 = ... = \Sigma_k
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'hom',false 
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'hom',false 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_restrfactor" class="clearfix"></div><h3 id="input_argument_namevalue_restrfactor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrfactor</code> &#8212;restriction factor.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar in the interval $[1, \infty]$ which specifies the
                maximum ratio to allow between the largest $\sigma^2$ and
                the smallest $\sigma^2$ which are generated. If, for example,
@@ -310,16 +310,16 @@ title('Three components with different Tweedie-distributed explanatory variables
                group can be defined in [a32 b32].</p> <p>
                - If Xdistrib = 1 the default is to assume that the explanatory
                  variables come from U(0, 1) and that the first explanatory
-                 variable is a constant term (the intercept).</p> <p>
+                 variable is a constant term (the intercept).</p><p>
                - If Xdistrib is a structure, it may contain information about
                  the distribution (in the fieldname 'type') and the
                  parameters of the distribution. The following options are
-                 admitted for Xdistrib:</p><p>
+                 admitted for Xdistrib:
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p><p>scalar equal to 1 if intercept is
                    present. The default value of Xdistrib.intercept is 1.</p> <p>
                    The other fields of Xdistrib depend on the distribution
                    which is chosen.</p></p></td></tr><tr valign="top"><td><code>type</code></td><td><p><p>string which identifies the kind of distribution.</p> <p> 
-                   Possibile values are:</p> <p>
+                   Possibile values are:
                    'Normal'; NORMAL DISTRIBUTION N(mu, sigma); In this
                    case the use must supply mu and sigma.</p> <p>
                    'Uniform'; UNIFORM DISTRIBUTION U(a, b).</p> <p>
@@ -361,10 +361,10 @@ title('Three components with different Tweedie-distributed explanatory variables
                  of regression coefficients come from N(0, 1).</p> <p>
                - If betadistrib is a structure it may contain information
                  about the distribution (in the fieldname type) and the
-                 parameters of the distribution.</p> <p>
-                 The following options are admitted for betadistrib:</p><p>
+                 parameters of the distribution.</p><p>
+                 The following options are admitted for betadistrib:
           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p><p>string which identifies the kind of distribution.</p> <p> 
-                   Possibile values are:</p> <p>
+                   Possibile values are:
                    'Normal'; NORMAL DISTRIBUTION N(mu, sigma); In this
                    case the user must supply mu and sigma.</p> <p>
                    'Uniform'; UNIFORM DISTRIBUTION U(a, b).</p> <p>
@@ -446,10 +446,10 @@ title('Three components with different Tweedie-distributed explanatory variables
  of eigenvalues and eigenvectors, "Numerische Mathematik", Vol. 13,
  pp. 293-304.</p></div><div><p>Parlett, B.N. and Reinsch, C. (1971), Balancing a Matrix for Calculation of
  Eigenvalues and Eigenvectors, in Bauer, F.L. Eds, "Handbook for Automatic
- Computation", Vol. 2, pp. 315-326, Springer.</p></div><div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
-   A General Trimming Approach to Robust Cluster Analysis. Annals
-   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:</p> <p>
-   <a href="http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf">http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</a>].</p></p></div><div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+ Computation", Vol. 2, pp. 315-326, Springer.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+ A General Trimming Approach to Robust Cluster Analysis. Annals
+ of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
+ <a href="http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf">http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</a>].</p></div><div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2019). Assessing Robust
  Methodologies for Clustering Linear Regression Data, "Advances in Data
- Analysis and Classification". [doi
- <a href="https://doi.org/10.1007/s11634-018-0331-4">https://doi.org/10.1007/s11634-018-0331-4</a>].</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span> | <span itemprop="seealso"><a href="lga.html" itemprop="url"><span itemprop="name"><code>lga</code></span></a></span> | <span itemprop="seealso"><a href="rlga.html" itemprop="url"><span itemprop="name"><code>rlga</code></span></a></span> | <span itemprop="seealso"><a href="ncx2mixtcdf.html" itemprop="url"><span itemprop="name"><code>ncx2mixtcdf</code></span></a></span> | <span itemprop="seealso"><a href="restreigen.html" itemprop="url"><span itemprop="name"><code>restreigen</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Analysis and Classification", Vol. 13, pp. 227–257,
+ <a href="https://doi.org/10.1007/s11634-018-0331-4">https://doi.org/10.1007/s11634-018-0331-4</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span> | <span itemprop="seealso"><a href="lga.html" itemprop="url"><span itemprop="name"><code>lga</code></span></a></span> | <span itemprop="seealso"><a href="rlga.html" itemprop="url"><span itemprop="name"><code>rlga</code></span></a></span> | <span itemprop="seealso"><a href="ncx2mixtcdf.html" itemprop="url"><span itemprop="name"><code>ncx2mixtcdf</code></span></a></span> | <span itemprop="seealso"><a href="restreigen.html" itemprop="url"><span itemprop="name"><code>restreigen</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

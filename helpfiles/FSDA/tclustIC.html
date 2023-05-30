@@ -120,7 +120,7 @@ suplabel('BIC (MIXMIX)','t');</pre></div></div></p></div></div></div><p> <
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;type of information criterion.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character which specifies which information criteria must
                be computed for each k (number of groups) and each value of
                the restriction factor (c).</p> <p>
-               Possible values for whichIC are:</p> <p>
+               Possible values for whichIC are:
                'MIXMIX'  = a mixture model is fitted and to
                    compute the information criterion the mixture
                    likelihood is used. This option corresponds to the use of
@@ -243,7 +243,7 @@ suplabel('BIC (MIXMIX)','t');</pre></div></div></p></div></div></div><p> <
                default value for numpool the number of physical cores
                rather than the number of logical ones. The user can
                increase the number of parallel pool workers allocated to
-               the multiple start monitoring by:</p> <p>
+               the multiple start monitoring by:
                - setting the NumWorkers option in the local cluster profile
                  settings to the number of logical cores (Remark 2). To do
                  so go on the menu "Home|Parallel|Manage Cluster Profile"
@@ -295,7 +295,7 @@ suplabel('BIC (MIXMIX)','t');</pre></div></div></p></div></div></div><p> <
                $j$-th scatter matrix $\Sigma_j$ is
                </p>\[
                \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-               \]<p>
+               \]
                where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
                diagonal matrix with $|\Gamma_j|=1$ and with elements
                $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
@@ -303,8 +303,8 @@ suplabel('BIC (MIXMIX)','t');</pre></div></div></p></div></div></div><p> <
                $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
                known as "shape" matrices, because they determine the shape of the
                fitted cluster components. The following $k$
-               constraints are then imposed on the shape matrices:</p> <p>
-               </p>\[
+               constraints are then imposed on the shape matrices:
+               \[
                \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
                    c_{shape}, \text{ for } j=1,...,k,
                \]<p>
@@ -316,9 +316,9 @@ suplabel('BIC (MIXMIX)','t');</pre></div></div></p></div></div></div><p> <
                parametrization because it implies spherical clusters with
                equal volumes.</p><p>
                         </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cshape',10
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:
 
-        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p>matrix of size 5-times-8 if kk and cc are not
+        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p>matrix of size 5-times-8 if kk and cc are not
                    specififed else it is a matrix of size length(kk)-times
                    length(cc) containinig the value of the penalized
                    classification likelihood. This output is present only

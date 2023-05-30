@@ -21,26 +21,26 @@ out =
 
 ans(:,:,1) =
 
-   -1.0000   18.0044   21.0037   24.0027
-   15.0048   -1.0000   22.0032   25.0027
-   16.0046   19.0043   -1.0000   26.0024
-   17.0046   20.0039   23.0029   -1.0000
+   -1.0000   18.0128   21.0103   24.0079
+   15.0150   -1.0000   22.0095   25.0072
+   16.0148   19.0126   -1.0000   26.0068
+   17.0140   20.0106   23.0088   -1.0000
 
 
 ans(:,:,2) =
 
-   -1.0000   30.0020   33.0020   36.0018
-   27.0023   -1.0000   34.0020   37.0017
-   28.0022   31.0020   -1.0000   38.0016
-   29.0021   32.0020   35.0020   -1.0000
+   -1.0000   30.0062   33.0060   36.0059
+   27.0068   -1.0000   34.0060   37.0055
+   28.0067   31.0060   -1.0000   38.0052
+   29.0065   32.0060   35.0060   -1.0000
 
 
 ans(:,:,3) =
 
-         0   42.0015   45.0015   48.0013
-   39.0015         0   46.0015   49.0012
-   40.0015   43.0015         0   50.0012
-   41.0015   44.0015   47.0013         0
+         0   42.0048   45.0043   48.0040
+   39.0051         0   46.0043   49.0037
+   40.0050   43.0046         0   50.0037
+   41.0049   44.0045   47.0042         0
 
 </pre><a href='http://rosa.unipr.it/fsda/MixSim.html#Example_1'><img vspace="5" hspace="5" src="images\MixSim_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</li></span></a></span></h3><div class="collapse"><p>
      Use average overlap of 0.05 and
@@ -144,7 +144,7 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                BarOmega MaxOmega and StdOmega.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'StdOmega',0.05
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_sph" class="clearfix"></div><h3 id="input_argument_namevalue_sph" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>sph</code> &#8212;Spherical covariances.</span></a><span class="example_desc">scalar logical | structure.</span></span></h3><div class="collapse">	<p><p>Scalar boolean or structure which specifies covariance
-               matrix. When sph is logical value, if:</p> <p>
+               matrix. When sph is logical value, if:
                sph=false (default) ==&gt; non-spherical clusters;</p> <p>
                sph=true            ==&gt; spherical clusters= const*I.</p> <p>
                The following options "hom", "ecc" and "restrfactor" have
@@ -152,11 +152,11 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                value of sph is false that is non spherical clusters are
                generated.</p> <p>
                If sph is a structure it may contain the following fields.</p><p>
-       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p><p>a 3 letter character in the set:</p> <p>
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p>a 3 letter character in the set:
                 'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
                 'EVI','VEI','EEI','VII','EII' which
                 specifies the type of Gaussian Parsimonious Clustering
-                Model which needs to be generated.</p></p></td></tr><tr valign="top"><td><code>exactrestriction</code></td><td><p><p>boolean. If sph.exactrestriction is
+                Model which needs to be generated.</p></td></tr><tr valign="top"><td><code>exactrestriction</code></td><td><p><p>boolean. If sph.exactrestriction is
                 true the covariance matrices have to be generated with the
                 exact values of the restrictions specified in sph.cdet,
                 sph.shw and sph.shb. For example if sph.pars='VVE' and
@@ -284,10 +284,10 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
   probabilities of occurrence $\pi_i$ and $\pi_j$, the misclassification
   probability with respect to cluster $i$ (that is conditionally on $x$
   belonging to cluster $i$,  which is called  $w_{j|i}$) is defined as
-  $Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) &lt; \pi_j \phi(x;\mu_j,\Sigma_j)]$.</p> <p>
+  $Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) &lt; \pi_j \phi(x;\mu_j,\Sigma_j)]$.</p><p>
   The matrix containing the misclassification probabilities $w_{j|i}$ is
   called OmegaMap
-  The probability of overlapping between groups $i$ and $j$ is given by:</p><p>
+  The probability of overlapping between groups $i$ and $j$ is given by:
   </p>\[
             w_{j|i} + w_{i|j}    \qquad      i,j=1,2, ..., k
   \]<p>
@@ -315,13 +315,11 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
  this publication we will use "MM2010 JCGS"]</p></div><div><p>Melnykov, V., Chen, W.-C. and Maitra, R. (2012), MixSim: An R Package
  for Simulating Data to Study Performance of Clustering Algorithms,
  "Journal of Statistical Software", Vol. 51, pp. 1-25.</p></div><div><p>Davies, R. (1980), The distribution of a linear combination of
- chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.</p></div><div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
+ chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
  A General Trimming Approach to Robust Cluster Analysis. Annals
- of Statistics, Vol. 36, 1324-1345. [Technical Report available at:</p> <p>
- www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</p></p></div><div><p>Riani, M., Cerioli, A., Perrotta, D. and Torti, F. (2015), Simulating
+ of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
+ www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</p></div><div><p>Riani, M., Cerioli, A., Perrotta, D. and Torti, F. (2015), Simulating
  mixtures of multivariate data with fixed cluster overlap in FSDA,
- "Advances in data analysis and classification", Vol. 9, pp. 461-481.</p></div><div><p>Parlett, B.N. and Reinsch, C. (1969), Balancing a matrix for calculation
- of eigenvalues and eigenvectors, "Numerische Mathematik", Vol. 13,
- pp. 293-304.</p></div><div><p>Parlett, B.N. and Reinsch, C. (1971), Balancing a Matrix for Calculation of
+ "Advances in data analysis and classification", Vol. 9, pp. 461-481.</p></div><div><p>Parlett, B.N. and Reinsch, C. (1971), Balancing a Matrix for Calculation of
  Eigenvalues and Eigenvectors, in Bauer, F.L. Eds, "Handbook for Automatic
  Computation", Vol. 2, pp. 315-326, Springer.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span> | <span itemprop="seealso"><a href="lga.html" itemprop="url"><span itemprop="name"><code>lga</code></span></a></span> | <span itemprop="seealso"><a href="rlga.html" itemprop="url"><span itemprop="name"><code>rlga</code></span></a></span> | <span itemprop="seealso"><a href="ncx2mixtcdf.html" itemprop="url"><span itemprop="name"><code>ncx2mixtcdf</code></span></a></span> | <span itemprop="seealso"><a href="restreigen.html" itemprop="url"><span itemprop="name"><code>restreigen</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

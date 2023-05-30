@@ -7,7 +7,7 @@ Un = FSRbsb(y,X,out.bs);</pre></div></div></p></div></div><div id="example_
 y=fishery{:,2};
 X=fishery{:,1};
 [out]=LXS(y,X,'nsamp',10000);
-Un = FSRbsb(y,X,out.bs,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.20 seconds 
+Un = FSRbsb(y,X,out.bs,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.21 seconds 
 m=100
 m=200
 m=300
@@ -131,7 +131,7 @@ X=fishery{:,1};
                contains the units belonging to the subset at each step (or
                in selected steps as specified by optional vector bsbsteps)
                of the forward search.</p> <p>
-               More precisely:</p> <p>
+               More precisely:
                BB(:,1) contains the units forming subset in step bsbsteps(1);</p> <p>
                ....;</p> <p>
                BB(:,end) contains the units forming subset in step  bsbsteps(end);</p> <p>

@@ -39,8 +39,7 @@ alphaX = 1;
 % panel of the gscatter plot.
 plots=struct;
 plots.name={'gscatter'};
-out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);</pre></div></div><pre class="codeoutput">
- 75%[======================================&gt;            ]
+out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
 100%[===================================================]
 </pre><a href='http://rosa.unipr.it/fsda/tclustregeda.html#Example_2'><img vspace="5" hspace="5" src="images\tclustregeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustregeda: example with multiple explanatory variables, with yXplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X  = load('X.txt');
 y = X(:,end);
@@ -249,8 +248,8 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                    component that is linear combination of the variables
                    in X.</p> <p>
 
-               Case 2: plots option used as struct.</p> <p>
-                 If plots is a structure it may contain the following fields:</p><p>
+               Case 2: plots option used as struct.</p><p>
+                 If plots is a structure it may contain the following fields:
          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>name</code></td><td><p><p>cell array of strings which enables to
                    specify which plot to display.</p> <p>
                    plots.name={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...</p> <p>
@@ -331,7 +330,7 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
 
     <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>IDX</code></td><td><p><p>n-by-length(alphaLik) matrix containing assignment of each unit to
                        each of the k groups. Cluster names are integer
-                       numbers from 1 to k:</p> <p>
+                       numbers from 1 to k:
                        -1 indicates first level trimmed observations;</p> <p>
                        -2 indicates second level trimmed observations.</p><p>
                        observations. First column refers of out.IDX refers
@@ -393,7 +392,7 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                        ...</p><p>
                        last col = allocation of the n1 units in step alphaLik(end)</p></p></td></tr><tr valign="top"><td><code>Postprob</code></td><td><p>Posterior probabilities. 3D array of size
                        n-by-k-length(alphaLik) containing the monitoring
-                       of posterior probabilities.</p></td></tr><tr valign="top"><td><code>units</code></td><td><p><p>structure containing the following fields:</p> <p>
+                       of posterior probabilities.</p></td></tr><tr valign="top"><td><code>units</code></td><td><p><p>structure containing the following fields:
                        units.UnitsTrmOrChgCla=units trimmed at least onece
                            or changed classification at least once.</p> <p>
                        units.UnitsChgCla=units which changed
@@ -431,17 +430,17 @@ given \beta_{j,\alpha_r}
  a particular label.</p><p>
 
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Mayo-Iscar A. (2016), The joint role of trimming and constraints in
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S., and
+ Mayo-Iscar A. (2016), The joint role of trimming and constraints in
  robust estimation for mixtures of gaussian factor analyzers,
- "Computational Statistics & Data Analysis", Vol. 99, pp. 131-147.</p> <p>
-
- Garcia-Escudero, L.A., Gordaliza, A., Greselin, F., Ingrassia, S. and</p></p></div><div><p><p>Mayo-Iscar, A. (2017), Robust estimation of mixtures of regressions with
+ "Computational Statistics & Data Analysis", Vol. 99, pp. 131-147.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza, A., Greselin, F., Ingrassia, S. and
+ Mayo-Iscar, A. (2017), Robust estimation of mixtures of regressions with
  random covariates, via trimming and constraints, "Statistics and
- Computing", Vol. 27, pp. 377-402.</p> <p>
-
- Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R.</p></p></div><div><p>(2010), Robust clusterwise linear regression through trimming,
+ Computing", Vol. 27, pp. 377-402.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R.
+ (2010), Robust clusterwise linear regression through trimming,
  "Computational Statistics and Data Analysis", Vol. 54, pp.3057-3069.</p></div><div><p>Cerioli, A. and Perrotta, D. (2014). Robust Clustering Around Regression
  Lines with High Density Regions. Advances in Data Analysis and
- Classification, Vol. 8, pp. 5-26.</p></div><div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+ Classification, Vol. 8, pp. 5-26.</p></div><div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2019). Assessing Robust
  Methodologies for Clustering Linear Regression Data, "Advances in Data
- Analysis and Classification".</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclusteda.html" itemprop="url"><span itemprop="name"><code>tclusteda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Analysis and Classification", Vol. 13, pp. 227–257,
+ <a href="https://doi.org/10.1007/s11634-018-0331-4">https://doi.org/10.1007/s11634-018-0331-4</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclusteda.html" itemprop="url"><span itemprop="name"><code>tclusteda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

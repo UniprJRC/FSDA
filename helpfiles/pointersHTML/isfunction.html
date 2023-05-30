@@ -1,32 +1,4 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>isfunction</title> <meta content="refpage" name="chunktype"><meta content="function:isfunction " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="isfunction Checks if a function exists" itemprop="description" name="description" /><h1 itemprop="title">isfunction</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/isfunction.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/isfunction.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/isfunction.html">http://rosa.unipr.it/FSDA/isfunction.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: isfunction</em></p><P>isfunction</P><P>Checks if a function exists</P><h2>More About</h2><P>
- The density of the inverse gamma distribution defined over the support
- $x&gt;0$ with shape parameter $a$ and scale parameter $b$ is
-  \[
-  f_{IG}(x, a, b) \propto x^{-a -1} \exp (-b/x)
-  \frac{b^a}{\Gamma(a)}
-  \]
-
- inversegampdf computes the gamma pdf at each of the values in x using the
- corresponding shape parameters in a and scale parameters in b. Parameters
- x, a, and b can be vectors, matrices, or multidimensional arrays that all
- have the same size. A scalar input is expanded to a constant array with
- the same dimensions as the other inputs. The parameters in a and b must
- all be positive and the values in x must be in the interval $[0,\infty)$.
-
- The chief use of the inverse gamma distribution is in Bayesian
- statistics, where the distribution arises as the marginal posterior
- distribution for the unknown variance of a normal distribution if an
- uninformative prior is used; and as an analytically tractable conjugate
- prior if an informative prior is required. See the last example below. 
-
- Relation with the Gamma distribution.
- If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution
- with paramters $a$ and $1/b$.
-
- See the appendix of Zellner (1971) for a detailed description of the
- inverse Gamma distribution.
-
-
-</P><h2>References</h2><P>Zellner, A. (1971), "An introduction to Bayesian Inference in
- Econometrics", Wiley.
- [https://en.wikipedia.org/wiki/Inverse-gamma_distribution.]</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>isfunction</title> <meta content="refpage" name="chunktype"><meta content="function:isfunction " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="isfunction Checks if a function exists" itemprop="description" name="description" /><h1 itemprop="title">isfunction</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/isfunction.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/isfunction.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/isfunction.html">http://rosa.unipr.it/FSDA/isfunction.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: isfunction</em></p><P>isfunction</P><P>Checks if a function exists</P><h2>Description</h2><P>Returns 1 if the function 'funstr' exists, 0 otherwise. Also returns the
+ location of the function, which is empty if funstr does not exist. Works
+ for both MATLAB and third party functions, e.g. those in FSDA. REMARK:
+ does not work for built-in functions such as sin, cos, etc.</P></html>

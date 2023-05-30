@@ -12,9 +12,9 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+3;
-[out]=Smulteda(Ycont,'bdp',[0.5 0.3 0.1],'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.38 seconds 
-Total estimated time to complete S estimator:  0.49 seconds 
-Total estimated time to complete S estimator:  0.22 seconds 
+[out]=Smulteda(Ycont,'bdp',[0.5 0.3 0.1],'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.50 seconds 
+Total estimated time to complete S estimator:  0.30 seconds 
+Total estimated time to complete S estimator:  0.24 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/Smulteda.html#Example_2'><img vspace="5" hspace="5" src="images\Smulteda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Smulteda with extracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
@@ -84,7 +84,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
                matrix Y. As default nocheck=0.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:
                (1) a plot of Mahalanobis distances against index number. The
                confidence level used to draw the confidence bands for
                the MD is given by the input option conflev. If conflev is

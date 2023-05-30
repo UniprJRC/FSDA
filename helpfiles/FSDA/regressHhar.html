@@ -65,7 +65,7 @@ disp(LSest)
 % Estimate a multiplicative heteroscedastic model and print the
 % estimates of regression and scedastic parameters together with LM, LR
 % and Wald test
-out=regressHhar(y,X,Loadfactor,'msgiter',1,'test',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FGLS estimator.</li></span></a></span></h3><div class="collapse"><p>
+out=regressHhar(y,X,Loadfactor,'msgiter',1,'test',true);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FGLS estimator.</li></span></a></span></h3><div class="collapse"><p>
      Estimate a multiplicative heteroscedastic model using just one iteration
      that is find FGLS estimator (two step estimator).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Data are monthly credit card expenditure for 100 individuals.
 % Results in structure "out" coincide with estimates of row
@@ -110,7 +110,7 @@ Coeff.
                you explicitly remove it using option intercept, so do not
                include a column of 1s in X.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Z" class="clearfix"> </div> <h3 id="input_argument_Z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Z</code> &#8212; Predictor variables in the skedastic equation. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x r matrix or vector of length r.</p> <p>
                If Z is a n x r matrix it contains the r variables which
-               form the scedastic function as follows:</p><p> 
+               form the scedastic function as follows: 
                </p>\[
                \sigma^2_i = exp(\gamma_0 + \gamma_1 Z_{i1} + ...+
                \gamma_{r} Z_{ir}). 
@@ -184,13 +184,13 @@ Coeff.
                values of maximized log likelihood are given. The default
                is false, that is no test is computed.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'test',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>T consists of a structure 'out' containing the following fields
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>T consists of a structure 'out' containing the following fields
 
-   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>p-by-3 matrix containing:</p> <p> 
+   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>p-by-3 matrix containing: 
                        1st col = Estimates of regression coefficients;</p> <p> 
                        2nd col = Standard errors of the estimates of regr
                        coeff;</p><p> 
-                       3rd col = t-tests of the estimates of regr coeff.</p></p></td></tr><tr valign="top"><td><code>Gamma</code></td><td><p><p>(r+1)-by-3 matrix containing:</p> <p> 
+                       3rd col = t-tests of the estimates of regr coeff.</p></p></td></tr><tr valign="top"><td><code>Gamma</code></td><td><p><p>(r+1)-by-3 matrix containing: 
                        1st col = Estimates of scedastic coefficients;</p> <p> 
                        2nd col = Standard errors of the estimates of
                        scedastic coeff;</p> <p> 
@@ -201,7 +201,8 @@ Coeff.
                        other words 
                        </p>\[ 
                        \hat \sigma^2= \exp(\gamma_1) 
-                       \]</p></td></tr><tr valign="top"><td><code>WA</code></td><td><p>scalar. Wald test. This field is present only if
+                       \]</p></td></tr><tr valign="top"><td><code>typeH</code></td><td><p>'har'. This output is necessary if function
+                       forecastH is called.</p></td></tr><tr valign="top"><td><code>WA</code></td><td><p>scalar. Wald test. This field is present only if
                        input option test is true.</p></td></tr><tr valign="top"><td><code>LR</code></td><td><p>scalar. Likelihood ratio test. This field is
                        present only if input option test is true.</p></td></tr><tr valign="top"><td><code>LM</code></td><td><p>scalar. Lagrange multiplier test.  This field is 
                        present only if input option test is true.</p></td></tr><tr valign="top"><td><code>LogL</code></td><td><p>scalar. Complete maximized log likelihood.  This
@@ -210,7 +211,7 @@ Coeff.
    This routine implements Harvey&uuml;s (1976) model of
    multiplicative heteroscedasticity which is a very flexible, general
    model that includes most of the useful formulations as special cases.</p> <p>
-   The general formulation is:</p> <p> 
+   The general formulation is: 
    
        $\sigma^2_i =\sigma^2 \exp(z_i \alpha)$
    
@@ -229,7 +230,7 @@ Coeff.
    Once the full parameter vector is estimated \( \exp( \gamma_0)\) provides the
    estimator for \( \sigma^2 \).</p> <p> 
 
-  The model is:</p><p>  
+  The model is:  
                </p>\[
                  y=X \times\beta+ \epsilon,  \qquad 
                  \epsilon \sim N(0, \;  \Sigma)
@@ -287,4 +288,4 @@ Coeff.
 
 
 </p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Greene W.H. (1987), Econometric Analysis, Prentice Hall. [5th edition,
-   section 11.7.1 pp. 232-235, 7th edition, section  9.7.1 pp. 280-282].</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="regressHart.html" itemprop="url"><span itemprop="name"><code>regressHart</code></span></a></span> | <span itemprop="seealso"><a href="regressH.html" itemprop="url"><span itemprop="name"><code>regressH</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+   section 11.7.1 pp. 232-235, 7th edition, section  9.7.1 pp. 280-282].</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="regressHart.html" itemprop="url"><span itemprop="name"><code>regressHart</code></span></a></span> | <span itemprop="seealso"><a href="regressH.html" itemprop="url"><span itemprop="name"><code>regressH</code></span></a></span> | <span itemprop="seealso"><a href="forecastH.html" itemprop="url"><span itemprop="name"><code>forecastH</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

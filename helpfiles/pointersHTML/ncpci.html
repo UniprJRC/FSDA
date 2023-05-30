@@ -1,14 +1,29 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>ncpci</title> <meta content="refpage" name="chunktype"><meta content="function:ncpci " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ncpci Non centrality parameter confidence interval (taken from effect_of_size_toolbox)" itemprop="description" name="description" /><h1 itemprop="title">ncpci</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/ncpci.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/ncpci.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/ncpci.html">http://rosa.unipr.it/FSDA/ncpci.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: ncpci</em></p><P>ncpci</P><P>Non centrality parameter confidence interval (taken from effect_of_size_toolbox)</P><h2>More About</h2><P>
-   This function is similar to nchoosek of Statistics Toolbox but it is
-   much faster and makes a more efficient use of memory.
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>ncpci</title> <meta content="refpage" name="chunktype"><meta content="function:ncpci " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ncpci Non centrality parameter confidence interval (taken from effect_of_size_toolbox)" itemprop="description" name="description" /><h1 itemprop="title">ncpci</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/ncpci.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/ncpci.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/ncpci.html">http://rosa.unipr.it/FSDA/ncpci.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: ncpci</em></p><P>ncpci</P><P>Non centrality parameter confidence interval (taken from effect_of_size_toolbox)</P><h2>Description</h2><P>This function creates (using iteration) a two-sided confidence intervals for the
+ noncentrality parameter of a noncentral $\chi^2$, $F$ or
+ $t$ distribution with degrees of freedom $df$, given an abscissa value $x$.
+ This function has been taken from the MATLAB toolbox 'Measures of effect
+ Size' by Harald Hentschke and  Maik C. St&uuml;ttgen.
+ https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox
+ and has been slighlty modified to be included into the FSDA
+ toolbox.</P><h2>More About</h2><P>
+ This function is used in the FSDA toolbox in function corrNominal.m to
+ find the confidence interval of Cramer's $V$ index. This index is a
+ function of the non centrality parameter associated with the $\chi^2$
+ index. Confidence intervals based on non central distributions depend on
+ the "inversion confidence interval principle" (Stiegler and Fouladi 1997,
+ pp. 237-239). The main idea is to use the observed value of a test
+ statistic (that is input x in the language of this routine) to initiate a
+ search for the lower and upper limits of to a $1-\alpha$ confidence
+ interval for the non centrality parameter (the lower and upper bound of
+ the confidence interval is given in output argument ci).
+ The confidence interval of the non centrality parameter can then be
+ converted into a confidence interval of an index which takes into account
+ the sample size (which for example can be the Cramer's $V$ index) as long
+ as the effect-size index (parameter) is a monotonic function of the non
+ centrality parameter.
+ See Smithson (2003) and "Measures of Effect Size" Toolbox for further
+ details.
 
-   Returns the scalar $v!/k!(v-k)!$ if $v$ and $k$ are non-negative integers.
-   This is the number of combinations of $v$ things taken $k$ at a time. In
-   this case it makes use of function bc.
-
-   Produces a matrix with $n!/k!(n-k)!$ rows and $k$ columns if $v$ is a vector
-   of length $n. Each row contains a combination of k elements taken
-   without repetitions among n. In this case function combsFS is used.
-
-</P><h2>References</h2><P>Riordan, J. (1958), "An Introduction to Combinatorial Analysis", 
-    Wiley & Sons, New York.</P></html>
+</P><h2>References</h2><P>Hentschke, H. and Stuttgen, M. (2011), Comuputation of measures of effect
+ size for neuroscience data sets, "European Journal of Neuroscience", Vol.
+ 34, pp. 1887-1894.</P></html>

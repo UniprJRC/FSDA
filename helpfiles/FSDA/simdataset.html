@@ -232,7 +232,7 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                   order to generate these units the maximum number
                   of attempts is equal to 10000.</p> <p>
                 - If noiseunits is a structure it may contain the following
-                  fields:</p> <p>
+                  fields:
                   number = scalar, or vector of length f. The sum of the
                        elements of vector 'number' is equal to the total
                        number of outliers which are simulated.</p> <p>
@@ -250,13 +250,13 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                          each variables are simulated in the range
                          interval(1) and interval(2).</p> <p>
                          If interval is a 2-by-v matrix outliers are
-                         simulated in:</p> <p>
+                         simulated in:
                          interval(1,1) interval (2,1) for variable 1
                          ...</p> <p>
                          interval(1,v) interval (2,v) for variable v
                   typeout = list of length f containing the type of
                        outliers which must be simulated. Possible values
-                       for typeout are:</p> <p>
+                       for typeout are:
                        * unif (or uniform), if the outliers must be
                          generated using the uniform distribution;</p> <p>
                        * norm (or normal), if the outliers must be
@@ -274,7 +274,7 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                          from a single coordinate (which will be the
                          min or max in that particular dimension or the
                          min or max specified in interval).</p> <p>
-                For example, the code:</p> <p>
+                For example, the code:
                    noiseunits=struct;</p><p>
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>[100 100];</p></td></tr><tr valign="top"><td><code>typeout</code></td><td><p>{'uniform' 'componentwise'};</p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>[-2 2];</p> <p>
                 adds 200 outliers, the first 100 generated using
@@ -288,9 +288,9 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                 - If noisevars is a scalar equal to r, then r new noise
                   variables are added to the matrix of simulated data
                   using the uniform distribution in the range [min(X)
-                  max(X)].</p> <p>
+                  max(X)].</p><p>
                 - If noisevars is a structure it may contain the following
-                  fields:</p><p>
+                  fields:
           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>a scalar or a vector of length f. The sum of
                        elements of vector 'number' is equal to the total
                        number of noise variables to be addded.</p></td></tr><tr valign="top"><td><code>distribution</code></td><td><p><p>string or cell array of strings of length
@@ -300,7 +300,7 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                        uniform distribution is used to simulate the noise
                        variables.</p> <p>
                        String 'distribution' can be one of the following
-                       values:</p> <p>
+                       values:
                        * uniform = uniform distribution
                        * normal  = normal distribution
                        * t or T followed by a number which controls the
@@ -324,7 +324,7 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                          If interval is 'minmax' the noise varaibles are
                          simulated uniformly between the smallest and the
                          largest coordinates of the simulated data matrix.</p> <p>
-                For example, the code:</p> <p>
+                For example, the code:
                    noisevars=struct;</p> <p>
                    noisevars.number=[3 2];</p> <p>
                    noisevars.distribution={'Chisquare5' 'T3'};</p> <p>
@@ -362,4 +362,4 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
  chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.</p></div><div><p><p>Riani, M., Cerioli, A., Perrotta, D. and Torti, F. (2015), Simulating
  mixtures of multivariate data with fixed cluster overlap in FSDA,
  "Advances in data analysis and classification", Vol. 9, pp. 461-481.</p> <p>
- [DOI 10.1007/s11634-015-0223-9].</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="MixSim.html" itemprop="url"><span itemprop="name"><code>MixSim</code></span></a></span> | <span itemprop="seealso"><a href="genSigmaGPCM.html" itemprop="url"><span itemprop="name"><code>genSigmaGPCM</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ <a href="https://doi.org/10.1007/s11634-015-0223-9">https://doi.org/10.1007/s11634-015-0223-9</a></p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="MixSim.html" itemprop="url"><span itemprop="name"><code>MixSim</code></span></a></span> | <span itemprop="seealso"><a href="genSigmaGPCM.html" itemprop="url"><span itemprop="name"><code>genSigmaGPCM</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

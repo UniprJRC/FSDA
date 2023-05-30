@@ -70,7 +70,7 @@ quant=chi2inv(0.99,2);
 v=axis;
 line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
 title('Normality test');
-xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.15 seconds 
+xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/FSReda.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSReda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSReda_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSReda_03.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
      beta and sigma2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% House price data
 load hprice.txt;
@@ -143,9 +143,9 @@ suplabel(['Housing data; confidence intervals of the parameters monitored in the
 num2str(xlimL) ',' num2str(xlimU) ...
 ']'],'t');
 disp(['The vertical lines are located in the' ...
-' step prior to the inclusion of the first outlier'])</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.19 seconds 
+' step prior to the inclusion of the first outlier'])</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.24 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 38.1%
+Warning: Number of subsets without full rank equal to 38.9%
 m=100
 m=200
 m=300
@@ -216,7 +216,7 @@ m=500
              </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.90 0.93]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search
              and start monitoring required diagnostics. if init is not
-             specified it will be set equal to :</p> <p>
+             specified it will be set equal to :
              p+1, if the sample size is smaller than 40;</p> <p>
              min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
              </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
@@ -246,40 +246,40 @@ m=500
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean
 
                Data Types - double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>RES</code></td><td><p><p>n x (n-init+1) = matrix containing the monitoring of
-               scaled residuals:</p> <p>
+               scaled residuals:
                1st row = residual for first unit;</p> <p>
                ...;</p><p>
                nth row = residual for nth unit.</p></p></td></tr><tr valign="top"><td><code>LEV</code></td><td><p><p>(n+1) x (n-init+1) = matrix containing the monitoring of
-               leverage:</p> <p>
-               1st row = leverage for first unit:</p> <p>
-               ...;</p><p>
+               leverage:
+               1st row = leverage for first unit:
+               ...;</p> <p>
                nth row = leverage for nth unit.</p></p></td></tr><tr valign="top"><td><code>BB</code></td><td><p><p>n x (n-init+1) matrix containing the information about the units belonging
-               to the subset at each step of the forward search:</p> <p>
+               to the subset at each step of the forward search:
                1st col = indexes of the units forming subset in the
                initial step;</p> <p>
                ...;</p><p>
                last column = units forming subset in the final step (all
                units).</p></p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>n-init x 3 matrix which contains the monitoring of minimum
                deletion residual or (m+1)ordered residual  at each step of
-               the forward search:</p> <p>
+               the forward search:
                1st col = fwd search index (from init to n-1);</p> <p>
                2nd col = minimum deletion residual;</p> <p>
                3rd col = (m+1)-ordered residual.</p><p>
                Remark: these quantities are stored with sign, that is the
                min deletion residual is stored with negative sign if
                it corresponds to a negative residual.</p></p></td></tr><tr valign="top"><td><code>msr</code></td><td><p><p>n-init+1 x 3 = matrix which contains the monitoring of
-               maximum studentized residual or m-th ordered residual:</p> <p>
+               maximum studentized residual or m-th ordered residual:
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = maximum studentized residual;</p><p>
                3rd col = (m)-ordered studentized residual.</p></p></td></tr><tr valign="top"><td><code>nor</code></td><td><p><p>(n-init+1) x 4 matrix containing the monitoring of
-               normality test in each step of the forward search:</p> <p>
+               normality test in each step of the forward search:
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = Asymmetry test;</p> <p>
                3rd col = Kurtosis test;</p><p>
                4th col = Normality test.</p></p></td></tr><tr valign="top"><td><code>Bols</code></td><td><p>(n-init+1) x (p+1) matrix containing the monitoring of
                estimated beta coefficients in each step of the forward
                search.</p></td></tr><tr valign="top"><td><code>S2</code></td><td><p><p>(n-init+1) x 5 matrix containing the monitoring of S2 or
-                   R2, F test, in each step of the forward search:</p> <p> 
+                   R2, F test, in each step of the forward search: 
                1st col = fwd search index (from init to n);</p> <p> 
                2nd col = monitoring of S2;</p> <p>
                3rd col = monitoring of R2;</p> <p>
@@ -290,7 +290,7 @@ m=500
                unbiased).</p><p>
                5th col = monitoring of F test.  Note that an asymptotic
                unbiased estimate of sigma2 is used.</p></p></td></tr><tr valign="top"><td><code>coo</code></td><td><p><p>(n-init+1) x 3 matrix containing the monitoring of Cook or
-               modified Cook distance in each step of the forward search:</p> <p>
+               modified Cook distance in each step of the forward search:
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = monitoring of Cook distance;</p><p>
                3rd col = monitoring of modified Cook distance.</p></p></td></tr><tr valign="top"><td><code>Tols</code></td><td><p><p>(n-init+1) x (p+1) matrix containing the monitoring of
@@ -304,7 +304,7 @@ m=500
                the unit included in step init+1 Un(end,2) contains the
                units included in the final step of the search.</p></p></td></tr><tr valign="top"><td><code>betaINT</code></td><td><p><p>Confidence intervals for the elements of $\beta$.</p> <p>
                  betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D array.</p> <p>
-                 Each third dimension refers to an element of beta:</p> <p>
+                 Each third dimension refers to an element of beta:
                  betaINT(:,:,1) is associated with first element of beta;</p> <p>
                  ...;</p> <p>
                  betaINT(:,:,p) is associated with last element of beta.</p> <p>
@@ -334,7 +334,7 @@ m=500
                for the search at each step.</p> <p>
                Present only if wREML == true.</p> <p>
                n x (n-init+1) = matrix containing the monitoring of
-               singlular REML weights:</p> <p>
+               singlular REML weights:
                1st row = weight for first unit;</p> <p>
                ...;</p><p>
                nth row = weight for nth unit.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression

@@ -7,7 +7,12 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y; Ycont(1:5,[1,3]) = Ycont(1:5,[1,3])+sign(randn(5,2))*4.5;
 [out]=FSM(Ycont);
-title('Outliers detected by FSM','Fontsize',24,'Interpreter','LaTex');</pre></div></div><pre class="codeoutput">-------------------------
+title('Outliers detected by FSM','Fontsize',24,'Interpreter','LaTex');</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
+RANDN to use legacy random number generators.  This syntax is not recommended.
+See &lt;a href="matlab:helpview([docroot
+'\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged
+Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old syntax. 
+-------------------------
 Signal detection loop
 dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
 drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
@@ -122,7 +127,7 @@ plots.ncoord=1;
 </code></code></span></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;option that might be used to identify extreme outliers
                  when the distribution of the data is strongly non normal.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>In these circumstances, the general signal detection rule based on
                  consecutive exceedances cannot be used. In this case
-                 bonflev can be:</p> <p>
+                 bonflev can be:
                  - a scalar smaller than 1, which specifies the confidence
                    level for a signal and a stopping rule based on the
                    comparison of the minimum deletion residual with a
@@ -199,8 +204,8 @@ plots.ncoord=1;
                  produced.</p> <p>
                  If plots is a scalar equal to 2 the additional plots of
                  envelope resuperimposition are
-                 produced.</p> <p>
-                 If plots is a structure it may contain the following fields:</p><p>
+                 produced.</p><p>
+                 If plots is a structure it may contain the following fields:
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ylim</code></td><td><p>vector with two elements controlling minimum and maximum
                        on the y axis. Default value is '' (automatic
                        scale);</p></td></tr><tr valign="top"><td><code>xlim</code></td><td><p>vector with two elements controlling minimum and maximum

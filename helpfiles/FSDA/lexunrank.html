@@ -90,7 +90,7 @@ all_lex_combs(N_lex,:)</pre></div></div></p></div></div></div></div></div
    REMARKS ON THE INPUT ARGUMENTS.</p> <p>
 
    Input checks are intentionally avoided, as lexunrank is supposed to be
-   called many times, for sampling subsets. Thus, please ensure that:</p> <p>
+   called many times, for sampling subsets. Thus, please ensure that:
    - k &lt; n;</p> <p>
    - N is an integer between 0 and bc(n,p)-1.</p> <p>
    It is possible to enable checks, by changing an internal "if" statement to 1.</p> <p>
@@ -115,10 +115,10 @@ all_lex_combs(N_lex,:)</pre></div></div></p></div></div></div></div></div
    
    Note that, in this implementation of the lexicographic unrank, N ranges
    over the integers between 0 and bc(n,k)-1. For details see the
-   "combinatorial number system" discussed by Knuth (2005), pp. 5-6.</p> <p>
+   "combinatorial number system" discussed by Knuth (2005), pp. 5-6.</p><p>
 
    To clarify with an example the meaning of the different orders, while
-   the lexicographic order of the 2-combinations of 3 elements are:</p><p>
+   the lexicographic order of the 2-combinations of 3 elements are:
    
    </p>\[ 
      \left( 
@@ -142,11 +142,11 @@ all_lex_combs(N_lex,:)</pre></div></div></p></div></div></div></div></div
            4   &  3  &   2
         \end{array} 
       \right)
-   \]<p> 
+   \] 
    
-   and the reverse co-lexicographic order of the original combinations are:</p> <p>
+   and the reverse co-lexicographic order of the original combinations are:
 
-   </p>\[ 
+   \[ 
      \left( 
         \begin{array}{ccc}
            4   &  3  &   2     \\
@@ -170,9 +170,9 @@ all_lex_combs(N_lex,:)</pre></div></div></p></div></div></div></div></div
  Each $k$-combination $\{x_1,\ldots,x_k\}$ can be associated to the
  $n$-list having a 1 at position $x_1$, \ldots, $x_k$, and a 0 elsewhere.</p> <p>
 
- Example:</p> <p>
+ Example:
    2-combinations of $\{1,2,3,4\}$: $\{1,2\}$, $\{1,3\}$, $\{1,4\}$,
-   $\{2,3\}$, $\{2,4\}$, $\{3,4\}$. Corresponding 4-lists of $\{0,1\}$:</p> <p>
+   $\{2,3\}$, $\{2,4\}$, $\{3,4\}$. Corresponding 4-lists of $\{0,1\}$:
    $1100$,  $1010$,  $1001$,  $0110$, $0101$,  $0011$.</p> <p>
 
  The $n$-lists of $\{0,1\}$ containing $k$ times 1, and therefore

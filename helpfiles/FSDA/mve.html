@@ -12,7 +12,12 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+3;
-RAW=mve(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MVE:  0.18 seconds 
+RAW=mve(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
+RANDN to use legacy random number generators.  This syntax is not recommended.
+See &lt;a href="matlab:helpview([docroot
+'\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged
+Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old syntax. 
+Total estimated time to complete MVE:  0.23 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/mve.html#Example_2'><img vspace="5" hspace="5" src="images\mve_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\mve_02.png" alt=""> <img vspace="5" hspace="5" src="images\mve_03.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>mve monitoring the reweighted estimates.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
@@ -27,7 +32,7 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+3;
-[RAW,REW,C]=mve(Ycont);</pre></div></div><pre class="codeoutput">Total estimated time to complete MVE:  0.17 seconds 
+[RAW,REW,C]=mve(Ycont);</pre></div></div><pre class="codeoutput">Total estimated time to complete MVE:  0.16 seconds 
 </pre></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
                Y represent observations, and columns represent variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
@@ -64,7 +69,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;No check on input data.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check
                is performed on matrix Y. As default nocheck=0.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:</p> <p> 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates: 
                (1) a plot of Mahalanobis distances against index number. The
                confidence level used to draw the confidence bands for
                the MD is given by the input option conflev. If conflev is

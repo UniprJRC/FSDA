@@ -117,14 +117,14 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                mean $\beta_0$ and (conditional on $\tau_0$) covariance
                $(1/\tau_0) (X_0'X_0)^{-1}$.</p><p>
                $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_beta0" class="clearfix"> </div> <h3 id="input_argument_beta0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>beta0</code> &#8212; Prior mean of $\beta$. </span>  </a><span class="example_desc">p-times-1 vector.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_R" class="clearfix"> </div> <h3 id="input_argument_R" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>R</code> &#8212; Matrix associated with covariance matrix of $\beta$. </span>  </a><span class="example_desc">p-times-p
-               positive definite matrix.</span></span></h3> <div class="collapse"> <p><p>It can be interpreted as X0'X0 where X0 is a n0 x p
+               positive definite matrix.</span></span></h3> <div class="collapse"> <p>It can be interpreted as X0'X0 where X0 is a n0 x p
                matrix coming from previous experiments (assuming that the
                intercept is included in the model)
 
                The prior distribution of $\tau_0$ is a gamma distribution with
-               parameters $a_0$ and $b_0$, that is:</p> <p>
+               parameters $a_0$ and $b_0$, that is:
 
-                </p>\[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
+                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
                        \qquad   E(\tau_0)= a_0/b_0               \]</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_tau0" class="clearfix"> </div> <h3 id="input_argument_tau0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>tau0</code> &#8212; Prior estimate of tau. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Prior estimate of $\tau=1/ \sigma^2 =a_0/b_0$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_n0" class="clearfix"> </div> <h3 id="input_argument_n0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n0</code> &#8212; Number of previous experiments. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Sometimes it helps
                to think of the prior information as coming from n0
                previous experiments. Therefore we assume that matrix X0
@@ -171,7 +171,7 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                to represent the amount of prior knowledge.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'c',1.2
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_stats" class="clearfix"></div><h3 id="input_argument_namevalue_stats" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>stats</code> &#8212;additional statistics.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If stats =1 the following additional statistics are
-               computed:</p> <p>
+               computed:
                1) Bayesian p-values.</p> <p>
                2) highest posterior density intervals (HPDI) for each value
                of input option conflev.</p> <p>
@@ -310,8 +310,8 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
      \begin{equation}\label{b1}
                         b_1 = 0.5 \left( \frac{n_0-p}{\tau_0} + (y-X \beta_1)'y +(\beta_0-\beta_1)'R\beta_0 \right)
      \end{equation}
-     and, analogously, the posterior distribution of $\sigma^2$ is $IG(a_1, b_1)$.</p> <p>
-     The posterior estimates of $\tau$ and $\sigma^2$ are respectively:</p><p>
+     and, analogously, the posterior distribution of $\sigma^2$ is $IG(a_1, b_1)$.</p><p>
+     The posterior estimates of $\tau$ and $\sigma^2$ are respectively:
      </p>\[
      \hat \tau_1 = a_1/b_1, \qquad    \hat \sigma^2_1 = b_1 /(a_1-1)
      \]

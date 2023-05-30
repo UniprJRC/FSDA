@@ -4,7 +4,7 @@
  \[
    cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}
  \]<p>
- consists of four parts:</p> <p>
+ consists of four parts:
  1) $q$ a correction factor for the scale estimate;</p> <p>
  2) $\sigma$ the scale parameter.</p> <p>
  3) $v$ a correction factor depending on the $\psi$ function which is
@@ -162,7 +162,7 @@ hLS.LineStyle = ':';
 hLS.LineWidth = 2;
 hROB=refline([outS.beta(2) outS.beta(1)]);
 hROB.LineWidth = 2;
-legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.95 seconds 
+legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.37 seconds 
 covrob
     0.6426   -0.0036
    -0.0036    0.7248
@@ -204,11 +204,11 @@ covrobc
                  'Intercept' and either true to include or false to remove
                  the constant term from the model.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar defining nominal efficiency (i.e. a number between
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar defining nominal efficiency (i.e. a number between
                  0.5 and 0.99). The default value is 0.95
-                 Asymptotic nominal efficiency is:</p> <p>
+                 Asymptotic nominal efficiency is:
                  $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',0.99
+                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
                the algorithm should resist. In this case any value greater
                than 0 but smaller or equal than 0.5 will do fine.</p> <p>
@@ -242,24 +242,24 @@ covrobc
                For Hampel rho function it is possible to define parameters
                a, b and c (the default values are a=2, b=4, c=8)
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofuncparam',5
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>covrob</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>covrob</code></td><td><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob implements
                equation (4.49) of p. 101 of Maronna et al. (2006)
-               namely:</p> <p>
-                </p>\[
+               namely:
+                \[
                 \mbox{covrob} = cov( \hat \beta) = \hat \sigma^2 \hat v (X'X)^{-1}
                 \]
                 where
                 \[
                 \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{[\sum_{i=1}^n \psi'(r_i/\hat \sigma)]^2}
-                \]</p></td></tr><tr valign="top"><td><code>covrob1</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
+                \]</p></td></tr><tr valign="top"><td><code>covrob1</code></td><td><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob1 implements
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
                with $(X'X)^{-1}$ replaced by $(X' W X)^{-1}$
-               namely:</p> <p>
-                </p>\[
+               namely:
+                \[
                  \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};
                 \]
                  where $K=1+\frac{p}{n} \frac{var(\psi' (r/\hat \sigma))}{
@@ -267,19 +267,19 @@ covrobc
                    1+[CV(\psi')]^2  p/n $. The notation $CV(\psi')$ stands
                    for the coefficient of variation of $\psi'$, where
                    $\psi$ and $\psi'$ are, respectively,  the first and
-                   second derivatives of the $\rho$ function.</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
+                   second derivatives of the $\rho$ function.</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob1 implements
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
                with $X'X$ and $K^2$
-               namely:</p> <p>
-                </p>\[
+               namely:
+                \[
                  \mbox{covrob2} =  K^2  \hat v  (X' X)^{-1};
                 \]</p></td></tr><tr valign="top"><td><code>covrob3</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob implements
                equation (7.82) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
-               namely:</p><p>
+               namely:
                 </p>\[
                 \mbox{covrob3} =  K  \frac{n}{n-p} 
                  \frac{\sum_{i=1}^n \psi (r_i/\hat \sigma)^2}{\sum_{i=1}^n
@@ -288,7 +288,7 @@ covrobc
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob implements
                equation (7.83) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
-               namely:</p><p>
+               namely:
                 </p>\[
                  \mbox{covrob4} =  \frac{1}{n-p} K^{-1} \sum_{i=1}^n \psi(r_i/\hat \sigma)^2  (X' W X)^{-1} X'X (X' W X)^{-1};
                 \]</p></td></tr><tr valign="top"><td><code>covrobc</code></td><td><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
@@ -317,5 +317,7 @@ covrobc
  robust regression for small samples, "Computational Statistics & Data
  Analysis", Vol. 55, pp. 2504-2515.</p></div><div><p>Croux, C., Dhaene G., and Hoorelbeke D. (2003), Robust standard errors
  for robust estimators. Technical report, Dept. of Applied Economics, KU
- Leuven.</p></div><div><p>Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2021),
- Covariance matrices of robust estimators in regression, submitted.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Sreg.html" itemprop="url"><span itemprop="name"><code>Sreg</code></span></a></span> | <span itemprop="seealso"><a href="MMreg.html" itemprop="url"><span itemprop="name"><code>MMreg</code></span></a></span> | <span itemprop="seealso"><a href="Taureg.html" itemprop="url"><span itemprop="name"><code>Taureg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Leuven.</p></div><div><p>Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2022),
+ Covariance matrices of S robust regression estimators, Journal of
+ Statistical Computation and Simulation, Vol. 92, pp. 724-747, 
+ <a href="https://doi.org/10.1080/00949655.2021.1972300">https://doi.org/10.1080/00949655.2021.1972300</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Sreg.html" itemprop="url"><span itemprop="name"><code>Sreg</code></span></a></span> | <span itemprop="seealso"><a href="MMreg.html" itemprop="url"><span itemprop="name"><code>MMreg</code></span></a></span> | <span itemprop="seealso"><a href="Taureg.html" itemprop="url"><span itemprop="name"><code>Taureg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

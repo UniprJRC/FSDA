@@ -30,17 +30,17 @@ plots.cmap = autumn;
 out=tclust(Y,3,0.1,10000,'plots',plots);
 title('contourf plot with autumn colormap','interpreter','LaTex','FontSize',18);
 cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.60 seconds 
+Total estimated time to complete tclust:  0.73 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.33 seconds 
+Total estimated time to complete tclust:  0.26 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.30 seconds 
+Total estimated time to complete tclust:  0.25 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.28 seconds 
+Total estimated time to complete tclust:  0.27 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.32 seconds 
+Total estimated time to complete tclust:  0.25 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.29 seconds 
+Total estimated time to complete tclust:  0.18 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/tclust.html#Example_2'><img vspace="5" hspace="5" src="images\tclust_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_06.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 nsamp=20;
 [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
@@ -62,11 +62,11 @@ restrfactor=1;
 out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
 title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'],'interpreter','LaTex','FontSize',18)
 cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.58 seconds 
+Total estimated time to complete tclust:  0.40 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.50 seconds 
+Total estimated time to complete tclust:  0.70 seconds 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.43 seconds 
+Total estimated time to complete tclust:  0.47 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/tclust.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\tclust_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclust_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_09.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate
       distributions with different scales and proportions 1:2:2. One of
@@ -229,7 +229,7 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                More in detail, if 0&lt; alpha &lt;1 clustering is based on
                 h=fix(n*(1-alpha)) observations,
                else if alpha is an integer greater than 1 clustering is
-               based on h=n-floor(alpha);</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfactor" class="clearfix"> </div> <h3 id="input_argument_restrfactor" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfactor</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar or struct.</span></span></h3> <div class="collapse"> <p><p>Positive scalar which
+               based on h=n-floor(alpha);</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfactor" class="clearfix"> </div> <h3 id="input_argument_restrfactor" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfactor</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar or struct.</span></span></h3> <div class="collapse"> <p>Positive scalar which
                constrains the allowed differences
                among group scatters. Larger values imply larger differences of
                group scatters. On the other hand a value of 1 specifies the
@@ -239,9 +239,9 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                restrfactor to eigenvalues. In order to apply restrfactor
                to determinants it is necessary to use optional input
                argument restr. If restrfactor is a struct it may contain
-               the following fields:</p> <p>
- </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p><p>type of Gaussian Parsimonious Clustering Model. Character.</p> <p>
-               A 3 letter word in the set:</p> <p>
+               the following fields:
+ <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p><p>type of Gaussian Parsimonious Clustering Model. Character.</p> <p>
+               A 3 letter word in the set:
                'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
                'EVI','VEI','EEI','VII','EII'.</p><p>
                The field restrfactor.pars is compulsory. All the other fields are
@@ -311,7 +311,7 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                $j$-th scatter matrix $\Sigma_j$ is
                </p>\[
                \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-               \]<p>
+               \]
                where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
                diagonal matrix with $|\Gamma_j|=1$ and with elements
                $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
@@ -319,8 +319,8 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
                known as "shape" matrices, because they determine the shape of the
                fitted cluster components. The following $k$
-               constraints are then imposed on the shape matrices:</p> <p>
-               </p>\[
+               constraints are then imposed on the shape matrices:
+               \[
                \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
                    c_{shape}, \text{ for } j=1,...,k,
                \]<p>
@@ -336,16 +336,16 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                shall be considered in the concentration, assignment steps
                and computation of the likelihood.</p> <p>
                if equalweights = true we are (ideally) assuming equally
-               sized groups by maximizing:</p><p>
+               sized groups by maximizing:
 
                  </p>\[
                  \sum_{j=1}^k \sum_{ x_i \in group_j } \log f(x_i; m_j , S_j)
-                 \]<p>
+                 \]
 
                else if equalweights = false (default) we allow for
-               different group weights by maximizing:</p> <p>
+               different group weights by maximizing:
 
-                 </p>\[
+                 \[
                      \sum_{j=1}^k  \sum_{ x_i \in group_j }  \log \left[ \frac{n_j}{n}  f(x_i; m_j , S_j) \right]=
                  \]
                  \[
@@ -371,33 +371,33 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                controls which is the criterion to find the untrimmed units
                in each step of the maximization.</p> <p>
                If mixt &gt;=1 mixture modelling is assumed else crisp
-               assignment. The default value is mixt=0 (i.e. crisp assignment).</p> <p>
-               In mixture modelling the likelihood is given by:</p><p>
+               assignment. The default value is mixt=0 (i.e. crisp assignment).</p><p>
+               In mixture modelling the likelihood is given by:
                 </p>\[
                 \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
-                \]<p>
-               while in crisp assignment the likelihood is given by:</p> <p>
-               </p>\[
+                \]
+               while in crisp assignment the likelihood is given by:
+               \[
                \prod_{j=1}^k   \prod _{i\in R_j} \phi (y_i; \; \theta_j),
                \]<p>
                where $R_j$ contains the indexes of the observations which
                are assigned to group $j$.</p> <p>
                Remark - if mixt&gt;=1 previous parameter equalweights is
-               automatically set to 1.</p> <p>
+               automatically set to 1.</p><p>
                Parameter mixt also controls the criterion to select the
                units to trim,
                if mixt = 2 the h units are those which give the largest
                contribution to the likelihood that is the h largest
-               values of:</p><p>
+               values of:
                </p>\[
                    \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j)   \qquad
                     i=1, 2, ..., n,
-               \]<p>
+               \]
                else if mixt=1 the criterion to select the h units is
                exactly the same as the one which is used in crisp
                assignment. That is: the n units are allocated to a
-               cluster according to criterion:</p> <p>
-               </p>\[
+               cluster according to criterion:
+               \[
                 \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i; \; \hat \theta_j)
                \]<p>
                and then these n numbers are ordered and the units
@@ -420,7 +420,7 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                X(nsamp(i,:),:) and the covariance matrices are equal to the
                identity.</p> <p>
                If nsamp has k*(v+1) columns the initial centroids and covariance
-               matrices in iteration i are computed as follows:</p> <p>
+               matrices in iteration i are computed as follows:
                X1=X(nsamp(i,:),:);</p> <p>
                mean(X1(1:v+1,:)) contains the initial centroid for group  1;</p> <p>
                cov(X1(1:v+1,:)) contains the initial cov matrix for group 1;</p> <p>
@@ -513,12 +513,12 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | character | structure.</span></span></h3><div class="collapse">	<p><p>Case 1: plots option used as scalar.</p> <p>
                - If plots=0 (default), plots are not generated.</p> <p>
                - If plots=1, a plot with the classification is shown on
-                 the screen (using the spmplot function). The plot can be:</p> <p>
+                 the screen (using the spmplot function). The plot can be:
                    * for v=1, an histogram of the univariate data.</p> <p>
                    * for v=2, a bivariate scatterplot.</p> <p>
                    * for v&gt;2, a scatterplot matrix generated by spmplot.</p> <p>
                When v&gt;=2 plots offers the following additional features
-               (for v=1 the behaviour is forced to be as for plots=1):</p> <p>
+               (for v=1 the behaviour is forced to be as for plots=1):
 
                Case 2: plots option used as character array.</p> <p>
                - plots='contourf' adds in the background of the bivariate
@@ -554,18 +554,18 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                  function. This argument may also be inserted in a field
                  named 'type' of a structure.</p> <p>
 
-               Case 3: plots option used as struct.</p> <p>
-                 If plots is a structure it may contain the following fields:</p><p>
-         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p><p>in this case the 'type' supplied
+               Case 3: plots option used as struct.</p><p>
+                 If plots is a structure it may contain the following fields:
+         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p>in this case the 'type' supplied
                  is used to set the type of plot as when plots option is
-                 a character array. Therefore, plots.type can be:</p> <p>
-                 'contourf', 'contour', 'ellipse' or 'boxplotb'.</p></p></td></tr><tr valign="top"><td><code>cmap</code></td><td><p><p>this field is used to set a colormap
+                 a character array. Therefore, plots.type can be:
+                 'contourf', 'contour', 'ellipse' or 'boxplotb'.</p></td></tr><tr valign="top"><td><code>cmap</code></td><td><p><p>this field is used to set a colormap
                  for the plot type. For example, plots.cmap = 'autumn'.</p> <p>
                  See the MATLAB help of colormap for a list of colormap
                  possiblilites.</p></p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p><p>this is the confidence level
                  for the confidence ellipses. It must me a scalar between
-                 0 and 1. For example, one can set:</p> <p>
-                 plots.type = 'ellipse';</p><p>
+                 0 and 1. For example, one can set:
+                 plots.type = 'ellipse';</p> <p>
                  plots.conflev = 0.5;</p></p></td></tr></table><p><p>
 
                REMARK - The labels=0 are automatically excluded from the
@@ -610,13 +610,13 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                        subset associated with muopt.</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p><p>Scalar. Value of the objective function which is maximized
                        (value of the best returned solution).</p> <p>
                        If input option mixt &gt;1 the likelihood which is
-                       maximized is a mixture likelihood as follows:</p><p>
+                       maximized is a mixture likelihood as follows:
                        </p>\[
                        \prod_{i=1}^h  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
-                       \]<p>
+                       \]
                        else the likelihood which is maximized is a
-                       classification likelihood of the the form:</p> <p>
-                       </p>\[
+                       classification likelihood of the the form:
+                       \[
                        \prod_{j=1}^k   \prod _{i\in R_j} \pi_j' \phi (y_i; \; \theta_j),
                        \]
                        where $R_j$ contains the indexes of the observations which are assigned to group $j$
@@ -647,7 +647,7 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
  then 10 per cent of the iterations do not converge, a warning message is
  issued, indicating that nsamp has to be increased.</p><p>
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
    A General Trimming Approach to Robust Cluster Analysis. Annals
-   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:</p> <p>
-   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclusteda.html" itemprop="url"><span itemprop="name"><code>tclusteda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
+   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclusteda.html" itemprop="url"><span itemprop="name"><code>tclusteda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

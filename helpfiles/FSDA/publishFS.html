@@ -89,7 +89,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
              of online documentation help.</p> <p>
              In this case 'outputDir' and 'imagesDir' should be populated to
              avoid overwriting local help files with WEB help files.</p> <p>
-             Consider the following example with these namepairs:</p> <p>
+             Consider the following example with these namepairs:
              'outputDir'='C:\rosa','imagesDir','C:\rosa\images'
              It is worth noting that the folder 'C:\rosa', 'C:\rosa\tmp'
              and 'C:\rosa\images' should be created manually by the user.</p> <p>
@@ -223,7 +223,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          this string must contain the description of the compulsory input
          arguments. Each argument must have the name (a series of spaces from 0
          to 10) symbol ':' and then the description. The format of the description
-         is as follows:</p> <p>
+         is as follows:
          The first sentence after symbol ':' is the title of the input argument
          and in the HTML file it will appear in bold face in the same line of the
          input argument (this is the short description of the required input
@@ -243,7 +243,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          arguments which are respectively called y and X, then the
          accepted format is as follows.</p> <p>
 
-                       Required input arguments:</p> <p>
+                       Required input arguments:
 
                         y:         Response variable. Vector. Response variable,
                                    specified as a vector of length n, where n is
@@ -291,7 +291,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
           contains a series of sentences, they will be automatically included in
           the HTML output just below the description.</p> <p>
 
-          An example is given below:</p> <p>
+          An example is given below:
                  'function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin);</p> <p>
                  tclust computes trimmed clustering with restricitons on
                  the eigenvalues.</p> <p>
@@ -328,10 +328,10 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          which specifies a possible use of the option and the type of data. For
          example, suppose that the first two optional arguments are called
          respecively 'intercept' and 'h', then the
-         accepted format is as follows:</p> <p>
+         accepted format is as follows:
 
 
-                       Optional input arguments:</p> <p>
+                       Optional input arguments:
 
                        intercept :  Indicator for constant term. Scalar.</p> <p>
                                    If 1, a model with constant term will be fitted
@@ -366,7 +366,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
          output arguments are immediately known to the parser).</p> <p>
          In the case of output argument publishFS checks if the first 50
-         characters contain the words "which contains" or "containing" e.g.:</p> <p>
+         characters contain the words "which contains" or "containing" e.g.:
 
                       mdr:         n -init x 2
                                    matrix containing the
@@ -383,7 +383,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          before the strings "which contains" or "containing" will appear in the
          second row.</p> <p>
 
-         For example, the above lines will be processed as follows:</p> <p>
+         For example, the above lines will be processed as follows:
 
               mdr   -  Monitoring of minimum deletion residual;</p> <p>
               n -init x 2 matrix.</p> <p>
@@ -405,7 +405,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          of the output argument. For example, suppose that the output of a
          procedure contains the objects mdr and Un, the accepted format
          is as follows.</p> <p>
-               Output:</p> <p>
+               Output:
 
                       mdr:         Minimum deletion residual. Matrix.  n -init x 2
                                    matrix which contains the
@@ -416,7 +416,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
                                    subset at each step of the search.</p> <p>
                                    REMARK: in every step ....</p> <p>
 
-         The above lines will be processed as follows:</p> <p>
+         The above lines will be processed as follows:
 
               mdr   -  Minimum deletion residual. Matrix.</p> <p>
                        n -init x 2 matrix which contains the
@@ -439,11 +439,11 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          series of spaces" "name_of_output_structure.a_word" "a series of spaces
          followed by symbol '='". For example suppose that the output of a
          procedure is an object called out which is a structure with two fields
-         out.rew and out.beta, an accepted format is as follows:</p> <p>
+         out.rew and out.beta, an accepted format is as follows:
 
-                                    Output:</p> <p>
+                                    Output:
 
-                                  out :     A structure containing the following fields:</p> <p>
+                                  out :     A structure containing the following fields:
                                             out.rew  = Scalar if out.rew=1 all
                                                        subsequent output refers to
                                                        reweighted else no
@@ -475,10 +475,10 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          publishFS will try to put what comes before the string "which
          contains" or "containing" inside the subtitle (second row) of the each
          ouptut argument in the HTML file. For example, the example above in the
-         HTML file will be processed as follows:</p> <p>
+         HTML file will be processed as follows:
                         mdr -Monitoring of minimum deletion residual at each step of the forward search.</p> <p>
                         n -init -by- 2 matrix.</p> <p>
-         If, in the HTML file, the user clicks on the first line:</p> <p>
+         If, in the HTML file, the user clicks on the first line:
                        "mdr -Monitoring...";</p> <p>
          the expanded description will automatically appear.</p> <p>
 
@@ -490,9 +490,9 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
        <hr>[<b>7</b>] A line which starts with string "References:" must be present.</p> <p>
          The year of each reference must be enclosed in round parenthesis.</p> <p>
          PublishFS decides that a new reference starts if a new line contains
-         symbol "(" + "a sequence of 4 or 5 characthers identifying the year
+         symbol "(" + "a sequence of 4 or 5 characters identifying the year
          because the reference can be for example 2003 or 2003a" + symbol ")"
-         For example, an acceptable format for the two references below is:</p> <p>
+         For example, an acceptable format for the two references below is:
 
 
                          Chaloner and Brant (1988). A Bayesian Approach to Outlier
@@ -566,16 +566,16 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          modification has been added in order to make sure that there are
          no additional block signs within matlab code.</p> <p>
 
-       <hr>[<b>9</b>] If a procedure contains varargout, then the string:</p> <p>
+       <hr>[<b>9</b>] If a procedure contains varargout, then the string:
                        "Optional Output:"
          must be present. For example suppose there is a function called mcd which
-         has the following sintax:</p> <p>
+         has the following sintax:
 
                          function [RAW,REW,varargout] = mcd(Y,varargin).</p> <p>
 
-         Then at the end of the output argument the format must be as follows:</p> <p>
+         Then at the end of the output argument the format must be as follows:
 
-                               Optional Output:</p> <p>
+                               Optional Output:
 
                                          C     : matrix of the indices of the
                                                  subsamples extracted for
@@ -590,7 +590,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
 
 --------------------------------------------------------------------------
 
-         GENERAL REMARKS:</p> <p>
+         GENERAL REMARKS:
 
          -----------------------------------------------------------------------:.</p> <p>
          REMARK1: if symbol "%" is wanted and it is not a simple comment delimiter, it
@@ -637,9 +637,9 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          found in routine ncx2mixtcdf.m" is converted as follows.</p> <p>
          "More details can be found in routine
          &lt;a href="ncx2mixtcdf.html"&gt;ncx2mixtcdf&lt;/a&gt;".</p> <p>
-         Similarly, a sentence such as:</p> <p>
+         Similarly, a sentence such as:
          The full paper can be downloaded from "http://www.mysite.org".</p> <p>
-         is converted as follows:</p> <p>
+         is converted as follows:
          "The full paper can be donwloaded from
          &lt;a href="http://www.mysite.org"&gt; <a href="http://www.mysite.org">http://www.mysite.org</a> &lt;/a&gt;".</p> <p>
          -----------------------------------------------------------------------:.</p><p>

@@ -1,55 +1,2 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>RhoPsiWei</title> <meta content="refpage" name="chunktype"><meta content="function:RhoPsiWei " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="RhoPsiWei Finds rho, psi, psi', w functions given bdp, or eff or tuning constant c" itemprop="description" name="description" /><h1 itemprop="title">RhoPsiWei</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/RhoPsiWei.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/RhoPsiWei.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/RhoPsiWei.html">http://rosa.unipr.it/FSDA/RhoPsiWei.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: RhoPsiWei</em></p><P>RhoPsiWei</P><P>Finds rho, psi, psi', w functions given bdp, or eff or tuning constant c</P><h2>Description</h2><P>This routine applies the constraints to the covariance matrices using the
-  specifications contained in input structure pa.</P><h2>More About</h2><P>The notation for the eigen-decomposition of the
- component covariance matrices is as follows
-
- \[
- \Sigma_j= \lambda_j^{1/p} \Omega_j \Gamma_j \Omega_j'  \qquad j=1, 2, \ldots, k
- \]
- The dimension of matrices $\Omega_j$ (rotation) and $\Gamma_j$ (shape) is $p\times p$.
-
- $c_{det}=$ scalar, constraint associated with the determinants.
-
- $c_{shw}=$ scalar, constraint inside each group of the shape matrix.
-
- $c_{shb}=$ scalar, constraint among groups of the shape matrix.
-
- Note that if you impose equal volumes $c_{det}=1$. Similarly, if you
- impose a spherical shape $c_{shw}=1$.
-
- We also denote with
-
-   [1] $\Sigma_B$ the 3D array of size $p\times p \times k$ containing the
-   empirical covariance matrices of the $k$ groups, before applying the
-   constraints coming from the 14 parametrizations. In the code $\Sigma_B$
-   is called $SigmaB$. The $j$-th slice of this 3D array of size $p\times
-   p$ is denoted with symbol $\hat \Sigma_j$.
-   [2] $\Omega$ the 3D array of size $p\times p \times k$ containing the
-   rotation matrices of the $k$ groups. In the code $\Omega$  is called
-   $OMG$. The $j$-th slice of this 3D array of size $p\times p$ is called
-   $\hat \Omega_j$.
-   [3] $\Gamma$ the $p\times k$ matrix containing in column $j$, with
-   $j=1, 2, \ldots, k$, the diagonal elements of matrix $\Gamma_j$ (shape
-   matrix of group j). In the code matrix $\Gamma$ is called GAM.
-   After the application of this routine, the product of the elements of
-   each column of matrix GAM is equal to 1.
-   The ratio among the largest (second largest, ...smallest) elements of
-   each column is not greater than $c_{shb}$ (pa.shb).
-   The ratio of the elements of each column is not greater than
-   $c_{shw}$ (pa.shb). All the columns of matrix GAM are equal if the second
-   letter of modeltype is E. All the columns of matrix GAM are
-   equal to 1 if the second letter of modeltype is I.
-   [4] niini the vector of length $k$ containing the number of units
-   (weights) associated to each group.
-   [5]  $\lambda$ = the vector of length $p$ containing in the $j$-th
-   position $\lambda_j^{1/p}=|\Sigma_j|^{1/p}$. In the code  vector
-   $\lambda$ is called $lmd$.
-   The elements of lmd satisfy the constraint pa.cdet in the sense that
-   $\max(lmd) / \min(lmd) \leq pa.cdet^{(1/p)}$. In other words, the
-   ratio between the largest and the smallest determinant is not
-   greater than pa.cdet. All the elements of vector lmd are equal
-   if modeltype is E** or if $c_{det}=1$ (pa.cdet=1).
-
-
-
-</P><h2>References</h2><P>Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2019),
-   Robust parsimonious clustering models. Submitted.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>RhoPsiWei</title> <meta content="refpage" name="chunktype"><meta content="function:RhoPsiWei " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="RhoPsiWei Finds rho, psi, psi', w functions given bdp, or eff or tuning constant c" itemprop="description" name="description" /><h1 itemprop="title">RhoPsiWei</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/RhoPsiWei.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/RhoPsiWei.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/RhoPsiWei.html">http://rosa.unipr.it/FSDA/RhoPsiWei.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: RhoPsiWei</em></p><P>RhoPsiWei</P><P>Finds rho, psi, psi', w functions given bdp, or eff or tuning constant c</P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+ and Methods", Wiley, New York.</P></html>

@@ -205,9 +205,7 @@ pd.mleLowerBound = pd.mleStart/2;
 pd.mleUpperBound = pd.mleStart*2;
 [p, h] = distribspec(pd, specs, region, 'evalPoints', 50);
 cascade;
-pause(0.5);</pre></div></div><pre class="codeoutput">Warning: Maximum likelihood estimation did not converge.  Function evaluation
-limit exceeded. 
-</pre><a href='http://rosa.unipr.it/fsda/distribspec.html#ExtraExample_12'><img vspace="5" hspace="5" src="images\distribspec_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\distribspec_11.png" alt=""> </a></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> User-defined function starting from a default matlab distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Here the user takes one of the functions in makedist, possibly
+pause(0.5);</pre></div></div><a href='http://rosa.unipr.it/fsda/distribspec.html#ExtraExample_12'><img vspace="5" hspace="5" src="images\distribspec_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\distribspec_11.png" alt=""> </a></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> User-defined function starting from a default matlab distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Here the user takes one of the functions in makedist, possibly
 % changing the number of parameters.
 close all
 alpha0  = 2; 
@@ -232,38 +230,7 @@ pd.mleUpperBound = [Inf Inf min(X)];
 % sample data.
 [p, h] = distribspec(pd, specs, region, 'evalPoints', 100);
 cascade
-pause(0.5);</pre></div></div><pre class="codeoutput">Warning: Maximum likelihood estimation did not converge.  Iteration limit
-exceeded. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-Warning: Inf or NaN value encountered. 
-</pre><a href='http://rosa.unipr.it/fsda/distribspec.html#ExtraExample_13'><img vspace="5" hspace="5" src="images\distribspec_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\distribspec_13.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_pd" class="clearfix"> </div> <h3 id="input_argument_pd" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>pd</code> &#8212; can be one of the following. </span>  </a><span class="example_desc">- A probability density object returned by makedist.</span></span></h3> <div class="collapse"> <p><p>- A structure containing two fields:
+pause(0.5);</pre></div></div><a href='http://rosa.unipr.it/fsda/distribspec.html#ExtraExample_13'><img vspace="5" hspace="5" src="images\distribspec_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\distribspec_13.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_pd" class="clearfix"> </div> <h3 id="input_argument_pd" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>pd</code> &#8212; can be one of the following. </span>  </a><span class="example_desc">- A probability density object returned by makedist.</span></span></h3> <div class="collapse"> <p><p>- A structure containing two fields:
                (i) pd.distname, a character array with a valid distribution
                name (all those accepted by makedist);</p> <p>
                (ii) pd.x, a numeric vector containing the data sample

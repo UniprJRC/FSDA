@@ -2,8 +2,8 @@
      initial threshold omegaStar, a colormap, and allowing for additional
      interactive plots.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example using simdataset to create homogeneous and spherical clusters.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example using simdataset to create heterogeneous and elliptical
      clusters and using tkmeans output as input for the overlap map.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example using simdataset to create homogeneous and spherical clusters
-     and using tkmeans.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_D">D</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_omegaStar">omegaStar</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_userColors">userColors</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">overlapmap</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">overlapmap produces an interactive overlap map</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=overlapmap(D)</code><span class="syntax_example"><a class="intrnllnk" href="overlapmap.html#Example_1">example</a></span></li><li><code class="synopsis">out=overlapmap(D,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="overlapmap.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>The function overlapmap plots the ordered pairwise overlap values between
- components. These components are ordered according to a specific rule:</p> <p>
+     and using tkmeans.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_D">D</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_omegaStar">omegaStar</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_userColors">userColors</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">overlapmap</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">overlapmap produces an interactive overlap map</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=overlapmap(D)</code><span class="syntax_example"><a class="intrnllnk" href="overlapmap.html#Example_1">example</a></span></li><li><code class="synopsis">out=overlapmap(D,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="overlapmap.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>The function overlapmap plots the ordered pairwise overlap values between
+ components. These components are ordered according to a specific rule:
  first the closest pair is plotted in the lowest left corner, then the
  components closer to the ones already included are plotted (when all of
  them have a zero overlap value with the ones already included, the
@@ -16,7 +16,7 @@
  used to merge the components. The interactive process ends with a right
  click on the white grid in the upper left corner of the plot, it also
  updates the results creating in the workspace a new variable
- 'userOverlap'. See the More About section for further informations.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="overlapmap.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=overlapmap(<a class="intrnllnk" href="#inputarg_D"><code>D</code></a>)</code></span>Example using tkmeans on geyser data.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="overlapmap.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=overlapmap(<a class="intrnllnk" href="#inputarg_D"><code>D</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example using M5data with tclust and tkmeans, specifying an
+ 'userOverlap'. See the More About section for further informations.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="overlapmap.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=overlapmap(<a class="intrnllnk" href="#inputarg_D"><code>D</code></a>)</code></span>Example using tkmeans on geyser data.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="overlapmap.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=overlapmap(<a class="intrnllnk" href="#inputarg_D"><code>D</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example using M5data with tclust and tkmeans, specifying an
      initial threshold omegaStar, a colormap, and allowing for additional
      interactive plots.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using tkmeans on geyser data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 Y = load('geyser2.txt');
@@ -27,8 +27,8 @@ overl_1 = overlapmap(out);
 % using tkmeans for a higher number of components
 out2 = tkmeans(Y, k*4, 0.05, 'plots', 1);
 overl_2 = overlapmap(out2);
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.06 seconds 
-Total estimated time to complete trimmed k means:  0.30 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.07 seconds 
+Total estimated time to complete trimmed k means:  0.39 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/overlapmap.html#Example_1'><img vspace="5" hspace="5" src="images\overlapmap_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\overlapmap_02.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_03.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_04.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using M5data with tclust and tkmeans, specifying an
      initial threshold omegaStar, a colormap, and allowing for additional
      interactive plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
@@ -47,11 +47,11 @@ rng(1)
 end
 out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true);
 overl_2 = overlapmap(out_2, 'omegaStar', 0.0025, 'plots', 'contourf', 'userColors', summer);
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  1.88 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  2.12 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  2.12 seconds 
+Total estimated time to complete tclust:  2.17 seconds 
 Number of supplied clusters =6
 Number of estimated clusters =5
 Warning: The total number of estimated clusters is smaller than the number
@@ -114,7 +114,7 @@ title(str,'Interpreter','Latex');
 tkm = tkmeans(X, k*3, 0,'plots', 2,'Ysave',true, 'plots', 'ellipse');
 % overlap map with interctive mode
 overl = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 23.57 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 34.29 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 37.3333%
 </pre><a href='http://rosa.unipr.it/fsda/overlapmap.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\overlapmap_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\overlapmap_11.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_12.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using simdataset to create homogeneous and spherical clusters
@@ -138,13 +138,13 @@ clickableMultiLegend(num2str((1:k)'));
 tkm = tkmeans(X, k*3, 0,'plots', 2,'Ysave',true, 'plots', 'ellipse');
 % overlap map with interctive mode
 out = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  8.15 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 12.32 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 </pre><a href='http://rosa.unipr.it/fsda/overlapmap.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\overlapmap_13.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\overlapmap_14.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_15.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_D" class="clearfix"> </div> <h3 id="input_argument_D" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>D</code> &#8212; Informations to compute the overlap matrix. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>D is a structure which can have the following fields (not
                all of them are strictly required).</p> <p>
 
-   Admissable fields for the structure D:</p><p>
+   Admissable fields for the structure D:
 </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>idx</code></td><td><p><p>Label of the units. Vector. It is a vector with n
                elements which assigns each unit to one of the k groups.</p> <p>
                REMARK - labels&lt;=0 denotes trimmed units.</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p><p>Input data. Matrix. Data matrix containining n
@@ -159,7 +159,7 @@ Warning: Number of subsets without convergence equal to 36%
                interaction is closed (using spmplot). When this field is
                not specified the fields D.sigmaopt, D.muopt and D.siz are
                required.</p></p></td></tr><tr valign="top"><td><code>sigmaopt</code></td><td><p>v-by-v-by-k covariance matrices of the groups.</p></td></tr><tr valign="top"><td><code>muopt</code></td><td><p>k-by-v matrix containing cluster centroid locations.</p></td></tr><tr valign="top"><td><code>siz</code></td><td><p><p>Matrix or vector. If it is a matrix of size
-               k-by-3, where:</p> <p>
+               k-by-3, where:
                1st col = labels of the k components.</p> <p>
                2nd col = number of observations in each component.</p> <p>
                3rd col = percentage of observations in each
@@ -178,12 +178,12 @@ Warning: Number of subsets without convergence equal to 36%
                - If plots=0 (default) no additional plot is produced.</p> <p>
                - If plots=1, at the end of the interaction with the overlap
                map (i.e. right click on the white grid), the components
-               merged are shown using the spmplot function. In particular:</p> <p>
+               merged are shown using the spmplot function. In particular:
                    * for v=1, an histogram of the univariate data.</p> <p>
                    * for v=2, a bivariate scatterplot.</p> <p>
                    * for v&gt;2, a scatterplot matrix.</p> <p>
                When v&gt;=2 plots offers the following additional features
-               (for v=1 the behaviour is forced to be as for plots=1):</p> <p>
+               (for v=1 the behaviour is forced to be as for plots=1):
                - plots='contourf' adds in the background of the bivariate
                  scatterplots a filled contour plot. The colormap of the
                  filled contour is based on grey levels as default.</p> <p>
@@ -215,8 +215,8 @@ Warning: Number of subsets without convergence equal to 36%
                - plots='boxplotb' superimposes on the bivariate scatterplots
                  the bivariate boxplots for each group, using the boxplotb
                  function. This argument may also be inserted in a field
-                 named 'type' of a structure.</p> <p>
-                If plots is a struct it may contain the following fields:</p><p>
+                 named 'type' of a structure.</p><p>
+                If plots is a struct it may contain the following fields:
          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p><p>a char specifying the type of superimposition
                     Choices are 'contourf', 'contour', 'ellipse' or 'boxplotb'.</p> <p>
                REMARK - The labels&lt;=0 are automatically excluded from the
@@ -235,14 +235,14 @@ Warning: Number of subsets without convergence equal to 36%
                              components merged together.</p></td></tr><tr valign="top"><td><code>single</code></td><td><p><p>Vector containing the labels of single clusters
                              found, i.e. not merged with any other component.</p> <p>
 
-Optional Output:</p> <p>
+Optional Output:
 
    userOverlap     : Updating of the results. Structure. userOverlap
                      is obtained when the interaction with the overlap
                      map is closed and is added in the Workspace.</p> <p>
                      It contains the following fields, which represent
                      an update of their corresponding variable in
-                     the structure out:</p> <p>
+                     the structure out:
                      - userOverlap.omegaStar = update of out.omegaStar.</p> <p>
                      - userOverlap.Ghat = update of out.Ghat.</p> <p>
                      - userOverlap.merged = update of out.merged.</p><p>
@@ -263,8 +263,9 @@ Optional Output:</p> <p>
  The values $ \max(\Omega'_{k k'}) $ and the respective $ k $ and $ k' $
  labels are sequentially saved in a $ k(k-1)/2 \times 3 $ matrix MergMat.</p><p>
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Melnykov, V., Michael, S. (2017), "Clustering large datasets by merging
-   K-means solutions". Submitted.</p></div><div><p>Melnykov, V. (2016), Merging Mixture Components for Clustering Through
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Melnykov, V., Michael, S. (2020), Clustering Large Datasets by Merging
+   K-Means Solutions, Journal of Classification, Vol. 37, pp. 97–123,
+   <a href="https://doi.org/10.1007/s00357-019-09314-8">https://doi.org/10.1007/s00357-019-09314-8</a></p></div><div><p>Melnykov, V. (2016), Merging Mixture Components for Clustering Through
    Pairwise Overlap, "Journal of Computational and Graphical Statistics",
    Vol. 25, pp. 66-90.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
 

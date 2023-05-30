@@ -95,7 +95,12 @@ resindexplot(outLMSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','confl
 h=subplot(2,2,4);
 laby='Scaled reweighted LTS residuals';
 resindexplot(outLTSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev);
-% By simply changing the seed to 543 (state=543), using a Bonferroni size of 1%, no unit is declared as outlier.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+% By simply changing the seed to 543 (state=543), using a Bonferroni size of 1%, no unit is declared as outlier.</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
+RANDN to use legacy random number generators.  This syntax is not recommended.
+See &lt;a href="matlab:helpview([docroot
+'\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged
+Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old syntax. 
+Total estimated time to complete LMS:  0.02 seconds 
 
 h = 
 
@@ -113,7 +118,7 @@ h =
 
 Total estimated time to complete LTS:  0.01 seconds 
 Total estimated time to complete LMS:  0.01 seconds 
-Total estimated time to complete LTS:  0.02 seconds 
+Total estimated time to complete LTS:  0.01 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/LXS.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\LXS_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option bonflevoutX.</li></span></a></span></h3><div class="collapse"><p>
      In this example a set of remote units is added to a cloud of points.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The purpose of this example is to show that while best LMS using all
 % default options contains some of the remote units. In order to make sure
@@ -145,7 +150,7 @@ out=LXS(yall,Xall,'bonflevoutX',0.99);
 line(xylim(1:2),out.beta(1)+out.beta(2)*xylim(1:2))
 ylim(xylim(3:4));
 title('Fit using best subset with option bonflevoutX  not empty')</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
-Total estimated time to complete LMS:  0.09 seconds 
+Total estimated time to complete LMS:  0.10 seconds 
 ------------------------------
 Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to 17.1 %
 </pre><a href='http://rosa.unipr.it/fsda/LXS.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\LXS_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>LXS with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
@@ -235,7 +240,7 @@ y(1:5)=y(1:5)+6;
                else if lms is a scalar different from 1 and 2 standard lts
                        is used (without concentration steps)
                else if lms is a struct fast lts (with concentration steps) is used.</p> <p>
-                  In this case the user can control the following options:</p> <p>
+                  In this case the user can control the following options:
                   lms.refsteps : scalar defining number of refining iterations in each
                                subsample (default = 3). refsteps = 0 means
                                "raw-subsampling" without iterations.</p> <p>
@@ -296,12 +301,12 @@ y(1:5)=y(1:5)+6;
                  small sample correction factor which guarrantees that the
                  empirical size of the test is equal to the nominal size;</p> <p>
                - If SmallSampleCor =2 Gervini and Yohai procedure is called
-                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:</p> <p>
+                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
                  weights=GYfilt(stdres,'iterating',false,'alpha',0.99);</p> <p>
                - If SmallSampleCor =3 Gervini and Yohai procedure  called
-                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:</p> <p>
+                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
                  weights=GYfilt(stdres,'iterating',true,'alpha',0.99);</p> <p>
-               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:</p> <p>
+               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
                  weights = abs(stdres)&lt;=sqrt(chi2inv(0.99,1));</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SmallSampleCor',3
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_yxsave" class="clearfix"></div><h3 id="input_argument_namevalue_yxsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>yxsave</code> &#8212;the response vector y and data matrix X are saved into the output

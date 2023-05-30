@@ -1,3 +1,36 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>FSRmdr</title> <meta content="refpage" name="chunktype"><meta content="function:FSRmdr " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSRmdr Computes minimum deletion residual and other basic linear regression quantities in each step of the search" itemprop="description" name="description" /><h1 itemprop="title">FSRmdr</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/FSRmdr.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/FSRmdr.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/FSRmdr.html">http://rosa.unipr.it/FSDA/FSRmdr.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: FSRmdr</em></p><P>FSRmdr</P><P>Computes minimum deletion residual and other basic linear regression quantities in each step of the search</P><h2>References</h2><P>Atkinson, A.C. and Riani, M. (2006), Distribution theory and
- simulations for tests of outliers in regression, "Journal of
- Computational and Graphical Statistics", Vol. 15, pp. 460-476.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>FSRmdr</title> <meta content="refpage" name="chunktype"><meta content="function:FSRmdr " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSRmdr Computes minimum deletion residual and other basic linear regression quantities in each step of the search" itemprop="description" name="description" /><h1 itemprop="title">FSRmdr</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/FSRmdr.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/FSRmdr.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/FSRmdr.html">http://rosa.unipr.it/FSDA/FSRmdr.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: FSRmdr</em></p><P>FSRmdr</P><P>Computes minimum deletion residual and other basic linear regression quantities in each step of the search</P><h2>More About</h2><P>
+               Let $S^{(m)}_* \in \cal{M}$ be the  optimum subset of size $m$,
+               for which the matrix of regressors is $X(m^*)$. Least squares
+               applied to this subset yields parameter estimates
+               $\hat{\beta}(m^*)$ and $s^2(m^*)$, the mean square estimate of
+               $\sigma^2$ on $m-p$ degrees of freedom. Residuals can be
+               calculated for all observations including those not in
+               $S^{(m)}_*$. The $n$ resulting least squares residuals are
+               \begin{equation}
+                 e_i(m^*) =  y_i -x_i^T\hat{\beta}(m^*). \label{eq2.14a}
+               \end{equation}
+               The search moves forward
+               with the subset $S^{(m+1)}_*$ consisting of the observations with
+               the $m+1$ smallest absolute values of $e_i(m^*)$. When $m &lt; n$ the
+               estimates of the parameters are based on only those observations
+               giving the central $m$ residuals.
+               To test for outliers the deletion residual is calculated for the
+               $n-m$ observations not in $S^{(m)}_*$. These residuals are
+               \begin{equation}
+               r_i^*(m^*)  = \frac{y_{i} - x_{i}^T\hat{\beta}(m^*)} {
+               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}}  = \frac{e_{i}(m^*)} {
+               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}},
+               \end{equation}
+               where $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$;  the leverage
+               of each observation depends on $S^{(m)}_*$. Let the observation
+               nearest to those constituting $S^{(m)}_*$ be
+               $i_{\mbox{min}}$ where
+               \[
+               i_{\mbox{min}} = \arg \min | r^*_i(m^*)| \; \mbox{for} \; i \notin S^{(m)}_*,
+               \]
+               the observation with the minimum absolute deletion  residual among
+               those not in $S^{(m)}_*$. This function computes
+               $r_i^*(m^*)$ for $m^*=init, init+1, \ldots, n-1$.
+
+</P><h2>References</h2><P>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+ Analysis", Springer Verlag, New York.</P></html>

@@ -57,11 +57,11 @@ resfwdplot(out)</pre></div></div><pre class="codeoutput">Total estimated time t
                or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).</p> <p>
                Default value is 0.975
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>Vector defining nominal efficiency (i.e. a series of numbers between
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p>Vector defining nominal efficiency (i.e. a series of numbers between
                  0.5 and 0.99). The default value is the sequence 0.5:0.01:0.99
-                 Asymptotic nominal efficiency is:</p> <p>
+                 Asymptotic nominal efficiency is:
                  $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',[0.85 0.90 0.95 0.99]
+                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',[0.85 0.90 0.95 0.99]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_effshape" class="clearfix"></div><h3 id="input_argument_namevalue_effshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>effshape</code> &#8212;location or scale effiicency.</span></a><span class="example_desc">dummy scalar.</span></span></h3><div class="collapse">	<p>If effshape=1 efficiency refers to shape
                 efficiency else (default) efficiency refers to location
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'effshape',1
@@ -101,7 +101,8 @@ resfwdplot(out)</pre></div></div><pre class="codeoutput">Total estimated time t
                'optimal';</p> <p>
                'hyperbolic';</p> <p>
                'hampel';</p> <p>
-               'mdpd'.</p> <p>
+               'mdpd';</p> <p>
+               'AS'.</p> <p>
                'bisquare' uses Tukey's $\rho$ and $\psi$ functions.</p> <p>
                See TBrho and TBpsi.</p> <p>
                'optimal' uses optimal $\rho$ and $\psi$ functions.</p> <p>
@@ -111,7 +112,9 @@ resfwdplot(out)</pre></div></div><pre class="codeoutput">Total estimated time t
                'hampel' uses Hampel $\rho$ and $\psi$ functions.</p> <p>
                See HArho and HApsi.</p> <p>
                'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="PDrho.html">PDrho</a> and <a href="PDpsi.html">PDpsi</a>.</p><p>
+               See <a href="PDrho.html">PDrho</a> and <a href="PDpsi.html">PDpsi</a>.</p> <p>
+               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.</p> <p>
+               See <a href="ASrho.html">ASrho</a> and <a href="ASpsi.html">ASpsi</a>.</p><p>
                The default is bisquare
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofunc','optimal'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function in the MM step.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the

@@ -14,7 +14,12 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+4;
-[out]=SDest(Ycont,'jpcorr',1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.23 seconds 
+[out]=SDest(Ycont,'jpcorr',1,'plots',1);</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
+RANDN to use legacy random number generators.  This syntax is not recommended.
+See &lt;a href="matlab:helpview([docroot
+'\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged
+Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old syntax. 
+Total estimated time to complete Stahel-Donoho estimator:  0.23 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/SDest.html#Example_2'><img vspace="5" hspace="5" src="images\SDest_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\SDest_02.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_03.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>SDest with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
@@ -30,7 +35,13 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(2:20,3)=100;
-[out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.19 seconds 
+[out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.20 seconds 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
+Warning: Matrix is singular to working precision. 
 Warning: Matrix is singular to working precision. 
 Warning: Matrix is singular to working precision. 
 Warning: Matrix is singular to working precision. 
@@ -146,7 +157,7 @@ Y=randn(n,v);
                If weight = huber, the weights are determined according to
                the following formula
                $w(r) = \min(1, (r/c)^{-q})$ 
-               with:</p> <p> 
+               with: 
                $c=\min(\sqrt{\chi^2_{v,0.5}},4)$ 
                in Van Aelst, Vandervieren and
                Willems, "Stahel-Donoho Estimators with Cellwise Weights",
@@ -154,9 +165,9 @@ Y=randn(n,v);
                $c=\sqrt{\chi^2_{v,0.95}}$ in Todorov and Filzmoser, "An Object
                Oriented Framework for Robust Multivariate Analysis", (J OF
                STAT SOFTWARE, 2009) (option c='sdim', see below);</p> <p>
-               q = scalar see below.</p> <p>
+               q = scalar see below.</p><p>
                If weight = 'tukey' the Tukey Biweight function is applied,
-               where weights are given by:</p><p>
+               where weights are given by:
                </p>\[
                    w(r)= 
                    \left\{
@@ -170,7 +181,7 @@ Y=randn(n,v);
                breakdown point (bdp).</p> <p> 
                If weight = 'zch', weights are computed according to Zuo,
                Cui and He's formula (Zuo, Cui and He, "ON THE STAHEL-DONOHO ESTIMATOR AND DEPTH-WEIGHTED
-               MEANS OF MULTIVARIATE DATA", Annals of Statistics (2004)):</p><p>
+               MEANS OF MULTIVARIATE DATA", Annals of Statistics (2004)):
                
                  </p>\[
                    w(PD)= 
@@ -182,7 +193,7 @@ Y=randn(n,v);
                   \right.
                  \]<p>
 
-               where:</p> <p>
+               where:
                - $PD$ is the Projection Depth: $PD = 1/(1+r)$
                ($r$=outlyingness measure);</p> <p>
                - $C=Median(PD)$;</p> <p>
@@ -191,10 +202,10 @@ Y=randn(n,v);
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_q" class="clearfix"></div><h3 id="input_argument_namevalue_q" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>q</code> &#8212;Constant to be used in the Huber weight function.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value of q is 2 (see Maronna and Yohai, 1995).</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'q',2
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_c" class="clearfix"></div><h3 id="input_argument_namevalue_c" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>c</code> &#8212;Scale parameter.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>If c='hdim' (high dimensions) the
-               scale parameter c in the Huber weight function is given by:</p> <p>              
+               scale parameter c in the Huber weight function is given by:              
                $c= min(\sqrt{\chi^2_{v,0.5}},4)$. If c='sdim' (small
-               dimensions), parameter c is given by:</p> <p>
-               $c=\sqrt{\chi^2_{v,0.95}}$. The default is 'hdim'.</p><p>
+               dimensions), parameter c is given by:
+               $c=\sqrt{\chi^2_{v,0.95}}$. The default is 'hdim'.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'c','hdim' 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nbp" class="clearfix"></div><h3 id="input_argument_namevalue_nbp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nbp</code> &#8212;Nominal breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Nominal breakdown point to
                be fixed in the Tukey biweight function to obtain the
@@ -206,7 +217,7 @@ Y=randn(n,v);
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no
                check is performed on matrix Y. As default nocheck=0.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:</p> <p> 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates: 
                (1) a plot of robust Mahalanobis distances against index number. The 
                confidence level used to draw the confidence bands for
                the MD is given by the input option conflev. If conflev is
@@ -215,9 +226,9 @@ Y=randn(n,v);
                (2) a scatter plot matrix with the outliers highlighted.</p> <p> 
                (3) a scatter plot of robust Mahalanobis distances against
                observation weights (i.e. the outlyingness measure
-               transformed according to the weight function).</p> <p>
+               transformed according to the weight function).</p><p>
                If plots is a structure it may contain the following
-               fields:</p><p> 
+               fields: 
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>labeladd</code></td><td><p>if this option is '1', the outliers in the
                        spm are labelled with their unit row index. The
                        default value is labeladd='', i.e. no label is
@@ -297,7 +308,7 @@ Y=randn(n,v);
                     rstprojsave is set to 1.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'SD'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices of the
              subsamples extracted for computing the SD estimate.</span></a><span class="example_desc"><code>C     : nsamp-by-v+jpcorr </code>matrix</span></span></h3><div class="collapse"><p>
              jpcorr=0,2, 3, ... (see input option jpcorr)</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>              A "robust standardized" projection
-               score along direction vector d is defined as follows:</p> <p> 
+               score along direction vector d is defined as follows: 
 
                $Rstproj_i = \frac{d^T \times y_i -med_j(d^T \times y_j)}{MAD_j(d^T \times y_j)} \;\;\; i=1,\cdots,n$;</p> <p> 
 
@@ -305,11 +316,11 @@ Y=randn(n,v);
               the median and the modified MAD  $j=1,2,\cdots,n$.</p> <p>
               With our two input options  projloc and projscale it is
               possible to use alternative estimators of location and scale
-              to standardize $d^T \times y_i$:</p> <p> 
+              to standardize $d^T \times y_i$: 
 
                $Rstproj_i = \frac{d^T \times y_i -projloc(d^T \times y_j)}{projscale(d^T \times y_j)} \;\;\; i=1,\cdots,n$;</p> <p> 
 
-              The outlying measure for unit i ($outl_i$) is defined as:</p> <p> 
+              The outlying measure for unit i ($outl_i$) is defined as: 
 
               $outl_i = sup_{d \in R^v} (Rstproj_i) \;\;\; i=1, \cdots, n$;</p> <p> 
 
@@ -322,7 +333,7 @@ Y=randn(n,v);
               rescale d to unit norm.</p><p>
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Stahel, W.A. (1981), "Breakdown of covariance estimators", Research
-        Report 31, Fachgruppe f&uuml;r Statistik, E.T.H. Z&uuml;rich, Switzerland.</p></div><div><p>Donoho, D.L. (1982), "Breakdown Properties of Multivariate Location
+        Report 31, Fachgruppe for Statistik, E.T.H. Zurich, Switzerland.</p></div><div><p>Donoho, D.L. (1982), "Breakdown Properties of Multivariate Location
         Estimators", Ph.D. dissertation, Harvard University.</p></div><div><p>Maronna, R.A. and Yohai, V.J. (1995), The behavior of the Stahel-Donoho
          robust multivariate estimator, "Journal of the American
          Statistical Association", Vol. 90, pp. 329-341.</p></div><div><p>Juan J. and Prieto F.J. (1995), "Journal of Computational and Graphical
