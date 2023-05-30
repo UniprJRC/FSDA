@@ -23,12 +23,28 @@ else % From 2023a
         PersonalvalueDOC='WEB';
     end
 end
+
+    [~,nameFile,ext]=fileparts(varargin);
+
 if strcmp(PersonalvalueDOC,'WEB')
     disp('In order to be able to see the FSDA documentation locally,')
     disp('it is necessary in ''Home|Preferences'' to set ''Documentation Location''')
     disp('to ''Installed Locally''')
-    [~,nameFile,ext]=fileparts(varargin);
     varargin{:}=['http://rosa.unipr.it/FSDA/' nameFile ext];
+else
+    % Make sure that the file exists in the destination path
+    % If the destination file does not exist, call routine installHelpFiles
+    if exist(varargin{:},'file') ==0
+        status=installHelpFiles;
+        if status==0
+            % If routine installHelpFiles failed than redirect to rosa
+            % website for the documentation
+            varargin{:}=['http://rosa.unipr.it/FSDA/' nameFile ext];
+        end
+    end
 end
+
 web(varargin{:});
 end
+
+
