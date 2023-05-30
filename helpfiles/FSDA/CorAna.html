@@ -266,7 +266,7 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                        containing supplementary rows.</p> <p>
                        If indexes or cell array of strings are supplied in
                        a vector, we assume that supplementary rows belong
-                       to contingency table N. For example:</p> <p>
+                       to contingency table N. For example:
                        - if Sup.r=[2 5] (that is Sup.r is a numeric vector
                          which contains row indexes) we use rows 2 and 5
                          of the input contingency table as supplementary
@@ -291,7 +291,7 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                        numeric array containing supplementary rows.</p> <p>
                        If indexes or cell array of strings are supplied in
                        a vector, we assume that supplementary columns belong
-                       to contingency table N. For example:</p> <p>
+                       to contingency table N. For example:
                        - if Sup.c=[2 3] (that is Sup.c is a
                        numeric vector which contains column indexes) we use
                        columns 2 and 3 of the input contingency table as
@@ -326,10 +326,10 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                columns correspondence analysis is based on the first two
                columns of N (and a warning is produced).</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datamatrix',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot which shows the Principal
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p>If plots = 1, a plot which shows the Principal
                coordinates of rows and columns is shown on the screen. If
-               plots is a structure it may contain the following fields:</p> <p>
-       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>alpha</code></td><td><p><p>type of plot, scalar in the interval [0 1] or
+               plots is a structure it may contain the following fields:
+       <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>alpha</code></td><td><p><p>type of plot, scalar in the interval [0 1] or
                a string identifying the type of coordinates to use in the
                plot.</p> <p>
                If $plots.alpha='rowprincipal'$ the row points are in
@@ -427,14 +427,14 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                            D_c=diag(c)
                          \]</p></td></tr><tr valign="top"><td><code>ProfilesRows</code></td><td><p><p>$I$-by-$J$-matrix containing row profiles.</p> <p>
                          The $i,j$-th element of this matrix is given by
-                         $f_{ij}/f_{i.}=n_{ij}/n_{i.}$.</p> <p>
-                         Written in matrix form:</p><p>
+                         $f_{ij}/f_{i.}=n_{ij}/n_{i.}$.</p><p>
+                         Written in matrix form:
                          </p>\[
                          ProfilesRows = D_r^{-1} \times P
                          \]</p></td></tr><tr valign="top"><td><code>ProfilesCols</code></td><td><p><p>$I$-by-$J$-matrix containing column profiles.</p> <p>
                          The $i,j$-th element of this matrix is given by
-                         $f_{ij}/f_{.j}=n_{ij}/n_{.j}$.</p> <p>
-                         Written in matrix form:</p><p>
+                         $f_{ij}/f_{.j}=n_{ij}/n_{.j}$.</p><p>
+                         Written in matrix form:
                          </p>\[
                          ProfilesCols = P \times D_c^{-1}
                          \]</p></td></tr><tr valign="top"><td><code>K</code></td><td><p>Scalar integer containing the maximum number of
@@ -443,10 +443,10 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                          </p>\[
                          Residuals = D_r^{1/2}  (D_r^{-1}  P - r  c')  D_c^{-1/2} =
                          D_r^{-1/2}  (P - r  c')  D_c^{-1/2}
-                         \]<p>
+                         \]
                          With the singular value decomposition (SVD) we
-                         obtain that:</p> <p>
-                         </p>\[
+                         obtain that:
+                         \[
                          Residuals = U \Gamma V'
                          \]</p></td></tr><tr valign="top"><td><code>TotalInertia</code></td><td><p>Scalar containing total inertia. Total inertia
                          is equal (for example) to the sum of the
@@ -664,14 +664,12 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
  correspondances", Paris, Bordas.</p></div><div><p>Greenacre, M.J. (1993), "Correspondence Analysis in Practice", London,
  Academic Press.</p></div><div><p>Gabriel, K.R. and Odoroff, C. (1990), Biplots in biomedical research,
  "Statistics in Medicine", Vol. 9, pp. 469-485.</p></div><div><p>Greenacre, M.J. (1993), Biplots in correspondence Analysis, "Journal of
- Applied Statistics", Vol. 20, pp. 251-269.</p></div><div><p>Urbano, L.-S., van de Velden, M. and Kiers, H.A.L. (2009),
- CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations,
- "Journal of Statistical Software", Vol. 31.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
+ Applied Statistics", Vol. 20, pp. 251-269.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
 
- This function has been inspired by the code developed by:</p> <p>
+ This function has been inspired by the code developed by:
  Urbano Lorenzo-Seva (Rovira i Virgili University, Tarragona, Spain),
  Michel van de Velden (Erasmus University, Rotterdam, The Netherlands),
  and Henk A.L. Kiers (University of Groningen, Groningen, The Netherlands)
- (See References).</p><p>
+ (See References).</p> <p>
 
  </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="CorAnaplot.html" itemprop="url"><span itemprop="name"><code>CorAnaplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

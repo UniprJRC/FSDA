@@ -120,7 +120,7 @@ out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);</pre></div></div></p>
 </code>,<code> 'w',1:n
 </code>,<code> 'plots',true
 </code>,<code> 'showBars',true
-</code></code></span></div><div class="expandableContent"><div id="inputarg_critBestSol" class="clearfix"></div><h3 id="input_argument_namevalue_critBestSol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>critBestSol</code> &#8212;criterion to define the admissible solutions to retain.</span></a><span class="example_desc">scalar | struct.</span></span></h3><div class="collapse">	<p><p>The default value of critBestSol is
+</code></code></span></div><div class="expandableContent"><div id="inputarg_critBestSol" class="clearfix"></div><h3 id="input_argument_namevalue_critBestSol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>critBestSol</code> &#8212;criterion to define the admissible solutions to retain.</span></a><span class="example_desc">scalar | struct.</span></span></h3><div class="collapse">	<p>The default value of critBestSol is
                 0.10, that is solutions are retained if the associated
                 residuals pass the Durbin-Watson and Jarque-Bera tests, at
                 the 10 per cent level. For example if critBestSol is 0.01,
@@ -131,8 +131,8 @@ out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);</pre></div></div></p>
                 the other hand, if critBestSol is a struct it is possible
                 to use a different p-value threshold for each test. If
                 critBestSol is a struct it may contain the following
-                fields:</p> <p>
-        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pvalDW</code></td><td><p>threshold for the p-value of Durbin
+                fields:
+        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pvalDW</code></td><td><p>threshold for the p-value of Durbin
                 Watson test (if this field is not present default is
                 critBestSol.pvalDW=0.10).</p></td></tr><tr valign="top"><td><code>pvalJB</code></td><td><p>threshold for the p-value of Jarque-Bera
                 test (if this field is not present default is
@@ -254,7 +254,7 @@ out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);</pre></div></div></p>
  Routine avas, (additivity and variance stabilization) provides
  non-parametric alternatives to the widely used Box-Cox parametric
  transformation of the response and the Box-Tidwell family of power
- transformations of explanatory variables. In routine avas it is possible:</p> <p>
+ transformations of explanatory variables. In routine avas it is possible:
 <hr>[<b>1</b>] To use option rob in order to replace standard OLS regression with
  robust regression in all steps of the iterative procedure. More precisely
  using robust regression we identify a subset $S_m$ of clean observations

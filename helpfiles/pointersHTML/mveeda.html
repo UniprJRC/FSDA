@@ -2,7 +2,7 @@
  For each subset $J$ of $v+1$ observations
  $\mu_J$ and $C_J$ are the centroid and the covariance matrix based on
  subset $J$.
- 
+
 
  Rousseeuw and Leroy (RL) (eq. 1.25 chapter 7, p. 259) write the objective
  function for subset $J$ as
@@ -16,7 +16,7 @@
  MMY_J =  \hat \sigma \left( (y_i -\mu_J)' \Sigma_J^{-1} (y_i -\mu_J) \right) |C_J|^{1/v}
        =  \hat \sigma \left( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) \right) |C_J|^{1/v}
  \]
- where $\hat \sigma \left( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) \right) = med_{i=1, ..., n}(y_i -\mu_J)' C_J^{-1} (y_i -\mu_J)$. 
+ where $\hat \sigma \left( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) \right) = med_{i=1, ..., n}(y_i -\mu_J)' C_J^{-1} (y_i -\mu_J)$.
  Note that $MMY_J= (RL)^{2/v}$.
 
    To RAW.cov a consistency factor has been applied which is based on

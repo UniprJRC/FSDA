@@ -17,7 +17,12 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
 fre=sortrows(fre,[3 4]);
 bs=fre(1:m0,1);
 mmd=FSMmmd(Ycont,bs);
-plot(mmd(:,1),mmd(:,2))</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMmmd.html#Example_1'><img vspace="5" hspace="5" src="images\FSMmmd_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSMmmd with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+plot(mmd(:,1),mmd(:,2))</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
+RANDN to use legacy random number generators.  This syntax is not recommended.
+See &lt;a href="matlab:helpview([docroot
+'\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged
+Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old syntax. 
+</pre><a href='http://rosa.unipr.it/fsda/FSMmmd.html#Example_1'><img vspace="5" hspace="5" src="images\FSMmmd_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSMmmd with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Plotting the bandwith of the minimum Mahalanobis distance<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 m0=4;

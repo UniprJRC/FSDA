@@ -1,12 +1,11 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>RKpsix</title> <meta content="refpage" name="chunktype"><meta content="function:RKpsix " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="RKpsix Computes psi function times x for Rocke (translated Tukey's) biweight" itemprop="description" name="description" /><h1 itemprop="title">RKpsix</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/RKpsix.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/RKpsix.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/RKpsix.html">http://rosa.unipr.it/FSDA/RKpsix.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: RKpsix</em></p><P>RKpsix</P><P>Computes psi function times x for Rocke (translated Tukey's) biweight</P><h2>More About</h2><P>
 
- function RKpsider transforms vector u as follows:
+ function RKpsix transforms vector u as follows
  \[
- RKpsider(u)= \left\{
+ RKpsix(u)= \left\{
     \begin{array}{cc}
- 1 &  1 \leq u \leq M  \\
-  \left(1-\left( \frac{u-M}{c} \right)^2 \right)\left(1-\left( \frac{u-M}{c} \right)^2
- -4u \frac{u-M}{c^2} \right)  &  M \leq u \leq M+c \\
+ u^2 &  0\leq u \leq M  \\
+  u^2 \left(1-\left( \frac{u-M}{c} \right)^2 \right)^2 &  M &lt; u \leq M+c \\
  0   &             u &gt; M+c \\
  \end{array}
     \right.

@@ -60,15 +60,15 @@ disp(max(max(abs(Y-Ychk))))</pre></div></div></p></div></div></div></div>
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_Ytra" class="clearfix"></div><h3 id="output_argument_Ytra" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ytra</code> &#8212;transformed data matrix.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p> n x v data matrix containing
                transformed observations
              When $\lambda \ne 0$
-             if jacobian=true:</p> <p>
+             if jacobian=true:
              $ytra = (y^\lambda-1)/ (G^{(\lambda-1)} \lambda)$;</p> <p>
-             else if jacobian=false:</p> <p>
+             else if jacobian=false:
              $ytra = (y^\lambda-1)/ \lambda$;</p> <p>
              where $G$ is the geometric mean of the observations.</p> <p>
              When $\lambda = 0$
-             if jacobian=true:</p> <p>
+             if jacobian=true:
              $ytra = G log(y)$;</p> <p>
-             else if jacobian=false:</p> <p>
+             else if jacobian=false:
              $ytra = log(y)$;</p><p>
              where $G$ is the geometric mean of the observations.</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Box, G.E.P. and Cox, D.R. (1964), An analysis of transformations (with
  Discussion), "Journal of the Royal Statistical Society Series B", 

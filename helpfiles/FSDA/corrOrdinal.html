@@ -8,7 +8,7 @@
  strength, with larger absolute values indicating stronger
  relationships. Values close to an absolute value of 1 indicate a strong
  relationship between the two variables. Values close to 0 indicate little
- or no relationship. More in detail:</p> <p>
+ or no relationship. More in detail:
  $\gamma$ is a symmetric measure of association.</p> <p>
  Kendall's $\tau_a$ is a symmetric measure of association that does not
  take ties into account. Ties happen when both members of the data pair
@@ -208,21 +208,21 @@ end</pre></div></div></p></div></div></div></div></div><div class="ref_se
 
  \[
  b_{ij} = \sum_{k&gt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&lt;i} \sum_{l&gt;j} n_{kl}
- \]<p>
+ \]
 
 
- Twice the number of concordances, $C$ is given by:</p> <p>
- </p>\[
+ Twice the number of concordances, $C$ is given by:
+ \[
  2 \times C = \sum_{i=1}^I \sum_{j=1}^J n_{ij} a_{ij}
- \]<p>
- Twice the number of discordances, $D$ is given by:</p> <p>
- </p>\[
+ \]
+ Twice the number of discordances, $D$ is given by:
+ \[
  2 \times D = \sum_{i=1}^I \sum_{j=1}^J n_{ij} b_{ij}
- \]<p>
+ \]
 
- Goodman-Kruskal's $\gamma$ statistic is equal to the ratio:</p> <p>
+ Goodman-Kruskal's $\gamma$ statistic is equal to the ratio:
 
- </p>\[
+ \[
  \gamma= \frac{C-D}{C+D}
  \]<p>
 
@@ -237,7 +237,7 @@ end</pre></div></div></p></div></div></div></div></div><div class="ref_se
  $\tau_b$ is equal to concordant minus discordant
  pairs divided by a term representing the geometric mean between the
  number of pairs not tied on x and the number not tied on y.</p> <p>
- More precisely:</p><p>
+ More precisely:
  </p>\[
   \tau_b= \frac{C-D}{\sqrt{ (0.5 n(n-1)-T_x)(0.5 n(n-1)-T_y)}}
  \]<p>
@@ -260,7 +260,7 @@ end</pre></div></div></p></div></div></div></div></div><div class="ref_se
   d_{y|x} = \frac{C-D}{0.5 n(n-1)-T_x}
  \]<p>
 
- Null hypothesis:</p> <p>
+ Null hypothesis:
  corresponding index = 0. Alternative hypothesis (one-sided) index &lt; 0 or
  index &gt; 0.</p> <p>
 
@@ -271,9 +271,9 @@ end</pre></div></div></p></div></div></div></div></div><div class="ref_se
  Note that the expression of the standard errors which is used to compute
  the confidence intervals is different from the expression which is used
  to test the null hypothesis of no association (no relationship or independence)
- between the two variables.</p> <p>
+ between the two variables.</p><p>
 
-As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
+As concerns the Goodman-Kruskal's $\gamma$ index we have that:
  </p>\[
   var(\gamma) =   \frac{4}{(C + D)^4}  \sum_{i=1}^I \sum_{j=1}^J
   n_{ij} (D a_{ij} - C b_{ij} )^2
@@ -281,16 +281,16 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
  where
  \[
  d_{ij}=a_{ij}- b_{ij}
- \]<p>
+ \]
 
- The variance of $\gamma$  assuming the independence hypothesis is:</p> <p>
- </p>\[
+ The variance of $\gamma$  assuming the independence hypothesis is:
+ \[
  var_0(\gamma) =\frac{1}{(C + D)^2} \left( \sum_{i=1}^I \sum_{j=1}^J
   n_{ij} d_{ij}^2  -4(C-D)^2/n  \right)
- \]<p>
+ \]
 
- As concerns $\tau_a$ we have that:</p> <p>
- </p>\[
+ As concerns $\tau_a$ we have that:
+ \[
  var(\tau_a)= \frac{2}{n(n-1)} \left\{ \frac{2(n-2)}{n(n-1)^2}  \sum_{i=1}^I \sum_{j=1}^J (d_{ij} - \overline d)^2 + 1 - \tau_a^2 \right\}
  \qquad \mbox{with $i,j$ such that $N(i,j)&gt;0$}
  \]
@@ -298,16 +298,16 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
 
  \[
  \overline d = \sum_{i=1}^I \sum_{j=1}^J d_{ij} /n  \qquad \mbox{with $i,j$ such that $N(i,j)&gt;0$}
- \]<p>
+ \]
 
- The variance of $\tau_a$  assuming the independence hypothesis is:</p> <p>
- </p>\[
+ The variance of $\tau_a$  assuming the independence hypothesis is:
+ \[
  var_0(\tau_a) =\frac{2 (2n+5)}{9n(n-1) }
- \]<p>
+ \]
 
 
- As concerns $\tau_b$ we have that:</p> <p>
- </p>\[
+ As concerns $\tau_b$ we have that:
+ \[
  var(\tau_b)= \frac{n}{w^4} \left\{ n \sum_{i=1}^I \sum_{j=1}^J n_{ij} \tau_{ij}^2 - \left( \sum_{i=1}^I \sum_{j=1}^J  n_{ij}\tau_{ij}\right)^2  \right\}
  \]
  where
@@ -315,39 +315,39 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
  \[
   \tau_{ij} = 2n d_{ij} +2(C-D) n_{.j} w /n^3+2(C-D) (n_{i.}/n) \sqrt{
   w_c/w_r} \qquad \mbox{and} \qquad w= \sqrt{w_rw_c}
- \]<p>
+ \]
 
- The variance of $\tau_b$  assuming the independence hypothesis is:</p> <p>
- </p>\[
+ The variance of $\tau_b$  assuming the independence hypothesis is:
+ \[
  var_0(\tau_b) =\frac{4}{w_r w_c}  \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
- \]<p>
+ \]
 
 
- As concerns Stuart's $\tau_c$ we have that:</p> <p>
- </p>\[
+ As concerns Stuart's $\tau_c$ we have that:
+ \[
  var(\tau_c)= \frac{4m^2}{(m-1)^2 n^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
- \]<p>
+ \]
 
 
 
- The variance of $\tau_c$  assuming the independence hypothesis is:</p> <p>
- </p>\[
+ The variance of $\tau_c$  assuming the independence hypothesis is:
+ \[
  var_0(\tau_c) =var(\tau_c)
- \]<p>
+ \]
 
 
- As concerns $d_{y|x}$ we have that:</p> <p>
- </p>\[
+ As concerns $d_{y|x}$ we have that:
+ \[
  var( d_{y|x})= \frac{4}{w_r^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij}
  (w_r d_{ij} -2(C-D) (n-n_{i.}) \right\}^2
  \]
  where
  \[
  w_r= n^2- \sum_{i=1}^I n_{i.}^2
- \]<p>
+ \]
 
- The variance of $d_{y|x}$  assuming the independence hypothesis is:</p> <p>
- </p>\[
+ The variance of $d_{y|x}$  assuming the independence hypothesis is:
+ \[
  var_0(d_{y|x}) = \frac{4}{w_r^2} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
  \]<p>
 
@@ -357,11 +357,10 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Agresti, A. (2002), "Categorical Data Analysis", John Wiley & Sons. [pp.</p> <p>
  57-59]</p></p></div><div><p>Agresti, A. (2010), "Analysis of Ordinal Categorical Data", Second Edition,
- Wiley, New York, pp. 194-195.</p></div><div><p>Hollander, M, Wolfe, D.A., Chicken, E. (2014), "Nonparametric Statistical
- Methods", Third edition, Wiley,</p></div><div><p><p>Goktas, A. and Oznur, I. (2011), A comparision of the most commonly used
+ Wiley, New York, pp. 194-195.</p></div><div><p>Goktas, A. and Oznur, I. (2011), A comparision of the most commonly used
  measures of association for doubly ordered square contingency tables via
- simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37, [available at:</p> <p>
- www.stat-d.si/mz/mz8.1/goktas.pdf]</p></p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1954), Measures of association for
+ simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37, [available at:
+ www.stat-d.si/mz/mz8.1/goktas.pdf]</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1954), Measures of association for
  cross classifications, "Journal of the American Statistical
  Association", Vol. 49, pp. 732-764.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1959), Measures of association for
  cross classifications II: Further Discussion and References,
@@ -370,7 +369,8 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
  "Journal of the American Statistical Association", Vol. 58, pp. 310-364.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1972), Measures of association for
  cross classifications IV: Simplification of Asymptotic
  Variances, "Journal of the American Statistical Association", Vol. 67,
- pp. 415-421.</p></div><div><p>Liebetrau, A.M. (1983), "Measures of Association", Sage University Papers
+ pp. 415-421.</p></div><div><p>Hollander, M, Wolfe, D.A., Chicken, E. (2014), "Nonparametric Statistical
+ Methods", Third edition, Wiley,</p></div><div><p>Liebetrau, A.M. (1983), "Measures of Association", Sage University Papers
  Series on Quantitative Applications in the Social Sciences, 07-004,
  Newbury Park, CA: Sage. [pp. 49-56]</p></div><div><p>SAS documentation (2009), See
  <a href="http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf">http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf</a>,
@@ -384,4 +384,4 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
  gkgammatst: Goodman-Kruskal's gamma test. URL address
  <a href="http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst">http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst</a>
 
- </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'FSDA/GUIcorr.html'))" itemprop="url"><span itemprop="name"><code>corr</code></span></a></span> | <span itemprop="seealso"><a href="corrNominal.html" itemprop="url"><span itemprop="name"><code>corrNominal</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'FSDA/GUIautocorr.html'))" itemprop="url"><span itemprop="name"><code>corr</code></span></a></span> | <span itemprop="seealso"><a href="corrNominal.html" itemprop="url"><span itemprop="name"><code>corrNominal</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

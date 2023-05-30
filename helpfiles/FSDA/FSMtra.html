@@ -313,8 +313,8 @@ la0=[0.25,0,2,-1,0,0,1.5,1,1];
                monitor the profile log likelihood of the transformation
                parameters at selected steps of the search.</p> <p> 
                If prolik is a scalar, the plot of the profile loglikelihoods
-               is produced at step m=n with all default parameters.</p> <p>
-               If prolik is a structure it may contain the following fields:</p><p>
+               is produced at step m=n with all default parameters.</p><p>
+               If prolik is a structure it may contain the following fields:
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>steps</code></td><td><p>vector containing the steps of the fwd
                                   search for which profile logliks have to
                                   be plotted. The default value of steps
@@ -335,8 +335,8 @@ la0=[0.25,0,2,-1,0,0,1.5,1,1];
                to the plot.</p> <p>
                If prolik is a scalar, the plot of the monitoring of
                maximum likelihood estimates of transformation parameters
-               is produced on the screen with all the default options.</p> <p>
-               If plotsmle is a structure, it may contain the following fields:</p><p>
+               is produced on the screen with all the default options.</p><p>
+               If plotsmle is a structure, it may contain the following fields:
          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>xlim</code></td><td><p>minimum and maximum on the x axis;</p></td></tr><tr valign="top"><td><code>ylim</code></td><td><p>minimum and maximum on the y axis;</p></td></tr><tr valign="top"><td><code>LineWidth</code></td><td><p>Line width of the trajectories of
                                       mle of transformation parameters;</p></td></tr><tr valign="top"><td><code>LineStyle</code></td><td><p>cell containing Line styles of
                                       the trajectories of mle of
@@ -347,8 +347,8 @@ la0=[0.25,0,2,-1,0,0,1.5,1,1];
                plot the likelihood ratio test.</p> <p> 
                If plotslrt is a scalar, the plot of the monitoring of
                likelihood ratio test is produced on the screen with all
-               default options.</p> <p>
-               If plotslrt is a strucure, it may contain the following fields:</p><p>
+               default options.</p><p>
+               If plotslrt is a strucure, it may contain the following fields:
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>xlim</code></td><td><p>minimum and maximum on the x axis;</p></td></tr><tr valign="top"><td><code>ylim</code></td><td><p>minimum and maximum on the y axis;</p></td></tr><tr valign="top"><td><code>LineWidth</code></td><td><p>Line width of the trajectory of lrt of
                                        transformation parameters;</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>vector which defines the confidence
                                        levels of the horizontal line for
@@ -360,20 +360,20 @@ la0=[0.25,0,2,-1,0,0,1.5,1,1];
               screen else no message is displayed on the screen.</p> <p>
                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'msg',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MLEtra</code></td><td><p><p>n-init+1 x v matrix which contains the monitoring of
-               MLE of transformation parameters:</p> <p>
+               MLE of transformation parameters:
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = MLE of variable 1;</p> <p>
                3rd col = MLE of variable 2;</p> <p>
                ...;</p><p>
                (v+1)th col = MLE of variable v.</p></p></td></tr><tr valign="top"><td><code>LIKrat</code></td><td><p><p>n-init+1 x 2 = matrix which contains the monitoring of
-               likelihood ratio for testing H0:\lambda=la0:</p> <p>
-               1st col = fwd search index (from init to n);</p><p>
+               likelihood ratio for testing H0:\lambda=la0:
+               1st col = fwd search index (from init to n);</p> <p>
                2nd col = value of the likelihood ratio.</p></p></td></tr><tr valign="top"><td><code>Exflag</code></td><td><p><p>n-init+1 x 2 = matrix which contains the monitoring of
                the integer identifying the reason why the maximization
                algorithm terminated. See help page fminunc of the
                optimization toolbox  for the list of values of exitflag
-               and the corresponding reasons the algorithm terminated:</p> <p>
-               1st col = fwd search index (from init to n);</p><p>
+               and the corresponding reasons the algorithm terminated:
+               1st col = fwd search index (from init to n);</p> <p>
                2nd col = the value that describes the exit condition</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 Matrix which contains the unit(s)
                included in the subset at each step of the fwd search.</p> <p>
                REMARK: in every step the new subset is compared with the

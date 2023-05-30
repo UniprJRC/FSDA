@@ -143,7 +143,7 @@ disp(ctsub(x,y,11,true))</pre></div></div></p></div></div></div></div></d
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>logical</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_a" class="clearfix"></div><h3 id="output_argument_a" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>a</code> &#8212;Result of numerical integration.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p>  Vector of length
                $k$ containing the results of the $k$ numerical integrations.</p> <p>
                The $i$-th element of $a_i$ with $i=1, 2, \ldots, n$ is
-               equal to:</p><p>
+               equal to:
                </p>\[
                a_i =
                \int_{x_1}^{z_i} f(x) dx
@@ -152,7 +152,7 @@ disp(ctsub(x,y,11,true))</pre></div></div></p></div></div></div></div></d
  For a function defined $y=f(x)$ with $n$ pairs  $(x_1,y_1)$ $\ldots$
  $(x_n,y_n)$, with $x_1 \leq x_2 \leq, \ldots, \leq x_n$,
  if $x_i&lt;z_i \leq x_{i+1}$, $i=1, \ldots, n-1$, this routine computes the
- (approximate) integral  using the trapezoidal rule:</p><p>
+ (approximate) integral  using the trapezoidal rule:
  </p>\[
  a_i =
  \int_{x_1}^{z_i} f(x) dx
@@ -172,9 +172,9 @@ disp(ctsub(x,y,11,true))</pre></div></div></p></div></div></div></div></d
  If Trapezoid is omitted or is false, 
  when $z_i&gt;x_n$ the function for $x &gt;x_n$ is assumed constant and equal to
  $y_n$ therefore, to the expression of $a_i$ computed as described above, we
- must add $(z_i-x_n) y_n$.</p> <p>
+ must add $(z_i-x_n) y_n$.</p><p>
  On the other hand, if $z_i&lt;x_1$ the function for $x&lt;x_1$ is assumed
- constant and equal to $y_1$ therefore $a_i$ is computed as:</p><p>
+ constant and equal to $y_1$ therefore $a_i$ is computed as:
  </p>\[
  a_i = -(x_1-z_i) y_1
  \]<p>

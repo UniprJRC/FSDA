@@ -29,7 +29,7 @@ X2 = [zeros(200,1) ones(200,1) X repmat(2,200,1)];
                    constant column (see section 'More about').</p></p></td></tr><tr valign="top"><td><code>rk_warning</code></td><td><p>Warning for skipped estimation. String. If the matrix X is singular after the
                    adjustments, the OLS estimation is skipped, the parameters are set to NaN and a
                    warning is produced.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
- This routine performs the following operations:</p> <p>
+ This routine performs the following operations:
  1) If y is a row vector it is transformed in a column vector.</p> <p>
  2) Checks that X is a matrix that has not more than two dimensions.</p> <p>
  3) Checks dimension consistency of X and y.</p> <p>
@@ -39,7 +39,7 @@ X2 = [zeros(200,1) ones(200,1) X repmat(2,200,1)];
  in the parameter estimation step). Then, to avoid multicollinearity,
  in the case of presence of multiple non-zero constant columns, the
  code leave only the first constant column. If using the SETARX function,
- this corresponds to the preference order:</p> <p>
+ this corresponds to the preference order:
   (i) autoregressive variables,
   (ii) exogenous variables,
   (iii) dummies.</p> <p>
@@ -50,12 +50,12 @@ X2 = [zeros(200,1) ones(200,1) X repmat(2,200,1)];
  the OLS estimation is skipped with a warning and the parameters values are set to NaNs.</p> <p>
  9) Performs OLS estimation if matrix X is not singular.</p> <p>
  The estimation of the covariance matrix (and standard errors) of the OLS estimator
- $\hat{\beta} = (X^{\prime} X)^{-1}X^{\prime}y$ is made via the Huber-White "Sandwich" estimator:</p> <p>
+ $\hat{\beta} = (X^{\prime} X)^{-1}X^{\prime}y$ is made via the Huber-White "Sandwich" estimator:
  $$\mathrm{cov}(\boldsymbol{\beta})=(\mathbf{X}^{\prime} \mathbf{X})^{-1}\mathbf{X}^{\prime} \mathbf{\Sigma} \mathbf{X}(\mathbf{X}^{\prime}
  \mathbf{X})^{-1}.$$
  This is a heteroskedasticity-robust variance-covariance matrix, without imposing any assumption on
  the structure of heteroskedasticity. Assuming the indipendence of the regression errors $\mathbf{u}$,
- the adjusted estimation of matrix $\Sigma$ is:</p> <p>
+ the adjusted estimation of matrix $\Sigma$ is:
  $$\hat{\mathbf{\Sigma}}= \frac{n}{n-k} \mathrm{diag}(\mathbf{u}^2).$$
  If there is no heteroskedasticity, the robust standard errors will become just conventional
  OLS standard errors. Thus, the robust standard errors are appropriate even under homoskedasticity.</p> <p>

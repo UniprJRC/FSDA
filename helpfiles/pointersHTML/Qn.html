@@ -1,11 +1,17 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>Qn</title> <meta content="refpage" name="chunktype"><meta content="function:Qn " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="Qn Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)" itemprop="description" name="description" /><h1 itemprop="title">Qn</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/Qn.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/Qn.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/Qn.html">http://rosa.unipr.it/FSDA/Qn.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: Qn</em></p><P>Qn</P><P>Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)</P><h2>Description</h2><P>This routins uses as input the cell which is created with routine
- makecontentsfileFS.m and uses template file function-cateEmpty.html
- which is contained inside:
- (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
- to create in a fully automatic way the categorical list of
- functions with automatic links for each category.
- The output file will be created inside
- (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
- and will have name function-cate.html
- The automatic help file starting from structured .m file can be created
- using function publishFS.m</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>Qn</title> <meta content="refpage" name="chunktype"><meta content="function:Qn " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="Qn Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)" itemprop="description" name="description" /><h1 itemprop="title">Qn</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/Qn.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/Qn.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/Qn.html">http://rosa.unipr.it/FSDA/Qn.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: Qn</em></p><P>Qn</P><P>Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)</P><h2>More About</h2><P>
+   $Q_n$ is the first quartile of the distances { $|x_i-x_j|$; $i &lt;j$} Note that
+   $Q_n$ does not need any location estimate. More in detail, let 
+   $d_{(1)} \leq d_{(2)} \leq ... \leq d_{(m)}$ the ordered values of the
+   $m$
+   differences $|x_i-x_j|$ with $i&gt;j$ and $m = {n \choose 2}$. $Q_n=d_{(k)}$ where
+   $k= {[n/2]+1 \choose 2}$. Since $k$ is approximately $m/4$, $Q_n$ is approximately
+   the first quartile of the ordered distances $d_{(1)} \leq d_{(2)} \leq
+   ... \leq d_{(m)}$. $Q_n$ is multiplyed by $c$ and $c_n$. 
+   $c$ is the so called
+   asymptotic consistency factor and is equal to 2.2219 while $c_n$ is a
+   finite sample correction factor to make the estimator unbiased.
+
+
+</P><h2>References</h2><P>Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute
+ deviation, "Journal of American Statistical Association", Vol. 88, pp.
+ 1273-1283</P></html>

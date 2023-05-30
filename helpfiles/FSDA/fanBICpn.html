@@ -12,30 +12,22 @@ labest=outini.labest;
 % Compute test for positive and test for negative using labest
 [outFSRfanpn]=FSRfan(y,X,'msg',0,'family','YJpn','la',labest,'plots',0);
 % Check if two different transformations are needed for positive and negative values
-out=fanBICpn(outFSRfanpn);</pre></div></div><pre class="codeoutput">Analyzing la_P=0.75 and la_N=0
-Analyzing la_P=0.75 and la_N=0.75
+out=fanBICpn(outFSRfanpn);</pre></div></div><pre class="codeoutput">Analyzing la_P=0.75 and la_N=0.75
 Analyzing la_P=0.75 and la_N=0.5
 Analyzing la_P=0.75 and la_N=0.25
+Analyzing la_P=0.75 and la_N=0
 Analyzing la_P=1 and la_N=0.75
-Analyzing la_P=1 and la_N=0
 Analyzing la_P=1 and la_N=0.5
-Warning: interchange greater than 10 when m=186
-Warning: interchange greater than 10 when m=187
-Warning: interchange greater than 10 when m=188
-Warning: interchange greater than 10 when m=189
-Warning: interchange greater than 10 when m=186
-Warning: interchange greater than 10 when m=187
-Warning: interchange greater than 10 when m=188
-Warning: interchange greater than 10 when m=189
 Analyzing la_P=1 and la_N=0.25
+Analyzing la_P=1 and la_N=0
 Analyzing la_P=1.25 and la_N=0.75
-Analyzing la_P=1.25 and la_N=0
 Analyzing la_P=1.25 and la_N=0.5
 Analyzing la_P=1.25 and la_N=0.25
+Analyzing la_P=1.25 and la_N=0
 Analyzing la_P=1.5 and la_N=0.75
-Analyzing la_P=1.5 and la_N=0
 Analyzing la_P=1.5 and la_N=0.5
 Analyzing la_P=1.5 and la_N=0.25
+Analyzing la_P=1.5 and la_N=0
 </pre><a href='http://rosa.unipr.it/fsda/fanBICpn.html#Example_1'><img vspace="5" hspace="5" src="images\fanBICpn_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\fanBICpn_02.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_03.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_04.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_05.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option laRangeAndStep.</li></span></a></span></h3><div class="collapse"><p>
      Use simulated data from Atkinson Riani and Corbellini (2020)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
 rng(10)
@@ -69,26 +61,26 @@ labest=outUniqueLambda.labest;
 % option laRangeAndStep
 laRangeAndStep=[1.5 0.25 0.5];
 out=fanBICpn(outFSRfanpn,'laRangeAndStep',laRangeAndStep);</pre></div></div><pre class="codeoutput">Analyzing la_P=1.5 and la_N=1.5
-Analyzing la_P=1.5 and la_N=0
-Analyzing la_P=1.5 and la_N=0.25
 Analyzing la_P=1.5 and la_N=1.25
-Analyzing la_P=1.5 and la_N=0.5
-Analyzing la_P=1.5 and la_N=0.75
 Analyzing la_P=1.5 and la_N=1
-Analyzing la_P=1.75 and la_N=0.5
+Analyzing la_P=1.5 and la_N=0.75
+Analyzing la_P=1.5 and la_N=0.5
+Analyzing la_P=1.5 and la_N=0.25
+Analyzing la_P=1.5 and la_N=0
 Analyzing la_P=1.75 and la_N=1.5
-Analyzing la_P=1.75 and la_N=0
-Analyzing la_P=1.75 and la_N=0.25
 Analyzing la_P=1.75 and la_N=1.25
-Analyzing la_P=1.75 and la_N=0.75
 Analyzing la_P=1.75 and la_N=1
-Analyzing la_P=2 and la_N=0
+Analyzing la_P=1.75 and la_N=0.75
+Analyzing la_P=1.75 and la_N=0.5
+Analyzing la_P=1.75 and la_N=0.25
+Analyzing la_P=1.75 and la_N=0
 Analyzing la_P=2 and la_N=1.5
-Analyzing la_P=2 and la_N=0.25
 Analyzing la_P=2 and la_N=1.25
 Analyzing la_P=2 and la_N=1
-Analyzing la_P=2 and la_N=0.5
 Analyzing la_P=2 and la_N=0.75
+Analyzing la_P=2 and la_N=0.5
+Analyzing la_P=2 and la_N=0.25
+Analyzing la_P=2 and la_N=0
 </pre><a href='http://rosa.unipr.it/fsda/fanBICpn.html#Example_2'><img vspace="5" hspace="5" src="images\fanBICpn_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\fanBICpn_07.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_08.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_09.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_10.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of options fraciniFSR and plots.</li></span></a></span></h3><div class="collapse"><p>
      Balance sheets data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('BalanceSheets.txt');
 % Define X and y
@@ -114,24 +106,24 @@ fraciniFSR=0.90;
 plots=struct;
 plots.name={'BIC','AGI'};
 nsamp=2000;
-out=fanBICpn(outFSRfanpn,'fraciniFSR',fraciniFSR,'plots',plots,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">Analyzing la_P=0 and la_N=1
-Analyzing la_P=0 and la_N=1.5
-Analyzing la_P=0 and la_N=0.75
+out=fanBICpn(outFSRfanpn,'fraciniFSR',fraciniFSR,'plots',plots,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">Analyzing la_P=0 and la_N=1.5
 Analyzing la_P=0 and la_N=1.25
-Analyzing la_P=0.25 and la_N=0.75
+Analyzing la_P=0 and la_N=1
+Analyzing la_P=0 and la_N=0.75
 Analyzing la_P=0.25 and la_N=1.5
 Analyzing la_P=0.25 and la_N=1.25
 Analyzing la_P=0.25 and la_N=1
-Analyzing la_P=0.5 and la_N=1.25
+Analyzing la_P=0.25 and la_N=0.75
 Analyzing la_P=0.5 and la_N=1.5
-Analyzing la_P=0.5 and la_N=0.75
+Analyzing la_P=0.5 and la_N=1.25
 Analyzing la_P=0.5 and la_N=1
-Analyzing la_P=0.75 and la_N=0.75
+Analyzing la_P=0.5 and la_N=0.75
 Analyzing la_P=0.75 and la_N=1.5
 Analyzing la_P=0.75 and la_N=1.25
 Analyzing la_P=0.75 and la_N=1
-</pre><a href='http://rosa.unipr.it/fsda/fanBICpn.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\fanBICpn_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\fanBICpn_12.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_13.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_outFSRfan" class="clearfix"> </div> <h3 id="input_argument_outFSRfan" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>outFSRfan</code> &#8212; Structure created with function FSRfan. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>(n-init) x length(la)+1 matrix:</p> <p>
-               1st col = fwd search index;</p><p>
+Analyzing la_P=0.75 and la_N=0.75
+</pre><a href='http://rosa.unipr.it/fsda/fanBICpn.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\fanBICpn_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\fanBICpn_12.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_13.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_outFSRfan" class="clearfix"> </div> <h3 id="input_argument_outFSRfan" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>outFSRfan</code> &#8212; Structure created with function FSRfan. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>(n-init) x length(la)+1 matrix:
+               1st col = fwd search index;</p> <p>
                2nd col = value of the score test in each step
                of the fwd search for la;</p></p></td></tr><tr valign="top"><td><code>Scorep</code></td><td><p><p>(n-init) x 2 matrix containing the values of the
                score test for positive observations for each value of the
@@ -140,8 +132,8 @@ Analyzing la_P=0.75 and la_N=1
                2nd col = value of the (positive) score test in each step
                of the fwd search for la;</p></p></td></tr><tr valign="top"><td><code>Scoren</code></td><td><p><p>(n-init) x 2 matrix containing the values of the
                score test for positive observations for each value of the
-               transformation parameter:</p> <p>
-               1st col = fwd search index;</p><p>
+               transformation parameter:
+               1st col = fwd search index;</p> <p>
                2nd col = value of the (negative) score test in each step
                of the fwd search for la;</p></p></td></tr><tr valign="top"><td><code>Scoreb</code></td><td><p><p>(n-init) x 2+1 matrix containing the values of the
                score test for the joint presence of both constructed
@@ -194,16 +186,16 @@ Analyzing la_P=0.75 and la_N=1
                    exceedances of the minimum deletion residuals. The
                    default value of fraciniFSR is 0.8.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fraciniFSR',0.85
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Step to start monitoring exceedances.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the initial
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Step to start monitoring exceedances.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It specifies the initial
                  subset size to start monitoring exceedances of the
                  fanplot. If init is not specified it set equal
-                 to round(n*0.6):</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
+                 to round(n*0.6):
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option to be
                 used if the distribution of the data is
                  strongly non normal and, thus, the general signal
                  detection rule based on consecutive exceedances cannot be
-                 used. In this case bonflev can be:</p> <p>
+                 used. In this case bonflev can be:
                  - a scalar smaller than 1 which specifies the confidence
                    level for a signal and a stopping rule based on the
                    comparison of the minimum MD with a
@@ -246,8 +238,8 @@ Analyzing la_P=0.75 and la_N=1
                  with the transformation excluding the outliers and the
                  fourth ('R2c') the final value of R2 (corrected for truncation).</p> <p>
 
-               Case 2: plots option used as struct.</p> <p>
-                 If plots is a structure it may contain the following fields:</p><p>
+               Case 2: plots option used as struct.</p><p>
+                 If plots is a structure it may contain the following fields:
          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>name</code></td><td><p><p>cell array of strings which enables to
                    specify which plot to display.</p> <p>
                    plots.name={'Obs'; 'BIC'; 'AGI'; 'R2c'};</p> <p>
@@ -262,7 +254,7 @@ Analyzing la_P=0.75 and la_N=1
                    version of the agreement index ('AGIW') and the
                    orginal value of R2 before correction for truncation.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots', 1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Summary</code></td><td><p><p>k-by-9 table where k is the number of values of laPosxlaNeg which have been considered.</p> <p>
-              out.Summary contains the following information:</p> <p>
+              out.Summary contains the following information:
               1st column= value of laPos (transformation for positive
               values of y);</p> <p>
               2nd column= value of laNeg (transformation for negative
@@ -284,5 +276,6 @@ Analyzing la_P=0.75 and la_N=1
  Laboratory Systems", Vol. 60, pp. 87-100.</p></div><div><p>Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of
  transformations for profit-and-loss data, Journal of the Royal
  Statistical Society, Series C, "Applied Statistics",
- <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a></p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
- Transformation: Review and Extensions, "Statistical Science", in press.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRfan.html" itemprop="url"><span itemprop="name"><code>FSRfan</code></span></a></span> | <span itemprop="seealso"><a href="fanBIC.html" itemprop="url"><span itemprop="name"><code>fanBIC</code></span></a></span> | <span itemprop="seealso"><a href="fanplot.html" itemprop="url"><span itemprop="name"><code>fanplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a></p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2021), The Box–Cox
+ Transformation: Review and Extensions, "Statistical Science", Vol. 36,
+ pp. 239-255, <a href="https://doi.org/10.1214/20-STS778">https://doi.org/10.1214/20-STS778</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRfan.html" itemprop="url"><span itemprop="name"><code>FSRfan</code></span></a></span> | <span itemprop="seealso"><a href="fanBIC.html" itemprop="url"><span itemprop="name"><code>fanBIC</code></span></a></span> | <span itemprop="seealso"><a href="fanplot.html" itemprop="url"><span itemprop="name"><code>fanplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

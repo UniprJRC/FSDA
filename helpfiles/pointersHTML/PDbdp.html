@@ -1,40 +1,4 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>PDbdp</title> <meta content="refpage" name="chunktype"><meta content="function:PDbdp " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="PDbdp Finds the constant alpha associated to the supplied breakdown point for minimum power divergence estimator" itemprop="description" name="description" /><h1 itemprop="title">PDbdp</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/PDbdp.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/PDbdp.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/PDbdp.html">http://rosa.unipr.it/FSDA/PDbdp.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: PDbdp</em></p><P>PDbdp</P><P>Finds the constant alpha associated to the supplied breakdown point for minimum power divergence estimator</P><h2>Description</h2><P>The main differences with respect to MATLAB function pca are:
-   1) accepts an input X also as table;
-   2) produces in table format the percentage of the variance explained
-      single and cumulative of the various components and the associated
-      scree plot, in order to decide about the number of components to
-      retain.
-   3) returns the loadings in table format and shows them graphically.
-   4) provides guidelines about the automatic choice of the number of
-       components;
-   5) returns the communalities for each variable with respect to the
-       first k principal components in table format;
-   6) retuns the orthogonal distance ($OD_i$) of each observation to the
-      PCA subspace. For example, if the subspace is defined by the first two
-      principal components, $OD_i$ is computed as:
-      \[
-        OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
-      \]
-      where z_i is the i-th row of the original centered data matrix $Z$ of
-      dimension $n \times v$ and $V_{(2)}=(v_1 v_2)$ is the matrix of size
-      $p \times 2$ containing the first two eigenvectors of $Z'Z/(n-1)$. The
-      observations with large $OD_i$ are not well represented in the space of
-      the principal components.
-   7)  returns the score distance $SD_i$ of each observation. For example,
-      if the subspace is defined by the first two principal components,
-      $SD_i$ is computed as:
-      \[
-        SD_i=\sqrt{(z_i'v_1)^2/l_1+ (z_i'v_2)^2/l_2 }
-      \]
-      where $l_1$ and $l_2$ are the first two eigenvalues of $Z'Z/(n-1)$.
-   8) calls app biplotFS which enables to obtain an interactive biplot in
-      which points, rowslabels or arrows can be shown or hidden. This app
-      also gives the possibility of controlling the length of the arrows
-      and the position of the row points through two interactive slider
-      bars. In the app it is also possible to color row points depending
-      on the orthogonal distance ($OD_i$) of each observation to the PCA
-      subspace. If optional input argument bsb or bdp is specified, it is
-      possible to have in the app two tabs which enable the user to select
-      the breakdown point of the analysis or the subset size to use in the
-      svd. The units which are declared as outliers or the units outside
-      the subset are shown in the biplot with filled circles.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>PDbdp</title> <meta content="refpage" name="chunktype"><meta content="function:PDbdp " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="PDbdp Finds the constant alpha associated to the supplied breakdown point for minimum power divergence estimator" itemprop="description" name="description" /><h1 itemprop="title">PDbdp</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/PDbdp.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/PDbdp.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/PDbdp.html">http://rosa.unipr.it/FSDA/PDbdp.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: PDbdp</em></p><P>PDbdp</P><P>Finds the constant alpha associated to the supplied breakdown point for minimum power divergence estimator</P><h2>References</h2><P>Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
+  Regression with Density Power Divergence: Theory, Comparisons and Data
+  Analysis, Entropy, Vol. 22, 399. 
+  https://www.mdpi.com/1099-4300/22/4/399</P></html>

@@ -69,9 +69,9 @@ out=tclustICgpcm(Y,'pa',pa,'cleanpool',false,'plots',0,'alpha',0.1,'whichIC','CL
 </code>,<code> 'Ysave',1
 </code>,<code> 'warmup',true
 </code>,<code> 'UnitsSameGroup',[12 20]
-</code></code></span></div><div class="expandableContent"><div id="inputarg_pa" class="clearfix"></div><h3 id="input_argument_namevalue_pa" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>pa</code> &#8212;Constraints to apply and model specification.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure containing the following fields:</p> <p>
-     </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p><p>type of Gaussian Parsimonious Clustering Model. Character.</p> <p>
-               A 3 letter word in the set:</p> <p>
+</code></code></span></div><div class="expandableContent"><div id="inputarg_pa" class="clearfix"></div><h3 id="input_argument_namevalue_pa" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>pa</code> &#8212;Constraints to apply and model specification.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>Structure containing the following fields:
+     <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p><p>type of Gaussian Parsimonious Clustering Model. Character.</p> <p>
+               A 3 letter word in the set:
                'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
                'EVI','VEI','EEI','VII','EII'.</p><p>
                If pa is not supplied VVV model is used.</p></p></td></tr><tr valign="top"><td><code>cdet</code></td><td><p><p>scalar o vector containing the values of the
@@ -124,7 +124,7 @@ out=tclustICgpcm(Y,'pa',pa,'cleanpool',false,'plots',0,'alpha',0.1,'whichIC','CL
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>int16 | int32 | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;type of information criterion.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character which specifies which information criteria must
                be computed for each k (number of groups) and each value of
                the restriction factors $c_{det}$ and $c_{shw}$.</p> <p>
-               Possible values for whichIC are:</p> <p>
+               Possible values for whichIC are:
                'MIXMIX'  = a mixture model is fitted and to
                    compute the information criterion the mixture
                    likelihood is used. This option corresponds to the use of
@@ -249,7 +249,7 @@ out=tclustICgpcm(Y,'pa',pa,'cleanpool',false,'plots',0,'alpha',0.1,'whichIC','CL
                default value for numpool the number of physical cores
                rather than the number of logical ones. The user can
                increase the number of parallel pool workers allocated to
-               the multiple start monitoring by:</p> <p>
+               the multiple start monitoring by:
                - setting the NumWorkers option in the local cluster profile
                  settings to the number of logical cores (Remark 2). To do
                  so go on the menu "Home|Parallel|Manage Cluster Profile"
@@ -306,9 +306,9 @@ out=tclustICgpcm(Y,'pa',pa,'cleanpool',false,'plots',0,'alpha',0.1,'whichIC','CL
                    1, 2, ..., r-1). The default value of UnitsSameGroup is
                    '' that is consistent labels are not imposed.</p> <p>
                         </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'UnitsSameGroup',[12 20]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:
 
-        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p>3D array of size 5-times-8--times-8 if kk and
+        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p>3D array of size 5-times-8--times-8 if kk and
                    pa.cdet and pa.cshw are not specififed else it is a 3D
                    array of size
                    length(kk)-times-length(pa.cdet)-times-length(pa.shw)

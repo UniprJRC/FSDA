@@ -86,6 +86,26 @@ function [c,A,B,d] = HYPeff(eff, v, k, traceiter)
 % Examples:
 
 %{
+    % Find parameter c for fixed efficiency. 
+    % Find value of c for a nominal efficiency of 0.9
+    % when k=4.5 (default value).
+    c=HYPeff(0.9,1);
+    % In this case
+    % c = 3.3139
+%}
+
+%{
+    % Example of specifying k. 
+    % Find value of c for a nominal efficiency of 0.9
+    % when k=4
+    ktuning=4;
+    c=HYPeff(0.9,1,ktuning);
+    % In this case
+    % c =  3.5443
+%}
+
+
+%{
     % Find parameters for fixed efficiency and k. 
     % Find value of c, A, B, for a nominal efficiency of 0.8427
     % when k=4.5
@@ -114,6 +134,125 @@ function [c,A,B,d] = HYPeff(eff, v, k, traceiter)
     % B = 0.713612241773758
     % d= 1.304379168746527
     % See also Table 2 of HRR p. 645
+%}
+
+%{
+    % Example to show the issue of multiple solutions problem. 
+    % 5 redescending psi functions are used and the Huber psi.
+    load Income1;
+    y=Income1{:,"HTOTVAL"};
+    % Use contaminated income data 
+    y=[y(1:20); 600000; 575000; 590000];
+    
+    y=y';
+    mady=mad(y,1)/0.675;
+    
+    eff=0.95;
+    TBc=TBeff(eff,1);
+    HUc=HUeff(eff,1);
+    HAc=HAeff(eff,1);
+    HYPc=HYPeff(eff,1);
+    OPTc=OPTeff(eff,1);
+    PDc=PDeff(eff);
+    
+    
+    mu=0:1000:700000;
+    avePSI=zeros(length(mu),6);
+    for i=1:length(mu)
+        % aveTB(i,2)=mean(TBrho((y-mu(i))./mady,c));
+    
+        avePSI(i,1)=mean(HUpsi((y-mu(i))./mady,HUc));
+        avePSI(i,2)=mean(HApsi((y-mu(i))./mady,HAc));
+        avePSI(i,3)=mean(TBpsi((y-mu(i))./mady,TBc));
+        avePSI(i,4)=mean(HYPpsi((y-mu(i))./mady,[HYPc,5]));
+        avePSI(i,5)=mean(OPTpsi((y-mu(i))./mady,OPTc));
+        avePSI(i,6)=mean(PDpsi((y-mu(i))./mady,PDc));
+    
+    end
+    % Plotting part
+    close
+    Link={'Huber', 'Hampel', 'Tukey', 'Hyperbolic' 'Optimal' 'Power divergence'} ;
+    for i=1:6
+        subplot(2,3,i)
+        plot(mu',avePSI(:,i),'LineWidth',2,'Color','k')
+        hold('on')
+        yline(0) %  line([min(mu);max(mu)],[0;0],'LineStyle',':')
+        title(Link(i),'FontSize',14)
+        xlabel('$\mu$','FontSize',14,'Interpreter','Latex')
+        ylabel('$\overline \psi \left( \frac{ y -\mu}{\hat \sigma} \right)$','FontSize',14,'Interpreter','Latex')
+    end
+%}
+
+%{
+    % Compare the weight function for 6 different links.
+    FontSize=14;
+    FontSizetitl=12;
+    x=-6:0.01:6;
+    ylim1=-0.05;
+    ylim2=1.05;
+    xlim1=min(x);
+    xlim2=max(x);
+    LineWidth=2;
+    
+    subplot(2,3,1)
+    ceff05HU=HUeff(0.95,1);
+    weiHU=HUwei(x,ceff05HU);
+    plot(x,weiHU,'LineWidth',LineWidth)
+    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)
+    title('Huber','FontSize',FontSizetitl)
+    ylim([ylim1 ylim2])
+    xlim([xlim1 xlim2])
+    
+    subplot(2,3,2)
+    ceff095HA=HAeff(0.95,1);
+    weiHA=HAwei(x,ceff095HA);
+    plot(x,weiHA,'LineWidth',LineWidth)
+    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)
+    title('Hampel','FontSize',FontSizetitl)
+    ylim([ylim1 ylim2])
+    xlim([xlim1 xlim2])
+    
+    
+    subplot(2,3,3)
+    ceff095TB=TBeff(0.95,1);
+    weiTB=TBwei(x,ceff095TB);
+    plot(x,weiTB,'LineWidth',LineWidth)
+    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)
+    title('Tukey biweight','FontSize',FontSizetitl)
+    ylim([ylim1 ylim2])
+    xlim([xlim1 xlim2])
+    
+    subplot(2,3,4)
+    ceff095HYP=HYPeff(0.95,1);
+    ktuning=4.5;
+    weiHYP=HYPwei(x,[ceff095HYP,ktuning]);
+    plot(x,weiHYP,'LineWidth',LineWidth)
+    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)
+    title('Hyperbolic','FontSize',FontSizetitl)
+    ylim([ylim1 ylim2])
+    xlim([xlim1 xlim2])
+    
+    
+    subplot(2,3,5)
+    ceff095OPT=OPTeff(0.95,1);
+    % ceff095OPT=ceff095OPT/3;
+    weiOPT=OPTwei(x,ceff095OPT);
+    weiOPT=weiOPT/max(weiOPT);
+    plot(x,weiOPT,'LineWidth',LineWidth)
+    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)
+    title('Optimal','FontSize',FontSizetitl)
+    ylim([ylim1 ylim2])
+    xlim([xlim1 xlim2])
+    
+    subplot(2,3,6)
+    ceff095PD=PDeff(0.95);
+    weiPD=PDwei(x,ceff095PD);
+    weiPD=weiPD/max(weiPD);
+    plot(x,weiPD,'LineWidth',LineWidth)
+    xlabel('$u$','Interpreter','Latex','FontSize',FontSize)
+    title('Power divergence','FontSize',FontSizetitl)
+    ylim([ylim1 ylim2])
+    xlim([xlim1 xlim2])
 %}
 
 %% Beginning of code

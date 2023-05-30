@@ -161,10 +161,10 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
 </code>,<code> 'nocheck',false
 </code>,<code> 'FileNameOutput',['C:' filesep 'myoutput' fielsep 'savesimdata.txt']
 </code>,<code> 'samescale',false
-</code></code></span></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies the model
+</code></code></span></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>A structure which specifies the model
                used to simulate the time series. The structure contains
-               the following fields:</p> <p>
-       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
+               the following fields:
+       <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 1 implies linear trend with intercept,
                        trend = 2 implies quadratic trend, etc.</p><p>
                        If this field is empty the simulated time series
@@ -184,10 +184,10 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                         frequencies, i.e. harmonics, in the seasonal
                         component. Possible values are $1, 2, ..., [s/2]$,
                         where $[s/2]=floor(s/2)$.</p> <p>
-                        For example:</p> <p>
-                        if seasonal = 1 (default) we have:</p> <p>
+                        For example:
+                        if seasonal = 1 (default) we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin (2 \pi t/s)$;</p> <p>
-                        if seasonal = 2 we have:</p> <p>
+                        if seasonal = 2 we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin (2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
                         Note that when $s$ is even the sine term disappears
@@ -198,13 +198,13 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                         grows over time.</p> <p>
                         For example, seasonal = 101 implies a seasonal
                         component which just uses one frequency
-                        which grows linearly over time as follows:</p> <p>
+                        which grows linearly over time as follows:
                         $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
                         \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
                         For example, seasonal = 201 implies a seasonal
                         component which just uses one frequency
                         which grows in a quadratic way over time as
-                        follows:</p> <p>
+                        follows:
                         $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p><p>
                        If this field is an empty double (default) the
@@ -213,7 +213,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                        coefficients for the seasonal component.</p> <p>
                        For example model.seasonal = 201 and model
                        model.trendb = [1.2 2.3 3.4 4.5] generates a
-                       seasonal component of the kind:</p> <p>
+                       seasonal component of the kind:
                         $(1+ 3.4 t + 4.5  t^2)\times( 1.2 \cos(
                         2 \pi t/s) + 2.3 \sin ( 2 \pi t/s))$.</p><p>
                        If this field is an empty double (default) the
@@ -244,7 +244,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                        this field is empty or not present, the default
                        value is false.</p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>vector with non negative integer numbers
                        specifying the autoregressive
-                       components. For example:</p> <p>
+                       components. For example:
                         model.ARp=[1 2] means a AR(2) process;</p> <p>
                         model.ARp=2 means just the lag 2 component;</p> <p>
                         model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p><p>
@@ -336,9 +336,9 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Character</code></p></div></div><div class="expandableContent"><div id="inputarg_samescale" class="clearfix"></div><h3 id="input_argument_namevalue_samescale" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>samescale</code> &#8212;same ylim  in the output plot.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>If true (default), all underlying components of the time
                series are shown in the plot with the same scale.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'samescale',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:
 
-        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>y</code></td><td><p><p>the simulated time series.</p> <p>
+        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>y</code></td><td><p><p>the simulated time series.</p> <p>
                    Matrix of dimension T x nsim, which is sum of trend +
                    (time varying) seasonal + explanatory variables + level
                    shift + irregular = TR+SE+X+LS+I.</p></p></td></tr><tr valign="top"><td><code>signal</code></td><td><p><p>signal (TR+SE+X+LS).</p> <p>

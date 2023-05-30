@@ -93,7 +93,7 @@ plot(Bols(:,1),Bols(:,j))
 xlabel('Subset size m');
 ylabel(['b' num2str(j-2)]);
 end
-end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.07 seconds 
+end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/FSRmdr.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRmdr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRmdr_02.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
      In this example the units forming subset are stored just for
      selected steps.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('hawkins.txt');
@@ -113,7 +113,7 @@ else
 % sum(~isnan(BB(:,2))) is 60
 disp(sum(~isnan(BB(:,1))))
 disp(sum(~isnan(BB(:,2))))
-end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
+end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.07 seconds 
     30
 
     60
@@ -203,7 +203,7 @@ Warning: Upper limit of y axis of the mdr forward plot set to 20
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'constr',[1:10] forces the first 10 units to join
 </code>               the subset in the last 10 steps</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search and
                start monitoring required diagnostics. If it is not
-               specified it is set equal to:</p> <p>
+               specified it is set equal to:
                    p+1, if the sample size is smaller than 40;</p> <p>
                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100

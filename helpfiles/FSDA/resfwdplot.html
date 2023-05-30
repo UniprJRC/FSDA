@@ -398,7 +398,7 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                        appear with Color{1} and the other half with
                        Color{2}. And so on with 3 cell elements, etc.</p></p></td></tr><tr valign="top"><td><code>LineStyle</code></td><td><p><p>cell containing the line types.</p> <p>
 
-                   The default values of structure standard are:</p><p>
+                   The default values of structure standard are:
                    standard.SizeAxesNum=10</p></p></td></tr><tr valign="top"><td><code>SizeAxesLab</code></td><td><p>12
                    standard.xlim='' (Automatic scale)
                    standard.ylim='' (Automatic scale)
@@ -415,7 +415,7 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                    It is possible to control the label, the width, the
                    color, the line type and the marker of the highlighted
                    units. The structure fground contains the following
-                   fields:</p><p>
+                   fields:
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>fthresh</code></td><td><p><p>(alternative to funit) numeric vector of
                        length 1 or 2 which specifies the highlighted
                        trajectories.</p> <p>
@@ -447,7 +447,7 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                        else no marker is used (default).</p></p></td></tr><tr valign="top"><td><code>FontSize</code></td><td><p><p>scalar controlling font size of the labels of
                        the trajectories in foreground.</p> <p>
 
-                   The default values of structure fground are:</p><p>
+                   The default values of structure fground are:
                     fground.fthresh=2.5
                     fground.flabstep=[m0 n]
                     fground.LineWidth=1
@@ -464,7 +464,7 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                    also specifies the style used in the plot to give them
                    less emphasis, so that to not distract the eye of the
                    analyst from the trajectories of the relevant units.</p> <p>
-                   The structure contains the following fields:</p><p>
+                   The structure contains the following fields:
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bthresh</code></td><td><p><p>numeric vector of length 1 or 2 which
                        specifies how to define the unimmportant trajectories.</p> <p>
                        Unimmportant trajectories will be plotted using a
@@ -474,8 +474,8 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                          (in absolute value) than thresh.</p> <p>
                        - If length(bthresh)=2 the irrelevant units
                          are those which always had a residual greater
-                         than bthresh(1) and smaller than bthresh(2).</p> <p>
-                       The default is:</p><p>
+                         than bthresh(1) and smaller than bthresh(2).</p><p>
+                       The default is:
                            bthresh=2.5 if n&gt;100 and bthresh=-inf if n&lt;=100
                        i.e. to treat all trajectories as important if
                        n&lt;=100 and, if n&gt;100, to reduce emphasis only to
@@ -566,7 +566,7 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                    In addition, brushed units are automatically highlighted in the
                    minimum deletion residual plot if it is already open.</p> <p>
                    The extension to the following plots will be available
-                   in future versions of the toolbox:</p> <p>
+                   in future versions of the toolbox:
                    - monitoring leverage plot;</p> <p>
                    - maximum studentized residual;</p> <p>
                    - s^2 and R^2;</p> <p>
@@ -583,7 +583,7 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                    DATABRUSH IS A STRUCTURE.</p> <p>
                    If databrush is a structure, it is possible to use all
                    optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
-                   following optional argument:</p> <p>
+                   following optional argument:
                    - persist. Persist is an empty value or a scalar
                      containing the strings 'on' or 'off'.</p> <p>
                      The default value of persist is '', that is brushing

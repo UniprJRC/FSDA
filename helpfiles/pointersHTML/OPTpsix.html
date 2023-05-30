@@ -1,18 +1,17 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>OPTpsix</title> <meta content="refpage" name="chunktype"><meta content="function:OPTpsix " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="OPTpsix Computes psi function (derivative of rho function) times x" itemprop="description" name="description" /><h1 itemprop="title">OPTpsix</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/OPTpsix.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/OPTpsix.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/OPTpsix.html">http://rosa.unipr.it/FSDA/OPTpsix.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: OPTpsix</em></p><P>OPTpsix</P><P>Computes psi function (derivative of rho function) times x</P><h2>More About</h2><P>
- Function OPTpsider transforms vector x as follows
+
+ Function OPTpsix transforms vector u as follows
 
  \[
- \psi'(x) = \begin{cases}  \frac{2.7692}{c^2}   \qquad |x| \leq \frac{2}{3} c \\
-  -\frac{5.3834}{c^2} +\frac{3*43.0672 x^2}{c^4}   -\frac{5*69.9840 x^4}{c^6}  +\frac{7*32.3 x^6}{c^8} 
+ \psi(x)x =x\rho' (x) = \begin{cases}  \frac{2.7692 x^2}{c^2}   \qquad |x| \leq \frac{2}{3} c \\
+  -\frac{5.3834 x^2}{c^2} +\frac{43.0672 x^4}{c^4}   -\frac{69.9840 x^6}{c^6}  +\frac{32.3 x^8}{c^8} 
    \qquad \frac{2}{3} c &lt; |x|  \leq c   \\
    0 & \; \vert x \vert &gt; c. \end{cases}
  \]
+ 
 
-
- Remark: Optimal psi-function is almost linear around u = 0 in accordance with
- Winsor's principle that all distributions are normal in the middle.
- This means that  \psi (u)/u is approximately constant over the linear region of \psi,
- so the points in that region tend to get equal weight.
+ Remark: function $\psi(x) *x$ has been precalculated because it is used to find
+ the weights in case of Tau estimators
 
 </P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
  and Methods", Wiley, New York.</P></html>

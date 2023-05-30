@@ -250,8 +250,8 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
            If rob is a struct, it is possible to specify in the
            fields method, bdp and alphasim the values of the estimator to
            use, the breakdown point and and confidence level to use to
-           declare the outliers.</p> <p>
-           More precisely:</p><p>
+           declare the outliers.</p><p>
+           More precisely:
    </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>method</code></td><td><p><p>character which identifies the estimator to use.</p> <p>
                Possible values are 'FS' (Forward search estimator', 'LTS'
                (Least trimmed squares estimator), 'LMS' (Least median of
@@ -306,10 +306,10 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
            initial value for ty are simply the standardized values.</p> <p>
            If tyinitial is true, y is transformed using best BoxCox lambda
            value among the following values of lambda (-1, -0.8, -0.6,
-           ..., 0.8, 1) and routines <a href="FSRfan.html">FSRfan</a> and <a href="fanBIC.html">fanBIC</a> are called.</p> <p>
+           ..., 0.8, 1) and routines <a href="FSRfan.html">FSRfan</a> and <a href="fanBIC.html">fanBIC</a> are called.</p><p>
            If tyinitial is a struct it is possible to specify in the
            fields la and family the values of lambda and the family to
-           use. More precisely:</p><p>
+           use. More precisely:
    </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>la</code></td><td><p>values of the lambdas to consider inside FSRfan.</p></td></tr><tr valign="top"><td><code>family</code></td><td><p><p>string which identifies the family of transformations which
                    must be used. Character. Possible values are 'BoxCox'
                    (default), 'YJ', or 'YJpn'.</p> <p>

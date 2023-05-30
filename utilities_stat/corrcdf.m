@@ -32,7 +32,7 @@ function y = corrcdf(x, rho, n, varargin)
 % Optional input arguments:
 %
 %   upper:      upper or lower tail. Scalar character. 
-%               If the numbe of input arguments is greater than 3  
+%               If the number of input arguments is greater than 3  
 %               corrcdf(...,'upper') computes the upper tail probability 
 %               Example - 'upper'
 %               Data Types - char

@@ -1,2 +1,41 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>publishBibliography</title> <meta content="refpage" name="chunktype"><meta content="function:publishBibliography " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="publishBibliography Enables to create web page which contains the references inside the input .m files" itemprop="description" name="description" /><h1 itemprop="title">publishBibliography</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/publishBibliography.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/publishBibliography.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/publishBibliography.html">http://rosa.unipr.it/FSDA/publishBibliography.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: publishBibliography</em></p><P>publishBibliography</P><P>Enables to create web page which contains the references inside the input .m files</P><h2>References</h2><P>Yeo, I.K and Johnson, R. (2000), A new family of power transformations to
- improve normality or symmetry, "Biometrika", Vol. 87, pp. 954-959.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>publishBibliography</title> <meta content="refpage" name="chunktype"><meta content="function:publishBibliography " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="publishBibliography Enables to create web page which contains the references inside the input .m files" itemprop="description" name="description" /><h1 itemprop="title">publishBibliography</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/publishBibliography.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/publishBibliography.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/publishBibliography.html">http://rosa.unipr.it/FSDA/publishBibliography.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: publishBibliography</em></p><P>publishBibliography</P><P>Enables to create web page which contains the references inside the input .m files</P><h2>Description</h2><P>This routine uses as input the cell which is created with routine
+ makecontentsfileFS.m and the cell created by publishFSallFiles.m and uses
+ template file bibliographyEmpty.html
+ which is contained inside:
+ (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
+ to create in a fully automatic way the bibliography file containing all
+ the references.
+ The output file (if the path is not specified in input option outputDir)
+ will be created inside:
+ (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
+ and will have name bibliography.html</P><h2>More About</h2><P>
+ Guidelines to create the references.
+ [1] Example of book citation (note that the publisher town is not given and
+ that the title of the book must be written in ""):
+ Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+ Analysis", Springer Verlag.
+ [2] Example of article citation (note that just the volume is given and that
+ the name of the Journal is inside ""):
+ Wong, C.K. and Easton, M.C. (1980), An Efficient Method for Weighted
+ Sampling Without Replacement, "SIAM Journal of Computing", Vol. 9, pp.
+ 111-113.
+ [3] Example of InCollection (note that just the volume is given and that
+ the name of the Journal is inside""):
+ Riani, M., Cerioli, A., Atkinson, A.C., Perrotta, D. and Torti, F. (2008),
+ Fitting Mixtures of Regression Lines with the Forward Search, in:
+ "Mining Massive Data Sets for Security", Fogelman-Soulie F. et al. Eds.,
+ pp. 271-286, IOS Press.
+ [4] IMPORTANT.
+ Extra information which is attached to a citation inside the MATLAB .m
+ file but does not have to appear in the output file bibliography.html
+ must be inserted inside square parenthesis.
+ For example in the citation below inside the .m file:
+
+ Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
+ Monitoring of Many Time Series with Application to Fraud Detection,
+ "Econometrics and Statistics". [quoted below as RPRH].
+
+ The string [quoted below as RPRH] does not appear in the bibliography
+
+
+</P></html>

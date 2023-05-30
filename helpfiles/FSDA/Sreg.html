@@ -11,7 +11,7 @@ ycont(1:5)=ycont(1:5)+6;
 [out]=Sreg(ycont,X);
 laby='Scaled S residuals';
 titl='';
-resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.37 seconds 
+resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.77 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/Sreg.html#Example_1'><img vspace="5" hspace="5" src="images\Sreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Sreg with optional input arguments.</li></span></a></span></h3><div class="collapse"><p>
      Sreg with optimal rho function. Run this code to see the output shown in the help file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 p=3;
@@ -32,7 +32,7 @@ y=randn(n,1);
 % Contaminated data
 ycont=y;
 ycont(1:5)=ycont(1:5)+6;
-[out]=Sreg(ycont,X,'rhofunc','hyperbolic','plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.61 seconds 
+[out]=Sreg(ycont,X,'rhofunc','hyperbolic','plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.58 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/Sreg.html#Example_3'><img vspace="5" hspace="5" src="images\Sreg_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that contains
        the response variable. y can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors') of
        dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and columns

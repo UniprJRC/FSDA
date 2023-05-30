@@ -3,7 +3,7 @@
  the supplied range. Supported families are Box Cox, Yeo and Johnson and
  extended Yeo and Johnson (Atkinson et al. 2020).</p> <p>
 
-               The profile log-likelihood is computed as:</p><p>
+               The profile log-likelihood is computed as:
                </p>\[
                -(n/2) \log( (y(\lambda)-X\beta(\lambda))'(y(\lambda)-X\beta(\lambda))/n) +\log J
                \]
@@ -206,7 +206,7 @@ outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href
                of usefmin is false, that is the likelihood is evaluated at
                the points laseqPos and laseqNeg without the solver.</p> <p>
                If usefmin is a structure it may contain the following
-               fields:</p><p>
+               fields:
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MaxIter</code></td><td><p>Maximum number of iterations (default is 1000).</p></td></tr><tr valign="top"><td><code>TolX</code></td><td><p>Termination tolerance for the parameters
                    (default is 1e-7).</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the solver. Possible values are
                    'fminsearch' (default) and 'fminunc'. fminunc needs the
@@ -231,7 +231,7 @@ outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href
                length(laseq)-by-2. In this case the first column contains
                the values of laseq and the second column the values of the
                profile log lik. If family is 'YJpn', the dimension of
-               out.LogLik is:</p> <p>
+               out.LogLik is:
                * length(laseqPos)-by-length(laseqNeg) if option usefmin is
                  false (default) and therefore the maximization routine is
                  not called.</p> <p>
@@ -250,13 +250,15 @@ outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href
                  implies normal convergence, else no convergence has been
                  obtained. This ouptut is present only if input option
                  usefmin is true or struct and family is YJpn.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
- Analysis", Springer Verlag, New York. [see pp. 83-84]</p></div><div><p>Box, G.E.P. and Cox, D.R. (1964), The analysis of transformations,
- Journal of the Royal Statistical Society, Vol. 26, pp. 211-252.</p></div><div><p>Yeo, I.K and Johnson, R. (2000), A new family of power transformations to
+ Analysis", Springer Verlag, New York. [see pp. 83-84]</p></div><div><p>Box, G.E.P. and Cox, D.R. (1964), An analysis of transformations (with
+ Discussion), "Journal of the Royal Statistical Society Series B", 
+ Vol. 26, pp. 211-252.</p></div><div><p>Yeo, I.K and Johnson, R. (2000), A new family of power transformations to
  improve normality or symmetry, "Biometrika", Vol. 87, pp. 954-959.</p></div><div><p>Atkinson, A.C., Riani, M. and Corbellini C. (2019), The Analysis of
  Transformations for Profit and Loss Data, "Journal of the Royal
  Statistical Society. Series C: Applied Statistics",
- <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a> [ARC]</p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
- Transformation: Review and Extensions, "Statistical Science", in press.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p>
+ <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a> [ARC]</p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2021), The Box–Cox
+ Transformation: Review and Extensions, "Statistical Science", Vol. 36,
+ pp. 239-255, <a href="https://doi.org/10.1214/20-STS778">https://doi.org/10.1214/20-STS778</a></p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p>
 
  This function has been inspired by sumbmission
  <a href="https://www.mathworks.com/matlabcentral/fileexchange/10419-box-cox-power-transformation-for-linear-models">https://www.mathworks.com/matlabcentral/fileexchange/10419-box-cox-power-transformation-for-linear-models</a>

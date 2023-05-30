@@ -331,10 +331,10 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
        table with one column, or a structure containing monitoring
        information (see the examples).</p> <p>
 
-     INPUT ARGUMENT y IS A VECTOR:</p> <p>
+     INPUT ARGUMENT y IS A VECTOR:
 
      If y is a vector, varargin can be either a sequence of name/value
-     pairs, detailed below, or one of the following explicit assignments:</p> <p>
+     pairs, detailed below, or one of the following explicit assignments:
 
        yXplot(y,X,group);</p> <p>
 
@@ -348,7 +348,7 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
      description of plo). Otherwise, the program expects a
      sequence of name/value pairs.</p> <p>
 
-     INPUT ARGUMENT y IS A STRUCTURE:</p> <p>
+     INPUT ARGUMENT y IS A STRUCTURE:
 
        Required fields in input structure y to obtain a static plot.</p><p>
 </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>y</code></td><td><p>a vector containing the response of length n.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>a matrix containing the explanatory variables of size nxp.</p> <p>
@@ -415,9 +415,9 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
            no name is added to the plot.</p> <p>
 
          If plo = 1 the names y, and X1,..., Xp are added to the margins of the
-           the scatter plot matrix else nothing is added.</p> <p>
+           the scatter plot matrix else nothing is added.</p><p>
 
-         If plo is a structure it may contain the following fields:</p><p>
+         If plo is a structure it may contain the following fields:
  </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>labeladd</code></td><td><p><p>if it is '1', the elements belonging to the max(group)
                 in the spm are labelled with their unit row index.</p> <p>
                 The default value is labeladd = '', i.e. no label is added.</p></p></td></tr><tr valign="top"><td><code>clr</code></td><td><p>a string of color specifications. By default, the colors
@@ -425,8 +425,8 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
                 if sym = 'o+x', the first group will be plotted with a
                 circle, the second with a plus, and the third with a 'x'.</p> <p>
                 This is obtained with the assignment plo.sym = 'o+x'
-                or equivalently with plo.sym = {'o' '+' 'x'}.</p> <p>
-                By default the sequence of marker types is:</p><p>
+                or equivalently with plo.sym = {'o' '+' 'x'}.</p><p>
+                By default the sequence of marker types is:
                 '+';'o';'*';'x';'s';'d';'^';'v';'&gt;';'&lt;';'p';'h';'.'.</p></p></td></tr><tr valign="top"><td><code>siz</code></td><td><p>scalar, a marker size to use for all plots. By default the
                 marker size depends on the number of plots and the size of
                 the figure window. Default is siz = '' (empty value).</p></td></tr><tr valign="top"><td><code>doleg</code></td><td><p><p>a string to control whether legends are created or not.</p> <p>
@@ -502,7 +502,7 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
                to the selection(s) done by brushing. If the resfwdplot
                does not exist it is automatically created.</p> <p>
                In addition, brushed units can be highlighted in the
-               other following plots (only if they are already open):</p> <p>
+               other following plots (only if they are already open):
                - minimum deletion residual plot;</p> <p>
                - monitoring leverage plot;</p> <p>
                - maximum studentized residual;</p> <p>
@@ -520,7 +520,7 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
                DATABRUSH IS A CELL.</p> <p>
                If databrush is a cell, it is possible to use all
                optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
-               following optional argument:</p> <p>
+               following optional argument:
                - persist. Persist is an empty value or a scalar
                  containing the strings 'on' or 'off'.</p> <p>
                  The default value of persist is '', that is brushing
@@ -622,14 +622,14 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>numeric or character</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_H" class="clearfix"></div><h3 id="output_argument_H" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>H</code> &#8212;array of handles H to the plotted points.</span></a><span class="example_desc">3D array</span></span></h3><div class="collapse"><p> See
                    gplotmatrix for further details.</p></div></div><div class="expandableContent"><div id="outputarg_AX" class="clearfix"></div><h3 id="output_argument_AX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>AX</code> &#8212;handles to the individual subaxes.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p> See
                    gplotmatrix for further details.</p></div></div><div class="expandableContent"><div id="outputarg_BigAx" class="clearfix"></div><h3 id="output_argument_BigAx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BigAx</code> &#8212;handle to big (invisible) axes framing the subaxes.</span></a><span class="example_desc">Scalar</span></span></h3><div class="collapse"><p> See gplotmatrix for further details.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
-   yXplot has the same output of gplotmatrix in the statistics toolbox:</p> <p>
+   yXplot has the same output of gplotmatrix in the statistics toolbox:
    [H,AX,BigAx] = yXplot(...) returns an array of handles H to the
    plotted points; a matrix AX of handles to the individual subaxes; and a
    handle BIGAX to big (invisible) axes framing the subaxes.  The third
    dimension of H corresponds to groups in G. AX contains one extra row of
    handles to invisible axes in which the histograms are plotted. BigAx is
    left as the CurrentAxes so that a subsequent TITLE, XLABEL, or YLABEL
-   will be centered with respect to the matrix of axes.</p><p>
+   will be centered with respect to the matrix of axes.</p> <p>
 
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="spmplot.html" itemprop="url"><span itemprop="name"><code>spmplot</code></span></a></span> | <span itemprop="seealso"><a href="mdrplot.html" itemprop="url"><span itemprop="name"><code>mdrplot</code></span></a></span> | <span itemprop="seealso"><a href="fanplot.html" itemprop="url"><span itemprop="name"><code>fanplot</code></span></a></span> | <span itemprop="seealso"><a href="resfwdplot.html" itemprop="url"><span itemprop="name"><code>resfwdplot</code></span></a></span> | <span itemprop="seealso"><a href="add2yX.html" itemprop="url"><span itemprop="name"><code>add2yX</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

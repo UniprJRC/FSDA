@@ -11,11 +11,11 @@
  $\lambda_P$ is the transformation parameter for positive observations.</p> <p>
  $\lambda_N$ is the transformation parameter for negative observations.</p> <p>
  SSR is the residual sum of squares of the model which regresses
- $z(λ)$ against X.</p> <p>
+ $z(λ)$ against X.</p><p>
  SSF is the residual sum of squares of the model which regresses
  $z(\hat λ_{MLE})$ against $X$ where $\lambda_{MLE}$ is the vector
  of length 2 which contains the MLE of $\lambda_P$ and $\lambda_N$
- ScoreYJmle computes Num/Den where Num and Den are defined as follows:</p><p>
+ ScoreYJmle computes Num/Den where Num and Den are defined as follows:
  Num=(SSR-SSF)/2  and Den=SSF/(n-p-2) where p is the number of columns of
  matrix X (including intercept).</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="ScoreYJmle.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_outSC"><code>outSC</code></a>=ScoreYJmle(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>)</code></span></p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="ScoreYJmle.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_outSC"><code>outSC</code></a>=ScoreYJmle(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Ex in which positive and negative observations require different lambdas.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
 rng(1)
@@ -95,7 +95,7 @@ This may indicate that the data need two separate lambdas for pos and neg observ
                solver is not used and the likelihood is evaluated at the
                grid of points with steps 0.01.</p> <p>
                If usefmin is a structure it may contain the following
-               fields:</p><p>
+               fields:
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MaxIter</code></td><td><p>Maximum number of iterations (default is 1000).</p></td></tr><tr valign="top"><td><code>TolX</code></td><td><p>Termination tolerance for the parameters
                    (default is 1e-7).</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the solver. Possible values are
                    'fminsearch' (default) and 'fminunc'. fminunc needs the
@@ -114,9 +114,9 @@ This may indicate that the data need two separate lambdas for pos and neg observ
                  unchanged. In other words the additional column of ones
                  for the intercept is not added. As default nocheck=false.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Containing the following fields:
 
-</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>score tests. Vector.</p> <p>
+<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>score tests. Vector.</p> <p>
                             Column vector of length(la) which
                             contains the value of the likelihood ratio test for each
                             value of lambda specified in optional input
@@ -131,5 +131,6 @@ This may indicate that the data need two separate lambdas for pos and neg observ
  pp. 954-959.</p></div><div><p>Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of
  transformations for profit-and-loss data, Journal of the Royal
  Statistical Society, Series C, "Applied Statistics",
- <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a></p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
- Transformation: Review and Extensions, "Statistical Science", in press.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRfan.html" itemprop="url"><span itemprop="name"><code>FSRfan</code></span></a></span> | <span itemprop="seealso"><a href="Score.html" itemprop="url"><span itemprop="name"><code>Score</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJ.html" itemprop="url"><span itemprop="name"><code>ScoreYJ</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJpn.html" itemprop="url"><span itemprop="name"><code>ScoreYJpn</code></span></a></span> | </div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a></p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2021), The Box–Cox
+ Transformation: Review and Extensions, "Statistical Science", Vol. 36,
+ pp. 239-255, <a href="https://doi.org/10.1214/20-STS778">https://doi.org/10.1214/20-STS778</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRfan.html" itemprop="url"><span itemprop="name"><code>FSRfan</code></span></a></span> | <span itemprop="seealso"><a href="Score.html" itemprop="url"><span itemprop="name"><code>Score</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJ.html" itemprop="url"><span itemprop="name"><code>ScoreYJ</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJpn.html" itemprop="url"><span itemprop="name"><code>ScoreYJpn</code></span></a></span> | </div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

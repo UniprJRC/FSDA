@@ -1,33 +1,11 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>simulateLM</title> <meta content="refpage" name="chunktype"><meta content="function:simulateLM " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="simulateLM Simulates linear regression data with prespecified values of statistical indexes" itemprop="description" name="description" /><h1 itemprop="title">simulateLM</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/simulateLM.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/simulateLM.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/simulateLM.html">http://rosa.unipr.it/FSDA/simulateLM.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: simulateLM</em></p><P>simulateLM</P><P>Simulates linear regression data with prespecified values of statistical indexes</P><h2>Description</h2><P>[y,X,id]=simdatasetreg(n, Pi, Beta, S) generates a regression dataset
-   of size n from a mixture model with parameters 'Pi' (mixing
-   proportions), 'Beta' (matrix of regression coefficients), and 'S'
-   (vector of variances of the distributions of the points around each
-   regression hyperplane). Component sample sizes are produced as a
-   realization from a multinomial distribution with probabilities given by
-   mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25,
-   0.25, 0.25) function Nk1=mnrnd( n-k, Pi) is used to generate k integer
-   numbers (whose sum is n-k) from the multinominal distribution with
-   parameters n-k and Pi. The size of the groups is given by Nk1+1. The
-   first Nk1(1)+1  observations are generated using vector of regression
-   coefficients Beta(:,1) and variance S(1), ..., and the X simulated as
-   specified in structure Xdistrib, the last Nk1(k)+1 observations are
-   generated using using vector of regression coefficients Beta(:,k),
-   variance S(k) and the X simulated as specified in structure Xdistrib</P><h2>More About</h2><P>
- To make a dataset more challenging for clustering, a user might want to
- simulate noise variables or outliers. Parameter 'nnoise' specifies the
- desired number of noise variables. If an interval 'int' is specified,
- noise will be simulated from a Uniform distribution on the interval given
- by 'int'. Otherwise, noise will be simulated uniformly between the
- smallest and largest coordinates of mean vectors. 'nout' specifies the
- number of observations outside (1 - 'alpha') ellipsoidal contours for the
- weighted component distributions. Outliers are simulated on a hypercube
- specified by the interval 'int'. A user can apply an inverse Box-Cox
- transformation of y providing a coefficient 'lambda'. The value 1
- implies that no transformation is needed for the response.
-
-
-
-</P><h2>References</h2><P>Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
- of finite mixture modeling and clustering algorithms, "The Journal of
- Computational and Graphical Statistics", Vol. 19, pp. 354-376. [to refer to
- this publication we will use "MM2010 JCGS"]</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>simulateLM</title> <meta content="refpage" name="chunktype"><meta content="function:simulateLM " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="simulateLM Simulates linear regression data with prespecified values of statistical indexes" itemprop="description" name="description" /><h1 itemprop="title">simulateLM</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/simulateLM.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/simulateLM.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/simulateLM.html">http://rosa.unipr.it/FSDA/simulateLM.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: simulateLM</em></p><P>simulateLM</P><P>Simulates linear regression data with prespecified values of statistical indexes</P><h2>Description</h2><P>simulateLM simulates linear regression data. It is possible to specify:
+ 1) the requested value of R2 (or equivaletly its SNR);
+ 2) the values of the beta coefficients (possibly sparse);
+ 3) the correlation (covariance) matrix among the explanatory variables.
+ 4) the value of the intercept term.
+ 5) the distribution to use to generate the Xs;
+ 6) the distribution to use to generate the ys.
+ 7) the MSOM contamination in Xs and ys.
+ 8) the VIOM contamination in ys.</P><h2>References</h2><P>Insolia, L., F. Chiaromonte, and M. Riani (2020a). 
+ "A Robust Estimation Approach for Mean-Shift and Variance-Inflation Outliers". 
+ Festschrift in Honor of R. Dennis Cook pp 17–41.</P></html>

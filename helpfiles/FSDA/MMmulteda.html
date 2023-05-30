@@ -2,15 +2,19 @@
 Y=swiss_banknotes{:,:};
 Y=Y(1:100,:);
 [outMM]=MMmulteda(Y);
-malfwdplot(outMM);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.29 seconds 
+malfwdplot(outMM);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.31 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/MMmulteda.html#Example_1'><img vspace="5" hspace="5" src="images\MMmulteda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> MMmult with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y = load('geyser.txt');
-[out]=MMmulteda(Y,'conflev',0.99,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.67 seconds 
+[out]=MMmulteda(Y,'conflev',0.99,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.42 seconds 
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  2.655175e-20. 
-Warning: Matrix is singular, close to singular or badly scaled. Results may be
-inaccurate. RCOND = NaN. 
-Warning: Matrix is singular, close to singular or badly scaled. Results may be
-inaccurate. RCOND = NaN. 
+RCOND =  2.649412e-19. 
 </pre><a href='http://rosa.unipr.it/fsda/MMmulteda.html#Example_2'><img vspace="5" hspace="5" src="images\MMmulteda_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>MMmulteda with extracted subsamples in second output argument C.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
 Y=swiss_banknotes{:,:};
 Y=Y(1:100,:);
@@ -37,8 +41,8 @@ Y=Y(1:100,:);
 </code>,<code> 'conflev',0.99
 </code>,<code> 'plots',0
 </code>,<code> 'nocheck',1
-</code></code></span></div><div class="expandableContent"><div id="inputarg_InitialEst" class="clearfix"></div><h3 id="input_argument_namevalue_InitialEst" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>InitialEst</code> &#8212;starting values of the MM-estimator.</span></a><span class="example_desc">[] (default) | structure.</span></span></h3><div class="collapse">	<p><p>InitialEst must contain the following fields:</p> <p>
-           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>loc0</code></td><td><p>1 x v vector (estimate of the centroid)</p></td></tr><tr valign="top"><td><code>shape0</code></td><td><p>v x v matrix (estimate of the shape matrix)</p></td></tr><tr valign="top"><td><code>auxscale</code></td><td><p><p>scalar (estimate of the scale parameter).</p> <p>
+</code></code></span></div><div class="expandableContent"><div id="inputarg_InitialEst" class="clearfix"></div><h3 id="input_argument_namevalue_InitialEst" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>InitialEst</code> &#8212;starting values of the MM-estimator.</span></a><span class="example_desc">[] (default) | structure.</span></span></h3><div class="collapse">	<p>InitialEst must contain the following fields:
+           <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>loc0</code></td><td><p>1 x v vector (estimate of the centroid)</p></td></tr><tr valign="top"><td><code>shape0</code></td><td><p>v x v matrix (estimate of the shape matrix)</p></td></tr><tr valign="top"><td><code>auxscale</code></td><td><p><p>scalar (estimate of the scale parameter).</p> <p>
                   If InitialEst is empty (default)
                   program uses S estimators. In this last case it is
                    possible to specify the options given in function Smult.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'InitialEst',[]
@@ -88,11 +92,11 @@ Y=Y(1:100,:);
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Sreftolbestr',1e-10
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double
 
-               MM options</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>Vector defining nominal efficiency (i.e. a series of numbers between
+               MM options</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p>Vector defining nominal efficiency (i.e. a series of numbers between
                  0.5 and 0.99). The default value is the sequence 0.5:0.01:0.99
-                 Asymptotic nominal efficiency is:</p> <p>
+                 Asymptotic nominal efficiency is:
                  $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',[0.85 0.90 0.95 0.99]
+                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',[0.85 0.90 0.95 0.99]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_effshape" class="clearfix"></div><h3 id="input_argument_namevalue_effshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>effshape</code> &#8212;location or scale effiicency.</span></a><span class="example_desc">dummy scalar.</span></span></h3><div class="collapse">	<p>If effshape=1 efficiency refers to shape 
                 efficiency else (default) efficiency refers to location
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'effshape',1
@@ -107,7 +111,7 @@ Y=Y(1:100,:);
                or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).</p> <p>
                Default value is 0.975
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots is a structure or scalar equal to 1, generates:
                (1) a plot of Mahalanobis distances against index number. The
                confidence level used to draw the confidence bands for
                the MD is given by the input option conflev. If conflev is

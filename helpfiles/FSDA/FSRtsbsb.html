@@ -72,10 +72,10 @@ ylabel('Monitoring units plot');
                start monitoring required diagnostics. If it is not
                specified it is set equal floor(0.5*(T+1))
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies the model
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>A structure which specifies the model
                which will be used. The model structure contains the following
-               fields:</p> <p>
-       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
+               fields:
+       <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
                          data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 1 implies linear trend with intercept (default),
                        trend = 2 implies quadratic trend ...</p><p>
@@ -83,10 +83,10 @@ ylabel('Monitoring units plot');
                         frequencies, i.e. harmonics, in the seasonal
                         component. Possible values for seasonal are
                         $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
-                        For example:</p> <p>
-                        if seasonal =1 (default) we have:</p> <p>
+                        For example:
+                        if seasonal =1 (default) we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;</p> <p>
-                        if seasonal =2 we have:</p> <p>
+                        if seasonal =2 we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
                         Note that when $s$ is even the sine term disappears
@@ -97,13 +97,13 @@ ylabel('Monitoring units plot');
                         grows over time.</p> <p>
                         For example, seasonal =101 implies a seasonal
                         component which just uses one frequency
-                        which grows linearly over time as follows:</p> <p>
+                        which grows linearly over time as follows:
                         $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
                         \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
                         For example, seasonal =201 implies a seasonal
                         component which just uses one frequency
                         which grows in a quadratic way over time as
-                        follows:</p> <p>
+                        follows:
                         $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p><p>
                         seasonal =0 implies a non seasonal model.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
@@ -174,7 +174,7 @@ ylabel('Monitoring units plot');
                contains the units belonging to the subset at each step (or
                in selected steps as specified by optional vector bsbsteps)
                of the forward search.</p> <p>
-               More precisely:</p> <p>
+               More precisely:
                BB(:,1) contains the units forming subset in step bsbsteps(1);</p> <p>
                ....;</p> <p>
                BB(:,end) contains the units forming subset in step  bsbsteps(end);</p> <p>

@@ -6,17 +6,16 @@
  analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
  Yeo-Johnson transformation to allow two values of the transformations
  parameter: λN for negative observations and λP for non-negative ones.
- $\lambda$ is the transformation parameter (scalar) for all the
- obseravtions (positive adn negative).
- $\lambda_P$ is the transformation parameter for positive observations.
- $\lambda_N$ is the transformation parameter for negative observations.
- SSR is the residual sum of squares of the model which regresses
- $z(λ)$ against X.
- SSF is the residual sum of squares of the model which regresses
- $z(\hat λ_{MLE})$ against $X$ where $\lambda_{MLE}$ is the vector
- of length 2 which contains the MLE of $\lambda_P$ and $\lambda_N$
- ScoreYJmle computes Num/Den where Num and Den are defined as follows:
- Num=(SSR-SSF)/2  and Den=SSF/(n-p-2) where p is the number of columns of
- matrix X (including intercept).</P><h2>References</h2><P>Yeo, I.K. and Johnson, R. (2000), A new family of power
+ ScoreYJpn computes:
+ 1) the t test associated with the constructed variable computed assuming
+ a different transformation for positive observations keeping the value of
+ the transformation parameter for negative observations fixed. In short we
+ call this test, "test for positive observations".
+ 2) the t test associated with the constructed variable computed assuming
+ a different transformation for negative observations keeping the value of
+ the transformation parameter for positive observations fixed. In short we
+ call this test, "test for negative observations". 
+ 3) the F test for the joint presence of the two constructed variables
+ described in points 1) and 2.</P><h2>References</h2><P>Yeo, I.K. and Johnson, R. (2000), A new family of power
  transformations to improve normality or symmetry, "Biometrika", Vol. 87,
  pp. 954-959.</P></html>

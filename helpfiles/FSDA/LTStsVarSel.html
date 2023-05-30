@@ -170,13 +170,13 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                is a call to LTSts with an autoregressive component. The
                default value of firstTestLS is false.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'firstTestLS', false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>A structure which specifies the
                (over-parametrized) model which will be used to initialise
                the variable selection process. The model structure is
                identical to the one defined for function LTSts: for
-               convenience, we list the fields also here:</p> <p>
+               convenience, we list the fields also here:
 
-       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
+       <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
                          data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 0 implies no trend,
                        trend = 1 implies linear trend with intercept,
@@ -189,10 +189,10 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                         frequencies, i.e. harmonics, in the seasonal
                         component. Possible values for seasonal are
                         $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
-                        For example:</p> <p>
-                        if seasonal =1 we have:</p> <p>
+                        For example:
+                        if seasonal =1 we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;</p> <p>
-                        if seasonal =2 we have:</p> <p>
+                        if seasonal =2 we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
                         Note that when $s$ is even the sine term disappears
@@ -203,13 +203,13 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                         grows over time.</p> <p>
                         For example, seasonal = 101 implies a seasonal
                         component which just uses one frequency
-                        which grows linearly over time as follows:</p> <p>
+                        which grows linearly over time as follows:
                         $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
                         \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
                         For example, seasonal =201 implies a seasonal
                         component which just uses one frequency
                         which grows in a quadratic way over time as
-                        follows:</p> <p>
+                        follows:
                         $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
                         seasonal =0 implies a non seasonal model.</p> <p>
@@ -235,7 +235,7 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                          $t=13$, $t=20$ and $t=36$. The most significant
                          among these positions in included in the final
                          model. In other words, the following extra
-                         parameters are added to the final model:</p> <p>
+                         parameters are added to the final model:
                          $\beta_{LS1}* I(t \geq \beta_{LS2})$ where
                          $\beta_{LS1}$ is a real number (associated with
                          the magnitude of the level shift) and
@@ -258,7 +258,7 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                        symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
                        with symbol $\delta_2$.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>vector with non negative integer numbers
                        specifying the autoregressive
-                       components. For example:</p> <p>
+                       components. For example:
                         model.ARp=[1 2] means a AR(2) process;</p> <p>
                         model.ARp=2 means just the lag 2 component;</p> <p>
                         model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p><p>
@@ -346,7 +346,7 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                       in model.ARp, then the selected ones will be also
                       included in model.X.</p></p></div></div><div class="expandableContent"><div id="outputarg_reduced_model" class="clearfix"></div><h3 id="output_argument_reduced_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reduced_model</code> &#8212;Output fields of the optimal model.</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>
                     The fields are those of function LTSts (refer to
-                    LTSts for details):</p> <p>
+                    LTSts for details):
                     out.B = matrix of estimated beta coefficients.</p> <p>
                     out.h = number of observations that have determined
                       the initial LTS estimator.</p> <p>

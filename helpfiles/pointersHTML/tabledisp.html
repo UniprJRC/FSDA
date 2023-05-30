@@ -1,44 +1,4 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tabledisp</title> <meta content="refpage" name="chunktype"><meta content="function:tabledisp " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tabledisp Displays in good format a table or array in the command line" itemprop="description" name="description" /><h1 itemprop="title">tabledisp</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tabledisp.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tabledisp.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tabledisp.html">http://rosa.unipr.it/FSDA/tabledisp.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tabledisp</em></p><P>tabledisp</P><P>Displays in good format a table or array in the command line</P><h2>Description</h2><P>This function implements the supersmoother. This is basically the 
-   function supsmu written in MALTAB by Douglas M. Schwarz.
-    Email:   dmschwarz=ieee*org, dmschwarz=urgrad*rochester*edu
-    Real_email = regexprep(Email,{'=','*'},{'@','.'})
-    See the section "More About" of this file for the details of 
-    of the modifications which have been made.</P><h2>More About</h2><P>
-
- The supersmoother algorithm computes three separate smooth curves from
- the input data with symmetric spans of 0.05*n, 0.2*n and 0.5*n, where n
- is the number of data points.  The best of the three smooth curves is
- chosen for each predicted point using leave-one-out cross validation. The
- best spans are then smoothed by a fixed-span smoother (span = 0.2*n) and
- the prediction is computed by linearly interpolating between the three
- smooth curves.  This final smooth curve is then smmothed again with a
- fixed-span smoother (span = 0.05*n).
-
- According to comments by Friedman, "For small samples (n &lt; 40) or if
- there are substantial serial correlations between observations close in
- x-value, then a prespecified fixed span smoother (span &gt; 0) should be
- used.  Reasonable span values are 0.2 to 0.4."
-
-    This function is basically equal to the 
-   function supsmu written in MALTAB by Douglas M. Schwarz.
-    Email:   dmschwarz=ieee*org, dmschwarz=urgrad*rochester*edu
-    Real_email = regexprep(Email,{'=','*'},{'@','.'})
-
-    The following modifications with respect to the original function have
-    been made:
-    [1] In case of constant values of x over a span program was producng
-    NA. Modifications have been done in the subroutinesto cope with this
-    case. 
-    [2] The formula for the cross validation residuals in presence of
-    constant values has been introduced.
-    [3] All the Mlint suggestions have been incorporated. 
-    [4] The help has been put inside the FSDA style.
-    [5] A series of examples which explore the different options has been
-    added.
-    
-
- 
- 
-</P><h2>References</h2><P>Friedman, J. H. (1984). A Variable Span Smoother. Tech. Rep. No. 5,
- Laboratory for Computational Statistics, Dept. of Statistics, Stanford
- Univ., California.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tabledisp</title> <meta content="refpage" name="chunktype"><meta content="function:tabledisp " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tabledisp Displays in good format a table or array in the command line" itemprop="description" name="description" /><h1 itemprop="title">tabledisp</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/tabledisp.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/tabledisp.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/tabledisp.html">http://rosa.unipr.it/FSDA/tabledisp.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tabledisp</em></p><P>tabledisp</P><P>Displays in good format a table or array in the command line</P><h2>Description</h2><P>tabledisp displays a table or o bi-dimensional array in the MATLAB
+  command line or in a uitable and also in an excel file.</P><h2>References</h2><P>Lamport, L. (1994), LATEX: a document preparation system:
+    user's guide and reference manual. Addison-Wesley Longman Publishing
+    Co., Inc., USA.</P></html>

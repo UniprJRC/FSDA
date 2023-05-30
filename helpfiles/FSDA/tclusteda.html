@@ -200,7 +200,7 @@ plots.ylimy=ylimy;
                X(nsamp(i,:),:) and the covariance matrices are equal to the
                identity.</p> <p>
                If nsamp has k*(v+1) columns the initial centroids and covariance
-               matrices in iteration i are computed as follows:</p> <p>
+               matrices in iteration i are computed as follows:
                X1=X(nsamp(i,:),:);</p> <p>
                mean(X1(1:v+1,:)) contains the initial centroid for group  1;</p> <p>
                cov(X1(1:v+1,:)) contains the initial cov matrix for group 1;</p> <p>
@@ -224,16 +224,16 @@ plots.ylimy=ylimy;
                shall be considered in the concentration, assignment steps
                and computation of the likelihood.</p> <p>
                if equalweights = true we are (ideally) assuming equally
-               sized groups by maximizing:</p><p>
+               sized groups by maximizing:
 
                  </p>\[
                  \sum_{j=1}^k \sum_{ x_i \in group_j } \log f(x_i; m_j , S_j)
-                 \]<p>
+                 \]
 
                else if equalweights = false (default) we allow for
-               different group weights by maximizing:</p> <p>
+               different group weights by maximizing:
 
-                 </p>\[
+                 \[
                      \sum_{j=1}^k  \sum_{ x_i \in group_j }  \log \left[ \frac{n_j}{n}  f(x_i; m_j , S_j) \right]=
                  \]
                  \[
@@ -249,33 +249,33 @@ plots.ylimy=ylimy;
                controls which is the criterion to find the untrimmed units
                in each step of the maximization.</p> <p>
                If mixt &gt;=1 mixture modelling is assumed else crisp
-               assignment. The default value is mixt=0 (i.e. crisp assignment).</p> <p>
-               In mixture modelling the likelihood is given by:</p><p>
+               assignment. The default value is mixt=0 (i.e. crisp assignment).</p><p>
+               In mixture modelling the likelihood is given by:
                 </p>\[
                 \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
-                \]<p>
-               while in crisp assignment the likelihood is given by:</p> <p>
-               </p>\[
+                \]
+               while in crisp assignment the likelihood is given by:
+               \[
                \prod_{j=1}^k   \prod _{i\in R_j} \phi (y_i; \; \theta_j),
                \]<p>
                where $R_j$ contains the indexes of the observations which
                are assigned to group $j$.</p> <p>
                Remark - if mixt&gt;=1 previous parameter equalweights is
-               automatically set to 1.</p> <p>
+               automatically set to 1.</p><p>
                Parameter mixt also controls the criterion to select the
                units to trim,
                if mixt = 2 the h units are those which give the largest
                contribution to the likelihood that is the h largest
-               values of:</p><p>
+               values of:
                </p>\[
                    \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j)   \qquad
                     i=1, 2, ..., n,
-               \]<p>
+               \]
                else if mixt=1 the criterion to select the h units is
                exactly the same as the one which is used in crisp
                assignment. That is: the n units are allocated to a
-               cluster according to criterion:</p> <p>
-               </p>\[
+               cluster according to criterion:
+               \[
                 \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i; \; \hat \theta_j)
                \]<p>
                and then these n numbers are ordered and the units
@@ -308,8 +308,8 @@ plots.ylimy=ylimy;
                    we show on the axes titles the percentage of variance
                    explained by the first two principal components).</p> <p>
 
-               Case 2: plots option used as struct.</p> <p>
-                 If plots is a structure it may contain the following fields:</p><p>
+               Case 2: plots option used as struct.</p><p>
+                 If plots is a structure it may contain the following fields:
          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>name</code></td><td><p>cell array of strings which enables to
                    specify which plot to display. plots.name = {'gscatter'}
                    produces a figure with a series of subplots which show the
@@ -385,7 +385,7 @@ plots.ylimy=ylimy;
                $j$-th scatter matrix $\Sigma_j$ is
                </p>\[
                \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-               \]<p>
+               \]
                where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
                diagonal matrix with $|\Gamma_j|=1$ and with elements
                $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
@@ -393,8 +393,8 @@ plots.ylimy=ylimy;
                $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
                known as "shape" matrices, because they determine the shape of the
                fitted cluster components. The following $k$
-               constraints are then imposed on the shape matrices:</p> <p>
-               </p>\[
+               constraints are then imposed on the shape matrices:
+               \[
                \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
                    c_{shape}, \text{ for } j=1,...,k,
                \]<p>
@@ -472,7 +472,7 @@ plots.ylimy=ylimy;
  group if this group shows the smallest distance with group r for the
  previous value of alpha.</p> <p>
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
    A General Trimming Approach to Robust Cluster Analysis. Annals
-   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:</p> <p>
-   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
+   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

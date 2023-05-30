@@ -315,8 +315,8 @@ set(gcf,'Name','X Beta distributed');
 title('User-defined distribution for X');</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_11'><img vspace="5" hspace="5" src="images\simdatasetreg_14.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size  of the dataset. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Pi" class="clearfix"> </div> <h3 id="input_argument_Pi" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Pi</code> &#8212; vector of length k defining mixing proportions. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>$\sum_{j=1}^k \pi=1$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Beta" class="clearfix"> </div> <h3 id="input_argument_Beta" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Beta</code> &#8212; p-by-k matrix containing (in the columns) regression
                coefficients for the k groups. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_S" class="clearfix"> </div> <h3 id="input_argument_S" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>S</code> &#8212; vector of length k containing the variances of the k
                regression hyperplanes. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Xdistrib" class="clearfix"> </div> <h3 id="input_argument_Xdistrib" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Xdistrib</code> &#8212; information about how to generate
-               each explanatory variable inside each group. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>Structure which contains the following fields:</p> <p>
-           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p>scalar equal to 1 if intercept is
+               each explanatory variable inside each group. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure which contains the following fields:
+           <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p>scalar equal to 1 if intercept is
                        present. The default value of Xdistrib.intercept is 1.</p></td></tr><tr valign="top"><td><code>type</code></td><td><p>type of distribution. Possible values for
                        are 'normal', 'halfnormal', 'uniform', 'User'.</p></td></tr><tr valign="top"><td><code>mu</code></td><td><p>matrix of size (p-1)-by-k if
                        (Xdistrib.intercept=1) or p-by-k if
@@ -362,7 +362,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                   order to generate these units the maximum number
                   of attempts is equal to 10000.</p> <p>
                 - If noiseunits is a structure it may contain the following
-                  fields:</p> <p>
+                  fields:
                   number = scalar, or vector of length f. The sum of the
                        elements of vector 'number' is equal to the total
                        number of outliers which are simulated.</p> <p>
@@ -384,7 +384,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                          value of y which lies inside interval(1,2) and
                          interval(2,2).</p> <p>
                          * If interval is a 2-by-(p+1) matrix outliers are
-                         simulated in:</p> <p>
+                         simulated in:
                          interval(1,1) interval (2,1) for expl variable 1
                          ...</p> <p>
                          interval(1,p) interval (2,p) for expl variable p
@@ -394,7 +394,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                          min(y) max (y).</p> <p>
                   typeout = list of length f containing the type of
                        outliers which must be simulated. Possible values
-                       for typeout are:</p> <p>
+                       for typeout are:
                        * unif (or uniform), if the outliers must be
                          generated using the uniform distribution;</p> <p>
                        * norm (or normal), if the outliers must be
@@ -415,7 +415,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                          from the single coordinate of y (which will be the
                          min or max of y or to the
                          min or max specified in interval).</p> <p>
-                For example, the code:</p> <p>
+                For example, the code:
                    noiseunits=struct;</p><p>
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>[100 100];</p></td></tr><tr valign="top"><td><code>typeout</code></td><td><p>{'uniform' 'componentwise'};</p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>[-2 2];</p> <p>
                 adds 200 outliers, the first 100 generated using
@@ -429,9 +429,9 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                 - If noisevars is a scalar equal to r, then r new noise
                   explnatory variables are added to the matrix of
                   simulated data using the uniform distribution in the
-                  range [min(X) max(X)].</p> <p>
+                  range [min(X) max(X)].</p><p>
                 - If noisevars is a structure it may contain the following
-                  fields:</p><p>
+                  fields:
           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>a scalar or a vector of length f. The sum of
                        elements of vector 'number' is equal to the total
                        number of noise variables to be addded.</p></td></tr><tr valign="top"><td><code>distribution</code></td><td><p><p>string or cell array of strings of length
@@ -441,7 +441,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                        uniform distribution is used to simulate the noise
                        variables.</p> <p>
                        String 'distribution' can be one of the following
-                       values:</p> <p>
+                       values:
                        * uniform = uniform distribution
                        * normal  = normal distribution
                        * t or T followed by a number which controls the
@@ -463,7 +463,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                          variables are simulated uniformly between the
                          smallest and the largest coordinates of the
                          simulated data matrix X.</p> <p>
-                For example, the code:</p> <p>
+                For example, the code:
                    noisevars=struct;</p> <p>
                    noisevars.number=[3 2];</p> <p>
                    noisevars.distribution={'Chisquare5' 'T3'};</p><p>

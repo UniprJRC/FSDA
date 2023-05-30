@@ -2,12 +2,12 @@
      publishBibliography with all the default options (and write2file false).</a></li><li><a class="intrnllnk" href="#Example_2">Example of use of option outputDir.</a></li><li><a class="intrnllnk" href="#Example_3">Example where second output is returned.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_InputCell">InputCell</a></li><li><a class="intrnllnk" href="#input_argument_OUT">OUT</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_webhelp">webhelp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_outputDir">outputDir</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_write2file">write2file</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_fstring">fstring</a></li><li><a class="intrnllnk" href="#output_argument_citsCell">citsCell</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">publishBibliography</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">publishBibliography enables to create web page which contains the references inside the input .m files</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">fstring=publishBibliography(InputCell,OUT)</code><span class="syntax_example"><a class="intrnllnk" href="publishBibliography.html#Example_1">example</a></span></li><li><code class="synopsis">fstring=publishBibliography(InputCell,OUT,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="publishBibliography.html#Example_2">example</a></span></li><li><code class="synopsis">[fstring,citsCell]=publishBibliography(___)</code><span class="syntax_example"><a class="intrnllnk" href="publishBibliography.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>This routine uses as input the cell which is created with routine
  <a href="makecontentsfileFS.html">makecontentsfileFS</a> and the cell created by <a href="publishFSallFiles.html">publishFSallFiles</a> and uses
  template file bibliographyEmpty.html
- which is contained inside:</p> <p>
+ which is contained inside:
  (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;</p> <p>
  to create in a fully automatic way the bibliography file containing all
  the references.</p> <p>
  The output file (if the path is not specified in input option outputDir)
- will be created inside:</p> <p>
+ will be created inside:
  (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;</p><p>
  and will have name bibliography.html</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="publishBibliography.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_fstring"><code>fstring</code></a>=publishBibliography(<a class="intrnllnk" href="#inputarg_InputCell"><code>InputCell</code></a>,<a class="intrnllnk" href="#inputarg_OUT"><code>OUT</code></a>)</code></span>Skip_example
      publishBibliography with all the default options (and write2file false).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="publishBibliography.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_fstring"><code>fstring</code></a>=publishBibliography(<a class="intrnllnk" href="#inputarg_InputCell"><code>InputCell</code></a>,<a class="intrnllnk" href="#inputarg_OUT"><code>OUT</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of use of option outputDir.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="publishBibliography.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_fstring"><code>fstring</code></a>,<a class="intrnllnk" href="#outputarg_citsCell"><code>citsCell</code></a>]=publishBibliography(___)</code></span>Example where second output is returned.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Skip_example
@@ -104,7 +104,7 @@ warning('on')
              example 'C:\PublishedOutput'. Note that inside outputDir
              there must be a file named "function-cateEmpty.html" which
              contains the template to create the categorical list of
-             functions. The defaults of 'outputDir' are as follows:</p> <p>
+             functions. The defaults of 'outputDir' are as follows:
              if input option webhelp is false  outputDir is
              (FSDA root)\helpfiles\FSDA path,
              else if input option webhelp is true  outputDir is
@@ -125,22 +125,22 @@ warning('on')
                 was found.</p><p>
                 Third column = Path of associated file.</p></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
  Guidelines to create the references.</p> <p><hr>[<b>1</b>] Example of book citation (note that the publisher town is not given and
- that the title of the book must be written in ""):</p> <p>
+ that the title of the book must be written in ""):
  Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
  Analysis", Springer Verlag.</p> <p><hr>[<b>2</b>] Example of article citation (note that just the volume is given and that
- the name of the Journal is inside ""):</p> <p>
+ the name of the Journal is inside ""):
  Wong, C.K. and Easton, M.C. (1980), An Efficient Method for Weighted
  Sampling Without Replacement, "SIAM Journal of Computing", Vol. 9, pp.
  111-113.</p> <p><hr>[<b>3</b>] Example of InCollection (note that just the volume is given and that
- the name of the Journal is inside""):</p> <p>
+ the name of the Journal is inside""):
  Riani, M., Cerioli, A., Atkinson, A.C., Perrotta, D. and Torti, F. (2008),
- Fitting Mixtures of Regression Lines with the Forward Search, in:</p> <p>
+ Fitting Mixtures of Regression Lines with the Forward Search, in:
  "Mining Massive Data Sets for Security", Fogelman-Soulie F. et al. Eds.,
  pp. 271-286, IOS Press.</p> <p><hr>[<b>4</b>] IMPORTANT.</p> <p>
  Extra information which is attached to a citation inside the MATLAB .m
  file but does not have to appear in the output file bibliography.html
  must be inserted inside square parenthesis.</p> <p>
- For example in the citation below inside the .m file:</p> <p>
+ For example in the citation below inside the .m file:
 
  Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
  Monitoring of Many Time Series with Application to Fraud Detection,

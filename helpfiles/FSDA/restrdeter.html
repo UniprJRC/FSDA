@@ -101,10 +101,10 @@ disp(max(prod(a))/min(prod(a)))</pre></div></div></p></div></div></div></d
              of the covariance matrices of the k groups.</p> <p>
              v is the number of variables of the dataset which has to be
              clustered.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_niini" class="clearfix"> </div> <h3 id="input_argument_niini" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>niini</code> &#8212; Cluster size. </span>  </a><span class="example_desc">Column vector.</span></span></h3> <div class="collapse"> <p>k x 1 vector containing the size
-             of the k clusters</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restr" class="clearfix"> </div> <h3 id="input_argument_restr" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restr</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar (default) or vector of length 2.</span></span></h3> <div class="collapse"> <p><p>If restr is a scalar it defines the maximum ratio of the
+             of the k clusters</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restr" class="clearfix"> </div> <h3 id="input_argument_restr" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restr</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar (default) or vector of length 2.</span></span></h3> <div class="collapse"> <p>If restr is a scalar it defines the maximum ratio of the
             determinants which is allowed. In other words, we impose the
-            constraint on the covariance matrices:</p> <p>
-            </p>\[
+            constraint on the covariance matrices:
+            \[
                \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
                |\Sigma_j|} \leq restr
             \]
@@ -115,7 +115,7 @@ disp(max(prod(a))/min(prod(a)))</pre></div></div></p></div></div></div></d
            $j$-th scatter matrix $\Sigma_j$ is
            \[
            \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-           \]<p>
+           \]
            where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
            diagonal matrix with $|\Gamma_j|=1$ and with elements
            $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
@@ -123,8 +123,8 @@ disp(max(prod(a))/min(prod(a)))</pre></div></div></p></div></div></div></d
            $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
            known as "shape" matrices, because they determine the shape of the
            fitted cluster components. The following $k$
-           constraints are then imposed on the shape matrices:</p> <p>
-           </p>\[
+           constraints are then imposed on the shape matrices:
+           \[
            \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
                c_{shape}, \text{ for } j=1,...,k,
            \]<p>

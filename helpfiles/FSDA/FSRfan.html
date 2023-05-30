@@ -8,7 +8,7 @@
  Yeo-Johnson transformation to allow two values of the transformations
  parameter: $\lambda_N$ for negative observations and $\lambda_P$ for
  non-negative ones.</p> <p>
- FSRfan monitors:</p> <p>
+ FSRfan monitors:
  1) the t test associated with the constructed variable computed assuming
  the same transformation parameter for positive and negative observations
  fixed. In short we call this test, "global score test for positive
@@ -38,19 +38,19 @@ X=XX(:,1:end-1);
 % In this case we use the five most common values of lambda are considered
 [out]=FSRfan(y,X);
 fanplot(out);
-%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
 </pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#Example_1'><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
@@ -107,10 +107,10 @@ namey =
 
     'Sales'
 
-Total estimated time to complete LMS:  0.05 seconds 
-Total estimated time to complete LMS:  0.03 seconds 
-Total estimated time to complete LMS:  0.03 seconds 
-Total estimated time to complete LMS:  0.03 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRfan_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare BoxCox with Yeo and Johnson transformation.</li></span></a></span></h3><div class="collapse"><p>
      Store values of the score test statistic
      for the five most common values of $\lambda$.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Produce also a fan plot and display it on the screen.
@@ -131,28 +131,28 @@ Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.05 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.05 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.05 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.05 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.05 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
 Maximum difference in absolute value
@@ -295,7 +295,7 @@ out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',fal
                    </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',5
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the initial subset size to start
                    monitoring the value of the score test, if init is not
-                   specified it will be set equal to:</p> <p>
+                   specified it will be set equal to:
                     p+1, if the sample size is smaller than 40;</p> <p>
                     min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
                     </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
@@ -358,7 +358,7 @@ out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',fal
                is false that is solver is not used and the likelihood is
                evaluated at the grid of points with steps 0.01.</p> <p>
                If usefmin is a structure it may contain the following
-               fields:</p><p>
+               fields:
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MaxIter</code></td><td><p>Maximum number of iterations (default is 1000).</p></td></tr><tr valign="top"><td><code>TolX</code></td><td><p>Termination tolerance for the parameters
                    (default is 1e-7).</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the solver. Possible values are
                    'fminsearch' (default) and 'fminunc'. fminunc needs the
@@ -406,7 +406,7 @@ out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',fal
                    Default value for ylimy(2)=min(max(score_test),20).</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylimy',[0 1]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>(n-init+1) x length(la)+1 matrix containing the values of the
-               score test for each value of the transformation parameter:</p> <p>
+               score test for each value of the transformation parameter:
                1st col = fwd search index;</p> <p>
                2nd col = value of the score test in each step of the
                fwd search for la(1);</p> <p>
@@ -424,7 +424,7 @@ out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',fal
                Note that this output is present only if input option
                family is 'YJpn' or 'YJall'.</p></p></td></tr><tr valign="top"><td><code>Scoren</code></td><td><p><p>(n-init+1) x length(la)+1 matrix containing the values of the
                score test for positive observations for each value of the
-               transformation parameter:</p> <p>
+               transformation parameter:
                1st col = fwd search index;</p> <p>
                2nd col = value of the (negative) score test in each step
                of the fwd search for la(1);</p> <p>
@@ -491,5 +491,6 @@ out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',fal
  Laboratory Systems", Vol. 60, pp. 87-100.</p></div><div><p>Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of
  transformations for profit-and-loss data, Journal of the Royal
  Statistical Society, Series C, "Applied Statistics",
- <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a></p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
- Transformation: Review and Extensions, "Statistical Science", in press.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Score.html" itemprop="url"><span itemprop="name"><code>Score</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJ.html" itemprop="url"><span itemprop="name"><code>ScoreYJ</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJpn.html" itemprop="url"><span itemprop="name"><code>ScoreYJpn</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a></p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2021), The Box–Cox
+ Transformation: Review and Extensions, "Statistical Science", Vol. 36,
+ pp. 239-255, <a href="https://doi.org/10.1214/20-STS778">https://doi.org/10.1214/20-STS778</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Score.html" itemprop="url"><span itemprop="name"><code>Score</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJ.html" itemprop="url"><span itemprop="name"><code>ScoreYJ</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJpn.html" itemprop="url"><span itemprop="name"><code>ScoreYJpn</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

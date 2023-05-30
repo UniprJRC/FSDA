@@ -1,4 +1,4 @@
-function out = GUImad(x, flag,w, varargin)
+function out = GUImad(x, flag, w, varargin)
 %GUImad shows the necessary calculations to obtain MAD, S_M or S_Me in a GUI.
 %
 %<a href="matlab: docsearchFS('GUImad')">Link to the help function</a>
@@ -141,7 +141,7 @@ function out = GUImad(x, flag,w, varargin)
 
 %{
     %% SMe in a frequency distribution (discrete data).
-    % SMe= median absolute deviation from mean.
+    % SMe= mean absolute deviation from the median
     % Frequency distribution of the number of children in a sample of 400 families. (See page 29 of [CMR]).
     X=[0	112
     1	156
@@ -172,7 +172,7 @@ function out = GUImad(x, flag,w, varargin)
 %}
 
 %{
-   % SMe in a frequency distribution (continuous data).
+    % SMe in a frequency distribution (continuous data).
     % SMe= median absolute deviation from mean.
     % Conside the following distribution of employees of a large company
     % according to monthly gross wages:

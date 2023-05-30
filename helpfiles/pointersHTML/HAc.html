@@ -1,12 +1,12 @@
 <!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>HAc</title> <meta content="refpage" name="chunktype"><meta content="function:HAc " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="HAc Computes breakdown point and efficiency associated with constant c" itemprop="description" name="description" /><h1 itemprop="title">HAc</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/HAc.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/HAc.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/HAc.html">http://rosa.unipr.it/FSDA/HAc.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: HAc</em></p><P>HAc</P><P>Computes breakdown point and efficiency associated with constant c</P><h2>More About</h2><P>
  Function HApsi transforms vector u as follows.
   \[
-  HApsi(u)  = \left\{
+  HApsi(u)  = \left\{   
   \begin{array}{cc}
     u & |u| &lt;= a                                       \\
     a \times sign(u) & a &lt;= |u| &lt; b                    \\
     a \frac{c-|u|}{c-b} \times sign(u) & b &lt;= |u| &lt;  c \\
-    0 & |u| &gt;= c
+    0 & |u| &gt;= c 
   \end{array} \right.
  \]
 
@@ -15,9 +15,9 @@
                    $c$= ctun *param(3).
 
              The default is
-                   $a$= 2*ctun.
-                   $b$= 4*ctun.
-                   $c$= 8*ctun.
+                   $a$= 2*ctun. 
+                   $b$= 4*ctun. 
+                   $c$= 8*ctun. 
 
 	It is necessary to have 0 &lt;= a &lt;= b &lt;= c
 
