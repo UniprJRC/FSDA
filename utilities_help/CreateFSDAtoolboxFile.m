@@ -3,10 +3,10 @@
 %% Beginning of code
 
 % specify the version number, please use the format 'major.minor.revision'
-newVersion = '8.7.0.7';
+newVersion = '8.7.1.0';
 
 % Add the sentence which describes the new feature of the release
-commentRelease='Added new function txmerge';
+commentRelease='Added new suite of functions for robust regression using Andrews link';
 
 % Specify folder where to create the toolbox project
 FSDAProjFolder='D:\tmp';
