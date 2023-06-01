@@ -4,12 +4,10 @@ function createToolboxMLTBX(prjFile, toolboxVersion)
 %   it in the release folder. Input prjFile is the name of the toolbox
 %   packaging file and toolboxVersion is a string of the form Major.Minor.Bug.Build.
 
-if isfile(prjFile)
-    packagingData = matlab.addons.toolbox.ToolboxOptions(prjFile);
-else
-    msg = "Unable to find file " + "'" + prjFile+ "'";
-    error(msg);
+if ~isfile(prjFile)
+    error("Unable to find " + "'" + prjFile+ "'");  
 end
+packagingData = matlab.addons.toolbox.ToolboxOptions(prjFile);
 
 % Update the version number
 packagingData.ToolboxVersion = toolboxVersion;
