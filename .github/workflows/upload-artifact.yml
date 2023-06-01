@@ -12,6 +12,9 @@ on:
 #    types:
 #      - published
 
+env:
+  MATLAB_RELEASE: R2023a
+
 jobs:
        
   archive-build-artifacts:
@@ -22,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout on your repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       
       - name: Create Release
         id: create_release
@@ -35,32 +38,49 @@ jobs:
           draft: false
           prerelease: false
 
-      # Forks of this repo can have failed to build the MLTBX output so conditionally check for its 
-      # existence and let other steps know about this.
-      - name: Check MLTBX file exists
-        id: mltbx-check
+      - name: Start display server
+        run: |
+          sudo apt-get install xvfb
+          Xvfb :99 &
+          echo "DISPLAY=:99" >> $GITHUB_ENV
+
+      - name: Extract tag from this release
+        id: extract_tag
         shell: bash
         run: |
-          echo "::set-output name=exist::$(test -f ./bin/FSDA.mltbx && echo true || echo false)"
+          echo "::set-output name=tag::${GITHUB_REF#refs/*/}"
+          echo "GITHUB_RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        
+      - name: Cache MATLAB
+        id: cache-matlab
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.tool_cache }}/MATLAB
+          key: ${{ env.MATLAB_RELEASE }}-ubuntu-latest
+
+      # Sets up MATLAB on the GitHub Actions runner
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2-beta
+        with:
+          release: ${{ env.MATLAB_RELEASE }}
+            
+      # Runs a set of commands using the runners shell
+      - name: Run MLTBX build
+        uses: matlab-actions/run-build@v1
+        with: 
+          tasks: createMLTBX
 
       - name: Upload Release Asset
         if: ${{ steps.mltbx-check.outputs.exist == 'true' }}
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
         env:
-          #GITHUB_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          #upload_url: github.event.release.upload_url
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./bin/FSDA.mltbx
           asset_name: FSDA.mltbx
           asset_content_type: application/gzip
-
-      - name: Extract tag from this release
-        id: extract_tag
-        shell: bash
-        run: echo "::set-output name=tag::${GITHUB_REF#refs/*/}"
       
   build-docker-container:
     needs: archive-build-artifacts
