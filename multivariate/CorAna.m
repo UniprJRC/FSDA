@@ -729,7 +729,7 @@ if ~isempty(UserOptions)
         % Check if user options are valid options
         chkoptions(options,UserOptions)
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     if nargin > 2
         for i=1:2:length(varargin)
@@ -748,7 +748,7 @@ if ~isempty(UserOptions)
         Lr=matlab.lang.makeValidName(Lr);
         Lc=matlab.lang.makeValidName(Lc);
     end
-    
+
 end
 
 % Extract labels for rows and columns
@@ -766,7 +766,7 @@ else
             error('FSDA:CorAna:WrongInputOpt','Wrong length of row labels');
         end
     end
-    
+
     if isempty(Lc)
         Lc=cellstr(num2str((1:J)'));
     else
@@ -791,21 +791,21 @@ end
 
 
 if ~isempty(Sup)
-    
+
     % if Sup.r (Sup.c) is a cell or is character or it is a numeric vector,
     % then the supplementary rows (columns) belong to the the actual
     % contingency table, else if Sup.r (Sup.c) is a Matlab table then the
     % supplementary units do not belong to the actual contingency table N
-    
+
     if isfield(Sup,'r')
-        
+
         if iscell(Sup.r) || ischar(Sup.r)
             % find the indexes of the rows of matrix N to delete (rows to
             % use as supplementary rows)
             if ~verMatlab
                 Sup.r=matlab.lang.makeValidName(Sup.r);
             end
-            
+
             Indexesr=zeros(length(Sup.r),1);
             for i=1:length(Sup.r)
                 if iscell(Sup.r)
@@ -814,13 +814,13 @@ if ~isempty(Sup)
                     Indexesr(i)=find(strcmp(Sup.r(i),Lr),1);
                 end
             end
-            
+
             LrSup = Lr;
             LrSup = LrSup(Indexesr);
             % Delete the labels of contingency table associated to
             % supplementary rows
             Lr(Indexesr) = [];
-            
+
         elseif ~verMatlab && istable(Sup.r)
             Indexesr='';
             SupRowsN=table2array(Sup.r);
@@ -834,7 +834,7 @@ if ~isempty(Sup)
             if ~verMatlab
                 SupRowsNtable=array2table(SupRowsN,'RowNames',LrSup,'VariableNames',Lc);
             end
-            
+
         else
             Indexesr=Sup.r;
             if min(Indexesr)<1 || max(Indexesr)> size(N,1)
@@ -850,14 +850,14 @@ if ~isempty(Sup)
         LrSup='';
     end
     % end of part referred to labels for supplementary rows
-    
+
     % beginning of part referred to labels for supplementary columns
     if isfield(Sup,'c')
         if iscell(Sup.c) || ischar(Sup.c)
             if ~verMatlab
                 Sup.c=matlab.lang.makeValidName(Sup.c);
             end
-            
+
             % Find the indexes of the rows to delete (rows to use as
             % supplementary rows)
             Indexesc=zeros(length(Sup.c),1);
@@ -873,13 +873,13 @@ if ~isempty(Sup)
             % Delete the labels of contingency table associated to
             % supplementary rows
             Lc(Indexesc)=[];
-            
+
         elseif ~verMatlab && istable(Sup.c)
             Indexesc='';
             SupColsN=table2array(Sup.c);
             LcSup=Sup.c.Properties.VariableNames;
             SupColsNtable=Sup.c;
-            
+
         elseif  ~isvector(Sup.c)
             Indexesc='';
             % In this case there is a matrix (not a table) and labels are supplied separately
@@ -889,7 +889,7 @@ if ~isempty(Sup)
                 SupColsNtable=array2table(SupColsN,'RowNames',Lr,'VariableNames',LcSup);
             end
         else
-            
+
             Indexesc=Sup.c;
             if min(Indexesc)<1 || max(Indexesc)> size(N,2)
                 error('FSDA:CorAna:wrongInput',['Numeric indexes of supplementary columns must be integers between 1 and ' num2str(size(N,2))])
@@ -899,14 +899,14 @@ if ~isempty(Sup)
             % Delete the labels of contingency table associated to
             % supplementary rows
             Lc(Indexesc)=[];
-            
+
         end
     else
         Indexesc='';
         LcSup='';
     end
-    
-    
+
+
     % if ~isempty(Indexesr) this means that supplementary rows belong to
     % matrix N
     if ~isempty(Indexesr)
@@ -923,21 +923,21 @@ if ~isempty(Sup)
                 SupRowsNtable=Ntable(Indexesr,:);
             end
         end
-        
+
         Nred(Indexesr,:)=[];
         if ~verMatlab
             Nredtable(Indexesr,:)=[];
         end
     end
-    
-    
+
+
     % if ~isempty(Indexesc) this means that supplementary columns belong to
     % matrix N
     if ~isempty(Indexesc)
         % Contingency table referred to supplementary columns.
         if ~isempty(Indexesr)
             selrows=setdiff(1:I,Indexesr);
-            
+
             SupColsN=N(selrows,Indexesc);
             if ~verMatlab
                 SupColsNtable=Ntable(selrows,Indexesc);
@@ -948,7 +948,7 @@ if ~isempty(Sup)
                 SupColsNtable=Ntable(:,Indexesc);
             end
         end
-        
+
         Nred(:,Indexesc)=[];
         if ~verMatlab
             Nredtable(:,Indexesc)=[];
@@ -1163,20 +1163,20 @@ out.sqrtDim2InertiaCols = sqrtDim2InertiaCols;
 if exist('Sup','var')
     %Supplementary rows
     if isfield(Sup,'r')
-        
+
         % The sum of each row of h must be equal to 1
         % h=Nsup(Indexesr,:)/(diag(sum(Nsup(Indexesr,:))));
         h=bsxfun(@rdivide,SupRowsN,sum(SupRowsN,2));
-        
+
         RowsPriSup=h*ColsSta;             %Principal coordinates of supplementary rows
         RowsStaSup=h*ColsSta*Gam^(-1);    %Standard coordinates of supplementary rows
         RowsSymSup=h*ColsSta*Gam^(-1/2);  %Symmetrical coordinates of supplementary rows
         % rrc=(Gsup(:,1:k).*Gsup(:,1:k))/trace(Gsup(:,1:k)'*Gsup(:,1:k));
     end
-    
+
     %Supplementary columns
     if isfield(Sup,'c')
-        
+
         % The sum of each column of h must be equal to 1
         % h=SupColsN/(diag(sum(SupColsN)));
         h=bsxfun(@rdivide,SupColsN,sum(SupColsN,1));
@@ -1194,12 +1194,12 @@ if isstruct(plots) || plots==1
     CAplot=true;
     FontName='Times';
     FontSizeAxisLabels=12;
-    
+
     if isstruct(plots)
         % This anonymous function anables to extract the variable name to a
         % string
         ExtractVariableName=@(x) inputname(1);
-        
+
         if isfield(plots,'alpha')
             if strcmp(plots.alpha,'rowprincipal')
                 typeR='RowsPri'; % rows are in principal coordinates
@@ -1215,16 +1215,16 @@ if isstruct(plots) || plots==1
                     '$\alpha=0$, $X=D_r^{-1/2}U $ and $Y= D_c^{-1/2} V \Gamma$'};
                 typeRdesc='Row scores in standard coordinates';
                 typeCdesc='Column scores in principal coordinates';
-                
+
             elseif strcmp(plots.alpha,'symbiplot')
                 % equivalent to alpha=0.5
                 typeR='RowsSym';        % rows are in symmetrical coordinates
                 typeC='ColsSym';        % columns are in symmetrical coordinates
                 titl='Biplot symmetrical model $\alpha=0.5$ $X=D_r^{-1/2}U\Gamma^{1/2} $ and $Y= D_c^{-1/2} \Gamma V^{1/2}$';
-                
+
                 typeRdesc='Row scores in symmetric coordinates';
                 typeCdesc='Column scores in symmetric coordinates';
-                
+
             elseif strcmp(plots.alpha,'bothprincipal')
                 typeR='RowsPri';        % rows are in principal coordinates
                 typeC='ColsPri';        % columns are in principal coordinates
@@ -1232,7 +1232,7 @@ if isstruct(plots) || plots==1
                     'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_c^{-1/2} V \Gamma$'};
                 typeCdesc='Column scores in principal coordinates';
                 typeRdesc='Row scores in principal coordinates';
-                
+
             else
                 if isnumeric(plots.alpha)
                     if plots.alpha>=0 && plots.alpha<=1
@@ -1244,10 +1244,10 @@ if isstruct(plots) || plots==1
                     else
                         error('FSDA:CorAna:WrongInputOpt','Value of plots.alpha must lie in the interval [0 1]')
                     end
-                    
+
                     typeRdesc='Row scores in standard coordinates * \Gamma^alpha';
                     typeCdesc='Column scores in standard coordinates*\Gamma^{1-alpha}';
-                    
+
                 else
                     listStrings={'rowprincipal'; 'colprincipal'; 'symbiplot'; 'bothprincipal'; 'rowgab'; 'colgab'; 'rowgreen'; 'colgreen'};
                     warning('FSDA:CorAna:WrongInputOpt',['Input string ''' plots.alpha ''' is  not found'])
@@ -1263,9 +1263,9 @@ if isstruct(plots) || plots==1
                 'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
             typeRdesc='Row scores in principal coordinates';
             typeCdesc='Column scores in principal coordinates';
-            
+
         end
-        
+
         if isfield(plots,'FontSize')
             FontSize=plots.FontSize;
         else
@@ -1276,7 +1276,7 @@ if isstruct(plots) || plots==1
         else
             MarkerSize=MarkerSizedef;
         end
-        
+
     else
         typeR='RowsPri';        % rows are in principal coordinates
         typeC='ColsPri';        % columns are in principal coordinates
@@ -1286,7 +1286,7 @@ if isstruct(plots) || plots==1
         MarkerSize=MarkerSizedef;
         typeRdesc='Row scores in principal coordinates';
         typeCdesc='Column scores in principal coordinates';
-        
+
     end
     symbolrows='o';
     symbolcols='^';
@@ -1300,53 +1300,53 @@ if isstruct(plots) || plots==1
     colorsuprows='b';
     % Color for symbols and text for supplementary column points
     colorsupcols='r';
-    
-    
+
+
     figure
     hold('on')
     % Plot row points
     propR=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolrows ,''',''Color'',''', colorrows , ...
         ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
-    
+
     eval(['plot(' typeR '(:,' d1str '),' typeR '(:,' d2str '),' propR ')'])
-    
+
     % Plot column points
     propC=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolcols ,''',''Color'',''', colorcols, ...
         ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
-    
+
     eval(['plot(' typeC '(:,' d1str '),' typeC '(:,' d2str '),' propC ')'])
-    
+
     % Add labels for row points and column points
     % addx = adds a small right horizontal displacement for labels
     addx=0.04;
     eval(['text(' typeR '(:,' d1str ')+' num2str(addx) ',' typeR '(:,' d2str '),Lr,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
     eval(['text(' typeC '(:,' d1str ')+' num2str(addx) ',' typeC '(:,' d2str '),Lc,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
-    
+
     title(titl,'Interpreter','Latex');
-    
+
     % Labels for axes
     xlabel(['Dimension ',sprintf('%2.0f',d1),' (',sprintf('%5.1f',InertiaExplained(d1,3)*100),'%)'],'FontName', FontName, 'FontSize', FontSizeAxisLabels);
     ylabel(['Dimension ',sprintf('%2.0f',d2),' (',sprintf('%5.1f',InertiaExplained(d2,3)*100),'%)'],'FontName', FontName, 'FontSize', FontSizeAxisLabels);
-    
+
     % Add points and text associated to supplementary rows
     if isstruct(Sup) && isfield(Sup,'r')
         propsupR=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolsuprows ,''',''Color'',''', colorsuprows , ''',''MarkerFaceColor'',''', colorsuprows ,...
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
-        
+
         eval(['plot(' typeR 'Sup(:,d1),' typeR 'Sup(:,d2),' propsupR ')'])
         eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),LrSup,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
-        
+
     end
-    
+
     % Add points and text associated to supplementary columns
     if isstruct(Sup) && isfield(Sup,'c')
         propsupC=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolsupcols ,''',''Color'',''', colorsupcols , ''',''MarkerFaceColor'',''', colorsupcols ,...
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
-        
+
         eval(['plot(' typeC 'Sup(:,d1),' typeC 'Sup(:,d2),' propsupC ')'])
         eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),LcSup,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
     end
-    
+
     % Make axis equal and add cartesian axes
     axis(gca,'equal')
     axis(gca,'equal')
@@ -1388,8 +1388,12 @@ ColNames={'Mass' 'Score_1' 'Score_2' 'Inertia' ,...
     'CntrbPnt2In_1' 'CntrbPnt2In_2' ...
     'CntrbDim2In_1' 'CntrbDim2In_2'};
 
-OverviewRows=[out.r ScoreRows(:,1:k) InertiaRows Point2InertiaRows(:,1:k) Dim2InertiaRows(:,1:k)];
-OverviewCols=[out.c ScoreCols(:,1:k) InertiaCols Point2InertiaCols(:,1:k) Dim2InertiaCols(:,1:k)];
+try
+    OverviewRows=[out.r ScoreRows(:,1:k) InertiaRows Point2InertiaRows(:,1:k) Dim2InertiaRows(:,1:k)];
+    OverviewCols=[out.c ScoreCols(:,1:k) InertiaCols Point2InertiaCols(:,1:k) Dim2InertiaCols(:,1:k)];
+catch
+    error('FSDA:CorAna:WrongInput','Minimum number of active rows (columns) must be >=3');
+end
 
 if verMatlab==0
     OverviewRowstable=array2table(OverviewRows,'VariableNames',ColNames,'RowNames',Lr);
@@ -1403,13 +1407,13 @@ end
 
 if dispresults==true
     disp('Summary')
-    
+
     if verMatlab==1
         disp(ColNamesSummary)
     end
-    
+
     disp(out.Summary)
-    
+
     VarNamesforTab={'Scores', 'CntrbPnt2In' 'CntrbDim2In'};
     % CntrbPnt2In = relative contribution of points to explain total Inertia
     % CntrbDim2In = relative contribution of latent dimension to exaplin total
@@ -1426,10 +1430,10 @@ if dispresults==true
         disp(VarNamesforTab)
         disp(Tabresults)
     end
-    
+
     disp(['Results for dimension: ' d2str])
     Tabresults=eval(strcat('[',typeR,'(:,', d2str ,') Point2InertiaRows(:,', d2str ,')    Dim2InertiaRows(:,', d2str ,')         ]'));
-    
+
     if verMatlab==0
         Tabresultstable=array2table(Tabresults);
         Tabresultstable.Properties.RowNames=Lr;
@@ -1439,7 +1443,7 @@ if dispresults==true
         disp(VarNamesforTab)
         disp(Tabresults)
     end
-    
+
     disp('COLUMN POINTS')
     disp(['Results for dimension: ' d1str])
     Tabresults=eval(strcat('[',typeC,'(:,', d1str ,') Point2InertiaCols(:,', d1str ,')    Dim2InertiaCols(:,', d1str ,')         ]'));
@@ -1452,7 +1456,7 @@ if dispresults==true
         disp(VarNamesforTab)
         disp(Tabresults)
     end
-    
+
     disp(['Results for dimension: ' d2str])
     Tabresults=eval(strcat('[',typeC,'(:,', d2str ,') Point2InertiaCols(:,', d2str ,')    Dim2InertiaCols(:,', d2str ,')         ]'));
     if verMatlab==0
@@ -1476,21 +1480,21 @@ if dispresults==true
         disp(ColNames)
         disp(OverviewCols)
     end
-    
+
     disp('-----------------------------------------------------------')
     disp('Legend')
     if CAplot==true
         disp(typeRdesc)
         disp(typeCdesc)
     end
-    
+
     disp('CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension')
     disp('              The sum of the numbers in a column is equal to 1')
     disp('CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point')
     disp('              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1')
-    
-    
-    
+
+
+
     % Point2Inertia= relative contribution or each point to the inertia of the
     % dimension.
     % The points  with the larger value of Point2Inertia are those which contribute the
@@ -1499,7 +1503,7 @@ if dispresults==true
     % For a given dimension, any row with a
     % contribution larger than this threshold could be considered as
     % important in contributing to that dimension.
-    
+
     % Dim2Inertia= contribution of dimension to the inertia of point
     % (where inertia of point is the squared distance of point d_i^2 to the
     % centroid).
@@ -1510,8 +1514,8 @@ if dispresults==true
     % The values of the cos2 are forced to be between 0 and 1
     % If a row item is well represented by two dimensions, the sum of the
     % Dim2Inertia is close to one.
-    
-    
+
+
     %TODO
     % OverviewRowsSup
     % Overview for supplementary row points
@@ -1537,7 +1541,7 @@ if exist('Sup','var')
         out.RowsStaSup=RowsStaSup;
         out.RowsSymSup=RowsSymSup;
     end
-    
+
     %Supplementary columns
     if isfield(Sup,'c')
         % Store supplementary columns in matrix format
@@ -1546,7 +1550,7 @@ if exist('Sup','var')
             % Store table referred to supplementary columns
             out.SupColsNtable = SupColsNtable;
         end
-        
+
         out.ColsPriSup=ColsPriSup;
         out.ColsStaSup=ColsStaSup;
         out.ColsSymSup=ColsSymSup;
