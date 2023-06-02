@@ -815,6 +815,18 @@ else
 end
 
 weightsboo=md <= EmpEnv;
+
+% make sure you select the maximum number of rows
+% with a cumulative mass smaller or equal than to 1-bdp
+if sum(r(weightsboo))<1-bdp
+    [~,mdsorind]=sort(md);
+    weightsboo=false(I,1);
+    tt=2;
+    while  sum(r(mdsorind(1:tt)))<=1-bdp
+        tt=tt+1;
+    end
+    weightsboo(mdsorind(1:tt-1))=true;
+end
 RAW.outliers=seq(~weightsboo);
 % Matrix Profile Rows is stored in stucutre RAW
 RAW.Y=ProfilesRows;
