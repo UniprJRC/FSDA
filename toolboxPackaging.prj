@@ -1,14 +1,14 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
   <configuration file="C:\Users\bpancras\Documents\gitRepo\FSDAMW\fsdaToolboxPackaging.prj" location="C:\Users\bpancras\Documents\gitRepo\FSDAMW" name="fsdaToolboxPackaging" target="target.toolbox" target-name="Package Toolbox">
-    <param.appname>FSDA Toolbox</param.appname>
+    <param.appname>FSDA</param.appname>
     <param.authnamewatermark>FSDA team</param.authnamewatermark>
-    <param.email>U Parma</param.email>
-    <param.company />
-    <param.summary />
-    <param.description />
+    <param.email>FSDA@unipr.it</param.email>
+    <param.company>Univ. of Parma and JRC of EC</param.company>
+    <param.summary>Robust regression, robust multivariate analysis, robust classification and much more...</param.summary>
+    <param.description>FSDA toolbox contains more than 300 routines to assess and understand data affected by multiple outliers. FSDA routines cover, multiple regression, multivariate data analysis, classification and transformations. FSDA also includes interactive tools for anlyzing and modeling data, learning and teaching statistics. Every .m function has its corresponding HTML page in MathWorks style (which is generated automatically). The documentation system is perfectly integrated into the MathWorks framework.</param.description>
     <param.screenshot />
     <param.version>1.0</param.version>
-    <param.output>${PROJECT_ROOT}\FSDA Toolbox.mltbx</param.output>
+    <param.output>${PROJECT_ROOT}\FSDA.mltbx</param.output>
     <param.products.name />
     <param.products.id />
     <param.products.version />
@@ -77,12 +77,12 @@ poster_FSDA.pdf</param.exclude.filters>
     <param.getting.started.guide>${PROJECT_ROOT}\doc\GettingStarted.mlx</param.getting.started.guide>
     <param.matlabpath.excludes />
     <param.javaclasspath.excludes />
-    <param.exported.on.package>false</param.exported.on.package>
+    <param.exported.on.package>true</param.exported.on.package>
     <param.required.addons />
     <param.matlab.project.id />
     <param.matlab.project.name />
-    <param.release.start />
-    <param.release.end />
+    <param.release.start>R2015b</param.release.start>
+    <param.release.end>latest</param.release.end>
     <param.release.current.only>false</param.release.current.only>
     <param.compatiblity.windows>true</param.compatiblity.windows>
     <param.compatiblity.macos>true</param.compatiblity.macos>
@@ -95,9 +95,6 @@ poster_FSDA.pdf</param.exclude.filters>
     <param.additional.sw.mac.url />
     <param.additional.sw.linux.url />
     <unset>
-      <param.company />
-      <param.summary />
-      <param.description />
       <param.screenshot />
       <param.version />
       <param.output />
@@ -110,12 +107,9 @@ poster_FSDA.pdf</param.exclude.filters>
       <param.registered.apps />
       <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
-      <param.exported.on.package />
       <param.required.addons />
       <param.matlab.project.id />
       <param.matlab.project.name />
-      <param.release.start />
-      <param.release.end />
       <param.release.current.only />
       <param.compatiblity.windows />
       <param.compatiblity.macos />
@@ -158,6 +152,7 @@ poster_FSDA.pdf</param.exclude.filters>
       <file>${PROJECT_ROOT}\multivariate</file>
       <file>${PROJECT_ROOT}\readme.md</file>
       <file>${PROJECT_ROOT}\regression</file>
+      <file>${PROJECT_ROOT}\release</file>
       <file>${PROJECT_ROOT}\requirements.txt</file>
       <file>${PROJECT_ROOT}\runAllMyTestsFS.m</file>
       <file>${PROJECT_ROOT}\runAllMyTestsJenkins.m</file>
@@ -169,7 +164,7 @@ poster_FSDA.pdf</param.exclude.filters>
     <fileset.depfun.excluded />
     <fileset.package />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}" name="FSDA Toolbox.mltbx" optional="false">C:\Users\bpancras\Documents\gitRepo\FSDAMW\FSDA Toolbox.mltbx</file>
+      <file location="${PROJECT_ROOT}" name="FSDA.mltbx" optional="false">C:\Users\bpancras\Documents\gitRepo\FSDAMW\FSDA.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
