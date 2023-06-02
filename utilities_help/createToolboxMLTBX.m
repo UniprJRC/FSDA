@@ -1,11 +1,11 @@
 function createToolboxMLTBX(prjFile, toolboxVersion)
 %Package toolbox as MLTBX file.
-%   createToolboxMLTBX(prjFile, toolboxVersion) builds the MLTBX file and saves 
+%   createToolboxMLTBX(prjFile, toolboxVersion) builds the MLTBX file and saves
 %   it in the release folder. Input prjFile is the name of the toolbox
 %   packaging file and toolboxVersion is a string of the form Major.Minor.Bug.Build.
 
 if ~isfile(prjFile)
-    error("Unable to find " + "'" + prjFile+ "'");  
+    error("Unable to find " + "'" + prjFile+ "'");
 end
 packagingData = matlab.addons.toolbox.ToolboxOptions(prjFile);
 
@@ -17,3 +17,4 @@ packagingData.OutputFile = fullfile("release", "fsda.mltbx");
 
 % Create toolbox MLTBX
 matlab.addons.toolbox.packageToolbox(packagingData);
+end
