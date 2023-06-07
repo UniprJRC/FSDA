@@ -14,7 +14,7 @@ on:
 
 env:
   MATLAB_RELEASE: R2023a
-  MATLAB_RELEASE_DOC_V3: R2021b
+  MATLAB_RELEASE_DOC_V3: R2021a
   
 jobs:
 
@@ -49,7 +49,7 @@ jobs:
       - name: Build docseach db with MATLAB
         uses: matlab-actions/run-command@v1
         with:
-          command: "cd utilities_help/build; buildDocSearchForToolbox()"  
+          command: "cd('utilities_help/build'); buildDocSearchForToolbox()"  
           
       - name: Upload helpsearch-v3
         if: ${{ always() }}
