@@ -68,7 +68,7 @@ jobs:
       - name: Run MLTBX build
         uses: matlab-actions/run-build@v1
         with: 
-          tasks: createMLTBX
+          tasks: toolbox
 
       - name: Upload Release Asset
         id: upload-release-asset 
