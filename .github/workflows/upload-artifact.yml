@@ -14,13 +14,13 @@ on:
 
 env:
   MATLAB_RELEASE: R2023a
-  MATLAB_RELEASE_DOC_V3: R2023a
+  MATLAB_RELEASE_DOC_V3: R2021b
   
 jobs:
 
   # This job will specifically build the doc search db in 21b which is needed for pre-22a versions of MATLAB
   build-docsearch-v3:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     
     steps:    
       - name: Checkout on your repository
@@ -31,7 +31,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.tool_cache }}/MATLAB
-          key: ${{ env.MATLAB_RELEASE_DOC_V3 }}-windows-latest
+          key: ${{ env.MATLAB_RELEASE_DOC_V3 }}-ubuntu-latest
 
       # Sets up MATLAB on the GitHub Actions runner
       - name: Setup MATLAB
@@ -43,7 +43,7 @@ jobs:
       - name: Build docseach db with MATLAB
         uses: matlab-actions/run-command@v1
         with:
-          command: "cd('utilities_help/build'); buildDocSearchForToolbox()"  
+          command: "cd('utilities_help/build'); buildDocSearchForToolboxPre22a()"  
           
       - name: Upload helpsearch-v3
         if: ${{ always() }}
