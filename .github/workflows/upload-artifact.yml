@@ -14,30 +14,24 @@ on:
 
 env:
   MATLAB_RELEASE: R2023a
-  MATLAB_RELEASE_DOC_V3: R2021a
+  MATLAB_RELEASE_DOC_V3: R2021b
   
 jobs:
 
   # This job will specifically build the doc search db in 21b which is needed for pre-22a versions of MATLAB
   build-docsearch-v3:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     
     steps:    
       - name: Checkout on your repository
         uses: actions/checkout@v3
         
-      - name: Start display server
-        run: |
-          sudo apt-get install xvfb
-          Xvfb :99 &
-          echo "DISPLAY=:99" >> $GITHUB_ENV        
-
       - name: Cache MATLAB
         id: cache-matlab
         uses: actions/cache@v3
         with:
           path: ${{ runner.tool_cache }}/MATLAB
-          key: ${{ env.MATLAB_RELEASE_DOC_V3 }}-ubuntu-latest
+          key: ${{ env.MATLAB_RELEASE_DOC_V3 }}-windows-latest
 
       # Sets up MATLAB on the GitHub Actions runner
       - name: Setup MATLAB
