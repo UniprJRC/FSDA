@@ -14,10 +14,54 @@ on:
 
 env:
   MATLAB_RELEASE: R2023a
-
+  MATLAB_RELEASE_DOC_V3: R2021b
+  
 jobs:
-       
+
+  # This job will specifically build the doc search db in 21b which is needed for pre-22a versions of MATLAB
+  build-docsearch-v3:
+    runs-on: ubuntu-latest
+    
+    steps:    
+      - name: Checkout on your repository
+        uses: actions/checkout@v3
+        
+      - name: Start display server
+        run: |
+          sudo apt-get install xvfb
+          Xvfb :99 &
+          echo "DISPLAY=:99" >> $GITHUB_ENV        
+
+      - name: Cache MATLAB
+        id: cache-matlab
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.tool_cache }}/MATLAB
+          key: ${{ env.MATLAB_RELEASE_DOC_V3 }}-ubuntu-latest
+
+      # Sets up MATLAB on the GitHub Actions runner
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2-beta
+        with:
+          release: ${{ env.MATLAB_RELEASE_DOC_V3 }}
+          
+      # Runs a set of commands using the runners shell
+      - name: Build docseach db with MATLAB
+        uses: matlab-actions/run-command@v1
+        with:
+          command: "cd utilities_help/build; buildDocSearchForToolbox()"  
+          
+      - name: Upload helpsearch-v3
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          # Artifact name
+          name: helpsearch-v3-files
+          # A file, directory or wildcard pattern that describes what to upload
+          path: helpfiles/pointersHTML/helpsearch-v3/
+          
   archive-build-artifacts:
+    needs: build-docsearch-v3
     runs-on: ubuntu-latest
     
     outputs: 
@@ -26,7 +70,14 @@ jobs:
     steps:
       - name: Checkout on your repository
         uses: actions/checkout@v3
-      
+
+      - name: Download helpsearch-v3
+        if: ${{ always() }}
+        uses: actions/download-artifact@v3
+        with:
+          name: helpsearch-v3-files
+          path: helpfiles/pointersHTML/helpsearch-v3/
+          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
