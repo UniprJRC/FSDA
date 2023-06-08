@@ -27,12 +27,9 @@ publish('Contents.m');
 
 %% Create toolbox project file
 
-% uuid identified of FSDA
-uuid = '20669fbc-61ca-4050-bc87-575422f4c0b8';
-
 % Note that when matlab.addons.toolbox.ToolboxOptions the files attached to
 % the project are automatically added inside options.ToolboxFiles 
-options = matlab.addons.toolbox.ToolboxOptions(FSDAroot, uuid);
+options = matlab.addons.toolbox.ToolboxOptions(fullfile(FSDAroot, "defaultToolboxPackageConf.prj"));
 
 options = removeFoldersFromToolboxPackage(options, [ ...
     "_automation_tools"
