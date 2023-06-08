@@ -1,0 +1,21 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>FSDA</param.appname>
+    <param.guid>20669fbc-61ca-4050-bc87-575422f4c0b8</param.guid>
+    <param.version>0.0</param.version>
+    <param.output>${PROJECT_ROOT}/bin/FSDA.mltbx</param.output>
+    <fileset.rootdir>
+      <file>${PROJECT_ROOT}/</file>
+    </fileset.rootdir>
+
+    <fileset.depfun.included />
+    <fileset.depfun.excluded />
+    <fileset.package />
+    <param.company />
+    <param.email />
+    <param.authnamewatermark />
+    <param.description />
+    <param.summary />
+    <param.screenshot />
+  </configuration>
+</deployment-project>
