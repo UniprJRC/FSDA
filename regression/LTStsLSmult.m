@@ -412,7 +412,9 @@ while LSsignif==true &&  ij<=maxLS
         LSsignif=false;
         outTent.posLS=[];
     end
-    wedgeplot(outTent,'extradata',[y outTent.yhat]); 
+    if plots
+        wedgeplot(outTent,'extradata',[y outTent.yhat]); 
+    end
 end
 
 %% after having detected LS, call LTSts to identify outliers, etc

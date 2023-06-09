@@ -1,0 +1,189 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration file="C:\Users\bpancras\Documents\gitRepo\FSDAMW\toolboxPackaging.prj" location="C:\Users\bpancras\Documents\gitRepo\FSDAMW" name="toolboxPackaging" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>FSDA</param.appname>
+    <param.authnamewatermark>FSDA team</param.authnamewatermark>
+    <param.email>FSDA@unipr.it</param.email>
+    <param.company>Univ. of Parma and JRC of EC</param.company>
+    <param.summary>Robust regression, robust multivariate analysis, robust classification and much more...</param.summary>
+    <param.description>FSDA toolbox contains more than 300 routines to assess and understand data affected by multiple outliers. FSDA routines cover, multiple regression, multivariate data analysis, classification and transformations. FSDA also includes interactive tools for anlyzing and modeling data, learning and teaching statistics. Every .m function has its corresponding HTML page in MathWorks style (which is generated automatically). The documentation system is perfectly integrated into the MathWorks framework.</param.description>
+    <param.screenshot>${PROJECT_ROOT}\logoblue.jpg</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.output>${PROJECT_ROOT}\FSDA.mltbx</param.output>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.guid>98d2f0d3-88c9-4dd1-a28f-fe7574b07471</param.guid>
+    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
+% from packaging.  Excludes should be listed relative to the toolbox folder.
+% Some examples of how to specify excludes are provided below:
+%
+% A single file in the toolbox folder:
+% .svn
+%
+% A single file in a subfolder of the toolbox folder:
+% example/.svn
+%
+% All files in a subfolder of the toolbox folder:
+% example/*
+%
+% All files of a certain name in all subfolders of the toolbox folder:
+% **/.svn
+%
+% All files matching a pattern in all subfolders of the toolbox folder:
+% **/*.bak
+%
+.circleci
+.git
+.github
+_automation_tools
+_development
+docker
+.gitignore
+.gitattributes
+.travis.yml
+404.md
+azure-pipelines.yml
+Copyright notice.pdf
+InstallationNotes.doc
+InstallationNotes.pdf
+logo.png
+logo50x50.png
+poster_FSDA.pdf</param.exclude.filters>
+    <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
+    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;examples&gt;
+   &lt;exampleCategory name="LINK TO HTML FORMATTED PAGE"&gt;
+      &lt;example name="LINK TO LOCAL VERSION OF EXAMPLE FILES" type="html"&gt;
+         &lt;file type="source"/&gt;
+         &lt;file type="main"/&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+      &lt;example name="LINK TO WEB VERSION OF THE EXAMPLE FILES" type="html"&gt;
+         &lt;file type="source"/&gt;
+         &lt;file type="main"/&gt;
+         &lt;file type="thumbnail"/&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
+&lt;/examples&gt;</param.examples>
+    <param.demosxml />
+    <param.apps>
+      <file>${PROJECT_ROOT}\brushFAN.mlappinstall</file>
+      <file>${PROJECT_ROOT}\brushRES.mlappinstall</file>
+      <file>${PROJECT_ROOT}\brushROB.mlappinstall</file>
+    </param.apps>
+    <param.registered.apps />
+    <param.docs>${PROJECT_ROOT}\info.xml</param.docs>
+    <param.getting.started.guide>${PROJECT_ROOT}\doc\GettingStarted.mlx</param.getting.started.guide>
+    <param.matlabpath.excludes />
+    <param.javaclasspath.excludes />
+    <param.exported.on.package>true</param.exported.on.package>
+    <param.required.addons />
+    <param.matlab.project.id />
+    <param.matlab.project.name />
+    <param.release.start>R2015b</param.release.start>
+    <param.release.end>latest</param.release.end>
+    <param.release.current.only>false</param.release.current.only>
+    <param.compatiblity.windows>true</param.compatiblity.windows>
+    <param.compatiblity.macos>true</param.compatiblity.macos>
+    <param.compatiblity.linux>true</param.compatiblity.linux>
+    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
+    <param.installation.map />
+    <param.additional.sw.names />
+    <param.additional.sw.licenses />
+    <param.additional.sw.win.url />
+    <param.additional.sw.mac.url />
+    <param.additional.sw.linux.url />
+    <unset>
+      <param.version />
+      <param.output />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.exclude.pcodedmfiles />
+      <param.demosxml />
+      <param.registered.apps />
+      <param.matlabpath.excludes />
+      <param.javaclasspath.excludes />
+      <param.required.addons />
+      <param.matlab.project.id />
+      <param.matlab.project.name />
+      <param.release.current.only />
+      <param.compatiblity.windows />
+      <param.compatiblity.macos />
+      <param.compatiblity.linux />
+      <param.compatiblity.matlabonline />
+      <param.installation.map />
+      <param.additional.sw.names />
+      <param.additional.sw.licenses />
+      <param.additional.sw.win.url />
+      <param.additional.sw.mac.url />
+      <param.additional.sw.linux.url />
+    </unset>
+    <fileset.rootdir>
+      <file>${PROJECT_ROOT}</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>${PROJECT_ROOT}\addFSDA2path.m</file>
+      <file>${PROJECT_ROOT}\brushFAN.mlappinstall</file>
+      <file>${PROJECT_ROOT}\brushRES.mlappinstall</file>
+      <file>${PROJECT_ROOT}\brushROB.mlappinstall</file>
+      <file>${PROJECT_ROOT}\clustering</file>
+      <file>${PROJECT_ROOT}\CODE_OF_CONDUCT.md</file>
+      <file>${PROJECT_ROOT}\combinatorial</file>
+      <file>${PROJECT_ROOT}\Contents.m</file>
+      <file>${PROJECT_ROOT}\CONTRIBUTING.md</file>
+      <file>${PROJECT_ROOT}\datasets</file>
+      <file>${PROJECT_ROOT}\doc</file>
+      <file>${PROJECT_ROOT}\docsearchFS.m</file>
+      <file>${PROJECT_ROOT}\eupllicense.pdf</file>
+      <file>${PROJECT_ROOT}\examples</file>
+      <file>${PROJECT_ROOT}\FSDAdemos</file>
+      <file>${PROJECT_ROOT}\graphics</file>
+      <file>${PROJECT_ROOT}\helpfiles</file>
+      <file>${PROJECT_ROOT}\info.xml</file>
+      <file>${PROJECT_ROOT}\InstallationNotes.docx</file>
+      <file>${PROJECT_ROOT}\installFSDA.m</file>
+      <file>${PROJECT_ROOT}\installHelpFiles.m</file>
+      <file>${PROJECT_ROOT}\license.txt</file>
+      <file>${PROJECT_ROOT}\logoblue.jpg</file>
+      <file>${PROJECT_ROOT}\multivariate</file>
+      <file>${PROJECT_ROOT}\readme.md</file>
+      <file>${PROJECT_ROOT}\regression</file>
+      <file>${PROJECT_ROOT}\release</file>
+      <file>${PROJECT_ROOT}\requirements.txt</file>
+      <file>${PROJECT_ROOT}\runAllMyTestsFS.m</file>
+      <file>${PROJECT_ROOT}\runAllMyTestsJenkins.m</file>
+      <file>${PROJECT_ROOT}\utilities</file>
+      <file>${PROJECT_ROOT}\utilities_help</file>
+      <file>${PROJECT_ROOT}\utilities_stat</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included />
+    <fileset.depfun.excluded />
+    <fileset.package />
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}" name="FSDA.mltbx" optional="false">C:\Users\bpancras\Documents\gitRepo\FSDAMW\FSDA.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2023a</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
