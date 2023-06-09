@@ -26,13 +26,6 @@ jobs:
       - name: Checkout on your repository
         uses: actions/checkout@v3
         
-      - name: Cache MATLAB
-        id: cache-matlab
-        uses: actions/cache@v3
-        with:
-          path: ${{ runner.tool_cache }}/MATLAB
-          key: ${{ env.MATLAB_RELEASE_DOC_V3 }}-ubuntu-latest
-
       # Sets up MATLAB on the GitHub Actions runner
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v2-beta
