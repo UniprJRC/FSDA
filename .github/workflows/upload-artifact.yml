@@ -13,7 +13,9 @@ on:
 #      - published
 
 env:
+  # Define a specific version of MATLAB to release the toolbox
   MATLAB_RELEASE: R2023a
+  # We also need a specific version to build the older v3 doc search
   MATLAB_RELEASE_DOC_V3: R2021b
   
 jobs:
@@ -26,32 +28,37 @@ jobs:
       - name: Checkout on your repository
         uses: actions/checkout@v3
         
-      # Sets up MATLAB on the GitHub Actions runner
+      # Sets up MATLAB on the GitHub Actions runner using the older version of MATLAB
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v2-beta
         with:
           release: ${{ env.MATLAB_RELEASE_DOC_V3 }}
           
-      # Runs a set of commands using the runners shell
+      # Runs a set of commands using the runners shell - note that 21b doesn't support
+      # 'buildtool' so we use the specific script in a MATLAB run action
       - name: Build docseach db with MATLAB
         uses: matlab-actions/run-command@v1
         with:
           command: "cd('utilities_help/build'); buildDocSearchForToolboxPre22a()"  
-          
+      
+      # Finally keep a copy of the artifacts generated for the next job to download    
       - name: Upload helpsearch-v3
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
-          # Artifact name
+          # Artifact key to be used with download-artifact
           name: helpsearch-v3-files
           # A file, directory or wildcard pattern that describes what to upload
           path: helpfiles/pointersHTML/helpsearch-v3/
-          
+  
+  # This job does the build of the MLTBX file in the MATLAB_RELEASE version of MATLAB         
   archive-build-artifacts:
+    # Do not run this job until the previous job is complete
     needs: build-docsearch-v3
     runs-on: ubuntu-latest
     
     outputs: 
+      # This output is used by the next job to correctly tag the docker image being built
       fsda-release: ${{ steps.extract_tag.outputs.tag }}
 
     steps:
@@ -76,6 +83,9 @@ jobs:
           draft: false
           prerelease: false
 
+      # We are going to start a display server using XVFB to ensure that if the toolbox build 
+      # triggers something that needs a display we have one. This is a done prophylacticly in 
+      # case something one day needs a display.
       - name: Start display server
         run: |
           sudo apt-get install xvfb
@@ -88,7 +98,9 @@ jobs:
         run: |
           echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
           echo "GITHUB_RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-        
+      
+      # Since this version of MATLAB is likely the same as used in ci.yml if there is a cached version 
+      # use that instead of doing the install.    
       - name: Cache MATLAB
         id: cache-matlab
         uses: actions/cache@v3
@@ -102,7 +114,7 @@ jobs:
         with:
           release: ${{ env.MATLAB_RELEASE }}
             
-      # Runs a set of commands using the runners shell
+      # Runs buildtool in the root of the repository, triggering the `toolbox` task
       - name: Run MLTBX build
         uses: matlab-actions/run-build@v1
         with: 

@@ -41,13 +41,13 @@ options = matlab.addons.toolbox.ToolboxOptions(fullfile(FSDAroot, "defaultToolbo
 % Firstly there are a set of folders in this repository that we do not want
 % in the packaged toolbox - remove those using a helper function
 options = removeFoldersFromToolboxPackage(options, [ ...
-    "_automation_tools"
-    "_development"
-    "_TODO"
     ".buildtool"
     ".circleci"
     ".git"
     ".github"
+    "_automation_tools"
+    "_development"
+    "_TODO"
     "bin"
     "docker"
     "helpfiles" + fsep + "XML"
@@ -58,24 +58,29 @@ options = removeFoldersFromToolboxPackage(options, [ ...
 % Secondly there are a set of files in this repository that we do not want
 % in the packaged toolbox - remove those using a helper function
 options = removeFilesFromToolboxPackage(options, [...
+    ".gitattributes"
+    ".gitignore"
+    ".travis.yml"
+    "404.md"
+    "azure-pipelines.yml"
+    "buildfile.m"
+    "CODE_OF_CONDUCT.md"
+    "CONTRIBUTING.md"
+    "Copyright notice.pdf"
+    "defaultToolboxPackageConf.prj"
+    "eupllicense.pdf"
     "examples" + fsep + "examples_categorical.mlx"
     "examples" + fsep + "examples_multivariate.mlx"
     "examples" + fsep + "examples_regression.mlx"
     "examples" + fsep + "examples_MixSim.mlx"
-    "utilities_help" + fsep + "FlowChart.pptx"
-    "eupllicense.pdf"
-    "Copyright notice.pdf"
-    "installationNotes.docx"
-    "installationNotes.pdf"
-    "buildfile.m"
     "FSDA.prj"
-    "readme.md"
-    "404.md"
-    "CODE_OF_CONDUCT.md"
-    "CONTRIBUTING.md"
     "helpfiles" + fsep + "FSDA" + fsep + "images" + fsep + "githubimgexamples.jpg"
     "helpfiles" + fsep + "FSDA" + fsep + "images" + fsep + "githubimgindex.jpg"
     "helpfiles" + fsep + "FSDA" + fsep + "images" + fsep + "githubimgtutorials.jpg"    
+    "installationNotes.docx"
+    "installationNotes.pdf"
+    "readme.md"
+    "utilities_help" + fsep + "FlowChart.pptx"
     ]);
 
 
