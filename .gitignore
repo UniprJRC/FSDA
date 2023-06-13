@@ -10,8 +10,5 @@ tests-regressionLTSts/
 tests-regressionEXT/
 tests-utilities/
 # ignore search engine fo builddocsearchdb
-/helpfiles/pointersHTML/helpsearch-v3
-
-
-# Ignore the release folder
-release/*.mltbx
+helpfiles/pointersHTML/helpsearch*
+bin/
