@@ -17,7 +17,7 @@ To trigger a completely new release of the toolbox on `github` using the
 ```
 2. In that clean repo create the tag for the new release of the FSDA toolbox
 ```
-    git tag 8.7.1.0
+    git tag -a -m "Release comment" 8.7.1.0
 ```
 3. Push the new tags to github
 ```
