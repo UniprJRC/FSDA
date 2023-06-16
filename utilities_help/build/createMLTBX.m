@@ -29,14 +29,14 @@ publish('Contents.m');
 
 %% Create toolbox project file
 
-% Create our desired toolbox options from the default toolbox package
-% configuration project fil in the root. This specifies as little as
-% possible ... but it does define the following:
+% Create our desired toolbox options 
 %
 % 1. Our File Exchange UUID (currently 20669fbc-61ca-4050-bc87-575422f4c0b8)
 % 2. By default ALL files should be packaged in the toolbox - we will
 %   exclude those that are not needed below using some helpers.
-options = matlab.addons.toolbox.ToolboxOptions(fullfile(FSDAroot, "defaultToolboxPackageConf.prj"));
+
+uuid = '20669fbc-61ca-4050-bc87-575422f4c0b8';
+options = matlab.addons.toolbox.ToolboxOptions(FSDAroot, uuid);
 
 % Firstly there are a set of folders in this repository that we do not want
 % in the packaged toolbox - remove those using a helper function
