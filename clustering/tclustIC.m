@@ -530,6 +530,9 @@ if nargin > 1
     alpha=options.alpha;
     kk=options.kk;
     cc=options.cc;
+    if ~isrow(cc)
+        cc = cc';
+    end
     nsamp=options.nsamp;        % Number of subsets to extract
     plots=options.plots;        % Plot of the resulting classification
     equalweights=options.equalweights;    % Specify if assignment must take into account the size of the groups
@@ -661,11 +664,7 @@ if plots==1
     % Define legend entries
     a=cell(length(cc),1);
     a(:)={'c='};
-    if isrow(cc)
-        legstr=strcat(a, cellstr(num2str(cc')));
-    else
-        legstr=strcat(a, cellstr(num2str(cc')));
-    end
+    legstr=strcat(a, cellstr(num2str(cc')));
     xkk=0:(1/(length(kk)-1)):1;
 end
 
