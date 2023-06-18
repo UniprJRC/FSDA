@@ -276,8 +276,8 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 % Examples:
 %
 %{
-    %% Generate mixture of regression. Use an average overlapping at
-    % centroids =0.01 and  all default options:
+    %% Generate mixture of regression. 
+    % Use an average overlapping at centroids = 0.01 and all default options:
     % 1) Beta is generated according to random normal for each group with
     % mu=0 and sigma=1;
     % 2) X in each dimension and each group is generated according to U(0, 1);
