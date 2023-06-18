@@ -1805,3 +1805,33 @@ alphaopt   = outEDA.Amon(iARImax(end),1);
 outTCLUST    = tclust(Y,kopt,alphaopt,copt,'plots',1);
 idxTCLUST    = outTCLUST.idx;
 
+% Traditional BIC plot: MIXMIX as function of c given k, based on the
+% initial output of tclustIC.
+
+figure('units','normalized')
+samescale=1; % Specify whether to use the same y scale for ALL plots
+kk=outIC0.kk;
+lkk=length(kk);
+cc=outIC0.cc;
+lcc=length(cc);
+IC=outIC0.MIXMIX;
+miny=min(min(IC));
+maxy=max(max(IC));
+seqcc=1:lcc;
+for j=1:lkk
+    subplot(1,lkk,j)
+    hold('on')
+    plot(1:lcc,IC(j,:),'k')
+    [minICj,minICjind]=min(IC(j,:));
+    plot(seqcc(minICjind),minICj,'rs','MarkerSize',10)
+    xlim([1 length(cc)])
+    if samescale==1
+        ylim([miny maxy])
+    end
+    L = get(gca,'XLim');
+    set(gca,'XTick',linspace(L(1),L(2),lcc))
+    set(gca,'XTickLabel',num2str(cc'))
+    xlabel('Restr. fact. $c$','Interpreter','Latex')
+    title(['k=' num2str(kk(j))])
+end
+suplabel('BIC (MIXMIX)','t');
