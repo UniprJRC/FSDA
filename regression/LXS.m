@@ -923,7 +923,9 @@ if lmsopt==1
     % consistent estimator of \sigma when z_i ~ N(0, \sigma^2)
     % The additional factor 1+5/(n-p) was found by simulation by Rousseeuw and
     % Leroy (1987), see p. 202
-    factor=1.4826*(1+5/(n-p));
+    asymtpfact=1/norminv(0.5+(h/(2*n)));
+    % OLD factor=1.4826*(1+5/(n-p));
+    factor=asymtpfact*(1+5/(n-p));
 
     % Apply the consistency factor to the preliminary scale estimate
     s0=sh0*factor;
