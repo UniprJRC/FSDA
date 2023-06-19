@@ -10,22 +10,22 @@ plan.DefaultTasks = "toolbox";
 end
 
 function docTask(~)
-% This task builds the doc search DB for the current version of MATLAB - the
-% expected output will be in the folder ./helpfiles/pointersHTML
+% This task builds the doc search DB for the current version of MATLAB 
+% - the expected output will be in the folder ./helpfiles/pointersHTML
 cleanup = iCdWithRevert(fullfile(iGetRootFolder, "utilities_help", "build")); %#ok<NASGU>
 buildDocSearchForToolbox
 end
 
 function toolboxTask(~)
-% This task packages the toolbox MLTBX file - the expected output will be
-% in the ./bin/ folder (defined in the createMLTBX file)
+% This task packages the toolbox MLTBX file 
+% - the expected output will be in the ./bin/ folder (defined in the createMLTBX file)
 cleanup = iCdWithRevert(fullfile(iGetRootFolder, "utilities_help", "build")); %#ok<NASGU>
 createMLTBX
 end
 
 function releaseToGithubTask(~, opts)
-% This task tags a new release and build the toolbox MLTBX file -on GitHub-
-% using createMLTBX.m and GiHub Actions 
+% This task tags a new release and builds the toolbox MLTBX file -on GitHub-
+% This task uses createMLTBX.m and GiHub Actions 
 arguments
     ~
     opts.Version(1,1) string = ""
@@ -37,7 +37,7 @@ if opts.Version == "" || opts.Comment == ""
         '2 strings, Version and Comment, as input to the releaseToGithub built task'])
 end
 
-[OK, msg] = system("git tag -a " + opts.Version + " -m " + opts.Comment);
+[OK, msg] = system(['git tag -a ' char(opts.Version)  ' -m "'  char(opts.Comment) '"']);
 disp(msg);
 if OK ~= 0
     error("FSDA:ReleaseToGithub:GitTagFailed", "git tag failed");
