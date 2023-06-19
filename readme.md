@@ -25,7 +25,7 @@ the sinergy of the new buildtool functionalities, (see an overview in the [docum
 Releasing a new FSDA release was a manual, multi-step process, that involved a lot of tasks in different environments, now the process runs entirely on GitHub and is consistent and fast.
 (Our thanks goes to Jos Martin, Rob Purser, Bensingh Pancras and Andy Campbell that supported us with the implementation of this new feature)
 
-2. Now FSDA is also availble as a [Docker](https://github.com/UniprJRC/FSDA/docker) (follow the link for more info) so if you need to run simulations on a HPC facility on Singularity/Apptainer or you just want to try FSDA with all the features you can follow this link and download a full fledged FSDA docker (yes it works also locally on WSL/WSL2!). 
+2. Now FSDA is also availble as a [Docker](https://github.com/UniprJRC/FSDA/tree/master/docker) (follow the link for more info) so if you need to run simulations on a HPC facility on Singularity/Apptainer or you just want to try FSDA with all the features you can follow this link and download a full fledged FSDA docker (yes it works also locally on WSL/WSL2!). 
 Once a new release is created, a docker of FSDA is automatically build and can be easily pulled.
 (Our thanks go to Jos Martin that helped us a lot on this project).
 
