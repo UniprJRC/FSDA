@@ -9,7 +9,7 @@ plan("toolbox").Dependencies = "doc";
 plan.DefaultTasks = "toolbox";
 end
 
-function lintTask(~)
+function checkTask(~)
 issues = codeIssues;
 errors = issues.Issues(issues.Issues.Severity == "error", ...
     ["Location" "Severity" "Description"]);
