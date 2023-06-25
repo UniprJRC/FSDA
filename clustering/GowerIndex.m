@@ -47,7 +47,7 @@ function [S, Stable] = GowerIndex(Y, varargin)
 %
 %   Stable :  matrix with Gower similarity coefficients in table format. n-by-n table.
 %             n-by-n table whose i-th j-th entry contains the Gower
-%             similarity index between row i and row j of input matrix Y.  
+%             similarity index between row i and row j of input matrix Y.
 %
 %
 %
@@ -82,7 +82,7 @@ function [S, Stable] = GowerIndex(Y, varargin)
 % Sociological Methods & Research, Vol. 47, pp. 207-239
 %
 %
-% Acknowledgements: 
+% Acknowledgements:
 %
 % This function has been written jointly with Professor Aurea Grane',
 % Universidad Carlos III de Madrid, Statistics Department.
@@ -170,7 +170,7 @@ function [S, Stable] = GowerIndex(Y, varargin)
 l=[];
 if nargin>1
     options=struct('l',l);
-    
+
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
@@ -179,7 +179,7 @@ if nargin>1
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
-    
+
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
@@ -200,7 +200,7 @@ if isempty(l)
         error('FSDA:GowerIndex:needl','The input is a table therefore it is necessary to supply vector l which specifies the type of variables for each column')
     else
     end
-    
+
     booquant=false(p,1); % Initialize Boolean for quantitative variables
     boobin=booquant;  % Initialize Boolean for binary variables
     boocat=booquant; % Initialize Boolean for categorical variables
@@ -212,7 +212,7 @@ if isempty(l)
         if m==1
             error('FSDA:GowerIndex:ConstCol','A column of the dataset is made up of constant values')
         end
-        
+
         if m==2 && max(uniYj)==1 && min(uniYj)==0 % binary variable
             boobin(j)=true;
         elseif m<=20 &&  max(uniYj-round(uniYj))==0 % categorical variable
@@ -221,23 +221,23 @@ if isempty(l)
             booquant(j)=true;
         end
     end
-        RowNames=cellstr(num2str((1:n)','Row%d'));
+    RowNames=cellstr(num2str((1:n)','Row%d'));
 else
-    
+
     % Check that the length of supplied vector l is equal to p
     if length(l)~=p
         error('FSDA:GowerIndex:WrongInput','The length of supplied input vector l must be equal to the columns of input matrix Y')
     end
-    
+
     % Create boolean vectors containing true in position j if the corresponding
     % j-th variable matches the specification
     booquant=l==1; % Boolean for quantitative variables
     boobin=l==2;  % Boolean for binary variables
     boocat=l==3;  % Boolean for categorical variables
-    
+
     if istable(Y)
         Ynum=zeros(n,p);
-        
+
         for j=1:p
             if l(j)==3 % if column j is a cell which contains a categorical variable
                 if iscell(Y{:,j})
@@ -258,6 +258,9 @@ else
             end
         end
         RowNames=Y.Properties.RowNames;
+        if isempty(RowNames)
+            RowNames=cellstr(num2str((1:n)','Row%d'));
+        end
         Y=Ynum;
     else
         RowNames=cellstr(num2str((1:n)','Row%d'));
