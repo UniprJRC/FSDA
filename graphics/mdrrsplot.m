@@ -140,7 +140,7 @@ function [brushedUnits,BrushedUnits]=mdrrsplot(out,varargin)
 %                   steps. Note that if the largest mdr are in the final
 %                   part of the search (due to a group of outliers), the
 %                   peak is not informative and it is therefore not
-%                   considered because.
+%                   considered.
 %                   Example - 'ColorTrj',0
 %                   Data Types - single | double
 %
@@ -719,7 +719,7 @@ switch ColorTrj
         c = colorbar;
         c.Label.String = ['Standardised sum of mdr from step ' num2str(skipbefore)];
         c.FontSize = SizeAxesNum;
-        caxis([0 1]);
+        clim([0 1]);
         
         % use only the main line style '-'
         slinsty(2:end) = slinsty(1);
