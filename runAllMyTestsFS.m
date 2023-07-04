@@ -32,9 +32,12 @@ warning('on')
 disp(filesWithProblems)
 
 if isempty(cat2test)
+    cat2test = 'all';
+end
+
+if strcmp(cat2test,'all')
     FilesIncluded=FilesIncludedAll;
     boo = true(length(FilesIncluded), 1);
-    cat2test = 'all';
 elseif strcmp(cat2test,'graphics')
     % VIS GUI MULT CLUS REG UTI
     str=regexp(FilesIncluded(:,8),'VIS*');
