@@ -1128,15 +1128,18 @@ x=standard.xvalues;
 if any(strcmp(fieldnames(out),'class'))
     if strcmp(out.class,'MMregeda')
         x=out.eff;
-        out.Un='';
+        % out.Un='';
     elseif strcmp(out.class,'Sregeda')
         x=out.bdp;
-        out.Un='';
+        % out.Un='';
     elseif strcmp(out.class,'MDPDReda')
         x=out.bdp;
+        % out.Un='';
+    end
+    % If field Un does not exist then it is initialized with empty
+    if ~isfield(out,'Un')
         out.Un='';
     end
-    
 end
 
 plot1=plot(x,residuals,'tag','data_res','LineWidth',standard.LineWidth);
