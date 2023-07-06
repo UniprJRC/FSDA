@@ -119,7 +119,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     a=3;
     b=8;
     pd=makedist('Uniform','Lower',a,'Upper',b);
-    distribspec(pd, [5 6], 'inside','userColor','g');
+    distribspec(pd, [5 6], 'inside');
 %}
 
 %{
@@ -1075,7 +1075,7 @@ end
 % axis and labels
 xaxis = refline(0,0);
 set(xaxis,'Color','k');
-ylabel('Density value', 'interpreter' , 'latex' , 'FontSize', 12);
+ylabel('Density', 'interpreter' , 'latex' , 'FontSize', 12);
 xlabel('Critical value', 'interpreter' , 'latex' , 'FontSize', 12);
 
 if nargout > 1
