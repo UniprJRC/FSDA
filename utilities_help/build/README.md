@@ -17,7 +17,7 @@ To trigger a completely new release of the toolbox on `github` using the
 ```
 2. In that clean repo create the tag for the new release of the FSDA toolbox
 ```
-    git tag 8.7.1.0
+    git tag -a -m "Release comment" 8.7.1.0
 ```
 3. Push the new tags to github
 ```
@@ -48,4 +48,5 @@ the toolbox. The second is the toolbox packaging workflow which download the doc
 builds the toolbox using the `buildtool` via `run-build`, and the final builds a docker container as described in `docker\README.md`.
 
 These workflows can be seen in the github actions area of the repository, and if successful a new release
-will be available on the [repo release page](https://github.com/UniprJRC/FSDA/releases). There will be the usual source code assets along with the `FSDA.mltbx` file for customer installation.
+will be available on the [repo release page](https://github.com/UniprJRC/FSDA/releases). There will be the usual 
+source code assets along with the `FSDA.mltbx` file for customer installation.

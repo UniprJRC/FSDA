@@ -53,11 +53,12 @@ jobs:
             Parallel_Computing_Toolbox
             Optimization_Toolbox
             Econometrics_Toolbox
+
       # Runs a set of commands using the runners shell
-      - name: Check MATLAB Install
-        uses: matlab-actions/run-command@v1
+      - name: Run MATLAB Tests
+        uses: matlab-actions/run-build@v1
         with:
-          command: "run runAllMyTestsFS.m" 
+          tasks: test
           
 
           
