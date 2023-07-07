@@ -48,6 +48,158 @@
                 {"name":"ccshw", "type":["double", "vector"], "purpose":"vector containing the values of cshw which have been considered"},
                 {"name":"alpha", "type":["double", "scalar"], "purpose":"scalar containing the value of alpha which has been considered."}
             ]
+        },
+
+        "Outms": {
+
+            "purpose":"Structure required as input by cdsplot",
+            "type":"struct",
+            "field":[
+                {"name":"stor", "type":"double", "purpose":"k x 9 matrix containing statistics which are used to create the candles"},
+                {"name":"outl", "type":"double", "purpose":"r x 4 matrix containing information about 'influential units' or empty matrix"},
+                {"name":"siz", "type":"double", "purpose":"vector of length 2 containing information about n"}
+            ]
+        },
+
+        "PlotsCorAna": {
+
+            "purpose":"structure required as input by CorAnaplot",
+            "type":"struct",
+            "field":[
+                {"name":"alpha", "type":[["double"], ["string"]], "purpose":"type of plot"},
+                {"name":"FontSize", "type":"double", "purpose":"scalar which specifies font size of row (column) labels"},
+                {"name":"FontSizeSup", "type":"double", "purpose":"scalar which specifies font size of row (column) labels of supplementary points"},
+                {"name":"MarkerSize", "type":"double", "purpose":"scalar which specifies the marker size of symbols associated with rows or columns"},
+                {"name":"SymbolRows", "type":"char", "purpose":"character which specifies the symbol to use for row points"},
+                {"name":"SymbolCols", "type":"char", "purpose":"character which specifies the symbol to use for column points"},
+                {"name":"SymbolRowsSup", "type":"char", "purpose":"character which specifies the symbol to use for supplementary row points"},
+                {"name":"SymbolColsSup", "type":"char", "purpose":"character which specifies the symbol to use for supplementary column points"},
+                {"name":"ColorRows", "type":"char", "purpose":"character which specifies the symbol to use for row points or RGB triplet"},
+                {"name":"ColorMapLabelRows", "type":[["char"], ["cell"]], "purpose":"character or cell which specifies whether the color of row labels must depend on a colormap"},
+                {"name":"ColorCols", "type":"char", "purpose":"character which specifies the symbol to use for column points or RGB triplet"},
+                {"name":"ColorMapLabelCols", "type":[["char"], ["cell"]], "purpose":"character or cell which specifies  whether the color of column labels must depend on a colormap"},
+                {"name":"ColorRowsSup", "type":"char", "purpose":"character which specifies the symbol to use for row points or RGB triplet"},
+                {"name":"ColorColsSup", "type":"char", "purpose":"character which specifies the symbol to use for supplementary column points or RGB triplet"},
+                {"name":"MarkerFaceColorRows", "type":"char", "purpose":"character which specifies the marker fill color to use for active row points or RGB triplet"},
+                {"name":"MarkerFaceColorCols", "type":"char", "purpose":"character which specifies the marker fill color to use for active column points or RGB triplet"},
+                {"name":"MarkerFaceColorRowsSup", "type":"char", "purpose":"character which specifies the marker fill color to use for supplementary row points or RGB triplet"},
+                {"name":"MarkerFaceColorColsSup", "type":"char", "purpose":"character which specifies the marker fill color to use for supplementary column points or RGB triplet"}
+            ]
+        },
+
+        "ConfellipseCorAna": {
+
+            "purpose":"structure requested as optional input by CorAnaplot",
+            "type":"struct",
+            "field":[
+                {"name":"conflev", "type":"double", "purpose":"confidence level of each ellipse"},
+                {"name":"method", "type":"double", "purpose":"specifies the method(s) to use to compute confidence ellipses"},
+                {"name":"nsimul", "type":["double", "scalar"], "purpose":"number of contingency tables which have to ge generated"},
+                {"name":"selRows", "type":["logical", "vector"], "purpose":"specifies for which row points it is necessary to draw the ellipses"},
+                {"name":"selCols", "type":["logical", "vector"], "purpose":"specifies for which column points it is necessary to draw the ellipses"},
+                {"name":"AxesEllipse", "type":"logical", "purpose":"boolean which specifies whether it is necessary to show the major axes of the ellipse"}
+            ]
+        },
+
+        "OutCovplot": {
+
+            "purpose":"structure requested as input by Covplot",
+            "type":"struct",
+            "field":[
+                {"name":"S2cov", "type":"double", "purpose":"monitoring of the elements of the covariance matrix in each step of the forward search"},
+                {"name":"Un", "type":"double", "purpose":"order of entry of each unit"},
+                {"name":"Y", "type":"double", "purpose":"n x v data matrix"}
+            ]
+        },
+
+        "StandardCovplot": {
+
+            "purpose":"structure requested as optional input by covplot",
+            "type":"struct",
+            "field":[
+                {"name":"SizeAxesNum", "type":"double", "purpose":"scalar specifying the fontsize of the axes numbers"},
+                {"name":"xlim", "type":"double", "purpose":"two elements vector with minimum and maximum of the x axis"},
+                {"name":"ylim", "type":"double", "purpose":"two elements vector with minimum and maximum of the y axis"},
+                {"name":"titl", "type":"char", "purpose":"a label for the title"},
+                {"name":"labx", "type":"char", "purpose":"a label for the x-axis"},
+                {"name":"laby", "type":"char", "purpose":"a label for the y-axis"},
+                {"name":"SizeAxesLab", "type":"char", "purpose":"Scalar specifying the fontsize of the labels of the axes"},
+                {"name":"LineWidth", "type":"char", "purpose":"scalar specifying line width for the trajectories"},
+                {"name":"Color", "type":"cell", "purpose":"cell array of strings containing the colors to be used for the standard units"},
+                {"name":"LineStyle", "type":"cell", "purpose":"cell containing the line types"}
+            ]
+        },
+
+        "Fground": {
+
+            "purpose":"structure required as optional input by covplot and levfwdplot",
+            "type":"struct",
+            "field":[
+                {"name":"fthresh", "type":["numeric", "vector"], "purpose":"specifies the highlighted trajectories"},
+                {"name":"funit", "type":["numeric", "scalar"], "purpose":"number of trajectories of the covariances to be highlighted"},
+                {"name":"flabstep", "type":["numeric", "vector"], "purpose":"specifies steps of the search where to put labels for the highlighted trajectories (units)"},
+                {"name":"LineWidth", "type":["numeric", "scalar"], "purpose":"specifies line width for the highlighted trajectories"},
+                {"name":"Color", "type":"cell", "purpose":"colors to be used for the highlighted trajectories " },
+                {"name":"LineStyle", "type":"cell", "purpose":"line type of the highlighted trajectories"},
+                {"name":"fmark", "type":["numeric", "scalar"], "purpose":"scalar controlling whether to plot highlighted trajectories as markers"}
+            ]
+        },
+
+        "Bground": {
+
+            "purpose":"structure requested as optional input by levfwdplot",
+            "type":"struct",
+            "field":[
+                {"name":"bthresh", "type":["numeric", "vector"], "purpose":"specifies how to define the unimmportant trajectories"},
+                {"name":"bstyle", "type":"char", "purpose":"specifies how to plot the unimportant trajectories as defined in option bthresh"}  
+            ]
+        },
+
+        "outFanplot": {
+
+            "purpose":"structure requested as required input by fanplot",
+            "type":"struct",
+            "field":[
+                {"name":"Score", "type":"numeric", "purpose":"Score"},
+                {"name":"la", "type":"numeric", "purpose":"transformation parameter lambda which have been used inside routine FSRfan"},
+                {"name":"bs", "type":"numeric", "purpose":"units forming the initial subset for each value of lambda"},
+                {"name":"Un", "type":"numeric", "purpose":"unit(s) included in the subset at each step of the fwd search"},
+                {"name":"y", "type":"numeric", "purpose":"vector containing the response"},
+                {"name":"X", "type":"numeric", "purpose":"matrix containing the explanatory variables"}
+            ]   
+        },
+
+        "outLevfwdplot": {
+
+            "purpose":"structure requested as required input by levfwdplot",
+            "type":"struct",
+            "field":[
+                {"name":"LEV", "type":"numeric", "purpose":"matrix containing the leverage monitored in each step of the forward search"},
+                {"name":"RES", "type":"numeric", "purpose":"matrix containing the residuals monitored in each step of the forward search"},
+                {"name":"Un", "type":"numeric", "purpose":"matrix containing the order of entry of each unit"},
+                {"name":"y", "type":"numeric", "purpose":"vector containing the response"},
+                {"name":"X", "type":"numeric", "purpose":"matrix containing the explanatory variables"},
+                {"name":"Bols", "type":"numeric", "purpose":"estimated beta coefficients in each step of the forward search"}
+            ]
+        },
+
+        "StandardLevfwdplot": {
+
+            "purpose":"structure requested as optional input by covplot",
+            "type":"struct",
+            "field":[
+                {"name":"SizeAxesNum", "type":"double", "purpose":"scalar specifying the fontsize of the axes numbers"},
+                {"name":"xlim", "type":"double", "purpose":"two elements vector with minimum and maximum of the x axis"},
+                {"name":"ylim", "type":"double", "purpose":"two elements vector with minimum and maximum of the y axis"},
+                {"name":"titl", "type":"char", "purpose":"a label for the title"},
+                {"name":"labx", "type":"char", "purpose":"a label for the x-axis"},
+                {"name":"laby", "type":"char", "purpose":"a label for the y-axis"},
+                {"name":"SizeAxesLab", "type":"char", "purpose":"Scalar specifying the fontsize of the labels of the axes"},
+                {"name":"subsize", "type":"numeric", "purpose":"numeric vector containing the subset size with length equal to the number of columns of the leverage matrix"},
+                {"name":"LineWidth", "type":"char", "purpose":"scalar specifying line width for the trajectories"},
+                {"name":"Color", "type":"cell", "purpose":"cell array of strings containing the colors to be used for the standard units"},
+                {"name":"LineStyle", "type":"cell", "purpose":"cell containing the line types"}
+            ]
         }
     },
    
@@ -190,5 +342,184 @@
         ],
         
         "description":"Produces the carbike plot to find best relevant clustering solutions"
+    },
+
+    "cdsplot":
+    {
+        "inputs":
+        [
+            {"name":"outms", "kind":"required", "type":"struct:Outms", "purpose":"plot data"},
+            {"name":"color", "kind":"namevalue", "type":[["numeric", "vector", "ncols=3", ">=0", "<=1"], ["char", "choices={'r','g','b'}"], ["char"]], "purpose":"Color"},
+            {"name":"LineWidth", "kind":"namevalue", "type":"double", "purpose":"Line Width"},
+            {"name":"ylimy", "kind":"namevalue", "type":["double", "vector"], "purpose":"y axis scale"},
+            {"name":"xlimx", "kind":"namevalue", "type":["double", "vector"], "purpose":"x axis scale"},
+            {"name":"label", "kind":"namevalue", "type":"cell", "purpose":"Labels of the selected models"},
+            {"name":"quant", "kind":"namevalue", "type":["double", "vector"], "purpose":"Quantiles"},
+            {"name":"lablast", "kind":"namevalue", "type":"double", "purpose":"Label for the last unit entered"},
+            {"name":"laboutl", "kind":"namevalue", "type":"double", "purpose":"Label for the influential units"},
+            {"name":"labbold", "kind":"namevalue", "type":"char", "purpose":"Models to highliht"},
+            {"name":"labenv", "kind":"namevalue", "type":"double", "purpose":"Quantiles labels"},
+            {"name":"barend", "kind":"namevalue", "type":"double", "purpose":"Adding horizontal lines"},
+            {"name":"cpbrush", "kind":"namevalue", "type":"double", "purpose":"Brushing"},
+            {"name":"CandleWidth", "kind":"namevalue", "type":"double", "purpose":"width"}
+        ],
+
+        "description":"Produces the candlestick plot for robust model selection in linear regression"
+    },
+
+    "CorAnaplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct", "purpose":"Structure containing the output of function CorAna"},
+            {"name":"plots", "kind":"namevalue", "type":[["struct:PlotsCorAna"], ["double", "scalar"]], "purpose":"Customize plot appearance"},
+            {"name":"addx", "kind":"namevalue", "type":["double", "scalar"], "purpose":"horizontal displacement for labels"},
+            {"name":"addy", "kind":"namevalue", "type":["double", "scalar"], "purpose":"vertical displacement for labels"},
+            {"name":"changedimsign", "kind":"namevalue", "type":["logical", "vector", "numel=2"], "purpose":"change chosen dimension sign"},
+            {"name":"confellipse", "kind":"namevalue", "type":[["double", "scalar"], ["struct:ConfellipseCorAna"]], "purpose":"confidence ellipses around rows and/or columns points"},
+            {"name":"xlimx", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the x axis"},
+            {"name":"ylimy", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the y axis"},
+            {"name":"d1", "kind":"namevalue", "type":[["double", "positive", "integer"], ["single", "positive", "integer"]], "purpose":"Dimension to show on the horizontal axis"},
+            {"name":"d2", "kind":"namevalue", "type":[["double", "positive", "integer"], ["single", "positive", "integer"]], "purpose":"Dimension to show on the vertical axis"},
+            {"name":"h", "kind":"namevalue", "type":"matlab.graphics.axis.Axes", "purpose":"the axis handle of a figure where to send the CorAnaplot"}
+        ],
+
+        "description":"Draws the Correspondence Analysis (CA) graphs with confidence ellipses"
+    },
+
+    "covplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct:OutCovplot", "purpose":"data to plot"},
+            {"name":"standard", "kind":"namevalue", "type":"struct:StandardCovplot", "purpose":"Appearance of the plot"},
+            {"name":"fground", "kind":"namevalue", "type":"struct:Fground", "purpose":"Trajectories in foregroud"},
+            {"name":"tag", "kind":"namevalue", "type":"string", "purpose":" Handle of the plot"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"Information about the unit selected"}
+        ],
+
+        "description":"Plots the trajectories of the elements of the covariance (correlation) matrix monitored"
+    },
+
+    "ctlcurvesplot":
+    {
+        "inputs":
+        [
+            {"name":"outCTL", "kind":"required", "type":"struct", "purpose":"output structure produced by function ctlcurves"},
+            {"name":"crit", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"criterion for sgnificance"},
+            {"name":"thresh", "kind":"namevalue", "type":"char", "purpose":"threshold which defines where to put NaN in the out.pvalLRtest matrix"},
+            {"name":"tagCtl", "kind":"namevalue", "type":"char", "purpose":"Personalized tag for CTL curves plot"},
+            {"name":"tagPortofino", "kind":"namevalue", "type":"char", "purpose":"Personalized tag for Portofino plot"},
+            {"name":"conflev", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"confidence level of the bands"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive clicking"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive mouse brushing"},
+            {"name":"nameY", "kind":"namevalue", "type":"cell", "purpose":"variable labels"}
+        ],
+
+        "description":"Plots the output of routine ctlcurves"
+    },
+
+    "distribspec":
+    {
+        "inputs":
+        [
+            {"name":"pd", "kind":"required", "type":[["numeric", "vector"], ["struct"]], "purpose":"Probability density function"},
+            {"name":"specs", "kind":"required", "type":["numeric", "vector", "numel=2"], "purpose":"the lower and upper limits of the shading area"},
+            {"name":"region", "kind":"required", "type":["char", "choices={'outside', 'inside'}"], "purpose":"the region to shade"},
+            {"name":"userColor", "kind":"namevalue", "type":[["numeric", "vector", "ncols=3", ">=0", "<=1"], ["char"], ["FSColors"]], "purpose":"The color of the shaded area"},
+            {"name":"evalPoints", "kind":"namevalue", "type":"numeric", "purpose":"Evaluation points"}
+        ],
+
+        "outputs":
+        [
+            {"name":"p", "type":["double", "scalar"], "purpose":"Probability covered by the shaded area"},
+            {"name":"h", "type":"handle", "purpose":"Handle to the line objects"}
+        ],
+
+        "description":"Plots a probability density function between specification limits "
+    },
+
+    "fanplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct:outFanplot", "purpose":"Data to plot"},
+            {"name":"conflev", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"confidence level of the bands"},
+            {"name":"FontSize", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Font size of the labels"},
+            {"name":"highlight", "kind":"namevalue", "type":[["double", "vector"], ["double", "2d"]], "purpose":"units to highlight in the fanplot plot"},
+            {"name":"label", "kind":"namevalue", "type":"cell", "purpose":"Labels"},
+            {"name":"labx", "kind":"namevalue", "type":"string", "purpose":"x-axis label"},
+            {"name":"laby", "kind":"namevalue", "type":"string", "purpose":"y-axis label"},
+            {"name":"lwd", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Line Width"},
+            {"name":"lwdenv", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Width of the envelope lines"},
+            {"name":"nameX", "kind":"namevalue", "type":"cell", "purpose":"Labels of the X variables"},
+            {"name":"namey", "kind":"namevalue", "type":"string", "purpose":"Labels of the y variable"},
+            {"name":"SizeAxesNum", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Size of the numbers of the axis"},
+            {"name":"tag", "kind":"namevalue", "type":"char", "purpose":"Handle of the plot"},
+            {"name":"titl", "kind":"namevalue", "type":[["string"], ["char"]], "purpose":"Title"},
+            {"name":"xlimx", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the x axis"},
+            {"name":"ylimy", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the y axis"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"Information about the unit selected"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"Databrush options"}
+        ],
+
+        "description":"Plots the fan plot for transformation in linear regression"
+    },
+
+    "funnelchart":
+    {
+        "inputs":
+        [
+            {"name":"x", "kind":"required", "type":[["double"], ["table"]], "purpose":"input data"},
+            {"name":"Labels", "kind":"namevalue", "type":[["char"], ["string"], ["cell"], ["single"], ["double"]], "purpose":"Box labels"},
+            {"name":"Color", "kind":"namevalue", "type":[["numeric", "vector", "ncols=3", ">=0", "<=1"], ["char"]], "purpose":"Color of the boxes"},
+            {"name":"Title", "kind":"namevalue", "type":[["string"], ["char"]], "purpose":"Title"},
+            {"name":"h", "kind":"namevalue", "type":"matlab.graphics.axis.Axes", "purpose":"Target axes"}
+        ],
+
+        "description":"Displays a funnel chart"
+    },
+
+    "histFS":
+    {
+        "inputs":
+        [
+            {"name":"y", "kind":"required", "type":["numeric", "vector"], "purpose":"vector of n elements to bin"},
+            {"name":"nbins", "kind":"required", "type":["numeric", "vector"], "purpose":"the number of bins"},
+            {"name":"gy", "kind":"required", "type":["numeric", "vector"], "purpose":"identifier vector"},
+            {"name":"gylab", "kind":"ordered", "type":[["string"], ["cell"]], "purpose":"legend labels"},
+            {"name":"ax", "kind":"ordered", "type":"matlab.graphics.axis.Axes", "purpose":"plots into ax instead of gca"},
+            {"name":"barcolors", "kind":"ordered", "type":[["numeric"], ["char"]], "purpose":"colors of the bars"},
+            {"name":"W", "kind":"ordered", "type":["numeric", "vector"], "purpose":"Weights"}
+        ],
+
+        "outputs":
+        [
+            {"name":"ng", "type":"double", "purpose":"number of elements in each container for each group"},
+            {"name":"hb", "type":"matlab.graphics.chart.primitive.Bar", "purpose":"Bar array handles"}
+        ],
+
+        "description":"Plots a histogram with the elements in each bin grouped according to a vector of labels"
+    },
+
+    "levfwdplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct:outLevfwdplot", "purpose":"Structure containing monitoring of leverage"},
+            {"name":"standard", "kind":"namevalue", "type":"struct:StandardLevfwdplot", "purpose":"appearance of the plot"},
+            {"name":"fground", "kind":"namevalue", "type":"struct:Fground", "purpose":"trajectories in foregroud"},
+            {"name":"bground", "kind":"namevalue", "type":"struct:Bground", "purpose":"trajectories in background"},
+            {"name":"xground", "kind":"namevalue", "type":"char", "purpose":"trajectories to highlight in connection with resfwdplot"},
+            {"name":"tag", "kind":"namevalue", "type":"char", "purpose":"Personalized tag"},
+            {"name":"datatooltip", "kind":"namevalue", "type":"char", "purpose":"interactive clicking"},
+            {"name":"label", "kind":"namevalue", "type":"cell", "purpose":"row labels"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive mouse brushing"},
+            {"name":"nameX", "kind":"namevalue", "type":"cell", "purpose":"Labels of the variables of the regression dataset"},
+            {"name":"namey", "kind":"namevalue", "type":"string", "purpose":"label of the response"},
+            {"name":"msg", "kind":"namevalue", "type":[["single", "scalar"], ["double", "scalar"]], "purpose":"display or save used options"}
+        ],
+
+        "description":"Plots the trajectories of leverage along the search"
     }
 }
