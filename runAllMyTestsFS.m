@@ -1,4 +1,8 @@
-
+function runAllMyTestsFS(cat2test, options)
+arguments
+    cat2test char = getenv('CATEGORY_TO_TEST')
+    options.Performance (1,1) logical = false
+end
 %% Load necessary elements for performance test
 % load OUT
 run addFSDA2path
@@ -6,6 +10,8 @@ FileName='addFSDA2path';
 FullPath=which(FileName);
 %Navigate to the main folder of FSDA
 FSDAroot=fileparts(FullPath);
+cdir = pwd;
+cleanup = onCleanup(@() cd(cdir));
 cd(FSDAroot)
 % Specify subfolders of main folders for which contents file has to be
 % created
@@ -14,7 +20,7 @@ InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
 ExclDir={'privateFS'  'datasets'};
 % Create list of folders which must have the personalized contents file
 list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
-% Crete personalized contents file for main folder of FSDA
+% Create personalized contents file for main folder of FSDA
 % and required subfolders.
 force=false;
 warning('off')
@@ -25,15 +31,15 @@ FilesIncludedAll= FilesIncluded;
 warning('on')
 disp(filesWithProblems)
 
-%% Category to test
-cat2test=getenv('CATEGORY_TO_TEST');
-disp('---------------')
-disp('Test for category:')
-disp(cat2test)
-disp('---------------')
+if isempty(cat2test)
+    cat2test = 'all';
+end
 
-% VIS GUI MULT CLUS REG UTI
-if strcmp(cat2test,'graphics')
+if strcmp(cat2test,'all')
+    FilesIncluded=FilesIncludedAll;
+    boo = true(length(FilesIncluded), 1);
+elseif strcmp(cat2test,'graphics')
+    % VIS GUI MULT CLUS REG UTI
     str=regexp(FilesIncluded(:,8),'VIS*');
     boo1=~cellfun(@isempty,str);
     str=regexp(FilesIncluded(:,8),'GUI');
@@ -123,10 +129,13 @@ elseif strcmp(cat2test,'utilities')
 else
     error('FSDA:runTests:WrgCLS','Wrong class')
 end
-
+    
 OUT=OUT(boo,:);
 FilesIncluded=FilesIncluded(boo,:);
 
+disp('---------------')
+disp(['Running ' cat2test ' tests'])
+disp('---------------')
 
 ij=1;
 nfiles=length(OUT);
@@ -147,8 +156,9 @@ cd(FSDAroot)
 
 % Use perf = true if for each example you want run runperf.m
 % Use perf = true if for each example you want run runtests.m
-perf = false;
+perf = options.Performance;
 testpath= ['tests-' cat2test];
+disp(testpath)
 mkdir(testpath);
 
 

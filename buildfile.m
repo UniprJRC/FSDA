@@ -9,17 +9,33 @@ plan("toolbox").Dependencies = "doc";
 plan.DefaultTasks = "toolbox";
 end
 
-function docTask(~)
-% This task builds the doc search DB for the current version of MATLAB 
-% - the expected output will be in the folder ./helpfiles/pointersHTML
-cleanup = iCdWithRevert(fullfile(iGetRootFolder, "utilities_help", "build")); %#ok<NASGU>
+function checkTask(~)
+issues = codeIssues;
+errors = issues.Issues(issues.Issues.Severity == "error", ...
+    ["Location" "Severity" "Description"]);
+assert(isempty(errors),formattedDisplayText(errors))
+end
+
+function testTask(~, cat2test, options)
+arguments
+    ~
+    cat2test char = getenv('CATEGORY_TO_TEST')
+    options.Performance (1,1) logical = false
+end
+runAllMyTestsFS(cat2test, Performance=options.Performance)
+end
+
+function docTask(context)
+% This task builds the doc search DB for the current version of MATLAB - the
+% expected output will be in the folder ./helpfiles/pointersHTML
+cleanup = iCdWithRevert(fullfile(context.Plan.RootFolder, "utilities_help", "build")); %#ok<NASGU>
 buildDocSearchForToolbox
 end
 
-function toolboxTask(~)
-% This task packages the toolbox MLTBX file 
-% - the expected output will be in the ./bin/ folder (defined in the createMLTBX file)
-cleanup = iCdWithRevert(fullfile(iGetRootFolder, "utilities_help", "build")); %#ok<NASGU>
+function toolboxTask(context)
+% This task packages the toolbox MLTBX file - the expected output will be
+% in the ./bin/ folder (defined in the createMLTBX file)
+cleanup = iCdWithRevert(fullfile(context.Plan.RootFolder, "utilities_help", "build")); %#ok<NASGU>
 createMLTBX
 end
 
@@ -47,19 +63,6 @@ disp(msg)
 if OK ~= 0
     error("FSDA:ReleaseToGithub:GitPushFailed", "git push failed");
 end
-end
-
-
-
-function root = iGetRootFolder()
-% buildfile.m is always in the root of the toolbox - so use this definition
-% to get the root of the toolbox from the location of buildfile.m
-persistent THE_ROOT
-if isempty(THE_ROOT)
-    thisFile = mfilename("fullpath");
-    THE_ROOT = fileparts(thisFile);
-end
-root = THE_ROOT;
 end
 
 function cleanup = iCdWithRevert(folder)
