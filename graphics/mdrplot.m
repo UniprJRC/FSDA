@@ -752,7 +752,7 @@ ylabel(laby,'Fontsize',FontSize);
 
 set(gca,'FontSize',SizeAxesNum)
 
-set(gca,'FontSize',SizeAxesNum)
+%set(gca,'FontSize',SizeAxesNum)
 
 if sign==1
     mdrori=out.mdr(sel,1:3);
