@@ -115,6 +115,15 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 %{
     % Use with makedist, default settings.
+    % A uniform distribution U(3,8), in [5,6].
+    a=3;
+    b=8;
+    pd=makedist('Uniform','Lower',a,'Upper',b);
+    distribspec(pd, [5 6], 'inside');
+%}
+
+%{
+    % Use with makedist, default settings.
     % A standard normal distribution in [-1 1].
     pd     = makedist('Normal');
     specs  = [-1 1];
@@ -514,7 +523,7 @@ for i=1:2:length(varargin)
     options.(varargin{i})=varargin{i+1};
 end
 
-% Assign the values for the optional arguments
+% Assign the values for the optional argumentsBadFields
 userColor  = options.userColor;
 evalPoints = options.evalPoints;
 
@@ -526,14 +535,14 @@ prob = linspace(0.001,0.999,evalPoints)';
 if isstruct(pd)
 
     if ~and(isfield(pd,'distname') , isfield(pd,'x'))
-        error('FSDA:distribspec:BadFilds','Bad filds or filed names: please specify "distname" and "x".');
+        error('FSDA:distribspec:BadFields','Bad fields or fields names: please specify "distname" and "x".');
     end
     if ~any( strcmp( strtrim(makedist),strtrim(lower(pd.distname)) ) )
         if ~strcmp('user' , strtrim(lower(pd.distname)) )
-            error('FSDA:distribspec:BadDistribFildNames','Bad distribution name: see makedist for a comprehensive list.');
+            error('FSDA:distribspec:BadDistribFiledNames','Bad distribution name: see makedist for a comprehensive list.');
         else
             if ~isfield(pd,'userpdf') && ~isfield(pd,'usercdf')
-                error('FSDA:distribspec:BadUserDistribFild','User distribution missing: please specify your distribution as function handle.');
+                error('FSDA:distribspec:BadUserDistribField','User distribution missing: please specify your distribution as function handle.');
             else
                 % check if there is a user-specific pdf and/or cdf function
                 if isfield(pd,'userpdf')
@@ -872,7 +881,7 @@ else  % if strcmp(region,'inside')
             strprob = ['Probability greater than lower bound is ' num2str(p)];
         else
             p = cdf(pd,ub) - cdf(pd,lb);  % P(lb < t < ub)
-            strprob = ['The inside region $P(lb < t < ub)$ is ' num2str(p)];
+            strprob = ['The probability between limits $P(lb < t < ub)$ is ' num2str(p)];
         end
     end
 end
@@ -885,7 +894,17 @@ nspecfig = figure;
 nspecaxes = axes;
 set(nspecaxes, 'Parent', nspecfig);
 set(nspecaxes,'Nextplot','add');
-hh    = plot(x,y,'k-','LineWidth',1.5);
+
+if strcmp(pd.DistributionName , 'Uniform')
+    center   = (pd.Upper + pd.Lower)/2;
+    duration = (pd.Upper - pd.Lower);
+    hvsd    = @(z) (0.5*(z == 0) + (z > 0));
+    rectfun = @(t) y(1)*(hvsd(t - center + duration/2) - hvsd(t - center - duration/2));
+    hh=fplot(rectfun,[pd.Lower-duration/4,pd.Upper+duration/4],'b-','LineWidth',2);
+    xlim([min(x)-duration/4 , max(x)+duration/4]);
+else
+    hh    = plot(x,y,'b-','LineWidth',2);
+end
 
 if exist('sample','var')
     xlim([min(x) , (max(x)+max(sample))/2]);
@@ -1056,7 +1075,7 @@ end
 % axis and labels
 xaxis = refline(0,0);
 set(xaxis,'Color','k');
-ylabel('Density value', 'interpreter' , 'latex' , 'FontSize', 12);
+ylabel('Density', 'interpreter' , 'latex' , 'FontSize', 12);
 xlabel('Critical value', 'interpreter' , 'latex' , 'FontSize', 12);
 
 if nargout > 1
