@@ -645,7 +645,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
 end
 
 %% Close pool and show messages if required
-if cleanpool==true
+if numpool> 0 && cleanpool==true
     delete(gcp);
 end
 
