@@ -280,6 +280,9 @@ end
 if istable(Y)
     varnames=Y.Properties.VariableNames;
     rownames=Y.Properties.RowNames;
+    if isempty(rownames)
+         rownames=cellstr(num2str((1:n)','%d'));
+    end
     Y=table2array(Y);
 else
     varnames=cellstr(num2str((1:v)','Y%d'));
