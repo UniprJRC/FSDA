@@ -109,7 +109,7 @@ function out=pcaFS(Y,varargin)
 %                   with the loadings, the criteria for deciding the number
 %                   of components to retain and the 5 units with the
 %                   largest score and orthogonal distance (combined) are
-%                   shown in the command window. 
+%                   shown in the command window.
 %                   Example - 'dispresults',false
 %                    Data Types - char
 %
@@ -181,7 +181,7 @@ function out=pcaFS(Y,varargin)
 %                 distance of each observation from the PCA subspace.
 %                 The analysis of out.orthDist and out.scoreDist reveals
 %                 the good leverage points, the orthogonal outliers and the
-%                 bad leverage points. 
+%                 bad leverage points.
 %                 Good leverage points: points which lie close to the PCA
 %                 space but far from the regular observations. Good
 %                 leverage points have a large score distance and low
@@ -397,10 +397,11 @@ scoreDist=sqrt(sum(score.^2./larow,2));
 
 % Find the 5 units with the largest value of the combination between
 % orthogonal and score distance
-    DD=[orthDist,scoreDist];
-    distM=mahalFS(DD,mean(DD),cov(DD));
-    [~,indsor]=sort(distM,1,"descend");
-    selu=indsor(1:5);
+DD=[orthDist,scoreDist];
+mDD=zeros(1,2);
+distM=mahalFS(DD,mDD,cov(DD));
+[~,indsor]=sort(distM,1,"descend");
+selu=indsor(1:5);
 
 out=struct;
 out.Rtable=Rtable;
@@ -473,9 +474,9 @@ if plots==1
         title(['Correlations  with PC' num2str(i)])
     end
 
-    %% Plot of score distance versus orthogonal distance
+    %% Plot of orthogonal distance (Y) versus score distance (X)
     figure('Name','OutlierMap')
-    scatterboxplot(orthDist,scoreDist)
+    scatterboxplot(scoreDist,orthDist)
     xlabel('Score distance')
     ylabel('Orth. dist. from PCA subspace')
     text(1.01,0,['Good' newline 'leverage' newline 'points'],'Units','normalized')
@@ -484,7 +485,7 @@ if plots==1
     text(-0.05,1.05,'Orthogonal outliers','Units','normalized','HorizontalAlignment','left')
     text(0.95,1.05,'Bad leverage points','Units','normalized','HorizontalAlignment','right')
     text(1.01,0.95,['Bad' newline 'leverage' newline 'points'],'Units','normalized','HorizontalAlignment','left')
-    text(orthDist(selu),scoreDist(selu),string(selu),'HorizontalAlignment','left','VerticalAlignment','bottom');
+    text(scoreDist(selu),orthDist(selu),rownames(selu),'HorizontalAlignment','left','VerticalAlignment','bottom');
     % Good leverage points: points which lie close to the PCA space but far
     % from the regular observations.
     % Orthogonal outliers are points which have a large orthogonal distance
