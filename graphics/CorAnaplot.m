@@ -1041,6 +1041,7 @@ if isstruct(plots)
     plotsdef=struct;
     plotsdef.alpha=1;
     plotsdef.FontSize=10;
+    plotsdef.FontSizeSup=10;
     plotsdef.MarkerSize=10;
     plotsdef.SymbolRows='o';
     plotsdef.SymbolCols='^';
