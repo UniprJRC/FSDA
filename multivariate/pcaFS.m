@@ -420,6 +420,7 @@ out.score=score;
 out.scoreT=scoreT;
 out.orthDist=orthDist;
 out.scoreDist=scoreDist;
+out.class='pcaFS';
 
 if dispresults == true
     format bank
