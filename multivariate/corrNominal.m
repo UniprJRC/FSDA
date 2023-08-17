@@ -712,6 +712,8 @@ Hyxconflim=[Hyx seHyx Hyx-talpha*seHyx Hyx+talpha*seHyx];
 
 
 ConfLim=[CramerVconflim; GKlambdayxconflim; tauyxconflim;  Hyxconflim];
+ConfLim(ConfLim>1)=1;
+ConfLim(ConfLim<0)=0;
 out.ConfLim=ConfLim;
 colnamConfLim={'Value' 'StandardError' 'ConflimL' 'ConflimU'};
 if verMatlab ==0
