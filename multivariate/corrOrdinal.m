@@ -800,6 +800,8 @@ taubconflim=[taub setaub taub-talpha*setaub taub+talpha*setaub];
 taucconflim=[tauc setauc tauc-talpha*setauc tauc+talpha*setauc];
 somconflim=[som sesom som-talpha*sesom som+talpha*sesom];
 ConfLim=[gamconflim; tauaconflim; taubconflim; taucconflim; somconflim];
+ConfLim(ConfLim>1)=1;
+ConfLim(ConfLim<0)=0;
 out.ConfLim=ConfLim;
 colnamConfInt={'Value' 'StandardError' 'ConflimL' 'ConflimU'};
 
