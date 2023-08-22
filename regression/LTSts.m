@@ -1375,7 +1375,7 @@ ncomb=bc(T-nummissing,pini);
 if chktrim==1
     if options.h < hmin
         error('FSDA:LTSts:WrongInput',['The LTS must cover at least ' int2str(hmin) ' observations.'])
-    elseif options.h >= T
+    elseif options.h > T
         error('FSDA:LTSts:WrongInput','h is greater or equal to the number of non-missings and non-infinites.')
     end
     bdp=1-options.h/T;
@@ -1383,7 +1383,7 @@ if chktrim==1
     % the user has only specified bdp: h is defined accordingly
 elseif chktrim==2
     bdp=options.bdp;
-    if bdp <= 0
+    if bdp < 0
         error('FSDA:LTSts:WrongInput','Attention: bdp should be larger than 0');
     end
 
@@ -1416,11 +1416,17 @@ elseif h==T-nummissing
     warning('FSDA:LTSts:NoRob','h=Number of non missing values (estimator is not robust)');
 end
 
-nsamp=options.nsamp;        % Number of subsets to extract
-nsampsubsequentsteps=round(nsamp/2);
+if h==T
+    nsamp=1;
+    nsampsubsequentsteps=1;
+    SmallSampleCor=1;
+else
+    nsamp=options.nsamp;        % Number of subsets to extract
+    nsampsubsequentsteps=round(nsamp/2);
+    SmallSampleCor=options.SmallSampleCor; % small sample correction factor
+end
 
 lts=options.lts;
-SmallSampleCor=options.SmallSampleCor; % small sample correction factor
 if varampl>0
     % Convergence criteria inside ALS loop
     reftolALS=options.reftolALS;
@@ -1579,9 +1585,13 @@ RES = nan(T,lLSH);
 % Consistency factor based on the variance of the truncated normal
 % distribution. 1-h/n=trimming percentage Compute variance of the truncated
 % normal distribution.
-a=norminv(0.5*(1+h/T));
-%factor=1/sqrt(1-(2*a.*normpdf(a))./(2*normcdf(a)-1));
-factor=1/sqrt(1-2*(T/h)*a.*normpdf(a));
+if h<T
+    a=norminv(0.5*(1+h/T));
+    %factor=1/sqrt(1-(2*a.*normpdf(a))./(2*normcdf(a)-1));
+    factor=1/sqrt(1-2*(T/h)*a.*normpdf(a));
+else
+    factor=1;
+end
 
 % Initialize 2D or 3D array which stores indexes of extracted
 % subsets for each tentative level shift position
@@ -2087,23 +2097,27 @@ end
 
 stdres = residuals/s0;
 if SmallSampleCor==1
-    plinear=pini+lshiftYN;
-    robest='LTS';
-    eff=[];
-    rhofunc='';
-    sizesim=0;
-    Tallis=1;
-    if T<50
-        Ttouse=50;
-    else
-        Ttouse=T;
-    end
+    if h<T
+        plinear=pini+lshiftYN;
+        robest='LTS';
+        eff=[];
+        rhofunc='';
+        sizesim=0;
+        Tallis=1;
+        if T<50
+            Ttouse=50;
+        else
+            Ttouse=T;
+        end
 
-    if bdp==-99
-        bdp=1-options.h/T;
+        if bdp==-99
+            bdp=1-options.h/T;
+        end
+        thresh=RobRegrSize(Ttouse,plinear,robest,rhofunc,bdp,eff,sizesim,Tallis);
+        extracoeff=sqrt(thresh/chi2inv(0.99,1));
+    else
+        extracoeff=1;
     end
-    thresh=RobRegrSize(Ttouse,plinear,robest,rhofunc,bdp,eff,sizesim,Tallis);
-    extracoeff=sqrt(thresh/chi2inv(0.99,1));
     weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
 
 elseif  SmallSampleCor==2
