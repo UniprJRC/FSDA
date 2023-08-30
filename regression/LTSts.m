@@ -2115,10 +2115,11 @@ if SmallSampleCor==1
         end
         thresh=RobRegrSize(Ttouse,plinear,robest,rhofunc,bdp,eff,sizesim,Tallis);
         extracoeff=sqrt(thresh/chi2inv(0.99,1));
+        weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
     else
         extracoeff=1;
+        weights = abs(stdres)<=sqrt(chi2inv(0.9999,1))*extracoeff;
     end
-    weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
 
 elseif  SmallSampleCor==2
     weights=GYfilt(stdres,'iterating',false,'alpha',0.99,'centering',true,'niter',10);
