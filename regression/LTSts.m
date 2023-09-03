@@ -2117,8 +2117,7 @@ if SmallSampleCor==1
         extracoeff=sqrt(thresh/chi2inv(0.99,1));
         weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
     else
-        extracoeff=1;
-        weights = abs(stdres)<=sqrt(chi2inv(0.9999,1))*extracoeff;
+        weights = true(T,1); % if bdp=0, all units must be included
     end
 
 elseif  SmallSampleCor==2
