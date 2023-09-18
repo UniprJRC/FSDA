@@ -5,7 +5,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %
 %
 %    X can be a vector of length(n) or data matrix containing n observations on v
-%       variables or 3D array of size n-by-v-by-r.
+%       variables or 3D array of size n-by-v-by-r or a table.
 %   Z = zscoreFS(X) returns a centered, scaled version of X, with the same size
 %   as X. For vector input X, Z is the vector of z-scores
 %
@@ -116,6 +116,8 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %           parameters 'loc' and 'scale'. For vector input X, Z is the vector of
 %            z-scores
 %           (X-location(X)) ./ scale(X).
+%           If X is an array Z is also an array, if X is a table Z is also
+%           a table.
 %   mu : location estimate. Scalar, vector or matrix depending on the size of input matrix X.
 %           Estimates of location specified in loc input string.
 %  sigma : scale estimate. Scalar, vector or matrix depending on the size of input matrix X.
@@ -268,6 +270,14 @@ elseif nargin>=3
     end
 end
 
+if istable(X)
+    inputTable=true;
+    Xori=X;
+    X=X{:,:};
+else
+    inputTable=false;
+end
+
 if nargin < 4 && iscolumn(X) % Input is a column  vector
     [Z,mu,sigma]=zscoreFScore(X,loc,scale);
 elseif nargin < 4 && isrow(X) % Input is a row vector
@@ -326,6 +336,11 @@ else % Input is at least a two dimensional array
     else
         error('FSDA:zscoreFS:WrongInput','Not implemented for array of size greater than 3')
     end
+end
+
+if inputTable==true
+    Xori{:,:}=Z;
+    Z=Xori;
 end
 
     function [z,locest,scaleest]=zscoreFScore(x,loc,scale)
