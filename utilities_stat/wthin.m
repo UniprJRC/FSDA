@@ -21,6 +21,17 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %                Data Types - scalar
 %                Example - bandwidth,0.35
 %
+%   support   :  support value. Character array. The support of the density
+%                estimation step. It can be 'unbounded' (the default) or
+%                'positive' if the data are left-truncated with long right
+%                tails. In the latter case, the option performs the density
+%                estimate in the log domain and then transform the result
+%                back. The theoretical rationale is that when kernel
+%                density is applied to positive data, it does not yield
+%                proper PDFs.
+%                Data Types - char
+%                Example - support,'positive'
+%
 %        cup  :  pdf upper limit. Scalar. The upper limit for the pdf used
 %                to compute the retantion probability. If cup = 1
 %                (default), no upper limit is set.
@@ -63,6 +74,10 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %
 % Bowman, A.W. and Azzalini, A. (1997), "Applied Smoothing
 % Techniques for Data Analysis", Oxford University Press.
+%
+% Wand, M.P. and Marron, J.S. and Ruppert, D. (1991), "Transformations in
+% density estimation", Journal of the American Statistical Association,
+% 86(414), 343-353.
 %
 %
 % Copyright 2008-2023.
@@ -188,8 +203,26 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     axis manual
     clickableMultiLegend(['Retained: ' num2str(sum(Wt3))],['Thinned:   ' num2str(sum(~Wt3))]);
     title('"comp2one" thinning on the fishery dataset');
-
 %}
+
+%{
+   %% thinning on the fishery dataset using 'positive' support.
+    load fishery;
+    X=fishery{:,:};
+    % some jittering is necessary because duplicated units are not treated
+    % in tclustreg: this needs to be addressed
+    X = X + 10^(-8) * abs(randn(677,2));
+
+    % thinning over the original bi-variate data
+    [Wt3,pretain3,RetUnits3] = wthin(X ,'retainby','comp2one','support','positive');
+    figure;
+    plot(X(Wt3,1),X(Wt3,2),'k.',X(~Wt3,1),X(~Wt3,2),'rx');
+    drawnow;
+    axis manual
+    clickableMultiLegend(['Retained: ' num2str(sum(Wt3))],['Thinned:   ' num2str(sum(~Wt3))]);
+    title('"comp2one" thinning on the fishery dataset, using positive support');
+%}
+
 
 %{
     % univariate thinning with less than 100 units.
@@ -241,7 +274,22 @@ if nargin > 1
     % the bandwidth used to estimate the density
     bandwidth   = options.bandwidth;
     
-    % upper limit for the pdf used to compute the retantion probability
+    % the support of the estimation step 
+    support = options.support;
+    %Remark: if we want to provide the support for the density
+    %estimation, then the support should include the data values
+    %interval. The quantity 'e' that exceeds the interval should
+    %not be too small, otherwise (if bandwidth/2 is larger than
+    %'e') the estimates of the pdf at the extreme data values risk
+    %to be completely wrong. We have empirically observed this
+    %effect using the following support values, with factor = 6 and
+    %factor = 2:
+    % factor = 2; %factor = 6;
+    % minX = min(X); maxX = max(X); e = (maxX-minX)/10^(factor);
+    % support = [ (min(X)-e) , (max(X)+e) ];
+
+
+    % the upper limit for the pdf used to compute the retantion probability
     cup         = options.cup;
     % probability with each a unit enters in the thinning procedure
     pstar       = options.pstar;
@@ -259,24 +307,6 @@ if nargin > 1
         end
         if  ~isvector(bandwidth)
             bandwidth = 0;
-        end
-        if bandwidth > 0
-            % if the user has chosen a bandwidth, we may want to provide
-            % a support too. By default it is unbounded, which is also
-            % the default for ksdensity.
-            support = options.support;
-            
-            %Remark: if we want to provide the support for the density
-            %estimation, then the support should include the data values
-            %interval. The quantity 'e' that exceeds the interval should
-            %not be too small, otherwise (if bandwidth/2 is larger than
-            %'e') the estimates of the pdf at the extreme data values risk
-            %to be completely wrong. We have empirically observed this
-            %effect using the following support values, with factor = 6 and
-            %factor = 2:
-            % factor = 2; %factor = 6;
-            % minX = min(X); maxX = max(X); e = (maxX-minX)/10^(factor);
-            % support = [ (min(X)-e) , (max(X)+e) ];
         end
     end
 else
