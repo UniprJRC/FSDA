@@ -24,7 +24,7 @@ else % From 2023a
     end
 end
 
-    [~,nameFile,ext]=fileparts(varargin);
+    [~,nameFile,ext]=fileparts(varargin{:});
 
 if strcmp(PersonalvalueDOC,'WEB')
     disp('In order to be able to see the FSDA documentation locally,')
