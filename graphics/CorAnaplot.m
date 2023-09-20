@@ -1098,7 +1098,7 @@ if isstruct(plots)
             typeR='RowsPri';        % rows are in principal coordinates
             typeC='ColsPri';        % columns are in principal coordinates
             titl={'French symmetrical model: rows and cols in principal coordinates.' , ...
-                'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
+                'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_c^{-1/2} V \Gamma$'};
             typeRSup='RowsPriSup';
             typeCSup='ColsPriSup';
             
@@ -1207,7 +1207,7 @@ if isstruct(plots)
         typeR='RowsPri';        % rows are in principal coordinates
         typeC='ColsPri';        % columns are in principal coordinates
         titl={'French symmetrical model: rows and cols in principal coordinates.' ...
-            'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
+            'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_c^{-1/2} V \Gamma$'};
         typeRSup='RowsPriSup';
         typeCSup='ColsPriSup';
     end
@@ -1315,7 +1315,7 @@ else
     typeR='RowsPri';        % rows are in principal coordinates
     typeC='ColsPri';        % columns are in principal coordinates
     titl={'French symmetrical model: rows and cols in principal coordinates.'...
-        'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
+        'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_c^{-1/2} V \Gamma$'};
     FontSize=FontSizedef;
     FontSizeSup=FontSize;
     MarkerSize=MarkerSizedef;
