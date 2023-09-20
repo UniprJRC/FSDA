@@ -355,7 +355,7 @@ function [out]=FSRfan(y,X,varargin)
 %               input option intercept was missing or equal to 1)
 %
 %
-% See also: Score, ScoreYJ, ScoreYJpn
+% See also: Score, ScoreYJ, ScoreYJpn, fanBIC, fanBICpn
 %
 % References:
 %
