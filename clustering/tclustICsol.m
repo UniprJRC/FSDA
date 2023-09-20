@@ -824,7 +824,7 @@ for i=1:nbestsol
         Bestsolsi4=Bestsols{i,4};
         Bestsolc=[Bestsolsi3(:); Bestsolsi4(:)];
         stabsol=[' Stable in c ' num2str(min(Bestsolc)) '-' num2str(max(Bestsolc)) ];
-        title([detsol bestsol stabsol ' Sol:' Bestsols{i,5}])
+        sgtitle([detsol bestsol stabsol ' Sol:' Bestsols{i,5}])
     end
 end
 
@@ -860,7 +860,7 @@ for i=1:nbestsol
         stabsol=['\quad ; \quad \mbox{Stable in} \;' labe  num2str(min(Bestsolc)) '-' num2str(max(Bestsolc))];
         typesol=['\quad ; \quad \mbox{Sol: ' Bestsols{i,5} '}$'];
         tit = {detsol, [bestsol stabsol typesol]};
-        title(tit,'interpreter','latex','FontSize',16);
+        sgtitle(tit,'interpreter','latex','FontSize',16);
     end
 end
 
