@@ -90,6 +90,12 @@ function tclustICplot(IC,varargin)
 %                   Example - 'tag','myplot'
 %                   Data Types - char
 %
+%       ylimy   :   Min and Max of the y axis. Vector. Vector with two
+%                   elements controlling minimum and maximum of the y axis.
+%                   If ylimy is empty automatic scale is used
+%                   Example - 'ylimy',[0 100]
+%                   Data Types - double
+%
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. The default is datatooltip=''.
 %                   If datatooltip = 1, the user can select with the
@@ -285,9 +291,10 @@ whichIC='MIXMIX';
 databrush='';
 datatooltip=1;
 tag='';
+ylimy=[];
 
 if nargin>1
-    options=struct('whichIC',whichIC,...
+    options=struct('whichIC',whichIC,'ylimy',ylimy,...
         'datatooltip',datatooltip, 'tag',tag,'databrush', databrush,'nameY','');
 
     [varargin{:}] = convertStringsToChars(varargin{:});
@@ -323,6 +330,7 @@ if nargin>1
     databrush=options.databrush;
     tag=options.tag;
     whichIC=options.whichIC;
+    ylimy=options.ylimy;
 end
 
 % Extract the values of k (number of groups)
@@ -484,6 +492,10 @@ if typeIC==1 || typeIC==3
         PrepareDatatooltip(IC)
     end
 
+end
+
+if ~isempty(ylimy)
+    ylim(ylimy)
 end
 
 %% Interactivity
@@ -716,7 +728,7 @@ if ~isempty(databrush) || isstruct(databrush)
                     % tabulate(IDX{Iwithk,Jwithc})
                     yXplot(y,X,cellstr(num2str(IDX{Iwithk,Jwithc})),plo);
                 end
-                title([whichIC '=' num2str(bic(r),'%10.2f') ', k='  num2str(kk(Iwithk)) ' '  lab num2str(cORalpha(Jwithc) )])
+                sgtitle([whichIC '=' num2str(bic(r),'%10.2f') ', k='  num2str(kk(Iwithk)) ' '  lab num2str(cORalpha(Jwithc) )])
 
             end
 
