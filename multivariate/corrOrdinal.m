@@ -497,7 +497,12 @@ end
 % If input is a datamatrix it is necessary to construct the contingency
 % table
 if datamatrix == true
-    [N,~,~,labels] =crosstab(N(:,1),N(:,2));
+    if istable(N)
+        [N,~,~,labels] =crosstab(N{:,1},N{:,2});
+    else
+        [N,~,~,labels] =crosstab(N(:,1),N(:,2));
+    end
+
     [I,J]=size(N);
     % default labels for rows of contingency table
     Lr=labels(1:I,1);
