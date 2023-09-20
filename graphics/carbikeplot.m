@@ -108,7 +108,7 @@ function [h,varargout]  = carbikeplot(RelSol,varargin)
 %
 %  Optional Output:
 %
-%     area : RelSol x 2 array reporting information on the relevance of 
+%     area : RelSol x 2 array reporting information on the relevance of
 %            the RelSol solutions. Each row corresponds to a solution for a
 %            given $k$. The value of $k$ is in the first column. The area
 %            of the "car" rectangle of that $k$ solution is in the second
@@ -206,17 +206,17 @@ SpuriousSolutions=false;
 minCarHeight=0.1;
 if nargin>1
     options=struct('SpuriousSolutions',SpuriousSolutions,'minCarHeight',minCarHeight);
-    
+
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        
-        
+
+
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:carbikeplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        
+
         % Check if all the specified optional arguments were present
         % in structure options
         % Remark: the nocheck option has already been dealt by routine
@@ -228,16 +228,16 @@ if nargin>1
             error('FSDA:tclustBICsol:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
     end
-    
-    
+
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     SpuriousSolutions=options.SpuriousSolutions;
     minCarHeight = options.minCarHeight;
-    
+
 end
 
 
@@ -319,7 +319,7 @@ for i=1:numsol
     if strcmp(ICbs{i,5},'true') || SpuriousSolutions == true
         kbest=ICbs{i,1};
         cORalphabest=find(cORalpha==ICbs{i,2});
-        
+
         if isempty(ICbs{i,3})
             minindc=cORalphabest;
             maxindc=cORalphabest;
@@ -327,7 +327,7 @@ for i=1:numsol
             minindc=find(cORalpha==min(ICbs{i,3}));
             maxindc=find(cORalpha==max(ICbs{i,3}));
         end
-        
+
         if isempty(ICbs{i,4})
             minindstablec=cORalphabest;
             maxindstablec=cORalphabest;
@@ -335,22 +335,25 @@ for i=1:numsol
             minindstablec=find(cORalpha==min(ICbs{i,4}));
             maxindstablec=find(cORalpha==max(ICbs{i,4}));
         end
-        
+
         area(i) = ((maxindc-minindc)*(0.5*(1- min([(1 - minCarHeight), i/numsol])))) / (numsol*maxindc);
         hr(i)   = rectangle('position',[minindc kbest maxindc-minindc+eps 0.5*(1- min([(1 - minCarHeight), i/numsol]))+eps],'facecolor','w','Curvature',[0.2 0.2]);
         rectangle('position',[cORalphabest-0.25 kbest 0.5 0.5],'facecolor','w','Curvature',[1 1])
         minl=min([minindc minindstablec]);
         rectangle('position',[minl kbest max([maxindc maxindstablec])-minl+eps eps],'facecolor','w');
-        
+
         soltruen=sum(strcmp(ICbs(1:i,end),'true'));
-        
+
         text(cORalphabest,kbest+0.25,[num2str(soltruen) ',' num2str(i)],'HorizontalAlignment','center','FontSize',15,'VerticalAlignment','middle');
     end
 end
 A = rescaleFS(nanmean(abs(area),1),1,0);
 ivalid = find(area>0);
-colormapres = num2cell(colormap([zeros(numel(ivalid),1) , A(ivalid)' , ones(numel(ivalid),1)]),2);
-set(hr(ivalid),{'facecolor'},colormapres);
+if ~isempty(ivalid)
+    colormapres = num2cell(colormap([zeros(numel(ivalid),1) , A(ivalid)' , ones(numel(ivalid),1)]),2);
+    set(hr(ivalid),{'facecolor'},colormapres);
+end
+
 set(gca,'ActivePositionProperty','outerposition','FontSize',16);
 
 box('on');
