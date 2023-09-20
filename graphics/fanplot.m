@@ -19,8 +19,11 @@ function brushedUnits=fanplot(out,varargin)
 %               parameter lambda which have been used inside routine FSRfan
 %               or the numbers associated to the columns of matrix out.X
 %               for which deletion t stats have computed by routine
-%               FSRaddt.
-%       out.bs   =  matrix of size p x length(la) containing the units forming
+%               FSRaddt. Alternatively out.la can be a string array or cell
+%               arry of characters containing the names of the variables
+%               associated with the deletion t stats.
+%       out.bs   =  matrix of size p x length(la) containing the units
+%       forming
 %               the initial subset for each value of lambda.
 %      out. Un   =  cell of size length(la). out.Un{i} is a (n-init) x 11
 %               matrix which contains the unit(s) included in the subset
@@ -453,6 +456,21 @@ function brushedUnits=fanplot(out,varargin)
     fanplot(outFSRfan,'highlight',Highl,'ylimy',[-50 20],'xlimx',[30 510]);
 %}
 
+%{
+    %% fanplot based on the output of FSRaddt.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    nameX={'F1','F2','F3'};
+    [out]=FSRaddt(y,X,'plots',0);
+    % out.la contains the names of the variables which have to be shown
+    out.la=nameX;
+    fanplot(out);
+%}
+
 %% Beginning of code
 brushedUnits=[];
 
@@ -586,9 +604,17 @@ if fanplotScore==true
     la=out.la(:);
     las=string(la);
 else
+    % if out.la is a cell array of characters convert it to string array.
+    if iscell(out.la)
+        out.la=string(out.la);
+    end
     % Extract the variables for which deletion tstat have been computed
     % Note that there is -1 because intercept is present in out.X
-    las="X"+string(out.la(:)-1);
+    if isstring(out.la)
+        las=out.la(:);
+    else
+        las="X"+string(out.la(:)-1);
+    end
     la=las;
 end
 lla=length(la);
