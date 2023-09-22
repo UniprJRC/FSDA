@@ -219,9 +219,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'tag','myspm'
 %                   Data Types - char
 %
-%  typespm  :  type of scatter plot matrix. Character. If typespm is 'full'
+%  typespm  :  type of scatter plot matrix. Character/string or struct. 
+%               If typespm is 'full'
 %               (default) panels above and below the main diagonal are
-%               shown. If typespm is 'lower' scatter plots are shown just
+%               shown with scatter. If typespm is 'lower' scatter plots are shown just
 %               below the main diagonal. The upper part of the scatter plot
 %               matrix contains the values of the correlation
 %               coefficients. If optional input argument group is present,
@@ -232,8 +233,23 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               the scatter plot matrix contains the scatters
 %               and the lower part just the values of the
 %               correlations.
+%               if typespm is a struct it is possible to control how the
+%               lower (upper) part of the scatter plot matrix is shown.
+%               More precisely, typespm.lower controls how the part below
+%               the diagonal is shown and typespm.upper controls the upper
+%               part. Possible entries of typespm.lower or typespm.upper
+%               are "scatter", "circle", "square" "number" and "none";
+%               For example if typespm.lower="number" and
+%               typespm.upper="circle", the correlations in the part below
+%               the diagonal are shown with numbers and the upper part with
+%               circles. Similarly, if typespm.lower="none" and
+%               typespm.scatter="none" just the upper part of the scatter
+%               plot matrix is shown. The fields of the struct can either
+%               be charaters or strings.
+%               typespm='lower' is equivalent to typespm=struct;
+%               typespm.lower='scatter', typespm.upper='number';
 %                   Example - 'typespm','lower'
-%                   Data Types - char
+%                   Data Types - char or struct
 %
 %   undock   :  Panel to undock and visualize separately. Matrix or logical
 %               matrix. If undock='' (default), no panel is extracted. If
@@ -383,7 +399,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % of the plot.
     load fisheriris;
     meastable=array2table(meas,'VariableNames',{'SL','SW','PL','PW'});
-    spmplot(meastable)
+    spmplot(meastable);
 %}
 
 %{
@@ -820,12 +836,50 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
-    %% Example of use of option typespm.
+    %% Example of use of option typespm passed as character.
     % if 'typespm','lower' ('upper') just the panels below the main
-    % diagonal are shown. In the other part the correlation coefficient are
-    % shown
+    % diagonal are shown. In the other part the values of the correlation
+    % coefficient are shown
     load fisheriris;
     spmplot(meas,'group',species,'typespm','lower');
+%}
+
+%{
+    %% Example of use of option typespm passed as struct.
+    load head;
+    typespm=struct;
+    typespm.lower='circle';
+    typespm.upper="number";
+    spmplot(head,'typespm',typespm);
+%}
+
+%{
+    %% Example 1 of use of option typespm passed as struct with groups.
+    close all
+    load swiss_banknotes.mat
+    X=swiss_banknotes;
+    group=ones(200,1);
+    group(101:end)=2;
+    % In the lower part the correlations are shown with numbers
+    typespm=struct;
+    typespm.lower="number";
+    typespm.upper="scatter";
+    spmplot(swiss_banknotes,'group',group,'typespm',typespm)
+%}
+
+%{
+    %% Example 2 of use of option typespm passed as struct with groups.
+    close all
+    load swiss_banknotes.mat
+    X=swiss_banknotes;
+    group=ones(200,1);
+    group(101:end)=2;
+    % In the lower part the correlations are shown with squares
+    % and in the upper part with numbers
+    typespm=struct;
+    typespm.lower="square";
+    typespm.upper="number";
+    spmplot(swiss_banknotes,'group',group,'typespm',typespm)
 %}
 
 %{
@@ -1384,8 +1438,38 @@ set([get(BigAx,'Title'); get(BigAx,'XLabel'); get(BigAx,'YLabel')], ...
 % set the specified tag in the current plot
 set(gcf,'tag',tag)
 
+if isstruct(typespm)
+    if isfield(typespm,'lower')
+        lower=string(typespm.lower);
+    else
+        lower="scatter";
+    end
 
-if colorBackground==true || ismember(typespm,{'lower','upper'})
+    if isfield(typespm,'upper')
+        upper=string(typespm.upper);
+    else
+        upper="scatter";
+    end
+
+elseif string(typespm)=="lower"
+    lower="scatter";
+    upper="number";
+elseif string(typespm)=="upper"
+    lower="number";
+    upper="scatter";
+else
+    lower="scatter";
+    upper="scatter";
+end
+
+
+if ~(lower=="scatter" && upper=="scatter")
+    lowerORupper=true;
+else
+    lowerORupper=false;
+end
+
+if colorBackground==true || lowerORupper==true
     R=corr(Y);
 end
 
@@ -1417,6 +1501,7 @@ for i = 1:p
                 ax=axis;
                 h = patch([ax(1:2)';ax(2);ax(1)],[ax(3);ax(3);ax(4);ax(4)],cmapBackground(posBackground(i,j),:));
                 set(h,'facealpha',0.15);
+                % legend(end)
             end
 
         end
@@ -1424,15 +1509,29 @@ for i = 1:p
 end
 
 
-if ismember(typespm,{'lower','upper'})
 
 
-    if strcmp(typespm,'lower')
-        justlow=true;
-        warning('off','MATLAB:handle_graphics:exceptions:SceneNode');
-    else
-        justlow=false;
-    end
+if  lowerORupper ==true
+
+    % Part referred to colormap to use
+    % nn = 256;              % number of colors
+    % R1 = linspace(1,0,nn); % Red from 1 to 0
+    % B = linspace(0,1,nn);  % Blue from 0 to 1
+    % G = zeros(size(R1));   % Green all zero
+    % cmap=colormap( [R1(:), G(:), B(:)] );
+
+    % colormap to discuss
+    cmap=colormap("turbo");
+    %  c = jet;
+    % c = flipud(c);
+    % cmap=colormap(c);
+
+    index = linspace(-1, 1, size(cmap, 1));
+    % if lowerORupper ==true
+    %     warning('off','MATLAB:handle_graphics:exceptions:SceneNode');
+    % else
+    %     justlow=false;
+    % end
 
     if lunigroup>1
         Rgroup=zeros(p,p,lunigroup);
@@ -1445,31 +1544,110 @@ if ismember(typespm,{'lower','upper'})
     Rresc=8+abs(R)*15;
     for i=1:p
         for j=1:p
-            if justlow==true
-                cond=i<j;
-            else
-                cond=i>j;
-            end
 
-            if cond ==true
-                set(gcf,'CurrentAxes',AX(i,j));
-                cla(gca)
 
-                if lunigroup==1
-                    text(0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
-                        'Units','normalized','HorizontalAlignment','center')
+            if i~=j
+                if i>j
+                    method=lower;
                 else
-                    text(0.2,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
-                        'Units','normalized','HorizontalAlignment','center')
+                    method=upper;
+                end
 
-                    for jjj=1:lunigroup
-                        text(0.6,jjj/(lunigroup+1),num2str(Rgroup(i,j,jjj),2), ...
-                            'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj))
+                if method~="scatter"
+                    set(gcf,'CurrentAxes',AX(i,j));
+                    cla(gca)
+                    if method=="number"
+
+                        if lunigroup==1
+                            text(0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                                'Units','normalized','HorizontalAlignment','center')
+                        else
+                            text(0.2,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                                'Units','normalized','HorizontalAlignment','center')
+
+                            for jjj=1:lunigroup
+                                text(0.6,jjj/(lunigroup+1),num2str(Rgroup(i,j,jjj),2), ...
+                                    'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj))
+                            end
+                        end
+
+                    elseif method=="circle" || method =="square" || method =="number"
+                        % create new axes in position i,j
+                        a=axes('Position',AX(i,j).Position);
+                        a.XTick='';
+                        a.YTick='';
+                        xlim([-3, 3]);
+                        ylim([-3, 3]);
+                        center=[0 0];
+                        radius = max(abs(R(i,j)), 0.0001) * 3/lunigroup;
+
+                        pos = [center-radius 2*radius 2*radius];
+
+                        if lunigroup==1
+                            if method=="number"
+                                text(0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                                    'Units','normalized','HorizontalAlignment','center')
+                            else
+                                ind=find(index<=R(i,j),1,'last');
+                                % rectangle('Position',pos, 'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                if method=="circle"
+                                    rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                else
+                                    rectangle('Position',pos, 'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                end
+                            end
+                        else
+                            if method=="number"
+                                text(0.2,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                                    'Units','normalized','HorizontalAlignment','center')
+                            else
+                                radius = max(abs(R(i,j)), 0.0001) * 3;
+                                radius=radius/lunigroup;
+                                center=[-2 0];
+                                pos = [center-radius 2*radius 2*radius];
+                                ind=find(index<=R(i,j),1,'last');
+                                if method=="circle"
+                                    rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                else
+                                    rectangle('Position',pos, 'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                end
+
+                                step=3/lunigroup;
+                                center=[2 -3-step];
+                                for jjj=1:lunigroup
+                                    if method=="number"
+                                        text(0.6,jjj/(lunigroup+1),num2str(Rgroup(i,j,jjj),2), ...
+                                            'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj))
+
+                                    else
+                                        radius=  max(abs(Rgroup(i,j,jjj)), 0.0001)* 3/lunigroup;
+                                        center(2)=center(2)+2*step;
+                                        pos = [center-radius 2*radius 2*radius];
+                                        ind=find(index<=Rgroup(i,j,jjj),1,'last');
+                                        if method=="circle"
+                                            rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                        else
+                                            rectangle('Position',pos,'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                        end
+                                    end
+                                end
+                            end
+                        end
+
+                        axis equal
+                        axis off
+                    elseif method=="none"
+                        axis off
+                    else
                     end
                 end
-                % set(gca, 'Color', 'None')
             end
         end
+    end
+    if lower=="circle" || lower=="square" || upper=="circle" || upper=="square"
+        hc=colorbar(BigAx);
+        hc.Position(1)=  hc.Position(1)+0.05;
+        hc.Limits=[-1 1];
     end
 end
 
@@ -1499,7 +1677,7 @@ if ~isempty(overlay)
 
     elseif isstruct(overlay) && ~isfield(overlay, 'type')
         % use contourf as default if not specified in overlay.type
-        overlay.type = 'contourf';
+        overlay.type = 'ellipse';
 
     elseif ~(isstruct(overlay) && isfield(overlay, 'include') && isfield(overlay, 'type'))
         error('FSDA:spmplot:InvalidArg','The argument overlay is wrongly specified.');
