@@ -1480,6 +1480,10 @@ if colorBackground==true
     % and multiplied by number of rows of cmapBackground in
     % order to find the row of the colormap to extract
     posBackground=max(1,ceil(size(cmapBackground,1)*(R+1)/2));
+           
+    hc=colorbar(BigAx);
+        hc.Position(1)=  hc.Position(1)+0.05;
+        hc.Limits=[-1 1];
 end
 
 for i = 1:p
@@ -1644,12 +1648,14 @@ if  lowerORupper ==true
             end
         end
     end
-    if lower=="circle" || lower=="square" || upper=="circle" || upper=="square"
+    if lower=="circle" || lower=="square" || upper=="circle" || upper=="square" 
         hc=colorbar(BigAx);
         hc.Position(1)=  hc.Position(1)+0.05;
         hc.Limits=[-1 1];
     end
 end
+
+
 
 %% Add objects to the scatterplot matrix
 
