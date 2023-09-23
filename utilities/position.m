@@ -179,8 +179,10 @@ plspm=((findobj(openfigs,'flat','Tag','pl_spm')));
 if isempty(plspm), plspm=[]; end
 
 %Set the new position of the FS plots linked to that under brushing
-lkplots = horzcat(plmdr,plres,plresindex,plyX,pllev,plfan,...
-    plmalindex,plmalfwd,plmmd,plspm);
+% lkplots = horzcat(plmdr,plres,plresindex,plyX,pllev,plfan,...
+%     plmalindex,plmalfwd,plmmd,plspm);
+lkplots = [plmdr(:);plres(:);plresindex(:);plyX(:);pllev(:);plfan(:);...
+    plmalindex(:);plmalfwd(:);plmmd(:);plspm(:)]';
 lkplots(lkplots==plmain)=[];
 
 nlkplots = length(lkplots);
