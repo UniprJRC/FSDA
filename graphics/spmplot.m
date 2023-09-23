@@ -219,7 +219,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'tag','myspm'
 %                   Data Types - char
 %
-%  typespm  :  type of scatter plot matrix. Character/string or struct. 
+%  typespm  :  type of scatter plot matrix. Character/string or struct.
 %               If typespm is 'full'
 %               (default) panels above and below the main diagonal are
 %               shown with scatter. If typespm is 'lower' scatter plots are shown just
@@ -864,7 +864,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     typespm=struct;
     typespm.lower="number";
     typespm.upper="scatter";
-    spmplot(swiss_banknotes,'group',group,'typespm',typespm)
+    spmplot(swiss_banknotes,'group',group,'typespm',typespm);
 %}
 
 %{
@@ -879,7 +879,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     typespm=struct;
     typespm.lower="square";
     typespm.upper="number";
-    spmplot(swiss_banknotes,'group',group,'typespm',typespm)
+    spmplot(swiss_banknotes,'group',group,'typespm',typespm);
 %}
 
 %{
@@ -1480,10 +1480,10 @@ if colorBackground==true
     % and multiplied by number of rows of cmapBackground in
     % order to find the row of the colormap to extract
     posBackground=max(1,ceil(size(cmapBackground,1)*(R+1)/2));
-           
+
     hc=colorbar(BigAx);
-        hc.Position(1)=  hc.Position(1)+0.05;
-        hc.Limits=[-1 1];
+    hc.Position(1)=  hc.Position(1)+0.05;
+    hc.Limits=[-1 1];
 end
 
 for i = 1:p
@@ -1648,7 +1648,7 @@ if  lowerORupper ==true
             end
         end
     end
-    if lower=="circle" || lower=="square" || upper=="circle" || upper=="square" 
+    if lower=="circle" || lower=="square" || upper=="circle" || upper=="square"
         hc=colorbar(BigAx);
         hc.Position(1)=  hc.Position(1)+0.05;
         hc.Limits=[-1 1];
