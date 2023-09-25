@@ -18,10 +18,8 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
 %   D: Input data. Vector. A vector containing a set of $n$ data elements.
 %      Data Types - double
 %
-%   W: Weights.  Vector. The vector contains a set of n positive weights
-%      summing to 1. The 1-sum requirement does not imply loss of
-%      generality: it is just to avoid extra checks and the normalization
-%      step inside the function.
+%   W: Weights.  Vector. The vector contains a set of n positive weights.
+%      It is not necessary that the weights sum to 1. 
 %      Data Types - double
 %
 % Optional input arguments:
@@ -45,8 +43,8 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
 %         those on its right account for the remaining $1-p$.
 %
 % kstar : the index of kD in D and of kW in W. Scalar. It is the position
-%         of the weighted order statistic in the data and weight vectors,
-%         that is $D(k^{*})$ and $W(k^{*})$.
+%         of the weighted order statistic in the internal data and weight 
+%         vectors, that is $D(k^{*})$ and $W(k^{*})$.
 %
 %
 % Optional Output:
@@ -101,6 +99,18 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
     A = [1 2 3 4 5];
     W = [0.15 0.1 0.2 0.3 0.25];
     [kD, kW , kstar] = quickselectFSw(A,W);
+%}
+
+%{
+    % quickselectFSw with sum of weights greater than 1.
+    % This is equivalent to the previous example, but the weights have been
+    % multiplied by 10. Therefore, results should be identical even if the
+    % sum of the weights is not one. 
+    A = [1 2 3 4 5];
+    W = [0.15 0.1 0.2 0.3 0.25];
+    [kD, kW , kstar] = quickselectFSw(A,W);
+    W2 = [1.5 1 2 3 2.5];
+    [kD2, kW2 , kstar2] = quickselectFSw(A,W2);
 %}
 
 %{
@@ -167,15 +177,19 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
     % The weighted median is the value $x$ which minimizes the weighted
     % mean absolute deviation $\sum w_{i} | x_{i} - x |$.
 
-    N = 10000;
-    D=randperm(N);
-    W = abs(randn(N,1));
-    W = W/sum(W);
+    N  = 10000;
+    D  = randperm(N);
+    W  = abs(randn(1,N));
+    W1 = W/sum(W);
 
     p = 0.5;
-    [wm , ww , kstar, wdSort]  = quickselectFSw(D,W,p);
-    disp(['this is kstar               = ' num2str(kstar)]);
-    disp(['this is the weighted median = ' num2str(wm)]);
+    [wm , ww , kstar, wdSort] = quickselectFSw(D,W,p);
+    kstar_D = find(D==wm);
+    kstar_W = find(W==ww);
+    disp(['this is the weighted median  = ' num2str(wm)]);
+    disp(['this is kstar                = ' num2str(kstar)]);
+    disp(['this is the index of wm in D = ' num2str(kstar_D)]);
+    disp(['this is the index of ww in W = ' num2str(kstar_W)]);
 
     % compute the objective function with the definition
     obj = sum(W.*abs(D-wm));
@@ -183,9 +197,9 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
     disp('check if there are elements with smaller/equal objective function');
     check = false;
     for i = 1 : N
-            obj_i = sum(wdSort(:,2).*abs(wdSort(:,1)-wdSort(i,1)));
-            if obj_i <= obj
-                disp(['this is i = ' num2str(i)  ' - this is wdSort(i,1) = ' num2str(wdSort(i,1))]);
+            obj_i = sum(W.*abs(D-D(i)));
+            if (i ~= kstar_D) && (obj_i <= obj)
+                disp(['this is i = ' num2str(i)  ' - this is D(i) = ' num2str(D(i))]);
                 check = true;
             end
     end
@@ -195,7 +209,6 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
         disp('optimal obj is unique');
     end
 %}
-
 
 %{
     % Use the mex function quickselectFSwmex.
@@ -245,8 +258,14 @@ end
 % 2. Data values and weights collapse in a nx2 column vector and move in pairs
 D = [D(:) , W(:)];
 
-% 3. The pivot k is set to get elements partially ordered in D(1:k,:)
+% 3a. The pivot k is set to get elements partially ordered in D(1:k,:)
 k = ceil(n*p);
+
+% 3b. p is modified to treat the case when sum of weights > 1
+sumW = sum(W);
+if sumW > 1
+    p = p*sumW;
+end
 
 % 4. The external loop checks the condition on weights (point 6),  
 %    which generalises the ideas in Bleich and Overton (1983)
