@@ -27,19 +27,19 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %                    user-defined distribution. The estimation is done
 %                    by maximum likelihood using MATLAB function mle.
 %             - A numeric vector containg a sample used to fit a probability
-%               distribution object with nonparametric kernel-smoothing.             
+%               distribution object with nonparametric kernel-smoothing.
 %             Other optional fields can be set to help improving the speed
 %             and quality of the results obtained for user-defined
 %             distributions.
-%             In particular, when a data sample is provided in pd.x, the  
+%             In particular, when a data sample is provided in pd.x, the
 %             user can add to structue pd additional fields to control the
-%             estimation of the distribution parameters made by distribspec 
+%             estimation of the distribution parameters made by distribspec
 %             using matlab function mle:
 %             - pd.mleStart, used as initial parameter values. The choice
 %               of the starting point is often crucial for the convergence
 %               of mle. If the initial parameter values are far from the
-%               true maximum likelihood estimate, we can obtain underflow 
-%               in the distribution functions and infinite loglikelihoods. 
+%               true maximum likelihood estimate, we can obtain underflow
+%               in the distribution functions and infinite loglikelihoods.
 %               A reasonable choice for the initial value of a location
 %               parameter could be pd.mleStart = mean(pd.x). Similarily,
 %               for a scale parameter we could set pd.mleStart = std(pd.x).
@@ -47,7 +47,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %               distribution parameters. For example, if we trust
 %               pd.mleStart, we could set pd.mleLowerBound = pd.mleStart/2.
 %             - pd.mleUpperBound, which indicates teh  Upper bounds for
-%               distribution parameters. Along the previous case, we could 
+%               distribution parameters. Along the previous case, we could
 %               set pd.mleUpperBound = pd.mleStart*2;
 %
 %
@@ -97,7 +97,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %
 %
 % More About: See https://www.mathworks.com/help/stats/fitting-custom-univariate-distributions-part-2.html
-%              
+%
 %
 % See also: normspec, makedist, fitdist, mle
 %
@@ -297,7 +297,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     pause(0.5);
 %}
 
-%{ 
+%{
     % Sample from non-parametric used-defined distribution.
 
     close all
@@ -559,7 +559,7 @@ if isstruct(pd)
                 end
                 % parameters of the cdf/pdf
                 parnum = max(parnum_c,parnum_p) ;
-                
+
                 if ~isfield(pd,'mleStart')
                     pd.mleStart = repmat(0.5,parnum,1);
                 end
@@ -612,13 +612,13 @@ elseif isstruct(pd)
         pd = fitdist(sample,pd.distname);
         x = icdf(pd,prob);
         y = pdf(pd, x);
-        
+
         % plot(x,y,'-')
 
     else
 
         % CASE 2.2: THE PROBABILITY DISTRIBUTION IS USER-DEFINED
-        
+
         isuserdistrib = true;
         mleOpt        = statset('FunValCheck','off');
         %fminuncOpt    = optimset('Display','off','MaxIter',10000,'TolX',10^-30,'TolFun',10^-30);
@@ -655,7 +655,7 @@ elseif isstruct(pd)
 
         end
 
-        % Computation of the x and y values 
+        % Computation of the x and y values
         if parnum_c > 0 && parnum_p > 0
             % The user has provided both the pdf and cdf
 
@@ -698,8 +698,8 @@ elseif isstruct(pd)
                 case 3
                     userCDF = @(x)integral(@(x)userpdf(x,parhat(1),parhat(2),parhat(3)),eps,x,'ArrayValued',1);
             end
-            % Compute the ICDF from the CDF 
-            initialGuess = eps; % check first if initialGuess leads to a finite value for the integrand 
+            % Compute the ICDF from the CDF
+            initialGuess = eps; % check first if initialGuess leads to a finite value for the integrand
             fzeroOpt = optimset('MaxFunEvals',100,'MaxIter',100);
             userICDF = @(p) fzero( @(pp)userCDF(pp) - p , initialGuess, fzeroOpt);
             x = arrayfun(userICDF,prob);
@@ -726,7 +726,7 @@ elseif isstruct(pd)
                 case 3
                     userICDF = @(p) fzero( @(pp)usercdf(pp,parhat(1),parhat(2),parhat(3)) - p , initialGuess);
             end
-                    
+
             x = arrayfun(userICDF,prob);
 
             % Workaround for the above
@@ -761,7 +761,7 @@ elseif isstruct(pd)
             %[yy,xx] = hist(x); plot(xx,yy/sum(pp)); %PDF from sample
             %[ff,xx] = ecdf(x); plot(xx,ff);         %CDF from sample
 
-            % plot(x,y,'-') 
+            % plot(x,y,'-')
 
         else
             % the user distribution has no parameters to estimate
@@ -772,7 +772,7 @@ elseif isstruct(pd)
             else
                 x = ksdensity(sample,'Function','icdf','NumPoints',numel(prob));
             end
-            ii = x>0; 
+            ii = x>0;
             x = x(ii);
             x = x(:);
 
@@ -780,10 +780,10 @@ elseif isstruct(pd)
 
             % % Compute the CDF from the userpdf: we use the compact version below
             % usercdf = @(x)integral(@(x)userpdf(x),eps,x,'ArrayValued',1);
-            % 
+            %
             % % Compute the ICDF from the CDF, as in the previous case
             % userICDF = @(p) fzero( @(pp)usercdf(pp) - p , 0.5);
-            % 
+            %
             % x = zeros(numel(prob),1);
             % for i=1:numel(prob)
             %     x(i) = userICDF(prob(i));
@@ -798,7 +798,7 @@ elseif isstruct(pd)
         %y = y/area;
 
         % workaround to obtain a matlab distribution object, used for the plot
-        if min(x)>=0 
+        if min(x)>=0
             pd = fitdist(x,'Kernel','Support','Positive');
         else
             pd = fitdist(x,'Kernel');
@@ -924,14 +924,14 @@ else
             case 0
                 yll = [0; userpdf(lb)];
             case 1
-                yll = [0; userpdf(lb,parhat)]; 
+                yll = [0; userpdf(lb,parhat)];
             case 2
-                yll = [0; userpdf(lb,parhat(1),parhat(2))]; 
+                yll = [0; userpdf(lb,parhat(1),parhat(2))];
             case 3
-                yll = [0; userpdf(lb,parhat(1),parhat(2),parhat(3))]; 
+                yll = [0; userpdf(lb,parhat(1),parhat(2),parhat(3))];
         end
     else
-        yll = [0; pdf(pd, lb)];  
+        yll = [0; pdf(pd, lb)];
     end
 end
 
@@ -944,26 +944,26 @@ else
     ul  = [ub; ub];
     if isuserdistrib
         if parnum==0
-            yul = [userpdf(ub); 0];  
+            yul = [userpdf(ub); 0];
         else
             if parnum_p > 0
                 % the user has provided a pdf
                 switch parnum
                     case 1
-                        yul = [userpdf(ub,parhat); 0]; 
+                        yul = [userpdf(ub,parhat); 0];
                     case 2
-                        yul = [userpdf(ub,parhat(1),parhat(2)); 0];                         
+                        yul = [userpdf(ub,parhat(1),parhat(2)); 0];
                     case 3
-                        yul = [userpdf(ub,parhat(1),parhat(2),parhat(3)); 0]; 
+                        yul = [userpdf(ub,parhat(1),parhat(2),parhat(3)); 0];
                 end
             else
                 % the user has provided a cdf only
                 [~, indexOfMinDist] = min(abs(x-ub));
-                yul = [y(indexOfMinDist); 0]; 
+                yul = [y(indexOfMinDist); 0];
             end
         end
     else
-        yul = [pdf(pd, ub); 0];  
+        yul = [pdf(pd, ub); 0];
     end
 end
 
@@ -1009,10 +1009,22 @@ switch region
             hh1 = plot(ll,yll,'b-',ul,yul,'b-');
         end
 
+
         % fill regions with user-defined or default color
         if (ischar(userColor) && numel(userColor)==1) || (isnumeric(userColor) && size(userColor,1)==1)
             xfill = [pll;  x(k1); ll          ; ul;          x(k2); pul  ];
             yfill = [ypll; y(k1); flipud(yll) ; flipud(yul); y(k2); ypul ];
+
+
+            if strcmp(pd.DistributionName , 'Uniform')
+                xfill=[xfill; pd.Lower; pd.Upper];
+                yfill=[yfill; 0; 0];
+                [~,ord]=sort(xfill);
+                xfill=xfill(ord);
+                yfill=yfill(ord);
+            end
+
+
             fill(xfill,yfill,userColor);
         elseif (ischar(userColor) && numel(userColor)==2) || (isnumeric(userColor) && size(userColor,1)==2)
             xfill1 = [pll;  x(k1); ll          ];
