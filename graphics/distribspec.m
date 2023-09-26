@@ -120,6 +120,8 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     b=8;
     pd=makedist('Uniform','Lower',a,'Upper',b);
     distribspec(pd, [5 6], 'inside');
+    distribspec(pd, [5 6], 'outside');
+    cascade;
 %}
 
 %{
@@ -902,14 +904,14 @@ if strcmp(pd.DistributionName , 'Uniform')
     rectfun = @(t) y(1)*(hvsd(t - center + duration/2) - hvsd(t - center - duration/2));
     hh=fplot(rectfun,[pd.Lower-duration/4,pd.Upper+duration/4],'b-','LineWidth',2);
     xlim([min(x)-duration/4 , max(x)+duration/4]);
+    xlims = [pd.Lower , pd.Upper];
 else
     hh    = plot(x,y,'b-','LineWidth',2);
+    if exist('sample','var')
+        xlim([min(x) , (max(x)+max(sample))/2]);
+    end
+    xlims = get(nspecaxes,'Xlim');
 end
-
-if exist('sample','var')
-    xlim([min(x) , (max(x)+max(sample))/2]);
-end
-xlims = get(nspecaxes,'Xlim');
 
 % compute the endpoints of the spec limit lines and plot limit lines
 pll =  [max(xlims(1),min(x));max(xlims(1),min(x))];
@@ -1015,15 +1017,14 @@ switch region
             xfill = [pll;  x(k1); ll          ; ul;          x(k2); pul  ];
             yfill = [ypll; y(k1); flipud(yll) ; flipud(yul); y(k2); ypul ];
 
-
-            if strcmp(pd.DistributionName , 'Uniform')
-                xfill=[xfill; pd.Lower; pd.Upper];
-                yfill=[yfill; 0; 0];
-                [~,ord]=sort(xfill);
-                xfill=xfill(ord);
-                yfill=yfill(ord);
-            end
-
+            % To be deleted
+            % if strcmp(pd.DistributionName , 'Uniform')
+            %     xfill=[xfill; pd.Lower; pd.Upper];
+            %     yfill=[yfill; 0; 0];
+            %     [~,ord]=sort(xfill);
+            %     xfill=xfill(ord);
+            %     yfill=yfill(ord);
+            % end
 
             fill(xfill,yfill,userColor);
         elseif (ischar(userColor) && numel(userColor)==2) || (isnumeric(userColor) && size(userColor,1)==2)
