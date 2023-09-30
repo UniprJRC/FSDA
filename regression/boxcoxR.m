@@ -683,7 +683,7 @@ if BoxCoxTra <=2
         text(lambdaLow,coo(3)+vdisp,num2str(lambdaLow,'%2.2f'))
         text(lambdaUp,coo(3)+vdisp,num2str(lambdaUp,'%2.2f'))
         xlabel('\lambda');
-        ylabel('Profile Log-Likelihood');
+        ylabel('Profile loglikelihood');
         stext=sprintf('%2.0f%% confidence interval for \\lambda',round(100*(conflev)));
         title(stext)
     end
