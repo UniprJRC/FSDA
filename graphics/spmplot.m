@@ -1286,6 +1286,7 @@ end
 % we do not use gplotmatrix with option 'grpbars' because this would not
 % work in MATLAB releases previous to R2015a.
 
+% doleg = 'off'
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
 p=size(AX,2);
@@ -1422,6 +1423,7 @@ if ndims(H) == 3
     end
 end
 
+
 % the handle of the figure including the gplotmatrix (i.e. the closest ancestor of BigAx).
 fig = ancestor(BigAx,'figure');
 
@@ -1507,13 +1509,9 @@ for i = 1:p
                 set(h,'facealpha',0.15);
                 % legend(end)
             end
-
         end
     end
 end
-
-
-
 
 if  lowerORupper ==true
 
@@ -1526,7 +1524,7 @@ if  lowerORupper ==true
 
     % colormap to discuss
     cmap=colormap("turbo");
-    %  c = jet;
+    % c = jet;
     % c = flipud(c);
     % cmap=colormap(c);
 
@@ -1549,7 +1547,6 @@ if  lowerORupper ==true
     for i=1:p
         for j=1:p
 
-
             if i~=j
                 if i>j
                     method=lower;
@@ -1557,21 +1554,38 @@ if  lowerORupper ==true
                     method=upper;
                 end
 
-                if method~="scatter"
-                    set(gcf,'CurrentAxes',AX(i,j));
-                    cla(gca)
+                if method~="scatter"  %DDDD
+                    warning('off','MATLAB:handle_graphics:exceptions:SceneNode');
+                    %    set(gcf,'CurrentAxes',AX(i,j));
+                    %    cla(gca)
+                    if i==1 && j==p
+                        set(findobj(AX(i,j),'Type','line'),'Visible','off');
+                    else
+                        cla(AX(i,j));
+                    end
+
+                    %{
+                        legTMP = findobj('Tag', 'spmclickleg');
+                        clickableMultiLegend(get(legTMP(1), 'String'));
+
+                        set(gcf,'CurrentAxes',AX(1,4));
+                        clickableMultiLegend(guni);
+
+                        h = findobj('Tag','legend');
+                    %}
                     if method=="number"
 
                         if lunigroup==1
-                            text(0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                            text(AX(i,j),0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
                                 'Units','normalized','HorizontalAlignment','center')
                         else
-                            text(0.2,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                            text(AX(i,j),0.2,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
                                 'Units','normalized','HorizontalAlignment','center')
 
                             for jjj=1:lunigroup
-                                text(0.6,jjj/(lunigroup+1),num2str(Rgroup(i,j,jjj),2), ...
-                                    'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj))
+                                text(AX(i,j),0.6,jjj/(lunigroup+1),num2str(Rgroup(i,j,jjj),2), ...
+                                    'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj),...
+                                    'DisplayName',guni{jjj}) %DDDD   ,'Tag', 'spmclickleg'
                             end
                         end
 
