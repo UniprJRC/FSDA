@@ -1286,7 +1286,11 @@ end
 % we do not use gplotmatrix with option 'grpbars' because this would not
 % work in MATLAB releases previous to R2015a.
 
-% doleg = 'off'
+% if there is a single group, no need to add a legend, regarless the choice
+% of the user
+if lunigroup==1
+    doleg = 'off';
+end
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
 p=size(AX,2);
@@ -1476,6 +1480,7 @@ if colorBackground==true || lowerORupper==true
 end
 
 
+
 if colorBackground==true
     cmapBackground=colormap("turbo");
     % The range of correlation coefficient is mapped into [0 1]
@@ -1577,15 +1582,15 @@ if  lowerORupper ==true
 
                         if lunigroup==1
                             text(AX(i,j),0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
-                                'Units','normalized','HorizontalAlignment','center')
+                                'Units','normalized','HorizontalAlignment','center','Interpreter','Latex')
                         else
-                            text(AX(i,j),0.2,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
-                                'Units','normalized','HorizontalAlignment','center')
+                            text(AX(i,j),0.2,0.5,['\bf ' num2str(R(i,j),2)],'FontSize',Rresc(i,j), ...
+                                'Units','normalized','HorizontalAlignment','center','Interpreter','Latex')
 
                             for jjj=1:lunigroup
-                                text(AX(i,j),0.6,jjj/(lunigroup+1),num2str(Rgroup(i,j,jjj),2), ...
+                                text(AX(i,j),0.6,jjj/(lunigroup+1),['\sl ' num2str(Rgroup(i,j,jjj),2)], ...
                                     'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj),...
-                                    'DisplayName',guni{jjj}) %DDDD   ,'Tag', 'spmclickleg'
+                                    'DisplayName',guni{jjj},'Interpreter','Latex') %DDDD 
                             end
                         end
 
