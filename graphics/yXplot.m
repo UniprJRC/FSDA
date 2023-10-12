@@ -935,7 +935,7 @@ xlimx='';
 ylimy='';
 
 if nargin>2
-    if length(varargin{1})==n
+    if isnumeric(varargin{1}) && length(varargin{1})==n
         % In this case the user has called function yXplot with the
         % old format, that is
         % yXplot(y,X,group,plo), without name/value pairs
