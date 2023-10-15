@@ -1298,7 +1298,34 @@ end
 
 p=size(AX,2);
 for i=1:p
+
     hold('on');
+
+    % Rotate labels and change the interpreter to none %DDDD
+    if ~isempty(nameY)
+        %  Rotate labels
+        ylabel( AX(i,1), nameY(i),'Rotation',0);
+        xlabel( AX(p,i), nameY(i),'Rotation',90);
+        %set(AX(i,1),'PositionConstraint','outerposition')
+        %set(AX(p,i),'PositionConstraint','outerposition')
+
+        % labels should not be in latex, otherwise the underscore are
+        % badly visualised
+        tmphX = get(AX(p,i), 'Xlabel');
+        tmphY = get(AX(i,1), 'Ylabel');
+        set(tmphX,'Interpreter','none');
+        set(tmphY,'Interpreter','none');
+        if i==p
+            tmphX = get(AX(p+1,p), 'Xlabel');
+            tmphY = get(AX(p+1,1), 'Ylabel');
+            set(tmphX,'Interpreter','none');
+            set(tmphY,'Interpreter','none');
+            xlabel( AX(p+1,p), nameY(p),'Rotation',90);
+            ylabel( AX(p+1,1), nameY(p),'Rotation',0);
+            %set(AX(p+1,p),'PositionConstraint','outerposition')
+            %set(AX(p+1,1),'PositionConstraint','outerposition')
+        end
+    end
 
     % Add the boxplots generalised to groups. Note that we use AX(i,i)
     % just to find the position of the required panel on the main
@@ -1329,8 +1356,8 @@ for i=1:p
         set(ax,'XTickMode','manual','YTickMode','manual');
         %Now restore the labels of the gplotmatrix
         set(ax,'XTickLabel',XTickLabel,'YTickLabel',YTickLabel);
-        set(get(ax,'XLabel'),'String',XLabel);
-        set(get(ax,'YLabel'),'String',YLabel);
+        set(get(ax,'XLabel'),'String',XLabel,'Rotation',90); %DDDDD commented
+        set(get(ax,'YLabel'),'String',YLabel,'Rotation',0);  %DDDDD commented
 
 
     else % if strcmp(dispopt,'box')==1
@@ -1376,9 +1403,9 @@ for i=1:p
 
         % The label is reput on the x or y axis
         if i==1
-            ylabel(labForAxis,'Interpreter','none')
+            ylabel(labForAxis,'Interpreter','none','Rotation',0)
         elseif i== size(AX,2)
-            xlabel(labForAxis,'Interpreter','none')
+            xlabel(labForAxis,'Interpreter','none','Rotation',90)
         else
         end
 
@@ -1390,35 +1417,14 @@ for i=1:p
         end
     end
 
-    % Rotate labels and change the interpreter to none %DDDD 
-    if ~isempty(nameY)
-        %  Rotate labels 
-        ylabel( AX(i,1), nameY(i),'Rotation',0);
-        xlabel( AX(p,i), nameY(i),'Rotation',90);
-        %set(AX(i,1),'PositionConstraint','outerposition')
-        %set(AX(p,i),'PositionConstraint','outerposition')
+    % %DDDD Rotate labels and change the interpreter to none %DDDD
 
-        % labels should not be in latex, otherwise the underscore are 
-        % badly visualised
-        tmphX = get(AX(p,i), 'Xlabel');
-        tmphY = get(AX(i,1), 'Ylabel');
-        set(tmphX,'Interpreter','none');
-        set(tmphY,'Interpreter','none');
-        if i==p
-            tmphX = get(AX(p+1,p), 'Xlabel');
-            tmphY = get(AX(p+1,1), 'Ylabel');
-            set(tmphX,'Interpreter','none');
-            set(tmphY,'Interpreter','none');
-            xlabel( AX(p+1,p), nameY(p),'Rotation',90);
-            ylabel( AX(p+1,1), nameY(p),'Rotation',0);
-            %set(AX(p+1,p),'PositionConstraint','outerposition')
-            %set(AX(p+1,1),'PositionConstraint','outerposition')
-        end
-    end
 
     % The empty panel created by gplotmatrix in position (i,i) is
     % deleted
-    delete(AX(i,i));
+    if ~isempty(AX(i,i).YLabel.String)
+        delete(AX(i,i)); %ABCD
+    end
 
     % The final row of AX contains the handle to the panel which
     % contains the histograms
@@ -1655,9 +1661,9 @@ if  lowerORupper ==true
                                 ind=find(index<=R(i,j),1,'last');
                                 % rectangle('Position',pos, 'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
                                 if method=="circle"
-                                    rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                    rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
                                 else
-                                    rectangle('Position',pos, 'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                    rectangle('Position',pos, 'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
                                 end
                             end
                         else
@@ -1671,9 +1677,9 @@ if  lowerORupper ==true
                                 pos = [center-radius 2*radius 2*radius];
                                 ind=find(index<=R(i,j),1,'last');
                                 if method=="circle"
-                                    rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                    rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
                                 else
-                                    rectangle('Position',pos, 'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                    rectangle('Position',pos, 'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
                                 end
 
                                 step=3/lunigroup;
@@ -1689,9 +1695,9 @@ if  lowerORupper ==true
                                         pos = [center-radius 2*radius 2*radius];
                                         ind=find(index<=Rgroup(i,j,jjj),1,'last');
                                         if method=="circle"
-                                            rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                            rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', [cmap(ind, :) , abs(Rgroup(i,j,jjj))] , 'EdgeColor', cmap(ind, :))
                                         else
-                                            rectangle('Position',pos,'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                                            rectangle('Position',pos,'FaceColor', [cmap(ind, :) , abs(Rgroup(i,j,jjj))] , 'EdgeColor', cmap(ind, :))
                                         end
                                     end
                                 end
@@ -2415,8 +2421,8 @@ if ~isempty(databrush) || iscell(databrush)
                         set(ax,'XTickMode','manual','YTickMode','manual');
                         %Now restore the labels of the gplotmatrix
                         set(ax,'XTickLabel',XTickLabel,'YTickLabel',YTickLabel);
-                        set(get(ax,'XLabel'),'String',XLabel);
-                        set(get(ax,'YLabel'),'String',YLabel);
+                        set(get(ax,'XLabel'),'String',XLabel); % ,'Rotation',90
+                        set(get(ax,'YLabel'),'String',YLabel); % ,'Rotation',0
 
                     else
                         % Modify the boxplots generalised to groups Note
