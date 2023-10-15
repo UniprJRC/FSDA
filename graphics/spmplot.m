@@ -1266,6 +1266,9 @@ if iscell(group) || isstring(group) || iscategorical(group)
     %guniv = cellstr(num2str(unique(groupv,'stable')));
 else
     groupv = group;
+    guni = unique(group,'stable'); %DDDD
+    guni = num2str(guni);
+    guni = cellstr(guni);
 end
 
 unigroup = 1:ngroups;
@@ -1373,9 +1376,9 @@ for i=1:p
 
         % The label is reput on the x or y axis
         if i==1
-            ylabel(labForAxis)
+            ylabel(labForAxis,'Interpreter','none')
         elseif i== size(AX,2)
-            xlabel(labForAxis)
+            xlabel(labForAxis,'Interpreter','none')
         else
         end
 
@@ -1384,6 +1387,32 @@ for i=1:p
         % The tag is set for later use in add2spm by clickableMultiLegend
         for gg=1:numel(unigroup)
             set(hbp(:,gg),'Tag',['boxplot' num2str(gg)]);
+        end
+    end
+
+    % Rotate labels and change the interpreter to none %DDDD 
+    if ~isempty(nameY)
+        %  Rotate labels 
+        ylabel( AX(i,1), nameY(i),'Rotation',0);
+        xlabel( AX(p,i), nameY(i),'Rotation',90);
+        %set(AX(i,1),'PositionConstraint','outerposition')
+        %set(AX(p,i),'PositionConstraint','outerposition')
+
+        % labels should not be in latex, otherwise the underscore are 
+        % badly visualised
+        tmphX = get(AX(p,i), 'Xlabel');
+        tmphY = get(AX(i,1), 'Ylabel');
+        set(tmphX,'Interpreter','none');
+        set(tmphY,'Interpreter','none');
+        if i==p
+            tmphX = get(AX(p+1,p), 'Xlabel');
+            tmphY = get(AX(p+1,1), 'Ylabel');
+            set(tmphX,'Interpreter','none');
+            set(tmphY,'Interpreter','none');
+            xlabel( AX(p+1,p), nameY(p),'Rotation',90);
+            ylabel( AX(p+1,1), nameY(p),'Rotation',0);
+            %set(AX(p+1,p),'PositionConstraint','outerposition')
+            %set(AX(p+1,1),'PositionConstraint','outerposition')
         end
     end
 
@@ -1396,6 +1425,9 @@ for i=1:p
     AX(end,i)=ax;
 
 end
+
+% Adjust the rotated labels %DDDD does not work ...
+%BigAx.PositionConstraint = "outerposition";
 
 % The third dimension of H distinguishes the groups. If there are no groups
 % then ndims(H) = 2.
@@ -1480,17 +1512,21 @@ if colorBackground==true || lowerORupper==true
 end
 
 
-
 if colorBackground==true
-    cmapBackground=colormap("turbo");
+    scmap = 512;
+    cmap  = turbo(scmap);
+    cmapBackground=colormap(cmap);
+    %cmapBackground=colormap("turbo");
+
     % The range of correlation coefficient is mapped into [0 1]
     % and multiplied by number of rows of cmapBackground in
     % order to find the row of the colormap to extract
     posBackground=max(1,ceil(size(cmapBackground,1)*(R+1)/2));
 
-    hc=colorbar(BigAx);
-    hc.Position(1)=  hc.Position(1)+0.05;
-    hc.Limits=[-1 1];
+    hc = colorbar(BigAx);
+    hc.Position(1) = hc.Position(1)+0.05;
+    hc.TickLabels = linspace(-1, 1, numel(hc.Ticks));
+    %hc.Limits=[-1 1];
 end
 
 for i = 1:p
@@ -1527,13 +1563,18 @@ if  lowerORupper ==true
     % G = zeros(size(R1));   % Green all zero
     % cmap=colormap( [R1(:), G(:), B(:)] );
 
-    % colormap to discuss
-    cmap=colormap("turbo");
-    % c = jet;
-    % c = flipud(c);
-    % cmap=colormap(c);
+    % % colormap to discuss
+    scmap = 256;
+    cmap  = turbo(scmap);
+    cmap  = colormap(cmap);
+    %shading interp;
 
-    index = linspace(-1, 1, size(cmap, 1));
+    %cmap=colormap("turbo");
+    % % c = jet;
+    % % c = flipud(c);
+    % % cmap=colormap(c);
+
+    index = linspace(-1, 1, scmap);
     % if lowerORupper ==true
     %     warning('off','MATLAB:handle_graphics:exceptions:SceneNode');
     % else
@@ -1590,7 +1631,7 @@ if  lowerORupper ==true
                             for jjj=1:lunigroup
                                 text(AX(i,j),0.6,jjj/(lunigroup+1),['\sl ' num2str(Rgroup(i,j,jjj),2)], ...
                                     'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj),...
-                                    'DisplayName',guni{jjj},'Interpreter','Latex') %DDDD 
+                                    'DisplayName',guni{jjj},'Interpreter','Latex') %DDDD
                             end
                         end
 
@@ -1668,12 +1709,12 @@ if  lowerORupper ==true
         end
     end
     if lower=="circle" || lower=="square" || upper=="circle" || upper=="square"
-        hc=colorbar(BigAx);
-        hc.Position(1)=  hc.Position(1)+0.05;
-        hc.Limits=[-1 1];
+        hc = colorbar(BigAx);
+        hc.Position(1) =  hc.Position(1)+0.05;
+        hc.TickLabels = linspace(-1, 1, numel(hc.Ticks));
+        %hc.Limits=[-1 1];
     end
 end
-
 
 
 %% Add objects to the scatterplot matrix
@@ -1916,6 +1957,7 @@ if ~isempty(overlay)
         axes(BigAx);
     end
 end
+
 
 %% Undock specified panels
 
@@ -2588,8 +2630,8 @@ if ~isempty(databrush) || iscell(databrush)
 
 
 
-                xlabel(labx);
-                ylabel(laby);
+                xlabel(labx,'Interpreter','none');
+                ylabel(laby,'Interpreter','none');
                 % Initialize vector selstesp. It will contains the steps in
                 % which brushed units enter the search
                 selsteps=zeros(n,11);
@@ -2741,6 +2783,9 @@ if ~isempty(databrush) || iscell(databrush)
         end
     end
 end
+
+
+
 
     function output_txt = spmplotLbl(~,event_obj,out)
         %% spmplotLbl provides information about the selected points
@@ -2975,7 +3020,7 @@ end
                 labPrntX = get(get(AX(end-1,1), 'Xlabel'),'string');
             end
 
-            xlabel(labPrntX);
+            xlabel(labPrntX,'Interpreter','none');
 
             % general adjustment of axes labels and ticks
             if indRowspp~=indColspp
