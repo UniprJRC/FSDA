@@ -1422,7 +1422,7 @@ for i=1:p
 
     % The empty panel created by gplotmatrix in position (i,i) is
     % deleted
-    if ~isempty(AX(i,i).YLabel.String)
+    if ~isempty(AX(i,i).YLabel.String) || ~isempty(AX(i,i).XLabel.String)
         delete(AX(i,i)); %ABCD
     end
 
