@@ -26,7 +26,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %                    to be used to estimate the parameters of the
 %                    user-defined distribution. The estimation is done
 %                    by maximum likelihood using MATLAB function mle.
-%             - A numeric vector containg a sample used to fit a probability
+%             - A numeric vector containing a sample used to fit a probability
 %               distribution object with nonparametric kernel-smoothing.
 %             Other optional fields can be set to help improving the speed
 %             and quality of the results obtained for user-defined
