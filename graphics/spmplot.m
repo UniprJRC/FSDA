@@ -176,8 +176,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       plo.label : cell of length n containing the labels of the units. If
 %                   this field is empty the sequence 1:n will be used to
 %                   label the units.
-%  plo.TickLabels : If plo.TickLabels = 1 the TickLabels of the axes 
-%                   are displayd. Otherwise they are omitted. 
+%  plo.TickLabels : boolean. If it is true the TickLabels of the axes 
+%                   are displayed (default), otherwise they are omitted. 
+%              Example - 'plo',1
+%              Data Types - Empty value, scalar or structure.
 %
 %   selunit :   unit labelling in the spmplot and in the malfwdplot.
 %               Cell array of strings or string or numeric vector for
@@ -1146,7 +1148,7 @@ if isstruct(plo)
     if d>0
         useTickLabels = plo.TickLabels;
     else
-        useTickLabels = 1; 
+        useTickLabels = true; 
     end
 
 
@@ -1265,7 +1267,7 @@ else
     % numtext=[];
     numtext=cellstr(num2str(seq,'%d'));
 
-    useTickLabels = 1;
+    useTickLabels = true;
 end
 
 if iscell(group) || isstring(group) || iscategorical(group)
@@ -1307,7 +1309,7 @@ if lunigroup==1
 end
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
-if useTickLabels == 0
+if useTickLabels == false
     set(AX,'XTickLabel',[]); set(AX,'YTickLabel',[]); % DDDD removes the TickLabels: must be optional
 end
 

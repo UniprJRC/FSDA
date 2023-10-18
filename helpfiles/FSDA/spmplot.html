@@ -358,11 +358,7 @@ group(101:end)=2;
 typespm=struct;
 typespm.lower="square";
 typespm.upper="number";
-spmplot(swiss_banknotes,'group',group,'typespm',typespm);</pre></div></div><pre class="codeoutput">Warning: Error updating AxesLayoutManager.
-
- Value must be a handle.
- 
-</pre><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_20'><img vspace="5" hspace="5" src="images\spmplot_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_21" class="example_module expandableContent"><div id="ExtraExample_21"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option colorBackground.</li></span></a></span></h3><div class="collapse"><p>
+spmplot(swiss_banknotes,'group',group,'typespm',typespm);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_20'><img vspace="5" hspace="5" src="images\spmplot_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_21" class="example_module expandableContent"><div id="ExtraExample_21"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option colorBackground.</li></span></a></span></h3><div class="collapse"><p>
      if 'colorBackground is true the background color of each scatter 
      depends on the value of the correlation coefficient <div class="programlisting"><div class="codeinput"><pre class="matlab-code">load head;
 spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_21'><img vspace="5" hspace="5" src="images\spmplot_13.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; data matrix (2D array or table) containing n observations on v variables
@@ -513,10 +509,12 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
                 marker size depends on the number of plots and the size of
                 the figure window. Default is siz = '' (empty value).</p> <p>
         plo.doleg: a string to control whether legends are created or not.</p> <p>
-                Set doleg to 'on' (default) or 'off'.</p><p>
+                Set doleg to 'on' (default) or 'off'.</p> <p>
        plo.label : cell of length n containing the labels of the units. If
                    this field is empty the sequence 1:n will be used to
-                   label the units.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plo',1
+                   label the units.</p><p>
+  plo.TickLabels : boolean. If it is true the TickLabels of the axes 
+                   are displayed (default), otherwise they are omitted.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plo',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Empty value, scalar or structure.</code></p></div></div><div class="expandableContent"><div id="inputarg_selunit" class="clearfix"></div><h3 id="input_argument_namevalue_selunit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>selunit</code> &#8212;unit labelling in the spmplot and in the malfwdplot.</span></a><span class="example_desc">cell array of strings | string | numeric vector for               labelling units.</span></span></h3><div class="collapse">	<p><p>When input argument Y is a structure
                the threshold is associated with the trajectories of
                the Mahalanobis distances monitored along the search.</p> <p>
