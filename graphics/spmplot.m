@@ -176,8 +176,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       plo.label : cell of length n containing the labels of the units. If
 %                   this field is empty the sequence 1:n will be used to
 %                   label the units.
-%                   Example - 'plo',1
-%                   Data Types - Empty value, scalar or structure.
+%  plo.TickLabels : If plo.TickLabels = 1 the TickLabels of the axes 
+%                   are displayd. Otherwise they are omitted. 
 %
 %   selunit :   unit labelling in the spmplot and in the malfwdplot.
 %               Cell array of strings or string or numeric vector for
@@ -1142,6 +1142,14 @@ seq= (1:n)';
 if isstruct(plo)
     fplo=fieldnames(plo);
 
+    d=find(strcmp('TickLabels',fplo));
+    if d>0
+        useTickLabels = plo.TickLabels;
+    else
+        useTickLabels = 1; 
+    end
+
+
     d=find(strcmp('nameY',fplo));
     if d>0
         nameY=plo.nameY;
@@ -1152,6 +1160,7 @@ if isstruct(plo)
             nameY=namesFromTable;
         end
     end
+
     d=find(strcmp('labeladd',fplo));
     if d>0
         labeladd=plo.labeladd;
@@ -1255,6 +1264,8 @@ else
     doleg=dolegdef;
     % numtext=[];
     numtext=cellstr(num2str(seq,'%d'));
+
+    useTickLabels = 1;
 end
 
 if iscell(group) || isstring(group) || iscategorical(group)
@@ -1296,6 +1307,10 @@ if lunigroup==1
 end
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
+if useTickLabels == 0
+    set(AX,'XTickLabel',[]); set(AX,'YTickLabel',[]); % DDDD removes the TickLabels: must be optional
+end
+
 p=size(AX,2);
 for i=1:p
 
@@ -1304,24 +1319,24 @@ for i=1:p
     % Rotate labels and change the interpreter to none %DDDD
     if ~isempty(nameY)
         %  Rotate labels
-        ylabel( AX(i,1), nameY(i),'Rotation',0);
-        xlabel( AX(p,i), nameY(i),'Rotation',90);
+        ylabel( AX(i,1), nameY(i),'Rotation',0,'Interpreter','none');
+        xlabel( AX(p,i), nameY(i),'Rotation',90,'Interpreter','none');
         %set(AX(i,1),'PositionConstraint','outerposition')
         %set(AX(p,i),'PositionConstraint','outerposition')
 
         % labels should not be in latex, otherwise the underscore are
         % badly visualised
-        tmphX = get(AX(p,i), 'Xlabel');
-        tmphY = get(AX(i,1), 'Ylabel');
-        set(tmphX,'Interpreter','none');
-        set(tmphY,'Interpreter','none');
+%        tmphX = get(AX(p,i), 'Xlabel');
+%        tmphY = get(AX(i,1), 'Ylabel');
+%        set(tmphX,'Interpreter','none');
+%        set(tmphY,'Interpreter','none');
         if i==p
             tmphX = get(AX(p+1,p), 'Xlabel');
             tmphY = get(AX(p+1,1), 'Ylabel');
             set(tmphX,'Interpreter','none');
             set(tmphY,'Interpreter','none');
             xlabel( AX(p+1,p), nameY(p),'Rotation',90);
-            ylabel( AX(p+1,1), nameY(p),'Rotation',0);
+            %ylabel( AX(p+1,1), nameY(p),'Rotation',0);  %DDDDD commentato
             %set(AX(p+1,p),'PositionConstraint','outerposition')
             %set(AX(p+1,1),'PositionConstraint','outerposition')
         end
@@ -1356,8 +1371,8 @@ for i=1:p
         set(ax,'XTickMode','manual','YTickMode','manual');
         %Now restore the labels of the gplotmatrix
         set(ax,'XTickLabel',XTickLabel,'YTickLabel',YTickLabel);
-        set(get(ax,'XLabel'),'String',XLabel,'Rotation',90); %DDDDD commented
-        set(get(ax,'YLabel'),'String',YLabel,'Rotation',0);  %DDDDD commented
+        set(get(ax,'XLabel'),'String',XLabel,'Rotation',90,'Interpreter','none'); %DDDDD commented
+        set(get(ax,'YLabel'),'String',YLabel,'Rotation',0, 'Interpreter','none');  %DDDDD commented
 
 
     else % if strcmp(dispopt,'box')==1
@@ -1379,6 +1394,7 @@ for i=1:p
 
         % Now we create an axes object using axPosition.
         ax = axes('Position',axPosition);
+        %set(ax,'XTickLabel',[]); % DDDD removes the TickLabels: must be optional
 
         if lunigroup <= 5
             plotstyle = 'traditional';
@@ -1390,10 +1406,10 @@ for i=1:p
         hbp = boxplot(ax,Y(:,i),groupv,'plotstyle',plotstyle,'colors',clr(unigroup),'labelverbosity','minor','symbol','+');
 
         % Remove the x tick labels from the graph containing boxplots
-        set(ax,'XTickLabel',{' '});
+        set(ax,'XTickLabel',[]);  % DD it was {' '} 
 
         % Remove the y tick labels from the graph containing boxplots
-        set(ax,'YTickLabel',{' '});
+        set(ax,'YTickLabel',[]);  % DD it was {' '} 
 
         % Set the proper Ylim to the boxplots
         set(ax,'Ylim',axYlim)
@@ -1417,13 +1433,10 @@ for i=1:p
         end
     end
 
-    % %DDDD Rotate labels and change the interpreter to none %DDDD
-
-
     % The empty panel created by gplotmatrix in position (i,i) is
     % deleted
     if ~isempty(AX(i,i).YLabel.String) || ~isempty(AX(i,i).XLabel.String)
-        delete(AX(i,i)); %ABCD
+        delete(AX(i,i)); % ABCD
     end
 
     % The final row of AX contains the handle to the panel which
@@ -1519,10 +1532,13 @@ end
 
 
 if colorBackground==true
-    scmap = 512;
-    cmap  = turbo(scmap);
-    cmapBackground=colormap(cmap);
-    %cmapBackground=colormap("turbo");
+    %scmap = 512;
+    %cmap  = turbo(scmap);
+    %cmapBackground=colormap(cmap);
+
+    RColormap = load('RColormap');
+    cmapBackground = colormap(RColormap.RColormap);
+
 
     % The range of correlation coefficient is mapped into [0 1]
     % and multiplied by number of rows of cmapBackground in
@@ -1571,8 +1587,12 @@ if  lowerORupper ==true
 
     % % colormap to discuss
     scmap = 256;
-    cmap  = turbo(scmap);
-    cmap  = colormap(cmap);
+    %cmap  = flipud(turbo(scmap));
+    %cmap  = flipud(parula(scmap));
+    %cmap  = RColormap(scmap);
+    %cmap  = colormap(cmap);
+    RColormap = load('RColormap');
+    cmap = colormap(RColormap.RColormap);
     %shading interp;
 
     %cmap=colormap("turbo");
