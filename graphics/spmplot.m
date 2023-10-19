@@ -176,10 +176,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       plo.label : cell of length n containing the labels of the units. If
 %                   this field is empty the sequence 1:n will be used to
 %                   label the units.
-%  plo.TickLabels : boolean. If it is true the TickLabels of the axes 
-%                   are displayed (default), otherwise they are omitted. 
-%              Example - 'plo',1
-%              Data Types - Empty value, scalar or structure.
+%  plo.TickLabels : boolean. If it is true the TickLabels of the axes
+%                   are displayed (default), otherwise they are omitted.
+%                   Example - 'plo',true
+%                   Data Types - Empty value, scalar or structure.
 %
 %   selunit :   unit labelling in the spmplot and in the malfwdplot.
 %               Cell array of strings or string or numeric vector for
@@ -898,12 +898,25 @@ if nargin<1
     error('FSDA:spmplot:missingInputs','A required input argument is missing.')
 end
 
+% Specify default values for colors, symbols, size of symbols and presence
+% of legend
+clrdef='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
+symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h'};
+symdef=repmat(symdef,2,1);
+sizdef=[];
+dolegdef='on';
+
+% load the default colormap
+RColormap   = load('RColormap');
+colormapdef = RColormap.RColormap;
+
+
 % Check if the first argument is a structure or not
 if ~isstruct(Y)
     [n,v]=size(Y);
     isnotstructY=1;
     % seq= column vector containing the sequence 1 to n
-    seq= (1:n)';
+    seq = (1:n)';
 
     % numtext are the labels to add to the units. The type of labels to add
     % are specified in option plo.label.
@@ -951,17 +964,9 @@ else
 
 end
 
-% if length(varargin{1})==n then we are in the old format of the function
-% spmplot(Y,group)
-% or
-% spmplot(Y,group,plo)
-% or
-% spmplot(Y,group,plo,dispopt)
-
 if nargin>1
     if length(varargin{1})==n
-        % In this case the user has called function spmplot with the
-        % old format, that is
+        % In this case the user has called the function with the old format
         % spmplot(Y,group,plo,dispopt), without name/value pairs
 
         group=varargin{1};
@@ -1056,7 +1061,6 @@ if nargin>1
         typespm=options.typespm;
     end
 
-
     if isnotstructY ==1
         if ~isempty(databrush)
             disp('It is not possible to use option databrush without supplying structure out produced by FSReda')
@@ -1080,6 +1084,7 @@ if nargin>1
         end
 
     else
+
         if iscellstr(units)
             selunit=str2double(units);
             selmax=max(residuals,[],2);
@@ -1113,7 +1118,6 @@ if nargin>1
     % It can be a cell array of strings (defining lower and upper threhold),
     % a string (defining just one threshold) or a numeric vector.
 
-
 else
     group=ones(n,1);
     plo='';
@@ -1130,15 +1134,6 @@ else
 end
 
 ngroups=length(unique(group));
-% Specify default values for colors, symbols, size of symbols and presence
-% of legend
-clrdef='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
-symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h'};
-symdef=repmat(symdef,2,1);
-sizdef=[];
-dolegdef='on';
-
-% seq= column vector containing the sequence 1 to n
 seq= (1:n)';
 
 if isstruct(plo)
@@ -1148,9 +1143,8 @@ if isstruct(plo)
     if d>0
         useTickLabels = plo.TickLabels;
     else
-        useTickLabels = true; 
+        useTickLabels = true;
     end
-
 
     d=find(strcmp('nameY',fplo));
     if d>0
@@ -1287,6 +1281,7 @@ end
 unigroup = 1:ngroups;
 lunigroup=length(unigroup);
 
+
 %% The scatterplot matrix with histograms or boxplots (on the main diagonal) generalised to groups
 
 % sym can be either a cell array or a character
@@ -1309,8 +1304,13 @@ if lunigroup==1
 end
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 
+%hfigure = gcf;
+%set(hfigure,'Visible', 'Off');
+
+% Removes the TickLabels if requested % DDDD
 if useTickLabels == false
-    set(AX,'XTickLabel',[]); set(AX,'YTickLabel',[]); % DDDD removes the TickLabels: must be optional
+    set(AX,'XTickLabel',[]);
+    set(AX,'YTickLabel',[]);
 end
 
 p=size(AX,2);
@@ -1318,20 +1318,13 @@ for i=1:p
 
     hold('on');
 
-    % Rotate labels and change the interpreter to none %DDDD
+    % Rotate labels and change the interpreter to none, otherwise the
+    % underscore are badly visualised %DDDD
     if ~isempty(nameY)
         %  Rotate labels
-        ylabel( AX(i,1), nameY(i),'Rotation',0,'Interpreter','none');
+        ylabel( AX(i,1), nameY(i),'Rotation',0 ,'Interpreter','none');
         xlabel( AX(p,i), nameY(i),'Rotation',90,'Interpreter','none');
-        %set(AX(i,1),'PositionConstraint','outerposition')
-        %set(AX(p,i),'PositionConstraint','outerposition')
 
-        % labels should not be in latex, otherwise the underscore are
-        % badly visualised
-%        tmphX = get(AX(p,i), 'Xlabel');
-%        tmphY = get(AX(i,1), 'Ylabel');
-%        set(tmphX,'Interpreter','none');
-%        set(tmphY,'Interpreter','none');
         if i==p
             tmphX = get(AX(p+1,p), 'Xlabel');
             tmphY = get(AX(p+1,1), 'Ylabel');
@@ -1339,8 +1332,6 @@ for i=1:p
             set(tmphY,'Interpreter','none');
             xlabel( AX(p+1,p), nameY(p),'Rotation',90);
             %ylabel( AX(p+1,1), nameY(p),'Rotation',0);  %DDDDD commentato
-            %set(AX(p+1,p),'PositionConstraint','outerposition')
-            %set(AX(p+1,1),'PositionConstraint','outerposition')
         end
     end
 
@@ -1349,90 +1340,96 @@ for i=1:p
     % diagonal to superimpose boxplots
     ax=AX(i,i);
 
-    if strcmp(dispopt,'hist')==1
-        % Add the histograms generalised to groups
+    switch dispopt
+        case 'hist'
+            %if strcmp(dispopt,'hist')==1
+            % Add the histograms generalised to groups
 
-        Xlim=get(ax,'Xlim');
+            Xlim = get(ax,'Xlim');
 
-        % the strings used to label the tick marks and the axes labels
-        XTickLabel = get(ax,'XTickLabel');
-        YTickLabel = get(ax,'YTickLabel');
-        XLabel = get(get(ax,'XLabel'),'String');
-        YLabel = get(get(ax,'YLabel'),'String');
-        ax = AX(end,i);
+            % the strings used to label the tick marks and the axes labels
+            XTickLabel = get(ax,'XTickLabel');
+            YTickLabel = get(ax,'YTickLabel');
+            XLabel     = get(get(ax,'XLabel'),'String');
+            YLabel     = get(get(ax,'YLabel'),'String');
+            ax         = AX(end,i);
 
-        [countfreq, ~] = histFS(Y(:,i),10,groupv,'',ax,clr(unigroup)); %'br'
+            [countfreq, ~] = histFS(Y(:,i),10,groupv,'',ax,clr(unigroup));
 
-        % Prevent from changing the limits when the figure is resized:
-        % 1.Freeze the current limits
-        set(ax,'XLimMode','manual','YLimMode','manual');
-        set(ax,'xlim',Xlim)
-        % set(ax,'ylim',Ylim)
-        set(ax,'ylim',[0 max(sum(countfreq,2))])
-        % 2.Freeze the current tick values
-        set(ax,'XTickMode','manual','YTickMode','manual');
-        %Now restore the labels of the gplotmatrix
-        set(ax,'XTickLabel',XTickLabel,'YTickLabel',YTickLabel);
-        set(get(ax,'XLabel'),'String',XLabel,'Rotation',90,'Interpreter','none'); %DDDDD commented
-        set(get(ax,'YLabel'),'String',YLabel,'Rotation',0, 'Interpreter','none');  %DDDDD commented
+            % Prevent from changing the limits when the figure is resized:
+            % 1.Freeze the current limits
+            set(ax,'XLimMode','manual','YLimMode','manual');
+            set(ax,'xlim',Xlim)
+            % set(ax,'ylim',Ylim)
+            set(ax,'ylim',[0 max(sum(countfreq,2))])
+            % 2.Freeze the current tick values
+            set(ax,'XTickMode','manual','YTickMode','manual');
+            % Now restore the labels of the gplotmatrix
+            set(ax,'XTickLabel',XTickLabel,'YTickLabel',YTickLabel);
 
+            set(get(ax,'XLabel'),'String',XLabel,'Rotation',90,'Interpreter','none'); %DDDDD commented
+            set(get(ax,'YLabel'),'String',YLabel,'Rotation',0, 'Interpreter','none');  %DDDDD commented
+            
+        case 'box'
+            %else % if strcmp(dispopt,'box')==1
 
-    else % if strcmp(dispopt,'box')==1
+            if i==1
+                hylabel=get(ax,'ylabel');
+                labForAxis=get(hylabel,'String');
+            elseif i==size(AX,2)
+                hylabel=get(ax,'xlabel');
+                labForAxis=get(hylabel,'String');
+            else
 
-        if i==1
-            hylabel=get(ax,'ylabel');
-            labForAxis=get(hylabel,'String');
-        elseif i==size(AX,2)
-            hylabel=get(ax,'xlabel');
-            labForAxis=get(hylabel,'String');
-        else
+            end
 
-        end
+            % Get the Ylim of ax
+            axYlim=get(ax,'Ylim');
 
-        % Get the Ylim of ax
-        axYlim=get(ax,'Ylim');
+            axPosition = get(ax,'position');
 
-        axPosition = get(ax,'position');
+            % Now we create an axes object using axPosition.
+            ax = axes('Position',axPosition);
 
-        % Now we create an axes object using axPosition.
-        ax = axes('Position',axPosition);
-        %set(ax,'XTickLabel',[]); % DDDD removes the TickLabels: must be optional
+            if lunigroup <= 5
+                plotstyle = 'traditional';
+            else
+                plotstyle = 'compact';
+            end
 
-        if lunigroup <= 5
-            plotstyle = 'traditional';
-        else
-            plotstyle = 'compact';
-        end
+            % Boxplots are superimposed on object ax
+            hbp = boxplot(ax,Y(:,i),groupv,'plotstyle',plotstyle,'colors',clr(unigroup),'labelverbosity','minor','symbol','+');
+            
+            % Remove the x tick labels from the graph containing boxplots
+            if i<p || useTickLabels == false
+                set(ax,'XTickLabel',[]);  % DD it was {' '}
+            end
 
-        % Boxplots are superimposed on object ax
-        hbp = boxplot(ax,Y(:,i),groupv,'plotstyle',plotstyle,'colors',clr(unigroup),'labelverbosity','minor','symbol','+');
+            % Remove the y tick labels from the graph containing boxplots
+            if i>1 || useTickLabels == false
+                set(ax,'YTickLabel',[]);  % DD it was {' '}
+            end
+            
+            % Set the proper Ylim to the boxplots
+            set(ax,'Ylim',axYlim)
 
-        % Remove the x tick labels from the graph containing boxplots
-        set(ax,'XTickLabel',[]);  % DD it was {' '} 
+            % Put the graph containing boxplots in the correct position
+            set(ax,'position',axPosition);
 
-        % Remove the y tick labels from the graph containing boxplots
-        set(ax,'YTickLabel',[]);  % DD it was {' '} 
+            % The label is reput on the x or y axis
+            if i==1
+                ylabel(labForAxis,'Interpreter','none','Rotation',0)
+            elseif i== size(AX,2)
+                xlabel(labForAxis,'Interpreter','none','Rotation',90)
+            else
+            end
 
-        % Set the proper Ylim to the boxplots
-        set(ax,'Ylim',axYlim)
+            delete(AX(end,i))
 
-        % Put the graph containing boxplots in the correct position
-        set(ax,'position',axPosition);
-
-        % The label is reput on the x or y axis
-        if i==1
-            ylabel(labForAxis,'Interpreter','none','Rotation',0)
-        elseif i== size(AX,2)
-            xlabel(labForAxis,'Interpreter','none','Rotation',90)
-        else
-        end
-
-        delete(AX(end,i))
-
-        % The tag is set for later use in add2spm by clickableMultiLegend
-        for gg=1:numel(unigroup)
-            set(hbp(:,gg),'Tag',['boxplot' num2str(gg)]);
-        end
+            % The tag is set for later use in add2spm by clickableMultiLegend
+            for gg=1:numel(unigroup)
+                set(hbp(:,gg),'Tag',['boxplot' num2str(gg)]);
+            end
     end
 
     % The empty panel created by gplotmatrix in position (i,i) is
@@ -1538,8 +1535,8 @@ if colorBackground==true
     %cmap  = turbo(scmap);
     %cmapBackground=colormap(cmap);
 
-    RColormap = load('RColormap');
-    cmapBackground = colormap(RColormap.RColormap);
+    %RColormap = load('RColormap');
+    cmapBackground = colormap(colormapdef);
 
 
     % The range of correlation coefficient is mapped into [0 1]
@@ -1593,8 +1590,8 @@ if  lowerORupper ==true
     %cmap  = flipud(parula(scmap));
     %cmap  = RColormap(scmap);
     %cmap  = colormap(cmap);
-    RColormap = load('RColormap');
-    cmap = colormap(RColormap.RColormap);
+    %RColormap = load('RColormap');
+    cmap = colormap(colormapdef);
     %shading interp;
 
     %cmap=colormap("turbo");
@@ -2000,8 +1997,9 @@ if ~isempty(undock) % && ~strcmp(undock, 'interactive') % [To Add]
     %[To Add]
 end
 
-%%
-% set the options.datatooltip (enable/disable interactive data cursor mode)
+
+
+%% set the options.datatooltip (enable/disable interactive data cursor mode)
 if datatooltip
     try
         % chkgpu=gpuDeviceCount; %#ok<NASGU>
@@ -2019,14 +2017,14 @@ if datatooltip
         % Declare a custom datatooltip update function to display additional
         % information about the selected unit
 
-
-
         set(hdt,'UpdateFcn',{@spmplotLbl,out})
     catch
         disp('No graphical device, interactive datatooltip not enabled')
     end
 
 end
+
+
 
 %% Brush mode (call to function selectdataFS)
 
@@ -3128,6 +3126,8 @@ end
         % cascade;
 
     end
+
+% set(hfigure,'Visible', 'On');
 
 end
 %FScategory:VIS-Mult
