@@ -159,6 +159,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         plo.nameY = cell array of strings containing the labels of the
 %                variables. As default value, the labels which are added
 %                are Y1, ..., Yv.
+%      plo.nameYrot = rotation angle for the labels of the variables. 
+%                As default value it is 0, which means no rotation.
 %         plo.clr = a string of color specifications. By default, the colors
 %                are 'brkmgcy'.
 %         plo.sym = a string or a cell of marker specifications. For example,
@@ -1157,6 +1159,13 @@ if isstruct(plo)
         end
     end
 
+    d=find(strcmp('nameYrot',fplo));
+    if d>0
+        nameYrot=plo.nameYrot;
+    else
+        nameYrot = 0;
+    end
+
     d=find(strcmp('labeladd',fplo));
     if d>0
         labeladd=plo.labeladd;
@@ -1262,6 +1271,7 @@ else
     numtext=cellstr(num2str(seq,'%d'));
 
     useTickLabels = true;
+    nameYrot      = 0;
 end
 
 if iscell(group) || isstring(group) || iscategorical(group)
@@ -1555,7 +1565,7 @@ for i = 1:p
 
         if i~=j
             set(gcf,'CurrentAxes',AX(i,j));
-            xlimits = get(AX(j,i),'Xlim');
+            xlimits = get(AX(j,i),'Xlim'); % DDDD Why j,i intead of i,j?
             ylimits = get(AX(j,i),'Ylim');
             if ~isempty(units)
 
@@ -1577,34 +1587,11 @@ end
 
 if  lowerORupper ==true
 
-    % Part referred to colormap to use
-    % nn = 256;              % number of colors
-    % R1 = linspace(1,0,nn); % Red from 1 to 0
-    % B = linspace(0,1,nn);  % Blue from 0 to 1
-    % G = zeros(size(R1));   % Green all zero
-    % cmap=colormap( [R1(:), G(:), B(:)] );
-
-    % % colormap to discuss
+    % colormap
     scmap = 256;
-    %cmap  = flipud(turbo(scmap));
-    %cmap  = flipud(parula(scmap));
-    %cmap  = RColormap(scmap);
-    %cmap  = colormap(cmap);
-    %RColormap = load('RColormap');
-    cmap = colormap(colormapdef);
-    %shading interp;
-
-    %cmap=colormap("turbo");
-    % % c = jet;
-    % % c = flipud(c);
-    % % cmap=colormap(c);
-
     index = linspace(-1, 1, scmap);
-    % if lowerORupper ==true
-    %     warning('off','MATLAB:handle_graphics:exceptions:SceneNode');
-    % else
-    %     justlow=false;
-    % end
+    cmap  = colormap(colormapdef);
+    %cmap  = flipud(cmap);
 
     if lunigroup>1
         Rgroup=zeros(p,p,lunigroup);
@@ -1625,25 +1612,19 @@ if  lowerORupper ==true
                     method=upper;
                 end
 
-                if method~="scatter"  %DDDD
+                if method~="scatter"  
                     warning('off','MATLAB:handle_graphics:exceptions:SceneNode');
-                    %    set(gcf,'CurrentAxes',AX(i,j));
-                    %    cla(gca)
+   
                     if i==1 && j==p
+                        % this is the panel of the legend position:
+                        % elements can just be made invisible
+                        set(H(i,j,:),'Visible','off','Color','w'); %DDDD
                         set(findobj(AX(i,j),'Type','line'),'Visible','off');
                     else
+                        delete(H(i,j,:)); % DDDD delete data (it should accelerate the graphic generation)
                         cla(AX(i,j));
                     end
 
-                    %{
-                        legTMP = findobj('Tag', 'spmclickleg');
-                        clickableMultiLegend(get(legTMP(1), 'String'));
-
-                        set(gcf,'CurrentAxes',AX(1,4));
-                        clickableMultiLegend(guni);
-
-                        h = findobj('Tag','legend');
-                    %}
                     if method=="number"
 
                         if lunigroup==1
@@ -2180,10 +2161,10 @@ if ~isempty(databrush) || iscell(databrush)
         i=i+1;
         figure(plot1);
 
-        % Remark: function selectdataFS cannot be used on the current figure if
-        % the "selection mode" or the "zoom tool" are on. Setting the
-        % plotedit mode initially to on and then to off, has the effect to
-        % deselect plotedit mode.
+        % Remark: function selectdataFS cannot be used on the current
+        % figure if the "selection mode" or the "zoom tool" are on. Setting
+        % the plotedit mode initially to on and then to off, has the effect
+        % to deselect plotedit mode.
         plotedit on
         plotedit off
 
