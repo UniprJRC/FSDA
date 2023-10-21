@@ -1707,7 +1707,7 @@ if  lowerORupper ==true
                         axis equal
                         axis off
                     elseif method=="none"
-                        axis off
+                        %axis off
                     else
                     end
                 end
