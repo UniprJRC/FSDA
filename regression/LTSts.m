@@ -2477,6 +2477,8 @@ else
     end
 end
 
+% save the level shift positions tested by the procedure
+out.lshift = lshift;
 
 
 %% Create plots
@@ -2769,6 +2771,8 @@ end
 if ~isequaln(y,yin)
     error('FSDA:LTSts:yDiscrepancy','y should not change in this code. Please check if the global variable has been misused.');
 end
+
+
 
 %% The part below contains subfunctions which are used only inside this file
 

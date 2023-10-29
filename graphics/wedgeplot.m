@@ -304,6 +304,11 @@ end
 
 % Check if input is a structure
 if isstruct(RES)
+    if isfield(RES,'lshift') %DDDD
+        lshift = RES.lshift; 
+    else
+        lshift = [];
+    end
     if isfield(RES,'posLS')
         posLS = RES.posLS;
     else
@@ -321,6 +326,7 @@ if isstruct(RES)
     end
 else
     % Take absolute values of RES
+    lshift = [];
     RES = abs(RES);
     residuals = [];
     posLS = [];
@@ -329,8 +335,13 @@ end
 [T, l]  = size(RES);
 
 % LSH = vector of integers associated with tentative level shift positions
-lshift = (T-l)/2;
-LSH    = (lshift+1):(T-lshift);
+if isempty(lshift)   
+    lshift = (T-l)/2; 
+    LSH    = (lshift+1):(T-lshift);
+else
+    LSH = lshift;  %DDDD
+end
+
 
 %% colormap
 scmap = T*l;
@@ -564,6 +575,11 @@ end
 position = get(gca,'OuterPosition');
 [left, bottom, width, height] = deal(position(1),position(2),position(3),position(4));
 set(gca,'OuterPosition',[left 0.7*bottom width height]);
+
+if ~isempty(posLS)
+    yline(posLS,'Color','blue','LineWidth',2,'Alpha',0.2,'LineStyle',':');
+    xline(posLS,'Color','blue','LineWidth',2,'Alpha',0.2,'LineStyle',':');
+end
 
 end
 %FScategory:VIS-Reg
