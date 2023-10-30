@@ -942,6 +942,20 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
+    %% Example 3 of use of option typespm with lower = "none".
+    close all
+    load swiss_banknotes.mat
+    X=swiss_banknotes;
+    group=ones(200,1);
+    group(101:end)=2;
+    % In the lower part the correlations are shown with numbers
+    typespm=struct;
+    typespm.lower="none";
+    typespm.upper="scatter";
+    spmplot(swiss_banknotes,'group',group,'typespm',typespm);
+%}
+
+%{
     %% Example of use of option colorBackground.
     % if 'colorBackground is true the background color of each scatter 
     % depends on the value of the correlation coefficient 
@@ -1706,11 +1720,26 @@ if  lowerORupper ==true
                         set(H(i,j,:),'Visible','off','Color','w'); %DDDD
                         set(findobj(AX(i,j),'Type','line'),'Visible','off');
                     else
-                        delete(H(i,j,:)); % DDDD delete data (it should accelerate the graphic generation)
+                        delete(H(i,j,:)); % DDDD delete data (should accelerate the graphic generation)
                         cla(AX(i,j));
                     end
 
-                    if method=="number"
+                    if method=="none"
+                        %axis off   % DDDDDD bug on "none"
+                        if j==1
+                            qqq=get(AX(i,j),'YTickLabel');
+                            ppp=get(AX(i,j),'YLabel'); 
+                            ppp=ppp.String;
+                        end
+                        axis(AX(i,j),'off'); 
+                        if i==j+1
+                            AX(p+1,j+1).YTickLabel    = qqq;
+                            AX(p+1,j+1).YLabel.String = ppp;
+                            AX(p+1,j+1).XLabel.String = [];
+                            AX(p+1,j+1).XTickLabel    = qqq;
+                        end
+                        
+                    elseif method=="number"
 
                         if lunigroup==1
                             text(AX(i,j),0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
@@ -1791,8 +1820,8 @@ if  lowerORupper ==true
 
                         axis equal
                         axis off
-                    elseif method=="none"
-                        %axis off   % DDDD commented to fix the bug on none
+                    % elseif method=="none"
+                    %     axis off   % DDDDDD commented to fix the bug on none
                     else
                     end
                 end
