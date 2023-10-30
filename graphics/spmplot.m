@@ -166,8 +166,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                they are too long. The default value is 0, which indicates
 %                that the labels length should not be changed.
 %         plo.clr = a string of color specifications. By default, the
-%         colors
-%                are 'brkmgcy'.
+%                colors are 'brkmgcy'.
 %         plo.sym = a string or a cell of marker specifications. For example,
 %                if sym = 'o+x', the first group will be plotted with a
 %                circle, the second with a plus, and the third with a 'x'.

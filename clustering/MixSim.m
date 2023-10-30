@@ -348,15 +348,15 @@ function [out]  = MixSim(k,v,varargin)
 
     n=200;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
-    spmplot(X,id,[],'box');
+    [H,AX,BigAx] = spmplot(X,id,[],'box');
     set(gcf,'Name','restrfactor=1.1: almost homogeneous groups')
-    title('\texttt{restrfactor=1.1}: almost homogeneous groups','fontsize',17,'interpreter','latex');
+    title(BigAx,'\texttt{restrfactor=1.1}: almost homogeneous groups','fontsize',17,'interpreter','latex');
 
     [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);
     figure;
-    spmplot(X1,id1,[],'box')
+    [H,AX,BigAx] = spmplot(X1,id1,[],'box')
     set(gcf,'Name','Heterogeneous groups')
-    title('\texttt{restrfactor=`''}: heterogeneous groups','fontsize',17,'interpreter','latex')
+    title(BigAx,'\texttt{restrfactor=`''}: heterogeneous groups','fontsize',17,'interpreter','latex')
     cascade
 %}
 
@@ -387,13 +387,13 @@ function [out]  = MixSim(k,v,varargin)
     disp(out1.OmegaMap)
 
     disp('Comparison using interactive scatter plot matrices')
-    spmplot(X,id,[],'box');
+    [H,AX,BigAx] = spmplot(X,id,[],'box');
     set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
-    title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
+    title(BigAx,['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
     figure
-    spmplot(X1,id1,[],'box');
+    [H,AX,BigAx] = spmplot(X1,id1,[],'box');
     set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
-    title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
+    title(BigAx,['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
     cascade
 %}
 
