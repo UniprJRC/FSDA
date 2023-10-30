@@ -448,6 +448,20 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
+    %% Call of spmplot with option plo: Labels are rotated.
+    load head;
+
+    plo=struct;
+    plo.TickLabels  = []; 
+    plo.nameY       = head.Properties.VariableNames;
+    plo.nameYlength = 10;
+    plo.nameYrot    = 40;
+    spmplot(head,'plo',plo);
+
+%}
+
+
+%{
     % Call of spmplot without name/value pairs.
     % Iris data: scatter plot matrix with univariate boxplots on the main
     % diagonal.
@@ -1321,9 +1335,10 @@ else
     numtext=cellstr(num2str(seq,'%d'));
 
     theTickLabels = 'auto';
+    nameYlength   = 0;
+
     nameYrot      = 0;
 
-    nameYlength = 0;
 end
 
 if iscell(group) || isstring(group) || iscategorical(group)
@@ -1404,15 +1419,15 @@ for i=1:p
     % underscore are badly visualised %DDDD
     if ~isempty(nameY)
         %  Rotate labels
-        ylabel( AX(i,1), nameY(i),'Rotation',0 ,'Interpreter','none');
-        xlabel( AX(p,i), nameY(i),'Rotation',90,'Interpreter','none');
+        ylabel( AX(i,1), nameY(i),'Rotation',0+nameYrot ,'Interpreter','none');
+        xlabel( AX(p,i), nameY(i),'Rotation',90-nameYrot,'Interpreter','none');
 
         if i==p
             tmphX = get(AX(p+1,p), 'Xlabel');
             tmphY = get(AX(p+1,1), 'Ylabel');
             set(tmphX,'Interpreter','none');
             set(tmphY,'Interpreter','none');
-            xlabel( AX(p+1,p), nameY(p),'Rotation',90);
+            xlabel( AX(p+1,p), nameY(p),'Rotation',90-nameYrot);
             %ylabel( AX(p+1,1), nameY(p),'Rotation',0);  %DDDDD commentato
         end
     end
@@ -1455,8 +1470,8 @@ for i=1:p
             xtickangle(ax,0); % DDDD
             ytickangle(ax,0); % DDDD
             
-            set(get(ax,'XLabel'),'String',XLabel,'Rotation',90,'Interpreter','none'); %DDDDD commented
-            set(get(ax,'YLabel'),'String',YLabel,'Rotation',0, 'Interpreter','none');  %DDDDD commented
+            set(get(ax,'XLabel'),'String',XLabel,'Rotation',90-nameYrot,'Interpreter','none'); %DDDDD commented
+            set(get(ax,'YLabel'),'String',YLabel,'Rotation',0+nameYrot, 'Interpreter','none');  %DDDDD commented
 
         case 'box'
             %else % if strcmp(dispopt,'box')==1
@@ -1506,9 +1521,9 @@ for i=1:p
 
             % The label is reput on the x or y axis
             if i==1
-                ylabel(labForAxis,'Interpreter','none','Rotation',0)
+                ylabel(labForAxis,'Interpreter','none','Rotation',0+nameYrot);
             elseif i== size(AX,2)
-                xlabel(labForAxis,'Interpreter','none','Rotation',90)
+                xlabel(labForAxis,'Interpreter','none','Rotation',90-nameYrot);
             else
             end
 
