@@ -159,9 +159,12 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         plo.nameY = cell array of strings containing the labels of the
 %                variables. As default value, the labels which are added
 %                are Y1, ..., Yv.
-%      plo.nameYrot = rotation angle for the labels of the variables.
-%                As default value it is 0, which means no rotation.
-%   plo.nameYlength = scalar indicating the maximum length of the labels 
+%      plo.nameYrot = Angle (in degrees) for the labels of the variables. 
+%                 The default is 90, which means no rotation with respect 
+%                 to the MATLAB default. The setting nameYrot = 0 produces
+%                 a rotation perpendicular to the axes, which is often used
+%                 in R graphics. Intermediate values are of corse possible.
+%   plo.nameYlength = scalar indicating the maximum length of the labels
 %                of the variables. It is used to shorten the labels when
 %                they are too long. The default value is 0, which indicates
 %                that the labels length should not be changed.
@@ -182,12 +185,12 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       plo.label : cell of length n containing the labels of the units. If
 %                   this field is empty the sequence 1:n will be used to
 %                   label the units.
-%  plo.TickLabels : character array containing the formatSpec applied 
+%  plo.TickLabels : character array containing the formatSpec applied
 %                   to the TickLabels of the axes. By default the user can
 %                   leave this field unspecified, and in this case the
 %                   formatSpec is determined automatically. Otherwise the
 %                   user should specify a formatSpec following the standard
-%                   syntax of sprintf and fprintf, or can set TickLabels 
+%                   syntax of sprintf and fprintf, or can set TickLabels
 %                   to '' or [] to remove the TickLabels from the axes.
 %                   Example - 'plo',true
 %                   Data Types - Empty value, scalar or structure.
@@ -454,7 +457,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     plo.TickLabels  = []; 
     plo.nameY       = head.Properties.VariableNames;
     plo.nameYlength = 10;
-    plo.nameYrot    = 40;
+    plo.nameYrot    = 0;
     spmplot(head,'plo',plo);
 
 %}
@@ -918,11 +921,13 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     X=swiss_banknotes;
     group=ones(200,1);
     group(101:end)=2;
+    plo = struct;
+    plo.TickLabels  = []; 
     % In the lower part the correlations are shown with numbers
     typespm=struct;
     typespm.lower="number";
     typespm.upper="scatter";
-    spmplot(swiss_banknotes,'group',group,'typespm',typespm);
+    spmplot(swiss_banknotes,'plo',plo,'group',group,'typespm',typespm);
 %}
 
 %{
@@ -932,12 +937,15 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     X=swiss_banknotes;
     group=ones(200,1);
     group(101:end)=2;
+    plo = struct;
+    plo.TickLabels  = []; 
+
     % In the lower part the correlations are shown with squares
     % and in the upper part with numbers
     typespm=struct;
     typespm.lower="square";
     typespm.upper="number";
-    spmplot(swiss_banknotes,'group',group,'typespm',typespm);
+    spmplot(swiss_banknotes,'group',group,'plo',plo,'typespm',typespm);
 %}
 
 %{
@@ -947,11 +955,13 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     X=swiss_banknotes;
     group=ones(200,1);
     group(101:end)=2;
+    plo = struct;
+    plo.TickLabels  = []; 
     % In the lower part the correlations are shown with numbers
     typespm=struct;
     typespm.lower="none";
     typespm.upper="scatter";
-    spmplot(swiss_banknotes,'group',group,'typespm',typespm);
+    spmplot(swiss_banknotes,'group',group,'plo',plo,'typespm',typespm);
 %}
 
 %{
@@ -1240,7 +1250,7 @@ if isstruct(plo)
     if d>0
         nameYrot=plo.nameYrot;
     else
-        nameYrot = 0;
+        nameYrot = 90;
     end
 
     d=find(strcmp('labeladd',fplo));
@@ -1350,7 +1360,7 @@ else
     theTickLabels = 'auto';
     nameYlength   = 0;
 
-    nameYrot      = 0;
+    nameYrot      = 90;
 
 end
 
@@ -1395,26 +1405,26 @@ end
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 p=size(AX,2);
 
-if isempty(theTickLabels) 
+if isempty(theTickLabels)
     % Removes the TickLabels if requested % DDDD
     set(AX,'XTickLabel',[]);
     set(AX,'YTickLabel',[]);
 elseif ischar(theTickLabels) && strcmp(theTickLabels(1),'%')
-    % set the format of the ticklabels 
+    % set the format of the ticklabels
     for i=1:p
-        format_ticklbl(AX(p,i),'X','%.2f'); 
+        format_ticklbl(AX(p,i),'X','%.2f');
         format_ticklbl(AX(i,1),'Y','%.2f');
     end
-elseif ischar(theTickLabels) && strcmp(theTickLabels,'auto') 
+elseif ischar(theTickLabels) && strcmp(theTickLabels,'auto')
     % do nothing: keep the TickLabels generated by gplotmatrix
 else
     error('FSDA:spmplot:InvalidFormat','The TickLabels format is wrongly specified.');
 end
 
-if nameYlength>0 
+if nameYlength>0
     % set the lenght of the labels of the axes % DDDD
     for i=1:p
-        nameY{i} = format_lbl(AX(p,i),'X',nameYlength); 
+        nameY{i} = format_lbl(AX(p,i),'X',nameYlength);
         format_lbl(AX(i,1),'Y',nameYlength);
     end
 else
@@ -1461,7 +1471,7 @@ for i=1:p
             XTickLabel = get(ax,'XTickLabel');
             YTickLabel = get(ax,'YTickLabel');
 
-            %XTickLabel = format_ticklbl(ax,'X','%.2f'); 
+            %XTickLabel = format_ticklbl(ax,'X','%.2f');
             %YTickLabel = format_ticklbl(ax,'Y','%.2f');
 
             XLabel     = get(get(ax,'XLabel'),'String');
@@ -1482,7 +1492,7 @@ for i=1:p
             set(ax,'XTickLabel',XTickLabel,'YTickLabel',YTickLabel);
             xtickangle(ax,0); % DDDD
             ytickangle(ax,0); % DDDD
-            
+
             set(get(ax,'XLabel'),'String',XLabel,'Rotation',90-nameYrot,'Interpreter','none'); %DDDDD commented
             set(get(ax,'YLabel'),'String',YLabel,'Rotation',0+nameYrot, 'Interpreter','none');  %DDDDD commented
 
@@ -1727,17 +1737,17 @@ if  lowerORupper ==true
                         %axis off   % DDDDDD bug on "none"
                         if j==1
                             qqq=get(AX(i,j),'YTickLabel');
-                            ppp=get(AX(i,j),'YLabel'); 
+                            ppp=get(AX(i,j),'YLabel');
                             ppp=ppp.String;
                         end
-                        axis(AX(i,j),'off'); 
+                        axis(AX(i,j),'off');
                         if i==j+1
                             AX(p+1,j+1).YTickLabel    = qqq;
                             AX(p+1,j+1).YLabel.String = ppp;
                             AX(p+1,j+1).XLabel.String = [];
                             AX(p+1,j+1).XTickLabel    = qqq;
                         end
-                        
+
                     elseif method=="number"
 
                         if lunigroup==1
@@ -1819,8 +1829,8 @@ if  lowerORupper ==true
 
                         axis equal
                         axis off
-                    % elseif method=="none"
-                    %     axis off   % DDDDDD commented to fix the bug on none
+                        % elseif method=="none"
+                        %     axis off   % DDDDDD commented to fix the bug on none
                     else
                     end
                 end
@@ -2517,7 +2527,7 @@ if ~isempty(databrush) || iscell(databrush)
                         % the strings used to label the tick marks
                         XTickLabel = get(ax,'XTickLabel');
                         YTickLabel = get(ax,'YTickLabel');
-                        %XTickLabel = format_ticklbl(ax,'X','%.2f'); 
+                        %XTickLabel = format_ticklbl(ax,'X','%.2f');
                         %YTickLabel = format_ticklbl(ax,'Y','%.2f');
 
                         XLabel = get(get(ax,'XLabel'),'String');
@@ -3223,7 +3233,7 @@ end
 
     end
 
-    % function to adjust the format of tick labels
+% function to adjust the format of tick labels
     function tickLabels = format_ticklbl(ax,axName,format)
         if nargin<3 || isempty(format)
             format = '%.1f';
@@ -3236,7 +3246,7 @@ end
         set(ax,[axName 'TickLabel'],tickLabels);
     end
 
-    % function to adjust the lenght of the axes label
+% function to adjust the lenght of the axes label
     function LabelStringCut = format_lbl(ax,axName,maxcar)
         %if nargin<3 || isempty(format)
         %    format = '%.1f';
@@ -3245,9 +3255,9 @@ end
         LabelString = Label.String;
         if ~isempty(LabelString)
             LabelStringCut = LabelString(1:maxcar);
-            set(Label,'String',LabelStringCut);       
+            set(Label,'String',LabelStringCut);
         end
-        
+
     end
 
 end
