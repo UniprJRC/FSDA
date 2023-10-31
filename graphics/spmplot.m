@@ -1409,7 +1409,7 @@ end
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 p=size(AX,2);
 
-if isempty(TickLabelsFormat) || TickLabelsFormat == 0
+if isempty(TickLabelsFormat) || (isnumeric(TickLabelsFormat) && TickLabelsFormat == 0)
     % Removes the TickLabels if requested % DDDD
     set(AX,'XTickLabel',[]);
     set(AX,'YTickLabel',[]);
@@ -1539,7 +1539,7 @@ for i=1:p
             hbp = boxplot(ax,Y(:,i),groupv,'plotstyle',plotstyle,'colors',clr(unigroup),'labelverbosity','minor','symbol','+');
 
             % Remove the x tick labels from the graph containing boxplots
-            if i<p || isempty(TickLabelsFormat) || TickLabelsFormat == 0
+            if i<p || isempty(TickLabelsFormat) || (isnumeric(TickLabelsFormat) && TickLabelsFormat == 0)
                 set(ax,'XTickLabel',[]);  % DD it was {' '}
             end
 
