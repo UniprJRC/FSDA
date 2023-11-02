@@ -372,7 +372,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %   will be centered with respect to the matrix of axes.
 %
 %
-% See also: spmplot, mdrplot, fanplot, resfwdplot, add2yX
+% See also: spmplot, mdrplot, fanplotFS, resfwdplot, add2yX
 %
 % Copyright 2008-2023.
 % Written by FSDA team

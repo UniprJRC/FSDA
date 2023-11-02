@@ -1,7 +1,7 @@
-function brushedUnits=fanplot(out,varargin)
-%fanplot plots the fan plot for transformation in linear regression or deletion t stat
+function brushedUnits=fanplotFS(out,varargin)
+%fanplotFS plots the fan plot for transformation in linear regression or deletion t stat
 %
-%<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fanplotFS')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -262,26 +262,26 @@ function brushedUnits=fanplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('fanplotFS')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 
 %{
-    %% fanplot with all default options.
+    %% fanplotFS with all default options.
     % load the wool data
     XX=load('wool.txt');
     y=XX(:,end);
     X=XX(:,1:end-1);
-    % FSRfan and fanplot with all default options
+    % FSRfan and fanplotFS with all default options
     [out]=FSRfan(y,X);
     fanplotFS(out);
 %}
 %
 %{
-    %%fanplot with optional arguments.
-    %FSRfan and fanplot with specified lambda
+    %%fanplotFS with optional arguments.
+    %FSRfan and fanplotFS with specified lambda
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
@@ -294,7 +294,7 @@ function brushedUnits=fanplot(out,varargin)
 %
 %{
     %Interactive_example
-    %FSRfan and fanplot with databrush option.
+    %FSRfan and fanplotFS with databrush option.
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
@@ -305,7 +305,7 @@ function brushedUnits=fanplot(out,varargin)
 %
 %{
     %Interactive_example
-    %FSRfan and fanplot with databrush, persist, label and RemoveLabels options.
+    %FSRfan and fanplotFS with databrush, persist, label and RemoveLabels options.
     %Removelabels is a parameter of SelectdataFS function
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -317,7 +317,7 @@ function brushedUnits=fanplot(out,varargin)
 %
 %{
     %Interactive_example
-    %FSRfan and fanplot with databrush, bivarfit, label and  RemoveLabels options.
+    %FSRfan and fanplotFS with databrush, bivarfit, label and  RemoveLabels options.
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
@@ -328,7 +328,7 @@ function brushedUnits=fanplot(out,varargin)
 
 %{
     %Interactive_example
-    %FSRfan and fanplot with databrush  and selectionmode options.
+    %FSRfan and fanplotFS with databrush  and selectionmode options.
     %Example of the use of persistent cumulative brush.
     %Every time a brushing action is performed
     %current highlightments are added to previous highlightments
@@ -344,7 +344,7 @@ function brushedUnits=fanplot(out,varargin)
 %}
 
 %{
-    %fanplot with datatooltip passed as scalar.
+    %fanplotFS with datatooltip passed as scalar.
     %That is using default options for datacursor (i.e. DisplayStyle=window).
     load('loyalty.txt');
     y=loyalty(:,4);
@@ -405,12 +405,12 @@ function brushedUnits=fanplot(out,varargin)
 %}
 
 %{
-    % fanplot with option highlight (first example).
+    % fanplotFS with option highlight (first example).
     % load the wool data
     XX=load('wool.txt');
     y=XX(:,end);
     X=XX(:,1:end-1);
-    % FSRfan and fanplot with all default options
+    % FSRfan and fanplotFS with all default options
     [out]=FSRfan(y,X);
     % Units 24 27 and 23 enter tha last three steps in the search with la=0.
     % Option highlight enables us to understand when these 3 units join the
@@ -419,7 +419,7 @@ function brushedUnits=fanplot(out,varargin)
 %}
 
 %{
-    %% fanplot with option highlight (second example).
+    %% fanplotFS with option highlight (second example).
     load gasoline.mat
     y=gasoline{:,2};
     X=gasoline{:,1};
@@ -457,7 +457,7 @@ function brushedUnits=fanplot(out,varargin)
 %}
 
 %{
-    %% fanplot based on the output of FSRaddt.
+    %% fanplotFS based on the output of FSRaddt.
     n=200;
     p=3;
     randn('state', 123456);
@@ -505,7 +505,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:fanplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:fanplotFS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -600,7 +600,7 @@ else
 end
 
 if fanplotScore==true
-    set(gcf,'Name',['Fanplot for lambda=' mat2str(out.la) ]);
+    set(gcf,'Name',['fanplot for lambda=' mat2str(out.la) ]);
     la=out.la(:);
     las=string(la);
 else
@@ -677,7 +677,7 @@ end
 
 
 
-% SET SOME FIGURE PROPERTIES OF THE FANPLOT
+% SET SOME FIGURE PROPERTIES OF THE fanplot
 
 % FontSize = font size of the axes labels
 FontSize =options.FontSize;
@@ -1409,7 +1409,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 end
 
                 % Before waitforbuttonpress:
-                % - the fanplot is highlighted again
+                % - the fanplotFS is highlighted again
                 figure(hfan);
 
                 % Lay down the plots before continuing

@@ -397,7 +397,7 @@ function [out]=FSRfan(y,X,varargin)
     % Function FSRfan stores the score test statistic.
     % In this case we use the five most common values of lambda are considered
     [out]=FSRfan(y,X);
-    fanplot(out);
+    fanplotFS(out);
     %The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.
 %}
 
@@ -488,8 +488,8 @@ function [out]=FSRfan(y,X,varargin)
     [outBC]=FSRfan(y,X,'nsamp',0);
     % Store the score test statistic using Yeo and Johnson transformation.
     [outYJ]=FSRfan(y,X,'family','YJ','nsamp',0);
-    fanplot(outBC,'titl','Box Cox');
-    fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
+    fanplotFS(outBC,'titl','Box Cox');
+    fanplotFS(outYJ,'titl','Yeo and Johnson','tag','YJ');
     disp('Maximum difference in absolute value')
     disp(max(max(abs(outYJ.Score-outBC.Score))))
 %}

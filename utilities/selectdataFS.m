@@ -8,7 +8,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 % other specific graphical functions with brushing and linking
 % functionalities. Using this toolbox generally the user does not call
 % function selectdataFS directly, but indirectly inside functions
-% resfwdplot, fanplot, mdrplot, or yXplot through options databrush.
+% resfwdplot, fanplotFS, mdrplot, or yXplot through options databrush.
 % For using selectdata in other more
 % general contexts we suggest using the original version of John D'Errico
 % and referring to the native documentation in the m-file.
