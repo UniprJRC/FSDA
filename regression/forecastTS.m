@@ -290,6 +290,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %{
     %% Linear time varying seasonal component.
     close all
+    rng('default')
     rng(1)
     model=struct;
     model.trend=1;

@@ -16,7 +16,7 @@
 %   basicPower              - Computes the basic power transformation                                                                                             - UTISTAT         - 2023 Apr 19
 %   bwe                     - Estimates the bandwidth smoothing parameter for kernel density estimation                                                           - UTISTAT         - 2023 Apr 06
 %   CEVmodel                - Computes price and instantaneous variance processes from the CEV model                                                              - UTISTAT         - 2022 Nov 10
-%   corrcdf                 - Computes correlation coefficient probability distribution function                                                                  - ProbDist        - 2022 Dec 02
+%   corrcdf                 - Computes correlation coefficient probability distribution function                                                                  - ProbDist        - 2023 May 29
 %   corrpdf                 - Computes correlation coefficient probability density function                                                                       - ProbDist        - 2022 Dec 02
 %   crosstab2datamatrix     - Recreates the original data matrix X from contingency table N                                                                       - MULT-Categorical- 2023 Apr 19
 %   ctsub                   - Computes numerical integration from x(1) to z(i) of y=f(x)                                                                          - UTISTAT         - 2023 Apr 06
@@ -45,9 +45,9 @@
 %   HUrho                   - Computes rho function for Huber                                                                                                     - UTISTAT         - 2022 Nov 10
 %   HUwei                   - Computes weight function psi(u)/u for Huber                                                                                         - UTISTAT         - 2023 Apr 06
 %   HYPbdp                  - Finds constant c which is associated to the requested breakdown point for hyp. tan. estimator                                       - UTISTAT         - 2023 May 28
-%   HYPc                    - Computes breakdown point and efficiency associated with constant chyperbolic tangent estimator (for a given value of k=sup CVC)     - UTISTAT         - 2023 Apr 19
+%   HYPc                    - Computes breakdown point and efficiency associated with constant chyperbolic tangent estimator (for a given value of k=sup CVC)     - UTISTAT         - 2023 May 30
 %   HYPck                   - Computes values of the scalars A, B, d for hyperbolic tangent estimator                                                             - UTISTAT         - 2022 Nov 10
-%   HYPeff                  - Finds constant c which is associated to the requested efficiency for hyperbolic estimator                                           - UTISTAT         - 2022 Nov 10
+%   HYPeff                  - Finds constant c which is associated to the requested efficiency for hyperbolic estimator                                           - UTISTAT         - 2023 May 29
 %   HYPk                    - Computes breakdown point and efficiency for hyp. tan. estimator                                                                     - UTISTAT         - 2023 Apr 19
 %   HYPpsi                  - Computes psi function for hyperbolic tangent estimator                                                                              - UTISTAT         - 2022 Nov 10
 %   HYPpsider               - Computes derivative of psi function for hyperbolic tangent estimator                                                                - UTISTAT         - 2022 Nov 10
@@ -90,12 +90,12 @@
 %   PDpsider                - Computes derivative of psi function (second derivative of rho function) for minimum power divergence estimator                      - UTISTAT         - 2023 Apr 07
 %   PDpsix                  - Computes psi function (derivative of rho function) times x for minimum density power divergence estimator                           - UTISTAT         - 2023 Apr 07
 %   PDrho                   - Computes rho function for minimum density power divergence estimator                                                                - UTISTAT         - 2023 Apr 07
-%   PDwei                   - Computes weight function psi(u)/u for  for minimum density power divergence estimator                                               - UTISTAT         - 2023 Apr 07
+%   PDwei                   - Computes weight function psi(u)/u for  for minimum density power divergence estimator                                               - UTISTAT         - 2023 May 30
 %   Powertra                - Computes power transformation (Box-Cox or  Yeo-Johnson)                                                                             - UTISTAT         - 2023 Apr 19
 %   Qn                      - Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)                                                      - UTISTAT         - 2023 Apr 06
 %   qqplotFS                - Creates qqplot of studentized residuals with envelopes                                                                              - VIS-Reg         - 2023 Apr 19
 %   RandIndexFS             - Calculates Rand type Indices to compare two partitions                                                                              - UTISTAT         - 2022 Nov 10
-%   RhoPsiWei               - Finds rho, psi, psi', w functions given bdp, or eff or tuning constant c                                                            - UTISTAT         - 2023 Apr 19
+%   RhoPsiWei               - Finds rho, psi, psi', w functions given bdp, or eff or tuning constant c                                                            - UTISTAT         - 2023 May 29
 %   RKbdp                   - Finds the constants c associated to the supplied breakdown point and asymptotic rejection point                                     - UTISTAT         - 2023 Apr 06
 %   RKeff                   - Finds the constants c and M which are associated to the requested efficiency and ARP                                                - UTISTAT         - 2022 Nov 10
 %   RKpsi                   - Computes psi function for Rocke (translated Tukey's) biweight                                                                       - UTISTAT         - 2023 Apr 06
@@ -123,4 +123,4 @@
 %   winsor                  - Returns a winsorized copy of input                                                                                                  - UTISTAT         - 2022 Nov 10
 %   WNChygecdf              - Returns Wallenius' non-central hypergeometric cumulative distribution function                                                      - ProbDist        - 2023 Apr 06
 %   WNChygepdf              - Returns Wallenius' non-central hypergeometric probability density function                                                          - ProbDist        - 2023 Apr 06
-%   wthin                   - Thins a uni/bi-dimensional dataset                                                                                                  - UTISTAT         - 2022 Nov 10
+%   wthin                   - Thins a uni/bi-dimensional dataset                                                                                                  - UTISTAT         - 2023 Sep 18

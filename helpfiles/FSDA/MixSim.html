@@ -21,26 +21,26 @@ out =
 
 ans(:,:,1) =
 
-   -1.0000   18.0128   21.0103   24.0079
-   15.0150   -1.0000   22.0095   25.0072
-   16.0148   19.0126   -1.0000   26.0068
-   17.0140   20.0106   23.0088   -1.0000
+   -1.0000   22.0193   25.0159   28.0133
+   19.0232   -1.0000   26.0149   29.0125
+   20.0227   23.0188   -1.0000   30.0121
+   21.0209   24.0162   27.0142   -1.0000
 
 
 ans(:,:,2) =
 
-   -1.0000   30.0062   33.0060   36.0059
-   27.0068   -1.0000   34.0060   37.0055
-   28.0067   31.0060   -1.0000   38.0052
-   29.0065   32.0060   35.0060   -1.0000
+   -1.0000   34.0116   37.0114   40.0110
+   31.0121   -1.0000   38.0112   41.0106
+   32.0121   35.0114   -1.0000   42.0104
+   33.0118   36.0114   39.0111   -1.0000
 
 
 ans(:,:,3) =
 
-         0   42.0048   45.0043   48.0040
-   39.0051         0   46.0043   49.0037
-   40.0050   43.0046         0   50.0037
-   41.0049   44.0045   47.0042         0
+         0   46.0099   49.0085   52.0079
+   43.0103         0   50.0085   53.0076
+   44.0101   47.0096         0   54.0076
+   45.0100   48.0088   51.0082         0
 
 </pre><a href='http://rosa.unipr.it/fsda/MixSim.html#Example_1'><img vspace="5" hspace="5" src="images\MixSim_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</li></span></a></span></h3><div class="collapse"><p>
      Use average overlap of 0.05 and
@@ -72,14 +72,14 @@ rand('state', state1);
 out1=MixSim(3,5,'BarOmega',0.1, 'MaxOmega',0.2);
 n=200;
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
-spmplot(X,id,[],'box');
+[H,AX,BigAx] = spmplot(X,id,[],'box');
 set(gcf,'Name','restrfactor=1.1: almost homogeneous groups')
-title('\texttt{restrfactor=1.1}: almost homogeneous groups','fontsize',17,'interpreter','latex');
+title(BigAx,'\texttt{restrfactor=1.1}: almost homogeneous groups','fontsize',17,'interpreter','latex');
 [X1,id1]=simdataset(n, out1.Pi, out1.Mu, out1.S);
 figure;
-spmplot(X1,id1,[],'box')
+[H,AX,BigAx] = spmplot(X1,id1,[],'box')
 set(gcf,'Name','Heterogeneous groups')
-title('\texttt{restrfactor=`''}: heterogeneous groups','fontsize',17,'interpreter','latex')
+title(BigAx,'\texttt{restrfactor=`''}: heterogeneous groups','fontsize',17,'interpreter','latex')
 cascade</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Control of average and standard deviation of overlap.</li></span></a></span></h3><div class="collapse"><p> Given an
      average value of overlap, we explore the differences between imposing a
      small or a large value of standard deviation of overlap.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">clc
@@ -103,13 +103,13 @@ disp(out.OmegaMap)
 disp('When StdOmega is small the probabilities of overlapping are much more similar')
 disp(out1.OmegaMap)
 disp('Comparison using interactive scatter plot matrices')
-spmplot(X,id,[],'box');
+[H,AX,BigAx] = spmplot(X,id,[],'box');
 set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
-title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
+title(BigAx,['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega)])
 figure
-spmplot(X1,id1,[],'box');
+[H,AX,BigAx] = spmplot(X1,id1,[],'box');
 set(gcf,'name',['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
-title(['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
+title(BigAx,['BarOmega=' num2str(BarOmega) ' StdOmega=' num2str(StdOmega1)])
 cascade</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; number of groups (components). </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Desired number of groups.</p> <p>
                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>int16|int32|int64|single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_v" class="clearfix"> </div> <h3 id="input_argument_v" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>v</code> &#8212; number of dimensions (variables). </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Desired number of variables.</p> <p>
                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>int16|int32|int64|single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'BarOmega',0.05

@@ -1,0 +1,26 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>msdcutoff</title> <meta content="refpage" name="chunktype"><meta content="function:msdcutoff " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="msdcutoff Mahalanobis Squared Distance cutoff" itemprop="description" name="description" /><h1 itemprop="title">msdcutoff</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/msdcutoff.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/msdcutoff.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/msdcutoff.html">http://rosa.unipr.it/FSDA/msdcutoff.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: msdcutoff</em></p><P>msdcutoff</P><P>Mahalanobis Squared Distance cutoff</P><h2>Description</h2><P>Critical threshold derived from the Mahalanobis Squared Distance 
+ distribution for normal or Student-t population.</P><h2>More About</h2><P>
+ Mahalanobis distances measure the distance of a sample unit from the mean
+ of a distribution, taking into account the correlation between the units
+ in the covariance matrix. If $x$ is an observation from a multivariate
+ distribution with mean $\mu$ and covariance $\Sigma$, the Mahalanobis
+ squared distance (MSD) of $x$ from $\mu$ is $D^{2}=(x − \mu)^{t}
+ \Sigma^{-1} (x − \mu)$. When $x$ is from a $v$-dimensional multivariate
+ normal with known mean and covariance, the population MSD is distributed
+ as a chi-squared $\chi_{v}^{2}$ random variable with $\nu$ degrees of
+ freedom (Mardia et al, 1979). Then, to test the deviation of an
+ observation from the multivariate normal assumption we can compare its
+ MSD with an appropriate quantile of the chi-squared distribution: the
+ observation will be considered an outlier if the associated $D^{2}$ value
+ is larger than the critical value of the chi-squared distribution. There
+ are known limitations to the application of this cut-off, for example
+ when the sample is high dimensional and its size is not sufficiently
+ high. In this case the distribution of the sample MSD is a scaled Beta
+ distribution (Gnanadesikan and Kettenring, 1972). For continuous
+ Student-t samples, which account for heavy-tailed distributions, the
+ appropriate cutoff value depends from a standard Beta distribution with
+ shape parameters $v/2$ and $\nu/2$, as shown by Barabesi et al (2023).
+
+</P><h2>References</h2><P>Gnanadesikan, R. and Kettenring, J. R. (1972), Robust estimates,
+ residuals, and outlier detection with multiresponse data. Biometrics,
+ 28:81–124.</P></html>

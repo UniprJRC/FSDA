@@ -32,9 +32,8 @@ y(1:20)=y(1:20)+13;
 % $n&gt;=m^\dagger-1$ greater than the 99% threshold. The group can
 % therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
 RANDN to use legacy random number generators.  This syntax is not recommended.
-See &lt;a href="matlab:helpview([docroot
-'\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged
-Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old syntax. 
+See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the
+old syntax. 
 -------------------------
 Signal detection loop
 Tentative signal in central part of the search: step m=81 because
@@ -80,7 +79,7 @@ Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
            1          99         999        9999       99999
-           0           0           0           0           0
+           1           0           0           0           0
 
 </pre><a href='http://rosa.unipr.it/fsda/FSR.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSR_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSR_06.png" alt=""> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of options xlim and ylim (Hawkins data).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('hawkins.txt','hawkins');
 y=hawkins(:,9);

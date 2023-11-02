@@ -24,8 +24,8 @@ plot(1:n,RAWt.md,'xr' , 1:n,RAWn.md,'ob');
 hold on;
 line([1 , n] , [cutoffT , cutoffT] , 'Color', 'r');
 line([1 , n] , [cutoffN , cutoffN] , 'Color', 'b');
-legend({'Student-t','Normal','cutoff-t','cutoff Normal'});</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.12 seconds 
-Total estimated time to complete MCD:  0.16 seconds 
+legend({'Student-t','Normal','cutoff-t','cutoff Normal'});</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.24 seconds 
+Total estimated time to complete MCD:  0.07 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/msdcutoff.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\msdcutoff_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_conflev" class="clearfix"> </div> <h3 id="input_argument_conflev" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>conflev</code> &#8212; Confidence level. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Number between 0 and 1 containing
                confidence level.</p> <p>
                Usually conflev=0.95, 0.975 0.99 (individual alpha)

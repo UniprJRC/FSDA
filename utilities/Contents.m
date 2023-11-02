@@ -12,9 +12,9 @@
 %   findFile                  - Finds recursively all files in root                                                                          - UTIGEN- 2023 Apr 19
 %   isfunction                - Checks if a function exists                                                                                  - UTIGEN- 2022 Nov 10
 %   openMatlabFileFromHTML    - Enables to put in HTML an hypertextual link to a specific MATLAB file                                        - UTIGEN- 2022 Nov 10
-%   position                  - Controls the position of the open figures                                                                    - UTIGEN- 2023 Jan 09
+%   position                  - Controls the position of the open figures                                                                    - UTIGEN- 2023 Nov 02
 %   quickselectFS             - Finds the k-th order statistic                                                                               - UTIGEN- 2023 May 10
-%   quickselectFSw            - Finds the 100*p-th weighted order statistic for $0<p<1$                                                      - UTIGEN- 2023 May 10
+%   quickselectFSw            - Finds the 100*p-th weighted order statistic for $0<p<1$                                                      - UTIGEN- 2023 Sep 25
 %   removeExtraSpacesLF       - Removes extra spaces and selected carriage returns from input string                                         - UTIGEN- 2022 Nov 10
 %   repDupValWithMean         - Replaces values of y which have non unique elements in vector x with local means                             - UTIGEN- 2023 Apr 19
 %   setdiffFS                 - Finds the positive integers in a which are not present in the positive integers in b                         - UTIGEN- 2022 Nov 10
@@ -24,4 +24,4 @@
 %   upperfracpos              - Positions two figures on the upper part of the screen                                                        - UTIGEN- 2022 Nov 10
 %   verLessThanFS             - Compares version of MATLAB to specified version number                                                       - UTIGEN- 2022 Nov 10
 %   wraptextFS                - Formats long strings into wrapped text of specified width                                                    - UTIGEN- 2023 Apr 19
-%   zscoreFS                  - Computes (robust) standardized z scores                                                                      - UTIGEN- 2022 Nov 10
+%   zscoreFS                  - Computes (robust) standardized z scores                                                                      - UTIGEN- 2023 Sep 18

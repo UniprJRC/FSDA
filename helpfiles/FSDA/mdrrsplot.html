@@ -25,12 +25,7 @@ title('ColorTrj = 2 -- highlight the 2 trj with max mdr','FontSize',16,'Interpre
 % now with trajectories with marker symbols
 mdrrsplot(out,'ColorTrj',3,'tag','ColorTrj_3');
 title('ColorTrj = 3 -- highlight the 3 trj with max mdr','FontSize',16,'Interpreter','Latex');
-cascade;</pre></div></div><pre class="codeoutput">Simul nr. 30 n=200
-Simul nr. 75 n=200
-Simul nr. 150 n=200
-Simul nr. 225 n=200
-Total time required by the multiple start monitoring: 1.922 seconds
-</pre><a href='http://rosa.unipr.it/fsda/mdrrsplot.html#Example_1'><img vspace="5" hspace="5" src="images\mdrrsplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\mdrrsplot_02.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_03.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_04.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_05.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mdrrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p>
+cascade;</pre></div></div><a href='http://rosa.unipr.it/fsda/mdrrsplot.html#Example_1'><img vspace="5" hspace="5" src="images\mdrrsplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\mdrrsplot_02.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_03.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_04.png" alt=""> <img vspace="5" hspace="5" src="images\mdrrsplot_05.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mdrrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p>
      tclustreg of contaminated X data using all default options.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
 % The dataset presents two parallel components without contamination.
 X  = load('X.txt');
@@ -233,7 +228,7 @@ databrush.selectionmode='Rect'
                    steps. Note that if the largest mdr are in the final
                    part of the search (due to a group of outliers), the
                    peak is not informative and it is therefore not
-                   considered because.</p> <p>
+                   considered.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ColorTrj',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_SizeAxesNum" class="clearfix"></div><h3 id="input_argument_namevalue_SizeAxesNum" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>SizeAxesNum</code> &#8212;Size of axes numbers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls the
                    fontsize of the numbers of the axes.</p> <p>
