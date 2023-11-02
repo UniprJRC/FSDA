@@ -418,7 +418,7 @@ else
         Lc=cellstr(strcat('c',num2str((1:J)')));
         Ntable=array2table(N,'RowNames',Lr,'VariableNames',Lc);
     end
-    
+
 end
 
 
@@ -492,7 +492,7 @@ if ~isempty(UserOptions)
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -579,20 +579,20 @@ if h==n
         disp(['The MCD estimates are equal to the classical estimates h=n=',num2str(h)]);
     end
     %  REW.method=char(REW.method,msgn);
-    
+
     % cprime = row vector of column masses = centroid of row profiles
     cprime  = sum(N,1)/n;
-    
+
     RAW.loc=cprime;
     RAW.cov=diag(cprime);
     RAW.obj=prod(cprime);
     md=mahalCorAna(ProfilesRows,cprime);
-    
+
     RAW.md=md;
     RAW.class='mcdCorAna';
     bsbh=1:I;
 else
-    
+
     %% Extract in the rows of matrix C the indexes of all required subsets
     [C,nselected] = subsets(nsamp,I,J,ncomb,1);
     % Store the indices in varargout
@@ -602,35 +602,35 @@ else
     % initialise and start timer.
     tsampling = ceil(min(nselected/100 , 1000));
     time=zeros(tsampling,1);
-    
+
     % ij is a scalar used to ensure that the best first bestr non singular
     % subsets are stored
     ij=1;
     for i = 1:nselected
         if i <= tsampling, tic; end
-        
+
         % extract a subset of size v+1 .
         index = C(i,:);
-        
+
         % size Yj is J-by-J
         Nj = N(index,:);
-        
+
         %grand total
         nred=sum(Nj,'all');
-        
+
         % Column masses = centroids of the row profiles using subset
         cj  = sum(Nj,1)/nred;
-        
+
         % Find weighted estimate of the mean and cov
         locj = cj;        % centroid of subset
         Sj = diag(cj);    % covariance of subset
-        
+
         % Check if the subset is in general position (rank<v)
         if det(Sj)< tolMCD
             singsub = singsub + 1;
         end
-        
-        
+
+
         % Function IRWLSmcd performs refsteps concentration steps of IRLS on elemental
         % start. Input:
         % - N = contingency table of dimension I-by-J
@@ -641,14 +641,14 @@ else
         % - reftol = tolerance for convergence of refining iterations
         % outIRWLS = IRWLSmcd(N,ProfilesRows, rtimesn, locj, Sj, h, refsteps, reftol);
         outIRWLS = IRWLSmcd(N,ProfilesRows, rtimesn, locj, h, refsteps, reftol);
-       
+
         % The output of IRWLSmult is a structure containing centroid, cov
         % matrix and estimate value of the objective function (which has
         % been minimized, that is |cov|
         locrw = outIRWLS.loc;
         objrw = outIRWLS.obj;
-        
-        
+
+
         % to find s, save first the best bestr scales and shape matrices
         % (deriving from non singular subsets) and, from iteration bestr+1
         % (associated to another non singular subset), replace the worst scale
@@ -657,8 +657,8 @@ else
             % from the second step check whether new loc and new shape belong
             % to the top best loc; if so keep loc and shape with
             % corresponding scale.
-            
-            
+
+
             if  objrw < max(bestobjs)
                 % Find position of the maximum value of bestscale
                 [~,ind] = max(bestobjs);
@@ -668,7 +668,7 @@ else
                 % of the objective function
                 bestsubset(ind,1:length(index))=index;
             else
-                
+
             end
         else
             bestobjs(ij) = objrw;
@@ -676,11 +676,11 @@ else
             bestsubset(ij,1:length(index)) = index;
             ij=ij+1;
         end
-        
-        
+
+
         % Write total estimation time to compute final estimate
         if i <= tsampling
-            
+
             % sampling time until step tsampling
             time(i)=toc;
         elseif i==tsampling+1
@@ -689,28 +689,28 @@ else
                 fprintf('Total estimated time to complete MCD: %5.2f seconds \n', nselected*median(time));
             end
         end
-        
-        
+
+
     end
     if singsub==nselected
         error('FSDA:mcdCorAna:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
     end
-    
+
     if singsub/nselected>0.1 && msg==true
         disp('------------------------------')
         disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nsamp) '%'])
     end
-    
+
     % perform C-steps on best 'bestr' solutions, till convergence or for a
     % maximum of refstepsbestr steps using a convergence tolerance as specified
     % by scalar reftolbestr
-    
+
     % this is to ensure that the condition tmp.scale < superbestscale in the
     % next if statement is satisfied at least once
     superbestobj = Inf;
     for i=1:bestr
         tmp = IRWLSmcd(N,ProfilesRows, rtimesn, bestlocs(i,:), h, refstepsbestr, reftolbestr);
-        
+
         if tmp.obj < superbestobj
             superbestobj    = tmp.obj;
             superbestloc    = tmp.loc;
@@ -718,29 +718,29 @@ else
             % weights = tmp.weights;
         end
     end
-    
+
     RAW.class   = 'mcdCorAna';
     RAW.obj   = superbestobj;       % value of the objective function
-    
+
     % RAW.bsb is the list of the rows of contingency table used to compute best centroid
     RAW.bsb=bsbh;
-    
+
     % RAW.bsbh is the list of the rows of contingency table which
     % determined the final fit to obtain the best h units.
     % RAW.bsbh=bsbh;
-    
+
     RAW.loc= superbestloc;
     RAW.cov = diag(superbestloc);
     RAW.obj = superbestobj;
-    
+
     % Mahalanobis distances (in squared units) on Profile Rows matrix
     % md=mahalFS(ProfilesRows,superbestloc,diag(superbestloc));
     md=mahalCorAna(ProfilesRows,superbestloc);
-    
+
     % Store vector of Mahalanobis distances (in squared units)
     RAW.md = md;
-    
-    
+
+
 end
 
 
@@ -774,7 +774,7 @@ if findEmpiricalEnvelope == true
         disp('Empirical band is very extreme: running 5000 replicates')
         nsimul=5000;
     end
-    
+
     mmdStore=zeros(I,nsimul);
     if nargout>1
         mmdStoreR=zeros(I,nsimul);
@@ -799,7 +799,7 @@ if findEmpiricalEnvelope == true
             mmdStoreR(:,j)=TMPr.md;
         end
     end
-    
+
     % Sort rows of matrix mmdStore (MD in squared units)
     mmdStore=sort(mmdStore,2);
     EmpEnv=mmdStore(:,ceil(nsimul*conflev));
@@ -807,8 +807,8 @@ if findEmpiricalEnvelope == true
         mmdStoreR=sort(mmdStoreR,2);
         EmpEnvR=mmdStoreR(:,ceil(nsimul*conflev));
     end
-    
-    
+
+
 else
     EmpEnv=repmat(chi2inv(conflev,(J-1)*(I-1)/I)/n,I,1)./r;
     EmpEnvR=EmpEnv;
@@ -816,16 +816,20 @@ end
 
 weightsboo=md <= EmpEnv;
 
-% make sure you select the maximum number of rows
-% with a cumulative mass smaller or equal than to 1-bdp
-if sum(r(weightsboo))<1-bdp
-    [~,mdsorind]=sort(md);
-    weightsboo=false(I,1);
-    tt=2;
-    while  sum(r(mdsorind(1:tt)))<=1-bdp
-        tt=tt+1;
+if bdp>0
+    % make sure you select the maximum number of rows
+    % with a cumulative mass smaller or equal than to 1-bdp
+    if sum(r(weightsboo))<1-bdp
+        [~,mdsorind]=sort(md);
+        weightsboo=false(I,1);
+        tt=2;
+        while  sum(r(mdsorind(1:tt)))<=1-bdp
+            tt=tt+1;
+        end
+        weightsboo(mdsorind(1:tt-1))=true;
     end
-    weightsboo(mdsorind(1:tt-1))=true;
+else
+    weightsboo(:)=true(I,1);
 end
 RAW.outliers=seq(~weightsboo);
 % Matrix Profile Rows is stored in stucutre RAW
@@ -843,7 +847,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
     end
     malindexplot(RAW.md,EmpEnv,'conflev',conflev,'laby',laby,...
         'numlab',RAW.outliers,'tag','rawmcd','label',Lr);
-    
+
     figure('Tag','pl_spm_outliers');
     group=ones(I,1);
     if ~isempty(RAW.outliers)
@@ -859,37 +863,37 @@ end
 if nargout>1
     % size Yj is J-by-J
     Nrew = N(weightsboo,:);
-    
+
     %grand total
     nred=sum(Nrew,'all');
-    
+
     % Column masses = centroids of the row profiles using subset
     % crew= final centroid after reweighting
     crew  = sum(Nrew,1)/nred;
-    
+
     % Compute Mahalanobis distances using locrew
     md=mahalCorAna(ProfilesRows,crew);
-    
+
     REW=struct;
     % Store vector of Mahalanobis distances (in squared units)
     REW.md = md;
     REW.weights=md <= EmpEnv;
-    
+
     REW.outliers=seq(~REW.weights);
     % Matrix Profile Rows is stored in stucutre RAW
     REW.Y=ProfilesRows;
     REW.EmpEnv=EmpEnvR;
     REW.class   = 'mcdCorAna';
-    
+
 end
 
 % Plot Mahalanobis distances with outliers highlighted
 if (isstruct(plo) || (~isstruct(plo) && plo~=0)) && nargout>1
-    
+
     laby='Reweighted squared Mahalanobis distances';
     malindexplot(REW.md,EmpEnvR,'conflev',conflev,'laby',laby,...
         'numlab',REW.outliers,'tag','rewmcd','label',Lr);
-    
+
     figure('Tag','pl_spm_outliers(REW)');
     group=ones(I,1);
     if ~isempty(REW.outliers)
@@ -939,25 +943,25 @@ end
         %                         (h-sum(N(bsb(1:q-1),:),'all')/sum(N(bsb(q),:))
         %                         of its mass
         %
-        
+
         loc = initialloc;
         % Mahalanobis distances (in squared units) from initialloc and Initialshape
         % (multiplied by masses)
         mahaldist2=r.*mahalCorAna(ProfileRows,initialloc);
-        
+
         iter = 0;
         locdiff = 9999;
-        
+
         while ( (locdiff > reftol) && (iter < refsteps) )
             iter = iter + 1;
-            
+
             [~,sortdist]=sort(mahaldist2);
-            
+
             % The rows sortdist(1:indexesCR) will be completely
             % represented;
             cumsumnjdot=cumsum(r(sortdist));
             indexesCR=find(cumsumnjdot<h,1,'last');
-            
+
             if isempty(indexesCR)
                 indexesCR=0;
                 unitstoADD=h;
@@ -966,21 +970,21 @@ end
                 % row indexesCR+1 of the initial contingency table;
                 unitstoADD=h-cumsumnjdot(indexesCR);
             end
-            
+
             bsb=sortdist(1:indexesCR+1);
             Niter=N(bsb,:);
             Niter(end,:)=unitstoADD*Niter(end,:)/r(sortdist(indexesCR+1));
             newloc      = sum(Niter,1)/h;
-            
+
             % Compute MD
             mahaldist2=r.*mahalCorAna(ProfileRows,newloc);
             % mahaldist2=mahalCorAna(ProfileRows,newloc);
-            
-            
+
+
             % locdiff is linked to the tolerance
             locdiff = norm(newloc-loc,1)/norm(loc,1);
             loc = newloc;
-            
+
         end
         obj         = prod(newloc);
         outIRWLS = struct('loc',newloc,'obj',obj,'bsb',bsb);
