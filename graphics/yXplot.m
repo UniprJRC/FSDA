@@ -935,10 +935,17 @@ xlimx='';
 ylimy='';
 
 if nargin>2
-    if length(varargin{1})==n
+    if length(string(varargin{1}))==n 
         % In this case the user has called function yXplot with the
         % old format, that is
         % yXplot(y,X,group,plo), without name/value pairs
+        %
+        % REMARK: the application of function string to varargin{1} is
+        % necessary to address the peculiar cases where the option name has
+        % the same lenght of the dataset, like in this example:
+        % X = [1  5 13  7;   3  7 11 13;  5  9  9  9; 7  11 7  5; 9  13 5  11];
+        % yXplot(X(:,1),X(:,2:4),'nameX',{'pipp' 'pluto' 'topolino'});
+
         
         group=varargin{1};
         ngroups=length(unique(group));
@@ -953,6 +960,7 @@ if nargin>2
         datatooltip=0;
         tag='pl_yX';
         units='';
+    
     else
         
         % In the case the user has called function yXplot with the new
@@ -1043,12 +1051,16 @@ if nargin>2
     
     if isnotstructy ==1
         
+        %{
+        % This commented part should be superfluous 
+        % and generates an erroneous warning message
         if isempty(nameX)
-            nameX = cellstr(num2str((1:p1)','X%d'));
+            %nameX = cellstr(num2str((1:p1)','X%d')); 
         end
         if isempty(namey)
-            namey='y';
+            %namey='y'; 
         end
+        %}
         
         if ~isempty(databrush)
             disp('It is not possible to use option databrush without supplying structure out produced by FSReda')
