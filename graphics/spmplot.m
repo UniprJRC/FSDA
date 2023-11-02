@@ -159,8 +159,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         plo.nameY = cell array of strings containing the labels of the
 %                variables. As default value, the labels which are added
 %                are Y1, ..., Yv.
-%      plo.nameYrot = Angle (in degrees) for the labels of the variables. 
-%                 The default is 90, which means no rotation with respect 
+%      plo.nameYrot = Angle (in degrees) for the labels of the variables.
+%                 The default is 90, which means no rotation with respect
 %                 to the MATLAB default. The setting nameYrot = 0 produces
 %                 a rotation perpendicular to the axes, which is often used
 %                 in R graphics. Intermediate values are of corse possible.
@@ -980,7 +980,9 @@ if nargin<1
     error('FSDA:spmplot:missingInputs','A required input argument is missing.')
 end
 
-% Specify default values for colors, symbols, size of symbols and presence
+% Global definitions
+
+% Specify default values for colors, symbols, size of symbols, presence
 % of legend
 clrdef='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
 symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h'};
@@ -988,23 +990,24 @@ symdef=repmat(symdef,2,1);
 sizdef=[];
 dolegdef='on';
 
+% This is the background color of the MATLAB figures
 MATLAB_def_gray = [0.94 0.94 0.94];
 
-% load the default colormap
+% We adopt the R colormap as default
 RColormap   = load('RColormap');
 colormapdef = RColormap.RColormap;
 
+%% Required input given as structure or not
 
-% Check if the first argument is a structure or not
 if ~isstruct(Y)
+
+    % CASE A: The first argument (Y) is not a structure
+
     [n,v]=size(Y);
     isnotstructY=1;
+
     % seq= column vector containing the sequence 1 to n
     seq = (1:n)';
-
-    % numtext are the labels to add to the units. The type of labels to add
-    % are specified in option plo.label.
-    % numtext=cellstr(num2str(seq,'%d'));
 
     % check if Y is a table.
     if istable(Y)
@@ -1013,9 +1016,12 @@ if ~isstruct(Y)
     else
         namesFromTable='';
     end
+
 else
+
     namesFromTable='';
-    % The first argument (Y) is a structure
+    % CASE B: The first argument (Y) is a structure
+
     out=Y;
     % Retrieve matrix Y from the input structure
     Y=out.Y;
@@ -1048,9 +1054,12 @@ else
 
 end
 
+%% Optional input given as spmplot(Y,group,plo,dispopt) or as name/value pairs
+
 if nargin>1
+
     if length(varargin{1})==n
-        % In this case the user has called the function with the old format
+        % The user has called the function with the old format
         % spmplot(Y,group,plo,dispopt), without name/value pairs
 
         group=varargin{1};
@@ -1081,8 +1090,8 @@ if nargin>1
         end
 
     else
-        % In the case the user has called function spmplot with the new
-        % format name/value pairs
+        % The user has called function spmplot with the new name/value
+        % pairs format
         namevaluepairs=1;
 
         if isnotstructY==0
@@ -1106,6 +1115,7 @@ if nargin>1
         one=ones(n,1);
         options=struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),...
             'selunit',selthdef,'datatooltip',0,...
+            'nameY','','nameYrot',90,'nameYlength',0,...
             'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
             'undock', '','colorBackground',false,'typespm','full');
 
@@ -1143,7 +1153,12 @@ if nargin>1
         units=options.selunit;
         colorBackground=options.colorBackground;
         typespm=options.typespm;
+        plo.nameY=options.nameY;
+        plo.nameYrot=options.nameYrot;
+        plo.nameYlength=options.nameYlength;
     end
+
+    %%
 
     if isnotstructY ==1
         if ~isempty(databrush)
@@ -1203,22 +1218,27 @@ if nargin>1
     % a string (defining just one threshold) or a numeric vector.
 
 else
-    group=ones(n,1);
-    plo='';
-    dispopt='hist';
-    tag='pl_spm';
-    datatooltip=0;
-    databrush='';
-    namevaluepairs=1;
-    overlay='';
-    undock='';
-    units='';
-    colorBackground=false;
-    typespm='full';
+
+    % Only the required input Y is given: set defaults for all the optional
+    % parameters
+    group           = ones(n,1);
+    plo             = '';
+    dispopt         = 'hist';
+    tag             = 'pl_spm';
+    datatooltip     = 0;
+    databrush       = '';
+    namevaluepairs  = 1;
+    overlay         = '';
+    undock          = '';
+    units           = '';
+    colorBackground = false;
+    typespm         = 'full';
 end
 
 ngroups=length(unique(group));
 seq= (1:n)';
+
+%% Structure plo
 
 if isstruct(plo)
     fplo=fieldnames(plo);
@@ -1252,7 +1272,7 @@ if isstruct(plo)
     if d>0
         nameYrot=plo.nameYrot;
     else
-        % this is to get the MATLAB standard for the labels orientation 
+        % this is to get the MATLAB standard for the labels orientation
         nameYrot = 90;
     end
 
@@ -1357,16 +1377,18 @@ else
     sym=symdef;
     siz=sizdef;
     doleg=dolegdef;
-    % numtext=[];
     numtext=cellstr(num2str(seq,'%d'));
 
     TickLabelsFormat = 'auto';
-    nameYlength   = 0;
+    nameYlength      = 0;
 
-    % this is to get the MATLAB standard for the labels orientation 
+    % This ensures the MATLAB standard for the labels orientation.
+    % Used in instructions containing the 'Rotation' option.
     nameYrot      = 90;
 
 end
+
+%% The group
 
 if iscell(group) || isstring(group) || iscategorical(group)
     groupv = zeros(numel(group),1);
@@ -1374,10 +1396,9 @@ if iscell(group) || isstring(group) || iscategorical(group)
     for ii=1:numel(guni)
         groupv(strcmp(group,guni(ii))) = ii;
     end
-    %guniv = cellstr(num2str(unique(groupv,'stable')));
 else
     groupv = group;
-    guni = unique(group,'stable'); %DDDD
+    guni = unique(group,'stable');
     guni = num2str(guni);
     guni = cellstr(guni);
 end
@@ -1451,7 +1472,7 @@ for i=1:p
     hold('on');
 
     % Rotate labels and change the interpreter to none, otherwise the
-    % underscore are badly visualised %DDDD
+    % underscore are badly visualised
     if ~isempty(nameY)
         %  Rotate labels
         ylabel( AX(i,1), nameY(i),'Rotation',0+nameYrot ,'Interpreter','none');
@@ -1463,7 +1484,7 @@ for i=1:p
             set(tmphX,'Interpreter','none');
             set(tmphY,'Interpreter','none');
             xlabel( AX(p+1,p), nameY(p),'Rotation',90-nameYrot);
-            %ylabel( AX(p+1,1), nameY(p),'Rotation',0);  %DDDDD commentato
+            %ylabel( AX(p+1,1), nameY(p),'Rotation',0);
         end
     end
 
@@ -1502,11 +1523,11 @@ for i=1:p
             set(ax,'XTickMode','manual','YTickMode','manual');
             % Now restore the labels of the gplotmatrix
             set(ax,'XTickLabel',XTickLabel,'YTickLabel',YTickLabel);
-            xtickangle(ax,0); % DDDD
-            ytickangle(ax,0); % DDDD
+            xtickangle(ax,0);
+            ytickangle(ax,0);
 
-            set(get(ax,'XLabel'),'String',XLabel,'Rotation',90-nameYrot,'Interpreter','none'); %DDDDD commented
-            set(get(ax,'YLabel'),'String',YLabel,'Rotation',0+nameYrot, 'Interpreter','none');  %DDDDD commented
+            set(get(ax,'XLabel'),'String',XLabel,'Rotation',90-nameYrot,'Interpreter','none');
+            set(get(ax,'YLabel'),'String',YLabel,'Rotation',0+nameYrot, 'Interpreter','none');
 
         case 'box'
             %else % if strcmp(dispopt,'box')==1
@@ -1581,9 +1602,6 @@ for i=1:p
     AX(end,i)=ax;
 
 end
-
-% Adjust the rotated labels %DDDD does not work ...
-%BigAx.PositionConstraint = "outerposition";
 
 % The third dimension of H distinguishes the groups. If there are no groups
 % then ndims(H) = 2.
@@ -1686,7 +1704,7 @@ for i = 1:p
 
         if i~=j
             set(gcf,'CurrentAxes',AX(i,j));
-            xlimits = get(AX(j,i),'Xlim'); % DDDD Why j,i intead of i,j?
+            xlimits = get(AX(j,i),'Xlim');
             ylimits = get(AX(j,i),'Ylim');
             if ~isempty(units)
                 dx = (xlimits(2)-xlimits(1))*0.01*p/2;
@@ -1698,7 +1716,7 @@ for i = 1:p
             if colorBackground==true
                 ax=axis;
                 h = patch([ax(1:2)';ax(2);ax(1)],[ax(3);ax(3);ax(4);ax(4)],cmapBackground(posBackground(i,j),:));
-                set(h,'facealpha',0.15);
+                set(h,'facealpha',0.25);
                 % legend(end)
             end
         end
@@ -1736,29 +1754,43 @@ if  lowerORupper ==true
                     warning('off','MATLAB:handle_graphics:exceptions:SceneNode');
 
                     if i==1 && j==p
-                        % this is the panel of the legend position:
-                        % elements can just be made invisible
-                        %
-                        % hlegend = findobj(gcf, 'Type', 'Legend');
-                        % hl=[hlegend.EntryContainer.NodeChildren.Object]';
-                        % hlColors = zeros(lunigroup,3);
-                        % for iii = 1:lunigroup
-                        %     hlColors(iii,:) = hl(iii).Color;
-                        % end
 
-                        set(H(i,j,:), 'Color', MATLAB_def_gray); % DDDD ,'Visible','off'
+                        %this is the panel of the legend position:
+                        %elements can be made invisible if method=none
+
+                        if method~="none"
+                            hlegend = findobj(gcf, 'Type', 'Legend');
+                            if ~isempty(hlegend)
+                                hl=[hlegend.EntryContainer.NodeChildren.Object]';
+                                hlColors = zeros(lunigroup,3);
+                                for iii = 1:lunigroup
+                                    hlColors(iii,:) = hl(iii).Color;
+                                end
+                            end
+                        end
+
+                        if method=="none"
+                            set(H(i,j,:), 'Color', MATLAB_def_gray); % DDDD ,'Visible','off'
+                        else
+                            set(H(i,j,:), 'Color', 'w'); % DDDD ,'Visible','off'
+                        end
                         set(findobj(AX(i,j),'Type','line'),'Visible','off');   %DDDD
-                        
-                        % for iii = 1:lunigroup                       
-                        %     hl(iii).Color = hlColors(iii,:);
-                        % end
+
+                        if ~isempty(hlegend)
+                            if typespm.upper~="none" && typespm.upper~="number" && typespm.upper~="circle" && typespm.upper~="square"
+                                for iii = 1:lunigroup
+                                    hl(iii).Color = hlColors(iii,:);
+                                end
+                            end
+                        end
+
                     else
                         delete(H(i,j,:)); % DDDD delete data (should accelerate the graphic generation)
                         cla(AX(i,j));
                     end
 
                     if method=="none"
-                        %axis off   % DDDDDD bug on "none"
+                        %axis off   % DDDD bug on "none"
                         if j==1
                             qqq=get(AX(i,j),'YTickLabel');
                             ppp=get(AX(i,j),'YLabel');
@@ -1784,7 +1816,7 @@ if  lowerORupper ==true
                             for jjj=1:lunigroup
                                 text(AX(i,j),0.6,jjj/(lunigroup+1),['\sl ' num2str(Rgroup(i,j,jjj),2)], ...
                                     'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj),...
-                                    'DisplayName',guni{jjj},'Interpreter','Latex') %DDDD
+                                    'DisplayName',guni{jjj},'Interpreter','Latex')
                             end
                         end
 
@@ -1851,11 +1883,13 @@ if  lowerORupper ==true
                             end
                         end
 
-                        axis equal
+                        % DDDD axis equal is very slow: replaced
+                        %with instruction setting 'DataAspectRatio' 
+                        %axis equal  
+                        set(gca,'DataAspectRatio',[1 1 1]);
                         axis off
-                        % elseif method=="none"
-                        %     axis off   % DDDDDD commented to fix the bug on none
                     else
+                        % do nothing
                     end
                 end
             end
