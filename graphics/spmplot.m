@@ -1143,7 +1143,6 @@ if nargin>1
             options.(varargin{i})=varargin{i+1};
         end
         group=options.group;
-        plo=options.plo;
         dispopt=options.dispopt;
         databrush=options.databrush;
         tag=options.tag;
@@ -1153,9 +1152,10 @@ if nargin>1
         units=options.selunit;
         colorBackground=options.colorBackground;
         typespm=options.typespm;
-        plo.nameY=options.nameY;
-        plo.nameYrot=options.nameYrot;
-        plo.nameYlength=options.nameYlength;
+        plo=options.plo;
+        %plo.nameY=options.nameY;
+        %plo.nameYrot=options.nameYrot;
+        %plo.nameYlength=options.nameYlength;
     end
 
     %%
@@ -1757,9 +1757,8 @@ if  lowerORupper ==true
 
                         %this is the panel of the legend position:
                         %elements can be made invisible if method=none
-
+                        hlegend = findobj(gcf, 'Type', 'Legend');
                         if method~="none"
-                            hlegend = findobj(gcf, 'Type', 'Legend');
                             if ~isempty(hlegend)
                                 hl=[hlegend.EntryContainer.NodeChildren.Object]';
                                 hlColors = zeros(lunigroup,3);
@@ -1777,7 +1776,7 @@ if  lowerORupper ==true
                         set(findobj(AX(i,j),'Type','line'),'Visible','off');   %DDDD
 
                         if ~isempty(hlegend)
-                            if typespm.upper~="none" && typespm.upper~="number" && typespm.upper~="circle" && typespm.upper~="square"
+                            if isstruct(typespm) && typespm.upper~="none" && typespm.upper~="number" && typespm.upper~="circle" && typespm.upper~="square"
                                 for iii = 1:lunigroup
                                     hl(iii).Color = hlColors(iii,:);
                                 end
