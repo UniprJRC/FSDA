@@ -1,7 +1,11 @@
 function brushedUnits=fanplot(out,varargin)
-%fanplot plots the fan plot for transformation in linear regression or deletion t stat
+%fanplot plots the fan plot (this function will be replaced by fanplotFS)
 %
 %<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
+%
+% NOTE THAT THIS FUNCTION WILL BE REMOVED IN A FUTURE RELEASE OF FSDA
+% BECAUSE IT IS IN CONFLICT WITH FUNCTION fanplot OF THE ECONOMETRIC TOOLBOX.
+% FSDA function fanplot IS REPLACED BY FUNCTION fanplotFS
 %
 % Required input arguments:
 %
