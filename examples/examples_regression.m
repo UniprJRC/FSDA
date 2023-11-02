@@ -874,7 +874,7 @@ yXplot(y,X,'nameX',nameX,'namey',namey);
 %Example of the use of FlagSize, namey, namex, lwd,FontSize, SizeAxesNum.
 %FlagSize controls how large must be the highlighted points. It is a
 %parameter of selectdataFS.
-fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11)
+fanplotFS(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11)
 
 %% LD: dynamic brushing from the fan plot with dynamic brushing
 % Interactive_example
@@ -889,11 +889,11 @@ nameX={'Number of visits', 'Age', 'Number of persons in the family'};
 [out]=FSRfan(y,X,'plots',1,'la',[-1 -0.5  0 1/4 1/3 0.4 0.5 1]);
 %FlagSize controls how large must be the highlighted points. It is a
 %parameter of selectdataFS.
-fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
+fanplotFS(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
     'multivarfit' '2' 'FlagSize' '5'})
 % If you wish to do persistent brushing from the fan plot
 % uncomment the following line. Notice that multiple trajectories can be selected
-% fanplot(out,'databrush',{'selectionmode' 'Rect' 'persist' 'on' 'selectionmode','Brush'})
+% fanplotFS(out,'databrush',{'selectionmode' 'Rect' 'persist' 'on' 'selectionmode','Brush'})
 
 
 %% LD: forward EDA on transformed data
@@ -1194,7 +1194,7 @@ y=fishery{:,2};
 X=fishery{:,1};
 
 [out]=FSRfan(y,X,'plots',1,'la',[0 0.5 1]);
-fanplot(out,'ylimy',[-40,20],'databrush',{'selectionmode' 'Rect' 'persist' '' 'selectionmode','Brush'},'conflev',1-0.001/length(y))
+fanplotFS(out,'ylimy',[-40,20],'databrush',{'selectionmode' 'Rect' 'persist' '' 'selectionmode','Brush'},'conflev',1-0.001/length(y))
 
 
 %% PD (Poison data): Fan plot

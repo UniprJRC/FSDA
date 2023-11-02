@@ -104,7 +104,7 @@ if nargin < 1
         '\n\n'...
         'To produce the FAN plot in order to decide which is the most appropriate value of BOX-COX lambda, type:\n\n\n' ...
         '        [out]=FSRfan(y,X) \n' ...
-        '        fanplot(out) \n\n\n' ...
+        '        fanplotFS(out) \n\n\n' ...
         'See the help files of the above functions for more information \n\n'...
         'or see file']);
     
@@ -191,10 +191,10 @@ end
             nameX={'Length of test specimen', 'Amplitude of loading cycle', 'Load '};
             if InputScalarInteger==0
                 
-                fanplot(out,'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
+                fanplotFS(out,'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
                     'persist' '' 'multivarfit' '2' 'FlagSize' '5' 'Label' 'on' 'RemoveLabels' 'off'})
             else
-                fanplot(out,'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush','')
+                fanplotFS(out,'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush','')
             end
             
         elseif InputScalarInteger==2 || strcmp(stringselected,'Stack loss dataset')
@@ -208,10 +208,10 @@ end
             [out]=FSRfan(y,X,'init',8);
             if InputScalarInteger==0
                 
-                fanplot(out,'ylimy',[-5 7],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
+                fanplotFS(out,'ylimy',[-5 7],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
                     'persist' '' 'multivarfit' '2' 'FlagSize' '5' 'Label' 'on' 'RemoveLabels' 'off'})
             else
-                fanplot(out,'ylimy',[-5 7],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush','')
+                fanplotFS(out,'ylimy',[-5 7],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush','')
             end
             
         elseif InputScalarInteger==3 || strcmp(stringselected,'Loyalty cards')
@@ -228,10 +228,10 @@ end
             %FlagSize controls how large must be the highlighted points. It is a
             %parameter of selectdataFS.
             if InputScalarInteger==0
-                fanplot(out,'ylimy',[-10 20],'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
+                fanplotFS(out,'ylimy',[-10 20],'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...
                     'multivarfit' '2' 'FlagSize' '5'})
             else
-                fanplot(out,'ylimy',[-10 20],'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush','')
+                fanplotFS(out,'ylimy',[-10 20],'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush','')
             end
             
         else

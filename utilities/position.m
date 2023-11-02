@@ -160,7 +160,7 @@ if isempty(pllev), pllev=[]; end
 % mdrplot
 plmdr=((findobj(openfigs,'flat','Tag','pl_mdr')));
 if isempty(plmdr), plmdr=[]; end
-% fanplot
+% fanplotFS
 plfan=((findobj(openfigs,'flat','Tag','pl_fan')));
 if isempty(plfan), plfan=[]; end
 

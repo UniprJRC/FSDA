@@ -26,7 +26,7 @@ function [out]=fanBIC(outFSRfan,varargin)
 %
 %
 %       conflev :   Confidence level. Scalar. Confidence level
-%                   to evaluate the exceedances in hte fanplot.
+%                   to evaluate the exceedances in the fanplot.
 %                   Default confidence level is 0.9999 that is signals are
 %                   considered when there is an exceedance for confidence
 %                   level for at least 3 consecutive times.
@@ -133,7 +133,7 @@ function [out]=fanBIC(outFSRfan,varargin)
 %    out.labest= scalar. Value of lambda associated with the largest BIC
 %                value.
 %
-% See also: FSRfan, fanplot
+% See also: FSRfan, fanplotFS
 %
 % References:
 %
@@ -169,7 +169,7 @@ function [out]=fanBIC(outFSRfan,varargin)
     XX=load('wool.txt');
     y=XX(:,end);
     X=XX(:,1:end-1);
-    % FSRfan and fanplot with all default options
+    % FSRfan and fanplotFS with all default options
     [outFSR]=FSRfan(y,X,'msg',0);
     out=fanBIC(outFSR);
 %}

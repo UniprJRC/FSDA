@@ -70,7 +70,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %
 %
 %       conflev :   Confidence level. Scalar. Confidence level
-%                   to evaluate the exceedances in hte fanplot.
+%                   to evaluate the exceedances in the fanplot.
 %                   Default confidence level is 0.9999 that is signals are
 %                   considered when there is an exceedance for confidence
 %                   level for at least 3 consecutive times.
@@ -203,7 +203,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %      out.y  = n x 1 vector containing the original y values.
 %      out.X  = n x p matrix containing the original X matrix.
 %
-% See also: FSRfan, fanBIC, fanplot
+% See also: FSRfan, fanBIC, fanplotFS
 %
 % References:
 %
