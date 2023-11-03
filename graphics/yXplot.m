@@ -1280,6 +1280,8 @@ end
 
 %% Display the yXplot
 
+FontSizeLegend = 12;
+
 % Create a figure to host the gplotmatrix or clear the existing one
 h=findobj('-depth',1,'tag',tag);
 if (~isempty(h))
@@ -1360,6 +1362,12 @@ if ndims(H) == 3
         end
     end
 end
+
+% set the final size of the legend
+if ~isempty(AX(1,end).Legend)
+    clickableMultiLegend(AX(1,end),'FontSize',FontSizeLegend);
+end
+
 
 %%  Prepare the yXplot for brushing
 

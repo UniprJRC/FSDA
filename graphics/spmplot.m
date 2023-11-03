@@ -1427,8 +1427,22 @@ end
 if lunigroup==1
     doleg = 'off';
 end
+
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
+%[H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'grpbars',nameY);
 p=size(AX,2);
+
+% % This would make the text of the legend colorful, but clickablemultilegend would not work anymore
+% hlegend = findobj(gcf, 'Type', 'Legend');
+% if ~isempty(hlegend)
+%     hl=[hlegend.EntryContainer.NodeChildren.Object]';
+%     hlColors = zeros(lunigroup,3);
+%     for iii = 1:lunigroup
+%         hlColors(iii,:) = hl(iii).Color;
+%         the_string = ['\color[rgb]{' num2str(hlColors(iii,:)) '} ' hlegend.String{iii}];
+%         hlegend.String{iii} = the_string;
+%     end
+% end
 
 if isempty(TickLabelsFormat) || (isnumeric(TickLabelsFormat) && TickLabelsFormat == 0)
     % Removes the TickLabels if requested 
@@ -1760,17 +1774,30 @@ if  lowerORupper ==true
                         %this is the panel of the legend position:
                         %elements can be made invisible if method=none
                         hlegend = findobj(gcf, 'Type', 'Legend');
-                        if method~="none"
+                        %if method~="none"
                             if ~isempty(hlegend)
+                                %set(hlegend ,'AutoUpdate','off');
+                                %set(gcf,'defaultLegendAutoUpdate','off');
                                 hl=[hlegend.EntryContainer.NodeChildren.Object]';
                                 hlColors = zeros(lunigroup,3);
                                 for iii = 1:lunigroup
+                                    %take the color of the group
                                     hlColors(iii,:) = hl(iii).Color;
+                                    %SET THE LABEL OF THE LEGEND WITH THE SAME COLOR OF THE PLOT OBJECTS
+                                    set(hlegend.EntryContainer.NodeChildren(iii), 'Color',hl(iii).Color);
+                                    %This would do the same, but change the string and affect the functioning of clickableMultiLegend
+                                    %hlegend.String{iii} = ['\color[rgb]{' num2str(hlColors(iii,:)) '} ' hlegend.String{iii}];
                                 end
                             end
-                        end
+                        %end
 
-                        if method=="none"
+                        % This is to exclude an individual plot from the legend
+                        % for ig=1:lunigroup
+                        %     s=get(H(i,j,ig));
+                        %     s.Annotation.LegendInformation.IconDisplayStyle = 'off'; 
+                        % end
+
+                        if method=="none"  
                             set(H(i,j,:), 'Color', MATLAB_def_gray); 
                         else
                             set(H(i,j,:), 'Color', 'w'); 
@@ -1903,7 +1930,6 @@ if  lowerORupper ==true
         %hc.Limits=[-1 1];
     end
 end
-
 
 %% Add objects to the scatterplot matrix
 

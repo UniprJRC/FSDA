@@ -181,7 +181,12 @@ end
 if get(hObject, 'UserData') % It is on, turn it off
     set(obj,'HitTest','off','Visible','off','handlevisibility','off');
     pause(0.001); %artificially introduced from 2016a to leave time to refresh HG2 object.
-    set(hObject, 'Color', (get(hObject, 'Color') + 1)/1.5, 'UserData', false);
+    
+    % the color of the text of the legend is usually black ([0,0,0]) but 
+    % can be changed by spmplot. We ensure that the lighter color is a valid rgb 
+    getCol = get(hObject, 'Color');
+    if sum(getCol)>0, factor = 2.5; else, factor = 1.5; end
+    set(hObject, 'Color', (getCol + 1)/factor, 'UserData', false);
     
     similar_obj_h = findobj('DisplayName',get(obj,'DisplayName'));
     similar_obj_h(logical(similar_obj_h==obj)) = [];
@@ -211,7 +216,11 @@ if get(hObject, 'UserData') % It is on, turn it off
     
 else
     
-    set(hObject, 'Color', get(hObject, 'Color')*1.5 - 1, 'UserData', true);
+    % the color of the text of the legend is usually black ([0,0,0]) but 
+    % can be changed by spmplot. We ensure that the lighter color is a valid rgb 
+    getCol = get(hObject, 'Color');
+    if sum(getCol)>0, factor = 2.5; else, factor = 1.5; end
+    set(hObject, 'Color', getCol*factor - 1, 'UserData', true);
     set(obj, 'HitTest','on','visible','on','handlevisibility','on');
     
     similar_obj_h = findobj('DisplayName',get(obj,'DisplayName'));
