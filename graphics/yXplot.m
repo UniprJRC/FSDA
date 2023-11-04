@@ -944,7 +944,7 @@ if nargin>2
         % necessary to address the peculiar cases where the option name has
         % the same lenght of the dataset, like in this example:
         % X = [1  5 13  7;   3  7 11 13;  5  9  9  9; 7  11 7  5; 9  13 5  11];
-        % yXplot(X(:,1),X(:,2:4),'nameX',{'pipp' 'pluto' 'topolino'});
+        % yXplot(X(:,1),X(:,2:4),'nameX',{'Foo' 'Daisy_Duck' 'Micky_Mouse'});
 
         
         group=varargin{1};
@@ -1310,6 +1310,11 @@ styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
 % Display the initial gplotmatrix
 [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigrouplist),charsym,siz,doleg,[],nameX,namey);
+
+for iii=1:p
+    set(AX(iii).XLabel,'Interpreter','none');
+    set(AX(iii).YLabel,'Interpreter','none');
+end
 
 % default legend
 if isnotstructy ~=1
@@ -1881,8 +1886,8 @@ if ~isempty(databrush) || iscell(databrush)
                 %                     text(reshape(repmat(steps,length(units),1),length(units)*length(steps),1),reshape(residuals(units,steps-x(1)+1),length(units)*length(steps),1),reshape(repmat(numtext(units),1,length(steps)),length(units)*length(steps),1));
                 %                 end
                 
-                xlabel(labx);
-                ylabel(laby);
+                xlabel(labx,'Interpreter','none');
+                ylabel(laby,'Interpreter','none');
                 % Initialize vector selstesp. It will contains the steps in
                 % which brushed units enter the search
                 selsteps=zeros(n,11);

@@ -3347,12 +3347,12 @@ end
         %if nargin<3 || isempty(format)
         %    format = '%.1f';
         %end
-        p = size(AX,2);
-        hLabels        = nan(p,1);
-        LabelString    = cell(p,1);
-        LabelStringCut = cell(p,1);
-        for ih=1:p
-            hLabel = get(AX(p,ih),[axName 'Label']);
+        pp = size(AX,2);
+        hLabels        = nan(pp,1);
+        LabelString    = cell(pp,1);
+        LabelStringCut = cell(pp,1);
+        for ih=1:pp
+            hLabel = get(AX(pp,ih),[axName 'Label']);
             hLabels(ih)        = hLabel;
             LabelStr           = hLabel.String;
             LabelString{ih}    = LabelStr;
