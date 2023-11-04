@@ -1459,17 +1459,19 @@ if addPlotCorRes==true
     figure; %create new figure
     s1 = subplot(3,2,[1 3 5]); %create and get handle to the subplot axes
     copyobj(fig1,s1); %copy children to new parent axes i.e. the subplot axes
-    set(gca,'XDir','reverse')
+    if SoftTrimmingS==true
+        set(gca,'XDir','reverse')
+    end
     xlabel(labx,'Fontsize',SizeAxesLab);
     ylabel(laby,'Fontsize',SizeAxesLab);
     % control minimum and maximum for x and y axis
-if ~isempty(standard.xlim)
-    xlim(standard.xlim);
-end
-if ~isempty(standard.ylim)
-    ylim(standard.ylim);
-end
- %   myaxis=gca; TODO
+    if ~isempty(standard.xlim)
+        xlim(standard.xlim);
+    end
+    if ~isempty(standard.ylim)
+        ylim(standard.ylim);
+    end
+    %   myaxis=gca; TODO
 
     % Delete previous figure
     a=findobj(0,'Tag', options.tag);
@@ -1702,7 +1704,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
 
         % call to selectdataFS
         disp('Select a region to brush in the monitoring residual plot');
-        
+
         % sele=[sele 'Axes' {myaxis}]; MR TODO
         % a123=get(gcf,"Children");
         % axes(a123(end))  MR TODO
