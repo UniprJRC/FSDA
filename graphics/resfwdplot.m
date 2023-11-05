@@ -28,14 +28,14 @@ function plotopt=resfwdplot(out,varargin)
 %
 %  Optional input arguments:
 %
-%      addPlotCorRes : boolean. If addPlotCorRes is true a 3 panel plot
+%            corres : boolean. If corres is true a 3 panel plot
 %                      showing the correlations of adjacent residuals is
 %                      added to the monitoring residual plot. The 3
 %                      measures of correlation are respectively Spearmann,
 %                      Kendall and Pearson correlations. The default value
-%                      of addPlotCorRes is false, that is no monitoring
+%                      of corres is false, that is no monitoring
 %                      plot of correlations is added.
-%                   Example - 'addPlotCorRes',true
+%                   Example - 'corres',true
 %                   Data Types - logical scalar
 %
 %           standard : appearance of the plot
@@ -966,7 +966,7 @@ bgrounddef=struct('bthresh',bthresh, 'bstyle',bstyle);
 options=struct(...
     'standard',standarddef,'fground',fgrounddef,'bground',bgrounddef,...
     'tag','pl_resfwd','datatooltip',1,'label','','databrush','',...
-    'nameX','','namey','','msg','','addPlotCorRes',false);
+    'nameX','','namey','','msg','','corres',false);
 
 
 %% Preliminary checks
@@ -993,7 +993,8 @@ if nargin>1
     end
 end
 
-addPlotCorRes=options.addPlotCorRes;
+% Specify whether to add correlations among adjacent residuals
+corres=options.corres;
 
 % if LineColor and SubsetLinesColor are not specified, set to default.
 LineColor=[1 0 0];      %[1 0 0] is red.
@@ -1448,7 +1449,7 @@ set(gca,'Position',[0.1 0.1 0.85 0.85])
 set(gcf,'tag',options.tag)
 
 
-if addPlotCorRes==true
+if corres==true
 
     RES=out.RES;
 
