@@ -1490,7 +1490,7 @@ if corres==true
     RHOK = corr(RES,'type','Kendall');
     RHOP = corr(RES,'type','Pearson');
     upy=1.02;
-    lowy=0.95;
+    lowyini=0.95;
     droS=diag(RHOS,1);
     droK=diag(RHOK,1);
     droP=diag(RHOP,1);
@@ -1508,7 +1508,7 @@ if corres==true
     title('Spearman');
     % ylim([lowy upy])
     ylimp=get(gca,'ylim');
-    lowy=min(lowy,ylimp(1));
+    lowy=min(lowyini,ylimp(1));
     set(gca,'ylim',[lowy upy])
     xlim([ini-2 n+1])
 
@@ -1521,7 +1521,7 @@ if corres==true
     set(gca,'Xtick',xtick,'Xticklabel',newlabel)
     title('Kendall');
     ylimp=get(gca,'ylim');
-    lowy=min(lowy,ylimp(1));
+    lowy=min(lowyini,ylimp(1));
     set(gca,'ylim',[lowy upy])
     xlim([ini-2 n+1])
 
@@ -1536,7 +1536,7 @@ if corres==true
     title('Pearson');
     % ylim([lowy upy])
     ylimp=get(gca,'ylim');
-     lowy=min(lowy,ylimp(1));
+    lowy=min(lowyini,ylimp(1));
     set(gca,'ylim',[lowy upy])
     xlim([ini-2 n+1])
 end
