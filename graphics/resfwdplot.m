@@ -1164,8 +1164,14 @@ plot1=plot(x,residuals,'tag','data_res','LineWidth',standard.LineWidth);
 if strcmp(out.class,'Sregeda') || strcmp(out.class,'MDPDReda')
     set(gca,'XDir','reverse')
     SoftTrimmingS=true;
+    maxx=x(1);
+    minx=x(end);
+    step=x(1)-x(2);
 else
     SoftTrimmingS=false;
+    maxx=x(end);
+    minx=x(1);
+    step=x(2)-x(1);
 end
 
 % Apply color
@@ -1257,7 +1263,6 @@ if ~isempty(options.fground)
     % fground.flabstep option and check if the choice of flabstep is valid
     if ~isempty(fground.flabstep)
         steps=fground.flabstep;
-        minx=min(x); maxx=max(x);
         if max(steps)>maxx || min(steps)<minx
             mess=sprintf(['Warning: steps that you have chosen outside the range of x\n',...
                 'are re-assigned to min(x) or to max(x)']);
@@ -1468,6 +1473,8 @@ if corres==true
     % control minimum and maximum for x and y axis
     if ~isempty(standard.xlim)
         xlim(standard.xlim);
+    else
+        xlim([minx-step,maxx+step])
     end
     if ~isempty(standard.ylim)
         ylim(standard.ylim);
@@ -1483,6 +1490,7 @@ if corres==true
     RHOK = corr(RES,'type','Kendall');
     RHOP = corr(RES,'type','Pearson');
     upy=1.02;
+    lowy=0.95;
     droS=diag(RHOS,1);
     droK=diag(RHOK,1);
     droP=diag(RHOP,1);
@@ -1494,32 +1502,42 @@ if corres==true
     plot(xaxis,droS);
     xlim([ini n])
     xticklabel=get(gca,'Xticklabel');
+    xtick=get(gca,'XTick');
     newlabel=char(num2str(x(str2double(xticklabel)-ini+1)'));
-    set(gca,'Xticklabel',newlabel)
+    set(gca,'Xtick',xtick,'Xticklabel',newlabel)
     title('Spearman');
     % ylim([lowy upy])
     ylimp=get(gca,'ylim');
-    set(gca,'ylim',[ylimp(1) upy])
+    lowy=min(lowy,ylimp(1));
+    set(gca,'ylim',[lowy upy])
     xlim([ini-2 n+1])
 
     subplot(3,2,4);
     plot(xaxis,droK);
     xlim([ini n])
-    set(gca,'Xticklabel',newlabel)
+    xticklabel=get(gca,'Xticklabel');
+    xtick=get(gca,'XTick');
+    newlabel=char(num2str(x(str2double(xticklabel)-ini+1)'));
+    set(gca,'Xtick',xtick,'Xticklabel',newlabel)
     title('Kendall');
     ylimp=get(gca,'ylim');
-    set(gca,'ylim',[ylimp(1) upy])
+    lowy=min(lowy,ylimp(1));
+    set(gca,'ylim',[lowy upy])
     xlim([ini-2 n+1])
 
     subplot(3,2,6);
     plot(xaxis,droP);
     xlim([ini n])
-    set(gca,'Xticklabel',newlabel)
+    xticklabel=get(gca,'Xticklabel');
+    xtick=get(gca,'XTick');
+    newlabel=char(num2str(x(str2double(xticklabel)-ini+1)'));
+    set(gca,'Xtick',xtick,'Xticklabel',newlabel)
     xlabel('bdp','FontSize',SizeAxesLab+2,'Interpreter','Latex')
     title('Pearson');
     % ylim([lowy upy])
     ylimp=get(gca,'ylim');
-    set(gca,'ylim',[ylimp(1) upy])
+     lowy=min(lowy,ylimp(1));
+    set(gca,'ylim',[lowy upy])
     xlim([ini-2 n+1])
 end
 
