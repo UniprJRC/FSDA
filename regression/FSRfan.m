@@ -348,6 +348,7 @@ function [out]=FSRfan(y,X,varargin)
 %               the old one Un(1,:) for example contains the unit included
 %               in step init+1 ... Un(end,2) contains the units included in the
 %               final step of the search
+%   out.class = 'FSRfan'.
 %  out.y      = A vector with n elements that contains the response
 %               variable which has been used
 %  out.X      = Data matrix of explanatory variables
