@@ -194,7 +194,9 @@ function [out]=FSRaddt(y,X,varargin)
 %  out.la     = Vector containing the numbers associated to matrix out.X for
 %               which deletion t stat have been computed. For example is
 %               the intercept is present and input option DataVars was
-%               equal to [1 3], out.la=[2 4],  
+%               equal to [1 3], out.la=[2 4].
+%
+%  out.class  = 'FSRaddt';
 %
 % See also addt
 %
