@@ -84,6 +84,10 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               See HYPrho.m and HYPpsi.m.
 %               'hampel' uses Hampel $\rho$ and $\psi$ functions.
 %               See HArho.m and HApsi.m.
+%               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
+%               See PDrho.m and PDpsi.m.
+%               'AS' uses  Andrews' sine $\rho$ and $\psi$ functions.
+%               See ASrho.m and ASpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - double
@@ -159,7 +163,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               coefficients. covrobc checks the coefficient of variation
 %               of the derivative of function $\psi(r_i/\hat \sigma)$. If 
 %               it is greater than the threshold proposed in Salini, et
-%                al. (2020), it uses covrob2 else covrob.
+%                al. (2020), it uses covrob else covrob2.
 %      out.q =  scalar. Correction for scale estimate (see Maronna and Yohai
 %               CSDA 2010). It is defined as
 %               \[
@@ -228,15 +232,17 @@ function out=RobCov(X,scaledres,scaleest,varargin)
     bdp=0.5;
     out=RobCov(X,outS.residuals,outS.scale);
     disp('Compare 5 estimates of cov(\hat beta)')
-    disp(out.covrob)
+    disp('covrob'); disp(out.covrob)
     disp('--------')
-    disp(out.covrob1)
+    disp('covrob1'); disp(out.covrob1)
     disp('--------')
-    disp(out.covrob2)
+    disp('covrob2'); disp(out.covrob2)
     disp('--------')
-    disp(out.covrob3)
+    disp('covrob3'); disp(out.covrob3)
     disp('--------')
-    disp(out.covrob4)
+    disp('covrob4'); disp(out.covrob4)
+    disp('--------')
+    disp('covrobc'); disp(out.covrobc)
 %}
 
 %{
@@ -350,18 +356,17 @@ function out=RobCov(X,scaledres,scaleest,varargin)
     X=XX(:,1);
     outS=Sreg(y,X,'rhofunc','bisquare','bdp',0.5);
     out=RobCov(X,outS.residuals,1,'rhofunc','bisquare','bdp',0.5);
-    disp('covrob')
-    disp(out.covrob)
-    disp('covrob1')
-    disp(out.covrob1)
-    disp('covrob2')
-    disp(out.covrob2)
-    disp('covrob3')
-    disp(out.covrob3)
-    disp('covrob4')
-    disp(out.covrob4)
-    disp('covrobc')
-    disp(out.covrobc)
+    disp('covrob'); disp(out.covrob)
+    disp('--------')
+    disp('covrob1'); disp(out.covrob1)
+    disp('--------')
+    disp('covrob2'); disp(out.covrob2)
+    disp('--------')
+    disp('covrob3'); disp(out.covrob3)
+    disp('--------')
+    disp('covrob4'); disp(out.covrob4)
+    disp('--------')
+    disp('covrobc'); disp(out.covrobc)
 
     % plot X and y and add LS and robust regression line
     plot(X,y,'o')
@@ -505,9 +510,21 @@ if  ~isempty(bdp)
         
         c=[c,abc];
         psifunc='HA';
+
+    elseif strcmp(rhofunc,'mdpd')
+        % minimum density power divergence estimator
+
+        c=PDbdp(bdp);
+        psifunc='PD';
+
+    elseif strcmp(rhofunc,'AS')
+
+        c=ASbdp(bdp,1);
+        % kc1 = E(rho) = sup(rho)*bdp
+        psifunc='AS';
     else
         
-        error('FSDA:RobCov:WrongInputOpt','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
+        error('FSDA:RobCov:WrongInputOpt','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'', ''PD'', ''AS''')
     end
 end
 
@@ -519,12 +536,9 @@ if  ~isempty(eff)
         psifunc='TB';
         
     elseif strcmp(rhofunc,'optimal')
-        
-        
         % Compute tuning constant associated to the requested nominal efficiency
         % c = consistency factor for a given value of efficiency
         c=OPTeff(eff,1); 
-        
         psifunc='OPT';
         
     elseif strcmp(rhofunc,'hyperbolic')
@@ -574,8 +588,6 @@ if  ~isempty(eff)
             % c2 = consistency factor for a given value of efficiency
             [c2,A2,B2,d2]=HYPeff(eff,1,kdef);
         end
-        
-        
         c=[c2,kdef,A2,B2,d2];
         psifunc='HYP';
         
@@ -594,8 +606,20 @@ if  ~isempty(eff)
         
         c=[c,abc];
         psifunc='HA';
+
+    elseif strcmp(rhofunc,'mdpd')
+        % minimum density power divergence estimator
+
+        c=PDeff(eff);
+        psifunc='PD';
+
+    elseif strcmp(rhofunc,'AS')
+
+        c=ASeff(eff,1);
+        % kc1 = E(rho) = sup(rho)*bdp
+        psifunc='AS';
     else
-        error('FSDA:RobCov:WrongInputOpt','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
+        error('FSDA:RobCov:WrongInputOpt','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'', ''PD'', ''AS''')
         
     end
     
