@@ -134,7 +134,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               See HArho.m and HApsi.m.
 %               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
-%               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
+%               'AS' uses  Andrews' sine $\rho$ and $\psi$ functions.
 %               See ASrho.m and ASpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
@@ -162,8 +162,14 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %
 %  out :     A structure containing the following fields
 %
-%            out.Beta = matrix containing the S estimator of regression
-%                       coefficients for each value of bdp
+%            out.Beta = matrix of size length(bdp)-by-(p+1)
+%                       containing the S estimator of regression
+%                       coefficients for each value of bdp. 
+%                       The first column contains the value of bdp.
+%            out.tStat = matrix of size length(bdp)-by-(p+1)
+%                       containing the S estimator of t statistics for each
+%                       value of bdp. The first column contains the value
+%                       of bdp.
 %            out.Scale= vector containing the estimate of the scale
 %                       (sigma) for each value of bdp. This is the value of the objective function
 %              out.BS = p x 1 vector containing the units forming best subset
@@ -432,7 +438,10 @@ psifunc=struct;
 % Define matrices which will store relevant quantities
 lbdp=length(bdp);
 % Beta= matrix which will contain beta coefficients
-Beta=zeros(p,lbdp);
+Beta=[bdp(:) zeros(lbdp,p)];
+% tStat = matrix whic will contain t statistics
+tStat=Beta;
+
 % Scale = vector which will contain the estimate of the scale
 Scale=zeros(lbdp,1);
 BS=zeros(p,lbdp);
@@ -440,6 +449,7 @@ Weights=zeros(n,lbdp);
 Residuals=zeros(n,lbdp);
 Singsub=zeros(lbdp,1);
 Outliers=false(n,lbdp);
+
 rhofuncparam=[];
 
 for jj=1:length(bdp)
@@ -775,8 +785,13 @@ for jj=1:length(bdp)
         end
     end
 
+    [outCOV]=RobCov(X,residuals,superbestscale,'rhofunc',rhofunc,'bdp',bdp(jj),'intercept',0);
+    covrobS=outCOV.covrobc;
+    tstatS=superbestbeta./(sqrt(diag(covrobS)));
+
     Residuals(:,jj)=residuals;
-    Beta(:,jj)=superbestbeta;
+    Beta(jj,2:end)=superbestbeta';
+    tStat(jj,2:end)=tstatS';
     Scale(jj)=superbestscale;
     BS(:,jj)=superbestsubset;
     Weights(:,jj)=weights;
@@ -794,6 +809,7 @@ end
 % Store in output structure monitored \beta, s, best subset, vector of
 % S-weights and residuals
 out.Beta = Beta;
+out.tStat=tStat;
 out.Scale = Scale;
 out.BS = BS;
 out.Weights = Weights;
@@ -814,6 +830,7 @@ out.rhofunc=rhofunc;
 % For Hampel store a vector of length 3 containing parameters a, b and c
 % For hyperbolic store the value of k= sup CVC
 out.rhofuncparam=rhofuncparam;
+
 
 if options.intercept==true
     % Store X (without the column of ones if there is an intercept)
