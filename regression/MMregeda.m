@@ -154,17 +154,23 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %       out.auxscale    =   scalar, S estimate of the scale (or supplied
 %                           external estimate of scale, if option InitialEst
 %                           is not empty)
-%       out.Beta        =   p x length(eff) matrix containing MM estimate of
-%                           regression coefficients for each value of eff
-%       out.RES	=           n x length(eff) matrix containing scaled MM
+%          out.Beta     =   matrix of size length(eff)-by-(p+1)
+%                           containing the S estimator of regression
+%                           coefficients for each value of eff.
+%                           The first column contains the value of eff.
+%         out.tStat     =   matrix of size length(eff)-by-(p+1)
+%                           containing the MM estimator of t statistics for each
+%                           value of eff. The first column contains the value
+%                           of  eff.
+%              out.RES  =   n x length(eff) matrix containing scaled MM
 %                           residuals for each value of eff
 %                           out.RES(:,jj)=(y-X*out.Beta(:,jj))/out.auxscale
 %       out.Weights     =   n x length(eff) matrix. Weights assigned to
 %                           each observation for each value of eff
-%       out.Outliers    :   n x length(eff) Boolean matrix containing the
+%       out.Outliers    =   n x length(eff) Boolean matrix containing the
 %                           outliers which have been found for each value
 %                           of eff.
-%       out.Sbeta       :   p x 1 vector containing S estimate of regression
+%       out.Sbeta       =   p x 1 vector containing S estimate of regression
 %                           coefficients (or supplied initial external
 %                           estimate of regression coefficients, if option
 %                           InitialEst is not empty)
@@ -188,7 +194,9 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %           out.Sbeta   = vector.  S initial estimate of regression
 %                         coefficients.
 %            out.y      =   response vector y.
-%            out.X      =   data matrix X.
+%            out.X=    Data matrix of explanatory variables
+%                     which has been used (it also contains the column of ones if
+%                     input option intercept was missing or equal to 1)
 %       out.class       =   'MMregeda'.
 %
 %  Optional Output:
@@ -430,7 +438,12 @@ conflev=options.conflev;
 
 % Initialize quantities to store for each value of eff
 leff=length(eff);
-Beta=zeros(p,leff);
+
+% Beta= matrix which will contain beta coefficients
+Beta=[eff(:) zeros(leff,p)];
+% tStat = matrix which will contain t statistics
+tStat=Beta;
+
 Weights=zeros(n,leff);
 Residuals=zeros(n,leff);
 Outliers=false(n,leff);
@@ -441,15 +454,26 @@ for jj=1:length(eff)
     outIRW = MMregcore(y,X,bs,ss,'eff',eff(jj),'effshape',effshape,...
         'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',0,'nocheck',true,...
         'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,'yxsave',false);
+
     residuals=(y-X*outIRW.beta)/ss;
+
+    [outCOV]=RobCov(X,residuals,ss,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam, ...
+        'eff',eff(jj),'intercept',0);
+    covrobMM=outCOV.covrobc;
+    tstatMM=outIRW.beta./(sqrt(diag(covrobMM)));
+
+
     Residuals(:,jj)=residuals;
-    Beta(:,jj)=outIRW.beta;
+    Beta(jj,2:end)=outIRW.beta;
+    tStat(jj,2:end)=tstatMM';
+
     Weights(:,jj)=outIRW.weights;
     Outliers(outIRW.outliers,jj)=true;
 end
 
 % Store quantities which depend on the value of eff(jj)
 out.Beta = Beta;
+out.tStat= tStat;
 out.RES =  Residuals; % MM scaled residuals
 out.Weights=Weights;
 out.Outliers=Outliers;
@@ -471,12 +495,7 @@ out.rhofuncparam=rhofuncparam;
 % Store values of efficiency
 out.eff=eff;
 
-if options.intercept==true
-    % Store X (without the column of ones if there is an intercept)
-    out.X=X(:,2:end);
-else
     out.X=X;
-end
 % Store response
 out.y=y;
 

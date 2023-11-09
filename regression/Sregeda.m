@@ -197,7 +197,9 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %           out.bdp   = vector which contains the values of bdp which have
 %                       been used
 %            out.y    = response vector y.
-%            out.X    = data matrix X.
+%            out.X=    Data matrix of explanatory variables
+%                     which has been used (it also contains the column of ones if
+%                     input option intercept was missing or equal to 1)
 %           out.class = 'Sregeda'
 %
 %  Optional Output:
@@ -439,7 +441,7 @@ psifunc=struct;
 lbdp=length(bdp);
 % Beta= matrix which will contain beta coefficients
 Beta=[bdp(:) zeros(lbdp,p)];
-% tStat = matrix whic will contain t statistics
+% tStat = matrix which will contain t statistics
 tStat=Beta;
 
 % Scale = vector which will contain the estimate of the scale
@@ -785,7 +787,8 @@ for jj=1:length(bdp)
         end
     end
 
-    [outCOV]=RobCov(X,residuals,superbestscale,'rhofunc',rhofunc,'bdp',bdp(jj),'intercept',0);
+    [outCOV]=RobCov(X,residuals,superbestscale,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam, ...
+        'bdp',bdp(jj),'intercept',0);
     covrobS=outCOV.covrobc;
     tstatS=superbestbeta./(sqrt(diag(covrobS)));
 
@@ -831,13 +834,7 @@ out.rhofunc=rhofunc;
 % For hyperbolic store the value of k= sup CVC
 out.rhofuncparam=rhofuncparam;
 
-
-if options.intercept==true
-    % Store X (without the column of ones if there is an intercept)
-    out.X=X(:,2:end);
-else
-    out.X=X;
-end
+out.X=X;
 % Store response
 out.y=y;
 
