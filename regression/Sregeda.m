@@ -42,6 +42,14 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %
+%    covrob  : scalar. A number in the set 0, 1, ..., 5 which specifies
+%               the type of covariance matrix of robust beta coefficients.
+%               These numbers correspond to estimators covrob, covrob1,
+%               covrob2, covrob4, covrob4 and covrobc detailed inside file
+%               RobCov.m. The default value is 5  (i.e. estimator covrobc).
+%                 Example - 'tstattype',3
+%                 Data Types - single | double
+%
 %    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
@@ -149,6 +157,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %
+%
 %       plots : Plot on the screen. Scalar.
 %               If plots = 1, generates a plot with the robust residuals
 %               for each value of bdp. The confidence level used to draw the
@@ -164,12 +173,13 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %
 %            out.Beta = matrix of size length(bdp)-by-(p+1)
 %                       containing the S estimator of regression
-%                       coefficients for each value of bdp. 
+%                       coefficients for each value of bdp.
 %                       The first column contains the value of bdp.
 %            out.tStat = matrix of size length(bdp)-by-(p+1)
 %                       containing the S estimator of t statistics for each
 %                       value of bdp. The first column contains the value
-%                       of bdp.
+%                       of bdp. The type of t stat which is monitored
+%                       depends on option tstattype.
 %            out.Scale= vector containing the estimate of the scale
 %                       (sigma) for each value of bdp. This is the value of the objective function
 %              out.BS = p x 1 vector containing the units forming best subset
@@ -357,6 +367,8 @@ minsctoldef=1e-7;
 
 % rho (psi) function which has to be used to weight the residuals
 rhofuncdef='bisquare';
+covrobdef=5;
+
 %rhofuncdef='optimal';
 
 if coder.target('MATLAB')
@@ -365,7 +377,7 @@ if coder.target('MATLAB')
     options=struct('intercept',true,'nsamp',nsampdef,'refsteps',refstepsdef,...
         'reftol',reftoldef,'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
         'minsctol',minsctoldef,'bestr',bestrdef,'rhofunc',rhofuncdef,'rhofuncparam','','bdp',bdpdef,...
-        'plots',0,'conflev',0.975,'nocheck',false,'msg',1);
+        'plots',0,'conflev',0.975,'nocheck',false,'msg',1,'covrob',covrobdef);
 
     % check user options and update structure options
     [varargin{:}] = convertStringsToChars(varargin{:});
@@ -412,6 +424,7 @@ refstepsbestr=options.refstepsbestr;  % refining steps for the best subsets
 reftolbestr=options.reftolbestr;      % tolerance for refining steps for the best subsets
 msg=options.msg;                % Scalar which controls the messages displayed on the screen
 rhofunc=options.rhofunc;        % String which specifies the function to use to weight the residuals
+covrob=options.covrob;
 
 if min(bdp)<0
     error('FSDA:Sregeda:Wrongbdp','elements of bdp must lie in the interval [0 0.5]')
@@ -700,7 +713,7 @@ for jj=1:length(bdp)
 
 
                     else
-                        error('FSDA:Sreg:WrongRhoFunc','Wrong rho function supplied')
+                        error('FSDA:Sregeda:WrongRhoFunc','Wrong rho function supplied')
                     end
 
                 end
@@ -789,7 +802,18 @@ for jj=1:length(bdp)
 
     [outCOV]=RobCov(X,residuals,superbestscale,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam, ...
         'bdp',bdp(jj),'intercept',0);
-    covrobS=outCOV.covrobc;
+    if covrob==0
+        covrobS=outCOV.covrob;
+    elseif covrob==5
+        covrobS=outCOV.covrobc;
+    else
+        if any(covrob==1:4)
+            covrobS=outCOV.("covrob" + covrob);
+        else
+            error('FSDA:Sregeda:Wrongcovrob','Option covrob must be a number in the set 0, 1, ...5')
+
+        end
+    end
     tstatS=superbestbeta./(sqrt(diag(covrobS)));
 
     Residuals(:,jj)=residuals;
@@ -967,7 +991,7 @@ while ( (betadiff > reftol) && (iter < refsteps) )
             weights = PDwei(res/scale,c);
 
         else
-            error('FSDA:Sreg:WrongRhoFunc','Wrong rho function supplied')
+            error('FSDA:Sregeda:WrongRhoFunc','Wrong rho function supplied')
         end
 
     end

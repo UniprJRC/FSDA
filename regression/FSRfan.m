@@ -1011,6 +1011,7 @@ if scoremle == true
     out.Scoremle=Scomle;
     out.laMLE=laMLE;
 end
+out.class='FSRfan';
 
 if coder.target('MATLAB')
     

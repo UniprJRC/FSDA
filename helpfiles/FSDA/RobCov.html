@@ -30,15 +30,17 @@ rhofunc='optimal';
 bdp=0.5;
 out=RobCov(X,outS.residuals,outS.scale);
 disp('Compare 5 estimates of cov(\hat beta)')
-disp(out.covrob)
+disp('covrob'); disp(out.covrob)
 disp('--------')
-disp(out.covrob1)
+disp('covrob1'); disp(out.covrob1)
 disp('--------')
-disp(out.covrob2)
+disp('covrob2'); disp(out.covrob2)
 disp('--------')
-disp(out.covrob3)
+disp('covrob3'); disp(out.covrob3)
 disp('--------')
-disp(out.covrob4)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Compare t stat from S and MM estimator.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+disp('covrob4'); disp(out.covrob4)
+disp('--------')
+disp('covrobc'); disp(out.covrobc)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Compare t stat from S and MM estimator.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 p=3;
 state1=123456;
 randn('state', state1);
@@ -140,18 +142,17 @@ y=XX(:,2);
 X=XX(:,1);
 outS=Sreg(y,X,'rhofunc','bisquare','bdp',0.5);
 out=RobCov(X,outS.residuals,1,'rhofunc','bisquare','bdp',0.5);
-disp('covrob')
-disp(out.covrob)
-disp('covrob1')
-disp(out.covrob1)
-disp('covrob2')
-disp(out.covrob2)
-disp('covrob3')
-disp(out.covrob3)
-disp('covrob4')
-disp(out.covrob4)
-disp('covrobc')
-disp(out.covrobc)
+disp('covrob'); disp(out.covrob)
+disp('--------')
+disp('covrob1'); disp(out.covrob1)
+disp('--------')
+disp('covrob2'); disp(out.covrob2)
+disp('--------')
+disp('covrob3'); disp(out.covrob3)
+disp('--------')
+disp('covrob4'); disp(out.covrob4)
+disp('--------')
+disp('covrobc'); disp(out.covrobc)
 % plot X and y and add LS and robust regression line
 plot(X,y,'o')
 xlabel('X')
@@ -162,29 +163,34 @@ hLS.LineStyle = ':';
 hLS.LineWidth = 2;
 hROB=refline([outS.beta(2) outS.beta(1)]);
 hROB.LineWidth = 2;
-legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.98 seconds 
+legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.45 seconds 
 covrob
     0.6426   -0.0036
    -0.0036    0.7248
 
+--------
 covrob1
    29.6355   -0.4573
    -0.4573   29.4373
 
+--------
 covrob2
    29.6292   -0.1654
    -0.1654   33.4196
 
+--------
 covrob3
     0.2391   -0.0037
    -0.0037    0.2375
 
+--------
 covrob4
    1.0e-03 *
 
     0.2843   -0.0069
    -0.0069    0.2487
 
+--------
 covrobc
     0.6426   -0.0036
    -0.0036    0.7248
@@ -234,7 +240,11 @@ covrobc
                'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.</p> <p>
                See <a href="HYPrho.html">HYPrho</a> and <a href="HYPpsi.html">HYPpsi</a>.</p> <p>
                'hampel' uses Hampel $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="HArho.html">HArho</a> and <a href="HApsi.html">HApsi</a>.</p><p>
+               See <a href="HArho.html">HArho</a> and <a href="HApsi.html">HApsi</a>.</p> <p>
+               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.</p> <p>
+               See <a href="PDrho.html">PDrho</a> and <a href="PDpsi.html">PDpsi</a>.</p> <p>
+               'AS' uses  Andrews' sine $\rho$ and $\psi$ functions.</p> <p>
+               See <a href="ASrho.html">ASrho</a> and <a href="ASpsi.html">ASpsi</a>.</p><p>
                The default is bisquare
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofunc','optimal'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the
@@ -244,7 +254,7 @@ covrobc
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofuncparam',5
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>covrob</code></td><td><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
-               matrix of regression coefficients. covrob implements
+               matrix of regression coefficients. covrob uses
                equation (4.49) of p. 101 of Maronna et al. (2006)
                namely:
                 \[
@@ -255,7 +265,7 @@ covrobc
                 \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{[\sum_{i=1}^n \psi'(r_i/\hat \sigma)]^2}
                 \]</p></td></tr><tr valign="top"><td><code>covrob1</code></td><td><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
-               matrix of regression coefficients. covrob1 implements
+               matrix of regression coefficients. covrob1 uses
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
                with $(X'X)^{-1}$ replaced by $(X' W X)^{-1}$
                namely:
@@ -269,7 +279,7 @@ covrobc
                    $\psi$ and $\psi'$ are, respectively,  the first and
                    second derivatives of the $\rho$ function.</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
-               matrix of regression coefficients. covrob1 implements
+               matrix of regression coefficients. covrob2 uses
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
                with $X'X$ and $K^2$
                namely:
@@ -277,8 +287,8 @@ covrobc
                  \mbox{covrob2} =  K^2  \hat v  (X' X)^{-1};
                 \]</p></td></tr><tr valign="top"><td><code>covrob3</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
-               matrix of regression coefficients. covrob implements
-               equation (7.82) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
+               matrix of regression coefficients. covrob uses
+               equation (7.82) of p. 171 of Huber and Ronchetti (2009).</p> <p>
                namely:
                 </p>\[
                 \mbox{covrob3} =  K  \frac{n}{n-p} 
@@ -286,7 +296,7 @@ covrobc
                  \psi'(r_i/\hat \sigma)} (X' W X)^{-1};
                 \]</p></td></tr><tr valign="top"><td><code>covrob4</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
-               matrix of regression coefficients. covrob implements
+               matrix of regression coefficients. covrob4 uses
                equation (7.83) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
                namely:
                 </p>\[
@@ -296,7 +306,7 @@ covrobc
                coefficients. covrobc checks the coefficient of variation
                of the derivative of function $\psi(r_i/\hat \sigma)$. If 
                it is greater than the threshold proposed in Salini, et
-                al. (2020), it uses covrob2 else covrob.</p></td></tr><tr valign="top"><td><code>q</code></td><td><p>scalar. Correction for scale estimate (see Maronna and Yohai
+                al. (2020), it uses covrob else covrob2.</p></td></tr><tr valign="top"><td><code>q</code></td><td><p>scalar. Correction for scale estimate (see Maronna and Yohai
                CSDA 2010). It is defined as
                \[
                q=1+\frac{p}{2n} \frac{a}{b \times c}

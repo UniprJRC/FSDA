@@ -106,7 +106,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %
 %   out.covrob = p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
-%               matrix of regression coefficients. covrob implements
+%               matrix of regression coefficients. covrob uses
 %               equation (4.49) of p. 101 of Maronna et al. (2006)
 %               namely:
 %                \[
@@ -118,7 +118,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \]
 %  out.covrob1 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
-%               matrix of regression coefficients. covrob1 implements
+%               matrix of regression coefficients. covrob1 uses
 %               equation (7.81) of p. 171 of Huber and Ronchetti (2009)
 %               with $(X'X)^{-1}$ replaced by $(X' W X)^{-1}$
 %               namely:
@@ -133,7 +133,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                   second derivatives of the $\rho$ function.
 %  out.covrob2 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
-%               matrix of regression coefficients. covrob1 implements
+%               matrix of regression coefficients. covrob2 uses
 %               equation (7.81) of p. 171 of Huber and Ronchetti (2009)
 %               with $X'X$ and $K^2$
 %               namely:
@@ -142,8 +142,8 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \]
 %  out.covrob3 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
-%               matrix of regression coefficients. covrob implements
-%               equation (7.82) of p. 171 of of Huber and Ronchetti (2009).
+%               matrix of regression coefficients. covrob uses
+%               equation (7.82) of p. 171 of Huber and Ronchetti (2009).
 %               namely:
 %                \[
 %                \mbox{covrob3} =  K  \frac{n}{n-p} 
@@ -152,7 +152,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \]
 %  out.covrob4 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
-%               matrix of regression coefficients. covrob implements
+%               matrix of regression coefficients. covrob4 uses
 %               equation (7.83) of p. 171 of of Huber and Ronchetti (2009).
 %               namely:
 %                \[

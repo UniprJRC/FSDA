@@ -7,13 +7,17 @@ function brushedUnits=fanplotFS(out,varargin)
 %
 %  out :  Data to plot. Structure. Structure containing the following fields
 %     out.Score  =  (n-init) x length(la)+1 matrix:
-%               1st col = fwd search index;
-%               2nd col = value of the score test in each step
-%               of the fwd search for la(1);
+%               1st col = fwd search index or bpd or eff
+%               2nd col = value of the statistic in each step
+%               of the fwd search or each bdp or each eff,
+%               For example if for la(1);
 %               ...;
 %               last col  =  value of the score test in each step
 %               of the fwd search for la(end).
-%               Remark: note that out.Score can be replaced by out.Tdel if
+%               Remark: note that out.Score can be replaced by any other
+%               statistic monitored as function of breakdown point,
+%               efficiency or subset szie
+%               out.Tdel if
 %               the input comes from routine FSRaddt.
 %       out.la   =  vector containing the values of transformation
 %               parameter lambda which have been used inside routine FSRfan
@@ -23,8 +27,7 @@ function brushedUnits=fanplotFS(out,varargin)
 %               arry of characters containing the names of the variables
 %               associated with the deletion t stats.
 %       out.bs   =  matrix of size p x length(la) containing the units
-%       forming
-%               the initial subset for each value of lambda.
+%               forming the initial subset for each value of lambda.
 %      out. Un   =  cell of size length(la). out.Un{i} is a (n-init) x 11
 %               matrix which contains the unit(s) included in the subset
 %               at each step of the fwd search (necessary only if option
@@ -412,7 +415,7 @@ function brushedUnits=fanplotFS(out,varargin)
     X=XX(:,1:end-1);
     % FSRfan and fanplotFS with all default options
     [out]=FSRfan(y,X);
-    % Units 24 27 and 23 enter tha last three steps in the search with la=0.
+    % Units 24 27 and 23 enter the last three steps in the search with la=0.
     % Option highlight enables us to understand when these 3 units join the
     % subset for the other values of lambda
     fanplotFS(out,'highlight',[24 27 23]);
@@ -471,6 +474,48 @@ function brushedUnits=fanplotFS(out,varargin)
     fanplotFS(out);
 %}
 
+%{
+    %% fanplotFS based on the output of Sregeda.
+    load('multiple_regression.txt');
+    y=multiple_regression(:,4);
+    X=multiple_regression(:,1:3);
+    % Specify the type of estimator of t statistic
+    covrob=2; 
+    % Specify the rho function
+    rhofunc='optimal'; 
+    % Specity line width of the envelopes
+    lwdenv=2;
+    [outS]=Sregeda(y,X,'covrob',covrob,'rhofunc',rhofunc);
+    fanplotFS(outS,'conflev',0.90,'lwdenv',lwdenv);
+%}
+
+%{
+    %% fanplotFS based on the output of MMregeda.
+    load('multiple_regression.txt');
+    y=multiple_regression(:,4);
+    X=multiple_regression(:,1:3);
+    % Specify the type of estimator of t statistic
+    covrob=5; 
+    % Specify the rho function
+    rhofunc='optimal'; 
+    % Specity line width of the envelopes
+    lwdenv=2;
+    [outMM]=MMregeda(y,X,'covrob',covrob,'rhofunc',rhofunc);
+    fanplotFS(outMM,'conflev',0.90,'lwdenv',lwdenv);
+%}
+
+%{
+    %% fanplotFS based on the output of FSReda.
+    load('multiple_regression.txt');
+    y=multiple_regression(:,4);
+    X=multiple_regression(:,1:3);
+    % Specity line width of the envelopes
+    lwdenv=2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [outFS]=FSReda(y,X,out.bs);
+    fanplotFS(outFS,'conflev',0.90,'lwdenv',lwdenv);
+%}
+
 %% Beginning of code
 brushedUnits=[];
 
@@ -483,19 +528,100 @@ close(findobj('type','figure','Tag','pl_mdr'));
 y=out.y;
 X=out.X;
 [n,p]=size(X);
+if range(X(:,1))==0
+    intercept=1;
+else
+    intercept=0;
+end
 
-if isfield(out,'Score')
+if strcmp(out.class,'FSRfan')
     fanplotScore=true;
     Sco=out.Score;
     laby='Score test statistic';
-else
+    labx= 'Subset size m';
+
+    set(gcf,'Name',['fanplot for lambda=' mat2str(out.la) ]);
+    la=out.la(:);
+    las=string(la);
+    dfvary=false;
+    estimatorS=false;
+    finalvalue=n;
+    intercept=0;
+    maxy=20;
+    statName="X";
+
+elseif strcmp(out.class,'FSRaddt')
     fanplotScore=false;
     Sco=out.Tdel;
     laby='Deletion t statistics';
+    labx= 'Subset size m';
+    dfvary=true;
+    estimatorS=false;
+    finalvalue=n;
+    intercept=0;
+    maxy=50;
+    statName="X";
+
+elseif strcmp(out.class,'Sregeda')
+    fanplotScore=false;
+    Sco=out.tStat;
+    laby='t statistics from S estimator';
+    labx= 'Break down point';
+
+    dfvary=false;
+    estimatorS=true;
+    finalvalue=out.bdp(end)-0.005;
+    maxy=50;
+    statName="t_";
+
+elseif strcmp(out.class,'MMregeda')
+    fanplotScore=false;
+    Sco=out.tStat;
+    laby='t statistics from MM estimator';
+    labx= 'Efficiency';
+    dfvary=false;
+    estimatorS=false;
+    finalvalue=out.eff(end)+0.01;
+    maxy=50;
+    statName="t_";
+
+elseif  strcmp(out.class,'FSReda')
+    fanplotScore=false;
+    Sco=out.Tols;
+    laby='t statistics from FS';
+    labx= 'Subset size m';
+    dfvary=true;
+    estimatorS=false;
+    finalvalue=n;
+    maxy=50;
+    statName="t_";
+
+else
+    error('Unknown class')
+end
+
+if fanplotScore==false
+    if isfield(out,'la')
+        % if out.la is a cell array of characters convert it to string array.
+        if iscell(out.la)
+            out.la=string(out.la);
+        end
+        % Extract the variables for which deletion tstat have been computed
+        % Note that there is -1 because intercept is present in out.X
+        if isstring(out.la)
+            las=out.la(:);
+        else
+            las=statName+string(out.la(:)-1);
+        end
+        la=las;
+    else
+        las=statName+(1:(p-intercept));
+        la=las;
+    end
 end
 
 %% User options
-options=struct('conflev',0.99,'titl','Fan plot','labx','Subset size m',...
+options=struct('conflev',0.99,'titl','Fan plot','labx',labx,...
     'laby',laby,'xlimx','','ylimy','','lwd',2,'lwdenv',1, ...
     'FontSize',12,'SizeAxesNum',10,'highlight',[],...
     'tag','pl_fan','datatooltip','','databrush','','nameX','','namey','','label','');
@@ -517,6 +643,7 @@ if nargin > 2
         options.(varargin{i})=varargin{i+1};
     end
 end
+
 
 % find and store the value of option labeladd inside cell options.databrush
 d=find(strcmp('labeladd',options.databrush));
@@ -599,30 +726,12 @@ else
     figure;
 end
 
-if fanplotScore==true
-    set(gcf,'Name',['fanplot for lambda=' mat2str(out.la) ]);
-    la=out.la(:);
-    las=string(la);
-else
-    % if out.la is a cell array of characters convert it to string array.
-    if iscell(out.la)
-        out.la=string(out.la);
-    end
-    % Extract the variables for which deletion tstat have been computed
-    % Note that there is -1 because intercept is present in out.X
-    if isstring(out.la)
-        las=out.la(:);
-    else
-        las="X"+string(out.la(:)-1);
-    end
-    la=las;
-end
 lla=length(la);
 
 % lwd = line width of the trajectories which contain the score test
 lwd=options.lwd;
 
-plot1=plot(Sco(:,1),Sco(:,2:end),'LineWidth',lwd);
+plot1=plot(Sco(:,1),Sco(:,2+intercept:end),'LineWidth',lwd);
 set(gcf,'Tag',options.tag)
 
 % Specify the line type for the units inside vector units
@@ -640,8 +749,11 @@ end
 
 if isempty(ylimy)
     % Use default limits for y axis
-    ylim1=max(-20,min(min(Sco(:,2:end))));
-    ylim2=min(20,max(max(Sco(:,2:end))));
+    ylim1=max(-maxy,min(min(Sco(:,2+intercept:end))));
+    ylim1=min([ylim1 -3]);
+    ylim2=min(maxy,max(max(Sco(:,2+intercept:end))));
+    ylim2=max([ylim2 3]);
+
     ylim([ylim1 ylim2]);
 else
     % Use limits specified by the user
@@ -656,7 +768,17 @@ conflev=options.conflev;
 
 rangeaxis=axis;
 
-if fanplotScore==true
+if dfvary==true
+
+    conflev=(1+conflev)/2;
+    % df = m-p
+    Tdelenv=tinv(repmat(conflev,length(Sco(:,1)),1),repmat(Sco(:,1),1,length(conflev))-p);
+
+    for i=1:length(conflev)
+        % Superimpose chosen envelopes
+        line(Sco(:,[1 1]),[-Tdelenv(:,i) Tdelenv(:,i)],'LineWidth',lwdenv,'color','r','Tag','env');
+    end
+else
     quant = sqrt(chi2inv(conflev,1));
     numconflev=length(conflev);
     V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
@@ -664,15 +786,6 @@ if fanplotScore==true
     % Assign to the confidence lines Tag env so that they cannot be selected
     % with options databrush
     line(V, QUANT,'LineWidth',lwdenv,'color','r','Tag','env');
-
-else
-    conflev=(1+conflev)/2;
-    Tdelenv=tinv(repmat(conflev,length(Sco(:,1)),1),repmat(Sco(:,1),1,length(conflev))-p);
-
-    for i=1:length(conflev)
-        % Superimpose chosen envelopes
-        line(Sco(:,[1 1]),[-Tdelenv(:,i) Tdelenv(:,i)],'LineWidth',lwdenv,'color','r','Tag','env');
-    end
 end
 
 
@@ -683,7 +796,11 @@ end
 FontSize =options.FontSize;
 
 % Add labels at the end of the search
-text(n*ones(lla,1),Sco(end,2:end)',las,'FontSize',FontSize);
+text(finalvalue*ones(lla,1),Sco(end,2+intercept:end)',las,'FontSize',FontSize);
+
+if estimatorS==true
+    set(gca,'XDir','reverse');
+end
 
 % Main title of the plot and labels for the axes
 labx=options.labx;

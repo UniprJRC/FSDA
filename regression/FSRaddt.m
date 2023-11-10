@@ -543,6 +543,7 @@ out.y=y;
 out.X=X;
 out.la=vars;
 out.bs=binit;
+out.class='FSRaddt';
 
 if plo==1
 

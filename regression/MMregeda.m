@@ -26,6 +26,15 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %
+%
+%    covrob  : scalar. A number in the set 0, 1, ..., 5 which specifies
+%               the type of covariance matrix of robust beta coefficients.
+%               These numbers correspond to estimators covrob, covrob1,
+%               covrob2, covrob4, covrob4 and covrobc detailed inside file
+%               RobCov.m. The default value is 5  (i.e. estimator covrobc).
+%                 Example - 'tstattype',3
+%                 Data Types - single | double
+%
 %      eff     : nominal efficiency. Scalar or vector.
 %                Vector defining nominal efficiency (i.e. a series of numbers between
 %                 0.5 and 0.99). The default value is the sequence 0.5:0.01:0.99
@@ -319,6 +328,7 @@ Srhofuncparamdef=[];
 % step
 rhofuncdef='bisquare';
 rhofuncparamdef=[];
+covrobdef=5;
 
 
 
@@ -332,7 +342,7 @@ if coder.target('MATLAB')
         'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
         'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam',Srhofuncparamdef,'nocheck',false,'eff',eff,'effshape',0,...
         'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0,'rhofunc',rhofuncdef, ...
-        'rhofuncparam',rhofuncparamdef);
+        'rhofuncparam',rhofuncparamdef,'covrob',covrobdef);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -372,6 +382,7 @@ InitialEst=options.InitialEst;
 % rho function to use in the MM step
 rhofunc = options.rhofunc;
 rhofuncparam=options.rhofuncparam;
+covrob=options.covrob;
 
 
 if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
@@ -459,9 +470,20 @@ for jj=1:length(eff)
 
     [outCOV]=RobCov(X,residuals,ss,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam, ...
         'eff',eff(jj),'intercept',0);
-    covrobMM=outCOV.covrobc;
-    tstatMM=outIRW.beta./(sqrt(diag(covrobMM)));
 
+
+    if covrob==0
+        covrobMM=outCOV.covrob;
+    elseif covrob==5
+        covrobMM=outCOV.covrobc;
+    else
+        if any(covrob==1:4)
+            covrobMM=outCOV.("covrob" + covrob);
+        else
+            error('FSDA:Sregeda:Wrongcovrob','Option covrob must be a number in the set 0, 1, ...5')
+        end
+    end
+    tstatMM=outIRW.beta./(sqrt(diag(covrobMM)));
 
     Residuals(:,jj)=residuals;
     Beta(jj,2:end)=outIRW.beta;
@@ -495,7 +517,7 @@ out.rhofuncparam=rhofuncparam;
 % Store values of efficiency
 out.eff=eff;
 
-    out.X=X;
+out.X=X;
 % Store response
 out.y=y;
 
