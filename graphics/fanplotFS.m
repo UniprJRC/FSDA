@@ -110,6 +110,13 @@ function brushedUnits=fanplotFS(out,varargin)
 %                   Example - 'namey',''
 %                   Data Types - char
 %
+%separatePanels :  plots on a single or multiple panels. Boolean. If
+%                   separatePanels is true each trajectory appears on a
+%                   seperate subplot. If separatePanels is false all the
+%                   trajectories appear in single plot.
+%                   Example - 'separatePanels',true
+%                   Data Types - logical
+%
 %    SizeAxesNum:   Size of the numbers of the axis. Scalar. Scalar which
 %                   controls the size of the numbers of the axes.
 %                   Default value is 10.
@@ -483,7 +490,7 @@ function brushedUnits=fanplotFS(out,varargin)
     covrob=2; 
     % Specify the rho function
     rhofunc='optimal'; 
-    % Specity line width of the envelopes
+    % Specify line width of the envelopes
     lwdenv=2;
     [outS]=Sregeda(y,X,'covrob',covrob,'rhofunc',rhofunc);
     fanplotFS(outS,'conflev',0.90,'lwdenv',lwdenv);
@@ -498,7 +505,7 @@ function brushedUnits=fanplotFS(out,varargin)
     covrob=5; 
     % Specify the rho function
     rhofunc='optimal'; 
-    % Specity line width of the envelopes
+    % Specify line width of the envelopes
     lwdenv=2;
     [outMM]=MMregeda(y,X,'covrob',covrob,'rhofunc',rhofunc);
     fanplotFS(outMM,'conflev',0.90,'lwdenv',lwdenv);
@@ -509,7 +516,7 @@ function brushedUnits=fanplotFS(out,varargin)
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
     X=multiple_regression(:,1:3);
-    % Specity line width of the envelopes
+    % Specify line width of the envelopes
     lwdenv=2;
     [out]=LXS(y,X,'nsamp',1000);
     [outFS]=FSReda(y,X,out.bs);
@@ -611,11 +618,11 @@ if fanplotScore==false
         if isstring(out.la)
             las=out.la(:);
         else
-            las=statName+string(out.la(:)-1);
+            las=statName+"{"+string(out.la(:)-1)+"}";
         end
         la=las;
     else
-        las=statName+(1:(p-intercept));
+        las=statName+"{"+(1:(p-intercept))+"}";
         la=las;
     end
 end
@@ -624,7 +631,8 @@ end
 options=struct('conflev',0.99,'titl','Fan plot','labx',labx,...
     'laby',laby,'xlimx','','ylimy','','lwd',2,'lwdenv',1, ...
     'FontSize',12,'SizeAxesNum',10,'highlight',[],...
-    'tag','pl_fan','datatooltip','','databrush','','nameX','','namey','','label','');
+    'tag','pl_fan','datatooltip','','databrush','', ...
+    'nameX','','namey','','label','','separatePanels',false);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -731,193 +739,220 @@ lla=length(la);
 % lwd = line width of the trajectories which contain the score test
 lwd=options.lwd;
 
-plot1=plot(Sco(:,1),Sco(:,2+intercept:end),'LineWidth',lwd);
-set(gcf,'Tag',options.tag)
-
-% Specify the line type for the units inside vector units
-slin={'-';'--';':';'-.'};
-slin=repmat(slin,ceil(lla/4),1);
-set(plot1,{'LineStyle'},slin(1:lla));
-
 % set the x and y axis
 xlimx=options.xlimx;
 ylimy=options.ylimy;
 
-if ~isempty(xlimx)
-    xlim(xlimx);
-end
-
-if isempty(ylimy)
-    % Use default limits for y axis
-    ylim1=max(-maxy,min(min(Sco(:,2+intercept:end))));
-    ylim1=min([ylim1 -3]);
-    ylim2=min(maxy,max(max(Sco(:,2+intercept:end))));
-    ylim2=max([ylim2 3]);
-
-    ylim([ylim1 ylim2]);
-else
-    % Use limits specified by the user
-    ylim(ylimy);
-end
-
-% PLOT THE CONFIDENCE BANDS OF THE SCORE TESTS
-
 % lwdenv = line width of the curves associated with the envelopes
 lwdenv=options.lwdenv;
 conflev=options.conflev;
-
-rangeaxis=axis;
-
-if dfvary==true
-
-    conflev=(1+conflev)/2;
-    % df = m-p
-    Tdelenv=tinv(repmat(conflev,length(Sco(:,1)),1),repmat(Sco(:,1),1,length(conflev))-p);
-
-    for i=1:length(conflev)
-        % Superimpose chosen envelopes
-        line(Sco(:,[1 1]),[-Tdelenv(:,i) Tdelenv(:,i)],'LineWidth',lwdenv,'color','r','Tag','env');
-    end
-else
-    quant = sqrt(chi2inv(conflev,1));
-    numconflev=length(conflev);
-    V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
-    QUANT=[[quant;quant],[ -quant;-quant]];
-    % Assign to the confidence lines Tag env so that they cannot be selected
-    % with options databrush
-    line(V, QUANT,'LineWidth',lwdenv,'color','r','Tag','env');
-end
-
-
-
-% SET SOME FIGURE PROPERTIES OF THE fanplot
-
 % FontSize = font size of the axes labels
 FontSize =options.FontSize;
 
-% Add labels at the end of the search
-text(finalvalue*ones(lla,1),Sco(end,2+intercept:end)',las,'FontSize',FontSize);
-
-if estimatorS==true
-    set(gca,'XDir','reverse');
-end
+% Use default limits for y axis
+ylim1=max(-maxy,min(min(Sco(:,2+intercept:end))));
+ylim1=min([ylim1 -3]);
+ylim2=min(maxy,max(max(Sco(:,2+intercept:end))));
+ylim2=max([ylim2 3]);
 
 % Main title of the plot and labels for the axes
 labx=options.labx;
 laby=options.laby;
 titl=options.titl;
 highlight=options.highlight;
-
-title(titl);
-
-% Add to the plot the labels for values of la
-% Add the horizontal lines representing asymptotic confidence bands
-xlabel(labx,'Fontsize',FontSize);
-ylabel(laby,'Fontsize',FontSize);
-
-% SizeAxesNum = font size for the axes numbers
-SizeAxesNum=options.SizeAxesNum;
-set(gca,'FontSize',SizeAxesNum)
-box on
+separatePanels=options.separatePanels;
 
 if ~isempty(highlight)
+
     if isvector(highlight)
         nBrush=repmat(highlight(:),1,lla);
     else
         nBrush=highlight;
     end
-
-    hold('on');
-
-    for j=1:lla
-        nbrush=rmmissing(nBrush(:,j));
-
-        Un=out.Un{j};
-        % nbrush= vector which contains the brushed steps selstesp=
-        % vector which will contain the steps in which the brushed
-        % units enter the search Given nbrush, find selstesp
-        selsteps=zeros(n,11);
-        ii=0;
-        for i=1:length(nbrush)
-            idx = find(Un(:,2:end) == nbrush(i));
-
-            % Find the required row(s) of matrix Un
-            row = ind2sub(size(Un(:,2:end)),idx);
-            % when isempty(row) is true the selected unit entered the
-            % subset at step before Un(1,:), that is before the first
-            % step which has been monitored
-            if ~isempty(row)
-                % Note that mod(row,size(Un,1)) is used rather than
-                % Un(row,:) because the unit could have entered the
-                % subset together with other units (i.e. could be in a
-                % column  of matrix Un different from the second).
-                % Finally note that the expression row-1e-12 is
-                % necessary otherwise when row is= size(Un,1) then
-                % mod(row-1e-12,size(Un,1))is equal to zero
-                selsteps(ii+1:ii+length(row),:)=Un(ceil(mod(row-1e-12,size(Un,1))),:);
-                ii=ii+length(row);
-            end
-        end
-
-        selsteps=sortrows(selsteps(1:ii,:),1);
-        % m1 contains the indexes of the unique steps;
-        [~, m1]=unique(selsteps(:,1));
-        selsteps=selsteps(m1,:);
-        selsteps=rmmissing(selsteps,2,'MinNumMissing',size(selsteps,1));
-
-        % remove the columns of selsteps which contain just NaN
-
-        if fanplotScore==true
-            disp("Steps of entry of selected units when la= "+las(j));
-        else
-            disp("Steps of entry of selected units in deletion t tstat for "+las(j));
-        end
-        disp(selsteps);
-
-        %% - highlight units in the fanplot
-
-        % Remove unnecessary rows from vector selsteps -1 is
-        % necessary because we are considering minimum outside
-        % selsteps=selsteps(:,1)-1;
-
-        xdata=Sco(:,1)'; % x coordinates of score (steps)
-        ydata=Sco(:,j+1)'; % y coordinates of score (values)
-
-        [c, ia, ib]=intersect(selsteps(:,1), xdata); %#ok<ASGLU>
-        % Stack together x and y coordinates
-        xx=[xdata; ydata];
-
-        % Just in case the first step of mdr is selected remove it
-        % because we also consider ib-1
-        ib=ib(ib>1);
-        % For each of the brushed units extract coordinates of mdr
-        % referred to the step before their entry and the step
-        % before
-        xxsel=xx(:,[ib-1 ib])';
-        % Sort all steps
-        xxselr=sortrows(xxsel,1);
-        % xxlim=length(nbrush);
-        xxlim=length(ib);
-        % Reshape previous matrix in such a way that the first
-        % length(nbrush) columns refer to the steps which have to
-        % be plotted and the remining columns refer to their
-        % corresponding values of mdr
-        xy=reshape(xxselr,2,2*xxlim);
-        % Add to the previous matrix a row of missing values This
-        % operation is necessary if the steps are not contiguous
-        xy=cat(1,xy,NaN*zeros(1,2*xxlim));
-
-        % Reshape the set of x and y coordinates in two column
-        % vectors Note the NaN between the steps which are not
-        % consecutive
-        xcoord=reshape(xy(:,1:xxlim),3*xxlim,1);
-        ycoord=reshape(xy(:,xxlim+1:end),3*xxlim,1);
-        plot(gca,xcoord,ycoord,'LineWidth',3.5,'color',[1 0 0],'tag','brush_mdr');
-
-    end
-    hold('off');
 end
 
+% SizeAxesNum = font size for the axes numbers
+SizeAxesNum=options.SizeAxesNum;
+
+if separatePanels==false
+
+    plot1=plot(Sco(:,1),Sco(:,2+intercept:end),'LineWidth',lwd);
+    set(gcf,'Tag',options.tag)
+
+    % Specify the line type for the units inside vector units
+    slin={'-';'--';':';'-.'};
+    slin=repmat(slin,ceil(lla/4),1);
+    set(plot1,{'LineStyle'},slin(1:lla));
+
+
+    if ~isempty(xlimx)
+        xlim(xlimx);
+    end
+
+    if isempty(ylimy)
+        ylim([ylim1 ylim2]);
+    else
+        % Use limits specified by the user
+        ylim(ylimy);
+    end
+
+    % PLOT THE CONFIDENCE BANDS OF THE SCORE TESTS
+    rangeaxis=axis;
+
+    if dfvary==true
+        conflev=(1+conflev)/2;
+        % df = m-p
+        Tdelenv=tinv(repmat(conflev,length(Sco(:,1)),1),repmat(Sco(:,1),1,length(conflev))-p);
+
+        for i=1:length(conflev)
+            % Add adaptive confidence bands
+            line(Sco(:,[1 1]),[-Tdelenv(:,i) Tdelenv(:,i)],'LineWidth',lwdenv,'color','r','Tag','env');
+        end
+    else
+        quant = sqrt(chi2inv(conflev,1));
+        numconflev=length(conflev);
+        V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
+        QUANT=[[quant;quant],[ -quant;-quant]];
+        % Assign to the confidence lines Tag env so that they cannot be selected
+        % with options databrush
+        line(V, QUANT,'LineWidth',lwdenv,'color','r','Tag','env');
+    end
+
+    % Add labels at the end of the search
+    text(finalvalue*ones(lla,1),Sco(end,2+intercept:end)',las,'FontSize',FontSize);
+
+    if estimatorS==true
+        set(gca,'XDir','reverse');
+    end
+
+    title(titl);
+
+    % Add to the plot the labels for values of la
+    % Add the horizontal lines representing asymptotic confidence bands
+    xlabel(labx,'Fontsize',FontSize);
+    ylabel(laby,'Fontsize',FontSize);
+
+    set(gca,'FontSize',SizeAxesNum)
+    box on
+
+    if ~isempty(highlight)
+
+        hold('on');
+
+        for j=1:lla
+            nbrush=rmmissing(nBrush(:,j));
+
+            if iscell(out.Un)
+                Un=out.Un{j};
+            else
+                Un=out.Un;
+            end
+            xdata=Sco(:,1)'; % x coordinates of score (steps)
+            ydata=Sco(:,j+intercept+1)'; % y coordinates of score (values)
+
+            % Find step of entry of selected units and the associated
+            % x,y coordinates
+            [selsteps, xcoord,ycoord]= computeHG(n,nbrush,Un,xdata,ydata);
+
+            if fanplotScore==true
+                disp("Steps of entry of selected units when la= "+las(j));
+            else
+                disp(['Steps of entry of selected units in ' laby '  for ' char(las(j))]);
+            end
+            disp(selsteps);
+            plot(gca,xcoord,ycoord,'LineWidth',3.5,'color',[1 0 0],'tag','brush_mdr');
+        end
+
+        hold('off');
+    end
+else % else plot on separate panels
+    ij=0;
+
+    if dfvary==true
+        conflev=(1+conflev)/2;
+        % df = m-p
+        Tdelenv=tinv(repmat(conflev,length(Sco(:,1)),1),repmat(Sco(:,1),1,length(conflev))-p);
+    else
+        quant = sqrt(chi2inv(conflev,1));
+        numconflev=length(conflev);
+
+    end
+
+    ht = tiledlayout('flow');
+    for j=2+intercept:size(Sco,2)
+        nexttile
+        ij=ij+1;
+        plot(Sco(:,1),Sco(:,j),'LineWidth',lwd);
+        set(gcf,'Tag',options.tag)
+
+
+        if ~isempty(xlimx)
+            xlim(xlimx);
+        end
+
+        if isempty(ylimy)
+            ylim([ylim1 ylim2]);
+        else
+            % Use limits specified by the user
+            ylim(ylimy);
+        end
+
+        % PLOT THE CONFIDENCE BANDS OF THE SCORE TESTS
+
+        if dfvary==true
+            for i=1:length(conflev)
+                % Add adaptive confidence bands
+                line(Sco(:,[1 1]),[-Tdelenv(:,i) Tdelenv(:,i)],'LineWidth',lwdenv,'color','r','Tag','env');
+            end
+        else
+            rangeaxis=axis;
+            V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
+            QUANT=[[quant;quant],[ -quant;-quant]];      % Assign to the confidence lines Tag env so that they cannot be selected
+            % with options databrush
+            line(V, QUANT,'LineWidth',lwdenv,'color','r','Tag','env');
+        end
+
+        % Add labels at the end of the search
+        text(finalvalue,Sco(end,j)',las(ij),'FontSize',FontSize);
+
+        if estimatorS==true
+            set(gca,'XDir','reverse');
+        end
+
+        set(gca,'FontSize',SizeAxesNum)
+        box on
+        hold('on')
+        if ~isempty(highlight)
+            nbrush=rmmissing(nBrush(:,ij));
+
+            if iscell(out.Un)
+                Un=out.Un{ij};
+            else
+                Un=out.Un;
+            end
+            xdata=Sco(:,1)'; % x coordinates of score (steps)
+            ydata=Sco(:,ij+intercept+1)'; % y coordinates of score (values)
+
+            % Find step of entry of selected units and the associated
+            % x,y coordinates
+            [selsteps, xcoord,ycoord]= computeHG(n,nbrush,Un,xdata,ydata);
+
+            if fanplotScore==true
+                disp("Steps of entry of selected units when la= "+las(ij));
+            else
+                disp(['Steps of entry of selected units in ' laby ' for ' char(las(ij))]);
+            end
+            disp(selsteps);
+            plot(gca,xcoord,ycoord,'LineWidth',3.5,'color',[1 0 0],'tag','brush_mdr');
+        end
+
+    end
+    title(ht,titl);
+    % Add to the plot the x and y labels
+    xlabel(ht,labx,'Fontsize',FontSize);
+    ylabel(ht,laby,'Fontsize',FontSize);
+
+end
 %% Set the datatooltip for the fanplot
 
 if ~isempty(options.datatooltip)
@@ -1652,4 +1687,79 @@ end % close options.databrush
 
 
 end
+
+function [selsteps, xcoord,ycoord]=computeHG(n,nbrush,Un,xdata,ydata)
+% nbrush= vector which contains the brushed steps selstesp=
+% vector which will contain the steps in which the brushed
+% units enter the search Given nbrush,Un,xdata,ydata, find selstesp
+selsteps=zeros(n,11);
+ii=0;
+for i=1:length(nbrush)
+    idx = find(Un(:,2:end) == nbrush(i));
+
+    % Find the required row(s) of matrix Un
+    row = ind2sub(size(Un(:,2:end)),idx);
+    % when isempty(row) is true the selected unit entered the
+    % subset at step before Un(1,:), that is before the first
+    % step which has been monitored
+    if ~isempty(row)
+        % Note that mod(row,size(Un,1)) is used rather than
+        % Un(row,:) because the unit could have entered the
+        % subset together with other units (i.e. could be in a
+        % column  of matrix Un different from the second).
+        % Finally note that the expression row-1e-12 is
+        % necessary otherwise when row is= size(Un,1) then
+        % mod(row-1e-12,size(Un,1))is equal to zero
+        selsteps(ii+1:ii+length(row),:)=Un(ceil(mod(row-1e-12,size(Un,1))),:);
+        ii=ii+length(row);
+    end
+end
+
+selsteps=sortrows(selsteps(1:ii,:),1);
+% m1 contains the indexes of the unique steps;
+[~, m1]=unique(selsteps(:,1));
+selsteps=selsteps(m1,:);
+selsteps=rmmissing(selsteps,2,'MinNumMissing',size(selsteps,1));
+
+% remove the columns of selsteps which contain just NaN
+
+
+%% - highlight units in the fanplot
+
+% Remove unnecessary rows from vector selsteps -1 is
+% necessary because we are considering minimum outside
+% selsteps=selsteps(:,1)-1;
+
+
+[c, ia, ib]=intersect(selsteps(:,1), xdata); %#ok<ASGLU>
+% Stack together x and y coordinates
+xx=[xdata; ydata];
+
+% Just in case the first step of mdr is selected remove it
+% because we also consider ib-1
+ib=ib(ib>1);
+% For each of the brushed units extract coordinates of mdr
+% referred to the step before their entry and the step
+% before
+xxsel=xx(:,[ib-1 ib])';
+% Sort all steps
+xxselr=sortrows(xxsel,1);
+% xxlim=length(nbrush);
+xxlim=length(ib);
+% Reshape previous matrix in such a way that the first
+% length(nbrush) columns refer to the steps which have to
+% be plotted and the remining columns refer to their
+% corresponding values of mdr
+xy=reshape(xxselr,2,2*xxlim);
+% Add to the previous matrix a row of missing values This
+% operation is necessary if the steps are not contiguous
+xy=cat(1,xy,NaN*zeros(1,2*xxlim));
+
+% Reshape the set of x and y coordinates in two column
+% vectors Note the NaN between the steps which are not
+% consecutive
+xcoord=reshape(xy(:,1:xxlim),3*xxlim,1);
+ycoord=reshape(xy(:,xxlim+1:end),3*xxlim,1);
+end
+
 %FScategory:VIS-Reg
