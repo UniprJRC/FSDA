@@ -1,11 +1,11 @@
 function brushedUnits=fanplot(out,varargin)
-%fanplot plots the fan plot (this function will be replaced by fanplotFS)
+%fanplot OLD FUNCTION (this function is replaced by fanplotFS and it is not updated anylonger)
 %
 %<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
 %
 % NOTE THAT THIS FUNCTION WILL BE REMOVED IN A FUTURE RELEASE OF FSDA
 % BECAUSE IT IS IN CONFLICT WITH FUNCTION fanplot OF THE ECONOMETRIC TOOLBOX.
-% FSDA function fanplot IS REPLACED BY FUNCTION fanplotFS
+% This function has been replace by function fanplotFS
 %
 % Required input arguments:
 %

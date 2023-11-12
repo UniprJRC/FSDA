@@ -110,11 +110,11 @@ function brushedUnits=fanplotFS(out,varargin)
 %                   Example - 'namey',''
 %                   Data Types - char
 %
-%separatePanels :  plots on a single or multiple panels. Boolean. If
-%                   separatePanels is true each trajectory appears on a
-%                   seperate subplot. If separatePanels is false all the
+%multiPanel :  plots on a single or multiple panels. Boolean. If
+%                   multiPanel is false each trajectory appears on a
+%                   seperate subplot. If multiPanel is true (defaul) all the
 %                   trajectories appear in single plot.
-%                   Example - 'separatePanels',true
+%                   Example - 'multiPanel',true
 %                   Data Types - logical
 %
 %    SizeAxesNum:   Size of the numbers of the axis. Scalar. Scalar which
@@ -632,7 +632,7 @@ options=struct('conflev',0.99,'titl','Fan plot','labx',labx,...
     'laby',laby,'xlimx','','ylimy','','lwd',2,'lwdenv',1, ...
     'FontSize',12,'SizeAxesNum',10,'highlight',[],...
     'tag','pl_fan','datatooltip','','databrush','', ...
-    'nameX','','namey','','label','','separatePanels',false);
+    'nameX','','namey','','label','','multiPanel',false);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -760,7 +760,7 @@ labx=options.labx;
 laby=options.laby;
 titl=options.titl;
 highlight=options.highlight;
-separatePanels=options.separatePanels;
+multiPanel=options.multiPanel;
 
 if ~isempty(highlight)
 
@@ -774,7 +774,7 @@ end
 % SizeAxesNum = font size for the axes numbers
 SizeAxesNum=options.SizeAxesNum;
 
-if separatePanels==false
+if multiPanel==false
 
     plot1=plot(Sco(:,1),Sco(:,2+intercept:end),'LineWidth',lwd);
     set(gcf,'Tag',options.tag)
@@ -1600,41 +1600,19 @@ end % close options.databrush
         % event_obj =   Handle to event object (event_obj=graphics.datatipevent)
         %               Remark: the first two arguments are implicit in the sense that
         %               these arguments are automatically passed to the function when it executes.
-        %   out     =   a structure containing the following fields
-        %               Score = (n-init) x length(la)+1 matrix
-        %                       1st col = fwd search index
-        %                       2nd col = value of the score test in each step
-        %                       of the fwd search for la(1)
-        %                       ...........
-        %                       end col = value of the score test in each step
-        %                       of the fwd search for la(end)
-        %               Un   = cell of size length(la). out.Un{i} is a
-        %                       (n-init) x 11 Matrix which contains the unit(s)
-        %                       included in the subset at each step of the fwd search
-        %                       REMARK: in every step the new subset is compared
-        %                       with the old subset. Un contains the unit(s) present
-        %                       in the new subset but not in the old one
-        %                       Un(1,2) for example contains the unit included in step
-        %                       init+1
-        %                       Un(end,2) contains the units included in the final step
-        %                       of the search
+        %   out     =   a structure coming from FSReda, Sregeda, MMregeda
+        %               or FSRaddt
         %               label =(optional argument) if it is present it must be
         %                       a cell array of strings containing the labels of
         %                       the rows of the regression dataset
         % Output:
         %
         %   output_txt=  Datatip text (string or string cell array) which informs
-        %                1) about the value of the score test
-        %                2) the step of the search
-        %                3) the value of the transformation parameter
-        %                4) the unit(s) which enter(s) the search
+        %                1) about the value of the statistic which is monitored
+        %                2) the step of the search (just if FS) or bdp (if
+        %                Sregeda) or eff (if MMregeda) 
         %
         % REMARK: this function is called by function fanplotFS
-        %
-        % References:
-        %
-        %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
-        %   Springer Verlag, New York.
         %
         % Written by FSDA team
         %
@@ -1645,43 +1623,87 @@ end % close options.databrush
         % x and y, plot coordinates of the mouse
         x = pos(1); y = pos(2);
 
-        if fanplotScore ==true
-
-            % output_txt is what it is shown on the screen
-            output_txt = {['Value of the score test=',num2str(y)]};
-        else
-            output_txt = {['Value of the deletion t test=',num2str(y)]};
-        end
-        % Add information abou the step of the search which is under investigation
-        output_txt{end+1} = ['Step m=' num2str(x)];
-
-        % If structure out does not contain labels for the rows then
-        % labels row1....rown are added automatically
-        if isempty(intersect('label',fieldnames(out)))
-
-            % Find n=number of units
-            % cUn=cell2mat(out.Un(1));
-            % n=cUn(end,1);
-            out.label=cellstr(num2str((1:n)','row%d'));
-        end
+        % if fanplotScore ==true
+        %
+        % else
+        %     output_txt = {['Value of the deletion t test=',num2str(y)]};
+        % end
+        %
+        % % If structure out does not contain labels for the rows then
+        % % labels row1....rown are added automatically
+        % if isempty(intersect('label',fieldnames(out)))
+        %
+        %     % Find n=number of units
+        %     % cUn=cell2mat(out.Un(1));
+        %     % n=cUn(end,1);
+        %     out.label=cellstr(num2str((1:n)','row%d'));
+        % end
 
         % Add information about the unit(s) and the selected steps they entered the
         % search
 
-        [~,col] = find(Sco(:,2:end)==y);
-        Un=out.Un{col};
-        idx = find(Un(:,1)==x,1);
-        sel=Un(idx,2:end);
 
         % Add information about the corresponding row label of what has been
         % selected
-        if fanplotScore ==true
+        if strcmp(out.class,'FSRfan')
+            % output_txt is what it is shown on the screen
+            output_txt = {['Value of the score test=',num2str(y)]};
+
+            % Add information abou the step of the search which is under investigation
+            output_txt{end+1} = ['Step m=' num2str(x)];
+
+            [~,col] = find(Sco(:,2:end)==y);
+            Un=out.Un{col};
+            idx = find(Un(:,1)==x,1);
+            sel=Un(idx,2:end);
+
+
             output_txt{end+1} = ['H_0: \lambda =' num2str(out.la(col))];
-        else
+            output_txt{end+1} = ['Unit(s) entered in step ' num2str(x) '='  num2str(sel(~isnan(sel)))];
+
+
+        elseif strcmp(out.class,'FSRaddt')
+            output_txt = {['Value of the deletion t test=',num2str(y)]};
+            % Add information abou the step of the search which is under investigation
+            output_txt{end+1} = ['Step m=' num2str(x)];
+
+            [~,col] = find(Sco(:,2:end)==y);
+            Un=out.Un{col};
+            idx = find(Un(:,1)==x,1);
+            sel=Un(idx,2:end);
             output_txt{end+1} = ['H_0: \beta_' num2str(out.la(col)-1) '=0'];
+            output_txt{end+1} = ['Unit(s) entered in step ' num2str(x) '='  num2str(sel(~isnan(sel)))];
+
+        elseif strcmp(out.class,'FSReda')
+            output_txt = {['Value of the t test=',num2str(y)]};
+            % Add information abou the step of the search which is under investigation
+            output_txt{end+1} = ['Step m=' num2str(x)];
+
+            [~,col] = find(Sco(:,2+intercept:end)==y);
+            Un=out.Un;
+            idx = find(Un(:,1)==x,1);
+            sel=Un(idx,2:end);
+            output_txt{end+1} = ['H_0: \beta_' num2str(col) '=0'];
+            output_txt{end+1} = ['Unit(s) entered in step ' num2str(x) '='  num2str(sel(~isnan(sel)))];
+
+        elseif strcmp(out.class,'Sregeda')
+
+            output_txt = {['Value of the t test=',num2str(y)]};
+            % Add information about bdp
+            output_txt{end+1} = ['bdp=' num2str(x)];
+            [~,col] = find(Sco(:,2+intercept:end)==y);
+            output_txt{end+1} = ['H_0: \beta_' num2str(col) '=0'];
+        elseif  strcmp(out.class,'MMregeda')
+
+            output_txt = {['Value of the t test=',num2str(y)]};
+            % Add information about eff
+            output_txt{end+1} = ['eff=' num2str(x)];
+            [~,col] = find(Sco(:,2+intercept:end)==y);
+            output_txt{end+1} = ['H_0: \beta_' num2str(col) '=0'];
+        else
+
         end
 
-        output_txt{end+1} = ['Unit(s) entered in step ' num2str(x) '='  num2str(sel(~isnan(sel)))];
 
     end
 
