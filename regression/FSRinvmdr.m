@@ -1,15 +1,24 @@
-function [MDRinv] = FSRinvmdr(mdr,p,varargin)
-%FSRinvmdr converts values of minimum deletion residual into confidence levels
+function [mdrOutput] = FSRinvmdr(mdrInput,p,varargin)
+%FSRinvmdr converts values of mdr into confidence levels and  mdr in normal coordinates
 %
 %<a href="matlab: docsearchFS('FSRinvmdr')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    mdr : Minimum deletion residuals. Matrix. n-m0 x 2 matrix containing:
-%          1st col = fwd search index;
-%          2nd col = minimum deletion residual .
-%    p : Number of explanatory variables. Scalar. Number of explanatory variables of the underlying dataset
+%  mdrInput : Object containing values of minimum deletion residuals.
+%          Matrix or struct.
+%          If mdrInput is a matrix it has 2 or 3 columns and contains. 
+%          1st col = fwd search index; 
+%          2nd col = minimum deletion residual (possibly stored with sign). 
+%          If mdrInput is a struct it must contain
+%          mdrInput.mdr = matrix which contains in the second column
+%                   the values of the minimum deletion residual.
+%                   Data Types - array or struct
+%
+%    p : Number of explanatory variables. Scalar. Number of explanatory
+%         variables of the underlying dataset
 %           (including the intercept if present)
+%                   Data Types - numeric scalar
 %
 %  Optional input arguments:
 %
@@ -46,15 +55,21 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %                 Data Types - double
 %  Output:
 %
-%   MDRinv:     Confidence levels. Matrix. Matrix with n-m0 rows (same rows
-%               of input matrix mdr) and 3 columns:
-%               1st col = fwd search index from m0 to n-1.
+%   mdrOutput:  Object containing values of mdr in normal coordinates.
+%               Matrix or structure depending on the input mdrInput.
+%               If input mdrInput is a matrix, mdrOutput is a matrix with
+%               the same rows of input and 3 columns:
+%               1st col = fwd search index.
 %               2nd col = confidence level of each value of mdr.
-%               3rd col = confidence level in normal coordinates: 50% conf
-%               level becomes norminv(0.50)=0; 99% conf level becomes norminv(0.99)=2.33.
+%               3rd col = mdr in normal coordinates (50% conf
+%               level becomes norminv(0.50)=0; 99% conf level becomes
+%               norminv(0.99)=2.33. 
+%               If input mdrInput is a struct mdrOutput is a struct with
+%               all the fields of the input structure mdrInput except that
+%               now the field mdr is referred to normal coordinates.
+%               mdrOutput.mdr = value of mdr in normal coordinates.
 %
-%
-% See also FSRenvmdr, LXS.m, FSREDA.m
+% See also FSRmdr, FSRenvmdr, FSReda.m
 %
 % References:
 %
@@ -82,7 +97,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
     % Example of finding the confidence level of MDRenv, where MDRenv is
     % the matrix of 99 per cent confidence envelopes based on 1000
     % observations and 5 explanatory variables.
-    % MDinv is a matrix which in the second column contains
+    % MDRinv is a matrix which in the second column contains
     % all values equal to 0.99
     p=5;
     MDRenv=FSRenvmdr(1000,p,'prob',0.99);
@@ -173,14 +188,56 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 
 %}
 
+%{
+ % Example with input passed as struct.
+    load('hospitalFS.txt');
+    y=hospitalFS(:,5);
+    X=hospitalFS(:,1:4);
+    
+    n=length(y);
+    % Prepare input for Figure 4.30
+    % LMS using all  subsamples (very lengthy)
+    computeLMSusingAllSubsets=false;
+    if computeLMSusingAllSubsets ==true
+        nsamp=0;
+        [outLXS]=LXS(y,X,'nsamp',nsamp);
+    else
+        % best out of 111,469,176 subsets
+        outLXS=struct;
+        outLXS.bs= [ 3   11   20   23   74];
+    end
+    
+    p=size(X,2)+1;
+    
+    outFS=FSReda(y,X,outLXS.bs);
+    
+    % Tranform minimum deletion residual from standard coordinates to normal
+    % coordinates
+    outFS1=FSRinvmdr(outFS,p);
+    
+    % Minimum deletion residuals in normal coordinates (Figure 4.30 of the
+    % forthcoming book ARCPT 2024)
+    mdrplot(outFS1,'ncoord',true,'quant',[0.1 0.5 0.99 0.999 0.9999]);
+%}
+
 %% Beginning of code
+
+% Check whether the input is an array or a struct.
+if isstruct(mdrInput)
+    mdrstruct=true;
+    mdrOutput=mdrInput;
+    mdr=mdrInput.mdr;
+else
+    mdrstruct=false;
+    mdr=mdrInput;
+end
 
 % Input parameters checks
 n=mdr(end,1)+1;
 
 if coder.target('MATLAB')
     options=struct('n',n,'plots','');
-    
+
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -211,6 +268,11 @@ end
 
 
 %% Find confidence level of each value of mdr
+% Make sure we are removing the sign from mdr.
+% The sign was stored just to check whether the minimum deletion residual
+% was associated with a positive or a negative residual.
+mdr=abs(mdr);
+
 
 % mm = column vector which contains fwd search index.
 mm =mdr(:,1);
@@ -241,28 +303,28 @@ MDRinv=[mm mdrt MDRncoord];
 %% Plotting part
 if coder.target('MATLAB')
     if ~isempty(options.plots)
-        
+
         plots=options.plots;
-        
+
         if isstruct(plots)
-            
+
             fplots=fieldnames(plots);
-            
+
             d=find(strcmp('xlim',fplots));
             if d>0
                 xlimx=plots.xlim;
             else
                 xlimx='';
             end
-            
-            
+
+
             d=find(strcmp('LineWidth',fplots));
             if d>0
                 LineWidth=plots.LineWidth;
             else
                 LineWidth=2;
             end
-            
+
             % LineWidthEnv = line width of the horizontal lines associated
             % with required confidence envelopes
             % the plot of monitoring of MLE of transformation parameters or the
@@ -274,7 +336,7 @@ if coder.target('MATLAB')
             else
                 LineWidthEnv=1;
             end
-            
+
             % Specify the line type for the trajectory of mdr
             % in normal coordinate
             d=find(strcmp('LineStyle',fplots));
@@ -283,7 +345,7 @@ if coder.target('MATLAB')
             else
                 LineStyle={'-'};
             end
-            
+
             % Horizontal lines associated with confidence level
             d=find(strcmp('conflev',fplots));
             if d>0
@@ -291,28 +353,28 @@ if coder.target('MATLAB')
             else
                 conflev=[0.01 0.5 0.99];
             end
-            
+
             d=find(strcmp('ylim',fplots));
             if d>0
                 ylimy=plots.ylim;
             else
                 ylimy=[min([MDRncoord;norminv(min(conflev))]) max([MDRncoord;norminv(max(conflev))])];
             end
-            
+
             d=find(strcmp('conflevlab',fplots));
             if d>0
                 conflevlab=plots.conflevlab;
             else
                 conflevlab=1;
             end
-            
+
             d=find(strcmp('Tag',fplots));
             if d>0
                 tag=plots.Tag;
             else
                 tag='pl_mdrinv';
             end
-            
+
             % Font size for the number of the axes and the titles of the
             % axes
             d=find(strcmp('FontSize',fplots));
@@ -321,7 +383,7 @@ if coder.target('MATLAB')
             else
                 FontSize=12;
             end
-            
+
             % Font size for text messages associated with the
             % labels of the horizontal lines
             d=find(strcmp('FontSizeLab',fplots));
@@ -330,9 +392,9 @@ if coder.target('MATLAB')
             else
                 FontSizeLab=12;
             end
-            
+
         else
-            
+
             xlimx=[MDRinv(1,1) MDRinv(end,1)+1];
             ylimy=[min([MDRncoord;norminv(0.009)]) max([MDRncoord;norminv(0.991)])];
             LineWidth=2;
@@ -344,7 +406,7 @@ if coder.target('MATLAB')
             conflev=[0.01 0.5 0.99];
             conflevlab=1;
         end
-        
+
         % Specify where to send the output of the monitoring of mdr
         % in normal coordinates
         hmle=findobj('-depth',1,'tag',tag);
@@ -356,23 +418,23 @@ if coder.target('MATLAB')
             figure;
             set(gcf,'Name','MDR in normal coordinates');
         end
-        
+
         plot1=plot(MDRinv(:,1),MDRncoord,'LineWidth',LineWidth);
-        
+
         % Specify the line style of the trajectory of mdr in normal coordinates
         set(plot1,{'LineStyle'},LineStyle);
-        
-        
+
+
         set(gcf,'Tag',tag)
-        
+
         if ~isempty(xlimx)
             xlim(xlimx);
         end
-        
+
         if ~isempty(ylimy)
             ylim(ylimy);
         end
-        
+
         % Add horizontal lines associated with confidenve levels
         v=axis;
         ninv=norminv(conflev);
@@ -386,20 +448,25 @@ if coder.target('MATLAB')
             end
             line(v(1:2)',[ninv(i);ninv(i)],'color',col,'LineWidth',LineWidthEnv,'LineStyle','--','Tag','env');
         end
-        
+
         % add text label associated to horizontal confidence levels
         if conflevlab==1
             text(v(1)*ones(length(ninv),1),ninv+0.2,strcat(num2str(100*conflev'),'%'),...
                 'FontSize',FontSizeLab,'HorizontalAlignment','Left');
         end
-        
+
         xlabel('Subset size m','FontSize',FontSize);
         ylabel('MDR in normal coordinates','FontSize',FontSize);
         set(gca,'FontSize',FontSize)
-        
+
     end
 end
 
+if mdrstruct == true
+    mdrOutput.mdr(:,2)=MDRinv(:,3);
+else
+    mdrOutput= MDRinv;
+end
 end
 
 %FScategory:REG-Regression
