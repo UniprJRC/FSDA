@@ -76,7 +76,7 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
 %                   Data Types - double
 %
 %       ncoord  :   input out.mdr in normal coordinates. Boolean.
-%                   If ncoord=true the input matrix which contains the 
+%                   If ncoord=true the input matrix which contains the
 %                   minimum deletion residual has been transformed to
 %                   normal coordinates. The default is ncoord false.
 %                   Example - 'ncoord',true
@@ -469,25 +469,25 @@ UserOptions=varargin(1:2:length(varargin));
 brushedUnits=[];
 BrushedUnits=[];
 
-  checklms2 = strcmp(UserOptions,'ncoord');
-        if sum(checklms2)
-            lmsval = varargin(2*find(checklms2));
-            if lmsval{1}== true
-                ncoord=true;
-            else
-                ncoord=false;
-            end
-        else
-            ncoord=false;
-        end
+checklms2 = strcmp(UserOptions,'ncoord');
+if sum(checklms2)
+    lmsval = varargin(2*find(checklms2));
+    if lmsval{1}== true
+        ncoord=true;
+    else
+        ncoord=false;
+    end
+else
+    ncoord=false;
+end
 
-  if ncoord==true     
-% Extract mdr with sign
-mdr=out.mdr;
-  else
-% Extract the absolute value of minimum deletion residual
-mdr=abs(out.mdr);
-  end
+if ncoord==true
+    % Extract mdr with sign
+    mdr=out.mdr;
+else
+    % Extract the absolute value of minimum deletion residual
+    mdr=abs(out.mdr);
+end
 
 [n,p]=size(out.X);
 
@@ -510,8 +510,8 @@ yl2=max(mdr(:,2))*1.1;
 
 % Set upper limit to 20 of the plot if it is greater
 if yl2>20
-        % Inform the user about automatic upper limit
-        warning('FSDA:mdrplot:TooLargeUpperylim','Upper limit of y axis of the mdr forward plot set to 20')
+    % Inform the user about automatic upper limit
+    warning('FSDA:mdrplot:TooLargeUpperylim','Upper limit of y axis of the mdr forward plot set to 20')
     yl2=20;
 end
 
@@ -560,7 +560,7 @@ if isstruct(databrush)
     else
         labeladd='';
     end
-    
+
     % bivarfit option
     d=find(strcmp('bivarfit',fdatabrush));
     if d>0
@@ -570,7 +570,7 @@ if isstruct(databrush)
     else
         bivarfit='';
     end
-    
+
     % multivarfit option
     d=find(strcmp('multivarfit',fdatabrush));
     if d>0
@@ -580,7 +580,7 @@ if isstruct(databrush)
     else
         multivarfit='';
     end
-    
+
     % persist option
     dpers=find(strcmp('persist',fdatabrush));
     if dpers>0
@@ -588,14 +588,14 @@ if isstruct(databrush)
         %         options.databrush(d:d+1)=[];
         persist=databrush.persist;
         databrush=rmfield(databrush,'persist');
-        
+
         ColorOrd=[1 0 0;0 1 1; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
         ColorOrd=repmat(ColorOrd,4,1);
     else
         persist='';
         ColorOrd=[1 0 0];
     end
-    
+
     % FlagColor option Initialize colors for the brushing option: default
     % colors are blue (unbrushed unit) and red (brushed units)
     d=find(strcmp('FlagColor',fdatabrush));
@@ -604,7 +604,7 @@ if isstruct(databrush)
         flagcol=databrush.FlagColor;
         databrush=rmfield(databrush,'FlagColor');
         fdatabrush=fieldnames(databrush);
-        
+
         clr=['b' flagcol 'cmykgbrcmykg'];
         %if dpers>0
         %    ColorOrd=
@@ -666,10 +666,10 @@ set(h,'Name', 'Monitoring of Minimum deletion residual', 'NumberTitle', 'off');
 hold('all');
 
 if ncoord==true
-qua=norminv(quant);
-gmin=[(init:n-1)' repmat(qua(:)',n-init,1)];
+    qua=norminv(quant);
+    gmin=[(init:n-1)' repmat(qua(:)',n-init,1)];
 else
-[gmin] = FSRenvmdr(envm,p,'prob',quant,'init',init);
+    [gmin] = FSRenvmdr(envm,p,'prob',quant,'init',init);
 end
 
 box('on');
@@ -695,11 +695,11 @@ for i=1:length(quant)
     else
         line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',[0  0 0],'tag','env');
     end
-    
+
     % [figx figy] = dsxy2figxy(gca, max([xlimx(1) init]), gmin(1,i+1));
     [figx, figy] = dsxy2figxy(gca, xcoord,gmin(gmin(:,1)==xcoord,i+1));
     kx=0; ky=0;
-    
+
     if isempty(figy) || figy<0
         figy=0;
     else
@@ -714,10 +714,10 @@ for i=1:length(quant)
             figx=1;
         end
     end
-    
-    
-    
-    
+
+
+
+
     annotation(gcf,'textbox',[figx figy kx ky],'String',{[num2str(100*quant(i)) '%']},...
         'HorizontalAlignment','center',...
         'VerticalAlignment','middle',...
@@ -761,22 +761,22 @@ if sign==1
     % value is followed by a positive value of mdr
     selstep=(mdrori(:,2)>0) | [(mdrori(1:end-1,2)<0 & mdrori(2:end,2)>0);0];
     mdrori(selstep>0,3)=mdr(selstep>0,2);
-    
+
     % Find steps where it is necessary to include NaN These steps are those
     % in which a positive value of mdr is followed by a negative value
     stepna=mdrori(mdrori(1:end-1,2).*mdrori(2:end,2)<0 & mdrori(2:end,2)<0,1)+1;
     % add a column of NaN
     stepna=cat(2,stepna,NaN*zeros(length(stepna),1));
-    
+
     % Vertically concatenate matrix mdrori and matrix stepna
     mdrt=cat(1,mdrori(:,[1 3]),stepna);
-    
+
     % Sort all rows of matrix mdrt and make sure that in correspondence of
     % the duplicated steps NaN is in the first value of the two duplicated
     % steps
     mdrsor=sortrows(mdrt,-1);
     mdrsor=mdrsor(length(mdrsor):-1:1,:);
-    
+
     % Add with blue color the line associated with positive values of mdr
     line(mdrsor(:,1),mdrsor(:,2),'LineWidth',2,'Color','red','tag','env');
 end
@@ -795,7 +795,7 @@ hmin=gcf;
 %% Set the datatooltip for the mdrplot
 if ~isempty(options.datatooltip)
     try
-        % chkgpu=gpuDeviceCount; 
+        % chkgpu=gpuDeviceCount;
         % datacursormode on;
         hdt = datacursormode;
         set(hdt,'Enable','on');
@@ -826,52 +826,52 @@ end
 %
 
 if ~isempty(options.databrush) || isstruct(options.databrush)
-    
-    
+
+
     if isstruct(options.databrush)
-        
+
         % If option Label is 'on' then matrix Un is added to UserData
         d=max(strcmp('Label',fieldnames(databrush)));
         if d==1 && strcmp(databrush.Label,'on')
             set(gcf,'UserData',out.Un)
         end
-        
+
         % sele={options.databrush{:} 'Ignore' findobj(gcf,'tag','env')}; % old code
         % we need to transform the input structure databrush into a cell array
-        
+
         cv=[fieldnames(databrush) struct2cell(databrush)]';
-        
+
         % sele=[options.databrush {'Ignore'} {findobj(gcf,'tag','env')}];
         sele=[cv(:)' 'Ignore' {findobj(gcf,'tag','env')}];
-        
+
         % Add the FlagSize of the brushed points if it has not been previously
         % specified by the user
         d=find(strcmp('FlagSize',fdatabrush));
         if d==0
             sele=[sele 'FlagSize' '3'];
         end
-        
+
     else
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
     end
-    
+
     % sele={sele{:} 'Tag' options.tag}; OLD inefficient code
     sele=[sele 'Tag' {options.tag}];
-    
+
     % group = VECTOR WHICH WILL CONTAIN THE IDENTIFIER OF EACH GROUP
     % e.g. group(14)=3 means that unit 14 was selected at the third brush
     group=ones(n,1);
-    
+
     % some local variables
     but=0; brushcum=[]; ij=1;
-    
+
     % Check if X includes the constant term for the intercept.
     X=out.X;
     y=out.y;
     % p=size(X,2);
-    
+
     intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
-    
+
     if intcolumn==1
         intercept=1;
         p1=1:(p-numel(intcolumn));
@@ -882,25 +882,25 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         p1=1:p;
         Xsel=X;
     end
-    
+
     % Set the labels of the axes.
     if isempty(options.nameX)
         nameX=cellstr(num2str(p1','X%d'));
     else
         nameX=options.nameX;
     end
-    
+
     if isempty(options.namey)
         namey=char('y');
     else
         namey=options.namey;
     end
-    
-    
+
+
     % add to cell sele option FlagColor (color of selection) and
     % FlagMarker (symbol to be used for selection)
     sele=[sele 'FlagColor' ColorOrd(ij,:) 'FlagMarker' char(styp(ij+1))];
-    
+
     %Before brushing, check if there is a resplot open and save the colors,
     % the type and the width of its lines.
     hplres = findobj('-depth',1,'Tag','pl_resfwd');
@@ -909,18 +909,18 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         lineresC = get(hLplres,'Color');
         lineresLwd = get(hLplres(1),'LineWidth');
     end
-    
+
     % loop brushing
     while but<=1
         figure(hmin);
-        
+
         % Remark: function selectdataFS cannot be used on the current figure if
         % the "selection mode" or the "zoom tool" are on. Setting the
         % plotedit mode initially to on and then to off, has the effect to
         % deselect plotedit mode.
         plotedit on
         plotedit off
-        
+
         if strcmp(persist,'off')
             % Remove from the current plot the yellow selection left by
             % selectdataFS, if present.
@@ -934,22 +934,22 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                     sele{chkexist+3}=char(styp(ij+1));
                 end
             end
-            
+
         end
-        
+
         % CALL TO FUNCTION selectdataFS
         disp('Select steps to brush in the current plot');
         % [unused,xs] = selectdataFS(sele{:}, 'Label', 'off');
         [unused,xs] = selectdataFS(sele{:});
-        
+
         % exit from function if the mdrplot was closed before selection
         if ~isempty(unused) && isnumeric(unused) && (min(unused) == -999)
             return
         end
-        
+
         % selsteps= the list of the steps which have been brushed
         selsteps=xs+1;
-        
+
         % selindex= the indexes of selsteps in matrix un
         lselsteps=length(selsteps);
         selindex=zeros(lselsteps,1);
@@ -957,13 +957,13 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         for i=1:lselsteps
             selindex(i)=find(Un(:,1)==selsteps(i));
         end
-        
+
         % Unsel= units which entered the search in the brushed steps
         Unsel=Un(selindex,2:end);
-        
+
         % nbrush = vector which contains the list of the selected units
         nbrush=Unsel(~isnan(Unsel));
-        
+
         %% For each brushing operation, do the following:
         if ~isempty(nbrush)
             % brushcum =
@@ -979,17 +979,17 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             end
             % Construct a matrix with brushed units
             BrushedUnits(1:length(nbrush),end+1)=nbrush; %#ok<AGROW>
-            
+
             % group=vector of length(Xsel) observations taking values
             % from 1 to the number of groups selected.
             % unigroup= list of selected groups.
             group(nbrush)=ij+1;
             unigroup=unique(group);
-            
+
             %% - display the yXplot with the corresponding groups of units highlighted
-            
+
             h=findobj('-depth',1,'Tag','pl_yX');
-            
+
             if (~isempty(h))
                 % delete from the current figure all graphics objects whose
                 % handles are not hidden
@@ -1004,51 +1004,51 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 figure;
                 set(gcf,'WindowStyle',get(hmin,'WindowStyle'));
             end
-            
+
             [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
-            
+
             % Assign to this figure a name and a tag=pl_yX
             set(gcf,'Name','Scatter plot matrix y|X with selected groups highlighted');
             set(gcf,'tag','pl_yX');
-            
+
             % Set markers
             for mfc=1:length(unigroup)
                 set(findobj(gcf,'marker',char(styp(unigroup(mfc)))),'MarkerFaceColor',clr(unigroup(mfc)));
             end
-            
+
             % Set the legend properties of the gplotmatrix
             set(H(:,:,1),'DisplayName','Unbrushed units');
             for brugrp = 2:length(unigroup)
                 set(H(:,:,brugrp),'DisplayName',['Brushed units ' num2str(brugrp-1)]);
             end
-            
+
             % save the indices of the last selected units (nbrush) to the
             % 'UserData' field of the last selected group of H(:,:,end)
             set(H(:,:,end), 'UserData' , nbrush);
-            
+
             % The following line adds objects to the panels of the yX
             % add2yX(H,AX,BigAx,out,group,nbrush,bivarfit,multivarfit,labeladd)
             add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
-            
-            
+
+
             %% - highlight brushed trajectories also in the resplot, if it is open
-            
+
             % Now check if the figure which monitors the residuals is open.
             % If it is, then also in that figure highlight the trajectories
             % of the brushed units
             h=findobj('-depth',1,'Tag','pl_resfwd');
             if (~isempty(h))
-                
+
                 % make figure which contains monitoring scaled residuals
                 % become the current figure
                 figure(h);
-                
+
                 % Condition || but==0 if but=0 then it is necessary to
                 % remove previous highlightments (even if persist='on')
                 if strcmp(persist,'off') || but==0
                     lines = findobj(h,'Type','line');
                     set(lines,{'Color'},lineresC,'LineWidth',lineresLwd);
-                    
+
                     %                     % If set of values has already been highlighted in the
                     %                     % mdr plot, remove it
                     %                     a=findobj(h,'Tag','brush_res');
@@ -1058,13 +1058,13 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                     %                     a=findobj(h,'Tag','selected');
                     %                     delete(a);
                 end
-                
+
                 if strcmp('on',persist)
                     set(lines((n+1-nbrush)),'Color',ColorOrd(ij,:),'LineWidth',3);
                 else
                     set(lines((n+1-nbrush)),'Color',flagcol,'LineWidth',3);
                 end
-                
+
                 %                 % get the x and y coordinates of the monitoring of the
                 %                 % scaled residuals
                 %                 a=findobj(h,'tag','data_res'); %a=lines;
@@ -1083,25 +1083,25 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 %                     plot(gca,xcoord,ycoord,'LineWidth',4,'color',flagcol,'tag','brush_res');
                 %                 end
                 %                 hold('off');
-                
+
             end
-            
+
             disp('Brushed steps');
             disp(selsteps);
-            
+
             disp('Associated brushed units');
             disp(nbrush);
-            
+
             disp('Steps of entry of brushed units');
             disp(Un(selindex,:));
-            
+
         end
-        
+
         %% check condition to exit from the brush mode
         % If the option persistent is not equal off or on than get out of
         % the loop
         if strcmp('on',persist) || strcmp('off',persist)
-            
+
             % variable ij is linked to the highlighting color
             if strcmp('on',persist)
                 ij=ij+1;
@@ -1109,18 +1109,18 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 % figures are not deleted
                 but=1;
             end
-            
-            
+
+
             % Before waitforbuttonpress:
             % - the mdrplot is highlighted again
             figure(hmin);
-            
+
             % Lay down the plots before continuing
             position(hmin);
-            
+
             % - and a function to be executed on figure close is set
             set(gcf,'CloseRequestFcn',@closereqFS);
-            
+
             disp('Press a mouse key to continue brushing, a keyboard key to stop')
             ss=waitforbuttonpressFS;
             disp('------------------------')
@@ -1128,7 +1128,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             %             % - the standard MATLAB function to be executed on figure
             %             %   close is recovered
             %             set(gcf,'CloseRequestFcn','closereq');
-            
+
             % After waitforbuttonpress:
             % - the standard MATLAB function to be executed on figure
             %   close is recovered
@@ -1141,9 +1141,9 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 if ~isempty(Open_res); delete(Open_res); end  % monitoring residual plot is deleted
                 delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
             end
-            
-            
-            
+
+
+
             % - and the 'but' variable is set if keyboard key was pressed
             if ss==1
                 but=2;
@@ -1151,7 +1151,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         else
             but=2;
         end
-        
+
     end % close loop associated with but
     brushedUnits=brushcum;
 end % close options.databrush
@@ -1189,35 +1189,35 @@ end % close options.databrush
         %   Springer Verlag, New York.
         %
         % Written by FSDA team
-        
+
         %%
         pos = get(event_obj,'Position');
-        
+
         % x and y, plot coordinates of the mouse
         x = pos(1); y = pos(2);
-        
+
         % output_txt is what it is shown on the screen
         output_txt = {['mdr=',num2str(y,4)]};
-        
+
         % Add information abou the step of the search which is under investigation
         output_txt{end+1} = ['Step m=' num2str(x)];
-        
+
         % If structure out does not contain labels for the rows then
         % labels row1....rown are added automatically
         if isempty(intersect('label',fieldnames(out)))
             out.label=cellstr(num2str((1:length(out.y))','row%d'));
         end
-        
+
         % Add information about the corresponding row label of what has been
         % selected
         %output_txt{end+1} = ['Unit: ' cell2mat(out.label(row))];
-        
+
         % Add information about the next step in which the selected unit entered the
         % search
         Un=out.Un;
         idx = find(Un(:,1)==x,1)+1;
         sel=Un(idx,2:end);
-        
+
         output_txt{end+1} = ['Unit(s) entered in step ' num2str(x+1) '='  num2str(sel(~isnan(sel)))];
     end
 
