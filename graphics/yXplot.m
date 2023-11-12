@@ -1311,7 +1311,7 @@ styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 % Display the initial gplotmatrix
 [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigrouplist),charsym,siz,doleg,[],nameX,namey);
 
-for iii=1:p
+for iii=1:numel(AX)
     set(AX(iii).XLabel,'Interpreter','none');
     set(AX(iii).YLabel,'Interpreter','none');
 end
