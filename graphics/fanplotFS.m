@@ -41,11 +41,27 @@ function brushedUnits=fanplotFS(out,varargin)
 % Optional input arguments:
 %
 %
+%      addxline : add to the plot a vertical line.
+%                 Numeric vector.
+%                 It is possible to add to the overall plot or to each
+%                 panel vertical line(s) with constant x-value. The default
+%                 value is [], that is no vertical line is added.
+%                   Example - 'addxline', [30 50 200]
+%                   Data Types - double
+%
 %       conflev :   Confidence level. Scalar or vector. Confidence level
 %                   for the bands (default is 0.99, that is we plot two
 %                   horizontal lines in correspondence of value -2.58 and
 %                   2.58).
 %                   Example - 'conflev',[0.9 0.95 0.99]
+%                   Data Types - double
+%
+%     flabstep  :   numeric vector which specifies the steps of
+%                   where to put labels for the trajectories.
+%                   trajectories (units). The default is to put the labels
+%                   in the final steps of the monitoring procedure.
+%                   fground=[] means no label.
+%                   Example - 'flabstep',[20 30 120]
 %                   Data Types - double
 %
 %
@@ -556,6 +572,8 @@ if strcmp(out.class,'FSRfan')
     intercept=0;
     maxy=20;
     statName="X";
+    xrange=[Sco(1,1) Sco(end,1)+1];
+
 
 elseif strcmp(out.class,'FSRaddt')
     fanplotScore=false;
@@ -568,6 +586,8 @@ elseif strcmp(out.class,'FSRaddt')
     intercept=0;
     maxy=50;
     statName="X";
+    xrange=[Sco(1,1) Sco(end,1)+1];
+
 
 elseif strcmp(out.class,'Sregeda')
     fanplotScore=false;
@@ -580,6 +600,8 @@ elseif strcmp(out.class,'Sregeda')
     finalvalue=out.bdp(end)-0.005;
     maxy=50;
     statName="t_";
+    xrange=[out.bdp(end) out.bdp(1)];
+
 
 elseif strcmp(out.class,'MMregeda')
     fanplotScore=false;
@@ -591,6 +613,7 @@ elseif strcmp(out.class,'MMregeda')
     finalvalue=out.eff(end)+0.01;
     maxy=50;
     statName="t_";
+    xrange=[out.eff(1) out.eff(end)+0.01];
 
 elseif  strcmp(out.class,'FSReda')
     fanplotScore=false;
@@ -602,6 +625,7 @@ elseif  strcmp(out.class,'FSReda')
     finalvalue=n;
     maxy=50;
     statName="t_";
+    xrange=[Sco(1,1) Sco(end,1)+1];
 
 else
     error('Unknown class')
@@ -632,7 +656,8 @@ options=struct('conflev',0.99,'titl','Fan plot','labx',labx,...
     'laby',laby,'xlimx','','ylimy','','lwd',2,'lwdenv',1, ...
     'FontSize',12,'SizeAxesNum',10,'highlight',[],...
     'tag','pl_fan','datatooltip','','databrush','', ...
-    'nameX','','namey','','label','','multiPanel',false);
+    'nameX','','namey','','label','','multiPanel', ...
+    false,'addxline',[],'flabstep',[]);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -722,8 +747,6 @@ styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
 %% Display the fanplot
 
-% PLOT THE LINES ASSOCIATED WITH THE SCORE TEST
-
 % Specify where to send the output of the current procedure
 h=findobj('-depth',1,'tag',options.tag);
 if (~isempty(h))
@@ -748,6 +771,7 @@ lwdenv=options.lwdenv;
 conflev=options.conflev;
 % FontSize = font size of the axes labels
 FontSize =options.FontSize;
+addxline = options.addxline;
 
 % Use default limits for y axis
 ylim1=max(-maxy,min(min(Sco(:,2+intercept:end))));
@@ -761,6 +785,7 @@ laby=options.laby;
 titl=options.titl;
 highlight=options.highlight;
 multiPanel=options.multiPanel;
+flabstep=options.flabstep;
 
 if ~isempty(highlight)
 
@@ -773,6 +798,9 @@ end
 
 % SizeAxesNum = font size for the axes numbers
 SizeAxesNum=options.SizeAxesNum;
+
+% Line Width of vertical line
+lwdVerticalLine=1.5;
 
 if multiPanel==false
 
@@ -787,6 +815,8 @@ if multiPanel==false
 
     if ~isempty(xlimx)
         xlim(xlimx);
+    else
+        xlim(xrange)
     end
 
     if isempty(ylimy)
@@ -819,7 +849,20 @@ if multiPanel==false
     end
 
     % Add labels at the end of the search
-    text(finalvalue*ones(lla,1),Sco(end,2+intercept:end)',las,'FontSize',FontSize);
+
+
+    if isempty(flabstep)
+        % Add labels at the end of the search
+        text(finalvalue*ones(lla,1),Sco(end,2+intercept:end)',las,'FontSize',FontSize);
+    else
+        % Add labels in the steps specified by flabstep
+        for ii=1:length(flabstep)
+            posii=find(Sco(:,1)>=flabstep(ii),1);
+            if ~isempty(posii)
+                text(Sco(posii,1)*ones(lla,1),Sco(posii,2+intercept:end)'+0.1,las,'FontSize',FontSize);
+            end
+        end
+    end
 
     if estimatorS==true
         set(gca,'XDir','reverse');
@@ -832,7 +875,12 @@ if multiPanel==false
     xlabel(labx,'Fontsize',FontSize);
     ylabel(laby,'Fontsize',FontSize);
 
+    % Add the vertical line(s)
+    if ~isempty(addxline)
+        xline(addxline,'LineWidth',lwdVerticalLine,'Color','k')
+    end
     set(gca,'FontSize',SizeAxesNum)
+
     box on
 
     if ~isempty(highlight)
@@ -888,6 +936,8 @@ else % else plot on separate panels
 
         if ~isempty(xlimx)
             xlim(xlimx);
+        else
+            xlim(xrange)
         end
 
         if isempty(ylimy)
@@ -912,8 +962,22 @@ else % else plot on separate panels
             line(V, QUANT,'LineWidth',lwdenv,'color','r','Tag','env');
         end
 
-        % Add labels at the end of the search
-        text(finalvalue,Sco(end,j)',las(ij),'FontSize',FontSize);
+        if isempty(flabstep)
+            % Add labels at the end of the search
+            text(finalvalue,Sco(end,j)',las(ij),'FontSize',FontSize);
+        else
+            for ii=1:length(flabstep)
+                posii=find(Sco(:,1)>=flabstep(ii),1);
+                if ~isempty(posii)
+                    text(Sco(posii,1),Sco(posii,j)',las(ij),'FontSize',FontSize);
+                end
+            end
+        end
+
+        % Add the vertical line(s)
+        if ~isempty(addxline)
+            xline(addxline,'LineWidth',lwdVerticalLine,'Color','k')
+        end
 
         if estimatorS==true
             set(gca,'XDir','reverse');
@@ -1610,7 +1674,7 @@ end % close options.databrush
         %   output_txt=  Datatip text (string or string cell array) which informs
         %                1) about the value of the statistic which is monitored
         %                2) the step of the search (just if FS) or bdp (if
-        %                Sregeda) or eff (if MMregeda) 
+        %                Sregeda) or eff (if MMregeda)
         %
         % REMARK: this function is called by function fanplotFS
         %
@@ -1623,21 +1687,15 @@ end % close options.databrush
         % x and y, plot coordinates of the mouse
         x = pos(1); y = pos(2);
 
-        % if fanplotScore ==true
-        %
-        % else
-        %     output_txt = {['Value of the deletion t test=',num2str(y)]};
-        % end
-        %
-        % % If structure out does not contain labels for the rows then
-        % % labels row1....rown are added automatically
-        % if isempty(intersect('label',fieldnames(out)))
-        %
-        %     % Find n=number of units
-        %     % cUn=cell2mat(out.Un(1));
-        %     % n=cUn(end,1);
-        %     out.label=cellstr(num2str((1:n)','row%d'));
-        % end
+        % If structure out does not contain labels for the rows then
+        % labels row1....rown are added automatically
+        if isempty(intersect('label',fieldnames(out)))
+
+            % Find n=number of units
+            % cUn=cell2mat(out.Un(1));
+            % n=cUn(end,1);
+            out.label=cellstr(num2str((1:n)','row%d'));
+        end
 
         % Add information about the unit(s) and the selected steps they entered the
         % search
