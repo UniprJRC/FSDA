@@ -41,7 +41,7 @@ function brushedUnits=fanplotFS(out,varargin)
 % Optional input arguments:
 %
 %
-%      addxline : add to the plot a vertical line.
+%      addxline : add to the plot a set of vertical lines.
 %                 Numeric vector.
 %                 It is possible to add to the overall plot or to each
 %                 panel vertical line(s) with constant x-value. The default
@@ -57,10 +57,10 @@ function brushedUnits=fanplotFS(out,varargin)
 %                   Data Types - double
 %
 %     flabstep  :   numeric vector which specifies the steps of
-%                   where to put labels for the trajectories.
-%                   trajectories (units). The default is to put the labels
-%                   in the final steps of the monitoring procedure.
-%                   fground=[] means no label.
+%                   where to put labels for the trajectories of the
+%                   quantities which are monitored. The default is to put
+%                   the labels in the final steps of the monitoring
+%                   procedure. fground=[] means no label.
 %                   Example - 'flabstep',[20 30 120]
 %                   Data Types - double
 %
