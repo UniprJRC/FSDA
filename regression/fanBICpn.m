@@ -601,7 +601,7 @@ end
 namej = 'Obs';
 d=strcmp(namej,name);
 if max(d)>0
-    figure('Name',namej,'Visible','on');
+    figure('Name',namej,'Visible','on','Tag','pl_nobs');
     hold('off')
     if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
@@ -618,7 +618,7 @@ end
 namej = 'R2';
 d=strcmp(namej,name);
 if max(d)>0
-    figure('Name',namej,'Visible','on');
+    figure('Name',namej,'Visible','on','Tag','pl_R2');
     if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         title('R2 not corrected')
@@ -633,7 +633,7 @@ end
 namej = 'R2c';
 d=strcmp(namej,name);
 if max(d)>0
-    figure('Name',namej,'Visible','on');
+    figure('Name',namej,'Visible','on','Tag','pl_R2c');
     if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         title('R2 corrected for truncation')
@@ -649,7 +649,7 @@ end
 namej = 'AGI';
 d=strcmp(namej,name);
 if max(d)>0
-    figure('Name',namej,'Visible','on');
+    figure('Name',namej,'Visible','on','Tag','pl_AGI');
     if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         % title('1/(|ScoP-ScoN|_c*|Sco|_c)')
@@ -668,7 +668,7 @@ if max(d)>0
     [~, indmax]=max(Exctable{:,'AGIW'});
     labestAGIw=Exctable{indmax,1:2};
     
-    figure('Name',namej,'Visible','on');
+    figure('Name',namej,'Visible','on','pl_AGIW');
     if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         title(['Agreement index weighted: best \lambda_P=' num2str(labestAGIw(1)) ' best  \lambda_N=' num2str(labestAGIw(2))])
@@ -683,7 +683,7 @@ end
 namej = 'BIC';
 d=strcmp(namej,name);
 if max(d)>0
-    figure('Name',namej,'Visible','on');
+    figure('Name',namej,'Visible','on','Tag','pl_BIC');
     if ~verLessThanFS('9.2') % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         title(['BIC: best \lambda_P=' num2str(labestBIC(1)) ' best  \lambda_N=' num2str(labestBIC(2))])
