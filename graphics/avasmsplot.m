@@ -1,4 +1,4 @@
-function avasmsplot(BestSol,varargin)
+function BigAx=avasmsplot(BestSol,varargin)
 %avasmsplot produces the augmented star plot and enables interactivity
 %
 %<a href="matlab: docsearchFS('avasmsplot')">Link to the help function</a>
@@ -117,6 +117,13 @@ function avasmsplot(BestSol,varargin)
 %                   Data Types - single | double | struct
 %
 % Output:
+%
+%      BigAx   : handle to big (invisible) axes framing the subaxes.
+%                Graphical handle. BigAx is left as the CurrentAxes so that
+%                a subsequent TITLE, XLABEL, or YLABEL will be centered
+%                with respect to the matrix of axes.
+%
+%
 %
 % See also: avasms.m, avas.m
 %
@@ -353,7 +360,7 @@ else
     testdata='';
 end
 % call augStarplot with options BestSols and addPolygons
-centers=augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs, ...
+[centers,BigAx]=augStarplot(VALtadj(1:maxSol,:),rowlabs(1:maxSol,:),varlabs, ...
     'BestSol',testdata,'addPolygons',addPolygons);
 
 set(gcf,'Tag',tag,'Name', 'Augmented star plot', 'NumberTitle', 'off')

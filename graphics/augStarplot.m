@@ -1,4 +1,4 @@
-function centers=augStarplot(X,obslabs,varlabs, varargin)
+function [centers,h_axes]=augStarplot(X,obslabs,varlabs, varargin)
 %augStarplot creates the Augmented star plot.
 %
 % This plot is useful to indicate which options are important in a particular
@@ -43,7 +43,11 @@ function centers=augStarplot(X,obslabs,varlabs, varargin)
 %               $p_{JB}$.
 % 
 %           Data Types - table or empty
-
+%
+% Output:
+%
+%    h_axes  : handle to big (invisible) axes framing the subaxes.
+%
 
 %% Beginning of code
 % Create a figure to host the Augmented star plot
