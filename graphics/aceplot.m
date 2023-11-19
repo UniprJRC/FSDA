@@ -316,6 +316,8 @@ end
 
 yhat=sum(tX,2);
 res = ty - yhat;
+
+
 subplot(2,2,2)
 plot(yhat,res,'o')
 refline(0,0)
@@ -420,9 +422,6 @@ if oneplot==false
 else
     set(gcf,'Tag','pl_tyX')
 end
-
-% Add an horizontal line at 0
-%    abline(h = 0, col = "black", lty = 2)
 
 end
 %FScategory:VIS-Reg
