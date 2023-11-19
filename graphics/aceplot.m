@@ -69,6 +69,15 @@ function aceplot(out,varargin)
 %                 Example - 'notitle',true
 %                 Data Types - logical
 %
+%     ResFitted : Show or not the plot of residuals vs fitted values. Boolean.
+%                 If ResFitted is true (default) the plot of residuals vs
+%                 fit is shown in the top right panel else the plot of
+%                 residuals vs fit is not computed and what is shown in the
+%                 top right panel is the the scatter of transformed y
+%                 versus fitted values.
+%                 Example - 'ResFitted',false
+%                 Data Types - logical
+%
 %      VarNames : Names of the variabiles.
 %                   Empty value or string array or cell array of character
 %                   vectors.
@@ -173,13 +182,14 @@ oneplot=false;
 VarNames='';
 notitle=false;
 DataVars=[];
+ResFitted=true;
 if nargin >1
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
 
     options=struct('highlight',highlight,'ylimy',ylimy, ...
         'oneplot',oneplot,'VarNames',VarNames, ...
-        'DataVars',DataVars,'notitle',notitle);
+        'DataVars',DataVars,'notitle',notitle,'ResFitted',ResFitted);
 
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -202,6 +212,7 @@ if nargin >1
     VarNames=options.VarNames;
     notitle=options.notitle;
     DataVars=options.DataVars;
+    ResFitted=options.ResFitted;
 end
 % Tranform VarNames in string array if the user has supplied a cell array
 % of characters
@@ -238,6 +249,7 @@ else
 end
 pused=length(selXvars);
 
+
 % Organize the locations of the plots of tXj vs Xj
 if oneplot==false
     if pused<=2
@@ -266,20 +278,41 @@ if oneplot==false
 else % oneplot true
     if pused==1
         nr=2; nc=2;
-        numbers=[4 4];
+        if ResFitted==true
+            numbers=[4 4];
+        else
+            numbers=[3 4];
+        end
     elseif pused==2
         nr=4; nc=4;
-        numbers=[11 12; 15 16];
+        if ResFitted==true
+            numbers=[11 12; 15 16];
+        else
+            numbers=[9 12; 13 16];
+        end
     elseif pused==3
         nr=6; nc=6;
         % numbers=[22.5 24; 28.5 30; 34.5 36];
-        numbers=[22 24; 28 30; 34 36];
+        if ResFitted==true
+            numbers=[22 24; 28 30; 34 36];
+        else
+            numbers=[19 19+nc-1; 25 25+nc-1; 31 31+nc-1];
+        end
     elseif pused==4
         nr=8; nc=8;
-        numbers=[37.5 40; 45.5 48; 53.5 56; 61.5 64];
+        if ResFitted==true
+            numbers=[37.5 40; 45.5 48; 53.5 56; 61.5 64];
+        else
+            numbers=[33 33+nc-1; 41 41+nc-1; 49 49+nc-1; 57 57+nc-1];
+        end
+
     elseif pused==5
         nr=10; nc=10;
-        numbers=[56 60; 66 70; 76 80; 86 90; 96 100];
+        if ResFitted==true
+            numbers=[56 60; 66 70; 76 80; 86 90; 96 100];
+        else
+            numbers=[51 51+nc-1; 61 61+nc-1; 71 71+nc-1; 81 81+nc-1; 91 91+nc-1];
+        end
     else
         error('FSDA:aceplot:Wrongp','Option oneplot is implemented for p<=5')
     end
@@ -317,27 +350,31 @@ end
 yhat=sum(tX,2);
 res = ty - yhat;
 
+if ResFitted==true
+    subplot(2,2,2)
+    plot(yhat,res,'o')
+    refline(0,0)
+    if notitle==false
+        title('Plot of residuals vs. fit')
+    end
 
-subplot(2,2,2)
-plot(yhat,res,'o')
-refline(0,0)
-if notitle==false
-    title('Plot of residuals vs. fit')
+    ylabel('Residuals')
+    xlabel('Fitted values')
+    if addout ==true
+        hold('on')
+        plot(yhat(highlight),res(highlight),'ro','MarkerFaceColor','r')
+    end
+    % Set the ylimits
+    if ~isempty(ylimy)
+        ylim(ylimy(2,:))
+    end
+
+
+    subplot(2,2,3)
+else
+    subplot(2,2,2)
 end
 
-ylabel('Residuals')
-xlabel('Fitted values')
-if addout ==true
-    hold('on')
-    plot(yhat(highlight),res(highlight),'ro','MarkerFaceColor','r')
-end
-% Set the ylimits
-if ~isempty(ylimy)
-    ylim(ylimy(2,:))
-end
-
-
-subplot(2,2,3)
 plot(yhat,ty,'o')
 xlabel('Fitted values')
 
@@ -378,10 +415,10 @@ for j=selXvars
     ij=ij+1;
     subplot(nr,nc,jj)
     plot(X(:,j),tX(:,j),'o')
-    %if j<p
-    a=gca;
-    a.XTickLabel='';
-    % end
+    if j<p && p>1
+        a=gca;
+        a.XTickLabel='';
+    end
     R=rug(0.03);
     try
         delete(R.yRug)
