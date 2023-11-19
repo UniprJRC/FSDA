@@ -48,18 +48,21 @@ function aceplot(out,varargin)
 %                 Example - 'highlight',1:10
 %                 Data Types - double
 %
-%      oneplot : combined unique plot. Boolean. If oneplot is true just one
-%                 figure is produced. The top left panel contains the plot
-%                 of transformed y vs. y, the top right panel contains the
-%                 plot of residuals vs. fit, the bottom left panel contains
-%                 the plot of transformed y vs. fit. The bottom right panel
-%                 contains a set of p subpanels (where p is the number of
-%                 columns of X) for transformed $X_j$ (tXj)  vs. $X_j$
-%                 (with a rug plot along the tick marks). If oneplot is
-%                 false (default), the p panels for transformed $X_j$ (tXj)
-%                 vs. $X_j$ are put in a separate figure.
+%      oneplot : combined unique plot. Boolean or empty value. 
+%                 If oneplot is true just one figure is produced. The top
+%                 left panel contains the plot of transformed y vs. y, the
+%                 top right panel contains the plot of residuals vs. fit,
+%                 the bottom left panel contains the plot of transformed y
+%                 vs. fit. The bottom (right) panel contains a set of p
+%                 subpanels (where p is the number of columns of X) for
+%                 transformed $X_j$ (tXj)  vs. $X_j$ (with a rug plot along
+%                 the tick marks). If oneplot is false (default), the p
+%                 panels for transformed $X_j$ (tXj) vs. $X_j$ are put in a
+%                 separate figure. If oneplot is empty no plot of
+%                 transformed column of the the explanatory variables is
+%                 shown on the screen.
 %                 Example - 'oneplot',true
-%                 Data Types - logical
+%                 Data Types - logical or []
 %
 %       notitle : no title in the plots. Boolean.
 %                 If notitle is true the title in each panel is removed.
@@ -71,16 +74,28 @@ function aceplot(out,varargin)
 %
 %     ResFitted : Show or not the plot of residuals vs fitted values. Boolean.
 %                 If ResFitted is true (default) the plot of residuals vs
-%                 fit is shown in the top right panel else the plot of
-%                 residuals vs fit is not computed and what is shown in the
-%                 top right panel is the the scatter of transformed y
-%                 versus fitted values.
+%                 fit is shown in the top (right) panel else the plot of
+%                 residuals vs fit else this plot is not shown. 
 %                 Example - 'ResFitted',false
 %                 Data Types - logical
 %
+%    tyFitted   : Show or not the plot of transformed values vs original values.
+%                 Boolean. If tyFitted=true (default) the plot of
+%                 transformed values vs the fitted values is shown  else
+%                 this plot is not shown. 
+%                 Example - 'tyFitted',false
+%                 Data Types - logical
+%
+%    tyOriginal : Show or not the plot of transformed values vs original values.
+%                 Boolean. If tyOriginal=true (default) the plot of
+%                 transformed values vs the original values is shown in the
+%                 top (left) panel else this plot is not shown
+%                 Example - 'tyOriginal',false
+%                 Data Types - logical
+%
 %      VarNames : Names of the variabiles.
-%                   Empty value or string array or cell array of character
-%                   vectors.
+%                 Empty value or string array or cell array of character
+%                 vectors.
 %                 Names of variables specified as a string array or cell array
 %                 of character vectors of length p+1, including the names
 %                 for the columns of X first, and the name for the response
@@ -182,14 +197,18 @@ oneplot=false;
 VarNames='';
 notitle=false;
 DataVars=[];
+tyOriginal=true;
 ResFitted=true;
+tyFitted=true;
+
 if nargin >1
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
 
     options=struct('highlight',highlight,'ylimy',ylimy, ...
         'oneplot',oneplot,'VarNames',VarNames, ...
-        'DataVars',DataVars,'notitle',notitle,'ResFitted',ResFitted);
+        'DataVars',DataVars,'notitle',notitle,'tyOriginal',tyOriginal, ...
+        'ResFitted',ResFitted,'tyFitted',tyFitted);
 
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -213,6 +232,8 @@ if nargin >1
     notitle=options.notitle;
     DataVars=options.DataVars;
     ResFitted=options.ResFitted;
+    tyFitted=options.tyFitted;
+    tyOriginal=options.tyOriginal;
 end
 % Tranform VarNames in string array if the user has supplied a cell array
 % of characters
@@ -249,6 +270,8 @@ else
 end
 pused=length(selXvars);
 
+countPlots=sum(tyOriginal+ResFitted+tyFitted);
+
 
 % Organize the locations of the plots of tXj vs Xj
 if oneplot==false
@@ -278,14 +301,14 @@ if oneplot==false
 else % oneplot true
     if pused==1
         nr=2; nc=2;
-        if ResFitted==true
+        if  countPlots>2
             numbers=[4 4];
         else
             numbers=[3 4];
         end
     elseif pused==2
         nr=4; nc=4;
-        if ResFitted==true
+        if  countPlots>2
             numbers=[11 12; 15 16];
         else
             numbers=[9 12; 13 16];
@@ -293,14 +316,14 @@ else % oneplot true
     elseif pused==3
         nr=6; nc=6;
         % numbers=[22.5 24; 28.5 30; 34.5 36];
-        if ResFitted==true
+        if   countPlots>2
             numbers=[22 24; 28 30; 34 36];
         else
             numbers=[19 19+nc-1; 25 25+nc-1; 31 31+nc-1];
         end
     elseif pused==4
         nr=8; nc=8;
-        if ResFitted==true
+        if   countPlots>2
             numbers=[37.5 40; 45.5 48; 53.5 56; 61.5 64];
         else
             numbers=[33 33+nc-1; 41 41+nc-1; 49 49+nc-1; 57 57+nc-1];
@@ -308,7 +331,7 @@ else % oneplot true
 
     elseif pused==5
         nr=10; nc=10;
-        if ResFitted==true
+        if   countPlots>2
             numbers=[56 60; 66 70; 76 80; 86 90; 96 100];
         else
             numbers=[51 51+nc-1; 61 61+nc-1; 71 71+nc-1; 81 81+nc-1; 91 91+nc-1];
@@ -321,37 +344,52 @@ end
 
 figure
 set(gcf,'Tag','pl_ty')
-subplot(2,2,1)
-plot(y,ty,'o')
 
-if emptyVarNames
-    ylabel('Transformed y')
-    xlabel('y')
-    title('Plot of ty vs. y')
-else
-    ylabel('Transformed y')
-    xlabel(VarNames(end))
-    title("Plot of t"+ VarNames(end)+ " vs. "+ VarNames(end))
+
+jk=0;
+if tyOriginal ==true
+    if countPlots==1
+        subplot(2,2,1:2)
+    else
+        subplot(2,2,1)
+    end
+    plot(y,ty,'o')
+
+    if emptyVarNames
+        ylabel('Transformed y')
+        xlabel('y')
+        title('Plot of ty vs. y')
+    else
+        ylabel('Transformed y')
+        xlabel(VarNames(end))
+        title("Plot of t"+ VarNames(end)+ " vs. "+ VarNames(end))
+    end
+
+    if notitle ==true
+        title('')
+    end
+
+    if addout ==true
+        hold('on')
+        plot(y(highlight),ty(highlight),'ro','MarkerFaceColor','r')
+    end
+    % Set the ylimits
+    if ~isempty(ylimy)
+        ylim(ylimy(1,:))
+    end
+    jk=jk+1;
 end
 
-if notitle ==true
-    title('')
-end
-
-if addout ==true
-    hold('on')
-    plot(y(highlight),ty(highlight),'ro','MarkerFaceColor','r')
-end
-% Set the ylimits
-if ~isempty(ylimy)
-    ylim(ylimy(1,:))
-end
 
 yhat=sum(tX,2);
 res = ty - yhat;
 
 if ResFitted==true
-    subplot(2,2,2)
+     if countPlots==1
+             subplot(2,2,1:2)
+    else
+    subplot(2,2,jk+1)
+     end
     plot(yhat,res,'o')
     refline(0,0)
     if notitle==false
@@ -368,47 +406,52 @@ if ResFitted==true
     if ~isempty(ylimy)
         ylim(ylimy(2,:))
     end
-
-
-    subplot(2,2,3)
-else
-    subplot(2,2,2)
+    jk=jk+1;
 end
 
-plot(yhat,ty,'o')
-xlabel('Fitted values')
 
-if emptyVarNames
-    ylabel('Transformed y')
-    title('Plot of ty vs. fit')
-else
-    ylabel("Transformed "+ VarNames(end))
-    title("Plot of t"+ VarNames(end)+ " vs. fit")
+if tyFitted==true
+     if countPlots==1
+             subplot(2,2,1:2)
+     else
+    subplot(2,2,jk+1)
+     end
+
+    plot(yhat,ty,'o')
+    xlabel('Fitted values')
+
+    if emptyVarNames
+        ylabel('Transformed y')
+        title('Plot of ty vs. fit')
+    else
+        ylabel("Transformed "+ VarNames(end))
+        title("Plot of t"+ VarNames(end)+ " vs. fit")
+    end
+
+    if notitle ==true
+        title('')
+    end
+
+    if addout ==true
+        hold('on')
+        plot(yhat(highlight),ty(highlight),'ro','MarkerFaceColor','r')
+    end
+    % Set the ylimits
+    if ~isempty(ylimy)
+        ylim(ylimy(3,:))
+    end
 end
 
-if notitle ==true
-    title('')
-end
-
-if addout ==true
-    hold('on')
-    plot(yhat(highlight),ty(highlight),'ro','MarkerFaceColor','r')
-end
-% Set the ylimits
-if ~isempty(ylimy)
-    ylim(ylimy(3,:))
-end
-
+if ~isempty(oneplot)
 if oneplot==true
 else
     figure
 end
 
-
 ij=1;
 for j=selXvars
     if oneplot==true
-        jj=numbers(ij,1):numbers(ij,2);
+        jj=linspace(numbers(ij,1),numbers(ij,2),2);
     else
         jj=ij;
     end
@@ -458,6 +501,7 @@ if oneplot==false
     set(gcf,'Tag','pl_tX')
 else
     set(gcf,'Tag','pl_tyX')
+end
 end
 
 end
