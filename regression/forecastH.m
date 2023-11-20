@@ -421,10 +421,10 @@ if originalScale==true
     % Plot the regression line in the original scale
     plot(Xord,yhatord)
     % plot good observations
-    plot(Xgood(:,selcolX),ygood,'ro')
+    plot(Xgood(:,selcolX),ygood,'bo')
     % plot the outliers
     if ~isempty(outl)
-        plot(Xout,yout,'kx','MarkerSize',12)
+        plot(Xout,yout,'rx','MarkerSize',12)
     end
 
     % Plot the upper and lower confidence bands (in the original scale)
@@ -434,9 +434,9 @@ if originalScale==true
 else
     plot(XWord,yhatordW)
     hold('on')
-    plot(XgoodW,ygoodW,'ro','MarkerSize',8)
+    plot(XgoodW,ygoodW,'bo','MarkerSize',8)
     if ~isempty(outl)
-        plot(XoutW,youtW,'kx','MarkerSize',8)
+        plot(XoutW,youtW,'rx','MarkerSize',8)
     end
     % Plot the upper and lower confidence bands (in the transformed scale)
     plot(XWord,lowconfordW,'k')
