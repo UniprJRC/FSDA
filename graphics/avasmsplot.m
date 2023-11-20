@@ -78,6 +78,17 @@ function BigAx=avasmsplot(BestSol,varargin)
 %           Data Types - logical
 %
 %
+%  corMatrix  : correlation matrix among the input solutions. Array of size
+%               maxBestSol-by-maxBestSol or [] (default). If this optional
+%               argument is supplied it is possible to have in output the
+%               heatmap among the different solutions. The correlation
+%               matrix is returned as second output of function avasmsplot.
+%               If corMatrix is an empty value (default) just the augmented
+%               star plot is shown on the screen.
+%           Example - 'corMatrix',eye(p)
+%           Data Types - double
+%
+%
 %       tag     :    Personalized plot tag. String. String which identifies
 %                   the handle of the plot which
 %                   is about to be created. The default is to use tag
@@ -311,8 +322,10 @@ databrush='';
 tag='pl_augstarplot';
 showBars=false;
 addPolygons=true;
+corMatrix = [];
 options=struct('maxBestSol',maxBestSol,'tag',tag,...
-    'databrush',databrush,'showBars',showBars,'addPolygons',addPolygons);
+    'databrush',databrush,'showBars',showBars,'addPolygons',addPolygons, ...
+    'corMatrix',corMatrix);
 
 if nargin > 1
     [varargin{:}] = convertStringsToChars(varargin{:});
@@ -334,9 +347,10 @@ if nargin > 1
     databrush=options.databrush;
     showBars=options.showBars;
     addPolygons=options.addPolygons;
+    corMatrix=options.corMatrix;
 end
 
-% the maximum number of solutions to show is equalù
+% the maximum number of solutions to show is equal
 % to the rows of BestSol
 if isempty(maxBestSol)
     maxSol=size(BestSol,1);
@@ -365,6 +379,19 @@ end
 
 set(gcf,'Tag',tag,'Name', 'Augmented star plot', 'NumberTitle', 'off')
 
+
+if ~isempty(corMatrix)
+    % Create the heatmap of the correlation matrix of the best solutions
+    % which have been found (just if maxSol>1)
+    if maxSol>1
+        hold off
+        figure
+        xval="Sol"+(1:maxSol)';
+        heatmap(xval,xval,corMatrix(1:maxSol,1:maxSol),'MissingDataColor','w')
+        title('Heatmap of the correlation matrix among the best solutions')
+        set(gcf,'Tag','pl_heatmap')
+    end
+end
 
 %% Brush mode (call to function selectdataFS)
 if ~isempty(databrush) || isstruct(databrush)
