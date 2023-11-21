@@ -281,7 +281,7 @@ if istable(Y)
     varnames=Y.Properties.VariableNames;
     rownames=Y.Properties.RowNames;
     if isempty(rownames)
-         rownames=cellstr(num2str((1:n)','%d'));
+        rownames=cellstr(num2str((1:n)','%d'));
     end
     Y=table2array(Y);
 else
@@ -331,7 +331,7 @@ Ztable=array2table(Z,'RowNames',rownames,'VariableNames',varnames);
 
 % Correlation (Covariance) matrix in table format
 Zbsb=Z(bsb,:);
-R=cov(Zbsb);
+R=corr(Zbsb);
 Rtable=array2table(R,'VariableNames',varnames,'RowNames',varnames);
 
 sigmas=sqrt(diag(R));
@@ -352,7 +352,7 @@ namecols={'Eigenvalues' 'Explained_Variance' 'Explained_Variance_cum'};
 explainedT=array2table(explained,'RowNames',namerows,'VariableNames',namecols);
 if isempty(NumComponents)
     NumComponents=find(explained(:,3)>100*0.95^v,1);
-    if NumComponents==1
+    if NumComponents==1 && v>1
         disp('The first PC already explains more than 0.95^v variability')
         disp('In what follows we still extract the first 2 PCs')
         NumComponents=2;
@@ -382,7 +382,12 @@ commun=loadings.^2;
 labelscum=cellstr([repmat([pcnames{1} '-'],NumComponents-1,1) char(pcnames{2:end})]);
 communcum=cumsum(loadings.^2,2);
 communwithcum=[commun communcum(:,2:end)];
-varNames=[pcnames; labelscum];
+if isempty(labelscum{1})
+    varNames=pcnames;
+else
+    varNames=[pcnames; labelscum];
+end
+
 if verLessThanFS('9.7')
     varNames=matlab.lang.makeValidName(varNames);
 end
