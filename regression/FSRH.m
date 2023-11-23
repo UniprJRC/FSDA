@@ -25,7 +25,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %               values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations.
-%     Z :       Predictor variables in the scedastic equation. Matrix. 
+%     Z :       Predictor variables in the scedastic equation. Matrix.
 %               n x r matrix or vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows (if input option art==1)
@@ -49,7 +49,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %
 % Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -72,7 +72,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
 %                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
 %               \]
-%               Example - 'typeH','har' 
+%               Example - 'typeH','har'
 %               Data Types - character or string
 %
 %           h   : The number of observations that have determined the least
@@ -82,14 +82,14 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 is outlier detection h=[0.5*(n+p+1)] (default value). h
 %                 can be smaller than this threshold if the purpose is to find
 %                 subgroups of homogeneous observations.
-%                 Example - 'h',round(n*0,75) 
+%                 Example - 'h',round(n*0,75)
 %                 Data Types - double
 %
 %       nsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar.
 %                 If nsamp=0 all subsets will be extracted.
 %                 They will be (n choose p).
-%                 Example - 'nsamp',1000 
+%                 Example - 'nsamp',1000
 %                 Data Types - double
 %                 Remark: if the number of all possible subset is <1000 the
 %                 default is to extract all subsets otherwise just 1000.
@@ -109,21 +109,21 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 or 2. If lms is a struct it is possible to control a
 %                 series of options for concentration steps (for more
 %                 details see option lms inside LXS.m)
-%                 LXS.m. 
+%                 LXS.m.
 %                 If, on the other hand, the user wants to initialize the
 %                 search with a prespecified set of units there are two
-%                 possibilities: 
-%                 1) lms can be a vector with length greater than 1 which 
+%                 possibilities:
+%                 1) lms can be a vector with length greater than 1 which
 %                 contains the list of units forming the initial subset. For
 %                 example, if the user wants to initialize the search
-%                 with units 4, 6 and 10 then lms=[4 6 10]. 
+%                 with units 4, 6 and 10 then lms=[4 6 10].
 %                 2) lms is a struct which contains a field named bsb which
 %                 contains the list of units to initialize the search. For
 %                 example, in the case of simple regression through the
 %                 origin with just one explanatory variable, if the user
 %                 wants to initialize the search with unit 3 then
-%                 lms=struct; lms.bsb=3. 
-%                 Example - 'lms',1 
+%                 lms=struct; lms.bsb=3.
+%                 Example - 'lms',1
 %                 Data Types - double
 %
 %       plots   : Plot on the screen. Scalar.
@@ -134,19 +134,19 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 If plots=2 the user can also monitor the intermediate
 %                 plots based on envelope superimposition.
 %                 else no plot is produced.
-%                 Example - 'plots',1 
+%                 Example - 'plots',1
 %                 Data Types - double
 %
-%       init    : Search initialization. Scalar. 
+%       init    : Search initialization. Scalar.
 %                 It specifies the initial subset size to start
 %                 monitoring exceedances of minimum deletion residual, if
 %                 init is not specified it set equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               Example - 'init',100 starts monitoring from step m=100 
+%               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
-%        tag    : tags to the plots which are created. 
+%        tag    : tags to the plots which are created.
 %                 character or cell array of characters.
 %                 This option enables to add a tag to the plots which are
 %                 created. The default tag names are:
@@ -172,7 +172,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %    gridsearch:  Algorithm to be used. Scalar.
 %                   If gridsearch ==1 grid search will be used else (default) the
 %               scoring algorith will be used.
-%               Example - 'gridsearch',1 
+%               Example - 'gridsearch',1
 %               Data Types - double
 %
 %       nocheck : Check input arguments. Boolean.
@@ -180,10 +180,10 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
 %                 for the intercept is not added. As default nocheck=false.
-%               Example - 'nocheck',true 
+%               Example - 'nocheck',true
 %               Data Types - boolean
 %
-%    bivarfit : Superimpose bivariate least square lines. Character. 
+%    bivarfit : Superimpose bivariate least square lines. Character.
 %               This option adds one or more least square lines, based on
 %                 SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
 %                 bivarfit = ''
@@ -202,7 +202,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                   fits an ols line to a specific group, the one with
 %                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
 %                   of mixtures.
-%               Example - 'bivarfit',2 
+%               Example - 'bivarfit',2
 %               Data Types - char
 %
 %       multivarfit : Superimpose multivariate least square lines. Character.
@@ -222,29 +222,29 @@ function [out]=FSRH(y,X,Z,varargin)
 %                   equal to multivarfit ='1' but this time we also add the
 %                   line based on the group of unselected observations
 %                   (i.e. the normal units).
-%               Example - 'multivarfit','1' 
+%               Example - 'multivarfit','1'
 %               Data Types - char
 %
 %      labeladd : Add outlier labels in plot. Character.
 %                   If this option is '1',  we label the outliers with the
 %                 unit row index in matrices X and y. The default value is
 %                 labeladd='', i.e. no label is added.
-%               Example - 'labeladd','1' 
+%               Example - 'labeladd','1'
 %               Data Types - char
 %
 %       nameX  :  Add variable labels in plot. Cell array of strings.
 %               labels of the variables of the regression dataset. If it is empty
 %                 (default) the sequence X1, ..., Xp will be created
 %                 automatically
-%               Example - 'nameX',{'NameVar1','NameVar2'} 
+%               Example - 'nameX',{'NameVar1','NameVar2'}
 %               Data Types - cell
 %
-%       namey  :  Add response label. Character. 
+%       namey  :  Add response label. Character.
 %               label of the response
-%               Example - 'namey','NameOfResponse' 
+%               Example - 'namey','NameOfResponse'
 %               Data Types - char
 %
-%       ylim   :   Control y scale in plot. Vector. 
+%       ylim   :   Control y scale in plot. Vector.
 %                minimum and maximum
 %                 on the y axis. Default value is '' (automatic scale)
 %               Example - 'ylim','[0,10]' sets the minim value to 0 and the
@@ -277,16 +277,16 @@ function [out]=FSRH(y,X,Z,varargin)
 %               Example - 'bonflev',0.99
 %               Data Types - double
 %
-%       msg    :  Level of output to display. Scalar. 
+%       msg    :  Level of output to display. Scalar.
 %                   It controls whether to display or not messages
 %                 on the screen
 %                 If msg==1 (default) messages are displayed on the screen about
 %                   step in which signal took place
 %                 else no message is displayed on the screen
-%               Example - 'msg',1 
+%               Example - 'msg',1
 %               Data Types - double
 %
-% bsbmfullrank :  Dealing with singluar X matrix. Scalar. 
+% bsbmfullrank :  Dealing with singluar X matrix. Scalar.
 %               It tells how to behave in case subset at step m
 %                 (say bsbm) produces a non singular X. In other words,
 %                 this options controls what to do when rank(X(bsbm,:)) is
@@ -296,7 +296,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 the final n-mnofullrank steps else the search continues
 %                 using as estimate of beta at step m the estimate of beta
 %                 found in the previous step.
-%               Example - 'bsbmfullrank',1 
+%               Example - 'bsbmfullrank',1
 %               Data Types - double
 %
 %
@@ -314,11 +314,11 @@ function [out]=FSRH(y,X,Z,varargin)
 % out.hetero =  r-by-1 vector containing the estimated parameters of the
 %               scedastic parameters (in step n-k)
 % out.scale  = scalar containing the estimate of the scale
-%                       (sigma). 
-% out.mdr    =  (n-init) x 2 matrix: 
-%               1st col = fwd search index; 
+%                       (sigma).
+% out.mdr    =  (n-init) x 2 matrix:
+%               1st col = fwd search index;
 %               2nd col = value of minimum deletion residual in each step
-%               of the fwd search. 
+%               of the fwd search.
 % out.Un     =  (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
@@ -425,7 +425,7 @@ else
     init=min(3*p+1,floor(0.5*(n+p+1)));
 end
 % ini0=init;
-% tag 
+% tag
 tagdef='pl_fsr';
 
 options=struct('h',hdef,...
@@ -482,22 +482,22 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     if init<length(bs)
         init=length(bs);
     end
-    
+
     % Compute Minimum Deletion Residual for each step of the search
     [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',true,'msg',msg,'typeH',typeH,'gridsearch',gridsearch);
-    
+
     if size(mdr,2)<2
         if length(mdr)>=n/2
             disp('More than half of the observations produce a singular X matrix')
             disp('X is badly defined')
             disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
             out.ListOut=setdiff(seq,mdr);
-            
+
         else
             disp('Bad starting point which produced a singular matrix, please restart the search from a different starting point or use option bsbmfullrank=0 ')
-            
+
         end
-        
+
         out.mdr = NaN;
         out.Un  = NaN;
         out.nout= NaN;
@@ -506,29 +506,29 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
 else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
     [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg);
-    
+
     if out.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
         % Just return the outliers found by LXS
         %out.ListOut=out.outliers;
         %return
     end
-    
+
     bs=out.bs;
     mdr=0;
     constr='';
-    
-    
+
+
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
         [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',true,...
             'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'typeH',typeH,'gridsearch',gridsearch);
-        
+
         % If FSRmdr run without problems, mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
         % monitored in each step of the search
-        
+
         % If mdr has just one columns then one of the following two cases took place:
         % isnan(mdr)=1 ==> in this case initial subset was not full rank
         % mdr has just one column ==> in this case, even if the initial
@@ -536,14 +536,14 @@ else % initial subset is not supplied by the user
         %    m<n/2 a list of units which produce a singular matrix. In this
         %    case LXS is rerun excluding these units which gave rise to a
         %    non singular matrix
-        
+
         if size(mdr,2)<2
             if length(mdr)>=n/2
                 disp('More than half of the observations produce a singular X matrix')
                 disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
-                
+
                 out.ListOut=setdiff(seq,mdr);
-                
+
                 return
             elseif isnan(mdr(1,1))
                 % INITIAL SUBSET WAS NOT FULL RANK
@@ -552,8 +552,8 @@ else % initial subset is not supplied by the user
                 bsb=setdiff(seq,out.bs);
                 [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',true,'msg',msg);
                 bs=bsb(out.bs);
-                
-                
+
+
             else
                 % INITIAL SUBSET WAS FULL RANK BUT THE SEARCH HAS FOUND A
                 % SET OF OBSERVATIONS CONSTR <n/2  WHICH PRODUCED A SINGULAR
@@ -566,8 +566,8 @@ else % initial subset is not supplied by the user
             end
         end
     end
-    
-    
+
+
 end
 
 
@@ -604,7 +604,7 @@ INP.S2=S2(:,1:2);
 out.mdr=mdr;
 out.Un=Un;
 out.class  =  'FSRH';
-  
+
 % out.Hetero=Hetero;
 % out.S2=S2;
 % out.WEI=WEI;
