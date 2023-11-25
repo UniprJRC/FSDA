@@ -508,7 +508,7 @@ if  ~isempty(bdp)
         c=HAbdp(bdp,1,abc);
         
         
-        c=[c,abc];
+        c=[c;abc(:)];
         psifunc='HA';
 
     elseif strcmp(rhofunc,'mdpd')
