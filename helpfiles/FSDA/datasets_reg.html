@@ -55,6 +55,34 @@ document.write(divsbefore);
       <td style="width: 799px"></td>
       <td></td>
     </tr>
+      <tr>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>air_pollution </tt></td>
+        <td bgcolor="#F2F2F2"> This dataset on air pollution and mortality in 60 metropolitan statistical areas
+in the United States accompanies the book Ramsey, F. L. and Schafer, D. W. 
+		(2013). The Statistical Sleuth: A Course in Methods of Data Analysis 
+		(3rd ed). Cengage Learning.  <br>The response variable is the total
+age-adjusted mortality from all causes, counted as deaths per 100,000 population ('Mortality').
+The explanatory variables are listed below: <br>Precip: Mean annual precipitation (in inches)
+		<br>Humidity: Percent relative humidity (annual average at 1:00pm)<br>JanTemp: Mean January temperature (degrees Fahrenheit)
+		<br>JulyTemp: Mean July temperature (degrees Fahrenheit)
+<br>Over65: Percentage of the population aged 65 years or over
+<br>House: Population per household
+<br>Educ: Median number of school years completed for persons 25 years or older
+		<br>Sound: Percentage of housing that is sound with all facilities
+<br>Density: Population density (in persons per square mile of urbanized area)
+		<br>NonWhite: Percentage of population that is nonwhite
+<br>WhiteCol: Percentage of employment in white collar occupations
+<br>Poor: Percentage of households with annual income under 3,000 USD in 1960
+		<br>HC: Relative pollution potential of hydrocarbons
+<br>NOX: Relative pollution potential of oxides of nitrogen<br>SO2: Relative pollution potential of sulfur dioxide
+
+
+		<br>The explanatory variables include four climate variables, eight 
+		demographic variables and three pollution related variables. ``Relative 
+		pollution potential'' is the product of the tons emitted per day per 
+		square kilometer and a factor correcting for the area dimension and 
+		exposure. The three pollution variables are skewed.</td>
+      </tr>
     <tr>
       <td bgcolor="#F2F2F2" style="width: 799px"><tt>algae </tt></td>
       <td bgcolor="#F2F2F2">The algae dataset (from Hettich and Bay, 1999)
@@ -95,25 +123,33 @@ The number of rows without missing values is 392.
 The web site where the data have been downloaded
 	  <a href="https://code.datasciencedojo.com/datasciencedojo/datasets/tree/master/Auto%20MPG">https://code.datasciencedojo.com/datasciencedojo/datasets/tree/master/Auto MPG</a> 
 states that ``this dataset is recommended for learning and practicing your skills in exploratory data analysis, data visualization, and regression modelling techniques''.
-The variables are: <br>mpg (y): fuel efficiency measured in miles per gallon (mpg);
-	  <br>cylinders (X_1): number of cylinders in the engine; <br>displacement (X2): engine displacement (in cubic inches); 
-	  <br>horsepower  (X3): engine horsepower; <br>weight (X4): vehicle weight (in pounds); 
-	  <br>acceleration (X5): time to accelerate from 0 to 60 mph (in seconds); 
-	  <br>modelYear (X6): model year; <br>origin (X7): origin of car (1: American, 2: European, 3: Japanese). 
+The variables are: <br>cylinders (X_1):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; number of cylinders in the engine; <br>displacement (X2):&nbsp; engine displacement (in cubic inches); 
+	  <br>horsepower  (X3):&nbsp;&nbsp;&nbsp; engine horsepower; <br>weight (X4):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vehicle weight (in pounds); 
+	  <br>acceleration (X5):&nbsp;&nbsp; time to accelerate from 0 to 60 mph (in seconds); 
+	  <br>modelYear (X6):&nbsp;&nbsp;&nbsp;&nbsp; model year; <br>origin (X7):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; origin of car (1: American, 2: European, 3: Japanese).
+	  <br>mpg (y):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fuel efficiency measured in miles per gallon (mpg); 
 	  <br>The goal is to predict mpg (the fuel-efficiency of a car).
-      </td>
+      <br>A different version of this dataset is also contained in the 
+	  Statistics and Machine Learning Toolbox and is called carbig. The number 
+	  of observations in carbig is 406 because it contains observations with 
+	  missing values. Note that load carbig&nbsp; loads into workspace the 
+	  information about each variable separately and origin is a char. load 
+	  autompg loads (as usual for all the FSDA datasets) the dataset in table 
+	  format. Given that original variable model had repeated entries in order 
+	  to include this variable as RowNames in the table we added the&nbsp; row 
+	  number in front of the char representing the model.</td>
 	  </tr>
       <tr>
       <td bgcolor="#F2F2F2" style="width: 799px"><tt>Balancesheetstd>
       <td bgcolor="#F2F2F2">The Balancesheets dataset contains 6 balancesheets voices of 1405
 	  Italian capital companies extracted from the Buerau Van Dijks AIDA database.
 	  The voices are:<br>
-	  - X1 =  Labour share,<br>
-	  - X2 = ratio of tangible fixed assets to added value,<br>
-      - X3 = ratio of intangible assets to total assets,<br>
-      - X4 = ratio of industrial equipment tototal asset,<br>
-      - X5 = firm’s interest burden.
-      <br>- y  = Return On Sales (ROS),</td>  
+	  - X1:  Labour share,<br>
+	  - X2: ratio of tangible fixed assets to added value,<br>
+      - X3: ratio of intangible assets to total assets,<br>
+      - X4: ratio of industrial equipment tototal asset,<br>
+      - X5: firm’s interest burden.
+      <br>- y: Return On Sales (ROS),</td>  
 	  
 
       </tr>
@@ -524,6 +560,18 @@ Thousands $ ).
         The plot of residuals against fitted values shows no obvious pattern.
         However the FS finds that there are 6 masked outliers.</td>
     </tr>
+      <tr>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>nci60</tt></td>
+      <td bgcolor="#F2F2F2">NCI-60 cancer cell panel data. The data set is a 
+	  pre-processed version of the NCI-60 cancer cell panel as used in Alfons, 
+	  Croux &amp; Gelper (2013). One observation was removed since all values in the 
+	  gene expression data were missing. The number of observations is 59 and 
+	  the number of explanatory variables is 100. The response (which in the dataset is called y) is KRT18 
+	  antibody, which constitutes the variable with the largest MAD. The 
+	  response variable measures the expression levels of the protein keratin 
+	  18, which is known to be persistently expressed in carcinomas. The 
+	  explanatory variables are the most correlated 100 variables. </td>
+      </tr>
     <tr>
       <td bgcolor="#F2F2F2" style="width: 799px"><tt>oats</tt></td>
       <td bgcolor="#F2F2F2">The data set oats (Scheffe, 1959, p. 138) lists the
