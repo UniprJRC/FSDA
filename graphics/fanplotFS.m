@@ -542,9 +542,6 @@ function brushedUnits=fanplotFS(out,varargin)
 %% Beginning of code
 brushedUnits=[];
 
-close(findobj('type','figure','Tag','pl_yX'));
-close(findobj('type','figure','Tag','pl_resfwd'));
-close(findobj('type','figure','Tag','pl_mdr'));
 
 %% Input parameters checking
 
@@ -1043,6 +1040,9 @@ hfan=gcf;
 %% Brush mode (call to function selectdataFS)
 
 if (~isempty(options.databrush) || iscell(options.databrush))
+    close(findobj('type','figure','Tag','pl_yX'));
+    close(findobj('type','figure','Tag','pl_resfwd'));
+    close(findobj('type','figure','Tag','pl_mdr'));
 
     if isscalar(options.databrush)
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
