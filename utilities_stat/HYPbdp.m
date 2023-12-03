@@ -27,6 +27,10 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 %               If traceiter = 1 it is possible to monitor
 %              how the value of the objective function E(rho)/\rho(\infty)
 %              gets closer to the target (bdp) during the iterations
+%              If traceiter =0 just the message about effective convergence
+%              (if the number of iteration exceeds 80) is shown on the
+%              screen. 
+%              If traceiter =-1 no message is shown on the screen.
 %               Example - 'traceiter',0
 %               Data Types - single|double|int32|int64
 % Output:
@@ -166,6 +170,15 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
     [c,A,B,d]=HYPbdp(0.4,1,ktuning,traceiter);
 %}
 
+%{
+    % Another example of use of option traceiter.
+    traceiter=-1 
+    % traceiter=-1 implies that no messsage is shown on the screen about
+    % effective tolerance in the iterative procedure.
+    ktuning=4.5;
+    [c,A,B,d]=HYPbdp(0.4,1,ktuning,traceiter);
+%}
+
 %% Beginning of code
 
 
@@ -207,7 +220,9 @@ if v==1
         iter=iter+1;
         
         if iter==80
-            disp(['Effective tolerance in routine HYPbdp=' num2str(abs(Erho1-1))])
+            if traceiter>=0
+                disp(['Effective tolerance in routine HYPbdp=' num2str(abs(Erho1-1))])
+            end
             break
         end
         

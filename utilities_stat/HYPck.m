@@ -115,7 +115,7 @@ while max(abs([A-Anew,B-Bnew,dd-d]))>1e-8
     iter=iter+1;
     %disp(iter)
     if iter==1000
-        disp(['Effective tolerance in routine HYPck=' num2str(max(abs([A-Anew,B-Bnew,dd-d])))])
+        % disp(['Effective tolerance in routine HYPck=' num2str(max(abs([A-Anew,B-Bnew,dd-d])))])
         break
     end
     
