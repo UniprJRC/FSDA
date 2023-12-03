@@ -557,7 +557,7 @@ for jj=1:length(bdp)
             if coder.target('MATLAB')
                 % Compute tuning constant associated to the requested breakdown
                 % point
-                [c,A,B,d]=HYPbdp(bdp(jj),1,kdef);
+                [c,A,B,d]=HYPbdp(bdp(jj),1,kdef,-1);
                 % kc1 = E(rho) = sup(rho)*bdp
                 kc=HYPrho(c,[c,kdef,A,B,d])*bdp(jj);
             else

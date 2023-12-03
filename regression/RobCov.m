@@ -487,7 +487,7 @@ if  ~isempty(bdp)
             
             % Compute tuning constant associated to the requested breakdown
             % point
-            [c,A,B,d]=HYPbdp(bdp,1,kdef);
+            [c,A,B,d]=HYPbdp(bdp,1,kdef,-1);
         end
         
         
