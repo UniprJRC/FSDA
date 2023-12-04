@@ -74,9 +74,11 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %                 to display or not messages on the screen.
 %               If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
-%               and the warnings about
+%               and the proportion of singular elemental subsets, if this
+%               proportion exceeds 0.1.
+%               Note that the warnings about:
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
-%               'MATLAB:nearlySingularMatrix' are set to off
+%               'MATLAB:nearlySingularMatrix' are always set to off
 %               else no message is displayed on the screen
 %                 Example - 'msg',0
 %                 Data Types - single | double
@@ -794,9 +796,11 @@ for jj=1:length(bdp)
     outliers=seq( abs(residuals)>norminv(conflev) );
 
     if coder.target('MATLAB')
+        if msg==true
         if singsub/nselected>0.1
             disp('------------------------------')
             disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+        end
         end
     end
 
