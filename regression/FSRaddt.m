@@ -87,6 +87,14 @@ function [out]=FSRaddt(y,X,varargin)
 %                        Example - 'lwdenv',1
 %                        Data Types - double
 %
+%         msg    :      Level of output to display. Boolean. It controls whether
+%                       to display or not messages on the screen about subset
+%                       size. If msg==true (default) messages are displayed on the screen
+%                       about subset size every 100 steps,
+%                       else no message is displayed on the screen.
+%                       Example - 'msg',false
+%                       Data Types - logical
+%
 %        quant  :       Confidence quantiles for the envelopes. Vector.
 %                       Confidence quantiles for the envelopes of deletion t
 %                        stat. Default is [0.005 0.995] (i.e. a 99 per cent
@@ -169,7 +177,7 @@ function [out]=FSRaddt(y,X,varargin)
 %               units to enter the fwd search is found excluding last explanatory
 %               variable
 %
-%  out.bs     = matrix of size p x length(DataVars) containing the units forming
+%    out.bs  =  matrix of size p x length(DataVars) containing the units forming
 %               the initial subset of length p for the searches associated
 %               with the deletion t statistics.
 %
@@ -328,13 +336,13 @@ else
 end
 
 DataVars='';
-
+msg=true;
 options=struct('h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',0,...
     'init',init,'nameX','','lwdenv',2,'quant',[0.005 0.995],'lwdt',2,'xlimx','','ylimy','',...
     'titl','','labx','Subset size m','laby','Deletion t statistics', ...
     'FontSize',12,'SizeAxesNum',10,'nocheck',false,'intercept',true, ...
-    'DataVars', DataVars);
+    'DataVars', DataVars,'msg',msg);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -360,13 +368,14 @@ lms=options.lms;
 plo=options.plots;
 nsamp=options.nsamp;
 DataVars=options.DataVars;
+msg=options.msg;
 
 % intcolumn = the index of the first constant column found in X, or empty.
 % Used here to check if X includes the constant term for the intercept.
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0, 1);
 
 %vars: list of the variables
-vars=1:p; 
+vars=1:p;
 
 % Remove from vars the column of ones
 vars(intcolumn)=[];
@@ -441,7 +450,7 @@ for i=vars
 
     % Find initial subset to initialize the search (in the search which
     % excludes variable w
-    [outLXS]=LXS(y,Xred,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true);
+    [outLXS]=LXS(y,Xred,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg);
     bsb=outLXS.bs;
 
     Xb=Xred(bsb,:); % Subset of reduced X matrix (in the search which excludes variable w)
@@ -450,10 +459,12 @@ for i=vars
 
     % Initialize the fwd search (excluding variable w)
     for mm=ini0:n
-        % if n>200 show every 100 steps the fwd search index
-        if n>200
-            if length(intersect(mm,seq100))==1
-                disp(['m=' int2str(mm)]);
+        if msg==true
+            % if n>200 show every 100 steps the fwd search index
+            if n>200
+                if length(intersect(mm,seq100))==1
+                    disp(['m=' int2str(mm)]);
+                end
             end
         end
 
@@ -461,7 +472,7 @@ for i=vars
             % Store units forminng subset for each value of deletion tstat
             % when m= number of columns of matrix X (including the
             % constant)
-             binit(:,j)=bsb;
+            binit(:,j)=bsb;
         end
 
 
@@ -522,9 +533,10 @@ for i=vars
                 if length(unit)<=10
                     Un(mm-init+1,2:(length(unit)+1))=unit;
                 else
+                    if msg==true
                     disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                     disp(['Number of units which entered=' int2str(length(unit))]);
-
+                    end
                     Un(mm-init+1,2:end)=unit(1:10);
                 end
             end
