@@ -60,7 +60,7 @@ function brushedUnits=fanplotFS(out,varargin)
 %                   where to put labels for the trajectories of the
 %                   quantities which are monitored. The default is to put
 %                   the labels in the final steps of the monitoring
-%                   procedure. fground=[] means no label.
+%                   procedure. flabstep=[] means no label.
 %                   Example - 'flabstep',[20 30 120]
 %                   Data Types - double
 %
