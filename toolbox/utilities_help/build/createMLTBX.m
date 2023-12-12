@@ -17,6 +17,11 @@ end
 % object goes out of scope
 [FSDAroot, cleanup] = changeDirToRootWithCleanup; %#ok<ASGLU>
 
+% create realFSDAroot that points to the rela root of FSDA
+% and not ot the FSDA/toolbox folder
+tmp=split(FSDAroot,"/");
+realFSDAroot=join(tmp(1:end-1,1), "/");
+
 % Get filesep
 fsep=filesep;
 
@@ -36,6 +41,8 @@ publish('Contents.m');
 %   exclude those that are not needed below using some helpers.
 
 uuid = '20669fbc-61ca-4050-bc87-575422f4c0b8';
+% uuid = 'd6e027ff-e27e-448a-aa53-ef8f1ba4b647';
+
 options = matlab.addons.toolbox.ToolboxOptions(FSDAroot, uuid);
 
 % Firstly there are a set of folders in this repository that we do not want
@@ -57,18 +64,18 @@ options = removeFoldersFromToolboxPackage(options, [ ...
 
 % Secondly there are a set of files in this repository that we do not want
 % in the packaged toolbox - remove those using a helper function
+% some of them to be discussed with Bensingh snd Rob
 options = removeFilesFromToolboxPackage(options, [...
     ".gitattributes"
     ".gitignore"
     ".travis.yml"
-    "404.md"
     "azure-pipelines.yml"
     "buildfile.m"
     "CODE_OF_CONDUCT.md"
     "CONTRIBUTING.md"
-    "Copyright notice.pdf"
+    "copyright.md"
     "defaultToolboxPackageConf.prj"
-    "eupllicense.pdf"
+    "license.md"
     "examples" + fsep + "examples_categorical.mlx"
     "examples" + fsep + "examples_multivariate.mlx"
     "examples" + fsep + "examples_regression.mlx"
@@ -77,9 +84,7 @@ options = removeFilesFromToolboxPackage(options, [...
     "helpfiles" + fsep + "FSDA" + fsep + "images" + fsep + "githubimgexamples.jpg"
     "helpfiles" + fsep + "FSDA" + fsep + "images" + fsep + "githubimgindex.jpg"
     "helpfiles" + fsep + "FSDA" + fsep + "images" + fsep + "githubimgtutorials.jpg"    
-    "installationNotes.docx"
-    "installationNotes.pdf"
-    "readme.md"
+    "README.md"
     "utilities_help" + fsep + "FlowChart.pptx"
     ]);
 
@@ -87,6 +92,8 @@ options = removeFilesFromToolboxPackage(options, [...
 % Define the paths that we want to add to an installed MATLAB path
 % NOTE - we need the root as well as some sub-folders so include the empty
 % string at the beginning
+% IMPORTANT - the folders must be added in a bottom-up style, starting from 
+% the subfolder, failure to do so results in an exception.
 pathsToAdd = [ ...
     ""
     "multivariate"
@@ -103,10 +110,17 @@ pathsToAdd = [ ...
     "utilities_help"
     "examples"
     "FSDAdemos"    
+    "apps"    
+    % "helpfiles" + fsep + "FSDA"
+    % "helpfiles" + fsep + "includes" + fsep + "product" + fsep + "css"
+    % "helpfiles" + fsep + "includes" + fsep + "product" + fsep + "fonts"
+    % "helpfiles" + fsep + "includes" + fsep + "product" + fsep + "scripts"
+    % "helpfiles" + fsep + "includes" + fsep + "shared" + fsep + "scripts"
+    % "helpfiles" + fsep + "pointersHTML"
     ];
 
 % AND NOTE scalar expansion here with vector of pathsToAdd
-options.ToolboxMatlabPath = FSDAroot + fsep + pathsToAdd;
+ options.ToolboxMatlabPath = FSDAroot + fsep + pathsToAdd;
 
 % Define our TOOLBOX name, version and other metadata
 options.ToolboxName = "FSDA";
@@ -139,7 +153,7 @@ options.MinimumMatlabRelease = 'R2018a';
 options.MaximumMatlabRelease = '';
 
 % add big logo
-options.ToolboxImageFile = fullfile(FSDAroot, "logoblue.jpg");
+options.ToolboxImageFile = fullfile(realFSDAroot, "images", "logoblue.jpg");
 
 % add getting startup file
 options.ToolboxGettingStartedGuide = fullfile(FSDAroot, 'doc', 'GettingStarted.mlx');
