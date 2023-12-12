@@ -20,41 +20,41 @@ env:
   
 jobs:
 
-  # This job will specifically build the doc search db in 21b which is needed for pre-22a versions of MATLAB
-  build-docsearch-v3:
-    runs-on: ubuntu-latest
+  # # This job will specifically build the doc search db in 21b which is needed for pre-22a versions of MATLAB
+  # build-docsearch-v3:
+  #   runs-on: ubuntu-latest
     
-    steps:    
-      - name: Checkout on your repository
-        uses: actions/checkout@v3
+  #   steps:    
+  #     - name: Checkout on your repository
+  #       uses: actions/checkout@v3
         
-      # Sets up MATLAB on the GitHub Actions runner using the older version of MATLAB
-      - name: Setup MATLAB
-        uses: matlab-actions/setup-matlab@v2-beta
-        with:
-          release: ${{ env.MATLAB_RELEASE_DOC_V3 }}
+  #     # Sets up MATLAB on the GitHub Actions runner using the older version of MATLAB
+  #     - name: Setup MATLAB
+  #       uses: matlab-actions/setup-matlab@v2-beta
+  #       with:
+  #         release: ${{ env.MATLAB_RELEASE_DOC_V3 }}
           
-      # Runs a set of commands using the runners shell - note that 21b doesn't support
-      # 'buildtool' so we use the specific script in a MATLAB run action
-      - name: Build docseach db with MATLAB
-        uses: matlab-actions/run-command@v1
-        with:
-          command: "cd('utilities_help/build'); buildDocSearchForToolboxPre22a()"  
+  #     # Runs a set of commands using the runners shell - note that 21b doesn't support
+  #     # 'buildtool' so we use the specific script in a MATLAB run action
+  #     - name: Build docseach db with MATLAB
+  #       uses: matlab-actions/run-command@v1
+  #       with:
+  #         command: "cd('toolbox/utilities_help/build'); buildDocSearchForToolboxPre22a()"  
       
-      # Finally keep a copy of the artifacts generated for the next job to download    
-      - name: Upload helpsearch-v3
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v3
-        with:
-          # Artifact key to be used with download-artifact
-          name: helpsearch-v3-files
-          # A file, directory or wildcard pattern that describes what to upload
-          path: helpfiles/pointersHTML/helpsearch-v3/
+  #     # Finally keep a copy of the artifacts generated for the next job to download    
+  #     - name: Upload helpsearch-v3
+  #       if: ${{ always() }}
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         # Artifact key to be used with download-artifact
+  #         name: helpsearch-v3-files
+  #         # A file, directory or wildcard pattern that describes what to upload
+  #         path: helpfiles/pointersHTML/helpsearch-v3/
   
   # This job does the build of the MLTBX file in the MATLAB_RELEASE version of MATLAB         
   archive-build-artifacts:
     # Do not run this job until the previous job is complete
-    needs: build-docsearch-v3
+    # needs: build-docsearch-v3
     runs-on: ubuntu-latest
     
     outputs: 
@@ -65,12 +65,12 @@ jobs:
       - name: Checkout on your repository
         uses: actions/checkout@v3
 
-      - name: Download helpsearch-v3
-        if: ${{ always() }}
-        uses: actions/download-artifact@v3
-        with:
-          name: helpsearch-v3-files
-          path: helpfiles/pointersHTML/helpsearch-v3/
+      # - name: Download helpsearch-v3
+      #   if: ${{ always() }}
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: helpsearch-v3-files
+      #     path: helpfiles/pointersHTML/helpsearch-v3/
           
       - name: Create Release
         id: create_release
@@ -127,7 +127,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/FSDA.mltbx
+          asset_path: ./toolbox/bin/FSDA.mltbx
           asset_name: FSDA.mltbx
           asset_content_type: application/gzip
       
