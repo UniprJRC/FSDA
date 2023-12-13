@@ -19,11 +19,13 @@ end
 
 % create realFSDAroot that points to the rela root of FSDA
 % and not ot the FSDA/toolbox folder
-tmp=split(FSDAroot,"/");
-realFSDAroot=join(tmp(1:end-1,1), "/");
 
 % Get filesep
 fsep=filesep;
+
+tmp=split(FSDAroot,fsep);
+realFSDAroot=join(tmp(1:end-1,1), fsep);
+
 
 %% Publish contents file in the root inside subfolder html
 % This instruction is necessary in order to display subfolder examples in
