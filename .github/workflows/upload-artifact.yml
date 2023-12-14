@@ -81,7 +81,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           draft: false
-          prerelease: true
+          prerelease: false
 
       # We are going to start a display server using XVFB to ensure that if the toolbox build 
       # triggers something that needs a display we have one. This is a done prophylacticly in 
