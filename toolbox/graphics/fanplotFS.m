@@ -560,7 +560,6 @@ if strcmp(out.class,'FSRfan')
     laby='Score test statistic';
     labx= 'Subset size m';
 
-    set(gcf,'Name',['fanplot for lambda=' mat2str(out.la) ]);
     la=out.la(:);
     las=string(la);
     dfvary=false;
@@ -752,6 +751,10 @@ if (~isempty(h))
     axes;
 else
     figure;
+end
+
+if fanplotScore == true
+    set(gcf,'Name',['fanplot for lambda=' mat2str(out.la) ]);
 end
 
 lla=length(la);
