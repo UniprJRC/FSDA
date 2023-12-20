@@ -36,15 +36,16 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   Example - 'category','##myPersonalLabel##'
 %                   Data Types - character or string
 %
+%
 %    dirpath:       path to use or file to convert.
 %                   Cell array of characters or character. Absolute path of
 %                   the folder(s) for which m2ipynb files must be created.
-%                   If dirpath is not specified or it is empty all m files
+%                   If dirpath is not specified or it is empty all .m files
 %                   in the current folder with the category label will be
 %                   converted. If dirpath is a cell array of characters
 %                   then .m file are converted for all specified subfolders.
 %                   If dirpath is a charater containing a single file
-%                   in the currect folder, just this file will be
+%                   in the current folder, just this file will be
 %                   converted.
 %                   Example - 'dirpath',pwd
 %                   Data Types - cell array of characters or char
@@ -76,36 +77,46 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   screen. Scalar.
 %                   If msg==false (default) messages are not displayed
 %                   on the screen about all .m files which are considered for
-%                   translation to ipynb 
+%                   translation to ipynb
 %                   Example - 'msg',false
 %                   Data Types - logical
 %
 %     repoName :    GitHub repository name. Character or string.
-%                   String which the GitHub repository address 
+%                   String which the GitHub repository address
 %                   The default is to use 'UniprJRC/FigMonitoringBook'
 %                   Example - repoName 'uhub/awesome-matlab'
 %                   Data Types - Character or string
-%                   
+%
 %            run :  Whether to run the code in the .mlx files include
 %                   outputs. Boolean.
 %                   If this option is set to true  (default) the code
 %                   inside the MLX files is run and the output is included
-%                   in the converted file.
+%                   in the converted file. Through option runExcluded it is
+%                   possible to control the files which have to be
+%                   translated to ipynb format with run set to false.
 %                   Example - 'run',false
 %                   Data Types - logical
 %
+%   runExcluded  :  String which identifies files with run  set to false.
+%                   'Character' or 'string'. The default of runExcluded is
+%                   'Interactive', in the sense that all files whose name
+%                   contains the string Interactive have be translated to
+%                   ipynb format with option run set to false.
+%                   Example - 'runExcluded','UserIntercation'
+%                   Data Types - logical
+%
 % deleteMLXfiles : delete or not the .mlx files after their conversion to
-%                   iupiter notebook format.
+%                   jupiter notebook format.
 %                   Boolean. The default is false, that is .mlx are note
-%                  deleted after theri conversion to ipynb format.
+%                   deleted after their conversion to ipynb format.
 %                   Example - 'deleteMLXfiles',true
 %                   Data Types - logical
 %
 %   append2README: append or not the list of filtered files to README.md
-%                   file. Boolean. By default the lsit of filtered files
-%                   in the specififed folder will be appended to the
-%                   README.md file. If this table already exists inside the
-%                   README.md it will be replaced with the current one.
+%                   file. Boolean. By default the list of filtered files in
+%                   the specififed folder will be appended to the README.md
+%                   file. If this table already exists inside the
+%                   README.md, it will be replaced with the current one.
 %                   Example - 'append2README',false
 %                   Data Types - logical
 %
@@ -113,7 +124,7 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %
 %          Incl:   structured information of translated files Cell.
 %                 Cell of size r-times-4 containing detailed information about
-%                 the files present in required folder or subfolders for which 
+%                 the files present in required folder or subfolders for which
 %                 jpynb format has been created.
 %               The columns of Incl contain the following information:
 %               Incl(:,1)= name of the m file (with extension);
@@ -206,22 +217,23 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %% Beginning of code
 
 dirpath=pwd;   % default path (if it is empty it is current folder)
-FilterOutFileName='old'; % Remove all files whose name contains string old
-printOutputCell=false; % specifies if the overall output has to be written in a file
+FilterOutFileName='old'; % Do not translate files whose name contains string old
+printOutputCell=false; % specifies whether to print on the screen the output cell
 msg=false;
 runMLXfile=true;
 deleteMLXfiles=false;
 append2README=true;
-
 category='%InsideREADME';
 repoName='UniprJRC/FigMonitoringBook';
 CatchError=true;
+runExcluded='Interactive';
 
 options=struct('dirpath',dirpath,...
     'run',runMLXfile,'FilterOutFileName',FilterOutFileName,'msg',msg,...
     'category',category,'printOutputCell',printOutputCell, ...
     'repoName',repoName,'append2README',append2README', ...
-    'deleteMLXfiles',deleteMLXfiles,'CatchError',CatchError);
+    'deleteMLXfiles',deleteMLXfiles,'CatchError',CatchError, ...
+    'runExcluded',runExcluded);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -247,6 +259,7 @@ if ~isempty(UserOptions)
     deleteMLXfiles=options.deleteMLXfiles;
     append2README=options.append2README;
     CatchError=options.CatchError;
+    runExcluded=options.runExcluded;
 
     Folder=true;
     % Check if dirpath is a cell array of strings or a char associated with
@@ -263,14 +276,14 @@ if ~isempty(UserOptions)
         assert(ischar(dirpath),'''supplied path'' should be an empty value a  char or a cell array of chars')
         % Check if the char which is supplied is a file or a folder which
         % exists
-        if exist(dirpath,'dir')==7 
+        if exist(dirpath,'dir')==7
             % In this case dirpath is char identifying a subfolder which
             % exists
-        elseif exist(dirpath,'dir')==2
+        elseif exist(dirpath,'file')==2
             % In this case dirpath is a file in the current folder
-             Folder=false;
+            Folder=false;
         else
-         errmsg= ['Supplied path ' dirpath ' does not exist and/or finename not found in current folder'];
+            errmsg= ['Supplied path ' dirpath ' does not exist and/or finename not found in current folder'];
             error('FSDA:m2ipynb:WrongInputOpt',errmsg)
         end
         ldirpath=1;
@@ -327,7 +340,27 @@ for j=1:ldirpath
         end
 
         % Sort files in alphabetical order
-        [~,sortIndex] = sort(lower({d.name}));
+        filel=lower({d.name});
+        % If FileNames contain number an attempt will be made to order the
+        % file according to numbers. For examples if FileNames are
+        % ex5_2.m ex10_1.m ex10_1 cames later than ex5_2.m
+        personOrder=true;
+        if personOrder==true
+            %names=extract(string(filel(4)),digitsPattern);
+            %str2num(strjoin(names,''))
+            names=zeros(length(d),2);
+            for ii=1:length(d)
+                namii=extract(string(filel(ii)),digitsPattern);
+                if length(namii)>=2
+                    names(ii,:)=double(namii(1:2));
+                end
+            end
+
+            [~,sortIndex]=sortrows(names,[1 2]);
+        else
+            [~,sortIndex] = sort(lower({d.name}));
+        end
+
         d = d(sortIndex);
         dout=cell(100,3);
         ij=1;
@@ -338,27 +371,33 @@ for j=1:ldirpath
             d(i).mfilename = regexprep(d(i).name,'\.m$','');
             FileName=d(i).name;
 
-            if msg==true
-                disp(d(i).name)
-            end
 
-             if strcmp(d(i).name,'m2ipynb.m')
+
+            if strcmp(d(i).name,'m2ipynb.m')
                 catBoolean=false;
-             else
-            try
-                [H1line,H2line,catBoolean]=get_H1lineandCategory(FileName,category);
-                H2line=regexprep(H2line,'\n',' ');
-            catch
-                catBoolean=false;
-                % error('FSDA:m2ipynb:WrongInputFile',['error while parsing file :' d(i).name])
+            else
+                try
+                    [H1line,H2line,catBoolean]=get_H1lineandCategory(FileName,category);
+                    H2line=regexprep(H2line,'\n',' ');
+                catch
+                    catBoolean=false;
+                    % error('FSDA:m2ipynb:WrongInputFile',['error while parsing file :' d(i).name])
+                end
             end
-             end
             % Convert file to mlx and subsequently to ipynb format
             if catBoolean ==true
+                if msg==true
+                    disp(['Converting file: ' FileName])
+                end
+
                 FileNameMLX=[FileName(1:end-2) '.mlx'];
                 matlab.internal.liveeditor.openAndSave(FileName,FileNameMLX);
                 try
-                    export(FileNameMLX,'Format','ipynb','Run',runMLXfile,'CatchError',CatchError);
+                    if contains(FileName,runExcluded)
+                        export(FileNameMLX,'Format','ipynb','Run',false);
+                    else
+                        export(FileNameMLX,'Format','ipynb','Run',runMLXfile,'CatchError',CatchError);
+                    end
                 catch
                     warning('FSDA:m2ipynb:WrongInputFile',['CatchError in file ' FileName])
                     % error('FSDA:m2ipynb:WrongInputFile','Source code error in original .m file')
@@ -473,7 +512,7 @@ if nargin<2
     searchTag='';
 end
 
-[~,name,ext] = fileparts(filename);
+[~,~,ext] = fileparts(filename);
 H1line = ''; % default output
 if strcmp(ext,'.m')
     fid = fopen(filename); % open file
@@ -487,13 +526,6 @@ if strcmp(ext,'.m')
             start = k+find(~(isspace(tline(k:end)) | ispercents),1,'first')-1;
             if ~isempty(start)
                 tline = tline(start:end); % remove leading space/percent
-                % IX = strfind(lower(tline),lower(name));
-                % if ~isempty(IX)
-                %     if IX(1)==1
-                %         tline = tline(length(name)+1:end); % remove function name
-                %     end
-                %     tline = strtrim(tline); % remove any leading/trailing space
-                % end
                 H1line = tline;
                 H1line = strtrim(H1line);
                 if ~isempty(H1line)
