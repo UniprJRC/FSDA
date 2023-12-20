@@ -38,16 +38,16 @@ X=XX(:,1:end-1);
 % In this case we use the five most common values of lambda are considered
 [out]=FSRfan(y,X);
 fanplotFS(out);
-%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
 Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.7%
 Total estimated time to complete LMS:  0.00 seconds 
@@ -108,9 +108,9 @@ namey =
     'Sales'
 
 Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
 Total estimated time to complete LMS:  0.03 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRfan_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare BoxCox with Yeo and Johnson transformation.</li></span></a></span></h3><div class="collapse"><p>
      Store values of the score test statistic
      for the five most common values of $\lambda$.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Produce also a fan plot and display it on the screen.
@@ -125,19 +125,10 @@ X=XX(:,1:end-1);
 fanplotFS(outBC,'titl','Box Cox');
 fanplotFS(outYJ,'titl','Yeo and Johnson','tag','YJ');
 disp('Maximum difference in absolute value')
-disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
+disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.07 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.04 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.04 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.05 seconds 
@@ -149,7 +140,16 @@ Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
-Total estimated time to complete LMS:  0.05 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.04 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.6%
+Total estimated time to complete LMS:  0.04 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.6%
 Total estimated time to complete LMS:  0.05 seconds 
@@ -482,7 +482,7 @@ out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',fal
                contains the unit(s) present in the new subset but not in
                the old one Un(1,:) for example contains the unit included
                in step init+1 ... Un(end,2) contains the units included in the
-               final step of the search</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>A vector with n elements that contains the response
+               final step of the search</p></p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSRfan'.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>A vector with n elements that contains the response
                variable which has been used</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>Data matrix of explanatory variables
                which has been used (it also contains the column of ones if
                input option intercept was missing or equal to 1)</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression

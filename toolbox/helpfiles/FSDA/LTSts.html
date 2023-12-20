@@ -394,8 +394,8 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
 % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_8'><img vspace="5" hspace="5" src="images\LTSts_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_08.png" alt=""> </a></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Examples 4 and 5 used in the paper RPRH: trade data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%% Examples 4 and 5 used in the paper RPRH: trade data.
 close all; clear all;
 % the datasets
-load('P12119085');
-load('P17049075');
+load('TTP12119085');
+load('TTP17049075');
 Y4 = P12119085{:,1};
 Y5 = P17049075{:,1};
 % the model
@@ -414,7 +414,7 @@ wedgeplot(out5,'extradata',Y5,'titl','P17049075, imports of sugars from UA to LT
 % Forecasts with a 99.9 per cent confidence level
 nfore=10;
 outfore4 = forecastTS(out4,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P12119085, imports of plants from KN to UK');
-outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P17049075, imports of sugars from UA to LT');
+outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P17049075, imports of sugar from UA to LT');
 % Comparing with FS (needs conflev option)
 outLTS4 = LTSts(Y4,'model',model,'plots',1,'conflev',0.99,'msg',0);
 title(findobj(gcf,'Tag','LTSts:ts'),'P12119085, LTS with conflev=0.99');
@@ -864,7 +864,9 @@ Summary of the exceedances
                        given with their row number, units not belonging to
                        subset have missing values
                        This output is present just if input option
-                       model.lshift is not equal to 0.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p>scalar associated with best tentative level shift
+                       model.lshift is not equal to 0.</p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p>(row) vector containing level shift positions which
+                       have been investigated. out.lshift  =0 means that
+                       level position has not been investigated.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p>scalar associated with best tentative level shift
                        position. This output is present just if input
                        option model.lshift is not equal to 0.</p></td></tr><tr valign="top"><td><code>numscale2</code></td><td><p>matrix of size lts.bestr-by-(T-2*lshift) containing
                        (in the columns) the values of the lts.bestr smallest

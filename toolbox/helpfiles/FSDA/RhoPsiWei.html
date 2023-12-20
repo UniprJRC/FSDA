@@ -49,8 +49,7 @@ plot(u,out.psider)
 title('HYP: psi(x)*x function')
 subplot(2,3,5)
 plot(u,out.wei)
-title('HYP: weight function')</pre></div></div><pre class="codeoutput">Effective tolerance in routine HYPck=6.4036e-08
-</pre><a href='http://rosa.unipr.it/fsda/RhoPsiWei.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\RhoPsiWei_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of calling RhoPsiWei with all parameters related to the constant: c, k, A, B and d
+title('HYP: weight function')</pre></div></div><a href='http://rosa.unipr.it/fsda/RhoPsiWei.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\RhoPsiWei_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of calling RhoPsiWei with all parameters related to the constant: c, k, A, B and d
      First call RhoPsiWei with efficiency fixed and then use the
        calculated constant for a second call - it will be much faster
     n=20;
@@ -65,8 +64,7 @@ isequal(out.rho, out1.rho)
 isequal(out.psi, out1.psi)
 [bdp1, eff1]=HYPc(out.c1(1), 1, 'k', out.c1(2), 'param', out.c1(3:5));
 isequal(out.bdp, bdp1)
-isequal(out.eff, eff1)</pre></div></div><pre class="codeoutput">Effective tolerance in routine HYPck=6.4036e-08
-
+isequal(out.eff, eff1)</pre></div></div><pre class="codeoutput">
 ans =
 
   logical

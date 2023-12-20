@@ -11,25 +11,26 @@ significant LS at position 7 (pval = 0)
      Two examples taken from the (extended version of the) series in:
      Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
      Monitoring of Many Time Series with Application to Fraud Detection,
-     "Econometrics and Statistics".<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('P12119085full.txt'); % KE-GB
-load('P17049075full.txt'); % UA-LT
-yin1   = P12119085full(:,2);
-yin2   = P17049075full(:,2);
+     "Econometrics and Statistics".<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load TTplant  % KE-GB
+load TTsugar   % UA-LT
+yin1   = plant{:,1};
+yin2   = sugar{:,1};
 out1  = LTStsLSmult(yin1,'msg',true,'plots',1);
-title('P12119085_KE_GB','interpreter','none','Fontsize',20);
+sgtitle('P12119085_KE_GB','interpreter','none','Fontsize',20);
 pause(1);
 out2  = LTStsLSmult(yin2,'msg',true,'plots',1);
-title('P17049075_UA_LT','interpreter','none','Fontsize',20);</pre></div></div><pre class="codeoutput">significant LS at position 75 (pval = 0)
-significant LS at position 58 (pval = 0)
-significant LS at position 68 (pval = 6.242e-07)
-significant LS at position 74 (pval = 2.0299e-06)
-significant LS at position 57 (pval = 2.5981e-08)
-significant LS at position 79 (pval = 5.6843e-14)
-significant LS at position 41 (pval = 2.8422e-14)
-</pre><a href='http://rosa.unipr.it/fsda/LTStsLSmult.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\LTStsLSmult_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTStsLSmult_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_08.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_09.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_15.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 1.
+sgtitle('P17049075_UA_LT','interpreter','none','Fontsize',20);</pre></div></div><pre class="codeoutput">significant LS at position 75 (pval = 0)
+significant LS at position 57 (pval = 0)
+significant LS at position 30 (pval = 0)
+significant LS at position 60 (pval = 0)
+significant LS at position 36 (pval = 1.7337e-10)
+significant LS at position 79 (pval = 4.793e-06)
+significant LS at position 41 (pval = 0)
+significant LS at position 101 (pval = 0.0096827)
+</pre><a href='http://rosa.unipr.it/fsda/LTStsLSmult.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\LTStsLSmult_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTStsLSmult_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_08.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_09.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_16.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 1.
  Detection of multiple Level Shifts followed by variable selection on the
- dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('P17049075full.txt'); 
-yin2   = P17049075full(:,2);
+ dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load TTsugar   % UA-LT
+yin2   = TTsugar{:,1};
 out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
 'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
 outX = out.outX;
@@ -41,8 +42,8 @@ model.X = outX(:,3:end);
 [out_LTSts]=LTSts(yin2,'model',out_model_1,...
 'plots',1,'msg',0,'dispresults',1,'SmallSampleCor',1,'conflev',1-0.01/length(yin2));</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 2.
      Detection of multiple Level Shifts followed by variable selection on the
-     dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('P12119085full.txt');
-yin2   = P12119085full(:,2);
+     dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load TTplant 
+yin2   = TTplant{:,1};
 out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
 'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
 outX = out.outX;

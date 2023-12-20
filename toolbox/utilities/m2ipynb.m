@@ -394,6 +394,7 @@ for j=1:ldirpath
                 FileNameMLX=[FileName(1:end-2) '.mlx'];
                 matlab.internal.liveeditor.openAndSave(FileName,FileNameMLX);
                 try
+                    pause(0.0001)
                     if contains(FileName,runExcluded)
                         export(FileNameMLX,'Format','ipynb','Run',false);
                     else

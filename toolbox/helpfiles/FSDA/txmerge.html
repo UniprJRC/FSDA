@@ -28,7 +28,7 @@ str = sprintf('Simulated data with %d groups in %d dimensions and %d units', k, 
 title(str,'Interpreter','Latex');
 % merging algorithm based on hierarchical clustering
 g = 3;
-out = txmerge(X, k*5, g, 'dist', 1, 'plots', 'contourf');</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 42.74 seconds 
+out = txmerge(X, k*5, g, 'dist', 1, 'plots', 'contourf');</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  9.38 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36.6667%
 </pre><a href='http://rosa.unipr.it/fsda/txmerge.html#Example_1'><img vspace="5" hspace="5" src="images\txmerge_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\txmerge_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using txmerge with additional arguments in the call to tkmeans.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
@@ -70,7 +70,7 @@ txOpt.nomes = 0;
 % saving tkmeans output
 txOut = 1;
 txsol = txmerge(X, k, g, 'txOpt', txOpt, 'plots', 'ellipse');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  1.88 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.44 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 21.6667%
 </pre><a href='http://rosa.unipr.it/fsda/txmerge.html#Example_2'><img vspace="5" hspace="5" src="images\txmerge_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\txmerge_04.png" alt=""> <img vspace="5" hspace="5" src="images\txmerge_05.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using txmerge based on TCLUST and 'weights' linkage
@@ -114,7 +114,7 @@ k = g * 3;
 % additional input for clusterdata (i.e. hierOpt)
 linkagearg = 'weights';
 txsol = txmerge(X, k, g, 'tkm', 1,'linkagearg', linkagearg, 'plots', 'ellipse');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.78 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.25 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 37%
 </pre><a href='http://rosa.unipr.it/fsda/txmerge.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\txmerge_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\txmerge_07.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using txmerge Euclidean distances or DEMP in the presence of contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
@@ -150,10 +150,10 @@ txsol1 = txmerge(X, k, g, 'alpha', alpha, 'plots', 'contourf');
 % txmerge using a cutoff g to detect the clusters based on DEMP
 g = 0.05;
 txsol2 = txmerge(X, k, g, 'alpha', alpha, 'dist', 1', 'plots', 'contourf');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 20.54 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  5.10 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38%
-Total estimated time to complete trimmed k means: 17.17 seconds 
+Total estimated time to complete trimmed k means:  3.92 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 </pre><a href='http://rosa.unipr.it/fsda/txmerge.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\txmerge_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\txmerge_09.png" alt=""> <img vspace="5" hspace="5" src="images\txmerge_10.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using txmerge on the M5 dataset using different strategies.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
@@ -184,16 +184,16 @@ txsol2= txmerge(Y, k, g, 'alpha', alpha, 'txOut', 1, 'plots', 1);
 txsol3 = txmerge(Y, k, g, 'alpha', alpha+0.04, 'txOut', 1, 'plots', 1);
 % using DEMP instead (usually effective)
 txsol3 = txmerge(Y, k, g, 'alpha', alpha+0.04, 'txOut', 1, 'dist', 1, 'plots', 1);
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.19 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.11 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
-Total estimated time to complete trimmed k means:  2.34 seconds 
+Total estimated time to complete trimmed k means:  1.34 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 39%
-Total estimated time to complete trimmed k means:  2.12 seconds 
+Total estimated time to complete trimmed k means:  1.23 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38.6667%
-Total estimated time to complete trimmed k means:  0.14 seconds 
+Total estimated time to complete trimmed k means:  0.19 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 </pre><a href='http://rosa.unipr.it/fsda/txmerge.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\txmerge_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\txmerge_12.png" alt=""> <img vspace="5" hspace="5" src="images\txmerge_13.png" alt=""> <img vspace="5" hspace="5" src="images\txmerge_14.png" alt=""> <img vspace="5" hspace="5" src="images\txmerge_15.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v
