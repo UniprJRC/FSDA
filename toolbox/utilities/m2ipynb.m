@@ -16,6 +16,15 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %
 % Optional input arguments:
 %
+%
+%   append2README: append or not the list of filtered files to README.md
+%                   file. Boolean. By default the list of filtered files in
+%                   the specififed folder will be appended to the README.md
+%                   file. If this table already exists inside the
+%                   README.md, it will be replaced with the current one.
+%                   Example - 'append2README',false
+%                   Data Types - logical
+%
 % CatchError:       Whether to catch errors. Boolean.
 %                   Whether to catch errors when running the live script or
 %                   function during conversion, specified as a numeric or
@@ -74,7 +83,7 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   Data Types - string
 %
 %        msg  :     It controls whether to display or not messages on the
-%                   screen. Scalar.
+%                   screen. Boolean.
 %                   If msg==false (default) messages are not displayed
 %                   on the screen about all .m files which are considered for
 %                   translation to ipynb
@@ -84,7 +93,7 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %     repoName :    GitHub repository name. Character or string.
 %                   String which the GitHub repository address
 %                   The default is to use 'UniprJRC/FigMonitoringBook'
-%                   Example - repoName 'uhub/awesome-matlab'
+%                   Example - repoName 'github/awesome-matlab'
 %                   Data Types - Character or string
 %
 %            run :  Whether to run the code in the .mlx files include
@@ -97,12 +106,12 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   Example - 'run',false
 %                   Data Types - logical
 %
-%   runExcluded  :  String which identifies files with run  set to false.
+%   runExcluded  :  String which identifies files with run set to false.
 %                   'Character' or 'string'. The default of runExcluded is
 %                   'Interactive', in the sense that all files whose name
-%                   contains the string Interactive have be translated to
+%                   contains the string Interactive have to be translated to
 %                   ipynb format with option run set to false.
-%                   Example - 'runExcluded','UserIntercation'
+%                   Example - 'runExcluded','UserInteraction'
 %                   Data Types - logical
 %
 % deleteMLXfiles : delete or not the .mlx files after their conversion to
@@ -110,14 +119,6 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   Boolean. The default is false, that is .mlx are note
 %                   deleted after their conversion to ipynb format.
 %                   Example - 'deleteMLXfiles',true
-%                   Data Types - logical
-%
-%   append2README: append or not the list of filtered files to README.md
-%                   file. Boolean. By default the list of filtered files in
-%                   the specififed folder will be appended to the README.md
-%                   file. If this table already exists inside the
-%                   README.md, it will be replaced with the current one.
-%                   Example - 'append2README',false
 %                   Data Types - logical
 %
 % Output:
@@ -146,7 +147,7 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %               Excluded(:,5)= Modification date as serial date number;
 %
 %
-% See also: publishFunctionAlpha, publishFunctionCate, publishFS
+% See also: export, publishFunctionAlpha, publishFunctionCate, publishFS
 %
 % References:
 %
@@ -557,4 +558,4 @@ end
 
 
 end
-%FScategory:UTIHELP
+%FScategory:UTIGEN
