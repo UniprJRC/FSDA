@@ -212,17 +212,17 @@ function out = LTStsLSmult(y,varargin)
     % Monitoring of Many Time Series with Application to Fraud Detection,
     % "Econometrics and Statistics".
 
-    load('P12119085full.txt'); % KE-GB
-    load('P17049075full.txt'); % UA-LT
+    load TTplant  % KE-GB
+    load TTsugar   % UA-LT
     
-    yin1   = P12119085full(:,2);
-    yin2   = P17049075full(:,2);
+    yin1   = plant{:,1};
+    yin2   = sugar{:,1};
     
     out1  = LTStsLSmult(yin1,'msg',true,'plots',1);
-    title('P12119085_KE_GB','interpreter','none','Fontsize',20);
+    sgtitle('P12119085_KE_GB','interpreter','none','Fontsize',20);
     pause(1);
     out2  = LTStsLSmult(yin2,'msg',true,'plots',1);
-    title('P17049075_UA_LT','interpreter','none','Fontsize',20);
+    sgtitle('P17049075_UA_LT','interpreter','none','Fontsize',20);
 %}
 
 
@@ -230,8 +230,8 @@ function out = LTStsLSmult(y,varargin)
 % Multiple level shift and variable selection. Example 1.
 % Detection of multiple Level Shifts followed by variable selection on the
 % dataset of example before.
-  load('P17049075full.txt'); 
-  yin2   = P17049075full(:,2);
+  load TTsugar   % UA-LT
+  yin2   = TTsugar{:,1};
   out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
     'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
   outX = out.outX;
@@ -251,8 +251,8 @@ function out = LTStsLSmult(y,varargin)
     % Multiple level shift and variable selection. Example 2.
     % Detection of multiple Level Shifts followed by variable selection on the
     % dataset of example before.
-    load('P12119085full.txt');
-    yin2   = P12119085full(:,2);
+    load TTplant 
+    yin2   = TTplant{:,1};
     out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
             'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
     outX = out.outX;

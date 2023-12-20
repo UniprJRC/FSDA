@@ -425,6 +425,9 @@ function [out, varargout] = LTSts(y,varargin)
 %                       subset have missing values
 %                       This output is present just if input option
 %                       model.lshift is not equal to 0.
+%          out.lshift = (row) vector containing level shift positions which
+%                       have been investigated. out.lshift  =0 means that
+%                       level position has not been investigated.
 %           out.posLS = scalar associated with best tentative level shift
 %                       position. This output is present just if input
 %                       option model.lshift is not equal to 0.
@@ -1035,8 +1038,8 @@ function [out, varargout] = LTSts(y,varargin)
     %% Examples 4 and 5 used in the paper RPRH: trade data.
     close all; clear all;
     % the datasets
-    load('P12119085');
-    load('P17049075');
+    load('TTP12119085');
+    load('TTP17049075');
     Y4 = P12119085{:,1};
     Y5 = P17049075{:,1};
 
@@ -1059,7 +1062,7 @@ function [out, varargout] = LTSts(y,varargin)
     % Forecasts with a 99.9 per cent confidence level
     nfore=10;
     outfore4 = forecastTS(out4,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P12119085, imports of plants from KN to UK');
-    outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P17049075, imports of sugars from UA to LT');
+    outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P17049075, imports of sugar from UA to LT');
 
     % Comparing with FS (needs conflev option)
 
