@@ -426,7 +426,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                       This output is present just if input option
 %                       model.lshift is not equal to 0.
 %          out.lshift = (row) vector containing level shift positions which
-%                       have been investigated. out.lshift  =0 means that
+%                       have been tested. out.lshift  =0 means that
 %                       level position has not been investigated.
 %           out.posLS = scalar associated with best tentative level shift
 %                       position. This output is present just if input
