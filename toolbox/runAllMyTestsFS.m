@@ -181,13 +181,15 @@ for i=1:nfiles
             Exi=regexprep(Exi,'&lt;','<');
             Exi=regexprep(Exi,'&gt;','>');
             close all
-            if iEx==1
-                %Exif=[Exi,newline,'close all',newline 'save tempfileWS'];
-                Exif=[Exi,newline,'close all'];
-            %else
-             %   %Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
-             %   Exif=[Exi,newline,'close all'];
-            end
+            % if iEx==1
+            %     %Exif=[Exi,newline,'close all',newline 'save tempfileWS'];
+            %     Exif=[Exi,newline,'close all'];
+            % else
+            %  %   %Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
+            %     Exif=[Exi,newline,'close all'];
+            % end
+
+            Exif=[Exi,newline,'close all'];
             
             % Write Exif to a file which name begins with 'text'
             filename2open=[testpath '/test' FilesIncluded{i,1}(1:end-2) '_' num2str(iEx) ...
