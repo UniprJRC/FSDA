@@ -431,6 +431,11 @@ if typeIC==0 || typeIC==3
     set(gca,'xtick',kk)
     legend(legstr,'location','best')
     plot1=gcf;
+    if isempty(tag)
+        set(gcf,'Tag','pl_IC_CLACLA');
+    else
+        set(gcf,'Tag',tag);
+    end
     % Datatooltip mode (call to function ICplotLbl)
     if ~isempty(datatooltip)
         PrepareDatatooltip(IC)
@@ -459,6 +464,11 @@ if typeIC==2 || typeIC==3
     set(gca,'xtick',kk)
     legend(legstr,'location','best')
     plot1=gcf;
+    if isempty(tag)
+        set(gcf,'Tag','pl_IC_MIXMIX');
+    else
+        set(gcf,'Tag',tag);
+    end
     % Datatooltip mode (call to function ICplotLbl)
     if ~isempty(datatooltip)
         PrepareDatatooltip(IC)
@@ -487,6 +497,12 @@ if typeIC==1 || typeIC==3
     set(gca,'xtick',kk)
     legend(legstr,'location','best')
     plot1=gcf;
+    if isempty(tag)
+        set(gcf,'Tag','pl_IC_MIXCLA');
+    else
+        set(gcf,'Tag',tag);
+    end
+
     % Datatooltip mode (call to function ICplotLbl)
     if ~isempty(datatooltip)
         PrepareDatatooltip(IC)
@@ -787,9 +803,10 @@ if ~isempty(databrush) || isstruct(databrush)
         end % for each brushing operation do ...
     end % close loop associated with but (loop brushing)
 else
+    if typeIC==3
     % Apply cascade to existing plots in case databrush is not invoked
-    position(0);
-
+        position(0);
+    end
 end
 
 
