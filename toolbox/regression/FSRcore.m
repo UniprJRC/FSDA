@@ -1521,7 +1521,7 @@ if coder.target('MATLAB')
             yaxlim = [mine - delta ; maxe + delta];
 
             % Time series + fitted values
-            figure
+            figure('Tag','pl_res')
             htmp = subplot(2,1,1);
             plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
             hold('on');
