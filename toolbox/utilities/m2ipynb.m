@@ -46,6 +46,14 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   Data Types - character or string
 %
 %
+%
+% deleteMLXfiles : delete or not the .mlx files after their conversion to
+%                   jupiter notebook format.
+%                   Boolean. The default is false, that is .mlx are note
+%                   deleted after their conversion to ipynb format.
+%                   Example - 'deleteMLXfiles',true
+%                   Data Types - logical
+%
 %    dirpath:       path to use or file to convert.
 %                   Cell array of characters or character. Absolute path of
 %                   the folder(s) for which m2ipynb files must be created.
@@ -72,6 +80,13 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   Example - 'FilterOutFileName','veryold'
 %                   Data Types - string
 %
+%        msg  :     It controls whether to display or not messages on the
+%                   screen. Boolean.
+%                   If msg==false (default) messages are not displayed
+%                   on the screen about all .m files which are considered for
+%                   translation to ipynb
+%                   Example - 'msg',false
+%                   Data Types - logical
 %
 % printOutputCell : print output cell in the screen. Boolean.
 %                   If printOutputCell
@@ -82,13 +97,6 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   Example - 'printOutputCell','ContentsAll.m'
 %                   Data Types - string
 %
-%        msg  :     It controls whether to display or not messages on the
-%                   screen. Boolean.
-%                   If msg==false (default) messages are not displayed
-%                   on the screen about all .m files which are considered for
-%                   translation to ipynb
-%                   Example - 'msg',false
-%                   Data Types - logical
 %
 %     repoName :    GitHub repository name. Character or string.
 %                   String which the GitHub repository address
@@ -112,13 +120,6 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   contains the string Interactive have to be translated to
 %                   ipynb format with option run set to false.
 %                   Example - 'runExcluded','UserInteraction'
-%                   Data Types - logical
-%
-% deleteMLXfiles : delete or not the .mlx files after their conversion to
-%                   jupiter notebook format.
-%                   Boolean. The default is false, that is .mlx are note
-%                   deleted after their conversion to ipynb format.
-%                   Example - 'deleteMLXfiles',true
 %                   Data Types - logical
 %
 % Output:
@@ -220,7 +221,7 @@ function [Incl, Excluded]=m2ipynb(varargin)
 dirpath=pwd;   % default path (if it is empty it is current folder)
 FilterOutFileName='old'; % Do not translate files whose name contains string old
 printOutputCell=false; % specifies whether to print on the screen the output cell
-msg=false;
+msg=true;
 runMLXfile=true;
 deleteMLXfiles=false;
 append2README=true;
@@ -393,24 +394,26 @@ for j=1:ldirpath
 
                 FileNameMLX=[FileName(1:end-2) '.mlx'];
                 matlab.internal.liveeditor.openAndSave(FileName,FileNameMLX);
-                try
-                    pause(0.0001)
-                    if contains(FileName,runExcluded)
-                        export(FileNameMLX,'Format','ipynb','Run',false);
-                    else
-                        export(FileNameMLX,'Format','ipynb','Run',runMLXfile,'CatchError',CatchError);
-                    end
-                catch
-                    warning('FSDA:m2ipynb:WrongInputFile',['CatchError in file ' FileName])
-                    % error('FSDA:m2ipynb:WrongInputFile','Source code error in original .m file')
+                %  try
+                if contains(FileName,runExcluded)
+                    export(FileNameMLX,'Format','ipynb','Run',false,'CatchError',CatchError);
+                else
+                    export(FileNameMLX,'Format','ipynb','Run',runMLXfile,'CatchError',CatchError);
                 end
+                FileNameipynb=[FileName(1:end-2) '.ipynb'];
+                disp(['File '  num2str(FileNameipynb) ' created'])
+                % catch
+                %     warning('FSDA:m2ipynb:WrongInputFile',['CatchError in file ' FileName])
+                %     % error('FSDA:m2ipynb:WrongInputFile','Source code error in original .m file')
+                % disp(['CatchError in file ' FileName])
+                % end
+                dout{ij,1}=FileName;
+                dout{ij,2}=H1line;
+                dout{ij,3}=H2line;
                 % Delete mlx files if option  deleteMLXfiles is true
                 if deleteMLXfiles ==true
                     delete(FileNameMLX);
                 end
-                dout{ij,1}=FileName;
-                dout{ij,2}=H1line;
-                dout{ij,3}=H2line;
                 ij=ij+1;
             end
         end
