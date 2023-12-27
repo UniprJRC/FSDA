@@ -443,9 +443,20 @@ text(x(ind),residuals(ind),int2str(ind),'VerticalAlignment','Baseline', 'FontSiz
 % Displacement: baseline does already well the job of displacing the text.
 
 % set the colors for the confidence bands
-ColorOrd=[1 0 0 ; 0 1 1 ; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
+if verLessThanFS([23 2])
+        ColorOrd=[1 0 0 ; 0 1 1 ; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
+else
+    if numconflev==1
+        ColorOrd=[1 0 0];
+    elseif numconflev==2
+        ColorOrd=[0 1 1; 1 0 0];
+    else
+        ColorOrd=[1 0 1; 1 0 0 ; 0 1 1 ;  1 1 0; 0 0 0; 0 1 0; 0 0 1];
+    end
+end
+
 ColorOrd1=ColorOrd(1:numconflev,:);
-ColorOrd2=repmat(ColorOrd1,numconflev,1);
+ColorOrd2=repmat(ColorOrd1,2,1);
 set(afig,'ColorOrder',ColorOrd2);
 
 % set the string legend for the confidence bands
@@ -480,6 +491,9 @@ if ~isempty(h)
     copyobj(allchild(afig),h);
     pause(0.0000001);
     delete(hfig);
+
+    set(h,'ColorOrder',ColorOrd2);
+
     hline2 = findobj(h, 'Tag','conflevline');
     hlineh = flipud(hline2);
     if length(findobj(get(h,'Parent'),'Tag','res_subplot'))==1
