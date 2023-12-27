@@ -249,7 +249,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               the scatter plot matrix contains the scatters
 %               and the lower part just the values of the
 %               correlations.
-%               if typespm is a struct it is possible to control how the
+%               If typespm is a struct it is possible to control how the
 %               lower (upper) part of the scatter plot matrix is shown.
 %               More precisely, typespm.lower controls how the part below
 %               the diagonal is shown and typespm.upper controls the upper
@@ -1445,7 +1445,7 @@ p=size(AX,2);
 % end
 
 if isempty(TickLabelsFormat) || (isnumeric(TickLabelsFormat) && TickLabelsFormat == 0)
-    % Removes the TickLabels if requested 
+    % Removes the TickLabels if requested
     set(AX,'XTickLabel',[]);
     set(AX,'YTickLabel',[]);
 elseif ischar(TickLabelsFormat) && strcmp(TickLabelsFormat(1),'%')
@@ -1461,7 +1461,7 @@ else
 end
 
 if nameYlength>0
-    % set the lenght of the labels of the axes 
+    % set the lenght of the labels of the axes
     nameY = format_lbl_all(AX,'X',nameYlength);
     %format_lbl_all(AX,'Y',nameYlength);
 else
@@ -1469,7 +1469,7 @@ else
 end
 
 % if nameYlength>0
-%     % set the lenght of the labels of the axes 
+%     % set the lenght of the labels of the axes
 %     for i=1:p
 %         nameY{i} = format_lbl(AX(p,i),'X',nameYlength);
 %         format_lbl(AX(i,1),'Y',nameYlength);
@@ -1572,12 +1572,12 @@ for i=1:p
 
             % Remove the x tick labels from the graph containing boxplots
             if i<p || isempty(TickLabelsFormat) || (isnumeric(TickLabelsFormat) && TickLabelsFormat == 0)
-                set(ax,'XTickLabel',[]);  
+                set(ax,'XTickLabel',[]);
             end
 
             % Remove the y tick labels from the graph containing boxplots
             if i>1 || isempty(TickLabelsFormat)
-                set(ax,'YTickLabel',[]);  
+                set(ax,'YTickLabel',[]);
             end
 
             % Set the proper Ylim to the boxplots
@@ -1775,34 +1775,34 @@ if  lowerORupper ==true
                         %elements can be made invisible if method=none
                         hlegend = findobj(gcf, 'Type', 'Legend');
                         %if method~="none"
-                            if ~isempty(hlegend)
-                                %set(hlegend ,'AutoUpdate','off');
-                                %set(gcf,'defaultLegendAutoUpdate','off');
-                                hl=[hlegend.EntryContainer.NodeChildren.Object]';
-                                hlColors = zeros(lunigroup,3);
-                                for iii = 1:lunigroup
-                                    %take the color of the group
-                                    hlColors(iii,:) = hl(iii).Color;
-                                    %SET THE LABEL OF THE LEGEND WITH THE SAME COLOR OF THE PLOT OBJECTS
-                                    set(hlegend.EntryContainer.NodeChildren(iii), 'Color',hl(iii).Color);
-                                    %This would do the same, but change the string and affect the functioning of clickableMultiLegend
-                                    %hlegend.String{iii} = ['\color[rgb]{' num2str(hlColors(iii,:)) '} ' hlegend.String{iii}];
-                                end
+                        if ~isempty(hlegend)
+                            %set(hlegend ,'AutoUpdate','off');
+                            %set(gcf,'defaultLegendAutoUpdate','off');
+                            hl=[hlegend.EntryContainer.NodeChildren.Object]';
+                            hlColors = zeros(lunigroup,3);
+                            for iii = 1:lunigroup
+                                %take the color of the group
+                                hlColors(iii,:) = hl(iii).Color;
+                                %SET THE LABEL OF THE LEGEND WITH THE SAME COLOR OF THE PLOT OBJECTS
+                                set(hlegend.EntryContainer.NodeChildren(iii), 'Color',hl(iii).Color);
+                                %This would do the same, but change the string and affect the functioning of clickableMultiLegend
+                                %hlegend.String{iii} = ['\color[rgb]{' num2str(hlColors(iii,:)) '} ' hlegend.String{iii}];
                             end
+                        end
                         %end
 
                         % This is to exclude an individual plot from the legend
                         % for ig=1:lunigroup
                         %     s=get(H(i,j,ig));
-                        %     s.Annotation.LegendInformation.IconDisplayStyle = 'off'; 
+                        %     s.Annotation.LegendInformation.IconDisplayStyle = 'off';
                         % end
 
-                        if method=="none"  
-                            set(H(i,j,:), 'Color', MATLAB_def_gray); 
+                        if method=="none"
+                            set(H(i,j,:), 'Color', MATLAB_def_gray);
                         else
-                            set(H(i,j,:), 'Color', 'w'); 
+                            set(H(i,j,:), 'Color', 'w');
                         end
-                        set(findobj(AX(i,j),'Type','line'),'Visible','off');   
+                        set(findobj(AX(i,j),'Type','line'),'Visible','off');
 
                         if ~isempty(hlegend)
                             if isstruct(typespm) && typespm.upper~="none" && typespm.upper~="number" && typespm.upper~="circle" && typespm.upper~="square"
