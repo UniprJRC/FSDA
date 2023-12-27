@@ -20,7 +20,7 @@
 
 
 ## NEWS: new features (June 2023)
-1. Now FSDA supports the new [buildtool](https://github.com/UniprJRC/FSDA/tree/master/utilities_help/build) feature (follow the link for more info) to create new releases on GitHub automatically leveraging
+1. Now FSDA supports the new [buildtool](https://github.com/UniprJRC/FSDA/tree/master/toolbox/utilities_help/build) feature (follow the link for more info) to create new releases on GitHub automatically leveraging
 the sinergy of the new buildtool functionalities, (see an overview in the [documentation](https://it.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html), available since R2022b)  MATLAB scripts and GitHub Actions.
 Releasing a new FSDA release was a manual, multi-step process, that involved a lot of tasks in different environments, now the process runs entirely on GitHub and is consistent and fast.
 (Our thanks goes to Jos Martin, Rob Purser, Bensingh Pancras, Andy Campbell, Mark Cafaro et. al. that supported us with the implementation of this new feature)
@@ -36,7 +36,7 @@ Once a new release is created, a docker of FSDA is automatically build and can b
 
 This project hosts the source code to the [original MATLAB FileExchange project](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda) and is place of active development.
 
-[![FSDA Toolbox](helpfiles/FSDA/images/githubimgindex.jpg)](http://rosa.unipr.it/FSDA/guide.html)
+[![FSDA Toolbox](toolbox/helpfiles/FSDA/images/githubimgindex.jpg)](http://rosa.unipr.it/FSDA/guide.html)
 
 
 
@@ -75,7 +75,7 @@ For more information see the Wiki page at [https://github.com/UniprJRC/FSDA/wiki
 * Run the GUIs in the FSDA Matlab help pages. 
   For a preview see [http://rosa.unipr.it/FSDA/examples.html](http://rosa.unipr.it/FSDA/examples.html)
 
-  [![FSDA Examples](helpfiles/FSDA/images/githubimgexamples.jpg)](http://rosa.unipr.it/FSDA/examples.html)
+  [![FSDA Examples](toolbox/helpfiles/FSDA/images/githubimgexamples.jpg)](http://rosa.unipr.it/FSDA/examples.html)
 
 
 * Watch the videos in the Examples section of the FSDA Matlab help pages 
@@ -83,7 +83,7 @@ For a preview see [http://rosa.unipr.it/fsda_video.html](http://rosa.unipr.it/fs
 
 * Read section "Introduction to robust statistics" or "Technical introduction to Robust Statistics" in the FSDA Matlab help pages. For a preview see [http://rosa.unipr.it/FSDA/tutorials.html](http://rosa.unipr.it/FSDA/tutorials.html)
 
-  [![FSDA Tutorials](helpfiles/FSDA/images/githubimgtutorials.jpg)](http://rosa.unipr.it/FSDA/tutorials.html)
+  [![FSDA Tutorials](toolbox/helpfiles/FSDA/images/githubimgtutorials.jpg)](http://rosa.unipr.it/FSDA/tutorials.html)
 
    
 
