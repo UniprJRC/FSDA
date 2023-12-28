@@ -231,7 +231,7 @@ function out = LTStsLSmult(y,varargin)
 % Detection of multiple Level Shifts followed by variable selection on the
 % dataset of example before.
   load TTsugar   % UA-LT
-  yin2   = TTsugar{:,1};
+  yin2   = sugar{:,1};
   out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
     'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
   outX = out.outX;
@@ -252,7 +252,7 @@ function out = LTStsLSmult(y,varargin)
     % Detection of multiple Level Shifts followed by variable selection on the
     % dataset of example before.
     load TTplant 
-    yin2   = TTplant{:,1};
+    yin2   = plant{:,1};
     out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
             'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
     outX = out.outX;
