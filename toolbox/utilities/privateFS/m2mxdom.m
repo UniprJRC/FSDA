@@ -51,7 +51,7 @@ function dom = createDom
 % Now create the new DOM
 dom = com.mathworks.xml.XMLUtils.createDocument('mscript');
 dom.getDocumentElement.setAttribute('xmlns:mwsh', ...
-    'http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd')
+    'http://www.mathworks.com')
  
 % Add version.
 newNode = dom.createElement('version');

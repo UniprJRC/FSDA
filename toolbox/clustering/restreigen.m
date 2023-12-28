@@ -59,8 +59,6 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 % Fritz H., Garcia-Escudero, L.A. and Mayo-Iscar, A. (2013), A fast
 % algorithm for robust constrained clustering,
 %"Computational Satistics and Data Analysis", Vol. 61, pp. 124-136.
-% [Available at
-% http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf]
 %
 % Copyright 2008-2023.
 % Written by FSDA team

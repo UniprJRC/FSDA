@@ -294,8 +294,6 @@ function out = regressts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
     y=(y(:));
     % linear trend + just one harmonic for seasonal
     out=regressts(y);    
@@ -319,8 +317,6 @@ function out = regressts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
     y=(y(:));
     model=struct;
     model.trend=1;              % linear trend
@@ -347,8 +343,6 @@ function out = regressts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
     y=(y(:));
     model=struct;
     model.trend=1;              % linear trend
@@ -374,8 +368,6 @@ function out = regressts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
     y=(y(:));
     StartDate=[1949,1]
     % Imposed level shift in position t=60 and 4 harmonics
@@ -406,8 +398,6 @@ function out = regressts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
     y=(y(:));
     model=struct;
     model.trend=1;              % linear trend

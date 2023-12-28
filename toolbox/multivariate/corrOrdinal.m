@@ -319,8 +319,7 @@ function out=corrOrdinal(N, varargin)
 %
 % Goktas, A. and Oznur, I. (2011), A comparision of the most commonly used
 % measures of association for doubly ordered square contingency tables via
-% simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37, [available at:
-% www.stat-d.si/mz/mz8.1/goktas.pdf]
+% simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37, 
 %
 % Goodman, L.A. and Kruskal, W.H. (1954), Measures of association for
 % cross classifications, "Journal of the American Statistical

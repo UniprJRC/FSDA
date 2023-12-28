@@ -69,7 +69,7 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2, noisecluster)
 % Fowlkes, E.B. and Mallows, C.L. (1983), A Method for Comparing Two
 % Hierarchical Clusterings, "Journal of the American
 % Statistical Association", Vol. 78, pp. 553-569.
-% [http://en.wikipedia.org/wiki/Fowlkes-Mallows_index]
+% [https://en.wikipedia.org/wiki/Fowlkes-Mallows_index]
 %
 %
 % Copyright 2008-2023.

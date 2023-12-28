@@ -608,8 +608,6 @@ function [out, varargout] = LTSts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
 
     y=(y(:));
     yr = repmat((1949:1960),12,1);
@@ -654,8 +652,6 @@ function [out, varargout] = LTSts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
 
     y=(y(:));
     model=struct;
@@ -693,8 +689,6 @@ function [out, varargout] = LTSts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
 
     y=(y(:));
     model=struct;
@@ -731,8 +725,6 @@ function [out, varargout] = LTSts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
 
     y=(y(:));
     model=struct;
@@ -772,8 +764,6 @@ function [out, varargout] = LTSts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
 
     y=(y(:));
     yLS=y;
@@ -816,8 +806,6 @@ function [out, varargout] = LTSts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
 
     y=(y(:));
     yLS=y;
@@ -857,8 +845,6 @@ function [out, varargout] = LTSts(y,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
 
     y=(y(:));
     y1=log(y);

@@ -62,8 +62,9 @@ function [medout , varargout] = medcouple(z, mcm, wmm)
 % the kernel function
 % $h(z_i,z_j)=\frac{(z_j-median(z))-(median(z)-z_i)}{z_j-z_i}$ over all
 % pairs $(z_i,z_j)$ where $z_i<=median(z)$ and $z_j >= median(z)$. The MATLAB
-% toolbox LIBRA (http://wis.kuleuven.be/stat/robust.html) and the R package
-% robustbase (https://cran.r-project.org/web/packages/robustbase) implement
+% toolbox LIBRA (https://wis.kuleuven.be/statdatascience/robust/LIBRA/)
+% and the R package robustbase
+% (https://cran.r-project.org/web/packages/robustbase) implement
 % the fast medcouple with wrapper functions to the same compiled C source,
 % to maximize speed. This medcouple.m function replicates faithfully the C
 % function mlmc.c in pure MATLAB code, but replaces the key computations of

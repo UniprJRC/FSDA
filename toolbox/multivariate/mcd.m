@@ -110,9 +110,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               factor to inflate the scale estimate.  If it is equal to
 %               true the small sample correction factor is used. The
 %               default value of smallsamplecor is true, that is the
-%               correction is used. See
-%               http://users.ugent.be/~svaelst/publications/corrections.pdf
-%               for further details about the correction factor. 
+%               correction is used. 
 %               Example - 'smallsamplecor',true 
 %               Data Types - logical
 %
@@ -322,8 +320,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors. In particular, parts of the code rely on the LIBRA
 % mcd implementation of Hubert and Verboven. For more details, see:
-% http://wis.kuleuven.be/stat/robust/LIBRA.html,
-% http://www.econ.kuleuven.be/public/NDBAE06/programs/
+% https://wis.kuleuven.be/stat/robust/papers/2005/LIBRA.pdf
 % and the R library Robustbase http://robustbase.r-forge.r-project.org/
 % The core of our routines, e.g. the resampling approach, however, has been
 % completely redesigned, with considerable increase of the computational

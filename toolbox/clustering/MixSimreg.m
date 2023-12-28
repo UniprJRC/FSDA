@@ -348,8 +348,7 @@ function [out] = MixSimreg(k,p,varargin)
 %
 % Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
 % A General Trimming Approach to Robust Cluster Analysis. Annals
-% of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
-% http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf].
+% of Statistics, Vol. 36, 1324-1345. 
 %
 % Torti F., Perrotta D., Riani, M. and Cerioli A. (2019). Assessing Robust
 % Methodologies for Clustering Linear Regression Data, "Advances in Data

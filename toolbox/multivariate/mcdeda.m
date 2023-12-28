@@ -106,9 +106,7 @@ function [RAW,REW,varargout] = mcdeda(Y,varargin)
 %               correction factor to inflate the scale estimate.  If it is
 %               equal to true the small sample correction factor is used.
 %               The default value of smallsamplecor is true, that is the
-%               correction is used. See
-%               http://users.ugent.be/~svaelst/publications/corrections.pdf
-%               for further details about the correction factor.
+%               correction is used. 
 %               Example - 'smallsamplecor',true
 %               Data Types - logical
 %

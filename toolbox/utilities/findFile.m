@@ -223,7 +223,7 @@ end
 % is much faster than
 % cellfun(@isempty,list)
 % as documented in
-% http://undocumentedmatlab.com/blog/cellfun-undocumented-performance-boost/
+% https://undocumentedmatlab.com/articles/cellfun-undocumented-performance-boost/
 
 % Sort files in list, if list is not empty.
 if sum(cellfun(@isempty,list))<length(list)

@@ -31,7 +31,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 % Arguments: (input)
 %  The input arguments to selectdataFS are all property/value pairs.
 %  (See PARSE_PV_PAIRS for more details.)
-%  http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=9082&objectType=FILE
+%  https://www.mathworks.com/matlabcentral/fileexchange/9082-parse_pv_pairs
 %
 %  Property names and character values can be shortened as long as
 %  the shortening is unambiguous. Capitalization is ignored.
