@@ -71,13 +71,11 @@ if nargin < 1
     figure; % Create the button group.
     % Set name of the GUI
     set(gcf,'Name', 'Example of robust dynamic brushing starting from the monitoring residuals plot', 'NumberTitle', 'off','Tag','demo');
-    h = uibuttongroup('visible','off','Position',[0 0 .3 1]);
-    
-    
+    h = uibuttongroup('visible','off','Position',[0 0.4 .3 0.6]);
     
     wid=0.95;
     sx=0.05;
-    hei=0.04;
+    hei=0.05;
     fontsizebig = 10;
     fontsizesmall = 9;
     fontname = 'Lucida';
@@ -97,9 +95,7 @@ if nargin < 1
     uicontrol('Style','Radio','String','Stack loss (sqrt y)','Units','normalized',...
         'pos',[sx 0.4 wid hei],'parent',h,'HandleVisibility','off','FontSize',fontsizesmall,'FontName',fontname);
     
-    examp=which('examples_regression.m');
-    examp1=strrep(examp,'\','\\');
-    
+   
     str = sprintf(['\n'...
         'To explore how dynamic brushing works, select one of the radio buttons on the left. \n\n' ...
         'The monitoring of the residuals plot together with the minimum deletion residual plot will appear automatically. \n\n'...
@@ -109,23 +105,12 @@ if nargin < 1
         '        [out]=FSReda(y,X,out.bs);  To run the forward search \n'...
         '        mdrplot(out); To plot the minimum deletion residual  \n'...
         '        resfwdplot(out); To plot the scaled squared residuals \n\n\n'...
-        'See the help files of the above functions for more information \n\n'...
-        'or see file']);
+        'See the help files of the above functions for more information '...
+        'or see file "example_regression.m"']);
     
     
     annotation('textbox',[0.3 0 0.7 1],'String',str,'FontSize',fontsizebig,'FontName',fontname,'BackgroundColor',backgroundcolor,'Interpreter','none');
     
-    import com.mathworks.mlwidgets.html.HTMLRenderer;
-    
-    % create component
-    r = HTMLRenderer;
-    % set the text to display
-    r.setHtmlText(['<html> <a href="matlab:opentoline(''',examp1,''',5)">example_regression.m</a></html>']);
-    % make sure the component is opaque
-    r.setOpaque(true);
-    % add the component
-    javacomponent(r, [290 25 400 35], gcf);
-    %[left, bottom, width, height]
     
     % Include at the bottom of the GUI two toggle buttons named close and
     % closeall
@@ -143,15 +128,13 @@ if nargin < 1
     set(h,'Visible','on'); % Make the object visible
     
     % Add the logo to the GUI
-    imdata = imread('logo.png','BackgroundColor',(240/255)*[1 1 1]);
-    
-    hA=axes('Position',[0.05 0.15 0.2 0.2],'Layer','top');
+    fsep=filesep;
+    strLogo=fileparts(which('addFSDA2path.m'));
+    logoPath=[strLogo(1:end-8) fsep 'images' fsep 'logoblue.jpg'];
+    imdata = imread(logoPath);
+    hA=axes('Position',[0.01 0.15 0.25 0.25],'Layer','top');
     
     image(imdata,'Parent',hA);
-    set(hA,'DataAspectRatio',[1 1 1]);
-    xlim(hA,[1 64]);
-    % Uncomment the following line to preserve the Y-limits of the axes
-    ylim(hA,[0 65]);
     axis('off')
 else
     brushRESex([],eventdata)
