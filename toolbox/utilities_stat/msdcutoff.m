@@ -102,6 +102,7 @@ function cutoff = msdcutoff(conflev,v,nu)
     n  = 100;
     v  = 3;
     nu = 5;
+    conflev = 0.975;
     cutoffT = msdcutoff(conflev,v,nu);
 %}
 
@@ -136,6 +137,8 @@ function cutoff = msdcutoff(conflev,v,nu)
     legend({'Student-t','Normal','cutoff-t','cutoff Normal'});
 
 %}
+
+%% Beginning of code
 
 if nargin < 3 || isempty(nu)
     cutoff=chi2inv(conflev,v);
