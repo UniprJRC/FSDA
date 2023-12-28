@@ -210,10 +210,10 @@ function out=pcaFS(Y,varargin)
 
 
 %{
-    % Use of pcaFS with creditrating dataset.
-    creditrating = readtable('CreditRating_Historical.dat','ReadRowNames',true);
+    % Use of pcaFS with citiesItaly dataset.
+    load citiesItaly;
     % Use all default options
-    out=pcaFS(creditrating(1:100,1:6))
+    out=pcaFS(citiesItaly);
 %}
 
 %{
@@ -485,7 +485,7 @@ if plots==1
 
     %% Plot of orthogonal distance (Y) versus score distance (X)
     figure('Name','OutlierMap')
-    scatterboxplot(scoreDist,orthDist)
+    scatterboxplot(scoreDist,orthDist);
     xlabel('Score distance')
     ylabel('Orth. dist. from PCA subspace')
     text(1.01,0,['Good' newline 'leverage' newline 'points'],'Units','normalized')
