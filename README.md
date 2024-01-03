@@ -18,8 +18,15 @@
 
 # [Flexible Robust Statistics Data Analysis](https://github.com/UniprJRC/FSDA/)
 
+## NEWS: new features (January 2024)
+
+1. Now FSDA is compliant with [MATLAB Toolbox Best Practices](https://github.com/mathworks/toolboxdesign).
+Thanks to the constant support of Rob Purser and Bensingh Pancras we were able to migrate the FSDA toolbox to the new structure which improves the toolbox's polish, ease of maintenance, and developer/user experience.
+In addition to being more GitHub-friendly, being in the  *standard format* allows for a number of additional features that we are now attempting to leverage, such as `namespaces` and `internal` folders, among many other things.
+When a toolbox hits the 300 functions mark, it's time to do some housekeeping!
 
 ## NEWS: new features (June 2023)
+
 1. Now FSDA supports the new [buildtool](https://github.com/UniprJRC/FSDA/tree/master/toolbox/utilities_help/build) feature (follow the link for more info) to create new releases on GitHub automatically leveraging
 the sinergy of the new buildtool functionalities, (see an overview in the [documentation](https://it.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html), available since R2022b)  MATLAB scripts and GitHub Actions.
 Releasing a new FSDA release was a manual, multi-step process, that involved a lot of tasks in different environments, now the process runs entirely on GitHub and is consistent and fast.
@@ -29,10 +36,7 @@ Releasing a new FSDA release was a manual, multi-step process, that involved a l
 Once a new release is created, a docker of FSDA is automatically build and can be easily pulled.
 (Our thanks go to Jos Martin that helped us a lot on this project).
 
-
-
 ## FSDA
-
 
 This project hosts the source code to the [original MATLAB FileExchange project](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda) and is place of active development.
 
