@@ -112,7 +112,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           variables have orderable values (and therefore can be
 %           transformed non monotonically).
 %           Note that in avas procedure the response is always transformed
-%           (in a monothonic way).
+%           (in a monotonic way).
 %           Example - 'l',[3 3 1]
 %           Data Types - double
 %
@@ -179,7 +179,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %               the values of R2, fraction of units used, pvalue of DW test
 %               and pval of normality test are shown with bars below each
 %               star, else (default) these values are shown using a
-%               textbox.
+%               text-box.
 %           Example - 'showBars',true
 %           Data Types - logical
 %
@@ -200,7 +200,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 using the p-value of the Durbin Watson test (rescaled by
 %                 the value of $R^22$ and the number of units not declared as
 %                 outliers).
-%                 Colums 1-5 contain boolean information about the usage of
+%                 Columns 1-5 contain boolean information about the usage of
 %                 options: orderR2, scail, trapezoid, rob,
 %                 tyinitial. These 5 columns are ordered in non decreasing
 %                 way depending on the frequency in which a particular
@@ -244,7 +244,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % to use in the backfitting algorithm to calculate the transformations
 % $f(X)$ at each iteration, the $n-m$ outliers being ignored. We also use
 % the subset in function ctsub in the calculation of the numerical variance
-% stabilising transformation. Since different response transformations can
+% stabilizing transformation. Since different response transformations can
 % indicate different observations as outliers, the identification of
 % outliers occurs repeatedly during our robust algorithm, once per
 % iteration.
@@ -269,7 +269,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % The purpose of this routine is to apply avas with and without the five
 % options listed above. There are therefore 32 combinations of options that
 % could be chosen. It is not obvious that all will be necessary when
-% analysing all sets of data. This routine returns the list of options
+% analyzing all sets of data. This routine returns the list of options
 % which produced the best fit and provides the necessary ingredients for a
 % graphical method, the augmented star plot, to indicate which options are
 % important in a particular data analysis.
