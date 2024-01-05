@@ -278,14 +278,14 @@ have the corresponding HTML page (see screenshot below):
 Installation notes (details)
 
 
-4.  If FSDA has been installed properly (in what follows without loss of
+1.  If FSDA has been installed properly (in what follows without loss of
     generality we assume, for example, that FSDA has been installed in
     folder D:\\matlab\\FSDA), after the installation the **"Set Path"
     window of MATLAB should include the following FSDA search paths**
     
 ![](./images/image3.png)
 
-5.  If FSDA is installed in MATLAB R2012b or subsequent releases, three
+2.  when FSDA is installed three
     APPS (brushRES, brushFAN and brushROB) are automatically installed:
 
 ![](./images/image4.png)
@@ -293,85 +293,19 @@ Installation notes (details)
 Remark: if the three APPS have not been automatically installed, you can
 easily install them manually by double clicking on the files
 brushFAN.mlappinstall, brushRES.mlappinstall and brushROB.mlappinstall
-contained in the root folder of FSDA.
+contained in the subfolder (FSDAfolder)/toolbox/apps.
 
-![](./images/image5.png)
-
------------------------------
 
 > These APPS are graphical user interfaces conceived to demonstrate some
 > functionalities of FSDA.
 
 
-b.  **With the setup installer, three example files named
+3.  Three example files named
     "examples_regression.m", "examples_multivariate.m", and
-    "examples_categorical.m" should be opened automatically.** These
-    files contain a series analysis of several well-known datasets in
+    "examples_categorical.m" can be found in (FSDAfolder)/toolbox/examples These files contain a series analysis of several well-known datasets in
     the literature of robust statistics and categorical data analysis
     and have the purpose to let the user familiarize with the toolbox
-    (these two files are contained in (main folder of
-    FSDA)\\examples)**.**
-
-> ![](./images/image9.png)
-
-c.  
-
-d.  
-
-
-
-
-
-## FSDA html documentation files and MATLAB search engine
-
-Particular attention has been devoted by the FSDA team to have all our
-HTML files indexed by the old and new search engine of MATLAB. Below we
-describe what you should get 
-
-### MATLAB 2015a-2018b
-
-If your version of MATLAB is in the range 2015a-2018b, typing inside the
-engine a word you get also the results from the FSDA toolbox. For
-example, typing tclust you should automatically have the search
-suggestion from the drop down menu which automatically appears (see
-screenshot below)
-
-![](./images/image40.png)
-
-and you should be brought directly to the tclust documentation page.
-
-If, for example, you type "concentration step" and you do Refine by
-Product and select the FSDA toolbox these are the three instances you
-should get.
-
-![](./images/image41.png)
-
-If you put your mouse on the word restreigen you can see from the status
-bar that the function is located inside (main FSDA
-folder)/helpfiles/pointersHTML, (screenshot of status bar is given
-below):
-
-![](./images/image42.png)
-Once you click on restreigen you can go to page restreigen.html (see
-screenshot below) which is located inside docrootFS/FSDA.
-
-![](./images/image43.png)
-
-From the toolstrip on top you will notice that two instances of
-restreigen have been opened.
-![](./images/image44.png)
-The first on the left is the page which has been indexed by MATLAB
-search engine which is located inside
-
-(main FSDA folder)/helpfiles/pointersHTML (see screenshot below):
-
-![](./images/image45.png)
-All these syllabus pages have been automatically created by our routine
-createFSDAhelp.m. It was necessary to have the intermediate pages
-because MATLAB forces these pages to be opened on the iframe on the
-right. All these syllabus pages contain a redirect to our final HTML
-pages, which are contained inside docroot/FSDA. Files inside
-docroot/FSDA are not forced to be opened on the iframe on the right.
+    
 
 
 If you think that something not described in these
