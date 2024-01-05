@@ -80,7 +80,8 @@ function y = inversegampdf(x,a,b,nocheck)
 %
 % Zellner, A. (1971), "An introduction to Bayesian Inference in
 % Econometrics", Wiley.
-% [https://en.wikipedia.org/wiki/Inverse-gamma_distribution]
+% 
+% [ https://en.wikipedia.org/wiki/Inverse-gamma_distribution ]
 %
 %
 % Copyright 2008-2023.
