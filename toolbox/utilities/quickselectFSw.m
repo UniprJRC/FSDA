@@ -93,16 +93,19 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
 % Examples:
 
 %{
-    %% quickselectFSw without optional parameter p.
-    % It gives the weighted median. The median is 3, but the weighted one
-    % is 4, corresponding to the weight 0.3.
+    %% quickselectFSw without optional parameter p, giving the weighted median.
+    % The median is 3 but the weighted one is 4, corresponding to the weight 0.3.
     A = [1 2 3 4 5];
     W = [0.15 0.1 0.2 0.3 0.25];
     [kD, kW , kstar] = quickselectFSw(A,W);
 %}
 
 %{
-    % quickselectFSw with sum of weights greater than 1.
+    %% quickselectFSw with sum of weights taking any positive value.
+    % The weights usually are forced to sum to 1. However, our algorithm
+    % does not have this limitation.
+    %
+    % Case of sum of weights greater than 1.
     % This is equivalent to the previous example, but the weights have been
     % multiplied by 10. Therefore, results should be identical even if the
     % sum of the weights is not one. 
@@ -111,6 +114,50 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
     [kD, kW , kstar] = quickselectFSw(A,W);
     W2 = [1.5 1 2 3 2.5];
     [kD2, kW2 , kstar2] = quickselectFSw(A,W2);
+    %
+    % Case of sum of weights positive, but smaller than 1
+    W3 = [0.015 0.01 0.02 0.03 0.025];
+    [kD3, kW3 , kstar3] = quickselectFSw(A,W3);
+    W4 = [0.0015 0.001 0.002 0.003 0.0025];
+    [kD4, kW4 , kstar4] = quickselectFSw(A,W4);
+%}
+
+%{
+    %% quickselectFSw with negative weights. 
+    % This is an atypical case, but may find interesting applications,
+    % for example in the simplex algorithm for the choice of the pivot.
+    % quickselectFSw cannot be applied directly with the negative weights, 
+    % but a trivial change of the 
+    % observations and weights can lead to the solution.
+    %
+    % The approach proposed in this example is taken from 
+    % G. R. Arce, "A general weighted median filter structure admitting
+    % negative weights," in IEEE Transactions on Signal Processing, vol. 46,
+    % no. 12, pp. 3195-3205, Dec. 1998, doi: 10.1109/78.735296. 
+    
+    p    = 0.5;
+    A    = [-2 2 -1 3 6];
+    W    = [0.1 0.2 0.3 -0.2 0.1];
+    
+    % Arce(1998) step 1a: take the sign of weights
+    sW   = sign(W);
+    % Arce(1998) step 1b: take the absolute value of the weights
+    absW = abs(W);
+    % Arce(1998) step 1c: take the "W-signed" observations 
+    sWA  = sW .* A;
+
+    % Arce(1998) step 2: compute the weighted median of sWA with weights absW 
+    [swm, swwm , kstar] = quickselectFSw(sWA,absW,p);
+
+    % Step 3: retrieve the weighted median and corresponding weight
+    %         with the right original sign
+    %   3a: index of weighted median and corrisponding weight 
+    kstar_AW = find(sWA==swm & W==swwm);
+    %   3b: final weighted median, with the initial sign 
+    wm       = sW(kstar_AW) * swm;
+    %   3c: the weight of the weighted median, with the initial sign
+    wwm      = W(kstar_AW);
+
 %}
 
 %{
@@ -251,7 +298,7 @@ right    = n;
 position = -1;
 
 % 1. Default is to compute the weighted median
-if nargin<3 || p<0 || p>1
+if nargin<3 || p<0 %|| p>1
     p=0.5;
 end
 
@@ -261,11 +308,10 @@ D = [D(:) , W(:)];
 % 3a. The pivot k is set to get elements partially ordered in D(1:k,:)
 k = ceil(n*p);
 
-% 3b. p is modified to treat the case when sum of weights > 1
+% 3b. p is modified to treat the general case when sum of weights > 0 
+% but different than 1
 sumW = sum(W);
-if sumW > 1
-    p = p*sumW;
-end
+p = p*sumW;
 
 % 4. The external loop checks the condition on weights (point 6),  
 %    which generalises the ideas in Bleich and Overton (1983)
