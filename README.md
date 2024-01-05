@@ -94,190 +94,42 @@ For a preview see [http://rosa.unipr.it/fsda_video.html](http://rosa.unipr.it/fs
 
 # Installing the toolbox
 
-The installation procedure of FSDA relies on a setup executable (or
-Linux bash script) which should execute all the necessary steps
-automatically in less than one minute.
-
-MATLAB 64 bit and release from R2012a is required.
+The installation procedure is fully automatic if FSDA is installed through Get Adds-Ons inside MATLAB.
 
 The most critical part of the installation concerns the FSDA
 documentation system, which consists in a series of HTML files that
 follow the typical MATLAB style and are completely integrated inside the
 MATLAB documentation system.
 
-In order to achieve this goal from MATLAB release 2012b, it is necessary
-that all FSDA html files are located inside the subfolder help of the
-main root where MATLAB is installed. For example, if you have release
-2017a of MATLAB installed inside C:\\program files\\MATLAB\\R2017a, it
-is necessary that our documentation files are inside C:\\program
-files\\MATLAB\\R2017a\\help
-
-![](./images/image1.png)
-
-Our SETUP should automatically put our html files inside the appropriate
-MATLAB folder. If, due to restrictions on user permissions this was not
-possible, you will find the FSDA documentation folder inside subfolder
-called \_tmp_helpfiles. If you do not find it, it means that everything
-went well and you do not have to do anything, otherwise the subfolder
-FSDA in "\_tmp_helpfiles" must be moved manually (possibly by your
-system administrator) inside the subfolder help of the main root where
-MATLAB is installed (see screenshot above).
-
-Installation notes (details)
-
-In recent years MATLAB undertook several important changes, which made
-difficult for us to keep FSDA aligned to the MATLAB system. For example,
-from R2012b a Toolstrip replaced menus and toolbars in the MATLAB
-Desktop, a gallery of apps was introduced in the desktop and the
-documentation system was redesigned, for the first time after years of
-stability; with R2014a third party software documentation was moved to a
-separate section without filtering and searching possibilities; with
-R2014b there was a major update of the MATLAB graphics system that
-forced us to revisit most of the FSDA plotting functions; with R2015a
-the third party documentation was changed again, and was partly
-reintegrated in the MATLAB documentation system. This is why you may
-find these installation notes rather intricate: we apologise if this is
-going to happen and we invite you to signal problems or bugs that you
-think are in contradiction with, or should be reported in, these notes.
-With your help, it will be easier for us to make these installation
-notes ... superfluous.
-
-1.  FSDA has been fully tested from the release R2012a of MATLAB and
-    uses the Statistics toolbox.
-
-2.  FSDA can be installed:
-
-    a.  Automatically with our setup program for Windows platforms. The
-        automatic installation updates your MATLAB search path and
-        installs the FSDA documentation pages in:
-
-> (docroot folder)\\FSDA, If your release of MATLAB is \<=2012a
->
-> (FSDA root folder)\\helpfiles\\FSDA, if your release of MATLAB is
-> \>2012a.
->
-> To find out where your docroot folder is located it is enough to type
-> docroot in the command prompt.
-
-b.  Manually by unpacking the compressed tar file FSDA.tar.gz under a
-    folder of your choice (say programs). The search path update can be
-    done by running the MATLAB scripts addFSDA2path.m that is located in
-    the FSDA root folder. If your release is \>2012a the files present
-    inside (FSDA root folder)\\helpfiles\\FSDA must be moved to (docroot
-    folder)\\FSDA .
-
-```{=html}
-<!-- -->
-```
-3.  If there are multiple releases of MATLAB installed in your computer,
-    our setup program will ask you to **choose to which release the FSDA
-    Toolbox has to be associated and where** (under which folder) it has
-    to be installed. The search path update and documentation setup are
-    modified accordingly. However, if other MATLAB releases are present
-    and the user intends to run FSDA also on them, the two steps should
-    be completed manually by using the already mentioned addFSDA2path.m
-    (see 2b) as follows (now assuming a MS Windows platform installation
-    under D:\\programs\\FSDA):
-
-![](./images/image2.png)
-
-4.  If FSDA has been installed properly (in what follows without loss of
-    generality we assume, for example, that FSDA has been installed in
-    folder D:\\matlab\\FSDA), after the installation the **"Set Path"
-    window of MATLAB should include the following FSDA search paths**
-    (the last three being introduced with FSDA V3.0 (i.e. starting with
-    MATLAB R2015a).
-
-![](./images/image3.png)
-
-5.  If FSDA is installed in MATLAB R2012b or subsequent releases, three
-    APPS (brushRES, brushFAN and brushROB) are automatically installed:
-
-![](./images/image4.png)
-
-Remark: if the three APPS have not been automatically installed, you can
-easily install them manually by double clicking on the files
-brushFAN.mlappinstall, brushRES.mlappinstall and brushROB.mlappinstall
-contained in the root folder of FSDA.
-
-![](./images/image5.png)
-
-If FSDA is installed in MATLAB 2012a or earlier the three APPS appear
-inside MATLAB Start button\|Toolboxes\|FSDA.
-
-![](./images/image6.png)
-
-> These APPS are graphical user interfaces conceived to demonstrate some
-> functionalities of FSDA.
-
-6.  Our setup program, if successfully executed, adds to the "Program
-    Files" Windows Menu the entry "FSDA toolbox for MATLAB", including a
-    **FSDA uninstall program** that should be used by the user to remove
-    an obsolete FSDA release, before an update:
-
-![](./images/image7.png)
-
-7.  Nonetheless, to avoid problems that may occur if FSDA is installed
-    with our setup program more than once, the setup program tries to
-    locate and remove (with the agreement of the user) previous FSDA
-    installations.
-
-8.  If everything went well with an automatic or manual installation,
-    when you open MATLAB, the MATLAB "Help" pages should include FSDA
-    with all its submenus.
-
-    a.  **The MATLAB "Help" pages should include FSDA**, as shown below:
-
-![](./images/image8.png)
-
-b.  **With the setup installer, three example files named
-    "examples_regression.m", "examples_multivariate.m", and
-    "examples_categorical.m" should be opened automatically.** These
-    files contain a series analysis of several well-known datasets in
-    the literature of robust statistics and categorical data analysis
-    and have the purpose to let the user familiarize with the toolbox
-    (these two files are contained in (main folder of
-    FSDA)\\examples)**.**
-
-> ![](./images/image9.png)
-
-c.  **FSDA should appear among the installed "Toolboxes" in the MATLAB
-    "Start Menu" (only for MATLAB releases before R2012b)**
-
-![](./images/image10.png)
-
-d.  **For MATLAB R2012b to R2014b installations, the html help files can
-    be found in the Supplemental Software tab** which appears at the
+The html help files can
+be found in the Supplemental Software tab** which appears at the
     bottom of the Doc Center home page (see screenshot below)**.**
 
 ![](./images/image11.png)
 
-**For MATLAB 2015a-2016b installations, the html help files can be found
-in the Supplemental Software link**, (see screenshot below)
+Similarl to what happens for the MATLAB documentation, the FSDA documentation is shown in a different way depending on the User Preferences.
 
-**Screenshot for MATLAB 2016b**
+**Inside Preferences the Documentation Location is "Web"**.
 
-![](./images/image12.png)
+In this case every time the user the user tries to access FSDA documentation it will be redirected to the appropriate page inside http://rosa.unipr.it/FSDA (of course in this case Internet connection is required).
 
-**Screenshot for MATLAB 2017a-2018a**
+**Inside Preferences the Documentation Location is "Installed Locally"**.
 
-![](./images/image13.png)
+In this case the user has installed the documentation locally.
+The first time the user tries to access the FSDA documentation, there is a menu "Copy FSDA HTML help files" which alertes the user that the FSDA help files need to be copied in the local documentation folder. 
 
-**Screenshot for MATLAB 2019a**
+![](./images/imageCopyFiles.png)
 
-![](./images/image14.png)
 
-e.  **For MATLAB installations earlier than 2012b, the documentation is
-    located in the same place as all the other official Mathworks
-    toolboxes** (see bottom panel of screenshot below):
+If the user clicks on Yes the files will be copied under the subfolder help of the documentation root folder. If the user clicks on No the user will be redirected to the on line documentation of FSDA.
 
-![](./images/image15.png)
+*Remark*: in order to understand the path of your documentation root folder in your machine it is enough to type docroot in the prompt.
 
-Independently from MATLAB version you use, once you click on the link
-FSDA Toolbox you should reach our main documentation page (see
-screenshot below)
+ If everything went well independently of your Documentation Location prefereces you should be able to see the **The FSDA entry page**, as shown below:
 
 ![](./images/image8.png)
+
+
 
 Remark: you can reach our main documentation page also simply typing
 docsearchFS in the command prompt
@@ -420,11 +272,58 @@ have the corresponding HTML page (see screenshot below):
 
 ![](./images/image39.png)
 
+Installation notes (details)
+
+
+4.  If FSDA has been installed properly (in what follows without loss of
+    generality we assume, for example, that FSDA has been installed in
+    folder D:\\matlab\\FSDA), after the installation the **"Set Path"
+    window of MATLAB should include the following FSDA search paths**
+    
+![](./images/image3.png)
+
+5.  If FSDA is installed in MATLAB R2012b or subsequent releases, three
+    APPS (brushRES, brushFAN and brushROB) are automatically installed:
+
+![](./images/image4.png)
+
+Remark: if the three APPS have not been automatically installed, you can
+easily install them manually by double clicking on the files
+brushFAN.mlappinstall, brushRES.mlappinstall and brushROB.mlappinstall
+contained in the root folder of FSDA.
+
+![](./images/image5.png)
+
+-----------------------------
+
+> These APPS are graphical user interfaces conceived to demonstrate some
+> functionalities of FSDA.
+
+
+b.  **With the setup installer, three example files named
+    "examples_regression.m", "examples_multivariate.m", and
+    "examples_categorical.m" should be opened automatically.** These
+    files contain a series analysis of several well-known datasets in
+    the literature of robust statistics and categorical data analysis
+    and have the purpose to let the user familiarize with the toolbox
+    (these two files are contained in (main folder of
+    FSDA)\\examples)**.**
+
+> ![](./images/image9.png)
+
+c.  
+
+d.  
+
+
+
+
+
 ## FSDA html documentation files and MATLAB search engine
 
 Particular attention has been devoted by the FSDA team to have all our
 HTML files indexed by the old and new search engine of MATLAB. Below we
-describe what you should get depending on the MATLAB version you have.
+describe what you should get 
 
 ### MATLAB 2015a-2018b
 
@@ -471,89 +370,7 @@ right. All these syllabus pages contain a redirect to our final HTML
 pages, which are contained inside docroot/FSDA. Files inside
 docroot/FSDA are not forced to be opened on the iframe on the right.
 
-### MATLAB 2012b-2014b
 
-If your version of MATLAB is between 2012b-2014b, it is necessary to use
-the old MATLAB search engine inside supplemental software (see
-screenshot below),
-
-![](./images/image46.png)
-
-also, in this case, passing through the syllabus page contained in (FSDA
-root)\\helpfiles\\pointersHTML.
-
-![](./images/image47.png)
-
-It is possible to automatically reach our page LXS.html contained inside
-docroot/FSDA.
-
-![](./images/image48.png)
-
-### MATLAB \<=2012a
-
-In MATLAB older or equal than 2012a, there was no distinction between
-MATLAB toolboxes and third parties toolboxes (as concerns the
-documentation), therefore it is possible to search directly from the
-unique official MATLAB engine. For example searching for LXS,
-
-![](./images/image49.png)
-the output of the search is again the syllabus page which automatically
-redirects to the true HTML page (both are shown in the screenshot
-below):
-
-![](./images/image50.png)
-
-Remark 1: note that the old MATLAB browser enables us to see correctly
-just 95% of the javascripts which characterize the new MATLAB help
-style.
-
-Remark 2: given that in MATLAB versions earlier than 2012b the new
-engine lucene did not exist, all the "true HTML files" during the
-installation are not moved to folder docroot/FSDA but are left inside
-(main root of FSDA)/helpfiles/FSDA.
-
-Remark 3: If you are using a release lower than R2012b and you think
-that the MATLAB Help Browser is not producing proper search results for
-FSDA functions, check first that in the MATLAB Help Preferences FSDA is
-selected, as shown in Figure below:
-
-> ![](./images/image51.JPG)
-
-Remark 4: **From MATLAB R2015a,** **when you search for a given third
-party function** **for the first time**, the search results window will
-display a yellow message warning that a toolbox in the path does not
-have the proper documentation index file. The window and message
-produced when attempting to search for documentation about \`FSR'
-function, are shown here:
-
-![](./images/image52.png)
-
-> Only after clicking on the Build Index button you should start getting
-> the desired documentation. You will be informed of the successful
-> update of the search database with this message:
->
-> ![](./images/image53.png)
->
-> **If,** instead of this message and instead of receiving back the
-> desired results, **you receive an error message** such as this one
-
-![](./images/image54.png)
-
-> again it is likely that you have installed FSDA in a location without
-> proper permissions and, thus, the index building operation (i.e. the
-> builddocsearchdb command) could not update the search database. The
-> only solution in this case is to obtain the writing permissions or to
-> change location for FSDA. What you should get if the search is
-> successful, is something like the following:
-
-![](./images/image55.png)
-
-Therefore, if by some obscure reason you cannot find our HTML files
-using old or new (lucene) engine, it might be necessary to run again
-buildocsearchdb. For example assuming that FSDA main folder is
-D:\\PACKAGES\\FSDA, then it is necessary to run:
-
-![](./images/image56.png)
 If you think that something not described in these
 notes went wrong please do not hesitate to send an e-mail to
 
