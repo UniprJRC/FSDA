@@ -161,6 +161,39 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
 %}
 
 %{
+    % quickselectFSw with negative weights - example 2. 
+    % This is another atypical case, with negative weights, taken from
+    % Gonzalo R. Arce (2002) Recursive Weighted Median Filters Admitting
+    % Negative Weights and Their Optimization, IEEE TRANSACTIONS ON SIGNAL 
+    % PROCESSING, VOL. 48, NO. 3, MARCH 2000, pp 768-779.
+    % Note that Arce (2002), being this an even sample, takes the mean 
+    % of two middle values with a different approach using sorting.
+    
+    p    = 0.5;
+    A    = [-2 2 -1 3 6 8];
+    W    = [0.2 0.4 0.6 -0.4 0.2 0.2];
+    
+    % Arce(1998) step 1a: take the sign of weights
+    sW   = sign(W);
+    % Arce(1998) step 1b: take the absolute value of the weights
+    absW = abs(W);
+    % Arce(1998) step 1c: take the "W-signed" observations 
+    sWA  = sW .* A;
+
+    % Arce(1998) step 2: compute the weighted median of sWA with weights absW 
+    [swm, swwm , kstar] = quickselectFSw(sWA,absW,p);
+
+    % Step 3: retrieve the weighted median and corresponding weight
+    %         with the right original sign
+    %   3a: index of weighted median and corrisponding weight 
+    kstar_AW = find(sWA==swm & W==swwm);
+    %   3b: final weighted median, with the initial sign 
+    wm       = sW(kstar_AW) * swm;
+    %   3c: the weight of the weighted median, with the initial sign
+    wwm      = W(kstar_AW);
+%}
+
+%{
     % quickselectFSw for computing a generic weighted percentile.
     A=[1 2 3 4 5];
     W=[0.15 0.1 0.2 0.3 0.25];
