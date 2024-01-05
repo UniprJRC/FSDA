@@ -35,7 +35,8 @@ if str2double(a.Version)>7.14
         msg4=[FSDAroot filesep 'doc' filesep 'GettingStarted.mlx'];
         
         msg=regexprep([msg1 msg1bis msg2 msg2bis msg3 msg3bis msg3tris msg3fourth msg4],'\\','/');
-        warning('FSDA:docrootFS:wrongSetUp',msg)
+        % warning('FSDA:doccrootFS:wrongSetUp',msg)
+        disp(msg)
         %h=mydialog(msg);
         answer = questdlg(msg,'Copy FSDA HTML help files','Copy files','Close','Close');
         drawnow; pause(0.05);
