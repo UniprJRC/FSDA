@@ -299,7 +299,7 @@ prerepo='[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/g
 
 
 % Initialize Incl with a large number of rows
-% List of the files which have been translated to ipynbb format
+% List of the files which have been translated to ipynb format
 Incl=cell(1000,4);
 iout=1;
 Excluded=Incl;
