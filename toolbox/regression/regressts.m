@@ -95,10 +95,7 @@ function out = regressts(y,varargin)
 %               bsb is used and length(bsb)<length(y).  If it is true
 %               the small sample correction factor is used. The default
 %               value of smallsamplecor is 1, that is the correction is
-%               used. See
-%               http://users.ugent.be/~svaelst/publications/corrections.pdf
-%               for further details about the correction factor. The
-%               default value of smallsamplecor is false.
+%               used. The default value of smallsamplecor is false.
 %               Example - 'smallsamplecor',false
 %               Data Types - logical
 %

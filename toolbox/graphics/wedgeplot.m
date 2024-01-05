@@ -197,8 +197,6 @@ function hf = wedgeplot(RES,varargin)
         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
     y=(y(:));
     % Add a level shift contamintion plus some outliers.
     y(50:55)=y(50:55)-300;
