@@ -283,8 +283,6 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
          119  133  162  191  211  229  274  306  347  359  407  461    % Oct
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-    % Source:
-    % http://datamarket.com/data/list/?q=provider:tsdl
     y=(y(:));
     % Set up a personalized model.
     model=struct;
