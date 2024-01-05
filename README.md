@@ -105,7 +105,10 @@ The html help files can
 be found in the Supplemental Software tab** which appears at the
     bottom of the Doc Center home page (see screenshot below)**.**
 
-![](./images/image11.png)
+
+<img src="./images/image11.png" alt="drawing" width="250"/>
+
+
 
 Similarl to what happens for the MATLAB documentation, the FSDA documentation is shown in a different way depending on the User Preferences.
 
@@ -118,8 +121,8 @@ In this case every time the user the user tries to access FSDA documentation it 
 In this case the user has installed the documentation locally.
 The first time the user tries to access the FSDA documentation, there is a menu "Copy FSDA HTML help files" which alertes the user that the FSDA help files need to be copied in the local documentation folder. 
 
-![](./images/imageCopyFiles.png)
 
+<img src="./images/imageCopyFiles.png" alt="drawing" width="450"/>
 
 If the user clicks on Yes the files will be copied under the subfolder help of the documentation root folder. If the user clicks on No the user will be redirected to the on line documentation of FSDA.
 
