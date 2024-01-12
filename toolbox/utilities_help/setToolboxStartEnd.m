@@ -69,7 +69,7 @@ function setToolboxStartEnd(toolboxFile, varargin)
     FSDAroot=fileparts(FullPath);
     fsep=filesep;
     fname='ToolboxPackagingConfiguration.prj';
-    copyfile([FSDAroot fsep 'utilities_help' fsep fname],pwd)
+    copyfile([FSDAroot fsep 'utilities_help' fsep 'private' fsep fname],pwd)
     disp('Show release start and release end before calling setToolboxStartEnd')
     fileID = fopen(fname, 'r+');
     % Insert the file into fstring
@@ -96,7 +96,7 @@ function setToolboxStartEnd(toolboxFile, varargin)
     FSDAroot=fileparts(FullPath);
     fsep=filesep;
     fname='ToolboxPackagingConfiguration.prj';
-    copyfile([FSDAroot fsep 'utilities_help' fsep fname],pwd)
+    copyfile([FSDAroot fsep 'utilities_help' fsep 'private' fsep fname],pwd)
     % Set oldest and newest version inside ToolboxPackagingConfiguration.prj
     startVersion='R2012b';
     endVersion='R2020a';
