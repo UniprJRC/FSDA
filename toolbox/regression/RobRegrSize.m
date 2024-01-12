@@ -579,10 +579,10 @@ else
 end
 
 if sizesim==1
-    MAT=coder.load('Sim_ThreshSm');
+    MAT=coder.load('private/Sim_ThreshSm');
     THsel=mean(MAT.ThreshAllSmsim(:,:,posint),3);
 else
-    MAT=coder.load('Ind_ThreshSm');
+    MAT=coder.load('private/Ind_ThreshSm');
     THsel=mean(MAT.ThreshAllSmind(:,:,posint),3);
 end
 
