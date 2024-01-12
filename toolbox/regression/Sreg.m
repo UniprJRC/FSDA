@@ -434,7 +434,7 @@ elseif strcmp(rhofunc,'hyperbolic')
     [diffk,inddiffk]=min(abs(kdef-KDEF));
     if diffbdp<1e-6 && diffk<1e-06
         % Load precalculated values of tuning constants
-        Mat=coder.load('Hyp_BdpEff.mat','MatBDP');
+        Mat=coder.load('private/Hyp_BdpEff.mat','MatBDP');
         row=Mat.MatBDP(inddiffbdp,2:end,inddiffk);
         c=row(1); A=row(2); B=row(3); d=row(4); kc=row(5);
 
