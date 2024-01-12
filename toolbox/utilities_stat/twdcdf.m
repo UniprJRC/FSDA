@@ -1,5 +1,5 @@
 function cdf = twdcdf(x,alpha,theta,delta)
-% TWDCDF computes the cumulative distribution function of the Tweedie distribution.
+% twdcdf computes the cumulative distribution function of the Tweedie distribution.
 %
 %<a href="matlab: docsearchFS('twdcdf')">Link to the help function</a>
 %
