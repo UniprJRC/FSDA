@@ -234,6 +234,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lm
     pa=struct;
     pa.pars='EEE';
     SigmaNEW  = restrSigmaGPCM(Sigma, niini, pa);
+
 %}
 
 %{
@@ -254,6 +255,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lm
     pa=struct;
     pa.pars='VVE';
     [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(Sigma, niini, pa);
+
 %}
 
 %{
@@ -266,6 +268,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lm
     niini=100*ones(1,k);
     pa.pars='VVE';
     [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(S, niini, pa);
+
 %}
 
 %{

@@ -924,16 +924,3 @@ Z(:,[1 2])=sort(Z(:,[1 2]),2);
 end
 
 %FScategory:CLUS-RobClaMULT
-% © 2021 GitHub, Inc.
-% Terms
-% Privacy
-% Security
-% Status
-% Docs
-% Contact GitHub
-% Pricing
-% API
-% Training
-% Blog
-% About
-% Loading complete
