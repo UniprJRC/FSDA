@@ -12,5 +12,6 @@ jobs:
         use-verbose-mode: 'no'
         use-quiet-mode: 'yes'
         file-extension: '.m'
+        config-file: 'mlc_config.json'
 
         
