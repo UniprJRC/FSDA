@@ -53,9 +53,8 @@ function y = corrpdf(r, rho, n)
 % For additional information see
 % https://mathworld.wolfram.com/CorrelationCoefficientBivariateNormalDistribution.html
 % This function follows the lines of MATLAB code developed by Xu Cui,
-% https://www.alivelearn.net/?p=709 Stanford University and the file
-% exchange submission Joshua Carmichael (2022). sample correlation
-% distribution function
+% and the file exchange submission Joshua Carmichael (2022). sample
+% correlation distribution function
 % https://www.mathworks.com/matlabcentral/fileexchange/45785-sample-correlation-distribution-function/
 %
 %
