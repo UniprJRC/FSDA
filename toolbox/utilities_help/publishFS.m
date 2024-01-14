@@ -657,10 +657,10 @@ function out=publishFS(file,varargin)
 %         "More details can be found in routine
 %         <a href="ncx2mixtcdf.html">ncx2mixtcdf</a>".
 %         Similarly, a sentence such as:
-%         The full paper can be downloaded from "http://www.mysite.org".
+%         The full paper can be downloaded from "http://rosa.unipr.it".
 %         is converted as follows:
-%         "The full paper can be donwloaded from
-%         <a href="http://www.mysite.org"> http://www.mysite.org </a>".
+%         "The full paper can be downloaded from
+%         <a href="http://rosa.unipr.it"> http://rosa.unipr.it </a>".
 %         -----------------------------------------------------------------------:.
 %
 % See also: publish
