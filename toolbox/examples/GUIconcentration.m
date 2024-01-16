@@ -98,6 +98,15 @@ function out = GUIconcentration(Q, varargin)
     out=GUIconcentration(Q,'freq',ni,'plots',1);
 %}
 
+%{
+    % Local business units by employee classes in Emilia Romagna.
+    % Number of employees.
+    Q=[771752 201648 200137 430530];
+    % Relative number of local units.
+    freq=[0.9390 0.0370 0.0163 0.0077];
+    out=GUIconcentration(Q,'freq',freq);
+%}
+
 %% Beginning of code
 
 freq='';
@@ -206,7 +215,7 @@ out=struct;
 if approx==true
     sumf=footer(end);
     Q=1- sumf;
-    strfin=[' \it R $\approx 1- \sum_{i=1}^r (q_i +q_{i-1}) f_i = 1 -'  num2str(sumf) '= ' num2str(Q) '$'];
+    strfin=[' \it R $\approx 1- \sum_{i=1}^r (q_i'' +q_{i-1}'') f_i = 1 -'  num2str(sumf) '= ' num2str(Q) '$'];
     out.R=Q;
 else
     % Write details to find final calculation
