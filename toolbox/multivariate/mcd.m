@@ -474,7 +474,7 @@ tolMCDdef=eps('double');
 
 % if smallsamplecor ==1 (then small sample correction factor is applied to the
 % estimate of the scale)
-smallsamplecor=true;
+smallsamplecordef=true;
 
 restrfactordef=Inf;
 
@@ -484,7 +484,7 @@ options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
     'bdp',bdpdef,'plots',0,'conflev',0.975,'conflevrew','',...
     'betathresh',0,'nocheck',0,'msg',1,'tolMCD',tolMCDdef,...
-    'ysaveRAW',false,'ysaveREW',false,'smallsamplecor',smallsamplecor,...
+    'ysaveRAW',false,'ysaveREW',false,'smallsamplecor',smallsamplecordef,...
     'restrfactor',restrfactordef,'modelT',[]);
 
 % check user options and update structure options
@@ -515,6 +515,7 @@ reftol = options.reftol;        % tolerance for refining steps
 refstepsbestr=options.refstepsbestr;  % refining steps for the best subsets
 reftolbestr=options.reftolbestr;      % tolerance for refining steps for the best subsets
 
+smallsamplecor = options.smallsamplecor;
 % tolMCD threshold under which the determinant of the covariance matrix is
 % thought to be singular
 tolMCD=options.tolMCD;
@@ -538,7 +539,7 @@ end
 % location, indexes of subsets, cov matrices and objective function
 bestlocs = zeros(bestr, v);
 
-bestcovs=zeros(v,v,bestr);
+bestcovs = zeros(v,v,bestr);
 bestobjs = Inf * ones(bestr,1);
 
 % singsub = scalar which will contain the number of singular subsets which
