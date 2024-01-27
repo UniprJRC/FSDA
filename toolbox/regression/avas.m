@@ -141,7 +141,7 @@ function [out]=avas(y,X,varargin)
 %           If this option is omitted or if trapezoid is false
 %           (default), we assume a rectangulat hypothesis. In
 %           other words, we assume that below $\hat y_{(1)}$ the function
-%           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$, 
+%           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$,
 %           $|e_1|, \ldots, |e_{n-k}|$ are the smoothed residuals
 %           corresponding to ordered fitted values.
 %           Similarly, we assume that beyond $\hat y_{n-k}$ the function is
@@ -226,37 +226,37 @@ function [out]=avas(y,X,varargin)
 % \]
 % Then
 % \[
-% E[Y]=g(\mu)\; \mbox{and} \; \mathrm{Var}[Y]=\sigma^2g'(\mu)^2. 
+% E[Y]=g(\mu)\; \mbox{and} \; \mathrm{Var}[Y]=\sigma^2g'(\mu)^2.
 % \]
-% 
+%
 % Consider now a random variable $ X $ such that $ E[X]=\mu $ and $
 % \mathrm{Var}[X]=h(\mu) $. Notice the relation between the variance and
 % the mean, which implies, for example, heteroskedasticity in a linear
 % model. The goal is to find a function $ g $ such that $ Y=g(X) $ has a
 % variance independent (at least approximately) of its expectation.
-% 
+%
 % Imposing the condition $ \mathrm{Var}[Y]\approx
 % h(\mu)g'(\mu)^2=\mathrm{constant} $,  equality implies the differential
 % equation
 % \[
 % \frac{dg}{d\mu}=\frac{C}{\sqrt{h(\mu)}}.
 % \]
-% 
+%
 % This ordinary differential equation has, by separation of variables, the solution
 % \[
 % g(\mu)=\int \frac{Cd\mu}{\sqrt{h(\mu)}}.
-% \] 
+% \]
 % % Tibshirani (JASA, p.395) has a random variable $W$ with $ E[W]=u $ and $\mathrm{Var}[W]=v(u)$. The variance stabilising transformation for $W$ is given by
 % \[
 % h(t)=\int^t \frac{1}{\sqrt{v(u)}}.
 % \]
-% The constant $C = 1$ due to the standardization of the variance of $W$. 
+% The constant $C = 1$ due to the standardization of the variance of $W$.
 % In our context  $\frac{1}{\sqrt{v(u)}}$ corresponds to vector of the
 % reciprocal of the absolute values of the smoothed residuals sorted using
 % the ordering based on fitted values of the regression model which uses
 % the explanatory variables possibly transformed. The $x$ coordinates of
 % the function to integrate are the fitted values sorted.
-% 
+%
 % As concerns the range of integration it goes from
 % $\hat y_{(1)}$ the smallest fitted value, to $\widehat{ty}_i^{old}$.
 % Therefore the lower extreme of integration is fixed for all $n$ integrals.
@@ -265,8 +265,8 @@ function [out]=avas(y,X,varargin)
 % $\widehat{ty}_i^{old}$), corresponding to ordered fitted values.
 % The output of the integration is a new set of transformed values
 % $\widehat{ty}^{new}$.
-% 
-% 
+%
+%
 % In summary, the trick is that,  there is not just one integral, but there
 % are $n$ integrals. Th $i$-th integral which is defined as
 % \[
@@ -276,13 +276,13 @@ function [out]=avas(y,X,varargin)
 % $\widehat{ty}_i$ associated with $\hat y_{(i)}$ the $i$-th ordered fitted
 % value. Note that the old transformed value from previous iteration was
 % the upper extreme of integration.
-% 
+%
 % The estimate of $g$ is strictly increasing because it is the integral of
 % a positive function (reciprocal of the absolute values of the residuals).
-% 
+%
 % The computation of the $n$ integrals is done by the trapezoidal rule and
 % is detailed in routine ctsub.m.
-% 
+%
 % ${\it Remark}$: It may happen that at a particular iteration of the AVAS
 % procedure using $\widehat{ty}$ and $\widehat{tX}$, $n-m$ units are declared as outliers. In
 % this case the fit, the residuals and the associated smoothed values are
@@ -550,9 +550,20 @@ function [out]=avas(y,X,varargin)
 
 %% Beginning of code
 
+arguments
+    y {mustBeNumeric}
+    X {mustBeNumeric}
+end
+arguments (Repeating)
+    varargin
+end
+
+
+
 if nargin <2
     error('FSDA:avas:missingInputs','A required input argument is missing.')
 end
+
 
 [n,p]=size(X);
 
@@ -584,25 +595,25 @@ trapezoid=false;
 UserOptions=varargin(1:2:length(varargin));
 
 if ~isempty(UserOptions)
-    
+
     options=struct('l',l,'delrsq',delrsq,'nterm',nterm,...
         'w',w,'maxit',maxit,'scail',scail,'tyinitial',tyinitial,'rob',rob,...
         'orderR2',orderR2,'trapezoid',trapezoid);
-    
+
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:avas:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
-    
+
     % We now overwrite inside structure options the default values with
     % those chosen by the user
     % Notice that in order to do this we use dynamic field names
     for j=1:2:length(varargin)
         options.(varargin{j})=varargin{j+1};
     end
-    
+
     l=options.l;
     delrsq=options.delrsq;
     w=options.w;
@@ -632,7 +643,7 @@ if islogical(tyinitial)
     else
         callToFSRfan=false;
     end
-    
+
 elseif isstruct(tyinitial)
     callToFSRfan=true;
     if isfield(tyinitial,'la')
@@ -672,10 +683,10 @@ if islogical(rob)
     else
         robustAVAS=false;
     end
-    
+
 elseif isstruct(rob)
     robustAVAS=true;
-    
+
     if isfield(rob,'bdp')
         bdp=rob.bdp;
     else
@@ -686,7 +697,7 @@ elseif isstruct(rob)
     else
         simalpha=0.01;
     end
-    
+
     if isfield(rob,'method')
         estimator=rob.method;
         if strcmp(estimator,'FS')
@@ -704,11 +715,11 @@ elseif isstruct(rob)
             error('FSDA:avas:WrongInputOpt',['rob.method can only be '...
                 ' ''FS'', ''LTS'', ''LMS'' or ''S''']);
         end
-        
+
     else
-            % FS is defined using init and not bdp this is the reason of
-            % the instruction below
-            bdp=round(n*(1-bdp));
+        % FS is defined using init and not bdp this is the reason of
+        % the instruction below
+        bdp=round(n*(1-bdp));
         estimatorToUse=1;
     end
 else
@@ -807,16 +818,16 @@ lfinishOuterLoop=1;
 
 while lfinishOuterLoop ==1 % Beginning of Outer Loop
     iter=iter+1;
-    
+
     if robustAVAS==true && iter>1
         [bsb,outliers,ngood]=robAVAS(ty,tX,estimatorToUse,bdp,simalpha);
-         sw=sum(w(bsb));
+        sw=sum(w(bsb));
     end
-    
+
     % (yhat contains fitted values and yhatord = fitted values sorted)
     % These vectors have length n
     yhat=sum(tX,2);    % yhat is z10 in fortran program
-    
+
     % tres = vector of residuals using transformed y and transformed X
     tres=ty-yhat;
     % If a squared residual is exactly zero leads to a problem when taking
@@ -826,33 +837,33 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % logabsres = log absolute values of residuals (z2 in the Fortran
     % program)
     logabsres=log(sqrt(tres.^2));
-    
+
     yhatmod=yhat;
     if ~isempty(outliers)
         yhatmod(outliers)=Inf;
     end
-    
+
     [yhatord,ordyhat]=sort(yhatmod);
     % ztar_sorted=log(sqrt((z2-z1).^2));
     logabsresOrdyhat=logabsres(ordyhat);
     % wOrdyat = weights using the ordering based on yhat
     wOrdyhat=w(ordyhat);
-    
+
     % Now the residuals  are smoothed
     % smo=smothr(abs(l(pp1)),z(:,2),z(:,1),z(:,4));
     % x coord = fitted values based on tX (sorted)
     % y values ztar_sorted (log of |residuals| using the ordering of
     % fitted values)
-    
+
     % Smooth the log of (the sample version of) the |residuals|
     % against fitted values. Use the ordering based on fitted values.
     % Smoothing is done for the units not declared as outliers.
     [smo,yspan]=rlsmo(yhatord(1:ngood),logabsresOrdyhat(1:ngood),wOrdyhat(1:ngood),yspan);
-    
+
     % smoothresm1Ordyhat = 1/|e_{smoothed}|= v(u)^{-0.5}
     smoothresm1Ordyhat=exp(-smo);
     % sumlog=2*n*sum(smo.*w)/sw;
-    
+
     %     tyOrdyhat=ty(ordyhat);
     %
     %     % Compute the variance stabilizing transformation
@@ -877,8 +888,8 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     %     sm=sum(tynewOrdyhat.*w); % TODO replace w with wOrdyhat
     %     % Compute updated vector ty with mean removed
     %     ty(ordyhat)=tynewOrdyhat-sm/sw;
-    
-    
+
+
     % Compute updated transformed values
     ty=ctsub(yhatord(1:ngood),smoothresm1Ordyhat(1:ngood),ty,trapezoid);
 
@@ -886,8 +897,8 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     sm=sum(ty(bsb).*wbsb);
     % sw=sum(wbsb);
     ty=ty-sm/sw;
-    
-    
+
+
     sv=sum(ty(bsb).^2.*wbsb)/sw;
     % Make sure that sv (variance of transformed y) is a positive number
     if sv<=0
@@ -895,7 +906,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
         warning('FSDA:avas:negsv','Return a missing value')
         return
     end
-    
+
     % TODO it is necessary to replace w with  wOrdyhat
     % sw=sum(wOrdyhat(1:ngood));
     svx=sum(yhatord(1:ngood).^2.*wOrdyhat(1:ngood))/sw;
@@ -907,25 +918,25 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % Get the new transformation of X_j
     % that is backfit \hat g(y) on X_1, \ldots, X_p
     % to get new tX
-    
+
     [tX,~]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outliers,orderR2);
     % yhat contains fitted values (not sorted)
     yhat=sum(tX,2);    % z1 is z10 in AVAS
-    
+
     rr=sum(((ty(bsb)-yhat(bsb)).^2).*wbsb)/sw;
-    
+
     % rsq = new value of R2 (given that var(ty)=1)
     rsq=1-rr;
     % sumlog=sumlog+n*log(sv);
     % rnew=sumlog+rr;
-    
+
     nt=mod(nt,nterm)+1;
     ct(nt)=rsq;
     cmn=100.0;
     cmx=-100.0;
     cmn=min([cmn; ct(1:nterm)]);
     cmx=max([cmx;ct(1:nterm)]);
-    
+
     % Stopping condition for outer loop, for at least three consecutive
     % times the difference between two consecutive values of $R^2$ is
     % smaller than delrsq or $iter>=maxit$
