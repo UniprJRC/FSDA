@@ -1006,7 +1006,7 @@ if nargin>2
                 error('FSDA:yXplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
             end
             % Check if user options are valid options
-            chkoptions(options,UserOptions)
+            aux.chkoptions(options,UserOptions)
         end
         
         for i=1:2:length(varargin)

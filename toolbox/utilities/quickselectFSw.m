@@ -310,7 +310,7 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
     % copy which will be passed by reference to quickselectFSwmex
     D_copy = D; D_copy(end+1)=999; D_copy(end)=[]; 
     W_copy = W; W_copy(end+1)=999; W_copy(end)=[]; 
-    wm_mex = quickselectFSwmex(D_copy,W_copy,0.5,N);
+    wm_mex = aux.quickselectFSwmex(D_copy,W_copy,0.5,N);
 
     disp('  ');
     disp(['this is wm      = ' num2str(wm)]);

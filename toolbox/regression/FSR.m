@@ -595,7 +595,7 @@ if coder.target('MATLAB')
             error('FSDA:FSR:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
-        chkoptions(options,UserOptions)
+        aux.chkoption(options,UserOptions)
     end
 end
 
@@ -629,7 +629,7 @@ if isempty(threshoutX)
 elseif  isstruct(threshoutX)
     % Check if user options insidethreshoutX are valid options
     threshoutXdef=struct('bonflevoutX',0.99,'threshlevoutX',10);
-    chkoptions(threshoutXdef,fieldnames(threshoutX))
+    aux.chkoption(threshoutXdef,fieldnames(threshoutX))
     
     if isfield(threshoutX,'bonflevoutX')
         bonflevoutX=threshoutX.bonflevoutX;

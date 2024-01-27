@@ -1208,7 +1208,7 @@ if isstruct(plots)
             name=plotall;
         else
             % Check that the specified names is in the list of available names.
-            chkoptions(cell2struct(plotall,plotall),name)
+            aux.chkoptions(cell2struct(plotall,plotall),name)
         end
     else
         name=plotdef;

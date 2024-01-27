@@ -727,7 +727,7 @@ if ~isempty(UserOptions)
             error('FSDA:CorAna:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
-        chkoptions(options,UserOptions)
+        aux.chkoptions(options,UserOptions)
     end
 
     % Write in structure 'options' the options chosen by the user

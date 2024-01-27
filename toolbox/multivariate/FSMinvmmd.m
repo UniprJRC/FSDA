@@ -209,7 +209,7 @@ if coder.target('MATLAB')
             error('FSDA:FSMinvmmd:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
-        chkoptions(options,UserOptions)
+        aux.chkoptions(options,UserOptions)
     end
 end
 

@@ -1092,7 +1092,7 @@ if isstruct(restrfactor)
             'maxiterR','','tolR','','shw',100,'shb',50,...
             'cdet',100,'zerotol','','pars','','k','','v','','tol','',...
             'msg','','usepreviousest',usepreviousest,'userepmat',2,'sortsh',1);
-        chkoptions(optionspa,fieldnames(restrfactorSTRUCT))
+        aux.chkoptions(optionspa,fieldnames(restrfactorSTRUCT))
         if ~isfield(restrfactorSTRUCT,'shw')
             restrfactorSTRUCT.shw=100;
         end

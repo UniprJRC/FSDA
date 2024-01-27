@@ -520,7 +520,7 @@ elseif isstruct(sph)
     optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
         'maxiterR','','tolR','','shw','','shb','',...
         'cdet','','zerotol','','pars','','exactrestriction','');
-    chkoptions(optionspa,fieldnames(sph))
+    aux.chkoptions(optionspa,fieldnames(sph))
     nocheckpa=true;
 end
 

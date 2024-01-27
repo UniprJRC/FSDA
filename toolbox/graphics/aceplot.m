@@ -216,7 +216,7 @@ if nargin >1
             error('FSDA:aceplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
-        chkoptions(options,UserOptions)
+        aux.chkoptions(options,UserOptions)
     end
 
     % We now overwrite inside structure options the default values with

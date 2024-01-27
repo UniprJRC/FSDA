@@ -817,7 +817,7 @@ if isstruct(Xdistrib)
     end
     
     % Check if user options inside options.fground are valid options
-    chkoptions(Xdistribdef,fld)
+    aux.chkoptions(Xdistribdef,fld)
     for i=1:length(fld)
         Xdistribdef.(fld{i})=Xdistrib.(fld{i});
     end

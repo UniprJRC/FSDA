@@ -145,7 +145,7 @@ if nargin<4
     nocheck=0;
 end
 
-if nt example about R coocheck==1
+if nocheck==1
     % This code is much faster but there are no checks
     x = b./gammaincinv(p,a,'upper');
 else

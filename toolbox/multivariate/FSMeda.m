@@ -279,7 +279,7 @@ if ~isempty(UserOptions)
         error('FSDA:FSMeda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    aux.chkoptions(options,UserOptions)
 end
 
 %init1=options.init;

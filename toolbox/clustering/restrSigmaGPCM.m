@@ -316,7 +316,7 @@ if nocheck == false
     options=struct('maxiterDSR',maxiterDSRdef,'tolDSR',tolDSRdef,'maxiterS',maxiterSdef,'tolS',tolSdef, ...
         'maxiterR',maxiterRdef,'tolR',tolRdef,'shw',shwdef,'shb',shbdef,...
         'cdet',cdetdef,'zerotol',zerotoldef,'pars','','userepmat','');
-    chkoptions(options,fpa)
+    aux.chkoptions(options,fpa)
 end
 
 % SigmaB = p-times-p-times-k = empirical covariance matrix

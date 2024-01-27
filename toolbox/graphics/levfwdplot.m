@@ -859,7 +859,7 @@ if nargin>1
             error('FSDA:levfwdplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
-        chkoptions(options,UserOptions)
+        aux.chkoptions(options,UserOptions)
     end
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -951,7 +951,7 @@ end
 % was initialised with standarddef and updated with optional user's options
 if ~isequal(options.standard,standarddef)
     fld=fieldnames(options.standard);
-    chkoptions(standarddef,fld)
+    aux.chkoptions(standarddef,fld)
     for i=1:length(fld)
         standarddef.(fld{i})=options.standard.(fld{i});
     end
@@ -962,7 +962,7 @@ end
 if ~isempty(options.fground)
     if ~isequal(options.fground,fgrounddef)
         fld=fieldnames(options.fground);
-        chkoptions(fgrounddef,fld)
+        aux.chkoptions(fgrounddef,fld)
         for i=1:length(fld)
             fgrounddef.(fld{i})=options.fground.(fld{i});
         end
@@ -974,7 +974,7 @@ end
 if ~isempty(options.bground)
     if ~isequal(options.bground,bgrounddef)
         fld=fieldnames(options.bground);
-        chkoptions(bgrounddef,fld)
+        aux.chkoptions(bgrounddef,fld)
         for i=1:length(fld)
             bgrounddef.(fld{i})=options.bground.(fld{i});
         end

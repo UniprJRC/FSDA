@@ -125,7 +125,7 @@ if ~isempty(UserOptions)
         error('FSDA:HAc:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    aux.chkoption(options,UserOptions)
 end
 
 

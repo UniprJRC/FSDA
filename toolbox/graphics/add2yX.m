@@ -211,7 +211,7 @@ if nargin>3
             error('FSDA:add2yX:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
-        chkoptions(options,UserOptions)
+        aux.chkoptions(options,UserOptions)
     end
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};

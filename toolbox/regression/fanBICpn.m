@@ -384,7 +384,7 @@ if ~isempty(UserOptions)
         'scoremle',scoremle, 'nsamp', nsamp,'fraciniFSR',fraciniFSR);
     
     % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    aux.chkoption(options,UserOptions)
     
     % Write in structure 'options' the options chosen by the user
     if nargin > 2
@@ -585,7 +585,7 @@ if isstruct(plots)
             name=plotall;
         else
             % Check that the specified names is in the list of available names.
-            chkoptions(cell2struct(plotall,plotall),name)
+            aux.chkoption(cell2struct(plotall,plotall),name)
         end
     else
         name=plotdef;

@@ -1193,7 +1193,7 @@ if coder.target('MATLAB')
         fld=fieldnames(options.model);
 
         % Check if user options inside options.model are valid options
-        chkoptions(modeldef,fld)
+        aux.chkoption(modeldef,fld)
         for i=1:length(fld)
             modeldef.(fld{i})=options.model.(fld{i});
         end
@@ -1454,7 +1454,7 @@ elseif isstruct(lts)
             fld=fieldnames(lts);
 
             % Check if user options inside options.fground are valid options
-            chkoptions(ltsdef,fld)
+            aux.chkoption(ltsdef,fld)
             for i=1:length(fld)
                 ltsdef.(fld{i})=lts.(fld{i});
             end

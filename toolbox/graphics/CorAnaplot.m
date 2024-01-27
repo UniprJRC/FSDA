@@ -928,7 +928,7 @@ if ~isempty(UserOptions)
         error('FSDA:CorAnaplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    aux.chkoptions(options,UserOptions)
 end
 
 % Write in structure 'options' the options chosen by the user
@@ -1061,7 +1061,7 @@ if isstruct(plots)
     fld=fieldnames(plots);
     
     % Check if user options inside plots are valid options
-    chkoptions(plotsdef,fld)
+    aux.chkoptions(plotsdef,fld)
     
     % This anonymous function anables to extract the variable name to a
     % string
@@ -1560,7 +1560,7 @@ if isstruct(confellipse) || confellipse ==1
         fld=fieldnames(confellipse);
         
         % Check if user options inside plots are valid options
-        chkoptions(confellipsedef,fld)
+        aux.chkoptions(confellipsedef,fld)
         
         % confellipse.nsimul=scalar which defines the number of
         % contingency tables which have to ge generated.

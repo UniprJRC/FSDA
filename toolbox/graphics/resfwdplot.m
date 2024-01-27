@@ -985,7 +985,7 @@ if nargin>1
         error('FSDA:resfwdplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    aux.chkoptions(options,UserOptions)
 
 
     for i=1:2:length(varargin)
@@ -1129,7 +1129,7 @@ if ~isequal(options.standard,standarddef)
     fld=fieldnames(options.standard);
 
     % Check if user options inside options.fground are valid options
-    chkoptions(standarddef,fld)
+    aux.chkoptions(standarddef,fld)
     for i=1:length(fld)
         standarddef.(fld{i})=options.standard.(fld{i});
     end
@@ -1251,7 +1251,7 @@ if ~isempty(options.fground)
         fld=fieldnames(options.fground);
 
         % Check if user options inside options.fground are valid options
-        chkoptions(fgrounddef,fld)
+        aux.chkoptions(fgrounddef,fld)
         for i=1:length(fld)
             fgrounddef.(fld{i})=options.fground.(fld{i});
         end
@@ -1394,7 +1394,7 @@ if ~isempty(options.bground)
         fld=fieldnames(options.bground);
 
         % Check if user options inside options.fground are valid options
-        chkoptions(bgrounddef,fld)
+        aux.chkoptions(bgrounddef,fld)
 
         for i=1:length(fld)
             bgrounddef.(fld{i})=options.bground.(fld{i});

@@ -129,7 +129,7 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
     % copy which will be passed by reference to quickselectFSmex.
     Y_copy = Y; Y_copy(end+1)=999; Y_copy(end)=[]; 
 
-    outmex = quickselectFSmex(Y_copy,n,k-1);
+    outmex = aux.quickselectFSmex(Y_copy,n,k-1);
 
     disp('  ');
     disp(['this is k_star      = ' num2str(k_star)]);

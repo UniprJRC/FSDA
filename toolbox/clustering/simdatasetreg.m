@@ -777,7 +777,7 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
         fnoiseunits=fieldnames(noiseunits);
         
         % Check if user options inside options.fnoiseunits are valid options
-        chkoptions(fnoiseunitsdef,fnoiseunits)
+        aux.chkoptions(fnoiseunitsdef,fnoiseunits)
         
         % labeladd option
         d=find(strcmp('number',fnoiseunits));
@@ -898,7 +898,7 @@ if isstruct(noisevars) || ~isempty(noisevars)
         fnoisevars=fieldnames(noisevars);
         
         % Check if user options inside options.fnoisevars are valid options
-        chkoptions(noisevarsdef,fnoisevars)
+        aux.chkoptions(noisevarsdef,fnoisevars)
         
         % number option
         d=find(strcmp('number',fnoisevars));

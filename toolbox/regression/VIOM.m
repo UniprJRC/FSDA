@@ -168,7 +168,7 @@ if nargin>3
         error('FSDA:VIOM:WrongInput','wrong input for VIOM.');
     end
     % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    aux.chkoption(options,UserOptions)
     
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)

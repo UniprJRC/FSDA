@@ -227,7 +227,7 @@ if ~isempty(UserOptions)
         'tag',tag,'family',family);
     
     % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    aux.chkoption(options,UserOptions)
     
     % Write in structure 'options' the options chosen by the user
     if nargin > 2

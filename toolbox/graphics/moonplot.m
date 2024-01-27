@@ -345,7 +345,7 @@ if ~isempty(UserOptions)
         error('FSDA:moonplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    aux.chkoptions(options,UserOptions)
 end
 
 % Write in structure 'options' the options chosen by the user
@@ -467,7 +467,7 @@ if isstruct(plots)
     fld=fieldnames(plots);
     
     % Check if user options inside plots are valid options
-    chkoptions(plotsdef,fld)
+    aux.chkoptions(plotsdef,fld)
     
     % This anonymous function anables to extract the variable name to a
     % string

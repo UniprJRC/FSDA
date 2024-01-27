@@ -69,7 +69,7 @@ if nargin>3
         error('FSDA:augStarplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    aux.chkoption(options,UserOptions)
 
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)

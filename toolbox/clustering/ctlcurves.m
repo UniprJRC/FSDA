@@ -780,7 +780,7 @@ if ComputeBands==true
         bandsdef.nsampExtra=[];
         bandsdef.crit=crit;
 
-        chkoptions(bandsdef,fieldnames(bands))
+        aux.chkoptions(bandsdef,fieldnames(bands))
 
         if isfield(bands,'conflev')
             gamma=(1-bands.conflev)/2;
