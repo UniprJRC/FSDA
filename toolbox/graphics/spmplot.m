@@ -3296,9 +3296,11 @@ end
                 % in general for off-diagonal panels add a legend
 
                 legToAdd = findobj('Tag', 'spmclickleg');
-                clickableMultiLegend(get(legToAdd(1), 'String'));
-                % this tag is assigned by add2spm function
-                % (index 1 is used to avoid errors in case of multiple plots)
+                if ~isempty(legToAdd)
+                    clickableMultiLegend(get(legToAdd(1), 'String'));
+                    % this tag is assigned by add2spm function
+                    % (index 1 is used to avoid errors in case of multiple plots)
+                end
 
             end
 
