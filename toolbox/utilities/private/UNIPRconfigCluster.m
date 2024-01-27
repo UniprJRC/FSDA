@@ -215,7 +215,7 @@ if ~isempty(varargin)
             error('FSDA:ConfigClusterUNIPR:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
-        aux.chkoption(options,UserOptions)
+        aux.chkoptions(options,UserOptions)
 
         % Write in structure 'options' the options chosen by the user
         for i=1:2:length(varargin)

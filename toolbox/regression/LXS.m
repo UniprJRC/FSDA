@@ -639,7 +639,7 @@ elseif isstruct(lms)
             fld=fieldnames(lms);
 
             % Check if user options inside options.fground are valid options
-            aux.chkoption(lmsdef,fld)
+            aux.chkoptions(lmsdef,fld)
             for i=1:length(fld)
                 lmsdef.(fld{i})=lms.(fld{i});
             end

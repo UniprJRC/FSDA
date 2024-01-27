@@ -642,7 +642,7 @@ if ~isequal(options.model,modeldef)
 
     if nocheck == false
         % Check if user options inside options.model are valid options
-        aux.chkoption(modeldef,fld)
+        aux.chkoptions(modeldef,fld)
     end
     for i=1:length(fld)
         modeldef.(fld{i})=options.model.(fld{i});

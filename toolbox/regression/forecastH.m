@@ -249,7 +249,7 @@ if nargin>3
 
     UserOptions=varargin(1:2:length(varargin));
     % Check if user options are valid options
-    aux.chkoption(options,UserOptions)
+    aux.chkoptions(options,UserOptions)
 
 
     for i = 1:2:length(varargin)

@@ -447,7 +447,7 @@ if ~isempty(UserOptions)
         error('FSDA:regressts:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
-    aux.chkoption(options,UserOptions)
+    aux.chkoptions(options,UserOptions)
 end
 
 
@@ -469,7 +469,7 @@ if nargin >1
         
         if nocheck == false
             % Check if user options inside options.model are valid options
-            aux.chkoption(modeldef,fld)
+            aux.chkoptions(modeldef,fld)
         end
         for i=1:length(fld)
             modeldef.(fld{i})=options.model.(fld{i});

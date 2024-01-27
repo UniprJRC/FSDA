@@ -530,7 +530,7 @@ end
 % Put User options inside modeldef
 if ~isequal(options.model,modeldef)
     fld=fieldnames(options.model);
-    aux.chkoption(modeldef,fld)
+    aux.chkoptions(modeldef,fld)
     for i=1:length(fld)
         modeldef.(fld{i})=options.model.(fld{i});
     end

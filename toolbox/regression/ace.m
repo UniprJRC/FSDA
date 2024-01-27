@@ -199,7 +199,7 @@ if ~isempty(UserOptions)
         error('FSDA:FSReda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
-    aux.chkoption(options,UserOptions)
+    aux.chkoptions(options,UserOptions)
     
     % We now overwrite inside structure options the default values with
     % those chosen by the user

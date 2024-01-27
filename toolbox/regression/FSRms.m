@@ -474,7 +474,7 @@ if ~isempty(UserOptions)
         error('FSDA:FSRms:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
-    aux.chkoption(options,UserOptions)
+    aux.chkoptions(options,UserOptions)
 end
 
 
