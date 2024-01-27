@@ -819,11 +819,11 @@ weightsboo=md <= EmpEnv;
 if bdp>0
     % make sure you select the maximum number of rows
     % with a cumulative mass smaller or equal than to 1-bdp
-    if sum(r(weightsboo))<1-bdp
+    if sum(r(weightsboo))<1-bdp || sum(weightsboo)<3
         [~,mdsorind]=sort(md);
         weightsboo=false(I,1);
-        tt=2;
-        while  sum(r(mdsorind(1:tt)))<=1-bdp
+        tt=4;
+        while  sum(r(mdsorind(1:tt)))<=1-bdp || sum(r(mdsorind(1:tt-1)))<0.5
             tt=tt+1;
         end
         weightsboo(mdsorind(1:tt-1))=true;
