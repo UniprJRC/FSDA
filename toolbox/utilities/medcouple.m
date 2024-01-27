@@ -461,7 +461,7 @@ switch mcm
                 ttt = tic;
                 work_copy = work_jm1;   work_copy(end+1)=999; work_copy(end)=[]; %#ok<AGROW>
                 weig_copy = weight_jm1; weig_copy(end+1)=999; weig_copy(end)=[]; %#ok<AGROW>
-                trial = quickselectFSwmex(work_copy,weig_copy,0.5,j-1);
+                trial = aux.quickselectFSwmex(work_copy,weig_copy,0.5,j-1);
                 t_diva    = t_diva+toc(ttt);
             end
             

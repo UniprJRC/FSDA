@@ -75,7 +75,7 @@ function [out]= genr8next(n, distrib, s1, s2)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('genr8')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('genr8next')">Link to the help page for this function</a>
 %
 %$LastChangedDate:: 2018-06-08 01:27:40 #$: Date of the last commit
 %
@@ -83,26 +83,26 @@ function [out]= genr8next(n, distrib, s1, s2)
 
 %{
     % genr8 using all default arguments.
-    out = genr8(1)
+    out = genr8next(1)
 %}
 
 %{
-    % genr8 specifing the type of distribution.
+    % genr8next specifing the type of distribution.
     
     % a vector of 5 uniform distributed random numbers
-    out = genr8(5, 0)
+    out = genr8next(5, 0)
     % a vector of 10 normal distributed random numbers
-    out = genr8(10, 1)
+    out = genr8next(10, 1)
 
 %}
 
 %{
-    % genr8 specifing the type of distribution and 1 seed.
+    % genr8next specifing the type of distribution and 1 seed.
     
     % vector of 5 uniform distributed random numbers and 1 seed
-    out = genr8(5, 0, 12345)
+    out = genr8next(5, 0, 12345)
     % vector of 50 normal distributed random numbers and 1 seed
-     out = genr8(10, 1, 45678)
+     out = genr8next(10, 1, 45678)
 
 %}
 
@@ -110,9 +110,9 @@ function [out]= genr8next(n, distrib, s1, s2)
     % genr8 specifing the type of distribution and the 2 seeds.
     
     % vector of 5 uniform distributed random numbers with both seeds
-    out = genr8(5, 0, 12345, 45678)
+    out = genr8next(5, 0, 12345, 45678)
     % vector of 50 normal distributed random numbers with both seeds
-     out = genr8(10, 1, 12345, 45678)
+     out = genr8next(10, 1, 12345, 45678)
 
 %}
 
