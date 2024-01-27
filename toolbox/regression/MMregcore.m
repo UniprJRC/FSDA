@@ -262,7 +262,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 
 nnargin = nargin;
 vvarargin = varargin;
-[y,X,n] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 % default nominal efficiency
 effdef = 0.95;

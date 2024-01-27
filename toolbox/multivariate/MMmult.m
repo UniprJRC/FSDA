@@ -253,7 +253,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
-[Y,n,v] = chkinputM(Y,nnargin,vvarargin);
+[Y,n,v] = aux.chkinputM(Y,nnargin,vvarargin);
 
 % default values for the initial S estimate:
 

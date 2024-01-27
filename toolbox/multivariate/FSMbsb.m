@@ -202,7 +202,7 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
-Y = chkinputM(Y,nnargin,vvarargin);
+Y = aux.chkinputM(Y,nnargin,vvarargin);
 
 %% Input parameters checking
 [n,v]=size(Y);

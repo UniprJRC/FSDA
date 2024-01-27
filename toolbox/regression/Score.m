@@ -114,7 +114,7 @@ function [outSC]=Score(y,X,varargin)
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 % Add the extra check on vector y
 if min(y)<0

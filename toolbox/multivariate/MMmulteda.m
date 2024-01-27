@@ -241,7 +241,7 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
-[Y,n,v] = chkinputM(Y,nnargin,vvarargin);
+[Y,n,v] = aux.chkinputM(Y,nnargin,vvarargin);
 
 seq=1:n;
 % default values for the initial S estimate:

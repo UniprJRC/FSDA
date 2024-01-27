@@ -539,7 +539,7 @@ function out  = tclustICgpcm(Y, varargin)
 
 nnargin=nargin;
 vvarargin=varargin;
-Y = chkinputM(Y,nnargin,vvarargin);
+Y = aux.chkinputM(Y,nnargin,vvarargin);
 [n, v]=size(Y);
 
 % check how many physical cores are available in the computer (warning:

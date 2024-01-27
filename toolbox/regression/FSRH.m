@@ -396,7 +396,7 @@ function [out]=FSRH(y,X,Z,varargin)
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 %% User options
 

@@ -619,7 +619,7 @@ alphaX=1;
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 % default value for we: the observation weights
 we = ones(n,1);

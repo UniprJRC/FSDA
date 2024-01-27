@@ -139,7 +139,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %% Beginning of code
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 la=[-1 -0.5 0 0.5 1];
 Likboo=false;

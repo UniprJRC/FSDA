@@ -466,7 +466,7 @@ function [out , varargout] = LXS(y,X,varargin)
 % Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 seq=(1:n);
 
 %% User options

@@ -377,7 +377,7 @@ persistent cachedlahatPreviousStep;
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 if nargin<2
     error('FSDA:boxCoxR:missingInputs','It is necessary to supply both y and X');

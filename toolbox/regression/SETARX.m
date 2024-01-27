@@ -406,7 +406,7 @@ yd = [NaN(d, 1); y(1:n-d)];
 
 
 % Checks on y, yd and X, remove NaNs and insert intercept.
-[y, yd, X, n, k, rmv_obs, input_full] = chkinputTAR(y, yd, X, intercept);
+[y, yd, X, n, k, rmv_obs, input_full] = aux.chkinputTAR(y, yd, X, intercept);
 % n is the number of observations after removing NaNs and Infs.
 % k=p+k1+k2(+1) is the total number of regressors (including intercept if any)
 % after the checks for multiple constant columns and rank.

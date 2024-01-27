@@ -154,7 +154,7 @@ function [out] = regressHart_grid(y,X,Z,varargin)
 
 nnargin = nargin;
 vvarargin = varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 alpha=0.1:0.1:4;
 theta=[0.001 0.01 0.1 1 1.71 10:120 500 1000 5000 10000 50000];

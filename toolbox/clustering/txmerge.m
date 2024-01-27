@@ -335,7 +335,7 @@ function out = txmerge(Y, k, g, varargin)
 % Input parameters checking
 nnargin = nargin;
 vvarargin = varargin;
-Y = chkinputM(Y,nnargin,vvarargin);
+Y = aux.chkinputM(Y,nnargin,vvarargin);
 [~, v] = size(Y);
 
 %% Deleting possible NaN and Inf values

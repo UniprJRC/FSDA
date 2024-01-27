@@ -343,7 +343,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 
 nnargin = nargin;
 vvarargin = varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 % default value of break down point
 bdpdef=0.5:-0.01:0.01;

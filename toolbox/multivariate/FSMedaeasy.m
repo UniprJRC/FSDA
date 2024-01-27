@@ -297,7 +297,7 @@ function out = FSMedaeasy(Y,bsb,varargin)
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
-Y = chkinputM(Y,nnargin,vvarargin);
+Y = aux.chkinputM(Y,nnargin,vvarargin);
 
 if nargin<2
     error('FSDA:FSMeda:missingInputs','Initial subset is missing')

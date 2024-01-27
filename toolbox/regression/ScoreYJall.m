@@ -225,7 +225,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 la=[-1 -0.5 0 0.5 1];
 

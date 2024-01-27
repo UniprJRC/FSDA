@@ -406,7 +406,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n1,p] = chkinputRB(y,X,nnargin,vvarargin);
+[y,X,n1,p] = aux.chkinputRB(y,X,nnargin,vvarargin);
 
 % default arguments values
 bsbini=1:n1;

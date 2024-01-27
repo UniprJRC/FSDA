@@ -850,7 +850,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
-Y = chkinputM(Y,nnargin,vvarargin);
+Y = aux.chkinputM(Y,nnargin,vvarargin);
 [n, v]=size(Y);
 
 % Eigenvalues restriction can be time demanding, depending on the (k,v)

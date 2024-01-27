@@ -235,7 +235,7 @@ function [out]=regressHart(y,X,Z,varargin)
 
 nnargin = nargin;
 vvarargin = varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 % maxiter = maximum number of iterations in the iterative procedure
 maxiterdef=10000;

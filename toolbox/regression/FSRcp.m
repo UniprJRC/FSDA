@@ -444,7 +444,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 % If the number of all possible subsets is <1000 the default is to extract
 % all subsets otherwise just 1000.

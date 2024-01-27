@@ -292,7 +292,7 @@ function [out]=FSM(Y,varargin)
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
-Y = chkinputM(Y,nnargin,vvarargin);
+Y = aux.chkinputM(Y,nnargin,vvarargin);
 
 [n,v]=size(Y);
 seq=(1:n)';
@@ -840,7 +840,7 @@ if coder.target('MATLAB')
                 PrVaCell{1,5} = 'Tag'; PrVaCell{2,5} = 'quantile_label';
                 
                 % Create textbox with 1% label
-                [figx, figy] = dsxy2figxy(gca, init, gmin(1,c001));
+                [figx, figy] = aux.dsxy2figxy(gca, init, gmin(1,c001));
                 if figy>=0 && figy<=1 && figx>=0 && figx<=1
                     annotation(figure1,'textbox',[figx figy kx ky],...
                         'String',{'1%'},...
@@ -849,7 +849,7 @@ if coder.target('MATLAB')
                 end
                 
                 % Create textbox with 99% label
-                [figx, figy] = dsxy2figxy(gca, init, gmin(1,c99));
+                [figx, figy] = aux.dsxy2figxy(gca, init, gmin(1,c99));
                 
                 if figy>=0 && figy<=1 && figx>=0 && figx<=1
                     annotation(figure1,'textbox',[figx figy kx ky],...
@@ -859,7 +859,7 @@ if coder.target('MATLAB')
                 end
                 
                 % Create textbox with 50% label
-                [figx, figy] = dsxy2figxy(gca, init, gmin(1,c50));
+                [figx, figy] = aux.dsxy2figxy(gca, init, gmin(1,c50));
                 
                 if figy>=0 && figy<=1 && figx>=0 && figx<=1
                     annotation(figure1,'textbox',[figx figy kx ky],...
@@ -869,7 +869,7 @@ if coder.target('MATLAB')
                 end
                 
                 % Create textbox with 99.9% label
-                [figx, figy] = dsxy2figxy(gca, init, gmin(1,c999));
+                [figx, figy] = aux.dsxy2figxy(gca, init, gmin(1,c999));
                 if figy>=0 && figy<=1 && figx>=0 && figx<=1
                     annotation(figure1,'textbox',[figx figy kx ky],...
                         'String',{'99.9%'},...
@@ -878,7 +878,7 @@ if coder.target('MATLAB')
                 end
                 
                 % Create textbox with 99.99% label
-                [figx, figy] = dsxy2figxy(gca, init, gmin(1,c9999));
+                [figx, figy] = aux.dsxy2figxy(gca, init, gmin(1,c9999));
                 if figy<=1 && figy>=0 && figx>=0 && figx<=1
                     annotation(figure1,'textbox',[figx figy kx ky],...
                         'String',{'99.99%'},...
@@ -888,7 +888,7 @@ if coder.target('MATLAB')
                 
                 if gmin(1,c99999)<=yl2
                     % Create textbox with 99.999% label
-                    [figx, figy] = dsxy2figxy(gca, init, gmin(1,c99999));
+                    [figx, figy] = aux.dsxy2figxy(gca, init, gmin(1,c99999));
                     if figy<=1 && figy>=0 && figx>=0 && figx<=1
                         annotation(figure1,'textbox',[figx figy kx ky],...
                             'String',{'99.999%'},...
@@ -925,8 +925,8 @@ if coder.target('MATLAB')
                 if istep<=xl2
                     % Add vertical line which divides central part from final part of the
                     % search
-                    [figx, figy] = dsxy2figxy(gca, istep, yl1);
-                    [figx, figy2] = dsxy2figxy(gca, istep, yl2);
+                    [figx, figy] = aux.dsxy2figxy(gca, istep, yl1);
+                    [figx, figy2] = aux.dsxy2figxy(gca, istep, yl2);
                     if figy2>=1
                         figy2=1;
                     else
@@ -1013,8 +1013,8 @@ if coder.target('MATLAB')
                 if istep<=xl2
                     % Add vertical line which divides central part from final part of the
                     % search
-                    [figx, figy] = dsxy2figxy(gca, istep, yl1);
-                    [figx, figy2] = dsxy2figxy(gca, istep, yl2);
+                    [figx, figy] = aux.dsxy2figxy(gca, istep, yl1);
+                    [figx, figy2] = aux.dsxy2figxy(gca, istep, yl2);
                     if figy2>=1
                         figy2=1;
                     else
@@ -1469,12 +1469,12 @@ out.class  =  'FSM';
         % the figure coordinates which correspond to the annotations positions.
         [y99999, y9999 , y999 , y50 , y99 , y1] = ...
             deal(xy{1,1}(xi,2) , xy{2,1}(xi,2) , xy{3,1}(xi,2) , xy{4,1}(xi,2) , xy{5,1}(xi,2) , xy{6,1}(xi,2));
-        [figx, figy1] = dsxy2figxy(evd.Axes, xp, y1);
-        [figx, figy99] = dsxy2figxy(evd.Axes, xp, y99);
-        [figx, figy50] = dsxy2figxy(evd.Axes, xp, y50);
-        [figx, figy999] = dsxy2figxy(evd.Axes, xp, y999);
-        [figx, figy9999] = dsxy2figxy(evd.Axes, xp, y9999);
-        [figx, figy99999] = dsxy2figxy(evd.Axes, xp, y99999);
+        [figx, figy1] = aux.dsxy2figxy(evd.Axes, xp, y1);
+        [figx, figy99] = aux.dsxy2figxy(evd.Axes, xp, y99);
+        [figx, figy50] = aux.dsxy2figxy(evd.Axes, xp, y50);
+        [figx, figy999] = aux.dsxy2figxy(evd.Axes, xp, y999);
+        [figx, figy9999] = aux.dsxy2figxy(evd.Axes, xp, y9999);
+        [figx, figy99999] = aux.dsxy2figxy(evd.Axes, xp, y99999);
         positionValCell(1,1) = {[figx figy99999 0 0]};
         positionValCell(2,1) = {[figx figy9999 0 0]};
         positionValCell(3,1) = {[figx figy999 0 0]};
@@ -1498,7 +1498,7 @@ out.class  =  'FSM';
         istep = LineData(1); yl1 = LineData(2); yl2 = LineData(3);
         if istep > xmax, istep = xmax; end
         if istep < xmin, istep = xmin; end
-        [figx, figy]  = dsxy2figxy(evd.Axes, istep, yl1);
+        [figx, figy]  = aux.dsxy2figxy(evd.Axes, istep, yl1);
         
         positionLineOri=get(hanno2,'Position');
         positionLineOri(1)=figx;

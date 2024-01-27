@@ -417,7 +417,7 @@ end
 
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n,p] = chkinputRB(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputRB(y,X,nnargin,vvarargin);
 
 %% User options
 

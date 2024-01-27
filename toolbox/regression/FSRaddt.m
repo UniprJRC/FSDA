@@ -314,7 +314,7 @@ function [out]=FSRaddt(y,X,varargin)
 % Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 % Reduce the number of variables by 1 becuse we delete each variable in
 % turn
@@ -627,7 +627,7 @@ if plo==1
             line(Tdel(:,1),tinv(quant(i),Tdel(:,1)-p),'LineWidth',lwdenv,'LineStyle','--','Color',[0  0 0],'tag','env');
         end
 
-        [figx, figy] = dsxy2figxy(gca, xcoord,Tdelenv(Tdel(:,1)==xcoord,i));
+        [figx, figy] = aux.dsxy2figxy(gca, xcoord,Tdelenv(Tdel(:,1)==xcoord,i));
         if isempty(figy) || figy<0
             figy=0;
         end

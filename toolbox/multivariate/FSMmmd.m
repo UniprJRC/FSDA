@@ -202,7 +202,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %chkinputM does not do any check if option nocheck=true
 nnargin=nargin;
 vvarargin=varargin;
-Y = chkinputM(Y,nnargin,vvarargin);
+Y = aux.chkinputM(Y,nnargin,vvarargin);
 
 % rows(Y)
 [n,v]=size(Y);

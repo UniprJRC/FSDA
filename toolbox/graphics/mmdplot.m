@@ -558,7 +558,7 @@ for i=1:length(quant)
         line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',[0  0 0],'tag','env');
     end
     
-    [figx, figy] = dsxy2figxy(gca, xcoord,gmin(gmin(:,1)==xcoord,i+1));
+    [figx, figy] = aux.dsxy2figxy(gca, xcoord,gmin(gmin(:,1)==xcoord,i+1));
     kx=0; ky=0;
     
     if isempty(figy) || figy<0

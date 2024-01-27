@@ -243,7 +243,7 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 % Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
-[X, nn , d] = chkinputM(X,nnargin,vvarargin);
+[X, nn , d] = aux.chkinputM(X,nnargin,vvarargin);
 
 if d ~= 2
     error('FSDA:kdebiv:WrongInput','This function applies to bivariate data only!');

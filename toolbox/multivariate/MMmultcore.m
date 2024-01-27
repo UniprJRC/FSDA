@@ -173,7 +173,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 
 nnargin=nargin;
 vvarargin=varargin;
-[Y,n,v]= chkinputM(Y,nnargin,vvarargin);
+[Y,n,v]= aux.chkinputM(Y,nnargin,vvarargin);
 
 % default nominal efficiency
 effdef = 0.95;

@@ -797,7 +797,7 @@ verLess2016b=verLessThanFS('9.1');
 nnargin   = nargin;
 vvarargin = varargin;
 
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
+[y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
 % Check the presence of the intercept in matrix X
 if min(max(X)-min(X))==0
