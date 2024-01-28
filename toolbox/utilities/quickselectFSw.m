@@ -152,7 +152,7 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
     % Step 3: retrieve the weighted median and corresponding weight
     %         with the right original sign
     %   3a: index of weighted median and corrisponding weight 
-    kstar_AW = find(sWA==swm & W==swwm);
+    kstar_AW = find(sWA==swm & absW==swwm);
     %   3b: final weighted median, with the initial sign 
     wm       = sW(kstar_AW) * swm;
     %   3c: the weight of the weighted median, with the initial sign
@@ -186,7 +186,7 @@ function [kD , kW , kstar, varargout]  = quickselectFSw(D,W,p)
     % Step 3: retrieve the weighted median and corresponding weight
     %         with the right original sign
     %   3a: index of weighted median and corrisponding weight 
-    kstar_AW = find(sWA==swm & W==swwm);
+    kstar_AW = find(sWA==swm & absW==swwm);
     %   3b: final weighted median, with the initial sign 
     wm       = sW(kstar_AW) * swm;
     %   3c: the weight of the weighted median, with the initial sign
