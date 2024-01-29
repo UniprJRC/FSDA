@@ -1407,15 +1407,18 @@ end
         % The consistency factor is used to take the effect of trimming
         % into account. 
         
-        alpha      = h/n;
+        % Fraction of observations whose covariance determinant will be
+        % minimized. If a percentage alpha=1-h/n of units are trimmed by 
+        % the mcd, it is 1-alpha. 
+        alphacompto1 = h/n;
 
         if nargin<4 || isempty(nu) || nu == 0
             % This is the standard case, applied when uncontaminated data
             % are assumed to come from a multivariate Normal model.
             
             %alpha      = h/n;
-            a          = chi2inv(alpha,v);
-            rawconsfac = alpha/(chi2cdf(a,v+2));
+            a          = chi2inv(alphacompto1,v);
+            rawconsfac = alphacompto1/(chi2cdf(a,v+2));
         else
             % This is the case of a heavy-tail scenario, when
             % uncontaminated data come from a multivariate Student-t
@@ -1425,8 +1428,8 @@ end
             %alpha       = (n-h)/n;
             %alpha       = (1-alpha); 
             integrand   = @(u) 1 ./ (1 - betainv(u,v/2,nu/2));
-            theintegral = integral(integrand,0,alpha);
-            rawconsfac  = ((nu-2) / (alpha*v) * theintegral - (nu - 2)/v)^(-1);
+            theintegral = integral(integrand,0,alphacompto1);
+            rawconsfac  = ((nu-2) / (alphacompto1*v) * theintegral - (nu - 2)/v)^(-1);
         end
     end
 
