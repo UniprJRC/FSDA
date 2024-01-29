@@ -1415,7 +1415,7 @@ end
             
             %alpha      = h/n;
             a          = chi2inv(alpha,v);
-            rawconsfac = (h/n)/(chi2cdf(a,v+2));
+            rawconsfac = alpha/(chi2cdf(a,v+2));
         else
             % This is the case of a heavy-tail scenario, when
             % uncontaminated data come from a multivariate Student-t
