@@ -111,7 +111,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %               Example - 'tolMCD',1e-20
 %               Data Types - double
 %
-% findEmpiricalEnvelope : Empirical Confidence level. Boolean.
+% findEmpiricalEnvelope : Empirical Confidence level. Boolean or struct.
 %               If findEmpiricalEnvelope is true (default is false) the
 %               empirical envelope for each Mahalanobis distance of
 %               each Profile row of the contingency table is computed, else
@@ -120,6 +120,23 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %               theoretical envelope is based on the quantiles of the
 %               following scaled gamma distribution
 %               chi2inv(conflev,(J-1)*(I-1)/I)/n,I,1)./r;
+%               If findEmpiricalEnvelope is a struct it is possible to
+%               specify the following fields
+%               findEmpiricalEnvelope.nsimul  = number of simulations to
+%                           compute the empirical envelope;
+%               findEmpiricalEnvelope.underH0 = boolean which specifies
+%                           how to simulate the contingency tables.
+%                           If findEmpiricalEnvelope.underH0=true the
+%                           contingency tables are simulated under the null
+%                           hypothesis of independence  else they are
+%                           simulated with a Chi2 value equal to the
+%                           observed one.
+%               findEmpiricalEnvelope.StoreSimMD = boolean which specifies
+%                           whether to store or not as field named mmdStore
+%                           in output structs RAW and  REW the sorted
+%                           distances based on simulated contingency tables
+%                           which have been generated. The default value of
+%                           findEmpiricalEnvelope.StoreSimMD is false.
 %               Example - 'findEmpiricalEnvelope',true
 %               Data Types - Boolean
 %
@@ -172,15 +189,23 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %            RAW.EmpEnv=array of size I-by-1 containing empirical envelopes for
 %                   each Mahalanobis distance if input option
 %                   findEmpiricalEnvelope is true or scalar containing
-%                   quantile which ahse been used to declare the outliers.
+%                   quantile which has been used to declare the outliers.
+%      RAW.mmdStore  = array of size I-by-nsimul which cantains the robust
+%                   Mahalanobis distances for each row of the contingency
+%                   table across the nsimul simulations based on simulated
+%                   contingency tables. The rows are ordered in ascending
+%                   order. This output is present just if
+%                   input option findEmpiricalEnvelope is a struct and
+%                   findEmpiricalEnvelope.StoreSimMD is true.
 %        RAW.class = 'mcdCorAna'
 %
 %         REW:   structure which contains the following fields
 %           REW.md = I x 1 vector containing the estimates of the robust
 %                    Mahalanobis distances (in squared units). This vector
 %                    contains the distances of each observation from the
-%                    rewighted MCD location of the data, relative to the reweighted MCD
-%                    scatter matrix diag(reweighted MCD location)
+%                    reweighted MCD location of the data, relative to the
+%                    reweighted MCD scatter matrix diag(reweighted MCD
+%                    location)
 %      REW.weights = I x 1 vector containing the estimates of the weights.
 %                    Weights assume values 0 or 1. Weight is 0 if the
 %                    associated row has been declared outlier after reweighting.
@@ -191,7 +216,14 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %            REW.EmpEnv=array of size I-by-1 containing empirical envelopes for
 %                   each Mahalanobis distance if input option
 %                   findEmpiricalEnvelope is true or scalar containing
-%                   quantile which ahse been used to declare the outliers.
+%                   quantile which have been used to declare the outliers.
+%      REW.mmdStore  = array of size I-by-nsimul which cantains the robust
+%                   Mahalanobis distances for each row of the contingency
+%                   table across the nsimul simulations based on simulated
+%                   contingency tables. The rows are ordered in ascending
+%                   order. This output is present just if
+%                   input option findEmpiricalEnvelope is a struct and
+%                   findEmpiricalEnvelope.StoreSimMD is true.
 %        REW.class = 'mcdCorAna'
 %
 %
@@ -234,39 +266,8 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 
 %{
     % mcdCorAna with option plots=1.
-  N=[134    76    43    50    49
-    173    62    20    23    16
-    67    76    48    36    23
-    11    21    31    36    52
-    25    32    57    60    58
-    32    42    40    67    67
-    20    35    31    41    41
-    10    16    23    23    24
-    54    28    29    30    23
-    12    19    14    15    20
-     9    10    14    20    23
-    52    43    38    47    54
-    21    36    33    30    36
-    85    74    55    31    22
-     3     8    12    12    25
-    28    33    40    31    45
-     9    17    23    19    34
-    18    36    44    35    40
-    12    24    22    25    37
-    16    32    35    39    38
-    28    39    36    41    54
-     3    15    22    25    24
-    30    40    28    20    26
-     8    10    12    13    17
-     2     1     2     3     3
-    29    10    16     8     9
-    47    51    29    19    12
-     7    19    20    26     9];
-    rowlab={'GB' 'SK' 'BG' 'IE' 'BE' 'ES' 'PL' 'FI' 'GR' 'HU' 'SI' 'NL' 'IT' 'RO'...
-     'AT' 'FR' 'HR' 'SE' 'CZ' 'DK' 'DE' 'LT' 'PT' 'EE' 'LU' 'MT' 'LV' 'CY'};
-    collab={'x1' 'x2' 'x3' 'x4' 'x5'};
-    Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
-    RAW=mcdCorAna(Ntable,'plots',1);
+    load clothes
+    RAW=mcdCorAna(clothes,'plots',1);
 %}
 
 
@@ -297,78 +298,40 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
     disp([RAW.md d2])
 %}
 
-%{
-    % mcdCorAna with option plots.
-  N=[134    76    43    50    49
-    173    62    20    23    16
-    67    76    48    36    23
-    11    21    31    36    52
-    25    32    57    60    58
-    32    42    40    67    67
-    20    35    31    41    41
-    10    16    23    23    24
-    54    28    29    30    23
-    12    19    14    15    20
-     9    10    14    20    23
-    52    43    38    47    54
-    21    36    33    30    36
-    85    74    55    31    22
-     3     8    12    12    25
-    28    33    40    31    45
-     9    17    23    19    34
-    18    36    44    35    40
-    12    24    22    25    37
-    16    32    35    39    38
-    28    39    36    41    54
-     3    15    22    25    24
-    30    40    28    20    26
-     8    10    12    13    17
-     2     1     2     3     3
-    29    10    16     8     9
-    47    51    29    19    12
-     7    19    20    26     9];
-    rowlab={'GB' 'SK' 'BG' 'IE' 'BE' 'ES' 'PL' 'FI' 'GR' 'HU' 'SI' 'NL' 'IT' 'RO'...
-     'AT' 'FR' 'HR' 'SE' 'CZ' 'DK' 'DE' 'LT' 'PT' 'EE' 'LU' 'MT' 'LV' 'CY'};
-    collab={'x1' 'x2' 'x3' 'x4' 'x5'};
-    Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
-    RAW=mcdCorAna(Ntable,'plots',1);
-%}
 
 %{
     %% Raw and reweighted MCD.
-  N=[134    76    43    50    49
-    173    62    20    23    16
-    67    76    48    36    23
-    11    21    31    36    52
-    25    32    57    60    58
-    32    42    40    67    67
-    20    35    31    41    41
-    10    16    23    23    24
-    54    28    29    30    23
-    12    19    14    15    20
-     9    10    14    20    23
-    52    43    38    47    54
-    21    36    33    30    36
-    85    74    55    31    22
-     3     8    12    12    25
-    28    33    40    31    45
-     9    17    23    19    34
-    18    36    44    35    40
-    12    24    22    25    37
-    16    32    35    39    38
-    28    39    36    41    54
-     3    15    22    25    24
-    30    40    28    20    26
-     8    10    12    13    17
-     2     1     2     3     3
-    29    10    16     8     9
-    47    51    29    19    12
-     7    19    20    26     9];
-    rowlab={'GB' 'SK' 'BG' 'IE' 'BE' 'ES' 'PL' 'FI' 'GR' 'HU' 'SI' 'NL' 'IT' 'RO'...
-     'AT' 'FR' 'HR' 'SE' 'CZ' 'DK' 'DE' 'LT' 'PT' 'EE' 'LU' 'MT' 'LV' 'CY'};
-    collab={'x1' 'x2' 'x3' 'x4' 'x5'};
-    Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
-    [RAW,REW]=mcdCorAna(Ntable,'plots',1);
+    load clothes.mat
+    [RAW,REW]=mcdCorAna(clothes,'plots',1);
+%}
+
+%{
+    % Example 1 of findEmpiricalEnvelope passed as struct.
+    load clothes.mat
+    findEmp=struct;
+    % Number of simulations to create the envelope
+    findEmp.nsimul=100; 
+    % Simulate contingency tables with a Chi2 equal to the observed
+    findEmp.underH0=false; 
+    % Set confidence level
+    conflev=0.95;
+    RAW=mcdCorAna(clothes,'plots',1,'findEmpiricalEnvelope',findEmp,'conflev',conflev);
+
+%}
+
+%{ 
+    %% Example 2 of findEmpiricalEnvelope a struct
+    load clothes.mat
+    findEmp=struct;
+    % Generate 500 contingency tables
+    findEmp.nsimul=500;
+    % Under the null hypothesis of independence
+    findEmp.underH0=true;
+    % Store the nimul robust distance sorted (for each row)
+    findEmp.StoreSimMD=true;
+    % Detect outlying rows using a confidence level of 0.999
+    conflev=0.999;
+    [RAW,REW]=mcdCorAna(clothes,'plots',1,'findEmpiricalEnvelope',findEmp,'conflev',conflev,'bdp',0.1);
 %}
 
 %% Beginning of code
@@ -480,7 +443,8 @@ options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'reftol',reftoldef,...
     'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
     'bdp',bdpdef,'plots',0,'conflev',conflev,...
-    'msg',true,'tolMCD',tolMCDdef,'findEmpiricalEnvelope',findEmpiricalEnvelope,'Lr','','Lc','');
+    'msg',true,'tolMCD',tolMCDdef,'findEmpiricalEnvelope',findEmpiricalEnvelope, ...
+    'Lr','','Lc','');
 
 % check user options and update structure options
 [varargin{:}] = convertStringsToChars(varargin{:});
@@ -517,6 +481,34 @@ msg=options.msg;
 
 % Use or not empirical envelope to detect the outliers.
 findEmpiricalEnvelope=options.findEmpiricalEnvelope;
+
+if isstruct(findEmpiricalEnvelope)
+    findEmpEnv=true;
+    optionspa=struct('nsimul','','underH0','','StoreSimMD','');
+    aux.chkoptions(optionspa,fieldnames(findEmpiricalEnvelope))
+
+
+    if ~isfield(findEmpiricalEnvelope,'nsimul')
+        nsimul=[];
+    else
+        nsimul=findEmpiricalEnvelope.nsimul;
+    end
+    if ~isfield(findEmpiricalEnvelope,'StoreSimMD')
+        StoreSimMD=false;
+    else
+        StoreSimMD=findEmpiricalEnvelope.StoreSimMD;
+    end
+    if ~isfield(findEmpiricalEnvelope,'underH0')
+        simulateUnderH0=true;
+    else
+        simulateUnderH0=findEmpiricalEnvelope.underH0;
+    end
+else
+    nsimul=[];
+    simulateUnderH0=true;
+    findEmpEnv=options.findEmpiricalEnvelope;
+    StoreSimMD=false;
+end
 
 %Labels of row profiles.
 if ~isempty(options.Lr)
@@ -760,19 +752,23 @@ lastunit=bsbh(end);
 weights(lastunit)=(h-sum(N(bsbh(1:end-1),:),'all'))/sum(N(lastunit,:));
 RAW.weights=weights;
 
-if findEmpiricalEnvelope == true
+if findEmpEnv == true
     % nrowt = column vector containing row marginal totals
     nrowt=sum(N,2);
     % ncolt = row vector containing column marginal totals
     ncolt=sum(N,1);
     disp('Finding empirical bands')
-    if conflev<=0.99
-        nsimul=200;
-    elseif conflev <=0.999
-        nsimul=1000;
+    if isempty(nsimul)
+        if conflev<=0.99
+            nsimul=200;
+        elseif conflev <=0.999
+            nsimul=1000;
+        else
+            disp('Empirical band is very extreme: running 5000 replicates')
+            nsimul=5000;
+            % nsimul=100;
+        end
     else
-        disp('Empirical band is very extreme: running 5000 replicates')
-        nsimul=5000;
     end
 
     mmdStore=zeros(I,nsimul);
@@ -784,11 +780,114 @@ if findEmpiricalEnvelope == true
     else
         alsorew=false;
     end
+
+
+    if simulateUnderH0==false
+        nrowt=sum(N,2);
+        ncolt=sum(N,1);
+        Ntheo=nrowt*ncolt/n;
+        Ntheovec=Ntheo(:);
+
+
+        % funz2 = anonymous function with 2 input args N and Ntheo
+        funz2=@(x,Ntheovec) -sum(((x-Ntheovec).^2)./Ntheovec);
+        % funz1 = anonymous function with 1 input arg N which calls funz2
+        % The purpose is to minimize funz1 as a function of x
+        funz1=@(x)funz2(x,Ntheovec);
+        % Chi2current = current value of Chi2 test
+        Chi2current=-funz2(N(:),Ntheovec);
+
+        num=numel(N);
+        lb=zeros(num,1);
+
+        Arows=repmat([ones(1,I) zeros(1,num-I)],J,1);
+        AeqRows=Arows;
+        for i=2:size(Arows,1)
+            AeqRows(i,:)=circshift(AeqRows(i,:),I*(i-1));
+        end
+
+        Acols=zeros(I,num);
+        AeqCols=Acols;
+        seqJ=0:I:(num-J);
+        for i=1:I
+            AeqCols(i,seqJ+i)=1;
+        end
+
+        Aeq=[AeqRows; AeqCols];
+        beq=[ncolt'; nrowt];
+
+        % optionsFM = optimoptions('fmincon','Display', ...
+        %     'none',OptimalityTolerance=1e-20,ConstraintTolerance=1e-10, ...
+        %     FiniteDifferenceType='central',FiniteDifferenceStepSize=10000);
+        %optionsFM = optimoptions('fmincon','Display', ...
+        %    'none',OptimalityTolerance=1e-20,ConstraintTolerance=1e-10,FiniteDifferenceStepSize=10000);
+        % optionsFM = optimoptions('fmincon','Display', ...
+        %     'none',FiniteDifferenceType='central',FiniteDifferenceStepSize=10000);
+        optionsFM = optimoptions('fmincon','Display','none');
+        % Suppress warning on All Workers
+        parfevalOnAll(@warning,0,'off','all');
+    else
+        % Initialization needed for parfor
+        funz1=@(x)x;
+        Aeq=0; beq=0; lb=0; Chi2current=0;  Ntheovec=0;
+        optionsFM=struct;
+    end
+
     parfor j=1:nsimul
         % Generate random contingency table using row and column marginals
         % of the current table
-        out1=rcontFS(I,J,nrowt,ncolt,'nocheck',true,'algorithm','144');
-        Nsim=out1.m144;
+        % Initialization of temporary variables inside parfor
+        Nmaxvec=0;
+
+        if simulateUnderH0 == false
+            % Generate random contingency table using row and column marginals
+            % of the current table
+            % Find a contingency table with a Chi2 value at least equal to the one
+            % found in the sammple.
+            dd=1;
+            while dd>0
+                out1=rcontFS(I,J,nrowt,ncolt,'nocheck',true,'algorithm','144');
+                x0=out1.m144(:);
+
+                [Nmaxvec, fval] = fmincon(funz1, ...% function to minimize
+                    x0, ...                    % initial value
+                    [], [], ...                % no inequality constraint
+                    Aeq, ...                   %  Aeq  term in -> equality constraint Aeq*x=beq
+                    beq, ...                   % beq term ->  equality constraint Aeq*x=beq
+                    lb,[],[],optionsFM);         % all x must be non negative
+
+                % If the condition below is fullfilled we have found a contingency table
+                % with a Chi2 value greater than the observed one
+                if fval<-Chi2current
+                    dd=0;
+                end
+            end
+
+            % Pmax=reshape(Nmaxvec,I,[]);
+            % disp('fval')
+            % disp(fval)
+
+            % Now find a contingency table with (approximately) the same value of the Chi2
+            % in the current sample.
+            % lambda=1:-0.00001:0;
+            lambda=1:-0.001:0;
+            for i=1:length(lambda)
+                Pcandvec=lambda(i)*Ntheovec+(1-lambda(i))*Nmaxvec;
+                % disp(-funz1(Pcandvec))
+                if funz1(Pcandvec)<-Chi2current
+                    break
+                end
+            end
+
+            Pcandvec=Nmaxvec;
+
+            % Nsim = simulated contingency table with the required value of Chi2
+            Nsim=reshape(Pcandvec,I,[]);
+        else
+            out1=rcontFS(I,J,nrowt,ncolt,'nocheck',true,'algorithm','144');
+            Nsim=out1.m144;
+        end
+
         % Nsim=out1.m159;
         if alsorew==false
             TMP=mcdCorAna(Nsim,'plots',0,'msg',false,'bdp',h);
@@ -802,6 +901,11 @@ if findEmpiricalEnvelope == true
 
     % Sort rows of matrix mmdStore (MD in squared units)
     mmdStore=sort(mmdStore,2);
+
+    if StoreSimMD==true
+        RAW.mmdStore=mmdStore;
+    end
+
     EmpEnv=mmdStore(:,ceil(nsimul*conflev));
     if alsorew==true
         mmdStoreR=sort(mmdStoreR,2);
@@ -880,9 +984,13 @@ if nargout>1
     REW.weights=md <= EmpEnv;
 
     REW.outliers=seq(~REW.weights);
-    % Matrix Profile Rows is stored in stucutre RAW
+    % Matrix Profile Rows is stored in structure REW
     REW.Y=ProfilesRows;
     REW.EmpEnv=EmpEnvR;
+
+    if StoreSimMD==true
+        REW.mmdStore=mmdStoreR;
+    end
     REW.class   = 'mcdCorAna';
 
 end
