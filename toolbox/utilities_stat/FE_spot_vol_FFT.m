@@ -183,4 +183,4 @@ Fsum=exp(-1i*2*pi*M*(k+M)/(2*M+1)).*Fsum;
 spotvar=real(Fsum);
 
 end
-%FScategory:UTISTAT
+%FScategory:FMvol
