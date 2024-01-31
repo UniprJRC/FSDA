@@ -20,7 +20,7 @@ function out=CorAna(N, varargin)
 %
 %       N    :    Contingency table (default) or n-by-2 input dataset.
 %                 2D Array or Table.
-%                 2D array or table which contains the input contingency
+%                 2D array or table or timetable which contains the input contingency
 %                 table (say of size I-by-J) or the original data matrix X.
 %                 In this last case N=crosstab(X(:,1),X(:,2)). As default
 %                 procedure assumes that the input is a contingency table.
@@ -645,6 +645,26 @@ function out=CorAna(N, varargin)
     out=CorAna(Nactive,'Sup',Sup);
 %}
 
+%{
+    %% Example of interpretation of values close to the center.
+    N=[80	20	90	90	5	100	40
+        50	40	40	70	10	100	40
+        10	70	20	90	80	99	40
+        0	80	2	20	95	20	40
+        35	52	38	47	48	80	40];
+    rl=["Dog" "Cat" "Rat" "Cockroach" "Wallaby"];
+    cl=["Big" "Athletic" "Friendly"	"Trainable" "Resourceful" "Animal" "Lucky"];
+    Ntable=array2table(N,"RowNames",rl,"VariableNames",cl);
+    out=CorAna(Ntable);
+    % In the center of the map we have Wallaby and Lucky. Does this mean
+    % wallabies are lucky animals? No. Wallaby is pretty average on all the
+    % variables being measured. As it has nothing that differentiates it, the
+    % result is that it is in the middle of the map (i.e., near the origin).
+    % Similarly, Lucky does not differentiate, so it is also near the center.
+    % That they are both in the center tells us that they are both indistinct,
+    % and that is all that they have in common (in the data).
+%}
+
 %% Beginning of code
 
 % Check MATLAB version. If it is not smaller than 2014a, output is
@@ -752,9 +772,13 @@ if ~isempty(UserOptions)
 end
 
 % Extract labels for rows and columns
-if ~verMatlab && istable(N)
+if ~verMatlab && (istable(N) || istimetable(N))
     Lc=N.Properties.VariableNames;
-    Lr=N.Properties.RowNames;
+    if istimetable(N)
+        Lr=string(N.Properties.RowTimes);
+    else
+        Lr=N.Properties.RowNames;
+    end
     Ntable=N;
     N=table2array(N);
 else
@@ -958,7 +982,7 @@ else
     LrSup='';
     LcSup='';
 end
-out.Lr=Lr;
+out.Lr=string(Lr);
 out.Lc=Lc;
 
 % Store contingency table (in 2D array format)
@@ -996,15 +1020,23 @@ Nhat=(r*c')*n;
 out.Nhat=Nhat;
 
 if verMatlab==0
-    % Store Nhat in table format
-    Nhattable=array2table(Nhat,'RowNames',Lr,'VariableNames',Lc);
+    % Store Nhat in table or timetable format
+    if isdatetime(Lr)
+        Nhattable=array2timetable(Nhat,'RowTimes',Lr,'VariableNames',Lc);
+    else
+        Nhattable=array2table(Nhat,'RowNames',Lr,'VariableNames',Lc);
+    end
     out.Nhattable=Nhattable;
 end
 
 out.P=P;
 if verMatlab==0
     % Store P in table format
-    Ptable=array2table(P,'RowNames',Lr,'VariableNames',Lc);
+    if isdatetime(Lr)
+        Ptable=array2timetable(P,'RowTimes',Lr,'VariableNames',Lc);
+    else
+        Ptable=array2table(P,'RowNames',Lr,'VariableNames',Lc);
+    end
     out.Ptable=Ptable;
 end
 
@@ -1189,6 +1221,7 @@ end
 
 d1str=num2str(d1);
 d2str=num2str(d2);
+    Lr=string(Lr);
 
 if isstruct(plots) || plots==1
     CAplot=true;
@@ -1300,7 +1333,7 @@ if isstruct(plots) || plots==1
     colorsuprows='b';
     % Color for symbols and text for supplementary column points
     colorsupcols='r';
-
+    % Just in case Lr is of type datetime 
 
     figure
     hold('on')
@@ -1318,7 +1351,9 @@ if isstruct(plots) || plots==1
 
     % Add labels for row points and column points
     % addx = adds a small right horizontal displacement for labels
-    addx=0.04;
+    % addx=0.04;
+    ax=axis;
+    addx=(ax(2)-ax(1))/50;
     eval(['text(' typeR '(:,' d1str ')+' num2str(addx) ',' typeR '(:,' d2str '),Lr,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
     eval(['text(' typeC '(:,' d1str ')+' num2str(addx) ',' typeC '(:,' d2str '),Lc,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
 

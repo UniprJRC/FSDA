@@ -51,7 +51,7 @@ function CorAnaplot(out,varargin)
 % 		out.SupRowsN   =  matrix of size length(LrSup)-by-c
 %                         referred to supplementary rows. If there are no
 %                         supplementary rows this field is not present.
-% 		out.SupColsN  =   matlab of size r-by-length(LcSup) referred to
+% 		out.SupColsN  =   matrix of size r-by-length(LcSup) referred to
 %                         supplementary columns.
 %                         If there are no supplementary columns this field
 %                         is not present.
@@ -297,15 +297,15 @@ function CorAnaplot(out,varargin)
 %              Example - 'plots',plots=struct; plots.colorcols='k'
 %              Data Types - double
 %
-%       addx : horizontal displacement for labels. Scalar. Amount of
+%       addx : horizontal displacement for labels. Scalar  or empty. Amount of
 %              horizontal displacement which has been put on the labels in the
-%              plot. The defalut value of addx is 0.04.
+%              plot. The default value of addx (addx is empty) is (max(x)-min(x))/50.
 %              Example - 'addx',0.01
 %              Data Types - double
 %
 %       addy : vertical displacement for labels. Scalar. Amount of
 %              vertical displacement which has been put on the labels in the
-%              plot. The defalut value of addy is 0.
+%              plot. The default value of addy is 0.
 %              Example - 'addy',0.01
 %              Data Types - double
 %
@@ -317,7 +317,7 @@ function CorAnaplot(out,varargin)
 %               changedimsign(2) is true the sign of the coordinates for
 %               first chosen dimension is changed. As default the
 %               dimensions are the first and the second however, they can
-%               be changed using option plots.dim. The defaul value of
+%               be changed using option plots.dim. The default value of
 %               changedimsign is [false false] that is the sign is not
 %               changed.
 %              Example - 'changedimsign', [true false]
@@ -364,7 +364,7 @@ function CorAnaplot(out,varargin)
 %                   I containing a true in correspondence of the row
 %                   elements for which the ellipse has to be drawn or a
 %                   numeric vector which contains the indexes of the units
-%                   which have to be drawn or a cell arrary containing the
+%                   which have to be drawn or a cell array containing the
 %                   names of the rows for which the ellipse has to be drawn.
 %                   For example if I=3 and the second row is
 %                   called 'row2' in order to show just the confidence
@@ -377,7 +377,7 @@ function CorAnaplot(out,varargin)
 %                   length J containing a true in correspondence of the
 %                   column elements for which the ellipse has to be drawn
 %                   or a numeric vector which contains the indexes of the
-%                   columns which have to be drawn or a cell arrary
+%                   columns which have to be drawn or a cell array
 %                   containing the names of the columns for which the
 %                   ellipse has to be drawn. For example if J=3 and one the
 %                   third column is called 'Col3' in order to show just the
@@ -511,10 +511,10 @@ function CorAnaplot(out,varargin)
         Sup.c=N(1:14,6:8);
         Sup.Lc=colslab(6:8);
     end
-    % Compute correpondence analysis
+    % Compute correspondence analysis
     out=CorAna(Nactive,'Sup',Sup,'plots',0,'dispresults',false);
-    % Show the correspodence analysis plot.
-    % Rows and columns are showN in principal coordinates
+    % Show the correspondence analysis plot.
+    % Rows and columns are shown in principal coordinates
     CorAnaplot(out)
 %}
 
@@ -667,7 +667,7 @@ function CorAnaplot(out,varargin)
 %}
 
 %{
-    %% Correpondence analysis plot with selected ellipses.
+    %% Correspondence analysis plot with selected ellipses.
     N=[51	64	32	29	17	59	66	70;
         53	90	78	75	22	115	117	86;
         71	111	50	40	11	79	88	177;
@@ -717,7 +717,7 @@ function CorAnaplot(out,varargin)
     % Superimpose confidence ellipses for rows 2 and 4 and for column 3
     confellipse=struct;
     confellipse.selRows=[2 4];
-    % Ellipse for column 3 using an interger
+    % Ellipse for column 3 using an integer
     confellipse.selCols=3;
     % Ellipse for column 3 using a Boolean vector
     confellipse.selCols=[ false false true false false];
@@ -736,7 +736,7 @@ function CorAnaplot(out,varargin)
 %}
 
 %{
-    % Correpondence analysis plot with ellipses only on column points.
+    % Correspondence analysis plot with ellipses only on column points.
     N=[51	64	32	29	17	59	66	70;
         53	90	78	75	22	115	117	86;
         71	111	50	40	11	79	88	177;
@@ -784,7 +784,7 @@ function CorAnaplot(out,varargin)
     end
     % Superimpose confidence ellipses
     confellipse=struct;
-    % No confdence ellipse for row points
+    % No confidence ellipse for row points
     confellipse.selRows=[];
     % Ellipse for all the column points using a Boolean vector
     confellipse.selCols=[ true true true true true];
@@ -802,7 +802,7 @@ function CorAnaplot(out,varargin)
 %}
 
 %{
-    % Correpondence analysis plot using latent dimensions 3 and 4.
+    % Correspondence analysis plot using latent dimensions 3 and 4.
     N=[51	64	32	29	17	59	66	70;
         53	90	78	75	22	115	117	86;
         71	111	50	40	11	79	88	177;
@@ -913,12 +913,12 @@ function CorAnaplot(out,varargin)
 %% Beginning of code
 
 % Initialization
-% Default font size for labels of rows or colums to add to the plot
+% Default font size for labels of rows or columns to add to the plot
 FontSizedef=10;
 MarkerSizedef=10;
 
 options=struct('plots',1,'xlimx','','ylimy','','changedimsign',[false false],...
-    'addy',0,'addx',0.04,'confellipse',0,'d1',1,'d2',2,'h','');
+    'addy',0,'addx','','confellipse',0,'d1',1,'d2',2,'h','');
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -1375,6 +1375,12 @@ plot(afig,Cacols(:,d1),Cacols(:,d2),'LineStyle','none','Marker',SymbolCols ,'Col
 % Add labels for row points and column points
 % addx = adds a small horizontal displacement for labels
 addx=options.addx;
+
+if isempty(addx)
+    ax=axis;
+    addx=(ax(2)-ax(1))/50;
+end
+
 % addy = adds a small vertical displacement for labels
 addy=options.addy;
 
