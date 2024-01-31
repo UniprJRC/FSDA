@@ -38,6 +38,8 @@ jobs:
           categoryName: 'tclustMULT'
         tclustMULTgpcm:
           categoryName: 'tclustMULTgpcm'
+        FMvol:
+          categoryName: 'FMvol'
   pool:
       vmImage: 'ubuntu-latest'
   variables:
