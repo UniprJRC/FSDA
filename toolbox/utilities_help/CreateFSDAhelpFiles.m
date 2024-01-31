@@ -70,7 +70,7 @@ ExclDir={'privateFS'  'datasets'};
 list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
 % Crete personalized contents file for main folder of FSDA
 % and required subfolders.
-force=true;
+force=false;
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 disp('List of files which have been excluded (with path)')
 disp(FilesExcluded(:,[1 9]))
@@ -278,7 +278,7 @@ ListofFiles={'bibliography.html' 'cluster_intro.html' 'datasets.html' ...
     'statistical_visualization_resindex.html' 'statistical_visualization_yx.html'...
     'transf_fsrfan.html' 'transf_intro.html' 'transf_score.html' 'tutorials.html'};
 
-FilesNotFound=insertGoogleSearchEngine(ListofFiles);
+FilesNotFound=aux.insertGoogleSearchEngine(ListofFiles);
 
 if ~isempty(FilesNotFound)
     disp('Files for which google search engine could not be inserted')
@@ -301,14 +301,14 @@ for i=1:length(extFiles)
     end
     
 end
-% copy various files ....
-inputFile=[FSDAroot fsep 'InstallationNotes.pdf'];
-status=copyfile(inputFile, ...
-    [FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'InstallationNotes.pdf']);
-if status==0
-    disp(['File: ' inputFile ' not found'])
-    error('FSDA:CreateFSDAhelpFiles','File: not found')
-end
+% % copy various files ....
+% inputFile=[FSDAroot fsep 'InstallationNotes.pdf'];
+% status=copyfile(inputFile, ...
+%     [FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'InstallationNotes.pdf']);
+% if status==0
+%     disp(['File: ' inputFile ' not found'])
+%     error('FSDA:CreateFSDAhelpFiles','File: not found')
+% end
 
 
 % Create a simple URL Sitemap in txt format
