@@ -125,6 +125,10 @@ elseif strcmp(cat2test,'regressionEXT')
 elseif strcmp(cat2test,'utilities')
     str=regexp(FilesIncluded(:,8),'UTI*');
     boo=~cellfun(@isempty,str);
+
+elseif strcmp(cat2test,'FMvol')
+    str=regexp(FilesIncluded(:,8),'FMvol');
+    boo=~cellfun(@isempty,str);
     
 else
     error('FSDA:runTests:WrgCLS','Wrong class')
