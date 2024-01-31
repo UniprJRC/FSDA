@@ -15,8 +15,9 @@ function MCDenv=malindexplot(md,v,varargin)
 %        distances have been computed (this field is compulsory is option
 %           databrush is used).
 %        md.class = this field is not compulsory. In the case of
-%           md.class='mcdCorAna' simulated envelopes are used to define the
-%           empirical quantiles. Note that if the simulated bands have been
+%           md.class='mcdCorAna' simulated envelopes based on the null
+%           hypothesis of independence are used to define the empirical
+%           quantiles. Note that if the simulated bands have been
 %           precalculated they can be passed through the second input
 %           argument v.
 %                Data Types - single|double
@@ -34,11 +35,11 @@ function MCDenv=malindexplot(md,v,varargin)
 % Optional input arguments:
 %
 %
-%     modelT  : controls how the consistency factor is applied to account 
+%     modelT  : controls how the consistency factor is applied to account
 %               for the effect of trimming. Scalar. It is empty for the
 %               classic case when uncontaminated data are assumed to come
 %               from a normal distribution (default). If on the other hand
-%               the data are heavy-tailed and can be modelled by a
+%               the data are heavy-tailed and can be modeled by a
 %               Student-t distribution, modelT takes a positive value
 %               representing the degrees of freedom of the t-distribution;
 %               if modelT is zero, then the degrees of freedom are
@@ -46,7 +47,7 @@ function MCDenv=malindexplot(md,v,varargin)
 %               Example - 'modelT',5
 %               Data Types - double
 %
-%               h : Where to plot. Axis hadle.
+%               h : Where to plot. Axis handle.
 %                   The axis handle of the Figure where to send the
 %                   malindexplot. This can be used to host the malindexplot
 %                   in a subplot of a complex figure formed by different
@@ -71,18 +72,18 @@ function MCDenv=malindexplot(md,v,varargin)
 %                   Data Types - character
 %
 %          title :  plot title. Character. A label containing the title of the plot.
-%                   Default is 'Index plot of Mahalanobid distances'.
+%                   Default is 'Index plot of Mahalanobis distances'.
 %                   Example - 'title','Index plot of MD'
 %                   Data Types - character
 %
-%          numlab:  number of points to be labelled in the plot.
+%          numlab:  number of points to be labeled in the plot.
 %                   vector or cell. If numlab is a cell containing scalar k, the units
-%                   with the k largest md are labelled in the plots.
+%                   with the k largest md are labeled in the plots.
 %                   If numlab is a vector, the units indexed by the vector
-%                   are labelled in the plot.
+%                   are labeled in the plot.
 %                   Default is numlab={5}, that is units with the 5
-%                   largest md are labelled.
-%                   Use numlab='' for no labelling.
+%                   largest md are labeled.
+%                   Use numlab='' for no labeling.
 %                   Example - 'numlab',{3}
 %                   Data Types - numeric vector or cell.
 %
@@ -108,13 +109,13 @@ function MCDenv=malindexplot(md,v,varargin)
 %           ylimy:  ylimits. Vector. Vector with two elements controlling minimum and
 %                   maximum value of the y axis.
 %                   Default is '' (automatic scale).
-%                   Example - 'ylimiy',[-3 3]
+%                   Example - 'ylimy',[-3 3]
 %                   Data Types - numeric
 %
 %           xlimx:  xlimits. Vector. Vector with two elements controlling minimum and
 %                   maximum value of the x axis.
 %                   Default is '' (automatic scale).
-%                   Example - 'xlimix',[1 30]
+%                   Example - 'xlimx',[1 30]
 %                   Data Types - numeric
 %
 %          lwdenv:  Envelope line width. Scalar. Scalar which controls the
@@ -158,7 +159,7 @@ function MCDenv=malindexplot(md,v,varargin)
 %                   it is possible to use all optional arguments of
 %                   function selectdataFS.m and the following optional
 %                   arguments:
-%                   databrush.persist = persisent brushing.
+%                   databrush.persist = persistent brushing.
 %                     Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
@@ -204,7 +205,7 @@ function MCDenv=malindexplot(md,v,varargin)
 %           MCDenv : Empirical envelopes. Array.
 %                   Matrix with size n-by-length(conflev) which contains
 %                   the empirical confidence envelopes or vector of length
-%                   length(conflev) containing teh quantiles of the
+%                   length(conflev) containing the quantiles of the
 %                   reference distribution.
 %
 %
@@ -306,9 +307,10 @@ if nargin<2
     error('FSDA:malindexplot:missingInputs','To run this function the number of variables which have been used to construct md has to be supplied')
 end
 
-if isempty(v) || any(isnan(v))
-    error('FSDA:malindexplot:Wrongv','v must be scalar (or vector with the same length of md) non empty and non missing!!!');
-end
+%TODO
+% if isempty(v) || any(isnan(v))
+%     error('FSDA:malindexplot:Wrongv','v must be scalar (or vector/matrix with the same length of md) non empty and non missing!!!');
+% end
 
 
 % Close existing pl_mahal figure. Remark: existing figures containing
@@ -318,20 +320,37 @@ if ~isempty(findobj('type','figure','Tag','pl_malindex'))
 end
 
 if isstruct(md)
-    
-    if isfield(md,'N') && isfield(md,'h')
+
+    if isfield(md,'class') && strcmp(md.class,'mcdCorAna')
         % mcdCorAnatype
+        % Check whether envelopes have been stored
+        if isfield(md,'mmdStore')
+            mmdStore=md.mmdStore;
+            storedEnv=true;
+        else
+            storedEnv=false;
+        end
+
         out=md;
         hh=md.h;
         N=md.N;
         md=md.md;
         class='mcdCorAna';
+
     elseif isfield(md,'N')
         % non robust distances
         out=md;
         N=md.N;
         class='mcdCorAna';
         hh=sum(N,'all');
+        % Check whether envelopes have been stored
+        if isfield(md,'mmdStore')
+            mmdStore=md.mmdStore;
+            storedEnv=true;
+        else
+            storedEnv=false;
+        end
+
     else
         out=md;
         md=out.md;
@@ -346,6 +365,7 @@ md = md(:);
 
 % n = number of observations;
 n=length(md);
+
 
 % Set standard options
 options=struct('modelT',[],'h','','x',1:n,'labx','','laby','','numlab',{{5}},'conflev',0.975,...
@@ -363,12 +383,12 @@ if ~isempty(UserOptions)
     end
     % Check if user options are valid options
     aux.chkoptions(options,UserOptions)
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
 end
 
 [nuT, h, x, labx, laby, titl, numlab, conflev, FontSize, SizeAxesNum, ...
@@ -449,7 +469,7 @@ if isempty(class)
         % quant = chi2inv(conflev,v); % replaced to account for Student-T case
         quant = msdcutoff(conflev,v,nuT);
         QUANT=[quant;quant];
-        
+
         % plot the confidence bands
         hline = line(V, QUANT,'LineWidth',lwdenv,'Tag','conflevline');
         MCDenv=quant;
@@ -458,43 +478,53 @@ if isempty(class)
         hline = line(x, v,'LineWidth',lwdenv,'Tag','conflevline');
         MCDenv=v;
     end
-    
+
 elseif strcmp(class,'mcdCorAna')
+
     % if the class is mcdCorAna simulated envelopes are used for each row
     [I,J]=size(N);
-    % nrowt = column vector containing row marginal totals
-    nrowt=sum(N,2);
-    % ncolt = row vector containing column marginal totals
-    ncolt=sum(N,1);
-    
-    nsimul=200;
-    mmdStore=zeros(I,nsimul);
-    
-    parfor j=1:nsimul
-        % Generate the contingency table
-        out1=rcontFS(I,J,nrowt,ncolt);
-        Nsim=out1.m144;
-        
-        RAW=mcdCorAna(Nsim,'plots',0,'msg',0,'bdp',hh);
-        mmdStore(:,j)=RAW.md;
+
+    if storedEnv==true
+        nsimul=size(mmdStore,2);
+        MCDenv=mmdStore(:,round(nsimul*conflev));
+
+    elseif isscalar(v)
+        % nrowt = column vector containing row marginal totals
+        nrowt=sum(N,2);
+        % ncolt = row vector containing column marginal totals
+        ncolt=sum(N,1);
+
+        nsimul=200;
+        mmdStore=zeros(I,nsimul);
+
+        parfor j=1:nsimul
+            % Generate the contingency tables under the null hypothesis of
+            % independence
+            out1=rcontFS(I,J,nrowt,ncolt);
+            Nsim=out1.m144;
+
+            RAW=mcdCorAna(Nsim,'plots',0,'msg',0,'bdp',hh);
+            mmdStore(:,j)=RAW.md;
+        end
+
+        % Sort rows of matrix mmdStore
+        mmdStore=sort(mmdStore,2);
+        MCDenv=mmdStore(:,round(nsimul*conflev));
+    else
+
+        MCDenv=v;
     end
-    
-    % Sort rows of matrix mmdStore
-    mmdStore=sort(mmdStore,2);
-    
-    
-    MCDenv=mmdStore(:,round(nsimul*conflev));
-    
+
     % plot the confidence bands
     hline = line(1:I, MCDenv,'LineWidth',lwdenv,'Tag','conflevline');
 else
     % Should never be here
-    error('wrong class')
+    error('FSDA:malindexplot:WrgClass','wrong class')
 end
 
 if isscalar(v)
     set(hline(1:numconflev),{'Displayname'},legendstring2);
-    
+
     % make the legend for the confidence bands clickable
     clickableMultiLegend(hline(1:numconflev),legendstring2);
 end
@@ -506,7 +536,7 @@ axis(axis);
 if ~isempty(h)
     % Eventually send the malindexplot into a different figure/subplot
     hfigh = get(h,'Parent');
-    
+
     set(hfigh,'Name','Mahalanobis distance plot','NumberTitle','off');
     set(h,'Tag','md_subplot');
     copyobj(allchild(afig),h);
@@ -514,7 +544,7 @@ if ~isempty(h)
     delete(hfig);
     hline2 = findobj(h, 'Tag','conflevline');
     hlineh = flipud(hline2);
-    if length(findobj(get(h,'Parent'),'Tag','md_subplot'))==1
+    if isscalar(findobj(get(h,'Parent'),'Tag','md_subplot'))
         clickableMultiLegend(hlineh(1:numconflev),legendstring2);
     else
         legend_h = legend(hlineh(1:numconflev),legendstring2);
@@ -535,7 +565,7 @@ if ~isempty(h)
     ylabel(gca,laby,'Fontsize',FontSize);
     % Set the font size for the axes numbers
     set(gca,'FontSize',SizeAxesNum);
-    
+
 else
     % If the plot has not to be sent in a different figure/subplot
     % add the figure title and axis labels, and set their FontSize
@@ -565,22 +595,22 @@ if isstruct(databrush)
     else
         labeladd='';
     end
-    
-    
+
+
     % persist option
     dpers=find(strcmp('persist',fdatabrush));
     if dpers>0
         persist=databrush.persist;
         databrush=rmfield(databrush,'persist');
         fdatabrush=fieldnames(databrush);
-        
+
         ColorOrd=[1 0 0;0 1 1; 1 0 1; 1 1 0; 0 0 0; 0 1 0; 0 0 1];
         ColorOrd=repmat(ColorOrd,4,1);
     else
         persist='';
         ColorOrd=[1 0 0];
     end
-    
+
     % FlagColor option Initialize colors for the brushing option: default
     % colors are blue (unbrushed unit) and red (brushed units)
     d=find(strcmp('FlagColor',fdatabrush));
@@ -588,7 +618,7 @@ if isstruct(databrush)
         flagcol=databrush.FlagColor;
         databrush=rmfield(databrush,'FlagColor');
         fdatabrush=fieldnames(databrush);
-        
+
         clr=['b' flagcol 'cmykgbrcmykg'];
     else
         clr='brcmykgbrcmykgbrcmykg';
@@ -607,7 +637,7 @@ styp=repmat(styp,ceil(n/13),1);
 
 %% Brush mode (call to function selectdataFS)
 if ~isempty(options.databrush) || isstruct(options.databrush)
-    
+
     outnames=fieldnames(out);
     d=strcmp('Y',outnames);
     if max(d)<1
@@ -624,10 +654,10 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         Y=out.Y;
         v=size(Y,2);
     end
-    
-    
-    
-    
+
+
+
+
     if isstruct(options.databrush)
         % transform the input structure databrush into a cell array
         cv=[fdatabrush struct2cell(databrush)]';
@@ -641,82 +671,82 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
     else
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
     end
-    
+
     % Adding the instruction is necessary to make sure that the selection
     % is done in the  current plot
     sele=[sele 'Tag' {Tag}];
-    
-    
+
+
     % Create the labels
     p1=1:v;
-    
+
     % Set the labels of the axes.
     if isempty(options.nameY)
         nameY=cellstr(num2str(p1','Y%d'));
     else
         nameY=options.nameY;
     end
-    
-    
+
+
     % group = vector which will contain the identifier of each group e.g.
     % group(14)=3 means that unit 14 was selected at the third brush
     group=ones(n,1);
-    
+
     % some local variables
     but=0; brushcum=[]; ij=1;
-    
-    
+
+
     sele=[sele 'FlagColor' ColorOrd(ij,:) 'FlagMarker' char(styp(ij+1))];
-    
+
     plot1=gcf;
     % set(plot1,'tag','data_res')
-    
+
     % loop brushing
     while but<=1
-        
+
         figure(plot1);
-        
+
         % Remark: function selectdataFS cannot be used on the current
         % figure if the "selection mode" or the "zoom tool" are on. Setting
         % the plotedit mode initially to on and then to off, has the effect
         % to deselect plotedit mode.
         plotedit on
         plotedit off
-        
+
         if strcmp(persist,'on')
             % add to cell sele option FlagColor (color of selection) and
             % FlagMarker (symbol to be used for selection)
-            
+
             if ij>1
                 chkexist=find(strcmp('FlagColor',sele)==1);
                 sele{chkexist+1}=ColorOrd(ij,:);
                 sele{chkexist+3}=char(styp(ij+1));
             end
         end
-        
+
         % call to selectdataFS
         disp('Select a region to brush in the index plot of Mahalanobis distances');
         pl = selectdataFS(sele{:});
-        
+
         % exit if the malfwdplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)
             return
         end
-        
+
         if ~isempty(cell2mat(pl))
-            
+
             nbrush=pl{1};
-            
+
             disp('Brushed units, Yvalues ');
             disp([nbrush out.Y(nbrush,:)]);
-            
+
         else
             disp('Wrong selection: Try again');
             disp('Select a region to brush in the residual plot');
             figure(plot1);
             nbrush='';
         end
-        
+
         %% For each brushing operation, do the following:
         if ~isempty(nbrush)
             % brushcum = - the list of selected observations in all
@@ -730,19 +760,19 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 brushcum=nbrush;
                 group=ones(n,1);
             end
-            
+
             % group=vector of length(Xsel) observations taking values from
             % 1 to the number of groups selected. unigroup= list of
             % selected groups.
             group(nbrush)=ij+1;
             unigroup=unique(group);
-            
-            
-            
+
+
+
             %% - display the spm with the corresponding groups of units highlighted
-            
+
             h=findobj('-depth',1,'Tag','pl_spm');
-            
+
             if (~isempty(h))
                 % delete from the current figure all graphics objects whose
                 % handles are not hidden
@@ -757,22 +787,22 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 figure('Tag','pl_spm');
                 set(gcf,'WindowStyle',get(plot1,'WindowStyle'));
             end
-            
+
             plo=struct; plo.nameY=nameY; plo.labeladd=labeladd;
             H = spmplot(Y,group,plo);
-            
+
             % Assign to this figure a name and a tag=pl_spm
             set(gcf,'Name','Scatter plot matrix with selected groups highlighted');
-            
+
             % Set markers
             for mfc=1:length(unigroup)
                 set(findobj(gcf,'marker',char(styp(unigroup(mfc)))),'MarkerFaceColor',clr(unigroup(mfc)));
             end
-            
+
             % save the indices of the last selected units (nbrush) to the
             % 'UserData' field of the last selected group of H(:,:,end)
             set(H(:,:,end), 'UserData' , nbrush);
-            
+
             %% - check condition to exit from the brush mode
             % If the option persistent is not equal off or on than get out
             % of the loop
@@ -783,19 +813,19 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                     % figures are not deleted
                     but=1;
                 end
-                
+
                 % Before waitforbuttonpress:
                 % - the resfwdplot is highlighted again
                 figure(plot1);
                 % - a function to be executed on figure close is set
                 set(gcf,'CloseRequestFcn',@closereqFS);
-                
+
                 % - and lay down the plots before continuing
                 position(plot1);
                 disp('Highlight the index plot of MD then: click on it to continue brushing or press a keyboard key to stop');
                 ss=waitforbuttonpressFS;
                 disp('------------------------');
-                
+
                 % - the standard MATLAB function to be executed on figure
                 %   close is recovered
                 set(gcf,'CloseRequestFcn','closereq');
@@ -805,7 +835,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                     if ~isempty(Open_spm); delete(Open_spm); end    % yX plot is deleted
                     delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
                 end
-                
+
                 % - and the 'but' variable is set if keyboard key was
                 % pressed
                 if ss==1
