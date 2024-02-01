@@ -427,7 +427,7 @@ end
 % If input is a datamatrix it is necessary to construct the contingency
 % table
 if datamatrix == true
-    if istable(N)
+    if istable(N) || istimetable(N)
         [N,~,~,labels] =crosstab(N{:,1},N{:,2});
     else
         [N,~,~,labels] =crosstab(N(:,1),N(:,2));
@@ -483,7 +483,7 @@ if ~isempty(UserOptions)
 end
 
 % Extract labels for rows and columns
-if verMatlab ==0 && istable(N)
+if verMatlab ==0 && (istable(N) || istimetable(N)) 
     Ntable=N;
     N=table2array(N);
 else
