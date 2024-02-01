@@ -200,6 +200,7 @@ if isstruct(N)
     Nisstruct=true;
 else
     Nisstruct=false;
+    RAW=N;
 end
 
 if istable(N)
