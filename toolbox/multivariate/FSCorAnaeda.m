@@ -7,7 +7,7 @@ function out = FSCorAnaeda(N,varargin)
 % Required input arguments:
 %
 %  N :  contingency table or structure.
-%               Array or table of size I-by-J or strucure. If N is a
+%               Array or table of size I-by-J or structure. If N is a
 %               structure it contains the following fields:
 %               N.N = contingency table in array format of size I-by-J.
 %               N.loc = initial location estimate for the matrix of Profile
@@ -15,9 +15,11 @@ function out = FSCorAnaeda(N,varargin)
 %               N.weights= I x 1 vector containing the proportion of the
 %                    mass of each rows of matrix N in the computation of
 %                    the MCD estimate of location. If N.weigths(2)=0.1 it
-%                    means that row 2 of the contingency table contributed
+%                    means that row 2 of the contingency table contributes
 %                    with 10 per cent of its mass. The initial subset is
 %                    based on N.weights.
+%               N.NsimStore= array of size I-by-J times nsimul containing
+%                   in each column the nsimul simulated contingency tables. 
 %               Note that input structure N can be conveniently created by
 %               function mcdCorAna.
 %               If N is not a struct it is possible to specify the rows
@@ -173,11 +175,13 @@ function out = FSCorAnaeda(N,varargin)
 %% Beginning of code
 
 % Input parameters checking
-%chkinputM does not do any check if option nocheck=1
+% chkinputM does not do any check if option nocheck=1
 % Initialization of bsb as an empty vector.
 bsb=[];
 
 if isstruct(N)
+   
+    RAW=N;
     loc=N.loc;
  
     % Find the contingency table associated to N.loc
@@ -203,7 +207,7 @@ if istable(N)
 end
 
 % n= total sample size
-n=sum(N,'all');
+n=round(sum(N,'all'));
 
 [I,J]=size(N);
 
@@ -308,7 +312,9 @@ end
 
 % Initialize matrix which will contain the rows forming subset in each
 % step of the fwd search
-BB=NaN(I,n-init1+1);
+numcol=(n-init1+1);
+
+BB=NaN(I,numcol);
 
 % Initialize matrix which will contain the MD monitored in each
 % step of the fwd search
@@ -316,7 +322,7 @@ MAL=BB;
 
 % Initialize matrix which will contain the means of the variables monitored in
 % each step
-Loc=cat(2,(init1:n)',NaN(n-init1+1,J));
+Loc=cat(2,(init1:n)',NaN(numcol,J));
 
 %  Un is a Matrix whose 2nd column:11th col contains the row(s) just
 %  included.
@@ -371,7 +377,7 @@ for mm = ini0:n
         
         % The rows sortdist(1:indexesCR) will be completely
         % represented;
-        cumsumnjdot=cumsum(rtimesn(indsortdist));
+        cumsumnjdot=cumsum(rtimesn(indsortdist)) +0.000001;
         indexesCR=find(cumsumnjdot<mm+1,1,'last');
         
         if isempty(indexesCR)
@@ -383,8 +389,9 @@ for mm = ini0:n
             unitstoADD=mm+1-cumsumnjdot(indexesCR);
         end
         
-        bsb=indsortdist(1:indexesCR+1);
         
+        bsb=indsortdist(1:indexesCR+1);
+  
         bsbT=zeron1;
         bsbT(bsb)=true;
         
@@ -431,8 +438,11 @@ if plots==1
     % Compute theoretical envelops for minimum Mahalanobis distance based on all
     % the observations for the above quantiles.
     disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
-    [gmin] = FSCorAnaenvmmd(N,'prob',quant,'init',init1);
+    [gmin] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
     
+    % coeff=gmin(1,3)-mmd(1,2);
+    % gmin(:,2:end)=gmin(:,2:end)-coeff;
+
     plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
     
     % include specified tag in the current plot
