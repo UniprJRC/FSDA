@@ -452,7 +452,7 @@ if ~isempty(databrush) || isstruct(databrush)
         % call to selectdataFS
         disp('Interactive part: select the center of one or more stars');
         % [pl,xcoo,ycoo]=selectdataFS('selectionmode','Brush','brushsize',brushWidth,'FlagColor','k');
-        [pl,xcoo,ycoo]=selectdataFS(sele{:});
+        [pl,xcoo,ycoo]=aux.selectdataFS(sele{:});
 
         % exit if the avasmsplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)

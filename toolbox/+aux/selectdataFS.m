@@ -250,7 +250,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
    x = 0:.1:1;
    y = x.^2;
    plot(x,y,'o')
-   pl = selectdataFS('selectionmode','brush');
+   pl = aux.selectdataFS('selectionmode','brush');
 %}
 %
 %
@@ -258,7 +258,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
     % Interactive_example
     %  Select a single point with the mouse, then delete that
     %  selected point from the plot.
-    pl = selectdataFS('selectionmode','closest','action','delete');
+    pl = aux.selectdataFS('selectionmode','closest','action','delete');
 %}
 %
 %{
@@ -268,26 +268,26 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
     %  properties and values.
     n=10;
     plot(rand(n,2),rand(n,2),'o')
-    [pl,xs,ys] = selectdataFS('sel','lasso');
+    [pl,xs,ys] = aux.selectdataFS('sel','lasso');
 %}
 %
 %{
     % Interactive_example
     n=10;
     plot(rand(n,2),rand(n,2),'o')
-    [pl,xs,ys] = selectdataFS('selectionmode','brush','Brushsize',0.25);
+    [pl,xs,ys] = aux.selectdataFS('selectionmode','brush','Brushsize',0.25);
 %}
 %
 %{
     % Interactive_example
     n=10;
     plot(rand(n,2),rand(n,2),'o')
-    [pl,xs,ys] = selectdataFS('selectionmode','Closest')
+    [pl,xs,ys] = aux.selectdataFS('selectionmode','Closest')
 %}
 %
 %{
    % Interactive_example
-   [pl,xs,ys] = selectdataFS('selectionmode','Rect')
+   [pl,xs,ys] = aux.selectdataFS('selectionmode','Rect')
 %}
 %
 %{
@@ -301,7 +301,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
    h1 = plot(x,y,'-');
    hold on
    h2 = plot(x,ynoisy,'o');
-   [pl,xs,ys] = selectdataFS('sel','lasso','ignore',h1);
+   [pl,xs,ys] = aux.selectdataFS('sel','lasso','ignore',h1);
 %}
 %
 

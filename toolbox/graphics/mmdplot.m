@@ -733,7 +733,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         % CALL TO FUNCTION selectdataFS
         disp('Select steps to brush in the current plot');
         % [unused,xs] = selectdataFS(sele{:}, 'Label', 'off');
-        [unused,xs] = selectdataFS(sele{:});
+        [unused,xs] = aux.selectdataFS(sele{:});
         
         % exit from function if the mdrplot was closed before selection
         if ~isempty(unused) && isnumeric(unused) && (min(unused) == -999)

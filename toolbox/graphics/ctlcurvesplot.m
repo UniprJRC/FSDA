@@ -937,7 +937,7 @@ if ~isempty(databrush) || isstruct(databrush)
 
         % CALL to selectdataFS
         disp('Select a region to brush in the ctlcurves plot');
-        [pl,xselect,yselect] = selectdataFS(sele{:});
+        [pl,xselect,yselect] = aux.selectdataFS(sele{:});
 
         % exit if the ctlcurves figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)

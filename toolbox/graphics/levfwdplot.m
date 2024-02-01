@@ -1317,7 +1317,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         
         % call to selectdataFS
         disp('Select a region to brush in the monitoring leverage plot');
-        pl = selectdataFS(sele{:});
+        pl = aux.selectdataFS(sele{:});
         
         % exit if the levfwdplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)

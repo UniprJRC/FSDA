@@ -464,7 +464,7 @@ if ~isempty(cpbrush)
     storFWD=[(n-size(outms.MAL,1)+1:n)' outms.MAL];
     
     disp('Interactive part: select particular trajectories with the mouse');
-    [~,xselect]=selectdataFS('selectionmode','Brush','brushsize',width,'brushshape','vrect','Ignore',findobj(gcf,'tag','bar'),'FlagColor','k');
+    [~,xselect]=aux.selectdataFS('selectionmode','Brush','brushsize',width,'brushshape','vrect','Ignore',findobj(gcf,'tag','bar'),'FlagColor','k');
     
     % From the x selected coordinates find the selected searches
     [~, ~, ib] = intersect(unique(cell2mat(xselect)), stat(:,5));

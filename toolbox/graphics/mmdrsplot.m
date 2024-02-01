@@ -752,7 +752,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         % particular random starts
         % Each element of ys contains the values of mmd selected associated to a
         % particular random starts
-        [pointslist,xs,ys] = selectdataFS(sele{:});
+        [pointslist,xs,ys] = aux.selectdataFS(sele{:});
         
         % exit from function if the figure  was closed before selection
         if ~isempty(pointslist) && isnumeric(pointslist) && (min(pointslist) == -999)

@@ -2442,7 +2442,7 @@ if ~isempty(databrush) || iscell(databrush)
             end
 
             set(fig,'UserData',numtext);
-            [pl,xselect,yselect] = selectdataFS(sele{:});
+            [pl,xselect,yselect] = aux.selectdataFS(sele{:});
 
             % OLD CODE TO DELETE
             % set(fig,'UserData',num2cell(seq));

@@ -721,7 +721,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         
         % call to selectdataFS
         disp('Select a region to brush in the index plot of residuals');
-        pl = selectdataFS(sele{:});
+        pl = aux.selectdataFS(sele{:});
         
         % exit if the resfwdplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)

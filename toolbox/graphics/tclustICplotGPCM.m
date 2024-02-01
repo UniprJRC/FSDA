@@ -676,7 +676,7 @@ if ~isempty(databrush) || isstruct(databrush)
         plotedit on
         plotedit off
         
-        [~,~,pl] = selectdataFS(sele{:});
+        [~,~,pl] = aux.selectdataFS(sele{:});
         
         % exit if the ICplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)

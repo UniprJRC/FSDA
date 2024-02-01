@@ -1133,7 +1133,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
             disp('To brush, with the mouse select steps in the FAN plot');
         end
 
-        [pl,xs,ys] = selectdataFS(sele1{:},'Label','off');
+        [pl,xs,ys] = aux.selectdataFS(sele1{:},'Label','off');
 
         % exit from levfwdplot if the levfwdplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (max(pl) == -999)

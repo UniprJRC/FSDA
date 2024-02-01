@@ -694,7 +694,7 @@ if ~isempty(databrush) || isstruct(databrush)
 
         % CALL to selectdataFS
         disp('Select a region to brush in the IC plot');
-        [~,~,pl] = selectdataFS(sele{:});
+        [~,~,pl] = aux.selectdataFS(sele{:});
 
         % exit if the ICplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)

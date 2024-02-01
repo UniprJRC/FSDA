@@ -1727,7 +1727,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         % sele=[sele 'Axes' {myaxis}]; MR TODO
         % a123=get(gcf,"Children");
         % axes(a123(end))  MR TODO
-        pl = selectdataFS(sele{:});
+        pl = aux.selectdataFS(sele{:});
 
         % exit if the resfwdplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)

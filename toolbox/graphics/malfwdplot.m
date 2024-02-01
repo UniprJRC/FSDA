@@ -1660,7 +1660,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         
         % CALL to selectdataFS
         disp('Select a region to brush in the monitoring MD plot');
-        pl = selectdataFS(sele{:});
+        pl = aux.selectdataFS(sele{:});
         
         % exit if the resfwdplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)

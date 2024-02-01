@@ -726,7 +726,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
 
         % call to selectdataFS
         disp('Select a region to brush in the index plot of Mahalanobis distances');
-        pl = selectdataFS(sele{:});
+        pl = aux.selectdataFS(sele{:});
 
         % exit if the malfwdplot figure was closed before selection
         if isnumeric(pl) && ~isempty(pl) && (pl == -999)
