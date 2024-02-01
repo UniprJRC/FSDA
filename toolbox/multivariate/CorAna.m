@@ -551,6 +551,11 @@ function out=CorAna(N, varargin)
 % CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations,
 % "Journal of Statistical Software", Vol. 31.
 %
+% Riani, M, Atkinson A.C., Torti, F., Corbellini A. (2023), Robust
+% Correspondence Analysis, "Journal of the Royal Statistical Society Series
+% C: Applied Statistics", Vol. 71, pp. 1381–1401,
+% https://doi.org/10.1111/rssc.12580
+%
 % Acknowledgements:
 %
 % This function has been inspired by the code developed by:
