@@ -180,7 +180,7 @@ ncolt=sum(N,1);
 mmdStore=zeros(n-m0,nsimul);
 
 if preGeneratedNsim ==true
-    parfor j=1:nsimul
+    for j=1:nsimul
         Nsim=reshape(NsimStore(:,j),nrow,[]);
         outSIMj=FSCorAnaeda(Nsim,'init',m0);
         mmdStore(:,j)=outSIMj.mmd(:,2);

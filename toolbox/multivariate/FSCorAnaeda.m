@@ -19,7 +19,7 @@ function out = FSCorAnaeda(N,varargin)
 %                    with 10 per cent of its mass. The initial subset is
 %                    based on N.weights.
 %               N.NsimStore= array of size I-by-J times nsimul containing
-%                   in each column the nsimul simulated contingency tables. 
+%                   in each column the nsimul simulated contingency tables.
 %               Note that input structure N can be conveniently created by
 %               function mcdCorAna.
 %               If N is not a struct it is possible to specify the rows
@@ -180,10 +180,10 @@ function out = FSCorAnaeda(N,varargin)
 bsb=[];
 
 if isstruct(N)
-   
+
     RAW=N;
     loc=N.loc;
- 
+
     % Find the contingency table associated to N.loc
     % weights is the vector which tells us how each row of the contingency
     % table is represented inside subset.
@@ -194,7 +194,7 @@ if isstruct(N)
     seqI=1:size(N,1);
     % bsb contains the rows of N which had weights strictly greater than 0
     bsbini=seqI(weights>0);
-    
+
     rowstodel=sum(Niter,2)==0;
     Niter(rowstodel,:)=[];
     Nisstruct=true;
@@ -231,9 +231,9 @@ init1=floor(n*0.6);
 plots=0;
 
 if nargin > 1
-    
+
     options=struct('init',init1,'plots',plots,'msg',1,'bsb',[]);
-    
+
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -244,12 +244,12 @@ if nargin > 1
         % Check if user options are valid options
         aux.chkoptions(options,UserOptions)
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     % check init
     init1=options.init;
     msg=options.msg;
@@ -267,19 +267,26 @@ if isempty(bsb)
     else
         % A random subset of ini0 units will be extracted.
         indsamp=randsample(I,I);
-        
+
         cumsumnjdot=cumsum(rtimesn(indsamp));
         indexesCR=find(cumsumnjdot<ini0,1,'last');
-        
-        
-        % Find how many units must be included from
-        % row indexesCR+1;
-        unitstoADD=ini0-cumsumnjdot(indexesCR);
+
+
+
+        if isempty(indexesCR)
+            indexesCR=0;
+            unitstoADD=ini0;
+        else
+            % Find how many units must be included from
+            % row indexesCR+1 of the initial contingency table;
+            unitstoADD=ini0-cumsumnjdot(indexesCR);
+        end
+
         bsb=indsamp(1:indexesCR+1);
-        
+
         Niter=N(bsb,:);
         Niter(end,:)=unitstoADD*Niter(end,:)/rtimesn(indsamp(indexesCR+1));
-        
+
         % Compute centroid based on the random extracted ini0 units
         ym  = sum(Niter,1)/ini0;
     end
@@ -341,46 +348,46 @@ bsbT=zeron1;
 bsbT(bsb)=true;
 
 for mm = ini0:n
-    
+
     % Mahalanobis distances from initialloc and Initialshape
     % mahaldist = r.*mahalFS(ProfileRows, initialloc, initialcov);
     MD=mahalCorAna(ProfileRows,ym);
-    
+
     mahaldist=sqrt(MD);
-    
+
     if mm>=init1
-        
+
         % Find the proportion of units belonging to each row in the subset
         bsbProp=sum(Niter,2)./sum(N(bsb,:),2);
-        
+
         % BB(bsb,mm-init1+1)=bsb;
         BB(bsb,mm-init1+1)=bsbProp;
-        
+
         % Store the means
         Loc(mm-init1+1,2:end)=ym;
-        
+
         % Store the trace and the determinant
         % detS(mm-init1+1,2:end)=[detcovYb sum(diag(covYb))];
-        
-        
+
+
         % Store MD inside matrix MAL
         MAL(:,mm-init1+1)=mahaldist;
     end
-    
-    
+
+
     if mm<n
-        
+
         % oldbsb=bsb;
         oldbsbT=bsbT;
         % sort MD distances multiplied by row masses
         [mahaldistsor,indsortdist]=sort(mahaldist.*rtimesn);
-        
-        
+
+
         % The rows sortdist(1:indexesCR) will be completely
         % represented;
         cumsumnjdot=cumsum(rtimesn(indsortdist)) +0.000001;
         indexesCR=find(cumsumnjdot<mm+1,1,'last');
-        
+
         if isempty(indexesCR)
             indexesCR=0;
             unitstoADD=mm+1;
@@ -389,36 +396,36 @@ for mm = ini0:n
             % row indexesCR+1;
             unitstoADD=mm+1-cumsumnjdot(indexesCR);
         end
-        
-        
+
+
         bsb=indsortdist(1:indexesCR+1);
-  
+
         bsbT=zeron1;
         bsbT(bsb)=true;
-        
+
         Niter=N(bsb,:);
         Niter(end,:)=unitstoADD*Niter(end,:)/rtimesn(indsortdist(indexesCR+1));
-        
+
         % Compute new centroid based on mm+1 units
         ym  = sum(Niter,1)/(mm+1);
-        
-        
+
+
         % call to setdiff is much slower
         % unit=setdiff(bsb,oldbsb);
         unit=find(bsbT & ~oldbsbT);
         lunit=length(unit);
-        
-        
+
+
         if mm>=init1
-            
+
             % mmd contains minimum of Mahalanobis distances among
             % the units which are not in the subset at step m
             % store minMD and (m+1)th MD
             IndexminMD=find(cumsumnjdot>=mm+1,1,'first');
-            
+
             mmd(mm-init1+1,2)= mahaldistsor(IndexminMD);
-            
-            
+
+
             if (lunit<=10)
                 Un(mm-init1+1,2:(lunit+1))=unit;
             else
@@ -440,16 +447,16 @@ if plots==1
     % the observations for the above quantiles.
     disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
     [gmin] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
-    
+
     % coeff=gmin(1,3)-mmd(1,2);
     % gmin(:,2:end)=gmin(:,2:end)-coeff;
 
     plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
-    
+
     % include specified tag in the current plot
     set(gcf,'tag','pl_mmd');
     set(gcf,'Name', 'Monitoring of Minimum (weighted) Mahalanobis distance', 'NumberTitle', 'off');
-    
+
     % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
     lwdenv=2;
     % Superimpose 50% envelope
@@ -457,10 +464,10 @@ if plots==1
     % Superimpose 1% and 99% envelope
     line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
     line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-    
+
     xlabel('Subset size m');
     ylabel('Monitoring of minimum (weighted) Mahalanobis distance');
-    
+
 end
 
 out.MAL=MAL;
