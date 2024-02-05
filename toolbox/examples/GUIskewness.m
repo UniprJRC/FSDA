@@ -45,7 +45,7 @@ function out = GUIskewness(x, flag, w)
 %
 % Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

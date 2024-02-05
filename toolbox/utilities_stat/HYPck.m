@@ -66,7 +66,7 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 % pp. 643-648 [HRR]
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

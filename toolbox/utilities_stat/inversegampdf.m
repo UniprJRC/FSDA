@@ -83,7 +83,7 @@ function y = inversegampdf(x,a,b,nocheck)
 % [ https://en.wikipedia.org/wiki/Inverse-gamma_distribution ]
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

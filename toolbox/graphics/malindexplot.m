@@ -216,7 +216,7 @@ function MCDenv=malindexplot(md,v,varargin)
 %   Rousseeuw P.J., Leroy A.M. (1987), "Robust regression and outlier
 %   detection", Wiley.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

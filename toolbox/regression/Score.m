@@ -72,7 +72,7 @@ function [outSC]=Score(y,X,varargin)
 % Analysis", Springer Verlag, New York. [see equation 2.30 for the
 % expression for score test statistic]
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

@@ -206,7 +206,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lm
 %   https://doi.org/10.1007/s11222-021-10061-3
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

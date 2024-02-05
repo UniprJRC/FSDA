@@ -37,7 +37,7 @@ function [Wcdf] = WNChygecdf(X,N,K,M,W)
 % Distribution, "Communications in Statistics - Simulation and
 % Computation", Vol. 37, pp. 258-273.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % FSDA team adapted and documented Jim Huntley's function wallen_pdf for
 % illustration purposes only.
 %

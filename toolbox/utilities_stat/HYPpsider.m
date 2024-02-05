@@ -64,7 +64,7 @@ function psiHYPder = HYPpsider(u, cktuning)
 % "Journal of the American Statistical Association", Vol. 76,
 % pp. 643-648 [HRR]'
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

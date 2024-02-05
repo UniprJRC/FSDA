@@ -67,7 +67,7 @@ function [latex_string , disp_string , latex_string_full] = tabledisp(T, precisi
 %
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

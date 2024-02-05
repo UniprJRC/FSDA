@@ -235,7 +235,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 % of the computational performance. Moreover in this function there is the
 % possibility of choosing the rho (psi) function.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

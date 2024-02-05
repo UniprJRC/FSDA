@@ -173,7 +173,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 % been completely redesigned, with considerable increase of the
 % computational performance.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

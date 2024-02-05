@@ -80,7 +80,7 @@ function [out] = VIOM(y,X,dw,varargin)
 %       under the variance shift outlier model, "Journal of Applied
 %       Statistics", Vol. 46, pp. 598-620.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

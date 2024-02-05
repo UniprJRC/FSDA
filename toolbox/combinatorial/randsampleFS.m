@@ -94,7 +94,7 @@ function y = randsampleFS(n,k,method)
 % Wong, C.K. and Easton, M.C. (1980), An Efficient Method for Weighted
 % Sampling Without Replacement, "SIAM Journal of Computing", Vol. 9, pp. 111-113.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('randsampleFS')">Link to the help function</a>

@@ -47,7 +47,7 @@ function [out]  = restreigeneasy(eigenvalues, niini, restr, tol)
 % algorithm for robust constrained clustering,
 %"Computational Satistics and Data Analysis", Vol. 61, pp. 124-136.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 % DETAILS. This algorithm solves the minimization problem with constraints

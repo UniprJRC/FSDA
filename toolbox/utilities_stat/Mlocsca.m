@@ -131,7 +131,7 @@ function outIRWLS = Mlocsca(y,psifunc,initialmu,initialscale,tol,maxiter)
 % and Methods", Wiley, New York.
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

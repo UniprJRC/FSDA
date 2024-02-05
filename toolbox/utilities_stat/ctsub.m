@@ -109,7 +109,7 @@ function a=ctsub(x,y,z,Trapezoid)
 % Tibshirani R. (1987), Estimating optimal transformations for regression,
 % "Journal of the American Statistical Association", Vol. 83, 394-405.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

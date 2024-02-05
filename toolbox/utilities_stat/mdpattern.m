@@ -90,7 +90,7 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 % Schafer, J.L. (1997). "Analysis of Incomplete Multivariate Data". London: Chapman & Hall.
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

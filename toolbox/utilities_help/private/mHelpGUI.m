@@ -2,7 +2,7 @@ function mHelpGUI(FileName)
 %mHelpGUI calls the GUI which enables to modfify the Help for FileName
 % create structure out from input XML file
 
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

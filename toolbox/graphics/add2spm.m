@@ -96,7 +96,7 @@ function add2spm(H,AX,BigAx,varargin)
 %   Graphics Press, Cheshire.
 
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

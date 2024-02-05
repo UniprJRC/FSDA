@@ -124,7 +124,7 @@ function out = boxplotb(Y,varargin)
 % paper 'Multivariate Functional Outlier Detection' by Hubert, Rousseeuw
 % and Segaert, "Statistical Methods and Applications".
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

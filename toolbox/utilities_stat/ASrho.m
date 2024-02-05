@@ -47,7 +47,7 @@ function rhoAS = ASrho(u,c)
 % Andrews, D. F. (1974). A Robust Method for Multiple Linear Regression,
 % "Technometrics", V. 16, pp. 523-531, https://doi.org/10.1080/00401706.1974.10489233
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

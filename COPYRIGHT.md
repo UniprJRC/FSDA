@@ -1,4 +1,4 @@
-FSDA Copyright 201 7 European Union, Università degli Studi di Parma.
+FSDA Copyright 2024 European Union, Università degli Studi di Parma.
 
 FSDA is open source software licensed under the terms of the European Union Public Licence (EUPL).
 
@@ -10,7 +10,7 @@ We request that proper credit is given to the copyright and authorship for FSDA.
 adding the following copyright notice to the beginning of your source code files, and to any
 copyright notice that you may distribute with programs based on this work:
 
-_Copyright 2017 European Union, Università degli Studi di Parma_
+_Copyright 2024 European Union, Università degli Studi di Parma_
 
 FSDA is being made available by the JRC and the University of Parma as a service to the worldwide
 scientific and regulatory communities.

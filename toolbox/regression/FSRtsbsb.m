@@ -172,7 +172,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 % Monitoring of Many Time Series with Application to Fraud Detection,
 % "Econometrics and Statistics". [RPRH]
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

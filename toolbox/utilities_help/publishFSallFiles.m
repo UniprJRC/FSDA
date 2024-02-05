@@ -116,7 +116,7 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %                        and InputCell is lost if it is not an output
 %                        argument
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

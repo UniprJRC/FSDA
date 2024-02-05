@@ -270,7 +270,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 % C: Applied Statistics", Vol. 71, pp. 1381–1401,
 % https://doi.org/10.1111/rssc.12580
 % 
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

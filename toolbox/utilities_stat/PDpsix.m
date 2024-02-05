@@ -46,7 +46,7 @@ function psix=PDpsix(u,alpha)
 %  https://www.mdpi.com/1099-4300/22/4/399 
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %
