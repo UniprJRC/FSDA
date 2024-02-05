@@ -1,7 +1,7 @@
 function docr=docrootFS()
 %docrootFS calls docroot or subfolder of FSDA according to Matlab version
 
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

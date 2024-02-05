@@ -177,7 +177,7 @@ function [out] = mdpdReda(y, X, varargin)
 %   pp. 43-56.
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('mdpdReda')">Link to the help function</a>

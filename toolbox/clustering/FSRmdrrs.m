@@ -214,7 +214,7 @@ function out=FSRmdrrs(y,X,varargin)
 % "Mining Massive Data Sets for Security", F. Fogelman-Soulie et al. Eds.,
 % pp. 271-286, IOS Press.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

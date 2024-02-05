@@ -43,7 +43,7 @@ function [Xback] = pivotCoordInv(Xilr,varargin)
 % (2024), Applied Robust Statistics through the Monitoring Approach,
 % Heidelberg: Springer Nature.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

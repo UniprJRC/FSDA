@@ -314,7 +314,7 @@ function [out]=avas(y,X,varargin)
 % regression using the ACE algorithm, "Journal of Applied Statistics",
 % Vol. 32, pp. 243-258.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

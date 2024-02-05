@@ -105,7 +105,7 @@ function [out]=ace(y,X,varargin)
 % Wang D.  and Murphy M. (2005), Identifying nonlinear relationships regression using the ACE
 % algorithm, "Journal of Applied Statistics", Vol. 32, pp. 243-258.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

@@ -82,7 +82,7 @@ function [mdrOutput] = FSRinvmdr(mdrInput,p,varargin)
 % Analysis and Classification", Vol. 1, pp. 123-141.
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

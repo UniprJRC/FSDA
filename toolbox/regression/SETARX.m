@@ -259,7 +259,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %    https://doi.org/10.1016/j.techfore.2019.01.006
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

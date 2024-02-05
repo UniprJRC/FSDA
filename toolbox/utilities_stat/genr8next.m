@@ -71,7 +71,7 @@ function [out]= genr8next(n, distrib, s1, s2)
 %    Further modifications by FSDA team
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

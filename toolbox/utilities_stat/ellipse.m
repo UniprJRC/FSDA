@@ -77,7 +77,7 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color, axesellipse)
 % Academic Press, London, p. 140. [MKB].
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

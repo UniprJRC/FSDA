@@ -206,7 +206,7 @@ function [brushedUnits,BrushedUnits]=mdrrsplot(out,varargin)
 %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

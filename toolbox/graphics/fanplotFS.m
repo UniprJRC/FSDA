@@ -284,7 +284,7 @@ function brushedUnits=fanplotFS(out,varargin)
 % Transformation: Review and Extensions, "Statistical Science", Vol. 36,
 % pp. 239-255, https://doi.org/10.1214/20-STS778
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

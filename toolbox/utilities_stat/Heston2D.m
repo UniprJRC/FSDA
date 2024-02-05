@@ -55,7 +55,7 @@ function [x,V,t] = Heston2D(T,n,parameters,Rho,x0,V0)
 %
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('Heston2D')">Link to the help function</a>

@@ -555,7 +555,7 @@ function [out, varargout] = LTSts(y,varargin)
 % "Econometrics and Statistics". [RPRH]
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by Marco Riani, Domenico Perrotta, Peter
 % Rousseeuw and Mia Hubert
 %

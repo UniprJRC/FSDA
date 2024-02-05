@@ -130,7 +130,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

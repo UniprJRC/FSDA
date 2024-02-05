@@ -355,7 +355,7 @@ function [out] = MixSimreg(k,p,varargin)
 % Analysis and Classification", Vol. 13, pp. 227–257,
 % https://doi.org/10.1007/s11634-018-0331-4
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

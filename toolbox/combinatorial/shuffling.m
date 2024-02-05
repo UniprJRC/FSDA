@@ -41,7 +41,7 @@ function x = shuffling(x)
 % Fisher, R.A. and Yates, F. (1948), "Statistical tables for biological,
 % agricultural and medical research (3rd ed.)", Oliver & Boyd, pp. 26-27.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

@@ -55,7 +55,7 @@ function [bdp,eff] = ASc(c, v)
 % http://dx.doi.org/10.1007/s11749-014-0357-7
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('ASc')">Link to the help page for this function</a>

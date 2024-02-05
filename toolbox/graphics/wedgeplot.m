@@ -107,7 +107,7 @@ function hf = wedgeplot(RES,varargin)
 % "Econometrics and Statistics". [RPRH]
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

@@ -58,7 +58,7 @@ function ctun = HAbdp(bdp,p,abc)
 % Hoaglin, D.C., Mosteller, F., Tukey, J.W. (1982), "Understanding Robust and
 % Exploratory Data Analysis", Wiley, New York.
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %

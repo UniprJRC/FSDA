@@ -71,7 +71,7 @@ function [Q_spot, tau_out] = FM_spot_quart(x,t,T,varargin)
 % Sanfelici, S., Toscano, G. (2024), The Fourier-Malliavin Volatility (FMVol) MATLAB toolbox, available on ArXiv.
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FM_spot_quart')">Link to the help function</a>
