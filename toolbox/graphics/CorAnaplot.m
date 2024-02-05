@@ -2026,18 +2026,14 @@ if ~isempty(h)
     % Make axes equal and add cartesian axes
     
     axis(h,'equal')
-    vv=axis(h);
-    line(h,[vv(1);vv(2)],[0;0])
-    line(h,[0;0],[vv(3);vv(4)])
+    xline(h,0); yline(h,0);
     delete(hfig);
 else
     xlabel(xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
     ylabel(ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
     % Make axes equal and add cartesian axes
     axis(gca,'equal')
-    vv=axis;
-    line([vv(1);vv(2)],[0;0])
-    line([0;0],[vv(3);vv(4)])
+    xline(0); yline(0)
     title(titl,'Interpreter','Latex');
 end
 

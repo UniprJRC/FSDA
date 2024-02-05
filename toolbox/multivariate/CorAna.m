@@ -293,7 +293,7 @@ function out=CorAna(N, varargin)
 %                         V=\sqrt{Chi2stat/(n (\min(I,J)-1))}
 %                         \]
 %                         Cramer's index goes between 0 and 1.
-% out.InertiaExplained =  matrix with 4 columnn.
+% out.InertiaExplained =  matrix with 4 columns.
 %                         - First column contains the singular values (the
 %                           sum of the squared singular values is the total
 %                           inertia).
@@ -1389,11 +1389,8 @@ if isstruct(plots) || plots==1
 
     % Make axis equal and add cartesian axes
     axis(gca,'equal')
-    axis(gca,'equal')
-    vv=axis;
-    line([vv(1);vv(2)],[0;0])
-    line([0;0],[vv(3);vv(4)])
-else
+    xline(0); yline(0);
+ else
     typeR='RowsPri';        % rows are in principal coordinates
     typeC='ColsPri';        % columns are in principal coordinates
     CAplot=false;
@@ -1403,7 +1400,7 @@ ScoreRows=eval(typeR);
 ScoreCols=eval(typeC);
 
 
-% InertiaExplained is a matrix with 4 columnn.
+% InertiaExplained is a matrix with 4 columns.
 % First column contains the singular values (the sum of the squared singular values is the
 % total inertia)
 % Second column contains the eigenvalues  (the sum of the eigenvalues is the
@@ -1559,7 +1556,7 @@ if dispresults==true
     %TODO
     % OverviewRowsSup
     % Overview for supplementary row points
-    % OVerviewColsSup
+    % OverviewColsSup
     % Overview for supplementary column points
 end
 
