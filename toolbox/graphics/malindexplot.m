@@ -19,7 +19,12 @@ function MCDenv=malindexplot(md,v,varargin)
 %           hypothesis of independence are used to define the empirical
 %           quantiles. Note that if the simulated bands have been
 %           precalculated they can be passed through the second input
-%           argument v.
+%           argument v or  through field md.mdStore.
+%        md.N = this field is not compulsory. If this field is present the
+%           input matrix is a contingency table. If this field is present
+%           current procedure also checks if precalculated Mahalanobis
+%           distances to construct the empirical envelopes are present in
+%           field md.mdStore.
 %                Data Types - single|double
 %
 %  v : Number of variables or matrix of size n-by-k containing empirical envelope.
@@ -29,7 +34,9 @@ function MCDenv=malindexplot(md,v,varargin)
 %       threshold in this case is based on the Chi^2 distribution with v
 %       degrees of freedom. If v is a matrix with size(v,1)=length(md)
 %       the empirical precalculated envelope in v are used to obtain the
-%       confidence bands.
+%       confidence bands. Note that the precalculated envelopes in case
+%       input is a struct with field N can also be passed through field
+%       mdStore of the input structure.
 %                Data Types - single|double
 %
 % Optional input arguments:
@@ -324,8 +331,8 @@ if isstruct(md)
     if isfield(md,'class') && strcmp(md.class,'mcdCorAna')
         % mcdCorAnatype
         % Check whether envelopes have been stored
-        if isfield(md,'mmdStore')
-            mmdStore=md.mmdStore;
+        if isfield(md,'mdStore')
+            mdStore=md.mdStore;
             storedEnv=true;
         else
             storedEnv=false;
@@ -344,8 +351,8 @@ if isstruct(md)
         class='mcdCorAna';
         hh=sum(N,'all');
         % Check whether envelopes have been stored
-        if isfield(md,'mmdStore')
-            mmdStore=md.mmdStore;
+        if isfield(md,'mdStore')
+            mdStore=md.mdStore;
             storedEnv=true;
         else
             storedEnv=false;
@@ -485,8 +492,8 @@ elseif strcmp(class,'mcdCorAna')
     [I,J]=size(N);
 
     if storedEnv==true
-        nsimul=size(mmdStore,2);
-        MCDenv=mmdStore(:,round(nsimul*conflev));
+        nsimul=size(mdStore,2);
+        MCDenv=mdStore(:,round(nsimul*conflev));
 
     elseif isscalar(v)
         % nrowt = column vector containing row marginal totals
@@ -495,7 +502,7 @@ elseif strcmp(class,'mcdCorAna')
         ncolt=sum(N,1);
 
         nsimul=200;
-        mmdStore=zeros(I,nsimul);
+        mdStore=zeros(I,nsimul);
 
         parfor j=1:nsimul
             % Generate the contingency tables under the null hypothesis of
@@ -504,12 +511,12 @@ elseif strcmp(class,'mcdCorAna')
             Nsim=out1.m144;
 
             RAW=mcdCorAna(Nsim,'plots',0,'msg',0,'bdp',hh);
-            mmdStore(:,j)=RAW.md;
+            mdStore(:,j)=RAW.md;
         end
 
         % Sort rows of matrix mmdStore
-        mmdStore=sort(mmdStore,2);
-        MCDenv=mmdStore(:,round(nsimul*conflev));
+        mdStore=sort(mdStore,2);
+        MCDenv=mdStore(:,round(nsimul*conflev));
     else
 
         MCDenv=v;
