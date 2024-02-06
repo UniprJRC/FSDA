@@ -427,7 +427,14 @@ for mm = ini0:n
 
 
             if (lunit<=10)
-                Un(mm-init1+1,2:(lunit+1))=unit;
+                if isempty(unit) && (mm-init1)>1
+                    Un(mm-init1+1,2:end)=Un(mm-init1,2:end);
+
+                else
+                    Un(mm-init1+1,2:(lunit+1))=unit;
+                end
+
+
             else
                 if msg==1
                     disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
@@ -448,8 +455,8 @@ if plots==1
     disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
     [gmin] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
 
-    % coeff=gmin(1,3)-mmd(1,2);
-    % gmin(:,2:end)=gmin(:,2:end)-coeff;
+    coeff=gmin(1,3)-mmd(1,2);
+    gmin(:,2:end)=gmin(:,2:end)-coeff;
 
     plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
 
