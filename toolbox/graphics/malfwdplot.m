@@ -1517,7 +1517,7 @@ if ~isempty(datatooltip) && isstruct(datatooltip) && ~isempty(SubsetLinesColor)
     % butt=3 if the right button is pressed
     while butt<3
         % Remember to check compatibility of ginput with INUX and MACOSX.
-        [x1,~,butt] = ginputFS(1,'right');
+        [x1,~,butt] = aux.ginputFS(1,'right');
         if butt == 99
             return;
         else
