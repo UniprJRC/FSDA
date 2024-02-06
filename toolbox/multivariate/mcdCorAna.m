@@ -572,7 +572,7 @@ end
 % bestsubset is the matrix which will contain the indexes of the bestr
 % subsets. Each row refers to a subset.
 % Remark: note that each subset should have v+1 elements. However, due to
-% the fact that if the subset is singulat we continue adding randomly
+% the fact that if the subset is singular we continue adding randomly
 % elements to it up to when it becomes non singular, it is possible that
 % certain subsets have more than v+1 elements
 bestsubset = zeros(bestr, h,'int8');
@@ -951,13 +951,13 @@ if bdp>0
     % make sure you select at least 3 rows or that 
     % and that the cumulative mass of selected units is at least 0.5
     if sum(r(weightsboo))<0.5 || sum(weightsboo)<3
-        [~,mdsorind]=sort(md);
+        [~,mdsorind]=sort(md./EmpEnv);
         weightsboo=false(I,1);
         tt=4;
         while  sum(r(mdsorind(1:tt)))<0.5 % || sum(r(mdsorind(1:tt-1)))<0.5
             tt=tt+1;
         end
-        weightsboo(mdsorind(1:tt-1))=true;
+        weightsboo(mdsorind(1:tt))=true;
     end
 else
     weightsboo(:)=true(I,1);
