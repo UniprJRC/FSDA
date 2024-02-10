@@ -1052,7 +1052,7 @@ if ~isempty(databrush) || isstruct(databrush)
                 % Lay down the plots before continuing
                 position(plot1);
                 disp('Highlight the CTL plot then: click on it to continue brushing or press a keyboard key to stop');
-                ss=waitforbuttonpressFS;
+                ss=aux.waitforbuttonpressFS;
                 disp('------------------------');
 
                 % After waitforbuttonpress:

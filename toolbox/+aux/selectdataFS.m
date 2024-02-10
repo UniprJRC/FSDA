@@ -451,7 +451,7 @@ while selectionflag
             end
             
             % mouse click?
-            ss=waitforbuttonpressFS;
+            ss=aux.waitforbuttonpressFS;
             if ss
                 pointslist = -999;
                 break
@@ -512,7 +512,7 @@ while selectionflag
             % Selection rect as a polygon
             
             % mouse click?
-            ss=waitforbuttonpressFS;
+            ss=aux.waitforbuttonpressFS;
             if ss
                 pointslist = -999;
                 break
@@ -589,7 +589,7 @@ while selectionflag
             % Selection lasso as a polygon
             
             % mouse click?
-            ss=waitforbuttonpressFS;
+            ss=aux.waitforbuttonpressFS;
             if ss
                 pointslist = -999;
                 break
@@ -652,7 +652,7 @@ while selectionflag
             % paint over the data, with a rectangular brush
             
             % mouse click?
-            ss=waitforbuttonpressFS;
+            ss=aux.waitforbuttonpressFS;
             if ss
                 pointslist = -999;
                 break

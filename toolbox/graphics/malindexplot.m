@@ -830,7 +830,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 % - and lay down the plots before continuing
                 position(plot1);
                 disp('Highlight the index plot of MD then: click on it to continue brushing or press a keyboard key to stop');
-                ss=waitforbuttonpressFS;
+                ss=aux.waitforbuttonpressFS;
                 disp('------------------------');
 
                 % - the standard MATLAB function to be executed on figure

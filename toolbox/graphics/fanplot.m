@@ -1424,7 +1424,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 set(gcf,'CloseRequestFcn',@closereqFS);
 
                 disp('Press a mouse key to continue brushing, a keyboard key to stop')
-                ss=waitforbuttonpressFS;
+                ss=aux.waitforbuttonpressFS;
                 disp('------------------------')
                 % After waitforbuttonpress:
                 % - the standard MATLAB function to be executed on figure

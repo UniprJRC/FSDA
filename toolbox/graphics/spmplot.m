@@ -2398,7 +2398,7 @@ if ~isempty(databrush) || iscell(databrush)
 
         disp('Select a region to brush in the spmplot');
         disp('Left mouse button picks points.');
-        ss=waitforbuttonpressFS;
+        ss=aux.waitforbuttonpressFS;
 
         % After waitforbuttonpress:
         % - the standard MATLAB function to be executed on figure
@@ -2973,7 +2973,7 @@ if ~isempty(databrush) || iscell(databrush)
                     % before continuing with waitforbuttonpress
                     figure(plot1);
                     set(gcf,'CloseRequestFcn',@closereqFS);
-                    ss=waitforbuttonpressFS;
+                    ss=aux.waitforbuttonpressFS;
                     set(get(0,'CurrentFigure'),'CloseRequestFcn','closereq');
                     disp('------------------------')
 
