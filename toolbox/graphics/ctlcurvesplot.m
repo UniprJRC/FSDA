@@ -1047,7 +1047,7 @@ if ~isempty(databrush) || isstruct(databrush)
                 % - the CTL curves plot is highlighted again
                 figure(plot1);
                 % - and a function to be executed on figure close is set
-                set(gcf,'CloseRequestFcn',@closereqFS);
+                set(gcf,'CloseRequestFcn',@aux.closereqFS);
 
                 % Lay down the plots before continuing
                 position(plot1);

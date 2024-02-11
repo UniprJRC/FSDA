@@ -1988,7 +1988,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 % - the resfwdplot is highlighted again
                 figure(plot1);
                 % - a function to be executed on figure close is set
-                set(gcf,'CloseRequestFcn',@closereqFS);
+                set(gcf,'CloseRequestFcn',@aux.closereqFS);
 
                 % - and lay down the plots before continuing
                 position(plot1);

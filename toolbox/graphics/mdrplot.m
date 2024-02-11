@@ -395,7 +395,7 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
     [out]=FSReda(y,X,outLXS.bs);
     databrush=struct
     databrush.selectionmode='Lasso'
-     mdrplot(out,'databrush',databrush)
+    mdrplot(out,'databrush',databrush)
 %}
 
 %{
@@ -618,6 +618,7 @@ else
     labeladd='';
     persist='';
     ColorOrd=[1 0 0];
+    flagcol='r';
     clr='brcmykgbrcmykgbrcmykg';
 end
 
@@ -1119,7 +1120,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             position(hmin);
 
             % - and a function to be executed on figure close is set
-            set(gcf,'CloseRequestFcn',@closereqFS);
+            set(gcf,'CloseRequestFcn',@aux.closereqFS);
 
             disp('Press a mouse key to continue brushing, a keyboard key to stop')
             ss=aux.waitforbuttonpressFS;

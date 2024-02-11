@@ -1531,7 +1531,7 @@ if ~isempty(databrush) || iscell(databrush)
         %% - select an area in the yXplot
         
         % A function to be executed on figure close is set
-        set(gcf,'CloseRequestFcn',@closereqFS);
+        set(gcf,'CloseRequestFcn',@aux.closereqFS);
         
         disp('Select a region to brush in the yXplot');
         disp('Left mouse button picks points.');
@@ -2013,7 +2013,7 @@ if ~isempty(databrush) || iscell(databrush)
                     % The monitoring residual plot is highlighted again
                     % before continuing with waitforbuttonpress
                     figure(plot1);
-                    set(gcf,'CloseRequestFcn',@closereqFS);
+                    set(gcf,'CloseRequestFcn',@aux.closereqFS);
                     ss=aux.waitforbuttonpressFS;
                     set(get(0,'CurrentFigure'),'CloseRequestFcn','closereq');
                     disp('------------------------')

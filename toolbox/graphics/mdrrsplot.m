@@ -1193,7 +1193,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             position(hmin);
             
             % - and a function to be executed on figure close is set
-            set(gcf,'CloseRequestFcn',@closereqFS);
+            set(gcf,'CloseRequestFcn',@aux.closereqFS);
             
             disp('Press a mouse key to continue brushing, a keyboard key to stop')
             ss=aux.waitforbuttonpressFS;
