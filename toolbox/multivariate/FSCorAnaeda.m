@@ -227,7 +227,7 @@ rtimesn=r*n;
 ProfileRows=P./r;
 
 
-init1=floor(n*0.6);
+init1=floor(n*0.5);
 plots=0;
 
 if nargin > 1
@@ -474,7 +474,7 @@ if plots==1
 
     xlabel('Subset size m');
     ylabel('Monitoring of minimum (weighted) Mahalanobis distance');
-
+   %  yline(max(gmin(:,end)))
 end
 
 out.MAL=MAL;
