@@ -571,11 +571,8 @@ end
 
 % bestsubset is the matrix which will contain the indexes of the bestr
 % subsets. Each row refers to a subset.
-% Remark: note that each subset should have v+1 elements. However, due to
-% the fact that if the subset is singular we continue adding randomly
-% elements to it up to when it becomes non singular, it is possible that
-% certain subsets have more than v+1 elements
-bestsubset = zeros(bestr, h,'int8');
+% Remark: note that each subset has J  elements. 
+bestsubset = zeros(bestr, J,'int8');
 
 % write in structure RAW the value of h
 RAW=struct;
@@ -678,7 +675,7 @@ else
                 bestlocs(ind,:) = locrw;
                 % best subset associated with minimum value
                 % of the objective function
-                bestsubset(ind,1:length(index))=index;
+                bestsubset(ind,:)=index;
             else
 
             end
@@ -771,6 +768,7 @@ weights(bsbh(1:end-1))=1;
 lastunit=bsbh(end);
 weights(lastunit)=(h-sum(N(bsbh(1:end-1),:),'all'))/sum(N(lastunit,:));
 RAW.weights=weights;
+% Note that  sum(N.*weights,1)/h is RAW.loc
 
 if findEmpEnv == true
     % nrowt = column vector containing row marginal totals
@@ -855,8 +853,6 @@ if findEmpEnv == true
         Aeq=0; beq=0; lb=0; Chi2current=0;  Ntheovec=0;
         optionsFM=struct;
     end
-
-%  Chi2current=592.6249;
 
     parfor j=1:nsimul
         % Generate random contingency table using row and column marginals
@@ -963,7 +959,7 @@ else
     weightsboo(:)=true(I,1);
 end
 RAW.outliers=seq(~weightsboo);
-% Matrix Profile Rows is stored in structure RAW
+% Matrix Profile Rows is stored in structure RAW (field Y)
 RAW.Y=ProfilesRows;
 RAW.EmpEnv=EmpEnv;
 
