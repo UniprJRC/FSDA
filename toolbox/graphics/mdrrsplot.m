@@ -692,13 +692,13 @@ slinsty(nsimul+1:end,:)=[];
 
 % define the selected colors in RGB form
 %ColorSet={'b';'g';'r';'c';'m';'y';'k'};
-ColorSet = {FSColors.black.RGB;...
-    FSColors.blue.RGB;...
-    FSColors.red.RGB;...
-    FSColors.magenta.RGB;...
-    FSColors.green.RGB;...
-    FSColors.cyan.RGB;...
-    FSColors.yellow.RGB;...
+ColorSet = {aux.FSColors.black.RGB;...
+    aux.FSColors.blue.RGB;...
+    aux.FSColors.red.RGB;...
+    aux.FSColors.magenta.RGB;...
+    aux.FSColors.green.RGB;...
+    aux.FSColors.cyan.RGB;...
+    aux.FSColors.yellow.RGB;...
     };
 
 % Line width default
@@ -737,7 +737,7 @@ switch ColorTrj
         slinsty(1:end) = LinestyleSet(3);
         
         % start with a greish color for all trajectories
-        bgcolors  = repmat(FSColors.darkgrey.RGB,nsimul,1);
+        bgcolors  = repmat(aux.FSColors.darkgrey.RGB,nsimul,1);
         fcol      = num2cell(bgcolors,2);
         
         % find the trajectories to highlight
@@ -775,7 +775,7 @@ switch ColorTrj
             slinmkr(selii,:) = MarkerSet(ii+1);
         end
         iA = (1:nsimul)';
-        idarkgrey    = find(cellfun(@(x) isequal(x,FSColors.darkgrey.RGB), fcol(:), 'UniformOutput', 1));
+        idarkgrey    = find(cellfun(@(x) isequal(x,aux.FSColors.darkgrey.RGB), fcol(:), 'UniformOutput', 1));
         inotdarkgrey = setdiff(iA,idarkgrey);
         iA = [idarkgrey ; inotdarkgrey];
         slinsty = slinsty(iA);
@@ -1040,12 +1040,12 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 % Set new colors and new line style for the
                 % trajectories never selected in any iteration
                 % Set new colors and new line style for the unselected trajectories
-                set(htraj(~seleTracumboo),'Color',FSColors.greysh.RGB);
+                set(htraj(~seleTracumboo),'Color',aux.FSColors.greysh.RGB);
                 set(htraj(~seleTracumboo),'LineStyle',':');
             else
                 % Set new colors and new line style for the
                 % trajectories not selcted in the current iteration
-                set(htraj(~seleTrajboo),'Color',FSColors.greysh.RGB);
+                set(htraj(~seleTrajboo),'Color',aux.FSColors.greysh.RGB);
                 set(htraj(~seleTrajboo),'LineStyle',':');
             end
             

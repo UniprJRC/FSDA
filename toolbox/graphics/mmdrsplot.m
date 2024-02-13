@@ -854,12 +854,12 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             if strcmp(persist,'on')
                 % Set new colors and new line style for the
                 % trajectories never selected in any iteration
-                set(htraj(~seleTracumboo),'Color',FSColors.greysh.RGB);
+                set(htraj(~seleTracumboo),'Color',aux.FSColors.greysh.RGB);
                 set(htraj(~seleTracumboo),'LineStyle',':');
             else
                 % Set new colors and new line style for the
                 % trajectories not selcted in the current iteration
-                set(htraj(~seleTrajboo),'Color',FSColors.greysh.RGB);
+                set(htraj(~seleTrajboo),'Color',aux.FSColors.greysh.RGB);
                 set(htraj(~seleTrajboo),'LineStyle',':');
             end
             

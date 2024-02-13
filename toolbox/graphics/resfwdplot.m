@@ -490,7 +490,7 @@ function plotopt=resfwdplot(out,varargin)
     %
     datatooltip = struct;
 
-    datatooltip.LineColor = FSColors.yellowish.RGB;
+    datatooltip.LineColor = aux.FSColors.yellowish.RGB;
     resfwdplot(out,'datatooltip',datatooltip);
     % now LineColor is not a valid RGB vector, but red (default) will be used
     datatooltip.LineColor = [123 41 12 32 1];
@@ -511,7 +511,7 @@ function plotopt=resfwdplot(out,varargin)
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
     datatooltip = struct;
-    datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
+    datatooltip.SubsetLinesColor = aux.FSColors.purplish.RGB;
     resfwdplot(out,'datatooltip',datatooltip);
 
     % Here we show that the modality is also activated when

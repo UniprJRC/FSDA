@@ -44,7 +44,7 @@ yXplot(y,X);
 out1=out;
 out1.RES=out.RES.^2;
 datatooltip = struct;
-datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
+datatooltip.SubsetLinesColor = aux.FSColors.purplish.RGB;
 resfwdplot(out,'datatooltip',datatooltip);
 
 %}

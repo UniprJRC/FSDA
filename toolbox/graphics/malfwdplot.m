@@ -582,7 +582,7 @@ function plotopt=malfwdplot(out,varargin)
     %
     datatooltip = struct;
 
-    datatooltip.LineColor = FSColors.yellowish.RGB;
+    datatooltip.LineColor = aux.FSColors.yellowish.RGB;
     malfwdplot(out,'datatooltip',datatooltip);
     % now LineColor is not a valid RGB vector, but red (default) will be used
     datatooltip.LineColor = [123 41 12 32 1];
@@ -609,7 +609,7 @@ function plotopt=malfwdplot(out,varargin)
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'plots',1,'init',30);
     datatooltip = struct;
-    datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
+    datatooltip.SubsetLinesColor = aux.FSColors.purplish.RGB;
     malfwdplot(out,'datatooltip',datatooltip);
 
     % Here we show that the modality is also activated when

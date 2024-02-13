@@ -102,7 +102,7 @@ function h  = funnelchart(x, varargin)
     x=sort(x,1,'descend');
     labels={'A', 'B', 'C', 'D', 'E', ...
         'F', 'G' 'H', 'I' 'J'};
-    funnelchart(x,'Labels',labels,'Color',FSColors.greysh.RGB)
+    funnelchart(x,'Labels',labels,'Color',aux.FSColors.greysh.RGB)
 %}
 
 %{

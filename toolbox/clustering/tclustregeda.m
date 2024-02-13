@@ -1168,12 +1168,12 @@ matrixFont          = 8;
 % \alpha values. Colormap follows our color rotation standard:
 % clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
 clrdefmap = zeros(lalpha,3,6);
-clrdefmap(:,:,1) = flipud(cmapFS(FSColors.darkblue.RGB ,FSColors.blueish.RGB  ,lalpha));
-clrdefmap(:,:,2) = flipud(cmapFS(FSColors.black.RGB    ,FSColors.greysh.RGB   ,lalpha));
-clrdefmap(:,:,3) = flipud(cmapFS(FSColors.darkpurpl.RGB,FSColors.purplish.RGB ,lalpha));
-clrdefmap(:,:,4) = flipud(cmapFS(FSColors.darkgreen.RGB,FSColors.greenish.RGB ,lalpha));
-clrdefmap(:,:,5) = flipud(cmapFS(FSColors.darkcyan.RGB ,FSColors.lightblue.RGB,lalpha));
-clrdefmap(:,:,6) = flipud(cmapFS(FSColors.darkred.RGB  ,FSColors.reddish.RGB  ,lalpha));
+clrdefmap(:,:,1) = flipud(cmapFS(aux.FSColors.darkblue.RGB ,aux.FSColors.blueish.RGB  ,lalpha));
+clrdefmap(:,:,2) = flipud(cmapFS(aux.FSColors.black.RGB    ,aux.FSColors.greysh.RGB   ,lalpha));
+clrdefmap(:,:,3) = flipud(cmapFS(aux.FSColors.darkpurpl.RGB,aux.FSColors.purplish.RGB ,lalpha));
+clrdefmap(:,:,4) = flipud(cmapFS(aux.FSColors.darkgreen.RGB,aux.FSColors.greenish.RGB ,lalpha));
+clrdefmap(:,:,5) = flipud(cmapFS(aux.FSColors.darkcyan.RGB ,aux.FSColors.lightblue.RGB,lalpha));
+clrdefmap(:,:,6) = flipud(cmapFS(aux.FSColors.darkred.RGB  ,aux.FSColors.reddish.RGB  ,lalpha));
 clrdefmap        = repmat(clrdefmap,1,1,4);
 
 % plotdef = list of the plots which are produced by default (is plots=1)
@@ -1484,8 +1484,8 @@ if (isnumeric(plots) && plots~=0) || isstruct(plots)
                 [~,indredcolor]=intersect(IDtt(:,1),UnitsChgCla);
                 %col=repmat({'b'},n1,1);
                 %col(indredcolor)={'r'};
-                %col=repmat({FSColors.darkgrey.RGB},n1,1);
-                %col(indredcolor)={FSColors.purplish.RGB};
+                %col=repmat({aux.FSColors.darkgrey.RGB},n1,1);
+                %col(indredcolor)={aux.FSColors.purplish.RGB};
                 col=repmat({[0.4660 0.6740 0.1880]},n1,1);
                 col(indredcolor)={[0.6350 0.0780 0.1840]};
                 st=repmat({'normal'},n1,1);

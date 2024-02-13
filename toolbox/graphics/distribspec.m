@@ -264,7 +264,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
     pd = makedist('HalfNormal','mu',0,'sigma',1.5);
     specs  = [-inf 1];
     region = 'inside';
-    RGB_vector = FSColors.lightgrey.RGB;
+    RGB_vector = aux.FSColors.lightgrey.RGB;
     [p, h] = distribspec(pd, specs, region, 'userColor',RGB_vector);
     pause(0.5);
 %}

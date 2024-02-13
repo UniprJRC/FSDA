@@ -254,21 +254,21 @@ else
     for i=1:size(C,1)
         switch C(i)
             case 'y'
-                rgb = FSColors.yellow.RGB;
+                rgb = aux.FSColors.yellow.RGB;
             case 'm'
-                rgb = FSColors.magenta.RGB;
+                rgb = aux.FSColors.magenta.RGB;
             case 'c'
-                rgb = FSColors.cyan.RGB;
+                rgb = aux.FSColors.cyan.RGB;
             case 'r'
-                rgb = FSColors.red.RGB;
+                rgb = aux.FSColors.red.RGB;
             case 'g'
-                rgb = FSColors.green.RGB;
+                rgb = aux.FSColors.green.RGB;
             case 'b'
-                rgb = FSColors.blue.RGB;
+                rgb = aux.FSColors.blue.RGB;
             case 'w'
-                rgb = FSColors.white.RGB;
+                rgb = aux.FSColors.white.RGB;
             case 'k'
-                rgb = FSColors.black.RGB;
+                rgb = aux.FSColors.black.RGB;
         end
         Crgb(i,:)=rgb;
     end

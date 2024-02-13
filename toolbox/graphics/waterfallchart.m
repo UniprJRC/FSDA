@@ -288,7 +288,7 @@ y=y(:,1:end-1);
 % Gray color for the bars which are set as totals Color (211/255) is light
 % gray dark gray is 168/255 while silver is 192/255
 %lightgray = (211/255)*ones(1,3); 
-lightgrey = FSColors.lightgrey.RGB; 
+lightgrey = aux.FSColors.lightgrey.RGB; 
 h         = gobjects(3,1);
 
 if ~isempty(SetAsTotal)

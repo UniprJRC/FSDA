@@ -2122,7 +2122,7 @@ if ~isempty(overlay)
                         axx0 = length(findobj(AX(indRows,indCols), 'type', 'line')); % initial existing objects
                         [~ , he] = ellipse(mean([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
                             cov([dataextr{1,2}(inclId & dataextr{1,4}==ii), dataextr{1,3}(inclId & dataextr{1,4}==ii)]), ...
-                            conflev, clr(ii)); % color was FSColors.darkgrey.RGB
+                            conflev, clr(ii)); % color was aux.FSColors.darkgrey.RGB
                         he.Color=clr(ii);
                         % this is to make the color of the contour lighter
                         he.Color=he(1).Color*(3/4);
