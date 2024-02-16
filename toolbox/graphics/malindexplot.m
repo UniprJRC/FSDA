@@ -25,7 +25,12 @@ function MCDenv=malindexplot(md,v,varargin)
 %           current procedure also checks if precalculated Mahalanobis
 %           distances to construct the empirical envelopes are present in
 %           field md.mdStore.
-%                Data Types - single|double
+%        md.Ntable = this field is not compulsory where Ntable is a tablr
+%           or a timetable. If this field is present the
+%           label of the rows which are used are taken from
+%           RAW.Ntable.Properties.RowTimes (in presence of a timetable)
+%           RAW.Ntable.Properties.RowNames (in presence of a table).
+%                Data Types - single|double|struct
 %
 %  v : Number of variables or matrix of size n-by-k containing empirical envelope.
 %       Scalar or matrix with the same rows of length(md).
@@ -199,10 +204,10 @@ function MCDenv=malindexplot(md,v,varargin)
 %                   Example - 'nameY',{'Y_1' Y_2'}
 %                   Data Types - character
 %
-%      label : row labels. Cell.
+%      label : row labels. Cell or vector of strings.
 %               Cell of length n containing the labels of the rows.
 %                   Example - 'label',{'UK' ...  'IT'}
-%                   Data Types - cell
+%                   Data Types - cell or vector of strings
 %
 %
 %
@@ -326,6 +331,8 @@ if ~isempty(findobj('type','figure','Tag','pl_malindex'))
     close(findobj('type','figure','Tag','pl_malindex'));
 end
 
+labelini='';
+
 if isstruct(md)
 
     if isfield(md,'class') && strcmp(md.class,'mcdCorAna')
@@ -338,13 +345,33 @@ if isstruct(md)
             storedEnv=false;
         end
 
+        if isfield(md,'Ntable')
+            if istable(md.Ntable)
+                labelini=md.Ntable.Properties.RowNames;
+            elseif istimetable(md.Ntable)
+                labelini=string(md.Ntable.Properties.RowTimes);
+            else
+            end
+        end
         out=md;
         hh=md.h;
         N=md.N;
         md=md.md;
         class='mcdCorAna';
 
+
+
+
     elseif isfield(md,'N')
+        if isfield(md,'Ntable')
+            if istable(md.Ntable)
+                labelini=md.Ntable.Properties.RowNames;
+            elseif istimetable(md.Ntable)
+                labelini=string(md.Ntable.Properties.RowTimes);
+            else
+            end
+        end
+
         % non robust distances
         out=md;
         N=md.N;
@@ -378,7 +405,7 @@ n=length(md);
 options=struct('modelT',[],'h','','x',1:n,'labx','','laby','','numlab',{{5}},'conflev',0.975,...
     'title','Index plot of Mahalanobis distances','FontSize',12,'SizeAxesNum',10,...
     'xlimx','','ylimy','','lwdenv',1,'MarkerSize',6,'MarkerFaceColor','w',...
-    'databrush','','tag','pl_malindex','nameY','','label','');
+    'databrush','','tag','pl_malindex','nameY','','label',labelini);
 
 
 [varargin{:}] = convertStringsToChars(varargin{:});
