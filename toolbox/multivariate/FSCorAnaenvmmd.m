@@ -125,7 +125,7 @@ if istable(N) || istimetable(N)
 end
 
 [nrow,ncol]=size(N);
-n=sum(N,'all');
+n=round(sum(N,'all'));
 
 m0=floor(n*0.6);
 
@@ -133,7 +133,7 @@ m0=floor(n*0.6);
 prob=[0.01 0.5 0.99];
 
 % Default value for number of simulations
-nsimul=200;
+nsimul=2000;
 
 if nargin>1
     options=struct('init',m0,'prob',prob,'nsimul',nsimul);
@@ -172,9 +172,9 @@ end
 
 %% Envelopes generation
 % nrowt = column vector containing row marginal totals
-nrowt=sum(N,2);
+nrowt=round(sum(N,2));
 % ncolt = row vector containing column marginal totals
-ncolt=sum(N,1);
+ncolt=round(sum(N,1));
 
 
 mmdStore=zeros(n-m0,nsimul);
@@ -190,7 +190,7 @@ else
     parfor j=1:nsimul
 
         % Generate the contingency table
-        out1=rcontFS(nrow,ncol,nrowt,ncolt);
+        out1=rcontFS(nrow,ncol,nrowt,ncolt,'nocheck',true);
         Nsim=out1.m144;
 
         RAW=mcdCorAna(Nsim,'plots',0,'msg',0);
