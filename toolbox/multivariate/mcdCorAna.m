@@ -132,11 +132,12 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                           simulated with a Chi2 value equal to the
 %                           observed one.
 %               findEmpiricalEnvelope.StoreSim = boolean which specifies
-%                           whether to store or not as field named mdStore
-%                           in output structs RAW and  REW the sorted
-%                           distances based on simulated contingency tables
-%                           which have been generated and the contingency
-%                           tables. The default value of
+%                           whether to store or not as fields named mdStore
+%                           and NsimStore in output structs RAW and  REW
+%                           the sorted distances based on simulated
+%                           contingency tables which have been generated
+%                           and the simulated contingency tables. The
+%                           default value of
 %                           findEmpiricalEnvelope.StoreSimMD is false.
 %               Example - 'findEmpiricalEnvelope',true
 %               Data Types - Boolean
@@ -165,10 +166,12 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                    Mahalanobis distances (in squared units). This vector
 %                    contains the distances of each observation from the
 %                    raw MCD location of the data, relative to the raw MCD
-%                    scatter matrix diag(raw MCD location)
+%                    scatter matrix diag(raw MCD location). Note that these
+%                    distances are not multiplied by the masses.
 %     RAW.outliers = A vector containing the list of the rows declared as
 %                    outliers using confidence level specified in input
-%                    scalar conflev.
+%                    scalar conflev. If no outlier is found RAW.outliers is
+%                    empty.
 %      RAW.conflev = Confidence level that was used to declare outliers and
 %                    to do reweighting.
 %      RAW.singsub = Number of subsets without full rank. Notice that
@@ -192,18 +195,18 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                   findEmpiricalEnvelope is true or scalar containing
 %                   quantile which has been used to declare the outliers.
 %      RAW.mdStore  = array of size I-by-nsimul which contains the robust
-%                   Mahalanobis distances for each row of the contingency
+%                   squared Mahalanobis distances for each row of the contingency
 %                   table across the nsimul simulations based on simulated
 %                   contingency tables. The rows are ordered in ascending
 %                   order. This output is present just if
 %                   input option findEmpiricalEnvelope is a struct and
-%                   findEmpiricalEnvelope.StoreSimMD is true.
-%      RAW.NsimStore  = array of size I-by-nsimul which contains the robust
-%                   Mahalanobis distances for each row of the contingency
-%                   table across the nsimul simulations based on simulated
-%                   contingency tables. The rows are ordered in ascending
-%                   order. This output is present just if
-%                   input option findEmpiricalEnvelope is a struct and
+%                   findEmpiricalEnvelope.StoreSimMD is true. Note that the
+%                   these squared MD are not multiplied by masses.
+%      RAW.NsimStore  = array of size IxJ-by-nsimul which contains the
+%                   simulated contingency tables. First column contains the
+%                   first contingency table stored in vector format...
+%                   This output is present just if input option
+%                   findEmpiricalEnvelope is a struct and
 %                   findEmpiricalEnvelope.StoreSim is true.
 %        RAW.class = 'mcdCorAna'
 %
@@ -406,7 +409,7 @@ end
 
 
 %grand total
-n=sum(sum(N));
+n=round(sum(N,'all'));
 
 
 % P = correspondence matrix  containing relative frequencies
@@ -772,9 +775,9 @@ RAW.weights=weights;
 
 if findEmpEnv == true
     % nrowt = column vector containing row marginal totals
-    nrowt=sum(N,2);
+    nrowt=round(sum(N,2));
     % ncolt = row vector containing column marginal totals
-    ncolt=sum(N,1);
+    ncolt=round(sum(N,1));
     disp('Finding empirical bands')
     if isempty(nsimul)
         if conflev<=0.99
@@ -782,7 +785,9 @@ if findEmpEnv == true
         elseif conflev <=0.999
             nsimul=1000;
         else
-            disp('Empirical band is very extreme: running 5000 replicates')
+            if msg==true
+                disp('Empirical band is very extreme: running 5000 replicates')
+            end
             nsimul=5000;
             % nsimul=100;
         end
@@ -804,8 +809,6 @@ if findEmpEnv == true
 
 
     if simulateUnderH0==false
-        nrowt=sum(N,2);
-        ncolt=sum(N,1);
         Ntheo=nrowt*ncolt/n;
         Ntheovec=Ntheo(:);
 
@@ -817,7 +820,7 @@ if findEmpEnv == true
         funz1=@(x)funz2(x,Ntheovec);
         % Chi2current = current value of Chi2 test
         Chi2current=-funz2(N(:),Ntheovec);
-
+        %Chi2current=592;
         num=numel(N);
         lb=zeros(num,1);
 
