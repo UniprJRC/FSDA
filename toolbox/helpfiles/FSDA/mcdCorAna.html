@@ -24,19 +24,19 @@ d2=out.OverviewRows.Inertia./out.OverviewRows.Mass;
 disp('Square distance of each row profile from the centroid')
 disp([RAW.md d2])</pre></div></div><pre class="codeoutput">The MCD estimates are equal to the classical estimates h=n=1036
 Square distance of each row profile from the centroid
-          0.10          0.10
-          0.29          0.29
-          0.52          0.52
-          0.09          0.09
-          0.24          0.24
-          1.65          1.65
-          0.80          0.80
-          0.12          0.12
-          0.05          0.05
-          0.25          0.25
+    0.0962    0.0962
+    0.2942    0.2942
+    0.5219    0.5219
+    0.0932    0.0932
+    0.2415    0.2415
+    1.6514    1.6514
+    0.7965    0.7965
+    0.1151    0.1151
+    0.0547    0.0547
+    0.2517    0.2517
 
 </pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Raw and reweighted MCD.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load clothes.mat
-[RAW,REW]=mcdCorAna(clothes,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.19 seconds 
+[RAW,REW]=mcdCorAna(clothes,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.22 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/mcdCorAna.html#Example_3'><img vspace="5" hspace="5" src="images\mcdCorAna_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\mcdCorAna_02.png" alt=""> <img vspace="5" hspace="5" src="images\mcdCorAna_03.png" alt=""> <img vspace="5" hspace="5" src="images\mcdCorAna_04.png" alt=""> </a></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 1 of findEmpiricalEnvelope passed as struct.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load clothes.mat
 findEmp=struct;
 % Number of simulations to create the envelope
@@ -154,11 +154,12 @@ Finding empirical bands
                            hypothesis of independence  else they are
                            simulated with a Chi2 value equal to the
                            observed one.</p></p></td></tr><tr valign="top"><td><code>StoreSim</code></td><td><p>boolean which specifies
-                           whether to store or not as field named mdStore
-                           in output structs RAW and  REW the sorted
-                           distances based on simulated contingency tables
-                           which have been generated and the contingency
-                           tables. The default value of
+                           whether to store or not as fields named mdStore
+                           and NsimStore in output structs RAW and  REW
+                           the sorted distances based on simulated
+                           contingency tables which have been generated
+                           and the simulated contingency tables. The
+                           default value of
                            findEmpiricalEnvelope.StoreSimMD is false.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'findEmpiricalEnvelope',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_RAW" class="clearfix"></div><h3 id="output_argument_RAW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>RAW</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
 
@@ -171,9 +172,11 @@ Finding empirical bands
                     Mahalanobis distances (in squared units). This vector
                     contains the distances of each observation from the
                     raw MCD location of the data, relative to the raw MCD
-                    scatter matrix diag(raw MCD location)</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>A vector containing the list of the rows declared as
+                    scatter matrix diag(raw MCD location). Note that these
+                    distances are not multiplied by the masses.</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>A vector containing the list of the rows declared as
                     outliers using confidence level specified in input
-                    scalar conflev.</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>Confidence level that was used to declare outliers and
+                    scalar conflev. If no outlier is found RAW.outliers is
+                    empty.</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>Confidence level that was used to declare outliers and
                     to do reweighting.</p></td></tr><tr valign="top"><td><code>singsub</code></td><td><p>Number of subsets without full rank. Notice that
                     out.singsub &gt; 0.1*(number of subsamples) produces a
                     warning</p></td></tr><tr valign="top"><td><code>weights</code></td><td><p><p>I x 1 vector containing the estimates of the weights.</p> <p>
@@ -189,18 +192,18 @@ Finding empirical bands
                    each Mahalanobis distance if input option
                    findEmpiricalEnvelope is true or scalar containing
                    quantile which has been used to declare the outliers.</p></td></tr><tr valign="top"><td><code>mdStore</code></td><td><p>array of size I-by-nsimul which contains the robust
-                   Mahalanobis distances for each row of the contingency
+                   squared Mahalanobis distances for each row of the contingency
                    table across the nsimul simulations based on simulated
                    contingency tables. The rows are ordered in ascending
                    order. This output is present just if
                    input option findEmpiricalEnvelope is a struct and
-                   findEmpiricalEnvelope.StoreSimMD is true.</p></td></tr><tr valign="top"><td><code>NsimStore</code></td><td><p>array of size I-by-nsimul which contains the robust
-                   Mahalanobis distances for each row of the contingency
-                   table across the nsimul simulations based on simulated
-                   contingency tables. The rows are ordered in ascending
-                   order. This output is present just if
-                   input option findEmpiricalEnvelope is a struct and
-                   findEmpiricalEnvelope.StoreSim is true.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'mcdCorAna'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_REW" class="clearfix"></div><h3 id="output_argument_REW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>REW</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
+                   findEmpiricalEnvelope.StoreSimMD is true. Note that the
+                   these squared MD are not multiplied by masses.</p></td></tr><tr valign="top"><td><code>NsimStore</code></td><td><p><p>array of size IxJ-by-nsimul which contains the
+                   simulated contingency tables. First column contains the
+                   first contingency table stored in vector format...</p> <p>
+                   This output is present just if input option
+                   findEmpiricalEnvelope is a struct and
+                   findEmpiricalEnvelope.StoreSim is true.</p></p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'mcdCorAna'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_REW" class="clearfix"></div><h3 id="output_argument_REW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>REW</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
     <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>N</code></td><td><p>Original contingency table in array format.</p></td></tr><tr valign="top"><td><code>Ntable</code></td><td><p>Original contingency table in table format.</p></td></tr><tr valign="top"><td><code>md</code></td><td><p>I x 1 vector containing the estimates of the robust
                     Mahalanobis distances (in squared units). This vector
                     contains the distances of each observation from the
