@@ -205,9 +205,10 @@ function MCDenv=malindexplot(md,v,varargin)
 %                   Data Types - character
 %
 %      label : row labels. Cell or vector of strings.
-%               Cell of length n containing the labels of the rows.
+%               Cell or vector of strings of length n containing the labels
+%               of the rows.
 %                   Example - 'label',{'UK' ...  'IT'}
-%                   Data Types - cell or vector of strings
+%                   Data Types - cell or characters or vector of strings
 %
 %
 %
