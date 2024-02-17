@@ -34,6 +34,9 @@ function [MMDenv] = FSCorAnaenvmmd(N,varargin)
 %
 % nsimul   :   numer of simulations. Scalar.
 %              Number of simulations to perform. The default value is 200.
+%              Note that this input option is ignored if N is a struct and
+%              field N.NsimStore is present. In this last case nsimul is
+%              equal to the number of columns of N.NsimStore
 %                 Example - 'nsimul',100
 %                 Data Types - double
 %
@@ -108,11 +111,15 @@ function [MMDenv] = FSCorAnaenvmmd(N,varargin)
 
 %% Beginning of code
 
+% Default value for number of simulations
+nsimul=2000;
+
 % Input parameters checks
 if isstruct(N)
     if isfield(N,'NsimStore')
         preGeneratedNsim=true;
         NsimStore=N.NsimStore;
+        nsimul=size(NsimStore,2);
     else
         preGeneratedNsim=false;
     end
@@ -132,8 +139,6 @@ m0=floor(n*0.6);
 % Default quantiles to use
 prob=[0.01 0.5 0.99];
 
-% Default value for number of simulations
-nsimul=2000;
 
 if nargin>1
     options=struct('init',m0,'prob',prob,'nsimul',nsimul);
