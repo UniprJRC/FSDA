@@ -156,9 +156,8 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                    determined the MCD estimator
 %         RAW.loc  = 1 x J  vector containing raw MCD location of the data
 %         RAW.cov  = robust MCD estimate of
-%                    covariance matrix. It is the raw MCD covariance matrix
-%                    (multiplied by a finite sample correction factor and
-%                    an asymptotic consistency factor).
+%                    covariance matrix. Note that RAW.cov is a diagonal
+%                    matrix and on the main diagonal there is out.loc.
 %           RAW.obj= The determinant of the raw MCD covariance matrix.
 %           RAW.bsb= k x 1 vector containing the rows of matrix N which
 %                    contributed to the computation of the MCD estimate of location
