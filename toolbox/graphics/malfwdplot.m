@@ -32,8 +32,8 @@ function plotopt=malfwdplot(out,varargin)
 %                   the x axis is 'Break down point' the label in the x axis is
 %                   'Efficiency';
 %               out.class='FSCorAnaeda' the label in the x axis is 'Subset
-%                   size m' the expected fields of input strucure are 
-%                   out.Loc and out.N;
+%                   size m' the expected fields of input structure are 
+%                   out.Loc and out.N (and possibly out.Ntable);
 %               If out.class is a structure it may contain the fields xlab
 %                   and ylab which specify the labels to be put respectively to
 %                   the x and y axis.
@@ -46,7 +46,7 @@ function plotopt=malfwdplot(out,varargin)
 %               The first column of matrix out.Un contains the subset size
 %               while the other columns the units entered. The nmber of
 %               columns is k before more than one unit can enter the
-%               seubset at a particular step.
+%               subset at a particular step.
 %               This field is not compulsory.
 %                   Data Types - struct
 %
@@ -254,7 +254,7 @@ function plotopt=malfwdplot(out,varargin)
 %                       or using class FScolors:
 %                       datatooltip.SubsetLinesColor='black'; highlights in
 %                       black the trajectories of the units which are
-%                       inside subset in correpondence of the selected
+%                       inside subset in correspondence of the selected
 %                       steps.
 %                   Remark. This can be done (repeatedly) with a left mouse click
 %                       on the x axis ('subset size m') in proximity of the
@@ -272,7 +272,8 @@ function plotopt=malfwdplot(out,varargin)
 %                   Example - 'datatooltip',''
 %                   Data Types - empty value, scalar or struct
 %
-%       label   :   row labels. Cell of strings. Cell containing the labels
+%       label   :   row labels. Cell of characters of vector of strings.
+%                   Cell or vector of strings containing the labels
 %                   of the n units. This optional argument is used for
 %                   datattoltip and brushing. If label is present the
 %                   rownames of the units will be used  during brushing and
@@ -733,7 +734,7 @@ function plotopt=malfwdplot(out,varargin)
 %{
     % Interactive_example
     %   Example of the use of persistent non cumulative brush. Every time a
-    %   brushing action is performed previous highlightments are removed
+    %   brushing action is performed previous highlights are removed
     n=100;
     p=4;
     state1=141243498;
@@ -756,8 +757,8 @@ function plotopt=malfwdplot(out,varargin)
 %{
     % Interactive_example
     %   Example of the use of persistent cumulative brush. Every time a
-    %   brushing action is performed current highlightments are added to
-    %   previous highlightments
+    %   brushing action is performed current highlights are added to
+    %   previous highlights
     n=100;
     p=4;
     state1=141243498;
@@ -800,7 +801,7 @@ function plotopt=malfwdplot(out,varargin)
     % and store the options to produce the plot inside plotopt
     plotopt=malfwdplot(out,'fground',fground,'msg',2)
     % In order to reuse the options which have been stored inside plotopt
-    % use the following sintax
+    % use the following syntax
     % malfwdplot(out,plotopt{:})
 %}
 
@@ -942,6 +943,7 @@ laby='Mahalanobis distances';
 % fthresh=2.5^2;
 v=size(Y,2);
 fthresh=v+2*sqrt(2*v);
+fthresh=0.1;
 
 if n>100
     bthresh=2.5^2;
@@ -1002,7 +1004,7 @@ if nargin>1
         options.(varargin{i})=varargin{i+1};
     end
 end
-
+label=options.label;
 
 % if LineColor and SubsetLinesColor are not specified, set to default.
 LineColor=[1 0 0];      %[1 0 0] is red.
@@ -1092,7 +1094,7 @@ else
 end
 
 
-%% Prepate the figure to display the malfwdplot
+%% Prepare the figure to display the malfwdplot
 
 % Create a figure to host the plot or clear the existing one
 h=findobj('-depth',1,'tag',options.tag);
@@ -1108,7 +1110,7 @@ hold('all');
 
 
 %% standard options
-% get the option names: structure option was initialised with standarddef
+% get the option names: structure option was initialized with standarddef
 % and updated with optional user's options. For the options not set by the
 % user, use their default value
 
@@ -1126,11 +1128,8 @@ standard=standarddef;
 % extract the vector associated with the subset size (x)
 x=standard.subsize;
 
-
-
-
-% If structure out contains fielname class we check whether input structure
-% out comes from MMeda or Seda
+% If structure out contains fieldname class we check whether input structure
+% out comes from MMmulteda or Smulteda, mcdeda or FScoranaeda
 if any(strcmp(fieldnames(out),'class'))
     if strcmp(out.class,'MMmulteda')
         x=out.eff;
@@ -1139,7 +1138,9 @@ if any(strcmp(fieldnames(out),'class'))
         x=out.bdp;
         out.Un='';
     elseif   strcmp(out.class,'FSCorAnaeda')
-        
+        if isfield(out,'Ntable')
+            label=out.Ntable.Properties.RowNames;
+        end
         % out.Un='';
         x=out.Loc(1,1):sum(out.N,'all');
     end
@@ -1184,7 +1185,7 @@ if ~isempty(slintyp)
     set(plot1,{'LineStyle'},slintyp(1:n));
 end
 
-% save the resfwdplot lines handles, for subsequent use with option persist
+% save the malfwdplot lines handles, for subsequent use with option persist
 plot1lines=plot1;
 
 % control minimum and maximum for x and y axis
@@ -1323,7 +1324,7 @@ if ~isempty(options.fground)
         
         % strings = the labels supplied by the user if they
         % exist, otherwise we simply use the sequence 1 to n
-        if isempty(options.label)
+        if isempty(label)
             % In old releases of FSDA it was possible to supply row names
             % directly from input structure out, so for compatibility we
             % leave the instruction below
@@ -1334,8 +1335,8 @@ if ~isempty(options.fground)
             end
             strings = numtext(funit);
         else
-            numtext=options.label;
-            out.label=options.label;
+            numtext=label;
+            out.label=label;
             strings = numtext(funit);
         end
         
