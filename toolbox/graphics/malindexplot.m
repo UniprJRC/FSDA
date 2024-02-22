@@ -348,7 +348,7 @@ if isstruct(md)
 
         if isfield(md,'Ntable')
             if istable(md.Ntable)
-                labelini=md.Ntable.Properties.RowNames;
+                labelini=string(md.Ntable.Properties.RowNames);
             elseif istimetable(md.Ntable)
                 labelini=string(md.Ntable.Properties.RowTimes);
             else
@@ -366,7 +366,7 @@ if isstruct(md)
     elseif isfield(md,'N')
         if isfield(md,'Ntable')
             if istable(md.Ntable)
-                labelini=md.Ntable.Properties.RowNames;
+                labelini=string(md.Ntable.Properties.RowNames);
             elseif istimetable(md.Ntable)
                 labelini=string(md.Ntable.Properties.RowTimes);
             else
