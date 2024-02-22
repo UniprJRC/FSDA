@@ -354,6 +354,8 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 
 %% Beginning of code
 
+storeContTableUnderH0=false;
+
 if ~isempty(varargin)
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -564,7 +566,6 @@ else
     h=floor(2*floor((n+J+1)/2)-n+2*(n-floor((n+J+1)/2))*(1-bdp));
 end
 
-
 if h < hmin
     error('FSDA:mcdCorAna:Wrongh',['The MCD must cover at least ' int2str(hmin) ' observations.'])
 elseif h > n
@@ -610,7 +611,7 @@ else
     if nargout==3
         varargout={C};
     end
-    % initialise and start timer.
+    % initialize and start timer.
     tsampling = ceil(min(nselected/100 , 1000));
     time=zeros(tsampling,1);
 
@@ -620,7 +621,7 @@ else
     for i = 1:nselected
         if i <= tsampling, tic; end
 
-        % extract a subset of size v+1 .
+        % extract a subset of size J .
         index = C(i,:);
 
         % size Yj is J-by-J
@@ -853,20 +854,20 @@ if findEmpEnv == true
         % Initialization needed for parfor
         funz1=@(x)x;
         Aeq=0; beq=0; lb=0; Chi2current=0;  Ntheovec=0;
-        optionsFM=struct;
+        optionsFM=struct; 
     end
 
     parfor j=1:nsimul
         % Generate random contingency table using row and column marginals
         % of the current table
         % Initialization of temporary variables inside parfor
-        Nmaxvec=0; Pcandvec=0;
+        Nmaxvec=0; Pcandvec=0; x0=0;
 
-        if simulateUnderH0 == false
+        if simulateUnderH0 == false && chi2cdf(Chi2current,(I-1)*(J-1),"upper")<0.05
             % Generate random contingency table using row and column marginals
             % of the current table
             % Find a contingency table with a Chi2 value at least equal to the one
-            % found in the sammple.
+            % found in the sample.
             dd=1;
             while dd>0
                 out1=rcontFS(I,J,nrowt,ncolt,'nocheck',true,'algorithm','144');
@@ -881,7 +882,7 @@ if findEmpEnv == true
 
                 % If the condition below is fullfilled we have found a contingency table
                 % with a Chi2 value greater than the observed one
-                if fval<-Chi2current
+                if fval<-Chi2current && isequal(round(sum(Nmaxvec,'all')),n)
                     dd=0;
                 end
             end
@@ -912,6 +913,7 @@ if findEmpEnv == true
             Pcandvec=Nsim(:);
         end
 
+        
         % Nsim=out1.m159;
         if alsorew==false
             TMP=mcdCorAna(Nsim,'plots',0,'msg',false,'bdp',h);
@@ -921,7 +923,11 @@ if findEmpEnv == true
             mdStore(:,j)=TMP.md;
             mdStoreR(:,j)=TMPr.md;
         end
-        NsimStore(:,j)=Pcandvec;
+        if storeContTableUnderH0==true && simulateUnderH0 == false
+            NsimStore(:,j)=x0;
+        else
+            NsimStore(:,j)=Pcandvec;
+        end
     end
 
     % Sort rows of matrix mdStore (MD in squared units)
@@ -1054,7 +1060,7 @@ end
         %  Required input arguments:
         %
         % - N = contingency table of dimension I-by-J
-        % - ProfilesRows = matrix of profile rows
+        % - ProfilesRows = matrix of profile rows based on all obs
         % - r = sum(N,1) = vector of row masses multiplied by n
         % - initialloc = row vector containing (robust) centroid
         % - h = number of observations to use
@@ -1068,7 +1074,7 @@ end
         %  Output:
         %
         %  The output consists of a structure 'outIRWLS' containing:
-        %      outIRWLS.loc     : v x 1 vector. Estimate of location after refsteps
+        %      outIRWLS.loc     : 1 x J vector. Estimate of location after refsteps
         %                         refining steps.
         %      outIRWLS.obj     : scalar. Value of the objective function after refsteps refining
         %                         steps.
