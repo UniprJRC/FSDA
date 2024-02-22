@@ -1,4 +1,4 @@
-function [MMDenv] = FSCorAnaenvmmd(N,varargin)
+function [MMDenv,CHI2env] = FSCorAnaenvmmd(N,varargin)
 %FSCorAnaenvmmd computes the empirical envelopes of Minimum MD outside subset during the search
 %
 %<a href="matlab: docsearchFS('FSCorAnaenvmmd')">Link to the help function</a>
@@ -39,18 +39,24 @@ function [MMDenv] = FSCorAnaenvmmd(N,varargin)
 %              equal to the number of columns of N.NsimStore
 %                 Example - 'nsimul',100
 %                 Data Types - double
-%
-%
-%
+
 % Output:
 %
-%  MMDenv=      n-m0+1 x length(prob)+1 columns containing the envelopes
+%  MMDenv :     n-m0+1 x length(prob)+1 columns containing the envelopes
 %               for the requested quantiles.
 %               1st col = fwd search index from m0 to n-1;
 %               2nd col = envelope for quantile prob[1];
 %               3rd col = envelope for quantile prob[2];
 %               ...;
 %               (k+1) col = envelope for quantile prob[k].
+%
+%  CHI2env :     n-m0+1 x length(prob)+1 columns containing the envelopes
+%               for the requested quantiles of inertia explained.
+%               1st col = fwd search index from m0 to n1;
+%               2nd col = envelope of inertia explained for quantile prob[1];
+%               3rd col = envelope of inertia explained for quantile prob[2];
+%               ...;
+%               (k+1) col = envelope  of inertia explained for quantile prob[k].
 %
 % See also FSMenvmmd.m, FSM.m
 %
@@ -108,6 +114,23 @@ function [MMDenv] = FSCorAnaenvmmd(N,varargin)
     xlabel('Subset size m')
 %}
 
+%{
+    % Monitor the inertia explained.
+    % Compute 0.01 0.5 0.99 envelopes
+    % Generate contingency table of size 20-by-5 with total sum of n_ij=2000.
+    I=20;
+    J=5;
+    n=2000;
+    % nrowt = column vector containing row marginal totals
+    nrowt=(n/I)*ones(I,1);
+    % ncolt = row vector containing column marginal totals
+    ncolt=(n/J)*ones(1,J);
+    out1=rcontFS(I,J,nrowt,ncolt);
+    N=out1.m144;
+    [~,INEenv]=FSCorAnaenvmmd(N,'prob',[0.01 0.5 0.99],'nsimul',1000);
+    plot(INEenv(:,1),INEenv(:,2:end),'r-')
+    xlabel('Subset size m')
+%}
 
 %% Beginning of code
 
@@ -169,29 +192,32 @@ end
 % requested quantiles
 sel=round(nsimul*prob);
 sel(sel==0)=1;
-if ~isequal(unique(sel),sel)
+if ~isequal(unique(sel,"stable"),sel)
     warning('FSDA:FSCorAnaenvmmd:TooLowNsimul',['Some lines are equal it is necessary to' ...
         ' increase the number of simulations. At present the order stats which are selected are']);
     disp(num2str(sel(:)'))
 end
 
 %% Envelopes generation
-% nrowt = column vector containing row marginal totals
-nrowt=round(sum(N,2));
-% ncolt = row vector containing column marginal totals
-ncolt=round(sum(N,1));
 
 
 mmdStore=zeros(n-m0,nsimul);
+ineStore=zeros(n-m0+1,nsimul);
 
 if preGeneratedNsim ==true
     parfor j=1:nsimul
         Nsim=reshape(NsimStore(:,j),nrow,[]);
         outSIMj=FSCorAnaeda(Nsim,'init',m0);
         mmdStore(:,j)=outSIMj.mmd(:,2);
+        ineStore(:,j)=outSIMj.ine(:,2);
     end
 
 else
+    % nrowt = column vector containing row marginal totals
+    nrowt=round(sum(N,2));
+    % ncolt = row vector containing column marginal totals
+    ncolt=round(sum(N,1));
+
     parfor j=1:nsimul
 
         % Generate the contingency table
@@ -202,15 +228,19 @@ else
         outSIMj=FSCorAnaeda(RAW,'init',m0);
 
         mmdStore(:,j)=outSIMj.mmd(:,2);
+        ineStore(:,j)=outSIMj.ine(:,2);
     end
 end
 
 % Sort rows of matrix mmdStore
 mmdStore=sort(mmdStore,2);
 
+% Sort rows of matrix mmdStore
+ineStore=sort(ineStore,2);
+
 
 MMDenv=[(m0:n-1)',mmdStore(:,sel)];
-
+CHI2env=[(m0:n)',ineStore(:,sel)];
 end
 
 %FScategory:MULT-Multivariate

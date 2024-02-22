@@ -10,6 +10,7 @@ function out = FSCorAnaeda(N,varargin)
 %               Array or table of size I-by-J or structure. If N is a
 %               structure it contains the following fields:
 %               N.N = contingency table in array format of size I-by-J.
+%               N.Ntable = contingency table in table format of size  I-by-J.
 %               N.loc = initial location estimate for the matrix of Profile
 %                   rows of the contingency table (row vector or length J).
 %               N.weights= I x 1 vector containing the proportion of the
@@ -38,6 +39,16 @@ function out = FSCorAnaeda(N,varargin)
 %              a random subset containing round(n/5) units will be used.
 %                 Example - 'bsb',[3 6 8 10 12 14]
 %                 Data Types - double
+%
+%   conflev :  simultaneous confidence interval to declare units as
+%              outliers. Scalar.
+%              The default value of conflev is 0.99, that is a 99 per
+%              cent simultaneous confidence level.
+%              Confidence level are based on simulated contingency
+%              tables. This input argument is ignored if optional input
+%              argument mmdEnv is not missing
+%              Example - 'conflev',0.99
+%              Data Types - numeric
 %
 % init :       Point where to start monitoring required diagnostics. Scalar.
 %              Note that if init is not
@@ -89,6 +100,10 @@ function out = FSCorAnaeda(N,varargin)
 %               the forward search.
 %               1st col = fwd search index (from init to n-1);
 %               2nd col = minimum MD;
+%   out.ine=    n-init-by-2 matrix which contains the monitoring of inertia
+%               at each step of the forward search.
+%               1st col = fwd search index (from init to n);
+%               2nd col = inertia;
 %   out.Loc=     (n-init+1)-by-J matrix containing the monitoring of
 %               estimated  means for each variable in each step of
 %               the forward search.
@@ -100,6 +115,9 @@ function out = FSCorAnaeda(N,varargin)
 %               the unit included in step init+1 Un(end,2) contains the
 %               units included in the final step of the search
 %     out.N=    Original contingency table, in array format.
+%     out.Ntable = Original contingency table in table format (if initially
+%               supplied).
+%
 %     out.Y = array of size I-by-J containing row profiles.
 % out.class=    'FSCorAnaeda'
 %
@@ -174,15 +192,28 @@ function out = FSCorAnaeda(N,varargin)
 
 %% Beginning of code
 
-% Input parameters checking
-% chkinputM does not do any check if option nocheck=1
 % Initialization of bsb as an empty vector.
 bsb=[];
+label=[];
 
 if isstruct(N)
 
     RAW=N;
     loc=N.loc;
+
+    if isfield(N,'Ntable')
+        Ntable=N.Ntable;
+        if istable(N.Ntable)
+            label=string(N.Ntable.Properties.RowNames);
+        elseif istimetable(N.Ntable)
+            label=string(N.Ntable.Properties.RowTimes);
+        else
+        end
+    else
+        Ntable=N.N;
+    end
+
+
 
     % Find the contingency table associated to N.loc
     % weights is the vector which tells us how each row of the contingency
@@ -198,15 +229,17 @@ if isstruct(N)
     rowstodel=sum(Niter,2)==0;
     Niter(rowstodel,:)=[];
     Nisstruct=true;
+
 else
     Nisstruct=false;
     RAW=N;
+    if istable(N)
+        Ntable=N;
+        N=table2array(N);
+    else
+        Ntable=array2table(N);
+    end
 end
-
-if istable(N)
-    N=table2array(N);
-end
-
 % n= total sample size
 n=round(sum(N,'all'));
 
@@ -229,10 +262,12 @@ ProfileRows=P./r;
 
 init1=floor(n*0.5);
 plots=0;
+% Simultaneous confidence envelope to declare the outliers
+conflev=0.99;
 
 if nargin > 1
 
-    options=struct('init',init1,'plots',plots,'msg',1,'bsb',[]);
+    options=struct('init',init1,'plots',plots,'msg',1,'bsb',[],'conflev',conflev);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -336,12 +371,22 @@ Loc=cat(2,(init1:n)',NaN(numcol,J));
 %  included.
 Un = cat(2,(init1+1:n)',NaN(n-init1,10));
 
-%  mmd has three columns
+%  mmd has two columns
 %  1st col = dimension of the subset
-%  2nd col min. MD among the units ont belonging to the subset
-%  3rd col (m+1) ordered MD
+%  2nd col min. MD among the units not belonging to the subset
 mmd=[(init1:n-1)' zeros(n-init1,1)];
 
+% 2nd col ine=chi2/mm statistic using the units belonging to subset
+ine=[(init1:n)' zeros(n-init1+1,1)];
+
+% funz2chi2 = anonymous function with 2 input args x and Ntheovect
+% which computes the Chi2 statistic
+% x is the vec operator of the contingency table in array format
+% Ntheovec is the vec operator applied to the matrix of theoretical
+% frequencies
+% Ntheo=nrowt*ncolt/n;
+% Ntheovec=Ntheo(:);
+funzchi2=@(x,Ntheovec) sum(((x-Ntheovec).^2)./Ntheovec);
 
 zeron1=false(I,1);
 bsbT=zeron1;
@@ -357,8 +402,15 @@ for mm = ini0:n
 
     if mm>=init1
 
+        nrowt=sum(Niter,2);
         % Find the proportion of units belonging to each row in the subset
-        bsbProp=sum(Niter,2)./sum(N(bsb,:),2);
+        bsbProp=nrowt./sum(N(bsb,:),2);
+
+        % Store value of Inertia (Chi2/m) at step mm
+        ncolt=sum(Niter,1);
+        Ntheo=nrowt*ncolt/mm;
+        chi2mm=funzchi2(Niter(:),Ntheo(:));
+        ine(mm-init1+1,2)=chi2mm/mm;
 
         % BB(bsb,mm-init1+1)=bsb;
         BB(bsb,mm-init1+1)=bsbProp;
@@ -370,8 +422,8 @@ for mm = ini0:n
         % detS(mm-init1+1,2:end)=[detcovYb sum(diag(covYb))];
 
 
-        % Store MD inside matrix MAL
-        MAL(:,mm-init1+1)=mahaldist;
+        % Store weighted MD inside matrix MAL
+        MAL(:,mm-init1+1)=n*mahaldist .*r;
     end
 
 
@@ -379,13 +431,13 @@ for mm = ini0:n
 
         % oldbsb=bsb;
         oldbsbT=bsbT;
-        % sort MD distances multiplied by row masses
+        % sort squared MD distances multiplied by row masses and by n
         [mahaldistsor,indsortdist]=sort(mahaldist.*rtimesn);
 
 
         % The rows sortdist(1:indexesCR) will be completely
         % represented;
-        cumsumnjdot=cumsum(rtimesn(indsortdist)) +0.000001;
+        cumsumnjdot=cumsum(rtimesn(indsortdist))  +0.000001;
         indexesCR=find(cumsumnjdot<mm+1,1,'last');
 
         if isempty(indexesCR)
@@ -418,6 +470,8 @@ for mm = ini0:n
 
         if mm>=init1
 
+
+
             % mmd contains minimum of Mahalanobis distances among
             % the units which are not in the subset at step m
             % store minMD and (m+1)th MD
@@ -449,40 +503,59 @@ end
 % Plot minimum Mahalanobis distance with 1%, 50% and 99% envelopes
 if plots==1
     figure;
-    quant=[0.01;0.5;0.99];
+    quant=[0.05;0.5;0.95;0.01;conflev];
     % Compute theoretical envelops for minimum Mahalanobis distance based on all
     % the observations for the above quantiles.
     disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
     [gmin] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
 
-    coeff=gmin(1,3)-mmd(1,2);
-    gmin(:,2:end)=gmin(:,2:end)-coeff;
+    resc=true;
+    if resc==true
+        warmup=500;
+        warmup=min([find(mmd(:,1)>round(n/2),1),warmup]);
+        if sum(mmd(1:warmup,2)<gmin(1:warmup,2))>warmup/2   || sum(mmd(1:warmup,2)>gmin(1:warmup,4))>warmup/2
+            coeff=mean(gmin(1:warmup,3))-mean(mmd(1:warmup,2));
+            gmin(:,2:end)=gmin(:,2:end)-coeff;
+        end
 
+    end
+
+    figure;
     plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
 
     % include specified tag in the current plot
     set(gcf,'tag','pl_mmd');
     set(gcf,'Name', 'Monitoring of Minimum (weighted) Mahalanobis distance', 'NumberTitle', 'off');
 
-    % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
     lwdenv=2;
     % Superimpose 50% envelope
     line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
-    % Superimpose 1% and 99% envelope
-    line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-    line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    % Superimpose 1% and conflev% envelope
+    line(gmin(:,1),gmin(:,5),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    line(gmin(:,1),gmin(:,end),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
 
     xlabel('Subset size m');
     ylabel('Monitoring of minimum (weighted) Mahalanobis distance');
-   %  yline(max(gmin(:,end)))
+    yline(max(gmin(:,end)))
+
+    sel=~ismissing(Un(:,end));
+
+    if isempty(label)
+        text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
+    else
+        text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
+    end
+
 end
 
 out.MAL=MAL;
 out.BB=BB;
 out.mmd=mmd;
+out.ine=ine;
 % out.detS=detS;
 out.Un=Un;
 out.N=N;
+out.Ntable=Ntable;
 out.Loc=Loc;
 out.class='FSCorAnaeda';
 out.Y=ProfileRows;

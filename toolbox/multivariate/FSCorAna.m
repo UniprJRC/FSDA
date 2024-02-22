@@ -44,15 +44,15 @@ function out = FSCorAna(N,varargin)
 %                 Example - 'bsb',[3 6 8 10 12 14]
 %                 Data Types - double
 %
-%        conflev :  simultaneous confidence interval to declare units as
-%                   outliers. Scalar.
-%                   The default value of conflev is 0.99, that is a 99 per
-%                   cent simultaneous confidence level.
-%                   Confidence level are based on simulated contingency
-%                   tables. This input argument is ignore if optional input
-%                   argument mmdEnv is not missing
-%                   Example - 'conflev',0.99
-%                   Data Types - numeric
+%   conflev :  simultaneous confidence interval to declare units as
+%              outliers. Scalar.
+%              The default value of conflev is 0.99, that is a 99 per
+%              cent simultaneous confidence level.
+%              Confidence level are based on simulated contingency
+%              tables. This input argument is ignored if optional input
+%              argument mmdEnv is not missing
+%              Example - 'conflev',0.99
+%              Data Types - numeric
 %
 % init :       Point where to start monitoring required diagnostics. Scalar.
 %              Note that if init is not
@@ -114,10 +114,15 @@ function out = FSCorAna(N,varargin)
 %out.outliers=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
 %   out.mmd=    n-init-by-2 matrix which contains the monitoring of minimum
-%               MD or (m+1)th ordered MD  at each step of
+%               MD  at each step of
 %               the forward search.
 %               1st col = fwd search index (from init to n-1);
-%               2nd col = minimum MD;
+%               2nd col = minimum MD weighted by row mass;
+%   out.ine=    n-init-by-2 matrix which contains the monitoring of inertia
+%               at each step of the forward search.
+%               1st col = fwd search index (from init to n);
+%               2nd col = inertia;
+%
 %    out.Un=        (n-init) x 11 Matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
@@ -128,7 +133,7 @@ function out = FSCorAna(N,varargin)
 %     out.N=    Original contingency table, in array format.
 % out.loc     = 1 x v  vector containing location of the data.
 % out.md      = n x 1 vector containing the estimates of the robust
-%               Mahalanobis distances (in squared units) mutiplied by the row masses. 
+%               Mahalanobis distances (in squared units) mutiplied by the row masses.
 %               This vector
 %               contains the distances of each observation from the
 %               location of the data, relative to the scatter matrix cov.
@@ -267,11 +272,21 @@ ProfileRows=P./r;
 
 init1=floor(n*0.25);
 plots=1;
-% Simultaneous confidence envelope to decleare the outliers
+% Simultaneous confidence envelope to declare the outliers
 conflev=0.99;
 StoreSim=false;
 mmdEnv=[];
 msg=true;
+
+% funz2chi2 = anonymous function with 2 input args x and Ntheovect
+% which computes the Chi2 statistic
+% x is the vec operator of the contingency table in array format
+% Ntheovec is the vec operator applied to the matrix of theoretical
+% frequencies
+% Ntheo=nrowt*ncolt/n;
+% Ntheovec=Ntheo(:);
+funzchi2=@(x,Ntheovec) sum(((x-Ntheovec).^2)./Ntheovec);
+
 
 if nargin > 1
 
@@ -371,10 +386,13 @@ end
 %  included.
 Un = cat(2,(init1+1:n)',NaN(n-init1,3));
 
-%  mmd has three columns
+%  mmd has two columns
 %  1st col = dimension of the subset
 %  2nd col min. MD among the units not belonging to the subset
 mmd=[(init1:n-1)' zeros(n-init1,1)];
+
+% 2nd col ine=chi2/mm statistic using the units belonging to subset
+ine=[(init1:n)' zeros(n-init1+1,1)];
 
 
 zeron1=false(I,1);
@@ -389,18 +407,27 @@ for mm = ini0:n
 
     mahaldist=sqrt(MD);
 
+    if mm>=init1
+
+        nrowt=sum(Niter,2);
+        % Store value of Inertia (Chi2/m) at step mm
+        ncolt=sum(Niter,1);
+        Ntheo=nrowt*ncolt/mm;
+        chi2mm=funzchi2(Niter(:),Ntheo(:));
+        ine(mm-init1+1,2)=chi2mm/mm;
+    end
 
     if mm<n
 
         % oldbsb=bsb;
         oldbsbT=bsbT;
-        % sort MD distances multiplied by row masses
+        % sort MD distances (not squared) multiplied by row masses and by n
         [mahaldistsor,indsortdist]=sort(mahaldist.*rtimesn);
 
 
         % The rows sortdist(1:indexesCR) will be completely
         % represented;
-        cumsumnjdot=cumsum(rtimesn(indsortdist)); %+0.000001;
+        cumsumnjdot=cumsum(rtimesn(indsortdist));
         indexesCR=find(cumsumnjdot<mm+1,1,'last');
 
         if isempty(indexesCR)
@@ -450,7 +477,9 @@ for mm = ini0:n
                     Un(mm-init1+1,2:(lunit+1))=unit;
                     if ~isempty(unit)
                         if length(unit)>1
-                            disp(['Warning: more than one unit entered in step' num2str(mm)])
+                            if msg==true
+                                disp(['Warning: more than one unit entered in step' num2str(mm)])
+                            end
                         end
                         Un(mm-init1+1,end)=unit(1);
                     end
@@ -471,16 +500,18 @@ end
 out=struct;
 
 if isempty(mmdEnv)
-    % Outlier detection
-    quant=[0.01;0.5;conflev];
+    % Plot mmd with envelopes
+    % quant=[0.01;0.5;conflev];
+    quant=[0.05;0.5;0.95;0.01;conflev];
     % Compute theoretical envelops for minimum Mahalanobis distance based on all
     % the observations for the above quantiles.
     if msg==true
         disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
     end
-    [gmin] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
+    [gmin,gine] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
     if StoreSim ==true
         out.mmdEnv=gmin;
+        out.ineEnv=gine;
     end
 else
     % Use precalculated empirical confidence envelope of min Mahalanobis
@@ -496,13 +527,18 @@ end
 
 %warmup=200;
 % if sum(mmd(1:warmup,2)<gmin(1:warmup,2))>warmup/3
+resc=true;
+if resc==true
+    warmup=500;
+    warmup=min([find(mmd(:,1)>round(n/2),1),warmup]);
+    % warmup=200;
+    % warmup=round(n*0.6-n/4);
+    if sum(mmd(1:warmup,2)<gmin(1:warmup,2))>warmup/2   || sum(mmd(1:warmup,2)>gmin(1:warmup,4))>warmup/2
+        %     % coeff=mean(gmin(1:warmup,3)-mmd(1:warmup,2));
+        coeff=mean(gmin(1:warmup,3))-mean(mmd(1:warmup,2));
+        gmin(:,2:end)=gmin(:,2:end)-coeff;
+    end
 
-
-warmup=500;
-if sum(mmd(1:warmup,2)<gmin(1:warmup,2))>warmup/2   || sum(mmd(1:warmup,2)>gmin(1:warmup,4))>warmup/2
-    % coeff=mean(gmin(1:warmup,3)-mmd(1:warmup,2));
-    coeff=mean(gmin(1:warmup,3))-mean(mmd(1:warmup,2));
-    gmin(:,2:end)=gmin(:,2:end)-coeff;
 end
 
 % Outlier detection based on Bonferroni threshold
@@ -522,6 +558,7 @@ loc=sum(Ngood,1)/finaln;
 md=mahalCorAna(ProfileRows,loc);
 
 out.mmd=mmd;
+out.ine=ine;
 out.Un=Un;
 out.N=N;
 out.loc=loc;
@@ -529,7 +566,7 @@ out.class='FSCorAna';
 out.Y=ProfileRows;
 out.md=md;
 
-% Plot minimum Mahalanobis distance with 1%, 50% and confleve envelopes
+% Plot minimum Mahalanobis distance with 1%, 50% and conflev envelopes
 if plots==1
     figure;
 
@@ -544,8 +581,8 @@ if plots==1
     % Superimpose 50% envelope
     line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
     % Superimpose 1% and conflev% envelope
-    line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-    line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    line(gmin(:,1),gmin(:,5),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    line(gmin(:,1),gmin(:,end),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
 
     xlabel('Subset size m');
     ylabel('Monitoring of minimum (weighted) Mahalanobis distance');
@@ -558,6 +595,27 @@ if plots==1
     else
         text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
     end
+
+
+    figure;
+
+    % Plot of total inertia
+    plot(ine(:,1),ine(:,2:end),'tag','data_in');
+
+    % include specified tag in the current plot
+    set(gcf,'tag','pl_in');
+    set(gcf,'Name', 'Monitoring of inertia', 'NumberTitle', 'off');
+
+    lwdenv=2;
+    % Superimpose 50% envelope
+    line(gine(:,1),gine(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
+    % Superimpose alpha1% and alpha2% envelope
+    line(gine(:,1),gine(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    line(gine(:,1),gine(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+
+    xlabel('Subset size m');
+    ylabel('Monitoring of inertia');
+
 
 end
 
