@@ -1,6 +1,6 @@
 function MCDenv=malindexplot(md,v,varargin)
-%malindexplot plots the Mahalanobis distances versus a selected variable.
-%The selected variable is typically a generic index number.
+%malindexplot plots the Mahalanobis distances for each row of the input data matrix
+%
 %
 %<a href="matlab: docsearchFS('malindexplot')">Link to the help function</a>
 %
@@ -20,17 +20,21 @@ function MCDenv=malindexplot(md,v,varargin)
 %           quantiles. Note that if the simulated bands have been
 %           precalculated they can be passed through the second input
 %           argument v or  through field md.mdStore.
-%        md.N = this field is not compulsory. If this field is present the
-%           input matrix is a contingency table. If this field is present
-%           current procedure also checks if precalculated Mahalanobis
-%           distances to construct the empirical envelopes are present in
-%           field md.mdStore.
-%        md.Ntable = this field is not compulsory where Ntable is a tablr
-%           or a timetable. If this field is present the
+%        md.N = this field is not compulsory. If this field is present N
+%           is the original contingency table in array format. If this
+%           field is present current procedure also checks if precalculated
+%           Mahalanobis distances to construct the empirical envelopes are
+%           present in field md.mdStore.
+%        md.Ntable = this field is not compulsory. If this field is present 
+%           Ntable is the original contingency table in  table
+%           or timetable  format. If this field is present the
 %           label of the rows which are used are taken from
 %           RAW.Ntable.Properties.RowTimes (in presence of a timetable)
 %           RAW.Ntable.Properties.RowNames (in presence of a table).
 %                Data Types - single|double|struct
+%       md.mdStore = this field is not compulsory. If this field is present
+%           mdstore contains the md distances for the nsimul contingency
+%           tables which have been generated.
 %
 %  v : Number of variables or matrix of size n-by-k containing empirical envelope.
 %       Scalar or matrix with the same rows of length(md).
@@ -41,7 +45,8 @@ function MCDenv=malindexplot(md,v,varargin)
 %       the empirical precalculated envelope in v are used to obtain the
 %       confidence bands. Note that the precalculated envelopes in case
 %       input is a struct with field N can also be passed through field
-%       mdStore of the input structure.
+%       mdStore of the input structure. In this last case this input
+%       argument is ignored and can be a missing value.
 %                Data Types - single|double
 %
 % Optional input arguments:
@@ -95,9 +100,11 @@ function MCDenv=malindexplot(md,v,varargin)
 %                   are labeled in the plot.
 %                   Default is numlab={5}, that is units with the 5
 %                   largest md are labeled.
-%                   Use numlab='' for no labeling.
+%                   Use numlab='' for no labeling. Therefore if 'numlab',5
+%                   unit 5 is labeled while 'numlab',{5} indicates that the
+%                   units is the 5 largest distances have to be labelled.
 %                   Example - 'numlab',{3}
-%                   Data Types - numeric vector or cell.
+%                   Data Types - numeric vector or cell or missing value.
 %
 %        conflev :  confidence interval for the horizontal bands. Vector.
 %                   It can be a vector of different confidence level values,
@@ -396,6 +403,10 @@ else
 end
 
 % The following line is to ensure md is always a column vector
+if istable(md)
+    labelini=string(md.Properties.RowNames);
+    md=table2array(md);
+end
 md = md(:);
 
 % n = number of observations;
@@ -510,6 +521,9 @@ if isempty(class)
         MCDenv=quant;
     else
         % plot the empirical confidence band(s)
+        if istable(v)
+            v=table2array(v);
+        end
         hline = line(x, v,'LineWidth',lwdenv,'Tag','conflevline');
         MCDenv=v;
     end
