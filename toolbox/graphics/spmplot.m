@@ -152,8 +152,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         names but also, point labels, colors, symbols. More precisely
 %         structure pl may contain the following fields: plo.labeladd = if
 %         it is '1', the elements belonging to the max(group)
-%                in the spm are labelled with their unit row index or their
-%                rowname. The rowname is taken from plo.label or if
+%                in the spm are labeled with their unit row index or their
+%                row name. The row name is taken from plo.label or if
 %                plo.label is empty from
 %                The default value is labeladd = '', i.e. no label is added.
 %         plo.nameY = cell array of strings containing the labels of the
@@ -163,7 +163,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                 The default is 90, which means no rotation with respect
 %                 to the MATLAB default. The setting nameYrot = 0 produces
 %                 a rotation perpendicular to the axes, which is often used
-%                 in R graphics. Intermediate values are of corse possible.
+%                 in R graphics. Intermediate values are of course possible.
 %   plo.nameYlength = scalar indicating the maximum length of the labels
 %                of the variables. It is used to shorten the labels when
 %                they are too long. The default value is 0, which indicates
