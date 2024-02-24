@@ -80,7 +80,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %               (2) a scatter plot matrix with the outliers highlighted.
 %               If plots is a structure it may contain the following fields
 %                   plots.labeladd = if this option is '1', the outliers in the
-%                       spm are labelled with their unit row index. The
+%                       spm are labeled with their unit row index. The
 %                       default value is labeladd='', i.e. no label is
 %                       added.
 %                   plots.nameY = cell array of strings containing the labels of
@@ -125,12 +125,21 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %               findEmpiricalEnvelope.nsimul  = number of simulations to
 %                           compute the empirical envelope;
 %               findEmpiricalEnvelope.underH0 = boolean which specifies
-%                           how to simulate the contingency tables.
-%                           If findEmpiricalEnvelope.underH0=true the
+%                           how to simulate the contingency tables. If
+%                           findEmpiricalEnvelope.underH0=true the
 %                           contingency tables are simulated under the null
 %                           hypothesis of independence  else they are
 %                           simulated with a Chi2 value equal to the
-%                           observed one.
+%                           observed one based on all the observations
+%                           (this value can be changed by field
+%                           Chi2ValueToUse).
+%               findEmpiricalEnvelope.Chi2ValueToUse = positive scalar
+%                           which specifies which Chi2 value to use to simulate the
+%                           contingency tables. If this field is empty or
+%                           is not present the value of Chi2 based on all n
+%                           observations is used. Note that this option has
+%                           an effect just if findEmpiricalEnvelope.underH0
+%                           is false.
 %               findEmpiricalEnvelope.StoreSim = boolean which specifies
 %                           whether to store or not as fields named mdStore
 %                           and NsimStore in output structs RAW and  REW
@@ -154,6 +163,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %
 %         RAW.h    = scalar. The number of observations that have
 %                    determined the MCD estimator
+%         RAW.bdp    = scalar. The break down point of the MCD estimator
 %         RAW.loc  = 1 x J  vector containing raw MCD location of the data
 %         RAW.cov  = robust MCD estimate of
 %                    covariance matrix. Note that RAW.cov is a diagonal
@@ -508,7 +518,7 @@ findEmpiricalEnvelope=options.findEmpiricalEnvelope;
 
 if isstruct(findEmpiricalEnvelope)
     findEmpEnv=true;
-    optionspa=struct('nsimul','','underH0','','StoreSim','');
+    optionspa=struct('nsimul','','underH0','','StoreSim','','Chi2ValueToUse','');
     aux.chkoptions(optionspa,fieldnames(findEmpiricalEnvelope))
 
 
@@ -527,6 +537,13 @@ if isstruct(findEmpiricalEnvelope)
     else
         simulateUnderH0=findEmpiricalEnvelope.underH0;
     end
+
+    if ~isfield(findEmpiricalEnvelope,'Chi2ValueToUse')
+        Chi2ValueToUse='';
+    else
+        Chi2ValueToUse=findEmpiricalEnvelope.Chi2ValueToUse;
+    end 
+
 else
     nsimul=[];
     simulateUnderH0=true;
@@ -562,6 +579,7 @@ hmin=floor(2*floor((n+J+1)/2)-n+2*(n-floor((n+J+1)/2))*(0.5));
 
 if bdp>1
     h=bdp;
+    bdp=h/n;
 else
     h=floor(2*floor((n+J+1)/2)-n+2*(n-floor((n+J+1)/2))*(1-bdp));
 end
@@ -580,6 +598,7 @@ bestsubset = zeros(bestr, J,'int8');
 % write in structure RAW the value of h
 RAW=struct;
 RAW.h=h;
+RAW.bdp=bdp;
 
 seq=1:n;
 conflev = options.conflev;
@@ -818,9 +837,15 @@ if findEmpEnv == true
         % funz1 = anonymous function with 1 input arg N which calls funz2
         % The purpose is to minimize funz1 as a function of x
         funz1=@(x)funz2(x,Ntheovec);
-        % Chi2current = current value of Chi2 test
-        Chi2current=-funz2(N(:),Ntheovec);
-        %Chi2current=592;
+
+        if isempty(Chi2ValueToUse)
+            % Use value of Chi2 test based on all the obs
+            Chi2current=-funz2(N(:),Ntheovec);
+        else
+            % Use value of Chi2 supplied by the user
+            Chi2current=Chi2ValueToUse;
+        end
+        
         num=numel(N);
         lb=zeros(num,1);
 
