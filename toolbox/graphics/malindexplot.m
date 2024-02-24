@@ -128,7 +128,7 @@ function MCDenv=malindexplot(md,v,varargin)
 %           ylimy:  ylimits. Vector. Vector with two elements controlling minimum and
 %                   maximum value of the y axis.
 %                   Default is '' (automatic scale).
-%                   Example - 'ylimy',[-3 3]
+%                   Example - 'ylimy',[0 3]
 %                   Data Types - numeric
 %
 %           xlimx:  xlimits. Vector. Vector with two elements controlling minimum and
