@@ -137,6 +137,7 @@ function out = FSCorAna(N,varargin)
 %               This vector
 %               contains the distances of each observation from the
 %               location of the data, relative to the scatter matrix cov.
+% out.thresh  = threshold for nub nD with which outliers have been declared
 %     out.Y = array of size I-by-J containing row profiles.
 % out.class=    'FSCorAna'
 %
@@ -239,9 +240,9 @@ if isstruct(N)
     bsbini=seqI(weights>0);
 
     % Note that some rows of Niter are equal to 0 and must be deleted.
-    % Niter=N.*weights;
-    % rowstodel=sum(Niter,2)==0;
-    % Niter(rowstodel,:)=[];
+     Niter=N.*weights;
+     rowstodel=sum(Niter,2)==0;
+     Niter(rowstodel,:)=[];
     Nisstruct=true;
 else
     Nisstruct=false;
@@ -540,9 +541,9 @@ if resc==true
     end
 
 end
-
+thresh=max(gmin(:,end));
 % Outlier detection based on Bonferroni threshold
-sign=find(mmd(:,2)>max(gmin(:,end)),1);
+sign=find(mmd(:,2)>thresh,1);
 if isempty(sign)
     out.outliers=[];
 else
