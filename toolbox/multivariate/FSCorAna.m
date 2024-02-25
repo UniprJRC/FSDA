@@ -25,6 +25,8 @@ function out = FSCorAna(N,varargin)
 %                    based on N.weights.
 %               N.NsimStore= array of size I-by-J times nsimul containing
 %                   in each column the nsimul simulated contingency tables.
+%               N.simulateUnderH0 = boolean. If it is true the simulated
+%                   contingency tables  have been specified under H0.
 %               Note that input structure N can be conveniently created by
 %               function mcdCorAna.
 %               If N is not a struct it is possible to specify the rows
@@ -45,7 +47,7 @@ function out = FSCorAna(N,varargin)
 %                 Data Types - double
 %
 %   conflev :  simultaneous confidence interval to declare units as
-%              outliers. Scalar.
+%              outliers. Scalar inside (0, 1).
 %              The default value of conflev is 0.99, that is a 99 per
 %              cent simultaneous confidence level.
 %              Confidence level are based on simulated contingency
@@ -137,7 +139,14 @@ function out = FSCorAna(N,varargin)
 %               This vector
 %               contains the distances of each observation from the
 %               location of the data, relative to the scatter matrix cov.
-% out.thresh  = threshold for nub nD with which outliers have been declared
+% out.thresh  = threshold for minMD with which outliers have been declared
+% out.conflev = simultaneous confidence level which has been used to
+%               declare the outliers.
+% out.simulateUnderH0 = boolean. If it is true the simulated
+%                   contingency tables have been specified under H0.
+% out.nsimul       = number of simulations which have been used to create
+%                   the envelopes. This information is taken from
+%                   size(N.NsimStore,2)
 %     out.Y = array of size I-by-J containing row profiles.
 % out.class=    'FSCorAna'
 %
@@ -227,6 +236,13 @@ if isstruct(N)
     end
 
 
+   if isfield(N,'simulateUnderH0') 
+       simulateUnderH0=N.simulateUnderH0;
+   else
+       simulateUnderH0=true;
+   end
+
+
     RAW=N;
     loc=N.loc;
 
@@ -240,13 +256,14 @@ if isstruct(N)
     bsbini=seqI(weights>0);
 
     % Note that some rows of Niter are equal to 0 and must be deleted.
-     Niter=N.*weights;
-     rowstodel=sum(Niter,2)==0;
-     Niter(rowstodel,:)=[];
+    Niter=N.*weights;
+    rowstodel=sum(Niter,2)==0;
+    Niter(rowstodel,:)=[];
     Nisstruct=true;
 else
     Nisstruct=false;
     RAW=N;
+     simulateUnderH0=true;
 end
 
 if istable(N)
@@ -319,6 +336,10 @@ if nargin > 1
     StoreSim=options.StoreSim;
     mmdEnv=options.mmdEnv;
     label=options.label;
+end
+
+if conflev<=0 || conflev>=1
+    error('FSDA:FSCorAna:WrongConfInt','Confidence level must be a number in the interval (0 1)');
 end
 
 if isempty(bsb)
@@ -462,9 +483,9 @@ for mm = ini0:n
 
         if mm>=init1
 
-            % mmd contains minimum of Mahalanobis distances among
-            % the units which are not in the subset at step m
-            % store minMD and (m+1)th MD
+            % mmd contains minimum of Mahalanobis distances *masses *n
+            % among the units which are not in the subset at step m store
+            % minMD
             IndexminMD=find(cumsumnjdot>=mm+1,1,'first');
 
             mmd(mm-init1+1,2)= mahaldistsor(IndexminMD);
@@ -514,6 +535,7 @@ if isempty(mmdEnv)
         out.mmdEnv=gmin;
         out.ineEnv=gine;
     end
+    nsimul=size(RAW.NsimStore,2);
 else
     % Use precalculated empirical confidence envelope of min Mahalanobis
     % distance
@@ -523,8 +545,9 @@ else
     else
         error('FSDA:FSCorAna:WrongInputOpt','Empirical precalculated envelope cannot be used because it has a smaller size than mmd.');
     end
-
+    nsimul=0;
 end
+
 
 %warmup=200;
 % if sum(mmd(1:warmup,2)<gmin(1:warmup,2))>warmup/3
@@ -550,6 +573,10 @@ else
     out.outliers=unique(Un(sign:end,2));
 end
 
+% The above was
+% fac=sqrt(r)*n;
+% mmd(:,2)=(mmd(:,2)./fac).^2;
+
 
 good=setdiff(1:I,out.outliers);
 Ngood=N(good,:);
@@ -566,11 +593,14 @@ out.loc=loc;
 out.class='FSCorAna';
 out.Y=ProfileRows;
 out.md=md;
+out.thresh=thresh;
+out.conflev=conflev;
+out.simulateUnderH0=simulateUnderH0;
+out.nsimul=nsimul;
 
 % Plot minimum Mahalanobis distance with 1%, 50% and conflev envelopes
 if plots==1
     figure;
-
 
     plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
 

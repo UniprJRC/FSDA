@@ -46,8 +46,9 @@ Creating empirical confidence band for minimum (weighted) Mahalanobis distance
                     the MCD estimate of location. If N.weigths(2)=0.1 it
                     means that row 2 of the contingency table contributes
                     with 10 per cent of its mass. The initial subset is
-                    based on N.weights.</p></td></tr><tr valign="top"><td><code>NsimStore</code></td><td><p><p>array of size I-by-J times nsimul containing
-                   in each column the nsimul simulated contingency tables.</p> <p>
+                    based on N.weights.</p></td></tr><tr valign="top"><td><code>NsimStore</code></td><td><p>array of size I-by-J times nsimul containing
+                   in each column the nsimul simulated contingency tables.</p></td></tr><tr valign="top"><td><code>simulateUnderH0</code></td><td><p><p>boolean. If it is true the simulated
+                   contingency tables  have been specified under H0.</p> <p>
                Note that input structure N can be conveniently created by
                function mcdCorAna.</p><p>
                If N is not a struct it is possible to specify the rows
@@ -67,7 +68,7 @@ Creating empirical confidence band for minimum (weighted) Mahalanobis distance
               a random subset containing round(n/5) units will be used.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsb',[3 6 8 10 12 14]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;simultaneous confidence interval to declare units as
-              outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value of conflev is 0.99, that is a 99 per
+              outliers.</span></a><span class="example_desc">scalar inside (0, 1).</span></span></h3><div class="collapse">	<p><p>The default value of conflev is 0.99, that is a 99 per
               cent simultaneous confidence level.</p> <p>
               Confidence level are based on simulated contingency
               tables. This input argument is ignored if optional input
@@ -125,5 +126,9 @@ Creating empirical confidence band for minimum (weighted) Mahalanobis distance
                Mahalanobis distances (in squared units) mutiplied by the row masses.</p> <p>
                This vector
                contains the distances of each observation from the
-               location of the data, relative to the scatter matrix cov.</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>array of size I-by-J containing row profiles.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSCorAna'</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C., Riani, M. and Cerioli, A. (2004), "Exploring multivariate
+               location of the data, relative to the scatter matrix cov.</p></p></td></tr><tr valign="top"><td><code>thresh</code></td><td><p>threshold for minMD with which outliers have been declared</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>simultaneous confidence level which has been used to
+               declare the outliers.</p></td></tr><tr valign="top"><td><code>simulateUnderH0</code></td><td><p>boolean. If it is true the simulated
+                   contingency tables have been specified under H0.</p></td></tr><tr valign="top"><td><code>nsimul</code></td><td><p>number of simulations which have been used to create
+                   the envelopes. This information is taken from
+                   size(N.NsimStore,2)</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>array of size I-by-J containing row profiles.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSCorAna'</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C., Riani, M. and Cerioli, A. (2004), "Exploring multivariate
  data with the forward search", Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="mcdCorAna.html" itemprop="url"><span itemprop="name"><code>mcdCorAna</code></span></a></span> | <span itemprop="seealso"><a href="FSCorAnaeda.html" itemprop="url"><span itemprop="name"><code>FSCorAnaeda</code></span></a></span> | <span itemprop="seealso"><a href="FSR.html" itemprop="url"><span itemprop="name"><code>FSR</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
