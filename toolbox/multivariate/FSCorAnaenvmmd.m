@@ -220,11 +220,11 @@ else
 
     parfor j=1:nsimul
 
-        % Generate the contingency table
+        % Generate the contingency table under H0
         out1=rcontFS(nrow,ncol,nrowt,ncolt,'nocheck',true);
         Nsim=out1.m144;
 
-        RAW=mcdCorAna(Nsim,'plots',0,'msg',0);
+        RAW=mcdCorAna(Nsim,'plots',0,'msg',0,'nsamp',300);
         outSIMj=FSCorAnaeda(RAW,'init',m0);
 
         mmdStore(:,j)=outSIMj.mmd(:,2);
