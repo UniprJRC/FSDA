@@ -203,6 +203,8 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                   each Mahalanobis distance if input option
 %                   findEmpiricalEnvelope is true or scalar containing
 %                   quantile which has been used to declare the outliers.
+%            RAW.simulateUnderH0=is boolean. It is true if the simulated
+%                   contingency tables  have been specified under H0.
 %      RAW.mdStore  = array of size I-by-nsimul which contains the robust
 %                   squared Mahalanobis distances for each row of the contingency
 %                   table across the nsimul simulations based on simulated
@@ -241,7 +243,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                   each Mahalanobis distance if input option
 %                   findEmpiricalEnvelope is true or scalar containing
 %                   quantile which have been used to declare the outliers.
-%      REW.mdStore  = array of size I-by-nsimul which cantains the robust
+%      REW.mdStore  = array of size I-by-nsimul which contains the robust
 %                   Mahalanobis distances for each row of the contingency
 %                   table across the nsimul simulations based on simulated
 %                   contingency tables. The rows are ordered in ascending
@@ -812,6 +814,8 @@ if findEmpEnv == true
         end
     else
     end
+    % Number of subsets to extract in each simulation
+    nsampWithSimN=200;
 
     mdStore=zeros(I,nsimul);
     % Store the simulated contingency tables
@@ -941,10 +945,10 @@ if findEmpEnv == true
         
         % Nsim=out1.m159;
         if alsorew==false
-            TMP=mcdCorAna(Nsim,'plots',0,'msg',false,'bdp',h);
+            TMP=mcdCorAna(Nsim,'plots',0,'msg',false,'bdp',h,'nsamp',nsampWithSimN);
             mdStore(:,j)=TMP.md;
         else
-            [TMP,TMPr]=mcdCorAna(Nsim,'plots',0,'msg',false,'bdp',h);
+            [TMP,TMPr]=mcdCorAna(Nsim,'plots',0,'msg',false,'bdp',h,'nsamp',nsampWithSimN);
             mdStore(:,j)=TMP.md;
             mdStoreR(:,j)=TMPr.md;
         end
@@ -995,6 +999,7 @@ RAW.outliers=seq(~weightsboo);
 % Matrix Profile Rows is stored in structure RAW (field Y)
 RAW.Y=ProfilesRows;
 RAW.EmpEnv=EmpEnv;
+RAW.simulateUnderH0 = simulateUnderH0;
 
 plo=options.plots;
 
