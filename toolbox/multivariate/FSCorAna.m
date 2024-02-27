@@ -88,10 +88,17 @@ function out = FSCorAna(N,varargin)
 %
 %
 %  msg  :       It controls whether to display or not messages
-%               about envelope creation on the screen. logical.
-%               If msg==1 (default) messages are displyed on the screen
+%               about envelope creation on the screen. Logical.
+%               If msg==1 (default) messages are displayed on the screen
 %               else no message is displayed on the screen.
 %                 Example - 'msg',false
+%                 Data Types - logical
+%
+% resc :        Rescale or not the envelopes. Boolean. It controls whether to rescale or not the envelopes of min
+%               MD when if in the initial part of the search  is steadily
+%               above or below the 5 and 95 per cent confidence bands. The
+%               default value of resc is true.
+%                 Example - 'resc',false
 %                 Data Types - logical
 %
 %      label : row labels. Cell or vector of strings.
@@ -115,11 +122,15 @@ function out = FSCorAna(N,varargin)
 %
 %out.outliers=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous
-%   out.mmd=    n-init-by-2 matrix which contains the monitoring of minimum
+%   out.mmd=    n-init-by-5 matrix which contains the monitoring of minimum
 %               MD  at each step of
 %               the forward search.
 %               1st col = fwd search index (from init to n-1);
 %               2nd col = minimum MD weighted by row mass;
+%               3rd col = 1 per cent envelope;
+%               4th col = 50 per cent envelope;
+%               5th col = conflev per cent envelope;
+%
 %   out.ine=    n-init-by-2 matrix which contains the monitoring of inertia
 %               at each step of the forward search.
 %               1st col = fwd search index (from init to n);
@@ -236,11 +247,11 @@ if isstruct(N)
     end
 
 
-   if isfield(N,'simulateUnderH0') 
-       simulateUnderH0=N.simulateUnderH0;
-   else
-       simulateUnderH0=true;
-   end
+    if isfield(N,'simulateUnderH0')
+        simulateUnderH0=N.simulateUnderH0;
+    else
+        simulateUnderH0=true;
+    end
 
 
     RAW=N;
@@ -263,7 +274,7 @@ if isstruct(N)
 else
     Nisstruct=false;
     RAW=N;
-     simulateUnderH0=true;
+    simulateUnderH0=true;
 end
 
 if istable(N)
@@ -305,11 +316,11 @@ msg=true;
 % Ntheovec=Ntheo(:);
 funzchi2=@(x,Ntheovec) sum(((x-Ntheovec).^2)./Ntheovec);
 
-
+resc=true;
 if nargin > 1
 
     options=struct('init',init1,'plots',plots,'msg',msg,'bsb',[],'conflev',conflev, ...
-        'StoreSim',StoreSim,'mmdEnv',mmdEnv,'label',label);
+        'StoreSim',StoreSim,'mmdEnv',mmdEnv,'label',label,'resc',resc);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -336,6 +347,7 @@ if nargin > 1
     StoreSim=options.StoreSim;
     mmdEnv=options.mmdEnv;
     label=options.label;
+    resc=options.resc;
 end
 
 if conflev<=0 || conflev>=1
@@ -549,9 +561,6 @@ else
 end
 
 
-%warmup=200;
-% if sum(mmd(1:warmup,2)<gmin(1:warmup,2))>warmup/3
-resc=true;
 if resc==true
     warmup=500;
     warmup=min([find(mmd(:,1)>round(n/2),1),warmup]);
@@ -585,18 +594,7 @@ finaln=sum(Ngood,'all');
 loc=sum(Ngood,1)/finaln;
 md=mahalCorAna(ProfileRows,loc);
 
-out.mmd=mmd;
-out.ine=ine;
-out.Un=Un;
-out.N=N;
-out.loc=loc;
-out.class='FSCorAna';
-out.Y=ProfileRows;
-out.md=md;
-out.thresh=thresh;
-out.conflev=conflev;
-out.simulateUnderH0=simulateUnderH0;
-out.nsimul=nsimul;
+
 
 % Plot minimum Mahalanobis distance with 1%, 50% and conflev envelopes
 if plots==1
@@ -611,21 +609,32 @@ if plots==1
     lwdenv=2;
     % Superimpose 50% envelope
     line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
-    % Superimpose 1% and conflev% envelope
-    line(gmin(:,1),gmin(:,5),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-    line(gmin(:,1),gmin(:,end),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+
+    show5and95=true;
+    if show5and95==true
+        % Superimpose 5% and 95% envelope
+        line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+        line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+        ylabel('')
+    else
+
+        % Superimpose 1% and conflev% envelope
+        line(gmin(:,1),gmin(:,5),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+        line(gmin(:,1),gmin(:,end),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+        yline(max(gmin(:,end)))
+        sel=~ismissing(Un(:,end));
+
+        if isempty(label)
+            text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
+        else
+            text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
+        end
+
+
+    end
 
     xlabel('Subset size m');
     ylabel('Monitoring of minimum (weighted) Mahalanobis distance');
-    yline(max(gmin(:,end)))
-
-    sel=~ismissing(Un(:,end));
-
-    if isempty(label)
-        text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
-    else
-        text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
-    end
 
 
     figure;
@@ -650,5 +659,22 @@ if plots==1
 
 end
 
+% Store also 1 per cent, 50 per cent  and conflev end per cent envelopes
+mmd=[mmd gmin(:,[5 3 end])];
+% Store also the envelopes for inertia explained
+ine=[ine gine(:,2:4)];
+
+out.mmd=mmd;
+out.ine=ine;
+out.Un=Un;
+out.N=N;
+out.loc=loc;
+out.class='FSCorAna';
+out.Y=ProfileRows;
+out.md=md;
+out.thresh=thresh;
+out.conflev=conflev;
+out.simulateUnderH0=simulateUnderH0;
+out.nsimul=nsimul;
 end
 %FScategory:MULT-Multivariate
