@@ -423,7 +423,7 @@ for mm = ini0:n
 
 
         % Store weighted MD inside matrix MAL
-        MAL(:,mm-init1+1)=n*mahaldist .*r;
+        MAL(:,mm-init1+1)=mahaldist .*r;
     end
 
 
