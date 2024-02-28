@@ -610,7 +610,7 @@ if plots==1
     % Superimpose 50% envelope
     line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
 
-    show5and95=true;
+    show5and95=false;
     if show5and95==true
         % Superimpose 5% and 95% envelope
         line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
