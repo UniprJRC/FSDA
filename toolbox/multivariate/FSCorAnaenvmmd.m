@@ -50,7 +50,7 @@ function [MMDenv, INEenv, nsimul] = FSCorAnaenvmmd(N,varargin)
 %               ...;
 %               (k+1) col = envelope for quantile prob[k].
 %
-%  CHI2env :     n-m0+1 x length(prob)+1 columns containing the envelopes
+%  INEenv :     n-m0+1 x length(prob)+1 columns containing the envelopes
 %               for the requested quantiles of inertia explained.
 %               1st col = fwd search index from m0 to n1;
 %               2nd col = envelope of inertia explained for quantile prob[1];
