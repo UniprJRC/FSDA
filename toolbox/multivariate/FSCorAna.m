@@ -542,12 +542,12 @@ if isempty(mmdEnv)
     if msg==true
         disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
     end
-    [gmin,gine] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
+    [gmin,gine,nsimul] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
     if StoreSim ==true
         out.mmdEnv=gmin;
         out.ineEnv=gine;
     end
-    nsimul=size(RAW.NsimStore,2);
+ 
 else
     % Use precalculated empirical confidence envelope of min Mahalanobis
     % distance
@@ -661,8 +661,11 @@ end
 
 % Store also 1 per cent, 50 per cent  and conflev end per cent envelopes
 mmd=[mmd gmin(:,[5 3 end])];
+
+if isempty(mmdEnv)
 % Store also the envelopes for inertia explained
 ine=[ine gine(:,2:4)];
+end
 
 out.mmd=mmd;
 out.ine=ine;
