@@ -1,5 +1,5 @@
-function [MMDenv,CHI2env] = FSCorAnaenvmmd(N,varargin)
-%FSCorAnaenvmmd computes the empirical envelopes of Minimum MD outside subset during the search
+function [MMDenv, INEenv, nsimul] = FSCorAnaenvmmd(N,varargin)
+%FSCorAnaenvmmd computes the empirical envelopes of Min MD outside subset and inertia explained during the search 
 %
 %<a href="matlab: docsearchFS('FSCorAnaenvmmd')">Link to the help function</a>
 %
@@ -39,7 +39,7 @@ function [MMDenv,CHI2env] = FSCorAnaenvmmd(N,varargin)
 %              equal to the number of columns of N.NsimStore
 %                 Example - 'nsimul',100
 %                 Data Types - double
-
+%
 % Output:
 %
 %  MMDenv :     n-m0+1 x length(prob)+1 columns containing the envelopes
@@ -57,6 +57,9 @@ function [MMDenv,CHI2env] = FSCorAnaenvmmd(N,varargin)
 %               3rd col = envelope of inertia explained for quantile prob[2];
 %               ...;
 %               (k+1) col = envelope  of inertia explained for quantile prob[k].
+%
+%  nsimul :     number of simulations. Scalar. Number of simulations which
+%               have been used to create the envelope
 %
 % See also FSMenvmmd.m, FSM.m
 %
@@ -79,7 +82,7 @@ function [MMDenv,CHI2env] = FSCorAnaenvmmd(N,varargin)
 %
 %{
     %% Call of FSCorAnaenvmmd with all the default options.
-    % Generate contingency table of size 30-by-5 with total sum of n_ij=3000.
+    % Generate contingency table of size 50-by-5 with total sum of n_ij=10000.
     I=50;
     J=5;
     n=10000;
@@ -240,7 +243,7 @@ ineStore=sort(ineStore,2);
 
 
 MMDenv=[(m0:n-1)',mmdStore(:,sel)];
-CHI2env=[(m0:n)',ineStore(:,sel)];
+INEenv=[(m0:n)',ineStore(:,sel)];
 end
 
 %FScategory:MULT-Multivariate
