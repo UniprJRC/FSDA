@@ -1410,7 +1410,7 @@ end
         % Fraction of observations whose covariance determinant will be
         % minimized. If a percentage alpha=1-h/n of units are trimmed by 
         % the mcd, it is 1-alpha. 
-        alphacompto1 = h/n;
+        alphacompto1 = round(h/n,2);
 
         if nargin<4 || isempty(nu) || nu == 0
             % This is the standard case, applied when uncontaminated data
