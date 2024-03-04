@@ -200,11 +200,11 @@ if nlkplots > 0
             width = ceil(scrwidth / 4);
     end
     heigth = ceil(width/whratio);
-    
+
     % the left position of the plots depends on their width
     left = ((1:nlkplots)'-1)*width;
     left = mod(left,scrwidth);
-    
+
     % set the displacement from the bottom of the screen
     fb = 30 ;
     if nlkplots > 1
@@ -214,7 +214,7 @@ if nlkplots > 0
             fb(i) = min(nrows*fb(i)+heigth*(nrows-1) , heigth*3);
         end
     end
-    
+
     % set the new positions
     switch nlkplots
         case 1
@@ -225,7 +225,7 @@ if nlkplots > 0
             cposlkplots=num2cell(poslkplots,2);
             set(lkplots,{'OuterPosition'},cposlkplots);
     end
-    
+
 end
 
 %Set the new position and size of any other open plot
@@ -241,19 +241,22 @@ switch notherfigs
     case 0
     case 1
         posotherfigs = [scrwidth-(scrwidth/3) scrheight-scrheight/3 scrwidth/3 scrheight/3];
-        set(otherfigs,'OuterPosition',posotherfigs);
+        try
+            set(otherfigs,'OuterPosition',posotherfigs);
+        catch
+        end
     otherwise
         displacements = 20*ones(notherfigs,notherfigs).*repmat((0:notherfigs-1)',1,notherfigs);
         posotherfigs = [scrwidth-(scrwidth/3) scrheight-scrheight/3 scrwidth/3 scrheight/3];
         posotherfigs = repmat(posotherfigs,notherfigs,1);
-        
+
         if size(posotherfigs,2)<notherfigs
             notherfigs=size(posotherfigs,2);
             displacements=displacements(:,1:notherfigs);
         end
 
         posotherfigs(:,1:notherfigs) = posotherfigs(:,1:notherfigs) - displacements;
-    
+
         cposotherfigs=num2cell(posotherfigs,2);
         % repositioning can be done just for figures and not for UIfigures
         % Given that instruction below is only supported from 2018b
