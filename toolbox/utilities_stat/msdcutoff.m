@@ -140,7 +140,7 @@ function cutoff = msdcutoff(conflev,v,nu)
 
 %% Beginning of code
 
-if nargin < 3 || isempty(nu)
+if nargin < 3 || isempty(nu) || nu == 0
     cutoff=chi2inv(conflev,v);
 else
     cutoff = (1 - betainv(conflev,v/2,nu/2))^(-1);
