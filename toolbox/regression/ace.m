@@ -61,7 +61,7 @@ function [out]=ace(y,X,varargin)
 %   nterm  : minimum number of consecutive iteration below the threshold
 %           to terminate the outer loop. Positive scalar. This value
 %           specifies how many consecutive iterations below the threshold
-%           it is necesasry to have to declare convergence in the outer
+%           it is necessary to have to declare convergence in the outer
 %           loop. The default value of nterm is 3.
 %           Example - 'nterm',5
 %           Data Types - double
