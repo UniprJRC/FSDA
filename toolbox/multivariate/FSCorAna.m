@@ -542,7 +542,7 @@ if isempty(mmdEnv)
     if msg==true
         disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
     end
-    [gmin,gine,nsimul] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
+    [gmin,gine,nsimul] = FSCorAnaenv(RAW,'prob',quant,'init',init1);
     if StoreSim ==true
         out.mmdEnv=gmin;
         out.ineEnv=gine;

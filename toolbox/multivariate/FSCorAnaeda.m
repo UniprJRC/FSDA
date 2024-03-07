@@ -507,7 +507,7 @@ if plots==1
     % Compute theoretical envelops for minimum Mahalanobis distance based on all
     % the observations for the above quantiles.
     disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
-    [gmin] = FSCorAnaenvmmd(RAW,'prob',quant,'init',init1);
+    [gmin] = FSCorAnaenv(RAW,'prob',quant,'init',init1);
 
     resc=true;
     if resc==true

@@ -1,7 +1,7 @@
-function [MMDenv, INEenv, nsimul] = FSCorAnaenvmmd(N,varargin)
-%FSCorAnaenvmmd computes the empirical envelopes of Min MD outside subset and inertia explained during the search 
+function [MMDenv, INEenv, nsimul] = FSCorAnaenv(N,varargin)
+%FSCorAnaenv computes the empirical envelopes of Min MD outside subset and inertia explained during the search 
 %
-%<a href="matlab: docsearchFS('FSCorAnaenvmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSCorAnaenv')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -73,7 +73,7 @@ function [MMDenv, INEenv, nsimul] = FSCorAnaenvmmd(N,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('FSCorAnaenvmmd')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSCorAnaenv')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -81,7 +81,7 @@ function [MMDenv, INEenv, nsimul] = FSCorAnaenvmmd(N,varargin)
 
 %
 %{
-    %% Call of FSCorAnaenvmmd with all the default options.
+    %% Call of FSCorAnaenv with all the default options.
     % Generate contingency table of size 50-by-5 with total sum of n_ij=10000.
     I=50;
     J=5;
@@ -92,13 +92,13 @@ function [MMDenv, INEenv, nsimul] = FSCorAnaenvmmd(N,varargin)
     ncolt=(n/J)*ones(1,J);
     out1=rcontFS(I,J,nrowt,ncolt);
     N=out1.m144;
-    MMDenv=FSCorAnaenvmmd(N);
+    MMDenv=FSCorAnaenv(N);
     plot(MMDenv(:,1),MMDenv(:,2:4),'k')
     xlabel('Subset size m');
 %}
 
 %{
-    % Call of FSCorAnaenvmmd with options prob and nsimul.
+    % Call of FSCorAnaenv with options prob and nsimul.
     % Compute 0.001 0.01 0.99 and 0.999 envelopes
     % Generate contingency table of size 50-by-5 with total sum of n_ij=2000.
     I=50;
@@ -110,7 +110,7 @@ function [MMDenv, INEenv, nsimul] = FSCorAnaenvmmd(N,varargin)
     ncolt=(n/J)*ones(1,J);
     out1=rcontFS(I,J,nrowt,ncolt);
     N=out1.m144;
-    MMDenv=FSCorAnaenvmmd(N,'prob',[0.001 0.01 0.99 0.999],'nsimul',1000);
+    MMDenv=FSCorAnaenv(N,'prob',[0.001 0.01 0.99 0.999],'nsimul',1000);
     hold('on')
     plot(MMDenv(:,1),MMDenv(:,3:4),'r-')
     plot(MMDenv(:,1),MMDenv(:,[2 5]),'k-')
@@ -130,7 +130,7 @@ function [MMDenv, INEenv, nsimul] = FSCorAnaenvmmd(N,varargin)
     ncolt=(n/J)*ones(1,J);
     out1=rcontFS(I,J,nrowt,ncolt);
     N=out1.m144;
-    [~,INEenv]=FSCorAnaenvmmd(N,'prob',[0.01 0.5 0.99],'nsimul',1000);
+    [~,INEenv]=FSCorAnaenv(N,'prob',[0.01 0.5 0.99],'nsimul',1000);
     plot(INEenv(:,1),INEenv(:,2:end),'r-')
     xlabel('Subset size m')
 %}
@@ -173,7 +173,7 @@ if nargin>1
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSCorAnaenvmmd:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:FSCorAnaenv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     aux.chkoptions(options,UserOptions)
@@ -187,7 +187,7 @@ if nargin>1
 
     % Check that the initial subset size is not greater than n-1
     if m0>n-1
-        error('FSDA:FSMenvmmd:WrongM0',['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
+        error('FSDA:FSCorAnaenv:WrongM0',['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
     end
 end
 
@@ -196,7 +196,7 @@ end
 sel=round(nsimul*prob);
 sel(sel==0)=1;
 if ~isequal(unique(sel,"stable"),sel)
-    warning('FSDA:FSCorAnaenvmmd:TooLowNsimul',['Some lines are equal it is necessary to' ...
+    warning('FSDA:FSCorAnaenv:TooLowNsimul',['Some lines are equal it is necessary to' ...
         ' increase the number of simulations. At present the order stats which are selected are']);
     disp(num2str(sel(:)'))
 end
