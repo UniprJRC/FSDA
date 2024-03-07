@@ -215,11 +215,11 @@ if nocheck == false
         error('FSDA:rcontFS:WrongInputOpt','Number of columns of the contingency table cannot be smaller than 1')
     end
     
-    if min(nrowt)<=0
+    if min(nrowt)<0
         error('FSDA:rcontFS:WrongInputOpt','Row totals must be integers strictly greater than 0')
     end
     
-    if min(ncolt)<=0
+    if min(ncolt)<0
         error('FSDA:rcontFS:WrongInputOpt','Column totals must be integers strictly greater than 0')
     end
     
