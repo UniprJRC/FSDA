@@ -53,7 +53,7 @@ function [out]=ace(y,X,varargin)
 %
 %       w  : weights for the observations. Vector. Row or column vector of
 %           length n containing the weights associated to each
-%           observations. If w is not specified we assum $w=1$ for $i=1,
+%           observations. If w is not specified we assume $w=1$ for $i=1,
 %           2, \ldots, n$.
 %           Example - 'w',1:n
 %           Data Types - double
