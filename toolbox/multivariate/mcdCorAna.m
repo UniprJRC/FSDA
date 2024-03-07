@@ -283,7 +283,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 % Correspondence Analysis, "Journal of the Royal Statistical Society Series
 % C: Applied Statistics", Vol. 71, pp. 1381–1401,
 % https://doi.org/10.1111/rssc.12580
-% 
+%
 % Copyright 2008-2024.
 % Written by FSDA team
 %
@@ -349,7 +349,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 
 %}
 
-%{ 
+%{
     %% Example 2 of findEmpiricalEnvelope a struct
     load clothes.mat
     findEmp=struct;
@@ -365,8 +365,6 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %}
 
 %% Beginning of code
-
-storeContTableUnderH0=false;
 
 if ~isempty(varargin)
     [varargin{:}] = convertStringsToChars(varargin{:});
@@ -544,7 +542,7 @@ if isstruct(findEmpiricalEnvelope)
         Chi2ValueToUse='';
     else
         Chi2ValueToUse=findEmpiricalEnvelope.Chi2ValueToUse;
-    end 
+    end
 
 else
     nsimul=[];
@@ -594,7 +592,7 @@ end
 
 % bestsubset is the matrix which will contain the indexes of the bestr
 % subsets. Each row refers to a subset.
-% Remark: note that each subset has J  elements. 
+% Remark: note that each subset has J  elements.
 bestsubset = zeros(bestr, J,'int8');
 
 % write in structure RAW the value of h
@@ -849,7 +847,7 @@ if findEmpEnv == true
             % Use value of Chi2 supplied by the user
             Chi2current=Chi2ValueToUse;
         end
-        
+
         num=numel(N);
         lb=zeros(num,1);
 
@@ -883,14 +881,14 @@ if findEmpEnv == true
         % Initialization needed for parfor
         funz1=@(x)x;
         Aeq=0; beq=0; lb=0; Chi2current=0;  Ntheovec=0;
-        optionsFM=struct; 
+        optionsFM=struct;
     end
 
     parfor j=1:nsimul
         % Generate random contingency table using row and column marginals
         % of the current table
         % Initialization of temporary variables inside parfor
-        Nmaxvec=0; Pcandvec=0; x0=0;
+        Nmaxvec=0; Pcandvec=0;
 
         if simulateUnderH0 == false && chi2cdf(Chi2current,(I-1)*(J-1),"upper")<0.05
             % Generate random contingency table using row and column marginals
@@ -928,12 +926,12 @@ if findEmpEnv == true
                 Pcandvec=lambda(i)*Ntheovec+(1-lambda(i))*Nmaxvec;
                 % disp(-funz1(Pcandvec))
                 if funz1(Pcandvec)<-Chi2current
-                   % disp(lambda(i))
+                    % disp(lambda(i))
                     break
                 end
             end
 
-            
+
             % Nsim = simulated contingency table with the required value of Chi2
             Nsim=reshape(Pcandvec,I,[]);
         else
@@ -942,7 +940,7 @@ if findEmpEnv == true
             Pcandvec=Nsim(:);
         end
 
-        
+
         % Nsim=out1.m159;
         if alsorew==false
             TMP=mcdCorAna(Nsim,'plots',0,'msg',false,'bdp',h,'nsamp',nsampWithSimN);
@@ -952,11 +950,7 @@ if findEmpEnv == true
             mdStore(:,j)=TMP.md;
             mdStoreR(:,j)=TMPr.md;
         end
-        if storeContTableUnderH0==true && simulateUnderH0 == false
-            NsimStore(:,j)=x0;
-        else
-            NsimStore(:,j)=Pcandvec;
-        end
+        NsimStore(:,j)=Pcandvec;
     end
 
     % Sort rows of matrix mdStore (MD in squared units)
@@ -981,7 +975,7 @@ end
 weightsboo=md <= EmpEnv;
 
 if bdp>0
-    % make sure you select at least 3 rows or that 
+    % make sure you select at least 3 rows or that
     % and that the cumulative mass of selected units is at least 0.5
     if sum(r(weightsboo))<0.5 || sum(weightsboo)<3
         [~,mdsorind]=sort(md./EmpEnv);
