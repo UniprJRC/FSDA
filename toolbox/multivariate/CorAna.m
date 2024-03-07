@@ -1105,7 +1105,7 @@ out.CramerV = sqrt(Chi2stat/(n*(min(I,J)-1)));
 Gam2 = Gam.^2;
 cumsumTotalInertia = cumsum(diag(Gam2))/TotalInertia;
 
-% InertiaExplained is a matrix with 4 columnn.
+% InertiaExplained is a matrix with 4 columns.
 % - First column contains the singular values (the sum of the squared
 %   singular values is the total inertia)
 % - Second column contains the eigenvalues (the sum of the eigenvalues is
