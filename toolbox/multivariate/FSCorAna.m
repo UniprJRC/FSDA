@@ -103,7 +103,8 @@ function out = FSCorAna(N,varargin)
 %
 %      label : row labels. Cell or vector of strings.
 %               Cell or vector of strings of length n containing the labels
-%               of the rows.
+%               of the rows. If input is a table or a timetable the row
+%               labels are automatically taken from the row names.
 %                   Example - 'label',{'UK' ...  'IT'}
 %                   Data Types - cell or characters or vector of strings
 %
@@ -115,6 +116,13 @@ function out = FSCorAna(N,varargin)
 %               else (default), all plots are suppressed.
 %               Example - 'plots',0
 %               Data Types - double
+%
+% addRowNames  : add or not names of the rows to the plot of min MD.
+%               Boolean. If this option is equal to true (default) the
+%               first time a row is included in the subset is shown in the
+%               plot with the corresponding row label or row number.
+%               Example - 'addRowNames',false
+%               Data Types - logical
 %
 % Output:
 %
@@ -277,8 +285,18 @@ else
     simulateUnderH0=true;
 end
 
-if istable(N)
+if istable(N) || istimetable(N)
+    if istable(N)
+        label=string(N.Properties.RowNames);
+    elseif istimetable(N)
+        label=string(N.Ntable.Properties.RowTimes);
+    else
+    end
+
     N=table2array(N);
+
+
+
 end
 
 % n= total sample size
@@ -317,10 +335,11 @@ msg=true;
 funzchi2=@(x,Ntheovec) sum(((x-Ntheovec).^2)./Ntheovec);
 
 resc=true;
+addRowNames=true;
 if nargin > 1
 
     options=struct('init',init1,'plots',plots,'msg',msg,'bsb',[],'conflev',conflev, ...
-        'StoreSim',StoreSim,'mmdEnv',mmdEnv,'label',label,'resc',resc);
+        'StoreSim',StoreSim,'mmdEnv',mmdEnv,'label',label,'resc',resc,'addRowNames',addRowNames);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -348,6 +367,7 @@ if nargin > 1
     mmdEnv=options.mmdEnv;
     label=options.label;
     resc=options.resc;
+    addRowNames=options.addRowNames;
 end
 
 if conflev<=0 || conflev>=1
@@ -547,7 +567,7 @@ if isempty(mmdEnv)
         out.mmdEnv=gmin;
         out.ineEnv=gine;
     end
- 
+
 else
     % Use precalculated empirical confidence envelope of min Mahalanobis
     % distance
@@ -624,12 +644,14 @@ if plots==1
         yline(max(gmin(:,end)))
         sel=~ismissing(Un(:,end));
 
-        if isempty(label)
-            text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
-        else
-            text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
-        end
+        if addRowNames == true
+            if isempty(label)
+                text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
+            else
+                text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
+            end
 
+        end
 
     end
 
@@ -663,8 +685,8 @@ end
 mmd=[mmd gmin(:,[5 3 end])];
 
 if isempty(mmdEnv)
-% Store also the envelopes for inertia explained
-ine=[ine gine(:,2:4)];
+    % Store also the envelopes for inertia explained
+    ine=[ine gine(:,2:4)];
 end
 
 out.mmd=mmd;
