@@ -68,7 +68,7 @@ function out = FSCorAnaeda(N,varargin)
 %
 %  msg  :       It controls whether to display or not messages
 %               about great interchange on the screen. Scalar.
-%               If msg==1 (default) messages are displyed on the screen
+%               If msg==1 (default) messages are displayed on the screen
 %               else no message is displayed on the screen.
 %                 Example - 'msg',0
 %                 Data Types - double
@@ -474,27 +474,35 @@ for mm = ini0:n
 
             % mmd contains minimum of Mahalanobis distances among
             % the units which are not in the subset at step m
-            % store minMD and (m+1)th MD
+            % store minMD 
             IndexminMD=find(cumsumnjdot>=mm+1,1,'first');
 
             mmd(mm-init1+1,2)= mahaldistsor(IndexminMD);
 
 
-            if (lunit<=10)
+            if (lunit<=2)
                 if isempty(unit) && (mm-init1)>1
-                    Un(mm-init1+1,2:end)=Un(mm-init1,2:end);
+                    Un(mm-init1+1,2:end-1)=Un(mm-init1,2:end-1);
 
                 else
                     Un(mm-init1+1,2:(lunit+1))=unit;
+                    if ~isempty(unit)
+                        if length(unit)>3
+                            if msg==true
+                                disp(['Warning: more than one unit entered in step' num2str(mm)])
+                            end
+                        end
+                        Un(mm-init1+1,end)=unit(1);
+                    end
                 end
 
 
             else
                 if msg==1
-                    disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
+                    disp(['Warning: interchange greater than 1 when m=' int2str(mm)]);
                     disp(['Number of units which entered=' int2str(lunit)]);
                 end
-                Un(mm-init1+1,2:end)=unit(1:10);
+                Un(mm-init1+1,2:length(unit)+1)=unit(1:length(unit));
             end
         end
     end
