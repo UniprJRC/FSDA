@@ -66,7 +66,7 @@ function [out]=fanBIC(outFSRfan,varargin)
 %                   comparison of the minimum MD with a
 %                   Bonferroni bound. For example if bonflev=0.99 the
 %                   procedure stops when the trajectory exceeds for the
-%                   first time the 99% bonferroni bound.
+%                   first time the 99% Bonferroni bound.
 %                 - A scalar value greater than 1. In this case the
 %                   procedure stops when the residual trajectory exceeds
 %                   for the first time this value.
@@ -121,13 +121,13 @@ function [out]=fanBIC(outFSRfan,varargin)
 % out.BBla = n-by-length(la) matrix containing information about the
 %               outlier(s) for each value of lambda.
 %               If out.BBla(i,j)=0 means that unit i (i=1, 2, ...n) is not
-%               in agrement with la(j) j=1, 2, ..., length(la).
+%               in agreement with la(j) j=1, 2, ..., length(la).
 %               If out.BBla(i,j)=1 means that unit i (i=1, 2, ...n) is
-%               in agrement with la(j) j=1, 2, ..., length(la) but has been
+%               in agreement with la(j) j=1, 2, ..., length(la) but has been
 %               declared as outlier in the subsequent outlier detection
 %               procedure.
 %               If out.BBla(i,j)=2 means that unit i (i=1, 2, ...n) is
-%               in agrement with la(j) j=1, 2, ..., length(la) and has not been
+%               in agreement with la(j) j=1, 2, ..., length(la) and has not been
 %               declared as outlier in the subsequent outlier detection
 %               procedure.
 %    out.labest= scalar. Value of lambda associated with the largest BIC

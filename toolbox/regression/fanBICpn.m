@@ -31,7 +31,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %               score test for the joint presence of both constructed
 %               variables (associated with positive and negative
 %               observations) for each value of the transformation
-%               parameter.  In this case the reference distribution is the
+%               parameter. In this case the reference distribution is the
 %               $F$ with 2 and subset_size-p degrees of freedom.
 %               1st col = fwd search index (subset_size);
 %               2nd col = value of the score test in each step
@@ -40,7 +40,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %               (score) likelihood ratio test for the joint presence of
 %               both constructed variables (associated with positive and
 %               negative observations) for each value of the transformation
-%               parameter.  In this case the reference distribution is the
+%               parameter. In this case the reference distribution is the
 %               $F$ with 2 and subset_size-p degrees of freedom.
 %               1st col = fwd search index (subset_size);
 %               2nd col = value of the score test in each step of the fwd search for la;
@@ -78,7 +78,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %                   Data Types - double
 %    fraciniFSR :   fraction of observations to initialize search for outlier detection.
 %                   Scalar. After exceedance procedure based on the score
-%                   test a subset of obverations in agreement with a
+%                   test a subset of observations in agreement with a
 %                   transformation is found. On this subset we perform
 %                   outlier detection using FSR. fraciniFSR specifies the
 %                   fraction of observations to start monitoring
@@ -118,7 +118,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %                parameters $\lambda_P$ and $\lambda_N$. Boolean. If
 %                scoremle is true and field Scoremle is present in input
 %                structure outFSRfan is present we check exceedance of the
-%               threshold according to according to likelihood
+%               threshold according to likelihood
 %               ratio test else we check exceedance of the threshold
 %               according to outFSRfan.Scoreb.
 %               Example - 'scoremle',true
@@ -164,10 +164,10 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %                                   'ObsWithOut'; 'AGIW'; 'R2'}; or
 %                   plots.name={'all'};
 %                   it is also possible to view the heatmap referred to the
-%                   number of obserations in agreement with transformation
+%                   number of observations in agreement with transformation
 %                   before outlier detection ('ObsWithOut') the weighted
 %                   version of the agreement index ('AGIW') and the
-%                   orginal value of R2 before correction for truncation.
+%                   original value of R2 before correction for truncation.
 %                   Example - 'plots', 1
 %                   Data Types - single | double | struct
 %
@@ -193,12 +193,12 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %              7th col = value of the agreement index weighted;
 %              8th col = value of R2 based on observations in agreement
 %                   with transformation after outlier detection.
-%              9th col = value of R2 corrected for elliptical trunction.
+%              9th col = value of R2 corrected for elliptical truncation.
 %  out.labestBIC = vector of length 2 containing best values of laP and laN
 %              according to BIC.
 %  out.labestAGI = vector of length 2 containing best values of laP and laN
 %              according to agreement index.
-%  out.ty =    transformed response accordint to out.labestBIC.
+%  out.ty =    transformed response according to out.labestBIC.
 %     out.rsq  = the multiple R-squared value for the transformed values
 %      out.y  = n x 1 vector containing the original y values.
 %      out.X  = n x p matrix containing the original X matrix.
@@ -244,7 +244,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
     [outFSRfan]=FSRfan(y,X,'plots',0,'init',round(n*0.3),'nsamp',10000,'la',[0 0.25 0.5 0.75 1 1.25],'msg',0,'family','YJ');
     [outini]=fanBIC(outFSRfan,'plots',0);
     % labest is the best value imposing the constraint that positive and
-    % negative observations must have the same tramsformation parameter.
+    % negative observations must have the same transformation parameter.
     labest=outini.labest;
     % Compute test for positive and test for negative using labest
     [outFSRfanpn]=FSRfan(y,X,'msg',0,'family','YJpn','la',labest,'plots',0);
@@ -306,7 +306,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
     [outFSRfan]=FSRfan(y,X,'plots',1,'init',round(n*0.3),'nsamp',5000,'la',la,'msg',0,'family','YJ');
     [outini]=fanBIC(outFSRfan,'plots',0);
     % labest is the best value imposing the constraint that positive and
-    % negative observations must have the same tramsformation parameter.
+    % negative observations must have the same transformation parameter.
     labest=outini.labest;
     % Compute test for positive and test for negative using labest
     indexlabest=find(labest==la);
@@ -330,7 +330,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 
 % fopen() not being supported by localthreads prevent us
 % from using this code
-% 9.8 is MATLAB 2020a where  parpool('threads') was first introduced
+% 9.8 is MATLAB 2020a where parpool('threads') was first introduced
 % numbertotest = '9.8';
 % MLver=verLessThanFS(numbertotest);
 %
@@ -364,7 +364,7 @@ fraciniFSR=0.80;
 if length(outFSRfan.la)>1
     warning('FSDA:fanBICpn:labestNotScalar',['Input structure outFSRfan contains the values ' ...
         'of the score test for more than one value of lambda. Here we assume that labest is the first ' ...
-        'that is we assume that labest is ' num2str(labest)])
+        'that we assume that labest is ' num2str(labest)])
 end
 
 scoremle=false;
@@ -750,8 +750,8 @@ for i=3:nmdr
         PosMinNeg=sum(Sco(i-2:i+2,3)<Sco(i-2:i+2,4))==5 && max(Sco(i-2:i+2,4)-Sco(i-2:i+2,3))>1;
         % FandT=(ScolajB(i)>thB(i) && ScolajB(i-1)>thB(i) && ScolajB(i-2)>thB(i) && ScolajB(i+1)>thB(i) && ScolajB(i+2)>thB(i));
         
-        % F test is greater than threhold for 5 consecutive times (quintuplet) and both tP and tN
-        % are greater then threshold
+        % F test is greater than threshold for 5 consecutive times (quintuplet) and both tP and tN
+        % are greater than threshold
         FandT=sum(ScolajB(i-2:i+2)>thB(i))==5 &&  (ScolajP(i)>th ||  ScolajN(i)>th);
         
         % Extreme triplet out of the envelope for general test or
@@ -790,7 +790,7 @@ BBla(good,1)=1;
 n1=length(good);
 initlarger=round(n1*fraciniFSR);
 
-% lms contains the new indexs of bs inside good. lms will be used to
+% lms contains the new indexes of bs inside good. lms will be used to
 % initialize the search without calling LXS
 lms=zeros(length(bs),1);
 for i=1:length(bs)

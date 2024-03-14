@@ -170,7 +170,7 @@ function out=boxcoxR(y,X, varargin)
 %               is BoxCox' or 'YJ', the dimension of out.LogLik is
 %               length(laseq)-by-2. In this case the first column contains
 %               the values of laseq and the second column the values of the
-%               profile log lik. If family is 'YJpn', the dimension of
+%               profile log likelihood. If family is 'YJpn', the dimension of
 %               out.LogLik is:
 %               * length(laseqPos)-by-length(laseqNeg) if option usefmin is
 %                 false (default) and therefore the maximization routine is
@@ -190,7 +190,7 @@ function out=boxcoxR(y,X, varargin)
 %
 % out.exitflag =  flag which informs about convergence. exitflag = 0
 %                 implies normal convergence, else no convergence has been
-%                 obtained. This ouptut is present only if input option
+%                 obtained. This output is present only if input option
 %                 usefmin is true or struct and family is YJpn.
 %
 %
@@ -219,7 +219,7 @@ function out=boxcoxR(y,X, varargin)
 %
 % Acknowledgements:
 %
-% This function has been inspired by sumbmission
+% This function has been inspired by submission
 % https://www.mathworks.com/matlabcentral/fileexchange/10419-box-cox-power-transformation-for-linear-models
 % in the file exchange written by Hovav Dror, hovav@hotmail.com, March 2006
 %
@@ -271,7 +271,7 @@ function out=boxcoxR(y,X, varargin)
 %}
 
 %{
-    %% Example of use of option plots combined with  laseq.
+    %% Example of use of option plots combined with laseq.
     load('wool.txt','wool');
     y=wool(:,4);
     X=wool(:,1:3);
@@ -288,13 +288,13 @@ function out=boxcoxR(y,X, varargin)
     y=YY(:,2);
     X=YY(:,[1 3]);
     out=boxcoxR(y,X,'family','YJpn','plots',1);
-    % The contour plot suggestes that while positive observatios do not
-    % have to transformed, negative observations have to be transformed using
+    % The contour plot suggests that while positive observations do not
+    % have to be transformed, negative observations have to be transformed using
     % lambda=0. For more details see Atkinson Riani and Corbellini (2020)
 %}
 
 %{
-   %% Ex of the use of option usefmin.
+   %% Example of the use of option usefmin.
     rng(500)
     % Generate regression data
     outsim=simulateLM(100,'R2',0.95);
@@ -309,11 +309,11 @@ function out=boxcoxR(y,X, varargin)
     % specify maximum number of iterations
     usefmin.MaxIter=100;
     % Function boxcoxR initializes the optimization routine with the value
-    % of lambda from the last call of the optmization routine. This trick
+    % of lambda from the last call of the optimization routine. This trick
     % is very useful during the forward search when we use in step m+1 as
     % initial guess of laP and laN the final estimate of laP and laN in
     % step m.
-    % The instruction below clear persisten variables in function boxcoxR
+    % The instruction below clear persistent variables in function boxcoxR
     clear boxcoxR
     out=boxcoxR(y,X,'family','YJpn','plots',1,'usefmin',usefmin);
     disp('MLE of laPos and laNeg')
@@ -336,18 +336,18 @@ function out=boxcoxR(y,X, varargin)
     usefmin=struct;
     % specify maximum number of iterations
     usefmin.MaxIter=100;
-    % Note that to specify as solver fminunc the optmization toolbox is
+    % Note that to specify as solver fminunc the optimization toolbox is
     % needed.
     usefmin.solver='fminunc';
     out=boxcoxR(y,X,'family','YJpn','plots',1,'usefmin',usefmin);
     disp('MLE of laPos and laNeg')
     disp(out.lahat)
-    % Check that the values after the optmization are as expected
+    % Check that the values after the optimization are as expected
     assert(max(abs(out.lahat-[0.3166   -0.8825]))<1e-4,'Wrong values of laP and laN')
 %}
 
 %{
-    %% Ex using simulated contaminated data.
+    %% Example using simulated contaminated data.
     rng(10000)
     % Generate X and y data
     n=200;
@@ -457,7 +457,7 @@ elseif strcmp(family,'YJpn')
                 % Check if minimization toolbox is installed in current computer
                 typemin=exist('fminunc','file');
                 if typemin==0
-                    warning('FSDA:boxcoxR:OptToolNotPresent','fminunc has been chosen as optmizer but optmization toolbox is not present')
+                    warning('FSDA:boxcoxR:OptToolNotPresent','fminunc has been chosen as optmizer but optimization toolbox is not present')
                     warning('FSDA:boxcoxR:OptToolNotPresent','fminsearch will be used')
                     typemin=1;
                 end
@@ -539,7 +539,7 @@ elseif BoxCoxTra ==2
     
     for la=laseq
         ij=ij+1;
-        % Yeo and JOhnson transformation (without the Jacobian)
+        % Yeo and Johnson transformation (without the Jacobian)
         ytra=normYJ(y,1,la,'Jacobian',false);
         
         % Residual sum of squares using y(lambda) divided by n
@@ -570,9 +570,9 @@ elseif BoxCoxTra ==3 % This is the case of two values of lambda
     computeLogLikUsingGrid=OptimTruePreviousLambdaFalse || useOptim==false;
     
     if computeLogLikUsingGrid == true
-        % if useOptim==true and the previous estimater of lambda  has not been cached
+        % if useOptim==true and the previous estimate of lambda has not been cached
         % redefine laseqPos and laseqNeg in order to find
-        % a rough initial estimate of lambda for the optmization
+        % a rough initial estimate of lambda for the optimization
         if OptimTruePreviousLambdaFalse
             maxL=2;
             laseqPos=-maxL:0.5:maxL;
@@ -738,7 +738,7 @@ else % This is the case of 2 values of lambda
     end
 end
 
-% Store profile Log lik
+% Store profile LogLik
 out.LogLik=LogLik;
 
 end

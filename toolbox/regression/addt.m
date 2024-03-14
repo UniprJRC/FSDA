@@ -50,13 +50,13 @@ function [out]=addt(y,X,w,varargin)
 %               Data Types - double
 %
 %   FontSize:   Label font size inside plot. Scalar. It controls the
-%               fontsize of the labels of the axes and eventual plot
+%               font size of the labels of the axes and eventual plot
 %               labels. Default value is 10
 %               Example - 'FontSize',14
 %               Data Types - double
 %
 %   SizeAxesNum: Font size of axes numbers. Scalar. It controls the
-%               fontsize of the numbers of the
+%               font size of the numbers of the
 %               axes. Default value is 10
 %               Example - SizeAxesNum,12
 %               Data Types - double
@@ -188,7 +188,7 @@ if nargin > 3
         % FontSizeAxes = font size for the axes numbers
         SizeAxesNum=options.SizeAxesNum;
     end
-end
+    end3
 %% t test for an additional explanatory variable
 
 [~, R] = qr(X,0);
