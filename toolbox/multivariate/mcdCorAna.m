@@ -974,9 +974,9 @@ end
 
 weightsboo=md <= EmpEnv;
 
-if bdp>0
+% if bdp>0
     % make sure you select at least 3 rows or that
-    % and that the cumulative mass of selected units is at least 0.5
+    % the cumulative mass of selected units is at least 0.5
     if sum(r(weightsboo))<0.5 || sum(weightsboo)<3
         [~,mdsorind]=sort(md./EmpEnv);
         weightsboo=false(I,1);
@@ -986,9 +986,9 @@ if bdp>0
         end
         weightsboo(mdsorind(1:tt))=true;
     end
-else
-    weightsboo(:)=true(I,1);
-end
+% else
+%    weightsboo(:)=true(I,1);
+% end
 RAW.outliers=seq(~weightsboo);
 % Matrix Profile Rows is stored in structure RAW (field Y)
 RAW.Y=ProfilesRows;

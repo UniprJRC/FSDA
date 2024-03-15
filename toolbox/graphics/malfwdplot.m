@@ -921,6 +921,11 @@ numtext=cellstr(num2str(seq,'%d'));
 % x= vector which contains the subset size (numbers on the x axis)
 x=(n-nsteps+1):n;
 
+% fthresh=2.5^2;
+v=size(Y,2);
+fthresh=v+2*sqrt(2*v);
+
+
 % selthdef= threshold to select the MDs labelled in the malfwdplot.
 % selline=  threshold to select the MDs highlighted in the malfwdplot.
 % unselline= to select how to represent the unselected units ('faint' 'hide' 'greish');
@@ -932,6 +937,13 @@ if isfield(out,'class')
     else
         labx= 'Subset size m';
     end
+
+    if strcmp(out.class,'FSCorAnaeda')
+        [I,J]=size(out.N);
+        fthresh=chi2inv(0.99,(J-1)*(I-1))/(out.mmd(end,1)+1);
+        fthresh=quantile(out.MAL(:,1),0.75)
+    end
+
 else
     labx= 'Subset size m';
 end
@@ -940,10 +952,7 @@ end
 laby='Mahalanobis distances';
 
 
-% fthresh=2.5^2;
-v=size(Y,2);
-fthresh=v+2*sqrt(2*v);
-fthresh=0.1;
+
 
 if n>100
     bthresh=2.5^2;
@@ -960,10 +969,20 @@ selmin=min(MDvalues,[],2);
 styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 styp=repmat(styp,ceil(n/13),1);
 
+uniformStyle=true;
+if uniformStyle ==true
+    Coldef={'b'};
+    Lindef={'-'};
+else
+    Coldef={'b','r','k'};
+    Lindef={'-','--',':','-.'};
+end
+
+
 % Default options for all trajectories
 standarddef = struct(...
     'subsize',x,'xlim','','ylim','','titl','','labx',labx,'laby',laby,...
-    'Color',{{'b'}},'LineStyle',{{'-'}},...
+    'Color',{Coldef},'LineStyle',{Lindef},...
     'LineWidth',1,'SizeAxesLab',12,'SizeAxesNum',10);
 
 % Default options for the trajectories in foreground

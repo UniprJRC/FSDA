@@ -65,7 +65,7 @@ function out=CorAna(N, varargin)
 %                         'Senior-Employees' of the input contingency table
 %                         as supplementary rows. Of course the length of
 %                         Sup.r must be smaller than the number of rows of
-%                         the contigencey matrix divided by 2.
+%                         the contingency matrix divided by 2.
 %                      - if Sup.r is a table, or a 2D array
 %                         supplementary rows do not belong to N. Note that
 %                         if Sup.r is a table, the labels of the rows are
@@ -88,11 +88,11 @@ function out=CorAna(N, varargin)
 %                       supplementary columns.
 %                       - if Sup.c={'Smokers' 'NonSmokers'}
 %                        (that is Sup.c is a cell array of strings) we use
-%                        columns of the contingency table labelled
+%                        columns of the contingency table labeled
 %                        'Smokers' and 'NonSmokers' of the input
 %                        contingency table N as supplementary columns.
 %                        Of course the length of Sup.c must be smaller than
-%                        the number of columns of the contigencey matrix
+%                        the number of columns of the contingency matrix
 %                        divided by 2.
 %                       - If Sup.c is a table, or a 2D array
 %                         supplementary columns do not belong to N. Note that
@@ -425,7 +425,7 @@ function out=CorAna(N, varargin)
 %                          column points with latent dimension axes. Similar
 %                          to component loadings in PCA.
 %      out.Summary    =   $K$-times-4 table containing summary results
-%                         for correpondence analysis.
+%                         for correspondence analysis.
 %                         First column contains the singular values (the
 %                         sum of the squared singular values is the total
 %                         inertia).
