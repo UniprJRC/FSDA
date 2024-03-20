@@ -30,10 +30,10 @@ function outFORE=forecastH(y,X,Z,varargin)
 %               If Z is a vector of length r it contains the indexes of
 %               the columns of matrix X which form the scedastic function.
 %               Therefore, if for example the explanatory variables
-%               responsible for heteroscedisticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax
+%               responsible for heteroscedasticity are columns 3 and 5
+%               of matrix X, it is possible to use both the syntax
 %                    regressH(y,X,X(:,[3 5]))
-%               or the sintax
+%               or the syntax
 %                    regressH(y,X,[3 5])
 %
 %  Optional input arguments:
@@ -142,7 +142,7 @@ function outFORE=forecastH(y,X,Z,varargin)
 %
 %$LastChangedDate::                      $: Date of the last commit
 
-% Examples:
+%% Examples:
 
 %{
     % forecastH with all default options.

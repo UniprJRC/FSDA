@@ -49,7 +49,7 @@ function [out]=avas(y,X,varargin)
 %           l(j)=5 => j-th variable assumes categorical (unorderable) values.
 %           j =1, 2,..., p.
 %           The default value of l is a vector of ones of length p,
-%           that is the procedure assumes that all the explanatory
+%           this procedure assumes that all the explanatory
 %           variables have orderable values (and therefore can be
 %           transformed non monotonically).
 %           Note that in avas procedure the response is always transformed
@@ -109,11 +109,12 @@ function [out]=avas(y,X,varargin)
 %           Example - 'rob',true
 %           Data Types - boolean or struct
 %
-%   scail  : Inizialing values for the regressors. Boolean. If scail is
+%   scail  : Initializing values for the regressors. Boolean. If scail is
 %           true (default value is false), a linear regression is done on
 %           the independent variables $X_1$, ...$X_{p-1}$ centered, using y
 %           standardized, getting the coefficients $b_1$, ..., $b_{p-1}$.
-%           If scail is true, AVAS takes the initial value of the transform
+%           If scail is true, AVAS takes the initial value of the
+%           transformation 
 %           of $X_j$ to be $b_j(X_j-mean(X_j))$, $j=1, \ldots, p-1$. This
 %           is done in order to limit the effect of the ordering of the
 %           variables on the final results. The purpose of this initial
@@ -139,7 +140,7 @@ function [out]=avas(y,X,varargin)
 %           $\widehat{ty}_i^{old}$ is the transformed value for unit $i$
 %           from previous iteration ($i=1, \ldots, n$).
 %           If this option is omitted or if trapezoid is false
-%           (default), we assume a rectangulat hypothesis. In
+%           (default), we assume a rectangular hypothesis. In
 %           other words, we assume that below $\hat y_{(1)}$ the function
 %           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$,
 %           $|e_1|, \ldots, |e_{n-k}|$ are the smoothed residuals
@@ -155,13 +156,13 @@ function [out]=avas(y,X,varargin)
 %               Data Types - logical
 %
 %   tyinitial  : Initial values for the transformed response. Boolean or struct.
-%           If tyinitial is not specified tyinitial is set to false and the
+%           If tyinitial is not specified, tyinitial is set to false and the
 %           initial value for ty are simply the standardized values.
 %           If tyinitial is true, y is transformed using best BoxCox lambda
 %           value among the following values of lambda (-1, -0.8, -0.6,
 %           ..., 0.8, 1) and routines FSRfan.m and fanBIC.m are called.
 %           If tyinitial is a struct it is possible to specify in the
-%           fields la and family the values of lambda and the family to
+%           fields la and family, the values of lambda and the family to
 %           use. More precisely:
 %           tyinitial.la = values of the lambdas to consider inside FSRfan.
 %           tyinitial.family= string which identifies the family of transformations which
@@ -185,7 +186,7 @@ function [out]=avas(y,X,varargin)
 %
 %       w  : weights for the observations. Vector. Row or column vector of
 %           length n containing the weights associated to each
-%           observations. If w is not specified we assum $w=1$ for $i=1,
+%           observations. If w is not specified we assume $w=1$ for $i=1,
 %           2, \ldots, n$.
 %           Example - 'w',1:n
 %           Data Types - double
@@ -216,7 +217,7 @@ function [out]=avas(y,X,varargin)
 %
 %
 % More About:
-% In what follows we recall the techinque of the variance stabilizing
+% In what follows we recall the technique of the variance stabilizing
 % transformation which is at the root of the avas routine.
 % Let $ X $ be a random variable, with $ E[X]=\mu $ and $ \mathrm{Var}[X]=\sigma^2 $.
 % Define $ Y=g(X) $, where $g$ is a regular function. A first-order Taylor
@@ -246,7 +247,7 @@ function [out]=avas(y,X,varargin)
 % \[
 % g(\mu)=\int \frac{Cd\mu}{\sqrt{h(\mu)}}.
 % \]
-% % Tibshirani (JASA, p.395) has a random variable $W$ with $ E[W]=u $ and $\mathrm{Var}[W]=v(u)$. The variance stabilising transformation for $W$ is given by
+% % Tibshirani (JASA, p.395) has a random variable $W$ with $ E[W]=u $ and $\mathrm{Var}[W]=v(u)$. The variance stabilizing transformation for $W$ is given by
 % \[
 % h(t)=\int^t \frac{1}{\sqrt{v(u)}}.
 % \]
@@ -294,7 +295,7 @@ function [out]=avas(y,X,varargin)
 % where $\hat y_{(j)}$ is the $j$-th order statistic $j=1, 2, \ldots, n-k$
 % among the fitted values (associated to non outlying observations) and
 % $1/e_j$ is the reciprocal of the corresponding smoothed residual. Notice
-% that $e_j$ is not the residual for unit $j$ but it is the residuals which
+% that $e_j$ is not the residual for unit $j$ but it is the residual which
 % corresponds to the $j$-th ordered fitted value $\hat y_{(j)}$. In order
 % to have a new estimate of $\widehat{ty}^{new}$, we can still solve $n$
 % integrals. If in the upper extreme of integration, we plug in the $n$ old
@@ -348,7 +349,7 @@ function [out]=avas(y,X,varargin)
 %}
 
 %{
-    % Example 1 from TIB88: brain body weight data.
+    %% Example 1 from TIB88: brain body weight data.
     % Comparison between ace and avas.
     YY=load('animals.txt');
     y=YY(1:62,2);
@@ -413,7 +414,7 @@ function [out]=avas(y,X,varargin)
 %}
 
 %{
-    % Example 4 from TIB88: non constant underlying variance.
+    %% Example 4 from TIB88: non constant underlying variance.
     close all
     negstate=-100;
     rng('default')
@@ -479,7 +480,7 @@ function [out]=avas(y,X,varargin)
 %}
 
 %{
-    % Example 6 from TIB88: binary.
+    %% Example 6 from TIB88: binary.
     seed=20;
     n=50;
     y1=exp(-0.5+0.5*mtR(n,1,seed));
@@ -502,7 +503,7 @@ function [out]=avas(y,X,varargin)
 %}
 
 %{
-    % Example 9 from TIB88: Nonmonotone function of X.
+    %% Example 9 from TIB88: Nonmonotone function of X.
     n=200;
     x=rand(n,1)*2*pi;
     z=randn(n,1);
@@ -536,7 +537,7 @@ function [out]=avas(y,X,varargin)
     xlabel('Original x')
     ylabel('Without option tyinitial')
     title(['R2=' num2str(out.Rsquared.Ordinary)])
-    % call of AVAS with option tinitial set to true
+    % call of AVAS with option tyinitial set to true
     subplot(2,1,2)
     outAVAStyini=avas(y,X,'l',4,'tyinitial',true);
     tyfinal=outAVAStyini.ty;
@@ -678,7 +679,7 @@ if islogical(rob)
         estimatorToUse=1;
         % In this case bdp is init (point to start FS)
         bdp=round(n*(1-bdpdef));
-        % simalpa  1 per cent simultaneous
+        % simalpha  1 per cent simultaneous
         simalpha=0.01;
     else
         robustAVAS=false;
@@ -849,7 +850,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % wOrdyat = weights using the ordering based on yhat
     wOrdyhat=w(ordyhat);
 
-    % Now the residuals  are smoothed
+    % Now the residuals are smoothed
     % smo=smothr(abs(l(pp1)),z(:,2),z(:,1),z(:,4));
     % x coord = fitted values based on tX (sorted)
     % y values ztar_sorted (log of |residuals| using the ordering of

@@ -35,8 +35,8 @@ function [out]=ace(y,X,varargin)
 %
 %       l :  type of transformation. Vector. Vector of length p+1 which
 %           specifies how the type of transformation for the explanatory
-%           variables and the response. The fitst p element of this vector
-%           refer to the p explanatory variables, the last element refers to
+%           variables and the response. The first p element of this vector
+%           refers to the p explanatory variables, the last element refers to
 %           the response.
 %           l(j)=1 => j-th variable assumes orderable values.
 %           l(j)=2 => j-th variable assumes circular (periodic) values
@@ -45,8 +45,8 @@ function [out]=ace(y,X,varargin)
 %           l(j)=4 => j-th variable transformation is to be linear.
 %           l(j)=5 => j-th variable assumes categorical (unorderable) values.
 %           j =1, 2, \ldots, p+1.
-%           The default value of l is is a vector of ones of length p+1,
-%           that is the procedure assumes that both the explanatory
+%           The default value of l is a vector of ones of length p+1,
+%           this procedure assumes that both the explanatory
 %           variables and the response have orderable values.
 %           Example - 'l',[3 3 1]
 %           Data Types - double
@@ -102,7 +102,7 @@ function [out]=ace(y,X,varargin)
 % for multiple regression and correlation, "Journal of the American
 % Statistical Association", Vol. 80, pp. 580-597. 
 % 
-% Wang D.  and Murphy M. (2005), Identifying nonlinear relationships regression using the ACE
+% Wang D. and Murphy M. (2005), Identifying nonlinear relationships regression using the ACE
 % algorithm, "Journal of Applied Statistics", Vol. 32, pp. 243-258.
 %
 % Copyright 2008-2024.
@@ -167,7 +167,7 @@ end
 [n,p]=size(X);
 
 % l specifies how to transform the variables
-% The first p values of l refer to the p explanatory variables.
+% The first p values of l refers to the p explanatory variables.
 % The last refers to the response
 % 4 = linear transformation
 % 3 = monotonic transformation

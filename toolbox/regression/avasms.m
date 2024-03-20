@@ -108,7 +108,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %           l(j)=5 => j-th variable assumes categorical (unorderable) values.
 %           j =1, 2,..., p.
 %           The default value of l is a vector of ones of length p,
-%           that is the procedure assumes that all the explanatory
+%           this procedure assumes that all the explanatory
 %           variables have orderable values (and therefore can be
 %           transformed non monotonically).
 %           Note that in avas procedure the response is always transformed
@@ -124,7 +124,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %
 %  maxBestSol : criterion to define the maximum number of admissible
 %               solutions to show in the augmented star plot.
-%               positive integer scalar. The default value of maxBestSol is
+%               Positive integer scalar. The default value of maxBestSol is
 %                8 that is a maximum of 8 solutions is shown in the plot.
 %                Note that this is the upper bound among the set of the
 %                admissible solutions. If the number of admissible
@@ -186,7 +186,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %
 % Output:
 %
-%      BestSol :  Best solutions. table.
+%      BestSol :  Best solutions. Table.
 %                 A table containing the details of the admissible
 %                 solutions which have been found. We define a solution as
 %                 admissible if the residuals pass the Durbin-Watson and
@@ -204,7 +204,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 %                 options: orderR2, scail, trapezoid, rob,
 %                 tyinitial. These 5 columns are ordered in non decreasing
 %                 way depending on the frequency in which a particular
-%                 option has been used in the set of admissiable solutions.
+%                 option has been used in the set of admissible solutions.
 %                 For example, if option orderR2 is the only one
 %                 which is always used in the set of admissible solutions,
 %                 then column 1 is associated to orderR2.
@@ -261,7 +261,7 @@ function [BestSol,corMatrix]=avasms(y,X,varargin)
 % [4] To use option tyinitial which calculates a robust parametric
 % transformation of the response before starting the main backfitting loop.
 %
-% [5] To use option trapeziod in order to specify how to compute the
+% [5] To use option trapezoid in order to specify how to compute the
 % integral to obtain transformed values for the units which fall outside
 % the range of integration determined by the units not declared as
 % outliers.

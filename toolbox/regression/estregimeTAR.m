@@ -73,7 +73,7 @@ function [out] = estregimeTAR(y, X)
 % $$\mathrm{cov}(\boldsymbol{\beta})=(\mathbf{X}^{\prime} \mathbf{X})^{-1}\mathbf{X}^{\prime} \mathbf{\Sigma} \mathbf{X}(\mathbf{X}^{\prime}
 % \mathbf{X})^{-1}.$$
 % This is a heteroskedasticity-robust variance-covariance matrix, without imposing any assumption on
-% the structure of heteroskedasticity. Assuming the indipendence of the regression errors $\mathbf{u}$,
+% the structure of heteroskedasticity. Assuming the independence of the regression errors $\mathbf{u}$,
 % the adjusted estimation of matrix $\Sigma$ is:
 % $$\hat{\mathbf{\Sigma}}= \frac{n}{n-k} \mathrm{diag}(\mathbf{u}^2).$$
 % If there is no heteroskedasticity, the robust standard errors will become just conventional
@@ -111,8 +111,8 @@ function [out] = estregimeTAR(y, X)
 %}
 
 %{
-    % Example 2: adjustments for constant columns. Only the first non-zero
-    %   constant column is kept in the model estimation. Check beta and se values.
+    %% Example 2: adjustments for constant columns. Only the first non-zero
+    %%   constant column is kept in the model estimation. Check beta and se values.
     n=200;
     k=3;
     X=randn(n,k);

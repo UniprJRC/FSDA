@@ -22,7 +22,7 @@
 %   FSRBmdr          - Computes minimum deletion residual and other basic linear regression quantities in each step of the Bayesian search        - REG-Bayes          - 2023 Dec 13
 %   FSRBr            - Bayesian forward search in linear regression reweighted                                                                    - REG-Bayes          - 2023 Dec 13
 %   FSRbsb           - Returns the units belonging to the subset in each step of the forward search                                               - REG-Regression     - 2023 Dec 13
-%   FSRcp            - Monitors Cp and AIC for all models of interest of size smallp                                                              - REG-ModelSelection - 2023 Dec 13
+%   FSRcp            - Monitors Cp and AIC for all models of interest of size small                                                              - REG-ModelSelection - 2023 Dec 13
 %   FSReda           - Enables to monitor several quantities in each step of the forward search                                                   - REG-Regression     - 2023 Dec 13
 %   FSRenvmdr        - Computes the theoretical envelopes of Minimum Deletion Residual outside subset during the search                           - REG-Regression     - 2023 Dec 13
 %   FSRfan           - Monitors the values of the score test statistic for each lambda                                                            - REG-Transformations- 2023 Dec 13
@@ -30,7 +30,7 @@
 %   FSRHbsb          - Returns the units belonging to the subset in each step of the heteroskedastic forward search                               - REG-Hetero         - 2023 Dec 13
 %   FSRHeda          - Enables to monitor several quantities in each step of the forward search                                                   - REG-Hetero         - 2023 Dec 13
 %   FSRHmdr          - Computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search - REG-Hetero         - 2023 Dec 13
-%   FSRinvmdr        - Converts values of mdr into confidence levels and  mdr in normal coordinates                                               - REG-Regression     - 2023 Dec 13
+%   FSRinvmdr        - Converts values of mdr into confidence levels and mdr in normal coordinates                                               - REG-Regression     - 2023 Dec 13
 %   FSRmdr           - Computes minimum deletion residual and other basic linear regression quantities in each step of the search                 - REG-Regression     - 2023 Dec 13
 %   FSRms            - Performs robust model selection using flexible trimming in linear regression                                               - REG-ModelSelection - 2023 Dec 13
 %   FSRr             - Forward search in linear regression reweighted                                                                             - REG-Regression     - 2023 Dec 13
