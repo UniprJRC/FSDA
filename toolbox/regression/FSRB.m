@@ -259,12 +259,12 @@ function [out]=FSRB(y,X,varargin)
 %
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous. This field in
-%               future releases will be deleted bacause it will be replaced
+%               future releases will be deleted because it will be replaced
 %               by out.outliers.
 % out.outliers= k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous.
 % out.beta   =  p-by-1 vector containing the posterior mean of $\beta$
-%               (regression coefficents),
+%               (regression coefficients),
 %               $\beta = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$ in step
 %               $n-k$
 % out.scale  =   scalar. This is the reciprocal of the square root of the
