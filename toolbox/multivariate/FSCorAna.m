@@ -541,10 +541,10 @@ for mm = ini0:n
 
 
             else
-                if msg==1
-                    disp(['Warning: interchange greater than 1 when m=' int2str(mm)]);
-                    disp(['Number of units which entered=' int2str(lunit)]);
-                end
+                %if msg==1
+                %    disp(['Warning: interchange greater than 1 when m=' int2str(mm)]);
+                %    disp(['Number of units which entered=' int2str(lunit)]);
+                %end
                 Un(mm-init1+1,2:length(unit)+1)=unit(1:length(unit));
             end
         end
@@ -636,6 +636,16 @@ if plots==1
         line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
         line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
         ylabel('')
+
+         if addRowNames == true
+               sel=~ismissing(Un(:,end));
+             if isempty(label)
+                text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
+            else
+                text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
+            end
+
+        end
     else
 
         % Superimpose 1% and conflev% envelope
