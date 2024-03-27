@@ -97,7 +97,7 @@ function Wpdf = WNChygepdf(x,M,K,n,odds, accuracy)
 %                  of the same size as the other inputs.
 %
 %
-% See also randsampleFS.m, subsets.m
+% See also: WNChygepdf, WNChygecdf, WNChygeinv, WNChygernd, FNChygepdf, FNChygecdf, FNChygeinv, FNChygernd
 %
 % References:
 %
