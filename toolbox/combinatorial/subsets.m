@@ -192,11 +192,11 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
     % extraction probabilities follow Wallenius' noncentral hypergeometric
     % distribution. The sampling scheme is the same of that of the hypergeometric
     % distribution but, in addition, the success and failure are associated with
-    % weights w1 and w2 and we will say that the odds ratio is W = w1 / w2. The
-    % function is then called as: wpdf = WNChygepdf(x,N,K,M,W).
+    % weights w1 and w2 and we will say that the odds ratio is odds = w1 / w2. The
+    % function is then called as: wpdf = WNChygepdf(x,M,K,n,odds). 
 
     for i = 0:p
-        wpdf(i+1) = WNChygepdf(i,p,n/2,n,10);
+        wpdf(i+1) = WNChygepdf(i,n,n/2,p,10);;
     end
 
     % counts of the actual samples
