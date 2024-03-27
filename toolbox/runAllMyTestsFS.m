@@ -60,6 +60,11 @@ elseif strcmp(cat2test,'multivariate-clustering')
     booTCLUST=~cellfun(@isempty,str);
     boo=booMULT & ~booTCLUST;
     
+elseif strcmp(cat2test,'Probability-Distribution')
+    str=regexp(FilesIncluded(:,8),'ProbDist');
+    boo=~cellfun(@isempty,str);
+
+
 elseif strcmp(cat2test,'tclustMULT')
     % multivariate clustering just tclust*
     str=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');

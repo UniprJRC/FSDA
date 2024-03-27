@@ -40,6 +40,10 @@ jobs:
           categoryName: 'tclustMULTgpcm'
         FMvol:
           categoryName: 'FMvol'
+        Probability-Distribution:
+          categoryName: 'Probability-Distribution'
+
+
   pool:
       vmImage: 'ubuntu-latest'
   variables:
