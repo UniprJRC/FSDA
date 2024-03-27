@@ -14,7 +14,8 @@ function Wpdf = WNChygepdf(x,M,K,n,odds, accuracy)
 % totalling $M$ balls. $n$ balls are drawn at random from the urn
 % without replacement. Each red ball has the weight $\omega_{1}$, and
 % each white ball has the weight $\omega_{2}$; the probability ratio of red over
-% white balls is then given by $odds = \omega_{1} / \omega_{2}$.
+% white balls is then given by $odds = \omega_{1} / \omega_{2}$. Note that
+% the odds are fixed once and for all during the drawings.
 % 
 % If the balls are taken one by one, the probability (say $p_1$) that the
 % first ball picked is red is equal to the weight fraction of red balls:
