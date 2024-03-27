@@ -12,22 +12,36 @@ function r = WNChygernd(M,K,n,odds,   mm,nn,oo)
 %                  Data Types - single|double
 %           K    : Initial number of red balls in the urn. Scalar.
 %                  Data Types - single|double
-%           n    : Total number of balls sampled.
+%           n    : Total number of balls sampled. Scalar.
 %                  Data Types - single|double
 %        odds    : Probability ratio of red over white balls. Scalar.
 %                  Data Types - single|double
 %
 % Optional input arguments:
 %
-%         mm    : number of rows of the array which contains the random numbers
-%         nn    : number of columns of the array which contains the random numbers
-%         oo    : number of 3D slides of the array which contains the random numbers
+%         mm    : Length of first dimension. Scalar. Number of rows of the
+%                 array which contains the random numbers 
+%               Example - 3
+%               Data Types - double
+%         nn    : Length of second dimension. Scalar. Number of columns of
+%                 the array which contains the random numbers.
+%               Example - 2
+%               Data Types - double
+%         oo    : Length of third dimension. Scalar. Number of 3D slides of
+%                 the array which contains the random numbers
+%               Example - 5
+%               Data Types - double
+%       accuracy : accuracy of the calculations. Scalar. The default value
+%                  of accuracy is 1e-10.
+%                  Data Types - single|double
+%                  Example - 1e-06
 %
 % Output:
 %
-%         r    : array of random numbers from the Wallenius non central hypergeometric distribution.
+%         r    : Random numnbers. Array of random numbers from the
+%                Wallenius non central hypergeometric distribution.
 %                The size of rr is determined by the optional input
-%                parameters mm, nn, oo
+%                parameters mm, nn, oo.
 %
 %
 % See also: WNChygepdf, WNChygecdf, WNChygeinv
@@ -124,6 +138,9 @@ function r = WNChygernd(M,K,n,odds,   mm,nn,oo)
 
 
 %% Beginning of code
+if nargin<8
+    accuracy=1e-08;
+end
 
 if nargin<7
     oo=1;
@@ -134,7 +151,7 @@ end
 if nargin <5
     mm=1;
 end
-accuracy=1e-08;
+
 
 r=zeros(mm,nn,oo);
 for i=1:numel(r)

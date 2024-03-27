@@ -1,7 +1,7 @@
 function [Fcdf] = FNChygecdf(x,M,K,n,odds, accuracy)
-%WNChygecdf returns Wallenius' non-central hypergeometric cumulative distribution function
+%FNChygecdf returns Wallenius' non-central hypergeometric cumulative distribution function
 %
-%<a href="matlab: docsearchFS('WNChygecdf')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FNChygecdf')">Link to the help function</a>
 %
 % This function calls function  FisherNCHypergeometricpdf.m which is a
 % translation into MATLAB of the corresponding C++ function of Fog (2008).
@@ -13,19 +13,19 @@ function [Fcdf] = FNChygecdf(x,M,K,n,odds, accuracy)
 %
 %           x    : Number of red balls sampled. Scalar, vector or matrix.
 %                  Data Types - single|double
-%           n    : Total number of balls sampled. Scalar, vector or matrix.
+%           M    : Total number of balls in urn before sampling. Scalar, vector or matrix.
 %                  Data Types - single|double
 %           K    : Initial number of red balls in the urn. Scalar, vector or matrix.
 %                  Data Types - single|double
-%           M    : Total number of balls in urn before sampling. Scalar, vector or matrix.
+%           n    : Total number of balls sampled. Scalar, vector or matrix.
 %                  Data Types - single|double
-%           odds    : Probability ratio of red over white balls. Scalar, vector or matrix.
+%        odds    : Probability ratio of red over white balls. Scalar, vector or matrix.
 %                  Data Types - single|double
 %
 %  Optional input arguments:
 %
 %       accuracy : accuracy of the calculations. Scalar. The default value
-%                  of accuracy is 1e-10.
+%                  of accuracy is 1e-08.
 %                  Data Types - single|double
 %                  Example - 1e-06
 %  Output:
@@ -48,7 +48,7 @@ function [Fcdf] = FNChygecdf(x,M,K,n,odds, accuracy)
 %
 % Copyright 2008-2024.
 %
-%<a href="matlab: docsearchFS('FChygecdf')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FNChygecdf')">Link to the help function</a>
 %
 %
 %$LastChangedDate::                      $: Date of the last commit

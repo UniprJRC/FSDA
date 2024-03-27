@@ -29,6 +29,14 @@ function x = WNChygeinv(p,M,K,n,odds)
 %                  Data Types - single|double
 %           odds : Probability ratio of red over white balls. Scalar.
 %                  Data Types - single|double
+%
+%
+%  Optional input arguments:
+%
+%
+%       accuracy : accuracy of the calculations. Scalar. The default value
+%                  of accuracy is 1e-08.
+%
 %  Output:
 %
 %           x : Wallenius' quantile values.  Qauntiles corresponding to input probabilities. 
@@ -51,7 +59,7 @@ function x = WNChygeinv(p,M,K,n,odds)
 %
 %
 %
-%<a href="matlab: docsearchFS('WNChygernd')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('WNChygeinv')">Link to the help page for this function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

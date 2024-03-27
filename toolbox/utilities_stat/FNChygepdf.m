@@ -90,13 +90,14 @@ function Fpdf = FNChygepdf(x,M,K,n,odds, accuracy)
 %
 %  Output:
 %
-%           Wpdf : Wallenius' pdf values. Probability of drawing exactly x of a
+%           Fpdf : Fisher pdf values. Probability of drawing exactly x of a
 %                  possible K items in n drawings without replacement from a
 %                  group of M objects, when objects are from two weighted groups.
-%                  The size of Wpdf is the common size of the input
+%                  The size of Fpdf is the common size of the input
 %                  arguments. A scalar input functions as a constant matrix
 %                  of the same size as the other inputs.
 %
+%  Output:
 %
 % See also randsampleFS.m, subsets.m
 %

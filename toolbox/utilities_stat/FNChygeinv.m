@@ -1,4 +1,4 @@
-function x = FNChygeinv(p,M,K,n,odds)
+function x = FNChygeinv(p,M,K,n,odds, accuracy)
 %FNChygeinv computes the inverse of the Fisher non central hypergeometric cumulative distribution function (cdf).
 %
 %   Since the underlying distribution is discrete, FNChygeinv returns the
@@ -29,7 +29,19 @@ function x = FNChygeinv(p,M,K,n,odds)
 %                  Data Types - single|double
 %           odds : Probability ratio of red over white balls. Scalar.
 %                  Data Types - single|double
+%
+%  Optional input arguments:
+%
+%
+%       accuracy : accuracy of the calculations. Scalar. The default value
+%                  of accuracy is 1e-08.
+%                  Data Types - single|double
+%                  Example - 1e-06
+%
+%
+%
 %  Output:
+%
 %
 %           x : Fisher' quantile values.  Qauntiles corresponding to input probabilities. 
 %                  The size of x is the common size of the input
@@ -85,6 +97,10 @@ if nargin < 5
     error(message('FSDA:FNChygeinv:TooFewInputs'));
 end
 
+if nargin<6
+    accuracy=1e-08;
+end
+
  [errorcode, p, M, K, n, odds] = distchck(5,p,M,K,n,odds);
  
  if errorcode > 0
@@ -103,7 +119,7 @@ if any(k1(:))
     x(k1) = NaN;
 end
 
-cumdist = FNChygepdf(x,M,K,n,odds);
+cumdist = FNChygepdf(x,M,K,n,odds, accuracy);
 count = zeros(size(p));
 
 % Compare P to the hypergeometric distribution for each value of N.
@@ -111,7 +127,7 @@ while any(p(:) > cumdist(:)) && count(1) < max(n(:)) && count(1) < max(K(:))
     count = count + 1;
     idx = find(cumdist < p - eps(p));
     x(idx) = x(idx) + 1;
-    cumdist(idx) = cumdist(idx) + FNChygepdf(count(idx),M(idx),K(idx),n(idx),odds(idx));
+    cumdist(idx) = cumdist(idx) + FNChygepdf(count(idx),M(idx),K(idx),n(idx),odds(idx),accuracy);
 end
 
 % Check using hygecdf
@@ -120,7 +136,7 @@ ynew = zeros(size(y), "like", y);
 xnew = x;
 under = y<p & ~k1;
 while any(under(:))
-    ynew(under) = FNChygecdf(xnew(under)+1,M(under),K(under),n(under),odds(under));
+    ynew(under) = FNChygecdf(xnew(under)+1,M(under),K(under),n(under),odds(under),accuracy);
     xnew(under) = xnew(under)+1;
     under = under & ynew<p;
 end
@@ -129,8 +145,9 @@ ynew = zeros(size(y), "like", y);
 xnew = x;
 over = y>p & ~k1 & ~under;
 while any(over(:))
-    ynew(over) = FNChygecdf(xnew(over)-1,M(over),K(over),n(over),odds(over));
+    ynew(over) = FNChygecdf(xnew(over)-1,M(over),K(over),n(over),odds(over), accuracy);
     over = over & ynew>=p;
     xnew(over) = xnew(over)-1;
 end
 x = xnew;
+end

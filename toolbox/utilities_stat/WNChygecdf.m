@@ -13,14 +13,15 @@ function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
 %
 %           x    : Number of red balls sampled. Scalar, vector or matrix.
 %                  Data Types - single|double
-%           n    : Total number of balls sampled. Scalar, vector or matrix.
+%           M    : Total number of balls in urn before sampling. Scalar, vector or matrix.
 %                  Data Types - single|double
 %           K    : Initial number of red balls in the urn. Scalar, vector or matrix.
 %                  Data Types - single|double
-%           M    : Total number of balls in urn before sampling. Scalar, vector or matrix.
+%           n    : Total number of balls sampled. Scalar, vector or matrix.
 %                  Data Types - single|double
-%           odds    : Probability ratio of red over white balls. Scalar, vector or matrix.
+%        odds    : Probability ratio of red over white balls. Scalar, vector or matrix.
 %                  Data Types - single|double
+%
 %
 %  Optional input arguments:
 %
