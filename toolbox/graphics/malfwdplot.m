@@ -1997,7 +1997,7 @@ end % close options.databrush
         %               which entered the subset in each step of the search
         %      label=  (optional argument) if it is present it must be
         %               a cell array of strings containing the labels of
-        %               the rows of the regression dataset
+        %               the rows of the dataset
         %
         % Output:
         %
@@ -2063,7 +2063,12 @@ end % close options.databrush
 
             % Add information about the corresponding row label of what has
             % been selected
-            output_txt{3,1} = ['Unit: ' num2str(cell2mat(out.label(row)))];
+            try
+                output_txt{3,1} = ['Unit: ' num2str(cell2mat(out.label(row)))];
+            catch
+                output_txt{3,1} = ['Unit: ' num2str(row)];
+            end
+
 
             if any(strcmp(fieldnames(out),'class'))
                 if strcmp(out.class,'MMmulteda')
