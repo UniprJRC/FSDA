@@ -188,7 +188,7 @@ if nargin > 3
         % FontSizeAxes = font size for the axes numbers
         SizeAxesNum=options.SizeAxesNum;
     end
-    end3
+end
 %% t test for an additional explanatory variable
 
 [~, R] = qr(X,0);
@@ -256,6 +256,7 @@ end
 
 
 % Store results in structure out.
+out=struct;
 out.b=b;
 out.S2add=Sz_square;
 out.Tadd=Tl;
