@@ -3,7 +3,7 @@ function Wpdf = WNChygepdf(x,M,K,n,odds, accuracy)
 %
 %<a href="matlab: docsearchFS('WNChygepdf')">Link to the help function</a>
 %
-% This function calls function  WalleniusNCHypergeometricpdf.m which is a
+% This function calls function  WalleniusNCHypergeometricpdf which is a
 % translation into MATLAB of the corresponding C++ function of Fog (2008).
 % The notation which is used in WNChygepdf and the order of the arguments
 % is the one of MATLAB hyge. The notation which is used inside
@@ -11,7 +11,7 @@ function Wpdf = WNChygepdf(x,M,K,n,odds, accuracy)
 %
 % To illustrate the meaning of Wallenius and Fisher' function parameters, let's use
 % the classical biased urn example, with $K$ red balls and  $M-K$ white balls,
-% totalling $M}$ balls. $n$ balls are drawn at random from the urn
+% totalling $M$ balls. $n$ balls are drawn at random from the urn
 % without replacement. Each red ball has the weight $\omega_{1}$, and
 % each white ball has the weight $\omega_{2}$; the probability ratio of red over
 % white balls is then given by $odds = \omega_{1} / \omega_{2}$.
@@ -24,11 +24,10 @@ function Wpdf = WNChygepdf(x,M,K,n,odds, accuracy)
 % In the Wallenius distribution the
 % probability that the second ball picked is red depends on whether the
 % first ball was red or white. If the first ball was red then the above
-% formula is used with the first ball was red or not.  If the first ball
-% was red then the above formula is used with $K$ reduced by one. If the
-% first ball was not red then the above formula is used with M-K reduced by
-% one. The number of red balls that we get in this experiment is a random
-% variable with Wallenius' noncentral hypergeometric distribution.
+% formula is used with $K$ reduced by one. If the first ball was not red
+% then the above formula is used with $M-K$ reduced by one. The number of red
+% balls that we get in this experiment is a random variable with Wallenius'
+% noncentral hypergeometric distribution.
 %
 % The important fact that distinguishes Wallenius' distribution is that
 % there is competition between the balls. The probability that a particular
@@ -60,7 +59,7 @@ function Wpdf = WNChygepdf(x,M,K,n,odds, accuracy)
 % contingency tables where the marginals are fixed (McCullagh and Nelder,
 % 1983).
 % 
-% The multivariate Fisheras and Wallenius noncentral hypergeometric
+% The multivariate Fishers and Wallenius noncentral hypergeometric
 % distribution, are referred to the case where the type of different balls
 % is greater than 2 and each ball has a different probability. 
 %
