@@ -1,13 +1,13 @@
-function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
+function [Fcdf] = FNChygecdf(x,M,K,n,odds, accuracy)
 %WNChygecdf returns Wallenius' non-central hypergeometric cumulative distribution function
 %
 %<a href="matlab: docsearchFS('WNChygecdf')">Link to the help function</a>
 %
-% This function calls function  WalleniusNCHypergeometricpdf.m which is a
+% This function calls function  FisherNCHypergeometricpdf.m which is a
 % translation into MATLAB of the corresponding C++ function of Fog (2008).
-% The notation which is used in WNChygecdf and the order of the arguments
+% The notation which is used in FNChygecdf and the order of the arguments
 % is the one of MATLAB hyge. The notation which is used inside
-% WalleniusNCHypergeometriccdf is the original one of Fog.
+% WalleniusNCHypergeometricpdf is the original one of Fog.
 %
 %  Required input arguments:
 %
@@ -30,7 +30,7 @@ function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
 %                  Example - 1e-06
 %  Output:
 %
-%           Wcdf : Wallenius' cdf values. Cumulative probability of drawing exactly x of a
+%           Fcdf : Fisher' cdf values. Cumulative probability of drawing exactly x of a
 %                  possible K items in n drawings without replacement from a
 %                  group of M objects, when objects are from two weighted groups.
 %                  The size of Wcdf is the common size of the input
@@ -38,7 +38,7 @@ function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
 %                  of the same size as the other inputs.
 %
 %
-% See also WNChygepdf, WNChygeinv, WNChygernd, randsampleFS.m, subsets.m
+% See also FNChygepdf, FNChygeinv, FNChygernd, WNChygecdf, WNChygepdf, WNChygeinv, WNChygernd, randsampleFS.m, subsets.m
 %
 % References:
 %
@@ -48,7 +48,7 @@ function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
 %
 % Copyright 2008-2024.
 %
-%<a href="matlab: docsearchFS('WNChygecdf')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FChygecdf')">Link to the help function</a>
 %
 %
 %$LastChangedDate::                      $: Date of the last commit
@@ -60,18 +60,18 @@ function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
     % Problem description.
     % we have 500 balls in the urn
     M  = 500;   
-    %we extract 3 balls, one at a time, without replacement
+    %we extract 3 balls without replacement
     n  = 3;     
     %initially, in the urn we have 250 red and 250 white balls
     K  = M/2;   
     % red balls are ten times more likely to be extracted than the white balls
     odds  = 10;    
-    % We compute the cumulative probability of getting 2 red balls (in drawing
+    % We compute the cumulative probability of getting 0 1, or 2 red balls (in drawing
     % the 2 balls without replacement).
     x = 2;
-    wcdf = WNChygecdf(x,M,K,n,odds);
-    disp('See WNChygecdf;');
-    disp(wcdf);
+    fcdf = FNChygecdf(x,M,K,n,odds);
+    disp('prob of successes <=2;');
+    disp(fcdf);
 %}
 
 %% Beginning of code
@@ -80,10 +80,10 @@ if nargin <6
     accuracy=1e-10;
 end
 
-Wcdf = zeros(size(x));
+Fcdf = zeros(size(x));
 for j=1:numel(x)
     for jn = 0:x(j)
-        Wcdf(j) = Wcdf(j) + WNChygepdf(jn,M(j),K(j),n(j),odds(j),accuracy);
+        Fcdf(j) = Fcdf(j) + FNChygepdf(jn,M(j),K(j),n(j),odds(j),accuracy);
     end
 end
 
