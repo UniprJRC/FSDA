@@ -11,8 +11,10 @@ function [logfn]=logfactorial(n)
 %(1)if n<171, the value of log(n!) can be computed with high accuracy by Matlab itself;
 %(2) n doesn't have to be an integer.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if  (n <= 170 )
+if  (n <= 50 )
     logfn=log(factorial(n));
+elseif n<=170
+    logfn = gammaln(n+1);
 else
     eps=1e-18; % Preset accuracy for numerical evalueated log(n!) from Stirling's formula
     N=1e5; % Number of integration points in the numerical integral
