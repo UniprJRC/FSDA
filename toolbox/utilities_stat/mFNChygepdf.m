@@ -204,6 +204,37 @@ function Wpdf = mFNChygepdf(x, m, w, accuracy)
     ylabel('Multivariate Fisher non central density')
 %}
 
+%{
+    % Comparison between Wallenius and Fisher.
+    weights=[100,2,1]'; % define the weights for each color
+    m=[12 25 18];   % Define urn composition
+    numberBallsExtracted=5;     % Number of balls which are drawn.
+    
+    % Define all possible cases in which for numberBallsExtracted;
+    numcolors = length(m);      % Length of each permutation
+    % Create all possible permutations (with repetition) of numcolors
+    C = cell(numcolors, 1);         % Preallocate a cell array
+    x=0:numberBallsExtracted;
+    [C{:}] = ndgrid(x);     % Create grids of values
+    Y = cellfun(@(x){x(:)}, C); % Convert grids to column vectors
+    Y = [Y{:}];   % Create matrix with all possible permutations with repetion
+    % Extract from Y the rows whose sum is equal to numberBallsExtracted
+    boo=sum(Y,2)==numberBallsExtracted;
+    Ysel=Y(boo,:);
+    % Find the probability of each row of matrix Ysel
+    WpdfFisher=mFNChygepdf(Ysel,m,weights);
+    WpdfWallenius=mWNChygepdf(Ysel,m,weights);
+    
+    % Make sure that the sum of all probabilities is to (up to a certain
+    % tolerance)
+    lab=cellstr(num2str(Ysel));
+    labx=categorical(lab,lab);
+    bar(labx,[WpdfFisher WpdfWallenius])
+    title(['weights=[' num2str(weights') '] m=[' num2str(m) '] n=' num2str(numberBallsExtracted)])
+    ylabel('Multivariate Fisher and Wallenius non central hypergeometric density')
+    legend(["Fisher" "Wallenius"])
+%}
+
 %% Beginning of code
 
 if nargin<4
