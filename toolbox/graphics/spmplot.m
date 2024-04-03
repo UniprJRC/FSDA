@@ -490,8 +490,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
 
 %{
-    %% Call of spmplot with name/value pairs and specifying overlay,
-    % also discarding some groups with the field include, and changing
+    %% Call of spmplot with name/value pairs. 
+    % Specifying overlay, also discarding some groups with the field include, and changing
     % the default colormap.
     % The Tag setting will be used in the next example to demonstrate the
     % undock option.
@@ -587,8 +587,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
-    % Now test the direct use of FSM. Set two groups, e.g. those obtained
-    % from FSM.
+    % Now test the direct use of FSM. 
+    % Set two groups, e.g. those obtained from FSM.
     % Generate contaminated data
     state=100;
     randn('state', state);
@@ -903,7 +903,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % coefficient are shown
     load fisheriris;
     spmplot(meas,'group',species,'typespm','lower');
-%}
 %}
 
 %{

@@ -69,7 +69,7 @@ w=[1, 2.5, 1.8];
 n=10; 
 % Generate a random variate from this distribution
 r = mFNChygernd(m,w, n);
-disp(r);</pre></div></div><pre class="codeoutput">     0     7     3
+disp(r);</pre></div></div><pre class="codeoutput">     1     6     3
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 5 random variates from a multivariate non central Wallenius distribution.</li></span></a></span></h3><div class="collapse"><p>
      m = number of balls of each type in the urn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">m=[20,30,20, 10];
@@ -81,11 +81,11 @@ n=10;
 ntrials=5;
 R = mFNChygernd(m,w, n, ntrials);
 % R is matrix of size ntrials-by-length(m)
-disp(R);</pre></div></div><pre class="codeoutput">     1     1     1     7
-     1     2     0     7
-     0     3     0     7
+disp(R);</pre></div></div><pre class="codeoutput">     0     0     1     9
      0     1     0     9
-     2     2     0     6
+     0     2     1     7
+     0     2     0     8
+     0     0     1     9
 
 </pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Check agreement between theoretical and empirical relative frequencies.</li></span></a></span></h3><div class="collapse"><p>
      Define the weights for each color.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">weights=[10,2,1]; 
@@ -153,9 +153,8 @@ legend(["Theoretical probabilities" "Relative frequencies"])</pre></div></div><
                  generated.</span></span></h3> <div class="collapse"> <p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>3
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_accuracy" class="clearfix"> </div> <h3 id="input_argument_accuracy" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>accuracy</code> &#8212; accuracy of the calculations. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>The default value
                   of accuracy is 1e-10.</p> <p>
-                  Data Types - single|double
-                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double
-                  Example - 1e-06</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_r" class="clearfix"></div><h3 id="output_argument_r" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>r</code> &#8212;Random numbers.</span></a><span class="example_desc"><code><code> </code>Vector or </code>matrix</span></span></h3><div class="collapse"><p> Array of random numbers of size
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>1e-06
+</code></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_r" class="clearfix"></div><h3 id="output_argument_r" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>r</code> &#8212;Random numbers.</span></a><span class="example_desc"><code><code> </code>Vector or </code>matrix</span></span></h3><div class="collapse"><p> Array of random numbers of size
                 ntrials-by length(w).</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Fog, A. (2008), Calculation Methods for Wallenius' Noncentral Hypergeometric
  Distribution, "Communications in Statistics - Simulation and
  Computation", Vol. 37, pp. 258-273.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="WNChygepdf.html" itemprop="url"><span itemprop="name"><code>WNChygepdf</code></span></a></span> | <span itemprop="seealso"><a href="WNChygecdf.html" itemprop="url"><span itemprop="name"><code>WNChygecdf</code></span></a></span> | <span itemprop="seealso"><a href="WNChygeinv.html" itemprop="url"><span itemprop="name"><code>WNChygeinv</code></span></a></span> | <span itemprop="seealso"><a href="WNChygernd.html" itemprop="url"><span itemprop="name"><code>WNChygernd</code></span></a></span> | <span itemprop="seealso"><a href="FNChygepdf.html" itemprop="url"><span itemprop="name"><code>FNChygepdf</code></span></a></span> | <span itemprop="seealso"><a href="FNChygecdf.html" itemprop="url"><span itemprop="name"><code>FNChygecdf</code></span></a></span> | <span itemprop="seealso"><a href="FNChygeinv.html" itemprop="url"><span itemprop="name"><code>FNChygeinv</code></span></a></span> | <span itemprop="seealso"><a href="FNChygernd.html" itemprop="url"><span itemprop="name"><code>FNChygernd</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

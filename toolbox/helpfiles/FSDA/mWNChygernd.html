@@ -69,7 +69,7 @@ w=[1, 2.5, 1.8];
 n=10; 
 % Generate a random variate from this distribution
 r = mWNChygernd(m,w, n);
-disp(r);</pre></div></div><pre class="codeoutput">     0     5     5
+disp(r);</pre></div></div><pre class="codeoutput">     3     5     2
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 5 random variates from a multivariate non central Wallenius distribution.</li></span></a></span></h3><div class="collapse"><p>
      m = number of balls of each type in the urn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">m=[20,30,20, 10];
@@ -81,11 +81,11 @@ n=10;
 ntrials=5;
 R = mWNChygernd(m,w, n, ntrials);
 % R is matrix of size ntrials-by-length(m)
-disp(R);</pre></div></div><pre class="codeoutput">     0     1     0     9
+disp(R);</pre></div></div><pre class="codeoutput">     0     0     0    10
+     1     2     0     7
+     0     1     2     7
      0     1     0     9
      0     2     1     7
-     0     1     0     9
-     1     0     1     8
 
 </pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Check agreement between theoretical and empirical relative frequencies.</li></span></a></span></h3><div class="collapse"><p>
      define the weights for each color<div class="programlisting"><div class="codeinput"><pre class="matlab-code">weights=[5,2,1]'; 

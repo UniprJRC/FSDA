@@ -1,7 +1,7 @@
 function [out]= genr8next(n, distrib, s1, s2)
-%genr8 returns a vector of pseudorandom number sequence.
+%genr8next returns a vector of pseudorandom number sequence.
 %
-%<a href="matlab: docsearchFS('genr8')">Link to the help function</a>
+%<a href="matlab: docsearchFS('genr8next')">Link to the help function</a>
 %
 %
 %    This function generates a sequence of pseudorandom numbers
@@ -82,12 +82,12 @@ function [out]= genr8next(n, distrib, s1, s2)
 % Examples:
 
 %{
-    % genr8 using all default arguments.
+    % genr8next using all default arguments.
     out = genr8next(1)
 %}
 
 %{
-    % genr8next specifing the type of distribution.
+    % genr8next specifying the type of distribution.
     
     % a vector of 5 uniform distributed random numbers
     out = genr8next(5, 0)
@@ -97,7 +97,7 @@ function [out]= genr8next(n, distrib, s1, s2)
 %}
 
 %{
-    % genr8next specifing the type of distribution and 1 seed.
+    % genr8next specifying the type of distribution and 1 seed.
     
     % vector of 5 uniform distributed random numbers and 1 seed
     out = genr8next(5, 0, 12345)
@@ -107,7 +107,7 @@ function [out]= genr8next(n, distrib, s1, s2)
 %}
 
 %{
-    % genr8 specifing the type of distribution and the 2 seeds.
+    % genr8next specifying the type of distribution and the 2 seeds.
     
     % vector of 5 uniform distributed random numbers with both seeds
     out = genr8next(5, 0, 12345, 45678)
