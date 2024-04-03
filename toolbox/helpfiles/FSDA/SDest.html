@@ -16,8 +16,8 @@ Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+4;
 [out]=SDest(Ycont,'jpcorr',1,'plots',1);</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
 RANDN to use legacy random number generators.  This syntax is not recommended.
-See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the
-old syntax. 
+See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old
+syntax. 
 Total estimated time to complete Stahel-Donoho estimator:  0.19 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/SDest.html#Example_2'><img vspace="5" hspace="5" src="images\SDest_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\SDest_02.png" alt=""> <img vspace="5" hspace="5" src="images\SDest_03.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>SDest with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
@@ -34,13 +34,7 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(2:20,3)=100;
-[out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Warning: Matrix is singular to working precision. 
-Total estimated time to complete Stahel-Donoho estimator:  0.19 seconds 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
-Warning: Matrix is singular to working precision. 
+[out]=SDest(Ycont,'jpcorr',1,'margin',3,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete Stahel-Donoho estimator:  0.18 seconds 
 Warning: Matrix is singular to working precision. 
 Warning: Matrix is singular to working precision. 
 Warning: Matrix is singular to working precision. 

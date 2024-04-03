@@ -27,6 +27,7 @@ function openMatlabFileFromHTML(MatlabFileName,LineToOpen)
 %               Scalar which specifies the line where to position the
 %               cursor when opening the file. 
 %                 Example - 3
+%                  Data Types - single|double
 %
 % Output:
 %

@@ -83,8 +83,8 @@ function Fpdf = FNChygepdf(x,M,K,n,odds, accuracy)
 %
 %       accuracy : accuracy of the calculations. Scalar. The default value
 %                  of accuracy is 1e-10.
-%                  Data Types - single|double
 %                  Example - 1e-06
+%                  Data Types - single|double
 %
 %
 %  Output:

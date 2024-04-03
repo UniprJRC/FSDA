@@ -27,10 +27,10 @@ overl_1 = overlapmap(out);
 % using tkmeans for a higher number of components
 out2 = tkmeans(Y, k*4, 0.05, 'plots', 1);
 overl_2 = overlapmap(out2);
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.06 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.15 seconds 
 Warning: Colon operands must be real scalars. This warning will become an error
 in a future release. 
-Total estimated time to complete trimmed k means:  0.06 seconds 
+Total estimated time to complete trimmed k means:  0.19 seconds 
 Warning: Colon operands must be real scalars. This warning will become an error
 in a future release. 
 </pre><a href='http://rosa.unipr.it/fsda/overlapmap.html#Example_1'><img vspace="5" hspace="5" src="images\overlapmap_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\overlapmap_02.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_03.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_04.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using M5data with tclust and tkmeans, specifying an
@@ -51,13 +51,13 @@ rng(1)
 end
 out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true);
 overl_2 = overlapmap(out_2, 'omegaStar', 0.0025, 'plots', 'contourf', 'userColors', summer);
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  1.23 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  1.64 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 Warning: Colon operands must be real scalars. This warning will become an error
 in a future release. 
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.60 seconds 
+Total estimated time to complete tclust:  1.62 seconds 
 Number of supplied clusters =6
 Number of estimated clusters =5
 Warning: The total number of estimated clusters is smaller than the number
@@ -122,7 +122,7 @@ title(str,'Interpreter','Latex');
 tkm = tkmeans(X, k*3, 0,'plots', 2,'Ysave',true, 'plots', 'ellipse');
 % overlap map with interctive mode
 overl = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 18.39 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 18.77 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 37.3333%
 Warning: Colon operands must be real scalars. This warning will become an error
@@ -148,7 +148,7 @@ clickableMultiLegend(num2str((1:k)'));
 tkm = tkmeans(X, k*3, 0,'plots', 2,'Ysave',true, 'plots', 'ellipse');
 % overlap map with interctive mode
 out = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf');
-cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  6.98 seconds 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  6.81 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 Warning: Colon operands must be real scalars. This warning will become an error

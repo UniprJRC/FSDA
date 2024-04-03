@@ -35,8 +35,8 @@ function x = FNChygeinv(p,M,K,n,odds, accuracy)
 %
 %       accuracy : accuracy of the calculations. Scalar. The default value
 %                  of accuracy is 1e-08.
-%                  Data Types - single|double
 %                  Example - 1e-06
+%                  Data Types - single|double
 %
 %
 %

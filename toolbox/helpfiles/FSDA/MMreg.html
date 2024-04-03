@@ -58,11 +58,7 @@ resindexplot(outMM.residuals,'title',titl,'laby',laby,'numlab','','conflev',conf
 % In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level.
 % By simply changing the seed to 543 (state=543), using a Bonferroni size
 %of 1%, no unit is declared as outlier and just half of them using the 99%
-%band.</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
-RANDN to use legacy random number generators.  This syntax is not recommended.
-See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the
-old syntax. 
-Total estimated time to complete S estimate:  1.01 seconds 
+%band.</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.03 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\MMreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between direct call to MMreg and call to Sreg and MMregcore.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=30;
 p=3;
 randn('state', 123456);
@@ -107,9 +103,9 @@ title('Power divergence link')
 [outAS]=MMreg(ycont,X,'Srhofunc','AS','rhofunc','AS','plots',0);
 h3=subplot(3,1,3);
 resindexplot(outAS,'h',h3)
-title('Andrew''s sine link')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.87 seconds 
-Total estimated time to complete S estimate:  0.17 seconds 
-Total estimated time to complete S estimate:  0.54 seconds 
+title('Andrew''s sine link')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.48 seconds 
+Total estimated time to complete S estimate:  0.21 seconds 
+Total estimated time to complete S estimate:  0.53 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\MMreg_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of Power Divergence estimator.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 p=3;
 rng('default')

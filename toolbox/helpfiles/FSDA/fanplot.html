@@ -13,7 +13,7 @@ y=XX(:,end);
 X=XX(:,1:end-1);
 % FSRfan and fanplot with all default options
 [out]=FSRfan(y,X);
-fanplotFS(out);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.12 seconds 
+fanplotFS(out);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.13 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 17.1%
 Total estimated time to complete LMS:  0.01 seconds 
@@ -122,7 +122,7 @@ X=gasoline{:,1};
 [out]=FSRfan(y,X,'la', [-1 0 1]);
 % In the code below, option highlight enables us to understand when units
 % [21 18 33 77] join the subset for the difference values of lambda
-fanplotFS(out,'highlight',[ 21 18 33 77]);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.00 seconds 
+fanplotFS(out,'highlight',[ 21 18 33 77]);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 Total estimated time to complete LMS:  0.00 seconds 
 Total estimated time to complete LMS:  0.00 seconds 
 Steps of entry of selected units when la= -1

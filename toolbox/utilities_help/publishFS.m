@@ -882,7 +882,7 @@ if isempty(endpoint)
     disp('Please check HTML input file')
     error('FSDA:missOuts','Input .m file does not contain ''Output:'' string')
 else
-    disp('At least two instances in the file with ''Output:'' string')
+    % disp('At least two instances in the file with ''Output:'' string')
     fstringselOpt=fstringselOpt(1:endpoint(1)-2);
 end
 
@@ -2208,7 +2208,11 @@ for i=1:nTOTargin
                 % The first word of example code must be embedded around tags <code> </code>
                 examplecode=descrlong(CheckExample+10:Datatypes-1);
                 posspace=regexp(examplecode,'      ');
-                examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
+                if isempty(posspace)
+                    error('FSDA:publishFS:WrongInp',['Example/Data Types probably inverted (or missing) in Optional input argument ''' inpi ''' '])
+                end
+
+                examplecode=['<code>' examplecode(1:posspace(1)-1) '</code>' examplecode(posspace(1):end)];
                 listInpArgs{i,5}=strtrim(examplecode);
                 listInpArgs{i,6}=descrlong(Datatypes+13:end);
                 jins=6;

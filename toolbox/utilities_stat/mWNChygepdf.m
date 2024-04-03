@@ -87,15 +87,15 @@ function Wpdf = mWNChygepdf(x, m, w, accuracy)
 %                  must be equal to the length of vector m. If the number
 %                  of colors is equal to 2, odds=w(1)/w(2). If all the
 %                  elements of w are equal we have the central
-%                  hypergometric multivariate distribution.
+%                  hypergeometric multivariate distribution.
 %                  Data Types - single|double
 %
 %  Optional input arguments:
 %
 %       accuracy : accuracy of the calculations. Scalar. The default value
 %                  of accuracy is 1e-08.
-%                  Data Types - single|double
 %                  Example - 1e-06
+%                  Data Types - single|double
 %
 %
 %  Output:
