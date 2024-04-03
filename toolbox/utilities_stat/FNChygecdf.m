@@ -31,12 +31,13 @@ function [Fcdf] = FNChygecdf(x,M,K,n,odds, accuracy)
 %
 %  Output:
 %
-%           Fcdf : Fisher' cdf values. Cumulative probability of drawing exactly x of a
-%                  possible K items in n drawings without replacement from a
-%                  group of M objects, when objects are from two weighted groups.
-%                  The size of Wcdf is the common size of the input
-%                  arguments. A scalar input functions as a constant matrix
-%                  of the same size as the other inputs.
+%           Fcdf : Fisher' cdf values. Cumulative probability of drawing
+%                  exactly x or less than x of a possible K items in n
+%                  drawings without replacement from a group of M objects,
+%                  when objects are from two weighted groups. The size of
+%                  Wcdf is the common size of the input arguments. A scalar
+%                  input functions as a constant matrix of the same size as
+%                  the other inputs.
 %
 %
 % See also FNChygepdf, FNChygeinv, FNChygernd, WNChygecdf, WNChygepdf, WNChygeinv, WNChygernd, randsampleFS.m, subsets.m
@@ -67,7 +68,7 @@ function [Fcdf] = FNChygecdf(x,M,K,n,odds, accuracy)
     K  = M/2;   
     % red balls are ten times more likely to be extracted than the white balls
     odds  = 10;    
-    % We compute the cumulative probability of getting 0 1, or 2 red balls (in drawing
+    % We compute the cumulative probability of getting 0, 1, or 2 red balls (in drawing
     % the 2 balls without replacement).
     x = 2;
     fcdf = FNChygecdf(x,M,K,n,odds);
