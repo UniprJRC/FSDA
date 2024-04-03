@@ -1,11 +1,11 @@
 function Wpdf = mFNChygepdf(x, m, w, accuracy)
-%mWNChygepdf returns Fisher multivariate non-central hypergeometric probability density function
+%mFNChygepdf returns Fisher multivariate non-central hypergeometric probability density function
 %
 %<a href="matlab: docsearchFS('mFNChygepdf')">Link to the help function</a>
 %
 % This function calls function  CMultiFisherNCHypergeometricpdf which is a
 % translation into MATLAB of the corresponding C++ function of Fog (2008).
-% The notation which is used in WNChygepdf and the order of the arguments
+% The notation which is used in mFNChygepdf and the order of the arguments
 % is the one of MATLAB hyge. The notation which is used inside
 % CMultiFisherNCHypergeometricpdf is the original one of Fog.
 %

@@ -1,8 +1,8 @@
 function r = FNChygernd(M,K,n,odds,   mm,nn,oo)
-%FNChygernd random arrays from the Wallenius non central hypergeometric distribution.
+%FNChygernd random arrays from the Fisher non central hypergeometric distribution.
 % 
 %   returns an array of random numbers of size mm-by-nn-by-oo chosen from the 
-%   Wallenius non central hypergeometric distribution with parameters M, K, n, and odds
+%   Fisher non central hypergeometric distribution with parameters M, K, n, and odds
 %
 %<a href="matlab: docsearchFS('FNChygernd')">Link to the help page for this function</a>
 %
@@ -151,7 +151,9 @@ r=zeros(mm,nn,oo);
 for i=1:numel(r)
     r(i)=aux.FisherNCHypergeometricrnd(n,K,M,odds, accuracy);
 end
+end
 
+%FScategory:ProbDist
 
 
 

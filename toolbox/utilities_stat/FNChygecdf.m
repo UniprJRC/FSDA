@@ -1,5 +1,5 @@
 function [Fcdf] = FNChygecdf(x,M,K,n,odds, accuracy)
-%FNChygecdf returns Wallenius' non-central hypergeometric cumulative distribution function
+%FNChygecdf returns Fisher non-central hypergeometric cumulative distribution function
 %
 %<a href="matlab: docsearchFS('FNChygecdf')">Link to the help function</a>
 %
@@ -7,7 +7,7 @@ function [Fcdf] = FNChygecdf(x,M,K,n,odds, accuracy)
 % translation into MATLAB of the corresponding C++ function of Fog (2008).
 % The notation which is used in FNChygecdf and the order of the arguments
 % is the one of MATLAB hyge. The notation which is used inside
-% WalleniusNCHypergeometricpdf is the original one of Fog.
+% FisherNCHypergeometricpdf is the original one of Fog.
 %
 %  Required input arguments:
 %

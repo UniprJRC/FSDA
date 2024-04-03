@@ -142,3 +142,6 @@ while any(over(:))
     xnew(over) = xnew(over)-1;
 end
 x = xnew;
+end
+
+%FScategory:ProbDist

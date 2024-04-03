@@ -1,5 +1,5 @@
 function r = mWNChygernd(m, w, n,    ntrials, accuracy)
-%mWNChygernd returns Wallenius' multivariate non-central hypergeometric probability density function
+%mWNChygernd returns random arrays from the Wallenius non central hypergeometric distribution
 %
 %<a href="matlab: docsearchFS('mWNChygernd')">Link to the help function</a>
 %
@@ -80,7 +80,7 @@ function r = mWNChygernd(m, w, n,    ntrials, accuracy)
 %                  must be equal to the length of vector m. If the number
 %                  of colors is equal to 2, odds=w(1)/w(2). If all the
 %                  elements of w are equal we have the central
-%                  hypergometric multivariate distribution.
+%                  hypergeometric multivariate distribution.
 %                  Data Types - single|double
 %           n    : Total number of balls sampled. Scalar.
 %                  Scalar which defines the number of balls which are
@@ -90,7 +90,7 @@ function r = mWNChygernd(m, w, n,    ntrials, accuracy)
 % Optional input arguments:
 %
 %    ntrials    : Number of random variates which have to extracted. If
-%                 this arugment is not specified just one random variate is
+%                 this argument is not specified just one random variate is
 %                 generated.
 %               Example - 3
 %               Data Types - double
