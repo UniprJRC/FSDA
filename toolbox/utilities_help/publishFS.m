@@ -1028,7 +1028,7 @@ for i=1:length(ini)
             listOptArgs{ij,7}=examplecode;
 
             posspace=regexp(examplecode,'      ');
-            examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
+            examplecode=['<code>' examplecode(1:posspace(1)-1) '</code>' examplecode(posspace(1):end)];
             listOptArgs{ij,5}=strtrim(examplecode);
             listOptArgs{ij,6}=descrlong(Datatypes+13:end);
         else
@@ -4046,7 +4046,7 @@ if ~isempty(iniMathJax) || ~isempty(finMathJax)
         error('FSDA:wrongLatex','There is a non matching math symbol in the LaTeX equation')
     end
 
-    MoreA=formatHTML(inputString(1:iniMathJax-1));
+    MoreA=formatHTML(inputString(1:iniMathJax(1)-1));
     for k=1:length(iniMathJax)
         MoreA=[MoreA inputString(iniMathJax(k):finMathJax(k)+1)];
         if k==length(iniMathJax)
