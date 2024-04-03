@@ -107,8 +107,8 @@ document.write(divsbefore);</script>
 			</tr>
 		</thead>
 		<tr>
-			<td style="vertical-align: top; height: 669px; width: 232px;"><strong>&gt;V 8.7.2.4<br>
-			prerelease&nbsp; 2024a&nbsp; 
+			<td style="vertical-align: top; height: 669px; width: 232px;"><strong>&gt;V 8.7.4.8<br>
+			release&nbsp; 2024a&nbsp; 
 			</strong></td>
 			<td style="vertical-align: top; height: 669px;">
 				<br>
@@ -142,9 +142,39 @@ document.write(divsbefore);</script>
 				coefficients.&nbsp; <br><br>UTILITIES STAT<br><br>New functions&nbsp; 
 				<a href="pivotCoord.html">pivotCoord</a> and
 				<a href="pivotCoordInv.html">pivotCoordInv</a> to transform the data inro compute isometric logratio coordinates and viceversa.
-									 <br>
+									 <br>New function logfactorial to compute 
+				log(x!) with high precision where x is not necessarily an 
+				integer.<br>
 				<br>DATASETS<br><br>New <a href="datasets_reg.html">regression datasets</a>, D1, D2, D3, inttrade1, 
 				inttrade2, inttrade3, cement, air_pollution, valueadded and nci60, added.<br>
+				<br>DISTRIBUTION<br><br>New functions <a href="WNChygepdf.html">
+				WNChygepdf</a>, <a href="WNChygecdf.html">WNChygecdf</a>,
+				<a href="WNChygeinv.html">WNChygeinv</a>,
+				<a href="WNChygernd.html">WNChygernd</a>,
+				<a href="FNChygepdf.html">FNChygepdf</a>,
+				<a href="FNChygecdf.html">FNChygecdf</a>,
+				<a href="FNChygeinv.html">FNChygeinv</a>,
+				<a href="FNChygernd.html">FNChygernd</a> for the extended 
+				hypergeometric distribution. All the functions which start with 
+				WNC refer to the Wallenius non central hypergeometric 
+				distribution, while all the functions which start with FNC refer 
+				to the Fisher non central hypergeometric distribution.<br>New 
+				functions <a href="mWNChygepdf.html">mWNChygepdf</a>,
+				<a href="mWNChygernd.html">mWNChygernd</a>,&nbsp;
+				<a href="mFNChygepdf.html">mFNChygepdf</a>,
+				<a href="mFNChygernd.html">mFNChygernd</a> to compute the 
+				density and to generate random number from the multivariate 
+				Wallenius and multivariate Fisher non central&nbsp; 
+				hypergeometirc distribution. All these functions are a 
+				translation from C++ of the routines of Fog (2008), library
+				<a href="https://cran.r-project.org/web/packages/BiasedUrn/vignettes/UrnTheory.pdf">
+				BiasedUrn</a>.<br><br>
+				VOLATILITY<br><br>A collection of routines 1) to compute the 
+				integrated variance from a diffusion process via the Fourier 
+				estimator using Dirichlet or Fejer kernel; 2) to computes the 
+				integrated varaince, quarticity, leverage of a diffusion process 
+				via the Fourier-Malliavin estimator (routines written by S. 
+				Sanfelici and Toscano, G. (2024) .<br>
 				<br>MULTIVARIATE<br><br>Functions for robust correspondence 
 				analysis completely redesigned <a href="mcdCorAna.html">
 				mcdCorAna</a> (mcd in correspondece analysis),
@@ -161,11 +191,18 @@ document.write(divsbefore);</script>
 			fanplot.m in order to avoid conflicts with function fanplot of the 
 			Financial Toolbox has been renamed fanplotFS.m. Old function 
 			fanplot.m has been left in the folder but it will be removed in a 
-			future release<br><br>Function playbackdemoFS.m has been removed</td>
+			future release<br><br>Function playbackdemoFS.m has been removed<br>
+			<br>Thanks to MathWorks support now the FSDA tree has a new 
+			structure which improves the toolbox's polish, ease of maintenance, 
+			and developer/user experience. More specifically, subfolder +aux has 
+			been created in order to host the routines which do no have to be 
+			called directly by the user. Subfolders private have been added to 
+			each folder in order to host routines which are called just by the 
+			corresponding parent folder. </td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px;"> 
 			
 			&nbsp;</td>
-			<td style="vertical-align: top; height: 669px;">March 2024 			<br>
+			<td style="vertical-align: top; height: 669px;">April 2024 			<br>
 			</td>
 		</tr>
 		<tr>
