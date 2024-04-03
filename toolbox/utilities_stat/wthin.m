@@ -18,8 +18,8 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %   bandwidth :  bandwidth value. Scalar. The bandwidth used to estimate
 %                the density. It can be estimated from the data using
 %                function bwe.
-%                Data Types - scalar
 %                Example - bandwidth,0.35
+%                Data Types - scalar
 %
 %   support   :  support value. Character array. The support of the density
 %                estimation step. It can be 'unbounded' (the default) or
@@ -29,27 +29,27 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %                back. The theoretical rationale is that when kernel
 %                density is applied to positive data, it does not yield
 %                proper PDFs.
-%                Data Types - char
 %                Example - support,'positive'
+%                Data Types - char
 %
 %        cup  :  pdf upper limit. Scalar. The upper limit for the pdf used
 %                to compute the retantion probability. If cup = 1
 %                (default), no upper limit is set.
-%                Data Types - scalar
 %                Example - cup, 0.8
+%                Data Types - scalar
 %
 %      pstar  :  thinning probability. Scalar. Probability with each a unit
 %                enters in the thinning procedure. If pstar = 1 (default), all units
 %                enter in the thinning procedure.
-%                Data Types - scalar
 %                Example - pstar, 0.95  
+%                Data Types - scalar
 %
 %   retainby  :  retention method. String. The function used to retain the
 %                observations. It can be:
 %                - 'inverse' , i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
 %                - 'comp2one' (default),  i.e. 1 - pdfe/max(pdfe))
-%                Data Types - char
 %                Example - 'method','comp2one'
+%                Data Types - char
 %
 %  Output:
 %

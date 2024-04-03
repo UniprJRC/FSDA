@@ -144,7 +144,7 @@ function out=CorAna(N, varargin)
 %                   chi-squared distances (column-metric-preserving). The
 %                   position of the column points are at the weighted
 %                   average of the row points.
-%                   Note that 'colwprincipal' can also be
+%                   Note that 'colprincipal' can also be
 %                   specified setting plots.alpha=0.
 %               If $plots.alpha='symbiplot'$, the row and column coordinates
 %                   are scaled similarly. The sum of weighted squared
@@ -159,7 +159,7 @@ function out=CorAna(N, varargin)
 %               If $plots.alpha='bothprincipal'$, both the rows and columns
 %                   are depicted in principal coordinates. Such a plot is
 %                   often referred to as a symmetrical plot or French
-%                   symemtrical model. Note that such a symmetrical plot
+%                   symmetrical model. Note that such a symmetrical plot
 %                   does not provide a feasible solution in the sense that
 %                   it does not approximate matrix
 %                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$.

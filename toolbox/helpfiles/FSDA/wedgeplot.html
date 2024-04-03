@@ -31,9 +31,7 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
-y=(y(:));
+y=y(:);
 % Add a level shift contamintion plus some outliers.
 y(68:end)=y(68:end)+1300;
 y(67)=y(67)-600;
@@ -69,8 +67,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 % Add a level shift contamintion plus some outliers.
 y(50:55)=y(50:55)-300;
@@ -190,8 +186,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 % Add a level shift contamintion plus some outliers.
 y(50:55)=y(50:55)-300;
@@ -226,7 +220,8 @@ wedgeplot(out,'extradata',[y out.yhat],'transpose',true);</pre></div></div></p
 </code>,<code> 'extradata', [y yhat]
 </code>,<code> 'cmapname','summer'
 </code>,<code> 'labls','Position of level shift'
-</code>,<code></code>,<code> 'titl','Plot with two wedges'
+</code>,<code> 'labin','unit number'
+</code>,<code> 'titl','Plot with two wedges'
 </code>,<code> 'FontSize',12
 </code>,<code> 'SizeAxesNum',10
 </code></code></span></div><div class="expandableContent"><div id="inputarg_transpose" class="clearfix"></div><h3 id="input_argument_namevalue_transpose" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>transpose</code> &#8212;option determining the posiiton of the index number or tentative
@@ -275,7 +270,8 @@ wedgeplot(out,'extradata',[y out.yhat],'transpose',true);</pre></div></div></p
                 series. This axis could be either the horizontal or vertical
                 depending on the option transpose. The default label is 'Index
                 number'.</p> <p>
-                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p>	<p class="datatypelist"><strong>Data Types: </strong><code></code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;Title.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>A label for the title 
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labin','unit number'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Character</code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;Title.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>A label for the title 
                 (default: 'Double wedge plot').</p> <p>
                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'titl','Plot with two wedges'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_FontSize" class="clearfix"></div><h3 id="input_argument_namevalue_FontSize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>FontSize</code> &#8212;Font size of the labels.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls the font
@@ -288,4 +284,4 @@ wedgeplot(out,'extradata',[y out.yhat],'transpose',true);</pre></div></div></p
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_hf" class="clearfix"></div><h3 id="output_argument_hf" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hf</code> &#8212;handle to the figure.</span></a><span class="example_desc">Graphics handle</span></span></h3><div class="collapse"><p> Handle to the figure
                which has just been created.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
  Monitoring of Many Time Series with Application to Fraud Detection,
- "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'FSDA/CorAnaplot.html'))" itemprop="url"><span itemprop="name"><code>plot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'bioinfo/ref/cghfreqplot.html'))" itemprop="url"><span itemprop="name"><code>plot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

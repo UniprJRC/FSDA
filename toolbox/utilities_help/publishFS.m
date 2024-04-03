@@ -881,8 +881,10 @@ endpoint=regexp(fstringselOpt,'Output:');
 if isempty(endpoint)
     disp('Please check HTML input file')
     error('FSDA:missOuts','Input .m file does not contain ''Output:'' string')
+else
+    disp('At least two instances in the file with ''Output:'' string')
+    fstringselOpt=fstringselOpt(1:endpoint(1)-2);
 end
-fstringselOpt=fstringselOpt(1:endpoint-2);
 
 % Find any string which
 % begins with % sign then
@@ -890,7 +892,7 @@ fstringselOpt=fstringselOpt(1:endpoint-2);
 % contains any single word
 % a series of white spaces which can go from 0 to 10 then
 % character : then
-% a seris of white spaces
+% a series of white spaces
 % The inipoint of the following two regular expressions is the same but
 % however we want to exclude the lines where symbol : is followed by a
 % series of white spaces and then by a carriage return because these are
@@ -1030,6 +1032,8 @@ for i=1:length(ini)
             posspace=regexp(examplecode,'      ');
             if ~isempty(posspace)
                 examplecode=['<code>' examplecode(1:posspace(1)-1) '</code>' examplecode(posspace(1):end)];
+            else
+
             end
 
             listOptArgs{ij,5}=strtrim(examplecode);

@@ -64,7 +64,7 @@ function [out] = VIOM(y,X,dw,varargin)
 %           out.beta =  p x 1 vector of estimated coefficients based on WLS.
 %
 %
-% See also: FSR, FSRcore
+% See also: FSR
 %
 % References:
 %

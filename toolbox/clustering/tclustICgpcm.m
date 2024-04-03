@@ -4,7 +4,7 @@ function out  = tclustICgpcm(Y, varargin)
 %<a href="matlab: docsearchFS('tclustICgpcm')">Link to the help function</a>
 %
 %   tclustICgpcm (where the two letters IC  stand for 'Information
-%   Criterion') and gpcm stands for Gaussian parimonious clustering models
+%   Criterion') and gpcm stands for Gaussian parsimonious clustering models
 %   computes the values of BIC (MIXMIX), ICL (MIXCLA) or CLA (CLACLA), for
 %   different values of k (number of groups) and different values of
 %   $c_{det}$ (restriction factor for determinants), $c_{shw}$ (restriction
@@ -82,8 +82,8 @@ function out  = tclustICgpcm(Y, varargin)
 %                   default is to use implicit expansion (faster)
 %                   if verLessThanFS('9.1') is false and bsxfun if MATLAB is
 %                   older than 2016b.
-%               Data Types - struct
 %               Example - pa=struct; pa.cdet=10;
+%               Data Types - struct
 %
 %           kk: number of mixture components. Integer vector. Integer
 %               vector specifying the number of mixture components
