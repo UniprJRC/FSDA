@@ -181,6 +181,91 @@ function Fpdf = FNChygepdf(x,M,K,n,odds, accuracy)
     % ratios are high and n is near M.
 %}    
 
+%{
+    %% Fisher Noncentral Hypergeometric Distributions Property 1.
+    % Taken from Equation (12) of "Sampling Methods for Wallenius' and
+    % Fishers' Noncentral Hypergeometric Distributions"
+    %
+    % FNChygepdf(x,M,K,n,odds) should be equal to FNChygepdf(n-x,M,M-K,n,1/odds)
+    % up to some very small epsilon.
+    %
+    % we have 20 balls in the urn
+    M  = 20;
+    % initially, in the urn we have 250 red and 250 white balls
+    K  = M/2;
+    % we extract 3 balls without replacement
+    n  = 3;
+    % red balls have a probability ten times greater to be extracted thab white balls
+    odds  = 5;
+    % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
+    % 3 balls without replacement.
+    x = (0:n)';
+   
+    Fpdfa = FNChygepdf(x,M,K,n,odds);
+
+    Fpdfb = FNChygepdf(n-x,M,M-K,n,1/odds);
+    
+    assert(all(ismembertol(Fpdfa,Fpdfb,1E-12)), "Property 1 not verified.");
+   
+%}   
+
+%{
+    %% Fisher Noncentral Hypergeometric Distributions Property 2.
+    % Taken from Equation (13) of "Sampling Methods for Wallenius' and
+    % Fishers' Noncentral Hypergeometric Distributions"
+    %
+    % FNChygepdf(x,M,K,n,odds) should be equal to  FNChygepdf(x,M,n,K,odds)
+    % up to some very small epsilon.
+    %
+    % we have 20 balls in the urn
+    M  = 20;
+    % initially, in the urn we have 250 red and 250 white balls
+    K  = M/2;
+    % we extract 3 balls without replacement
+    n  = 3;
+    % red balls have a probability ten times greater to be extracted thab white balls
+    odds  = 5;
+    % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
+    % 3 balls without replacement.
+    x = (0:n)';
+   
+    Fpdfa = FNChygepdf(x,M,K,n,odds);
+
+    Fpdfb = FNChygepdf(x,M,n,K,odds);
+    
+    assert(all(ismembertol(Fpdfa,Fpdfb,1E-12)), "Property 2 not verified.");
+   
+%}   
+
+%{
+    %% Fisher Noncentral Hypergeometric Distributions Property 3.
+    % Taken from Equation (14) of "Sampling Methods for Wallenius' and
+    % Fishers' Noncentral Hypergeometric Distributions"
+    %
+    % FNChygepdf(x,M,K,n,odds) should be equal to FNChygepdf(K-x,M,M-n,K,1/odds)
+    % up to some very small epsilon.
+    %
+    % we have 20 balls in the urn
+    M  = 20;
+    % initially, in the urn we have 250 red and 250 white balls
+    K  = M/2;
+    % we extract 3 balls without replacement
+    n  = 3;
+    % red balls have a probability ten times greater to be extracted thab white balls
+    odds  = 5;
+    % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
+    % 3 balls without replacement.
+    x = (0:n)';
+   
+    Fpdfa = FNChygepdf(x,M,K,n,odds);
+
+    Fpdfb = FNChygepdf(K-x,M,M-n,K,1/odds);
+    
+    assert(all(ismembertol(Fpdfa,Fpdfb,1E-12)), "Property 3 not verified.");
+   
+%}   
+
+
 %% Beginning of code
 
 if nargin<6
