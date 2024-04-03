@@ -43,7 +43,7 @@ function x = FNChygeinv(p,M,K,n,odds, accuracy)
 %  Output:
 %
 %
-%           x : Fisher' quantile values.  Qauntiles corresponding to input probabilities. 
+%           x : Fisher' quantile values.  Quantiles corresponding to input probabilities. 
 %                  The size of x is the common size of the input
 %                  arguments. A scalar input functions as a constant matrix
 %                  of the same size as the other inputs.
@@ -82,11 +82,15 @@ function x = FNChygeinv(p,M,K,n,odds, accuracy)
 
 %{
     %% Compute quantiles 0.1, 0.2, ..., 0.9 from nverse of Fisher non central hypergeometric distribution.
-    M=80; % total number of balls
-    n=10;  % number of balls taken
-    odds=3; % Prob. of red balls vs other color balls
-    K=50; % Number of red balls in the urn
-    % Compute quantile 0.3
+    % M= total number of balls
+    M=80;
+    % n= number of balls taken
+    n=10;  
+    % odds = Ratio of Prob. of red balls vs other color balls    
+    odds=3; 
+    % K = number of red balls in the urn
+    K=50; 
+    % Compute quantiles 0.1, ..., 0.9
     xquant=FNChygeinv(0.1:0.1:0.9,M,K,n,odds);
     disp(xquant)
 %}

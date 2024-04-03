@@ -159,7 +159,7 @@ malfwdplot(out,'datatooltip',datatooltip);
 % Note that we can obtain the RGB vector with our MATLAB class FSColors.
 %
 datatooltip = struct;
-datatooltip.LineColor = FSColors.yellowish.RGB;
+datatooltip.LineColor = aux.FSColors.yellowish.RGB;
 malfwdplot(out,'datatooltip',datatooltip);
 % now LineColor is not a valid RGB vector, but red (default) will be used
 datatooltip.LineColor = [123 41 12 32 1];
@@ -181,7 +181,7 @@ m0=20;
 bs=fre(1:m0,1);
 [out]=FSMeda(Y,bs,'plots',1,'init',30);
 datatooltip = struct;
-datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
+datatooltip.SubsetLinesColor = aux.FSColors.purplish.RGB;
 malfwdplot(out,'datatooltip',datatooltip);
 % Here we show that the modality is also activated when
 % SubsetLinesColor is not a valid RGB vector.
@@ -271,7 +271,7 @@ databrush.Label='on';
 databrush.RemoveLabels='off';
 malfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 8.</i>
        Example of the use of persistent non cumulative brush.</li></span></a></span></h3><div class="collapse"><p> Every time a
-       brushing action is performed previous highlightments are removed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+       brushing action is performed previous highlights are removed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=4;
 state1=141243498;
 randn('state', state1);
@@ -289,8 +289,8 @@ databrush.Label='on';
 databrush.RemoveLabels='off';
 malfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
        Example of the use of persistent cumulative brush.</li></span></a></span></h3><div class="collapse"><p> Every time a
-       brushing action is performed current highlightments are added to
-       previous highlightments<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+       brushing action is performed current highlights are added to
+       previous highlights<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=4;
 state1=141243498;
 randn('state', state1);
@@ -326,7 +326,7 @@ fground.LineWidth=3;
 % and store the options to produce the plot inside plotopt
 plotopt=malfwdplot(out,'fground',fground,'msg',2)
 % In order to reuse the options which have been stored inside plotopt
-% use the following sintax
+% use the following syntax
 % malfwdplot(out,plotopt{:})</pre></div></div></p></div></div><div id="Extraexample_16" class="example_module expandableContent"><div id="ExtraExample_16"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>malfwdplot starting from MM estimators.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 v=3;
 Y=randn(n,v);
@@ -406,7 +406,7 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                the MCD monitored for k different values of break down
                point, the MM estimators monitored for k values of
                efficiency). This matrix can be created using functions
-               FSMeda or Smulteda or MMmulteda or FSCorAnaeda...</p><p> 
+               FSMeda or Smulteda or MMmulteda or FSCorAnaeda...</p><p>
                This field is
                compulsory.</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>n-by-v matrix.  It can be either the original data matrix
                or another matrix with n rows and p variables (i.e. the
@@ -423,8 +423,8 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                    the x axis is 'Break down point' the label in the x axis is
                    'Efficiency';</p> <p>
                out.class='FSCorAnaeda' the label in the x axis is 'Subset
-                   size m' the expected fields of input strucure are 
-                   out.Loc and out.N;</p> <p>
+                   size m' the expected fields of input structure are
+                   out.Loc and out.N (and possibly out.Ntable);</p> <p>
                If out.class is a structure it may contain the fields xlab
                    and ylab which specify the labels to be put respectively to
                    the x and y axis.</p> <p>
@@ -436,7 +436,7 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                The first column of matrix out.Un contains the subset size
                while the other columns the units entered. The nmber of
                columns is k before more than one unit can enter the
-               seubset at a particular step.</p><p>
+               subset at a particular step.</p><p>
                This field is not compulsory.</p></p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'standard.LineWidth','1'
 </code>,<code> 'fground.LineWidth','1'
 </code>,<code> 'bground.bstyle','faint'
@@ -481,7 +481,7 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                    standard.LineStyle={'-'}
 
                    </p></p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'standard.LineWidth','1'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_fground" class="clearfix"></div><h3 id="input_argument_namevalue_fground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fground</code> &#8212;trajectories in foregroud.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which controls which trajectories
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_fground" class="clearfix"></div><h3 id="input_argument_namevalue_fground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fground</code> &#8212;trajectories in foreground.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which controls which trajectories
                    are highlighted and how they are plotted to be
                    distinguishable from the others.</p> <p>
                    It is possible to control the label, the width, the
@@ -492,16 +492,16 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                        of length 1 or 2 which specifies the criterion to
                        select the trajectories to highlight.</p> <p>
                        If length(fthresh)=1 the highlighted trajectories
-                       are those units that throughtout the search had
+                       are those units that throughout the search had
                        at leat once a MD greater (in absolute value)
                        than fthresh. The default value of fthresh is 2.5.</p><p>
                        If length(fthresh)=2 the highlighted trajectories
-                       are those of units that throughtout the search had
+                       are those of units that throughout the search had
                        a MD at least once bigger than fthresh(2) or
                        smaller than fthresh(1).</p></p></td></tr><tr valign="top"><td><code>funit</code></td><td><p><p>(alternative to fthresh) vector
                        containing the list of the units to be highlighted.</p> <p>
                        If funit is supplied, fthresh is ignored.</p></p></td></tr><tr valign="top"><td><code>flabstep</code></td><td><p><p>numeric vector which specifies the steps of
-                       the search whre to put labels for the highlighted
+                       the search where to put labels for the highlighted
                        trajectories (units). The default is to put the
                        labels at the initial and final steps of the search.</p> <p>
                        flabstep='' means no label.</p></p></td></tr><tr valign="top"><td><code>LineWidth</code></td><td><p>scalar specifying line width for the
@@ -529,16 +529,16 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                    label is inserted into the plot.</p><p>
 
                    </p></p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fground.LineWidth','1'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_bground" class="clearfix"></div><h3 id="input_argument_namevalue_bground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bground</code> &#8212;characterictics of the trajectories in background.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which specifies the trajectories in background,
-                   i.e. the trajectories corresponding to "unimmportant"
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_bground" class="clearfix"></div><h3 id="input_argument_namevalue_bground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bground</code> &#8212;characteristics of the trajectories in background.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which specifies the trajectories in background,
+                   i.e. the trajectories corresponding to "unimportant"
                    units in the central part of the data. The structure
                    also specifies the style used in the plot to give them
                    less emphasis, so that to not distract the eye of the
                    analyst from the trajectories of the relevant units.</p> <p>
                    Structure bground contains the following fields:
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bthresh</code></td><td><p><p>numeric vector of length 1 or 2 which
-                       specifies how to define the unimmportant trajectories.</p> <p>
-                       Unimmportant trajectories will be plotted using a
+                       specifies how to define the unimportant trajectories.</p> <p>
+                       Unimportant trajectories will be plotted using a
                        colormap, in greysh or will be hidden.</p> <p>
                        - If length(bthresh)=1 the irrelevant units are
                          those which always had a MD smaller
@@ -614,7 +614,7 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                        or using class FScolors:
                        datatooltip.SubsetLinesColor='black'; highlights in
                        black the trajectories of the units which are
-                       inside subset in correpondence of the selected
+                       inside subset in correspondence of the selected
                        steps.</p> <p>
                    Remark. This can be done (repeatedly) with a left mouse click
                        on the x axis ('subset size m') in proximity of the
@@ -629,7 +629,7 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                        which cannot be interpreted as RGB vector will be
                        converted to blue, i.e. SubsetLinesColor will be
                        forced to be [0 0 1].</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>empty value, scalar or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_label" class="clearfix"></div><h3 id="input_argument_namevalue_label" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>label</code> &#8212;row labels.</span></a><span class="example_desc">cell of strings.</span></span></h3><div class="collapse">	<p><p>Cell containing the labels
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>empty value, scalar or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_label" class="clearfix"></div><h3 id="input_argument_namevalue_label" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>label</code> &#8212;row labels.</span></a><span class="example_desc">cell of characters of vector of strings.</span></span></h3><div class="collapse">	<p><p>Cell or vector of strings containing the labels
                    of the n units. This optional argument is used for
                    datattoltip and brushing. If label is present the
                    rownames of the units will be used  during brushing and

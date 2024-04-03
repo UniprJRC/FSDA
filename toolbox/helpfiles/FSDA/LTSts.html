@@ -37,8 +37,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 yr = repmat((1949:1960),12,1);
 mo = repmat((1:12)',1,12);
@@ -76,8 +74,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 model=struct;
 model.trend=1;              % linear trend
@@ -107,8 +103,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 model=struct;
 model.trend=1;              % linear trend
@@ -138,8 +132,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 model=struct;
 model.trend=1;              % linear trend
@@ -171,8 +163,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 yLS=y;
 yLS(55:end)=yLS(55:end)+130;
@@ -207,8 +197,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 yLS=y;
 yLS(35:end)=yLS(35:end)-300;
@@ -241,8 +229,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 y1=log(y);
 % Model with linear trend, two harmonics for seasonal component and
@@ -865,7 +851,7 @@ Summary of the exceedances
                        subset have missing values
                        This output is present just if input option
                        model.lshift is not equal to 0.</p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p>(row) vector containing level shift positions which
-                       have been investigated. out.lshift  =0 means that
+                       have been tested. out.lshift  =0 means that
                        level position has not been investigated.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p>scalar associated with best tentative level shift
                        position. This output is present just if input
                        option model.lshift is not equal to 0.</p></td></tr><tr valign="top"><td><code>numscale2</code></td><td><p>matrix of size lts.bestr-by-(T-2*lshift) containing

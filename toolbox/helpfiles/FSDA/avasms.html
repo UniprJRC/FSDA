@@ -153,11 +153,11 @@ out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);</pre></div></div></p>
            l(j)=5 =&gt; j-th variable assumes categorical (unorderable) values.</p> <p>
            j =1, 2,..., p.</p> <p>
            The default value of l is a vector of ones of length p,
-           that is the procedure assumes that all the explanatory
+           this procedure assumes that all the explanatory
            variables have orderable values (and therefore can be
            transformed non monotonically).</p> <p>
            Note that in avas procedure the response is always transformed
-           (in a monothonic way).</p><p>
+           (in a monotonic way).</p><p>
            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'l',[3 3 1]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_maxit" class="clearfix"></div><h3 id="input_argument_namevalue_maxit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>maxit</code> &#8212;maximum number of iterations for the outer loop.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The
             default maximum number of iterations before exiting the outer
@@ -208,9 +208,9 @@ out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);</pre></div></div></p>
                the values of R2, fraction of units used, pvalue of DW test
                and pval of normality test are shown with bars below each
                star, else (default) these values are shown using a
-               textbox.</p> <p>
+               text-box.</p> <p>
            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'showBars',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_BestSol" class="clearfix"></div><h3 id="output_argument_BestSol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BestSol</code> &#8212;Best solutions.</span></a><span class="example_desc">table</span></span></h3><div class="collapse"><p><p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_BestSol" class="clearfix"></div><h3 id="output_argument_BestSol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BestSol</code> &#8212;Best solutions.</span></a><span class="example_desc">Table</span></span></h3><div class="collapse"><p><p>
                  A table containing the details of the admissible
                  solutions which have been found. We define a solution as
                  admissible if the residuals pass the Durbin-Watson and
@@ -224,11 +224,11 @@ out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);</pre></div></div></p>
                  using the p-value of the Durbin Watson test (rescaled by
                  the value of $R^22$ and the number of units not declared as
                  outliers).</p> <p>
-                 Colums 1-5 contain boolean information about the usage of
+                 Columns 1-5 contain boolean information about the usage of
                  options: orderR2, scail, trapezoid, rob,
                  tyinitial. These 5 columns are ordered in non decreasing
                  way depending on the frequency in which a particular
-                 option has been used in the set of admissiable solutions.</p> <p>
+                 option has been used in the set of admissible solutions.</p> <p>
                  For example, if option orderR2 is the only one
                  which is always used in the set of admissible solutions,
                  then column 1 is associated to orderR2.</p> <p>
@@ -261,7 +261,7 @@ out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);</pre></div></div></p>
  to use in the backfitting algorithm to calculate the transformations
  $f(X)$ at each iteration, the $n-m$ outliers being ignored. We also use
  the subset in function ctsub in the calculation of the numerical variance
- stabilising transformation. Since different response transformations can
+ stabilizing transformation. Since different response transformations can
  indicate different observations as outliers, the identification of
  outliers occurs repeatedly during our robust algorithm, once per
  iteration.</p> <p>
@@ -274,7 +274,7 @@ out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);</pre></div></div></p>
  produces the highest increment of $R^2$.</p> <p>
 <hr>[<b>4</b>] To use option tyinitial which calculates a robust parametric
  transformation of the response before starting the main backfitting loop.</p> <p>
-<hr>[<b>5</b>] To use option trapeziod in order to specify how to compute the
+<hr>[<b>5</b>] To use option trapezoid in order to specify how to compute the
  integral to obtain transformed values for the units which fall outside
  the range of integration determined by the units not declared as
  outliers.</p> <p>
@@ -282,7 +282,7 @@ out=avasms(y,X,'l',ones(3,1),'critBestSol',critBestSol);</pre></div></div></p>
  The purpose of this routine is to apply avas with and without the five
  options listed above. There are therefore 32 combinations of options that
  could be chosen. It is not obvious that all will be necessary when
- analysing all sets of data. This routine returns the list of options
+ analyzing all sets of data. This routine returns the list of options
  which produced the best fit and provides the necessary ingredients for a
  graphical method, the augmented star plot, to indicate which options are
  important in a particular data analysis.</p><p>

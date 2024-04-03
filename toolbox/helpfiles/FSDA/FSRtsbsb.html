@@ -15,8 +15,6 @@ bsbini=[97    77    12     2    26    95    10    60    94   135     7    61   1
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 % Define the model  and show the monitoring units plots.
 model=struct;
@@ -38,8 +36,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 % Contaminates units 31:40
 y(31:40)=y(31:40)+200;
@@ -59,7 +55,7 @@ ylabel('Monitoring units plot');
 % The plot, which monitors the units belonging to subset in each step of
 % the forward search shows that independently of the initial starting
 % point the contaminated units (31:40) are always the last to enter the
-% forward search.</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRtsbsb.html#Example_3'><img vspace="5" hspace="5" src="images\FSRtsbsb_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRtsbsb_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRtsbsb_04.png" alt=""> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+% forward search.</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRtsbsb.html#Example_3'><img vspace="5" hspace="5" src="images\FSRtsbsb_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRtsbsb_03.png" alt=""> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial subset. </span>  </a><span class="example_desc">Vector | 0.</span></span></h3> <div class="collapse"> <p>If
                bsb=0 then the procedure starts with p units randomly
                chosen else if bsb is not 0 the search will start with

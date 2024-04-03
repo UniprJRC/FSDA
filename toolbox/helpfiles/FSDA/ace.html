@@ -54,8 +54,8 @@ aceplot(out)
 </code>,<code> 'maxit',30
 </code></code></span></div><div class="expandableContent"><div id="inputarg_l" class="clearfix"></div><h3 id="input_argument_namevalue_l" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>l</code> &#8212;type of transformation.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector of length p+1 which
            specifies how the type of transformation for the explanatory
-           variables and the response. The fitst p element of this vector
-           refer to the p explanatory variables, the last element refers to
+           variables and the response. The first p element of this vector
+           refers to the p explanatory variables, the last element refers to
            the response.</p> <p>
            l(j)=1 =&gt; j-th variable assumes orderable values.</p> <p>
            l(j)=2 =&gt; j-th variable assumes circular (periodic) values
@@ -64,19 +64,19 @@ aceplot(out)
            l(j)=4 =&gt; j-th variable transformation is to be linear.</p> <p>
            l(j)=5 =&gt; j-th variable assumes categorical (unorderable) values.</p> <p>
            j =1, 2, \ldots, p+1.</p> <p>
-           The default value of l is is a vector of ones of length p+1,
-           that is the procedure assumes that both the explanatory
+           The default value of l is a vector of ones of length p+1,
+           this procedure assumes that both the explanatory
            variables and the response have orderable values.</p><p>
            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'l',[3 3 1]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_w" class="clearfix"></div><h3 id="input_argument_namevalue_w" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>w</code> &#8212;weights for the observations.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Row or column vector of
            length n containing the weights associated to each
-           observations. If w is not specified we assum $w=1$ for $i=1,
+           observations. If w is not specified we assume $w=1$ for $i=1,
            2, \ldots, n$.</p> <p>
            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'w',1:n
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nterm" class="clearfix"></div><h3 id="input_argument_namevalue_nterm" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nterm</code> &#8212;minimum number of consecutive iteration below the threshold
            to terminate the outer loop.</span></a><span class="example_desc">positive scalar.</span></span></h3><div class="collapse">	<p><p>This value
            specifies how many consecutive iterations below the threshold
-           it is necesasry to have to declare convergence in the outer
+           it is necessary to have to declare convergence in the outer
            loop. The default value of nterm is 3.</p> <p>
            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nterm',5
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_delrsq" class="clearfix"></div><h3 id="input_argument_namevalue_delrsq" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>delrsq</code> &#8212;termination threshold.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Iteration (in the outer loop)
@@ -93,5 +93,5 @@ aceplot(out)
            when procedure is called with input option rob set to true. If
            rob is false out.outliers=[].</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Breiman, L. and Friedman, J.H. (1985), Estimating optimal transformations
  for multiple regression and correlation, "Journal of the American
- Statistical Association", Vol. 80, pp. 580-597.</p></div><div><p>Wang D.  and Murphy M. (2005), Identifying nonlinear relationships regression using the ACE
+ Statistical Association", Vol. 80, pp. 580-597.</p></div><div><p>Wang D. and Murphy M. (2005), Identifying nonlinear relationships regression using the ACE
  algorithm, "Journal of Applied Statistics", Vol. 32, pp. 243-258.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="aceplot.html" itemprop="url"><span itemprop="name"><code>aceplot</code></span></a></span> | <span itemprop="seealso"><a href="smothr.html" itemprop="url"><span itemprop="name"><code>smothr</code></span></a></span> | <span itemprop="seealso"><a href="supsmu.html" itemprop="url"><span itemprop="name"><code>supsmu</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

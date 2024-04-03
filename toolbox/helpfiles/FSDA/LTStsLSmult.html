@@ -4,7 +4,7 @@ Y(7:20)=Y(7:20)-3;
 out  = LTStsLSmult(Y,'msg',true,'plots',1);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> A synthetic example with optional arguments msg and plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=rand(50,1);
 Y(35:end)=Y(35:end)+5;
 Y(7:20)=Y(7:20)-3;
-out  = LTStsLSmult(Y,'msg',true,'plots',1);</pre></div></div><pre class="codeoutput">significant LS at position 35 (pval = 7.1054e-15)
+out  = LTStsLSmult(Y,'msg',true,'plots',1);</pre></div></div><pre class="codeoutput">significant LS at position 35 (pval = 0)
 significant LS at position 21 (pval = 0)
 significant LS at position 7 (pval = 0)
 </pre><a href='http://rosa.unipr.it/fsda/LTStsLSmult.html#Example_2'><img vspace="5" hspace="5" src="images\LTStsLSmult_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\LTStsLSmult_02.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_03.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_05.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Trade data examples.</li></span></a></span></h3><div class="collapse"><p>
@@ -30,7 +30,7 @@ significant LS at position 101 (pval = 0.0096827)
 </pre><a href='http://rosa.unipr.it/fsda/LTStsLSmult.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\LTStsLSmult_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTStsLSmult_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_08.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_09.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_16.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 1.
  Detection of multiple Level Shifts followed by variable selection on the
  dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load TTsugar   % UA-LT
-yin2   = TTsugar{:,1};
+yin2   = sugar{:,1};
 out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
 'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
 outX = out.outX;
@@ -43,7 +43,7 @@ model.X = outX(:,3:end);
 'plots',1,'msg',0,'dispresults',1,'SmallSampleCor',1,'conflev',1-0.01/length(yin2));</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 2.
      Detection of multiple Level Shifts followed by variable selection on the
      dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load TTplant 
-yin2   = TTplant{:,1};
+yin2   = plant{:,1};
 out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
 'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
 outX = out.outX;
@@ -94,7 +94,8 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
 </code>,<code> 'msg',true
 </code>,<code> 'sampleLS', [5 16 27 35]
 </code>,<code> 'startLS', 15
-</code>,<code></code>,<code> 'plots',1
+</code>,<code> 'thresLS', 50
+</code>,<code> 'plots',1
 </code></code></span></div><div class="expandableContent"><div id="inputarg_alphaLS" class="clearfix"></div><h3 id="input_argument_namevalue_alphaLS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>alphaLS</code> &#8212;maximum pvalue to consider a Level Shift significant.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It is a threshold for detecting significant Level
                Shifts. Default is 0.01.</p> <p>
                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alphaLS', 0.1
@@ -201,7 +202,8 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_thresLS" class="clearfix"></div><h3 id="input_argument_namevalue_thresLS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>thresLS</code> &#8212;minimum length of the time series to look for Level Shift.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>In order to detect Level Shifts the series should 
                have more than thresLS observations.</p> <p> 
                Default is 20.</p><p> 
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p>	<p class="datatypelist"><strong>Data Types: </strong><code></code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a two panel plot will be shown on the screen.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'thresLS', 50
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a two panel plot will be shown on the screen.</p> <p>
                The upper panel contains the orginal time series with
                fitted values. The bottom panel will contain the plot
                of robust residuals against index number. The confidence

@@ -22,22 +22,22 @@ function [Xilr] = pivotCoord(X,varargin)
 %                is used else norm is set equal to 1.
 %                This option takes effect just if sympivotcoord is
 %                false 
-%                Data Types - logical
 %                Example - 'norm',false
+%                Data Types - logical
 %
 %   pivotvar :  pivotal variable. Positive integer between 1 and D.
 %               If any other number than 1, the data are resorted in that
 %               sense that the pivotvar is shifted to the first
 %               part.
-%                Data Types - scalar
 %                Example - 'pivotvar',1
+%                Data Types - scalar
 %
 % sympivotcoord :  symmetric pivot coordinate. Boolean.
 %                As default symmetric pivot coordinates are not used.
 %                If sympivotcoord is true the output matrix is of size n-by-2 else
 %                it is of size n-by-(D-1).
-%                Data Types - logical
 %                Example - 'sympivotcoord',true
+%                Data Types - logical
 %
 %
 %  Output:

@@ -7,14 +7,14 @@ n=length(y);
 [outFSRfan]=FSRfan(y,X,'plots',0,'init',round(n*0.3),'nsamp',10000,'la',[0 0.25 0.5 0.75 1 1.25],'msg',0,'family','YJ');
 [outini]=fanBIC(outFSRfan,'plots',0);
 % labest is the best value imposing the constraint that positive and
-% negative observations must have the same tramsformation parameter.
+% negative observations must have the same transformation parameter.
 labest=outini.labest;
 % Compute test for positive and test for negative using labest
 [outFSRfanpn]=FSRfan(y,X,'msg',0,'family','YJpn','la',labest,'plots',0);
 % Check if two different transformations are needed for positive and negative values
-out=fanBICpn(outFSRfanpn);</pre></div></div><pre class="codeoutput">Analyzing la_P=0.75 and la_N=0.25
-Analyzing la_P=0.75 and la_N=0.5
+out=fanBICpn(outFSRfanpn);</pre></div></div><pre class="codeoutput">Analyzing la_P=0.75 and la_N=0.5
 Analyzing la_P=0.75 and la_N=0
+Analyzing la_P=0.75 and la_N=0.25
 Analyzing la_P=0.75 and la_N=0.75
 Analyzing la_P=1 and la_N=0.5
 Analyzing la_P=1 and la_N=0
@@ -60,27 +60,27 @@ labest=outUniqueLambda.labest;
 [outFSRfanpn]=FSRfan(y,X,'msg',0,'family','YJpn','la',labest);
 % option laRangeAndStep
 laRangeAndStep=[1.5 0.25 0.5];
-out=fanBICpn(outFSRfanpn,'laRangeAndStep',laRangeAndStep);</pre></div></div><pre class="codeoutput">Analyzing la_P=1.5 and la_N=1
-Analyzing la_P=1.5 and la_N=0.5
-Analyzing la_P=1.5 and la_N=0.75
-Analyzing la_P=1.5 and la_N=1.25
+out=fanBICpn(outFSRfanpn,'laRangeAndStep',laRangeAndStep);</pre></div></div><pre class="codeoutput">Analyzing la_P=1.5 and la_N=0.5
 Analyzing la_P=1.5 and la_N=0
-Analyzing la_P=1.5 and la_N=1.5
 Analyzing la_P=1.5 and la_N=0.25
-Analyzing la_P=1.75 and la_N=0.75
+Analyzing la_P=1.5 and la_N=1.5
+Analyzing la_P=1.5 and la_N=1
+Analyzing la_P=1.5 and la_N=1.25
+Analyzing la_P=1.5 and la_N=0.75
 Analyzing la_P=1.75 and la_N=1
 Analyzing la_P=1.75 and la_N=0.5
-Analyzing la_P=1.75 and la_N=1.25
 Analyzing la_P=1.75 and la_N=0
-Analyzing la_P=1.75 and la_N=1.5
 Analyzing la_P=1.75 and la_N=0.25
-Analyzing la_P=2 and la_N=0.5
+Analyzing la_P=1.75 and la_N=1.25
+Analyzing la_P=1.75 and la_N=0.75
+Analyzing la_P=1.75 and la_N=1.5
 Analyzing la_P=2 and la_N=1
-Analyzing la_P=2 and la_N=0.75
-Analyzing la_P=2 and la_N=1.25
+Analyzing la_P=2 and la_N=0.5
 Analyzing la_P=2 and la_N=0
-Analyzing la_P=2 and la_N=1.5
 Analyzing la_P=2 and la_N=0.25
+Analyzing la_P=2 and la_N=1.25
+Analyzing la_P=2 and la_N=0.75
+Analyzing la_P=2 and la_N=1.5
 </pre><a href='http://rosa.unipr.it/fsda/fanBICpn.html#Example_2'><img vspace="5" hspace="5" src="images\fanBICpn_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\fanBICpn_07.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_08.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_09.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_10.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of options fraciniFSR and plots.</li></span></a></span></h3><div class="collapse"><p>
      Balance sheets data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('BalanceSheets.txt');
 % Define X and y
@@ -91,7 +91,7 @@ la=[0 0.25 0.5 0.75 1 1.25];
 [outFSRfan]=FSRfan(y,X,'plots',1,'init',round(n*0.3),'nsamp',5000,'la',la,'msg',0,'family','YJ');
 [outini]=fanBIC(outFSRfan,'plots',0);
 % labest is the best value imposing the constraint that positive and
-% negative observations must have the same tramsformation parameter.
+% negative observations must have the same transformation parameter.
 labest=outini.labest;
 % Compute test for positive and test for negative using labest
 indexlabest=find(labest==la);
@@ -106,20 +106,20 @@ fraciniFSR=0.90;
 plots=struct;
 plots.name={'BIC','AGI'};
 nsamp=2000;
-out=fanBICpn(outFSRfanpn,'fraciniFSR',fraciniFSR,'plots',plots,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">Analyzing la_P=0 and la_N=0.75
-Analyzing la_P=0 and la_N=1.25
+out=fanBICpn(outFSRfanpn,'fraciniFSR',fraciniFSR,'plots',plots,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">Analyzing la_P=0 and la_N=1.25
+Analyzing la_P=0 and la_N=0.75
 Analyzing la_P=0 and la_N=1
 Analyzing la_P=0 and la_N=1.5
-Analyzing la_P=0.25 and la_N=0.75
 Analyzing la_P=0.25 and la_N=1.25
+Analyzing la_P=0.25 and la_N=0.75
 Analyzing la_P=0.25 and la_N=1
 Analyzing la_P=0.25 and la_N=1.5
 Analyzing la_P=0.5 and la_N=1.25
 Analyzing la_P=0.5 and la_N=0.75
 Analyzing la_P=0.5 and la_N=1
 Analyzing la_P=0.5 and la_N=1.5
-Analyzing la_P=0.75 and la_N=0.75
 Analyzing la_P=0.75 and la_N=1.25
+Analyzing la_P=0.75 and la_N=0.75
 Analyzing la_P=0.75 and la_N=1
 Analyzing la_P=0.75 and la_N=1.5
 </pre><a href='http://rosa.unipr.it/fsda/fanBICpn.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\fanBICpn_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\fanBICpn_12.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_13.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_outFSRfan" class="clearfix"> </div> <h3 id="input_argument_outFSRfan" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>outFSRfan</code> &#8212; Structure created with function FSRfan. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>(n-init) x length(la)+1 matrix:
@@ -139,7 +139,7 @@ Analyzing la_P=0.75 and la_N=1.5
                score test for the joint presence of both constructed
                variables (associated with positive and negative
                observations) for each value of the transformation
-               parameter.  In this case the reference distribution is the
+               parameter. In this case the reference distribution is the
                $F$ with 2 and subset_size-p degrees of freedom.</p> <p>
                1st col = fwd search index (subset_size);</p><p>
                2nd col = value of the score test in each step
@@ -147,7 +147,7 @@ Analyzing la_P=0.75 and la_N=1.5
                (score) likelihood ratio test for the joint presence of
                both constructed variables (associated with positive and
                negative observations) for each value of the transformation
-               parameter.  In this case the reference distribution is the
+               parameter. In this case the reference distribution is the
                $F$ with 2 and subset_size-p degrees of freedom.</p> <p>
                1st col = fwd search index (subset_size);</p> <p>
                2nd col = value of the score test in each step of the fwd search for la;</p><p>
@@ -179,7 +179,7 @@ Analyzing la_P=0.75 and la_N=1.5
                    level for at least 3 consecutive times.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.999]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_fraciniFSR" class="clearfix"></div><h3 id="input_argument_namevalue_fraciniFSR" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fraciniFSR</code> &#8212;fraction of observations to initialize search for outlier detection.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>After exceedance procedure based on the score
-                   test a subset of obverations in agreement with a
+                   test a subset of observations in agreement with a
                    transformation is found. On this subset we perform
                    outlier detection using FSR. fraciniFSR specifies the
                    fraction of observations to start monitoring
@@ -212,7 +212,7 @@ Analyzing la_P=0.75 and la_N=1.5
                 parameters $\lambda_P$ and $\lambda_N$.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If
                 scoremle is true and field Scoremle is present in input
                 structure outFSRfan is present we check exceedance of the
-               threshold according to according to likelihood
+               threshold according to likelihood
                ratio test else we check exceedance of the threshold
                according to outFSRfan.Scoreb.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'scoremle',true
@@ -249,10 +249,10 @@ Analyzing la_P=0.75 and la_N=1.5
                                    'ObsWithOut'; 'AGIW'; 'R2'}; or
                    plots.name={'all'};</p><p>
                    it is also possible to view the heatmap referred to the
-                   number of obserations in agreement with transformation
+                   number of observations in agreement with transformation
                    before outlier detection ('ObsWithOut') the weighted
                    version of the agreement index ('AGIW') and the
-                   orginal value of R2 before correction for truncation.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots', 1
+                   original value of R2 before correction for truncation.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots', 1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Summary</code></td><td><p><p>k-by-9 table where k is the number of values of laPosxlaNeg which have been considered.</p> <p>
               out.Summary contains the following information:
               1st column= value of laPos (transformation for positive
@@ -268,9 +268,9 @@ Analyzing la_P=0.75 and la_N=1.5
               7th col = value of the agreement index weighted;</p> <p>
               8th col = value of R2 based on observations in agreement
                    with transformation after outlier detection.</p><p>
-              9th col = value of R2 corrected for elliptical trunction.</p></p></td></tr><tr valign="top"><td><code>labestBIC</code></td><td><p>vector of length 2 containing best values of laP and laN
+              9th col = value of R2 corrected for elliptical truncation.</p></p></td></tr><tr valign="top"><td><code>labestBIC</code></td><td><p>vector of length 2 containing best values of laP and laN
               according to BIC.</p></td></tr><tr valign="top"><td><code>labestAGI</code></td><td><p>vector of length 2 containing best values of laP and laN
-              according to agreement index.</p></td></tr><tr valign="top"><td><code>ty</code></td><td><p>transformed response accordint to out.labestBIC.</p></td></tr><tr valign="top"><td><code>rsq</code></td><td><p>the multiple R-squared value for the transformed values</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>n x 1 vector containing the original y values.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>n x p matrix containing the original X matrix.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+              according to agreement index.</p></td></tr><tr valign="top"><td><code>ty</code></td><td><p>transformed response according to out.labestBIC.</p></td></tr><tr valign="top"><td><code>rsq</code></td><td><p>the multiple R-squared value for the transformed values</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>n x 1 vector containing the original y values.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>n x p matrix containing the original X matrix.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
  Analysis", Springer Verlag, New York.</p></div><div><p>Atkinson, A.C. and Riani, M. (2002a), Tests in the fan plot for robust,
  diagnostic transformations in regression, "Chemometrics and Intelligent
  Laboratory Systems", Vol. 60, pp. 87-100.</p></div><div><p>Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of

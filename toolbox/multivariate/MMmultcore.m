@@ -85,6 +85,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
 %               Example - 'ysave',1
+%               Data Types - double
 %
 %  Output:
 %
@@ -165,8 +166,8 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [out]=Smult(Ycont,'plots',1);
-    outMM=MMmultcore(Ycont,out.loc,out.shape,out.scale,'plots',1,'nocheck',1);
+    [outS]=Smult(Ycont,'plots',1);
+    out=MMmultcore(Ycont,outS.loc,outS.shape,outS.scale,'plots',1,'nocheck',1);
 %}
 
 %% Beginning of code

@@ -87,7 +87,7 @@ function Wpdf = mFNChygepdf(x, m, w, accuracy)
 %                  must be equal to the length of vector m. If the number
 %                  of colors is equal to 2, odds=w(1)/w(2). If all the
 %                  elements of w are equal we have the central
-%                  hypergometric multivariate distribution.
+%                  hypergeometric multivariate distribution.
 %                  Data Types - single|double
 %
 %  Optional input arguments:
@@ -176,18 +176,24 @@ function Wpdf = mFNChygepdf(x, m, w, accuracy)
 
 %{
     %% Check that the sum of densities is 1.
-    weights=[5,2,1]'; % define the weights for each color
-    m=[12 25 18];   % Define urn composition
-    numberBallsExtracted=3;     % Number of balls which are drawn.
-    
+    % define the weights for each color
+    weights=[5,2,1]'; 
+    % Define urn composition
+    m=[12 25 18];   
+    % Number of balls which are drawn.
+    numberBallsExtracted=3;    
     % Define all possible cases in which for numberBallsExtracted;
     numcolors = length(m);      % Length of each permutation
     % Create all possible permutations (with repetition) of numcolors
-    C = cell(numcolors, 1);         % Preallocate a cell array
+    % Preallocate a cell array
+    C = cell(numcolors, 1);        
     x=0:numberBallsExtracted;
-    [C{:}] = ndgrid(x);     % Create grids of values
-    Y = cellfun(@(x){x(:)}, C); % Convert grids to column vectors
-    Y = [Y{:}];   % Create matrix with all possible permutations with repetion
+    % Create grids of values
+    [C{:}] = ndgrid(x);     
+    % Convert grids to column vectors
+    Y = cellfun(@(x){x(:)}, C); 
+    % Create matrix with all possible permutations with repetition    
+    Y = [Y{:}];  
     % Extract from Y the rows whose sum is equal to numberBallsExtracted
     boo=sum(Y,2)==numberBallsExtracted;
     Ysel=Y(boo,:);

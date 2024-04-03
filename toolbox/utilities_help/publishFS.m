@@ -1028,7 +1028,10 @@ for i=1:length(ini)
             listOptArgs{ij,7}=examplecode;
 
             posspace=regexp(examplecode,'      ');
-            examplecode=['<code>' examplecode(1:posspace(1)-1) '</code>' examplecode(posspace(1):end)];
+            if ~isempty(posspace)
+                examplecode=['<code>' examplecode(1:posspace(1)-1) '</code>' examplecode(posspace(1):end)];
+            end
+
             listOptArgs{ij,5}=strtrim(examplecode);
             listOptArgs{ij,6}=descrlong(Datatypes+13:end);
         else

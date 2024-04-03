@@ -64,18 +64,15 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %    userColor :   The color of the shaded area. Character, 2-element
 %                  character array, RGB triplet, 2-row RGB triplet. The
 %                  character can be any of the LineSpec colors properties
-%                  of MATLAB plot funtion. The RGB triplet specification is
+%                  of MATLAB plot function. The RGB triplet specification is
 %                  defined as usual, that is with three numbers taking
 %                  values in [0 1]: to generate the triplet, the user can
-%                  use FSDA function FSColors.
-%                   Example - 'userColor', 'r'
-%                   Data Types - character
-%                   Example - 'userColor', 'rb'
-%                   Data Types - 2-character array
-%                   Example - 'userColor', FSColors.lightgrey.RGB
-%                   Data Types - 3-element array for a RGB triplet
-%                   Example - 'userColor', [FSColors.lightgrey.RGB ; FSColors.grey.RGB]
-%                   Data Types - 2-row with RGB triplets
+%                  use FSDA function FSColors. For example you can use
+%                  'userColor', 'r', or 'userColor', 'rb' or  'userColor',
+%                   FSColors.lightgrey.RGB, or 'userColor', [FSColors.lightgrey.RGB ; FSColors.grey.RGB]
+%                   Example - 'userColor', 'b'
+%                   Data Types - character, character array, 3-element
+%                   array for a RGB triplet,2-row with RGB triplets
 %
 %   evalPoints :    Evaluation points. Scalar. Number of points where the
 %                   the pdf is evaluated and plotted. Default is 1000. The
@@ -84,10 +81,8 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %                   points. If on the contrary the plot looks not
 %                   sufficiently smooth, increase the number of evaluation
 %                   points.
-%                   Example - 'evalPoints', 1
-%                   Data Types - scalar
 %                   Example - 'evalPoints', [1.5 3.2]
-%                   Data Types - array
+%                   Data Types - scalar or array
 %
 % Output:
 %

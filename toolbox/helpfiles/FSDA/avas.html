@@ -16,7 +16,7 @@ X = [X1 X2 X3 X4];
 % Apply the avas algorithm
 out= avas(y,X);
 % Show the output graphically using function aceplot
-aceplot(out)</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#Example_1'><img vspace="5" hspace="5" src="images\avas_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\avas_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 1 from TIB88: brain body weight data.</li></span></a></span></h3><div class="collapse"><p>
+aceplot(out)</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#Example_1'><img vspace="5" hspace="5" src="images\avas_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\avas_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 1 from TIB88: brain body weight data.</li></span></a></span></h3><div class="collapse"><p>
      Comparison between ace and avas.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">YY=load('animals.txt');
 y=YY(1:62,2);
 X=YY(1:62,1);
@@ -28,7 +28,7 @@ aceplot(out)
 % ## The `same' plot for Rousseeuw's subset:
 % data(Animals, package = "MASS")
 % brain &lt;- Animals[c(1:24, 26:25, 27:28),]
-% plotbb(bbdat = brain)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 from TIB88: unequal variances.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+% plotbb(bbdat = brain)</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#Example_2'><img vspace="5" hspace="5" src="images\avas_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\avas_04.png" alt=""> <img vspace="5" hspace="5" src="images\avas_05.png" alt=""> <img vspace="5" hspace="5" src="images\avas_06.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 from TIB88: unequal variances.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 rng('default')
 seed=100;
 negstate=-30;
@@ -66,7 +66,7 @@ legend({'ACE' 'AVAS'},'Location','Best')
 % z &lt;- rnorm(n)
 % y=x+0.1*x*z;
 % out=ace(x,y)
-% out=avas(x,y)</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\avas_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 4 from TIB88: non constant underlying variance.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+% out=avas(x,y)</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\avas_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 4 from TIB88: non constant underlying variance.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 negstate=-100;
 rng('default')
 seed=100;
@@ -98,7 +98,7 @@ lsline
 % absx1_x2=abs(x1-x2);
 % y=x1+x2+(1/3)*absx1_x2*z;
 % X=cbind(x1,x2);
-% out=avas(X,y);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 5 from TIB88: missing group variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+% out=avas(X,y);</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\avas_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 5 from TIB88: missing group variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
 seed=1000;
 n=100;
 x=mtR(n,0,seed)*10-5;
@@ -122,7 +122,7 @@ aceplot(out);
 % y2=-3+5*x+z;
 % y=c(y1,y2);
 % X=c(x,x)
-% out=avas(X,y);</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\avas_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\avas_05.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 6 from TIB88: binary.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">seed=20;
+% out=avas(X,y);</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\avas_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\avas_10.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 6 from TIB88: binary.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">seed=20;
 n=50;
 y1=exp(-0.5+0.5*mtR(n,1,seed));
 y2=exp(0.5+0.5*mtR(n,1,-seed));
@@ -139,13 +139,13 @@ aceplot(out)
 % y2=exp(0.5+0.5*rnorm(n));
 % y=c(y1,y2);
 % X=c(-0.5*rep(1,n), 0.5*rep(1,n));
-% out=avas(X,y);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 9 from TIB88: Nonmonotone function of X.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+% out=avas(X,y);</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\avas_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\avas_12.png" alt=""> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 9 from TIB88: Nonmonotone function of X.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 x=rand(n,1)*2*pi;
 z=randn(n,1);
 y=exp(sin(x)+0.2*z);
 X=x;
 out=avas(y,X);
-aceplot(out)</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option tyinitial.</li></span></a></span></h3><div class="collapse"><p>
+aceplot(out)</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\avas_13.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\avas_14.png" alt=""> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option tyinitial.</li></span></a></span></h3><div class="collapse"><p>
      Generate the data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2000)
 n=100;
 X=10*rand(n,1);
@@ -166,7 +166,7 @@ lsline
 xlabel('Original x')
 ylabel('Without option tyinitial')
 title(['R2=' num2str(out.Rsquared.Ordinary)])
-% call of AVAS with option tinitial set to true
+% call of AVAS with option tyinitial set to true
 subplot(2,1,2)
 outAVAStyini=avas(y,X,'l',4,'tyinitial',true);
 tyfinal=outAVAStyini.ty;
@@ -218,7 +218,7 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
            l(j)=5 =&gt; j-th variable assumes categorical (unorderable) values.</p> <p>
            j =1, 2,..., p.</p> <p>
            The default value of l is a vector of ones of length p,
-           that is the procedure assumes that all the explanatory
+           this procedure assumes that all the explanatory
            variables have orderable values (and therefore can be
            transformed non monotonically).</p> <p>
            Note that in avas procedure the response is always transformed
@@ -261,11 +261,12 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
                set to 0.2.</p></td></tr><tr valign="top"><td><code>simalpha</code></td><td><p>simultaneous error rate one is willing to
                tolerate to declare the outliers. If rob.simalpha is not
                specified it is set to 0.01.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rob',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_scail" class="clearfix"></div><h3 id="input_argument_namevalue_scail" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>scail</code> &#8212;Inizialing values for the regressors.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If scail is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_scail" class="clearfix"></div><h3 id="input_argument_namevalue_scail" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>scail</code> &#8212;Initializing values for the regressors.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If scail is
            true (default value is false), a linear regression is done on
            the independent variables $X_1$, ...$X_{p-1}$ centered, using y
            standardized, getting the coefficients $b_1$, ..., $b_{p-1}$.</p> <p>
-           If scail is true, AVAS takes the initial value of the transform
+           If scail is true, AVAS takes the initial value of the
+           transformation 
            of $X_j$ to be $b_j(X_j-mean(X_j))$, $j=1, \ldots, p-1$. This
            is done in order to limit the effect of the ordering of the
            variables on the final results. The purpose of this initial
@@ -289,9 +290,9 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
            $\widehat{ty}_i^{old}$ is the transformed value for unit $i$
            from previous iteration ($i=1, \ldots, n$).</p> <p>
            If this option is omitted or if trapezoid is false
-           (default), we assume a rectangulat hypothesis. In
+           (default), we assume a rectangular hypothesis. In
            other words, we assume that below $\hat y_{(1)}$ the function
-           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$, 
+           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$,
            $|e_1|, \ldots, |e_{n-k}|$ are the smoothed residuals
            corresponding to ordered fitted values.</p> <p>
            Similarly, we assume that beyond $\hat y_{n-k}$ the function is
@@ -302,13 +303,13 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
            Additional details are given in the More About section of this
            file.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'trapezoid',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_tyinitial" class="clearfix"></div><h3 id="input_argument_namevalue_tyinitial" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tyinitial</code> &#8212;Initial values for the transformed response.</span></a><span class="example_desc">boolean | struct.</span></span></h3><div class="collapse">	<p><p>If tyinitial is not specified tyinitial is set to false and the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_tyinitial" class="clearfix"></div><h3 id="input_argument_namevalue_tyinitial" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tyinitial</code> &#8212;Initial values for the transformed response.</span></a><span class="example_desc">boolean | struct.</span></span></h3><div class="collapse">	<p><p>If tyinitial is not specified, tyinitial is set to false and the
            initial value for ty are simply the standardized values.</p> <p>
            If tyinitial is true, y is transformed using best BoxCox lambda
            value among the following values of lambda (-1, -0.8, -0.6,
            ..., 0.8, 1) and routines <a href="FSRfan.html">FSRfan</a> and <a href="fanBIC.html">fanBIC</a> are called.</p><p>
            If tyinitial is a struct it is possible to specify in the
-           fields la and family the values of lambda and the family to
+           fields la and family, the values of lambda and the family to
            use. More precisely:
    </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>la</code></td><td><p>values of the lambdas to consider inside FSRfan.</p></td></tr><tr valign="top"><td><code>family</code></td><td><p><p>string which identifies the family of transformations which
                    must be used. Character. Possible values are 'BoxCox'
@@ -328,7 +329,7 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
                    respectively for positive and negative observations.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tyinitial',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_w" class="clearfix"></div><h3 id="input_argument_namevalue_w" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>w</code> &#8212;weights for the observations.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Row or column vector of
            length n containing the weights associated to each
-           observations. If w is not specified we assum $w=1$ for $i=1,
+           observations. If w is not specified we assume $w=1$ for $i=1,
            2, \ldots, n$.</p> <p>
            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'w',1:n
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ty</code></td><td><p>n x 1 vector containing the transformed y values.</p></td></tr><tr valign="top"><td><code>tX</code></td><td><p>n x p matrix containing the transformed X matrix.</p></td></tr><tr valign="top"><td><code>rsq</code></td><td><p>the multiple R-squared value for the transformed values in
@@ -340,7 +341,7 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
                     fitted values from the model.</p></td></tr><tr valign="top"><td><code>pvaljb</code></td><td><p><p>scalar containing p-value of Jarque and Bera test.</p> <p>
                     This statistic uses a combination of estimated
                     skewness and kurtosis to test for distributional shape
-                    of the residuals.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>In what follows we recall the techinque of the variance stabilizing
+                    of the residuals.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>In what follows we recall the technique of the variance stabilizing
  transformation which is at the root of the avas routine.</p> <p>
  Let $ X $ be a random variable, with $ E[X]=\mu $ and $ \mathrm{Var}[X]=\sigma^2 $.</p><p>
  Define $ Y=g(X) $, where $g$ is a regular function. A first-order Taylor
@@ -350,37 +351,37 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
  \]
  Then
  \[
- E[Y]=g(\mu)\; \mbox{and} \; \mathrm{Var}[Y]=\sigma^2g'(\mu)^2. 
+ E[Y]=g(\mu)\; \mbox{and} \; \mathrm{Var}[Y]=\sigma^2g'(\mu)^2.
  \]<p>
- 
+
  Consider now a random variable $ X $ such that $ E[X]=\mu $ and $
  \mathrm{Var}[X]=h(\mu) $. Notice the relation between the variance and
  the mean, which implies, for example, heteroskedasticity in a linear
  model. The goal is to find a function $ g $ such that $ Y=g(X) $ has a
  variance independent (at least approximately) of its expectation.</p> <p>
- 
+
  Imposing the condition $ \mathrm{Var}[Y]\approx
  h(\mu)g'(\mu)^2=\mathrm{constant} $,  equality implies the differential
  equation
  </p>\[
  \frac{dg}{d\mu}=\frac{C}{\sqrt{h(\mu)}}.
  \]
- 
+
  This ordinary differential equation has, by separation of variables, the solution
  \[
  g(\mu)=\int \frac{Cd\mu}{\sqrt{h(\mu)}}.
- \] 
-  Tibshirani (JASA, p.395) has a random variable $W$ with $ E[W]=u $ and $\mathrm{Var}[W]=v(u)$. The variance stabilising transformation for $W$ is given by
+ \]
+  Tibshirani (JASA, p.395) has a random variable $W$ with $ E[W]=u $ and $\mathrm{Var}[W]=v(u)$. The variance stabilizing transformation for $W$ is given by
  \[
  h(t)=\int^t \frac{1}{\sqrt{v(u)}}.
  \]<p>
- The constant $C = 1$ due to the standardization of the variance of $W$.</p> <p> 
+ The constant $C = 1$ due to the standardization of the variance of $W$.</p> <p>
  In our context  $\frac{1}{\sqrt{v(u)}}$ corresponds to vector of the
  reciprocal of the absolute values of the smoothed residuals sorted using
  the ordering based on fitted values of the regression model which uses
  the explanatory variables possibly transformed. The $x$ coordinates of
  the function to integrate are the fitted values sorted.</p> <p>
- 
+
  As concerns the range of integration it goes from
  $\hat y_{(1)}$ the smallest fitted value, to $\widehat{ty}_i^{old}$.</p> <p>
  Therefore the lower extreme of integration is fixed for all $n$ integrals.</p> <p>
@@ -389,8 +390,8 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
  $\widehat{ty}_i^{old}$), corresponding to ordered fitted values.</p> <p>
  The output of the integration is a new set of transformed values
  $\widehat{ty}^{new}$.</p><p>
- 
- 
+
+
  In summary, the trick is that,  there is not just one integral, but there
  are $n$ integrals. Th $i$-th integral which is defined as
  </p>\[
@@ -400,13 +401,13 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
  $\widehat{ty}_i$ associated with $\hat y_{(i)}$ the $i$-th ordered fitted
  value. Note that the old transformed value from previous iteration was
  the upper extreme of integration.</p> <p>
- 
+
  The estimate of $g$ is strictly increasing because it is the integral of
  a positive function (reciprocal of the absolute values of the residuals).</p> <p>
- 
+
  The computation of the $n$ integrals is done by the trapezoidal rule and
  is detailed in routine <a href="ctsub.html">ctsub</a>.</p> <p>
- 
+
  ${\it Remark}$: It may happen that at a particular iteration of the AVAS
  procedure using $\widehat{ty}$ and $\widehat{tX}$, $n-m$ units are declared as outliers. In
  this case the fit, the residuals and the associated smoothed values are
@@ -418,7 +419,7 @@ title(['R2=' num2str(out.Rsquared.Ordinary)])</pre></div></div></p></div></d
  where $\hat y_{(j)}$ is the $j$-th order statistic $j=1, 2, \ldots, n-k$
  among the fitted values (associated to non outlying observations) and
  $1/e_j$ is the reciprocal of the corresponding smoothed residual. Notice
- that $e_j$ is not the residual for unit $j$ but it is the residuals which
+ that $e_j$ is not the residual for unit $j$ but it is the residual which
  corresponds to the $j$-th ordered fitted value $\hat y_{(j)}$. In order
  to have a new estimate of $\widehat{ty}^{new}$, we can still solve $n$
  integrals. If in the upper extreme of integration, we plug in the $n$ old

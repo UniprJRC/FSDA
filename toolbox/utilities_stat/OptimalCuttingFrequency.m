@@ -79,7 +79,8 @@ function Nopt = OptimalCuttingFrequency(x,t)
 % Examples:
 
 %{
-    %% Computation of the optimal cutting frequency for estimating the integrated variance from a
+    %% Computation of the optimal cutting frequency.
+    % Optimal cutting frequency for estimating the integrated variance from a
     % vector x of noisy observations of a univariate diffusion process.
     % Generate data.
     n=1000;
@@ -88,8 +89,8 @@ function Nopt = OptimalCuttingFrequency(x,t)
     x=randn(n,1)*sqrt(dt);
     % generate the diffusion process
     x=[0;cumsum(x)];
-    % Add noise:
-     noise_to_signal =0.5; % noise-to-signal ratio
+    % Add noise: noise-to-signal ratio
+     noise_to_signal =0.5; 
      sigma_eps = noise_to_signal*std(diff(x));
      noise=sigma_eps*randn(size(x));
      % add noise, which is i.i.d. N(0,sigma_eps^2)

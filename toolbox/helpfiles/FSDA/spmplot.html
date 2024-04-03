@@ -354,11 +354,11 @@ spmplot(out,'selstep',[60 80],'selunit',{'1.2' '1.6'},...
      if 'typespm','lower' ('upper') just the panels below the main
      diagonal are shown. In the other part the values of the correlation
      coefficient are shown<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris;
-spmplot(meas,'group',species,'typespm','lower');</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_20'><img vspace="5" hspace="5" src="images\spmplot_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_21" class="example_module expandableContent"><div id="ExtraExample_21"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option typespm passed as struct.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load head;
+spmplot(meas,'group',species,'typespm','lower');</pre></div></div></p></div></div><div id="Extraexample_21" class="example_module expandableContent"><div id="ExtraExample_21"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option typespm passed as struct.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load head;
 typespm=struct;
 typespm.lower='circle';
 typespm.upper="number";
-spmplot(head,'typespm',typespm);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_21'><img vspace="5" hspace="5" src="images\spmplot_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_22" class="example_module expandableContent"><div id="ExtraExample_22"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 1 of use of option typespm passed as struct with groups.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+spmplot(head,'typespm',typespm);</pre></div></div></p></div></div><div id="Extraexample_22" class="example_module expandableContent"><div id="ExtraExample_22"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 1 of use of option typespm passed as struct with groups.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 load swiss_banknotes.mat
 X=swiss_banknotes;
 group=ones(200,1);
@@ -369,7 +369,7 @@ plo.TickLabels  = [];
 typespm=struct;
 typespm.lower="number";
 typespm.upper="scatter";
-spmplot(swiss_banknotes,'plo',plo,'group',group,'typespm',typespm);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_22'><img vspace="5" hspace="5" src="images\spmplot_13.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_23" class="example_module expandableContent"><div id="ExtraExample_23"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 of use of option typespm passed as struct with groups.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+spmplot(swiss_banknotes,'plo',plo,'group',group,'typespm',typespm);</pre></div></div></p></div></div><div id="Extraexample_23" class="example_module expandableContent"><div id="ExtraExample_23"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 of use of option typespm passed as struct with groups.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 load swiss_banknotes.mat
 X=swiss_banknotes;
 group=ones(200,1);
@@ -381,7 +381,7 @@ plo.TickLabels  = [];
 typespm=struct;
 typespm.lower="square";
 typespm.upper="number";
-spmplot(swiss_banknotes,'group',group,'plo',plo,'typespm',typespm);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_23'><img vspace="5" hspace="5" src="images\spmplot_14.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_24" class="example_module expandableContent"><div id="ExtraExample_24"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 of use of option typespm with lower = "none".</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+spmplot(swiss_banknotes,'group',group,'plo',plo,'typespm',typespm);</pre></div></div></p></div></div><div id="Extraexample_24" class="example_module expandableContent"><div id="ExtraExample_24"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 of use of option typespm with lower = "none".</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 load swiss_banknotes.mat
 X=swiss_banknotes;
 group=ones(200,1);
@@ -392,10 +392,10 @@ plo.TickLabels  = [];
 typespm=struct;
 typespm.lower="none";
 typespm.upper="scatter";
-spmplot(swiss_banknotes,'group',group,'plo',plo,'typespm',typespm);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_24'><img vspace="5" hspace="5" src="images\spmplot_15.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_25" class="example_module expandableContent"><div id="ExtraExample_25"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option colorBackground.</li></span></a></span></h3><div class="collapse"><p>
+spmplot(swiss_banknotes,'group',group,'plo',plo,'typespm',typespm);</pre></div></div></p></div></div><div id="Extraexample_25" class="example_module expandableContent"><div id="ExtraExample_25"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option colorBackground.</li></span></a></span></h3><div class="collapse"><p>
      if 'colorBackground is true the background color of each scatter 
      depends on the value of the correlation coefficient <div class="programlisting"><div class="codeinput"><pre class="matlab-code">load head;
-spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_25'><img vspace="5" hspace="5" src="images\spmplot_16.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; data matrix (2D array or table) containing n observations on v variables
+spmplot(head,'colorBackground',true);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; data matrix (2D array or table) containing n observations on v variables
          or a structure 'out' coming from function FSMeda. </span>  </a><span class="example_desc">Matrix or
          struct.</span></span></h3> <div class="collapse"> <p><p>If Y is a 2D array or table, varargin can be either a sequence of name/value
      pairs, detailed below, or one of the following explicit assignments:
@@ -526,8 +526,8 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
          names but also, point labels, colors, symbols. More precisely
          structure pl may contain the following fields:</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>labeladd</code></td><td><p>if
          it is '1', the elements belonging to the max(group)
-                in the spm are labelled with their unit row index or their
-                rowname. The rowname is taken from plo.label or if
+                in the spm are labeled with their unit row index or their
+                row name. The row name is taken from plo.label or if
                 plo.label is empty from
                 The default value is labeladd = '', i.e. no label is added.</p></td></tr><tr valign="top"><td><code>nameY</code></td><td><p>cell array of strings containing the labels of the
                 variables. As default value, the labels which are added
@@ -535,7 +535,7 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
                  The default is 90, which means no rotation with respect
                  to the MATLAB default. The setting nameYrot = 0 produces
                  a rotation perpendicular to the axes, which is often used
-                 in R graphics. Intermediate values are of corse possible.</p></p></td></tr><tr valign="top"><td><code>nameYlength</code></td><td><p>scalar indicating the maximum length of the labels
+                 in R graphics. Intermediate values are of course possible.</p></p></td></tr><tr valign="top"><td><code>nameYlength</code></td><td><p>scalar indicating the maximum length of the labels
                 of the variables. It is used to shorten the labels when
                 they are too long. The default value is 0, which indicates
                 that the labels length should not be changed.</p></td></tr><tr valign="top"><td><code>clr</code></td><td><p>a string of color specifications. By default, the
@@ -608,7 +608,7 @@ spmplot(head,'colorBackground',true);</pre></div></div><a href='http://rosa.uni
                the scatter plot matrix contains the scatters
                and the lower part just the values of the
                correlations.</p> <p>
-               if typespm is a struct it is possible to control how the
+               If typespm is a struct it is possible to control how the
                lower (upper) part of the scatter plot matrix is shown.</p> <p>
                More precisely, typespm.lower controls how the part below
                the diagonal is shown and typespm.upper controls the upper
