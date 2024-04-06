@@ -1783,10 +1783,14 @@ if  lowerORupper ==true
                             for iii = 1:lunigroup
                                 %take the color of the group
                                 hlColors(iii,:) = hl(iii).Color;
-                                %SET THE LABEL OF THE LEGEND WITH THE SAME COLOR OF THE PLOT OBJECTS
-                                set(hlegend.EntryContainer.NodeChildren(iii), 'Color',hl(iii).Color);
-                                %This would do the same, but change the string and affect the functioning of clickableMultiLegend
-                                %hlegend.String{iii} = ['\color[rgb]{' num2str(hlColors(iii,:)) '} ' hlegend.String{iii}];
+                                v24a=verLessThanFS('24.1');
+                                if v24a == true
+                                    %SET THE LABEL OF THE LEGEND WITH THE SAME COLOR OF THE PLOT OBJECTS
+                                    set(hlegend.EntryContainer.NodeChildren(iii), 'Color',hl(iii).Color);
+                                else
+                                    %This would do the same, but change the string and affect the functioning of clickableMultiLegend
+                                    hlegend.String{iii} = ['\color[rgb]{' num2str(hlColors(iii,:)) '} ' hlegend.String{iii}];
+                                end
                             end
                         end
                         %end
