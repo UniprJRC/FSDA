@@ -27,7 +27,7 @@ function smo = supsmu(x,y,varargin)
 %
 %       Weights  : weights for the observations. Vector. Row or column vector of
 %                positive numbers of length n containing the weights associated to each
-%                observations. If w is not specified we assum $w=1$ for $i=1,
+%                observations. If w is not specified we assume $w=1$ for $i=1,
 %                2, \ldots, n$.
 %                Example - 'Weights',1:n
 %                Data Types - double
@@ -40,21 +40,21 @@ function smo = supsmu(x,y,varargin)
 %                Example - 'Span',0.2
 %                Data Types - double
 %
-%     Period  : Sets the period of periodic data.  Default is Inf
+%     Period  : Sets the period of periodic data.  Scalar. Default is Inf
 %               (infinity) which implies that the data is not periodic.
 %               Can also be set to zero for the same effect.
 %                Example - 'Period',1
 %                Data Types - double
 %
-%   Alpha       Sets a small-span penalty to produce a greater smoothing
+%   Alpha     : Sets a small-span penalty to produce a greater smoothing
 %               effect.  0 < Alpha < 10, where 0 does nothing and 10
-%               produces the maximum effect.  Default = 0. This paramter
+%               produces the maximum effect.  Default = 0. This parameter
 %               controls the smoothness of the fitted curve. Values up to
 %               10 indicate increasing smoothness.
 %                Example - 'Alpha',5
 %                Data Types - double
 %
-%   Unsorted    Sorted or unsorted data. Boolean. 
+%   Unsorted  : Sorted or unsorted data. Boolean. 
 %               If the data points are not already sorted in order of the x
 %               values then setting this to true will sort them.
 %               Default is false.

@@ -29,7 +29,7 @@ function [logfn] = logfactorial(n,method)
 %
 %  Output:
 %
-%           logfn : the logrithm value of n!. Scalar. 
+%           logfn : the logarithm value of n!. Scalar. 
 %                  Data Types - single|double
 %
 % See also factorial.m
@@ -38,6 +38,13 @@ function [logfn] = logfactorial(n,method)
 %
 % Li, Y.C. (2006), A note on an identity of the gamma function and Stirling
 % formula, "Real Analysis Exchange", Vol. 32 (1), pp.267–271.
+% Fog, A. (2008), Calculation Methods for Wallenius' Noncentral Hypergeometric
+% Distribution, "Communications in Statistics - Simulation and
+% Computation", Vol. 37, pp. 258-273.
+% Andy Huang (2024). Log Factorial of Large Positive Numbers 
+% (https://www.mathworks.com/matlabcentral/fileexchange/
+% 33687-log-factorial-of-large-positive-numbers), 
+% MATLAB Central File Exchange. Retrieved April 3, 2024.
 %
 % Copyright 2008-2024.
 %
@@ -81,7 +88,7 @@ function [logfn] = logfactorial(n,method)
 
 if nargin<2
     if (n <= 50) && (n==round(n))
-        % uses factorial function of matlab. In principle it should be
+        % uses factorial function of MATLAB. In principle it should be
         % accurate until n<171, but we prefer using it for smaller n. 
         method = 1;
     elseif n <= 170
@@ -103,7 +110,7 @@ switch method
         logfn = gammaln(n+1);
     case 3
         % Stirling's approximation
-        eps = 1e-18;  % Preset accuracy for numerical evalueated log(n!) from Stirling's formula
+        eps = 1e-18;  % Preset accuracy for numerical evaluated log(n!) from Stirling's formula
         N   = 1e5;    % Number of integration points in the numerical integral
         Lm  = (1/2/pi)*log(1+1/(4*eps)); % Upper bound of the integral determined by the 'eps'
         t   = Lm/N:Lm/N:(1-1/N)*Lm;
@@ -120,9 +127,8 @@ switch method
 
     case 4
         % Stirling's approximation to two orders
-        % see WNChygepdf, waw 360
         D  = 1;
-        C0 =  0.918938533204672722; % // ln(sqrt(2*pi))
+        C0 =  0.918938533204672722; % ln(sqrt(2*pi))
         C1 =  1/12;
         C3 = -1/360;
         C5 =  1/1260;
@@ -145,3 +151,4 @@ switch method
 end
 end
 
+%FScategory:UTISTAT

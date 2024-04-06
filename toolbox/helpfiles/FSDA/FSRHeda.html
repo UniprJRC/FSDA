@@ -6,7 +6,7 @@ X=XX(:,1);
 X=X./max(X);
 Z=log(X);
 [out]=LXS(y,X,'nsamp',1000);
-out1=FSRHeda(y,X,Z,out.bs);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+out1=FSRHeda(y,X,Z,out.bs);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
 Warning: interchange greater than 10 when m=26
 Warning: interchange greater than 10 when m=27
 Warning: interchange greater than 10 when m=67
@@ -156,20 +156,30 @@ xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Warning: Usin
 RANDN to use legacy random number generators.  This syntax is not recommended.
 See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the
 old syntax. 
-Total estimated time to complete LMS:  0.05 seconds 
-Warning: Maximum number of iterations has been reached without convergence 
+Total estimated time to complete LMS:  0.04 seconds 
+Warning: Rank deficient, rank = 7, tol =  8.759214e-04. 
+Warning: Rank deficient, rank = 7, tol =  1.140309e-03. 
+Warning: Rank deficient, rank = 3, tol =  1.480703e-02. 
 Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  2.884844e-19. 
-Warning: Rank deficient, rank = 1, tol =  5.823281e+03. 
+inaccurate. RCOND =  1.832917e-16. 
 Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  1.134180e-16. 
+inaccurate. RCOND =  3.338014e-20. 
+Warning: Rank deficient, rank = 2, tol =  1.082400e+03. 
+Warning: Rank deficient, rank = 2, tol =  3.007266e+03. 
 Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  1.533637e-20. 
+inaccurate. RCOND =  3.564858e-17. 
 Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  1.709773e-16. 
-Warning: Rank deficient, rank = 1, tol =  8.209022e+02. 
+inaccurate. RCOND =  2.647638e-19. 
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
+Warning: Rank deficient, rank = 8, tol =  3.376048e+00. 
 Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  7.075502e-20. 
+inaccurate. RCOND =  2.275251e-21. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  5.189491e-20. 
+Warning: Rank deficient, rank = 1, tol =  1.282522e+03. 
+Warning: Matrix is close to singular or badly scaled. Results may be
+inaccurate. RCOND =  4.246314e-20. 
 Warning: Rank deficient, rank = 2, tol =  1.237249e+03. 
 Warning: Matrix is close to singular or badly scaled. Results may be
 inaccurate. RCOND =  1.913104e-20. 
@@ -245,9 +255,9 @@ xlabel('Subset size m','FontSize',FontSize);
 % Add multiple title
 suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...
 num2str(xlimL) ',' num2str(xlimU) ...
-']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.18 seconds 
+']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.17 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 37.7%
+Warning: Number of subsets without full rank equal to 37.5%
 Warning: Matrix is singular, close to singular or badly scaled. Results may be
 inaccurate. RCOND = NaN. 
 Warning: Matrix is singular, close to singular or badly scaled. Results may be

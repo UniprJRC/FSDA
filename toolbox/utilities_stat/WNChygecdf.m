@@ -27,16 +27,18 @@ function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
 %
 %       accuracy : accuracy of the calculations. Scalar. The default value
 %                  of accuracy is 1e-10.
-%                  Data Types - single|double
 %                  Example - 1e-06
+%                  Data Types - single|double
+%
 %  Output:
 %
-%           Wcdf : Wallenius' cdf values. Cumulative probability of drawing exactly x of a
-%                  possible K items in n drawings without replacement from a
-%                  group of M objects, when objects are from two weighted groups.
-%                  The size of Wcdf is the common size of the input
-%                  arguments. A scalar input functions as a constant matrix
-%                  of the same size as the other inputs.
+%           Wcdf : Wallenius' cdf values. Cumulative probability of drawing
+%                  exactly x or less than x of a possible K items in n
+%                  drawings without replacement from a group of M objects,
+%                  when objects are from two weighted groups. The size of
+%                  Wcdf is the common size of the input arguments. A scalar
+%                  input functions as a constant matrix of the same size as
+%                  the other inputs.
 %
 %
 % See also WNChygepdf, WNChygeinv, WNChygernd, randsampleFS.m, subsets.m
@@ -59,7 +61,7 @@ function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
 %{
     % Cumulative probability of getting 0 to x successes in n weighted drawns without replacement.
     % Problem description.
-    % we have 500 balls in the urn
+    % We have 500 balls in the urn
     M  = 500;   
     %we extract 3 balls, one at a time, without replacement
     n  = 3;     
@@ -67,8 +69,8 @@ function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
     K  = M/2;   
     % red balls are ten times more likely to be extracted than the white balls
     odds  = 10;    
-    % We compute the cumulative probability of getting 2 red balls (in drawing
-    % the 2 balls without replacement).
+    % We compute the cumulative probability of getting 0, 1, 2 red balls 
+    % (in drawing the 2 balls without replacement).
     x = 2;
     wcdf = WNChygecdf(x,M,K,n,odds);
     disp('See WNChygecdf;');

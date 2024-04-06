@@ -18,8 +18,8 @@ function [Xback] = pivotCoordInv(Xilr,varargin)
 %   norm :  the normalizing constant. Boolean.
 %                If norm is true (default) sqrt((D-i)/(D-i+1))
 %                is used else norm is set equal to 1.
-%                Data Types - logical
 %                Example - 'norm',false
+%                Data Types - logical
 %
 %
 %

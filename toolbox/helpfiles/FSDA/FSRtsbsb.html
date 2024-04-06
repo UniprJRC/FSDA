@@ -15,8 +15,6 @@ bsbini=[97    77    12     2    26    95    10    60    94   135     7    61   1
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 % Define the model  and show the monitoring units plots.
 model=struct;
@@ -38,8 +36,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 % Contaminates units 31:40
 y(31:40)=y(31:40)+200;

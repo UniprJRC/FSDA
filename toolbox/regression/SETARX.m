@@ -35,11 +35,11 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %               of the threshold variable, in order to ensure a sufficient
 %               number of observations around the true threshold parameter
 %               so that it can be identified (usually set between 0.10 and
-%               0.15). Default is 0.15. If the number of observation to be
-%               trimmed is less that the total number of regressors, an
+%               0.15). Default is 0.15. If the number of observations to be
+%               trimmed is less than the total number of regressors, an
 %               error is given.
-%               Example - 'trim',0.10
-%               Data type - double
+%               Example - 'trim', 0.10
+%               Data Types - double
 %
 %  intercept :  Indicator for constant term. true (default) | false.
 %               Indicator for the constant term (intercept) in the fit,
@@ -47,7 +47,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %               'Intercept' and either true to include or false to remove
 %               the constant term from the model.
 %               Example - 'intercept',false
-%               Data Type - boolean
+%               Data Types - boolean
 %
 %          X :  Data matrix of explanatory variables. Matrix of exogenous
 %               regressors of dimension n x k1, where k1 denotes the number
@@ -61,7 +61,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %               (rows) with missing or infinite values will automatically
 %               be excluded from the computations. 
 %               Example - 'X',randn(n,k1)
-%               Data Type - double
+%               Data Types - double
 %
 %          Z :  Deterministic variables (including dummies). Matrix of
 %               deterministic regressors of dimension n x k2, where k2
@@ -75,7 +75,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations. Data
 %               Example - 'Z',randn(n,k2)
-%               Type - double
+%               Data Types - double
 %
 %
 %  Output:

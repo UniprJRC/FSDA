@@ -49,7 +49,7 @@
  to use in the backfitting algorithm to calculate the transformations
  $f(X)$ at each iteration, the $n-m$ outliers being ignored. We also use
  the subset in function ctsub in the calculation of the numerical variance
- stabilising transformation. Since different response transformations can
+ stabilizing transformation. Since different response transformations can
  indicate different observations as outliers, the identification of
  outliers occurs repeatedly during our robust algorithm, once per
  iteration.
@@ -66,7 +66,7 @@
  [4] To use option tyinitial which calculates a robust parametric
  transformation of the response before starting the main backfitting loop.
 
- [5] To use option trapeziod in order to specify how to compute the
+ [5] To use option trapezoid in order to specify how to compute the
  integral to obtain transformed values for the units which fall outside
  the range of integration determined by the units not declared as
  outliers.
@@ -74,7 +74,7 @@
  The purpose of this routine is to apply avas with and without the five
  options listed above. There are therefore 32 combinations of options that
  could be chosen. It is not obvious that all will be necessary when
- analysing all sets of data. This routine returns the list of options
+ analyzing all sets of data. This routine returns the list of options
  which produced the best fit and provides the necessary ingredients for a
  graphical method, the augmented star plot, to indicate which options are
  important in a particular data analysis.

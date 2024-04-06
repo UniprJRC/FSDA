@@ -82,7 +82,7 @@ fsep=filesep;
 cd(fileparts(which('docsearchFS.m')))
 % Create HTML file containing categorical list of functions
 fileCate=publishFunctionCate(FilesIncluded);
-% open outfile file in web browser
+% open output file in web browser
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-cate.html'];
 web(outputOFHtmlHelpFile,'-browser');
 
@@ -99,7 +99,7 @@ web(outputOFHtmlHelpFile,'-browser');
 
 fsep=filesep;
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-alpha.txt'];
-% open outfile txt in web browser
+% open output file txt in web browser
 disp('Check .txt file')
 web(outputOFHtmlHelpFile,'-browser');
 

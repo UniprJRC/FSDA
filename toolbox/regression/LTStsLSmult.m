@@ -137,6 +137,7 @@ function out = LTStsLSmult(y,varargin)
 %               have more than thresLS observations. 
 %               Default is 20. 
 %               Example - 'thresLS', 50
+%               Data Types - double
 %       plots : Plots on the screen. Scalar.
 %               If plots = 1, a two panel plot will be shown on the screen.
 %               The upper panel contains the orginal time series with

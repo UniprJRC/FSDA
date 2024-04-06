@@ -84,8 +84,8 @@ function Wpdf = WNChygepdf(x,M,K,n,odds, accuracy)
 %
 %       accuracy : accuracy of the calculations. Scalar. The default value
 %                  of accuracy is 1e-10.
-%                  Data Types - single|double
 %                  Example - 1e-06
+%                  Data Types - single|double
 %
 %
 %  Output:
@@ -156,6 +156,34 @@ function Wpdf = WNChygepdf(x,M,K,n,odds, accuracy)
     ylabel('Point mass function')
     title(['M=' num2str(M) ' K=' num2str(K)  ' n=' num2str(n) ' odds=' num2str(odds)])
 %}
+
+%{
+    %% Fisher Noncentral Hypergeometric Distributions Property 1.
+    % Taken from Equation (12) of "Sampling Methods for Wallenius' and
+    % Fishers' Noncentral Hypergeometric Distributions"
+    %
+    % WNChygepdf(x,M,K,n,odds) should be equal to WNChygepdf(n-x,M,M-K,n,1/odds)
+    % up to some very small epsilon.
+    %
+    % we have 20 balls in the urn
+    M  = 20;
+    % initially, in the urn we have 250 red and 250 white balls
+    K  = M/2;
+    % we extract 3 balls without replacement
+    n  = 3;
+    % red balls have a probability ten times greater to be extracted thab white balls
+    odds  = 5;
+    % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
+    % 3 balls without replacement.
+    x = (0:n)';
+   
+    Wpdfa = WNChygepdf(x,M,K,n,odds);
+
+    Wpdfb = WNChygepdf(n-x,M,M-K,n,1/odds);
+    
+    assert(all(ismembertol(Wpdfa,Wpdfb,1E-12)), "Property 1 not verified.");
+   
+%}   
 
 %% Beginning of code
 

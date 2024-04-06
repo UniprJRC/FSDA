@@ -12,8 +12,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 % linear trend + just one harmonic for seasonal
 out=regressts(y);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of input option model and plots.</li></span></a></span></h3><div class="collapse"><p>
@@ -32,8 +30,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 model=struct;
 model.trend=1;              % linear trend
@@ -55,8 +51,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 model=struct;
 model.trend=1;              % linear trend
@@ -77,8 +71,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 StartDate=[1949,1]
 % Imposed level shift in position t=60 and 4 harmonics
@@ -104,8 +96,6 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 119  133  162  191  211  229  274  306  347  359  407  461    % Oct
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
-% Source:
-% http://datamarket.com/data/list/?q=provider:tsdl
 y=(y(:));
 model=struct;
 model.trend=1;              % linear trend
@@ -202,10 +192,7 @@ title('Estimate of the scale with correction factors')</pre></div></div></p><
                bsb is used and length(bsb)&lt;length(y).  If it is true
                the small sample correction factor is used. The default
                value of smallsamplecor is 1, that is the correction is
-               used. See
-               <a href="http://users.ugent.be/~svaelst/publications/corrections.pdf">http://users.ugent.be/~svaelst/publications/corrections.pdf</a>
-               for further details about the correction factor. The
-               default value of smallsamplecor is false.</p> <p>
+               used. The default value of smallsamplecor is false.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'smallsamplecor',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_asymptcor" class="clearfix"></div><h3 id="input_argument_namevalue_asymptcor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>asymptcor</code> &#8212;asymptotic consistency factor.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Boolean which
                defines whether to use or not consistency correction

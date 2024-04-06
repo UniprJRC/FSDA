@@ -17,8 +17,8 @@ function bw = bwe(X, bwopt)
 %                  estimated is Gaussian.
 %                - 'robust', is the normal reference rule, applicable in
 %                  presence of outliers, again for d=1.
-%                Data Types - char
 %                Example - 'method','robust'
+%                Data Types - char
 %
 %
 %  Output:

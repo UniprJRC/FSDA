@@ -1,4 +1,4 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSCorAna</title><meta content="refpage" name="chunktype"><meta content="function:FSCorAna" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSCorAna performs automatic outlier based on the forward search in correspondence analysis." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSCorAna</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSCorAna with all default options (input is output from mcdCorAna).</a></li><li><a class="intrnllnk" href="#Example_2">FSCorAna with input contingency table.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Use pregenerated contingency tables to find envelopes for mmd.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_N">N</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_bsb">bsb</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mmdEnv">mmdEnv</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_StoreSim">StoreSim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_label">label</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSCorAna</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSCorAna performs automatic outlier based on the forward search in correspondence analysis</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=FSCorAna(N)</code><span class="syntax_example"><a class="intrnllnk" href="FSCorAna.html#Example_1">example</a></span></li><li><code class="synopsis">out=FSCorAna(N,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSCorAna.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSCorAna.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSCorAna(<a class="intrnllnk" href="#inputarg_N"><code>N</code></a>)</code></span>FSCorAna with all default options (input is output from mcdCorAna).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSCorAna.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSCorAna(<a class="intrnllnk" href="#inputarg_N"><code>N</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSCorAna with input contingency table.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSCorAna with all default options (input is output from mcdCorAna).</li></span></a></span></h3><div class="collapse"><p>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSCorAna</title><meta content="refpage" name="chunktype"><meta content="function:FSCorAna" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSCorAna performs automatic outlier based on the forward search in correspondence analysis." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSCorAna</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSCorAna with all default options (input is output from mcdCorAna).</a></li><li><a class="intrnllnk" href="#Example_2">FSCorAna with input contingency table.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Use pregenerated contingency tables to find envelopes for mmd.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_N">N</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_bsb">bsb</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mmdEnv">mmdEnv</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_StoreSim">StoreSim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_resc">resc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_label">label</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_addRowNames">addRowNames</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSCorAna</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSCorAna performs automatic outlier based on the forward search in correspondence analysis</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=FSCorAna(N)</code><span class="syntax_example"><a class="intrnllnk" href="FSCorAna.html#Example_1">example</a></span></li><li><code class="synopsis">out=FSCorAna(N,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSCorAna.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSCorAna.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSCorAna(<a class="intrnllnk" href="#inputarg_N"><code>N</code></a>)</code></span>FSCorAna with all default options (input is output from mcdCorAna).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSCorAna.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSCorAna(<a class="intrnllnk" href="#inputarg_N"><code>N</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSCorAna with input contingency table.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSCorAna with all default options (input is output from mcdCorAna).</li></span></a></span></h3><div class="collapse"><p>
      Generate contingency table of size 50-by-5 with total sum of n_ij=2000.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">I=20;
 J=5;
 n=5000;
@@ -31,9 +31,221 @@ findEmp.underH0=true;
 % Store the nsimul robust distance sorted (for each row)
 findEmp.StoreSim=true;
 RAW=mcdCorAna(clothes,'plots',0,'findEmpiricalEnvelope',findEmp);
-out=FSCorAna(RAW);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.03 seconds 
+out=FSCorAna(RAW);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.17 seconds 
 Finding empirical bands
 Creating empirical confidence band for minimum (weighted) Mahalanobis distance
+Warning: interchange greater than 1 when m=1921
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1923
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1925
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1927
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1929
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1931
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1933
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1935
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1152
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1169
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1201
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1155
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1820
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1823
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1826
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1829
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1832
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1394
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1168
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1129
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1132
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1135
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1138
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1141
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1144
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1147
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1197
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1201
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1205
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1209
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1213
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1217
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1221
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1225
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1229
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1233
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1211
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1215
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1219
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1223
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1872
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1275
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1107
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1095
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1097
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1099
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1101
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1103
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1105
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1107
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1109
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1111
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1113
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1115
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1117
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1119
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1121
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1123
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1125
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1127
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1129
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1131
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1133
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1135
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1137
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1139
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1141
+Number of units which entered=3
+Warning: interchange greater than 1 when m=2425
+Number of units which entered=3
+Warning: interchange greater than 1 when m=2429
+Number of units which entered=3
+Warning: interchange greater than 1 when m=2433
+Number of units which entered=3
+Warning: interchange greater than 1 when m=2437
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1384
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1804
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1806
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1808
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1810
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1812
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1814
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1816
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1818
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1820
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1822
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1824
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1826
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1828
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1830
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1832
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1834
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1836
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1838
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1840
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1842
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1844
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1846
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1848
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1850
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1854
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1858
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1862
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1866
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1870
+Number of units which entered=4
+Warning: interchange greater than 1 when m=1874
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1878
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1882
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1886
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1124
+Number of units which entered=3
 </pre><a href='http://rosa.unipr.it/fsda/FSCorAna.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSCorAna_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSCorAna_02.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; contingency table or structure. </span>  </a><span class="example_desc">Array or table of size I-by-J or structure.</span></span></h3> <div class="collapse"> <p>If N is a
                structure it contains the following fields:
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>N</code></td><td><p>contingency table in array format of size I-by-J.</p></td></tr><tr valign="top"><td><code>Ntable</code></td><td><p>this field is not compulsory where Ntable is a table
@@ -59,8 +271,10 @@ Creating empirical confidence band for minimum (weighted) Mahalanobis distance
 </code>,<code> 'mmdEnv',[]
 </code>,<code> 'plots',0
 </code>,<code> 'msg',false
+</code>,<code> 'resc',false
 </code>,<code> 'label',{'UK' ...  'IT'}
 </code>,<code> 'plots',0
+</code>,<code> 'addRowNames',false
 </code></code></span></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;Initial subset.</span></a><span class="example_desc">vector of positive integers containing the              indexes of the rows of the contingency table which have to              be used to initialize the forward search.</span></span></h3><div class="collapse">	<p><p>If bsb is empty
               and required input argument is a struct N.loc will be used.</p> <p>
               If bsb is supplied and N is a struct N.loc is ignored.</p> <p>
@@ -96,11 +310,17 @@ Creating empirical confidence band for minimum (weighted) Mahalanobis distance
                  minimum Mahalanobis distance monitored along the search.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;It controls whether to display or not messages
-               about envelope creation on the screen.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displyed on the screen
+               about envelope creation on the screen.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displayed on the screen
                else no message is displayed on the screen.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_resc" class="clearfix"></div><h3 id="input_argument_namevalue_resc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resc</code> &#8212;Rescale or not the envelopes.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>It controls whether to rescale or not the envelopes of min
+               MD when if in the initial part of the search  is steadily
+               above or below the 5 and 95 per cent confidence bands. The
+               default value of resc is true.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'resc',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_label" class="clearfix"></div><h3 id="input_argument_namevalue_label" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>label</code> &#8212;row labels.</span></a><span class="example_desc">cell | vector of strings.</span></span></h3><div class="collapse">	<p><p>Cell or vector of strings of length n containing the labels
-               of the rows.</p> <p>
+               of the rows. If input is a table or a timetable the row
+               labels are automatically taken from the row names.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'label',{'UK' ...  'IT'}
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell or characters or vector of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;It specify whether it is necessary to produce the plots of the
                monitoring of minMD.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots=1, a plot of the monitoring of minMD among
@@ -108,12 +328,19 @@ Creating empirical confidence band for minimum (weighted) Mahalanobis distance
                screen with 1 per cent, 50 per cent and 99 per cent confidence bands
                else (default), all plots are suppressed.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>outliers</code></td><td><p>k x 1 vector containing the list of the units declared as
-               outliers or NaN if the sample is homogeneous</p></td></tr><tr valign="top"><td><code>mmd</code></td><td><p><p>n-init-by-2 matrix which contains the monitoring of minimum
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_addRowNames" class="clearfix"></div><h3 id="input_argument_namevalue_addRowNames" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>addRowNames</code> &#8212;add or not names of the rows to the plot of min MD.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If this option is equal to true (default) the
+               first time a row is included in the subset is shown in the
+               plot with the corresponding row label or row number.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'addRowNames',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>outliers</code></td><td><p>k x 1 vector containing the list of the units declared as
+               outliers or NaN if the sample is homogeneous</p></td></tr><tr valign="top"><td><code>mmd</code></td><td><p><p>n-init-by-5 matrix which contains the monitoring of minimum
                MD  at each step of
                the forward search.</p> <p>
-               1st col = fwd search index (from init to n-1);</p><p>
-               2nd col = minimum MD weighted by row mass;</p></p></td></tr><tr valign="top"><td><code>ine</code></td><td><p><p>n-init-by-2 matrix which contains the monitoring of inertia
+               1st col = fwd search index (from init to n-1);</p> <p>
+               2nd col = minimum MD weighted by row mass;</p> <p>
+               3rd col = 1 per cent envelope;</p> <p>
+               4th col = 50 per cent envelope;</p><p>
+               5th col = conflev per cent envelope;</p></p></td></tr><tr valign="top"><td><code>ine</code></td><td><p><p>n-init-by-2 matrix which contains the monitoring of inertia
                at each step of the forward search.</p> <p>
                1st col = fwd search index (from init to n);</p><p>
                2nd col = inertia;</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 Matrix which contains the unit(s)

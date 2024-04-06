@@ -881,8 +881,10 @@ endpoint=regexp(fstringselOpt,'Output:');
 if isempty(endpoint)
     disp('Please check HTML input file')
     error('FSDA:missOuts','Input .m file does not contain ''Output:'' string')
+else
+    % disp('At least two instances in the file with ''Output:'' string')
+    fstringselOpt=fstringselOpt(1:endpoint(1)-2);
 end
-fstringselOpt=fstringselOpt(1:endpoint-2);
 
 % Find any string which
 % begins with % sign then
@@ -890,7 +892,7 @@ fstringselOpt=fstringselOpt(1:endpoint-2);
 % contains any single word
 % a series of white spaces which can go from 0 to 10 then
 % character : then
-% a seris of white spaces
+% a series of white spaces
 % The inipoint of the following two regular expressions is the same but
 % however we want to exclude the lines where symbol : is followed by a
 % series of white spaces and then by a carriage return because these are
@@ -1028,7 +1030,12 @@ for i=1:length(ini)
             listOptArgs{ij,7}=examplecode;
 
             posspace=regexp(examplecode,'      ');
-            examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
+            if ~isempty(posspace)
+                examplecode=['<code>' examplecode(1:posspace(1)-1) '</code>' examplecode(posspace(1):end)];
+            else
+
+            end
+
             listOptArgs{ij,5}=strtrim(examplecode);
             listOptArgs{ij,6}=descrlong(Datatypes+13:end);
         else
@@ -2201,7 +2208,11 @@ for i=1:nTOTargin
                 % The first word of example code must be embedded around tags <code> </code>
                 examplecode=descrlong(CheckExample+10:Datatypes-1);
                 posspace=regexp(examplecode,'      ');
-                examplecode=['<code>' examplecode(1:posspace-1) '</code>' examplecode(posspace:end)];
+                if isempty(posspace)
+                    error('FSDA:publishFS:WrongInp',['Example/Data Types probably inverted (or missing) in Optional input argument ''' inpi ''' '])
+                end
+
+                examplecode=['<code>' examplecode(1:posspace(1)-1) '</code>' examplecode(posspace(1):end)];
                 listInpArgs{i,5}=strtrim(examplecode);
                 listInpArgs{i,6}=descrlong(Datatypes+13:end);
                 jins=6;
@@ -4046,7 +4057,7 @@ if ~isempty(iniMathJax) || ~isempty(finMathJax)
         error('FSDA:wrongLatex','There is a non matching math symbol in the LaTeX equation')
     end
 
-    MoreA=formatHTML(inputString(1:iniMathJax-1));
+    MoreA=formatHTML(inputString(1:iniMathJax(1)-1));
     for k=1:length(iniMathJax)
         MoreA=[MoreA inputString(iniMathJax(k):finMathJax(k)+1)];
         if k==length(iniMathJax)

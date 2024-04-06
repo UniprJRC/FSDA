@@ -23,8 +23,8 @@ function h = scatterboxplot(x,y,varargin)
 %                 With this option scatterboxplot creates a 2D GSCATTER
 %                 plot instead of a SCATTER plot, and the marginal
 %                 boxplots are replaced by grouped boxplots.
-%                 Data Types - categorical array | logical or numeric vector | character array | string array | cell array of character vectors
 %                 Example - 'Group',[1,1,1,2,2,2,2,2,2]
+%                 Data Types - categorical array | logical or numeric vector | character array | string array | cell array of character vectors
 %
 %  PlotGroup :  Grouped plot indicator. Character. If PlotGroup is 'on'   
 %               routine displays grouped boxplots. 
@@ -32,8 +32,8 @@ function h = scatterboxplot(x,y,varargin)
 %               If PlotGroup is 'off' scatterboxplot displays boxplots of
 %               the whole data set. This is the default if a Group
 %               parameter is not specified.
-%                 Data Types - character 'on' or 'off'
 %                 Example - 'PlotGroup','on'
+%                 Data Types - character 'on' or 'off'
 %
 %
 %  Output:

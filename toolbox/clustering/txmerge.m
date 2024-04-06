@@ -54,6 +54,7 @@ function out = txmerge(Y, k, g, varargin)
 % linkagearg:   Linkage used for hierarchical agglomeration. Single linkage 
 %               is the default, see the MATLAB linkage function for other options.
 %               Example - 'linkagearg', 'weights'
+%               Data Types - character
 %
 % auto:         Automatic trimming level detection. Scalar. It is set to 1 to 
 %               overwrite the prespecified alpha parameter, or it is equal to 0

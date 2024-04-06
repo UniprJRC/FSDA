@@ -99,6 +99,7 @@ function out = dempk(Y, k, g, varargin)
 % linkagearg:   Linkage used. Single linkage is the default, see the
 %               MATLAB linkage function for more general information.
 %               Example - 'linkagearg', 'weights'
+%               Data Types - char
 %
 % Ysave:        Saving Y. Scalar. Scalar that is set to 1 to request that
 %               the input matrix Y is saved into the output structure out.

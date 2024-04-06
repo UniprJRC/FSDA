@@ -11,9 +11,9 @@ out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'mixt',2);
 % Comparison with robust linear grouping
 out = rlga(X,k,alpha2);
 cascade;</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclustreg:  1.19 seconds 
+Total estimated time to complete tclustreg:  1.15 seconds 
 MixLik with untrimmed units selected using h largest lik contributions
-Total estimated time to complete tclustreg:  1.04 seconds 
+Total estimated time to complete tclustreg:  0.85 seconds 
 RLGA Algorithm k =2 biter =7 niter =10
 Finished.
 </pre><a href='http://rosa.unipr.it/fsda/tclustreg.html#Example_1'><img vspace="5" hspace="5" src="images\tclustreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustreg_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_04.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustreg of fishery data 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
@@ -276,7 +276,9 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
 </code>,<code> 'plots',1
 </code>,<code> 'wtrim',1
 </code>,<code> 'we',[0.2 0.2 0.2 0.2 0.2]
-</code>,<code></code>,<code></code>,<code> 'k_dens_mixt',6
+</code>,<code> cup, 0.8
+</code>,<code> pstar, 0.95
+</code>,<code> 'k_dens_mixt',6
 </code>,<code> 'nsamp_dens_mixt',1000
 </code>,<code> 'refsteps_dens_mixt',15
 </code>,<code> 'method_dens_mixt','E'
@@ -411,14 +413,12 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cup" class="clearfix"></div><h3 id="input_argument_namevalue_cup" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cup</code> &#8212;pdf upper limit.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The upper limit for the pdf used
                 to compute the retantion probability. If cup = 1
                 (default), no upper limit is set.</p> <p>
-                Data Types - scalar
-                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar
-                Example - cup, 0.8</code></p></div></div><div class="expandableContent"><div id="inputarg_pstar" class="clearfix"></div><h3 id="input_argument_namevalue_pstar" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>pstar</code> &#8212;thinning probability.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Probability with each a unit
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> cup, 0.8
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar</code></p></div></div><div class="expandableContent"><div id="inputarg_pstar" class="clearfix"></div><h3 id="input_argument_namevalue_pstar" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>pstar</code> &#8212;thinning probability.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Probability with each a unit
                 enters in the thinning procedure. If pstar = 1 (default), all units
                 enter in the thinning procedure.</p> <p>
-                Data Types - scalar
-                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar
-                Example - pstar, 0.95</code></p></div></div><div class="expandableContent"><div id="inputarg_k_dens_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_k_dens_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>k_dens_mixt</code> &#8212;in the Poisson/Exponential mixture density function,
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> pstar, 0.95
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar</code></p></div></div><div class="expandableContent"><div id="inputarg_k_dens_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_k_dens_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>k_dens_mixt</code> &#8212;in the Poisson/Exponential mixture density function,
                     number of clusters for density mixtures.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>This is a guess on the number of data groups. Default
                     value is 5.</p> <p>
             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'k_dens_mixt',6

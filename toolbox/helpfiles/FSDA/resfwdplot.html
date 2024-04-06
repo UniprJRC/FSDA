@@ -83,7 +83,7 @@ resfwdplot(out,'datatooltip',datatooltip);
 % Note that we can obtain the RGB vector with our MATLAB class FSColors.
 %
 datatooltip = struct;
-datatooltip.LineColor = FSColors.yellowish.RGB;
+datatooltip.LineColor = aux.FSColors.yellowish.RGB;
 resfwdplot(out,'datatooltip',datatooltip);
 % now LineColor is not a valid RGB vector, but red (default) will be used
 datatooltip.LineColor = [123 41 12 32 1];
@@ -99,7 +99,7 @@ X=randn(n,4);
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
 datatooltip = struct;
-datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
+datatooltip.SubsetLinesColor = aux.FSColors.purplish.RGB;
 resfwdplot(out,'datatooltip',datatooltip);
 % Here we show that the modality is also activated when
 % SubsetLinesColor is not a valid RGB vector.

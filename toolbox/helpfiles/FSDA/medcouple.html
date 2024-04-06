@@ -136,17 +136,17 @@ repetition n. 900
 repetition n. 1000
  
 OVERALL TIME EXECUTION IN 1000 MC COMPUTATION
-time using WM by Haase       = 0.88909
-time using quickselectFSw    = 0.54604
-time using quickselectFSwmex = 0.33655
-time using the naive         = 1.5117
-time using quantiles         = 0.033357
-time using octiles           = 0.079388
+time using WM by Haase       = 0.89418
+time using quickselectFSw    = 0.50866
+time using quickselectFSwmex = 0.33656
+time using the naive         = 1.7259
+time using quantiles         = 0.033919
+time using octiles           = 0.06674
  
 TIME SPENT IN COMPUTING WEIGHTED AVERAGES IN A SINGLE MC COMPUTATION
-t_Haase             = 0.0005792
-t_quickselectFSw    = 0.0002285
-t_quickselectFSwmex = 9.09e-05
+t_Haase             = 0.0005864
+t_quickselectFSw    = 0.0001909
+t_quickselectFSwmex = 6.38e-05
 </pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_z" class="clearfix"> </div> <h3 id="input_argument_z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>z</code> &#8212; Uni-dimensional array. </span>  </a><span class="example_desc">The elements of the array z represent a  
         sample from a univariate distribution.</span></span></h3> <div class="collapse"> <p>They can be missing (nan)
         of infinite (inf) values, which are excluded from the computation
@@ -186,8 +186,9 @@ t_quickselectFSwmex = 9.09e-05
  the kernel function
  $h(z_i,z_j)=\frac{(z_j-median(z))-(median(z)-z_i)}{z_j-z_i}$ over all
  pairs $(z_i,z_j)$ where $z_i&lt;=median(z)$ and $z_j &gt;= median(z)$. The MATLAB
- toolbox LIBRA  <a href="(http://wis.kuleuven.be/stat/robust.html)">(http://wis.kuleuven.be/stat/robust.html)</a>and the R package
- robustbase  <a href="(https://cran.r-project.org/web/packages/robustbase)">(https://cran.r-project.org/web/packages/robustbase)</a> implement
+ toolbox LIBRA  <a href="(https://wis.kuleuven.be/statdatascience/robust/LIBRA/)">(https://wis.kuleuven.be/statdatascience/robust/LIBRA/)</a>
+ and the R package robustbase
+  <a href="(https://cran.r-project.org/web/packages/robustbase)">(https://cran.r-project.org/web/packages/robustbase)</a> implement
  the fast medcouple with wrapper functions to the same compiled C source,
  to maximize speed. This <a href="medcouple.html">medcouple</a> function replicates faithfully the C
  function mlmc.c in pure MATLAB code, but replaces the key computations of

@@ -229,14 +229,14 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %        cup  :  pdf upper limit. Scalar. The upper limit for the pdf used
 %                to compute the retantion probability. If cup = 1
 %                (default), no upper limit is set.
-%                Data Types - scalar
 %                Example - cup, 0.8
+%                Data Types - scalar
 %
 %      pstar  :  thinning probability. Scalar. Probability with each a unit
 %                enters in the thinning procedure. If pstar = 1 (default), all units
 %                enter in the thinning procedure.
-%                Data Types - scalar
 %                Example - pstar, 0.95
+%                Data Types - scalar
 %
 %       k_dens_mixt: in the Poisson/Exponential mixture density function,
 %                    number of clusters for density mixtures. Scalar.

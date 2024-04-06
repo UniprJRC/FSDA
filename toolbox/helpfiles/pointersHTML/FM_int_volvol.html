@@ -1,0 +1,25 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>FM_int_volvol</title> <meta content="refpage" name="chunktype"><meta content="function:FM_int_volvol " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FM_int_volvol Computes the integrated volatility of volatility of a diffusion process via the Fourier-Malliavin estimator" itemprop="description" name="description" /><h1 itemprop="title">FM_int_volvol</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/FM_int_volvol.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/FM_int_volvol.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/FM_int_volvol.html">http://rosa.unipr.it/FSDA/FM_int_volvol.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: FM_int_volvol</em></p><P>FM_int_volvol</P><P>Computes the integrated volatility of volatility of a diffusion process via the Fourier-Malliavin estimator</P><h2>More About</h2><P>
+ We assume that the vectors x contains discrete observations from a diffusion
+ process $x$ following the Ito stochastic differential equation 
+ $$dx(t)= \sigma(t) \ dW(t) + b(t) \ dt,$$ 
+ $$d\sigma^2(t)= \gamma(t) \ dZ(t) + a(t) \ dt,$$ 
+ where $W$ and $Z$ are two Brownian motions defined on the filtered probability space 
+ $(\Omega, (\mathcal{F}_t)_{t \in [0,T]}, P)$, with correlation $\rho$, while 
+ $\sigma, \gamma, b$ and $a$ are random processes, adapted to  $\mathcal{F}_t$.
+ See the References for further  mathematical details.
+ The integrated volatility of volatility on $[0,T]$ is defined as 
+ $$ IVV_{[0,T]}:= \langle  \sigma^2 ,\sigma^2 \rangle_T =\int_0^T\gamma^2(s)ds.$$
+ 
+ 
+For any positive integer $n$, let $\mathcal{S}_{n}:=\{ 0=t_{0}\leq \cdots
+ \leq t_{n}=T  \}$ be the observation times. Moreover, let $\delta_l(x):=
+ x(t_{l+1})-x(t_l)$ be the increments of $x$. 
+ The Fourier estimator of the integrated volatility of volatility on $[0,T]$ is
+ given by
+ $$T c_0(V_{{n},N,M})={T^2\over {2M+1}} \sum_{|k|\leq M} c_{k}(d\sigma_{n,N})c_{-k}(d\sigma_{n,N}),$$
+ 
+ where:
+ $$c_k(d\sigma_{n,N})= i k \frac{2\pi}{T} c_k(\sigma_{n,N}), \quad   c_k(\sigma_{{n},N})={T\over {2N+1}} \sum_{|s|\leq N} c_{s}(dx_{n})c_{k-s}(dx_{n}),$$
+ $$c_k(dx_{n})= {1\over {T}} \sum_{l=0}^{n-1} e^{-{\rm i}\frac{2\pi}{T}kt_l}\delta_{l}(x).$$
+ 
+</P><h2>References</h2><P>Mancino, M.E., Recchioni, M.C., Sanfelici, S. (2017), Fourier-Malliavin Volatility Estimation. Theory and Practice, "Springer Briefs in Quantitative Finance", Springer.</P></html>

@@ -75,7 +75,7 @@ function hf = wedgeplot(RES,varargin)
 %                depending on the option transpose. The default label is 'Index
 %                number'.
 %                Example - 'labin','unit number'
-%                Types - Character
+%                Data Types - Character
 %
 %     titl     : Title. String. A label for the title 
 %                (default: 'Double wedge plot').

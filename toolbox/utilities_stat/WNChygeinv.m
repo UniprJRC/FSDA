@@ -36,10 +36,12 @@ function x = WNChygeinv(p,M,K,n,odds)
 %
 %       accuracy : accuracy of the calculations. Scalar. The default value
 %                  of accuracy is 1e-08.
+%                  Example - 1e-06
+%                  Data Types - single|double
 %
 %  Output:
 %
-%           x : Wallenius' quantile values.  Qauntiles corresponding to input probabilities. 
+%           x : Wallenius' quantile values.  Quantiles corresponding to input probabilities. 
 %                  The size of x is the common size of the input
 %                  arguments. A scalar input functions as a constant matrix
 %                  of the same size as the other inputs.
@@ -77,12 +79,16 @@ function x = WNChygeinv(p,M,K,n,odds)
 %}
 
 %{
-    %% Compute quantiles 0.1, 0.2, ..., 0.9 from nverse of Wallenius non central hypergeometric distribution.
-    M=80; % total number of balls
-    n=10;  % number of balls taken
-    odds=3; % Prob. of red balls vs other color balls
-    K=50; % Number of red balls in the urn
-    % Compute quantile 0.3
+    %% Compute quantiles from inverse of Wallenius non central hypergeometric distribution.
+    % M = total number of balls
+    M=80; 
+    % n= number of balls taken
+    n=10;  
+    % odds = prob. of red balls vs other color balls
+    odds=3; 
+    % Number of red balls in the urn 
+    K=50; 
+    % Compute quantiles 0.1, ..., 0.9
     xquant=WNChygeinv(0.1:0.1:0.9,M,K,n,odds);
     disp(xquant)
 %}
@@ -142,3 +148,6 @@ while any(over(:))
     xnew(over) = xnew(over)-1;
 end
 x = xnew;
+end
+
+%FScategory:ProbDist

@@ -217,8 +217,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               input option databrush is not empty). For example if
 %               selunit is [20 34], the labels associated to rows 20 and 34
 %               are added to each scatter plot. The labels which are used
-%               are taken from Y.label is Y is a structure or from
-%               plo.label if plo.label is notemp and Y is a 2D array, else the
+%               are taken from Y.label if Y is a structure or from
+%               plo.label if plo.label is not empty and Y is a 2D array, else the
 %               numbers 1:n are used.
 %               The default value of selunit is string '2.5' if input
 %               argument Y is a structure else it is an empty value if
@@ -261,7 +261,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               circles. Similarly, if typespm.lower="none" and
 %               typespm.scatter="none" just the upper part of the scatter
 %               plot matrix is shown. The fields of the struct can either
-%               be charaters or strings.
+%               be characters or strings.
 %               typespm='lower' is equivalent to typespm=struct;
 %               typespm.lower='scatter', typespm.upper='number';
 %                   Example - 'typespm','lower'
@@ -490,8 +490,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
 
 %{
-    %% Call of spmplot with name/value pairs and specifying overlay,
-    % also discarding some groups with the field include, and changing
+    %% Call of spmplot with name/value pairs. 
+    % Specifying overlay, also discarding some groups with the field include, and changing
     % the default colormap.
     % The Tag setting will be used in the next example to demonstrate the
     % undock option.
@@ -587,8 +587,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
-    % Now test the direct use of FSM. Set two groups, e.g. those obtained
-    % from FSM.
+    % Now test the direct use of FSM. 
+    % Set two groups, e.g. those obtained from FSM.
     % Generate contaminated data
     state=100;
     randn('state', state);

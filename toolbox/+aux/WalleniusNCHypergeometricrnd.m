@@ -39,7 +39,7 @@ end
 if (odds == 1.)
     % // use hypergeometric function if odds == 1
     % M. K. N
-    r = hygernd(N, m, m);
+    r = hygernd(N, m, n);
     return
 end
 
@@ -408,8 +408,8 @@ if UseChopDown == false
         end
 
         % // search for mode can be limited
-        for xi = wnc_mode:1:x2
-            f = WalleniusNCHypergeometricpdf(xi,n,m,N,odds,accuracy);
+        for xi = wnc_mode:-1:x2
+            f = aux.WalleniusNCHypergeometricpdf(xi,n,m,N,odds,accuracy);
             if (f <= f2)
                 break
             end
@@ -427,7 +427,7 @@ if UseChopDown == false
         end
 
         for xi = wnc_mode:1:x2
-            f = WalleniusNCHypergeometricpdf(xi,n,m,N,odds,accuracy);
+            f = aux.WalleniusNCHypergeometricpdf(xi,n,m,N,odds,accuracy);
             if (f <= f2)
                 break
             end
@@ -661,7 +661,7 @@ while 1>0                                    %// loop until accepted (normally e
                     updown=updown-1; % // stop searching down
                 % end
             else
-                f = WalleniusNCHypergeometricpdf(wall_x1,n,m,N,odds,accuracy);
+                f = aux.WalleniusNCHypergeometricpdf(wall_x1,n,m,N,odds,accuracy);
                 u = u-f;                           % // subtract probability until 0
                 if (u <= 0)
                     r=wall_x1;
@@ -684,7 +684,7 @@ while 1>0                                    %// loop until accepted (normally e
                     updown =updown-2;        %  updown &= ~2;  // stop searching up
                 % end
             else
-                f = WalleniusNCHypergeometricpdf(x2,n,m,N,odds,accuracy);
+                f = aux.WalleniusNCHypergeometricpdf(x2,n,m,N,odds,accuracy);
                 u = u-f;                           % // subtract probability until 0
                 if u <= 0
                     r=x2;
@@ -786,7 +786,7 @@ if (G_integral <= h)          % // %G fits under h-hat
     testnum= rh < G_integral * fts * rgts;   % // Bernouilli variate
 else
     %   // G > h: can't use sampling in t-domain
-     testnum= rh < WalleniusNCHypergeometricpdf(x,n,m,N,odds);
+     testnum= rh < aux.WalleniusNCHypergeometricpdf(x,n,m,N,odds);
    % testnum= rh < probability(x);
 end
 end

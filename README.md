@@ -18,9 +18,103 @@
 
 # [Flexible Robust Statistics Data Analysis](https://github.com/UniprJRC/FSDA/)
 
+
+
+
+## $\textsf{\color{orange} NEWS: FSDA release  2024a is out  (April 2024)}$
+
+
+#### GRAPHICS 
+  
+Function `fanplotFS.m` now accepts in input not only the output of `FSReda` and [`FSRaddt`](http://rosa.unipr.it/FSDA/FSRaddt.html)
+but also the output of `FSReda`, `Sregeda` and `MMregeda`. `fanplotFS` can be used also to monitor the t-statistics 
+coming from FS or S or MM regression.  
+  
+New option `corres` inside [`resfwdplot`](http://rosa.unipr.it/FSDA/resfwdplot.html). If `corres` is `true` a 3 panel plot showing the correlations of 
+adjacent residuals is added to the monitoring residual plot.  
+  
+New options `colorBackground` in [`spmplot`](http://rosa.unipr.it/FSDA/spmplot.html) in order to have a background color of each scatter which depends 
+on the value of the correlation coefficient.  
+  
+New option `typespm` which enables the user to control how the  lower (upper) part of the scatter plot matrix is shown. 
+It is possible to repalce the scatter with the correlation coefficients given as   `"circle"`, `"square"` `"number"`. 
+Finally it is also possible to suppress the scatter.  
+  
+`avasmsplot` now returns the handle to the big (invisible) axes framing the subaxes of the plot.  
+  
+New optional arguments in [`aceplot`](http://rosa.unipr.it/FSDA/aceplot.html). Now it is possible to show just selected plots with or without the plot of 
+the transformation for the explanatory variables.  
+  
+New optional arguments `addxline`, `flabstep` and `multiPanel` in [`fanplotFS`](http://rosa.unipr.it/FSDA/fanplotFS.html)  
+  
+New optional argument `msg` in [`FSRaddt`](http://rosa.unipr.it/FSDA/FSRaddt.html)  
+   
+#### REGRESSION
+  
+Functions [`Sregeda`](http://rosa.unipr.it/FSDA/Sregeda.html), [`MMregeda`](http://rosa.unipr.it/FSDA/MMregeda.html), now also report the values of the t-statistics of the regression
+coefficients.   
+  
+#### UTILITIES STAT  
+  
+New functions  [`pivotCoord`](http://rosa.unipr.it/FSDA/pivotCoord.html) and [`pivotCoordInv`](http://rosa.unipr.it/FSDA/pivotCoordInv.html) to transform the data into 
+compute isometric logratio coordinates and viceversa.  
+New function `logfactorial` to compute `log(x!)` with high precision where x is not necessarily an integer.  
+  
+#### DATASETS  
+  
+New [regression datasets](http://rosa.unipr.it/FSDA/datasets_reg.html), `D1`, `D2`, `D3`, `inttrade1`, `inttrade2`, `inttrade3`, `cement`, `air_pollution`, 
+`valueadded` and `nci60`, added.  
+  
+#### DISTRIBUTION  
+  
+New functions [`WNChygepdf`](http://rosa.unipr.it/FSDA/WNChygepdf.html), [`WNChygecdf`](http://rosa.unipr.it/FSDA/WNChygecdf.html), [`WNChygeinv`](http://rosa.unipr.it/FSDA/WNChygeinv.html), 
+[`WNChygernd`](http://rosa.unipr.it/FSDA/WNChygernd.html), [`FNChygepdf`](http://rosa.unipr.it/FSDA/FNChygepdf.html), [`FNChygecdf`](http://rosa.unipr.it/FSDA/FNChygecdf.html), 
+[`FNChygeinv`](http://rosa.unipr.it/FSDA/FNChygeinv.html), [`FNChygernd`](http://rosa.unipr.it/FSDA/FNChygernd.html) for the extended hypergeometric distribution. 
+
+All the functions which start with WNC refer to the Wallenius non central hypergeometric distribution, while all 
+the functions which start with FNC refer to the Fisher non central hypergeometric distribution.  
+
+New functions [`mWNChygepdf`](http://rosa.unipr.it/FSDA/mWNChygepdf.html), [`mWNChygernd`](http://rosa.unipr.it/FSDA/mWNChygernd.html),  [`mFNChygepdf`](http://rosa.unipr.it/FSDA/mFNChygepdf.html), 
+[`mFNChygernd`](http://rosa.unipr.it/FSDA/mFNChygernd.html) to compute the density and to generate random number from the multivariate Wallenius 
+and multivariate Fisher non central hypergeometric distribution. All these functions are a translation from C++ 
+of the routines of Fog (2008), library [BiasedUrn](https://cran.r-project.org/web/packages/BiasedUrn/vignettes/UrnTheory.pdf).  
+  
+#### VOLATILITY
+  
+A collection of routines 
+1. to compute the integrated variance from a diffusion process via the Fourier estimator using Dirichlet or Fejer kernel; 
+2. to computes the integrated variance, quarticity, leverage of a diffusion process via the 
+Fourier-Malliavin estimator, routines written by S. Sanfelici and G. Toscano, (2024).  
+  
+#### MULTIVARIATE  
+  
+Functions for robust correspondence analysis completely redesigned [`mcdCorAna`](http://rosa.unipr.it/FSDA/mcdCorAna.html) (mcd in correspondece analysis), 
+[`FSCorAna`](http://rosa.unipr.it/FSDA/FSCorAna.html) (automatic outlier detection based on the Forward Search) and [`FSCorAnaenv`](http://rosa.unipr.it/FSDA/FSCorAnaenv.html) 
+(envelope creation of minimum Mahalanobis distance and inertia explained), [`FSCorAnaeda`](http://rosa.unipr.it/FSDA/FSCorAnaeda.html) 
+(FS in correspondence analysis with exploratory data analysis purposes).  
+  
+#### APPS 
+  
+`CorAnaAPP` which enables an interactive robust data analysis of the contingency tables  
+  
+Oldest version of MATLAB which is supported is now R2019a.  
+  
+Funcion `fanplot.m` in order to avoid conflicts with function `fanplot` of the Financial Toolbox has been renamed `fanplotFS.m`. 
+Old function `fanplot.m` has been left in the folder but it will be removed in a future release.
+  
+Function `playbackdemoFS.m` has been removed.  
+  
+Thanks to MathWorks support now the FSDA tree has a new structure which improves the toolbox's polish, 
+ease of maintenance, and developer/user experience. More specifically, subfolder `+aux` has been created
+in order to host the routines which do no have to be called directly by the user. 
+Subfolders private have been added to each folder in order to host routines which are called just by the corresponding 
+parent folder.
+
+
+
 ## NEWS: new features (January 2024)
 
-1. Now FSDA is compliant with [MATLAB Toolbox Best Practices](https://github.com/mathworks/toolboxdesign).
+Now FSDA is compliant with [MATLAB Toolbox Best Practices](https://github.com/mathworks/toolboxdesign).
 Thanks to the constant support of Rob Purser and Bensingh Pancras we were able to migrate the FSDA toolbox to the new structure which improves the toolbox's polish, ease of maintenance, and developer/user experience.
 In addition to being more GitHub-friendly, being in the  *standard format* allows for a number of additional features that we are now attempting to leverage, such as `namespaces` and `internal` folders, among many other things.
 When a toolbox hits the 300 functions mark, it's time to do some housekeeping!

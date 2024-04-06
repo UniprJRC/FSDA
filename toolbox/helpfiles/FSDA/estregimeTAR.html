@@ -5,8 +5,8 @@ k=3;
 X=randn(n,k);
 y=randn(n,1);
 X1=[X [1:200]' [1:200]'];
-[out] = estregimeTAR(y, X1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 2: adjustments for constant columns.</li></span></a></span></h3><div class="collapse"><p> Only the first non-zero
-       constant column is kept in the model estimation. Check beta and se values.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+[out] = estregimeTAR(y, X1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2: adjustments for constant columns.</li></span></a></span></h3><div class="collapse"><p> Only the first non-zero
+    %   constant column is kept in the model estimation. Check beta and se values.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 k=3;
 X=randn(n,k);
 y=randn(n,1);   
@@ -54,7 +54,7 @@ X2 = [zeros(200,1) ones(200,1) X repmat(2,200,1)];
  $$\mathrm{cov}(\boldsymbol{\beta})=(\mathbf{X}^{\prime} \mathbf{X})^{-1}\mathbf{X}^{\prime} \mathbf{\Sigma} \mathbf{X}(\mathbf{X}^{\prime}
  \mathbf{X})^{-1}.$$
  This is a heteroskedasticity-robust variance-covariance matrix, without imposing any assumption on
- the structure of heteroskedasticity. Assuming the indipendence of the regression errors $\mathbf{u}$,
+ the structure of heteroskedasticity. Assuming the independence of the regression errors $\mathbf{u}$,
  the adjusted estimation of matrix $\Sigma$ is:
  $$\hat{\mathbf{\Sigma}}= \frac{n}{n-k} \mathrm{diag}(\mathbf{u}^2).$$
  If there is no heteroskedasticity, the robust standard errors will become just conventional
