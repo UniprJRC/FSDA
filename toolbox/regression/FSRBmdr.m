@@ -6,12 +6,12 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 % Required input arguments:
 %
-%  y:           Response variable. Vector.  A vector with n elements that contains the response variable.
+%  y:           Response variable. Vector. A vector with n elements that contains the response variable.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the
 %               computations.
-%  X :          Predictor variables. Matrix.  Data matrix of explanatory
+%  X :          Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called
 %               'regressors') of dimension (n x p-1).
 %               Rows of X represent observations, and columns represent
@@ -79,7 +79,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 %  plots :    Plot on the screen. Scalar.
 %               If equal to one a plot of Bayesian minimum deletion residual
-%               appears  on the screen with 1%, 50% and 99% confidence
+%               appears on the screen with 1%, 50% and 99% confidence
 %               bands else (default) no plot is shown.
 %                 Example - 'plots',1
 %                 Data Types - double
@@ -98,8 +98,8 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
-%               about great interchange on the screen
-%               If msg==1 (default) messages are displyed on the screen
+%               about great interchange on the screen.
+%               If msg==1 (default) messages are displayed on the screen,
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
@@ -137,7 +137,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -149,7 +149,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               (i.e. all units).
 %  BBayes:       posterior estimates of $\beta$. Matrix.
 %               (n-init+1) x (p+1) matrix containing the monitoring o
-%               posterior mean of $\beta$ (regression coefficents)
+%               posterior mean of $\beta$ (regression coefficients)
 %               $\beta_1 = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$.
 %  S2Bayes :    posterior estimate of $\sigma^2$ and $\tau$. Matrix.
 %               (n-init+1) x 3 matrix containing the monitoring of
@@ -549,7 +549,7 @@ else
 end
 
 % ij = index which is linked with the columns of matrix BB. During the
-% search every time a subset is stored inside matrix BB ij icreases by one
+% search every time a subset is stored inside matrix BB ij increases by one
 ij=1;
 
 %  Un is a Matrix whose 2nd column:11th col contains the unit(s) just

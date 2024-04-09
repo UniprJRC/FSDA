@@ -44,7 +44,7 @@ function [out]=FSRB(y,X,varargin)
 %               bayes.R    =  p-times-p positive definite matrix which can be
 %                       interpreted as X0'X0 where X0 is a n0 x p matrix
 %                       coming from previous experiments (assuming that the
-%                       intercept is included in the model.
+%                       intercept is included in the model).
 %
 %               The prior distribution of $\tau_0$ is a gamma distribution with
 %               parameters $a_0$ and $b_0$, that is
@@ -168,47 +168,47 @@ function [out]=FSRB(y,X,varargin)
 %                 Data Types - char
 %
 %      labeladd : Add outlier labels in plot. Character.
-%                 If this option is '1',  we label the outliers with the
+%                 If this option is '1', we label the outliers with the
 %                 unit row index in matrices X and y. The default value is
 %                 labeladd='', i.e. no label is added.
 %                 Example - 'labeladd','1'
 %                 Data Types - char
 %
 %       nameX  :  Add variable labels in plot. Cell array of strings.
-%                 cell array of strings of length p containing the labels of
+%                 Cell array of strings of length p containing the labels of
 %                 the variables of the regression dataset. If it is empty
 %                 (default) the sequence X1, ..., Xp will be created
 %                 automatically
 %                 Example - 'nameX',{'NameVar1','NameVar2'}
 %                 Data Types - cell
 %       namey  :  Add response label. Character.
-%               character containing the label of the response
+%               Character containing the label of the response
 %               Example - 'namey','NameOfResponse'
 %               Data Types - char
 %
 %       ylim   :   Control y scale in plot. Vector.
-%                   vector with two elements controlling minimum and maximum
+%                   Vector with two elements controlling minimum and maximum
 %                 on the y axis. Default value is '' (automatic scale)
-%               Example - 'ylim','[0,10]' sets the minim value to 0 and the
+%               Example - 'ylim','[0,10]' sets the minimum value to 0 and the
 %               max to 10 on the y axis
 %               Data Types - double
 %
 %       xlim   :   Control x scale in plot. Vector.
-%                  vector with two elements controlling minimum and maximum
+%                  Vector with two elements controlling minimum and maximum
 %                 on the x axis. Default value is '' (automatic scale)
-%               Example - 'xlim','[0,10]' sets the minim value to 0 and the
+%               Example - 'xlim','[0,10]' sets the minimum value to 0 and the
 %               max to 10 on the x axis
 %               Data Types - double
 %
 %      bonflev  : Signal to use to identify outliers. Scalar.
-%                   option to be used if the distribution of the data is
+%                   Option to be used if the distribution of the data is
 %                 strongly non normal and, thus, the general signal
 %                 detection rule based on consecutive exceedances cannot be
 %                 used. In this case bonflev can be:
 %                 - a scalar smaller than 1 which specifies the confidence
 %                   level for a signal and a stopping rule based on the
 %                   comparison of the minimum MD with a
-%                   Bonferroni bound. For example if bonflev=0.99 the
+%                   Bonferroni bound. For example, if bonflev=0.99, the
 %                   procedure stops when the trajectory exceeds for the
 %                   first time the 99% bonferroni bound.
 %                 - A scalar value greater than 1. In this case the
@@ -220,7 +220,7 @@ function [out]=FSRB(y,X,varargin)
 %               Data Types - double
 %
 %       msg    :  Level of output to display. Scalar.
-%               scalar which controls whether to display or not messages
+%               Scalar which controls whether to display or not messages
 %                 on the screen
 %                 If msg==1 (default) messages are displayed on the screen about
 %                   step in which signal took place and ....
@@ -229,7 +229,7 @@ function [out]=FSRB(y,X,varargin)
 %               Data Types - double
 %
 %         tag    : tags to the plots which are created.
-%                 character or cell array of characters.
+%                 Character or cell array of characters.
 %                 This option enables to add a tag to the plots which are
 %                 created. The default tag names are:
 %                 fsrb_mdrplot for the plot of mdr based on all the
@@ -259,12 +259,12 @@ function [out]=FSRB(y,X,varargin)
 %
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous. This field in
-%               future releases will be deleted bacause it will be replaced
+%               future releases will be deleted because it will be replaced
 %               by out.outliers.
 % out.outliers= k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous.
 % out.beta   =  p-by-1 vector containing the posterior mean of $\beta$
-%               (regression coefficents),
+%               (regression coefficients),
 %               $\beta = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$ in step
 %               $n-k$
 % out.scale  =   scalar. This is the reciprocal of the square root of the
@@ -278,7 +278,7 @@ function [out]=FSRB(y,X,varargin)
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -374,7 +374,7 @@ function [out]=FSRB(y,X,varargin)
     % year, in order to find initial subset using LMS.
     close all
     nsamp=3000;
-    % threshold to be used to increase susbet of good units
+    % threshold to be used to increase subset of good units
     threshold=300;
     bonflev=0.99; % Bonferroni confidence level to be used for first year
     bonflevB=0.99; % Bonferroni confidence level to be used for subsequent years
@@ -578,7 +578,7 @@ function [out]=FSRB(y,X,varargin)
     % good units, plotted as (+)
     plot(X04(u04g)',y04(u04g)','Marker','+','LineStyle','none','Color','b')
     hold('on')
-    % units below the treshold, plotted as (X)
+    % units below the threshold, plotted as (X)
     plot(X04(u04i)',y04(u04i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')
 
     % outliers, plotted as (O)
@@ -602,7 +602,7 @@ function [out]=FSRB(y,X,varargin)
     % nsamp is the number of subsamples to use in the frequentist analysis of first
     % year, in order to find initial subset using LMS.
     nsamp=3000;
-    % threshold to be used to increase susbet of good units
+    % threshold to be used to increase subset of good units
     threshold=300;
     bonflev=0.99; % Bonferroni confidence level
 
@@ -790,8 +790,8 @@ if ~isempty(UserOptions)
 end
 
 
-% Ovewrite (if provided) in structure 'options' the options chosen by the user
-% if user provides the variables the rewrite the strucure with such
+% Overwrite (if provided) in structure 'options' the options chosen by the user
+% if user provides the variables then rewrite the structure with such
 % variables
 
 if nargin > 2

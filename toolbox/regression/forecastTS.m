@@ -36,7 +36,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                        there are two coefficients, the second (which is
 %                        also the last element of vector beta) is an integer
 %                        which specifies the time in which level shift takes
-%                        place and the first (which is also the penultime
+%                        place and the first (which is also the penultimate
 %                        element of vector beta) is a real number which
 %                        identifies the magnitude of the upward (downward)
 %                        level shift;
@@ -91,7 +91,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                       of model.trend is 1.
 %               model.s = scalar greater than zero which specifies the
 %                       length of the seasonal period. For monthly
-%                       data (default) s=12, for quartely data s=4, ...
+%                       data (default) s=12, for quarterly data s=4, ...
 %                       The default value of model.s is 12 (that is monthly
 %                       data are assumed)
 %               model.seasonal = scalar (integer specifying number of
@@ -124,7 +124,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                       If this field is an empty double (default) the
 %                       simulated time series will not contain a seasonal
 %                       component.
-%               model.X  = explanatory variabels. Matrix of size
+%               model.X  = explanatory variables. Matrix of size
 %                       (length(y)+nfore)-by-nexpl.
 %                       If model.X is a matrix of size (length(y)+nfore)-by-nexpl, it
 %                       contains the values of nexpl extra covariates which
@@ -164,7 +164,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %               Data Types - double
 %
 %       plots : Plots on the screen. Scalar.
-%               If plots == 1 a plot with the real time series  with fitted
+%               If plots == 1 a plot with the real time series with fitted
 %               values and forecasts (with confidence bands) will appear on
 %               the screen. This plot is tagged forecastTS.
 %               The default value of plot is 0, that is no plot is shown on
@@ -211,7 +211,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %               Data Types - Character
 %
 %  dispresults : Display results of final fit. Boolean. If dispresults is
-%               true,  labels of coefficients, estimated coefficients,
+%               true, labels of coefficients, estimated coefficients,
 %               standard errors, tstat and p-values are shown on the
 %               screen in a fully formatted way. The default value of
 %               dispresults is false.
@@ -244,7 +244,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                outFORE.XAR = vector of length (length(y)+nfore)
 %                   containing the effect of the explanatory variables (Xexpl).
 %                   If this component is not present, it is equal to 0.
-%                outFORE.confband  = matrix of size (length(y)+nfore)-by-2
+%                outFORE.confband = matrix of size (length(y)+nfore)-by-2
 %                   containing lower and upper confidence bands of the
 %                   forecasts. The confidence level of the bands is
 %                   specified in input parameter conflev. Note that the
@@ -335,7 +335,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     % A time series of 100 observations is simulated from a model which
     % contains a quadratic trend, a seasonal component with two harmonics
     % no explanatory variables and a level shift in position 30 with size
-    % 5000 and a signal to noise ratio egual to 20
+    % 5000 and a signal to noise ratio equal to 20
     close all
     rng(1)
     model=struct;
@@ -519,7 +519,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.ARIMAX=true;
     T=100;
     out=simulateTS(T,'model',model,'plots',1);
-    % Fit a model imposing linear trend, sesonal component and AR(2)
+    % Fit a model imposing linear trend, seasonal component and AR(2)
     y=out.y;
     nfore=20;
     Xall=1e+2*randn(T+nfore,1);
@@ -555,7 +555,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     T=150;
     out=simulateTS(T,'model',model,'plots',1);
     yall=out.y;
-    % Fit a model imposing linear trend, sesonal component and AR(2)
+    % Fit a model imposing linear trend, seasonal component and AR(2)
     y=out.y(1:100);
     nfore=50;
     model=struct;
@@ -653,7 +653,7 @@ end
 model = modeldef;
 
 % Get model parameters
-trend    = model.trend;       % get kind of  trend
+trend    = model.trend;       % get kind of trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
 
@@ -698,7 +698,7 @@ if seasonal >0
     for j=1:seasonal
         Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
     end
-    % Remark: when s is even the sine term disapperas for j=s/2 and so the
+    % Remark: when s is even the sine term disappears for j=s/2 and so the
     % maximum number of trigonometric terms is s-1
     if seasonal==(s/2)
         Xseaso=Xseaso(:,1:end-1);
@@ -772,7 +772,7 @@ betaout=outEST.B(:,1);
 if length(betaout)~=p
     disp('Warning: number of supplied regression parameters is not in agreement with those of input structure model')
     disp(['Number of supplied regression parameters=' num2str(length(betaout))])
-    disp(['Number of parameters in input strcuture model=' num2str(p)])
+    disp(['Number of parameters in input structure model=' num2str(p)])
     disp('...')
     error('FSDA:forecast:WrongInput','Wrong input model')
 end
@@ -800,7 +800,7 @@ if length(ARp)>1 || ARp>0
     bARp=betaout(ntrend+nseaso+1:ntrend+nseaso+length(ARp));
     % For the forecast use previous estimated values if the autoregressive
     % coefficients multiply y_{n+1}, y_{n+2} ... of real values of the time
-    % series if the autoregressive cofficients multiply y_{n}, y_{n-1} ..
+    % series if the autoregressive coefficients multiply y_{n}, y_{n-1} ..
     for i=1:nfore
         for j=1:length(ARp)
             lagj=ARp(j);
@@ -817,9 +817,9 @@ else
 end
 
 % Impose the sum to 0 constraint for the different underlying components of
-% the times seris in the interval 1:n-mod(n,s). For example if n=52 and
-% s=12 (monthly time series) we impose the sum to zer constraint for the
-% underlyng components for the first 4 years. In this case n-mod(n,s)=48
+% the times series in the interval 1:n-mod(n,s). For example if n=52 and
+% s=12 (monthly time series) we impose the sum to zero constraint for the
+% underlying components for the first 4 years. In this case n-mod(n,s)=48
 Tround=n-mod(n,s);
 
 if ~isempty(yhatseaso) && yhatseaso(1)~=0
@@ -861,7 +861,7 @@ end
 yhattrend=yhattrend+yhatseasoMEAN+yhatXARMEAN+yhatXexplMEAN+yhatlshiftMEAN;
 
 % The if which follows is just to insert inside yhatXAR(n+1:end) the
-% remaning part of the decomposition
+% remaining part of the decomposition
 if ARpresent==true
     yhatXAR(n+1:end)= yhat(n+1:end)-yhattrend(n+1:end)-yhatseasoFORE-yhatlshiftFORE-yhatXexplFORE;
 end
@@ -1047,7 +1047,7 @@ figure
     hold('on')
     plot(datesnumeric(1:n),y,'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
 
-    %                plot(datesnumeric, yall, 'b','LineWidth',lwd)
+    % plot(datesnumeric, yall, 'b','LineWidth',lwd)
     plot(datesnumeric,outFORE.signal,'k--','LineWidth',lwd)
     plot(datesnumeric,outFORE.confband,'r--','LineWidth',lwd)
     datetick('x','mmm-yy');
@@ -1170,7 +1170,7 @@ end
         % * theta is vector or matrix of parameter values. If a matrix, each row
         %   represents a different group or observation (see "Grouping Note" below)
         %   and each column represents a different model parameter.
-        % * DerivStep (optional) controls the finite differencing step size. It may
+        % * DerivStep (optional) controls the finite difference step size. It may
         %   be empty, scalar, or a vector of positive numbers with the number of
         %   elements equal to the number model parameters.
         % * y0 (optional) is the model function evaluated at theta. A value of []
@@ -1222,7 +1222,7 @@ end
         end
 
         % When there is only one group, ensure that theta is a row vector so
-        % that vectoriation works properly. Also ensure that the underlying
+        % that vectorization works properly. Also ensure that the underlying
         % function is called with an input with the original size of theta.
         thetaOriginalSize = size(theta);
         theta = reshape(theta, 1, []);

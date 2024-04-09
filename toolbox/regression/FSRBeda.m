@@ -40,10 +40,10 @@ function [out] = FSRBeda(y, X, varargin)
 %               (Identity matrix); tau0=1/1e+6 (very large value for the
 %               prior variance, that is a very small value for tau0); n0=1 
 %               (just one prior observation). 
-%               Strucure bayes contains the following fields:
+%               Structure bayes contains the following fields:
 %               bayes.beta0 =  p-times-1 vector containing prior mean of $\beta$
 %               bayes.R  =     p-times-p positive definite matrix which can be
-%                              interepreted as $X_0'X_0$ where $X_0$ is a n0 x p matrix
+%                              interpreted as $X_0'X_0$ where $X_0$ is a n0 x p matrix
 %                              coming from previous experiments (assuming that the
 %                              intercept is included in the model)
 %               bayes.tau0 =   scalar. Prior estimate of $\tau=1/ \sigma^2=a_0/b_0$. 
@@ -60,16 +60,16 @@ function [out] = FSRBeda(y, X, varargin)
 %                  Data Types - double
 %
 %       bsb   : list of units forming the initial subset. Vector.
-%                if bsb=0 then the procedure starts with p
-%               units randomly chosen else if bsb is not 0 the search will
-%               start with m0=length(bsb). The default value of bsb is ''
-%               that is in the first step just prior information is used.
+%                If bsb=0, then the procedure starts with p
+%               units randomly chosen, else if bsb is not 0, the search will
+%               start with m0=length(bsb). The default value of bsb is '',
+%               that is, in the first step, just prior information is used.
 %               Example - bsb=[2 5 1];
 %               Data Types - double
 %
 %        init : Search initialization. Scalar. 
 %               scalar, specifies the point where to start monitoring
-%               required diagnostics. if init is not specified it will be
+%               required diagnostics. If init is not specified it will be
 %               set equal to :
 %                 p+1, if the sample size is smaller than 40;
 %                 min(3*p+1,floor(0.5*(n+p+1))), otherwise.
@@ -79,7 +79,7 @@ function [out] = FSRBeda(y, X, varargin)
 %      nocheck: Check input arguments. Boolean.
 %               Scalar. If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
+%               unchanged. In other words, the additional column of ones for
 %               the intercept is not added. As default nocheck=false. See
 %               routine chkinputRB.m for the details of the operations.
 %               Example - 'nocheck',true 
@@ -126,7 +126,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               last column = units forming subset in the final step (all
 %               units).
 %   out.mdrB=     n-init x 3 matrix which contains the monitoring of Bayesian
-%               minimum deletion residual or (m+1)ordered residual  at each
+%               minimum deletion residual or (m+1)ordered residual at each
 %               step of the forward search. 
 %               1st col = fwd search index (from init to n-1); 
 %               2nd col = minimum deletion residual; 
@@ -143,7 +143,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               1st col = fwd search index (from init to n); 
 %               2nd col = monitoring of Cook distance. 
 %  out.beta1 =  (n-init+1) x (p+1) matrix containing the monitoring of
-%               posterior mean of $\beta$ (regression coefficents)
+%               posterior mean of $\beta$ (regression coefficients)
 %               $\beta_1 = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$
 %    out.Gam    =  (n-init+1) x 3 matrix containing: 
 %               1st col = fwd search index (from init to n); 
@@ -179,7 +179,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               Bhpd(:,:,1) = lower and upper HPDI of first element of
 %               $\beta_1$ (posterior estimate of $\beta$); 
 %               ...; 
-%               Bhpd(:,:,p) = lower and upper HPDI of  last element
+%               Bhpd(:,:,p) = lower and upper HPDI of last element
 %               of $\beta_1$  (posterior estimate of $\beta$). 
 %   out.tau1HPD =  (n-init+1) x 3 containing HPDI for $\tau_1$. 
 %               1st col = fwd search index (from init to n); 
@@ -190,7 +190,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               2nd col = lower value of HPDI; 
 %               3rd col = upper value of HPDI. 
 %  out.postodds =   (n-init+1)-by-(p+1) matrix which contains posterior odds for $\beta_j=0$. 
-%               For example the posterior odd of $\beta_0=0$ is p(y| model which contains
+%               For example, the posterior odd of $\beta_0=0$ is p(y| model which contains
 %               all expl variables except the one associated with beta0) divided by
 %               p(y| model which contains all expl variables). 
 %               1st col = fwd search index (from init to n); 
@@ -199,7 +199,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               (p+1) col = posterior odd for $beta_p$. 
 % out.modelprob =  (n-init+1)-by-(p+1) matrix which contains
 %               posterior model probability of the model which excludes
-%               variable j. For example if modelprob(j)= 0.28, that is if
+%               variable j. For example, if modelprob(j)= 0.28, that is if
 %               the probability of the model which does not contain
 %               variable j is equal to 0.28, it means that there is a 28%
 %               chance that beta_j=0 and a 72% chance that it is not. 
@@ -213,8 +213,8 @@ function [out] = FSRBeda(y, X, varargin)
 %               included in the subset at each step of the fwd search. 
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
-%               subset but not in the old one Un(1,2) for example contains
-%               the unit included in step init+1 Un(end,2) contains the
+%               subset but not in the old one. Un(1,2), for example, contains
+%               the unit included in step init+1. Un(end,2) contains the
 %               units included in the final step of the search.
 %     out.y=        A vector with n elements that contains the response
 %               variable which has been used.
@@ -303,14 +303,14 @@ function [out] = FSRBeda(y, X, varargin)
 %{
     %% Plot posterior estimates of beta and sigma2.
     % Plot posterior estimates of beta and sigma2 in the interval (subset size) [20 125].
-    % In this example for the house price data we monitor the forward plots
-    % of the parameters of the linear model adding 95% and 99% HPD
+    % In this example, for the house price data, we monitor the forward plots
+    % of the parameters of the linear model, adding 95% and 99% HPD
     % regions. The first 8 panels refer to the elements of $\beta_1$
     % and the bottom right-hand panel refer to the estimate of sigma2.
-    % The horizontal lines correspond to prior values    
+    % The horizontal lines correspond to prior values.    
     % The vertical lines refer to the step prior to the introduction of the first outlier
     % init = point to start monitoring diagnostics along the FS
-    % run routine FSRB in order to find the outliers automatically
+    % run routine FSRB in order to find the outliers automatically.
     load hprice.txt;
     
     % setup parameters
@@ -436,7 +436,7 @@ function [out] = FSRBeda(y, X, varargin)
     % of the parameters of the linear model adding 95% and 99% HPD
     % regions. The first 8 panels refer to the elements of $\beta_1$
     % and the bottom right-hand panel refer to the estimate of sigma2.
-    % The horizontal lines correspond to prior values    
+    % The horizontal lines correspond to prior values.  
     % The vertical lines refer to the step prior to the introduction of the first outlier
     % init = point to start monitoring diagnostics along the FS
     % run routine FSRB in order to find the outliers automatically
@@ -731,7 +731,7 @@ else
             X=cat(2,ones(n,1),X); % add column of ones
         end
     else
-        % If the user has not specified a value for the intercept than the
+        % If the user has not specified a value for the intercept, then the
         % column of ones is automatically attached
         X=cat(2,ones(n,1),X); % add column of ones
     end
@@ -873,7 +873,7 @@ msr=[(init:n)'  zer1(:,1)];
 coo=[((init+1):n)'  NaN(n-init,1)];
 
 
-% Matrix RES will contain the resisuals for each unit in each step of the forward search
+% Matrix RES will contain the residuals for each unit in each step of the forward search
 % The first row refers to the residuals of the first unit
 RES=NaN(n,n-init+1);
 RES(:)=NaN;
@@ -888,7 +888,7 @@ BB=RES;
 % The first row is associated with the first unit
 LEV=RES;
 
-%  Un= Matrix whose 2nd column:11th col contain the unit(s) just included
+%  Un= Matrix whose 2nd column:11th col contains the unit(s) just included
 Un=NaN(n-init,10);
 Un=[(init+1:n)' Un];
 
@@ -902,8 +902,8 @@ sigma21HPD=tau1HPD;
 % postodds will contain (n-init+1)-by-(p+1) matrix which contains posterior
 % odds for betaj=0
 postodds=beta1;
-% modelprob will contain (n-init+1)-by-(p+1) matrix which contains which
-% contains posterior model probability of the model which excludes variable j.
+% modelprob will contain (n-init+1)-by-(p+1) matrix which contains
+% posterior model probability of the model which excludes variable j.
 modelprob=beta1;
 
 %% Start of the forward search
@@ -940,8 +940,8 @@ for mm=ini0:n
         
         % Store leverage for the units belonging to subset
         % hi contains leverage for all units
-        % It is a proper leverage for the units belonging to susbet
-        % It is a pseudo leverage for the unit not belonging to the subset
+        % It is a proper leverage for the units belonging to subset
+        % It is a pseudo leverage for the units not belonging to the subset
         mAm=bayes.covbeta1;
         
         mmX=bayes.tau1*mAm;
@@ -953,7 +953,7 @@ for mm=ini0:n
         % Store cov matrix of beta
         covbeta1(:,:,mm-init+1)=bayes.covbeta1;
         
-        % Store paramters a and b associated with the posterior estimate of tau
+        % Store parameters a and b associated with the posterior estimate of tau
         Gam(mm-init+1,2:3)=[bayes.a1 bayes.b1];
         
         
@@ -1028,7 +1028,7 @@ for mm=ini0:n
         oldbsb=bsb;
         
         % order the r_i and include the smallest among the units
-        %  forming the group of potential outliers
+        % forming the group of potential outliers
         % ord=sortrows(r,2);
         [~,ord]=sort(r(:,2));
         

@@ -4,14 +4,14 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %
 %<a href="matlab: docsearchFS('FSRBr')">Link to the help function</a>
 %
-%   FSRBr uses the units not declared as outliers by  FSRB to produce a robust fit.
+%   FSRBr uses the units not declared as outliers by FSRB to produce a robust fit.
 %   The units whose residuals exceeds the threshold determined by option
 %   alpha are declared as outliers. Moreover, it is possible in option
 %   R2th to modify the estimate of sigma2 which is used to declare
 %   the outliers. This is useful when there is almost a perfect fit in the
 %   data, the estimate of the error variance is very small and therefore
 %   there is the risk of declaring as outliers very small deviations from
-%   the robust fit. In this case the estimate of sigma2 is corrected in
+%   the robust fit. In this case, the estimate of sigma2 is corrected in
 %   order to achieve a value of R2 equal to R2th.
 %
 %
@@ -46,7 +46,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %                 Data Types - double
 %
 %       R2th : R2 threshold. Scalar. Scalar which defines the value R2 does
-%              have to exceed. For example if R2 based on good observations
+%              have to exceed. For example, if R2 based on good observations
 %              is 0.92 and R2th is 0.90 the estimate of the variance of the
 %              residuals which is used to declare the outliers is adjusted
 %              in order to have a value of R2 which is equal to 0.90.
@@ -85,7 +85,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %               bayes.R    =  p-times-p positive definite matrix which can be
 %                       interpreted as X0'X0 where X0 is a n0 x p matrix
 %                       coming from previous experiments (assuming that the
-%                       intercept is included in the model.
+%                       intercept is included in the model).
 %
 %               The prior distribution of $\tau_0$ is a gamma distribution with
 %               parameters $a_0$ and $b_0$, that is
@@ -162,7 +162,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %   nocheck : Check input arguments. Boolean.
 %                    If nocheck is equal to 1 no check is performed on
 %                    matrix y and matrix X. Notice that y and X are left
-%                    unchanged. In other words the additional column of ones
+%                    unchanged. In other words, the additional column of ones
 %                     for the intercept is not added. As default nocheck=0.
 %                   Example - 'nocheck',true
 %                   Data Types - boolean
@@ -232,14 +232,14 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %       ylim   :   Control y scale in plot. Vector.
 %                   vector with two elements controlling minimum and maximum
 %                 on the y axis. Default value is '' (automatic scale)
-%               Example - 'ylim','[0,10]' sets the minim value to 0 and the
+%               Example - 'ylim','[0,10]' sets the minimum value to 0 and the
 %               max to 10 on the y axis
 %               Data Types - double
 %
 %       xlim   :   Control x scale in plot. Vector.
 %                  vector with two elements controlling minimum and maximum
 %                 on the x axis. Default value is '' (automatic scale)
-%               Example - 'xlim','[0,10]' sets the minim value to 0 and the
+%               Example - 'xlim','[0,10]' sets the minimum value to 0 and the
 %               max to 10 on the x axis
 %               Data Types - double
 %
@@ -251,7 +251,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %                 - a scalar smaller than 1 which specifies the confidence
 %                   level for a signal and a stopping rule based on the
 %                   comparison of the minimum MD with a
-%                   Bonferroni bound. For example if bonflev=0.99 the
+%                   Bonferroni bound. For example, if bonflev=0.99 the
 %                   procedure stops when the trajectory exceeds for the
 %                   first time the 99% bonferroni bound.
 %                 - A scalar value greater than 1. In this case the
@@ -543,7 +543,7 @@ yb=y(ListIn);
 % Correct the value of the deviance of residuals (numerator of S2) if R2
 % is greater than R2th
 [S2b,R2b]=R2correction(yb,Xb,beta,bayes,intercept,R2th);
-% res=raw residuals for all observartions
+% res=raw residuals for all observations
 res=y-X*beta;
 % resb= raw residuals for good observations
 resb=res(ListIn);
@@ -571,7 +571,7 @@ hi=sum((Xb/mAm).*Xb,2);
 studres2(ListIn)=((resb.^2)./(1-hi));
 studres2=studres2/S2b;
 
-% The final outliers are the units declared as outiers by FSR for which
+% The final outliers are the units declared as outliers by FSR for which
 % observations r(ncl) is greater than the confidence threshold
 if fullreweight
     % rncl boolean vector which contains true for the unit whose

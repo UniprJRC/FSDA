@@ -118,7 +118,7 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -379,7 +379,7 @@ Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 %% Start of the forward search
 
     % ij = index which is linked with the columns of matrix BB. During the
-    % search every time a subset is stored inside matrix BB ij icreases by one
+    % search every time a subset is stored inside matrix BB ij increases by one
     ij=1;
 
 for mm=ini0:n

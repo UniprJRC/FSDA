@@ -86,7 +86,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -98,7 +98,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %               More precisely:
 %               BB(:,1) contains the units forming subset in step bsbsteps(1);
 %               ....;
-%               BB(:,end) contains the units forming subset in step  bsbsteps(end);
+%               BB(:,end) contains the units forming subset in step bsbsteps(end);
 %               Row 1 of matrix BB is referred to unit 1;
 %               ......;
 %               Row n of matrix BB is referred to unit n;
@@ -163,8 +163,8 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
     xlabel('Subset size m');
     ylabel('Monitoring units plot');
     % The plot, which monitors the units belonging to subset in each step of
-    % the forward search shows that apart from unit 11 which enters the
-    % search in step m=78 all the other contaminated units enter the search
+    % the forward search, shows that apart from unit 11, which enters the
+    % search in step m=78, all the other contaminated units enter the search
     % in the last 19 steps.
 
     % if we consider the seed state=500, we obtain a plot showing that the
@@ -357,7 +357,7 @@ bsbsteps=options.bsbsteps;
 % selected steps) of the forward search. The first column contains
 % information about units forming subset at step init1.
 if isempty(bsbsteps)
-    % Default for vector bsbsteps which indicates for which steps of the fwd
+    % Default for vector bsbsteps, which indicates for which steps of the fwd
     % search units forming subset have to be saved
     if n<=5000
         bsbsteps = (init:1:n)';
@@ -399,7 +399,7 @@ boobsbsteps(bsbsteps)=true;
 %  included.
 Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 
-% The last correctly computed beta oefficients
+% The last correctly computed beta coefficients
 blast=NaN(p,1);
 
 % opts is a structure which contains the options to use in linsolve
@@ -459,7 +459,7 @@ else
         if NoRankProblem  % rank is ok
             blast=b;
         else
-            b=blast;    % in case of rank problem, the last orrectly computed coefficients are used
+            b=blast;    % in case of rank problem, the last correctly computed coefficients are used
             if coder.target('MATLAB')
                 warning('FSDA:FSRbsb:NoFullRank','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
             end

@@ -90,14 +90,14 @@ function [out]=FSR(y,X,varargin)
 %
 %
 %       lms     : Criterion to use to find the initial
-%                 subset to initialize the search. Scalar,  vector or structure.
+%                 subset to initialize the search. Scalar, vector or structure.
 %                 lms specifies the criterion to use to find the initial
 %                 subset to initialize the search (LMS, LTS with
 %                 concentration steps, LTS without concentration steps
 %                 or subset supplied directly by the user).
 %                 The default value is 1 (Least Median of Squares
 %                 is computed to initialize the search). On the other hand,
-%                 if the user wants to initialze the search with LTS with
+%                 if the user wants to initialize the search with LTS with
 %                 all the default options for concentration steps then
 %                 lms=2. If the user wants to use LTS without
 %                 concentration steps, lms can be a scalar different from 1
@@ -112,7 +112,7 @@ function [out]=FSR(y,X,varargin)
 %                 contains the list of units forming the initial subset. For
 %                 example, if the user wants to initialize the search
 %                 with units 4, 6 and 10 then lms=[4 6 10];
-%                 2) lms is a struct which contains a field named bsb which
+%                 2) lms is a struct that contains a field named bsb which
 %                 contains the list of units to initialize the search. For
 %                 example, in the case of simple regression through the
 %                 origin with just one explanatory variable, if the user
@@ -148,7 +148,7 @@ function [out]=FSR(y,X,varargin)
 %                 Data Types - double
 %
 %  threshoutX  : threshold to bound the effect of high leverage units.
-%                empty value (default) or scalar equal to 1 or structure.
+%                Empty value (default) or scalar equal to 1 or structure.
 %               If the design matrix X contains several high leverage units
 %               (that is units which are very far from the bulk of the
 %               data), it may happen that the best subset of LXS may include some
@@ -161,24 +161,24 @@ function [out]=FSR(y,X,varargin)
 %               using a Bonferronized confidence level of 0.99
 %               are removed from the list of candidate subsets to find the
 %               LXS solution.
-%               2) imposes the contrainst that $h_i(m^*)$
+%               2) imposes the constraint that $h_i(m^*)$
 %               cannot exceed $10 \times p/m$.
 %               If threshoutX is a structure, it contains the following
 %               fields:
 %               threshoutX.bonflevoutX = specifies the Bonferronized
 %               confidence level to be used to find the outliers in the X
-%               space. If this field is not present a 99 per cent
+%               space. If this field is not present, a 99 percent
 %               confidence level is used.
 %               threshoutX.threshlevoutX = specifies the threshold to bound
 %               the effect of high leverage units in the computation of
 %               deletion residuals. In the computation of
 %               the quantity $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$,
-%               $i \notin S^{(m)}_*$, units which very far from the bulk of
+%               $i \notin S^{(m)}_*$, units which are very far from the bulk of
 %               the data (represented by $X(m^*)$) will have a huge value
-%               of $h_i(m^*)$ and consequently of the deletion residuals.
+%               of $h_i(m^*)$ and consequently, the deletion of residuals.
 %               In order to tackle this problem it is possible to put a
 %               bound to the value of $h_i(m^*)$. For example
-%               threshoutX.threshlevoutX=r imposes the contrainst that $h_i(m^*)$
+%               threshoutX.threshlevoutX=r imposes the constraint that $h_i(m^*)$
 %               cannot exceed $r \times p/m$. If this field is not present
 %               the default threshold of 10 is imposed.
 %               Example - 'threshoutX',1
@@ -329,7 +329,7 @@ function [out]=FSR(y,X,varargin)
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -394,12 +394,12 @@ function [out]=FSR(y,X,varargin)
     % thresholds. More precisely, the message inside the graph informs that
     % the signal took place in step 81 because the value of minimum deletion
     % residual in this step was greater than 99.999% threshold.
-    % Once a signal takes place the envelopes are resuperimposed until a
+    % Once a signal takes place, the envelopes are resuperimposed until a
     % stopping rule is fulfilled.
     % The procedure of resuperimposing envelopes in this case stops when
     % n = 85, the first time in which we have a value of rmin(m) for
-    % $n>=m^\dagger-1$ greater than the 99% threshold. The group can
-    % therefore be considered as homogeneous up to when we include 84 units.
+    % $n>=m^\dagger-1$ greater than the 99% threshold. The group can,
+    % therefore, be considered as homogeneous up to when we include 84 units.
 %}
 
 %{
@@ -490,7 +490,7 @@ function [out]=FSR(y,X,varargin)
     % Example of the use of option threshoutX.
     % In this example a set of remote units is added to a cloud of points.
     % The purpose of this example is to show that in presence of units very far
-    % from the bulk of th data (bad or good elverage points) it is necessary to
+    % from the bulk of the data (bad or good leverage points) it is necessary to
     % bound their effect putting a constraint on their leverage hi=xi'(X'X)xi
     rng('default')
     rng(10000)
@@ -510,11 +510,11 @@ function [out]=FSR(y,X,varargin)
     xylim=axis;
     ylabel('mdr')
     title('FS without bound on the leverage')
-    % threshoutX is passed as astructure
+    % threshoutX is passed as a structure
     threshoutX=struct;
     threshoutX.threshlevoutX=5;
     % Use the instruction below if you wish to change the confidence level to
-    % be used to find outlierd in the X space
+    % be used to find outliers in the X space
     % threshoutX.bonflevoutX=0.99
     outWithLevConstr=FSR(yall,Xall,'threshoutX',threshoutX,'msg',0,'ylim',[0 5]);
     title('FS with bound on the leverage')
@@ -650,9 +650,9 @@ else
     error('FSDA:FSR:WrongInputOpt','threshoutX can be empty a scalar equal to 1 or a struct.');
 end
 
-% Necessary for MATLAb C Coder initialization
+% Necessary for MATLAB C Coder initialization
 % Initialize constr as a column vector of variable size whose elements
-% are greater than n is such a way that no unit is constrained to enter the final steps
+% are greater than n in such a way that no unit is constrained to enter the final steps
 constr=((n+1):2*n)';
 mdrFlag=true;
 
