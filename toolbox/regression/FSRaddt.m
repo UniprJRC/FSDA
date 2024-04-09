@@ -42,7 +42,7 @@ function [out]=FSRaddt(y,X,varargin)
 %                       Example - 'h',round(n*0,75)
 %                       Data Types - double
 %
-%       nsamp   :       Number of subsample which will be extracted to find the
+%       nsamp   :       Number of subsamples which will be extracted to find the
 %                       robust estimator. Scalar.
 %                       If nsamp=0 all subsets will be
 %                       extracted. They will be (n choose p). Remark: if the
