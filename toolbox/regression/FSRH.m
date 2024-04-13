@@ -60,7 +60,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %  typeH:    Parametric function to be used in the skedastic equation.
 %               Character or String.
 %               If typeH is 'art' (default) than the skedastic function is
-%               modeled as follows
+%               modelled as follows
 %               \[
 %               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
 %                           \cdots + \gamma_{r} Z(i,r)))
