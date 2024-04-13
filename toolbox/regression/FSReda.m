@@ -20,8 +20,8 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               (rows) with missing or infinite values will automatically
 %               be excluded from the computations.
 %   bsb :       list of units forming the initial
-%               subset. Vector or scalar. If bsb=0 (default) then the procedure starts with p
-%               units randomly chosen else if bsb is not 0 the search will
+%               subset. Vector or scalar. If bsb=0 (default), then the procedure starts with p
+%               units randomly chosen, else if bsb is not 0, the search will
 %               start with m0=length(bsb).
 %
 % Optional input arguments:
@@ -35,7 +35,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %
 % init :      Search initialization. Scalar.
 %             It specifies the point where to initialize the search
-%             and start monitoring required diagnostics. if init is not
+%             and start monitoring required diagnostics. If init is not
 %             specified it will be set equal to :
 %             p+1, if the sample size is smaller than 40;
 %             min(3*p+1,floor(0.5*(n+p+1))), otherwise.
@@ -51,7 +51,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %             Data Types - boolean
 %
 %  nocheck:  Check input arguments. Boolean.
-%            If nocheck is equal to true no check is performed on
+%            If nocheck is equal to true, no check is performed on
 %            matrix y and matrix X. Notice that y and X are left
 %            unchanged. In other words the additional column of ones for
 %            the intercept is not added. As default nocheck=false. The
@@ -111,7 +111,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               last column = units forming subset in the final step (all
 %               units).
 %   out.mdr=        n-init x 3 matrix which contains the monitoring of minimum
-%               deletion residual or (m+1)ordered residual  at each step of
+%               deletion residual or (m+1)ordered residual at each step of
 %               the forward search:
 %               1st col = fwd search index (from init to n-1);
 %               2nd col = minimum deletion residual;
@@ -143,7 +143,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               estimated of $\sigma^2$ at step m is divided by the
 %               consistency factor (to make the estimate asymptotically
 %               unbiased).
-%               5th col = monitoring of F test.  Note that an asymptotic
+%               5th col = monitoring of F test. Note that an asymptotic
 %               unbiased estimate of sigma2 is used.
 %   out.coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search:
@@ -158,8 +158,8 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               included in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
-%               subset but not in the old one Un(1,2) for example contains
-%               the unit included in step init+1 Un(end,2) contains the
+%               subset but not in the old one. Un(1,2), for example, contains
+%               the unit included in step init+1. Un(end,2) contains the
 %               units included in the final step of the search.
 %  out.betaINT = Confidence intervals for the elements of $\beta$.
 %                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D array.
@@ -175,7 +175,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %                 The last two columns contain the lower
 %                 and upper confidence limits associated with conflev(end).
 %
-%                 For example betaint(:,3:4,5) contain the lower and upper
+%                 For example, betaint(:,3:4,5) contain the lower and upper
 %                 confidence limits for the fifth element of beta using
 %                 confidence level specified in the second element of input
 %                 option conflev.
@@ -199,7 +199,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               for the search at each step.
 %               Present only if wREML == true.
 %               n x (n-init+1) = matrix containing the monitoring of
-%               singlular REML weights:
+%               singular REML weights:
 %               1st row = weight for first unit;
 %               ...;
 %               nth row = weight for nth unit.
@@ -589,12 +589,12 @@ blast=NaN(p,1);
 % 3rd col = R^2
 % 4th col = (\sum e_i^2 / (m-p)) / (consistency factor) to make the
 % estimate asymptotically unbiased
-% 5th col = F test (based on unbiased estimate of sigma2
+% 5th col = F test (based on unbiased estimate of sigma2)
 S2=[(init:n)' NaN(n-init+1,4)];
 
 % mdr= (n-init) x 3 matrix
 % 1st column = fwd search index
-% 2nd col min deletion residual among observerations non belonging to the
+% 2nd column deletion residual among observations non belonging to the
 % subset
 % 3rd column (m+1)-th ordered residual
 % They are stored with sign, that is the min deletion residual
@@ -613,7 +613,7 @@ coo=[((init+1):n)'  NaN(n-init,6)];
 % kurtosis (3rd col) and normality test (4th col)
 nor=[(init:n)'  zer1];
 
-% Matrix RES will contain the resisuals for each unit in each step of the forward search
+% Matrix RES will contain the residuals for each unit in each step of the forward search
 % The first row refers to the residuals of the first unit
 RES=NaN(n,n-init+1);
 RES(:)=NaN;
@@ -733,8 +733,8 @@ else
 
                 % Store leverage for the units belonging to subset
                 % hi contains leverage for all units
-                % It is a proper leverage for the units belonging to susbet
-                % It is a pseudo leverage for the unit not belonging to the subset
+                % It is a proper leverage for the units belonging to subset
+                % It is a pseudo leverage for the units not belonging to the subset
                 mAm=Xb'*Xb;
 
                 mmX=inv(mAm);
@@ -794,7 +794,7 @@ else
                 SSRadd=yhatm'*yhatm/(p-1);
                 S2(mm-init+1,5)=SSRadd/S2(mm-init+1,4);
 
-                % Code to check the correct implementaion of the F test
+                % Code to check the correct implementation of the F test
                 %                 lm=fitlm(Xb(:,2:end),yb);
                 %                 [~,F] = coefTest(lm);
                 %                 Fchk=SSRadd/S2(mm-init+1,2);
@@ -906,7 +906,7 @@ else
 
                 % Compute highest posterior density interval for each value of
                 % Tinvcdf = required quantiles of T distribution
-                % consider just upper quantiles due to simmetry
+                % consider just upper quantiles due to symmetry
                 Tinvcdf=tinv(conflev,mm-p);
                 % IGinvcdf = required quantiles of Inverse Gamma distribution
                 Chi2invcdf=chi2inv([conflev 1-conflev],mm-p);

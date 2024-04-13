@@ -5,9 +5,10 @@ function [out]=FSRfan(y,X,varargin)
 %
 % The transformations for negative and positive responses were determined
 % by Yeo and Johnson (2000) by imposing the smoothness condition that the
-% second derivative of zYJ(λ) with respect to y be smooth at y = 0. However
+% second derivative of zYJ(λ) with respect to y be smooth at y = 0.
+% However,
 % some authors, for example Weisberg (2005), query the physical
-% interpretability of this constraint which is oftern violated in data
+% interpretability of this constraint, which is often violated in data
 % analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
 % Yeo-Johnson transformation to allow two values of the transformations
 % parameter: $\lambda_N$ for negative observations and $\lambda_P$ for
@@ -28,8 +29,8 @@ function [out]=FSRfan(y,X,varargin)
 % 4) the F test for the joint presence of the two constructed variables
 % described in points 2) and 3.
 % 4) the F likelihood ratio test based on the MLE of $\lambda_P$ and
-% $\lambda_N$. In this case the residual sum of squares of the null model
-% bsaed on a single trasnformation parameter $\lambda$ is compared with the
+% $\lambda_N$. In this case, the residual sum of squares of the null model
+% based on a single transformation parameter $\lambda$ is compared with the
 % residual sum of squares of the model based on data transformed data using
 % MLE of $\lambda_P$ and $\lambda_N$.
 %
@@ -38,7 +39,7 @@ function [out]=FSRfan(y,X,varargin)
 %
 %    y:         Response variable. Vector. A vector with n elements that
 %               contains the response
-%               variable.  It can be either a row or a column vector.
+%               variable. It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors') of dimension (n x
 %               p-1). Rows of X represent observations, and columns
@@ -63,7 +64,7 @@ function [out]=FSRfan(y,X,varargin)
 %                   Remember that BoxCox can be used just
 %                   if input y is positive. Yeo-Johnson family of
 %                   transformations does not have this limitation.
-%                   If family is 'YJpn' Yeo-Johnson family is applied but in
+%                   If family is 'YJpn', Yeo-Johnson family is applied, but in
 %                   this case it is also possible to monitor (in the output
 %                   arguments out.Scorep and out.Scoren) the score test
 %                   respectively for positive and negative observations.
@@ -105,12 +106,12 @@ function [out]=FSRfan(y,X,varargin)
 %                   Example - 'la',[-1 -0.5]
 %                   Data Types - double
 %
-%       lms     :   Criterion to use to find the initlal
+%       lms     :   Criterion to use to find the initial
 %                 subset to initialize the search. Scalar or Vector.
 %                 If lms=1 (default) Least Median of Squares is
 %                 computed, else Least trimmed of Squares is computed.
-%                 If, lms is matrix with size
-%                 p-1+intercept-by-length(la) it contains in column
+%                 If lms is matrix with size
+%                 p-1+intercept-by-length(la), it contains in column
 %                 j=1,..., length(la) the list of units forming the initial
 %                 subset for the search associated with la(j). In this last
 %                 case previous input option nsamp is ignored.
@@ -139,7 +140,7 @@ function [out]=FSRfan(y,X,varargin)
 %                   the robust estimator. Scalar.
 %                   If nsamp=0 all subsets will be extracted. They will be
 %                   (n choose p). Remark: if the number of all possible
-%                   subset is <1000 the default is to extract all subsets
+%                   subset is <1000, the default is to extract all subsets
 %                   otherwise just 1000. If nsamp is a matrix of size
 %                   r-by-p, it contains in the rows the subsets which sill
 %                   have to be extracted. For example, if p=3 and nsamp=[ 2
@@ -153,19 +154,19 @@ function [out]=FSRfan(y,X,varargin)
 %                parameters $\lambda_P$ and $\lambda_N$. Boolean.
 %                If scoremle is true it is possible to compute the
 %                likelihood ratio test. In this case the residual sum of
-%                squares of the null model bsaed on a single trasnformation
+%                squares of the null model based on a single transformation
 %                parameter $\lambda$ is compared with the residual sum of
 %                squares of the model based on data transformed data using
 %                MLE of $\lambda_P$ and $\lambda_N$. If scoremle is true it
 %                is possible through following option usefmin, to control
-%                the parameters of the optmization routine.
+%                the parameters of the optimization routine.
 %               Example - 'scoremle',true
 %               Data Types - logical
 %
 %    usefmin :  use solver to find MLE of lambda. Boolean or struct.
 %               This option takes effect only when input option 'family' is
 %               'YJpn'  or 'YJall'. If usefmin is true or usefmin is a
-%               struct it is possible to use MATLAB solvers fminsearch or
+%               struct, it is possible to use MATLAB solvers fminsearch or
 %               fminunc to find the maximum likelihood estimates of
 %               $\lambda_P$ and $\lambda_N$. The default value of usefmin
 %               is false that is solver is not used and the likelihood is
@@ -173,13 +174,13 @@ function [out]=FSRfan(y,X,varargin)
 %               If usefmin is a structure it may contain the following
 %               fields:
 %               usefmin.MaxIter = Maximum number of iterations (default is 1000).
-%               usefmin.TolX   = Termination tolerance for the parameters
+%               usefmin.TolX = Termination tolerance for the parameters
 %                   (default is 1e-7).
 %               usefmin.solver = name of the solver. Possible values are
 %                   'fminsearch' (default) and 'fminunc'. fminunc needs the
 %                   optimization toolbox.
 %               usefmin.displayLevel = amount of information displayed by
-%                   the algorithm. possible values are 'off' (displays no
+%                   the algorithm. Possible values are 'off' (displays no
 %                   information, this is the default), 'final' (displays
 %                   just the final output) and 'iter' (displays iterative
 %                   output to the command window).
@@ -201,7 +202,7 @@ function [out]=FSRfan(y,X,varargin)
 %                   Example - 'conflev',[0.9 0.95 0.99]
 %                   Data Types - double
 %
-%       FontSize:   font size of the labels of  the axes. Scalar.
+%       FontSize:   font size of the labels of the axes. Scalar.
 %                   Default value is 12.
 %                   Example - 'FontSize',20
 %                   Data Types - double
@@ -296,7 +297,7 @@ function [out]=FSRfan(y,X,varargin)
 %               score test for the joint presence of both constructed
 %               variables (associated with positive and negative
 %               observations) for each value of the transformation
-%               parameter.  In this case the reference distribution is the
+%               parameter. In this case the reference distribution is the
 %               $F$ with 2 and subset_size-p degrees of freedom.
 %               1st col = fwd search index (subset_size);
 %               2nd col = value of the score test in each step
@@ -310,7 +311,7 @@ function [out]=FSRfan(y,X,varargin)
 %               (score) likelihood ratio test for the joint presence of both constructed
 %               variables (associated with positive and negative
 %               observations) for each value of the transformation
-%               parameter.  In this case the reference distribution is the
+%               parameter. In this case the reference distribution is the
 %               $F$ with 2 and subset_size-p degrees of freedom.
 %               1st col = fwd search index (subset_size);
 %               2nd col = value of the score test in each step
@@ -321,8 +322,8 @@ function [out]=FSRfan(y,X,varargin)
 %               Note that this output is present only if input option
 %               scoremle is true
 %    out.laMLE = (n-init+1) x 2*length(la)+1 matrix containing the values of the
-%               maximum ikelihood estimate of laP and laN.
-%               Columns 2:3 are associated with  the search which has
+%               maximum likelihood estimate of laP and laN.
+%               Columns 2:3 are associated with the search which has
 %               ordered the data using to la(1);
 %               .........
 %               Columns 2*length(la):2*length(la)+1 are associated with
@@ -345,8 +346,8 @@ function [out]=FSRfan(y,X,varargin)
 %               associated with la(i).
 %               REMARK: in every step the new subset is compared with the old subset. Un
 %               contains the unit(s) present in the new subset but not in
-%               the old one Un(1,:) for example contains the unit included
-%               in step init+1 ... Un(end,2) contains the units included in the
+%               the old one. Un(1,:), for example, contains the unit included
+%               in step init+1 ... ; Un(end,2) contains the units included in the
 %               final step of the search
 %   out.class = 'FSRfan'.
 %  out.y      = A vector with n elements that contains the response
@@ -452,7 +453,7 @@ function [out]=FSRfan(y,X,varargin)
 
 %{
     %% Fan plot using fidelity cards data.
-    % In the example, la is the vector contanining the most common values
+    % In the example, la is the vector containing the most common values
     % of the transformation parameter.
     % Store the score test statistics for the specified values of lambda
     % and automatically produce the fan plot
@@ -461,18 +462,18 @@ function [out]=FSRfan(y,X,varargin)
     y=XX(:,end);
     nameX={'Number of visits', 'Age', 'Number of persons in the family'};
     X=XX(:,1:end-1);
-    % la = vector contanining the most common values of the transformation
+    % la = vector containing the most common values of the transformation
     % parameter
     la=[0 1/3 0.4 0.5];
     % Store the score test statistics for the specified values of lambda
     % and automatically produce the fan plot
     [out]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'plots',1,'lwd',3);
-    % The fan plot shows the even if the third root is the best value of the
-    % transformation parameter at the end of the search in earlier steps it
+    % The fan plot shows that even if the third root is the best value of the
+    % transformation parameter at the end of the search, in earlier steps it
     % lies very close to the upper rejection region. The best value of the
-    % transformation parameter seems to be the one associated with l=0.4
-    % which is always the confidence bands but at the end of search, due to
-    % the presence of particular observations it goes below the lower
+    % transformation parameter seems to be the one associated with l=0.4,
+    % which is always the confidence bands, but at the end of search, due to
+    % the presence of particular observations, it goes below the lower
     % rejection line.
 %}
 
@@ -497,7 +498,7 @@ function [out]=FSRfan(y,X,varargin)
 
 
 %{
-    %% Example of monitoring of score test for positive and negative obseravations.
+    %% Example of monitoring of score test for positive and negative observations.
     rng('default')
     rng(10)
     close all
@@ -571,7 +572,7 @@ function [out]=FSRfan(y,X,varargin)
 %}
 
 %{
-   %% Comparison of  F test based on constructed variables with F test based on MLE.
+   %% Comparison of F test based on constructed variables with F test based on MLE.
     rng('default')
     rng(100)
     close all
@@ -605,7 +606,7 @@ vvarargin=varargin;
 
 %% User options
 
-% If the number of all possible subsets is <1000 the default is to extract
+% If the number of all possible subsets is <1000, the default is to extract
 % all subsets, otherwise just 1000.
 ncomb=bc(n,p);
 nsamp=min(1000,ncomb);
@@ -807,7 +808,7 @@ opts.UT =false;
 for i=1:lla
     
     if BoxCox==1
-        % Construct transformed z according to power tansformation
+        % Construct transformed z according to power transformation
         if abs(la(i))<1e-8
             z=log(y);
         else
@@ -844,7 +845,7 @@ for i=1:lla
     yb=y(bsb);
     Xb=X(bsb,:);
     
-    % last correctly computed beta oefficients
+    % last correctly computed beta coefficients
     blast=NaN(p,1);
     
     if nocheck==false && (rank(Xb)~=p)
@@ -941,15 +942,15 @@ for i=1:lla
             
             if mm<n
                 
-                % store units forming old subset in vector oldbsb
+                % store units forming old subset in vector oldbsbT
                 oldbsbT=bsbT;
                 
                 % order the r_i and include the smallest among the units
-                %  forming the group of potential outliers
+                % forming the group of potential outliers
                 % ord=sortrows(r,2);
                 [~,ord]=sort(r(:,2));
                 
-                % bsb= units forming the new  subset
+                % bsb= units forming the new subset
                 bsb=ord(1:(mm+1),1);
                 
                 bsbT=zeron1;
@@ -963,7 +964,7 @@ for i=1:lla
                 if mm>=init
                     
                     % unit = vector containing units which just entered subset;
-                    % unit=setdiff(bsb,oldbsb);
+                    % unit=setdiff(bsb,oldbsbT);
                     % new instruction to find unit
                     unit=seq(bsbT & ~oldbsbT);
                     
@@ -1042,7 +1043,7 @@ if coder.target('MATLAB')
             plotp=plot(Scop(:,1),Scop(:,2:end),'LineWidth',lwd);
             set(plotp,{'LineStyle'},{'--'});
             % set(plotp,{'LineStyle'},slin(1:lla));
-            %  set(plotp,{'Color'}, ColorOrd(1:lla,:));
+            % set(plotp,{'Color'}, ColorOrd(1:lla,:));
             % Green color for positive values of y
             set(plotp,{'Color'},{'g'})
             
@@ -1110,7 +1111,7 @@ if coder.target('MATLAB')
         
         % FontSize = font size of the axes labels
         
-        % Add to the plot the labels for values of la Add the horizontal lines
+        % Add to the plot the labels for values of la. Add the horizontal lines
         % representing asymptotic confidence bands
         xlabel(labx,'Fontsize',FontSize);
         ylabel(laby,'Fontsize',FontSize);
@@ -1162,7 +1163,7 @@ if coder.target('MATLAB')
             % FontSize = font size of the axes labels
             FontSize =options.FontSize;
             
-            % Add to the plot the labels for values of la Add the horizontal lines
+            % Add to the plot the labels for values of la. Add the horizontal lines
             % representing asymptotic confidence bands
             xlabel(labx,'Fontsize',FontSize);
             ylabel(laby,'Fontsize',FontSize);
@@ -1225,7 +1226,7 @@ if coder.target('MATLAB')
                 % FontSize = font size of the axes labels
                 FontSize =options.FontSize;
                 
-                % Add to the plot the labels for values of la Add the horizontal lines
+                % Add to the plot the labels for values of la. Add the horizontal lines
                 % representing asymptotic confidence bands
                 xlabel(labx,'Fontsize',FontSize);
                 ylabel(laby,'Fontsize',FontSize);

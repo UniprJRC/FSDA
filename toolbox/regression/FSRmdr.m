@@ -35,11 +35,11 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 % bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
 %               non singular X. Scalar.
 %               This options controls what to do when rank(X(bsbm,:)) is
-%               smaller then number of explanatory variables.
-%               If bsbmfullrank = 1 (default is 1) these units (whose number
+%               smaller than number of explanatory variables.
+%               If bsbmfullrank = 1 (default is 1), these units (whose number
 %               is say mnofullrank) are constrained to enter the search in
-%               the final n-mnofullrank steps else the search continues
-%               using as estimate of beta at step m the estimate of beta
+%               the final n-mnofullrank steps, else the search continues
+%               using as an estimate of beta at step m the estimate of beta
 %               found in the previous step.
 %               Example - 'bsbmfullrank',1
 %               Data Types - double
@@ -47,7 +47,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %   bsbsteps :  Save the units forming subsets. Vector. It specifies for
 %               which steps of the fwd search it
 %               is necessary to save the units forming subsets. If bsbsteps
-%               is 0 we store the units forming subset in all steps. If
+%               is 0, we store the units forming subset in all steps. If
 %               bsbsteps=[] or omitted, the default is to store the units
 %               forming subset in all steps if n<=5000, else to store the
 %               units forming subset at steps init and steps which are
@@ -87,7 +87,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               If internationaltrade is true (default is false) residuals
 %               which have large of the final column of X (generally
 %               quantity) are reduced. Note that this guarantees that
-%               leverge units which have a large value of  X will tend to
+%               leverage units which have a large value of X will tend to
 %               stay in the subset. This option is particularly useful in
 %               the context of international trade data where we
 %               regress value (value=price*Q) on quantity (Q). In other
@@ -98,15 +98,15 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 %  msg  :       Level of output to display. Scalar. It controls whether to
 %               display or not messages about great interchange on the
-%               screen If msg==1 (default)
-%               messages are displayed on the screen
-%               else no message is displayed on the screen
+%               screen. If msg==1 (default),
+%               messages are displayed on the screen,
+%               else no message is displayed on the screen.
 %               Example - 'msg',1
 %               Data Types - double
 %
 %  nocheck:     Check input arguments. Boolean. If nocheck is equal to true no
 %               check is performed on matrix y and matrix X. Notice that y
-%               and X are left unchanged. In other words the additioanl
+%               and X are left unchanged. In other words, the additional
 %               column of ones for the intercept is not added. As default
 %               nocheck=false. The controls on h, alpha and nsamp still remain
 %               Example - 'nocheck',true
@@ -120,8 +120,8 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               the data (represented by $X(m^*)$) will have a huge value
 %               of $h_i(m^*)$ and consequently of the deletion residuals.
 %               In order to tackle this problem it is possible to put a
-%               bound to the value of $h_i(m^*)$. For example
-%               threshlevoutX=r imposes the contrainst that $h_i(m^*)$
+%               bound to the value of $h_i(m^*)$. For example,
+%               threshlevoutX=r imposes the constraint that $h_i(m^*)$
 %               cannot exceed $r \times p/m$. The default value of
 %               threshlevoutX is empty, which means that no threshold is
 %               imposed.
@@ -130,7 +130,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 
 %
 %  plots :      Plot on the screen. Scalar. If equal to one a plot of
-%               minimum deletion residual appears  on the screen with 1%,
+%               minimum deletion residual appears on the screen with 1%,
 %               50% and 99% confidence bands else (default) no plot is
 %               shown.
 %               Example - 'plots',1
@@ -149,7 +149,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               2nd col = minimum deletion residual.
 %               REMARK: if in a certain step of the search matrix is
 %               singular, this procedure checks how many observations
-%               produce a singular matrix. In this case mdr is a column
+%               produce a singular matrix. In this case, mdr is a column
 %               vector which contains the list of units for which matrix X
 %               is non singular.
 %  Un:          Units included in each step. Matrix.
@@ -158,7 +158,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -177,9 +177,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               n-th row has number n in correspondence of the steps in
 %                   which unit n is included inside subset and a missing
 %                   value for the other steps
-%               The size of matrix BB is n x (n-init+1) if option input
-%               bsbsteps is 0 else the size is n-by-length(bsbsteps).
-%  Bols:        OLS coefficents. Matrix.
+%               The size of matrix BB is n x (n-init+1), if option input
+%               bsbsteps is 0, else the size is n-by-length(bsbsteps).
+%  Bols:        OLS coefficients. Matrix.
 %               (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
@@ -191,7 +191,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 % More About:
 %
-%               Let $S^{(m)}_* \in \cal{M}$ be the  optimum subset of size $m$,
+%               Let $S^{(m)}_* \in \cal{M}$ be the optimum subset of size $m$,
 %               for which the matrix of regressors is $X(m^*)$. Least squares
 %               applied to this subset yields parameter estimates
 %               $\hat{\beta}(m^*)$ and $s^2(m^*)$, the mean square estimate of
@@ -213,14 +213,14 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}}  = \frac{e_{i}(m^*)} {
 %               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}},
 %               \end{equation}
-%               where $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$;  the leverage
+%               where $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$; the leverage
 %               of each observation depends on $S^{(m)}_*$. Let the observation
 %               nearest to those constituting $S^{(m)}_*$ be
 %               $i_{\mbox{min}}$ where
 %               \[
 %               i_{\mbox{min}} = \arg \min | r^*_i(m^*)| \; \mbox{for} \; i \notin S^{(m)}_*,
 %               \]
-%               the observation with the minimum absolute deletion  residual among
+%               the observation with the minimum absolute deletion residual among
 %               those not in $S^{(m)}_*$. This function computes
 %               $r_i^*(m^*)$ for $m^*=init, init+1, \ldots, n-1$.
 %
@@ -281,7 +281,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %{
     % Analyze units entering the search in the final steps.
     % Compute minimum deletion residual and analyze the units entering
-    % subset in each step of the fwd search (matrix Un).  As is well known,
+    % subset in each step of the fwd search (matrix Un). As is well known,
     % the FS provides an ordering of the data from those most in agreement
     % with a suggested model (which enter the first steps) to those least in
     % agreement with it (which are included in the final steps).
@@ -419,9 +419,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 
 %{
     %% Example of the use of option threshlevoutX.
-    % In this example a set of remote units is added to a cloud of points.
+    % In this example, a set of remote units is added to a cloud of points.
     % The purpose of this example is to show that in presence of units very far
-    % from the bulk of th data (bad or good elverage points) it is necessary to
+    % from the bulk of the data (bad or good leverage points) it is necessary to
     % bound their effect putting a constraint on their leverage hi=xi'(X'X)xi
     rng(10000)
     n=100;
@@ -832,7 +832,7 @@ else
             
             % If internationaltrade is true residuals which have large of
             % the final column of X (generally quantity) are reduced. Note
-            % that this guarantees that leverge units which have a large
+            % that this guarantees that leverage units which have a large
             % value of  X will tend to stay in the subset.
             % In other words, we use the residuals as if we were regressing
             % y/X (that is price) on the vector of ones.
@@ -842,7 +842,7 @@ else
                 [~,ord]=sort(r(:,2)./weight);
             end
             
-            % bsb= units forming the new  subset
+            % bsb= units forming the new subset
             bsb=ord(1:(mm+1),1);
             
             bsbT=zeron1;

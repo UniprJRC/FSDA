@@ -39,11 +39,11 @@ function [out]=FSRH(y,X,Z,varargin)
 %               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))
 %               \]
-%               Therefore, if for example the explanatory variables
+%               Therefore, if, for example, the explanatory variables
 %               responsible for heteroscedasticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax:
+%               of matrix X, it is possible to use both the syntax:
 %                    FSRH(y,X,X(:,[3 5]))
-%               or the sintax:
+%               or the syntax:
 %                    FSRH(y,X,[3 5])
 %
 %
@@ -60,7 +60,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %  typeH:    Parametric function to be used in the skedastic equation.
 %               Character or String.
 %               If typeH is 'art' (default) than the skedastic function is
-%               modelled as follows
+%               modeled as follows
 %               \[
 %               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
 %                           \cdots + \gamma_{r} Z(i,r)))
@@ -78,7 +78,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %           h   : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar.
 %                   h is an integer greater or
-%                 equal than p but smaller then n. Generally if the purpose
+%                 equal than p but smaller then n. Generally, if the purpose
 %                 is outlier detection h=[0.5*(n+p+1)] (default value). h
 %                 can be smaller than this threshold if the purpose is to find
 %                 subgroups of homogeneous observations.
@@ -91,22 +91,22 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 They will be (n choose p).
 %                 Example - 'nsamp',1000
 %                 Data Types - double
-%                 Remark: if the number of all possible subset is <1000 the
+%                 Remark: if the number of all possible subset is <1000, the
 %                 default is to extract all subsets otherwise just 1000.
 %
-%       lms     :  Criterion to use to find the initlal
+%       lms     :  Criterion to use to find the initial
 %                 subset to initialize the search. Scalar,  vector or structure.
-%                 lms specifies the criterion to use to find the initlal
+%                 lms specifies the criterion to use to find the initial
 %                 subset to initialize the search (LMS, LTS with
 %                 concentration steps, LTS without concentration steps
 %                 or subset supplied directly by the user).
 %                 The default value is 1 (Least Median of Squares
 %                 is computed to initialize the search). On the other hand,
-%                 if the user wants to initialze the search with LTS with
+%                 if the user wants to initialize the search with LTS with
 %                 all the default options for concentration steps then
 %                 lms=2. If the user wants to use LTS without
 %                 concentration steps, lms can be a scalar different from 1
-%                 or 2. If lms is a struct it is possible to control a
+%                 or 2. If lms is a struct, it is possible to control a
 %                 series of options for concentration steps (for more
 %                 details see option lms inside LXS.m)
 %                 LXS.m.
@@ -147,7 +147,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %               Data Types - double
 %
 %        tag    : tags to the plots which are created.
-%                 character or cell array of characters.
+%                 Character or cell array of characters.
 %                 This option enables to add a tag to the plots which are
 %                 created. The default tag names are:
 %                 fsr_mdrplot for the plot of mdr based on all the
@@ -160,25 +160,25 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 If tag is character or a cell of characters of length 1,
 %                 it is possible to specify the tag for the plot of mdr
 %                 based on all the observations;
-%                 If tag is a cell of length 2 it is possible to control
+%                 If tag is a cell of length 2, it is possible to control
 %                 both the tag for the plot of mdr based on all the
 %                 observations and the tag for the yXplot with outliers
 %                 highlighted.
-%                 If tag is a cell of length 3 the third element specifies
+%                 If tag is a cell of length 3, the third element specifies
 %                 the names of the plots of resuperimposed envelopes.
 %                 Example - 'tag',{'plmdr' 'plyXplot'};
 %                 Data Types - char or cell
 %
 %    gridsearch:  Algorithm to be used. Scalar.
 %                   If gridsearch ==1 grid search will be used else (default) the
-%               scoring algorith will be used.
+%               scoring algorithm will be used.
 %               Example - 'gridsearch',1
 %               Data Types - double
 %
 %       nocheck : Check input arguments. Boolean.
-%                 If nocheck is equal to true no check is performed on
+%                 If nocheck is equal to true, no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
+%                 unchanged. In other words, the additional column of ones
 %                 for the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
@@ -226,7 +226,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %               Data Types - char
 %
 %      labeladd : Add outlier labels in plot. Character.
-%                   If this option is '1',  we label the outliers with the
+%                   If this option is '1', we label the outliers with the
 %                 unit row index in matrices X and y. The default value is
 %                 labeladd='', i.e. no label is added.
 %               Example - 'labeladd','1'
@@ -254,7 +254,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %       xlim   :  Control x scale in plot. Vector.
 %                minimum and maximum
 %                 on the x axis. Default value is '' (automatic scale)
-%               Example - 'xlim','[0,10]' sets the minim value to 0 and the
+%               Example - 'xlim','[0,10]' sets the minimum value to 0 and the
 %               max to 10 on the x axis
 %               Data Types - double
 %
@@ -263,10 +263,10 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 strongly non normal and, thus, the general signal
 %                 detection rule based on consecutive exceedances cannot be
 %                 used. In this case bonflev can be:
-%                 - a scalar smaller than 1 which specifies the confidence
+%                 - a scalar smaller than 1, which specifies the confidence
 %                   level for a signal and a stopping rule based on the
 %                   comparison of the minimum MD with a
-%                   Bonferroni bound. For example if bonflev=0.99 the
+%                   Bonferroni bound. For example, if bonflev=0.99 the
 %                   procedure stops when the trajectory exceeds for the
 %                   first time the 99% bonferroni bound.
 %                 - A scalar value greater than 1. In this case the
@@ -286,15 +286,15 @@ function [out]=FSRH(y,X,Z,varargin)
 %               Example - 'msg',1
 %               Data Types - double
 %
-% bsbmfullrank :  Dealing with singluar X matrix. Scalar.
+% bsbmfullrank :  Dealing with singular X matrix. Scalar.
 %               It tells how to behave in case subset at step m
 %                 (say bsbm) produces a non singular X. In other words,
 %                 this options controls what to do when rank(X(bsbm,:)) is
-%                 smaller then number of explanatory variables. If
-%                 bsbmfullrank =1 (default) these units (whose number is
+%                 smaller than number of explanatory variables. If
+%                 bsbmfullrank =1 (default), these units (whose number is
 %                 say mnofullrank) are constrained to enter the search in
-%                 the final n-mnofullrank steps else the search continues
-%                 using as estimate of beta at step m the estimate of beta
+%                 the final n-mnofullrank steps, else the search continues
+%                 using as estimate of beta at step m, the estimate of beta
 %                 found in the previous step.
 %               Example - 'bsbmfullrank',1
 %               Data Types - double
@@ -305,7 +305,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %  The output consists of a structure 'out' containing the following fields:
 % out.ListOut=  k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous. This field in
-%               future releases will be deleted bacause it will be replaced
+%               future releases will be deleted because it will be replaced
 %               by out.outliers.
 % out.outliers= k x 1 vector containing the list of the units declared as
 %               outliers or NaN if the sample is homogeneous.
@@ -324,7 +324,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -333,7 +333,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %               First row contains quantiles 1 99 99.9 99.99 99.999.
 %               Second row contains the frequency distribution.
 % out.constr  = This output is produced only if the search found at a
-%               certain step a non singular matrix X. In this case the
+%               certain step is a non singular matrix X. In this case, the
 %               search run in a constrained mode, that is including the
 %               units which produced a singular matrix in the last n-constr
 %               steps. out.constr is a vector which contains the list of
@@ -410,7 +410,7 @@ else
     intercept=false;
 end
 
-% If the number of all possible subsets is <1000 the default is to extract
+% If the number of all possible subsets is <1000, the default is to extract
 % all subsets, otherwise just 1000.
 ncomb=bc(n,p);
 nsampdef=min(1000,ncomb);
@@ -490,7 +490,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
         if length(mdr)>=n/2
             disp('More than half of the observations produce a singular X matrix')
             disp('X is badly defined')
-            disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
+            disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
             out.ListOut=setdiff(seq,mdr);
 
         else
@@ -529,7 +529,7 @@ else % initial subset is not supplied by the user
         % column it contains the value of the minimum deletion residual
         % monitored in each step of the search
 
-        % If mdr has just one columns then one of the following two cases took place:
+        % If mdr has just one columns, then one of the following two cases took place:
         % isnan(mdr)=1 ==> in this case initial subset was not full rank
         % mdr has just one column ==> in this case, even if the initial
         %    subset was full rank, the search has found at a certain step
@@ -540,7 +540,7 @@ else % initial subset is not supplied by the user
         if size(mdr,2)<2
             if length(mdr)>=n/2
                 disp('More than half of the observations produce a singular X matrix')
-                disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was fll rank use option bsbmfullrank=0')
+                disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
 
                 out.ListOut=setdiff(seq,mdr);
 

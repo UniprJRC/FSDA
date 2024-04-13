@@ -30,15 +30,15 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))
 %               \]
-%               Therefore, if for example the explanatory variables
+%               Therefore, if, for example, the explanatory variables
 %               responsible for heteroscedasticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax:
+%               of matrix X, it is possible to use both the syntax:
 %                    FSRHeda(y,X,X(:,[3 5]))
-%               or the sintax:
+%               or the syntax:
 %                    FSRHeda(y,X,[3 5])
 %   bsb :       list of units forming the initial
 %               subset. Vector or scalar. If bsb=0 (default) then the procedure starts with p
-%               units randomly chosen else if bsb is not 0 the search will
+%               units randomly chosen, else if bsb is not 0 the search will
 %               start with m0=length(bsb).
 %
 % Optional input arguments:
@@ -53,7 +53,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %
 %        init :      Search initialization. Scalar.
 %                      It specifies the point where to initialize the search
-%                       and start monitoring required diagnostics. if init is not
+%                       and start monitoring required diagnostics. If init is not
 %                       specified it will be set equal to :
 %                       p+1, if the sample size is smaller than 40;
 %                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
@@ -62,11 +62,11 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %
 %        tstat:      the kind of t-statistics which have to be monitored.
 %                       Character.
-%                       tstat = 'trad' implies  monitoring of traditional t
-%                       statistics (out.Tgls). In this case the estimate of \sigma^2 at step m
+%                       tstat = 'trad' implies monitoring of traditional t
+%                       statistics (out.Tgls). In this case, the estimate of \sigma^2 at step m
 %                       is based on s^2_m (notice that s^2_m<<\sigma^2 when m/n is
 %                       small) tstat = 'scal' (default) implies monitoring of
-%                       rescaled t statistics In this scale the estimate of
+%                       rescaled t statistics. In this scale the estimate of
 %                       \sigma^2 at step m is based on s^_m / var_truncnorm(m/n)
 %                       where var_truncnorm(m/n) is the variance of the truncated
 %                       normal distribution.
@@ -74,9 +74,9 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       Data Types - char
 %
 %      nocheck:  Check input arguments. Boolean.
-%                       If nocheck is equal to true no check is performed on
+%                       If nocheck is equal to true, no check is performed on
 %                       matrix y and matrix X. Notice that y and X are left
-%                       unchanged. In other words the additional column of ones for
+%                       unchanged. In other words, the additional column of ones for
 %                       the intercept is not added. As default nocheck=false. The
 %                       controls on h, alpha and nsamp still remain
 %                       Example - 'nocheck',true
@@ -91,11 +91,11 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %
 % gridsearch:           Algorithm to be used. Scalar.
 %                       If gridsearch ==1 grid search will be used else the
-%                       scoring algorith will be used.
+%                       scoring algorithm will be used.
 %                       Example - 'gridsearch',0
 %                       Data Types - double
 %                       REMARK: the grid search has only been implemented when
-%                       there is just one explantory variable which controls
+%                       there is just one explanatory variable which controls
 %                       heteroskedasticity
 %                       Example - 'gridsearch',1
 %                       Data Types - double
@@ -155,7 +155,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               last column = units forming subset in the final step (all
 %               units).
 %   out.mdr=        n-init x 3 matrix which contains the monitoring of minimum
-%               deletion residual or (m+1)ordered residual  at each step of
+%               deletion residual or (m+1)ordered residual at each step of
 %               the forward search:
 %               1st col = fwd search index (from init to n-1);
 %               2nd col = minimum deletion residual;
@@ -182,7 +182,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               1st col = fwd search index (from init to n);
 %               2nd col = monitoring of unbiased S2;
 %               3rd col = monitoring of R2;
-%               4th col = monitoring of rescaled S2. In this case the
+%               4th col = monitoring of rescaled S2. In this case, the
 %               estimate of $\sigma^2$ at step m is divided by the
 %               consistency factor (to make the estimate asymptotically
 %               unbiased).
@@ -193,14 +193,14 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               3rd col = monitoring of modified Cook distance.
 %  out.Tgls=    (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated t-statistics (as specified in option input 'tstat'
-%               in each step of the forward search.
+%               in each step of the forward search).
 %   out.Un=        (n-init) x 11 Matrix which contains the unit(s)
 %               included in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
-%               subset but not in the old one Un(1,2) for example contains
-%               the unit included in step init+1 Un(end,2) contains the
-%               units included in the final step of the search
+%               subset, but not in the old one. Un(1,2), for example, contains
+%               the unit included in step init+1. Un(end,2) contains the
+%               units included in the final step of the search.
 %  out.betaINT = Confidence intervals for the elements of $\beta$.
 %                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D
 %                 array.
@@ -216,9 +216,9 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                 The last two columns contain the lower
 %                 and upper confidence limits associated with conflev(end).
 %
-%                 For example betaint(:,3:4,5) contain the lower and upper
+%                 For example, betaint(:,3:4,5) contains the lower and upper
 %                 confidence limits for the fifth element of beta using
-%                 confidence level specified in the second element of input
+%                 confidence level specified in the second element of the input
 %                 option conflev.
 %out.sigma2INT = confidence interval for $\sigma^2$.
 %                1st col = fwd search index;
@@ -387,8 +387,8 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     [outLXS]=LXS(y,X,'nsamp',10000);
     % Forward Search
     [out]=FSRHeda(y,X,log(X),outLXS.bs);
-    %The monitoring residuals plot shows a set of positive residuals which
-    %starting from the central part of the search tend to have a residual much
+    %The monitoring residuals plot shows a set of positive residuals which,
+    %starting from the central part of the search, tend to have a residual much
     %larger than that of the other units.
     resfwdplot(out);
     %The minimum deletion residual from m=90 starts going above the 99% threshold.
@@ -399,7 +399,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     xlimx=[10 100];
     subplot(2,2,1);
     plot(out.nor(:,1),out.nor(:,2));
-    title('Asimmetry test');
+    title('Asymmetry test');
     xlim(xlimx);
     quant=chi2inv(0.99,1);
     v=axis;
@@ -446,7 +446,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     for j=1:p
         subplot(nr,nc,j);
         hold('on')
-        % plot 95% and 99% HPD  trajectories
+        % plot 95% and 99% HPD trajectories
         plot(outEDA.Bgls(:,1),outEDA.betaINT(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
         plot(outEDA.Bgls(:,1),outEDA.betaINT(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
 
@@ -611,7 +611,7 @@ S2 = [(init:n)' NaN(n-init+1,3);];
 
 % mdr= (n-init) x 3 matrix
 % 1st column = fwd search index
-% 2nd col min deletion residual among observerations non belonging to the
+% 2nd col min deletion residual among observations non belonging to the
 % subset
 % 3rd column (m+1)-th ordered residual
 % They are stored with sign, that is the min deletion residual
@@ -619,7 +619,7 @@ S2 = [(init:n)' NaN(n-init+1,3);];
 mdr = [(init:n-1)'  zer];
 
 % mdr= (n-init+1) x 3 matrix which will contain max studentized residual
-%  among bsb and m-th studentized residual
+% among bsb and m-th studentized residual
 msr = [(init:n)'  zer1];
 
 % coo= (n-init) x 3 matrix which will contain Cook distances
@@ -630,7 +630,7 @@ coo = [((init+1):n)'  NaN(n-init,6)];
 % kurtosis (3rd col) and normality test (4th col)
 nor = [(init:n)'  zer1];
 
-% Matrix RES will contain the resisuals for each unit in each step of the forward search
+% Matrix RES will contain the residuals for each unit in each step of the forward search
 % The first row refers to the residuals of the first unit
 RES = NaN(n,n-init+1);
 RES(:) = NaN;
@@ -689,7 +689,7 @@ sigma2INT = [(init:n)' zeros(n-init+1,2*lconflev)];
 % Z = n-by-r matrix which contains the explanatory variables for
 % heteroskedasticity
 if size(Z,1) ~= n
-    % Check if interecept was true
+    % Check if intercept was true
     if intercept == true
         Z = X(:,Z+1);
     else
@@ -699,8 +699,8 @@ end
 
 gridsearch = options.gridsearch;
 if gridsearch == 1 && size(Z,2) > 1
-    warning('FSDA:FSRHmdr:WrongInputOpts','To perform a grid search you cannot have more than one varaible responsible for heteroskedasticity');
-    warning('FSDA:FSRHmdr:WrongInputOpts','Scoring algorith is used');
+    warning('FSDA:FSRHmdr:WrongInputOpts','To perform a grid search you cannot have more than one variable responsible for heteroskedasticity');
+    warning('FSDA:FSRHmdr:WrongInputOpts','Scoring algorithm is used');
     gridsearch = 0;
 end
 
@@ -773,7 +773,7 @@ else
             sqweights = omegahat.^(-0.5);
             
             % Xw and yw are referred to all the observations
-            % They contains transformed values of X and y using estimates
+            % They contain transformed values of X and y using estimates
             % at step m
             % Xw = [X(:,1) .* sqweights X(:,2) .* sqweights ... X(:,end) .* sqweights]
             Xw = bsxfun(@times, X, sqweights);
@@ -792,7 +792,7 @@ else
             resBSB = yb-Xb*b;
             blast = b;
             
-        else   % number of independent columns is smaller than number of parameters
+        else   % the number of independent columns is smaller than the number of parameters
             warning('FSDA:FSRHeda','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
             b = blast;
         end
@@ -835,14 +835,14 @@ else
                 
                 % Store leverage for the units belonging to subset
                 % hi contains leverage for all units
-                % It is a proper leverage for the units belonging to susbet
-                % It is a pseudo leverage for the unit not belonging to the subset
+                % It is a proper leverage for the units belonging to subset
+                % It is a pseudo leverage for the units not belonging to the subset
                 mAm = Xb'*Xb;
                 
                 mmX = inv(mAm);
                 dmmX = diag(mmX);
                 
-                % Notice that we could replace the lowwing line with
+                % Notice that we could replace the lowing line with
                 % hi=sum((X/mAm).*X,2); but there is no gain since we need
                 % to compute dmmX=diag(mmX);
                 hi = sum((Xw*mmX).*Xw,2); %#ok<MINV>
@@ -927,7 +927,8 @@ else
             if mm >= init
                 if NoRankProblem
                     % ord = matrix whose first col (divided by S2(i)) contains the deletion residuals
-                    % for all units. For the units belonging to the subset these are proper deletion residuals
+                    % for all units. For the units belonging to the subset,
+                    % these are proper deletion residuals.
                     if hhh == 1
                         ord = [(r(:,2)./(1+hi)) e];
                     else
@@ -961,7 +962,7 @@ else
                 r(constr,2) = Inf;
             end
             % order the r_i and include the smallest among the units
-            %  forming the group of potential outliers
+            % forming the group of potential outliers
             % ord=sortrows(r,2);
             [~,ord]=sort(r(:,2));
             
@@ -1002,7 +1003,7 @@ else
                 
                 % Compute highest posterior density interval for each value of
                 % Tinvcdf = required quantiles of T distribution
-                % consider just upper quantiles due to simmetry
+                % consider just upper quantiles due to symmetry
                 Tinvcdf = tinv(conflev,mm-p);
                 % IGinvcdf = required quantiles of Inverse Gamma distribution
                 Chi2invcdf = chi2inv([conflev 1-conflev],mm-p);

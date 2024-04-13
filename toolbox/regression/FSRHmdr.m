@@ -39,11 +39,11 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               \gamma_{r} X(i,Z(r)))
 %               \]
 %
-%               Therefore, if for example the explanatory variables
+%               Therefore, if, for example, the explanatory variables
 %               responsible for heteroscedasticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax
+%               of matrix X, it is possible to use both the syntax
 %                    FSRHmdr(y,X,X(:,[3 5]),0)
-%               or the sintax
+%               or the syntax
 %                    FSRHmdr(y,X,[3 5],0)
 %  bsb :        list of units forming the initial subset. Vector | 0. If
 %               bsb=0 then the procedure starts with p units randomly
@@ -58,7 +58,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               The minimum value of init is 0. In this case in the first
+%               The minimum value of init is 0. In this case, in the first
 %               step we just use prior information
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
@@ -91,54 +91,54 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %
 %  plots :      Plot on the screen. Scalar.
 %               If equal to one a plot of Bayesian minimum deletion
-%               residual appears  on the screen with 1 per cent, 50 per
-%               cent and 99 per cent confidence bands else (default) no
+%               residual appears on the screen with 1 per cent, 50 per
+%               cent and 99 per cent confidence bands; else (default) no
 %               plot is shown.
-%               Remark. the plot which is produced is very simple. In order
+%               Remark. The plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
-%               connect it dynamically to the other forward plots it is necessary to use
+%               connect it dynamically to the other forward plots, it is necessary to use
 %               function mdrplot
 %                 Example - 'plots',1
 %                 Data Types - double
 %
 %  nocheck:   Check input arguments. Boolean.
-%               If nocheck is equal to true no check is performed on
+%               If nocheck is equal to true, no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
+%               unchanged. In other words, the additional column of ones for
 %               the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
 %
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
-%               about great interchange on the screen
-%               If msg==1 (default) messages are displyed on the screen
-%               else no message is displayed on the screen
+%               about great interchange on the screen.
+%               If msg==1 (default), messages are displayed on the screen,
+%               else no message is displayed on the screen.
 %               Example - 'msg',1
 %               Data Types - double
 %
 % gridsearch:   Algorithm to be used. Scalar.
-%               If gridsearch ==1 grid search will be used else the
-%               scoring algorith will be used.
+%               If gridsearch ==1, grid search will be used, else the
+%               scoring algorithm will be used.
 %               Example - 'gridsearch',0
 %               Data Types - double
 %               REMARK: the grid search has only been implemented when
-%               there is just one explantory variable which controls
+%               there is just one explanatory variable which controls
 %               heteroskedasticity.
 %
 %  constr :    units which are forced to join the search in the last r steps. Vector.
-%               r x 1 vector. The default is constr=''.  No constraint is imposed
+%               r x 1 vector. The default is constr=''. No constraint is imposed
 %               Example - 'constr',[1 6 3]
 %               Data Types - double
 %
 % bsbmfullrank :It tells how to behave in case subset at step m
 %               (say bsbm) produces a non singular X. Scalar.
 %               In other words, this options controls what to do when rank(X(bsbm,:)) is
-%               smaller then number of explanatory variables. If
-%               bsbmfullrank = 1 (default is 1) these units (whose number is
+%               smaller than the number of explanatory variables. If
+%               bsbmfullrank = 1 (default is 1), these units (whose number is
 %               say mnofullrank) are constrained to enter the search in
-%               the final n-mnofullrank steps else the search continues
-%               using as estimate of beta at step m the estimate of beta
+%               the final n-mnofullrank steps, else the search continues
+%               using as an estimate of beta at step m the estimate of beta
 %               found in the previous step.
 %               Example - 'bsbmfullrank',0
 %               Data Types - double
@@ -147,10 +147,10 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
-%               0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
-%               n<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, as
+%               0, we store the units forming subset in all steps. The
+%               default is to store the units forming subset in all steps if
+%               n<=5000, otherwise store the units forming subset at steps
+%               init and steps that are multiples of 100. For example, as
 %               default, if n=7530 and init=6, units forming subset are
 %               stored for
 %               m=init, 100, 200, ..., 7500.
@@ -178,7 +178,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               2nd col = minimum deletion residual.
 %               REMARK: if in a certain step of the search matrix is
 %               singular, this procedure checks how many observations
-%               produce a singular matrix. In this case mdr is a column
+%               produce a singular matrix. In this case, mdr is a column
 %               vector which contains the list of units for which matrix X
 %               is non singular.
 %  Un:          Units included in each step. Matrix.
@@ -186,8 +186,8 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
-%               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               subset, but not in the old one.
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -205,10 +205,10 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %                   value for the other steps
 %               n-th row has number n in correspondence of the steps in
 %                   which unit n is included inside subset and a missing
-%                   value for the other steps
-%               The size of matrix BB is n x (n-init+1) if option input
-%               bsbsteps is 0 else the size is n-by-length(bsbsteps).
-%  Bgls:        GLS beta coefficents. Matrix.
+%                   value for the other steps.
+%               The size of matrix BB is n x (n-init+1), if option input
+%               bsbsteps is 0, else the size is n-by-length(bsbsteps).
+%  Bgls:        GLS beta coefficients. Matrix.
 %               (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
@@ -276,7 +276,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %{
     % Analyze units entering the search in the final steps.
     % Compute minimum deletion residual and analyze the units entering
-    % subset in each step of the fwd search (matrix Un).  As is well known,
+    % subset in each step of the fwd search (matrix Un). As is well known,
     % the FS provides an ordering of the data from those most in agreement
     % with a suggested model (which enter the first steps) to those least in
     % agreement with it (which are included in the final steps).
@@ -430,8 +430,8 @@ end
 
 gridsearch=options.gridsearch;
 if gridsearch==1 && size(Z,2)>1
-    warning('FSDA:FSRHmdr:WrongInputOpts','To perform a grid search you cannot have more than one varaible responsible for heteroskedasticity');
-    warning('FSDA:FSRHmdr:WrongInputOpts','Scoring algorith is used');
+    warning('FSDA:FSRHmdr:WrongInputOpts','To perform a grid search you cannot have more than one variable responsible for heteroskedasticity');
+    warning('FSDA:FSRHmdr:WrongInputOpts','Scoring algorithm is used');
     gridsearch=0;
 end
 
@@ -504,7 +504,7 @@ bsbsteps=options.bsbsteps;
 % information about units forming subset at step init1.
 % WEI= matrix which contains in each column the estimate of the weights
 if isempty(bsbsteps)
-    % Default for vector bsbsteps which indicates for which steps of the fwd
+    % Default for vector bsbsteps, which indicates for which steps of the fwd
     % search units forming subset have to be saved
     if n<=5000
         bsbsteps = init:1:n;
@@ -532,7 +532,7 @@ end
 
 
 % ij = index which is linked with the columns of matrix BB. During the
-% search every time a subset is stored inside matrix BB ij icreases by one
+% search, every time a subset is stored inside matrix BB, ij increases by one
 ij=1;
 
 
@@ -717,7 +717,7 @@ else
             % ord=sortrows(r,2);
             [~,ord]=sort(r(:,2));
             
-            % bsb= units forming the new  subset
+            % bsb= units forming the new subset
             bsb=ord(1:(mm+1),1);
             
             Xb=X(bsb,:);  % subset of X     HHH  OK
