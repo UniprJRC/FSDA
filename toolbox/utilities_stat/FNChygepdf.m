@@ -38,9 +38,10 @@ function Fpdf = FNChygepdf(x,M,K,n,odds, accuracy)
 % balls are independent and there is no dependence between draws. One may
 % as well take all $n$ balls at the same time. Each ball has no "knowledge"
 % of what happens to the other balls.
-% More formally, if the total number $n$ of balls taken is known then the
-% conditional distribution of the number of taken red balls for given $n$ is
-% Fisher's noncentral hypergeometric distribution. 
+% More formally, if the total number $n$ of balls taken is not known before
+% the experiment (i.e n is determined just after the experiment), then the
+% conditional distribution of the number of taken red balls for given $n$
+% is Fisher's noncentral hypergeometric distribution.
 %
 % These two distributions have important applications in evolutionary
 % biology and population genetics. If animals of a particular species are
@@ -160,12 +161,12 @@ function Fpdf = FNChygepdf(x,M,K,n,odds, accuracy)
     %% Comparison between Wallenius and Fisher.
     % we have 20 balls in the urn
     M  = 20;
-    %initially, in the urn we have 250 red and 250 white balls
+    %initially, in the urn we have 10 red and 10 white balls
     K  = M/2;
     % we extract 3 balls without replacement
     n  = 3;
-    %red balls have a probability ten times greater to be extracted thab white balls
-    odds  = 5;
+    %red balls have a probability ten times greater to be extracted than white balls
+    odds  = 10;
     % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
     % 3 balls without replacement.
     x = (0:n)';
@@ -191,12 +192,12 @@ function Fpdf = FNChygepdf(x,M,K,n,odds, accuracy)
     %
     % we have 20 balls in the urn
     M  = 20;
-    % initially, in the urn we have 250 red and 250 white balls
+    % initially, in the urn we have 10 red and 10 white balls
     K  = M/2;
     % we extract 3 balls without replacement
     n  = 3;
-    % red balls have a probability ten times greater to be extracted thab white balls
-    odds  = 5;
+    % red balls have a probability ten times greater to be extracted than white balls
+    odds  = 10;
     % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
     % 3 balls without replacement.
     x = (0:n)';
@@ -219,12 +220,12 @@ function Fpdf = FNChygepdf(x,M,K,n,odds, accuracy)
     %
     % we have 20 balls in the urn
     M  = 20;
-    % initially, in the urn we have 250 red and 250 white balls
+    % initially, in the urn we have 10 red and 10 white balls
     K  = M/2;
     % we extract 3 balls without replacement
     n  = 3;
-    % red balls have a probability ten times greater to be extracted thab white balls
-    odds  = 5;
+    % red balls have a probability ten times greater to be extracted than white balls
+    odds  = 10;
     % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
     % 3 balls without replacement.
     x = (0:n)';
@@ -247,12 +248,12 @@ function Fpdf = FNChygepdf(x,M,K,n,odds, accuracy)
     %
     % we have 20 balls in the urn
     M  = 20;
-    % initially, in the urn we have 250 red and 250 white balls
+    % initially, in the urn we have 10 red and 10 white balls
     K  = M/2;
     % we extract 3 balls without replacement
     n  = 3;
-    % red balls have a probability ten times greater to be extracted thab white balls
-    odds  = 5;
+    % red balls have a probability ten times greater to be extracted than white balls
+    odds  = 10;
     % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
     % 3 balls without replacement.
     x = (0:n)';

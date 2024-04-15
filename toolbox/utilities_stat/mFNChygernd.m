@@ -39,9 +39,10 @@ function r = mFNChygernd(m, w, n,    ntrials, accuracy)
 % balls are independent and there is no dependence between draws. One may
 % as well take all $n$ balls at the same time. Each ball has no "knowledge"
 % of what happens to the other balls.
-% More formally, if the total number $n$ of balls taken is known then the
-% conditional distribution of the number of taken red balls for given $n$ is
-% Fisher's noncentral hypergeometric distribution. 
+% More formally, if the total number $n$ of balls taken is not known before
+% the experiment (i.e n is determined just after the experiment), then the
+% conditional distribution of the number of taken red balls for given $n$
+% is Fisher's noncentral hypergeometric distribution.
 %
 % These two distributions have important applications in evolutionary
 % biology and population genetics. If animals of a particular species are
