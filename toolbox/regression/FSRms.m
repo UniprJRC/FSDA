@@ -12,8 +12,8 @@ function outms = FSRms(y,X,varargin)
 %               computations.
 %       X :     Predictor variables. Matrix. Data matrix of explanatory variables (also called
 %               'regressors') of dimension (n x (bigP-1)).
-%               The intercept will be added in automatic way, so that the
-%               dimension of the full model is bigP
+%               The intercept will be added in an automatic way, so that the
+%               dimension of the full model is bigP.
 %               Rows of X represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
@@ -49,14 +49,14 @@ function outms = FSRms(y,X,varargin)
 %     nsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar.
 %                   Number of subsamples which will be extracted to find the
-%               robust estimator. If nsamp=0 all subsets will be extracted.
+%               robust estimator. If nsamp=0, all subsets will be extracted.
 %               They will be (n choose smallp).
-%               Remark. if the number of all possible subset is <1000 the
+%               Remark. If the number of all possible subset is <1000 the
 %               default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000 
 %                 Data Types - double
 %
-%         lms : Criterion to use to find the initlal
+%         lms : Criterion to use to find the initial
 %                 subset to initialize the search. Scalar.
 %                   If lms=1 (default) Least Median of Squares is
 %               computed, else Least Trimmed of Squares is computed.
@@ -64,9 +64,9 @@ function outms = FSRms(y,X,varargin)
 %                 Data Types - double
 %
 %     nocheck : Check input arguments. Boolean.
-%               If nocheck is equal to true no check is performed on
+%               If nocheck is equal to true, no check is performed on
 %               matrix y and matrix X. Note that y and X are left
-%               unchanged. In other words the additional column of ones
+%               unchanged. In other words, the additional column of ones
 %               for the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true 
 %               Data Types - boolean
@@ -87,7 +87,7 @@ function outms = FSRms(y,X,varargin)
 %               Cell array of strings of length bigP-1 containing the
 %               names of the explanatory variables.
 %                If labels is a missing
-%               value the following sequence of strings will be
+%               value, the following sequence of strings will be
 %               automatically created for labelling the column of matrix X
 %               (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
 %               Example - 'labels',{'1','2'} 
@@ -104,7 +104,7 @@ function outms = FSRms(y,X,varargin)
 %               search. This information will be used to create the
 %               candlestick Cp plot.
 %               If the elements of fin_step are integers greater or equal 1
-%               they refer to the number of steps. For example if
+%               they refer to the number of steps. For example, if
 %               fin_step=[10 3] the program considers the last 10 steps to
 %               choose the best models and the central part of the search
 %               is defined up to step n-3.
@@ -121,7 +121,7 @@ function outms = FSRms(y,X,varargin)
 %
 %      first_k: Number of models to consider. Scalar. Number of best models to
 %               consider in each of the last fin_step. 
-%               For example if
+%               For example, if
 %               first_k=5 in each of the fin_step the models which had
 %               the 5 smallest values of Cp are considered. As default
 %               first_k=3
@@ -141,7 +141,7 @@ function outms = FSRms(y,X,varargin)
 %
 %   ExclThresh:  Exclusion threshold. Scalar.
 %               It has effect only if ignore=1.
-%               Exclusion threshold associated to the uppper
+%               Exclusion threshold associated to the upper
 %               percentage point of the F distribution of Cp which defines
 %               the threshold for each p declaring models as irrelevant.
 %               The default value of ExclThresh is 0.99999 that is the
@@ -153,16 +153,16 @@ function outms = FSRms(y,X,varargin)
 %               Example - 'ExclThresh',0.9
 %               Data Types - double
 %
-%     meanmed : Boxes of tha candles. Scalar. It specifies how to construct
+%     meanmed : Boxes of the candles. Scalar. It specifies how to construct
 %               the boxes of the candles.
-%               If meanmed=1 boxes are constructed using mean and median
+%               If meanmed=1, boxes are constructed using mean and median,
 %               else using the first and third quartile.
 %               Example - 'meanmed',1
 %               Data Types - double
 %
 %       plots :  Plot on the screen. Scalar.
-%               If plot==1 a candlestick Cp plot is created on the screen
-%               else (default) no plot is shown on the screen
+%               If plot==1, a candlestick Cp plot is created on the screen
+%               else (default) no plot is shown on the screen.
 %               The options below only work when plots=1
 %               Example - 'plots',1
 %               Data Types - double
@@ -170,7 +170,7 @@ function outms = FSRms(y,X,varargin)
 %          rl : spread of the candles around
 %               each integer value defining the size of the submodels.
 %               Scalar.
-%               For example if rl=0.4 for each smallp candles are spread in the
+%               For example, if rl=0.4 for each smallp candles are spread in the
 %               interval [smallp-rl smallp+rl]. The default value of rl
 %               is 0.4. rl does not have to be greater than 0.45 otherwise
 %               the candles overlap
@@ -227,11 +227,11 @@ function outms = FSRms(y,X,varargin)
 %               7th col: y coordinate of final Cp; 
 %               8th col: units entering the final step of the search; 
 %               9th col: maximum Cp value during the (central and final
-%               part of the) search (This information is used to print the
+%               part of the) search (this information is used to print the
 %               labels on top of each model). 
 %        outms.outl = r x 4 matrix containing information about 'influential
 %               units' or empty matrix. 
-%               Influential units in this context are defined as the units
+%               Influential units, in this context, are defined as the units
 %               which enter the subset in the final part of the search and
 %               bring the value of Cp below the minimum or above the
 %               maximum value of the central part of the search. 
@@ -285,7 +285,7 @@ function outms = FSRms(y,X,varargin)
 
 %{  
     % FSRms with all default options.
-    % Common part to all examples: load Ozone dataset, tranform the 
+    % Common part to all examples: load Ozone dataset, transform the 
     % response using logs and add a time trend.
 
     X=load('ozone.txt');
@@ -324,9 +324,9 @@ function outms = FSRms(y,X,varargin)
 
     %The figure has slightly changed and certainly there can be some random
     %fluctuations due to the number of subset which have been used to initialize
-    %the search for each model. However, The indication of the previous two
-    %Figures does not change at all: the values of smallp of 4 or 5 should yield
-    %a satisfactory model. For smallp = 4 the best model has the trend, x3 and
+    %the search for each model. However, the indication of the previous two
+    %figures does not change at all: the values of smallp of 4 or 5 should yield
+    %a satisfactory model. For smallp = 4, the best model has the trend x3 and
     %x7, although the plot shows the values of Cp(m) increasing towards the end
     %of the search. By far the most stable model for smallp= 5 adds x2 to these
     %variables.
@@ -348,7 +348,7 @@ function outms = FSRms(y,X,varargin)
 %{
     %% Comparing results of different settings.
     % Perform robust model selection and show the generalized candlestick
-    % plot. Restric attention to the models with size in the interval 4:6
+    % plot. Restrict attention to the models with size in the interval 4:6.
     % Compare the results using ignore=1 with those with ignore=0
     % default option ignore=1.
 
@@ -395,7 +395,7 @@ function outms = FSRms(y,X,varargin)
 
 %{
     % Input fin_step supplied as fraction (1).
-    % For example when fin_step=[0.3 0.1] the central part of the search
+    % For example, when fin_step=[0.3 0.1], the central part of the search
     % goes from m=round(n*0.7)=56 to m=round(n*0.9)=72 and the final part
     % of the search goes from m=73 to m=80.
     
@@ -410,7 +410,7 @@ function outms = FSRms(y,X,varargin)
 
 %{
     % Input fin_step supplied as fraction (2).
-    % For example when fin_step=[0.36 0.06] the central part of the search
+    % For example, when fin_step=[0.36 0.06], the central part of the search
     % goes from m=round(n*0.64)=51 to m=round(n*0.94)=75 and the final part of the search goes from
     % m=76 to m=80.
 
@@ -425,13 +425,13 @@ function outms = FSRms(y,X,varargin)
 
 %{
     % Input fin_step supplied as integers.
-    % For example when fin_step=[20 5] the central part of the search
+    % For example, when fin_step=[20 5], the central part of the search
     % goes from m=n-20=61 to m=n-5=75 and the final part of the search goes from
     % m=76 to m=80.
     % It is worthwhile to notice that independently on how fin_step is
     % chosen, the message of the generalized candlestick plot remains the
     % same. In other words, the best two models with 5 variables are always
-    % (Time,4,5,6) and (Time,2,4,5)
+    % (Time,4,5,6) and (Time,2,4,5),
     % while two reasonable models with 6 variables are (Time,2,4,5,6) and
     % (Time,2,3,4,5).
 
@@ -513,7 +513,7 @@ ExclThresh=options.ExclThresh;
 outl=zeros(100,6);
 ii=1;
 
-% ini = scalar which initializes the rows of matrces stor, storLAB and
+% ini = scalar which initializes the rows of matrices stor, storLAB and
 % the columns of matrix storFWD
 % ini is a guess about the number of searches which will be selected
 ini=500;
@@ -537,18 +537,18 @@ jj=1;
 storLAB=cell(ini,1);
 
 % storLAB matrix which will contain in the columns the selected searches
-% Number of columns of matrix storFWD is equal to the number of rows of
+% number of columns of matrix storFWD is equal to the number of rows of
 % matrices stor and storLAB
 storFWD=zeros(n-3*p,ini);
 
 
 % Tolerance for candles
-% For example if rl=0.4 for each small p candles are spread in the
+% For example, if rl=0.4, for each small p candles are spread in the
 % interval [p-rl p+rl]
 rl=options.rl;
 
-% specfy how to construct the boxes of the candles
-% if meanmed=1 boxes are constructed using mean and median
+% specify how to construct the boxes of the candles
+% if meanmed=1 boxes are constructed using mean and median,
 % else we use first and third quartile
 meanmed=options.meanmed;
 
@@ -572,7 +572,7 @@ end
 % Information about the number of best searches which have to be analyzed
 first_k=options.first_k;
 
-% Initalize matrix Excl (the matrix which contains the irrelevant models)
+% Initialize matrix Excl (the matrix which contains the irrelevant models)
 Excl='';
 
 %% Beginning of procedure (loop through all values of smallp)
@@ -631,7 +631,7 @@ for smallp=xlimp
         seqr=(smallp+(-rl:2*rl/(lsto-1):rl))';
     end
     
-    % Store: statistics, spread xcoordinates, smallp,  final values of Cp,
+    % Store: statistics, spread xcoordinates, smallp, final values of Cp,
     % the unit which entered the last step of the search
     % and in the last column overall maximum (from step n-fin_step(1)+1 to
     % n)

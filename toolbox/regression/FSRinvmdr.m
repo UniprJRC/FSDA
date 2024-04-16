@@ -1,5 +1,5 @@
 function [mdrOutput] = FSRinvmdr(mdrInput,p,varargin)
-%FSRinvmdr converts values of mdr into confidence levels and  mdr in normal coordinates
+%FSRinvmdr converts values of mdr into confidence levels and mdr in normal coordinates
 %
 %<a href="matlab: docsearchFS('FSRinvmdr')">Link to the help function</a>
 %
@@ -7,10 +7,10 @@ function [mdrOutput] = FSRinvmdr(mdrInput,p,varargin)
 %
 %  mdrInput : Object containing values of minimum deletion residuals.
 %          Matrix or struct.
-%          If mdrInput is a matrix it has 2 or 3 columns and contains. 
+%          If mdrInput is a matrix, it has 2 or 3 columns and contains: 
 %          1st col = fwd search index; 
 %          2nd col = minimum deletion residual (possibly stored with sign). 
-%          If mdrInput is a struct it must contain
+%          If mdrInput is a struct, it must contain
 %          mdrInput.mdr = matrix which contains in the second column
 %                   the values of the minimum deletion residual.
 %                   Data Types - array or struct
@@ -30,13 +30,14 @@ function [mdrOutput] = FSRinvmdr(mdrInput,p,varargin)
 %
 %   plots :  Plot on the screen. Scalar or structure.
 %               It specify whether it is necessary to
-%               plot in normal coordinates the value of mdr
+%               plot in normal coordinates the value of mdr.
 %               If plots = 1, a plot which shows the
 %               confidence level of mdr in each step is shown on the
 %               screen.
-%               Remark. three horizontal lines associated respectively with
-%               values  0.01 0.5 and 0.99  are added to the plot
-%               If plots is a structure the user can specify the following options
+%               Remark. Three horizontal lines associated respectively with
+%               values 0.01 0.5 and 0.99 are added to the plot.
+%               If plots is a structure, the user can specify the following
+%               options:
 %                   conflev = vector containing horizontal lines associated
 %                       with confidence levels
 %                   conflevlab = scalar if it is equal 1 labels associated with
@@ -63,8 +64,8 @@ function [mdrOutput] = FSRinvmdr(mdrInput,p,varargin)
 %               2nd col = confidence level of each value of mdr.
 %               3rd col = mdr in normal coordinates (50% conf
 %               level becomes norminv(0.50)=0; 99% conf level becomes
-%               norminv(0.99)=2.33. 
-%               If input mdrInput is a struct mdrOutput is a struct with
+%               norminv(0.99)=2.33). 
+%               If input mdrInput is a struct, mdrOutput is a struct with
 %               all the fields of the input structure mdrInput except that
 %               now the field mdr is referred to normal coordinates.
 %               mdrOutput.mdr = value of mdr in normal coordinates.
@@ -174,7 +175,6 @@ function [mdrOutput] = FSRinvmdr(mdrInput,p,varargin)
         ij=ij+1;
         [MDRinv] = FSRinvmdr(out.mdr,5,'n',jn0);
         % Plot for each step of the fwd search the values of mdr translated in
-        % Plot for each step of the fwd search the values of mdr translated in
         % terms of normal quantiles
         subplot(2,2,ij)
         plot(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)
@@ -196,7 +196,7 @@ function [mdrOutput] = FSRinvmdr(mdrInput,p,varargin)
     
     n=length(y);
     % Prepare input for Figure 4.30
-    % LMS using all  subsamples (very lengthy)
+    % LMS using all subsamples (very lengthy)
     computeLMSusingAllSubsets=false;
     if computeLMSusingAllSubsets ==true
         nsamp=0;
@@ -211,7 +211,7 @@ function [mdrOutput] = FSRinvmdr(mdrInput,p,varargin)
     
     outFS=FSReda(y,X,outLXS.bs);
     
-    % Tranform minimum deletion residual from standard coordinates to normal
+    % Transform minimum deletion residual from standard coordinates to normal
     % coordinates
     outFS1=FSRinvmdr(outFS,p);
     
@@ -292,7 +292,7 @@ mdrt=1-mdr;
 % Confidence level in normal coordinates
 % One may wonder why mmdncoo cannot be computed as follows
 % mmdncoo=norminv(mmt);
-% The reason is that while norminv(1-\epsilon)=inf but
+% The reason is that while norminv(1-\epsilon)=inf, but
 % -norminv(\epsilon) is exact where \epsilon is a very very small number
 MDRncoord=-norminv(mdr);
 
@@ -435,7 +435,7 @@ if coder.target('MATLAB')
             ylim(ylimy);
         end
 
-        % Add horizontal lines associated with confidenve levels
+        % Add horizontal lines associated with confidence levels
         v=axis;
         ninv=norminv(conflev);
         for i=1:length(conflev)

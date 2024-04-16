@@ -13,7 +13,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 % X :           Predictor variables. Matrix. Data matrix of explanatory variables (also called
 %               'regressors') of dimension (n x (bigP-1)).
 %               The intercept will be added in automatic way, so that the
-%               dimension of the full model is bigP
+%               dimension of the full model is bigP.
 %               Rows of X represent observations, and columns represent
 %               variables. Missing values (NaN's) and infinite values
 %               (Inf's) are allowed, since observations (rows) with missing
@@ -21,7 +21,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %               computations.
 % smallp:       number of variables in the reduced models. Scalar. Scalar
 %               which specifies the number of variables in the
-%               reduced models which will be considered. For example if
+%               reduced models which will be considered. For example, if
 %               smallp=3, all possible subsets containing 2 columns of
 %               matrix X will be considered. Notice that the dimension of
 %               each submodel is 3 because to each submodel the column of
@@ -38,9 +38,9 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 Data Types - boolean
 %
 %     nocheck   : Check input arguments. Boolean.
-%                        If nocheck is equal to true no check is performed on
+%                        If nocheck is equal to true, no check is performed on
 %                       matrix y and matrix X. Note that y and X are left
-%                       unchanged. In other words the additioanl column of ones
+%                       unchanged. In other words, the additional column of ones
 %                       for the intercept is not added. As default nocheck=true.
 %                       Example - 'nocheck',true
 %                       Data Types - boolean
@@ -53,7 +53,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       Example - 'h',3
 %                       Data Types - double
 %
-%           lms :    Criterion to use to find the initlal  subset to
+%           lms :    Criterion to use to find the initial subset to
 %                       initialize the search. Scalar. If lms=1 (default)
 %                       Least Median of Squares is computed, else Least
 %                       Trimmed of Squares is computed.
@@ -74,8 +74,8 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       They will be (n choose smallp).
 %                       Example - 'nsamp',1000
 %                       Data Types - double
-%                       Remark: if the number of all possible subset is <1000 the
-%                       default is to extract all subsets otherwise just 1000.
+%                       Remark: if the number of all possible subset is <1000, the
+%                       default is to extract all subsets, otherwise just 1000.
 %
 %          init :       Search initialization. Scalar.
 %                       It specifies the initial subset size to start
@@ -95,7 +95,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %        labels :   names of the explanatory variables. Cell array of
 %                   strings. Cell array of strings of length bigP-1
 %                   containing the names of the explanatory variables. If
-%                   labels is a missing  value the following sequence of
+%                   labels is a missing value, the following sequence of
 %                   strings will be automatically created for X
 %                  (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
 %                       Example - 'labels',{'Time','1','2','3','4','5','6','7','8'}
@@ -105,7 +105,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 monitored to choose the best models. Scalar.
 %                 If fin_step is an integer greater
 %                 or equal 1, it refers to the number of steps.
-%                 For example if fin_step=10 the program considers the last
+%                 For example, if fin_step=10, the program considers the last
 %                 10 steps to choose the best models.
 %                 If fin_step is a real number alpha (0<alpha<0.5) in the
 %                 interval (0 0.5] than the program considers the last
@@ -123,7 +123,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %
 %       first_k :  number of best models to
 %                      consider in each of the last fin_step. Scalar.
-%                       For example if first_k=5 in each of the last fin_step, 
+%                       For example, if first_k=5 in each of the last fin_step, 
 %                       the models which had the 5 smallest values of Cp are considered. 
 %                       As default first_k=3
 %                       Example - 'first_k',5
@@ -152,7 +152,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %         plots : Plot on the screen. Scalar.
 %                 If plots==1 a plot is created on the screen which
 %                 contains the trajectories of Cp monitored along the
-%                 search with confidence bands
+%                 search with confidence bands.
 %                 If plots==2 two plots are generated. The first contains
 %                 the trajectories of Cp monitored along the search with
 %                 confidence bands. The second contains the trajectories of
@@ -176,8 +176,8 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 Example - 'quant',0.1
 %                 Data Types - double
 %
-%         steps : Steps to add labels. Vector. It specifies in which steps of the plot which
-%                 monitors Cp it is necessary to include the labels of the
+%         steps : Steps to add labels. Vector. It specifies in which steps of the plot, which
+%                 monitors Cp, it is necessary to include the labels of the
 %                 models which have been previously chosen. 
 %                 The default is to write the labels of the models in steps
 %                 round([n*0.6  n*0.8  n]);
@@ -283,7 +283,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                   This information is useful because in this way it is
 %                   possible to skip the computation of the submodels of
 %                   the rows of matrix Ajout.
-%                   For example if smallp=3, bigP=6 and
+%                   For example, if smallp=3, bigP=6 and
 %                   Ajout = [ 23; 24; 27 ]
 %                   the three models 23, 24, and 27 always have Cp values
 %                   much greater than the threshold (that is variables
@@ -402,7 +402,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 
 %{
     %% Extract the best models of size 6 and 5 and plot monitoring of Cp.
-    % Extract 1000 subsets to initialize the search andse labels defined by
+    % Extract 1000 subsets to initialize the search and use labels defined by
     % the user. Exclude the searches of the models which were unacceptable
     % for smallp=5.
     X=load('ozone.txt');
@@ -446,7 +446,7 @@ nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
-% If the number of all possible subsets is <1000 the default is to extract
+% If the number of all possible subsets is <1000, the default is to extract
 % all subsets otherwise just 1000.
 ncomb=bc(n,smallp);
 nsampdef=min(1000,ncomb);
@@ -866,12 +866,12 @@ if ~isempty(Aj)
                 % first_k Mallows Cp
                 [~,IX]=sort(AIC(end-fin_step(1)+1:end,2:end),2);
                 
-                % Information abou the number of best searches to consider
+                % Information about the number of best searches to consider
                 first_k=options.first_k;
                 
                 first=min(first_k,size(IX,2));
                 sto=reshape(IX(:,1:first),fin_step(1)*first,1);
-                % units vector which contains the information abou the
+                % units vector which contains the information about the
                 % searches which satisfy the previous criteria
                 units=unique(sto);
                 % lunits = number of selected searches
@@ -931,7 +931,7 @@ if ~isempty(Aj)
             outCp.LABout=LABout;
         end
     else
-        % all models are considered of interst
+        % all models are considered of interest
     end
 else
     % No model of interest

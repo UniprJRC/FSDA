@@ -201,7 +201,7 @@ quant=finv(repmat(probf,lm,1),2*(n-mm),2*(mm+1));
 % from the equivalence with Incomplete beta distribution.
 q=(mm+1)./(mm+1+(n-mm).*(quant));
 
-% Minsca = matrix of the scaled MDR envelopes in each step of the search.
+% MinSca = matrix of the scaled MDR envelopes in each step of the search.
 MinSca= abs(tinv(0.5*(1+q), mm-p));
 
 

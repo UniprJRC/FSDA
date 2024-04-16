@@ -39,11 +39,11 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))
 %               \]
-%               Therefore, if for example the explanatory variables
+%               Therefore, if, for example, the explanatory variables
 %               responsible for heteroscedasticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax:
+%               of matrix X, it is possible to use both the syntax:
 %                    FSRHbsb(y,X,X(:,[3 5]),0)
-%               or the sintax:
+%               or the syntax:
 %                    FSRHbsb(y,X,[3 5],0)
 %  bsb :        list of units forming the initial subset. Vector | 0. If
 %               bsb=0 then the procedure starts with p units randomly
@@ -58,8 +58,8 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               The minimum value of init is 0. In this case in the first
-%               step we just use prior information
+%               The minimum value of init is 0. In this case, in the first
+%               step, we just use prior information.
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
@@ -90,9 +90,9 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               Data Types - string
 %
 %  nocheck:   Check input arguments. Boolean.
-%               If nocheck is equal to true no check is performed on
+%               If nocheck is equal to true, no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
+%               unchanged. In other words, the additional column of ones for
 %               the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
@@ -100,18 +100,18 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
 %               about great interchange on the screen
-%               If msg==1 (default) messages are displayed on the screen
+%               If msg==1 (default) messages are displayed on the screen,
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
 %
 % gridsearch:   Algorithm to be used. Scalar.
-%               If gridsearch ==1 grid search will be used else the
-%               scoring algorith will be used.
+%               If gridsearch ==1 grid search will be used, else the
+%               scoring algorithm will be used.
 %               Example - 'gridsearch',0
 %               Data Types - double
 %               REMARK: the grid search has only been implemented when
-%               there is just one explantory variable which controls
+%               there is just one explanatory variable which controls
 %               heteroskedasticity.
 %
 %  constr   :   units which are forced to join the search in the last r steps. Vector.
@@ -122,8 +122,8 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
-%               0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
+%               0, we store the units forming subset in all steps. The
+%               default is: store the units forming subset in all steps if
 %               n<=5000, else to store the units forming subset at steps
 %               init and steps which are multiple of 100. For example, as
 %               default, if n=7530 and init=6, units forming subset are
@@ -148,7 +148,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -274,7 +274,7 @@ end
 % Z = n-by-r matrix which contains the explanatory variables for
 % heteroskedasticity
 if size(Z,1)~=n
-    % Check if interecept was true
+    % Check if intercept was true
     intercept=options.intercept;
     if intercept==true
         Z=X(:,Z+1);
@@ -307,7 +307,7 @@ end
 gridsearch=options.gridsearch;
 if gridsearch==1 && size(Z,2)>1
     warning('FSDA:FSRHmdr:WrongInputOpts','To perform a grid search you cannot have more than one varaible responsible for heteroskedasticity');
-    warning('FSDA:FSRHmdr:WrongInputOpts','Scoring algorith is used');
+    warning('FSDA:FSRHmdr:WrongInputOpts','Scoring algorithm is used');
     gridsearch=0;
 end
 
@@ -392,7 +392,7 @@ if nocheck==false && rank(Xb)~=p
     % FS loop will not be performed
 else
     % ij = index which is linked with the columns of matrix BB. During the
-    % search every time a subset is stored inside matrix BB ij icreases by one
+    % search every time a subset is stored inside matrix BB ij increases by one
     ij=1;
     
     for mm=ini0:n

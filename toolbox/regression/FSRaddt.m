@@ -42,7 +42,7 @@ function [out]=FSRaddt(y,X,varargin)
 %                       Example - 'h',round(n*0,75)
 %                       Data Types - double
 %
-%       nsamp   :       Number of subsamplse which will be extracted to find the
+%       nsamp   :       Number of subsamples which will be extracted to find the
 %                       robust estimator. Scalar.
 %                       If nsamp=0 all subsets will be
 %                       extracted. They will be (n choose p). Remark: if the
@@ -51,10 +51,10 @@ function [out]=FSRaddt(y,X,varargin)
 %                       Example - 'nsamp',1000
 %                        Data Types - double
 %
-%       lms     :      Criterion to use to find the initlal subset to
-%                       initialize the search. Scalar,  vector or structure.
+%       lms     :      Criterion to use to find the initial subset to
+%                       initialize the search. Scalar, vector or structure.
 %                       If lms=1 (default) Least Median of Squares is
-%                       computed, else Least Trimmed of Squares is computed. else
+%                       computed, else Least Trimmed of Squares is computed. Else
 %                       (default) no plot is produced
 %                       Example - 'lms',1
 %                       Data Types - double
@@ -76,7 +76,7 @@ function [out]=FSRaddt(y,X,varargin)
 %
 %        nameX  :       Add variable labels in plot. Cell array of strings.
 %                       Cell array of strings of length p containing the labels of
-%                       the varibles of the regression dataset. If it is empty
+%                       the variables of the regression dataset. If it is empty
 %                       (default) the sequence X1, ..., Xp will be created
 %                       automatically
 %                       Example - 'nameX',{'NameVar1','NameVar2'}
@@ -182,13 +182,13 @@ function [out]=FSRaddt(y,X,varargin)
 %               with the deletion t statistics.
 %
 %    out.Un=   cell of length  length(DataVars).
-%               out.Un{i} (i=1, ..., ength(DataVars)) is a (n-init) x 11
+%               out.Un{i} (i=1, ..., length(DataVars)) is a (n-init) x 11
 %               matrix which contains the unit(s) included in the subset at
 %               each step in the search which excludes the ith explanatory
 %               variable.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
-%               subset but not in the old one Un(1,:) for example contains
+%               subset but not in the old one Un(1,:), for example contains
 %               the unit included in step init+1 ... Un(end,2) contains the
 %               units included in the final step of the search
 %
@@ -200,7 +200,7 @@ function [out]=FSRaddt(y,X,varargin)
 %               input option intercept was missing or equal to 1)
 %
 %  out.la     = Vector containing the numbers associated to matrix out.X for
-%               which deletion t stat have been computed. For example is
+%               which deletion t stat have been computed. For example, if
 %               the intercept is present and input option DataVars was
 %               equal to [1 3], out.la=[2 4].
 %
@@ -316,7 +316,7 @@ nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
-% Reduce the number of variables by 1 becuse we delete each variable in
+% Reduce the number of variables by 1 because we delete each variable in
 % turn
 p1=p-1;
 
@@ -414,7 +414,6 @@ Tdel=[(init:n)' zeros(n-init+1,ini0)];
 
 % Matrix S2del will contain the deletion \sigma^2 estimate when corresponding
 % explanatory variable is deleted from the forward search
-% search.
 % 1st col = fwd search index
 % 2nd col = estimate of \sigma^2 when first explanatory variable is deleted
 % ...
@@ -430,7 +429,7 @@ Una=cell(ini0,1);
 %  included.
 Uni = cat(2 , (init+1:n)' , NaN(n-init,10));
 
-% binit = units forming intial subset
+% binit = units forming initial subset
 binit=zeros(p,ini0);
 
 j=0;
@@ -454,7 +453,7 @@ for i=vars
     bsb=outLXS.bs;
 
     Xb=Xred(bsb,:); % Subset of reduced X matrix (in the search which excludes variable w)
-    yb=y(bsb); % Subset of y  (in the search which excludes variable w)
+    yb=y(bsb); % Subset of y (in the search which excludes variable w)
     wb=w(bsb); % Subset of vector w (excluded explanatory variable)
 
     % Initialize the fwd search (excluding variable w)
@@ -469,7 +468,7 @@ for i=vars
         end
 
         if mm==p
-            % Store units forminng subset for each value of deletion tstat
+            % Store units forming subset for each value of deletion tstat
             % when m= number of columns of matrix X (including the
             % constant)
             binit(:,j)=bsb;
