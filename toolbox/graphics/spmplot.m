@@ -1789,7 +1789,8 @@ if  lowerORupper ==true
                                     set(hlegend.EntryContainer.NodeChildren(iii), 'Color',hl(iii).Color);
                                 else
                                     %This would do the same, but change the string and affect the functioning of clickableMultiLegend
-                                    hlegend.String{iii} = ['\color[rgb]{' num2str(hlColors(iii,:)) '} ' hlegend.String{iii}];
+                                    set(hlegend.EntryContainer.NodeChildren(iii), 'FontColor',hl(iii).Color);
+                                    %hlegend.String{iii} = ['\color[rgb]{' num2str(hlColors(iii,:)) '} ' hlegend.String{iii}];
                                 end
                             end
                         end
