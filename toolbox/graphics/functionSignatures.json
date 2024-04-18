@@ -145,9 +145,25 @@
             ]
         },
 
+        "FgroundMalfwdplot": {
+
+            "purpose":"structure required as optional input by malfwdplot and resfwdplot",
+            "type":"struct",
+            "field":[
+                {"name":"fthresh", "type":["numeric", "vector"], "purpose":"specifies the highlighted trajectories"},
+                {"name":"funit", "type":["numeric", "scalar"], "purpose":"number of trajectories of the covariances to be highlighted"},
+                {"name":"flabstep", "type":["numeric", "vector"], "purpose":"specifies steps of the search where to put labels for the highlighted trajectories (units)"},
+                {"name":"LineWidth", "type":["numeric", "scalar"], "purpose":"specifies line width for the highlighted trajectories"},
+                {"name":"Color", "type":"cell", "purpose":"colors to be used for the highlighted trajectories " },
+                {"name":"LineStyle", "type":"cell", "purpose":"line type of the highlighted trajectories"},
+                {"name":"fmark", "type":["numeric", "scalar"], "purpose":"scalar controlling whether to plot highlighted trajectories as markers"},
+                {"name":"FontSize", "type":["double", "scalar"], "purpose":"scalar controlling font size of the labels of the trajectories in foreground"}
+            ]
+        },
+
         "Bground": {
 
-            "purpose":"structure requested as optional input by levfwdplot",
+            "purpose":"structure requested as optional input by levfwdplot and malfwdplot",
             "type":"struct",
             "field":[
                 {"name":"bthresh", "type":["numeric", "vector"], "purpose":"specifies how to define the unimmportant trajectories"},
@@ -171,7 +187,7 @@
 
         "outLevfwdplot": {
 
-            "purpose":"structure requested as required input by levfwdplot",
+            "purpose":"structure requested as required input by levfwdplot and malfwdplot",
             "type":"struct",
             "field":[
                 {"name":"LEV", "type":"numeric", "purpose":"matrix containing the leverage monitored in each step of the forward search"},
@@ -185,7 +201,7 @@
 
         "StandardLevfwdplot": {
 
-            "purpose":"structure requested as optional input by covplot",
+            "purpose":"structure requested as optional input by Levfwdplot",
             "type":"struct",
             "field":[
                 {"name":"SizeAxesNum", "type":"double", "purpose":"scalar specifying the fontsize of the axes numbers"},
@@ -198,6 +214,98 @@
                 {"name":"subsize", "type":"numeric", "purpose":"numeric vector containing the subset size with length equal to the number of columns of the leverage matrix"},
                 {"name":"LineWidth", "type":"char", "purpose":"scalar specifying line width for the trajectories"},
                 {"name":"Color", "type":"cell", "purpose":"cell array of strings containing the colors to be used for the standard units"},
+                {"name":"LineStyle", "type":"cell", "purpose":"cell containing the line types"}
+            ]
+        },
+
+        "outMalfwdplot": {
+            
+            "purpose":"structure used as required input by malfwdplot",
+            "type":"struct",
+            "field":[
+                {"name":"MAL", "type":"double", "purpose":"matrix containing the squared Mahalanobis distances"},
+                {"name":"Y", "type":"double", "purpose":"the original data matrix or another matrix with n rows and p variables"},
+                {"name":"class", "type":"char", "purpose":"x and y axis labels"},
+                {"name":"Un", "type":"double", "purpose":"order of entry of each unit"}
+            ]
+
+        },
+
+        "outMdrplot": {
+
+            "purpose":"structure requested as input by mrdplot",
+            "type":"struct",
+            "field":[
+                {"name":"mdr", "type":"double", "purpose":"minimum deletion residual"},
+                {"name":"Un", "type":"double", "purpose":"order of entry of each unit"},
+                {"name":"y", "type":"numeric", "purpose":"vector containing the response"},
+                {"name":"X", "type":"numeric", "purpose":"matrix containing the explanatory variables"},
+                {"name":"Bols", "type":"numeric", "purpose":"Monitoring of beta coefficients"}
+            ]
+        },
+
+        "outMdrrsplot": {
+
+            "purpose":"structure requested as input by mdrrsplot",
+            "type":"struct",
+            "field":[
+                {"name":"mdrrs", "type":"double", "purpose":"matrix containing the monitoring of minimum deletion residual"},
+                {"name":"BBrs", "type":["double", "3d"], "purpose":"array containing units forming subset for each random start"},
+                {"name":"y", "type":"numeric", "purpose":"vector containing the response"},
+                {"name":"X", "type":"numeric", "purpose":"matrix containing the explanatory variables"}
+            ]
+        },
+
+        "outMmdplot": {
+
+            "purpose":"structure requested as input by mmdplot",
+            "type":"struct",
+            "field":[
+                {"name":"mmd", "type":"double", "purpose":"matrix containing the monitoring of miminum Mhahalanobis distance in each step of the forward search"},
+                {"name":"Un", "type":"double", "purpose":"order of entry of each unit"},
+                {"name":"Y", "type":"double", "purpose":"original n x v matrix"}
+            ]
+        },
+
+        "outMmdrsplot": {
+
+            "purpose":"structure requested as input by mmdrsplot",
+            "type":"struct",
+            "field":[
+                {"name":"mmdrs", "type":"double", "purpose":"matrix containing the monitoring of minimum Mahalanobis distance"},
+                {"name":"BBrs", "type":["double", "3d"], "purpose":"array containing units forming subset for each random start"},
+                {"name":"Y", "type":"numeric", "purpose":"matrix containing the original datamatrix"}
+            ]
+        },
+
+        "outResfwdplot": {
+
+            "purpose":"structure requested as input by resfwdplot",
+            "type":"struct",
+            "field":[
+                {"name":"RES", "type":"double", "purpose":"matrix containing the residual monitored in each step of the forward search"},
+                {"name":"Un", "type":"double", "purpose":"order of entry in the subset of each unit"},
+                {"name":"y", "type":"numeric", "purpose":"vector containing the response"},
+                {"name":"X", "type":"numeric", "purpose":"matrix containing the explanatory variables"},
+                {"name":"Bols", "type":"numeric", "purpose":"Monitoring of estimated beta coefficients monitored in each step of the robus procedure"}
+            ]
+        },
+
+        "StandardResfwdplot": {
+
+            "purpose":"structure requested as optional input by resfwdplot",
+            "type":"struct",
+            "field":[
+                {"name":"SizeAxesNum", "type":"double", "purpose":"scalar specifying the fontsize of the axes numbers"},
+                {"name":"xlim", "type":"double", "purpose":"two elements vector with minimum and maximum of the x axis"},
+                {"name":"ylim", "type":"double", "purpose":"two elements vector with minimum and maximum of the y axis"},
+                {"name":"titl", "type":"char", "purpose":"a label for the title"},
+                {"name":"labx", "type":"char", "purpose":"a label for the x-axis"},
+                {"name":"laby", "type":"char", "purpose":"a label for the y-axis"},
+                {"name":"SizeAxesLab", "type":"double", "purpose":"Scalar specifying the fontsize of the labels of the axes"},
+                {"name":"xvalues", "type":"numeric", "purpose":"vector containing x axis values"},
+                {"name":"LineWidth", "type":"char", "purpose":"scalar specifying line width for the trajectories"},
+                {"name":"Color", "type":"cell", "purpose":"cell array of strings containing the colors to be used for the highlighted units"},
                 {"name":"LineStyle", "type":"cell", "purpose":"cell containing the line types"}
             ]
         }
@@ -426,7 +534,7 @@
             {"name":"pd", "kind":"required", "type":[["numeric", "vector"], ["struct"]], "purpose":"Probability density function"},
             {"name":"specs", "kind":"required", "type":["numeric", "vector", "numel=2"], "purpose":"the lower and upper limits of the shading area"},
             {"name":"region", "kind":"required", "type":["char", "choices={'outside', 'inside'}"], "purpose":"the region to shade"},
-            {"name":"userColor", "kind":"namevalue", "type":[["numeric", "vector", "ncols=3", ">=0", "<=1"], ["char"], ["FSColors"]], "purpose":"The color of the shaded area"},
+            {"name":"userColor", "kind":"namevalue", "type":[["numeric", "vector", "ncols=3", ">=0", "<=1"], ["char"]], "purpose":"The color of the shaded area"},
             {"name":"evalPoints", "kind":"namevalue", "type":"numeric", "purpose":"Evaluation points"}
         ],
 
@@ -508,7 +616,7 @@
         [
             {"name":"out", "kind":"required", "type":"struct:outLevfwdplot", "purpose":"Structure containing monitoring of leverage"},
             {"name":"standard", "kind":"namevalue", "type":"struct:StandardLevfwdplot", "purpose":"appearance of the plot"},
-            {"name":"fground", "kind":"namevalue", "type":"struct:Fground", "purpose":"trajectories in foregroud"},
+            {"name":"fground", "kind":"namevalue", "type":"struct:Fground", "purpose":"trajectories in foreground"},
             {"name":"bground", "kind":"namevalue", "type":"struct:Bground", "purpose":"trajectories in background"},
             {"name":"xground", "kind":"namevalue", "type":"char", "purpose":"trajectories to highlight in connection with resfwdplot"},
             {"name":"tag", "kind":"namevalue", "type":"char", "purpose":"Personalized tag"},
@@ -521,5 +629,223 @@
         ],
 
         "description":"Plots the trajectories of leverage along the search"
+    },
+
+    "malfwdplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct:outMalfwdplot", "purpose":"Structure containing monitoring of Mahalanobis distance"},
+            {"name":"standard", "kind":"namevalue", "type":"struct:StandardLevfwdplot", "purpose":"plot layout"},
+            {"name":"fground", "kind":"namevalue", "type":"struct:FgroundMalfwdplot", "purpose":"trajectories in foreground"},
+            {"name":"bground", "kind":"namevalue", "type":"struct:Bground", "purpose":"characterictics of the trajectories in background"},
+            {"name":"tag", "kind":"namevalue", "type":"char", "purpose":"Personalized plot tag"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive clicking"},
+            {"name":"label", "kind":"namevalue", "type":"cell", "purpose":"row labels"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive mouse brushing"},
+            {"name":"nameY", "kind":"namevalue", "type":"cell", "purpose":"variable labels"},
+            {"name":"msg", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"display or save used options"},
+            {"name":"conflev", "kind":"namevalue", "type":[["numeric", "vector"], ["struct"]], "purpose":"confidence interval for the horizontal bands"}
+        ],
+
+        "description":"Plots the trajectories of scaled Mahalanobis distances along the search"
+    },
+
+    "malindexplot":
+    {
+        "inputs":
+        [
+            {"name":"md", "kind":"required", "type":[["single", "vector"], ["double", "vector"], ["struct"]], "purpose":"Mahalanobis distances"},
+            {"name":"v", "kind":"required", "type":[["single"], ["double"]], "purpose":"Number of variables or matrix of size n-by-k containing empirical envelope"},
+            {"name":"modelT", "kind":"namevalue", "type":["double", "scalar"], "purpose":"controls how the consistency factor is applied to account for the effect of trimming"},
+            {"name":"h", "kind":"namevalue", "type":"matlab.graphics.axis.Axes", "purpose":"Where to plot"},
+            {"name":"x", "kind":"namevalue", "type":["double", "vector"], "purpose":"x axis"},
+            {"name":"labx", "kind":"namevalue", "type":"char", "purpose":"x-axis label"},
+            {"name":"laby", "kind":"namevalue", "type":"char", "purpose":"y-axis label"},
+            {"name":"Title", "kind":"namevalue", "type":"char", "purpose":"plot title"},
+            {"name":"numlab", "kind":"namevalue",  "type":[["numeric", "vector"], ["cell"]], "purpose":"number of points to be labelled in the plot"},
+            {"name":"conflev", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"confidence interval for the horizontal bands"},
+            {"name":"FontSize", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"labels font size"},
+            {"name":"SizeAxesNum", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"numbers font size"},
+            {"name":"ylimy", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"y limits"},
+            {"name":"xlimx", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"x limits"},
+            {"name":"lwdenv", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Envelope line width"},
+            {"name":"MarkerSize", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"marker size of points"},
+            {"name":"MarkerFaceColor", "kind":"namevalue", "type":[["numeric"], ["char"]], "purpose":"marker fill color of points"},
+            {"name":"tag", "kind":"namevalue", "type":"char", "purpose":"figure tag"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive mouse brushing"},
+            {"name":"nameY", "kind":"namevalue", "type":"cell", "purpose":"variables labels of the original data matrix"},
+            {"name":"label", "kind":"namevalue", "type":"cell", "purpose":"row labels"}
+        ],
+
+        "description":"Plots the Mahalanobis distances versus a selected variable"
+    },
+
+    "mdrplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct:outMdrplot", "purpose":"Structure containing monitoring of mdr"},
+            {"name":"quant", "kind":"namevalue", "type":["double", "vector"], "purpose":"Quantiles for which envelope have to be computed"},
+            {"name":"sign", "kind":"namevalue", "type":["double", "scalar"], "purpose":"mdr with sign"},
+            {"name":"mplus1", "kind":"namevalue", "type":["double", "scalar"], "purpose":"plot of (m+1)th order statistic"},
+            {"name":"envm", "kind":"namevalue", "type":["double", "scalar"], "purpose":"sample size for drawing envelopes"},
+            {"name":"xlimx", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"minimum and maximum on the x axis"},
+            {"name":"ylimy", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"minimum and maximum on the y axis"},
+            {"name":"lwdenv", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Line Width"},
+            {"name":"ncoord", "kind":"namevalue", "type":"logical", "purpose":"input out.mdr in normal coordinates"},
+            {"name":"tag", "kind":"namevalue", "type":"char", "purpose":"plot handle"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive clicking"},
+            {"name":"label", "kind":"namevalue", "type":"cell", "purpose":"row labels"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive mouse brushing"},
+            {"name":"FontSize", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Size of axes labels"},
+            {"name":"nameX", "kind":"namevalue", "type":"cell", "purpose":"Regressor names"},
+            {"name":"nameY", "kind":"namevalue", "type":"char", "purpose":"Response Label"},
+            {"name":"lwd", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"curves lines width"},
+            {"name":"titl", "kind":"namevalue", "type":"char", "purpose":"main title"},
+            {"name":"labx", "kind":"namevalue", "type":"char", "purpose":"x axis title"},
+            {"name":"laby", "kind":"namevalue", "type":"char", "purpose":"y axis title"}
+        ],
+
+        "description":"Plots the trajectory of minimum deletion residual (mdr)"
+    },
+
+    "mdrrsplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct:outMdrrsplot", "purpose":"structure that contains the following fields: mdrrs, BBrs, y, X"},
+            {"name":"quant", "kind":"namevalue", "type":["double", "vector"], "purpose":"vector containing quantiles for which envelopes have to be computed"},
+            {"name":"envm", "kind":"namevalue", "type":["double", "scalar"], "purpose":"size of the sample which is used to superimpose the envelope"},
+            {"name":"xlimx", "kind":"namevalue", "type":["double", "vector"], "purpose":"vector with two elements controlling minimum and maximum of the x axis"},
+            {"name":"ylimy", "kind":"namevalue", "type":["double", "vector"], "purpose":"min and max on the y axis"},
+            {"name":"lwdenv", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Line Width of the envelopes"},
+            {"name":"tag", "kind":"namevalue", "type":"char", "purpose":"tag of the plot"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive clicking"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive mouse brushing"},
+            {"name":"FontSize", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"label font size"},
+            {"name":"ColorTrj", "kind":"namevalue", "type":[["single", "scalar"], ["double", "scalar"]], "purpose":"color of trajectories"},
+            {"name":"SizeAxesNum", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"sizes of axes numbers"},
+            {"name":"nameX", "kind":"namevalue", "type":"cell", "purpose":"Labels of the variables of the regression dataset"},
+            {"name":"nameY", "kind":"namevalue", "type":"char", "purpose":"Response Label"},
+            {"name":"lwd", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Trajectories line width"},
+            {"name":"titl", "kind":"namevalue", "type":"char", "purpose":"title label"},
+            {"name":"labx", "kind":"namevalue", "type":"char", "purpose":"x axis title"},
+            {"name":"laby", "kind":"namevalue", "type":"char", "purpose":"y axis title"}
+        ],
+
+        "outputs":
+        [
+            {"name":"brushedUnits", "type":["double", "vector"], "purpose":"vector containing the list of the units which are inside subset in the trajectories which have been brushed using option databrush"},
+            {"name":"BrushedUnits", "type":["double", "2d"], "purpose":"matrix which contains in the column j the brushed units after jth brushing"}
+        ],
+
+        "description":"plots the trajectory of minimum deletion residual from random starts"
+    },
+
+    "mmdplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct:outMmdplot", "purpose":"structure containing the monitoring of mmd"},
+            {"name":"quant", "kind":"namevalue", "type":["double", "vector"], "purpose":"quantiles for which envelopes have to be computed"},
+            {"name":"mplus1", "kind":"namevalue", "type":["double", "scalar"], "purpose":"add (m+1) order statistic curve"},
+            {"name":"envm", "kind":"namevalue", "type":["double", "scalar"], "purpose":"size of the sample to use"},
+            {"name":"xlimx", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the x axis"},
+            {"name":"ylimy", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the y axis"},
+            {"name":"lwdenv", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Line Width"},
+            {"name":"tag", "kind":"namevalue", "type":"string", "purpose":"plot handle"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive clicking"},
+            {"name":"label", "kind":"namevalue", "type":"cell", "purpose":"row labels"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive mouse brushing"},
+            {"name":"FontSize", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Size of axes labels"},
+            {"name":"SizeAxesNum", "kind":"namevalue", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"size of axes numbers"},
+            {"name":"nameY", "kind":"namevalue", "type":"cell", "purpose":"Regressor names"},
+            {"name":"lwd", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"curves lines width"},
+            {"name":"titl", "kind":"namevalue", "type":"char", "purpose":"main title"},
+            {"name":"labx", "kind":"namevalue", "type":"char", "purpose":"x axis title"},
+            {"name":"laby", "kind":"namevalue", "type":"char", "purpose":"y axis title"},
+            {"name":"scaled", "kind":"namevalue", "type":"numeric", "purpose":"scaled or unscaled envelopes"}
+        ],
+
+        "outputs":
+        [
+            {"name":"brushedUnits", "type":["double", "vector"], "purpose":"vector containing the list of the units which are inside subset in the trajectories which have been brushed using option databrush"},
+            {"name":"BrushedUnits", "type":["double", "2d"], "purpose":"matrix which contains in the column j the brushed units after jth brushing"}
+        ],
+
+        "description":"Plots the trajectory of minimum Mahalanobis distance (mmd)"
+    },
+
+    "mmdrsplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct:outMmdrsplot", "purpose":"structure containing the following fields: mmdrs, BBrs, Y"},
+            {"name":"quant", "kind":"namevalue", "type":["double", "vector"], "purpose":"quantiles for which envelopes have to be computed"},
+            {"name":"envm", "kind":"namevalue", "type":["double", "scalar"], "purpose":"size of the sample to use"},
+            {"name":"xlimx", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the x axis"},
+            {"name":"ylimy", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the y axis"},
+            {"name":"lwdenv", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Line Width"},
+            {"name":"tag", "kind":"namevalue", "type":"string", "purpose":"plot handle"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive clicking"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive mouse brushing"},
+            {"name":"FontSize", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"Size of axes labels"},
+            {"name":"SizeAxesNum", "kind":"namevalue", "type":[["double", "scalar"], ["single", "scalar"]], "purpose":"size of axes numbers"},
+            {"name":"nameY", "kind":"namevalue", "type":"cell", "purpose":"Regressor names"},
+            {"name":"lwd", "kind":"namevalue", "type":[["single"], ["double"]], "purpose":"curves lines width"},
+            {"name":"titl", "kind":"namevalue", "type":"char", "purpose":"main title"},
+            {"name":"labx", "kind":"namevalue", "type":"char", "purpose":"x axis title"},
+            {"name":"laby", "kind":"namevalue", "type":"char", "purpose":"y axis title"},
+            {"name":"labenv", "kind":"namevalue", "type":"logical", "purpose":"label of the envelopes"},
+            {"name":"scaled", "kind":"namevalue", "type":"numeric", "purpose":"scaled or unscaled envelopes"}
+        ],
+
+        "outputs":
+        [
+            {"name":"brushedUnits", "type":["double", "vector"], "purpose":"vector containing the list of the units which are inside subset in the trajectories which have been brushed using option databrush"},
+            {"name":"BrushedUnits", "type":["double", "2d"], "purpose":"matrix which contains in the column j the brushed units after jth brushing"}
+        ],
+
+        "description":"Plots the trajectories of minimum Mahalanobis distances from different starting points"
+    },
+
+    "moonplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct", "purpose":"Structure containing the output of function CorAna"},
+            {"name":"plots", "kind":"namevalue", "type":"struct", "purpose":"Customize plot appearance"},
+            {"name":"addx", "kind":"namevalue", "type":["double", "scalar"], "purpose":"horizontal displacement for labels"},
+            {"name":"addy", "kind":"namevalue", "type":["double", "scalar"], "purpose":"vertical displacement for labels"},
+            {"name":"changedimsign", "kind":"namevalue", "type":["logical", "vector", "numel=2"], "purpose":"change chosen dimension sign"},
+            {"name":"xlimx", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the x axis"},
+            {"name":"ylimy", "kind":"namevalue", "type":["double", "vector", "numel=2"], "purpose":"Min and Max of the y axis"},
+            {"name":"d1", "kind":"namevalue", "type":[["double", "positive", "integer"], ["single", "positive", "integer"]], "purpose":"Dimension to show on the horizontal axis"},
+            {"name":"d2", "kind":"namevalue", "type":[["double", "positive", "integer"], ["single", "positive", "integer"]], "purpose":"Dimension to show on the vertical axis"},
+            {"name":"h", "kind":"namevalue", "type":"matlab.graphics.axis.Axes", "purpose":"the axis handle of a figure where to send the CorAnaplot"}
+        ],
+
+        "description":"Draws the Correspondence Analysis (CA) moonplot"
+    },
+
+    "resfwdplot":
+    {
+        "inputs":
+        [
+            {"name":"out", "kind":"required", "type":"struct:outResfwdplot", "purpose":"structure containing the monitoring of scaled residuals"},
+            {"name":"standard", "kind":"namevalue", "type":"struct:StandardResfwdplot", "purpose":"appearance of the plot"},
+            {"name":"fground", "kind":"namevalue", "type":"struct:FgroundMalfwdplot", "purpose":"trajectories in foreground"},
+            {"name":"bground", "kind":"namevalue", "type":"struct:Bground", "purpose":"characteristics of the trajectories in background"},
+            {"name":"tag", "kind":"namevalue", "type":"string", "purpose":"Personalized plot tag"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive clicking"},
+            {"name":"label", "kind":"namevalue", "type":"cell", "purpose":"row labels"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive mouse brushing"},
+            {"name":"nameX", "kind":"namevalue", "type":"cell", "purpose":"Labels of the explanatory variables"},
+            {"name":"nameY", "kind":"namevalue", "type":"char", "purpose":"Response Label"},
+            {"name":"msg", "kind":"namevalue", "type":[["single", "scalar"], ["double", "scalar"]], "purpose":"display or save used options"}
+        ],
+
+        "description":"Plots the trajectories of the monitored scaled (squared) residuals"
     }
 }

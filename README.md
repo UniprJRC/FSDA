@@ -21,7 +21,7 @@
 
 
 
-## $\textsf{\color{orange} NEWS: FSDA release  2024a is out  (April 2024)}$
+## NEWS: FSDA release  2024a is out. (April 2024)
 
 
 #### GRAPHICS 

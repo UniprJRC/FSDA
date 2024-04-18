@@ -18,16 +18,17 @@ function out=OSILA(X,k,alpha,n)
 %
 %
 %  Optional input arguments:
+%
 %  alpha: confidence level, it provides an upper value for the probability 
 %        to have more than one iteration in the algorithm. If not provided 
 %        (or empty), it is set to 0.99.  
 %                   Example - 0.99
-%                   Data Type - double
+%                   Data Types - double
 %  n: dimension of the random sample. If not provided (or n=0 or empty), it
 %       is calculated through the subfunction 'FindOptimalDimension' (see
 %       Section 3 of the reference).  
 %                   Example - 1000
-%                   Data Type - double
+%                   Data Types - double
 %
 % Output:
 %
@@ -39,12 +40,12 @@ function out=OSILA(X,k,alpha,n)
 %
 % References:
 %
-% Cerasa, Andrea. "Order statistics in large arrays (OSILA): a simple 
+% Cerasa, A. (2023). "Order statistics in large arrays (OSILA): a simple 
 % randomised algorithm for a fast and efficient attainment of the order 
-% statistics in very large arrays." Computational Statistics (2023): 1-26.
+% statistics in very large arrays." Computational Statistics, p. 1-26.
 %
 %
-% Copyright 2008-2023.
+% Copyright 2008-2024.
 % Written by FSDA team
 %
 %
@@ -55,7 +56,7 @@ function out=OSILA(X,k,alpha,n)
 % Examples:
 %
 %{
-    %% OSILA: standard application - alpha=0.99 (default value), n calculated
+    %% OSILA: standard application - alpha=0.99 (default value), n calculated.
     N=10^7;
     Y=randn(N,1);
     k=34580;
@@ -67,7 +68,7 @@ function out=OSILA(X,k,alpha,n)
 %}
 
 %{
-    %% OSILA with alpha supplied and n calculated 
+    %% OSILA with alpha supplied and n calculated.
     N=10^7;
     Y=randn(N,1);
     k=34580;
@@ -243,6 +244,7 @@ r1=b4a-Q+QpSplus;
 n=round(N/r1^2);
 end
 
+%FScategory:UTISTAT
 
 
 
