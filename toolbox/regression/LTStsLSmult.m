@@ -25,8 +25,8 @@ function out = LTStsLSmult(y,varargin)
 %                 Example - 'alphaLTS',0.1
 %                 Data Types - double
 %     bdp     : breakdown point. Scalar. It measures the fraction of outliers
-%               the algorithm should resist. In this case any value greater
-%               than 0 but smaller or equal than 0.5 will do fine. Default
+%               the algorithm should resist. In this case, any value greater
+%               than 0, but smaller or equal than 0.5, will do fine. Default
 %               value 0.1.
 %                 Example - 'bdp',0.4
 %                 Data Types - double
@@ -38,7 +38,7 @@ function out = LTStsLSmult(y,varargin)
 %               which will be used. The model structure contains the following
 %               fields:
 %               model.s = scalar (length of seasonal period). For monthly
-%                         data s=12 (default), for quartely data s=4, ...
+%                         data s=12 (default), for quarterly data s=4, ...
 %               model.trend = scalar (order of the trend component).
 %                       trend = 0 implies no trend;
 %                       trend = 1 implies linear trend with intercept (default);
@@ -49,17 +49,17 @@ function out = LTStsLSmult(y,varargin)
 %                        frequencies, i.e. harmonics, in the seasonal
 %                        component. Possible values for seasonal are
 %                        $0,1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
-%                        If seasonal =0 we assume there is no seasonal
+%                        If seasonal=0, we assume there is no seasonal
 %                        component.
-%                        If seasonal =1 (default) we have:
+%                        If seasonal=1 (default) we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;
-%                        if seasonal =2 we have:
+%                        if seasonal=2 we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
 %                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
-%                        Note that when $s$ is even the sine term disappears
+%                        Note that when $s$ is even, the sine term disappears
 %                        for $j=s/2$ and so the maximum number of
 %                        trigonometric parameters is $s-1$.
-%                        If seasonal is a number greater than 100 then it
+%                        If seasonal is a number greater than 100, then it
 %                        is possible to specify how the seasonal component
 %                        grows over time.
 %                        For example, seasonal = 101 implies a seasonal
@@ -73,9 +73,9 @@ function out = LTStsLSmult(y,varargin)
 %                        follows:
 %                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
 %                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
-%                        seasonal =0 implies a non seasonal model.
-%                       In the paper RPRH to denote the number of
-%                       frequencies of the seasonal component
+%                        seasonal=0 implies a non seasonal model.
+%                       In the paper RPRH, to denote the number of
+%                       frequencies of the seasonal component,
 %                       symbol B is used, while symbol G is used to denote
 %                       the order of the trend of the seasonal component.
 %                       Therefore, for example, model.seasonal=201
@@ -96,15 +96,15 @@ function out = LTStsLSmult(y,varargin)
 %                       and corresponding fitted values (second column) or
 %                       empty scalar. If model.ARtentout is not empty, when
 %                       the autoregressive component is present, the y
-%                       values which are used to compute the autoregressive
-%                       component are replaced by model.tentout(:,2) for
+%                       values, which are used to compute the autoregressive
+%                       component, are replaced by model.tentout(:,2) for
 %                       the units contained in model.tentout(:,1)
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default model is for monthly data with no
 %               trend (1 parameter) + seasonal component with just one
 %               harmonic (2 parameters), no additional explanatory
-%               variables and no level shift that is
+%               variables and no level shift that is:
 %                               model=struct;
 %                               model.s=12;
 %                               model.trend=0;
@@ -113,15 +113,15 @@ function out = LTStsLSmult(y,varargin)
 %                               model.lshift=0;
 %    msg  : Messages on the screen. Boolean.
 %               Scalar which controls whether to display or not messages
-%               on the screen. If msg==true (default) messages are displayed on
+%               on the screen. If msg==true (default), messages are displayed on
 %               the screen about estimated time to compute the estimator
 %               and the warnings about 'MATLAB:rankDeficientMatrix',
 %               'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
-%               are set to off else no message is displayed on the screen
+%               are set to off, else no message is displayed on the screen.
 %               Example - 'msg',true
 %               Data Types - logical
 %   sampleLS   : vector of the positions in which Level Shift should be
-%               tested. Vector. It is be the vector for the parameter 
+%               tested. Vector. It is the vector for the parameter 
 %                   model.lshift of the LTSts function.
 %                   Default is 3. 
 %                Example - 'sampleLS', [5 16 27 35]
@@ -140,7 +140,7 @@ function out = LTStsLSmult(y,varargin)
 %               Data Types - double
 %       plots : Plots on the screen. Scalar.
 %               If plots = 1, a two panel plot will be shown on the screen.
-%               The upper panel contains the orginal time series with
+%               The upper panel contains the original time series with
 %               fitted values. The bottom panel will contain the plot
 %               of robust residuals against index number. The confidence
 %               level which is used to draw the horizontal lines associated
@@ -230,7 +230,7 @@ function out = LTStsLSmult(y,varargin)
 %{
 % Multiple level shift and variable selection. Example 1.
 % Detection of multiple Level Shifts followed by variable selection on the
-% dataset of example before.
+% dataset of the example before.
   load TTsugar   % UA-LT
   yin2   = sugar{:,1};
   out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
@@ -251,7 +251,7 @@ function out = LTStsLSmult(y,varargin)
 %{
     % Multiple level shift and variable selection. Example 2.
     % Detection of multiple Level Shifts followed by variable selection on the
-    % dataset of example before.
+    % dataset of the example before.
     load TTplant 
     yin2   = plant{:,1};
     out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
@@ -332,7 +332,7 @@ options=struct('msg',false,'plots',0,'maxLS',5,'alphaLTS',0.05,'bdp',0.1,...
         end
         
         % Check if all the specified optional arguments were present in
-        % structure options Remark: the nocheck option has already been dealt
+        % structure options. Remark: the nocheck option has already been dealt
         % by routine chkinputR
         inpchk=isfield(options,UserOptions);
         WrongOptions=UserOptions(inpchk==0);
@@ -380,7 +380,7 @@ if T>thresLS
 end
 while LSsignif==true &&  ij<=maxLS
     outTent=LTSts(y,'model',model,'conflev',1-alphaLTS/T,'plots',0,'msg',0,'bdp',bdp);
-    %in case there is no LS or only 1 save some results
+    %in case there is no LS or only 1, save some results
     if T <= thresLS
         outTent.LevelShiftPval = NaN;
         outTent.posLS = NaN;

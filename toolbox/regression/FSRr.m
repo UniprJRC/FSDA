@@ -4,14 +4,14 @@ function [out , varargout] = FSRr(y, X, varargin)
 %
 %<a href="matlab: docsearchFS('FSRr')">Link to the help function</a>
 %
-%   FSRr uses the units not declared by outliers by  FSR to produce a robust fit.
+%   FSRr uses the units not declared by outliers by FSR to produce a robust fit.
 %   The units whose residuals exceeds the threshold determined by option
 %   alpha are declared as outliers. Moreover, it is possible in option
 %   R2th to modify the estimate of sigma2 which is used to declare
 %   the outliers. This is useful when there is almost a perfect fit in the
 %   data, the estimate of the error variance is very small and therefore
 %   there is the risk of declaring as outliers very small deviations from
-%   the robust fit. In this case the estimate of sigma2 is corrected in
+%   the robust fit. In this case, the estimate of sigma2 is corrected in
 %   order to achieve a value of R2 equal to R2th.
 %
 %
@@ -47,22 +47,22 @@ function [out , varargout] = FSRr(y, X, varargin)
 %                 Data Types - double
 %
 %       R2th : R2 threshold. Scalar. Scalar which defines the value R2 does
-%              have to exceed. For example if R2 based on good observations
-%              is 0.92 and R2th is 0.90 the estimate of the variance of the
+%              have to exceed. For example, if R2 based on good observations
+%              is 0.92 and R2th is 0.90, the estimate of the variance of the
 %              residuals which is used to declare the outliers is adjusted
 %              in order to have a value of R2 which is equal to 0.90. A
 %              similar correction is applied to compute the prediction
-%              intervals. The default value of R2th is 1 which means that
+%              intervals. The default value of R2th is 1, which means that
 %              there is no correction.
 %                 Example - 'R2th',0.99
 %                 Data Types - double
 %
 %fullreweight: Option to declare outliers. Boolean. If fullreweight is true
 %              (default option), the list of outliers refers to all the
-%              units whose residuals is above the threshold else if it is
-%              false the outliers are the observaions which by procedure
+%              units whose residuals are above the threshold; if it is
+%              false, the outliers are the observations which by procedure,
 %              FSR had been declared outliers and have a residual greater
-%              than threshold
+%              than threshold.
 %                 Example - 'fullreweight',true
 %                 Data Types - double
 %
@@ -71,7 +71,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %               equal 1, it is possible to see on the screen the yX scatter
 %               with superimposed the prediction intervals using a
 %               confidence level 1-alpha, else no plot is shown on the
-%               screen
+%               screen.
 %                 Example - 'plotsPI',1
 %                 Data Types - double
 %
@@ -82,15 +82,15 @@ function [out , varargout] = FSRr(y, X, varargin)
 %         out:   structure which contains the following fields
 %
 % out.outliers  =  k x 1 vector containing the list of the units declared
-%                  outliers by procedure FSR or NaN if the sample is
-%                  homogeneous
+%                  outliers by procedure FSR or NaN, if the sample is
+%                  homogeneous.
 % out.beta      =  p-by-1 vector containing the estimated regression parameter
-%                  by procedure FSR
+%                  by procedure FSR.
 % out.outliersr =  k1-by-1 vector containing the list of the units declared
-%                  outliers after the reweighting step or NaN if the sample is
-%                  homogeneous
+%                  outliers after the reweighting step or NaN, if the sample is
+%                  homogeneous.
 % out.betar     =  p-by-1 vector containing the estimated regression parameter
-%                  after the reweighting step
+%                  after the reweighting step.
 % out.rstud     =  n-by-2 matrix.
 %                   First column = studentized residuals;
 %                   Second column = p-values (computed using as reference
@@ -366,7 +366,7 @@ end
 p=size(X,2);
 % Xb = subset of X referred to good units
 Xb=X(ListIn,:);
-% res=raw residuals for all observartions
+% res=raw residuals for all observations
 res=y-X*beta;
 % resb= raw residuals for good observations
 resb=res(ListIn);
@@ -382,7 +382,7 @@ end
 
 % devtotb = total deviance referred to subset
 devtotb=ytildeb'*ytildeb;
-% compute R2b = R squared referred to susbet;
+% compute R2b = R squared referred to subset;
 R2b=1-numS2b/devtotb;
 
 % Correct the value of the deviance of residuals (numerator of S2) if R2
@@ -394,7 +394,7 @@ dfe=nlistIn-p;
 S2b=numS2b/dfe;
 
 % studres= vector which will contain squared (appropriately studentized)
-% residuals for all n units. For the units non declared as outliers by FS
+% residuals for all n units. For the units non declared as outliers by FS,
 % they will be squared studentized residuals (that is at the denominator we
 % have (1-h)), while for the units declared as outliers by FS, they are
 % deletion residuals (that is at the denominator we have (1+h)).
@@ -415,7 +415,7 @@ hi=sum((Xb/mAm).*Xb,2);
 studres2(ListIn)=((resb.^2)./(1-hi));
 studres2=studres2/S2b;
 
-% The final outliers are the units declared as outiers by FSR for which
+% The final outliers are the units declared as outliers by FSR for which
 % observations r(ncl) is greater than the confidence threshold
 if fullreweight
     % rncl boolean vector which contains true for the unit whose

@@ -18,14 +18,14 @@ function weights = GYfilt(x,varargin)
 %                 Data Types - double
 %
 %   centering:  centering the data. Boolean.
-%               If centering is true input data are preliminarly centered.
-%               The defalt value of centering is true.
+%               If centering is true, input data are preliminary centered.
+%               The default value of centering is true.
 %                 Example - 'centering',false
 %                 Data Types - logical
 %
 %   iterating:  iterative procedure. Boolean.
-%               If Boolean is true then an iterative adaptive procedure is
-%               applied.  The defalt value of iterating is true.
+%               If Boolean is true, then an iterative adaptive procedure is
+%               applied. The default value of iterating is true.
 %                 Example - 'iterating',false
 %                 Data Types - logical
 %
@@ -130,7 +130,7 @@ weights( isnan(xs2na)) =0;
 
 end
 
-% Inner fucntion gyfiltaux
+% Inner function gyfiltaux
 function vna=gyfiltaux(v, alpha)
 
 [v,vorder] = sort(v);
