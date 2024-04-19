@@ -64,8 +64,8 @@ function [logfn] = logfactorial(n,method)
 %}
 
 %{
-    % a test to check the relative accuracy between the methods. The naive
-    one is clearly Ok only for n<170.
+    % A test to check the relative accuracy between the methods. 
+    % The naive one is clearly Ok only for n<170.
     i=0;
     for n=10:1000
         i=i+1;

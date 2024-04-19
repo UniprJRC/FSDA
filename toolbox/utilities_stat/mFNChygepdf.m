@@ -151,7 +151,6 @@ function Wpdf = mFNChygepdf(x, m, w, accuracy)
     disp('The probability of getting 8 red balls, 10, white and 6 black balls');
     disp('in an extraction without replacement is ');
     disp(wpdf);
-
 %}
 
 %{
@@ -177,7 +176,7 @@ function Wpdf = mFNChygepdf(x, m, w, accuracy)
 
 %{
     %% Check that the sum of densities is 1.
-    % define the weights for each color
+    % Define the weights for each color
     weights=[5,2,1]'; 
     % Define urn composition
     m=[12 25 18];   
@@ -213,9 +212,12 @@ function Wpdf = mFNChygepdf(x, m, w, accuracy)
 
 %{
     % Comparison between Wallenius and Fisher.
-    weights=[100,2,1]'; % define the weights for each color
-    m=[12 25 18];   % Define urn composition
-    numberBallsExtracted=5;     % Number of balls which are drawn.
+    % Define the weights for each color
+    weights=[100,2,1]'; 
+    % Define urn composition
+    m=[12 25 18];   
+    % Number of balls which are drawn.
+    numberBallsExtracted=5;     
     
     % Define all possible cases in which for numberBallsExtracted;
     numcolors = length(m);      % Length of each permutation

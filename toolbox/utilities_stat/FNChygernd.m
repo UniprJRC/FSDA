@@ -61,12 +61,14 @@ function r = FNChygernd(M,K,n,odds,   mm,nn,oo)
 
 %{
     % Generate a random number from  Wallenius non central hypergeometric distribution.
-    M=80; % total number of balls
-    n=10;  % number of balls taken
-    odds=3; % Prob. of red balls vs other color balls
-    K=50; % Number of red balls in the urn
-    samplesize=100000; % Sample size to extract
-    edges=(0:(n+1))';
+    % M = total number of balls.
+    M=80;
+    % n = number of balls taken 
+    n=10;  
+    % odds= prob. of red balls vs other color balls.
+    odds=3; 
+    % Number of red balls in the urn.
+    K=50; 
     % Generate a random number from the distribution above
     x=FNChygernd(M,K,n,odds);
     disp(x)
@@ -74,7 +76,8 @@ function r = FNChygernd(M,K,n,odds,   mm,nn,oo)
 
 %{
     % A difficult example which needs to avoid underflow/overflow.
-    M=8000; % total number of balls
+    % M is total number of balls.
+    M=8000; 
     n=2000;  % number of balls taken
     odds=3; % Prob. of red balls vs other color balls
     K=5000; % Number of red balls in the urn
@@ -87,7 +90,8 @@ function r = FNChygernd(M,K,n,odds,   mm,nn,oo)
 
 %{
     % Generate a matrix of size mmxnn of random number from  Fisher non central hypergeometric distribution.
-    M=80; % total number of balls
+    % M is total number of balls.
+    M=80; 
     n=10;  % number of balls taken
     odds=3; % Prob. of red balls vs other color balls
     K=50; % Number of red balls in the urn
@@ -100,7 +104,8 @@ function r = FNChygernd(M,K,n,odds,   mm,nn,oo)
 
 %{
     % Generate a 3D array of size mmxnnxoo of random number from  Fisher non central hypergeometric distribution.
-    M=800; % total number of balls
+    % M is total number of balls.
+    M=800;
     n=200;  % number of balls taken
     odds=3; % Prob. of red balls vs other color balls
     K=500; % Number of red balls in the urn
@@ -113,7 +118,8 @@ function r = FNChygernd(M,K,n,odds,   mm,nn,oo)
 %{
     %% Comparison density and relatived frequencies based on random numbers.
     close all
-    M=100; % total number of balls
+    % M is total number of balls.
+    M=100; 
     n=10;  % number of balls taken
     odds=2; % Prob. of red balls vs other color balls
     K=50; % Number of red balls in the urn
