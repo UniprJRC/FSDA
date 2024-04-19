@@ -66,7 +66,8 @@ function r = WNChygernd(M,K,n,odds,   mm,nn,oo)
 
 %{
     % Generate a random number from  Wallenius non central hypergeometric distribution.
-    M=80; % total number of balls
+    % total number of balls
+    M=80; 
     n=10;  % number of balls taken
     odds=3; % Prob. of red balls vs other color balls
     K=50; % Number of red balls in the urn
@@ -79,7 +80,8 @@ function r = WNChygernd(M,K,n,odds,   mm,nn,oo)
 
 %{
     % A difficult example which needs to avoid underflow/overflow.
-    M=8000; % total number of balls
+    % total number of balls
+    M=8000; 
     n=2000;  % number of balls taken
     odds=3; % Prob. of red balls vs other color balls
     K=5000; % Number of red balls in the urn
@@ -93,7 +95,8 @@ function r = WNChygernd(M,K,n,odds,   mm,nn,oo)
 
 %{
     % Generate a 3D array of size mmxnnxoo of random number from  Wallenius non central hypergeometric distribution.
-    M=800; % total number of balls
+    % total number of balls
+    M=800; 
     n=200;  % number of balls taken
     odds=3; % Prob. of red balls vs other color balls
     K=500; % Number of red balls in the urn

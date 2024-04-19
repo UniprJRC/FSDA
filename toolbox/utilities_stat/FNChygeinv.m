@@ -71,7 +71,8 @@ function x = FNChygeinv(p,M,K,n,odds, accuracy)
 %
 %{
     % Compute the inverse of Fisher non central hypergeometric distribution.
-    M=80; % total number of balls
+    % M = total number of balls;
+    M=80; 
     n=10;  % number of balls taken
     odds=3; % Prob. of red balls vs other color balls
     K=50; % Number of red balls in the urn
