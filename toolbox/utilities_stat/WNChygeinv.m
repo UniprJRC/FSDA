@@ -69,7 +69,8 @@ function x = WNChygeinv(p,M,K,n,odds)
 %
 %{
     % Compute the inverse of Wallenius non central hypergeometric distribution.
-    M=80; % total number of balls
+    % total number of balls
+    M=80; 
     n=10;  % number of balls taken
     odds=3; % Prob. of red balls vs other color balls
     K=50; % Number of red balls in the urn
