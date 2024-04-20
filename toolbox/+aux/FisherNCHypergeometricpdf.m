@@ -2,7 +2,7 @@ function Wpdf = FisherNCHypergeometricpdf(x,n,m,N,omega,accuracy)
 %FisherNCHypergeometricpdf returns Fisher non-central hypergeometric probability density function
 
 if (n < 0 || n > N || m < 0 || m > N || omega < 0)
-    error("Parameter out of range in CWalleniusNCHypergeometric");
+    error('FSDA:FisherNCHypergeometricpdf:WrgInp',"Parameter out of range in CWalleniusNCHypergeometric");
 end
 
 xmin = m + n - N;

@@ -309,7 +309,7 @@ while abs(r-r1) > 1E-5
     r = r* n * (N-q) / (q * (N-n));
     iter=iter+1;
     if (iter > 100)
-        error("convergence problem in function CMultiFishersNCHypergeometric::mean");
+        error('FSDA:CMultiFisherNCHypergeometricpdf:WrgCnv',"convergence problem in function CMultiFishersNCHypergeometric::mean");
     end
 end
 

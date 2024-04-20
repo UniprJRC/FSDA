@@ -31,7 +31,7 @@ end
 
 if (odds == 0.)
     if (n > N-m)
-        error("Not enough items with nonzero weight in function WalleniusNCHyp");
+        error('FSDA:WalleniusNCHypergeometricrnd:WrgInpt',"Not enough items with nonzero weight in function WalleniusNCHyp");
     end
 end
 
@@ -245,7 +245,7 @@ p2=p1;
     for nu = 1:n
         if (n - nu < xmin - x1 || p1(x1+1) < cutoff)
             x1=x1+1;                     % // increase lower limit when breakpoint passed or probability negligible
-            p2=[0;p2];                     % // compensate buffer offset in order to reduce storage space
+            p2=[0;p2];                     %#ok<AGROW> % // compensate buffer offset in order to reduce storage space
             remove1=1;
         else
             remove1=0;
@@ -257,11 +257,7 @@ p2=p1;
             y1 = p1(x2+1);
         end
         if (p2(1) - tabl(1) + x2 >= MaxLength || x1 > x2)
-            %try
-                error('table length exceeded') % goto ONE_BY_ONE;       %     // Error: table length exceeded. Use other method
-            %catch
-            %    ddd=1;
-            %end
+                error('FSDA:WalleniusNCHypergeometricrnd','table length exceeded') % goto ONE_BY_ONE;       %     // Error: table length exceeded. Use other method
         end
 
         mxo = (m-x2)*omega;
@@ -530,7 +526,7 @@ end
 
 if (omega == 0.)
     if  (n > N-m)
-        error("Not enough items with nonzero weight in CWalleniusNCHypergeometric::mean");
+        error('FSDA:WalleniusNCHypergeometricrnd:WrgInp',"Not enough items with nonzero weight in CWalleniusNCHypergeometric::mean");
     end
 end
 
@@ -586,7 +582,7 @@ if (omega > 1.)
         iter=iter+1;
 
         if iter > 40
-            error("Search for mean failed in function CWalleniusNCHypergeometric::mean");
+            error('FSDA:WalleniusNCHypergeometricrnd:WrhIter',"Search for mean failed in function CWalleniusNCHypergeometric::mean");
         end
     end
 
@@ -614,7 +610,7 @@ else % { // omega < 1
         end
         iter=iter+1;
         if (iter > 40)
-            error("Search for mean failed in function CWalleniusNCHypergeometric::mean");
+            error('FSDA:WalleniusNCHypergeometricrnd:WrngIte',"Search for mean failed in function CWalleniusNCHypergeometric::mean");
         end
     end
 end
@@ -850,7 +846,7 @@ while condexit==0
     end
 
     if zd == 0
-        error('cannot find r in function CWalleniusNCHypergeometric::findpars');
+        error("FSDA:WalleniusNCHypergeometricrnd:WrgIter",'cannot find r in function CWalleniusNCHypergeometric::findpars');
     end
 
     rr = rr- z / zd;
@@ -860,7 +856,7 @@ while condexit==0
     j=j+1;
 
     if j== 70
-        error('convergence problem searching for r in function CWalleniusNCHypergeometric::findpars');
+        error("FSDA:WalleniusNCHypergeometricrnd:WrgIter",'convergence problem searching for r in function CWalleniusNCHypergeometric::findpars');
     end
 
 
@@ -900,7 +896,7 @@ end
 
 phi2d = -4.*r*r*(x*k1 + (n-x)*k2);
 if (phi2d >= 0.)
-    error('peak width undefined in function CWalleniusNCHypergeometric::findpars')
+    error("FSDA:WalleniusNCHypergeometricrnd:WrgIter",'peak width undefined in function CWalleniusNCHypergeometric::findpars')
     %        /* wr = r = 0.; */
 
 else

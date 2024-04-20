@@ -6,7 +6,7 @@ function Wpdf = WalleniusNCHypergeometricpdf(x,n,m,N,omega,accuracy)
 % omega = odds
 
 if (n < 0 || n > N || m < 0 || m > N || omega < 0)
-    error("Parameter out of range in CWalleniusNCHypergeometric");
+    error('FSDA:WalleniusNCHypergeometricpdf:Wrginpt',"Parameter out of range in CWalleniusNCHypergeometric");
 end
 
 xmin = m + n - N;
@@ -114,7 +114,7 @@ while condexit==0
     end
 
     if zd == 0
-        error('cannot find r in function CWalleniusNCHypergeometric::findpars');
+        error('FSDA:WalleniusNCHypergeometricpdf:WrgItr','cannot find r in function CWalleniusNCHypergeometric::findpars');
     end
 
     rr = rr- z / zd;
@@ -124,7 +124,7 @@ while condexit==0
     j=j+1;
 
     if j== 70
-        error('convergence problem searching for r in function CWalleniusNCHypergeometric::findpars');
+        error('FSDA:WalleniusNCHypergeometricpdf:WrgIter','convergence problem searching for r in function CWalleniusNCHypergeometric::findpars');
     end
 
 
@@ -164,7 +164,7 @@ end
 
 phi2d = -4.*r*r*(x*k1 + (n-x)*k2);
 if (phi2d >= 0.)
-    error('peak width undefined in function CWalleniusNCHypergeometric::findpars')
+    error('FSDA:WalleniusNCHypergeometricpdf:Wrgiter','peak width undefined in function CWalleniusNCHypergeometric::findpars')
     %        /* wr = r = 0.; */
 
 else
@@ -312,7 +312,7 @@ elseif  x1 == 1
     d = e - (n-1);
     dens= m1*d*(exp(q0) - exp(q1));
 else
-    error('x > 1 not supported by function CWalleniusNCHypergeometric::binoexpand');
+    error('FSDA:WalleniusNCHypergeometricpdf:Wrginpt','x > 1 not supported by function CWalleniusNCHypergeometric::binoexpand');
 end
 end
 
@@ -495,7 +495,7 @@ while (abs(t - t1) > 1e-5)
     iter=iter+1;
 
     if iter > 20
-        error("Search for inflection point failed in function CWalleniusNCHypergeometric::search_inflect");
+        error('FSDA:WalleniusNCHypergeometricpdf:Wrgiter',"Search for inflection point failed in function CWalleniusNCHypergeometric::search_inflect");
     end
 end
 end

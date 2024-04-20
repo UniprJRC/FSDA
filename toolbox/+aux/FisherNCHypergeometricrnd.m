@@ -26,7 +26,7 @@ end
 
 if (odds == 0.)
     if (n > N-m)
-        error("Not enough items with nonzero weight in function WalleniusNCHyp");
+         error('FSDA:FisherNCHypergeometricrnd:Wrginpt',"Not enough items with nonzero weight in function WalleniusNCHyp");
     end
 end
 

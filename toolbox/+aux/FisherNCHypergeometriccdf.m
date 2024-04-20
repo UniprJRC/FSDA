@@ -2,7 +2,7 @@ function Wcdf = FisherNCHypergeometriccdf(x,n,m,N,omega,accuracy)
 %WNChygepdf returns Fisher non-central hypergeometric probability density function
 
 if (n < 0 || n > N || m < 0 || m > N || omega < 0)
-    error("Parameter out of range in CWalleniusNCHypergeometric");
+    error('FSDA:FisherNCHypergeometriccdf:Wrginpt',"Parameter out of range in CWalleniusNCHypergeometric");
 end
 
 

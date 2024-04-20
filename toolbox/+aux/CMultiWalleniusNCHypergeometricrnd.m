@@ -103,7 +103,7 @@ source=m;
 
 % // check validity of parameters
 if (n < 0 || colors < 0 || colors > MAXCOLORS)
-    error("Parameter out of range in function MultiWalleniusNCHyp");
+    error('FSDA:CMultiWalleniusNCHypergeometricrnd:WrgInp',"Parameter out of range in function MultiWalleniusNCHyp");
 end
 
 destination=zeros(colors,1);
@@ -114,7 +114,7 @@ end
 
 % // check validity of array parameters
 if (min(m) < 0 || min(w) < 0)
-    error("Parameter negative in function MultiWalleniusNCHyp");
+    error('FSDA:CMultiWalleniusNCHypergeometricrnd:WrgInp',"Parameter negative in function MultiWalleniusNCHyp");
 end
 
 
@@ -159,7 +159,7 @@ colors=colors-sum(weights==0);
 % // check if there are more than n balls with nonzero weight
 if (n >= N)
     if (n > N)
-        error("Taking more items than there are in function MultiWalleniusNCHyp");
+        error('FSDA:CMultiWalleniusNCHypergeometricrnd:WrgInp',"Taking more items than there are in function MultiWalleniusNCHyp");
     end
 
     for i = 1:colors
@@ -401,15 +401,15 @@ else
         end
         % // calculate approximate variance from mean
         for i=1:colors2
-           
-                r1 = vari(i) * (osource(i)-vari(i));
-                r2 = (n-vari(i))*(vari(i)+N-n-osource(i));
-                if (r1 <= 0. || r2 <= 0.)
-                    vari(i) = 0;
-                else
-                    vari(i) = N*r1*r2/((N-1)*(osource(i)*r2+(N-osource(i))*r1));
-                end
-           
+
+            r1 = vari(i) * (osource(i)-vari(i));
+            r2 = (n-vari(i))*(vari(i)+N-n-osource(i));
+            if (r1 <= 0. || r2 <= 0.)
+                vari(i) = 0;
+            else
+                vari(i) = N*r1*r2/((N-1)*(osource(i)*r2+(N-osource(i))*r1));
+            end
+
         end
 
         % // sort again, this time by variance
@@ -546,7 +546,7 @@ while (abs(H - n) > 1E-3)
     end
     iter=iter+1;
     if (iter > 20)
-        error("Search for mean failed in function CMultiWalleniusNCHypergeometric::mean");
+        error('FSDA:CMultiWalleniusNCHypergeometricrnd:WrgIter',"Search for mean failed in function CMultiWalleniusNCHypergeometric::mean");
     end
 end
 

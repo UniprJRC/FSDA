@@ -83,7 +83,7 @@ source=m;
 
 % // check validity of parameters
 if (n < 0 || colors < 0 || colors > MAXCOLORS)
-    error("Parameter out of range in function MultiFisherNCHyp");
+    error('FSDA:CMultiFisherNCHypergeometricrnd:WrgInpt',"Parameter out of range in function MultiFisherNCHyp");
 end
 
 destination=zeros(colors,1);
@@ -94,7 +94,7 @@ end
 
 % // check validity of array parameters
 if (min(m) < 0 || min(w) < 0)
-    error("Parameter negative in function MultiFisherNCHyp");
+    error('FSDA:CMultiFisherNCHypergeometricrnd:WrgInpt',"Parameter negative in function MultiFisherNCHyp");
 end
 
 
@@ -139,7 +139,7 @@ colors=colors-sum(weights==0);
 % // check if there are more than n balls with nonzero weight
 if (n >= N)
     if (n > N)
-        error("Taking more items than there are in function MultiFisherNCHyp");
+        error('FSDA:CMultiFisherNCHypergeometricrnd:WrgInpt',"Taking more items than there are in function MultiFisherNCHyp");
     end
 
     for i = 1:colors
@@ -286,9 +286,9 @@ else
 
         if isempty(i)
             osample(a+1)=n0;
-         else
+        else
             osample(i+2)=n0;
-         end
+        end
 
         % // set parameters for second group (light)
         a = b;  b = colors2;  n0 = n2;
@@ -431,7 +431,7 @@ while (abs(H - n) > 1E-3)
     end
     iter=iter+1;
     if (iter > 20)
-        error("Search for mean failed in function CMultiWalleniusNCHypergeometric::mean");
+        error('FSDA:CMultiFisherNCHypergeometricrnd:WrgIter',"Search for mean failed in function CMultiWalleniusNCHypergeometric::mean");
     end
 end
 
@@ -499,7 +499,7 @@ while abs(r-r1) > 1E-5
     r = r* n * (N-q) / (q * (N-n));
     iter=iter+1;
     if (iter > 100)
-        error("convergence problem in function CMultiFishersNCHypergeometric::mean");
+        error('FSDA:CMultiFisherNCHypergeometricrnd:WrgInpt',"convergence problem in function CMultiFishersNCHypergeometric::mean");
     end
 end
 

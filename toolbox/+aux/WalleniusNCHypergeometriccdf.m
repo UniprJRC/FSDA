@@ -6,7 +6,7 @@ function Wcdf = WalleniusNCHypergeometriccdf(x,n,m,N,omega,accuracy)
 % omega = odds
 
 if (n < 0 || n > N || m < 0 || m > N || omega < 0)
-    error("Parameter out of range in CWalleniusNCHypergeometric");
+    error('FSDA:WalleniusNCHypergeometriccdf:WrgInp',"Parameter out of range in CWalleniusNCHypergeometric");
 end
 
 

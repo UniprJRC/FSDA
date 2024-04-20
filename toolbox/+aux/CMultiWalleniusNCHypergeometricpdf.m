@@ -153,7 +153,7 @@ while abs(rr-lastr) > rr * 1E-5
         end
     end
     if (zd == 0)
-        error("can't find r in function CMultiWalleniusNCHypergeometric::findpars");
+        error('FSDA:CMultiWalleniusNCHypergeometricpdf:WrgIter',"can't find r in function CMultiWalleniusNCHypergeometric::findpars");
     end
 
     rr = rr- z / zd;                   %  // next r
@@ -183,7 +183,7 @@ for i=1:colors
 end
 phi2d = -phi2d *(4 * rr * rr);
 if (phi2d > 0.)
-    error("peak width undefined in function CMultiWalleniusNCHypergeometric::findpars");
+    error('FSDA:CMultiWalleniusNCHypergeometricrnd:WrgInpt',"peak width undefined in function CMultiWalleniusNCHypergeometric::findpars");
 end
 wr = sqrt(-phi2d);
 w = 1. / wr;
@@ -406,7 +406,7 @@ while (abs(t - t1) > 1e-5)
     iter=iter+1;
 
     if iter > 20
-        error("Search for inflection point failed in function CWalleniusNCHypergeometric::search_inflect");
+        error('FSDA:CMultiWalleniusNCHypergeometricrnd:WrgIter',"Search for inflection point failed in function CWalleniusNCHypergeometric::search_inflect");
     end
 end
 end
