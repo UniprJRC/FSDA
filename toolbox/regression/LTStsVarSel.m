@@ -24,13 +24,13 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %
 %  Optional input arguments:
 %
-% firstTestLS: initial test for presence of level shift. Boolean. if
+% firstTestLS: initial test for presence of level shift. Boolean. If
 %               firstTestLS is true, we immediately find the position of
 %               the level shift in a model which does not contain
-%               autoregressive terms, the seasonal specification is 101 If
+%               autoregressive terms, the seasonal specification is 101. If
 %               the level shift component is significant we pass the level
 %               shift component in fixed position to the variable selection
-%               procedure.  Note also that the units declared as outliers
+%               procedure. Note also that the units declared as outliers
 %               with a p-value smaller than 0.001 are used to form
 %               model.ARtentout. model.ARtentout is used in the subsequent
 %               steps of the variable selection procedure, every time there
@@ -46,18 +46,18 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %               convenience, we list the fields also here:
 %
 %               model.s = scalar (length of seasonal period). For monthly
-%                         data s=12 (default), for quartely data s=4, ...
+%                         data s=12 (default), for quarterly data s=4, ...
 %               model.trend = scalar (order of the trend component).
 %                       trend = 0 implies no trend,
 %                       trend = 1 implies linear trend with intercept,
 %                       trend = 2 implies quadratic trend,
 %                       trend = 3 implies cubic trend.
 %                       Admissible values for trend are, 0, 1, 2 and 3.
-%                       In the paper RPRH to denote the order of the trend
+%                       In the paper RPRH to denote the order of the trend,
 %                       symbol A is used. If this field is not present into
 %                       input structure model, model.trend=2 is used.
 %               model.seasonal = scalar (integer specifying number of
-%                        frequencies, i.e. harmonics, in the seasonal
+%                        frequencies), i.e. harmonics, in the seasonal
 %                        component. Possible values for seasonal are
 %                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
 %                        For example:
@@ -66,10 +66,10 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                        if seasonal =2 we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
 %                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
-%                        Note that when $s$ is even the sine term disappears
+%                        Note that when $s$ is even, the sine term disappears
 %                        for $j=s/2$ and so the maximum number of
 %                        trigonometric parameters is $s-1$.
-%                        If seasonal is a number greater than 100 then it
+%                        If seasonal is a number greater than 100, then it
 %                        is possible to specify how the seasonal component
 %                        grows over time.
 %                        For example, seasonal = 101 implies a seasonal
@@ -84,8 +84,8 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
 %                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
 %                        seasonal =0 implies a non seasonal model.
-%                       In the paper RPRH to denote the number of
-%                       frequencies of the seasonal component
+%                       In the paper RPRH, to denote the number of
+%                       frequencies of the seasonal component,
 %                       symbol B is used, while symbol G is used to denote
 %                       the order of the trend of the seasonal component.
 %                       Therefore, for example, model.seasonal=201
@@ -103,10 +103,10 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                         then it is associated to the positions of level
 %                         shifts which have to be considered. The most
 %                         significant one is included in the fitted model.
-%                         For example if model.lshift =[13 20 36] a
+%                         For example, if model.lshift =[13 20 36], a
 %                         tentative level shift is imposed in position
 %                         $t=13$, $t=20$ and $t=36$. The most significant
-%                         among these positions in included in the final
+%                         among these positions is included in the final
 %                         model. In other words, the following extra
 %                         parameters are added to the final model:
 %                         $\beta_{LS1}* I(t \geq \beta_{LS2})$ where
@@ -152,7 +152,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %               trend (3 parameters) + seasonal component with three
 %               harmonics which grows in a cubic way over time (9 parameters),
 %               no additional explanatory variables, no level shift
-%               and no AR component that is
+%               and no AR component that is:
 %                               model=struct;
 %                               model.s=12;
 %                               model.trend=2;
@@ -186,7 +186,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %               The default value of nsamp is 1000;
 %                 Example - 'nsamp',500
 %                 Data Types - double
-%               Remark: if nsamp=0 all subsets will be extracted.
+%               Remark: if nsamp=0 ,all subsets will be extracted.
 %               They will be (n choose p).
 %
 %    thPval:    threshold for pvalues. Scalar. A value between 0 and 1.
@@ -204,8 +204,8 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %
 %    msg:       Messages on the screen. Scalar.
 %               Scalar which controls whether LTSts will display or not
-%               messages on the screen. Deafault is msg=0, that is no
-%               messages are displayed on the screen. If msg==1 messages
+%               messages on the screen. Default is msg=0, that is no
+%               messages are displayed on the screen. If msg==1, messages
 %               displayed on the screen are about estimated time to compute
 %               the estimator and the warnings about
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
@@ -235,7 +235,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                    model.lshift = the optimal level shift position.
 %                    model.X = a matrix containing the values of the extra
 %                      covariates which are likely to affect y. If the
-%                      imput model specifies autoregressive components
+%                      input model specifies autoregressive components
 %                      in model.ARp, then the selected ones will be also
 %                      included in model.X.
 %
@@ -268,7 +268,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                      using final weights.
 %                    out.conflev = confidence level used to declare outliers.
 %                    out.outliers = vector of the units declared outliers.
-%                    out.singsub = number of subsets wihtout full rank.
+%                    out.singsub = number of subsets without full rank.
 %                    out.y = response vector y.
 %                    out.X = data matrix X containing trend, seasonal, expl
 %                       (with autoregressive component) and lshift.
@@ -440,15 +440,15 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
     model.trendb=[0 1];             % parameters of the linear trend
     model.s=12;                     % monthly time series
     model.seasonal=1;               % 1 harmonic
-    model.seasonalb=[2 3];        % parameter for one harmonic
-    model.lshiftb=50;              % level shift amplitude
+    model.seasonalb=[2 3];          % parameter for one harmonic
+    model.lshiftb=50;               % level shift amplitude
     model.lshift= 35;               % level shift position
-    model.signal2noiseratio = 30;  % signal to noise ratio
+    model.signal2noiseratio = 30;   % signal to noise ratio
     model.ARp=1;
     model.ARb=0.9;
-    n = 50;                        % sample size
+    n = 50;                         % sample size
     tmp = rand(n,1);
-    model.X = tmp;          % a extra covariate
+    model.X = tmp;                  % a extra covariate
     model.Xb = 1;                   % beta coefficient of the covariate
     % generate data
     out_sim=simulateTS(n,'plots',1,'model',model);
@@ -554,7 +554,7 @@ h1  = round(n*0.9);  % default for h (num. obs. for the LTS estimator)
 
 % If firstTestLS is true, we immediately find the position of the level shift
 % in a model which does not contains autoregressive terms and
-% and seasonal specification is 101
+% and seasonal specification is 101.
 % If the level shift component is significant we pass the level shift
 % component in fixed position to the variable selection procedure.
 if firstTestLS==true && (length(model.lshift)>1 || model.lshift(1)==-1)
@@ -613,7 +613,7 @@ end
 
 % Initializations
 
-% AllPvalSig = dycotomic variable that becomes 1 if all variables are
+% AllPvalSig = dichotomic variable that becomes 1 if all variables are
 % significant. This means that the variables are to be kept and the
 % iterative procedure should stop.
 AllPvalSig=0;
@@ -698,7 +698,7 @@ while AllPvalSig == 0
                 model.trend=model.trend-1;
             case 2
                 % elseif indmaxPvalall ==2
-                % Remove from model the last term of the seasonal component that
+                % Remove from model the last term of the seasonal component, that
                 % is remove last harmonic
                 if msg==1 || plots==1
                     tmp = num2str(model.seasonal);
@@ -786,10 +786,10 @@ end
 ARfinalrefinement=false;
 if ARfinalrefinement==true && ~isempty(model.ARp)
     % 1) Estimate the model without the autoregressive component using final
-    % values of seasonal component, level shift and trend
+    % values of seasonal component, level shift and trend;
     % 2) Find the outliers and use fitted values for the units declared as
-    % outliers for the autoregressive component
-    % 3) Final call to LTSts to restimate the model adding the specification for
+    % outliers for the autoregressive component;
+    % 3) Final call to LTSts to re-estimate the model adding the specification for
     % the autoregressive component found before and using yhat for y lagged
     % for the units declared as outliers.
     modelfinref=model;
@@ -802,7 +802,7 @@ if ARfinalrefinement==true && ~isempty(model.ARp)
     ARtentout=[tentOutForAR yhatout];
     model.ARtentout=ARtentout;
 
-    % reestimate final model
+    % re-estimate final model
     [out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',nsamp,...
         'plots',0,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
 end

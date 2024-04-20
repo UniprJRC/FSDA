@@ -9,8 +9,8 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               with T elements, which contains the time series.
 %
 %  bsb     :    list of units forming the initial subset. Vector. If bsb=0
-%               (default) then the procedure starts with p units randomly
-%               chosen else if bsb is not 0 the search will start with
+%               (default), then the procedure starts with p units randomly
+%               chosen; else if bsb is not 0, the search will start with
 %               m0=length(bsb). p is the total number of regression
 %               parameters which have to be estimated.
 %
@@ -19,7 +19,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %  init :       Start of monitoring point. Scalar.
 %               It specifies the point where to initialize the search and
 %               start monitoring required diagnostics. If it is not
-%               specified it is set equal floor(0.5*(T+1))
+%               specified it is set equal floor(0.5*(T+1)).
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
@@ -27,14 +27,14 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               which will be used. The model structure contains the following
 %               fields:
 %               model.s = scalar (length of seasonal period). For monthly
-%                         data s=12 (default), for quartely data s=4, ...
+%                         data s=12 (default), for quarterly data s=4, ...
 %               model.trend = scalar (order of the trend component).
 %                       trend = 1 implies linear trend with intercept (default),
-%                       trend = 2 implies quadratic trend ...
+%                       trend = 2 implies quadratic trend and so on.
 %                       Admissible values for trend are, 0, 1, 2 and 3.
 %               model.seasonal = scalar (integer specifying number of
 %                        frequencies, i.e. harmonics, in the seasonal
-%                        component. Possible values for seasonal are
+%                        component). Possible values for seasonal are
 %                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
 %                        For example:
 %                        if seasonal =1 (default) we have:
@@ -42,10 +42,10 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %                        if seasonal =2 we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
 %                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
-%                        Note that when $s$ is even the sine term disappears
+%                        Note that when $s$ is even, the sine term disappears
 %                        for $j=s/2$ and so the maximum number of
 %                        trigonometric parameters is $s-1$.
-%                        If seasonal is a number greater than 100 then it
+%                        If seasonal is a number greater than 100, then it
 %                        is possible to specify how the seasonal component
 %                        grows over time.
 %                        For example, seasonal =101 implies a seasonal
@@ -63,9 +63,9 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
-%               model.posLS = positive integer which specifies to position
+%               model.posLS = positive integer which specifies the position
 %                         to include the level shift component.
-%                         For example if model.posLS =13 then the
+%                         For example, if model.posLS =13 then the
 %                         explanatory variable $I(t \geq 13})$ is created.
 %                         If this field is not present or if it is empty,
 %                         the level shift component is not included.
@@ -73,7 +73,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %                         values of parameter estimates which have to be used in the
 %                         maximization procedure. If model.B is a matrix,
 %                         then initial estimates are extracted from the
-%                         first colum of this matrix. If this field is
+%                         first column of this matrix. If this field is
 %                         empty or if this field is not present, the
 %                         initial values to be used in the maximization
 %                         procedure are referred to the OLS parameter
@@ -85,7 +85,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               Remark: the default model is for monthly data with a linear
 %               trend (2 parameters) + seasonal component with just one
 %               harmonic (2 parameters), no additional explanatory
-%               variables and no level shift that is
+%               variables and no level shift that is:
 %                               model=struct;
 %                               model.s=12;
 %                               model.trend=1;
@@ -93,9 +93,9 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %                               model.X='';
 %                               model.posLS='';
 %
-%  plots :      Plot on the screen. Scalar. If equal to one a plot of
-%               minimum deletion residual appears  on the screen with 1%,
-%               50% and 99% confidence bands else (default) no plot is
+%  plots :      Plot on the screen. Scalar. If equal to one, a plot of
+%               minimum deletion residual appears on the screen with 1%,
+%               50% and 99% confidence bands, else (default) no plot is
 %               shown.
 %               Example - 'plots',1
 %               Data Types - double
@@ -111,27 +111,27 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %
 %  msg  :       Level of output to display. Scalar. It controls whether to
 %               display or not messages about great interchange on the
-%               screen If msg==1 (default)
-%               messages are displayed on the screen
-%               else no message is displayed on the screen
+%               screen. If msg==1 (default),
+%               messages are displayed on the screen,
+%               else no message is displayed on the screen.
 %               Example - 'msg',1
 %               Data Types - double
 %
 %  constr :     Constrained search. Vector. r x 1 vector which contains the
 %               list of units which are forced to join the search in the
 %               last r steps. The default is constr=''.  No constraint is
-%               imposed
+%               imposed.
 %               Example - 'constr',[1:10] forces the first 10 units to join
-%               the subset in the last 10 steps
+%               the subset in the last 10 steps.
 %               Data Types - double
 %
 % bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
 %               non singular X. Scalar.
 %               This options controls what to do when rank(X(bsbm,:)) is
-%               smaller then number of explanatory variables.
-%               If bsbmfullrank = 1 (default is 1) these units (whose number
+%               smaller than the number of explanatory variables.
+%               If bsbmfullrank = 1 (default is 1), these units (whose number
 %               is say mnofullrank) are constrained to enter the search in
-%               the final n-mnofullrank steps else the search continues
+%               the final n-mnofullrank steps, else the search continues
 %               using as estimate of beta at step m the estimate of beta
 %               found in the previous step.
 %               Example - 'bsbmfullrank',1
@@ -140,10 +140,10 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %   bsbsteps :  Save the units forming subsets. Vector. It specifies for
 %               which steps of the fwd search it
 %               is necessary to save the units forming subsets. If bsbsteps
-%               is 0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
-%               T<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, as
+%               is 0, we store the units forming subset in all steps. The
+%               default is: store the units forming subset in all steps if
+%               T<=5000; else to store the units forming subset at steps
+%               init and steps which are multiples of 100. For example, as
 %               default, if T=753 and init=6,
 %               units forming subset are stored for
 %               m=init, 100, 200, 300, 400, 500 and 600.
@@ -159,22 +159,22 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %
 % Output:
 %
-%  mdr:         T -init x 2 matrix which contains the monitoring of minimum
+%  mdr:         T-init x 2 matrix which contains the monitoring of minimum
 %               deletion residual at each step of the forward search.
 %               1st col = fwd search index (from init to T-1).
 %               2nd col = minimum deletion residual.
 %               REMARK: if in a certain step of the search matrix is
 %               singular, this procedure checks how many observations
-%               produce a singular matrix. In this case mdr is a column
+%               produce a singular matrix. In this case, mdr is a column
 %               vector which contains the list of units for which matrix X
 %               is non singular.
 %  Un:          Units included in each step. Matrix.
-%               (T-init) x 11 Matrix which contains the unit(s) included
+%               (T-init) x 11: Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -192,24 +192,24 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %                   value for the other steps;
 %               T-th row has number Tn in correspondence of the steps in
 %                   which unit T is included inside subset and a missing
-%                   value for the other steps
+%                   value for the other steps.
 %               The size of matrix BB is T x (T-init+1) if option input
-%               bsbsteps is 0 else the size is T-by-length(bsbsteps).
-%  Bols:        beta coefficents. Matrix.
-%               (T-init+1) x (p+1) matrix containing the monitoring of
+%               bsbsteps is 0, else the size is T-by-length(bsbsteps).
+%  Bols:        beta coefficients. Matrix.
+%               (T-init+1) x (p+1): matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
 %  S2:          S2 and R2. Matrix.
-%               (T-init+1) x 3 matrix containing the monitoring of S2 (2nd
-%               column)and R2 (third column) in each step of the forward
+%               (T-init+1) x 3: matrix containing the monitoring of S2 (2nd
+%               column) and R2 (third column) in each step of the forward
 %               search.
 %   Exflag  :   Reason nlinfit stopped. Integer matrix.
-%               (T-init+1) x 2 matrix containing information about the
-%               result  of the maximization procedure.
-%               If the model is non linear out.Exflag(i,2) is equal to 1
-%               if at step out.Exflag(i,1) the maximization procedure did not produce
+%               (T-init+1) x 2: matrix containing information about the
+%               result of the maximization procedure.
+%               If the model is non linear, out.Exflag(i,2) is equal to 1.
+%               If at step out.Exflag(i,1) the maximization procedure did not produce
 %               warnings or the warning was different from
-%               "ILL Conditiioned Jacobian". For any other warning
+%               "ILL Conditioned Jacobian". For any other warning
 %               which is produced (for example,
 %               "Overparameterized", "IterationLimitExceeded",
 %               'MATLAB:rankDeficientMatrix") out.Exflag(i,2) is equal
@@ -312,7 +312,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
     y=(y(:));
     % Compute minimum deletion residual and analyze the units entering
-    % subset in each step of the fwd search (matrix Un).  As is well known,
+    % subset in each step of the fwd search (matrix Un). As is well known,
     % the FS provides an ordering of the data from those most in agreement
     % with a suggested model (which enter the first steps) to those least in
     % agreement with it (which are included in the final steps).
@@ -476,7 +476,7 @@ model = modeldef;
 plots=options.plots;
 
 % Get model parameters
-trend    = model.trend;       % get kind of  trend
+trend    = model.trend;       % get kind of trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
 
@@ -521,8 +521,8 @@ if seasonal >0
     for j=1:seasonal
         Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
     end
-    % Remark: when s is even the sine term disapperas for j=s/2 and so the
-    % maximum number of trigonometric terms is s-1
+    % Remark: when s is even, the sine term disappears for j=s/2 and so the
+    % maximum number of trigonometric terms is s-1.
     if seasonal==(s/2)
         Xseaso=Xseaso(:,1:end-1);
     end
@@ -536,13 +536,13 @@ end
 X=model.X;
 isemptyX=isempty(X);
 if isemptyX
-    % nexpl = number of potential explanatory variables
+    % nexpl = number of potential explanatory variables.
     nexpl=0;
 else
     nexpl=size(X,2);
 end
 
-% Define the explanatory variable associated to the level shift component
+% Define the explanatory variable associated to the level shift component.
 if lshift>0
     % Xlshift = explanatory variable associated with
     % level shift Xlshift is 0 up to lsh-1 and 1 from
@@ -681,13 +681,13 @@ seq500=500*(1:1:ceil(T/500));
 % search. The first column of Bols contains the fwd search index
 Bols=[(init1:T)' NaN(T-init1+1,p)];     %initial value of beta coefficients is set to NaN
 
-% S2 = (n-init1+1) x 3 matrix which will contain:
+% S2 = (n-init1+1) x 3: matrix which will contain:
 % 1st col = fwd search index
 % 2nd col = S2= \sum e_i^2 / (m-p)
 % 3rd col = R^2
 S2=[(init1:T)' NaN(T-init1+1,2)];        %initial value of S2 (R2) is set to NaN
 
-% mdr = (n-init1-1) x 2 matrix which will contain min deletion residual
+% mdr = (n-init1-1) x 2: matrix which will contain min deletion residual
 % among nobsb r_i^*
 mdr=[(init1:T-1)'  NaN(T-init1,1)];      %initial value of mdr is set to NaN
 
@@ -699,13 +699,14 @@ if bsbsteps == 0
     BB = NaN(T,T-init1+1);
 else
     % The number of columns of matrix BB is equal to the number of steps
-    % for which bsbsteps is greater or equal than init1
+    % for which bsbsteps is greater or equal than init1.
     bsbsteps=bsbsteps(bsbsteps>=init1);
     BB = NaN(T,length(bsbsteps));
 end
 
 % ij = index which is linked with the columns of matrix BB. During the
-% search every time a subset is stored inside matrix BB ij increases by one
+% search every time a subset is stored inside matrix BB ij increases by
+% one.
 ij=1;
 
 
@@ -714,7 +715,7 @@ ij=1;
 Un = cat(2 , (init1+1:T)' , NaN(T-init1,10));
 
 % Initialize matrix which stores in each step the integer identifying the
-% reason why the algorithm terminated
+% reason why the algorithm terminated.
 Exflag=[(ini0:T)',ones(T-ini0+1,1)];
 
 Xb=Xsel(bsb,:);
@@ -753,7 +754,7 @@ else
         end
         
         % Note that Xsel is the X matrix of the linearized version if the
-        % model is non linear (that is it contains time varying amplitude)
+        % model is non linear (that is, it contains time varying amplitude)
         
         tmp = zscore(Xsel(bsb,2:end));
         NoRankProblem=(rank(tmp) == size(Xsel,2)-1 );
@@ -819,7 +820,7 @@ else
                 invXX=covB/s2;
                 
                 % Now compute vector yhat for all the observations
-                % using input  vector betaout
+                % using input vector betaout
                 bsb=seq;
                 yhat=lik(betaout);
                 
@@ -838,7 +839,7 @@ else
             
             % Check whether the estimate of b which has come out is
             % reasonable. An estimate of b is called unreasonable if
-            % max(yhat)>2*max(y)  and min(yhat)<0.5*min(y)
+            % max(yhat)>2*max(y) and min(yhat)<0.5*min(y)
             % Make sure that the coefficients of posvarampl are set to 0 if
             % they are greater than a certain threshold
             if max(abs(betaout(posvarampl)))>10
@@ -966,7 +967,7 @@ else
             % ord=sortrows(r,2);
             [~,ord]=sort(r(:,2));
             
-            % bsb= units forming the new  subset
+            % bsb= units forming the new subset
             bsb=ord(1:(mm+1),1);
             
             yb=y(bsb);    % subset of y
@@ -1026,7 +1027,7 @@ end % rank check
 % likyhat computes fitted values using vector of regression coefficients
 % beta0. Note that matrices Xtrendf, Xseasof, Seqf, Xf contain n-k rows.
 % This function is called in the very last step of the procedure when
-% routine nlinfit is invoked. Please, note the difference beween likyhat
+% routine nlinfit is invoked. Please, note the difference between likyhat
 % and lik
     function objyhat=likyhat(beta0,Xtrendf)
         
@@ -1142,7 +1143,7 @@ end % rank check
         %
         % * func is the model function and is a valid function handle that accepts
         %   a single input argument of the same size as theta.
-        % * theta is vector or matrix of parameter values. If a matrix, each row
+        % * theta is vector or matrix of parameter values. If it's a matrix, each row
         %   represents a different group or observation (see "Grouping Note" below)
         %   and each column represents a different model parameter.
         % * DerivStep (optional) controls the finite differencing step size. It may
@@ -1191,13 +1192,13 @@ end % rank check
         classname = class(theta);
         
         % Handle optional arguments, starting with y0 since it will be needed to
-        % determine the appropriate size for a default groups.
+        % determine the appropriate size for a default group.
         if nargin < 4 || isempty(y0)
             y0 = func(theta);
         end
         
         % When there is only one group, ensure that theta is a row vector so
-        % that vectoriation works properly. Also ensure that the underlying
+        % that vectorization works properly. Also ensure that the underlying
         % function is called with an input with the original size of theta.
         thetaOriginalSize = size(theta);
         theta = reshape(theta, 1, []);
@@ -1263,7 +1264,7 @@ end % rank check
             
             % OLS to estimate coefficients of trend + expl variables + non lin coeff of
             % seasonal + coefficient of fixed level shift
-            % trlshift is the matrix of explanatory variables
+            % tr_expl_nls_lshift is the matrix of explanatory variables
             if isemptyX
                 if lshift>0
                     tr_expl_nls_lshift=[Xtrend(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1)) Xlshift(bsb)];
@@ -1319,7 +1320,7 @@ end % rank check
             
             % exit from the loop if the new beta has singular values. In
             % such a case, any intermediate estimate is not reliable and we
-            % can just keep the initialbeta and initial scale.
+            % can just keep the initial beta and initial scale.
             if (any(isnan(newbeta)))
                 newbeta = beta0;
                 exitflag=-1;

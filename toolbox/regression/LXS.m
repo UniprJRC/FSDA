@@ -6,8 +6,8 @@ function [out , varargout] = LXS(y,X,varargin)
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. A vector with n elements that
-%               contains the response
-%               variable.  It can be either a row or a column vector.
+%               contains the response variable.
+%               It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
@@ -23,11 +23,11 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %         bdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers
-%               the algorithm should
-%               resist. In this case any value greater than 0 but smaller
-%               or equal than 0.5 will do fine. If on the other hand the
-%               purpose is subgroups detection then bdp can be greater than
-%               0.5. In any case however n*(1-bdp) must be greater than
+%               the algorithm should resist.
+%               In this case any value greater than 0, but smaller
+%               or equal than 0.5, will do fine. If, on the other hand, the
+%               purpose is subgroups detection, then bdp can be greater than
+%               0.5. In any case, however, n*(1-bdp) must be greater than
 %               p. If this condition is not fulfilled an error will be
 %               given. Please specify h or bdp not both.
 %                 Example - 'bdp',0.4
@@ -37,13 +37,14 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  bonflevoutX : remote units in the X space. Scalar or empty (default).
 %               If the design matrix X contains several high leverage units
-%               (that is units which are very far from the bulk of the
+%               (that is, units which are very far from the bulk of the
 %               data), it may happen that the best subset may include some
 %               of these units.
-%               If boflevoutX is not empty, outlier detection procedure FSM
-%               is applied to the design matrix X,  using name/pair option
-%               'bonflev',bonflevoutX. The extracted subsets which contain
-%               at least one unit declared as outlier in the X space by FSM
+%               If bonflevoutX is not empty, outlier detection procedure FSM
+%               is applied to the design matrix X, using name/pair option
+%               'bonflev',bonflevoutX. The extracted subsets, which contain
+%               at least one unit declared as outlier in the X space by
+%               FSM,
 %               are removed (more precisely they are treated as singular
 %               subsets) from the list of candidate subsets to find the LXS
 %               solution. The default value of bonflevoutX is empty, that
@@ -59,7 +60,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %
-%  conflevrew : Confidence level for use for reweighting. Scalar. Number
+%  conflevrew : Confidence level used for reweighting. Scalar. Number
 %               between 0 and 1 containing confidence level which is used to do
 %               the reweighting step. Default value is the one specified in
 %               previous option conflev.
@@ -70,11 +71,11 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 trimmed squares estimator. Scalar.
 %               The number of observations that have determined the least
 %               trimmed squares estimator. h is an integer greater than p
-%               (number of columns of matrix X including the intercept but
-%               smaller then n. If the purpose is outlier detection than h
+%               (number of columns of matrix X including the intercept, but
+%               smaller then n. If the purpose is outlier detection, then h
 %               does not have to be smaller than [0.5*(n+p+1)] (default
-%               value). On the other hand if the purpose is to find
-%               subgroups of homogeneous observations h can be smaller than
+%               value). On the other hand, if the purpose is to find
+%               subgroups of homogeneous observations, h can be smaller than
 %               [0.5*(n+p+1)]. If h <p+1 an error will be given.
 %                 Example - 'h',round(n*0,75)
 %                 Data Types - double
@@ -94,7 +95,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               else if lms is a scalar different from 1 and 2 standard lts
 %                       is used (without concentration steps)
 %               else if lms is a struct fast lts (with concentration steps) is used.
-%                  In this case the user can control the following options:
+%                  In this case, the user can control the following options:
 %                  lms.refsteps : scalar defining number of refining iterations in each
 %                               subsample (default = 3). refsteps = 0 means
 %                               "raw-subsampling" without iterations.
@@ -106,12 +107,12 @@ function [out , varargout] = LXS(y,X,varargin)
 %             lms.refstepsbestr : scalar defining number of refining iterations for each
 %                               best subset (default = 50).
 %              lms.reftolbestr  : scalar. Default value of tolerance for the refining steps
-%                               for each of the best subsets
+%                               for each of the best subsets.
 %                               The default value is 1e-8.
 %                 Example - 'lms',1
 %                 Data Types - double
 %
-%      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
+%      nocheck: Check input arguments. Boolean. If nocheck is equal to true, no
 %               check is performed on matrix y and matrix X. Notice that
 %               when no check is true y and X are left unchanged, that is
 %               the additional column of ones for the intercept is
@@ -120,8 +121,8 @@ function [out , varargout] = LXS(y,X,varargin)
 %               Data Types - boolean
 %
 %        nomes:  It controls whether to display or not on the screen
-%               messages about estimated  time to compute LMS (LTS) . Boolean.
-%               If nomes is equal to true no message about estimated
+%               messages about estimated time to compute LMS (LTS) . Boolean.
+%               If nomes is equal to true, no message about estimated
 %               time to compute LMS (LTS) is displayed, else if nomes is
 %               equal to false (default), a message about estimated time is
 %               displayed.
@@ -130,22 +131,22 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %
 %        msg  : It controls whether to display or not messages on the screen. Boolean.
-%                If msg==true (default) messages are displayed
+%                If msg==true (default), messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               and the warnings about
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
-%               'MATLAB:nearlySingularMatrix' are set to off
-%               else no message is displayed on the screen
+%               'MATLAB:nearlySingularMatrix' are set to off,
+%               else no message is displayed on the screen.
 %               Example - 'msg',false
 %               Data Types - logical
 %
 %       nsamp : Number of subsamples which will be extracted to find the
-%               robust estimator or matrix with preextracted subsamples.
+%               robust estimator or matrix with pre-extracted subsamples.
 %               Scalar or matrix.
-%               If nsamp=0 all subsets will be extracted. They will be (n
+%               If nsamp=0, all subsets will be extracted. They will be (n
 %               choose p). If nsamp is (say) 200, 200 subsets will be
 %               extracted. If nsamp is a matrix of size r-by-p, it contains
-%               in the rows the subsets which sill have to be extracted.
+%               in the rows the subsets that still have to be extracted.
 %               For example, if p=3 and nsamp=[ 2 4 9; 23 45 49; 90 34 1];
 %               the first subset is made up of units [2 4 9], the second
 %               subset of units [23 45 49] and the third subset of units
@@ -160,22 +161,22 @@ function [out , varargout] = LXS(y,X,varargin)
 %       rew   : LXS reweighted. Boolean.
 %                If rew=true the reweighted version of LTS (LMS) is
 %               used and the output quantities refer to the reweighted
-%               version
+%               version,
 %               else no reweighting is performed (default).
 %                 Example - 'rew',true
 %                 Data Types - logical
 %
 %SmallSampleCor : Small sample correction factor to control empirical size of
-%                 the test.  Scalar equal to 0 (default) or 1 or 2 or 3 or 4.
+%                 the test. Scalar equal to 0 (default) or 1 or 2 or 3 or 4.
 %               - If SmallSampleCor=0 (default) no small sample correction;
 %               - If SmallSampleCor=1 in the reweighting step the nominal
 %                 threshold based on $\chi^2_{0.99}$ is multiplied by the
-%                 small sample correction factor which guarrantees that the
+%                 small sample correction factor, which guarantees that the
 %                 empirical size of the test is equal to the nominal size;
 %               - If SmallSampleCor =2 Gervini and Yohai procedure is called
 %                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
 %                 weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
-%               - If SmallSampleCor =3 Gervini and Yohai procedure  called
+%               - If SmallSampleCor =3 Gervini and Yohai procedure is called
 %                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
 %                 weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
 %               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
@@ -196,7 +197,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               screen. The confidence level which is used to draw the
 %               horizontal lines associated with the bands for the
 %               residuals is as specified in input option conflev. If
-%               conflev is missing a nominal 0.975 confidence interval will
+%               conflev is missing, a nominal 0.975 confidence interval will
 %               be used.
 %                 Example - 'plots',1
 %                 Data Types - double
@@ -211,8 +212,8 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  out :     A structure containing the following fields
 %
-%            out.rew  = boolean. if out.rew=true all subsequent output refers to
-%                       reweighted else no reweighting is done.
+%            out.rew  = boolean. if out.rew=true, all subsequent output refers to
+%                       reweighted, else no reweighting is done.
 %            out.beta = Vector of beta LTS (LMS) coefficient estimates,
 %                       including the intercept when options.intercept=true.
 %                       out.beta=[intercept slopes].
@@ -226,7 +227,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %                       These weights identify the h observations which are
 %                       used to compute the final LTS (LMS) estimate.
 %                       sum(out.weights)=h if there is not a perfect fit
-%                       otherwise sum(out.weights) can be greater than h
+%                       otherwise sum(out.weights) can be greater than h.
 %               out.h = The number of observations that have determined the
 %                       LTS (LMS) estimator, i.e. the value of h.
 %        out.outliers = row vector containing the list of the units declared
@@ -234,10 +235,11 @@ function [out , varargout] = LXS(y,X,varargin)
 %                       input scalar conflev.
 %         out.conflev = confidence level which is used to declare outliers.
 %                       Remark: scalar out.conflev will be used
-%                       to draw the horizontal lines (confidence bands) in the plots
-%         out.singsub = Number of subsets wihtout full rank. Notice that if
+%                       to draw the horizontal lines (confidence bands) in
+%                       the plots.
+%         out.singsub = Number of subsets without full rank. Notice that if
 %                       this number is greater than 0.1*(number of
-%                       subsamples) a warning is produced on the screen
+%                       subsamples), a warning is produced on the screen.
 %           out.class = 'LTS' or 'LMS'.
 %            out.y    = response vector Y. The field is present only if option
 %                       yxsave is set to 1.
@@ -367,7 +369,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %}
 
 %{
-    %% We compare the output of different procedures:  only the reweighted
+    %% We compare the output of different procedures: only the reweighted
     % LTS seems to detect half of the outlier with a Bonferroni
     %significance level.
     close all;
@@ -414,7 +416,7 @@ function [out , varargout] = LXS(y,X,varargin)
 
 %{
     %% Example of the use of option bonflevoutX.
-    % In this example a set of remote units is added to a cloud of points.
+    % In this example, a set of remote units is added to a cloud of points.
     % The purpose of this example is to show that while best LMS using all
     % default options contains some of the remote units. In order to make sure
     % that the remote units are excluded from the best LMS subset it is
@@ -472,13 +474,13 @@ seq=(1:n);
 %% User options
 
 % singsub= scalar which will contain the number of singular subsets which
-% are extracted (that is the subsets of size p which are not full rank)
+% are extracted (that is, the subsets of size p which are not full rank)
 singsub=0;
 
-% If the number of all possible subsets is <10000 the default is to extract
-% all subsets otherwise just 10000.
-% Notice that we use bc, a fast version of nchoosek. One may also use the
-% approximation floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(p+1))+0.5)
+% If the number of all possible subsets is <10000, the default is to extract
+% all subsets, otherwise just 10000.
+% Notice that we use bc, a fast version of function nchoosek. One may also use the
+% approximation floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(p+1))+0.5).
 ncomb=bc(n,p);
 nsampdef=min(3000,ncomb);
 
@@ -522,7 +524,7 @@ if coder.target('MATLAB')
         end
 
         % Check if all the specified optional arguments were present
-        % in structure options
+        % in structure options.
         % Remark: the nocheck option has already been dealt by routine
         % chkinputR
         inpchk=isfield(options,UserOptions);
@@ -590,7 +592,7 @@ if nargin > 2
         elseif  options.nsamp<0
             error('FSDA:LXS:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
         end
-    else % in this case nsamp is the matrix of prextracted subsamples
+    else % in this case nsamp is the matrix of pre-extracted subsamples
         if size(options.nsamp,2)~=p
             error('FSDA:LXS:WrongNsamp','Matrix nsamp must have %.0f columns\n',p);
         end
@@ -644,7 +646,7 @@ elseif isstruct(lms)
                 lmsdef.(fld{i})=lms.(fld{i});
             end
         end
-        % For the options not set by the user use their default value
+        % For the options not set by the user, use their default value.
         lms=lmsdef;
     end
 
@@ -677,7 +679,7 @@ SmallSampleCor=options.SmallSampleCor; % small sample correction factor
 
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
 
-nomes=options.nomes;        % if options.nomes==true no message about estimated time to compute LMS is displayed
+nomes=options.nomes;        % if options.nomes==true, no message about estimated time to compute LMS is displayed
 
 if coder.target('MATLAB')
     % Get user values of warnings
@@ -763,8 +765,8 @@ for i=1:nselected
         yb=y(index);
 
         % if rank(Xb)==p Warning: this instruction has been replaced by a
-        % posteriori control on vector b
-        % Compute the vector of coefficients using matrice Xb and yb
+        % posteriori control on vector b.
+        % Compute the vector of coefficients using matrix Xb and yb
         b=Xb\yb;
     end
 
@@ -801,7 +803,7 @@ for i=1:nselected
             end
 
 
-        else % in this case the user has chosen the FAST LTS (with concentration steps)
+        else % in this case, the user has chosen the FAST LTS (with concentration steps)
 
             tmp = IRWLSreg(y,X,b,refsteps,reftol,h);
 
@@ -979,7 +981,7 @@ if abs(s0) > 1e-7
     % Store inside structure out, the vector of the weights
     out.weights=weights;
 
-    % Compute the Student T quantile threshold . If options.conflev=0.975,
+    % Compute the Student T quantile threshold. If options.conflev=0.975,
     % 1.25% on the right and
     % 1.25% on the left, globally 2.5%.
     % m = factor which modifies the degrees of freedom used for computing
@@ -1083,7 +1085,7 @@ if abs(s0) > 1e-7
         % sqrt(chi2inv(0.975,1)) = tinv(0.9875,\infinity) = norminv(0.9875)
 
         weights = abs(stdres)<=norminv(conflev);
-        % The new vector of weights overwrites previous vector of weigths
+        % The new vector of weights overwrites previous vector of weights
         % before reweighting.
 
         % Store information about reweighting
@@ -1189,7 +1191,7 @@ if coder.target('MATLAB')
     plots=options.plots;        % Plot of residuals equal to 1
 
     % If plots is a structure, plot directly those chosen by the user;
-    % elseif plots is 1 a plot or residuals against index number appears
+    % elseif plots is 1 a plot or residuals against index number appears,
     % else no plot is produced.
     if plots==1
         if lmsopt==1
@@ -1208,7 +1210,7 @@ if coder.target('MATLAB')
 
 end
 
-%% The part below contains subfunctions which are used only inside this file
+%% The part below contains sub-functions which are used only inside this file
 
     function asymptvar=asvar(h,n)
         %asvar computes the new degrees of freedom for the Student T
@@ -1229,7 +1231,7 @@ end
 
 
 % -------------------------------------------------------------------
-% subfunction IRWLSreg
+% sub-function IRWLSreg
 % -------------------------------------------------------------------
 
 function outIRWLS = IRWLSreg(y,X,initialbeta,refsteps,reftol,h)
@@ -1242,23 +1244,24 @@ function outIRWLS = IRWLSreg(y,X,initialbeta,refsteps,reftol,h)
 %    X :        Data matrix of explanatory variables (also called 'regressors')
 %               of dimension (n x p). Rows of X represent observations, and
 %               columns represent variables.
-% initialbeta : p x 1 vector containing initial estimate of beta
-%   refsteps  : scalar, number of refining (IRLS) steps
-%   reftol    : relative convergence tolerance
-%               Default value is 1e-7
-%      h      : scalar. number of observations with smallest residuals to consider
+% initialbeta : p x 1 vector containing initial estimate of beta.
+%   refsteps  : scalar, number of refining (IRLS) steps.
+%   reftol    : relative convergence tolerance.
+%               Default value is 1e-7.
+%      h      : scalar. number of observations with smallest residuals to
+%      consider.
 %
 %  Output:
 %
 %  The output consists of a structure 'outIRWLS' containing the following fields:
-%      betarw  : p x 1 vector. Estimate of beta after refsteps refining steps
+%      betarw  : p x 1 vector. Estimate of beta after refsteps refining steps.
 %  numscale2rw : scalar. Sum of the smallest h squared residuals from
 %                final iteration (after refsteps refining step).It is the
 %                numerator of the estimate of the squared scale.
-%     weights  : n x 1 vector. Weights assigned to each observation
+%     weights  : n x 1 vector. Weights assigned to each observation.
 %               In this case weights are 0,1.
 %               1 for the units associated with the smallest h squared residuals from
-%               final iteration
+%               final iteration,
 %               0 for the other units.
 %
 
@@ -1280,7 +1283,7 @@ betadiff    = 9999;
 beta        = initialbeta;
 scale       = Inf;
 
-newbeta=beta; % Initialization for MATLAB Ccoder
+newbeta=beta; % Initialization for MATLAB C-coder
 
 % update of weights moved at the end of the function
 % weights=zeros(n,1);
@@ -1297,7 +1300,7 @@ while ( (betadiff > reftol) && (iter < refsteps) )
 
     % exit from the loop if the new beta has singular values. In such a
     % case, any intermediate estimate is not reliable and we can just
-    % keep the initialbeta and initial scale.
+    % keep the initial beta and initial scale.
     if (any(isnan(newbeta)))
         newbeta = initialbeta;
         scale = initialscale;
@@ -1327,7 +1330,7 @@ outIRWLS.numscale2rw = scale;
 % store final estimate of the weights for each observation
 % In this case weights are 0,1.
 % 1 for the units associated with the smallest h squared residuals from
-% final iteration
+% final iteration,
 % 0 for the other units.
 weights=zeros(n,1);
 weights(i_r2s(1:h))=1;
@@ -1384,7 +1387,7 @@ if rawcorfac <=0 || rawcorfac>50
     % if msg==1
     disp('Warning: problem in subfunction corfactorRAW')
     disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
-    disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
+    disp('Given that, this value is clearly wrong, we put it equal to 1 (no correction)')
     disp('This may happen when n is very small and p is large')
     % end
 end
@@ -1434,7 +1437,7 @@ if rewcorfac <=0 || rewcorfac>50
     % if msg==1
     disp('Warning: problem in subfunction corfactorREW');
     disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
-    disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');
+    disp('Given that, this value is clearly wrong, we put it equal to 1 (no correction)');
     disp('This may happen when n is very small and p is large');
     % end
 end

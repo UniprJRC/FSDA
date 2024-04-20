@@ -42,7 +42,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %  Optional input arguments:
 %
 %   modelfun   : non linear function to use. It is a function_handle or
-%                an empty value (default). If modelfun is empty the link
+%                an empty value (default). If modelfun is empty, the link
 %                between $X$ and $\beta$ is assumed to be linear, otherwise
 %                it is necessary to specify a function (using @) that
 %                accepts two arguments, a coefficient vector and the array
@@ -54,7 +54,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %                 where modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 %                 Data Types - function_handle or empty value.
 %
-%  theta0       : Initial point. Vector or empty valu.
+%  theta0       : Initial point. Vector or empty value.
 %                 Empty value or vector containing initial values for the
 %                 coefficients (beta0 and sigma0) just in case modelfun is
 %                 non empty. If modelfun is empty this argument is ignored.
@@ -62,7 +62,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %                 Data Types - double
 %
 %  intercept :  Indicator for constant term. true (default) | false.
-%               If true, and modelfun is empty (that is if the link between
+%               If true, and modelfun is empty (that is, if the link between
 %               X and beta is linear) a model with constant term will be
 %               fitted (default), else no constant term will be included.
 %               This argument is ignored if modelfun is not empty.
@@ -70,7 +70,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %               Data Types - boolean
 %
 %  dispresults :  Display results on the screen. Boolean. If dispresults is
-%                 true (default) it is possible to see on the screen table
+%                 true (default), it is possible to see on the screen table
 %                 Btable.
 %                 Example - 'dispresults',false
 %                 Data Types - Boolean
@@ -99,7 +99,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %                 Data Types - double
 %
 %      MaxIter : maximum number of iterations allowed. Positive integer.
-%                The default value is 1000-
+%                The default value is 1000
 %                Example - 'MaxIter',100
 %                Data Types - double
 %
@@ -133,7 +133,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %                       yxsave is set to 1.
 %           out.class = 'Sreg'
 %          out.Btable = table containing estimated beta coefficients,
-%                       standard errors, t-stat and p-values
+%                       standard errors, t-stat and p-values.
 %                       The content of matrix B is as follows:
 %                       1st col = beta coefficients and sigma (in the last
 %                       element). This output is present only if input
@@ -151,7 +151,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %
 % We assume that the random variables $Y|x$ are distributed as normal $N(
 % \eta(x,\beta), \sigma_0)$ random variable with density function $\phi$.
-% Note that if the model is linear $\eta(x,\beta)= x^T \beta$. The estimate
+% Note that, if the model is linear $\eta(x,\beta)= x^T \beta$. The estimate
 % of the vector $\theta_\alpha=(\beta_1, \ldots, \beta_p)^T$  (Minimum
 % Density Power Divergence Estimate) is given by:
 %
@@ -162,8 +162,8 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %  \right]
 %  \]
 %
-% As the tuning paramter $\alpha$ increases, the robustness of the Minimum
-% Density Power Divergence Estimator (MDPDE) increases while its efficieny
+% As the tuning parameter $\alpha$ increases, the robustness of the Minimum
+% Density Power Divergence Estimator (MDPDE) increases, while its efficiency
 % decreases (Basu et al. 1998). For $\alpha=0$ the MDPDE becomes the Maximum
 % Likelihood Estimator, while for $\alpha=1$ the estimator minimizes the
 % $L_2$ distance between the densities (Durio and Isaia, 2003),
@@ -230,8 +230,8 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %}
 
 %{
-    %% Compare MLE estimator with MDPD estimator (uncontamindated data).
-    % Scenario as in example 1 of Durio and Isaia (2011).
+    %% Compare MLE estimator with MDPD estimator (uncontaminated data).
+    % Scenario, as in example 1, of Durio and Isaia (2011).
     % 600 points generated according to the model
     % Y=0.5*X1+0.5*X2+eps
     % and n2 = 120 points (outliers), drawn from the model
@@ -258,7 +258,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 
 %{
     % Compare MLE estimator with MDPD estimator (EX2).
-    % Scenario as in example 2 of Durio and Isaia (2011).
+    % Scenario, as in example 2, of Durio and Isaia (2011).
     % 480 points generated according to the model
     % Y=0.5*X1+0.5*X2+eps
     % and n2 = 120 points (outliers), drawn from the model
@@ -301,7 +301,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 
 %{
     % Compare MLE estimator with MDPD estimator (EX3).
-    % Scenario as in example 3 of Durio and Isaia (2011)
+    % Scenario, as in example 3, of Durio and Isaia (2011).
     % 480 points generated according to the model
     % Y=0.25*X1+0.25*X2+0.25*X3+0.25*X4+eps
     % and n2 = 120 points (outliers), drawn from the model
@@ -346,7 +346,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %{
 
     % Compare MLE estimator with MDPD estimator (EX4).
-    % Scenario as in example 4 of Durio and Isaia (2011)
+    % Scenario, as in example 4, of Durio and Isaia (2011).
     % 180 points generated according to the model
     % Y  = 0.25*X1+eps
     % X1~U(0,0.5) eps~N(0,0.1^2)
@@ -495,8 +495,8 @@ if nargin>3
     end
     
     % Check if all the specified optional arguments were present in
-    % structure options Remark: the nocheck option has already been dealt
-    % by routine chkinputR
+    % structure options. Remark: the nocheck option has already been dealt
+    % by routine chkinputR.
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
@@ -547,7 +547,7 @@ else
                 error('FSDA:mdpdR:WrongDim',...
                     ['Wrong dimension for theta0, it must be a vector with length = ', num2str(p+1)]);
             else
-                % Just in case input theta0 is a rwo vector
+                % Just in case input theta0 is a row vector
                 theta0=theta0(:);
             end
         end
@@ -557,7 +557,7 @@ else
     nlinfitOptions=statset('Display',DisplayLevel,'MaxIter',MaxIter,'TolX',TolX);
     
     % Given that likfmin only accepts objective functions that depend only
-    % on a single variable (in this case betsigma)
+    % on a single variable (in this case, betsigma)
     % Vector of regression coefficients and scale
     likfminOneParameter = @(betsigma)likfmin(betsigma, modelfun, y, X, alpha);
     if dispresults == true

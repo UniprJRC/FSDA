@@ -8,16 +8,16 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %    y:         Time series to analyze. Vector. A row or a column vector
 %               with T elements, which contains the time series.
 %  bsb :        list of units forming the initial subset. Vector | 0. If
-%               bsb=0 then the procedure starts with p units randomly
-%               chosen else if bsb is not 0 the search will start with
-%               m0=length(bsb)
+%               bsb=0, then the procedure starts with p units randomly
+%               chosen, else if bsb is not 0, the search will start with
+%               m0=length(bsb).
 %
 % Optional input arguments:
 %
 %  init :       Start of monitoring point. Scalar.
 %               It specifies the point where to initialize the search and
 %               start monitoring required diagnostics. If it is not
-%               specified it is set equal floor(0.5*(T+1))
+%               specified, it is set equal floor(0.5*(T+1)).
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
@@ -25,14 +25,14 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %               which will be used. The model structure contains the following
 %               fields:
 %               model.s = scalar (length of seasonal period). For monthly
-%                         data s=12 (default), for quartely data s=4, ...
+%                         data s=12 (default), for quarterly data s=4, ...
 %               model.trend = scalar (order of the trend component).
 %                       trend = 1 implies linear trend with intercept (default),
-%                       trend = 2 implies quadratic trend ...
+%                       trend = 2 implies quadratic trend and so on.
 %                       Admissible values for trend are, 0, 1, 2 and 3.
 %               model.seasonal = scalar (integer specifying number of
 %                        frequencies, i.e. harmonics, in the seasonal
-%                        component. Possible values for seasonal are
+%                        component). Possible values for seasonal are
 %                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
 %                        For example:
 %                        if seasonal =1 (default) we have:
@@ -43,7 +43,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %                        Note that when $s$ is even the sine term disappears
 %                        for $j=s/2$ and so the maximum number of
 %                        trigonometric parameters is $s-1$.
-%                        If seasonal is a number greater than 100 then it
+%                        If seasonal is a number greater than 100, then it
 %                        is possible to specify how the seasonal component
 %                        grows over time.
 %                        For example, seasonal =101 implies a seasonal
@@ -61,9 +61,9 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
-%               model.posLS = positive integer which specifies to position
+%               model.posLS = positive integer which specifies the position
 %                         to include the level shift component.
-%                         For example if model.posLS =13 then the
+%                         For example, if model.posLS =13 then the
 %                         explanatory variable $I(t \geq 13})$ is created.
 %                         If this field is not present or if it is empty,
 %                         the level shift component is not included.
@@ -71,7 +71,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %                         values of parameter estimates which have to be used in the
 %                         maximization procedure. If model.B is a matrix,
 %                         then initial estimates are extracted from the
-%                         first colum of this matrix. If this field is
+%                         first column of this matrix. If this field is
 %                         empty or if this field is not present, the
 %                         initial values to be used in the maximization
 %                         procedure are referred to the OLS parameter
@@ -83,7 +83,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %               Remark: the default model is for monthly data with a linear
 %               trend (2 parameters) + seasonal component with just one
 %               harmonic (2 parameters), no additional explanatory
-%               variables and no level shift that is
+%               variables and no level shift that is:
 %                               model=struct;
 %                               model.s=12;
 %                               model.trend=1;
@@ -92,18 +92,18 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %                               model.posLS='';
 %
 %  nocheck:     Check input arguments. Boolean.
-%               If nocheck is equal to true no check is performed on
-%               supplied structure model
+%               If nocheck is equal to true, no check is performed on
+%               supplied structure model.
 %               Example - 'nocheck',false
 %               Data Types - logical
 %
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
-%               0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
+%               0, we store the units forming subset in all steps. The
+%               default is to store the units forming subset in all steps if
 %               n<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, as
+%               init and steps which are multiples of 100. For example, as
 %               default, if n=7530 and init=6, units forming subset are
 %               stored for
 %               m=init, 100, 200, ..., 7500.
@@ -120,12 +120,12 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %
 % bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
 %               non singular X. Scalar.
-%               This options controls what to do when rank(X(bsbm,:)) is
-%               smaller then number of explanatory variables.
-%               If bsbmfullrank = 1 (default is 1) these units (whose number
+%               This option controls what to do when rank(X(bsbm,:)) is
+%               smaller than the number of explanatory variables.
+%               If bsbmfullrank = 1 (default is 1), these units (whose number
 %               is say mnofullrank) are constrained to enter the search in
-%               the final n-mnofullrank steps else the search continues
-%               using as estimate of beta at step m the estimate of beta
+%               the final n-mnofullrank steps, else the search continues
+%               using as estimate of beta at step m, the estimate of beta
 %               found in the previous step.
 %               Example - 'bsbmfullrank',1
 %               Data Types - double
@@ -138,7 +138,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one.
-%               Un(1,2) for example contains the unit included in step
+%               Un(1,2), for example, contains the unit included in step
 %               init+1.
 %               Un(end,2) contains the units included in the final step
 %               of the search.
@@ -150,7 +150,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %               More precisely:
 %               BB(:,1) contains the units forming subset in step bsbsteps(1);
 %               ....;
-%               BB(:,end) contains the units forming subset in step  bsbsteps(end);
+%               BB(:,end) contains the units forming subset in step bsbsteps(end);
 %               Row 1 of matrix BB is referred to unit 1;
 %               ......;
 %               Row n of matrix BB is referred to unit n;
@@ -207,7 +207,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
          104  114  146  172  180  203  237  271  305  310  362  390    % Nov
          118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
     y=(y(:));
-    % Define the model  and show the monitoring units plots.
+    % Define the model and show the monitoring units plots.
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
@@ -249,7 +249,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
     xlabel('Subset size m');
     ylabel('Monitoring units plot');
     % The plot, which monitors the units belonging to subset in each step of
-    % the forward search shows that independently of the initial starting
+    % the forward search, shows that independently of the initial starting
     % point the contaminated units (31:40) are always the last to enter the
     % forward search.
 %}
@@ -327,7 +327,7 @@ end
 model = modeldef;
 
 % Get model parameters
-trend    = model.trend;       % get kind of  trend
+trend    = model.trend;       % get kind of trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
 
@@ -372,7 +372,7 @@ if seasonal >0
     for j=1:seasonal
         Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
     end
-    % Remark: when s is even the sine term disapperas for j=s/2 and so the
+    % Remark: when s is even the sine term disappears for j=s/2 and so the
     % maximum number of trigonometric terms is s-1
     if seasonal==(s/2)
         Xseaso=Xseaso(:,1:end-1);
@@ -428,7 +428,7 @@ end
 
 
 % pini = number of parameters in the linear model without level shifts nor
-% varying amplitude
+% varying amplitude.
 % ntrend = number of trend parameters,
 % nseaso = number of parameters associated with the harmonics,
 % nexpl = number of explanatory variables,
@@ -486,9 +486,9 @@ elseif init>=n
     init=n-1;
 end
 
-% If model contains a field named B than use the first column of this field
+% If model contains a field named B then use the first column of this field
 % as initial parameter value, else use OLS estimate based on linear part of
-% the model
+% the model.
 if ~isempty(model.B)
     b=model.B(:,1); % get initial estimate of parameter values
 else
@@ -574,7 +574,7 @@ if rank(zscore(Xb(:,2:end)))<pini-1
     % FS loop will not be performed
 else
     % ij = index which is linked with the columns of matrix BB. During the
-    % search every time a subset is stored inside matrix BB ij icreases by one
+    % search every time a subset is stored inside matrix BB ij increases by one
     ij=1;
     
     for mm = ini0:n
@@ -598,7 +598,7 @@ else
         % Compute beta coefficients using subset
         
         % Note that Xsel is the X matrix of the linearized version if the
-        % model is non linear (that is it contains time varying amplitude)
+        % model is non linear (that is, it contains time varying amplitude)
         NoRankProblem=( rank(zscore(Xsel(bsb,2:end))) == size(Xsel,2)-1 );
         
         if NoRankProblem  % rank is ok
@@ -657,7 +657,7 @@ else
                 
                 
                 % Now compute vector yhat for all the observations
-                % using input  vector betaout
+                % using input vector betaout
                 bsb=seq;
                 yhat=lik(betaout);
                 
@@ -668,9 +668,9 @@ else
                 Xsel = getjacobianFS(betaout,fdiffstep,@lik,yhat);
             end
             
-            % Check whether the estimate of b which has come out is
+            % Check whether the estimate of b, which has come out, is
             % reasonable. An estimate of b is called unreasonable if
-            % max(yhat)>2*max(y)  and min(yhat)<0.5*min(y)
+            % max(yhat)>2*max(y) and min(yhat)<0.5*min(y).
             % Make sure that the coefficients of posvarampl are set to 0 if
             % they are greater than a certain threshold
             if max(abs(betaout(posvarampl)))>10
@@ -685,7 +685,7 @@ else
             
             % Store correctly computed b for the case of rank problem
             bprevious=b;
-        else   % number of independent columns is smaller than number of parameters
+        else   % number of independent columns is smaller than the number of parameters
             if bsbmfullrank
                 Xb=Xsel(bsb,:);
                 Xbx=Xb;
@@ -793,7 +793,7 @@ end
 % likyhat computes fitted values using vector of regression coefficients
 % beta0. Note that matrices Xtrendf, Xseasof, Seqf, Xf contain n-k rows.
 % This function is called in the very last step of the procedure when
-% routine nlinfit is invoked. Please, note the difference beween likyhat
+% routine nlinfit is invoked. Please, note the difference between likyhat
 % and lik
     function objyhat=likyhat(beta0,Xtrendf)
         
@@ -829,7 +829,7 @@ end
         
         if lshift >0
             %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
-            %  is a real number and \beta_(npar+2) is a integer which
+            %  is a real number and \beta_(npar+2) is an integer which
             %  denotes the period in which level shift shows up
             
             yhatlshift=beta0(npar+1)*Xlshiftf;
@@ -876,7 +876,7 @@ end
         
         if lshift >0
             %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
-            %  is a real number and \beta_(npar+2) is a integer which
+            %  is a real number and \beta_(npar+2) is an integer which
             %  denotes the period in which level shift shows up
             yhatlshift=beta0(npar+1)*Xlshift(bsb);
         else
@@ -909,7 +909,7 @@ end
         %
         % * func is the model function and is a valid function handle that accepts
         %   a single input argument of the same size as theta.
-        % * theta is vector or matrix of parameter values. If a matrix, each row
+        % * theta is a vector or matrix of parameter values. If a matrix, each row
         %   represents a different group or observation (see "Grouping Note" below)
         %   and each column represents a different model parameter.
         % * DerivStep (optional) controls the finite differencing step size. It may
@@ -964,7 +964,7 @@ end
         end
         
         % When there is only one group, ensure that theta is a row vector so
-        % that vectoriation works properly. Also ensure that the underlying
+        % that vectorization works properly. Also ensure that the underlying
         % function is called with an input with the original size of theta.
         thetaOriginalSize = size(theta);
         theta = reshape(theta, 1, []);
@@ -1006,7 +1006,7 @@ end
 
 
 % ALS computes Alternating Least Squares estimate of beta starting from
-% vector beta0. The rows which are used are those specified in global
+% vector beta0. The rows, which are used, are those specified in global
 % variable bsb
     function [newbeta,exitflag,iter]=ALS(y,beta0,maxiterALS,maxtolALS)
         
@@ -1086,7 +1086,7 @@ end
             
             % exit from the loop if the new beta has singular values. In
             % such a case, any intermediate estimate is not reliable and we
-            % can just keep the initialbeta and initial scale.
+            % can just keep the initial beta and initial scale.
             if (any(isnan(newbeta)))
                 newbeta = beta0;
                 exitflag=-1;
