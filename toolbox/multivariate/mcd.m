@@ -305,6 +305,17 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % derivation of the factor is discussed by Barabesi et al. (2023), Trimming
 % heavy-tailed multivariate data, submitted.
 %
+%
+% About the consistency factor. The consistency factor, which is applied 
+% to the scatter matrix to account for the effect of trimming observations,
+% can be computed based on the nominal trimming percentage, which is
+% $1-bdp$, or based on the empirical one, which is $h/n$. The two values
+% can slightly differ if $n$ is small. By default, we use the nominal
+% value. This means that the RAW residuals are based on the nominal value
+% $1-bdp$. On the other hand, note that currently the REW residuals are
+% based on the empirical $h/n$ to reflect the empirical nature of the
+% reweighted approach.
+%
 % See also: mve.m
 %
 % References:
@@ -656,7 +667,7 @@ if v==1 && h~=n
     REW.loc=mean(Y(weights==1,:));
     REW.cov=cov(Y(weights==1,:));
     
-    cfactor = consistencyfactor(sum(weights),n,v,nuT); %remove nuT?
+    cfactor = consistencyfactor([sum(weights),n],v,nuT); %remove nuT?
     if smallsamplecor == true
         cfactor = cfactor*corfactorREW(v,n,1-bdp);
     end
@@ -986,9 +997,12 @@ RAW.obj   = superbestobj;       % value of the objective function
 
 RAW.bs=superbestsubset;
 
-% cfactor: if we multiply the raw MCD covariance matrix by factor, we obtain
-% consistency when the data come from a multivariate normal distribution.
-cfactor = consistencyfactor(h,n,v,nuT);
+% cfactor: if we multiply the raw MCD covariance matrix by cfactor, we
+% obtain consistency when the data come from the desired distribution
+% (multivariate normal or t, depending on the value of nuT). Note that 
+% here the consistency factor is computed using the nominal trimming 
+% level (the bdp).
+cfactor = consistencyfactor(bdp,v,nuT);
 
 % Apply small sample correction factor
 if smallsamplecor == true
@@ -1069,12 +1083,12 @@ REW.cov=cov(Y(weights==1,:));
 if betathresh==1
     % Consistency factor based on nominal trimming of conflevrew
     hh=floor(n*conflevrew);
-    cfactor = consistencyfactor(hh,n,v,nuT); %remove nuT?
+    cfactor = consistencyfactor([hh,n],v,nuT); %remove nuT?
 else
     % Apply consistency factor to reweighted estimate of covariance
     hrew=sum(weights);
     if hrew<n
-        cfactor=consistencyfactor(hrew,n,v,nuT); %remove nuT?
+        cfactor=consistencyfactor([hrew,n],v,nuT); %remove nuT?
     else
         cfactor=1;
     end
@@ -1397,28 +1411,39 @@ end
             c1factor = corfactorRAW(1,ncas,alpha);
         end
         
-        c1factor = c1factor * consistencyfactor(h,ncas,1,nuT);
+        % Note that here the consistency factor is computed using the
+        % nominal trimming level (the bdp).
+        c1factor = c1factor * consistencyfactor(alpha,1,nuT);
         initcov  = c1factor * sqmin/(h-1);
     end
 
 %% consistencyfactor function
 
-    function rawconsfac = consistencyfactor(h,n,v,nu)
+    function rawconsfac = consistencyfactor(hna,v,nu)
         % The consistency factor is used to take the effect of trimming
-        % into account. 
-        
-        % Fraction of observations whose covariance determinant will be
-        % minimized. If a percentage alpha=1-h/n of units are trimmed by 
-        % the mcd, it is 1-alpha. 
-        alphacompto1 = round(h/n,2);
+        % into account. It is based on the fraction of observations
+        % whose covariance determinant will be minimized. 
 
-        if nargin<4 || isempty(nu) || nu == 0
+        % If a fraction 1-h/n of units are trimmed by the mcd and alpha
+        % is the breakdoun point, we should have 1-alpha ~= h/n.
+
+        % The argument hna can be either the breakdown value alpha or the 
+        % pair [h,n] (being h=retained units and n=sample size).
+
+        if isscalar(hna)
+            % In this case the user has provided the nominal trimming level
+            retained = 1-hna;
+        else
+            retained = hna(1)/hna(2);
+        end
+
+        if nargin<3 || isempty(nu) || nu == 0
             % This is the standard case, applied when uncontaminated data
             % are assumed to come from a multivariate Normal model.
             
             %alpha      = h/n;
-            a          = chi2inv(alphacompto1,v);
-            rawconsfac = alphacompto1/(chi2cdf(a,v+2));
+            a          = chi2inv(retained,v);
+            rawconsfac = retained/(chi2cdf(a,v+2));
         else
             % This is the case of a heavy-tail scenario, when
             % uncontaminated data come from a multivariate Student-t
@@ -1428,8 +1453,8 @@ end
             %alpha       = (n-h)/n;
             %alpha       = (1-alpha); 
             integrand   = @(u) 1 ./ (1 - betainv(u,v/2,nu/2));
-            theintegral = integral(integrand,0,alphacompto1);
-            rawconsfac  = ((nu-2) / (alphacompto1*v) * theintegral - (nu - 2)/v)^(-1);
+            theintegral = integral(integrand,0,retained);
+            rawconsfac  = ((nu-2) / (retained*v) * theintegral - (nu - 2)/v)^(-1);
         end
     end
 
