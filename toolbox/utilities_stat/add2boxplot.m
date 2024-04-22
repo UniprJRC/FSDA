@@ -130,6 +130,11 @@ end
 
 % Find in current figure the objects which are tagged as outliers
 objOutliers = findobj(gcf,'Tag','Outliers');
+
+if isempty(objOutliers)
+    error('FSDA:add2boxplot:noTag','No figure found containing objects tagged as "Outliers"')
+end
+
 % Extract the x and y coordinates of the outliers
 outliersYcoo = get(objOutliers,'YData');
 outliersXcoo = get(objOutliers,'XData');
