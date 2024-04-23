@@ -1414,7 +1414,7 @@ if ~isempty(options.bground)
     else
         if length(bthresh)>1
             units=seq(selmax>bthresh(2) | selmin<bthresh(1));
-        elseif length(bthresh)==1
+        elseif isscalar(bthresh)
             units=seq(selmax>bthresh | selmin<-bthresh);
         end
     end
