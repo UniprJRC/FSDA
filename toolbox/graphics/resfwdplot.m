@@ -370,6 +370,14 @@ function plotopt=resfwdplot(out,varargin)
 %                   Example - 'msg',1
 %                   Data Types - single or double
 %
+% movieLength   :   Length of the movie in seconds. Scalar.
+%                   Scalar which controls whether to display
+%                   the monitoring of the residuals as a snapshot or a movie.
+%                   movieLength specifies the duration in seconds of the
+%                   length of the movie. The default value of movieLength
+%                   is 0 that is just a snapshot is shown on the screen.
+%                   Example - 'movieLength',5
+%                   Data Types - single or double
 % Output:
 %
 %   plotopt : options which have been used to create the plot. Cell array
@@ -396,7 +404,7 @@ function plotopt=resfwdplot(out,varargin)
 
 %{
     % Monitoring residuals plot with all the default options.
-    % generate input structure for the resfwdplot
+    % Generate input structure for the resfwdplot
     % In this example FS estimator is used
     n=100;
     y=randn(n,1);
@@ -462,7 +470,24 @@ function plotopt=resfwdplot(out,varargin)
     bground.bstyle='hide';
     resfwdplot(out,'bground',bground);
 %}
-%
+
+%{
+    % Example of the use of option movieLength.
+    load('multiple_regression.txt');
+    y=multiple_regression(:,4);
+    X=multiple_regression(:,1:3);
+    % LMS using 1000 subsamples
+    [out]=LXS(y,X,'nsamp',10000);
+    % Forward Search
+    [out]=FSReda(y,X,out.bs);
+    out1=out;
+    % Create scaled squared residuals
+    out1.RES=out.RES.^2;
+    % resfwdplot with option movieLength.
+    % The progressing of the residuals is shown as a movie.
+    resfwdplot(out1,"movieLength",8);
+%}
+
 %
 %{
     % Example of the use of option datatooltip.
@@ -925,6 +950,7 @@ else
     labx= 'Subset size m';
 end
 
+movieLength=0;
 
 if min(min(residuals))<0
     fthresh=2.5;
@@ -966,7 +992,7 @@ bgrounddef=struct('bthresh',bthresh, 'bstyle',bstyle);
 options=struct(...
     'standard',standarddef,'fground',fgrounddef,'bground',bgrounddef,...
     'tag','pl_resfwd','datatooltip',1,'label','','databrush','',...
-    'nameX','','namey','','msg','','corres',false);
+    'nameX','','namey','','msg','','corres',false,'movieLength',movieLength);
 
 
 %% Preliminary checks
@@ -992,6 +1018,8 @@ if nargin>1
         options.(varargin{i})=varargin{i+1};
     end
 end
+
+movieLength=options.movieLength;
 
 % Specify whether to add correlations among adjacent residuals
 corres=options.corres;
@@ -1071,6 +1099,7 @@ if isstruct(databrush)
         multivarfit='';
     end
 
+
     % persist option
     dpers=find(strcmp('persist',fdatabrush));
     if dpers>0
@@ -1105,7 +1134,9 @@ else
     ColorOrd=[1 0 0];
     clr='brcmykgbrcmykgbrcmykg';
 end
-%% Prepate the figure to display the resfwdplot
+
+
+%% Prepare the figure to display the resfwdplot
 
 % Create a figure to host the plot or clear the existing one
 h=findobj('-depth',1,'tag',options.tag);
@@ -1159,71 +1190,319 @@ if any(strcmp(fieldnames(out),'class'))
     end
 end
 
-plot1=plot(x,residuals,'tag','data_res','LineWidth',standard.LineWidth);
 
-if strcmp(out.class,'Sregeda') || strcmp(out.class,'MDPDReda')
-    set(gca,'XDir','reverse')
-    SoftTrimmingS=true;
-    maxx=x(1);
-    minx=x(end);
-    step=x(1)-x(2);
+if movieLength>0
+    mov=true;
+    pau=movieLength/nsteps;
 else
-    SoftTrimmingS=false;
-    maxx=x(end);
-    minx=x(1);
-    step=x(2)-x(1);
+    mov=false;
 end
 
-% Apply color
-scol=standard.Color;
 
-if ~isempty(scol)
-    if size(scol,2)>1
-        scol=scol';
+if mov ==true
+    % M(loops)=struct('cdata',[],'colormap',[]);
+    % axis manual
+    jjinitial=1;
+    Colors=repmat([ 0 0 1; 1 0 0; 0 1 1; 1  0 1; 1 1 0; 0 0 0; 0 1 0],ceil(n/7),1);
+Colors=Colors(1:n,:);
+
+    colororder(Colors);
+    % colororder gem
+else
+    jjinitial=nsteps;
+end
+
+
+
+for jj=jjinitial:nsteps
+    % h.Visible='off';
+    plot1=plot(x(1:jj),residuals(:,1:jj),'tag','data_res','LineWidth',standard.LineWidth);
+
+
+    if strcmp(out.class,'Sregeda') || strcmp(out.class,'MDPDReda')
+        set(gca,'XDir','reverse')
+        SoftTrimmingS=true;
+        maxx=x(1);
+        minx=x(end);
+        step=x(1)-x(2);
+    else
+        SoftTrimmingS=false;
+        maxx=x(end);
+        minx=x(1);
+        step=x(2)-x(1);
     end
-    scol=repmat(scol,ceil(n/length(scol)),1);
-    set(plot1,{'Color'},scol(1:n));
-end
 
-% Apply Line Style
-slintyp=standard.LineStyle;
-if ~isempty(slintyp)
-    if size(slintyp,2)>1
-        slintyp=slintyp';
+    % control minimum and maximum for x and y axis
+    if ~isempty(standard.xlim)
+        xlim(standard.xlim);
+    else
+        xlim([minx,maxx])
     end
-    slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
+    if ~isempty(standard.ylim)
+        ylim(standard.ylim);
+    end
 
-    set(plot1,{'LineStyle'},slintyp(1:n));
+    % Apply color
+    scol=standard.Color;
+
+    if ~isempty(scol)
+        if size(scol,2)>1
+            scol=scol';
+        end
+        scol=repmat(scol,ceil(n/length(scol)),1);
+        set(plot1,{'Color'},scol(1:n));
+    else
+        %  colororder("sail")
+    end
+
+    % Apply Line Style
+    slintyp=standard.LineStyle;
+    if ~isempty(slintyp)
+        if size(slintyp,2)>1
+            slintyp=slintyp';
+        end
+        slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
+
+        set(plot1,{'LineStyle'},slintyp(1:n));
+    end
+    % save the resfwdplot lines handles, for subsequent use with option persist
+    plot1lines=plot1;
+
+
+
+    % Main title of the plot and labels for the axes
+    labx=standard.labx;
+    laby=standard.laby;
+    titl=standard.titl;
+    title(titl);
+
+    % Add the x and y labels to the plot.
+    SizeAxesLab=standard.SizeAxesLab;
+    xlabel(labx,'Fontsize',SizeAxesLab);
+    ylabel(laby,'Fontsize',SizeAxesLab);
+
+    % FontSizeAxes = font size for the axes numbers
+    SizeAxesNum=standard.SizeAxesNum;
+    % Specify the FontSize of the number on the axes
+    set(gca,'FontSize',SizeAxesNum)
+
+    % displays the boundary of the current axes.
+    box on
+
+
+
+
+
+    %% fground options
+    if ~isempty(options.fground)
+        fgrounddef.flabstep=[x(1) x(end)];
+
+        % Control the appearance of the trajectories to be highlighted
+        if ~isequal(options.fground,fgrounddef)
+
+            fld=fieldnames(options.fground);
+
+            % Check if user options inside options.fground are valid options
+            aux.chkoptions(fgrounddef,fld)
+            for i=1:length(fld)
+                fgrounddef.(fld{i})=options.fground.(fld{i});
+            end
+        end
+
+        % For the options not set by the user use their default value
+        fground=fgrounddef;
+
+        % fground.flabstep option and check if the choice of flabstep is valid
+        if ~isempty(fground.flabstep)
+            steps=fground.flabstep;
+            if max(steps)>maxx || min(steps)<minx
+                mess=sprintf(['Warning: steps that you have chosen outside the range of x\n',...
+                    'are re-assigned to min(x) or to max(x)']);
+                fprintf('%s\n',mess);
+                steps(steps<x(1)) = x(1);
+                steps(steps>x(end)) = x(end);
+                steps = sort(unique(steps));
+            end
+
+        else
+            % steps=[x(1) x(end)];
+            fground.flabstep=''; % steps;
+        end
+
+        % fthresh= threshold to define units which have to be displayed in
+        % foreground (highlighted)
+        fthresh=fground.fthresh;
+        % funit= List of the units to be displayed in foreground (highlighted)
+        funit=fground.funit;
+        if ~isempty(funit)
+            % Some checks on minimum and maximum of vector funit
+            if max(funit)>n || min(funit)<1
+                mess=sprintf(['Warning: units that you have chosen outside the range [1 ... n]\n',...
+                    'are not considered']);
+                fprintf('%s\n',mess);
+                funit=funit(funit>0 & funit<=n);
+            end
+        else
+            selmax=max(residuals,[],2);
+            selmin=min(residuals,[],2);
+            if length(fthresh)>1
+                funit=seq(selmax>fthresh(2) | selmin<fthresh(1));
+            else
+                funit=seq(selmax>fthresh | selmin<-fthresh);
+            end
+        end
+
+        % lunits = number of units which must be highlighted
+        lunits=length(funit);
+
+        % Specify the line type for the highlighted units (those forming vector
+        % funit)
+        slintyp=fground.LineStyle;
+        slintyp=slintyp(:);
+
+        if ~isempty(slintyp)
+            slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
+            set(plot1(funit),{'LineStyle'},slintyp(1:length(funit)));
+
+        else
+            slintyp={'-';'--';':';'-.'};
+            % slintyp={'-'};
+            slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
+
+            set(plot1(funit),{'LineStyle'},slintyp(1:length(funit)));
+
+        end
+
+        if ~isempty(fground.flabstep)
+            % lsteps = number of steps for which we add the labels
+            lsteps=length(steps);
+            lall=lunits*lsteps;
+            % indsteps = indexes of the columns of the matrix named residuals
+            % which have to be taken
+            % For FS indsteps is simply
+            % indsteps=steps-steps(1)+1; however we want to write it in very
+            % general terms to cope with S and MM
+            indsteps=zeros(lsteps,1);
+            for i=1:lsteps
+                indsteps(i)=find(x==steps(i));
+            end
+
+            % HA = the HorizontalAlignment of the labels
+            nflabstep = lunits*numel(steps);
+            HA = repmat({'center'},nflabstep,1);
+            % Note that when SoftTrimmingS ==true Xdir is reversed
+            if sum(steps==x(1))
+                if SoftTrimmingS ==true
+                    HA(1:lunits) = {'left'};
+                else
+                    HA(1:lunits) = {'right'};
+                end
+            end
+            if sum(steps==x(end))
+                if SoftTrimmingS ==true
+                    HA(nflabstep-lunits+1:nflabstep) = {'right'};
+                else
+                    HA(nflabstep-lunits+1:nflabstep) = {'left'};
+                end
+            end
+
+            % strings = the labels supplied by the user if they
+            % exist, otherwise we simply use the sequence 1 to n
+            strings = numtext(funit);
+
+            % Label the units
+            h=text(reshape(repmat(steps,lunits,1),lall,1),...
+                reshape(residuals(funit,indsteps),lall,1),...
+                reshape(repmat(strings,1,lsteps),lall,1),...
+                'FontSize',fground.FontSize);
+            set(h,{'HorizontalAlignment'},HA)
+        end
+
+        % if requested, set the color of the selected trajectories note that if
+        % scolor contains more than one color, e.g. options.scolor =
+        % {'b';'g';'r'}, then the colors of the trajectories alternate.
+        fcol=fground.Color;
+        if ~isempty(fcol)
+            fcol=repmat(fcol,ceil(lunits/length(fcol)),1);
+            set(plot1(funit),{'Color'},fcol(1:lunits));
+        end
+
+        % if requested, set the selected trajectories in LineWidth
+        if isnumeric(fground.LineWidth)
+            set(plot1(funit),'LineWidth',fground.LineWidth);
+        end
+
+        % If requested, add markers to all the trajectories
+        if fground.fmark==1
+            set(plot1(funit),{'Marker'},styp(funit))
+        end
+    end
+
+    %% bground options
+    if ~isempty(options.bground)
+
+        if ~isequal(options.bground,bgrounddef)
+
+            fld=fieldnames(options.bground);
+
+            % Check if user options inside options.fground are valid options
+            aux.chkoptions(bgrounddef,fld)
+
+            for i=1:length(fld)
+                bgrounddef.(fld{i})=options.bground.(fld{i});
+            end
+        end
+
+        % For the options not set by the user use their default value
+        bground=bgrounddef;
+
+        % units = the units which do not have to be modified backunits = the
+        % other units which must be plotted using a colormap or which must be
+        % hidden or which have to be plotted in greysh
+        bthresh=bground.bthresh;
+
+        if ~isempty(bthresh) && ischar(bthresh)
+            error('FSDA:resfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
+        else
+            if length(bthresh)>1
+                units=seq(selmax>bthresh(2) | selmin<bthresh(1));
+            elseif isscalar(bthresh)
+                units=seq(selmax>bthresh | selmin<-bthresh);
+            end
+        end
+
+        % backunits are defined as the trajectories not belonging to units
+        % backunits are associated with unimportant trajectories
+        backunits = setdiff(seq,units);
+
+        % set line style for trajectories associated with "backunits"
+        bstyle=bground.bstyle;
+        switch bstyle
+            case 'faint'
+                % Set to degrading faint blue the color of the 'unimportant
+                % trajectories'. Note that stdColor above is 'b', i.e. [0 0 1],
+                % and that cyan is [0 1 1].
+                Z = rescaleFS(mean(abs(residuals),2,'omitnan'),1,0);
+                colormapres = num2cell(colormap([zeros(n,1) Z ones(n,1)]),2);
+                set(plot1(backunits),{'Color'},colormapres(backunits,:));
+            case 'hide'
+                % hide the curves not selected in vector units
+                set(plot1(backunits),'Visible','off');
+            case 'greysh'
+                % set(plot1(backunits),'Color',[0.9 0.9 0.9]);
+                set(plot1(backunits),'Color',[0.7 0.9 1]);
+            otherwise
+                % do nothing, i.e. leave the default color (blue).
+        end
+
+    end
+    if mov ==true
+        if jj==nsteps-1
+            close gcf
+        end
+        pause(pau)
+    end
 end
-% save the resfwdplot lines handles, for subsequent use with option persist
-plot1lines=plot1;
-
-% control minimum and maximum for x and y axis
-if ~isempty(standard.xlim)
-    xlim(standard.xlim);
-end
-if ~isempty(standard.ylim)
-    ylim(standard.ylim);
-end
-
-% Main title of the plot and labels for the axes
-labx=standard.labx;
-laby=standard.laby;
-titl=standard.titl;
-title(titl);
-
-% Add the x and y labels to the plot.
-SizeAxesLab=standard.SizeAxesLab;
-xlabel(labx,'Fontsize',SizeAxesLab);
-ylabel(laby,'Fontsize',SizeAxesLab);
-
-% FontSizeAxes = font size for the axes numbers
-SizeAxesNum=standard.SizeAxesNum;
-% Specify the FontSize of the number on the axes
-set(gca,'FontSize',SizeAxesNum)
-
-% displays the boundary of the current axes.
-box on
 
 
 if isempty(options.label)
@@ -1240,210 +1519,6 @@ else
     out.label=options.label;
 end
 
-
-%% fground options
-if ~isempty(options.fground)
-    fgrounddef.flabstep=[x(1) x(end)];
-
-    % Control the appearance of the trajectories to be highlighted
-    if ~isequal(options.fground,fgrounddef)
-
-        fld=fieldnames(options.fground);
-
-        % Check if user options inside options.fground are valid options
-        aux.chkoptions(fgrounddef,fld)
-        for i=1:length(fld)
-            fgrounddef.(fld{i})=options.fground.(fld{i});
-        end
-    end
-
-    % For the options not set by the user use their default value
-    fground=fgrounddef;
-
-    % fground.flabstep option and check if the choice of flabstep is valid
-    if ~isempty(fground.flabstep)
-        steps=fground.flabstep;
-        if max(steps)>maxx || min(steps)<minx
-            mess=sprintf(['Warning: steps that you have chosen outside the range of x\n',...
-                'are re-assigned to min(x) or to max(x)']);
-            fprintf('%s\n',mess);
-            steps(steps<x(1)) = x(1);
-            steps(steps>x(end)) = x(end);
-            steps = sort(unique(steps));
-        end
-
-    else
-        % steps=[x(1) x(end)];
-        fground.flabstep=''; % steps;
-    end
-
-    % fthresh= threshold to define units which have to be displayed in
-    % foreground (highlighted)
-    fthresh=fground.fthresh;
-    % funit= List of the units to be displayed in foreground (highlighted)
-    funit=fground.funit;
-    if ~isempty(funit)
-        % Some checks on minimum and maximum of vector funit
-        if max(funit)>n || min(funit)<1
-            mess=sprintf(['Warning: units that you have chosen outside the range [1 ... n]\n',...
-                'are not considered']);
-            fprintf('%s\n',mess);
-            funit=funit(funit>0 & funit<=n);
-        end
-    else
-        selmax=max(residuals,[],2);
-        selmin=min(residuals,[],2);
-        if length(fthresh)>1
-            funit=seq(selmax>fthresh(2) | selmin<fthresh(1));
-        else
-            funit=seq(selmax>fthresh | selmin<-fthresh);
-        end
-    end
-
-    % lunits = number of units which must be highlighted
-    lunits=length(funit);
-
-    % Specify the line type for the highlighted units (those forming vector
-    % funit)
-    slintyp=fground.LineStyle;
-    slintyp=slintyp(:);
-
-    if ~isempty(slintyp)
-        slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-        set(plot1(funit),{'LineStyle'},slintyp(1:length(funit)));
-
-    else
-        slintyp={'-';'--';':';'-.'};
-        % slintyp={'-'};
-        slintyp=repmat(slintyp,ceil(n/length(slintyp)),1);
-
-        set(plot1(funit),{'LineStyle'},slintyp(1:length(funit)));
-
-    end
-
-    if ~isempty(fground.flabstep)
-        % lsteps = number of steps for which we add the labels
-        lsteps=length(steps);
-        lall=lunits*lsteps;
-        % indsteps = indexes of the columns of the matrix named residuals
-        % which have to be taken
-        % For FS indsteps is simply
-        % indsteps=steps-steps(1)+1; however we want to write it in very
-        % general terms to cope with S and MM
-        indsteps=zeros(lsteps,1);
-        for i=1:lsteps
-            indsteps(i)=find(x==steps(i));
-        end
-
-        % HA = the HorizontalAlignment of the labels
-        nflabstep = lunits*numel(steps);
-        HA = repmat({'center'},nflabstep,1);
-        % Note that when SoftTrimmingS ==true Xdir is reversed
-        if sum(steps==x(1))
-            if SoftTrimmingS ==true
-                HA(1:lunits) = {'left'};
-            else
-                HA(1:lunits) = {'right'};
-            end
-        end
-        if sum(steps==x(end))
-            if SoftTrimmingS ==true
-                HA(nflabstep-lunits+1:nflabstep) = {'right'};
-            else
-                HA(nflabstep-lunits+1:nflabstep) = {'left'};
-            end
-        end
-
-        % strings = the labels supplied by the user if they
-        % exist, otherwise we simply use the sequence 1 to n
-        strings = numtext(funit);
-
-        % Label the units
-        h=text(reshape(repmat(steps,lunits,1),lall,1),...
-            reshape(residuals(funit,indsteps),lall,1),...
-            reshape(repmat(strings,1,lsteps),lall,1),...
-            'FontSize',fground.FontSize);
-        set(h,{'HorizontalAlignment'},HA)
-    end
-
-    % if requested, set the color of the selected trajectories note that if
-    % scolor contains more than one color, e.g. options.scolor =
-    % {'b';'g';'r'}, then the colors of the trajectories alternate.
-    fcol=fground.Color;
-    if ~isempty(fcol)
-        fcol=repmat(fcol,ceil(lunits/length(fcol)),1);
-        set(plot1(funit),{'Color'},fcol(1:lunits));
-    end
-
-    % if requested, set the selected trajectories in LineWidth
-    if isnumeric(fground.LineWidth)
-        set(plot1(funit),'LineWidth',fground.LineWidth);
-    end
-
-    % If requested, add markers to all the trajectories
-    if fground.fmark==1
-        set(plot1(funit),{'Marker'},styp(funit))
-    end
-end
-
-%% bground options
-if ~isempty(options.bground)
-
-    if ~isequal(options.bground,bgrounddef)
-
-        fld=fieldnames(options.bground);
-
-        % Check if user options inside options.fground are valid options
-        aux.chkoptions(bgrounddef,fld)
-
-        for i=1:length(fld)
-            bgrounddef.(fld{i})=options.bground.(fld{i});
-        end
-    end
-
-    % For the options not set by the user use their default value
-    bground=bgrounddef;
-
-    % units = the units which do not have to be modified backunits = the
-    % other units which must be plotted using a colormap or which must be
-    % hidden or which have to be plotted in greysh
-    bthresh=bground.bthresh;
-
-    if ~isempty(bthresh) && ischar(bthresh)
-        error('FSDA:resfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
-    else
-        if length(bthresh)>1
-            units=seq(selmax>bthresh(2) | selmin<bthresh(1));
-        elseif isscalar(bthresh)
-            units=seq(selmax>bthresh | selmin<-bthresh);
-        end
-    end
-
-    % backunits are defined as the trajectories not belonging to units
-    % backunits are associated with unimportant trajectories
-    backunits = setdiff(seq,units);
-
-    % set line style for trajectories associated with "backunits"
-    bstyle=bground.bstyle;
-    switch bstyle
-        case 'faint'
-            % Set to degrading faint blue the color of the 'unimportant
-            % trajectories'. Note that stdColor above is 'b', i.e. [0 0 1],
-            % and that cyan is [0 1 1].
-            Z = rescaleFS(mean(abs(residuals),2,'omitnan'),1,0);
-            colormapres = num2cell(colormap([zeros(n,1) Z ones(n,1)]),2);
-            set(plot1(backunits),{'Color'},colormapres(backunits,:));
-        case 'hide'
-            % hide the curves not selected in vector units
-            set(plot1(backunits),'Visible','off');
-        case 'greysh'
-            % set(plot1(backunits),'Color',[0.9 0.9 0.9]);
-            set(plot1(backunits),'Color',[0.7 0.9 1]);
-        otherwise
-            % do nothing, i.e. leave the default color (blue).
-    end
-
-end
 
 hold('off')
 set(gca,'Position',[0.1 0.1 0.85 0.85])
