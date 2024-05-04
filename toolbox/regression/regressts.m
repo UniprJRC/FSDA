@@ -110,7 +110,7 @@ function out = regressts(y,varargin)
 %               Data Types - logical
 %
 %  plots :      Plot on the screen. Scalar. If equal to one a two panel plot 
-%               appears on the scree. The top panel contains real and
+%               appears on the screen. The top panel contains real and
 %               fitted value. The bottom panel contains scaled residuals
 %               with a 99.9 per cent confidence band, else (default) no
 %               plot is shown.
