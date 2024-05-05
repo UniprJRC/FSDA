@@ -214,7 +214,7 @@ function [out] = regressCens(y,X, varargin)
     %% Example of right censoring.
     % When left=-Inf and right=0 indicates that there is no left-censoring but
     % there is a right censoring at 0. The same model as above but with the
-    % negative number of affairs as teh dependent variable can be estimated  by
+    % negative number of affairs as the dependent variable can be estimated  by
     load affairs.mat
     X=affairs(:,["age" "yearsmarried" "religiousness" "occupation" "rating"]);
     y=affairs(:,"affairs").*(-1);
@@ -228,7 +228,7 @@ function [out] = regressCens(y,X, varargin)
     %% Example of right censoring with X a table with categorical variables.
     % When left=-Inf and right=0 indicates that there is no left-censoring but
     % there is a right censoring at 0. The same model as above but with the
-    % negative number of affairs as teh dependent variable can be estimated  by
+    % negative number of affairs as the dependent variable can be estimated  by
     load affairs.mat
     X=affairs(:,["age" "yearsmarried" "religiousness" "occupation" "rating"]);
     y=affairs(:,"affairs").*(-1);
