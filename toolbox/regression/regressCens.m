@@ -122,6 +122,15 @@ function [out] = regressCens(y,X, varargin)
 % More About:
 %
 %
+% The issue is one where data is censored such that while we observe the
+% value, it is not the true value, which would extend beyond the range of
+% the observed data. This is very commonly seen in cases where the
+% dependent variable has been given some arbitrary cutoff at the lower or
+% upper end of the range, often resulting in floor or ceiling effects
+% respectively. The conceptual idea is that we are interested in modeling
+% the underlying latent variable that would not have such restriction if it
+% was actually observed.
+%
 % In the standard Tobit model (Tobin 1958), we have a dependent variable $y$ that is left-censored at zero:
 % \begin{eqnarray}
 % y_i^* & = & x_i^{\prime} \beta+\varepsilon_i \\
@@ -391,7 +400,7 @@ obsBetween = ~obsBelow & ~obsAbove;
 
 
 if sum(obsBelow) + sum(obsAbove) == 0
-    error('FSDA:regressCens:WrongInputOpt',"there are no censored observations")
+    warning('FSDA:regressCens:WrongInputOpt',"there are no censored observations")
 end
 
 if sum(obsBetween) == 0
@@ -464,6 +473,6 @@ end
         yhat=Xin*beta;
         dZ=-sum(ya.*log(normcdf((left-yhat)/sigma)+1e-12)+...
             yb.*log(normcdf((yhat-right)/sigma)+1e-12)+...
-            +yab.*(log(normpdf((yin-yhat)/sigma))-log(sigma)));
+            +yab.*(log( normpdf((yin-yhat)/sigma)+1e-12 )-log(sigma)));
     end
 end
