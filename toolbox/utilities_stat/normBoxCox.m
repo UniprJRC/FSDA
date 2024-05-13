@@ -54,7 +54,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 %             $ytra = log(y)$;
 %             where $G$ is the geometric mean of the observations.
 %
-% See also normYJ
+% See also normYJ, normYJpn
 %
 %
 % References:
