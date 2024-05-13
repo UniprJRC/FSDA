@@ -91,7 +91,8 @@ function r = tobitrnd(mu,sigma, left, right,   mm,nn,oo)
 
 %{
     %% Generate a random number from  the tobit  distribution(mu,sigma,left,right).
-    mu=1; % location parameter
+    % location parameter
+    mu=1; 
     sigma=2;  % dispersion parameter
     left=-0.5; % Lower limit
     right=5; % Upper limit
@@ -105,9 +106,10 @@ function r = tobitrnd(mu,sigma, left, right,   mm,nn,oo)
 
 %{
     % Generate a 2D array of size mmxnn of random number from  the Tobit distribution.
-    % total number of balls
-    mu=1; % location parameter
-    sigma=2;  % dispersion parameter
+    % Set location parameter.
+    mu=1; 
+    % dispersion parameter
+    sigma=2;  
     left=-0.5; % Lower limit
     right=5; % Upper limit
     % Generate an array of size 2x3x5 of random numbers from the distribution above
@@ -118,8 +120,8 @@ function r = tobitrnd(mu,sigma, left, right,   mm,nn,oo)
 
 %{
     % Generate a 3D array of size mmxnnxoo of random number from  the Tobit distribution.
-    % total number of balls
-    mu=1; % location parameter
+    % location parameter.
+    mu=1; 
     sigma=2;  % dispersion parameter
     left=-0.5; % Lower limit
     right=5; % Upper limit
@@ -132,7 +134,7 @@ function r = tobitrnd(mu,sigma, left, right,   mm,nn,oo)
 %{
     %% Compare relative frequencies with probabilities.
     % Generate data from a Tobit distribution with parameters 
-    % mu sigma left right 
+    % mu sigma left right. 
     mu=3; sigma=1;  left=2; right=4.2;
     % Generate n observations
     n=10000;
