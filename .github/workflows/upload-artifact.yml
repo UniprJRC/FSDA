@@ -14,7 +14,7 @@ on:
 
 env:
   # Define a specific version of MATLAB to release the toolbox
-  MATLAB_RELEASE: R2023a
+  MATLAB_RELEASE: R2024a
   # We also need a specific version to build the older v3 doc search
   MATLAB_RELEASE_DOC_V3: R2021b
   
