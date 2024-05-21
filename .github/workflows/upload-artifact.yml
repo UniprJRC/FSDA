@@ -116,7 +116,7 @@ jobs:
           files: ./toolbox/bin/FSDA.mltbx
           fail_on_unmatched_files: true
           generate_release_notes: true
-          draft: true
+          draft: false
       
   build-docker-container:
     needs: archive-build-artifacts
