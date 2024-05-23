@@ -145,8 +145,9 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 
 
 %{
+    %% Example in which positive and negative obs require the same lambda.
     rng('default')
-    rng(1)
+    rng(100)
     n=100;
     yori=randn(n,1);
     % Transform the value to find out if we can recover the true value of
