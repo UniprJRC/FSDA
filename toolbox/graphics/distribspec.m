@@ -471,6 +471,15 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 %}
 
 
+%{
+    % Exmple with the Chi2 distribution with v degrees of freedom.
+    % Set the degrees of freedom.
+    v=6;
+    % Create the Chi2 with v degrees of freedom
+    pd = makedist('Gamma','a',v/2,'b',2);
+    p= distribspec(pd,[icdf(pd,0.05)  icdf(pd,0.95)])
+%}
+
 %% Beginning of code
 
 fittedUsingKernel   = false;
