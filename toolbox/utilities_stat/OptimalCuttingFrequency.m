@@ -5,9 +5,8 @@ function Nopt = OptimalCuttingFrequency(x,t)
 %<a href="matlab: docsearchFS('OptimalCuttingFrequency')">Link to the help function</a>
 %
 % OptimalCuttingFrequency computes the optimal cutting frequency for
-% running  the Fourier estimator of the integrated variance on noisy
-% timeseries data. Note that this function calls function autocorr
-% which needs the Econometric toolbox.
+% running  the Fourier estimator of the integrated variance
+% on noisy timeseries data.
 %
 % Required input arguments:
 %
@@ -59,7 +58,8 @@ function Nopt = OptimalCuttingFrequency(x,t)
 % $$c_k(d\tilde x_{n}):= {1\over {T}} \sum_{i=0}^{n-1} e^{-{\rm i} {{2\pi}\over {T}}
 % kt_i}\delta_i(\tilde x).$$
 %
-% See also: FE_int_vol.m
+% See also: FE_int_vol.m, FE_int_vol_Fejer.m, FM_int_vol, FM_int_cov.m,
+% FM_cov_matrix.m
 %
 % References:
 %
@@ -67,9 +67,10 @@ function Nopt = OptimalCuttingFrequency(x,t)
 % Volatility Estimation. Theory and Practice, "Springer Briefs in
 % Quantitative Finance", Springer.
 %
+%Sanfelici, S., Toscano, G. (2024), The Fourier-Malliavin Volatility (FMVol) MATLAB toolbox, available on ArXiv.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2023.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('OptimalCuttingFrequency')">Link to the help function</a>
@@ -79,8 +80,7 @@ function Nopt = OptimalCuttingFrequency(x,t)
 % Examples:
 
 %{
-    %% Computation of the optimal cutting frequency.
-    % Optimal cutting frequency for estimating the integrated variance from a
+    %% Computation of the optimal cutting frequency for estimating the integrated variance from a
     % vector x of noisy observations of a univariate diffusion process.
     % Generate data.
     n=1000;
@@ -89,8 +89,8 @@ function Nopt = OptimalCuttingFrequency(x,t)
     x=randn(n,1)*sqrt(dt);
     % generate the diffusion process
     x=[0;cumsum(x)];
-    % Add noise: noise-to-signal ratio
-     noise_to_signal =0.5; 
+    % Add noise:
+     noise_to_signal =0.5; % noise-to-signal ratio
      sigma_eps = noise_to_signal*std(diff(x));
      noise=sigma_eps*randn(size(x));
      % add noise, which is i.i.d. N(0,sigma_eps^2)
@@ -173,10 +173,13 @@ for k=1:N
     
     betaFE(k)=beta*(1+rD^2-2*rD);
     
-    gammaFE(k)=gamma+4*(Eeta4+E2^2)*(2*rD-rD^2)+4*pi*Q/(2*trunc+1);
+    % gammaFE(k)=gamma+4*(Eeta4+E2^2)*(2*rD-rD^2)+4*pi*Q/(2*trunc+1);
+    gammaFE(k)=gamma+4*(Eeta4+(E2/2)^2)*(2*rD-rD^2)+8*pi*Q/(2*trunc+1);
     
     MSE(k) = 2*Q*h+betaFE(k)*n+alphaFE(k)*n^2+gammaFE(k);
 end
+
+plot(MSE)
 
 end
 
@@ -214,4 +217,3 @@ beta=4*Eeta4;
 gamma=8*Eeta2*V+alpha/2-2*Eeta4;
 
 end
-%FScategory:FMvol
