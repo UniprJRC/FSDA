@@ -15,10 +15,10 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %       automatically be excluded from the computations.
 %    b0:        Initial estimate of beta. Vector. Vector containing initial
 %               estimate of beta (generally an S estimate with high
-%               breakdown point (e.g. 0.5)
+%               breakdown point (e.g. 0.5).
 % auxscale:     scale estimate. Scalar.
 %               Scalar containing estimate of the scale (generally an S
-%               estimate with high breakdown point (e.g. .5)
+%               estimate with high breakdown point (e.g. .5)).
 %
 %  Optional input arguments:
 %
@@ -38,9 +38,9 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %                 Example - 'eff',0.99
 %                 Data Types - double
 %
-%     effshape : locacation or scale effiicency. dummy scalar.
+%     effshape : location or scale efficiency. dummy scalar.
 %                If effshape=1 efficiency refers to shape
-%                efficiency else (default) efficiency refers to location
+%                efficiency, else (default) efficiency refers to location.
 %                 Example - 'effshape',1
 %                 Data Types - double
 %
@@ -66,7 +66,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals.
-%               Possible values are
+%               Possible values are:
 %               'bisquare';
 %               'optimal';
 %               'hyperbolic';
@@ -85,24 +85,24 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               See PDrho.m and PDpsi.m.
 %               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
 %               See ASrho.m and ASpsi.m.
-%               The default is bisquare
+%               The default is bisquare.
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - char
 %
 % rhofuncparam: Additional parameters for the specified rho function.
-%               Scalar or vector or empty  value.
+%               Scalar or vector or empty value.
 %               For hyperbolic rho function it is possible to set up the
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
 %               a, b and c (the default values are a=2, b=4, c=8). For the
-%               other rho functions (Tuhey, PD and optimal) it is an empty
+%               other rho functions (Tuhey, PD and optimal), it is an empty
 %               value.
 %                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
-%               true no check is performed on matrix y and matrix X. Notice
-%               that y and X are left unchanged. In other words the
+%               true, no check is performed on matrix y and matrix X. Notice
+%               that y and X are left unchanged. In other words, the
 %               additional column of ones for the intercept is not added.
 %               As default nocheck=false.
 %               Example - 'nocheck',true
@@ -112,7 +112,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               If plots = 1, generates a plot with the robust residuals
 %               against index number. The confidence level used to draw the
 %               confidence bands for the residuals is given by the input
-%               option conflev. If conflev is not specified a nominal 0.975
+%               option conflev. If conflev is not specified, a nominal 0.975
 %               confidence interval will be used.
 %                 Example - 'plots',0
 %                 Data Types - single | double
@@ -128,18 +128,18 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %      out :     A structure containing the following fields
 %
 %       out.beta  = p x 1 vector. Estimate of beta coefficients after
-%                   refsteps refining steps
+%                   refsteps refining steps.
 %   out.residuals = n x 1 vector containing the estimates of the robust
-%                   scaled residuals
+%                   scaled residuals.
 %   out.outliers  = A vector containing the list of the units declared as
 %                   outliers using confidence level specified in input
-%                   scalar conflev
-%   out.conflev   = Confidence level that was used to declare outliers
-%   out.weights   = n x 1 vector. Weights assigned to each observation
+%                   scalar conflev.
+%   out.conflev   = Confidence level that was used to declare outliers.
+%   out.weights   = n x 1 vector. Weights assigned to each observation.
 %     out.rhofunc = string identifying the rho function which has been
 %                   used.
 % out.rhofuncparam= vector which contains the additional parameters
-%                   for the specified rho function which have been
+%                   for the specified rho function that have been
 %                   used. For hyperbolic rho function the value of
 %                   k =sup CVC. For Hampel rho function the parameters
 %                   a, b and c. This field is empty if rhofunc is not
@@ -218,7 +218,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
     % Weighting the residuals with a rho function.
     % Determine, e.g., an S estimate and extract the required arguments for the MM estimate.
     % This time use a Tukey biweight for S estimation and HA rho function
-    % for MM loop
+    % for MM loop.
     n=200;
     p=3;
     state1=123456;
@@ -235,7 +235,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 
 %{
     % Comparison between direct call to MMreg and call to Sreg and MMregcore.
-    % In this example two different rho functions are used for S and MM
+    % In this example, two different rho functions are used for S and MM.
     n=30;
     p=3;
     randn('state', 16);
@@ -311,7 +311,7 @@ end
 eff     = options.eff;      % nominal efficiency
 effshape= options.effshape; % nominal efficiency refers to shape or location
 refsteps= options.refsteps; % maximum refining iterations
-reftol  = options.reftol;   % tolerance for refining iterations covergence
+reftol  = options.reftol;   % tolerance for refining iterations convergence
 rhofunc = options.rhofunc;  % String which specifies the function to use to weight the residuals
 
 psifunc=struct;
@@ -494,8 +494,8 @@ while (iter <= refsteps) && (crit > reftol)
         r1(tmp) = epsf;
     end
 
-    % w is the weight vector \psi(x)/x Each observations receives a
-    % weight. Units associated to outliers tend to have 0 weight
+    % w is the weight vector \psi(x)/x, each observations receives a
+    % weight. Units associated to outliers tend to have 0 weight.
 
     % OLD INSTRUCTION
     % w=TBwei(r1,c);
@@ -527,7 +527,7 @@ while (iter <= refsteps) && (crit > reftol)
         end
     end
     % Every column of matrix X and vector y is multiplied by the sqrt root of the n x 1
-    % weight vector w, then weighted regression is performed
+    % weight vector w, then weighted regression is performed.
     w1=sqrt(w);
     Xw=bsxfun(@times,X,w1);
     Yw=y.*w1;
@@ -548,7 +548,7 @@ residuals=(y-X*b2)/auxscale;
 out.residuals =residuals ;
 
 % Store in output structure the outliers found with confidence level conflev
-% which has been usedto declared the outliers
+% which has been used to declared the outliers.
 conflev = options.conflev;
 
 seq = 1:n;
@@ -556,10 +556,10 @@ out.outliers = seq(abs(residuals) > sqrt(chi2inv(conflev,1)) );
 out.conflev = conflev;
 
 out.rhofunc=rhofunc;
-% In case of Hampel or hyperbolic tangent estimator store the additional
-% parameters which have been used
-% For Hampel store a vector of length 3 containing parameters a, b and c
-% For hyperbolic store the value of k= sup CVC
+% In case of Hampel or hyperbolic tangent estimator, store the additional
+% parameters which have been used.
+% For Hampel, store a vector of length 3 containing parameters a, b and c.
+% For hyperbolic, store the value of k= sup CVC.
 out.rhofuncparam=rhofuncparam;
 
 

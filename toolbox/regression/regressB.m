@@ -41,7 +41,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               positive definite matrix.
 %               It can be interpreted as X0'X0 where X0 is a n0 x p
 %               matrix coming from previous experiments (assuming that the
-%               intercept is included in the model)
+%               intercept is included in the model).
 %
 %               The prior distribution of $\tau_0$ is a gamma distribution with
 %               parameters $a_0$ and $b_0$, that is:
@@ -68,11 +68,11 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %      bsb :   units forming subset. Vector.
 %                m x 1 vector.
 %               The default value of bsb is 1:n1, that is all n1 units are
-%               used to compute beta1
+%               used to compute beta1.
 %               Example - 'bsb',[3 5]
 %               Data Types - double
 %               REMARK: if bsb='' (empty value) just prior information is
-%               used
+%               used.
 %
 %      c  :    it can be used to control the prior information
 %               about beta. Scalar.
@@ -109,7 +109,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               of input option conflev.
 %               3) posterior odds for $\beta_j=0$.
 %               4) posterior model probability of the model which excludes
-%               variable j
+%               variable j.s
 %               Example - 'stats',1
 %               Data Types - double
 %
@@ -119,14 +119,14 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               This input option is used just if input
 %               stats=1. The default value of conflev is [0.95 0.99] that
 %               is 95 per cent and 99 per cent HPDI confidence intervals
-%               are computed
+%               are computed.
 %               Example - 'conflev',[0.99 0.999]
 %               Data Types - double
 %
 %  nocheck:   Check input arguments. Boolean.
 %               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
+%               unchanged. In other words, the additional column of ones for
 %               the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
@@ -136,7 +136,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %         out:   structure which contains the following fields
 %
 %   out.beta1=    p x 1 vector containing posterior mean (conditional on
-%               $\tau_0$) of $\beta$ (regression coefficents)
+%               $\tau_0$) of $\beta$ (regression coefficients)
 %               $ \beta_1 = (c \times R + X'X)^{-1} (c \times R \times \beta_0 + X'y)$
 %   out.a1    = shape parameter of the posterior gamma distribution of
 %               $\tau$ ($\sigma^2$). Scalar.
@@ -158,7 +158,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               transformed respectively into Xm'Xm and Xm'ym and m where
 %               Xm=X(bsb,:), ym=y(bsb) and m=length(bsb), therefore all the
 %               previous quantities are estimated just using the units
-%               forming subset
+%               forming subset.
 %   out.tau1  = posterior estimate of $\tau$. Scalar.
 %               $\tau_1$ is obtained as $a_1/b_1$
 %  out.covbeta1=    p x p matrix containing covariance matrix
@@ -172,7 +172,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               Remember that if $X\sim IG(a,b)$, then  $E(X)=b/(a-1)$.
 %    out.res =   n1-times-2 matrix.
 %               1st column = raw residuals
-%               res(i,1) is computed as y(i) - X(i,:)*beta1 where beta1 is
+%               res(i,1) is computed as y(i) - X(i,:)*beta1, where beta1 is
 %               computed using the units forming subset.
 %               In the Bayesian approach they are the posterior means of
 %               the $\epsilon_i$ and can be interpreted as point estimates of
@@ -186,7 +186,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               hii = X(i,:)* (c*R + Xm'*Xm)^{-1} * X(i,:)'.
 %
 %       The additional output which follows is produced just if input
-%       scalar stats is equal 1
+%       scalar stats is equal 1.
 %
 %  out.beta1HPD =   p-by-2*length(conflev) matrix HPDI of \hat \beta.
 %               (HPDI stands for Highest Posterior Density Interval)
@@ -205,7 +205,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               with conflev(end).
 %               2*length(conflev) element (last element) = upper bound of
 %               HPDI associated with conflev(end).
-%               Remark: confidence levels are based on the Gamma distribution
+%               Remark: confidence levels are based on the Gamma distribution.
 % out.sigma21HPD =   1-by-2*length(conflev) matrix HPDI of $\hat \sigma^2_1$.
 %               1st element =lower bound of HPDI associated with conflev(1).
 %               2st element =upper bound of HPDI associated with conflev(1).
@@ -217,22 +217,22 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               Remark: confidence levels are based on the inverse-gamma distribution
 %    out.Bpval =   p-by-1 vector containing Bayesian p-values.
 %               p-value = P(|t| > | \hat \beta /se(\hat beta) |)
-%               = prob. of beta different from 0
+%               = prob. of beta different from 0.
 %  out.postodds = p-by-1 vector which contains posterior odds for
 %               betaj=0.
-%               For example the posterior odd of betaj=0 is p(y| model
+%               For example, the posterior odd of betaj=0 is p(y| model
 %               which contains all expl variables except the one associated
 %               with betaj) divided by p(y| model which contains all expl
 %               variables).
 %               Warning: postodds can be computed just if n1>=p
-% out.modelprob =   p-by-1 vector which contains  posterior model probability
+% out.modelprob =   p-by-1 vector which contains posterior model probability
 %               of the model which excludes variable j.
-%               For example if modelprob(j)= 0.28, that is if the
+%               For example, if modelprob(j)= 0.28, that is if the
 %               probability of the model which does not contain variable j
 %               is equal to 0.28, it means that there is a 28 per cent
 %               chance that $\beta_j=0$ and a 72 per cent chance that it is
 %               not.
-%               Warning: modelprob can be computed just if n1>=p
+%               Warning: modelprob can be computed just if n1>=p.
 %
 %
 %  More About:
@@ -249,7 +249,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %     \]
 %     The mean  (for $a>1$) is $b/(a-1)$ and the variance (for $a>2$) is $\frac{b^2}{(a-1)^2(a-2)}$.
 %
-%     With the above parameterizations if $X\sim G(a,b)$, then $Y=1/X$  has
+%     With the above parameterizations if $X\sim G(a,b)$, then $Y=1/X$ has
 %     an $IG(a, b)$.
 %
 %     The posterior distribution of
@@ -261,7 +261,16 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %          &=&   (R+ X^TX)^{-1} (R \beta_0 + X^TX \hat \beta) \\
 %          &=&   (I-A) \beta_0 + A \hat \beta,
 %     \end{eqnarray*}
-%     with $A= (R+ X^TX)^{-1} X^TX$. This last expression shows that the posterior estimate $\hat \beta_1$ is a matrix weighted average of the prior mean $\beta_0$ and the classical OLS estimate  $\hat \beta$, with weights $I-A$ and $A$. If prior information is strong elements of $R$ will be large, and $A$ will be small, so that the posterior mean gives most weight to the prior mean. In the classical approach these weights are fixed, while with the forward search technique as the subset size grows, the weight assigned to A becomes stronger and stronger, so we can dynamically see how the estimate changes as the effect of the prior becomes less important.
+%     with $A= (R+ X^TX)^{-1} X^TX$. This last expression shows that the 
+%     posterior estimate $\hat \beta_1$ is a matrix weighted average of 
+%     the prior mean $\beta_0$ and the classical OLS estimate  $\hat \beta$, 
+%     with weights $I-A$ and $A$. If prior information is strong, elements 
+%     of $R$ will be large, and $A$ will be small, so that the posterior mean 
+%     gives most weight to the prior mean. In the classical approach these weights 
+%     are fixed, while with the forward search technique as the subset size grows, 
+%     the weight assigned to A becomes stronger and stronger, so we can 
+%     dynamically see how the estimate changes as the effect of the prior 
+%     becomes less important.
 %
 %     The posterior distribution of $\tau$ is $G(a_1, b_1)$ where
 %     \begin{equation}\label{a1}
@@ -472,15 +481,16 @@ beta1=cRXXinv*(c*R*beta0+Xbsb'*ybsb); %#ok<MINV>
 a1 = 0.5 *(c*n0 + nbsb -p);
 
 % Remark: notice that if bsb is empty 
-% beta1=beta0, that is posterior beta is equal to prior beta
+% beta1=beta0, that is, posterior beta is equal to prior beta
 % and -beta1'*R*beta0 +beta0'*R*beta0=0 
 b1 = 0.5 * ( c*(n0-p) / tau0 + ((ybsb-Xbsb*beta1)'*ybsb -beta1'*R*beta0) +beta0'*R*beta0 );
 
 % Notation is as follows:
 % tau1 = posterior estimate of $\tau$ (mean of the posterior distribution of
-%        $\tau$). Post distrib of $\tau$ is  $\tau_1 \sim G(a_1, b_1)$
+%        $\tau$). Posterior distribution of $\tau$ is  $\tau_1 \sim G(a_1, b_1)$.
 % sigma21 = posterior estimate of $\sigma^2$ (mean of the posterior distribution of
-%        $\sigma^2$) Post distrib of $\tau$ is  $\tau_1 \sim IG(a_1, b_1)$
+%        $\sigma^2$). Posterior distribution of $\tau$ is  $\tau_1 \sim IG(a_1,
+%        b_1)$.
 
 % tau1 = E[G(a_1, b_1)]
 tau1=a1/b1;  % posterior estimate of $\tau$
@@ -506,7 +516,7 @@ if nbsb<n1
     % hi = X(i,:)* (c*R + Xbsb'*Xbsb)^{-1} * X(i,:)'
     % with i \not in bsb
     hi = sum((Xncl*cRXXinv).*Xncl,2);   %#ok<MINV>
-    % Calulation of global corr that depends on (n0+nbsb; n0+n1) for the
+    % Calculation of global corr that depends on (n0+nbsb; n0+n1) for the
     % correction of the residuals of the observations not used for the
     % fit
     aco=norminv(0.5*(1+(n0+nbsb)/(n0+n1)));
@@ -536,7 +546,7 @@ if stats==1 && nbsb>0
     conflev=options.conflev;
     conflev=1-(1-conflev)/2;
     % Tinvcdf = required quantiles of T distribution
-    % consider just upper quantiles due to simmetry
+    % consider just upper quantiles due to symmetry
     Tinvcdf=tinv(conflev,n0nbsb);
     % IGinvcdf = required quantiles of Inverse Gamma distribution
     IGinvcdf=inversegaminv([1-conflev conflev],a1,b1);
@@ -577,13 +587,13 @@ if stats==1 && nbsb>0
     v1s12 = n0*s02 + df*s2 + deltab'* ((Rinv + inv(XXbsb))\deltab);
     % logcj = log of (cj) see equation (3.35), p. 41 of Koop (2004)
     logcj=gammaln(.5*n0nbsb) + .5*n0*log(n0*s02)- gammaln(.5*n0) -.5*nbsb*log(pi);
-    % lmarglik = log of the marginal likelihood for the full modell
+    % lmarglik = log of the marginal likelihood for the full model
     % lmarglik = log (y|full model which contains all expl variables)
     lmarglik=logcj + .5*log(det(cRXX1inv)/det(Rinv)) - .5*n0nbsb*log(v1s12);
     
-    if n1>=p
+    if n1>=p 
         % postodds = vector which contains posterior odds for betaj=0
-        % For example the posteriorodd of beta0=0 is p(y| model which contains
+        % For example the posterior odd of beta0=0 is p(y| model which contains
         % all expl variables except the one associated with beta0) divided by
         % p(y| model which contains all expl variables)
         postodds=zeros(k,1);
@@ -606,14 +616,14 @@ if stats==1 && nbsb>0
             % lmarglik = log (y|model which does not contain variable j)
             lmarglikj=logcj + .5*log(det(cRXX1inv)/det(Rinvj)) - .5*n0nbsb*log(v1s12);
             postodds(j)=exp(lmarglikj-lmarglik);
-            % Remark: The noninformative choice, p(M_1)=p(M_2)=0.5 is commonly made
-            % where  p(M_1) is the model without variable j and p(M_2) is the
-            % full model with all the explanatory variables
+            % Remark: The non informative choice, p(M_1)=p(M_2)=0.5 is commonly made
+            % where p(M_1) is the model without variable j and p(M_2) is the
+            % full model with all the explanatory variables.
         end
         
         % Remark: in order to obtain the posterior model probabilities for each
-        % restricted model it is enough to do the following calculation
-        % For example if modelprob(j)= 0.28, that is if the probability of the
+        % restricted model it is enough to do the following calculation.
+        % For example, if modelprob(j)= 0.28, that is if the probability of the
         % model which does not contain variable j is equal to 0.28, it means
         % that there is a 28% chance that beta_j=0 and a 72% chance that it is
         % not.

@@ -1,5 +1,5 @@
 function out=RobCov(X,scaledres,scaleest,varargin)
-%robCov computes covariance matrix of robust regression coefficients
+%RobCov computes covariance matrix of robust regression coefficients
 %
 %<a href="matlab: docsearchFS('RobCov')">Link to the help function</a>
 %
@@ -50,7 +50,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %
 %      eff     : nominal efficiency. Scalar.
 %                Scalar defining nominal efficiency (i.e. a number between
-%                 0.5 and 0.99). The default value is 0.95
+%                 0.5 and 0.99). The default value is 0.95.
 %                 Asymptotic nominal efficiency is:
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',0.99
@@ -58,20 +58,20 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %
 %         bdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers
-%               the algorithm should resist. In this case any value greater
-%               than 0 but smaller or equal than 0.5 will do fine.
+%               the algorithm should resist. In this case, any value greater
+%               than 0, but smaller or equal to 0.5 will do fine.
 %               Note that given bdp nominal
 %               efficiency is automatically determined.
 %                 Example - 'bdp',0.4
 %                 Data Types - double
 %               REMARK: just one between bdp and eff must be specified. If
 %               both of them are specified an error is produced. If both of
-%               them are not specified the defulat is tu use the tuning
+%               them are not specified, the default is to use the tuning
 %               constant associated to a nominal efficiency of 0.95.
 %
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals.
-%               Possible values are
+%               Possible values are:
 %               'bisquare'
 %               'optimal'
 %               'hyperbolic'
@@ -88,7 +88,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               See PDrho.m and PDpsi.m.
 %               'AS' uses  Andrews' sine $\rho$ and $\psi$ functions.
 %               See ASrho.m and ASpsi.m.
-%               The default is bisquare
+%               The default is bisquare.
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - double
 %
@@ -97,7 +97,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               For hyperbolic rho function it is possible to set up the
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
-%               a, b and c (the default values are a=2, b=4, c=8)
+%               a, b and c (the default values are a=2, b=4, c=8).
 %                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %  Output:
@@ -116,7 +116,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \[
 %                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{[\sum_{i=1}^n \psi'(r_i/\hat \sigma)]^2}
 %                \]
-%  out.covrob1 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
+%  out.covrob1 =  p-times-p (if intercept is true, else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob1 uses
 %               equation (7.81) of p. 171 of Huber and Ronchetti (2009)
@@ -129,9 +129,9 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                   \left[ \sum_{i=1}^n \psi'(r_i/\hat \sigma)/n \right]^2}=
 %                   1+[CV(\psi')]^2  p/n $. The notation $CV(\psi')$ stands
 %                   for the coefficient of variation of $\psi'$, where
-%                   $\psi$ and $\psi'$ are, respectively,  the first and
+%                   $\psi$ and $\psi'$ are, respectively, the first and
 %                   second derivatives of the $\rho$ function.
-%  out.covrob2 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
+%  out.covrob2 =  p-times-p (if intercept is true, else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob2 uses
 %               equation (7.81) of p. 171 of Huber and Ronchetti (2009)
@@ -140,7 +140,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \[
 %                 \mbox{covrob2} =  K^2  \hat v  (X' X)^{-1};
 %                \]
-%  out.covrob3 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
+%  out.covrob3 =  p-times-p (if intercept is true, else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob uses
 %               equation (7.82) of p. 171 of Huber and Ronchetti (2009).
@@ -150,7 +150,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                 \frac{\sum_{i=1}^n \psi (r_i/\hat \sigma)^2}{\sum_{i=1}^n
 %                 \psi'(r_i/\hat \sigma)} (X' W X)^{-1};
 %                \]
-%  out.covrob4 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
+%  out.covrob4 =  p-times-p (if intercept is true, else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob4 uses
 %               equation (7.83) of p. 171 of of Huber and Ronchetti (2009).
@@ -368,7 +368,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
     disp('--------')
     disp('covrobc'); disp(out.covrobc)
 
-    % plot X and y and add LS and robust regression line
+    % plot X and y and add LS and robust regression line.
     plot(X,y,'o')
     xlabel('X')
     ylabel('y')
@@ -383,28 +383,28 @@ function out=RobCov(X,scaledres,scaleest,varargin)
    
 %% Beginning of code
 
-% rho (psi) function which has to be used to weight the residuals
+% rho (psi) function which has to be used to weight the residuals.
 rhofuncdef='bisquare';
 %rhofuncdef='optimal';
 
 bdpdef='';
 effdef='';
-% store default values in the structure options
+% store default values in the structure options.
 options=struct('intercept',true,'rhofunc',rhofuncdef,'rhofuncparam','','bdp',bdpdef,'eff',effdef);
 
-% check user options and update structure options
+% check user options and update structure options.
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
+    % Check if number of supplied options is valid.
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:RobCov:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    % Check if user options are valid options
+    % Check if user options are valid options.
     aux.chkoptions(options,UserOptions)
 end
 
-% Write in structure 'options' the options chosen by the user
+% Write in structure 'options' the options chosen by the user.
 if nargin > 3
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -422,7 +422,7 @@ end
 
 bdp = options.bdp;              % break down point
 eff = options.eff;              % nominal efficiency
-% Remark: one of them must be empty
+% Remark: one of them must be empty.
 
 if  ~isempty(bdp) && ~isempty(eff)
     error('FSDA:RobCov:WrongInputOpt','Both bdp and eff cannot be specified')
@@ -432,10 +432,10 @@ if  isempty(bdp) && isempty(eff)
     eff=0.95;
 end
 
-rhofunc=options.rhofunc;        % String which specifies the function to use to weight the residuals
+rhofunc=options.rhofunc;        % String that specifies the function to use to weight the residuals.
 
 
-% In this case just bdp has been specified
+% In this case, just bdp has been specified.
 if  ~isempty(bdp)
     if strcmp(rhofunc,'bisquare')
         c=TBbdp(bdp,1);
@@ -444,11 +444,11 @@ if  ~isempty(bdp)
     elseif strcmp(rhofunc,'optimal')
         % Optimal rho function is strictly increasing on [0 c] and constant [c \infty)
         % E(\rho) = kc = sup(rho)*bdp =  being kc the K of
-        % Rousseeuw and Leroy (1987)
+        % Rousseeuw and Leroy (1987).
         
         % Compute tuning constant associated to the requested breakdown
-        % point
-        % For bdp =0.5 and optimal rho function c1=1.2139
+        % point.
+        % For bdp =0.5 and optimal rho function c1=1.2139.
         c=OPTbdp(bdp,1); 
         psifunc='OPT';
         
@@ -460,7 +460,7 @@ if  ~isempty(bdp)
             kdef=options.rhofuncparam;
         end
         
-        % Use (if possible) precalculated values of c,A,b,d and kc
+        % Use (if possible) precalculated values of c,A,b,d and kc.
         if kdef == 4 && bdp==0.5
             c =2.158325031399727;
             A =1.627074124322223e-04;
@@ -486,7 +486,7 @@ if  ~isempty(bdp)
         else
             
             % Compute tuning constant associated to the requested breakdown
-            % point
+            % point.
             [c,A,B,d]=HYPbdp(bdp,1,kdef,-1);
         end
         
@@ -504,7 +504,7 @@ if  ~isempty(bdp)
         end
         
         % Compute tuning constant associated to the requested breakdown
-        % point
+        % point.
         c=HAbdp(bdp,1,abc);
         
         
@@ -512,7 +512,7 @@ if  ~isempty(bdp)
         psifunc='HA';
 
     elseif strcmp(rhofunc,'mdpd')
-        % minimum density power divergence estimator
+        % minimum density power divergence estimator.
 
         c=PDbdp(bdp);
         psifunc='PD';
@@ -528,7 +528,7 @@ if  ~isempty(bdp)
     end
 end
 
-% In this case just efficiency has been specified
+% In this case, just efficiency has been specified.
 if  ~isempty(eff)
     if strcmp(rhofunc,'bisquare')
         
@@ -536,8 +536,8 @@ if  ~isempty(eff)
         psifunc='TB';
         
     elseif strcmp(rhofunc,'optimal')
-        % Compute tuning constant associated to the requested nominal efficiency
-        % c = consistency factor for a given value of efficiency
+        % Compute tuning constant associated to the requested nominal efficiency.
+        % c = consistency factor for a given value of efficiency.
         c=OPTeff(eff,1); 
         psifunc='OPT';
         
@@ -584,8 +584,8 @@ if  ~isempty(eff)
             
         else
             
-            % Compute tuning constant associated to the requested nominal efficiency
-            % c2 = consistency factor for a given value of efficiency
+            % Compute tuning constant associated to the requested nominal efficiency.
+            % c2 = consistency factor for a given value of efficiency.
             [c2,A2,B2,d2]=HYPeff(eff,1,kdef);
         end
         c=[c2,kdef,A2,B2,d2];
@@ -600,15 +600,15 @@ if  ~isempty(eff)
         end
         
         
-        % Compute tuning constant associated to the requested nominal efficiency
-        % c2 = consistency factor for a given value of efficiency
+        % Compute tuning constant associated to the requested nominal efficiency.
+        % c2 = consistency factor for a given value of efficiency.
         c=HAeff(eff,1,abc);
         
         c=[c,abc];
         psifunc='HA';
 
     elseif strcmp(rhofunc,'mdpd')
-        % minimum density power divergence estimator
+        % minimum density power divergence estimator.
 
         c=PDeff(eff);
         psifunc='PD';
@@ -643,7 +643,7 @@ XX=X'*X;
 % Epsi2=(psi'*psi)/n=  sumpsi2 /n ;
 % EXX=(1/n)*XX;
 % Edpsi=(1/n)*sum(psider);
-% % cov2s should be the one producing traditional standard errors
+% cov2s should be the one producing traditional standard errors;
 % covrob=(1/n)*scaleest^2*Epsi2*inv(EXX)/Edpsi^2;
 sumpsi2=psi'*psi;
 sumpsider=sum(psider);

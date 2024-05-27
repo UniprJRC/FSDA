@@ -1,5 +1,5 @@
 function [outSC]=ScoreYJmle(y,X,varargin)
-%ScoreYJmle computes the likelihood ratio test fof H_0=lambdaP=lambdaP0 and lambdaN=lambdaN0
+%ScoreYJmle computes the likelihood ratio test for H_0=lambdaP=lambdaP0 and lambdaN=lambdaN0
 %
 %
 %<a href="matlab: docsearchFS('ScoreYJmle')">Link to the help function</a>
@@ -9,12 +9,12 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 % by Yeo and Johnson (2000) by imposing the smoothness condition that the
 % second derivative of zYJ(λ) with respect to y be smooth at y = 0. However
 % some authors, for example Weisberg (2005), query the physical
-% interpretability of this constraint which is oftern violated in data
+% interpretability of this constraint which is often violated in data
 % analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
 % Yeo-Johnson transformation to allow two values of the transformations
 % parameter: λN for negative observations and λP for non-negative ones.
 % $\lambda$ is the transformation parameter (scalar) for all the
-% obseravtions (positive adn negative).
+% observations (positive and negative).
 % $\lambda_P$ is the transformation parameter for positive observations.
 % $\lambda_N$ is the transformation parameter for negative observations.
 % SSR is the residual sum of squares of the model which regresses
@@ -23,7 +23,7 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 % $z(\hat λ_{MLE})$ against $X$ where $\lambda_{MLE}$ is the vector
 % of length 2 which contains the MLE of $\lambda_P$ and $\lambda_N$
 % ScoreYJmle computes Num/Den where Num and Den are defined as follows:
-% Num=(SSR-SSF)/2  and Den=SSF/(n-p-2) where p is the number of columns of
+% Num=(SSR-SSF)/2 and Den=SSF/(n-p-2), where p is the number of columns of
 % matrix X (including intercept).
 %
 %
@@ -32,8 +32,8 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. A vector with n elements that
-%               contains the response
-%               variable.  It can be either a row or a column vector.
+%               contains the response variable. 
+%               It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
@@ -56,27 +56,27 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 %               values of the transformation parameter it is necessary to
 %               compute the score test. Default value of lambda is la=[-1
 %               -0.5 0 0.5 1]; that is the five most common values of
-%               lambda
+%               lambda.
 %               Example - 'la',[0 0.5]
 %               Data Types - double
 %
 %    usefmin :  use solver to find MLE of lambda. Boolean or struct.
-%               if usefmin is true or usefmin is a struct it is
+%               If usefmin is true or usefmin is a struct, it is
 %               possible to use MATLAB solvers fminsearch or fminunc to
 %               find the maximum likelihood estimates of $\lambda_P$ and
-%               $\lambda_N$. The default value of usefmin is false that is
-%               solver is not used and the likelihood is evaluated at the
+%               $\lambda_N$. The default value of usefmin is false which
+%               means the solver is not used, and the likelihood is evaluated at the
 %               grid of points with steps 0.01.
-%               If usefmin is a structure it may contain the following
+%               If usefmin is a structure, it may contain the following
 %               fields:
 %               usefmin.MaxIter = Maximum number of iterations (default is 1000).
-%               usefmin.TolX   = Termination tolerance for the parameters
+%               usefmin.TolX = Termination tolerance for the parameters
 %                   (default is 1e-7).
 %               usefmin.solver = name of the solver. Possible values are
 %                   'fminsearch' (default) and 'fminunc'. fminunc needs the
 %                   optimization toolbox.
 %               usefmin.displayLevel = amount of information displayed by
-%                   the algorithm. possible values are 'off' (displays no
+%                   the algorithm. Possible values are 'off' (displays no
 %                   information, this is the default), 'final' (displays
 %                   just the final output) and 'iter' (displays iterative
 %                   output to the command window).
@@ -85,16 +85,16 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 %
 % sseReducedModel: sum of squares of residuals of reduced model. Vector.
 %               Vector with the same length of input vector lambda
-%               containing the sum of squares of residuals of the reduced
+%               containing the sum of squares of the residuals of the reduced
 %               model. The default value of sseReducedModel is an empty
-%               value that is this quantity is computed by this routine.
+%               value, that is this quantity is computed by this routine.
 %               Example - 'sseReducedModel',[20.2 30.3 12.8]
 %               Data Types - empty value or double
 %
 %       nocheck : Check input arguments. Boolean.
 %               If nocheck is equal to true no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
+%                 unchanged. In other words, the additional column of ones
 %                 for the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
@@ -114,7 +114,7 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 %                            estimate of $\lambda_P$ and $\lambda_N$
 %                            for each value of lambda specified in optional
 %                            input parameter la. First column refers to
-%                            $\lambda_P$ and second column to $\lambda_N$
+%                            $\lambda_P$ and second column to $\lambda_N$.
 %
 % See also: FSRfan, Score, ScoreYJ, ScoreYJpn,
 %
@@ -151,7 +151,7 @@ function [outSC]=ScoreYJmle(y,X,varargin)
     n=100;
     yori=randn(n,1);
     % Transform the value to find out if we can recover the true value of
-    % the transformation parameter
+    % the transformation parameter.
     la=0.5;
     ytra=normYJ(yori,[],la,'inverse',true);
     % Start the analysis
@@ -165,11 +165,11 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 %}
 
 %{
-    %% Ex in which positive and negative observations require different lambdas.
+    %% Example in which positive and negative observations require different lambda.
     rng(1000)
     n=100;
     y=randn(n,1);
-    % Transform in a different way positive and negative values
+    % Transform in a different way positive and negative values.
     lapos=0;
     ytrapos=normYJ(y(y>=0),[],lapos,'inverse',true);
     laneg=1;
@@ -210,15 +210,15 @@ if nargin>2
     
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
-    % Check if number of supplied options is valid
+    % Check if number of supplied options is valid.
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:ScoreYJmle:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    % Check if user options are valid options
+    % Check if user options are valid options.
     aux.chkoptions(options,UserOptions)
     
     
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the options chosen by the user.
     if nargin > 2
         for i=1:2:length(varargin)
             options.(varargin{i})=varargin{i+1};
@@ -256,12 +256,12 @@ SSeF = norm(residualsF)^2;
 
 %% Loop over the values of lambda_0
 
-%  LikRatio= vector of length  lla which contains the likelihood ratio test
-%  for the values of \lambda specified in vector la
+%  LikRatio= vector of length lla, that contains the likelihood ratio test
+%  for the values of \lambda specified in vector la.
 lla=length(la);
 LikRatio=NaN(lla,1);
 
-% Initialize things which are constant across the different values of lambda
+% Initialize things that are constant across the different values of lambda.
 nonnegs = y >= 0;
 negs = ~nonnegs;
 ynonnegs=y(nonnegs);
@@ -284,8 +284,8 @@ for i=1:lla
         q=lai*Glaminus1;
         twomlambdai=2-lai;
         
-        % Compute transformed values under the null hypotesis
-        % transformation for non negative values
+        % Compute transformed values under the null hypothesis
+        % transformation for non-negative values.
         if abs(lai)>1e-8  % if la is different from 0
             % vposlai=vpos.^lai;
             vposlai=exp(lai*logvpos);
@@ -308,10 +308,10 @@ for i=1:lla
             z(negs)=znegs;
         end
         
-        % Compute residual sum of squares for null (reduced) model
+        % Compute residual sum of squares for null (reduced) model.
         betaR=X\z;
         residualsR = z - X*betaR;
-        % Sum of squares of residuals
+        % Sum of squares of residuals.
         SSeR = norm(residualsR)^2;
     else
         SSeR=sseReducedModel(i);
@@ -324,9 +324,9 @@ for i=1:lla
     
 end
 
-% Store values of the score test inside structure outSC
+% Store values of the score test inside structure outSC.
 outSC.Score=LikRatio;
-% Store values of the MLE of lambda inside structure outSC
+% Store values of the MLE of lambda inside structure outSC.
 outSC.laMLE=LA.lahat;
 end
 %FScategory:REG-Transformations

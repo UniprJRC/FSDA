@@ -6,8 +6,8 @@ function [outSC]=Score(y,X,varargin)
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. A vector with n elements that
-%               contains the response
-%               variable.  It can be either a row or a column vector.
+%               contains the response variable.
+%               It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
@@ -26,26 +26,26 @@ function [outSC]=Score(y,X,varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
-%           la  :transformation parameter. Vector. It specifies for which values of the
+%           la : transformation parameter. Vector. It specifies for which values of the
 %                 transformation parameter it is necessary to compute the
 %                 score test.
 %                 Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
-%                 is the five most common values of lambda
+%                 is the five most common values of lambda.
 %               Example - 'la',[0 0.5]
 %               Data Types - double
 %
 %           Lik : likelihood for the augmented model. Boolean.
 %                   If true the value of the likelihood for the augmented
-%                   model will be produced
+%                   model will be produced,
 %                 else (default) only the value of the score test will be
-%                 given
+%                 given.
 %               Example - 'Lik',false
 %               Data Types - logical
 %
 %       nocheck : Check input arguments. Boolean.
 %               If nocheck is equal to true no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
+%                 unchanged. In other words, the additional column of ones
 %                 for the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
@@ -56,13 +56,13 @@ function [outSC]=Score(y,X,varargin)
 %
 %        outSC.Score    =    score test. Vector. Vector of length
 %                            length(lambda) which contains the value of the
-%                            score test for each value of lambda specfied
+%                            score test for each value of lambda specified
 %                            in optional input parameter la. If la is not
 %                            specified, the vector will be of length 5 and
 %                            contains the values of the score test for the
 %                            5 most common values of lambda.
 %        outSC.Lik      =    value of the likelihood. Scalar. This output
-%                           is produced only if input value Lik =1
+%                           is produced only if input value Lik=1.
 %
 % See also: FSRfan, ScoreYJ, ScoreYJpn, normBoxCox, normYJ
 %
@@ -88,7 +88,7 @@ function [outSC]=Score(y,X,varargin)
     XX=load('wool.txt');
     y=XX(:,end);
     X=XX(:,1:end-1);
-    % Score test using the five most common values of lambda
+    % Score test using the five most common values of lambda.
     [outSC]=Score(y,X);
     disp('Values of the score test')
     disp({'la=-1' 'la=-0.5' 'la=0' 'la=0.5' 'la=1'})
@@ -102,7 +102,7 @@ function [outSC]=Score(y,X,varargin)
     y=loyalty(:,4);
     X=loyalty(:,1:3);
     % la = vector containing the values of the transformation
-    % parameters which have to be tested
+    % parameters that have to be tested.
     la=[0.25 1/3 0.4 0.5];
     [outSc]=Score(y,X,'la',la,'intercept',false);
 %}
@@ -130,16 +130,16 @@ if coder.target('MATLAB')
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
+        % Check if number of supplied options is valid.
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:Score:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        % Check if user options are valid options
+        % Check if user options are valid options.
         aux.chkoptions(options,UserOptions)
     end
 end
 
-% Write in structure 'options' the options chosen by the user
+% Write in structure 'options' the options chosen by the user.
 if nargin > 2
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -151,19 +151,19 @@ end
 
 
 %  Sc= vector which contains the t test for constructed variables for the
-%  values of \lambda specified in vector la
+%  values of \lambda specified in vector la.
 lla=length(la);
 Sc=zeros(lla,1);
 
-% Lik is a vector which contains the likelihoods for diff. values of la
+% Lik is a vector which contains the likelihoods for diff. values of la.
 Lik=Sc;
 
-% Geometric mean of the observations
+% Geometric mean of the observations.
 logy=log(y);
 G=exp(sum(logy)/n);
 logG=log(G);
 
-% loop over the values of \lambda
+% loop over the values of \lambda.
 for i=1:lla
     lai=la(i);
     % Define transformed and constructed variable
@@ -184,30 +184,30 @@ for i=1:lla
         % w=(y.^la(i).*log(y)-(y.^la(i)-1)*(1/la(i)+log(G)))/(la(i)*G^(la(i)-1));
     end
     
-    % Define augmented X matrix
+    % Define augmented X matrix.
     Xw=[X w];
     [Q,R] = qr(Xw,0);
     beta = R\(Q'*z);
     residuals = z - Xw*beta;
-    % Sum of squares of residuals
+    % Sum of squares of residuals.
     sse = norm(residuals)^2;
-    % Compute t stat for constructed added variable
+    % Compute t stat for constructed added variable.
     ri = R\eye(p+1);
     xtxi = ri*ri';
     se = sqrt(diag(xtxi*sse/(n-p-1)));
     Sc(i) = -beta(end)/se(end);
     
     % Store the value of the likelihood for the model which also contains
-    % the constructed variable
+    % the constructed variable.
     if Likboo==true
         Lik(i)=-n*log(sse/n);
     end
 end
 
-% Store values of the score test inside structure outSC
+% Store values of the score test inside structure outSC.
 outSC.Score=Sc;
 
-% Store values of the likelihood inside structure outSC
+% Store values of the likelihood inside structure outSC.
 if Likboo==true
     outSC.Lik=Lik;
 else

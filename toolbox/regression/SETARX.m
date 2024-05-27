@@ -23,7 +23,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %               p = 0, the AR part is not present in the regimes, so an
 %               error is given in the case 'X' and 'Z' are empty and
 %               'intercept' is false.
-%               Data type - non negative integer.
+%               Data type - non-negative integer.
 %          d :  lag of the threshold variable $y_{(t-d)}$. Scalar. Data
 %               Data type - positive integer.
 %
@@ -73,7 +73,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %               intercept, so do not include a column of 1s in Z. Missing
 %               values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values
-%               will automatically be excluded from the computations. Data
+%               will automatically be excluded from the computations. 
 %               Example - 'Z',randn(n,k2)
 %               Data Types - double
 %
@@ -85,14 +85,14 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %       out : A structure with the results of the SETARX model estimation
 %               containing the following fields:
 %        out.regime1 =  A sub-substructure containing the results of the OLS estimation of the linear
-%                              regression model applyied to the data in
+%                              regression model applied to the data in
 %                              regime 1. The estimation is performed with
 %                              the function estregimeTAR.
-%                              Additional details are  in the description
+%                              Additional details are in the description
 %                              of the outputs in the output structure reg.
 %        out.regime2 =  A sub-substructure containing the results of the
 %                             OLS estimation of the linear
-%                              regression model applyied to the data in
+%                              regression model applied to the data in
 %                              regime 2. The estimation is performed with
 %                              the function estregimeTAR (see sections
 %                              'Outputs' and 'More about' of estregimeTAR).
@@ -120,11 +120,11 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %      out.resj_full =  Residuals of the SETARX model with observations
 %                       (rows) with missing or infinite
 %                       values reinserted as NaNs. This is to obtain the
-%                       same length of the initial input vector ydefined by
+%                       same length of the initial input vector defined by
 %                       the user.
 %
 %    reg : A structure with the results of the OLS estimation of
-%               the linear regression model (benchmark), contanining the following fields.
+%               the linear regression model (benchmark), containing the following fields.
 %         reg.beta =  Estimated parameters of the regression model. Vector.
 %                     See out.covar.
 %           reg.se =  Estimated heteroskedasticity-consistent (HC) standard
@@ -187,12 +187,12 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %                  values excluded.
 %       input.rmv_obs = Indices of removed observations/rows (because of
 %                   missings or infs). Scalar vector.
-%    input.y_full = Response y after adjustements by chkinputTAR BUT with
+%    input.y_full = Response y after adjustments by chkinputTAR BUT with
 %                   observations (rows) with missing or infinite values
 %                   included.
-%    input.X_full = Matrix X after adjustements by chkinputTAR BUT with
+%    input.X_full = Matrix X after adjustments by chkinputTAR BUT with
 %                 observations (rows) with missing or infinite values included.
-%   input.yd_full = Threshold variable after adjustements by chkinputTAR BUT
+%   input.yd_full = Threshold variable after adjustments by chkinputTAR BUT
 %                 with observations (rows) with
 %                 missing or infinite values included.
 %
@@ -223,17 +223,23 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %         \subsection{Estimation of SETAR models}
 %         \label{sec:2.1}
 %
-%         In general the value of the threshold $\gamma$ is unknown, so that
+%         In general, the value of the threshold $\gamma$ is unknown, so that
 %         the parameters to estimate become ${\boldsymbol{\theta}}_1=({\boldsymbol{\beta}}^{\prime}_1, {\bf\lambda}^{\prime}_1)^{\prime}$, ${\boldsymbol{\theta}}_2=({\boldsymbol{\beta}}^{\prime}_2,{\bf\lambda}^{\prime}_2)^{\prime}
 %         $, $\gamma$, $\sigma_{\varepsilon,1}$ and $\sigma_{\varepsilon,2}$.
 %
-%         Parameters can be estimated by sequential conditional least squares. For a fixed threshold $\gamma$ the observations may be divided into two samples $\{y_t |y_{t-d}\leq \gamma\}$ and $\{y_t |y_{t-d}> \gamma\}$: the data can be denoted respectively as $\mathbf{y}_j=(y_{ji_1},y_{ji_2},...,y_{ji_{N_j}})^{\prime}$ in regimes $j=1,2$, with $N_1$ and $N_2$ the regimes sample sizes and $N_1+N_2=N-\max(p,d)$.
+%         Parameters can be estimated by sequential conditional least squares. 
+%         For a fixed threshold $\gamma$ the observations may be divided into two samples 
+%         $\{y_t |y_{t-d}\leq \gamma\}$ and $\{y_t |y_{t-d}> \gamma\}$: 
+%         the data can be denoted respectively as 
+%         $\mathbf{y}_j=(y_{ji_1},y_{ji_2},...,y_{ji_{N_j}})^{\prime}$ in regimes $j=1,2$, 
+%         with $N_1$ and $N_2$ the regimes sample sizes and $N_1+N_2=N-\max(p,d)$.
 %
 %     Parameters ${\boldsymbol{\theta}}_1$ and ${\boldsymbol{\theta}}_2$ can be estimated by OLS as
 %     \begin{equation}\label{eqn:par}
 %     \hat{\boldsymbol{\theta}}_j=\left({\mathbf{X}^*_j}^{\prime}\mathbf{X}^*_j\right)^{-1}{\mathbf{X}^*_j}^{\prime}\mathbf{y}_j\,
 %     \end{equation}
-%       for $j=1,2$ where $\mathbf{X}^*_j=(\mathbf{X}_j,\mathbf{Z}_j)=(({\bf x}_{ji_1}^{\prime},...,{\bf x}_{ji_{N_j}}^{\prime})^{\prime},({\bf z}_{ji_1}^{\prime},...,{\bf z}_{ji_{N_j}}^{\prime})^{\prime})$ is the $(N_j \times (p+r))$ matrix of regressors for each regime. The variance estimates can be calculated as
+%       for $j=1,2$ where $\mathbf{X}^*_j=(\mathbf{X}_j,\mathbf{Z}_j)=(({\bf x}_{ji_1}^{\prime},...,{\bf x}_{ji_{N_j}}^{\prime})^{\prime},({\bf z}_{ji_1}^{\prime},...,{\bf z}_{ji_{N_j}}^{\prime})^{\prime})$ 
+%       is the $(N_j \times (p+r))$ matrix of regressors for each regime. The variance estimates can be calculated as
 %         $\hat{\sigma}_{\varepsilon,j}={\bf r}_j^{\prime}{\bf r}_j /(N_j - (p+r))$, with ${\bf r}_j={\bf y}_j-\mathbf{X}^*_j\hat{\boldsymbol{\theta}}_j$.
 %
 %     The least square estimate of $\gamma$ is obtained by minimizing the joint residual sum of
@@ -243,7 +249,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %     \end{equation}
 % over a set $\Gamma$ of allowable threshold values so that each
 % regime contains at least a given fraction $\varphi$ (ranging from
-% 0.05 to 0.3) of all observations
+% 0.05 to 0.3) of all observations.
 %
 %
 % See also: LTSts
@@ -291,7 +297,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %}
 
 %{
-    % Example 2: Estimation from simulated data of example 1 with an extra constant column as regressor.
+    % Example 2: Estimation from simulated data in example 1 with an extra constant column as regressor.
      n = 50;
     y = randn(n,1);
     X1 = randn(n,2);
@@ -521,7 +527,7 @@ sigmaj_2 = minRSSj/(regime1.n+regime2.n-regime1.k-regime2.k);
 
 
 % Reorder yjhat and resj using the index of original positions thrvar_ord.
-yjhat = yjhat(thrvar_ord); %%%%%%%%%%%%%%%%%%%%%%%% CHECK IF WORKS PROPERLY
+yjhat = yjhat(thrvar_ord); % CHECK IF WORKS PROPERLY
 resj = resj(thrvar_ord);
 
 

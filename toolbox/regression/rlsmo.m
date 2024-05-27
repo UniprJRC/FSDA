@@ -10,7 +10,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 %
 %  Required input arguments:
 %
-%    x   :      Predictor variable sorted. Vector.  Ordered abscissa values.
+%    x   :      Predictor variable sorted. Vector. Ordered abscissa values.
 %               Note that the x values are assumed non decreasing.
 %    y  :       Response variable. Vector. Response variable which has to
 %               be smoothed, specified as
@@ -22,7 +22,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 %
 %       w  : weights for the observations. Vector. Row or column vector of
 %           length n containing the weights associated to each
-%           observations. If w is not specified we assum $w=1$ for $i=1,
+%           observations. If w is not specified we assume $w=1$ for $i=1,
 %           2, \ldots, n$.
 %           Example - 1:n
 %           Data Types - double
@@ -36,7 +36,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 %           cross validation residual sum of squares is chosen. The
 %           smoothing procedure is called using the best value of cvspan
 %           and the smoothed values are found without cross validation.
-%           If span is not 0 but is a value in
+%           If span is not 0, but is a value in
 %           the interval (0, 1], the local regression have length n*span and
 %           the smoothed values are found without cross validation.
 %           Example - 0.4
@@ -46,12 +46,12 @@ function [smo,span]=rlsmo(x,y,w,span)
 %
 %         ysmo:  smoothed values. Vector. A vector with the same dimension
 %               of y containing smoothed values, that is the y values on
-%               the fitted curve. The smoothed values come from linear
+%               the fitted curve. The smoothed values come from
 %               local linear regressions whose length is specified by input
 %               parameter span.
 %         span: length of the local regressions. Scalar. Scalar in the
 %               interval [0, 1] which specifies the length of the local
-%               regressions which has been used. For example if span=0.3
+%               regressions which has been used. For example, if span=0.3
 %               approximately 30 per cent of consecutive observations are
 %               used in order to compute the local regressions.
 %
@@ -59,9 +59,9 @@ function [smo,span]=rlsmo(x,y,w,span)
 % More About:
 %
 % This function makes use of subroutine smth.
-% The sintax of $smth$ is $[smo] = smth(x,y,w,span,cross)$. $x$, $y$ and
+% The syntax of $smth$ is $[smo] = smth(x,y,w,span,cross)$. $x$, $y$ and
 % $w$ are 3 vectors of length $n$ containing respectively the $x$
-% coordinates, the $y$ coordinates and the weights. Input paramter $span$ is
+% coordinates, the $y$ coordinates and the weights. Input parameter $span$ is
 % a scalar in the interval (0 1] which defines the length of the elements
 % in the local regressions.
 % More precisely, if $span$ is in (0 1), the length of elements in the
@@ -71,7 +71,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 % 
 % Parameter $cross$ is a Boolean scalar. If it is set to true, it specifies
 % that, to compute the local regression centered on unit $i$, unit $i$ must
-% be deleted. Therefore for example, 
+% be deleted. Therefore, for example, 
 % [1] if $m$ is 3 and $cross$ is true, the
 % smoothed value for observation $i$ uses a local regression with $x$
 % coordinates $(x(i-1), x(i+1))$, $y$ coordinates $(y(i-1), y(i+1))$ and
@@ -85,11 +85,11 @@ function [smo,span]=rlsmo(x,y,w,span)
 % smoothed values for observation 1 uses a local regression based on
 % $(x(1), x(2))$, $(y(1), y(2))$, and  $(w(1), w(2))$ while the smoothed
 % value for observation $n$ uses a local regression based on $(x(n-1),
-% x(n))$, $(y(n-1), y(n))$, and  $(w(n-1), w(n))$.
+% x(n))$, $(y(n-1), y(n))$, and $(w(n-1), w(n))$.
 % 
 % [3] If $m=5$ and $cross$ is true, the smoothed value for observations $i$
 % uses a local regression based on observations $(i-2), (i-1), (i+1),
-% (i+2)$, for $i=3, \ldots, n-2$.  The smoothed values for observation 1
+% (i+2)$, for $i=3, \ldots, n-2$. The smoothed values for observation 1
 % uses observations 2 and 3, the smoothed value for observations 2 uses
 % observations 1, 3 and 4 ... 
 % [4] If $m$ is 5 and $cross$ is false, the
@@ -193,9 +193,9 @@ if cross==1
     for  k=1:6
         % [smo,rss]=smth(x,y,w,span,dof,n,cross);
         % disp(['k=' num2str(k)])
-        % Apply the smoothing procedure for a given value of cvpsan
+        % Apply the smoothing procedure for a given value of cvspan.
         % Note that smth is called with input parameter cross set to 1
-        % (that is cross validation is used to find smoothed values)
+        % (that is, cross validation is used to find smoothed values).
         [~,cvrss(k)]=smth(x,y,w,cvspan(k),1);
         
         if cvrss(k)<=cvmin
@@ -233,7 +233,7 @@ function [smo,rss,meay] = smth(x,y,w,span,cross)
 % coming from local regressions. Note that this vector is given in terms of
 % deviations from the mean 
 % rss = the vector of residual sum of squares or
-% cross validation residual sum of squares (if smth is call with input
+% cross validation residual sum of squares (if smth is called with input
 % parameter cross set to true). meay = the mean of the y values.
 
 % Get the dimensions of the input.
@@ -300,16 +300,16 @@ if span<1
         smo(end)=y(end-1);
     end
     
-    % Check the presence of NaN inside smo
-    % NaN are due to constant values of x over the span
+    % Check the presence of NaN inside smo,
+    % NaN are due to constant values of x over the span.
     NaNsmo=isnan(smo);
     
     % The smoothed values are simply equal to the weighted average of y over
-    % the span, if x is constant over the span
+    % the span, if x is constant over the span.
     if sum(NaNsmo)>0
         smo(NaNsmo)=sums(NaNsmo,4)./sums(NaNsmo,1);
     end
-    % Return smoothed values in terms of deviation from the overall mean of y
+    % Return smoothed values in terms of deviation from the overall mean of y.
     smo=smo-meay;
 else
     smo=smo-sums(:,4)./sums(:,1);

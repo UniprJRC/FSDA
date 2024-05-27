@@ -28,7 +28,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %
 %      eff     : nominal efficiency. Scalar.
 %                Scalar defining nominal efficiency (i.e. a number between
-%                 0.5 and 0.99). The default value is 0.95
+%                 0.5 and 0.99). The default value is 0.95.
 %                 Asymptotic nominal efficiency is:
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',0.99
@@ -36,7 +36,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %
 %     effshape : location or scale efficiency. dummy scalar.
 %                If effshape=1 efficiency refers to shape
-%                efficiency else (default) efficiency refers to location
+%                efficiency, else (default) efficiency refers to location.
 %                 Example - 'effshape',1
 %                 Data Types - double
 %
@@ -45,8 +45,8 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               InitialEst.beta =  v x 1 vector (estimate of the initial regression coefficients)
 %               InitialEst.scale = scalar (estimate of the scale parameter).
 %               If InitialEst is empty (default) or InitialEst.beta
-%               continas NaN values, program uses S estimators. In this
-%               last case it is possible to specify the options given in
+%               contains NaN values, program uses S estimators. In this
+%               last case, it is possible to specify the options given in
 %               function Sreg. 
 %               Example - 'InitialEst',[]
 %               Data Types - struct or empty value
@@ -61,8 +61,8 @@ function [out , varargout] = MMreg(y,X,varargin)
 %
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
-%               true no check is performed on matrix y and matrix X. Notice
-%               that y and X are left unchanged. In other words the
+%               true, no check is performed on matrix y and matrix X. Notice
+%               that y and X are left unchanged. In other words, the
 %               additional column of ones for the intercept is not added.
 %               As default nocheck=false.
 %               Example - 'nocheck',true
@@ -76,7 +76,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals.
-%               Possible values are
+%               Possible values are:
 %               'bisquare';
 %               'optimal';
 %               'hyperbolic';
@@ -105,7 +105,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               For hyperbolic rho function it is possible to set up the
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
-%               a, b and c (the default values are a=2, b=4, c=8)
+%               a, b and c (the default values are a=2, b=4, c=8).
 %                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %
@@ -116,16 +116,16 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               See function Sreg.m for more details on these options.
 %               It is necessary to add to the S options the letter
 %               S at the beginning. For example, if you want to use the
-%               optimal rho function the supplied option is
+%               optimal rho function, the supplied option is
 %               'Srhofunc','optimal'. For example, if you want to use 3000
-%               subsets, the supplied option is 'Snsamp',3000
+%               subsets, the supplied option is 'Snsamp',3000.
 %               Example - 'Snsamp',1000
 %               Data Types - single | double
 %
 %
 %       tol    : Tolerance. Scalar.
 %                 Scalar controlling tolerance in the MM loop.
-%                 Default value is 1e-7
+%                 Default value is 1e-7.
 %                 Example - 'tol',1e-10
 %                 Data Types - double
 %
@@ -141,7 +141,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               If plots = 1, generates a plot with the robust residuals
 %               against index number. The confidence level used to draw the
 %               confidence bands for the residuals is given by the input
-%               option conflev. If conflev is not specified a nominal 0.975
+%               option conflev. If conflev is not specified, a nominal 0.975
 %               confidence interval will be used.
 %                 Example - 'plots',0
 %                 Data Types - single | double
@@ -159,21 +159,21 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                           residuals.
 %      out.fittedvalues =   n x 1 vector containing the fitted values.
 %                           out.residuals=(y-X*out.beta)/out.auxscale
-%       out.weights     =   n x 1 vector. Weights assigned to each observation
+%       out.weights     =   n x 1 vector. Weights assigned to each observation.
 %       out.Sbeta       =   p x 1 vector containing S estimate of regression
 %                           coefficients (or supplied initial external
 %                           estimate of regression coefficients, if option
-%                           InitialEst is not empty)
+%                           InitialEst is not empty).
 %       out.Ssingsub    =   Number of subsets without full rank in the S
 %                           preliminary part. Notice that
 %                           out.singsub > 0.1*(number of subsamples)
-%                           produces a warning
+%                           produces a warning.
 %       out.outliers    =   1 x k vectors containing the outliers which
-%                           have been found
-%       out.conflev     =   Confidence level that was used to declare outliers
+%                           have been found.
+%       out.conflev     =   Confidence level that was used to declare outliers.
 %           out.rhofuncS =   string identifying the rho function which has been
 %                           used in the S initial step. This field is empty if
-%                           input option InitialEst is not empty
+%                           input option InitialEst is not empty.
 %      out.rhofuncparamS =   vector which contains the additional parameters
 %                           for the specified rho function which have been
 %                           used in the S initial step. This field is empty if
@@ -242,7 +242,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %{
     % MMreg with optional input arguments.
     % MMreg using the hyperbolic rho function.
-    % Run this code to see the output shown in the help file
+    % Run this code to see the output shown in the help file.
     n=200;
     p=3;
     randn('state', 123456);
@@ -258,7 +258,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %{
     % MMreg with optional input arguments.
     % MMreg using the OLS estimates ac InitialEst.
-    % Run this code to see the output shown in the help file
+    % Run this code to see the output shown in the help file.
     n=200;
     p=3;
     randn('state', 123456);
@@ -297,11 +297,11 @@ function [out , varargout] = MMreg(y,X,varargin)
     % Define the main title of the plots
     titl='';
 
-    % MM  estimators
+    % MM estimators
     [outMM]=MMreg(y,X,'conflev',conflev(1));
     laby='Scaled MM residuals';
     resindexplot(outMM.residuals,'title',titl,'laby',laby,'numlab','','conflev',conflev)
-    % In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level.
+    % In this example, MM estimator seems to detect half of the outlier with a Bonferroni significance level.
     % By simply changing the seed to 543 (state=543), using a Bonferroni size
     %of 1%, no unit is declared as outlier and just half of them using the 99%
     %band.
@@ -348,7 +348,7 @@ function [out , varargout] = MMreg(y,X,varargin)
     ycont(1:5)=ycont(1:5)+6;
     close all
     h1=subplot(3,1,1);
-    % TB  is used both in the S and in MM step.
+    % TB is used both in the S and in MM step.
     [outTB]=MMreg(ycont,X,'plots',0);
     resindexplot(outTB,'h',h1)
     title('Tukey''s biweight link')
@@ -399,7 +399,7 @@ Snsampdef=min(1000,ncomb);
 
 % default value of number of refining iterations (C steps) for each extracted subset
 Srefstepsdef=3;
-% default value of tolerance for the refining steps convergence for  each extracted subset
+% default value of tolerance for the refining steps convergence for each extracted subset
 Sreftoldef=1e-6;
 % default value of number of best locs to remember
 Sbestrdef=5;
@@ -456,9 +456,9 @@ end
 
 % intercept=options.intercept;
 
-% InitialEst = structure which contains initial estimate of beta and sigma
-% If InitialEst is empty then initial estimates of beta and sigma come from
-% S-estimation
+% InitialEst = structure which contains initial estimate of beta and sigma.
+% If InitialEst is empty, then initial estimates of beta and sigma come from
+% S-estimation.
 InitialEst=options.InitialEst;
 
 if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
@@ -486,13 +486,13 @@ if isempty(InitialEst) || (isstruct(InitialEst) && any(isnan(InitialEst.beta)))
         [Sresult , C] = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
             'reftolbestr',reftolbestr,'rhofunc',rhofuncS,'rhofuncparam',rhofuncparamS,...
-            'nocheck',true,'msg',msg,    'conflev',0.95,'yxsave',false);
+            'nocheck',true,'msg',msg,'conflev',0.95,'yxsave',false);
         
     else
         Sresult = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
             'reftolbestr',reftolbestr,'rhofunc',rhofuncS,'rhofuncparam',rhofuncparamS,...
-            'nocheck',true,'msg',msg,      'conflev',0.95,'yxsave',false);
+            'nocheck',true,'msg',msg,'conflev',0.95,'yxsave',false);
         C=0;
     end
     
@@ -505,7 +505,7 @@ else
     bs = InitialEst.beta;
     ss = InitialEst.scale;
     singsub=0;
-    % In this case there is no preliminary S estimator
+    % In this case, there is no preliminary S estimator
     rhofuncS='';
     rhofuncparamS=[];
     C=0;
@@ -530,7 +530,7 @@ tol = options.tol;
 
 
 % MMregcore = function which does IRWLS steps from initialbeta (bs) and sigma (ss)
-% Notice that the estimate of sigma (scale) remains fixed
+% Notice that the estimate of sigma (scale) remains fixed.
 plots=options.plots;
 conflev=options.conflev;
 
@@ -555,16 +555,16 @@ out.class='MMreg';
 
 out.rhofuncS=rhofuncS;
 % In case of Hampel or hyperbolic tangent estimator store the additional
-% parameters which have been used
-% For Hampel store a vector of length 3 containing parameters a, b and c
-% For hyperbolic store the value of k= sup CVC
+% parameters which have been used.
+% For Hampel store a vector of length 3 containing parameters a, b and c.
+% For hyperbolic store the value of k= sup CVC.
 out.rhofuncparamS=rhofuncparamS;
 
 out.rhofunc=outIRW.rhofunc;
 % In case of Hampel or hyperbolic tangent estimator store the additional
-% parameters which have been used
-% For Hampel store a vector of length 3 containing parameters a, b and c
-% For hyperbolic store the value of k= sup CVC
+% parameters which have been used.
+% For Hampel store a vector of length 3 containing parameters a, b and c.
+% For hyperbolic store the value of k= sup CVC.
 out.rhofuncparam=outIRW.rhofuncparam;
 
 if options.yxsave

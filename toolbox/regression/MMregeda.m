@@ -32,7 +32,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               These numbers correspond to estimators covrob, covrob1,
 %               covrob2, covrob4, covrob4 and covrobc detailed inside file
 %               RobCov.m. The default value is 5  (i.e. estimator covrobc).
-%                 Example - 'tstattype',3
+%                 Example - 'covrob',3
 %                 Data Types - single | double
 %
 %      eff     : nominal efficiency. Scalar or vector.
@@ -43,19 +43,19 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                 Example - 'eff',[0.85 0.90 0.95 0.99]
 %                 Data Types - double
 %
-%     effshape : location or scale effiicency. dummy scalar.
-%                If effshape=1 efficiency refers to shape
-%                efficiency else (default) efficiency refers to location
+%     effshape : location or scale efficiency. dummy scalar.
+%                If effshape=1, efficiency refers to shape
+%                efficiency, else (default) efficiency refers to location.
 %                 Example - 'effshape',1
 %                 Data Types - double
 %
 %  InitialEst : starting values of the MM-estimator. [] (default) or structure.
-%               InitialEst must contain the following fields
+%               InitialEst must contain the following fields:
 %               InitialEst.beta =  v x 1 vector (estimate of the initial regression coefficients)
 %               InitialEst.scale = scalar (estimate of the scale parameter).
 %               If InitialEst is empty (default) or InitialEst.beta
 %               contains NaN values, program uses S estimators. In this
-%               last case it is possible to specify the options given in
+%               last case, it is possible to specify the options given in
 %               function Sreg.
 %               Example - 'InitialEst',[]
 %               Data Types - struct or empty value
@@ -70,18 +70,18 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %
 %        msg  : Level of output to display. Boolean. It controls whether
 %                 to display or not messages on the screen.
-%               If msg==true (default) messages are displayed
+%               If msg==true (default), messages are displayed
 %               on the screen about estimated time to compute the initial S estimator
 %               and the warnings about
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
 %               'MATLAB:nearlySingularMatrix' are set to off.
-%               If msg is false no message is displayed on the screen
+%               If msg is false, no message is displayed on the screen.
 %                 Example - 'msg',false
 %                 Data Types - logical
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
-%               true no check is performed on matrix y and matrix X. Notice
-%               that y and X are left unchanged. In other words the
+%               true, no check is performed on matrix y and matrix X. Notice
+%               that y and X are left unchanged. In other words, the
 %               additional column of ones for the intercept is not added.
 %               As default nocheck=false.
 %               Example - 'nocheck',true
@@ -95,7 +95,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals in MM step.
-%               Possible values are
+%               Possible values are:
 %               'bisquare';
 %               'optimal';
 %               'hyperbolic';
@@ -114,7 +114,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               See PDrho.m and PDpsi.m.
 %               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
 %               See ASrho.m and ASpsi.m.
-%               The default is bisquare
+%               The default is bisquare.
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - char
 %
@@ -124,7 +124,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               For hyperbolic rho function it is possible to set up the
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
-%               a, b and c (the default values are a=2, b=4, c=8)
+%               a, b and c (the default values are a=2, b=4, c=8).
 %                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %  Soptions  :  options if initial estimator is S and InitialEst is empty.
@@ -143,7 +143,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %
 %       tol    : Tolerance. Scalar.
 %                 Scalar controlling tolerance in the MM loop.
-%                 Default value is 1e-7
+%                 Default value is 1e-7.
 %                 Example - 'tol',1e-10
 %                 Data Types - double
 %
@@ -151,7 +151,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               If plots = 1, generates a plot with the robust residuals
 %               against index number. The confidence level used to draw the
 %               confidence bands for the residuals is given by the input
-%               option conflev. If conflev is not specified a nominal 0.975
+%               option conflev. If conflev is not specified, a nominal 0.975
 %               confidence interval will be used.
 %                 Example - 'plots',0
 %                 Data Types - single | double
@@ -159,10 +159,10 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %  Output:
 %
 %
-%  out :     A structure containing the following fields
+%  out :     A structure containing the following fields:
 %       out.auxscale    =   scalar, S estimate of the scale (or supplied
 %                           external estimate of scale, if option InitialEst
-%                           is not empty)
+%                           is not empty).
 %          out.Beta     =   matrix of size length(eff)-by-(p+1)
 %                           containing the S estimator of regression
 %                           coefficients for each value of eff.
@@ -170,42 +170,42 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %         out.tStat     =   matrix of size length(eff)-by-(p+1)
 %                           containing the MM estimator of t statistics for each
 %                           value of eff. The first column contains the value
-%                           of  eff.
+%                           of eff.
 %              out.RES  =   n x length(eff) matrix containing scaled MM
-%                           residuals for each value of eff
+%                           residuals for each value of eff.
 %                           out.RES(:,jj)=(y-X*out.Beta(:,jj))/out.auxscale
 %       out.Weights     =   n x length(eff) matrix. Weights assigned to
-%                           each observation for each value of eff
+%                           each observation for each value of eff.
 %       out.Outliers    =   n x length(eff) Boolean matrix containing the
 %                           outliers which have been found for each value
 %                           of eff.
 %       out.Sbeta       =   p x 1 vector containing S estimate of regression
 %                           coefficients (or supplied initial external
 %                           estimate of regression coefficients, if option
-%                           InitialEst is not empty)
+%                           InitialEst is not empty).
 %       out.Ssingsub    =   Number of subsets without full rank in the S
 %                           preliminary part. Notice that
 %                           out.singsub > 0.1*(number of subsamples)
-%                           produces a warning
-%       out.conflev     =   Confidence level that was used to declare outliers
+%                           produces a warning.
+%       out.conflev     =   Confidence level that was used to declare outliers.
 %           out.rhofunc =   string identifying the rho function which has been
-%                           used
+%                           used.
 %      out.rhofuncparam =   vector which contains the additional parameters
-%                           for the specified rho function which have been
+%                           for the specified rho function that have been
 %                           used. For hyperbolic rho function the value of
 %                           k =sup CVC. For Hampel rho function the parameters
-%                           a, b and c
+%                           a, b and c.
 %        out.Outliers = Boolean matrix containing the list of
 %                       the units declared as outliers for each value of eff using confidence
-%                       level specified in input scalar conflev
+%                       level specified in input scalar conflev.
 %            out.eff    =   vector containing the value of eff which have
 %                           been used.
-%           out.Sbeta   = vector.  S initial estimate of regression
+%           out.Sbeta   = vector. S initial estimate of regression
 %                         coefficients.
-%            out.y      =   response vector y.
+%            out.y      =  response vector y.
 %            out.X=    Data matrix of explanatory variables
 %                     which has been used (it also contains the column of ones if
-%                     input option intercept was missing or equal to 1)
+%                     input option intercept was missing or equal to 1).
 %       out.class       =   'MMregeda'.
 %
 %  Optional Output:
@@ -285,7 +285,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
     % Define number of subsets
     nsamp=3000;
 
-    % MM  estimators
+    % MM estimators
     [out]=MMregeda(y,X,'conflev',conflev(1));
     laby='Scaled MM residuals';
     resfwdplot(out)
@@ -308,7 +308,7 @@ Smsgdef=true;
 Snsampdef=20;
 % default value of number of refining iterations (C steps) for each extracted subset
 Srefstepsdef=3;
-% default value of tolerance for the refining steps convergence for  each extracted subset
+% default value of tolerance for the refining steps convergence for each extracted subset
 Sreftoldef=1e-6;
 % default value of number of best locs to remember
 Sbestrdef=5;
@@ -321,18 +321,18 @@ Sreftolbestrdef=1e-8;
 Sminsctoldef=1e-7;
 
 % rho (psi) function which has to be used to weight the residuals in the S
-% step
+% step.
 Srhofuncdef='bisquare';
 Srhofuncparamdef=[];
 % rho (psi) function which has to be used to weight the residuals in the MM
-% step
+% step.
 rhofuncdef='bisquare';
 rhofuncparamdef=[];
 covrobdef=5;
 
 
 
-% default values of nominal efficiency which are used
+% default values of nominal efficiency that are used.
 eff=0.5:0.01:0.99;
 
 if coder.target('MATLAB')
@@ -374,12 +374,12 @@ end
 
 % intercept=options.intercept;
 
-% InitialEst = structure which contains initial estimate of beta and sigma
-% If InitialEst is empty then initial estimates of beta and sigma come from
-% S-estimation
+% InitialEst = structure which contains initial estimate of beta and sigma.
+% If InitialEst is empty, then initial estimates of beta and sigma come from
+% S-estimation.
 InitialEst=options.InitialEst;
 
-% rho function to use in the MM step
+% rho function to use in the MM step.
 rhofunc = options.rhofunc;
 rhofuncparam=options.rhofuncparam;
 covrob=options.covrob;
@@ -508,10 +508,10 @@ out.conflev=conflev;
 out.class='MMregeda';
 
 out.rhofunc=rhofunc;
-% In case of Hampel or hyperbolic tangent estimator store the additional
-% parameters which have been used
-% For Hampel store a vector of length 3 containing parameters a, b and c
-% For hyperbolic store the value of k= sup CVC
+% In case of Hampel or hyperbolic tangent estimator, store the additional
+% parameters which have been used.
+% For Hampel, store a vector of length 3 containing parameters a, b and c.
+% For hyperbolic, store the value of k= sup CVC.
 out.rhofuncparam=rhofuncparam;
 
 % Store values of efficiency
