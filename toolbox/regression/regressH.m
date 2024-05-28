@@ -31,9 +31,9 @@ function out=regressH(y,X,Z,varargin)
 %               the columns of matrix X which form the scedastic function.
 %               Therefore, if for example the explanatory variables
 %               responsible for heteroscedisticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax
+%               of matrix X, it is possible to use both the syntax
 %                    regressH(y,X,X(:,[3 5]))
-%               or the sintax
+%               or the syntax
 %                    regressH(y,X,[3 5])
 %
 %  Optional input arguments:
@@ -41,13 +41,13 @@ function out=regressH(y,X,Z,varargin)
 %   typeH:      Parametric function to be used in the skedastic equation.
 %               Character or string.
 %               If typeH is 'arc' (default) than the skedastic function is
-%               modelled as follows
+%               modelled as follows:
 %               \[
 %               \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
 %                           \cdots + \gamma_{r} Z(i,r)))
 %               \]
 %               on the other hand, if typeH is 'har' then traditional
-%               formulation due to Harvey is used as follows
+%               formulation due to Harvey is used as follows:
 %               \[
 %               \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +
 %                           \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
@@ -70,13 +70,13 @@ function out=regressH(y,X,Z,varargin)
 %
 % initialbeta : initial estimate of beta. Vector.
 %               p x 1 vector. If initialbeta is not supplied (default) standard least
-%               squares is used to find initial estimate of beta
+%               squares is used to find initial estimate of beta.
 %               Example - 'initialbeta',[3 8] 
 %               Data Types - double
 %
 % initialgamma: initial estimate of gamma. Vector.
 %               vector of length (r+1). If initialgamma is not supplied
-%               (default)  initial estimate of gamma is nothing but the OLS
+%               (default), initial estimate of gamma is nothing but the OLS
 %               estimate in a regression where the response is given by
 %               squared residuals and the regressors are specified in input
 %               object Z (this regression also contains a constant term).
@@ -97,7 +97,7 @@ function out=regressH(y,X,Z,varargin)
 %               where \( d \) is the vector of length p+r+1 which contains
 %               regression and scedastic coefficients \( d=(\beta' \;
 %               \gamma')' \); while \( d_{old} \) and \(d_{new} \) are the
-%               values of d in iterations t and t+1 t=1,2, ..., maxiter
+%               values of d in iterations t and t+1 t=1,2, ..., maxiter.
 %               Example - 'tol',0.0001 
 %               Data Types - double
 %
@@ -109,7 +109,7 @@ function out=regressH(y,X,Z,varargin)
 %               loglikelihood. If msgiter>1 it is also possible to see
 %               monitor the estimates of the coefficients in each step of
 %               the iteration. If msgiter<1 nothing is displayed on the
-%               screen
+%               screen.
 %               Example - 'msgiter',0 
 %               Data Types - double               
 %  Output:
@@ -127,7 +127,7 @@ function out=regressH(y,X,Z,varargin)
 %                       scedastic coeff; 
 %                       3rd col = t tests of the estimates of scedastic
 %                       coeff.
-%       out.typeH = character containg 'art' or 'har' depending on the type
+%       out.typeH = character containing 'art' or 'har' depending on the type
 %                   of heteroskedasticity which has been used. 
 %              out.WA = scalar. Wald test
 %              out.LR = scalar. Likelihood ratio test
@@ -196,7 +196,7 @@ function out=regressH(y,X,Z,varargin)
     % Monthly credit card expenditure for 100 individuals.
     % Results in structure "OUT" coincides with "Maximum Likelihood
     % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
-    % Results in structure "OLS" coincide with "Ordinary Leat Squares
+    % Results in structure "OLS" coincide with "Ordinary Least Squares
     % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
  
     load('TableF91_Greene');
@@ -206,16 +206,16 @@ function out=regressH(y,X,Z,varargin)
     % Linear regression of monthly expenditure on a constant, age, income
     % its square and a dummy variable for home ownership using the 72
     % observations for which expenditure was nonzero produces the residuals
-    % plotted below
+    % plotted below.
 
     X=zeros(n,4);
     X(:,1)=data(:,3);%age
     X(:,2)=data(:,6);% Own rent (dummy variable)
     X(:,3)=data(:,4);% Income
-    X(:,4)=(data(:,4)).^2; %Income  square
+    X(:,4)=(data(:,4)).^2; %Income square
     y=data(:,5); % Monthly expenditure
 
-    % Select the 72 observations for which expenditure was nonzero
+    % Select the 72 observations for which expenditure was nonzero.
     sel=y>0;
     X=X(sel,:);
     y=y(sel);
@@ -231,7 +231,7 @@ function out=regressH(y,X,Z,varargin)
     % Income square (that is columns 3 and 4 of matrix X)
     out=regressH(y,X,[3 4],'msgiter',0,'typeH','har');
 
-    % Plot OLS residuals againt Income (This is nothing but Figure 11.1 of
+    % Plot OLS residuals against Income (This is nothing but Figure 11.1 of
     % Green (5th edition) p. 216)
     plot(X(:,4),r,'o')
     xlabel('Income')
@@ -253,13 +253,13 @@ function out=regressH(y,X,Z,varargin)
     % Linear regression of monthly expenditure on a constant, age, income and
     % its square and a dummy variable for home ownership using the 72
     % observations for which expenditure was nonzero produces the residuals
-    % plotted plotted below
+    % plotted below.
 
     X=zeros(n,4);
-    X(:,1)=data(:,3);%age
-    X(:,2)=data(:,6);% Own rent (dummy variable)
-    X(:,3)=data(:,4);% Income
-    X(:,4)=(data(:,4)).^2; %Income  square
+    X(:,1)=data(:,3); % age
+    X(:,2)=data(:,6); % Own rent (dummy variable)
+    X(:,3)=data(:,4); % Income
+    X(:,4)=(data(:,4)).^2; % Income square
     y=data(:,5); % Monthly expenditure
 
     % Select the 72 observations for which expenditure was nonzero

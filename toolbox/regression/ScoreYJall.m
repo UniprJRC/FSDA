@@ -7,7 +7,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
 % by Yeo and Johnson (2000) by imposing the smoothness condition that the
 % second derivative of zYJ(λ) with respect to y be smooth at y = 0. However
 % some authors, for example Weisberg (2005), query the physical
-% interpretability of this constraint which is oftern violated in data
+% interpretability of this constraint which is often violated in data
 % analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
 % Yeo-Johnson transformation to allow two values of the transformations
 % parameter: λN for negative observations and λP for non-negative ones.
@@ -23,15 +23,15 @@ function [outSC]=ScoreYJall(y,X,varargin)
 % the transformation parameter for positive observations fixed. In short we
 % call this test, "test for negative observations".
 % 4) the F test for the joint presence of the two constructed variables
-% described in points 2) and 3.
+% described in points 2) and 3).
 %
 %
 %
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. A vector with n elements that
-%               contains the response
-%               variable.  It can be either a row or a column vector.
+%               contains the response variable. 
+%               It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
@@ -53,41 +53,41 @@ function [outSC]=ScoreYJall(y,X,varargin)
 %        la  :  transformation parameter. Vector. It specifies for which
 %               values of the transformation parameter it is necessary to
 %               compute the score test. Default value of lambda is la=[-1
-%               -0.5 0 0.5 1]; that is the five most common values of
-%               lambda
+%               -0.5 0 0.5 1]; that are the five most common values of
+%               lambda.
 %               Example - 'la',[0 0.5]
 %               Data Types - double
 %
 %      scoremle: likelihood ratio test for the two different transformation
 %                parameters $\lambda_P$ and $\lambda_N$. Boolean.
-%                if scoremle is true it is possible to compute the
-%                likelihood ratio test. In this case the residual sum of
-%                squares of the null model bsaed on a single transformation
-%                parameter $\lambda$ is compared with the residual sum of
-%                squares of the model based on data transformed data using
-%                MLE of $\lambda_P$ and $\lambda_N$. If scoremle is true it
+%                If scoremle is true, it is possible to compute the
+%                likelihood ratio test. In this case, the residual sum of
+%                squares of the null model based on a single transformation
+%                parameter, $\lambda$ is compared with the residual sum of
+%                squares of the model based on transformed data using
+%                MLE of $\lambda_P$ and $\lambda_N$. If scoremle is true, it
 %                is possible through following option usefmin, to control
-%                the parameters of the optmization routine.
+%                the parameters of the optimization routine.
 %               Example - 'scoremle',true
 %               Data Types - logical
 %
 %    usefmin :  use solver to find MLE of lambda. Boolean or struct.
-%               if usefmin is true or usefmin is a struct it is
+%               If usefmin is true or usefmin is a struct, it is
 %               possible to use MATLAB solvers fminsearch or fminunc to
 %               find the maximum likelihood estimates of $\lambda_P$ and
-%               $\lambda_N$. The default value of usefmin is false that is
-%               solver is not used and the likelihood is evaluated at the
+%               $\lambda_N$. The default value of usefmin is false, which
+%               means the solver is not used, and the likelihood is evaluated at the
 %               grid of points with steps 0.01.
-%               If usefmin is a structure it may contain the following
+%               If usefmin is a structure, it may contain the following
 %               fields:
 %               usefmin.MaxIter = Maximum number of iterations (default is 1000).
-%               usefmin.TolX   = Termination tolerance for the parameters
+%               usefmin.TolX = Termination tolerance for the parameters
 %                   (default is 1e-7).
 %               usefmin.solver = name of the solver. Possible values are
 %                   'fminsearch' (default) and 'fminunc'. fminunc needs the
 %                   optimization toolbox.
 %               usefmin.displayLevel = amount of information displayed by
-%                   the algorithm. possible values are 'off' (displays no
+%                   the algorithm. Possible values are 'off' (displays no
 %                   information, this is the default), 'final' (displays
 %                   just the final output) and 'iter' (displays iterative
 %                   output to the command window).
@@ -96,9 +96,9 @@ function [outSC]=ScoreYJall(y,X,varargin)
 %
 %
 %       nocheck : Check input arguments. Boolean.
-%               If nocheck is equal to true no check is performed on
+%               If nocheck is equal to true, no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
+%                 unchanged. In other words, the additional column of ones
 %                 for the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
@@ -108,7 +108,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
 %  The output consists of a structure 'outSC' containing the following fields:
 %
 %        outSC.Score =       score tests. Matrix.
-%                            Matrix of size length(la)-by-5 which
+%                            Matrix of size length(la)-by-5 that
 %                            contains the value of the score test for each
 %                            value of lambda specified in optional input
 %                            parameter la. The first column refers to the
@@ -117,8 +117,8 @@ function [outSC]=ScoreYJall(y,X,varargin)
 %                            test for negative observations and the fourth
 %                            column refers to the F test for the joint
 %                            presence of the two constructed variables.
-%                            If input option scoremle is true the fifth
-%                            column will contain the exact likelihod ratio
+%                            If input option scoremle is true, the fifth
+%                            column will contain the exact likelihood ratio
 %                            test based on the maximum likelihood estimates
 %                            of the $\lambda_P$ and $\lambda_N$.
 %                            If la is not specified, the number of rows of
@@ -128,7 +128,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
 %        outSC.laMLE =       MLE of lambda. Vector.
 %                            Vector of dimension 2 which
 %                            contains the value of maximum likelihood
-%                            estimate of $\lambda_P$ and $\lambda_N$.  This
+%                            estimate of $\lambda_P$ and $\lambda_N$. This
 %                            output is present only if input option
 %                            scoremle is true.
 %
@@ -162,13 +162,13 @@ function [outSC]=ScoreYJall(y,X,varargin)
 
 
 %{
-    %% Ex in which positive and negative observations require the same lambda.
+    %% Example in which positive and negative observations require the same lambda.
     rng('default')
     rng(100)
     n=100;
     y=randn(n,1);
     % Transform the value to find out if we can recover the true value of
-    % the transformation parameter
+    % the transformation parameter.
     la=0.5;
     ytra=normYJ(y,[],la,'inverse',true);
     % Start the analysis
@@ -178,26 +178,26 @@ function [outSC]=ScoreYJall(y,X,varargin)
     Sco=[la outSC.Score];
     Scotable=array2table(Sco,'VariableNames',{'lambda','Tall','Tp','Tn','Ftest'});
     disp(Scotable)
-    % Comment: if we consider the 5 most common values of lambda the value
-    % of the score test when lambda=0.5 is the only one which is not
+    % Comment: if we consider the 5 most common values of lambda, the value
+    % of the score test when lambda=0.5 is the only one that is not
     % significant. Both values of the score test for positive and negative
     % observations and the Ftest confirm that this value of the
     % transformation parameter is OK for both sides of the distribution.
 %}
 
 %{
-    %% Ex in which positive and negative observation require different lambdas.
+    %% Example in which positive and negative observation require different lambda.
     rng(2000)
     n=100;
     y=randn(n,1);
-    % Tranform in a different way positive and negative values
+    % Transform in a different way positive and negative values.
     lapos=0;
     ytrapos=normYJ(y(y>=0),[],lapos,'inverse',true);
     laneg=1;
     ytraneg=normYJ(y(y<0),[],laneg,'inverse',true);
     ytra=[ytrapos; ytraneg];
 
-    % Start the analysis
+    % Start the analysis.
     X=ones(n,1);
     % also compute lik. ratio test based on MLE of laP and laN
     scoremle=true;
@@ -206,14 +206,14 @@ function [outSC]=ScoreYJall(y,X,varargin)
     Sco=[la outSC.Score];
     Scotable=array2table(Sco,'VariableNames',{'lambda','Tall','Tp','Tn','FtestPN' 'FtestLR'});
     disp(Scotable)
-    % Comment: if we consider the 5 most common values of lambda
+    % Comment: if we consider the 5 most common values of lambda,
     % the value of the score test when lambda=0.5 is the only one which is not
-    % significant. However when lambda=0.5 the score test for negative
+    % significant. However, when lambda=0.5, the score test for negative
     % observations is highly significant.
     disp('Difference between the test for positive and the test for negative')
     disp(abs(Scotable{4,3}-Scotable{4,4})),
-    % which is very
-    % large. This indicates that the two tails need a different value of the
+    % which is very large. 
+    % This indicates that the two tails need a different value of the
     % transformation parameter.
 %}
 
@@ -257,13 +257,11 @@ if nargin > 2
     la=options.la;
     scoremle=options.scoremle;
     usefmin=options.usefmin;
-    % SSElaMLE = residual sum of squares of the regression model based on
-    % MLE of laPos and laNeg
 end
 
 
 
-% inizialize qunatities which do not depnd on la(i)
+% initialize quantities that do not depend on la(i).
 nonnegs = y >= 0;
 negs = ~nonnegs;
 ynonnegs=y(nonnegs);
@@ -282,13 +280,13 @@ G=exp(logG);
 % Note that Gpos*Gneg=G
 
 
-%  Sc= matrix lla-by-5 which contain:
+% Sc= matrix lla-by-5, which contains:
 % 1st col = global t test
-% 2nd col = t test for pos
-% 3rd col = t test for neg
+% 2nd col = t test for positive
+% 3rd col = t test for negative
 % 4th col = F test for both
 % 5th col = Lik. ratio test for both (if input option scoremle is true)
-%  for the values of \lambda specified in vector la
+% for the values of \lambda specified in vector la.
 lla=length(la);
 wini=NaN(n,1);
 if scoremle == true
@@ -313,7 +311,7 @@ for i=1:lla
     twomlambdai=2-lai;
     
     % Compute transformed values and constructed variables depending on lambda
-    % transformation for non negative values
+    % transformation for non-negative values.
     if abs(lai)>1e-8  % if la is different from 0
         % vposlai=vpos.^lai;
         vposlai=exp(lai*logvpos);
@@ -355,14 +353,14 @@ for i=1:lla
         w(negs)=logvneg.*(logvneg/2+logG)/G;
     end
     
-    % Compute residual sum of squares for null (reduced) model
+    % Compute residual sum of squares for null (reduced) model.
     betaR=X\z;
     residualsR = z - X*betaR;
-    % Sum of squares of residuals
+    % Sum of squares of residuals.
     SSeR = norm(residualsR)^2;
     
     
-    % Define augmented X matrix for overall constructed variable
+    % Define augmented X matrix for overall constructed variable.
     Xw=[X w];
     
     % New code
@@ -440,9 +438,9 @@ for i=1:lla
     end
     
     % Compute the F test for the joint presence of both constructed
-    % variables
+    % variables.
     if vposboo==true && vnegboo==true
-        % Compute residual sum of squares for full model
+        % Compute residual sum of squares for full model.
         Xww=[X wpos wneg];
         betaF=Xww\z;
         
@@ -455,10 +453,10 @@ for i=1:lla
         Ftest=Ftestnum/Ftestden;
         Sc(i,4)=Ftest;
     elseif vposboo==true
-        % If there are just positive observations F test is the square of
-        % the t test for positive
+        % If there are just positive observations, F test is the square of
+        % the t test for positive.
         Sc(i,4)=Sc(i,2)^2;
-    else % in this case there are just negative observations
+    else % in this case, there are just negative observations.
         Sc(i,4)=Sc(i,3)^2;
     end
     
@@ -470,10 +468,10 @@ for i=1:lla
     end
 end
 
-% Store values of the score test inside structure outSC
+% Store values of the score test inside structure outSC.
 outSC.Score=Sc;
 
-% Also store MLE of lambda
+% Also store MLE of lambda.
 if scoremle == true
     outSC.laMLE=laMLE;
 end

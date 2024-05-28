@@ -1,5 +1,5 @@
 function [out] = simulateTS(T,varargin)
-%simulateTS simulates a time series with trend, time varying seasonal, level shift and irregular component
+%simulateTS simulates a time series with trend, time varying seasonal, level shift and irregular component.
 %
 %<a href="matlab: docsearchFS('simulateTS')">Link to the help function</a>
 %
@@ -15,26 +15,26 @@ function [out] = simulateTS(T,varargin)
 %
 %  Optional input arguments:
 %
-%      model :  model type. Structure. A structure which specifies the model
+%      model :  model type. Structure. A structure that specifies the model
 %               used to simulate the time series. The structure contains
 %               the following fields:
 %               model.trend = scalar (order of the trend component).
 %                       trend = 1 implies linear trend with intercept,
 %                       trend = 2 implies quadratic trend, etc.
-%                       If this field is empty the simulated time series
+%                       If this field is empty, the simulated time series
 %                       will not contain a trend. The default value
 %                       of model.trend is 1.
-%               model.trendb = vector of doubles containining the beta
-%                       coefficients for the trend. For example model.trend=1
+%               model.trendb = vector of doubles containing the beta
+%                       coefficients for the trend. For example, model.trend=1
 %                       and model.trendb=[3.2 2] generate a linear trend
 %                       of the kind 3.2+2*t.
-%                       If this field is an empty double the simulated time
+%                       If this field is an empty double, the simulated time
 %                       series will not contain a trend. The default value
-%                       of model.trendb is [0 1] that is a slope equal to 1
+%                       of model.trendb is [0 1], that is a slope equal to 1
 %                       and intercept equal to 0.
 %               model.s = scalar greater than zero which specifies the
 %                       length of the seasonal period. For monthly
-%                       data (default) s=12, for quartely data s=4, ...
+%                       data (default) s=12, for quarterly data s=4, ...
 %                       The default value of model.s is 12, which is for
 %                       monthly data.
 %               model.seasonal = scalar. Integer specifying the number of
@@ -47,51 +47,51 @@ function [out] = simulateTS(T,varargin)
 %                        if seasonal = 2 we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin (2 \pi t/s)
 %                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
-%                        Note that when $s$ is even the sine term disappears
+%                        Note that when $s$ is even, the sine term disappears
 %                        for $j=s/2$ and so the maximum number of
 %                        trigonometric parameters is $s-1$.
-%                        If seasonal is a number greater than 100 then it
+%                        If seasonal is a number greater than 100, then it
 %                        is possible to specify how the seasonal component
 %                        grows over time.
 %                        For example, seasonal = 101 implies a seasonal
-%                        component which just uses one frequency
+%                        component that just uses one frequency,
 %                        which grows linearly over time as follows:
 %                        $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
 %                        \beta_2 \sin ( 2 \pi t/s))$.
 %                        For example, seasonal = 201 implies a seasonal
-%                        component which just uses one frequency
+%                        component that just uses one frequency,
 %                        which grows in a quadratic way over time as
 %                        follows:
 %                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
 %                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
-%                       If this field is an empty double (default) the
+%                       If this field is an empty double (default), the
 %                       simulated time series will not contain a seasonal
 %                       component.
 %               model.seasonalb = vector of doubles containing the beta
 %                       coefficients for the seasonal component.
-%                       For example model.seasonal = 201 and model
+%                       For example, model.seasonal = 201 and model
 %                       model.trendb = [1.2 2.3 3.4 4.5] generates a
 %                       seasonal component of the kind:
 %                        $(1+ 3.4 t + 4.5  t^2)\times( 1.2 \cos(
 %                        2 \pi t/s) + 2.3 \sin ( 2 \pi t/s))$.
-%                       If this field is an empty double (default) the
+%                       If this field is an empty double (default), the
 %                       simulated time series will not contain a seasonal
 %                       component.
 %               model.X  = scalar or matrix of size T-by-nexpl. If model.X
 %                       is a matrix of size T-by-nexpl, it contains the
-%                       values of nexpl extra covariates which
+%                       values of nexpl extra covariates that
 %                       affect y. If model.X is a scalar equal to k,
 %                       where k=1, 2, ... k explanatory variables using
 %                       random numbers from the normal distribution are
 %                       generated. If this field is an empty double
-%                       (default) the simulated time series will not
+%                       (default), the simulated time series will not
 %                       contain explanatory variables.
 %               model.Xb = vector of doubles containing the beta
 %                       coefficients for the explanatory variables.
-%                       For example model.X = 2 and model.Xb = [4,5]
+%                       For example, model.X = 2 and model.Xb = [4,5]
 %                       generate two additional explanatory variables
 %                       of the kind: $ 4*randn(T,1) + 5*randn(T,1) $.
-%                       If this field is an empty double (default) the
+%                       If this field is an empty double (default), the
 %                       simulated time series will not contain explanatory
 %                       variables.
 %               model.ARIMAX = boolean variable (true/false) that specifies
@@ -104,7 +104,7 @@ function [out] = simulateTS(T,varargin)
 %                       expression (2) of the same page with A(L)=1. If
 %                       this field is empty or not present, the default
 %                       value is false.
-%               model.ARp = vector with non negative integer numbers
+%               model.ARp = vector with non-negative integer numbers
 %                       specifying the autoregressive
 %                       components. For example:
 %                        model.ARp=[1 2] means a AR(2) process;
@@ -119,31 +119,31 @@ function [out] = simulateTS(T,varargin)
 %                       y_{t-2}$ + seasonal + lshift + $\epsilon_t$.
 %                       model.ARb must have the same number of elements of
 %                       model.ARp. If this field is an empty double
-%                       (default) the simulated time series will not have
+%                       (default), the simulated time series will not have
 %                       an autoregressive component.
-%               model.lshift = scalar greater than 0 which specifies the
+%               model.lshift = scalar greater than 0, which specifies the
 %                       position where to include a level shift component.
-%                       If this field is an empty double (default) the
+%                       If this field is an empty double (default), the
 %                       simulated time series will not contain a level shift.
-%               model.lshiftb = scalar double which specifies the magnitude
+%               model.lshiftb = scalar double, which specifies the magnitude
 %                       of the level shift component.
-%                       For example model.lshift = 26 and model.lshiftb = 3
+%                       For example, model.lshift = 26 and model.lshiftb = 3
 %                       generates the following explanatory variable
 %                        $ [zeros(25,1) + 3*ones(T-25+1,1)] $.
-%                       If this field is an empty double (default) the
+%                       If this field is an empty double (default), the
 %                       simulated time series will not contain a level
 %                       shift.
-%               model.nsim = scalar wich defines the number of time series
+%               model.nsim = scalar that defines the number of time series
 %                       to simulate. If this field is empty or not present,
 %                       the default value of 1 is used.
 %               model.residuals = T x nsim matrix of doubles of length T
 %                       containing the values of the residuals to use in the
 %                       simulation. Default value is [].
-%                model.sigmaeps = scalar wich defines the standard error of
+%                model.sigmaeps = scalar that defines the standard error of
 %                       the residuals. If model.residuals is not empty, the
 %                       value of model.sigmaeps will be ignored. Default
 %                       value is [].
-%                model.signal2noiseratio = scalar wich defines the ratio
+%                model.signal2noiseratio = scalar that defines the ratio
 %                       between the variance of the systematic part of the
 %                       model (signal) and the variance of the noise
 %                       (irregular model). The greater is this value, the
@@ -155,12 +155,12 @@ function [out] = simulateTS(T,varargin)
 %                       then an algorithm will search the best value of the
 %                       standard error of the residuals that guarantees the
 %                       desired model.signal2noiseratio. If this field is
-%                       empty or not present the default value of 1 is used.
+%                       empty or not present, the default value of 1 is used.
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default model is for monthly data with a linear
 %               trend with slope 1 and intercept 0, no seasonal, no
-%               level shift and a signal to noise ratio equal to 1, that is
+%               level shift and a signal to noise ratio equal to 1, that is:
 %                               model=struct;
 %                               model.s=[];
 %                               model.trend=1;
@@ -170,10 +170,10 @@ function [out] = simulateTS(T,varargin)
 %                               model.signal2noiseratio=1;
 %
 %       plots : Plots on the screen. Scalar.
-%               If plots == 1 a six panel plot appears on the screen.
+%               If plots == 1, a six panel plot appears on the screen.
 %               Top left panel contains the simulated time series y.
 %               y=TR+SE+X+LS+I of the first simulated time series.
-%               Top central panel contains the signal component (that is
+%               Top central panel contains the signal component (that is,
 %               trend + seasonal + explanatory variables + level shift = TR
 %               + SE + LS + X).
 %               Top right panel contains the trend component (TR).
@@ -194,7 +194,7 @@ function [out] = simulateTS(T,varargin)
 %               specify a natural time unit and a (1-based) number of
 %               samples into the time unit. For example, if model.s=12
 %               (that is the data are monthly) and the first observation
-%               starts in March 2016, then StartDate=[2016,3]; Similarly,
+%               starts in March 2016, then StartDate=[2016,3]; similarly,
 %               if models.s=4 (that is the data are quarterly) and the first
 %               observation starts in the second quarter or year 2014, then
 %               StartData=[2014,2]. The information in option StartDate
@@ -203,20 +203,20 @@ function [out] = simulateTS(T,varargin)
 %                 Example - 'StartDate',[2016,3]
 %                 Data Types - double
 %
-%      nocheck: Check input arguments. Boolean. If nocheck is true no
-%               check is performed on supplied input. Otherwise (default)
+%      nocheck: Check input arguments. Boolean. If nocheck is true, no
+%               check is performed on supplied input. Otherwise (default),
 %               every input of the structure model is checked.
 %               Example - 'nocheck',false
 %               Data Types - double
 %
 % FileNameOutput : save simulated time series to txt file. Character.
-%               If FileNameOutput is empty (default) nothing is saved on
+%               If FileNameOutput is empty (default), nothing is saved on
 %               the disk, else FileNameOutput will contain the path where
 %               to save the file on the disk.
-%               Example - 'FileNameOutput',['C:' filesep 'myoutput' fielsep 'savesimdata.txt']
+%               Example - 'FileNameOutput',['C:' filesep 'myoutput' filesep 'savesimdata.txt']
 %               Data Types - Character
 %
-% samescale :   same ylim  in the output plot.  Logical.
+% samescale :   same ylim in the output plot. Logical.
 %               If true (default), all underlying components of the time
 %               series are shown in the plot with the same scale.
 %               Example - 'samescale',false
@@ -224,7 +224,7 @@ function [out] = simulateTS(T,varargin)
 %
 %  Output:
 %
-%         out:   structure which contains the following fields:
+%         out:   structure that contains the following fields:
 %
 %                out.y = the simulated time series.
 %                   Matrix of dimension T x nsim, which is sum of trend +
@@ -235,24 +235,24 @@ function [out] = simulateTS(T,varargin)
 %                   (time varying) seasonal + explanatory variables + level
 %                   shift. Signal = out.y - out.irregular.
 %                out.trend = trend (TR).
-%                   Column vector of length T which contains the trend
+%                   Column vector of length T, which contains the trend
 %                   component.
 %                out.seasonal = (time varying) seasonal (SE).
-%                   Column vector of length T which contains the seasonal
-%                   component. If there is no seasonal component
+%                   Column vector of length T, which contains the seasonal
+%                   component. If there is no seasonal component:
 %                   outyhatseaso=0.
 %                out.X = explanatory variables (X).
-%                   Column vector of length T which contains the component
+%                   Column vector of length T, which contains the component
 %                   associated to the explanatory variables.
 %                   If there is no explanatory variable, out.X=0.
 %                out.lshift = level shift (LS).
-%                   Column vector of length T which contains the level
+%                   Column vector of length T, which contains the level
 %                   shift component.
 %                   If there is no level shift component out.lshift=0.
 %                out.irregular = irregular component (I).
-%                   Matrix of dimension T x nsim which contains the irregular
+%                   Matrix of dimension T x nsim, which contains the irregular
 %                   component.
-%                   When the signal to noise ratio tends to infinity the
+%                   When the signal to noise ratio tends to infinity, the
 %                   irregular component tends to 0.
 %                out.model = structure. The model used to simulate the time
 %                   series.
@@ -278,9 +278,9 @@ function [out] = simulateTS(T,varargin)
 
 %{
     %% Simulated time series with linear trend.
-    % A time series of 100 observations is simulated from a model which
+    % A time series of 100 observations is simulated from a model that
     % contains a linear trend (with slope 1 and intercept 0), no seasonal
-    % component, no explanatory variables and a signal to noise ratio egual
+    % component, no explanatory variables and a signal to noise ratio equal
     % to 1 (the default).
     out=simulateTS(100,'plots',1);
 %}
@@ -294,10 +294,10 @@ function [out] = simulateTS(T,varargin)
 
 %{
     %% Simulated time series with a linear time varying seasonal component.
-    % A time series of 100 observations is simulated from a model which
+    % A time series of 100 observations is simulated from a model that
     % contains no trend, a linear time varying seasonal component with
     % three harmonics, no explanatory variables and a signal to noise ratio
-    % egual to 20
+    % equal to 20.
     rng('default')
     rng(1)
     model=struct;
@@ -312,10 +312,10 @@ function [out] = simulateTS(T,varargin)
 
 %{
     %% Simulated time series with a quadratic time varying seasonal component.
-    % A time series of 100 observations is simulated from a model which
+    % A time series of 100 observations is simulated from a model that
     % contains no trend, a quadratic time varying seasonal component with
     % one harmonic, no explanatory variables and a signal to noise ratio
-    % egual to 20
+    % equal to 20.
     rng(1)
     model=struct;
     model.trend=[];
@@ -329,10 +329,10 @@ function [out] = simulateTS(T,varargin)
 
 %{
     %% Simulated time series with quadratic trend, fixed seasonal and level shift.
-    % A time series of 100 observations is simulated from a model which
-    % contains a quadratic trend, a seasonal component with two harmonics
+    % A time series of 100 observations is simulated from a model that
+    % contains a quadratic trend, a seasonal component with two harmonics,
     % no explanatory variables and a level shift in position 30 with size
-    % 5000 and a signal to noise ratio egual to 20
+    % 5000 and a signal to noise ratio equal to 20.
     rng(1)
     model=struct;
     model.trend=2;
@@ -349,10 +349,10 @@ function [out] = simulateTS(T,varargin)
 %{
     %% Simulated time series with quadratic trend, fixed seasonal and LS.
     % A time series of 100 observations is simulated from a model
-    % which contains a quadratic trend, a linear time varying seasonal
-    % component with two harmonics no explanatory variables and a level
+    % that contains a quadratic trend, a linear time varying seasonal
+    % component with two harmonics, no explanatory variables and a level
     % shift in position 30 with size -10000 and a signal to noise ratio
-    % egual to 20
+    % equal to 20.
     rng(1)
     model=struct;
     model.trend=2;
@@ -367,13 +367,12 @@ function [out] = simulateTS(T,varargin)
 %}
 
 %{
-    %% Simulated time series with quadratic trend, fixed seasonal, LS and
-    % two explanatory variables.
+    %% Simulated time series with quadratic trend, fixed seasonal, LS and two explanatory variables.
     % A time series of 100 observations is simulated from a model
-    % which contains a quadratic trend, a linear time varying seasonal
+    % that contains a quadratic trend, a linear time varying seasonal
     % component with two harmonics, two explanatory variables and a level
     % shift in position 30 with size -40000 and a signal to noise ratio
-    % egual to 10
+    % equal to 10.
     rng(1)
     model=struct;
     model.trend=2;
@@ -391,8 +390,8 @@ function [out] = simulateTS(T,varargin)
 
 %{
     % Example of the use of option FileNameOutput.
-    % In this example the simulated time series is saved into a file named
-    % ysimout.txt in the current folder
+    % In this example, the simulated time series is saved into a file named
+    % ysimout.txt in the current folder.
     FileNameOutput=[pwd filesep 'ysimout.txt'];
     T=100;
     out=simulateTS(T,'FileNameOutput',FileNameOutput);
@@ -400,9 +399,9 @@ function [out] = simulateTS(T,varargin)
 
 %{
     %% Example of the use of option StartDate.
-    % Suppose that the inital observation refers to February 2016.
+    % Suppose that the initial observation refers to February 2016.
     StartDate=[2016 2];
-    % The x axis of the plots contains the dates using format mmm-yyyy
+    % The x axis of the plots contains the dates using format mmm-yyyy.
     rng(1)
     model=struct;
     model.trend=2;
@@ -452,9 +451,9 @@ function [out] = simulateTS(T,varargin)
     out=simulateTS(T,'model',model,'plots',1);
     y=out.y;
 
-    % The lines below just work if the econometric toolbox is present
+    % The lines below just work if the econometric toolbox is present.
     % The autocorrelation function of y shows just two peaks in
-    % correspondence of the first two lags
+    % correspondence of the first two lags.
     if exist('parcorr','file')>0
         figure
         parcorr(out.y)
@@ -491,7 +490,7 @@ function [out] = simulateTS(T,varargin)
 
 %% Beginning of code
 
-% seq is the vector which will contain linear time trend
+% seq is the vector that will contain linear time trend.
 seq   = (1:T)';
 one   = ones(T,1);
 
@@ -534,22 +533,22 @@ options=struct('model',modeldef,...
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
 
-    % Check if number of supplied options is valid
+    % Check if number of supplied options is valid.
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:simulateTS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
 
     % Check if all the specified optional arguments were present in
-    % structure options Remark: the nocheck option has already been dealt
-    % by routine chkinputR
+    % structure options. Remark: the nocheck option has already been dealt
+    % by routine chkinputR.
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
-        disp(strcat('Non existent user option found->', char(WrongOptions{:})))
+        disp(strcat('Non-existent user option found->', char(WrongOptions{:})))
         error('FSDA:simulateTS:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the options chosen by the user.
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
@@ -560,12 +559,12 @@ if ~isempty(UserOptions)
     samescale       = options.samescale;
 end
 
-% Default values for the optional parameters are set in structure 'options'
+% Default values for the optional parameters are set in structure 'options'.
 if ~isequal(options.model,modeldef)
     fld=fieldnames(options.model);
 
     if nocheck == false
-        % Check if user options inside options.model are valid options
+        % Check if user options inside options.model are valid options.
         aux.chkoptions(modeldef,fld)
     end
     for i=1:length(fld)
@@ -577,7 +576,7 @@ end
 %% Get model parameters
 
 model    = modeldef;
-trend    = model.trend;       % get kind of  trend
+trend    = model.trend;       % get kind of trend
 trendb   = model.trendb;      % coefficients for trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
@@ -608,7 +607,7 @@ if ~isempty(trend)
     if nocheck == false
 
         if isempty(intersect(trend,0:3))
-            error('FSDA:LTSts:WrongInput','Trend must assume the following values: 0  1 or 2 or 3')
+            error('FSDA:LTSts:WrongInput','Trend must assume the following values: 0  1  2 or 3')
         end
 
         if isempty(trendb) && ~isempty(trend)

@@ -28,11 +28,11 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               \sigma^2_i = exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))
 %               \]
-%               Therefore, if for example the explanatory variables
-%               responsible for heteroscedisticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax
+%               Therefore, if, for example, the explanatory variables
+%               responsible for heteroscedasticity are columns 3 and 5
+%               of matrix X, it is possible to use both the syntax
 %                    regressH(y,X,X(:,[3 5]))
-%               or the sintax
+%               or the syntax
 %                    regressH(y,X,[3 5]). 
 %
 %               Remark: Missing values (NaN's) and infinite values (Inf's) are
@@ -51,14 +51,14 @@ function [out]=regressHhar(y,X,Z,varargin)
 %                 Data Types - boolean
 %
 % initialbeta : initial estimate of beta. Vector.
-%               p x 1 vector. If initialbeta is not supplied (default) standard least
-%               squares is used to find initial estimate of beta
+%               p x 1 vector. If initialbeta is not supplied (default), standard least
+%               squares is used to find initial estimate of beta.
 %               Example - 'initialbeta',[3.6 8.1]
 %               Data Types - double
 %
 % initialgamma: initial estimate of gamma. Vector.
 %                vector of length (r+1). If initialgamma is not supplied
-%                (default)  initial estimate of gamma is nothing but the
+%                (default), initial estimate of gamma is nothing but the
 %                OLS estimate in a regression
 %               where the response is given by squared residuals and the
 %               regressors are specified in input object Z (this regression
@@ -66,7 +66,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               Example - 'initialgamma',[0.6 2.8]
 %               Data Types - double
 %
-%     maxiter : Maximum number of iterations to find model paramters. Scalar.
+%     maxiter : Maximum number of iterations to find model parameters. Scalar.
 %               If not defined, maxiter is fixed to 200. Remark: in order
 %               to obtain the FGLS estimator (two step estimator) it is
 %               enough to put maxiter=1.
@@ -83,26 +83,26 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               Data Types - double
 %
 %    msgiter : Level of output to display. Scalar.
-%               If msgiter=1 it is possible to see the estimates of
+%               If msgiter=1, it is possible to see the estimates of
 %               the regression and scedastic parameters together with their
 %               standard errors and the values of Wald, LM and
 %               Likelihood ratio test, and the value of the maximized
-%               loglikelihood. If msgiter>1 it is also possible to see
+%               loglikelihood. If msgiter>1, it is also possible to see
 %               monitor the estimates of the coefficients in each step of
-%               the iteration. If msgiter<1 nothing is displayed on the
-%               screen
+%               the iteration. If msgiter<1, nothing is displayed on the
+%               screen.
 %               Example - 'msgiter',0
 %               Data Types - double
 %
 %  nocheck:   Check input arguments. Boolean.
 %               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
+%               unchanged. In other words, the additional column of ones for
 %               the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
 %
-%   test :      Test statistics.  Boolean. If input option test is true  Wald,
+%   test :      Test statistics.  Boolean. If input option test is true Wald,
 %               Likelihood ratio, Lagrange multiplier test together with
 %               values of maximized log likelihood are given. The default
 %               is false, that is no test is computed.
@@ -122,7 +122,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %                       1st col = Estimates of scedastic coefficients; 
 %                       2nd col = Standard errors of the estimates of
 %                       scedastic coeff; 
-%                       3rd col = t tests of the estimates of scedastic
+%                       3rd col = t-tests of the estimates of scedastic
 %                       coeff. 
 %                       Remark: the first row of matrix out.Gamma is
 %                       referred to the estimate of \( \sigma^2 \). In
@@ -136,15 +136,14 @@ function [out]=regressHhar(y,X,Z,varargin)
 %                       input option test is true.
 %              out.LR = scalar. Likelihood ratio test. This field is
 %                       present only if input option test is true.
-%              out.LM = scalar. Lagrange multiplier test.  This field is 
+%              out.LM = scalar. Lagrange multiplier test. This field is 
 %                       present only if input option test is true.
-%            out.LogL = scalar. Complete maximized log likelihood.  This
-%                       field is present only if
-%                       input option test is true.
+%            out.LogL = scalar. Complete maximized log likelihood. This
+%                       field is present only if input option test is true.
 %
 %  More About:
 %
-%   This routine implements Harvey�s (1976) model of
+%   This routine implements Harvey's (1976) model of
 %   multiplicative heteroscedasticity which is a very flexible, general
 %   model that includes most of the useful formulations as special cases.
 %   The general formulation is: 
@@ -247,7 +246,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % Monthly credit card expenditure for 100 individuals.
     % Results in structure "OUT" coincides with "Maximum Likelihood
     % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
-    % Results in structure "OLS" coincide with "Ordinary Leat Squares
+    % Results in structure "OLS" coincide with "Ordinary Least Squares
     % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
  
     load('TableF91_Greene');
@@ -257,13 +256,13 @@ function [out]=regressHhar(y,X,Z,varargin)
     % Linear regression of monthly expenditure on a constant, age, income
     % its square and a dummy variable for home ownership using the 72
     % observations for which expenditure was nonzero produces the residuals
-    % plotted below
+    % plotted below.
 
     X=zeros(n,4);
-    X(:,1)=data(:,3);%age
-    X(:,2)=data(:,6);% Own rent (dummy variable)
-    X(:,3)=data(:,4);% Income
-    X(:,4)=(data(:,4)).^2; %Income  square
+    X(:,1)=data(:,3); % age
+    X(:,2)=data(:,6); % Own rent (dummy variable)
+    X(:,3)=data(:,4); % Income
+    X(:,4)=(data(:,4)).^2; % Income square
     y=data(:,5); % Monthly expenditure
 
     % Select the 72 observations for which expenditure was nonzero
@@ -279,11 +278,11 @@ function [out]=regressHhar(y,X,Z,varargin)
     disp(LSest)
     disp('Multiplicative Heteroskedasticity Model')
     % The variables which enter the scedastic function are Income and
-    % Income square (that is columns 3 and 4 of matrix X)
+    % Income square (that is columns 3 and 4 of matrix X).
     out=regressHhar(y,X,[3 4]);
 
     % Plot OLS residuals against Income (This is nothing but Figure 11.1 of
-    % Green (5th edition) p. 216)
+    % Green (5th edition) p. 216).
     plot(X(:,4),r,'o')
     xlabel('Income')
     ylabel('OLS residuals')
@@ -318,7 +317,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 
     % Estimate a multiplicative heteroscedastic model and print the
     % estimates of regression and scedastic parameters together with LM, LR
-    % and Wald test
+    % and Wald test.
     out=regressHhar(y,X,Loadfactor,'msgiter',1,'test',true);
 %}
 
@@ -339,13 +338,13 @@ function [out]=regressHhar(y,X,Z,varargin)
     % Linear regression of monthly expenditure on a constant, age, income and
     % its square and a dummy variable for home ownership using the 72
     % observations for which expenditure was nonzero produces the residuals
-    % plotted plotted below
+    % plotted below.
 
     X=zeros(n,4);
-    X(:,1)=data(:,3);%age
-    X(:,2)=data(:,6);% Own rent (dummy variable)
-    X(:,3)=data(:,4);% Income
-    X(:,4)=(data(:,4)).^2; %Income  square
+    X(:,1)=data(:,3); % age
+    X(:,2)=data(:,6); % Own rent (dummy variable)
+    X(:,3)=data(:,4); % Income
+    X(:,4)=(data(:,4)).^2; % Income  square
     y=data(:,5); % Monthly expenditure
 
     % Select the 72 observations for which expenditure was nonzero
@@ -380,9 +379,9 @@ if ~isempty(UserOptions)
     end
     
     % Check if all the specified optional arguments were present
-    % in structure options
+    % in structure .
     % Remark: the nocheck option has already been dealt by routine
-    % chkinputR
+    % chkinputR.
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
@@ -396,8 +395,8 @@ if ~isempty(UserOptions)
     end
     
 end
-% if test =1 procedure returns the results of Likelihood ratio, Lagrange
-% multiplier and Wald test, together with the maximed log likelihood
+% if test=1 procedure returns the results of Likelihood ratio, Lagrange
+% multiplier and Wald test, together with the maximized log likelihood.
 test=options.test;
 
 initialbeta=options.initialbeta;
@@ -433,7 +432,7 @@ end
 % Estimate of gamma is nothing but the OLS estimate in a regression where
 % the response is given by squared residuals and the regressors are a set
 % of variables Z supplied by the user (Z matrix may contain a subset of X
-% or another set of explanatory variables)
+% or another set of explanatory variables).
 % Note that the response is log(r.^2) because the scedastic function is
 % \sigma_i^2 = exp( \gamma_0 + \gamma_1*Z(i,2) + ... + \gamma_{r}*Z(i,r))
 initialgamma=options.initialgamma;
@@ -520,7 +519,7 @@ end
 
 % Store results
 
-% Store beta coefficients, standard errors and corresponding tstats
+% Store beta coefficients, standard errors and corresponding t-stats
 Beta=zeros(p,3);
 Beta(:,1)=newbeta;
 % Compute standard errors of beta coefficients
@@ -579,18 +578,18 @@ if test==true
     LogL= -(logL_U+n*log(2*pi))/2;
     
     % Lagrange multiplier test
-    % Take residuals from OLS model and form reponse variable h (nx1) where
+    % Take residuals from OLS model and form response variable h (nx1) where
     % the ith element of vector h is given by
     % h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
     % i=1, ..., n
     h=r.^2/(sum(r.^2)/n)-1;
     % Regress h on Z and find the explained sum of squares
-    % bh = vector of regression coefficients from regression of h on Z
+    % bh = vector of regression coefficients from regression of h on Z.
     bh=Z\h;
-    % Zbh = fitted values from the regression of h on Z
+    % Zbh = fitted values from the regression of h on Z.
     Zbh=Z*bh;
     % LM is nothing but one-half times the explained sum of squares in the
-    % linear regression of the variable h on Z
+    % linear regression of the variable h on Z.
     LM=Zbh'*Zbh/2;
     
     % Below it is possible to find two alternative (inefficient) ways of

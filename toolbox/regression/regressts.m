@@ -16,14 +16,14 @@ function out = regressts(y,varargin)
 %               which will be used. The model structure contains the following
 %               fields:
 %               model.s = scalar (length of seasonal period). For monthly
-%                         data s=12 (default), for quartely data s=4, ...
+%                         data s=12 (default), for quarterly data s=4, ...
 %               model.trend = scalar (order of the trend component).
 %                       trend = 1 implies linear trend with intercept (default),
-%                       trend = 2 implies quadratic trend ...
+%                       trend = 2 implies quadratic trend and so on.
 %                       Admissible values for trend are, 0, 1, 2 and 3.
 %               model.seasonal = scalar (integer specifying number of
 %                        frequencies, i.e. harmonics, in the seasonal
-%                        component. Possible values for seasonal are
+%                        component). Possible values for seasonal are
 %                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
 %                        For example:
 %                        if seasonal =1 (default) we have:
@@ -31,7 +31,7 @@ function out = regressts(y,varargin)
 %                        if seasonal =2 we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
 %                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
-%                        Note that when $s$ is even the sine term disappears
+%                        Note that when $s$ is even, the sine term disappears
 %                        for $j=s/2$ and so the maximum number of
 %                        trigonometric parameters is $s-1$.
 %                        If seasonal is a number greater than 100 then it
@@ -52,9 +52,9 @@ function out = regressts(y,varargin)
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
-%               model.posLS = positive integer which specifies to position
+%               model.posLS = positive integer which specifies the position
 %                         to include the level shift component.
-%                         For example if model.posLS =13 then the
+%                         For example, if model.posLS =13 then the
 %                         explanatory variable $I(t \geq 13})$ is created.
 %                         If this field is not present or if it is empty,
 %                         the level shift component is not included.
@@ -62,7 +62,7 @@ function out = regressts(y,varargin)
 %                         values of parameter estimates which have to be used in the
 %                         maximization procedure. If model.B is a matrix,
 %                         then initial estimates are extracted from the
-%                         first colum of this matrix. If this field is
+%                         first column of this matrix. If this field is
 %                         empty or if this field is not present, the
 %                         initial values to be used in the maximization
 %                         procedure are referred to the OLS parameter
@@ -74,7 +74,7 @@ function out = regressts(y,varargin)
 %               Remark: the default model is for monthly data with a linear
 %               trend (2 parameters) + seasonal component with just one
 %               harmonic (2 parameters), no additional explanatory
-%               variables and no level shift that is
+%               variables and no level shift that is:
 %                               model=struct;
 %                               model.s=12;
 %                               model.trend=1;
@@ -92,7 +92,7 @@ function out = regressts(y,varargin)
 %smallsamplecor: small sample correction factor. Boolean. Boolean which
 %               defines whether to use or not small sample correction
 %               factor to inflate the scale estimate just in case option
-%               bsb is used and length(bsb)<length(y).  If it is true
+%               bsb is used and length(bsb)<length(y). If it is true,
 %               the small sample correction factor is used. The default
 %               value of smallsamplecor is 1, that is the correction is
 %               used. The default value of smallsamplecor is false.
@@ -102,14 +102,14 @@ function out = regressts(y,varargin)
 %     asymptcor: asymptotic consistency factor. Boolean. Boolean which
 %               defines whether to use or not consistency correction
 %               factor to inflate the scale estimate just in case option
-%               bsb is used and length(bsb)<length(y).  If it is true
-%               the asmptotic consistency is used. The default
+%               bsb is used and length(bsb)<length(y). If it is true,
+%               the asymptotic consistency is used. The default
 %               value of asymptcor is false, that is the asymptotic
 %               consistency factor is not used.
 %               Example - 'asymptcor',false
 %               Data Types - logical
 %
-%  plots :      Plot on the screen. Scalar. If equal to one a two panel plot 
+%  plots :      Plot on the screen. Scalar. If equal to one, a two panel plot 
 %               appears on the screen. The top panel contains real and
 %               fitted value. The bottom panel contains scaled residuals
 %               with a 99.9 per cent confidence band, else (default) no
@@ -122,13 +122,13 @@ function out = regressts(y,varargin)
 %               necessary to use function mdrplot.
 %
 %  nocheck:     Check input arguments. Boolean.
-%               If nocheck is equal to true no check is performed on
-%               supplied structure model
+%               If nocheck is equal to true, no check is performed on
+%               supplied structure model.
 %               Example - 'nocheck',false
 %               Data Types - logical
 %
 %  dispresults : Display results of final fit. Boolean. If dispresults is
-%               true,  labels of coefficients, estimated coefficients,
+%               true, labels of coefficients, estimated coefficients,
 %               standard errors, tstat and p-values are shown on the
 %               screen in a fully formatted way. The default value of
 %               dispresults is false.
@@ -155,13 +155,13 @@ function out = regressts(y,varargin)
 %
 %             out.B =   Matrix containing estimated beta coefficients,
 %                       (including the intercept when options.intercept=true)
-%                       standard errors, t-stat and p-values
+%                       standard errors, t-stat and p-values.
 %                       The content of matrix B is as follows:
 %                       1st col = beta coefficients
 %                        The order of the beta coefficients is as follows:
 %                        1) trend elements (if present). If the trend is
-%                        of order two there are r+1 coefficients if the
-%                        intercept is present otherwise there are just r
+%                        of order two there are r+1 coefficients, if the
+%                        intercept is present, otherwise, there are just r
 %                        components;
 %                        2) linear part of seasonal component 2, 4, 6, ...,
 %                        s-2, s-1 coefficients (if present);
@@ -170,12 +170,12 @@ function out = regressts(y,varargin)
 %                        on the time series under study (X);
 %                        4) non linear part of seasonal component, that is
 %                        varying amplitude. If varying amplitude is of order
-%                        k there are k coefficients (if present);
-%                        5) level shift component (if present). In this case
+%                        k, there are k coefficients (if present);
+%                        5) level shift component (if present). In this case,
 %                        there are two coefficients, the second (which is
 %                        also the last element of vector beta) is an integer
 %                        which specifies the time in which level shift takes
-%                        place and the first (which is also the penultime
+%                        place and the first (which is also the penultimate
 %                        element of vector beta) is a real number which
 %                        identifies the magnitude of the upward (downward)
 %                        level shift;
@@ -192,13 +192,13 @@ function out = regressts(y,varargin)
 %                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)
 %                     \]
 %                     where $S_m$ is a set of cardinality $m$ which
-%                     contains the units belonging to bsb and  $p$
+%                     contains the units belonging to bsb and $p$
 %                     is the total number of estimated parameters and $cor$
 %                     is a correction factor to make the estimator
 %                     consistent (see input options smallsamplecor and
 %                     asymptcor).
 %            out.invXX = $cov(\beta)/\hat \sigma^2$. p-by-p, square matrix.
-%                       If the model is linear out.invXX  is equal to
+%                       If the model is linear, out.invXX is equal to
 %                       $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$
 %                       where $A$ is the matrix of partial derivatives. More
 %                       precisely:
@@ -246,7 +246,7 @@ function out = regressts(y,varargin)
 %                       estimates before retrying nlinfit.
 %                       If there was immediate convergence in nlinfit
 %                       out.ExflagALS is empty.
-%       out.iterALS    = Number of iterations in the ALS routine. Intger
+%       out.iterALS    = Number of iterations in the ALS routine. Integer
 %                       between 1 and 10000 (maximum number of iterations).
 %                       Note that ALS routine is used just in case there
 %                       was no convergence inside routine nlinfit in order
@@ -350,7 +350,7 @@ function out = regressts(y,varargin)
 %}
 
 %{
-    % Example of the use of input option  StartDate.
+    % Example of the use of input option StartDate.
     % Load airline data.
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
@@ -488,7 +488,7 @@ asymptcor=options.asymptcor;
 StartDate = options.StartDate;
 
 % Get model parameters
-trend    = model.trend;       % get kind of  trend
+trend    = model.trend;       % get kind of trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
 
@@ -534,8 +534,8 @@ if seasonal >0
     for j=1:seasonal
         Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
     end
-    % Remark: when s is even the sine term disapperas for j=s/2 and so the
-    % maximum number of trigonometric terms is s-1
+    % Remark: when s is even, the sine term disappears for j=s/2 and so the
+    % maximum number of trigonometric terms is s-1.
     if seasonal==(s/2)
         Xseaso=Xseaso(:,1:end-1);
     end
@@ -549,7 +549,7 @@ end
 X=model.X;
 isemptyX=isempty(X);
 if isemptyX
-    % nexpl = number of potential explanatory variables
+    % nexpl = number of potential explanatory variables.
     nexpl=0;
 else
     nexpl=size(X,2);
@@ -558,14 +558,14 @@ end
 % Define the explanatory variable associated to the level shift component
 if lshift>0
     % Xlshift = explanatory variable associated with
-    % level shift Xlshift is 0 up to lsh-1 and 1 from
-    % lsh to T
+    % level shift Xlshift, is 0 up to lsh-1 and 1 from
+    % lsh to T.
     Xlshift= [zeros(posLS-1,1);ones(T-posLS+1,1)];
 else
     Xlshift =[];
 end
 
-% Construct matrix X (called Xsel) which contains the linear part of the model
+% Construct matrix X (called Xsel) which contains the linear part of the model.
 if seasonal==0
     if isemptyX
         Xsel=Xtrend;
@@ -588,19 +588,19 @@ if lshift>0
 end
 
 % pini = number of parameters in the linear model without level shifts nor
-% varying amplitude
+% varying amplitude,
 % ntrend = number of trend parameters,
 % nseaso = number of parameters associated with the harmonics,
 % nexpl = number of explanatory variables,
-% 1 parameter for fixed level shift position
+% 1 parameter for fixed level shift position.
 pini=ntrend+nseaso+nexpl+(lshift>0);
 
 % p = total number of parameters in the model
 % nini +
-% varampl = number of parameters involving time varying trend,
+% varampl = number of parameters involving time varying trend.
 p=pini+varampl;
 
-% indexes of linear part of seasonal component
+% indexes of linear part of seasonal component.
 if seasonal <6
     indlinsc=(trend+2):(trend+1+seasonal*2);
 else
@@ -646,9 +646,9 @@ else % model is non linear because there is time varying amplitude in seasonal c
         Xlshiftf=Xlshift(bsb);
     end
     
-    % If model contains a field named B than use the first column of this field
+    % If model contains a field named B, then use the first column of this field
     % as initial parameter value, else use OLS estimate based on linear part of
-    % the model
+    % the model.
     if isfield(model,'B') && ~isempty(model.B)
         b=model.B(:,1); % get initial estimate of parameter values
     else
@@ -682,7 +682,7 @@ else % model is non linear because there is time varying amplitude in seasonal c
     
     iterALS=0;
     while iterALS < 2
-        % [betaout,R,J,CovB,MSE,ErrorModelInfo]=nlinfit(....)
+        % [betaout,R,J,covB,MSE,ErrorModelInfo]=nlinfit(....)
         [betaout,~,~,covB,s2,~]  = nlinfit(Xtrendf,yf,@likyhat,b,'options',nlinfitOptions);
         % Note that MSE*inv(J'*J) = covB where MSE is the fourth element
         % returned by nlinfit
@@ -692,7 +692,7 @@ else % model is non linear because there is time varying amplitude in seasonal c
         [~,ID] = lastwarn;
         
         % If lastwarn is not empty and ID of last warning is different from
-        % ILL Conditiioned Jacobian then try ALS to see if it is possible
+        % ILL Conditioned Jacobian then try ALS to see if it is possible
         % to find a better set of starting values for parameter estimates.
         if iterALS == 0 && ~isempty(lastwarn) && ~strcmp(ID,'stats:nlinfit:IllConditionedJacobian')
             lastwarn('')
@@ -710,7 +710,7 @@ else % model is non linear because there is time varying amplitude in seasonal c
     
     % If lastwarn is empty it means that there was full convergence and
     % Exflag=1. Exflag is -1 if there was a warning message which was
-    % different from Ill Conditioned jacobian.
+    % different from Ill Conditioned Jacobian.
     if ~isempty(lastwarn) && ~strcmp(ID,'stats:nlinfit:IllConditionedJacobian')
         Exflag=-1;
     end
@@ -860,8 +860,8 @@ end
 % likyhat computes fitted values using vector of regression coefficients
 % beta0. Note that matrices Xtrendf, Xseasof, Seqf, Xf contain n-k rows.
 % This function is called in the very last step of the procedure when
-% routine nlinfit is invoked. Please, note the difference beween likyhat
-% and lik
+% routine nlinfit is invoked. Please, note the difference between likyhat
+% and lik.
     function objyhat=likyhat(beta0,Xtrendf)
         
         yhattrend=Xtrendf*beta0(1:trend+1);
@@ -904,7 +904,7 @@ end
             yhatlshift=0;
         end
         
-        % objhat = fitted values from trend (yhattrend), (time varying) seasonal
+        % objyhat = fitted values from trend (yhattrend), (time varying) seasonal
         % (yhatseaso), explanatory variables (yhatX) and level shift
         % component (yhatlshift)
         objyhat=yhattrend+yhatseaso+yhatX+yhatlshift;
@@ -944,7 +944,7 @@ end
         if lshift >0
             %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
             %  is a real number and \beta_(npar+2) is a integer which
-            %  denotes the period in which level shift shows up
+            %  denotes the period in which level shift shows up.
             yhatlshift=beta0(npar+1)*Xlshift(bsb);
         else
             yhatlshift=0;
@@ -952,7 +952,7 @@ end
         
         % Fitted values from trend (yhattrend), (time varying) seasonal
         % (yhatseaso), explanatory variables (yhatX) and level shift
-        % component (yhatlshift)
+        % component (yhatlshift).
         yhat=yhattrend+yhatseaso+yhatX+yhatlshift;
         
     end
@@ -962,28 +962,28 @@ end
 
 % ALS computes Alternating Least Squares estimate of beta starting from
 % vector beta0. The rows which are used are those specified in global
-% variable bsb
+% variable bsb.
     function [newbeta,exitflag,iter]=ALS(y,beta0,maxiterALS,maxtolALS)
         iter        = 0;
         betadiff    = 9999;
         newbeta=beta0;
         oldbeta=beta0;
-        % exitflag = flag which informs about convergence. exitflag =0
-        % implies normal convergence, else no convergence has been obtained
+        % exitflag = flag which informs about convergence. exitflag=0
+        % implies normal convergence, else no convergence has been obtained.
         exitflag=0;
         
         while ( (betadiff > maxtolALS) && (iter < maxiterALS) )
             iter = iter + 1;
             
-            % b2378 estimate of linear part of seasonal component
+            % b2378 estimate of linear part of seasonal component.
             b2378=newbeta(indlinsc);
             % at= yhatseaso = fitted values for linear part of seasonal
-            % component
+            % component.
             at=Xseaso(bsb,:)*b2378;
             
-            % OLS to estimate coefficients of trend + expl variables + non lin coeff of
+            % OLS to estimate coefficients of trend + expl variables + non linear coeff of
             % seasonal + coefficient of fixed level shift
-            % trlshift is the matrix of explanatory variables
+            % tr_expl_nls_lshift is the matrix of explanatory variables.
             if isemptyX
                 if lshift>0
                     tr_expl_nls_lshift=[Xtrend(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1)) Xlshift(bsb)];
@@ -1005,7 +1005,7 @@ end
             % component in the regression of y-trend-expl-lsihft versus
             % vector which contains non linear part of seasonal component
             % which multiplies each column of matrix Xseaso (linear part of
-            % seasonal component)
+            % seasonal component).
             yhatnlseaso=Seq(bsb,1)+ Seq(bsb,2:varampl+1)*b0145((trend+2+nexpl):(trend+2+nexpl+varampl-1));
             if isemptyX
                 if lshift>0
@@ -1032,7 +1032,7 @@ end
             newbeta(otherind)=b0145;
             
             % betadiff is linked to the tolerance (specified in scalar
-            % reftol)
+            % reftol).
             betadiff = norm(oldbeta - newbeta,1) / norm(newbeta,1);
             
             oldbeta=newbeta;
@@ -1058,7 +1058,7 @@ end
     end % function getjacobian
 
     function J = statjacobianFS(func, theta, DerivStep, y0)
-        %STATJACOBIAN Estimate the Jacobian of a function
+        %STATJACOBIAN Estimate the Jacobian of a function.
         
         % J is a matrix with one row per observation and one column per model
         % parameter. J(i,j) is an estimate of the derivative of the i'th
@@ -1124,7 +1124,7 @@ end
         end
         
         % When there is only one group, ensure that theta is a row vector so
-        % that vectoriation works properly. Also ensure that the underlying
+        % that vectorization works properly. Also ensure that the underlying
         % function is called with an input with the original size of theta.
         thetaOriginalSize = size(theta);
         theta = reshape(theta, 1, []);

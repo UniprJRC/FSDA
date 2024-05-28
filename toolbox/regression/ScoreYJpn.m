@@ -6,30 +6,30 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 %
 % The transformations for negative and positive responses were determined
 % by Yeo and Johnson (2000) by imposing the smoothness condition that the
-% second derivative of zYJ(λ) with respect to y be smooth at y = 0. However
+% second derivative of zYJ(λ) with respect to y be smooth at y = 0. However,
 % some authors, for example Weisberg (2005), query the physical
-% interpretability of this constraint which is oftern violated in data
+% interpretability of this constraint which is often violated in data
 % analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
 % Yeo-Johnson transformation to allow two values of the transformations
 % parameter: λN for negative observations and λP for non-negative ones.
 % ScoreYJpn computes:
 % 1) the t test associated with the constructed variable computed assuming
 % a different transformation for positive observations keeping the value of
-% the transformation parameter for negative observations fixed. In short we
-% call this test, "test for positive observations".
+% the transformation parameter for negative observations fixed. In short, we
+% call this test "test for positive observations".
 % 2) the t test associated with the constructed variable computed assuming
 % a different transformation for negative observations keeping the value of
-% the transformation parameter for positive observations fixed. In short we
-% call this test, "test for negative observations". 
+% the transformation parameter for positive observations fixed. In short, we
+% call this test "test for negative observations". 
 % 3) the F test for the joint presence of the two constructed variables
-% described in points 1) and 2.
+% described in points 1) and 2).
 %
 %
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. A vector with n elements that
-%               contains the response
-%               variable.  It can be either a row or a column vector.
+%               contains the response variable. 
+%               It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
@@ -51,15 +51,15 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 %        la  :  transformation parameter. Vector. It specifies for which
 %               values of the transformation parameter it is necessary to
 %               compute the score test. Default value of lambda is la=[-1
-%               -0.5 0 0.5 1]; that is the five most common values of
-%               lambda
+%               -0.5 0 0.5 1]; that are the five most common values of
+%               lambda.
 %               Example - 'la',[0 0.5]
 %               Data Types - double
 %
 %       nocheck : Check input arguments. Scalar.
-%               If nocheck is equal to true no check is performed on
+%               If nocheck is equal to true, no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
+%                 unchanged. In other words, the additional column of ones
 %                 for the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
@@ -69,9 +69,9 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 %  The output consists of a structure 'outSC' containing the following fields:
 %
 %        outSC.Score =    score test. Matrix.
-%                            Matrix of size length(lambda)-by-3  which
+%                            Matrix of size length(lambda)-by-3 that
 %                            contains the value of the score test for each
-%                            value of lambda specfied in optional input
+%                            value of lambda specified in optional input
 %                            parameter la. The first column refers to the
 %                            test for positive observations, the
 %                            second column refers to the test for negative
@@ -111,13 +111,13 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 
 
 %{
-    %% Ex in which positive and negative observations require the same lambda.
+    %% Example in which positive and negative observations require the same lambda.
     rng('default')
     rng(1)
     n=100;
     y=randn(n,1);
     % Transform the value to find out if we can recover the true value of
-    % the transformation parameter
+    % the transformation parameter.
     la=0.5;
     ytra=normYJ(y,[],la,'inverse',true);
     % Start the analysis
@@ -126,7 +126,7 @@ function [outSC]=ScoreYJpn(y,X,varargin)
     [outSCpn]=ScoreYJpn(ytra,X,'intercept',false);
     la=[-1 -0.5 0 0.5 1]';
     disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
-    % Comment: if we consider the 5 most common values of lambda
+    % Comment: if we consider the 5 most common values of lambda,
     % the value of the score test when lambda=0.5 is the only one which is not
     % significant. Both values of the score test for positive and negative
     % observations confirm that this value of the transformation parameter is
@@ -134,11 +134,11 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 %}
 
 %{
-    %% Ex in which positive and negative observation require different lambdas.
+    %% Example in which positive and negative observation require different lambda.
     rng(1000)
     n=100;
     y=randn(n,1);
-    % Tranform in a different way positive and negative values
+    % Transform in a different way positive and negative values.
     lapos=0;
     ytrapos=normYJ(y(y>=0),[],lapos,'inverse',true);
     laneg=1;
@@ -151,9 +151,9 @@ function [outSC]=ScoreYJpn(y,X,varargin)
     [outSC]=ScoreYJpn(ytra,X,'intercept',false);
     la=[-1 -0.5 0 0.5 1]';
     disp([la outSC.Score(:,1) outSC1.Score outSC.Score(:,2)])
-    % Comment: if we consider the 5 most common values of lambda
-    % the value of the score test when lambda=0.5 is the only one which is not
-    % significant. However when lambda=0.5 the score test for negative
+    % Comment: if we consider the 5 most common values of lambda,
+    % the value of the score test when lambda=0.5 is the only one that is not
+    % significant. However, when lambda=0.5, the score test for negative
     % observations is highly significant. The difference between the test for
     % positive and the test for negative is 2.7597+0.7744=3.5341, is very
     % large. This indicates that the two tails need a different value of the
@@ -167,7 +167,7 @@ function [outSC]=ScoreYJpn(y,X,varargin)
     y=XX(:,end);
     X=XX(:,1:end-1);
     % Score test using the five most common values of lambda.
-    % In this case (given that all observations are positive the extended
+    % In this case (given that all observations are positive), the extended
     % score test for positive observations reduces to the standard score test
     % while that for negative is equal to NaN.
     [outSc]=ScoreYJpn(y,X);
@@ -175,14 +175,14 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 
 
 %{
-    % Extended score test using Darwin data given by Yeo and Yohnson.
+    % Extended score test using Darwin data given by Yeo and Johnson.
      y=[6.1, -8.4, 1.0, 2.0, 0.7, 2.9, 3.5, 5.1, 1.8, 3.6, 7.0, 3.0, 9.3, 7.5 -6.0]';
      n=length(y);
      X=ones(n,1);
      % Score and extended score test in the grid of lambda 1, 1.1, ..., 2
      la=[1:0.1:2];
-     % Given that there are no explanatory variables the test must be
-     % called with intercept false
+     % Given that there are no explanatory variables, the test must be
+     % called with intercept false.
      outpn=ScoreYJpn(y,X,'intercept',false,'la',la);
      out=ScoreYJ(y,X,'intercept',false,'la',la);
      disp([la' outpn.Score(:,1) out.Score outpn.Score(:,2)])
@@ -203,15 +203,15 @@ if nargin>2
     
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
-    % Check if number of supplied options is valid
+    % Check if number of supplied options is valid.
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:ScoreYJpn:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    % Check if user options are valid options
+    % Check if user options are valid options.
     aux.chkoptions(options,UserOptions)
     
     
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the options chosen by the user.
     if nargin > 2
         for i=1:2:length(varargin)
             options.(varargin{i})=varargin{i+1};
@@ -223,7 +223,7 @@ end
 
 
 %  Sc= vector which contains the t test for constructed variables for the
-%  values of \lambda specified in vector la
+%  values of \lambda specified in vector la.
 
 
 % value related to the Jacobian
@@ -246,8 +246,8 @@ G=exp(logG);
 % Note that Gpos*Gneg=G
 
 
-%  Sc= matrix lla-by-2 which contains the two t tests for constructed variables
-%  for the values of \lambda specified in vector la
+%  Sc= matrix lla-by-2 that contains the two t tests for constructed variables
+%  for the values of \lambda specified in vector la.
 lla=length(la);
 Sc=NaN(lla,2);
 wini=NaN(n,1);
@@ -267,7 +267,7 @@ for i=1:lla
     twomlambdai=2-lai;
     
     % Compute transformed values and constructed variables depending on lambda
-    % transformation for non negative values
+    % transformation for non-negative values.
     if abs(lai)>1e-8  % if la is different from 0
         % vposlai=vpos.^lai;
         vposlai=exp(lai*logvpos);
@@ -300,7 +300,7 @@ for i=1:lla
         wneg(negs)=logvneg.*(logvneg/2 +logGneg)/ G;
     end
     
-    % Compute residual sum of squares for null (reduced) model
+    % Compute residual sum of squares for null (reduced) model.
     betaR=X\z;
     residualsR = z - X*betaR;
     % Sum of squares of residuals
@@ -369,9 +369,9 @@ for i=1:lla
     end
     
     % Compute the F test for the joint presence of both constructed
-    % variables
+    % variables.
     if vposboo==true && vnegboo==true
-        % Compute residual sum of squares for full model
+        % Compute residual sum of squares for full model.
         Xww=[X wpos wneg];
         betaF=Xww\z;
         
@@ -385,15 +385,15 @@ for i=1:lla
         Sc(i,3)=Ftest;
     elseif vposboo==true
         % If there are just positive observations F test is the square of
-        % the t test for positive
+        % the t test for positive.
         Sc(i,3)=Sc(i,1)^2;
-    else % in this case there are just negative observations
+    else % in this case, there are just negative observations.
         Sc(i,3)=Sc(i,2)^2;
     end
     
 end
 
-% Store values of the score test inside structure outSC
+% Store values of the score test inside structure outSC.
 outSC.Score=Sc;
 
 

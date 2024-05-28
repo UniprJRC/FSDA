@@ -30,11 +30,11 @@ function [out]=regressHart(y,X,Z,varargin)
 %               $\omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
 %               \gamma_{r} X(i,Z(r)))$. 
 %
-%               Therefore, if for example the explanatory variables
+%               Therefore, if, for example, the explanatory variables
 %               responsible for heteroscedisticity are columns 3 and 5
-%               of matrix X, it is possible to use both the sintax 
+%               of matrix X, it is possible to use both the syntax 
 %                    regressHart(y,X,X(:,[3 5]))
-%               or the sintax 
+%               or the syntax 
 %                    regressHart(y,X,[3 5]). 
 %
 %               Remark: Missing values (NaN's) and infinite values (Inf's) are
@@ -54,20 +54,20 @@ function [out]=regressHart(y,X,Z,varargin)
 %
 % initialbeta : initial estimate of beta. Vector.
 %               p x 1 vector. If initialbeta is not supplied (default) standard least
-%               squares is used to find initial estimate of beta
+%               squares is used to find initial estimate of beta.
 %               Example - 'initialbeta',[3.6 8.1]
 %               Data Types - double
 %
 % initialgamma: initial estimate of gamma. Vector.
-%               vector of length (r+1). If initialgamma is not supplied
-%               (default)  initial estimate of gamma is nothing but the OLS
+%               Vector of length (r+1). If initialgamma is not supplied
+%               (default), initial estimate of gamma is nothing but the OLS
 %               estimate in a regression where the response is given by
 %               squared residuals and the regressors are specified in input
 %               object Z (this regression also contains a constant term).
 %               Example - 'initialgamma',[0.6 2.8]
 %               Data Types - double
 %
-%     maxiter : Maximum number of iterations to find model paramters. Scalar.
+%     maxiter : Maximum number of iterations to find model parameters. Scalar.
 %               If not defined, maxiter is fixed to 200. Remark: in order
 %               to obtain the FGLS estimator (two step estimator) it is
 %               enough to put maxiter=1.
@@ -84,22 +84,22 @@ function [out]=regressHart(y,X,Z,varargin)
 %               Data Types - double
 %
 %    msgiter : Level of output to display. Scalar.
-%               If msgiter=1 it is possible to see the estimates of
+%               If msgiter=1, it is possible to see the estimates of
 %               the regression and scedastic parameters together with their
 %               standard errors and the values of Wald, LM and
 %               Likelihood ratio test, and the value of the maximized
-%               loglikelihood. If msgiter>1 it is also possible to see
+%               loglikelihood. If msgiter>1, it is also possible to see and
 %               monitor the estimates of the coefficients in each step of
-%               the iteration. If msgiter<1 nothing is displayed on the
-%               screen
+%               the iteration. If msgiter<1, nothing is displayed on the
+%               screen.
 %               Example - 'msgiter',0
 %               Data Types - double
 %
 %
 %  nocheck:   Check input arguments. Boolean.
-%               If nocheck is equal to true no check is performed on
+%               If nocheck is equal to true, no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones for
+%               unchanged. In other words, the additional column of ones for
 %               the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
@@ -129,7 +129,7 @@ function [out]=regressHart(y,X,Z,varargin)
 %            out.LogL = scalar. Complete maximized log likelihood
 %
 %
-%   DETAILS. This routine implements art heteroscedasticity
+%   DETAILS. This routine implements art heteroscedasticity.
 %
 %
 %  More About:
@@ -156,7 +156,7 @@ function [out]=regressHart(y,X,Z,varargin)
 %               REMARK2: if there is just one explanatory variable (say x)
 %               which is responsible for heteroskedasticity and the model is
 %               $\sigma_i=\sigma_2(1+ \theta*x_i^\alpha)$
-%               then it is necessary to to supply Z as $Z=log(x)$. In this
+%               then it is necessary to supply Z as $Z=log(x)$. In this
 %               case, given that the program automatically adds a column of
 %               ones to Z: 
 %                  $exp(Z_{1i}*\gamma_1 +Z_{2i}*\gamma_2)=
@@ -215,7 +215,7 @@ function [out]=regressHart(y,X,Z,varargin)
     % regressHart with optional arguments.
     % Estimate a multiplicative heteroscedastic model and print the
     % estimates of regression and scedastic parameters together with LM, LR
-    % and Wald test
+    % and Wald test.
     load('TableF61_Greene');
     Y=TableF61_Greene{:,:};
 
@@ -256,9 +256,9 @@ if ~isempty(UserOptions)
     end
     
     % Check if all the specified optional arguments were present
-    % in structure options
+    % in structure options.
     % Remark: the nocheck option has already been dealt by routine
-    % chkinputR
+    % chkinputR.
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
@@ -297,7 +297,7 @@ logL_R= n*(1+log(sigma2));
 if size(Z,1)==n
     Z=[ones(n,1) Z];
 else
-    % Check if interecept was true
+    % Check if intercept was true
     intercept=options.intercept;
     if intercept==true
         Z=[ones(n,1) X(:,Z+1)];
@@ -308,7 +308,7 @@ end
 % Estimate of gamma is nothing but the OLS estimate in a regression where
 % the response is given by squared residuals and the regressors are a set
 % of variables Z supplied by the user (Z matrix may contain a subset of X
-% or another set of explanatory variables)
+% or another set of explanatory variables).
 % Note that the response is log(r.^2) because the scedastic function is
 % \sigma_i^2 = exp( \gamma_0 + \gamma_1*Z(i,2) + ... + \gamma_{r}*Z(i,r))
 initialgamma=options.initialgamma;
@@ -335,13 +335,13 @@ maxiter=options.maxiter;
 
 delt=1;
 
-% Given that exp(z'\gamma) it is necessary in the estimatio procedure to
+% Given that exp(z'\gamma) it is necessary in the estimation procedure to
 % put a threshold to z'\gamma. scalar |th| is the maximum value allowed during the
-% estimation procedure for each element of gamma
+% estimation procedure for each element of gamma.
 th=8;
 
-% d (dold and d new) are the column vectors which contains the full set of
-% parameters (beta and gamma)
+% d (dold and d new) are the column vectors, which contain the full set of
+% parameters (beta and gamma).
 dold=[oldbeta;oldgamma];
 while cont==1 && iter<maxiter
     iter=iter+1;
@@ -349,7 +349,7 @@ while cont==1 && iter<maxiter
     % 1. Estimate the disturbance variance
     % \sigma^2_i with \exp(\gamma_i' z_i)
     % sigma2hat1 = vector of length n which contains the n estimates of the
-    % disturbance variance
+    % disturbance variance.
     Zoldgamma=Z*oldgamma;
     
     greatth=Zoldgamma>th;
@@ -459,7 +459,7 @@ if test==1
     % Wald test
     % This test is computed extracting from the full parameter vector \gamma
     % and its estimated asymptotic covariance matrix, the subvector \hat alpha
-    % and its asymptotic covariance matrix
+    % and its asymptotic covariance matrix.
     % In the case of art heteroscedasticity
     %               \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
     %               \gamma_{r} X(i,Z(r)))
@@ -484,18 +484,18 @@ if test==1
     LogL= -(logL_U+n*log(2*pi))/2;
     
     % Lagrange multiplier test
-    % Take residuals from OLS model and form reponse variable h (nx1) where
+    % Take residuals from OLS model and form response variable h (nx1) where
     % the ith element of vector h is given by
     % h_i= e_i^2/(e'e/n) -1  and z_i is the i-th row of matrix Z
     % i=1, ..., n
     h=r.^2/(sum(r.^2)/n)-1;
     % Regress h on Z and find the explained sum of squares
-    % bh = vector of regression coefficients from regression of h on Z
+    % bh = vector of regression coefficients from regression of h on Z.
     bh=Z\h;
-    % Zbh = fitted values from the regression of h on Z
+    % Zbh = fitted values from the regression of h on Z.
     Zbh=Z*bh;
     % LM is nothing but one-half times the explained sum of squares in the
-    % linear regression of the variable h on Z
+    % linear regression of the variable h on Z.
     LM=Zbh'*Zbh/2;
     
     % Below it is possible to find two alternative (inefficient) ways of
