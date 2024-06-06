@@ -176,7 +176,7 @@ function [out] = regressCens(y,X, varargin)
 % \end{eqnarray}
 %
 % In this file the censored log likelihood above is maximized with respect
-% to the parameter vector (\beta' \sigma) using routine fminunc of the
+% to the parameter vector $(\beta', \sigma)$ using routine fminunc of the
 % optimization toolbox
 %
 % See also regress, regstats, regressB, regressH, regressts
@@ -294,7 +294,7 @@ if istable(y)
 end
 
 if istable(X)
-    
+
     tableX=true;
 
     catColumns = varfun(@iscategorical, X, 'OutputFormat', 'uniform');
@@ -382,6 +382,7 @@ else
 end
 
 optmin.Display='off';
+optmin.MaxFunEvals=10000;
 
 if isempty(bsb)
     Xin=X;
@@ -389,42 +390,74 @@ if isempty(bsb)
 else
     Xin=X(bsb,:);
     yin=y(bsb);
+    n=length(yin);
 end
-yin(yin>right)=right;
-yin(yin<left)=left;
 
+if any(yin>right)
+   error('FSDA:regrCens:WrgInpt','Observations with y greater than right truncation point')
+end
+if any(yin<left)
+    error('FSDA:regrCens:WrgInpt','Observations with y smaller than left truncation point')
+end
 
-obsBelow = yin <= left;
-obsAbove = yin>= right;
+obsBelow = yin == left;
+obsAbove = yin == right;
 obsBetween = ~obsBelow & ~obsAbove;
 
 
 if sum(obsBelow) + sum(obsAbove) == 0
-    warning('FSDA:regressCens:WrongInputOpt',"there are no censored observations")
+    if length(y)>50 & (left~=-Inf && isfinite(right))
+        warning('FSDA:regressCens:WrongInputOpt',"there are no censored observations")
+    end
 end
 
 if sum(obsBetween) == 0
-    error('FSDA:regressCens:WrongInputOpt',"there are no uncensored observations")
+    warning('FSDA:regressCens:WrongInputOpt',"there are no uncensored observations")
 end
 
+if range(yin)>0
 
-if isempty(initialbeta)
-    initialbeta=Xin\yin;
+    if isempty(initialbeta)
+        initialbeta=Xin\yin;
+    end
+
+
+    e=(yin-Xin*initialbeta);
+    sigmaini=e'*e/(n-p);
+
+    % lainit = column vector containing initial estimate of beta and sigma
+    thetainit=[initialbeta;sigmaini];
+
+    iter=0;
+    conv=false;
+    % optmin.TolX=1e-05;
+    while conv ==false && iter <=5
+        [betaout,fval,Exflag,~,~,hessian]  = fminunc(@loglik,thetainit,optmin);
+        if Exflag >0
+            conv=true;
+        else
+            thetainit=thetainit.*unifrnd(0.9,1.1,p+1,1);
+            iter=iter+1;
+        end
+    end
+
+    sebetaout=sqrt(diag(inv(hessian)));
+    tout=betaout./sebetaout;
+
+else
+    betaini=Xin\yin;
+
+    e=(yin-Xin*betaini);
+
+    sigmaini=e'*e/(n-p);
+    betaout=[betaini; sigmaini];
+
+    sebetaout=[sqrt(sigmaini*diag(inv(X'*X))); Inf];
+    tout=Inf(p+1,1);
+    Exflag=0;
+    fval=NaN;
 end
-e=(yin-Xin*initialbeta);
-sigmaini=e'*e/(n-p);
 
-
-ya=yin==left;
-yb=yin==right;
-yab=(yin>left & yin<right);
-
-% lainit = column vector containing initial estimate of beta and sigma
-lainit=[initialbeta;sigmaini];
-[betaout,fval,Exflag,~,~,hessian]  = fminunc(@loglik,lainit,optmin);
-sebetaout=sqrt(diag(inv(hessian)));
-
-tout=betaout./sebetaout;
 dfe=n-p-1;
 pval=2*(tcdf(-abs(tout), dfe));
 Beta=[betaout sebetaout tout pval];
@@ -434,9 +467,6 @@ out=struct;
 out.Beta=Beta;
 out.Exflag=Exflag;
 out.LogL=-fval;
-if saveX== true
-    out.X=X;
-end
 
 if dispresults == true
     if tableX==true
@@ -449,7 +479,7 @@ if dispresults == true
         if intercept==true
             lab=["(Intercept)"; "x"+(1:(p-1))'; "sigma"];
         else
-            lab="x"+(1:p)';
+            lab=["x"+(1:p)'; "sigma"];
         end
     end
     disp('Observations:')
@@ -464,15 +494,21 @@ if dispresults == true
     disp(['Number of observations: ' num2str(n) , ', Error degrees of freedom:' num2str(dfe)]);
     disp(['Log-likelihood: ' num2str(-fval)]);
 
+    R2=corr(y,X*betaout(1:end-1));
+    disp(['R-squared: ' num2str(R2)])
+    saveX=true;
 end
 
+if saveX== true
+    out.X=X;
+end
 
-    function dZ=loglik(la)
-        beta=la(1:end-1);
-        sigma=la(end);
+    function dZ=loglik(theta)
+        beta=theta(1:end-1);
+        sigma=theta(end);
         yhat=Xin*beta;
-        dZ=-sum(ya.*log(normcdf((left-yhat)/sigma)+1e-12)+...
-            yb.*log(normcdf((yhat-right)/sigma)+1e-12)+...
-            +yab.*(log( normpdf((yin-yhat)/sigma)+1e-12 )-log(sigma)));
+        dZ=-sum(obsBelow.*log(normcdf((left-yhat)/sigma)+1e-12)+...
+            obsAbove.*log(normcdf((yhat-right)/sigma)+1e-12)+...
+            +obsBetween.*(log( normpdf((yin-yhat)/sigma)+1e-12 )-log(sigma)));
     end
 end
