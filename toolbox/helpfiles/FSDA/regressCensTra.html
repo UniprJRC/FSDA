@@ -1,0 +1,240 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>regressCensTra</title><meta content="refpage" name="chunktype"><meta content="function:regressCensTra" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="regressCensTra computes signed sqrt LR test for lambda in the censored (Tobit) model." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">regressCensTra</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Tobit regression using the affairs dataset.</a></li><li><a class="intrnllnk" href="#Example_2">Example of right censoring.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example of right censoring with X a table with categorical variables.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Another example with right censoring.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_bsb">bsb</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_left">left</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_initialbeta">initialbeta</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_initialla">initialla</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_la0">la0</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_right">right</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_optmin">optmin</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">regressCensTra</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">regressCensTra computes signed sqrt LR test for lambda in the censored (Tobit) model</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=regressCensTra(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="regressCensTra.html#Example_1">example</a></span></li><li><code class="synopsis">out=regressCensTra(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="regressCensTra.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>This routines estimates the regression coefficients, sigma and the
+ trasformation parameter lambda. The model is estimated by Maximum
+ Likelihood (ML) assuming a Gaussian (normal) distribution of the error
+ term in the transformed scale. The maximization of the likelihood
+ function is done by function fmincon of the optimization toolbox.</p> <p>
+ It also computes the signed sqrt likelihood ratio test of
+ $H_0:\lambda=\lambda_0$.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="regressCensTra.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=regressCensTra(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>)</code></span>Tobit regression using the affairs dataset.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="regressCensTra.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=regressCensTra(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of right censoring.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Tobit regression using the affairs dataset.</li></span></a></span></h3><div class="collapse"><p>
+     In the example of Kleiber and Zeileis (2008, p. 142), the number of a
+     person's extramarital sexual inter-courses ("affairs") in the past year
+     is regressed on the person's age, number of years married, religiousness,
+     occupation, and won rating of the marriage. The dependent variable is
+     left-censored at zero and not right-censored.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% We show below the estimates of lambda, beta, sigma and transformation
+% parameter lambda
+load affairs.mat
+X=affairs(:,["age" "yearsmarried" "religiousness" "occupation" "rating"]);
+y=affairs(:,"affairs");
+out=regressCensTra(y,X,"dispresults",true);</pre></div></div><pre class="codeoutput">Observations:
+    Total    LeftCensored    Uncensored    RightCensored
+    _____    ____________    __________    _____________
+
+     601         451            150              0      
+
+Coefficients
+                     betaout     sebetaout     tout         pval   
+                     ________    _________    _______    __________
+
+    (Intercept)        8.0994      2.0551      3.9411    9.0766e-05
+    age              -0.17896    0.096378     -1.8568       0.06383
+    yearsmarried      0.55581     0.19968      2.7835     0.0055481
+    religiousness      -1.687      0.2857     -5.9047    5.9462e-09
+    occupation        0.32197     0.25833      1.2464       0.21313
+    rating            -2.2832     0.42998     -5.3102    1.5499e-07
+    sigma              8.2092      0.7192      11.414    2.0181e-27
+    lambda             1.2595     0.20391      6.1769    1.2131e-09
+
+Number of observations: 601, Error degrees of freedom:594
+Log-likelihood: -703.2104
+R-squared: 0.36215
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of right censoring.</li></span></a></span></h3><div class="collapse"><p>
+     When left=-Inf and right=0 indicates that there is no left-censoring but
+     there is a right censoring at 0. The same model as above but with the
+     negative number of affairs as the dependent variable can be estimated  by<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load affairs.mat
+X=affairs(:,["age" "yearsmarried" "religiousness" "occupation" "rating"]);
+y=affairs(:,"affairs").*(-1);
+out=regressCensTra(y,X,"dispresults",true,"left",-Inf,"right",0);
+% This estimation does not return anymore beta parameters that have the opposite sign of
+% the beta parameters in the original model, because of lambda</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of right censoring with X a table with categorical variables.</li></span></a></span></h3><div class="collapse"><p>
+     When left=-Inf and right=0 indicates that there is no left-censoring but
+     there is a right censoring at 0. The same model as above but with the
+     negative number of affairs as the dependent variable can be estimated  by<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load affairs.mat
+X=affairs(:,["age" "yearsmarried" "religiousness" "occupation" "rating"]);
+y=affairs(:,"affairs").*(-1);
+out=regressCensTra(y,X,"dispresults",true,"left",-Inf,"right",0);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Another example with right censoring.</li></span></a></span></h3><div class="collapse"><p>
+     This example is taken from https://stats.oarc.ucla.edu/r/dae/tobit-models/
+     Consider the situation in which we have a measure of academic aptitude
+     (scaled 200-800) which we want to model using reading and math test
+     scores, as well as, the type of program the student is enrolled in
+     (academic, general, or vocational). The problem here is that students who
+     answer all questions on the academic aptitude test correctly receive a
+     score of 800, even though it is likely that these students are not
+     “truly” equal in aptitude. The same is true of students who answer all of
+     the questions incorrectly. All such students would have a score of 200,
+     although they may not all be of equal aptitude.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=readtable("https://stats.idre.ucla.edu/stat/data/tobit.csv","ReadRowNames",true);
+XX.prog=categorical(XX.prog);
+% The dataset contains 200 observations. The academic aptitude variable is
+% "apt", the reading and math test scores are read and math respectively. The
+% variable prog is the type of program the student is in, it is a
+% categorical (nominal) variable that takes on three values, academic
+% general, and vocational (prog = 3). 
+% The scatterplot matrix is shown below
+spmplot(XX(:,[1 2 4]));
+% Now let’s look at the data descriptively. Note that in this dataset, the
+% lowest value of apt is 352. That is, no students received a score of 200
+% (the lowest score possible), meaning that even though censoring from
+% below was possible, it does not occur in the dataset.
+summary(XX)
+% Define y and X
+y=XX(:,"apt");
+X=XX(:,["read", "math" "prog"]);
+% Call regressCens
+out=regressCensTra(y,X,'right',800,'left',-Inf,'dispresults',true);
+disp('Value of the signed sqrt lik ratio test')
+disp(out.signLR)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+               a vector of length n, where n is the number of
+               observations. Each entry in y is the response for the
+               corresponding row of X.</p> <p>
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>array or table</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables in the regression equation. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix of
+               explanatory variables (also called 'regressors') of
+               dimension n x (p-1) where p denotes the number of
+               explanatory variables including the intercept. Rows of X
+               represent observations, and columns represent variables. By
+               default, there is a constant term in the model, unless you
+               explicitly remove it using input option intercept, so do
+               not include a column of 1s in X. Missing values (NaN's) and
+               infinite values (Inf's) are allowed, since observations
+               (rows) with missing or infinite values will automatically
+               be excluded from the computations.</p> <p>
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>array or table</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bsb',[3 5 20:30]
+</code>,<code> 'dispresults',true
+</code>,<code> 'left',1
+</code>,<code> 'initialbeta',[3 8]
+</code>,<code> 'initialbeta',[3 8]
+</code>,<code> 'intercept',false
+</code>,<code> 'la0',0.5
+</code>,<code> 'nocheck',false
+</code>,<code> 'right',800
+</code>,<code>'optmin.Display','off'
+</code></code></span></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;units forming subset.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>m x 1 vector of integers or logical vector of length n.</p> <p>
+               The default value of bsb is 1:n, that is all units are
+               used to compute parameter estimates.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsb',[3 5 20:30]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double or logical vector</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results of final fit.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is
+               true,  labels of coefficients, estimated coefficients,
+               standard errors, tstat and p-values are shown on the
+               screen in a fully formatted way. The default value of
+               dispresults is false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_left" class="clearfix"></div><h3 id="input_argument_namevalue_left" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>left</code> &#8212;left limit for the censored dependent variable.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If set to -Inf, the dependent variable is assumed to be not
+               left-censored; default value of left is zero (classical
+               Tobit model).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'left',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_initialbeta" class="clearfix"></div><h3 id="input_argument_namevalue_initialbeta" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>initialbeta</code> &#8212;initial estimate of beta.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>(p-1) x 1 vector. If initialbeta is not supplied (default) standard least
+               squares is used to find initial estimate of beta
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'initialbeta',[3 8]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_initialla" class="clearfix"></div><h3 id="input_argument_namevalue_initialla" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>initialla</code> &#8212;initial estimate of lambda.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Initial value of the transformation parameter which has to
+               be used in the optimization procedure
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'initialbeta',[3 8]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
+               specified as the comma-separated pair consisting of
+               'Intercept' and either true to include or false to remove
+               the constant term from the model.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_la0" class="clearfix"></div><h3 id="input_argument_namevalue_la0" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>la0</code> &#8212;Transformation parameter to test.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value of the transformation parameter which has to be
+               tested using the signed sqrt root lik ratio test. The
+               default value is la0 is 1. For example to test log
+               transformation use la0=0. The family of transformations
+               which is used is Yeo and Johnson.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'la0',0.5
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If nocheck is equal to true no check is performed on
+               supplied structure model
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_right" class="clearfix"></div><h3 id="input_argument_namevalue_right" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>right</code> &#8212;right limit for the censored dependent variable.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If set to Inf, the dependent variable is assumed to be not
+               right-censored; default value of left is Inf (classical
+               Tobit model).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'right',800
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_optmin" class="clearfix"></div><h3 id="input_argument_namevalue_optmin" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>optmin</code> &#8212;It contains the options dealing with the
+               maximization algorithm.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Use optimset to set these options.</p> <p>
+               Notice that the maximization algorithm which is used is
+               fminunc if the optimization toolbox is present else is
+               fminsearch.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'optmin.Display','off'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
+
+   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>(p+2)-by-3 matrix containing:
+                       1st col = Estimates of regression coefficients,
+                       sigma and lambda;</p> <p>
+                       2nd col = Standard errors of the estimates
+                       3rd col = t-tests of the estimates</p></p></td></tr><tr valign="top"><td><code>beta0</code></td><td><p>vector containing the estimates of the regression
+                       coefficients under z(lambda_0)</p></td></tr><tr valign="top"><td><code>jacla0</code></td><td><p>value of the Jacobian which has been used in order
+                       to normalize the observations under H_0. The
+                       Jacobian just uses uncensored observations.</p></td></tr><tr valign="top"><td><code>LogL</code></td><td><p>scalar. Value of the maximized log likelihood using
+                       lambda
+                       (ignoring constants).</p></td></tr><tr valign="top"><td><code>Exflag</code></td><td><p><p>Reason fminunc stopped in the maximization of the
+                       unconstrained likelihood. Integer.</p> <p>
+                      out.Exflag is equal to 1
+                       if the maximization procedure did not produce
+                       warnings or the warning was different from
+                       "ILL Conditioned Jacobian". For any other warning
+                       which is produced (for example,
+                       "Overparameterized", "IterationLimitExceeded",
+                       'MATLAB:rankDeficientMatrix") out.Exflag is equal
+                       to -1;</p></p></td></tr><tr valign="top"><td><code>signLR</code></td><td><p>Signed sqrt of the lik ratio test of lambda=la0.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>design matrix which has been used. This output is
+                       present just in X is a table containing categorical
+                       variables.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+
+ The issue is one where data is censored such that while we observe the
+ value, it is not the true value, which would extend beyond the range of
+ the observed data. This is very commonly seen in cases where the
+ dependent variable has been given some arbitrary cutoff at the lower or
+ upper end of the range, often resulting in floor or ceiling effects
+ respectively. The conceptual idea is that we are interested in modeling
+ the underlying latent variable that would not have such restriction if it
+ was actually observed.</p> <p>
+
+ In the standard Tobit model (Tobin 1958), we have a dependent variable $y$ that is left-censored at zero:
+ \begin{eqnarray}
+ y_i^* & = & x_i^{\prime} \beta+\varepsilon_i \\
+ y_i   =  &  0            & \text { if } y_i^* \leq 0 \\
+ y_i   =  &  y_i^*        &  \text { if } y_i^*&gt;0
+ \end{eqnarray}
+
+ Here the subscript $i=1, \ldots, n$ indicates the observation,
+ $y_i^*$ is an unobserved ("latent") variable,
+ $x_i$ is a vector of explanatory variables,
+ $\beta$ is a vector of unknown parameters, and
+ $\varepsilon_i$ is a disturbance term.</p> <p>
+
+ The censored regression model is a generalisation of the standard Tobit model.</p> <p>
+ The dependent variable can be either left-censored, right-censored, or
+ both left-censored and right-censored, where the lower and/or upper limit
+ of the dependent variable can be any number:
+ \begin{eqnarray}
+  y_i^*=x_i^{\prime} \beta+\varepsilon_i     \\
+  y_i & = &     a       \qquad  \text { if } y_i^* \leq a    \\
+      & = &   y_i^*     \qquad  \text { if } a&lt;y_i^*&lt;b    \\
+      & = &    b        \qquad  \text { if } y_i^* \geq b
+\end{eqnarray}
+
+ Here $a$ is the lower limit and $b$ is the upper limit of the dependent
+ variable trasformed. If $a=-\infty$ or $b=\infty$, the dependent variable is not
+ left-censored or right-censored, respectively.</p> <p>
+
+ Censored regression models (including the standard Tobit model) are usually estimated by the Maximum Likelihood (ML) method. Assuming that the disturbance term $\varepsilon$ follows a normal distribution with mean 0 and variance $\sigma^2$, the log-likelihood function is
+ \begin{aligned}
+ \log L=\sum_{i=1}^N  & \left[  I_i^a \log \Phi\left(\frac{a-z_i(\lambda)^{\prime} \beta}{\sigma}\right)+I_i^b \log \Phi\left(\frac{x_i^{\prime} \beta-b}{\sigma}\right)  \right. \\
+ & \left.+\left(1-I_i^a-I_i^b\right)\left(\log \phi\left(\frac{y_i-z_i(\lambda)^{\prime} \beta}{\sigma}\right)-\log \sigma\right)\right],
+ \end{aligned}
+
+ where $\phi( \cdot)$ and $\Phi( \cdot )$ denote the probability density
+ function and the cumulative distribution function, respectively, of
+ the standard normal distribution, and $I_i^a$ and $I_i^b$ are indicator
+ functions with. $z_i(\lambda)$ are the transformed observations using Yeo and
+ Johnson transformation normalized using the Jacabian based on uncensored
+ observations.</p><p>
+
+ \begin{eqnarray}
+ I_i^a & = &  1  \text { if } y_i=a   \\
+       & = &  0   \text { if } y_i&gt;a  \\
+ I_i^b & = &  1  \text { if } y_i=b   \\
+       & = &  0  \text { if } y_i&lt;b   \\
+ \end{eqnarray}
+
+ In this file the censored log likelihood above is maximized with respect
+ to the parameter vector $(\beta', \sigma)$ using routine fminunc of the
+ optimization toolbox
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Greene, W.H. (2008), "Econometric Analysis, Sixth Edition", Prentice Hall, pp. 871-875.</p></div><div><p>Henningsen, A. (2012), Estimating Censored Regression Models in R using
+ the censReg Package,
+  <a href="[https://cran.r-project.org/web/packages/censReg/vignettes/censReg.pdf">[https://cran.r-project.org/web/packages/censReg/vignettes/censReg.pdf</a></p></div><div><p>Kleiber C., Zeileis A. (2008), "Applied Econometrics with R", Springer, New York.</p></div><div><p>Tobin, J. (1958), Estimation of Relationships for Limited Dependent
+ Variables, "Econometrica", 26, pp. 24-36.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="regressCens.html" itemprop="url"><span itemprop="name"><code>regressCens</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'FSDA/GUIregress.html'))" itemprop="url"><span itemprop="name"><code>regress</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/regstats.html'))" itemprop="url"><span itemprop="name"><code>regstats</code></span></a></span> | <span itemprop="seealso"><a href="regressB.html" itemprop="url"><span itemprop="name"><code>regressB</code></span></a></span> | <span itemprop="seealso"><a href="regressH.html" itemprop="url"><span itemprop="name"><code>regressH</code></span></a></span> | <span itemprop="seealso"><a href="regressts.html" itemprop="url"><span itemprop="name"><code>regressts</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
