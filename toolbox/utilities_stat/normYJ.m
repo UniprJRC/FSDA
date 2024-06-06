@@ -26,6 +26,14 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 %
 % Optional input arguments:
 %
+%      bsb :   units to be used in the computation of the Jacobian. Vector.
+%                m x 1 vector or logical vector or length n.
+%               The default value of bsb is 1:length(y), that is all units are
+%               used to compute the Jacobian. Note that this option takes
+%               effect just if option Jacobian is true.
+%               Example - 'bsb',[3 5 20:30]
+%               Data Types - double or logical
+%
 %  inverse :    Inverse transformation. Logical. If inverse is true, the
 %               inverse transformation is returned. The default value of
 %               inverse is false.
@@ -34,9 +42,12 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 %
 %  Jacobian :   Requested Jacobian of transformed values. true (default) or
 %               false. If true (default) the transformation is normalized
-%               to have Jacobian equal to 1
+%               to have Jacobian equal to 1. Note that this optional
+%               argument is ignored if previous optional argument inverse
+%               is true
 %                 Example - 'Jacobian',true
 %                 Data Types - Logical
+% 
 %
 % Output:
 %
@@ -131,7 +142,7 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 
 % Input parameters checking
 % Extract size of the data
-v=size(Y,2);
+[n,v]=size(Y);
 
 if nargin<1
     error('FSDA:normYJ:missingInputs','Input data matrix is missing');
@@ -151,10 +162,11 @@ end
 
 Jacobian=true;
 inverse=false;
+bsb=[];
 
 if nargin>2
     if coder.target('MATLAB')
-        options=struct('Jacobian',Jacobian,'inverse',inverse);
+        options=struct('Jacobian',Jacobian,'inverse',inverse,'bsb',bsb);
         
         [varargin{:}] = convertStringsToChars(varargin{:});
         UserOptions=varargin(1:2:length(varargin));
@@ -173,9 +185,14 @@ if nargin>2
     end
     Jacobian=options.Jacobian;
     inverse=options.inverse;
+    bsb=options.bsb;
 end
 
-%% Normalized Yeo-Johnson transformation of columns ColtoTra using la
+if isempty(bsb)
+    bsb=1:n;
+end
+
+%% (Normalized) Yeo-Johnson transformation of columns ColtoTra using la
 Ytra=Y;
 
 if inverse== false
@@ -184,7 +201,7 @@ if inverse== false
         cj=ColtoTra(j);
         laj=la(j);
         Ycj=Y(:,cj);
-        
+       
         nonnegs = Ycj >= 0;
         negs = ~nonnegs;
         
@@ -207,9 +224,9 @@ if inverse== false
         
         % If Jacobian ==true the transformation is normalized so that its
         % Jacobian will be 1
-        
+        % Use just the observations inside bsb
         if Jacobian ==true
-            Ytra(:,cj)=Ytra(:,cj) * (exp(mean(log(   (1 + abs(Y(:,cj))).^(2 * nonnegs - 1)) )))^(1 - laj);
+            Ytra(:,cj)=Ytra(:,cj) * (exp(mean(log(   (1 + abs(Y(bsb,cj))).^(2 * nonnegs(bsb) - 1)) )))^(1 - laj);
         end
     end
     
@@ -219,6 +236,21 @@ else % inverse transformation
         laj=la(j);
         Ycj=Y(:,cj);
         
+         maxyj=max(Ycj);
+         if maxyj>1.77 && laj<=-0.5
+             error('FSDA:normYJ:WngInput','Inverse requested of inadmissable values')
+         end
+         
+        % if minyj<-198 && laj>=1.5
+        %     error('FSDA:normYJ:WngInput','Inverse requested of inadmissable values')
+        % elseif minyj<-9 && laj>=2
+        %     error('FSDA:normYJ:WngInput','Inverse requested of inadmissable values')
+        % elseif minyj<-1.98 && laj>=2.5
+        %     error('FSDA:normYJ:WngInput','Inverse requested of inadmissable values')
+        % elseif minyj<-0.999 && laj>=3
+        %     error('FSDA:normYJ:WngInput','Inverse requested of inadmissable values')
+        % else
+        % end
         nonnegs = Ycj >= 0;
         negs = ~nonnegs;
         

@@ -25,6 +25,14 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 %
 % Optional input arguments:
 %
+%      bsb :   units to be used in the computation of the Jacobian. Vector.
+%                m x 1 vector or logical vector or length n.
+%               The default value of bsb is 1:n, that is all units are
+%               used to compute the Jacobian. Note that this option takes
+%               effect just if option Jacobian is true.
+%               Example - 'bsb',[3 5 20:30]
+%               Data Types - double or logical
+%
 %  inverse :    Inverse transformation. Logical. If inverse is true, the
 %               inverse transformation is returned. The default value of
 %               inverse is false.
@@ -33,7 +41,9 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 %
 %  Jacobian :   Requested Jacobian of transformed values. true (default) or
 %               false. If true (default) the transformation is normalized
-%               to have Jacobian equal to 1
+%               to have Jacobian equal to 1. Note that this optional
+%               argument is ignored if previous optional argument inverse
+%               is true
 %                 Example - 'Jacobian',true
 %                 Data Types - Logical
 %
@@ -136,7 +146,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 
 % Input parameters checking
 % Extract size of the data
-v=size(Y,2);
+[n,v]=size(Y);
 
 if nargin<1
     error('FSDA:normBoxCox:missingInputs','Input data matrix is missing');
@@ -156,9 +166,10 @@ end
 
 Jacobian=true;
 inverse=false;
+bsb=1:n;
 
 if nargin>2
-    options=struct('Jacobian',Jacobian,'inverse',inverse);
+    options=struct('Jacobian',Jacobian,'inverse',inverse,'bsb',bsb);
     
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -177,10 +188,11 @@ if nargin>2
     end
     Jacobian=options.Jacobian;
     inverse=options.inverse;
+    bsb=options.bsb;
 end
 
 
-%% Normalized Box Cox transformation of columns ColtoTra using la
+%% (Normalized) Box Cox transformation of columns ColtoTra using la
 Ytra=Y;
 
 if inverse== false
@@ -197,7 +209,7 @@ if inverse== false
             % If Jacobian ==true the transformation is normalized so that its
             % Jacobian will be 1
             if Jacobian ==true
-                Gj=exp(mean(log(Ycj)));
+                Gj=exp(mean(log(Ycj(bsb))));
             else
                 Gj=1;
             end
@@ -209,7 +221,7 @@ if inverse== false
             end
         end
     end
-else
+else % inverse transformation
     
     for j=1:length(ColtoTra)
         cj=ColtoTra(j);
