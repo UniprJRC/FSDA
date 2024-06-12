@@ -31,12 +31,12 @@ function out  = tclustIC(Y,varargin)
 %
 %           cc: values of restriction factor. Vector. A vector specifying
 %               the values of the restriction factor
-%               which have to be considered for the covariance matrices. 
+%               which have to be considered for the covariance matrices.
 %               The default value of cc is [1 2 4 8 16 32 64 128]
 %                 Example - 'cc',[1 2 4 8 128]
 %                 Data Types - double
 %
-%      whichIC: type of information criterion. Character. 
+%      whichIC: type of information criterion. Character.
 %               Character which specifies which information criteria must
 %               be computed for each k (number of groups) and each value of
 %               the restriction factor (c).
@@ -109,7 +109,7 @@ function out  = tclustIC(Y,varargin)
 %                proportions of the groups. This option is effective just
 %                if nsamp is a matrix which contains pre-extracted
 %                subsamples and k is a scalar. The purpose of this option
-%                is to enable the user to replicate the results. 
+%                is to enable the user to replicate the results.
 %                The default value of RandNumbForNini is empty,
 %                that is random numbers from uniform are used.
 %                   Example - 'RandNumbForNini',''
@@ -129,7 +129,7 @@ function out  = tclustIC(Y,varargin)
 %equalweights : cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
-%               and computation of the likelihood. The default value is false. 
+%               and computation of the likelihood. The default value is false.
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
 %
@@ -164,7 +164,7 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'plots',1
 %                 Data Types - single | double
 %
-%     numpool : number of pools for parellel computing. Scalar. 
+%     numpool : number of pools for parellel computing. Scalar.
 %               If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
 %               the random starts over numpool parallel processes. If
@@ -231,7 +231,7 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
-%   UnitsSameGroup : Units with same labels. Numeric vector.  
+%   UnitsSameGroup : Units with same labels. Numeric vector.
 %                   List of the units which must (whenever possible)
 %                   have the same label.  For example if
 %                   UnitsSameGroup=[20 26], it means that group which contains
@@ -247,9 +247,9 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'UnitsSameGroup',[12 20]
 %                 Data Types - single | double
 %
-%       cshape :    constraint to apply to each of the shape matrices. 
-%                   Scalar greater or equal than 1. 
-%                   This options only works is 'restrtype' is 'deter'. 
+%       cshape :    constraint to apply to each of the shape matrices.
+%                   Scalar greater or equal than 1.
+%                   This options only works is 'restrtype' is 'deter'.
 %               When restrtype is deter the default value of the "shape" constraint (as
 %               defined below) applied to each group is fixed to
 %               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
@@ -358,7 +358,7 @@ function out  = tclustIC(Y,varargin)
 %
 % Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
 % Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
+% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416,
 % https://doi.org/10.1080/10618600.2017.1390469
 %
 % Copyright 2008-2024.
@@ -498,13 +498,13 @@ options=struct('kk',kk,'cc',cc,'whichIC',whichIC,'alpha',alpha,'nsamp',nsamp,'pl
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    
-    
+
+
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:tclustIC:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    
+
     % Check if all the specified optional arguments were present
     % in structure options
     % Remark: the nocheck option has already been dealt by routine
@@ -519,13 +519,13 @@ end
 
 
 if nargin > 1
-    
+
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
-    
+
+
     restr=options.restrtype;
     alpha=options.alpha;
     kk=options.kk;
@@ -536,17 +536,17 @@ if nargin > 1
     nsamp=options.nsamp;        % Number of subsets to extract
     plots=options.plots;        % Plot of the resulting classification
     equalweights=options.equalweights;    % Specify if assignment must take into account the size of the groups
-    
+
     refsteps=options.refsteps;
     reftol=options.reftol;
     msg=options.msg;            % Scalar which controls the messages displayed on the screen
-    
+
     whichIC=options.whichIC;
     cleanpool=options.cleanpool;
     numpool=options.numpool;
     UnitsSameGroup=options.UnitsSameGroup;
     RandNumbForNini=options.RandNumbForNini;
-     cshape=options.cshape;
+    cshape=options.cshape;
 end
 
 if strcmp(whichIC,'ALL')
@@ -593,9 +593,9 @@ colnamesIC=regexprep(colnamesIC,' ','');
 %% Preapare the pool (if required)
 
 for k=1:length(kk)  % loop for different values of k (number of groups)
-    
+
     seqk=kk(k);
-    
+
     % Cnsamp=subsets(nsamp,n,(v+1)*seqk);
     %seqk = number of groups to consider
     if isscalar(nsamp)
@@ -612,7 +612,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
     else
         gRandNumbForNini=RandNumbForNini;
     end
-    
+
     parfor (c=1:length(cc) , numpool)
         % columns = restr
         % rows = number of groups
@@ -629,7 +629,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
                 MIXCLA(k,c)=outMixt.MIXCLA;
             end
         end
-        
+
         if typeIC==0 || typeIC==3
             % tclust using classification likelihood
             outCla=tclust(Y,seqk,alpha,cc(c),'nsamp',Cnsamp,'plots',0,'msg',0, ...
@@ -676,14 +676,14 @@ if typeIC==0 || typeIC==3
         out.CLACLAtable=array2table(CLACLA,'RowNames',rownamesIC,...
             'VariableNames',matlab.lang.makeValidName(colnamesIC));
     end
-    
+
     % Store whenever possible consistent labels
     if ~isempty(UnitsSameGroup)
         IDXCLA=ClusterRelabel(IDXCLA,UnitsSameGroup);
     end
-    
+
     out.IDXCLA=IDXCLA;
-    
+
     if plots==1
         figure
         plot1=plot(kk',out.CLACLA,'LineWidth',LineWidth);
@@ -695,7 +695,7 @@ if typeIC==0 || typeIC==3
             cmin(j)=cc(posj);
             text(xkk(j),0.98,['c=' num2str(cmin(j))],'Units','Normalized')
         end
-        
+
         % Set line type and markers
         set(plot1,{'LineStyle'},slintyp(1:lcc));
         set(plot1,{'Marker'},styp(1:lcc))
@@ -703,7 +703,7 @@ if typeIC==0 || typeIC==3
         set(gca,'xtick',kk)
         legend(legstr,'location','best')
     end
-    
+
 end
 
 % MIXMIX or MIXCLA
@@ -711,7 +711,7 @@ if typeIC>0
     if ~isempty(UnitsSameGroup)
         IDXMIX=ClusterRelabel(IDXMIX,UnitsSameGroup);
     end
-    
+
     out.IDXMIX=IDXMIX;
 end
 
@@ -722,7 +722,7 @@ if typeIC==2 || typeIC==3
         % out.(IC) is also given in table format
         out.MIXMIXtable=array2table(MIXMIX,'RowNames',rownamesIC,'VariableNames',colnamesIC);
     end
-    
+
     if plots==1
         figure
         plot1=plot(kk',out.MIXMIX,'LineWidth',LineWidth);
@@ -734,7 +734,7 @@ if typeIC==2 || typeIC==3
             cmin(j)=cc(posj);
             text(xkk(j),0.98,['c=' num2str(cmin(j))],'Units','Normalized')
         end
-        
+
         % Set line type and markers
         set(plot1,{'LineStyle'},slintyp(1:lcc));
         set(plot1,{'Marker'},styp(1:lcc))
@@ -751,12 +751,12 @@ if typeIC==1 || typeIC==3
         % out.(IC) is also given in table format
         out.MIXCLAtable=array2table(MIXCLA,'RowNames',rownamesIC,'VariableNames',colnamesIC);
     end
-    
+
     if plots==1
         figure
         plot1=plot(kk',out.MIXCLA,'LineWidth',LineWidth);
         title('MIXCLA')
-        
+
         % Add labels for the best value of c for each k
         cmin=zeros(length(cc),1);
         for j=1:length(kk)
