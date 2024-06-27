@@ -497,12 +497,12 @@ if plots==1
     text(scoreDist(selu),orthDist(selu),rownames(selu),'HorizontalAlignment','left','VerticalAlignment','bottom');
     % Good leverage points: points which lie close to the PCA space but far
     % from the regular observations.
-    % Orthogonal outliers are points which have a large orthogonal distance
+    % Orthogonal outliers points: points which have a large orthogonal distance
     % to the PCA space but cannot be seen when we look only at their
     % projection on the PCA subspace.
-    % Bad leverage points are points which have a large orthogonal distance
+    % Bad leverage points: points which have a large orthogonal distance
     % and whose projection on the PCA subspace is remote from the typical
-    % projections,
+    % projections.
 
 end
 if biplot==1
