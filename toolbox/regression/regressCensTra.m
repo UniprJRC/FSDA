@@ -52,12 +52,6 @@ function [out] = regressCensTra(y,X, varargin)
 %               Example - 'dispresults',true
 %               Data Types - logical
 %
-%    left :     left limit for the censored dependent variable. Scalar.
-%               If set to -Inf, the dependent variable is assumed to be not
-%               left-censored; default value of left is zero (classical
-%               Tobit model).
-%               Example - 'left',1
-%               Data Types - double
 %
 % initialbeta : initial estimate of beta. Vector.
 %               (p-1) x 1 vector. If initialbeta is not supplied (default) standard least
@@ -89,6 +83,13 @@ function [out] = regressCensTra(y,X, varargin)
 %               which is used is Yeo and Johnson.
 %                 Example - 'la0',0.5
 %                 Data Types - double
+%
+%    left :     left limit for the censored dependent variable. Scalar.
+%               If set to -Inf, the dependent variable is assumed to be not
+%               left-censored; default value of left is zero (classical
+%               Tobit model).
+%               Example - 'left',1
+%               Data Types - double
 %
 %  nocheck:     Check input arguments. Boolean.
 %               If nocheck is equal to true no check is performed on
