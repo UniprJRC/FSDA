@@ -394,10 +394,10 @@ else
 end
 
 if any(yin>right)
-   error('FSDA:regrCens:WrgInpt','Observations with y greater than right truncation point')
+   error('FSDA:regressCens:WrgInpt','Observations with y greater than right truncation point')
 end
 if any(yin<left)
-    error('FSDA:regrCens:WrgInpt','Observations with y smaller than left truncation point')
+    error('FSDA:regressCens:WrgInpt','Observations with y smaller than left truncation point')
 end
 
 obsBelow = yin == left;
