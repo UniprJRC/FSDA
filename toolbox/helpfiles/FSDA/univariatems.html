@@ -1,0 +1,295 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>univariatems</title><meta content="refpage" name="chunktype"><meta content="function:univariatems" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="univariatems performs preliminary univariate robust model selection in linear regression." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">univariatems</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Call of univariatems with all default arguments.</a></li><li><a class="intrnllnk" href="#Example_2">Call of univariatems with a personalized threshold for p-value.</a></li><li><a class="intrnllnk" href="#Example_3">Call of univariatems with a personalized threshold based on R2rob.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Compare stepwiselm and lasso with and without preliminary calling univariatems.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example of use of option theoreticalSigns.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of X as a table and a variable inside X is categorical.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_fsr">fsr</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lms">lms</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_PredictorNames">PredictorNames</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_thresh">thresh</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_theoreticalSigns">theoreticalSigns</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_Tsel">Tsel</a></li><li><a class="intrnllnk" href="#output_argument_Texcl">Texcl</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">univariatems</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">univariatems performs preliminary univariate robust model selection in linear regression</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">Tsel=univariatems(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="univariatems.html#Example_1">example</a></span></li><li><code class="synopsis">Tsel=univariatems(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="univariatems.html#Example_2">example</a></span></li><li><code class="synopsis">[Tsel, Texcl]=univariatems(___)</code><span class="syntax_example"><a class="intrnllnk" href="univariatems.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>In the situations in which the number of potential explanatory variables
+ is very large it is necessary to preliminary understand the subset of
+ variables which surely must be excluded before running the proper
+ variable selection procedure.  This procedure estimates a univariate
+ regression model (with intercept) between each column of X and the
+ response. Just the variables which have an R2 greater than (or a
+ $p$-value smaller than) a certain threshold in the univariate regressions
+ are retained. The p-value or R2 threshold are based on robust univariate
+ models (with intercept) but the unrobust models can be chosen using
+ option thresh. Option fsr enables the user to select the preferred robust
+ regression procedure.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="univariatems.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Tsel"><code>Tsel</code></a>=univariatems(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>)</code></span>Call of univariatems with all default arguments.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="univariatems.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Tsel"><code>Tsel</code></a>=univariatems(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Call of univariatems with a personalized threshold for p-value.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="univariatems.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_Tsel"><code>Tsel</code></a>,<a class="intrnllnk" href="#outputarg_Texcl"><code> Texcl</code></a>]=univariatems(___)</code></span>Call of univariatems with a personalized threshold based on R2rob.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Call of univariatems with all default arguments.</li></span></a></span></h3><div class="collapse"><p> <div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=30;
+out=simulateLM(n,'R2',0.8);
+y=out.y;
+% Just the first 3 variables are significant
+X=[out.X randn(n,57)];
+Tsel=univariatems(y,X);
+disp('Table with the details of the vars which are significant in univ. regr.')</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Call of univariatems with a personalized threshold for p-value.</li></span></a></span></h3><div class="collapse"><p>
+     Generate a regression model with 3 expl. variables.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=30;
+out=simulateLM(n,'R2',0.5);
+y=out.y;
+% Just the first 3 variables are significant
+X=[out.X randn(n,7)];
+% The variables which are retained are those for which the robust p-value
+% of univiate regression is not greater than 0.2
+mypval=0.20;
+Tsel=univariatems(y,X,'thresh',mypval);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Call of univariatems with a personalized threshold based on R2rob.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=30;
+out=simulateLM(n,'R2',0.8,'nexpl',5);
+y=out.y;
+% Just the first 10 variables are significant
+X=[out.X randn(n,20)];
+% The variables which are retained are those for which the robust R2 
+% of univariate regression is not smaller than 0.08
+thresh=struct;
+thresh.R2rob=0.08;
+Tsel=univariatems(y,X,'thresh',thresh);
+disp(Tsel)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare stepwiselm and lasso with and without preliminary calling univariatems.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+n=30;
+out=simulateLM(n,'R2',0.8);
+y=out.y;
+% Just variables 6:8 are significant
+X=[randn(n,5) out.X randn(n,52)];
+% Use a threshold of p-values based on non robust models
+Tsel=univariatems(y,X);
+Xtab=array2table(X(:,Tsel.i),'VariableNames',Tsel.Properties.RowNames);
+mdl=stepwiselm(Xtab,y,'Upper','linear','Verbose',0);
+fprintf('&lt;strong&gt;Final chosen model after univariatems filter and then stepwiselm&lt;/strong&gt;')
+disp(mdl)
+disp('&lt;strong&gt;Final chosen model after applying directly stepwiselm&lt;/strong&gt;')
+mdltrad=stepwiselm(X,y,'Upper','linear','Verbose',0);
+disp(mdltrad)
+% Lasso part
+cvlassoParameter=5;
+[B,FitInfo] = lasso(Xtab{:,:},y,'CV',cvlassoParameter);
+idxLambdaMinMSE = FitInfo.IndexMinMSE;
+seqp=1:size(Xtab,2);
+minMSEModelPredictors = seqp(B(:,idxLambdaMinMSE)~=0);
+mdl=fitlm(Xtab(:,minMSEModelPredictors),y);
+disp('&lt;strong&gt;Final chosen model after univariatems filter and then lasso&lt;/strong&gt;')
+disp(mdl)
+disp('&lt;strong&gt;Final chosen model after applying directly lasso&lt;/strong&gt;')
+[B,FitInfo] = lasso(X,y,'CV',cvlassoParameter);
+idxLambdaMinMSE = FitInfo.IndexMinMSE;
+seqp=1:size(X,2);
+minMSEModelPredictors = seqp(B(:,idxLambdaMinMSE)~=0);
+mdl=fitlm(X(:,minMSEModelPredictors),y,'VarNames',["X"+minMSEModelPredictors "y"]);
+disp(mdl)</pre></div></div><pre class="codeoutput">&lt;strong&gt;Final chosen model after univariatems filter and then stepwiselm&lt;/strong&gt;
+Linear regression model:
+    y ~ 1 + X6 + X7 + X8
+
+Estimated Coefficients:
+                   Estimate      SE        tStat       pValue  
+                   ________    _______    _______    __________
+
+    (Intercept)    0.046141    0.17791    0.25935       0.79741
+    X6               1.0712    0.16059     6.6705    4.4672e-07
+    X7              0.94031     0.1986     4.7348    6.7681e-05
+    X8              0.83425    0.19591     4.2584    0.00023769
+
+
+Number of observations: 30, Error degrees of freedom: 26
+Root Mean Squared Error: 0.962
+R-squared: 0.763,  Adjusted R-Squared: 0.735
+F-statistic vs. constant model: 27.9, p-value = 2.78e-08
+&lt;strong&gt;Final chosen model after applying directly stepwiselm&lt;/strong&gt;
+
+Linear regression model:
+    y ~ 1 + x6 + x7 + x8 + x14 + x33 + x38 + x42 + x43 + x60
+
+Estimated Coefficients:
+                   Estimate       SE        tStat       pValue  
+                   ________    ________    _______    __________
+
+    (Intercept)    0.036482     0.11885    0.30695       0.76205
+    x6               1.0523    0.097845     10.755    9.1827e-10
+    x7               1.3944     0.14186     9.8291     4.224e-09
+    x8              0.75831     0.12019     6.3095    3.6942e-06
+    x14            -0.17313    0.076607    -2.2599      0.035139
+    x33            -0.26114     0.10221     -2.555      0.018873
+    x38             0.47328     0.13463     3.5155     0.0021758
+    x42             0.68126     0.17095     3.9852    0.00072821
+    x43             0.33055     0.11266     2.9339     0.0082075
+    x60            -0.85072     0.18011    -4.7234    0.00013016
+
+
+Number of observations: 30, Error degrees of freedom: 20
+Root Mean Squared Error: 0.551
+R-squared: 0.94,  Adjusted R-Squared: 0.913
+F-statistic vs. constant model: 35, p-value = 2.59e-10
+&lt;strong&gt;Final chosen model after univariatems filter and then lasso&lt;/strong&gt;
+
+Linear regression model:
+    y ~ 1 + X6 + X32 + X7 + X8 + X26 + X15 + X50
+
+Estimated Coefficients:
+                   Estimate      SE        tStat       pValue  
+                   ________    _______    _______    __________
+
+    (Intercept)    0.039614    0.18901    0.20959       0.83592
+    X6               0.9015    0.18904     4.7689    9.2322e-05
+    X32             0.22098    0.21242     1.0403        0.3095
+    X7              0.83778    0.22394      3.741     0.0011319
+    X8              0.79432    0.20381     3.8974    0.00077435
+    X26            0.091074    0.25484    0.35738       0.72421
+    X15             0.10139    0.17995    0.56344       0.57884
+    X50             0.19768    0.19432     1.0173       0.32009
+
+
+Number of observations: 30, Error degrees of freedom: 22
+Root Mean Squared Error: 0.977
+R-squared: 0.793,  Adjusted R-Squared: 0.728
+F-statistic vs. constant model: 12.1, p-value = 3.03e-06
+&lt;strong&gt;Final chosen model after applying directly lasso&lt;/strong&gt;
+
+Linear regression model:
+    y ~ 1 + X4 + X6 + X7 + X8 + X11 + X19 + X32 + X48
+
+Estimated Coefficients:
+                   Estimate      SE        tStat       pValue  
+                   ________    _______    _______    __________
+
+    (Intercept)      0.1483    0.14682       1.01       0.32397
+    X4               0.2335    0.13506     1.7289      0.098499
+    X6              0.90094    0.14003     6.4338    2.2382e-06
+    X7              0.69224    0.16398     4.2216    0.00038249
+    X8              0.56179    0.17276     3.2518     0.0038152
+    X11            -0.40163    0.15509    -2.5896        0.0171
+    X19            -0.33449    0.15965    -2.0952       0.04846
+    X32             0.48524    0.16388      2.961     0.0074569
+    X48             0.32956    0.13666     2.4115      0.025125
+
+
+Number of observations: 30, Error degrees of freedom: 21
+Root Mean Squared Error: 0.712
+R-squared: 0.895,  Adjusted R-Squared: 0.855
+F-statistic vs. constant model: 22.4, p-value = 1.23e-08
+</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option theoreticalSigns.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+n=30;
+thresh=struct;
+thresh.pval=0.10;
+out=simulateLM(n,'R2',0.8);
+y=out.y;
+% Just the first 3 variables are significant
+X=[out.X randn(n,57)];
+% Suppose that it is known that variable 11:20 must have a positive sign in
+% univariate regressions
+theoreticalSigns=zeros(1,size(X,2));
+theoreticalSigns(11:20)=1;
+% and that variables 41:50 must have a negative sign in
+% univariate regressions
+theoreticalSigns(41:50)=-1;
+% call to univariatems with option theoreticalSigns
+[Tsel,Texcl]=univariatems(y,X,'theoreticalSigns',theoreticalSigns);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of X as a table and a variable inside X is categorical.</li></span></a></span></h3><div class="collapse"><p>
+     This example is taken from https://stats.oarc.ucla.edu/r/dae/tobit-models/
+     Consider the situation in which we have a measure of academic aptitude
+     (scaled 200-800) which we want to model using reading and math test
+     scores, as well as, the type of program the student is enrolled in
+     (academic, general, or vocational). For this example tobit regression
+     (see function regressCens) is more appropriate. We just use this
+     dataset to show the case in which one of the variables is categorial
+     and X is table.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=readtable("https://stats.idre.ucla.edu/stat/data/tobit.csv","ReadRowNames",true);
+XX.prog=categorical(XX.prog);
+% Define y and X
+y=XX(:,"apt");
+X=XX(:,["read", "math" "prog"]);
+% In this case both y and X are tables
+[Tsel,Texcl]=univariatems(y,X);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector or table with just one column.</span></span></h3> <div class="collapse"> <p><p>A
+               vector with n elements that contains the response variables.</p> <p>
+               Missing values (NaN's) and infinite values (Inf's) are
+               allowed, since observations (rows) with missing or infinite
+               values will automatically be excluded from the
+               computations.</p><p>
+                 </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>vector or table</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix or table.</span></span></h3> <div class="collapse"> <p><p>Data matrix of
+               explanatory variables (also called 'regressors') of
+               dimension (n-by-p). Note that in this case p can be gerater
+               than n. Rows of X represent observations, and columns
+               represent variables. Missing values (NaN's) and infinite
+               values (Inf's) are allowed, since observations (rows) with
+               missing or infinite values will automatically be excluded
+               from the computations. If X is table for the variables
+               which are defined as categorical function dummyvar is
+               called and the p-value (R2) refers to the univariate model
+               with all the level (minus 1) of the categorical variable.</p> <p>
+                 </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>matrix or table</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'fsr',false
+</code>,<code> 'h',round(n*0,75)
+</code>,<code> 'lms',1
+</code>,<code> 'nsamp',1000
+</code>,<code> 'PredictorNames',{'X1','X2'}
+</code>,<code> 'thresh',0.10
+</code>,</code></span></div><div class="expandableContent"><div id="inputarg_fsr" class="clearfix"></div><h3 id="input_argument_namevalue_fsr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fsr</code> &#8212;Method to use for robust regression.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If fsr is true univariate robust is based on function FSR
+               (forward search) else it is based on function LXS (LTS or
+               LMS). The default value of fsr is true.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fsr',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that have determined the robust
+               regression estimator for each univariate regression.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>h is an integer greater or equal than [(n+p+1)/2] but
+               smaller then n
+                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0,75)
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the robust  beta
+                 in the univariate regressions.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If lms=1 (default) Least Median of Squares is
+               computed, else Least Trimmed of Squares is computed.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples which will be extracted to find the
+                 robust estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of subsamples which will be extracted to find the
+               robust estimator. If nsamp=0, all subsets will be extracted.</p> <p>
+               They will be (n choose p).</p> <p>
+               Remark. If the number of all possible subset is &lt;1000 the
+               default is to extract all subsets otherwise just 1000.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_PredictorNames" class="clearfix"></div><h3 id="input_argument_namevalue_PredictorNames" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>PredictorNames</code> &#8212;names of the explanatory variables.</span></a><span class="example_desc">cell array of               characters | string array.</span></span></h3><div class="collapse">	<p><p>Cell array of characters or string array of length p containing the
+               names of the explanatory variables.</p> <p>
+               If PredictorNames is a missing and X is not a table
+               the following sequence of strings will be
+               automatically created for labelling the column of matrix X
+               ("X1", "X2", "X3", ..., "Xp")
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'PredictorNames',{'X1','X2'}
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell array of characters or string array</code></p></div></div><div class="expandableContent"><div id="inputarg_thresh" class="clearfix"></div><h3 id="input_argument_namevalue_thresh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>thresh</code> &#8212;threshold which defines the variables to retain.</span></a><span class="example_desc">scalar | struct.</span></span></h3><div class="collapse">	<p><p>The default value of thresh is 0.10 that is all variables
+               which in univariate robust regression had a p-value smaller
+               than 0.10 are retained.</p> <p>
+               If thresh is a struct it is possible to specify whether the
+               threshold is based on (robust) p-values or (robust) R2.</p><p>
+               If thresh is a struct it may contain one of the the following fields
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pval</code></td><td><p>all variables which in univariate regression
+                   have a p-value smaller or equal than thresh.pval are
+                   selected.</p></td></tr><tr valign="top"><td><code>pvalrob</code></td><td><p>all variables which in univariate regression
+                   have a robust p-value smaller or equal than thresh.pvalr are
+                   selected.</p></td></tr><tr valign="top"><td><code>R2</code></td><td><p>all variables which in univariate regression
+                   have a R2 square greater or equal than thresh.R2 are
+                   selected.</p></td></tr><tr valign="top"><td><code>R2rob</code></td><td><p><p>all variables which in univariate regression
+                   have a robust R2 square greater or equal than thresh.R2r are
+                   selected.</p> <p>
+                   Note that if thresh is a struct with both
+                   fields an error is produced because just one between
+                   thresh.pval, thresh.pvalrob, thresh.R2, thresh.R2rob must be present</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'thresh',0.10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_theoreticalSigns" class="clearfix"></div><h3 id="input_argument_namevalue_theoreticalSigns" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>theoreticalSigns</code> &#8212;theoretical sign which the beta from univariate
+               regression must have.</span></a><span class="example_desc">vector of length p.</span></span></h3><div class="collapse">	<p><p>1 denotes a positive sign for the corresponding variable
+               while -1 denotes a negative sign for the corresponding
+               variable. 0 denotes that any sign is possible. For example
+               if p is equal to 5 if theoreticalSigns=[1 1 0 -1 1] means
+               that variables 1, 2 and 5 must have a positive robust
+               estimate of the slope in the univariate regression while
+               variable 4 must have a negative estimate for the robust
+               beta cofficient. Finally, variable 3 can have any sign.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'theoreticalSigns',[-1 1 1 0 -1]. If
+</code>               theoreticalSigns is empty or it is not specified no filter
+               based on sign is applied.</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_Tsel" class="clearfix"></div><h3 id="output_argument_Tsel" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Tsel</code> &#8212;Details of the variables which were
+                 important from univariate analysis.</span></a><span class="example_desc">table</span></span></h3><div class="collapse"><p><p> 
+                 The details of table Tsel are as follows.</p> <p>
+                 The rownames of this table contain the names of the
+                 variables.</p> <p>
+               1st col: the indexes of the important variables
+               2nd-4th col: estimates of beta pvalue and R2 from non robust
+                   univariate regression
+               5th-7th col: estimates of beta pvalue and R2 from robust
+                   univariate regression
+               8th col: number of units declared as outliers in robust
+                   univariate regression.</p> <p>
+               The rows of table Tsel are ordered in terms of variable
+               importance in the sense that row 1 refers to the variable
+               with highest robust R2 (smallest robust p-value). Row 2
+               contains the variable with the second highest robust R2
+               (second smallest robust p-value)...</p><p>
+               If no explanatory variable survives the criteria, Tsel is a
+               0×8 empty table</p></p></div></div><div class="expandableContent"><div id="outputarg_Texcl" class="clearfix"></div><h3 id="output_argument_Texcl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Texcl</code> &#8212;Details of the variables which were
+                 not important from univariate analysis.</span></a><span class="example_desc">table</span></span></h3><div class="collapse"><p><p>
+                 The details of table Texcl are as follows.</p> <p> 
+               The rownames of this table contain the names of the
+               selected variables.</p> <p>
+               1st col: the indexes of the important variables;</p> <p>
+               2nd-4th col: estimates of beta pvalue and R2 from non robust
+                   univariate regression;</p> <p>
+               5th-7th col: estimates of beta pvalue and R2 from robust
+                   univariate regression;</p> <p>
+               8th col: number of units declared as outliers in robust
+                   univariate regression.</p><p>
+               If no explanatory variable is excluded Texcl is a
+               0×8 empty table.</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/stepwiselm.html'))" itemprop="url"><span itemprop="name"><code>stepwiselm</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/lasso.html'))" itemprop="url"><span itemprop="name"><code>lasso</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
