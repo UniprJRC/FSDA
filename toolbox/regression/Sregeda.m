@@ -17,9 +17,9 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %  Optional input arguments:
 %
 %         bdp :  breakdown point. Scalar or vector.
-%               It measures the fraction of outliers
-%               the algorithm should resist. In this case any value greater
-%               than 0 but smaller or equal than 0.5 will do fine.
+%               It measures the fraction of outliers the algorithm should resist. 
+%               In this case any value greater
+%               than 0, but smaller or equal than 0.5, will do fine.
 %               The default for bdp is a sequence from 0.5 to 0.01
 %               with step -0.01. The sequence is forced to be monotonically
 %               decreasing.
@@ -36,18 +36,18 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %
 %     conflev :  Confidence level which is
 %               used to declare units as outliers. Scalar.
-%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               Usually conflev=0.95, 0.975, 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
-%               Default value is 0.975
+%               Default value is 0.975.
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %
-%    covrob  : scalar. A number in the set 0, 1, ..., 5 which specifies
+%    covrob  : scalar. A number in the set 0, 1, ..., 5 that specifies
 %               the type of covariance matrix of robust beta coefficients.
 %               These numbers correspond to estimators covrob, covrob1,
 %               covrob2, covrob4, covrob4 and covrobc detailed inside file
 %               RobCov.m. The default value is 5  (i.e. estimator covrobc).
-%                 Example - 'tstattype',3
+%                 Example - 'covrob',3
 %                 Data Types - single | double
 %
 %    intercept :  Indicator for constant term. true (default) | false.
@@ -63,8 +63,8 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               procedure for finding the minimum value of the scale. Scalar.
 %               Value of tolerance for the iterative
 %               procedure for finding the minimum value of the scale
-%               for each subset and each of the best subsets
-%               (It is used by subroutine minscale.m)
+%               for each subset and each of the best subsets.
+%               (It is used by subroutine minscale.m).
 %               The default value is 1e-7;
 %                 Example - 'minsctol',1e-7
 %                 Data Types - single | double
@@ -78,30 +78,30 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               proportion exceeds 0.1.
 %               Note that the warnings about:
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
-%               'MATLAB:nearlySingularMatrix' are always set to off
-%               else no message is displayed on the screen
+%               'MATLAB:nearlySingularMatrix' are always set to off,
+%               else no message is displayed on the screen.
 %                 Example - 'msg',0
 %                 Data Types - single | double
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
 %               true no check is performed on matrix y and matrix X. Notice
-%               that y and X are left unchanged. In other words the
+%               that y and X are left unchanged. In other words, the
 %               additional column of ones for the intercept is not added.
 %               As default nocheck=false.
 %               Example - 'nocheck',true
 %               Data Types - boolean
 %
-%       nsamp   : Number of subsamples which will be extracted to find the
-%                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
+%       nsamp   : Number of subsamples that will be extracted to find the
+%                 robust estimator. Scalar. If nsamp=0, all subsets will be extracted.
 %                 They will be (n choose p).
-%                 If the number of all possible subset is <1000 the
-%                 default is to extract all subsets otherwise just 1000.
+%                 If the number of all possible subset is <1000, the
+%                 default is to extract all subsets, otherwise just 1000.
 %                 Example - 'nsamp',1000
 %                 Data Types - single | double
 %
 %
 %    refsteps : Number of refining iterations. Scalar. Number of refining
-%               iterationsin each subsample (default = 3).
+%               iterations in each subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',10
 %                 Data Types - single | double
@@ -119,15 +119,15 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %
 % reftolbestr : Tolerance for the refining steps. Scalar.
 %               Tolerance for the refining steps
-%               for each of the best subsets
+%               for each of the best subsets.
 %               The default value is 1e-8;
 %                 Example - 'reftolbestr',1e-10
 %                 Data Types - single | double
 %
 %
-%     rhofunc : rho function. String. String which specifies the rho
+%     rhofunc : rho function. String. String that specifies the rho
 %               function which must be used to weight the residuals.
-%               Possible values are
+%               Possible values are:
 %               'bisquare'
 %               'optimal'
 %               'hyperbolic'
@@ -155,7 +155,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               For hyperbolic rho function it is possible to set up the
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
-%               a, b and c (the default values are a=2, b=4, c=8)
+%               a, b and c (the default values are a=2, b=4, c=8).
 %                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %
@@ -164,7 +164,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               If plots = 1, generates a plot with the robust residuals
 %               for each value of bdp. The confidence level used to draw the
 %               confidence bands for the residuals is given by the input
-%               option conflev. If conflev is not specified a nominal 0.975
+%               option conflev. If conflev is not specified, a nominal 0.975
 %               confidence interval will be used.
 %                 Example - 'plots',0
 %                 Data Types - single | double
@@ -187,31 +187,31 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %              out.BS = p x 1 vector containing the units forming best subset
 %                       associated with S estimate of regression coefficient.
 %              out.RES= n x length(bdp) matrix containing the robust
-%                       scaled residuals for each value of bdp
+%                       scaled residuals for each value of bdp.
 %         out.Weights = n x length(bdp) vector containing the estimates of
-%                       the weights for each value of bdp
+%                       the weights for each value of bdp.
 %        out.Outliers = Boolean matrix containing the list of
 %                       the units declared as outliers for each value of bdp using confidence
-%                       level specified in input scalar conflev
-%         out.conflev = confidence level which has been used to declare
+%                       level specified in input scalar conflev.
+%         out.conflev = confidence level that has been used to declare
 %                       outliers.
-%         out.Singsub = Number of subsets wihtout full rank. Notice that
+%         out.Singsub = Number of subsets without full rank. Notice that
 %                       out.singsub(bdp(jj)) > 0.1*(number of subsamples) produces a
-%                       warning
-%         out.rhofunc = string identifying the rho function which has been
-%                       used
-%    out.rhofuncparam = vector which contains the additional parameters
+%                       warning.
+%         out.rhofunc = string identifying the rho function that has been
+%                       used.
+%    out.rhofuncparam = vector that contains the additional parameters
 %                       for the specified rho function which have been
 %                       used. For hyperbolic rho function the value of
 %                       k =sup CVC. For Hampel rho function the parameters
-%                       a, b and c.  This field is present only if input
+%                       a, b and c. This field is present only if input
 %                       argument 'rhofunc' is  'hyperbolic' or 'hampel'.
-%           out.bdp   = vector which contains the values of bdp which have
-%                       been used
+%           out.bdp   = vector that contains the values of bdp which have
+%                       been used.
 %            out.y    = response vector y.
 %            out.X=    Data matrix of explanatory variables
-%                     which has been used (it also contains the column of ones if
-%                     input option intercept was missing or equal to 1)
+%                     that has been used (it also contains the column of ones, if
+%                     input option intercept was missing or equal to 1).
 %           out.class = 'Sregeda'
 %
 %  Optional Output:
@@ -244,7 +244,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 
 %{
     %% Sregeda with msg=0.
-    % Run this code to see the output shown in the help file
+    % Run this code to see the output shown in the help file.
     n=200;
     p=3;
     randn('state', 123456);
@@ -261,7 +261,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 
 %{
     % Sreg with optional input arguments.
-    % Sreg with optimal rho function. Run this code to see the output shown in the help file
+    % Sreg with optimal rho function. Run this code to see the output shown in the help file.
     n=200;
     p=3;
     randn('state', 123456);
@@ -277,7 +277,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 
 %{
     % Sregeda with hyperbolic rho function.
-    % Run this code to see the output shown in the help file
+    % Run this code to see the output shown in the help file.
     n=200;
     p=3;
     randn('state', 123456);
@@ -292,7 +292,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 
 %{
     %% Sreg on Stars data.
-    % Run this code to see the Figure 2 of the article in the References
+    % Run this code to see the Figure 2 of the article in the References.
     load('stars');
     X=stars{:,1};
     y=stars{:,2};
@@ -345,29 +345,29 @@ nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,p] = aux.chkinputR(y,X,nnargin,vvarargin);
 
-% default value of break down point
+% default value of break down point.
 bdpdef=0.5:-0.01:0.01;
 
 
-% default values of subsamples to extract
+% default values of subsamples to extract.
 ncomb=bc(n,p);
 nsampdef=min(1000,ncomb);
 
-% default value of number of refining iterations (C steps) for each extracted subset
+% default value of number of refining iterations (C steps) for each extracted subset.
 refstepsdef=3;
-% default value of tolerance for the refining steps convergence for  each extracted subset
+% default value of tolerance for the refining steps convergence for each extracted subset.
 reftoldef=1e-6;
-% default value of number of best betas to remember
+% default value of number of best betas to remember.
 bestrdef=5;
-% default value of number of refining iterations (C steps) for best subsets
+% default value of number of refining iterations (C steps) for best subsets.
 refstepsbestrdef=50;
-% default value of tolerance for the refining steps convergence for best subsets
+% default value of tolerance for the refining steps convergence for best subsets.
 reftolbestrdef=1e-8;
-% default value of tolerance for finding the minimum value of the scale
-% both for each extracted subset and each of the best subsets
+% default value of tolerance for finding the minimum value of the scale,
+% both for each extracted subset and each of the best subsets.
 minsctoldef=1e-7;
 
-% rho (psi) function which has to be used to weight the residuals
+% rho (psi) function that has to be used to weight the residuals.
 rhofuncdef='bisquare';
 covrobdef=5;
 
@@ -381,20 +381,20 @@ if coder.target('MATLAB')
         'minsctol',minsctoldef,'bestr',bestrdef,'rhofunc',rhofuncdef,'rhofuncparam','','bdp',bdpdef,...
         'plots',0,'conflev',0.975,'nocheck',false,'msg',1,'covrob',covrobdef);
 
-    % check user options and update structure options
+    % check user options and update structure options.
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
+        % Check if number of supplied options is valid.
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:Sregeda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        % Check if user options are valid options
+        % Check if user options are valid options.
         aux.chkoptions(options,UserOptions)
     end
 end
 
-% Write in structure 'options' the options chosen by the user
+% Write in structure 'options' the options chosen by the user.
 if nargin > 2
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -404,12 +404,12 @@ end
 
 if coder.target('MATLAB')
 
-    % Get user values of warnings
+    % Get user values of warnings.
     warnrank=warning('query','MATLAB:rankDeficientMatrix');
     warnsing=warning('query','MATLAB:singularMatrix');
     warnnear=warning('query','MATLAB:nearlySingularMatrix');
-    % Set them to off inside this function
-    % At the end of the file they will be restored to previous values
+    % Set them to off inside this function.
+    % At the end of the file they will be restored to previous values.
     warning('off','MATLAB:rankDeficientMatrix');
     warning('off','MATLAB:singularMatrix');
     warning('off','MATLAB:nearlySingularMatrix');
@@ -444,7 +444,7 @@ if nargout==2
 end
 
 
-% Store in output structure the outliers found with confidence level conflev
+% Store in output structure the outliers found with confidence level conflev.
 conflev = options.conflev;
 out.conflev = conflev;
 
@@ -452,14 +452,14 @@ conflev = (conflev+1)/2;
 seq = 1:n;
 psifunc=struct;
 
-% Define matrices which will store relevant quantities
+% Define matrices that will store relevant quantities.
 lbdp=length(bdp);
-% Beta= matrix which will contain beta coefficients
+% Beta= matrix that will contain beta coefficients.
 Beta=[bdp(:) zeros(lbdp,p)];
-% tStat = matrix which will contain t statistics
+% tStat = matrix that will contain t statistics.
 tStat=Beta;
 
-% Scale = vector which will contain the estimate of the scale
+% Scale = vector that will contain the estimate of the scale.
 Scale=zeros(lbdp,1);
 BS=zeros(p,lbdp);
 Weights=zeros(n,lbdp);
@@ -474,13 +474,13 @@ for jj=1:length(bdp)
     if strcmp(rhofunc,'bisquare')
         % Tukey's biweight is strictly increasing on [0 c] and constant (equal to c^2/6) on [c \infty)
         % E(\rho) = kc = (c^2/6)*bdp = TBrho(c,c)*bdp, being kc the K of Rousseeuw
-        % and Leroy (1987)
+        % and Leroy (1987).
 
-        % Compute tuning constant associated to the requested breakdown
-        % point
-        % For bdp =0.5 and Tukey biweight rho function c1=0.4046
-        % Remark: given that in function OPTbdp rho function is defined in the interval 0---2c/3, 2c/3---3c/3, >3c/3
-        % it is necessary to divide the output of OPTbdp by 3
+        % Compute tuning constant associated to the requested breakdown point
+        % for bdp=0.5 and Tukey biweight rho function c1=0.4046.
+        % Remark: given that in function OPTbdp rho function is defined in
+        % the intervals 0---2c/3, 2c/3---3c/3 and >3c/3,
+        % it is necessary to divide the output of OPTbdp by 3.
         c=TBbdp(bdp(jj),1);
         % kc1 = E(rho) = sup(rho)*bdp
         kc=TBrho(c,c)*bdp(jj);
@@ -493,11 +493,10 @@ for jj=1:length(bdp)
     elseif strcmp(rhofunc,'optimal')
         % Optimal rho function is strictly increasing on [0 3c] and constant (equal to 3.25c^2) on [3c \infty)
         % E(\rho) = kc = (3.25c^2)*bdp = TBrho(3*c,c)*bdp, being kc the K of
-        % Rousseeuw and Leroy (1987)
+        % Rousseeuw and Leroy (1987).
 
         % Compute tuning constant associated to the requested breakdown
-        % point
-        % For bdp =0.5 and optimal rho function c= 1.2139
+        % point for bdp =0.5 and optimal rho function c= 1.2139.
         c=OPTbdp(bdp(jj),1);
         % kc1 = E(rho) = sup(rho)*bdp
         kc=OPTrho(c,c)*bdp(jj);
@@ -517,13 +516,13 @@ for jj=1:length(bdp)
         end
         rhofuncparam=kdef;
 
-        % Use (if possible) precalculated values of c,A,b,d and kc
+        % Use (if possible) precalculated values of c,A,b,d and kc.
         BDP=0.5:-0.01:0.01;
         KDEF=[4 4.5 5];
         [diffbdp,inddiffbdp]=min(abs(bdp(jj)-BDP));
         [diffk,inddiffk]=min(abs(kdef-KDEF));
         if diffbdp<1e-6 && diffk<1e-06
-            % Load precalculated values of tuning constants
+            % Load precalculated values of tuning constants.
             Mat=coder.load('private/Hyp_BdpEff.mat','MatBDP');
             row=Mat.MatBDP(inddiffbdp,2:end,inddiffk);
             c=row(1); A=row(2); B=row(3); d=row(4); kc=row(5);
@@ -631,12 +630,13 @@ for jj=1:length(bdp)
     bestscales = Inf * ones(bestr,1);
     sworst = Inf;
 
-    % singsub = scalar which will contain the number of singular subsets which
-    % are extracted (that is the subsets of size p which are not full rank)
+    % singsub = scalar that will contain the number of singular subsets which
+    % are extracted (that is the subsets of size p which are not full
+    % rank).
     singsub=0;
 
     % ij is a scalar used to ensure that the best first bestr non singular
-    % subsets are stored
+    % subsets are stored.
     ij=1;
 
     % initialise and start timer.
@@ -648,13 +648,13 @@ for jj=1:length(bdp)
 
         if i <= tsampling, tic; end
 
-        % extract a subset of size p
+        % extract a subset of size p.
         index = C(i,:);
 
         Xb = X(index,:);
         yb = y(index);
 
-        % beta estimate
+        % beta estimate.
         beta = Xb\yb;
 
         if ~isnan(beta(1)) && ~isinf(beta(1))
@@ -678,22 +678,22 @@ for jj=1:length(bdp)
             % to find s, save first the best bestr scales (deriving from non
             % singular subsets) and, from iteration bestr+1 (associated to
             % another non singular subset), replace the worst scale
-            % with a better one as follows
+            % with a better one as follows.
             if ij > bestr
                 % compute the objective function using current residuals and
                 % the worst estimate of the scale among the bests previously
-                % stored
+                % stored.
                 % scaletest = (1/n) \sum_i=1^n (u_i/(sworst*c))
 
-                % Use function handle hrho. For example if
+                % Use function handle hrho. For example, if
                 % for optimal psi hrho=OPTrho
 
 
                 if coder.target('MATLAB')
                     scaletest=mean(feval(hrho,resrw/sworst,psifunc.c1));
                     % OLD DELETED TO CHECK
-                    % scaletest=mean(feval(hrho,resrw/sworst,c));
-                    %scaletest = mean(TBrho(resrw/sworst,c));
+                    % scaletest = mean(feval(hrho,resrw/sworst,c));
+                    % scaletest = mean(TBrho(resrw/sworst,c));
                 else
                     if strcmp(psifunc.class,'TB')
                         scaletest = mean(TBrho(resrw/sworst,psifunc.c1));
@@ -723,7 +723,7 @@ for jj=1:length(bdp)
 
                 if scaletest < kc
                     % Find position of the maximum value of previously stored
-                    % best scales
+                    % best scales.
                     [~,ind] = max(bestscales);
 
 
@@ -734,7 +734,7 @@ for jj=1:length(bdp)
 
                     % Store sbest, betarw and indexes of the units forming the
                     % best subset associated with minimum value
-                    % of the scale
+                    % of the scale.
                     bestscales(ind) = sbest;
                     bestbetas(ind,:) = betarw';
                     % best subset
@@ -771,7 +771,7 @@ for jj=1:length(bdp)
 
     % perform C-steps on best 'bestr' solutions, till convergence or for a
     % maximum of refstepsbestr steps using a convergence tolerance as specified
-    % by scalar reftolbestr
+    % by scalar reftolbestr.
 
     superbestscale = Inf;
     if ~coder.target('MATLAB')
@@ -838,7 +838,7 @@ if coder.target('MATLAB')
 end
 
 % Store in output structure monitored \beta, s, best subset, vector of
-% S-weights and residuals
+% S-weights and residuals.
 out.Beta = Beta;
 out.tStat=tStat;
 out.Scale = Scale;
@@ -846,18 +846,18 @@ out.BS = BS;
 out.Weights = Weights;
 out.RES=Residuals;
 
-% Store in output structure the number of singular subsets
+% Store in output structure the number of singular subsets.
 out.Singsub=Singsub;
-% Store in output structure the outliers
+% Store in output structure the outliers.
 out.Outliers = Outliers;
-% Store values of bdp which have been used
+% Store values of bdp that have been used.
 out.bdp=bdp;
 
 out.class='Sregeda';
 
 out.rhofunc=rhofunc;
-% In case of Hampel or hyperbolic tangent estimator store the additional
-% parameters which have been used
+% In case of Hampel or hyperbolic tangent estimator, store the additional
+% parameters that have been used
 % For Hampel store a vector of length 3 containing parameters a, b and c
 % For hyperbolic store the value of k= sup CVC
 out.rhofuncparam=rhofuncparam;
@@ -891,25 +891,25 @@ function outIRWLS = IRWLSregS(y,X,initialbeta,psifunc,refsteps,reftol,initialsca
 %    X :        Data matrix of explanatory variables (also called 'regressors')
 %               of dimension (n x p). Rows of X represent observations, and
 %               columns represent variables.
-% initialbeta : p x 1 vector containing initial estimate of beta
+% initialbeta : p x 1 vector containing initial estimate of beta.
 %     psifunc : a structure specifying the class of rho function to use, the
 %               consistency factor, and the value associated with the
-%               Expectation of rho in correspondence of the consistency
-%               factor
-%               psifunc must contain the following fields
+%               expectation of rho in correspondence of the consistency
+%               factor.
+%               psifunc must contain the following fields:
 %               c1 = consistency factor associated to required
-%                    breakdown point
-%               kc1= Expectation for rho associated with c1
-%               class = string identyfing the rho (psi) function to use.
+%                    breakdown point.
+%               kc1= Expectation for rho associated with c1.
+%               class = string identifying the rho (psi) function to use.
 %                    Admissible values for class are 'bisquare', 'optimal'
-%                    'hyperbolic' and 'hampel'
-%               Remark: if class is 'hyperbolic' it is also necessary to
-%                   specify parameters k (sup CVC), A, B and d
+%                    'hyperbolic' and 'hampel'.
+%               Remark: if class is 'hyperbolic', it is also necessary to
+%                   specify parameters k (sup CVC), A, B and d.
 %               Remark: if class is 'hampel' it is also necessary to
-%                   specify parameters a, b and c
-%   refsteps  : scalar, number of refining (IRLS) steps
-%   reftol    : relative convergence tolerance
-%               Default value is 1e-7
+%                   specify parameters a, b and c.
+%   refsteps  : scalar, number of refining (IRLS) steps.
+%   reftol    : relative convergence tolerance.
+%               Default value is 1e-7.
 %
 %  Optional input arguments:
 %
@@ -924,7 +924,7 @@ function outIRWLS = IRWLSregS(y,X,initialbeta,psifunc,refsteps,reftol,initialsca
 %     weights  : n x 1 vector. Weights assigned to each observation
 %
 % In the IRWLS procedure the value of beta and the value of the scale are
-% updated in each step
+% updated in each step.
 
 %% Beginning of code
 c=psifunc.c1;
@@ -1028,11 +1028,11 @@ while ( (betadiff > reftol) && (iter < refsteps) )
 
 end
 
-% store final estimate of beta
+% store final estimate of beta.
 outIRWLS.betarw = newbeta;
-% store final estimate of scale
+% store final estimate of scale.
 outIRWLS.scalerw = scale;
-% store final estimate of the weights for each observation
+% store final estimate of the weights for each observation.
 outIRWLS.weights=weights;
 
 end
