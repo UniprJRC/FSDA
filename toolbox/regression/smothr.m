@@ -1,46 +1,46 @@
 function ysmo=smothr(l,x,y,w)
-%smothr produces smoothed values with constraints
+%smothr produces smoothed values with constraints.
 %
 %
 %<a href="matlab: docsearchFS('smothr')">Link to the help page for this function</a>
 %
-%   This function is used in each step of the iterative procedure for ACE
+%   This function is used in each step of the iterative procedure for ACE,
 %   but can be called directly when it is necessary to smooth a set of
 %   values. Note that the x values must be non decreasing.
 %
 %
 % Required input arguments:
 %
-%       l :  type of transformation. Scalar. Scalar which
-%           specifies how the type of transformation.
-%           l=1 => transformation can also be non monotone. In this case
+%       l :  type of transformation. Scalar. Scalar that
+%           specifies the type of transformation.
+%           l=1 => transformation can also be non monotone. In this case,
 %                  the supersmoother is initially applied. In presence of
-%                  equal values of x the unweighted arithmetic mean of the
+%                  equal values of x, the unweighted arithmetic mean of the
 %                  smoothed values is returned.
 %           l=2 => j-th variable assumes circular (periodic) values
 %                 in the range (0.0,1.0) with period 1.0.
-%           l=3 => transformation is to be monotone. In this case the
+%           l=3 => transformation is to be monotone. In this case, the
 %                  supersmoother is initially applied. Monotonic
 %                  transformation is forced applying isotonic regression to
 %                  (1) the output of the supersmoother and to the flipped
 %                  upside down (2) output of the supersmoother. The choice
-%                  between solution (1) and (2) is made taked the output
-%                  which is closest to the output of the supersmoother.
+%                  between solution (1) and (2) is made based on the output
+%                  that is closest to the output of the supersmoother.
 %                  Closeness is measured in terms of sum
 %                  of squares of residuals. Equal consecutive values
-%                  smoothed values are replaced by linearly iterpolated values.
+%                  smoothed values are replaced by linearly interpolated values.
 %                  In presence of equal values of x, the unweighted
 %                  arithmetic mean of the final smoothed values is
 %                  returned.
-%           l=4 => transformation is to be linear. In this case the smoothed
+%           l=4 => transformation is to be linear. In this case, the smoothed
 %                  values are simply the fitted values from least squares
 %                  fit.
-%           l=5 => the predictor variable is categorical. In this case the smoothed
+%           l=5 => the predictor variable is categorical. In this case, the smoothed
 %                  values are simply the (weighted) values of y in
 %                  correspondence of each value of x.
-%    x   :      Predictor variable sorted. Vector.  Ordered abscissa values.
+%    x   :      Predictor variable sorted. Vector. Ordered abscissa values.
 %               Note that the x values are assumed non decreasing.
-%    y  :       Response variable. Vector. Response variable which has to
+%    y  :       Response variable. Vector. Response variable that has to
 %               be smoothed, specified as
 %               a vector of length n, where n is the number of
 %               observations.
@@ -50,7 +50,7 @@ function ysmo=smothr(l,x,y,w)
 %
 %       w  : weights for the observations. Vector. Row or column vector of
 %           length n containing the weights associated to each
-%           observations. If w is not specified we assum $w=1$ for $i=1,
+%           observations. If w is not specified, we assume: $w=1$ for $i=1,
 %           2, \ldots, n$.
 %           Example - 'w',1:n
 %           Data Types - double
@@ -61,9 +61,9 @@ function ysmo=smothr(l,x,y,w)
 %         ysmo:  smoothed values. Vector. A vector with the same dimension
 %               of y containing smoothed values, that is the y values on
 %               the fitted curve. The smoothed values come from linear
-%               regression if input value l=4. The smoothed values are
-%               monotonic if input value l=3. The smoothed values can also
-%               be non monotonic if input value l=1;
+%               regression, if input value l=4. The smoothed values are
+%               monotonic, if input value l=3. The smoothed values can also
+%               be non monotonic, if input value l=1;
 %
 %
 % See also: ace.m, supsmu.m, avas.m, rlsmo.m
@@ -74,7 +74,7 @@ function ysmo=smothr(l,x,y,w)
 % for multiple regression and correlation, "Journal of the American
 % Statistical Association", Vol. 80, pp. 580-597.
 %
-% Wang D.  and Murphy M. (2005), Identifying nonlinear relationships
+% Wang D. and Murphy M. (2005), Identifying nonlinear relationships
 % regression using the ACE algorithm, "Journal of Applied Statistics", Vol.
 % 32, pp. 243-258.
 %
@@ -96,7 +96,7 @@ function ysmo=smothr(l,x,y,w)
     %% Compare 4 different smoothers.
     % The data give the speed of cars and the distances taken to stop. Note
     % that the data were recorded in the 1920s.
-    % The first column of X is speed while the second is the time to stop.
+    % The first column of X is speed, while the second is the time to stop.
     X=[ 4    2
         4   10
         7    4
@@ -149,9 +149,9 @@ function ysmo=smothr(l,x,y,w)
         25   85];
     x=X(:,1);
     y=X(:,2);
-    % Compare the output
+    % Compare the output.
     subplot(2,2,1)
-    % Non monotonic output l=1
+    % Non monotonic output l=1.
     plot(x,y,'o')
     hold('on')
     l=1;
@@ -161,8 +161,8 @@ function ysmo=smothr(l,x,y,w)
     ylabel('Distance')
 
     subplot(2,2,2)
-    % Impose monotonic output
-    % Input option l=3
+    % Impose monotonic output.
+    % Input option l=3.
     plot(x,y,'o')
     hold('on')
     l=3;
@@ -171,11 +171,12 @@ function ysmo=smothr(l,x,y,w)
     title('l=1: monotonic transformation')
 
     subplot(2,2,3)
-    % Impose monotonic output
-    % Input option l=4
+    % Impose monotonic output.
+    % Input option l=4.
     plot(x,y,'o')
     hold('on')
-    l=4; % Impose a linear smoother
+    l=4; 
+    % Impose a linear smoother
     ysmo=smothr(l,x,y);
     plot(x,ysmo,'-','LineWidth',2)
     title('l=4: linear transformation')
@@ -217,9 +218,9 @@ if nargin<4
     w=ones(n,1);
 end
 
-if l==4 % Transformation is forced to be linear
-    %     % Approach to find Xsmo based on loops
-    %     % Old way of programming
+if l==4 % Transformation is forced to be linear.
+    %     % Approach to find Xsmo based on loops.
+    %     % Old way of programming:
     %        n=length(y);
     %         Xsmo=zeros(n,1);
     %         sm=0.0;
@@ -238,7 +239,7 @@ if l==4 % Transformation is forced to be linear
     %             Xsmo(j)=a*(x(j)-b);
     %         end
     
-    % Compute LS line without loops
+    % Compute LS line without loops.
     %     yori=y;
     %     xori=x;
     %     fitlm(xori,yori,'Weights',1:n )
@@ -246,7 +247,7 @@ if l==4 % Transformation is forced to be linear
     % The formulae below assume that x and y are mean centered.
     sumw=sum(w);
     sumxw=sum(x.*w);
-    % meanx = mean of x
+    % meanx = mean of x.
     meanx=sumxw/sumw;
     % The formulae below assume that y is mean centered.
     meany=sum(y.*w)/sumw;
@@ -258,18 +259,18 @@ if l==4 % Transformation is forced to be linear
     % The intercept of the LS line is -a*meanx+meany
     ysmo=a*(x-meanx)+meany;
     
-    % The approach below to find ysmo is slower
+    % The approach below to find ysmo is slower.
     %         X=[ones(length(x),1) x];
     %         wsqrt=sqrt(w);
     %         Xw=X.*wsqrt;
     %         yw=yori.*wsqrt;
     %         bb=Xw\yw;
     %         ysmo=bb(1)+x*bb(2);
-elseif l==5 % variable is categorical 
+elseif l==5 % variable is categorical .
     ysmo=zeros(n,1);
-   % In this case the smoothed values are equal to the local weighted
+   % In this case, the smoothed values are equal to the local weighted
    % arithmetic mean of y in correspondence of the equal consecutive
-   % values of x. Note that the x values are preliminarly ordered therefere
+   % values of x. Note that the x values are preliminary ordered therefore
    % the weighted arithmetic mean of equal consecutive values considers all the
    % values of x which have a particular value.
     j0=1;
@@ -296,20 +297,20 @@ elseif l==5 % variable is categorical
         end
     end
     
-else % Transformation must not necessarily be linear
+else % Transformation must not necessarily be linear.
     
     alpha=5;
-    % Apply the super smoother and find the smoothed values of y
+    % Apply the super smoother and find the smoothed values of y.
     if l~=2
         Period=Inf;
     else
-        % Note that in this case the x values are assumed to be in [0, 1] and of period 1.
+        % Note that in this case, the x values are assumed to be in [0, 1] and of period 1.
         % Therefore x(end+1)=x(1)+period x(end+2) = x(2)+period ..... x(end+k-1)=x(k-1)
         % y(end+1)=y(1)  y(end+2) = y(2) ..... y(end+k-1)=y(k-1), that is
         % x = [x;x(1:k-1)+period];
         % y = [y;y(1:k-1)];
         % The smoothed values in the first k-1 positions are added in the
-        % last k-1 positions
+        % last k-1 positions.
         Period=1;
     end
     [ysmo]=supsmu(x,y,'Alpha',alpha,'Weights',w,'Period',Period);
@@ -320,15 +321,15 @@ else % Transformation must not necessarily be linear
         scr1=ysmo;
         scr2=flip(ysmo,1);
         
-        % Smoothed y values forced to be monotonic
-        % Force scr1 and scr2 to be monotonically non decreasing
+        % Smoothed y values forced to be monotonic.
+        % Force scr1 and scr2 to be monotonically non decreasing.
         % Replace consecutive non decreasing values with the corresponding
-        % arithmetic mean (isotonic regression)
+        % arithmetic mean (isotonic regression).
         scr1=montne(scr1);
         scr2=montne(scr2);
         
         % Choose between scr1 and scr2: the one which is closer in terms of
-        % residual sum of squares
+        % residual sum of squares.
         sm=sum((ysmo-scr1).^2);
         scr2flipped=flip(scr2,1);
         sw=sum((ysmo-scr2flipped).^2);
@@ -339,7 +340,7 @@ else % Transformation must not necessarily be linear
             ysmo=scr2flipped;
         end
         
-        % Replace equal consecutive values of ysmo with linearly interpolated values
+        % Replace equal consecutive values of ysmo with linearly interpolated values.
         for j=1:n-1
             j0=j;
             jp=j;
@@ -370,10 +371,10 @@ else % Transformation must not necessarily be linear
                 ii=(j0:jp)';
                 ysmo(ii)=ysmo(ii)-a+d*(ii-j0);
             end
-        end % End of loop to replace equal consecutive values of ysmo
-    end % End of l=3 (monotonic transformation)
+        end % End of loop to replace equal consecutive values of ysmo.
+    end % End of l=3 (monotonic transformation).
     
-    % Loop which deals with equal consecutive values of x
+    % Loop that deals with equal consecutive values of x
     % row 397 of Fortran program. The values of ysmo in correspondence of
     % the equal values of x are equal to the simple average of the values
     % of y.

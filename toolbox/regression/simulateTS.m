@@ -627,7 +627,7 @@ if ~isempty(trend)
 else
     % Controls on the trend component
     if ~isempty(trendb)
-        disp('Warning: option trend has been specified but the beta coefficients for the trend have not been specified')
+        disp('Warning: option trend has been specified, but the beta coefficients for the trend have not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
@@ -636,10 +636,10 @@ else
 end
 
 %% checks on the explanatory variables
-% Define nexpl = number of explanatory variables
+% Define nexpl = number of explanatory variables.
 isemptyX=isempty(X);
 if isemptyX
-    % nexpl = number of potential explanatory variables
+    % nexpl = number of potential explanatory variables.
     nexpl=0;
 elseif isscalar(X)
     nexpl=X;
@@ -649,32 +649,32 @@ else
 end
 
 if nocheck == false
-    % Controls on the explanatory variables component
+    % Controls on the explanatory variables component.
     if isempty(X) && ~isempty(Xb)
-        disp('Warning: option X has not been specified but the beta coefficients for the explanatory variables have been specified')
+        disp('Warning: option X has not been specified, but the beta coefficients for the explanatory variables have been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
     if isempty(Xb) && ~isempty(X)
-        disp('Warning: option X has been specified but the beta coefficients for the explanatory variables have not been specified')
+        disp('Warning: option X has been specified, but the beta coefficients for the explanatory variables have not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
     if ~isempty(X) && length(Xb)~=nexpl
-        % Define matrix which contains explanatory variables
-        disp(['Warning: option X has been specified but the length of ' ...
+        % Define matrix which contains explanatory variables.
+        disp(['Warning: option X has been specified, but the length of ' ...
             'beta coefficients for X is not in agreeement'])
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
-    % Controls on level shift component
+    % Controls on level shift component.
     if isempty(lshift) && ~isempty(lshiftb)
-        disp('Warning: option lshift has not been specified but the beta coefficient for the level shift has been specified')
+        disp('Warning: option lshift has not been specified, but the beta coefficient for the level shift has been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
     if isempty(lshiftb) && ~isempty(lshift)
-        disp('Warning: option lshift has been specified but the beta coefficient for the level shift has not been specified')
+        disp('Warning: option lshift has been, specified but the beta coefficient for the level shift has not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
@@ -704,8 +704,8 @@ if ~isempty(seasonal) && seasonal >0
     for j=1:seasonal
         Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
     end
-    % Remark: when s is even the sine term disapperas for j=s/2 and so the
-    % maximum number of trigonometric terms is s-1
+    % Remark: when s is even, the sine term disappears for j=s/2 and so the
+    % maximum number of trigonometric terms is s-1.
     if seasonal==(s/2)
         Xseaso=Xseaso(:,1:end-1);
     end
@@ -716,20 +716,20 @@ else
 end
 
 if nocheck == false
-    % Controls on the seasonal  component
+    % Controls on the seasonal component.
     if isempty(seasonal) && ~isempty(seasonalb)
-        disp('Warning: option seasonal has been specified but the beta coefficients for the seasonal have not been specified')
+        disp('Warning: option seasonal has been specified, but the beta coefficients for the seasonal have not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
     if isempty(seasonalb) && ~isempty(seasonal)
-        disp('Warning: option seasonal has not been specified but the beta coefficients for the seasonal have been specified')
+        disp('Warning: option seasonal has not been specified, but the beta coefficients for the seasonal have been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
     if ~isempty(seasonal) && length(seasonalb)~=nseaso+varampl
-        % Define matrix which contains linear
-        disp(['Warning: option seasonal has been specified but the length of ' ...
+        % Define matrix which contains linear.
+        disp(['Warning: option seasonal has been specified, but the length of ' ...
             'beta coefficients for the seasonal component is not in agreeement'])
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
@@ -739,20 +739,20 @@ end
 %% checks on the AR component
 if ARp==0; ARp=[]; end
 if nocheck == false
-    % Controls on the AR component
+    % Controls on the AR component.
     if isempty(ARp) && ~isempty(ARb)
-        disp('Warning: option ARp has been specified but the beta coefficients for the autoregressive terms have not been specified')
+        disp('Warning: option ARp has been specified, but the beta coefficients for the autoregressive terms have not been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
     if isempty(ARb) && ~isempty(ARp)
-        disp('Warning: option seasonal has not been specified but the beta coefficients for the seasonal have been specified')
+        disp('Warning: option seasonal has not been specified, but the beta coefficients for the seasonal have been specified')
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
 
     if ~isempty(ARp) && length(ARb)~=length(ARp)
-        % Define matrix which contains linear
-        disp(['Warning: option ARp has been specified but the length of ' ...
+        % Define matrix which contains linear.
+        disp(['Warning: option ARp has been specified, but the length of ' ...
             'beta coefficients for the autoregressive component is not in agreeement'])
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
@@ -762,7 +762,7 @@ end
 %% checks on residuals definition
 if isempty(residuals)
     if isempty(sigmaeps) && isempty(signal2noiseratio)
-        signal2noiseratio=1; % No input for residual -> default setting
+        signal2noiseratio=1; % No input for residual -> default setting.
         disp(['None of the inputs for simulating residuals has been specified. ' ...
             'The default value signal2noiseratio=1 will be considered.'])
     elseif ~isempty(sigmaeps) && ~isempty(signal2noiseratio)
@@ -786,11 +786,11 @@ end
 %%  Define the explanatory variable associated to the level shift component
 if lshift>0
     if lshift>T-1
-        disp('Warning: podition of level shift cannot be greater than T-1')
+        disp('Warning: position of level shift cannot be greater than T-1')
         error('FSDA:simulateTS:WrongInput','Wrong position of level shift component')
     end
     % Xlshift = explanatory variable associated with level shift Xlshift is
-    % 0 up to lsh-1 and 1 from lsh to T
+    % 0 up to lsh-1 and 1 from lsh to T.
     Xlshift= [zeros(lshift-1,1);ones(T-lshift+1,1)];
 end
 
@@ -803,13 +803,13 @@ else
 end
 
 %% Compute the underlying components of the signal of the time series
-% beta0 = vector which will contain all the coefficients of the model.
+% beta0 = vector that will contain all the coefficients of the model.
 % The order of the coefficients is:
 % - trend component,
 % - linear part of the seasonal component,
 % - explanatory variables,
 % - non linear part of the seasonal component,
-% - level shift
+% - level shift,
 % - beta=[trendb(:); seasonalb_linpart(:); Xb(:); seasonalb_nonlinpart(:); lshiftb(:)];
 
 yhattrend = Xtrend * trendb(:);
@@ -830,7 +830,7 @@ if isemptyX
 else
     % Note the order of coefficients is trend, linear part of seasonal
     % component, expl variables, non linear part of seasonal component,
-    % level shift
+    % level shift.
     yhatX = X*Xb(:);
 end
 
@@ -846,9 +846,9 @@ signal = yhattrend + yhatseaso + yhatX + yhatlshift;
 
 %% Final simulated time series y, with or without autoregressive component
 if isempty(ARb)
-    % No autoregressive part
+    % No autoregressive part.
     if isempty(residuals)
-        % Calculate the std err of the residuals (if not provided)
+        % Calculate the std err of the residuals (if not provided).
         if isempty(sigmaeps)
             varsignal = var(signal);
             if varsignal>0
@@ -857,15 +857,15 @@ if isempty(ARb)
                 sigmaeps= sqrt(1/signal2noiseratio);
             end
         end
-        % Simulate the irregular component
+        % Simulate the irregular component.
         residuals = sigmaeps * randn(T,nsim);
     end
-    % y is the final simulated time series (signal + irregular component)
+    % y is the final simulated time series (signal + irregular component).
     irregular = residuals;
     y = signal*ones(1,nsim) + irregular;
 else
     % Add autoregressive part to the irregular.
-    % Be reasonable with the number of autoregressive components ...
+    % Be reasonable with the number of autoregressive components.
     if length(ARb)>6
         disp('Number of autoregressive components is too big and can create model instability: it is set to 6');
         ARp=ARp(1:6);
@@ -874,8 +874,8 @@ else
     ARb_all=zeros(1,max(ARp));
     ARb_all(ARp)=ARb;
     if ARIMAX==false
-        % AR components on residuals
-        % Calculate the std err of the residuals (if not provided)
+        % AR components on residuals.
+        % Calculate the std err of the residuals (if not provided).
         if isempty(residuals)
             if isempty(sigmaeps)
                 varsignal = var(signal);
@@ -887,14 +887,14 @@ else
             end
         end
         if exist('regARIMA','file') && isempty(residuals)>0
-            % Use the Econometric toolbox if present: regARIMA
+            % Use the Econometric toolbox if present: regARIMA.
             Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb_all),'Beta',1,'Variance',sigmaeps^2);
-            % arima generates ARIMAX models
+            % arima generates ARIMAX models:
             % Mdl1 = arima('AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
             [y , irregular] = simulate(Mdl1,T,'X',signal,'NumPaths',nsim);
         else
             % Simulate the data y(t) without the Econometrics toolbox.
-            % For more details see files
+            % For more details see files:
             % R2019b\toolbox\econ\econ\@regARIMA\simulate.m
             % R2019b\toolbox\econ\econ\@ARIMA\simulate.m
             % R2019b\toolbox\econ\econ\+internal\+econ\simulateStandardizedVariates.m
@@ -920,12 +920,12 @@ else
             y = signal*ones(1,nsim) + Y;
         end
     else
-        % AR components on dependent variable
-        if ~isempty(residuals) % residuals provided
+        % AR components on dependent variable.
+        if ~isempty(residuals) % residuals provided.
             [y,irregular,~]=simulateARIMAX(T,nsim,ARb_all,residuals,signal);
-        elseif ~isempty(sigmaeps) % sigmaeps fixed
+        elseif ~isempty(sigmaeps) % sigmaeps fixed.
             [y,irregular,~]=simulateARIMAX(T,nsim,ARb_all,sigmaeps,signal);
-        else % search sigmaeps depending on signal2noiseratio
+        else % search sigmaeps depending on signal2noiseratio.
             varSignal=var(signal);
             if varSignal>eps
                 disp('Iterative search of sigmaeps depending on the desired signal2noise ratio.')
@@ -987,14 +987,14 @@ if ~isempty(FileNameOutput)
     writematrix(y,FileNameOutput,'delimiter',';')
 end
 
-% label the x axis using appropriate dates
+% label the x axis using appropriate dates.
 if ~isempty(StartDate)
     IniYear=StartDate(1);
     FinalYear=IniYear+ceil(T/s);
     [years, months] = meshgrid(IniYear:FinalYear, 1:12/s:12);
     years=years(1:T);
     months=months(1:T);
-    % Convert date and time to serial date number
+    % Convert date and time to serial date number:
     % datesnumeric=datenum(years(:), months(:), 1);
     datesnumeric=datetime(years(:), months(:), 1);
     % datetime(StartDate(1),StartDate(2),1)+calmonths(0:(T-1))
@@ -1017,7 +1017,7 @@ if plots==1
         [minV,maxV]=minmax(y(:,1),signal,yhattrend,yhatseaso,yhatlshift,yhatX,y(:,1)-signal);
     end
 
-    % Minimum value for xlim
+    % Minimum value for xlim.
     if isempty(StartDate)
         minxlim=1;
         maxxlim=T;
@@ -1026,7 +1026,7 @@ if plots==1
         maxxlim=max(datesnumeric);
     end
 
-    % Time series + fitted values
+    % Time series + fitted values.
     sb1 = subplot(2,3,1);
     plot(datesnumeric,y(:,1));
     if samescale
@@ -1153,7 +1153,7 @@ end
 
 function [Y,irregular,s2nr]=simulateARIMAX(T,nsim,ARcoeff,errorDef,signal)
 ARterms=zeros(length(ARcoeff),nsim);
-coefficients = [1 ARcoeff];  % ARIMA coefficient vector
+coefficients = [1 ARcoeff];  % ARIMA coefficient vector.
 Y=zeros(T,nsim);
 if max(size(errorDef))==1
     Z=randn(T,nsim);
