@@ -236,8 +236,8 @@ function [out] = FSReda(y,X,bsb,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out]=LXS(y,X,'nsamp',1000);
-    out=FSReda(y,X,out.bs);
+    [out]=LXS(ycont,X,'nsamp',1000);
+    out=FSReda(ycont,X,out.bs);
 %}
 
 %{
@@ -250,9 +250,6 @@ function [out] = FSReda(y,X,bsb,varargin)
     X=randn(n,p);
     % Uncontaminated data
     y=randn(n,1);
-    % Contaminated data
-    ycont=y;
-    ycont(1:5)=ycont(1:5)+6;
     out=FSReda(y,X,0,'tstat','trad');
 %}
 
