@@ -80,7 +80,7 @@ function [out] = regressCens(y,X, varargin)
 %
 %    right :    right limit for the censored dependent variable. Scalar.
 %               If set to Inf, the dependent variable is assumed to be not
-%               right-censored; default value of left is Inf (classical
+%               right-censored; default value of right is Inf (classical
 %               Tobit model).
 %               Example - 'right',800
 %               Data Types - double
