@@ -237,7 +237,8 @@ function [out] = FSRedaCens(y,X,bsb,varargin)
     % from LMS.
     n=200;
     p=3;
-    randn('state', 123456);
+    rng default
+    rng(123456)
     X=randn(n,p);
     % Uncontaminated data
     y=randn(n,1)+1;
