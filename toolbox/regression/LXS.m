@@ -280,7 +280,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % and do not produce plots.
     n=200;
     p=3;
-    randn('state', 123456);
+    rng(123456)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
@@ -292,7 +292,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % Compute LMS estimator, reweight and plot the residuals.
     n=200;
     p=3;
-    randn('state', 123456);
+    rng(123456)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
@@ -305,7 +305,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % extracted for computing the estimate (the so called elemental sets).
     n=200;
     p=3;
-    randn('state', 123456);
+    rng(123456)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
@@ -318,7 +318,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % residuals.
     n=200;
     p=3;
-    randn('state', 123456);
+    rng(123456)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
@@ -330,7 +330,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % Compute LMS estimator, without plots using 20000 subsamples.
     n=200;
     p=3;
-    randn('state', 123456);
+    rng(123456)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
@@ -343,7 +343,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % detection equal to 0.999.
     n=200;
     p=3;
-    randn('state', 123456);
+    rng(123456)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
@@ -361,7 +361,7 @@ function [out , varargout] = LXS(y,X,varargin)
     lms.bestr=10;
     n=200;
     p=3;
-    randn('state', 123456);
+    rng(123456)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
@@ -373,8 +373,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % LTS seems to detect half of the outlier with a Bonferroni
     %significance level.
     close all;
-    state=100;
-    randn('state', state);
+    rng(100)
     n=100;
     X=randn(n,3);
     bet=[3;4;5];
@@ -390,7 +389,7 @@ function [out , varargout] = LXS(y,X,varargin)
 
     % LMS with no reweighting
     [outLMS]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1));
-    h=subplot(2,2,1)
+    h=subplot(2,2,1);
     laby='Scaled LMS residuals';
     resindexplot(outLMS.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev)
 
@@ -441,7 +440,7 @@ function [out , varargout] = LXS(y,X,varargin)
     xylim=axis;
     line(xylim(1:2),out.beta(1)+out.beta(2)*xylim(1:2))
     title('Fit using best subset with option bonflevoutX empty')
-    subplot(2,1,2)
+    subplot(2,1,2);
     plot(Xall,yall,'o')
     out=LXS(yall,Xall,'bonflevoutX',0.99);
     line(xylim(1:2),out.beta(1)+out.beta(2)*xylim(1:2))
