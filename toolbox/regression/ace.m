@@ -255,7 +255,7 @@ end
 % (procedure using subroutine scail)
 % [tXchk,bchk]=scail(w,sw,ty,tX,eps,maxit);
 
-% ct vector containing the
+% ct vector containing the information about the iteration number
 ct=zeros(maxit,1);
 ct(1:nterm)=100;
 
