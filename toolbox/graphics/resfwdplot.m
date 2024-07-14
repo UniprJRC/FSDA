@@ -1176,18 +1176,23 @@ x=standard.xvalues;
 if any(strcmp(fieldnames(out),'class'))
     if strcmp(out.class,'MMregeda')
         x=out.eff;
+        xlab='eff';
         % out.Un='';
     elseif strcmp(out.class,'Sregeda')
         x=out.bdp;
+        xlab='bdp';
         % out.Un='';
     elseif strcmp(out.class,'MDPDReda')
         x=out.bdp;
+        xlab='bdp';
         % out.Un='';
     end
     % If field Un does not exist then it is initialized with empty
     if ~isfield(out,'Un')
         out.Un='';
     end
+else
+    xlab='Subset size m';
 end
 
 
@@ -1607,7 +1612,9 @@ if corres==true
     xtick=get(gca,'XTick');
     newlabel=char(num2str(x(str2double(xticklabel)-ini+1)'));
     set(gca,'Xtick',xtick,'Xticklabel',newlabel)
-    xlabel('bdp','FontSize',SizeAxesLab+2,'Interpreter','Latex')
+
+
+    xlabel(xlab,'FontSize',SizeAxesLab+2,'Interpreter','Latex')
     title('Pearson');
     % ylim([lowy upy])
     ylimp=get(gca,'ylim');
