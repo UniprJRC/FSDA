@@ -264,6 +264,7 @@ function [out]=FSRfanCens(y,X,varargin)
 %{
     %% FSRfanCens with simulated data.
     % Generate Tobit regression data
+    rng('default')
     rng(200)
     n=200;
     lambda=0.5;
@@ -284,6 +285,7 @@ function [out]=FSRfanCens(y,X,varargin)
 
 %{
     %% Double censored simulated data.
+    rng('default')
     rng(4)
     n=200;
     lambda=0;
