@@ -367,7 +367,8 @@ function [out , varargout] = LXS(y,X,varargin)
     lms.bestr=10;
     n=200;
     p=3;
-    rng('default'); rng(123456)
+    rng('default'); 
+    rng(123456)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
@@ -379,7 +380,8 @@ function [out , varargout] = LXS(y,X,varargin)
     % LTS seems to detect half of the outlier with a Bonferroni
     %significance level.
     close all;
-    rng('default') rng(100)
+    rng('default');
+    rng(100)
     n=100;
     X=randn(n,3);
     bet=[3;4;5];
