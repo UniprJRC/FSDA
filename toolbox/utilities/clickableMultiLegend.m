@@ -163,8 +163,16 @@ axis manual;
 
     function togglevisibility(plotHandle)
 
-        % Toggle the visibility of the plot handle
-        allPlots = findall(groot, 'DisplayName',plotHandle.DisplayName);
+        % whichFigs contains the handle(s) of the target figures. When it
+        % is set to groot, clickableMultiLegend switches on/off all figures
+        % containing objects with the same DisplayName. If it is set to,
+        % for example, parentFigs (the ancestor), then clickableMultiLegend 
+        % switches on/off only the active figure. Try the first example.
+        whichFigs  = groot;
+        %parentFig = ancestor(plotHandle,'Figure');
+
+        % Toggle the visibility of the plot handle (groot vs parentFig)
+        allPlots = findall(whichFigs, 'DisplayName',plotHandle.DisplayName);
         for i = 1:length(allPlots)
             if (allPlots(i).Visible)
                 allPlots(i).Visible = 'off';
