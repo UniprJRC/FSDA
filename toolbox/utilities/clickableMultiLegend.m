@@ -46,19 +46,18 @@ function [varargout] = clickableMultiLegend(varargin)
 % Examples
 
 %{
-     % clickableMultiLegend applied to a single plot.
+     % clickableMultiLegend applied to two plots with lines with same legend names.
+     % Clicking on a legend line, will show/hide the selected line in both plots. 
      z = peaks(100);
      plot(z(:,26:5:50))
      grid on;
-     clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');
-     axis manual;
+     % define the names of the legend labels for both plots
+     names = {'Line1','Line2','Line3','Line4','Line5'};
+     clickableMultiLegend(names , 'Location', 'NorthWest');
      figure;
-     z = peaks(100);
-     plot(z(:,26:5:50))
+     plot(z(:,32:5:56))
      grid on;
-     hlegend=clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');
-     axis manual;
-     % legend(hlegend,'off');
+     hlegend=clickableMultiLegend(names, 'Location', 'NorthWest');
 %}
 
 %{
@@ -150,105 +149,46 @@ function [varargout] = clickableMultiLegend(varargin)
 
 %% Make the legend clickable
 
+drawnow;
+
 xlim manual;
 
-% Create legend as if it was called directly
-[varargout{1:nargout(@legend)}] = legend(varargin{:});
+lgd = legend(varargin{:});
+set(lgd, 'ItemHitFcn', @(src, event)togglevisibility(event.Peer));
+varargout={lgd};
 
-[~, objhan, plothan] = varargout{1:4};
-varargout = varargout(1:nargout);
+drawnow;
 
-% Set the callbacks
-for i = 1:length(plothan)
-    if ~isempty(objhan)
-        set(objhan(i), 'HitTest', 'on', 'ButtonDownFcn',...
-            @(varargin)togglevisibility(objhan(i),plothan(i)),...
-            'UserData', true);
-    end
-end
-end
+axis manual;
 
-%% The callback function that shows/hides legends
+    function togglevisibility(plotHandle)
 
-function togglevisibility(hObject, obj)
-if verLessThan('matlab','8.4.0')
-    histobj='patch';
-else
-    histobj='Bar';
-end
-
-% hObject is the handle of the text of the legend
-if get(hObject, 'UserData') % It is on, turn it off
-    set(obj,'HitTest','off','Visible','off','handlevisibility','off');
-    pause(0.001); %artificially introduced from 2016a to leave time to refresh HG2 object.
-    
-    % the color of the text of the legend is usually black ([0,0,0]) but 
-    % can be changed by spmplot. We ensure that the lighter color is a valid rgb 
-    getCol = get(hObject, 'Color');
-    if sum(getCol)>0, factor = 2.5; else, factor = 1.5; end
-    set(hObject, 'Color', (getCol + 1)/factor, 'UserData', false);
-    
-    similar_obj_h = findobj('DisplayName',get(obj,'DisplayName'));
-    similar_obj_h(logical(similar_obj_h==obj)) = [];
-    %similar_obj_h(find(similar_obj_h==obj)) = []; %slower than line before
-    set(similar_obj_h,'HitTest','off','Visible','off','handlevisibility','on');
-    
-    % This is to make the patches of a group histogram white
-    h = findobj('Type',histobj,'Tag',get(obj,'DisplayName'));
-    
-    % THIS SHOULD ALSO WORK
-    %  h1 = findobj('-not','Type','Line','-not','Type','Axes','-and','Tag',get(obj,'DisplayName'));
-    
-    if ~isempty(h)
-        set(h, 'UserData',get(h,'FaceColor'));
-        set(h, 'FaceColor','w', 'EdgeColor','k');
-    end
-    
-    % this is to hide the labels possibly associated to a group of units
-    h_plo_labeladd = findobj('-regexp','Tag','plo_labeladd');
-    if ~isempty(h_plo_labeladd)
-        color_labeladd = get(h_plo_labeladd, 'Color');
-        color_labeladd_1 = color_labeladd{1,:};
-        if color_labeladd_1 == get(obj, 'Color')
-            set(h_plo_labeladd,'HitTest','off','Visible','off','handlevisibility','on');
+        % Toggle the visibility of the plot handle
+        allPlots = findall(groot, 'DisplayName',plotHandle.DisplayName);
+        for i = 1:length(allPlots)
+            if (allPlots(i).Visible)
+                allPlots(i).Visible = 'off';
+            else
+                allPlots(i).Visible = 'on';
+            end
         end
-    end
-    
-else
-    
-    % the color of the text of the legend is usually black ([0,0,0]) but 
-    % can be changed by spmplot. We ensure that the lighter color is a valid rgb 
-    getCol = get(hObject, 'Color');
-    if sum(getCol)>0, factor = 2.5; else, factor = 1.5; end
-    set(hObject, 'Color', getCol*factor - 1, 'UserData', true);
-    set(obj, 'HitTest','on','visible','on','handlevisibility','on');
-    
-    similar_obj_h = findobj('DisplayName',get(obj,'DisplayName'));
-    similar_obj_h(logical(similar_obj_h==obj)) = [];
-    %similar_obj_h(find(similar_obj_h==obj)) = []; %slower than line before
-    set(similar_obj_h,'HitTest','on','Visible','on','handlevisibility','on');
-    
-    % This is to re-establish the color of the white patches of a group histogram
-    h = findobj('Type',histobj,'Tag',get(obj,'DisplayName'));
-    
-    % THIS SHOULD ALSO WORK
-    % h = findobj('-not','Type','Line','-not','Type','Axes','-and','Tag',get(obj,'DisplayName'));
-    
-    if ~isempty(h)
-        cori = get(h(1),'UserData'); cori = cori{1};
-        set(h, 'FaceColor',cori, 'EdgeColor','k');
-    end
-    
-    % this is to show the labels possibly associated to a group of units
-    h_plo_labeladd = findobj('-regexp','Tag','plo_labeladd');
-    if ~isempty(h_plo_labeladd)
-        color_labeladd = get(h_plo_labeladd, 'Color');
-        color_labeladd_1 = color_labeladd{1,:};
-        if color_labeladd_1 == get(obj, 'Color')
-            set(h_plo_labeladd,'HitTest','on','Visible','on','handlevisibility','on');
+        
+        h1 = findall(groot, '-not','Type','Line','-not','Type','Axes','-and','Tag',plotHandle.DisplayName);
+        if ~isempty(h1)
+            ccur = get(h1(1),'FaceColor');
+            %ccur = cell2mat(ccur(1,:));
+            if ~isequal(ccur , [1 1 1])
+                set(h1, 'UserData',get(h1,'FaceColor'));
+                set(h1, 'FaceColor','w', 'EdgeColor','k');
+            else
+                cori = get(h1(1),'UserData');
+                cori = cell2mat(cori(1,:));
+                set(h1, 'FaceColor',cori, 'EdgeColor','k');
+            end
         end
+
     end
-    
+
 end
-end
+
 %FScategory:UTIGEN
