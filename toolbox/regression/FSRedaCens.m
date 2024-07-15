@@ -282,7 +282,8 @@ function [out] = FSRedaCens(y,X,bsb,varargin)
     load affairs.mat
     X=affairs{:,["age" "yearsmarried" "religiousness" "occupation" "rating"]};
     y=affairs{:,"affairs"};
-    out=FSRedaCens(y,X,0);
+    outLXS=LXS(y,X);
+    out=FSRedaCens(y,X,outLXS.bs);
     resfwdplot(out)
 %}
 

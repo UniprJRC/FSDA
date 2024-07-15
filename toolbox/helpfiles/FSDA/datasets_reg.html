@@ -56,6 +56,38 @@ document.write(divsbefore);
       <td></td>
     </tr>
       <tr>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>affairs </tt></td>
+        <td bgcolor="#F2F2F2"> Infidelity data, known as Fair’s Affairs. 
+		Cross-section data from a survey conducted by Psychology Today in 1969.<br>
+		The variables are<br>gender: Factor indicating gender. <br>age: Numeric variable coding 
+		age in years: <br>17.5 = under 20, 22 = 20–24, 27 = 25–29, 32 = 30–34, 
+		37 = 35–39, 42 = 40–44, 47 = 45–49, 52 = 50–54, 57 = 55 or over. <br>
+		yearsmarried: Numeric variable coding number of years married: 0.125 = 3 
+		months or less, 0.417 = 4–6 months, 0.75 = 6 months–1 year, 1.5 = 1–2 
+		years, 4 = 3–5 years, 7 = 6–8 years, 10 = 9–11 years, 15 = 12 or more 
+		years. <br>children factor: Are there children in the marriage?<br>
+		religiousness: Numeric variable coding religiousness: 1 = anti, 2 = not 
+		at all, 3 = slightly, 4 = somewhat, 5 = very.<br>education: Numeric 
+		variable coding level of education: 9 = grade school, 12 = high school 
+		graduate, 14 = some college, 16 = college graduate, 17 = some graduate 
+		work, 18 = master’s degree, 20 = Ph.D., M.D., or other advanced degree. 
+		occupation: Numeric variable coding occupation according to Hollingshead 
+		classification (reverse numbering). <br>affairs (y) numeric. How often 
+		engaged in extramarital sexual intercourse during the past year? 0 = 
+		none, 1 = once, 2 = twice, 3 = 3 times, 7 = 4–10 times, 12 = monthly, 12 
+		= weekly, 12 = daily. <br>
+					In the example of Kleiber and 
+				Zeileis (2008, p. 142), the number of a person's extramarital 
+				sexual inter-courses ("affairs") in the past year is regressed 
+				on the person's age, number of years married, religiousness, 
+				occupation, and won rating of the marriage. The dependent 
+				variable is left-censored at zero and not right-censored. Hence 
+				this is a standard Tobit model which be estimated by functions
+				<a href="regressCens.html">regressCens</a> and&nbsp;
+				<a href="FSRedaCens.html">FSRedaCens</a>
+		  </td>
+      </tr>
+      <tr>
       <td bgcolor="#F2F2F2" style="width: 799px"><tt>air_pollution </tt></td>
         <td bgcolor="#F2F2F2"> This dataset on air pollution and mortality in 60 metropolitan statistical areas
 in the United States accompanies the book Ramsey, F. L. and Schafer, D. W. 
