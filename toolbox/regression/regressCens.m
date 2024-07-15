@@ -214,6 +214,9 @@ function [out] = regressCens(y,X, varargin)
     % left-censored at zero and not right-censored. Hence this is a standard
     % Tobit model which can be estimated by the following lines
     load affairs.mat
+    % Show the description of this table
+    wraptextFS(affairs.Properties.Description,'width',80)
+    % Define X and y 
     X=affairs(:,["age" "yearsmarried" "religiousness" "occupation" "rating"]);
     y=affairs(:,"affairs");
     out=regressCens(y,X,"dispresults",true);

@@ -283,7 +283,8 @@ function [out] = FSRedaCens(y,X,bsb,varargin)
     X=affairs{:,["age" "yearsmarried" "religiousness" "occupation" "rating"]};
     y=affairs{:,"affairs"};
     outLXS=LXS(y,X);
-    out=FSRedaCens(y,X,outLXS.bs);
+    [~,sor]=sort(abs(outLXS.residuals))
+    out=FSRedaCens(y,X,sor(1:100));
     resfwdplot(out)
 %}
 
