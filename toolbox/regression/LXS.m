@@ -278,6 +278,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % LXS with default input and output.
     % Compute LMS estimator without reweighting, add intercept to matrix X
     % and do not produce plots.
+    rng('default')
     n=200;
     p=3;
     rng(123456)
@@ -290,6 +291,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %{
     % LXS with optional arguments.
     % Compute LMS estimator, reweight and plot the residuals.
+    rng('default')
     n=200;
     p=3;
     rng(123456)
@@ -303,6 +305,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % LXS with optional output.
     % Generating the C matrix containing the indices of the subsamples
     % extracted for computing the estimate (the so called elemental sets).
+    rng('default')
     n=200;
     p=3;
     rng(123456)
@@ -316,6 +319,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % Reweighted LTS estimator.
     % Compute reweighted LTS estimator and produce the plot of
     % residuals.
+    rng('default')
     n=200;
     p=3;
     rng(123456)
@@ -328,6 +332,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %{
     % Specifying the number of subsamples.
     % Compute LMS estimator, without plots using 20000 subsamples.
+    rng('default')
     n=200;
     p=3;
     rng(123456)
@@ -341,6 +346,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % Specifying a confidence level.
     % Compute reweighted LMS and use a confidence level for outlier
     % detection equal to 0.999.
+    rng('default')
     n=200;
     p=3;
     rng(123456)
@@ -361,7 +367,7 @@ function [out , varargout] = LXS(y,X,varargin)
     lms.bestr=10;
     n=200;
     p=3;
-    rng(123456)
+    rng('default'); rng(123456)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
@@ -373,7 +379,7 @@ function [out , varargout] = LXS(y,X,varargin)
     % LTS seems to detect half of the outlier with a Bonferroni
     %significance level.
     close all;
-    rng(100)
+    rng('default') rng(100)
     n=100;
     X=randn(n,3);
     bet=[3;4;5];
@@ -455,7 +461,8 @@ function [out , varargout] = LXS(y,X,varargin)
     % confidence interval for outlier detection
     n=200;
     p=3;
-    randn('state', 123456);
+    rng('default')
+    rng(123456);
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
