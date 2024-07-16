@@ -46,6 +46,18 @@ function [varargout] = clickableMultiLegend(varargin)
 % Examples
 
 %{
+   % ClickableMultilegend applied to a single scatter with several groups.
+    % Simulate 3 groups
+    n1=30; n2=20; n3=50;
+    y = [rand(n1,1); rand(n2,1)+1; rand(n3,1)+2];
+    group= [2*ones(n1,1); ones(n2,1); zeros(n3,1)];
+    X = rand(n1+n2+n3,1);
+    gscatter(X,y,group)
+    % Make the legends clickable
+    clickableMultiLegend();
+%}
+
+%{
      % clickableMultiLegend applied to two plots with lines with same legend names.
      % Clicking on a legend line, will show/hide the selected line in both plots. 
      z = peaks(100);
