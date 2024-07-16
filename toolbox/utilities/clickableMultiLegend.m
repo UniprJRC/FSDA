@@ -79,20 +79,26 @@ function [varargout] = clickableMultiLegend(varargin)
     set(H(:,:,2),'DisplayName','group 2');
     set(H(:,:,3),'DisplayName','group 3');
 
-    % Get the new legend texts directly from the plot
-    % To take account a change in property names of the legend object in 2016b
-    if verLessThan('matlab','9.1')
-        legstring='LegendPeerHandle';
-    else
-        legstring='LayoutPeers';
-    end
-    legnew = get(getappdata(AX(1,end),legstring),'String');
-
     % Get the handles of the legend to update
     hLines  = findobj(AX(1,end), 'type', 'line');
 
     % Update the legend and make them clickable
-    clickableMultiLegend(sort(hLines), legnew{:});
+    clickableMultiLegend(hLines);
+
+    % % % Get the new legend texts directly from the plot
+    % % % To take account a change in property names of the legend object in 2016b
+    % % if verLessThan('matlab','9.1')
+    % %     legstring='LegendPeerHandle';
+    % % else
+    % %     legstring='LayoutPeers';
+    % % end
+    % % legnew = get(getappdata(AX(1,end),legstring),'String');
+    % % 
+    % % % Get the handles of the legend to update
+    % % hLines  = findobj(AX(1,end), 'type', 'line');
+    % % 
+    % % % Update the legend and make them clickable
+    % % clickableMultiLegend(sort(hLines), legnew{:});
 
     % Now, it is possible to click with the mouse on the different entries
     % to hide/show a particular group of units. For example, clicking on the
