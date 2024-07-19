@@ -1186,6 +1186,8 @@ if any(strcmp(fieldnames(out),'class'))
         x=out.bdp;
         xlab='bdp';
         % out.Un='';
+    else
+        xlab='Subset size m';
     end
     % If field Un does not exist then it is initialized with empty
     if ~isfield(out,'Un')
@@ -1209,7 +1211,7 @@ if mov ==true
     % axis manual
     jjinitial=1;
     Colors=repmat([ 0 0 1; 1 0 0; 0 1 1; 1  0 1; 1 1 0; 0 0 0; 0 1 0],ceil(n/7),1);
-Colors=Colors(1:n,:);
+    Colors=Colors(1:n,:);
 
     colororder(Colors);
     % colororder gem
