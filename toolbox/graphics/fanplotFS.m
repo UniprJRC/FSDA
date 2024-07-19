@@ -71,6 +71,13 @@ function brushedUnits=fanplotFS(out,varargin)
 %                   Example - 'FontSize',12
 %                   Data Types - double
 %
+%               h : the axis handle of a figure where to send fanplotFS.
+%                   axis handle. This option be used to host the fanplotFS in
+%                   a subplot of a complex figure formed by different
+%                   panels 
+%                   Example -'h',h1 where h1=subplot(2,1,1)
+%                   Data Types - Axes object (supplied as a scalar)
+%
 %    highlight : units to highlight in the fanplot plot. Vector or 2D array or empty
 %               (default). If highlight is a vector it contains numbers
 %               associated to the units whose entry step has to be shown in
@@ -126,10 +133,12 @@ function brushedUnits=fanplotFS(out,varargin)
 %                   Example - 'namey',''
 %                   Data Types - char
 %
+%
 %multiPanel :  plots on a single or multiple panels. Boolean. If
-%                   multiPanel is false each trajectory appears on a
-%                   seperate subplot. If multiPanel is true (defaul) all the
-%                   trajectories appear in single plot.
+%                   multiPanel is true each trajectory appears on a
+%                   separate subplot. If multiPanel is false (default) all the
+%                   trajectories appear in single plot. Note that if option
+%                   multiPanel is supplied option h is ignored.
 %                   Example - 'multiPanel',true
 %                   Data Types - logical
 %
@@ -539,9 +548,27 @@ function brushedUnits=fanplotFS(out,varargin)
     fanplotFS(outFS,'conflev',0.90,'lwdenv',lwdenv);
 %}
 
+%{
+    % Example of fanplot sent to a subplot (option h).
+    load('multiple_regression.txt');
+    y=multiple_regression(:,4);
+    X=multiple_regression(:,1:3);
+    % Comparing the monitoring of t tstas using the optimal rho function and
+    % two different specifications for the covariance matrix of estimates of
+    % robust regression coefficients
+    outOPT=Sregeda(y,X,'plots',0,'rhofunc','optimal','covrob',0,'msg',0);
+    outOPT1=Sregeda(y,X,'plots',0,'rhofunc','optimal','covrob',1,'msg',0);
+    % Top panel
+    h=subplot(2,1,1);
+    fanplotFS(outOPT,'conflev',0.95,'tag','plrobcopv0','h',h);
+    % Bottom panel
+    h=subplot(2,1,2);
+    fanplotFS(outOPT1,'conflev',0.95,'tag','plrobcopv1','h',h);
+%}
+
 %% Beginning of code
 brushedUnits=[];
-
+h='';
 
 %% Input parameters checking
 
@@ -589,7 +616,7 @@ elseif strcmp(out.class,'Sregeda')
     fanplotScore=false;
     Sco=out.tStat;
     laby='t statistics from S estimator';
-    labx= 'Break down point';
+    labx= 'Breakdown point';
 
     dfvary=false;
     estimatorS=true;
@@ -624,7 +651,7 @@ elseif  strcmp(out.class,'FSReda')
     xrange=[Sco(1,1) Sco(end,1)+1];
 
 else
-    error('Unknown class')
+    error('FSDA:fanplotFS:WrongClass','Unknown class')
 end
 
 if fanplotScore==false
@@ -653,7 +680,7 @@ options=struct('conflev',0.99,'titl','Fan plot','labx',labx,...
     'FontSize',12,'SizeAxesNum',10,'highlight',[],...
     'tag','pl_fan','datatooltip','','databrush','', ...
     'nameX','','namey','','label','','multiPanel', ...
-    false,'addxline',[],'flabstep',[]);
+    false,'addxline',[],'flabstep',[],'h',h);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -743,11 +770,13 @@ styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
 %% Display the fanplot
 
-% Specify where to send the output of the current procedure
-h=findobj('-depth',1,'tag',options.tag);
-if (~isempty(h))
-    clf(h);
-    figure(h)
+% Check is there is already a figure contining options.tag
+% If this is the case replace figure with option.tag with the new figure
+% else create a new figure
+htag=findobj('-depth',1,'tag',options.tag);
+if (~isempty(htag))
+    clf(htag);
+    figure(htag)
     axes;
 else
     figure;
@@ -772,6 +801,7 @@ conflev=options.conflev;
 % FontSize = font size of the axes labels
 FontSize =options.FontSize;
 addxline = options.addxline;
+h=options.h;
 
 % Use default limits for y axis
 ylim1=max(-maxy,min(min(Sco(:,2+intercept:end))));
@@ -870,10 +900,6 @@ if multiPanel==false
 
     title(titl);
 
-    % Add to the plot the labels for values of la
-    % Add the horizontal lines representing asymptotic confidence bands
-    xlabel(labx,'Fontsize',FontSize);
-    ylabel(laby,'Fontsize',FontSize);
 
     % Add the vertical line(s)
     if ~isempty(addxline)
@@ -913,6 +939,20 @@ if multiPanel==false
 
         hold('off');
     end
+    agcf=gcf;
+    agca=gca;
+    if ~isempty(h)
+        copyobj(allchild(agca),h);
+        delete(agcf)
+        if estimatorS==true
+            set(gca,'XDir','reverse');
+        end
+    end
+    % Add to the plot the labels for values of la
+    % Add the horizontal lines representing asymptotic confidence bands
+    xlabel(labx,'Fontsize',FontSize);
+    ylabel(laby,'Fontsize',FontSize);
+
 else % else plot on separate panels
     ij=0;
 
@@ -1189,8 +1229,8 @@ if (~isempty(options.databrush) || iscell(options.databrush))
 
                     %if the selected lambda has changed, all the existing
                     %plots will be stored in a new figure
-                    h=findobj('-depth',1,'Tag','pl_yX');
-                    if ~isempty(h)
+                    hyX=findobj('-depth',1,'Tag','pl_yX');
+                    if ~isempty(hyX)
 
                         %creation of a second figure which will contain a
                         %copy of the gplotmatrix, just created
@@ -1226,9 +1266,9 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     end
 
 
-                    h=findobj('-depth',1,'Tag','pl_resfwd');
-                    if ~isempty(h)
-                        figure(h)
+                    hplres=findobj('-depth',1,'Tag','pl_resfwd');
+                    if ~isempty(hplres)
+                        figure(hplres)
                         hax1=gca;
                         figure(hf2);
                         set(hf2,'Name',['Results for lambda=' num2str(la(lasel)) ]);
@@ -1240,9 +1280,9 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                         set(hax2, 'Position', pos);
 
                     end
-                    h=findobj('-depth',1,'Tag','pl_mdr');
-                    if ~isempty(h)
-                        figure(h)
+                    hplmdr=findobj('-depth',1,'Tag','pl_mdr');
+                    if ~isempty(hplmdr)
+                        figure(hplmdr)
                         hax1=gca;
                         figure(hf2);
                         set(hf2,'Name',['Results for lambda=' num2str(la(lasel)) ]);
@@ -1273,16 +1313,16 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 % nbrush= vector which contains the list of the selected units
                 nbrush=Unsel(~isnan(Unsel));
 
-                h=findobj('-depth',1,'Tag','pl_yX');
+                hyX=findobj('-depth',1,'Tag','pl_yX');
 
-                if (~isempty(h))
+                if (~isempty(hyX))
                     % delete from the current figure all graphics objects
                     % whose handles are not hidden
-                    clf(h);
+                    clf(hyX);
                     % Make the figure identified by handle h become the
                     % current figure make it visible, and raise it above
                     % all other figures on the screen.
-                    figure(h);
+                    figure(hyX);
 
                 else
                     % create a new figure
@@ -1442,13 +1482,13 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 end
 
                 % Now check if the figure which monitors the residuals is open.
-                h=findobj('-depth',1,'Tag','pl_resfwd');
-                set(h,'Name',strcat('Monitoring of Scaled Residuals for lambda=',num2str(la(lasel))));
-                if (~isempty(h))
+                hres=findobj('-depth',1,'Tag','pl_resfwd');
+                set(hres,'Name',strcat('Monitoring of Scaled Residuals for lambda=',num2str(la(lasel))));
+                if (~isempty(hres))
 
                     % make figure which contains monitoring scaled residuals
                     % become the current figure
-                    figure(h);
+                    figure(hres);
 
                     % if but=0 then it is necessary to remove previous
                     % highlightments (even if persist='on')
@@ -1456,17 +1496,17 @@ if (~isempty(options.databrush) || iscell(options.databrush))
 
                         % If set of values has already been highlighted in the
                         %monitoring residuals plot, remove it
-                        a=findobj(h,'Tag','brush_res');
+                        a=findobj(hres,'Tag','brush_res');
                         delete(a);
 
                         % Remove the yellow selection in this plot if present
-                        a=findobj(h,'Tag','selected');
+                        a=findobj(hres,'Tag','selected');
                         delete(a);
                     end
 
                     % get the x and y coordinates of the monitoring of the
                     % scaled residuals
-                    a=findobj(h,'tag','data_res');
+                    a=findobj(hres,'tag','data_res');
 
                     abrush=get(a(n+1-nbrush),'ydata');
                     if iscell(abrush)
@@ -1508,7 +1548,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 %% Highlight brushed trajectories also in the mdrplot, if it is open
 
                 % Default limits for x axis
-                h=findobj('-depth',1,'Tag','pl_mdr');
+                hmdr=findobj('-depth',1,'Tag','pl_mdr');
 
                 %the mdrplot has to be completely recreated if
                 % 1 persist is off
@@ -1519,8 +1559,8 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     % Now check if the figure containing minimum deletion
                     % residual is open. If it is, units are brushed in this
                     % plot too
-                    h=findobj('-depth',1,'Tag','pl_mdr');
-                    set(h,'Name',['Monitoring of Minimum deletion residual for lambda=' num2str(la(lasel)) ])
+                    hmdr=findobj('-depth',1,'Tag','pl_mdr');
+                    set(hmdr,'Name',['Monitoring of Minimum deletion residual for lambda=' num2str(la(lasel)) ])
                 else
 
                     % the mdrplot has also to be completly created if persist is
@@ -1532,18 +1572,18 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                         % Now check if the figure containing minimum deletion
                         % residual is open.
                         % If it is, units are brushed in this plot too
-                        h=findobj('-depth',1,'Tag','pl_mdr');
-                        set(h,'Name',['Monitoring of Minimum deletion residual where lambda=' num2str(la(lasel)) ])
+                        hmdr=findobj('-depth',1,'Tag','pl_mdr');
+                        set(hmdr,'Name',['Monitoring of Minimum deletion residual where lambda=' num2str(la(lasel)) ])
                     end
                 end
-                if (~isempty(h))
+                if (~isempty(hmdr))
 
                     % Remove unnecessary rows from vector selsteps -1 is
                     % necessary because we are considering minimum outside
                     selsteps=selsteps(:,1)-1;
 
                     % make figure which contains mdr become the current figure
-                    figure(h);
+                    figure(hmdr);
 
                     % Condition || but==0 if but=0 then it is necessary to
                     % remove previous highlightments (even if persist='on')
@@ -1551,7 +1591,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
 
                         % If set of values has already been highlighted in the
                         % mdr plot, remove it
-                        a=findobj(h,'Tag','brush_mdr');
+                        a=findobj(hmdr,'Tag','brush_mdr');
                         delete(a);
 
                         % Remove the yellow selection in this plot if present
@@ -1560,7 +1600,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     end
 
                     % get the x and y coordinates of mdr
-                    a=findobj(h,'tag','data_mdr');
+                    a=findobj(hmdr,'tag','data_mdr');
                     xdata=get(a,'Xdata'); % x coordinates of mdr (steps)
                     ydata=get(a,'ydata'); % y coordinates of mdr (values)
 
