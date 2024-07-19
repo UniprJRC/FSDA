@@ -496,7 +496,7 @@ if ~isempty(h)
 
     hline2 = findobj(h, 'Tag','conflevline');
     hlineh = flipud(hline2);
-    if length(findobj(get(h,'Parent'),'Tag','res_subplot'))==1
+    if isscalar(findobj(get(h,'Parent'),'Tag','res_subplot'))
         clickableMultiLegend(hlineh(1:numconflev),legendstring2);
     else
         legend_h = legend(hlineh(1:numconflev),legendstring2);
