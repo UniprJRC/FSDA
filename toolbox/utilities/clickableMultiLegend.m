@@ -52,7 +52,8 @@ function [varargout] = clickableMultiLegend(varargin)
     y = [rand(n1,1); rand(n2,1)+1; rand(n3,1)+2];
     group= [2*ones(n1,1); ones(n2,1); zeros(n3,1)];
     X = rand(n1+n2+n3,1);
-    gscatter(X,y,group)
+    gscatter(X,y,group);
+
     % Make the legends clickable
     clickableMultiLegend();
 %}
@@ -61,117 +62,187 @@ function [varargout] = clickableMultiLegend(varargin)
      % clickableMultiLegend applied to two plots with lines with same legend names.
      % Clicking on a legend line, will show/hide the selected line in both plots. 
      z = peaks(100);
-     plot(z(:,26:5:50))
+     plot(z(:,26:5:50),'LineWidth',3)
      grid on;
+
      % define the names of the legend labels for both plots
      names = {'Line1','Line2','Line3','Line4','Line5'};
-     clickableMultiLegend(names , 'Location', 'NorthWest');
+     clickableMultiLegend(names , 'Location', 'NorthWest','FontSize',14);
+
      figure;
-     plot(z(:,32:5:56))
+     plot(z(:,32:5:56),'LineWidth',3)
      grid on;
-     hlegend=clickableMultiLegend(names, 'Location', 'NorthWest');
+     hlegend=clickableMultiLegend(names, 'Location', 'NorthWest','FontSize',14);
 %}
 
 %{
-    % clickableMultiLegend applied to multiple subplots.
-    % For example let us start with a gplotmatrix.
-    % Simulate X
+    % clickableMultiLegend applied without arguments to multiple subplots.
+    
+    % Simulate X and y with 3 groups
     X = rand(100,4);
-
-    % Simulate y with 3 groups
     y = [rand(10,1); rand(20,1)+1; rand(70,1)+2];
-
     group= [2*ones(10,1); ones(20,1); zeros(70,1)];
+
+    % Generate the scatter matrix
+    gplotmatrix(X,y,group);
+
+    % Withut arguments, the effect is on the default legend
+    clickableMultiLegend();
+
+%}
+
+%{
+    % clickableMultiLegend applied with legend style arguments to multiple subplots.
+    
+    % Simulate X and y with 3 groups
+    X = rand(100,4);
+    y = [rand(10,1); rand(20,1)+1; rand(70,1)+2];
+    group= [2*ones(10,1); ones(20,1); zeros(70,1)];
+
+    % Generate the scatter matrix
+    gplotmatrix(X,y,group);
+
+    % Now we just want to change the font size of the legend
+    clickableMultiLegend('FontSize',14);
+%}
+
+%{
+    % clickableMultiLegend applied with legend names to multiple subplots.
+
+    % Simulate X and y with 3 groups
+    X = rand(100,4);
+    y = [rand(10,1); rand(20,1)+1; rand(70,1)+2];
+    group= [2*ones(10,1); ones(20,1); zeros(70,1)];
+
+    % Generate the scatter matrix
+    gplotmatrix(X,y,group);
+
+    % Update the legend and make them clickable
+    clickableMultiLegend({'group 1' , 'group 2' , 'group 3'},'FontSize',14);
+
+%}
+
+%{
+    % clickableMultiLegend applied with the handles of the line objects in multiple subplots.
+    
+    % This example shows that clickableMultiLegend can also receive the 
+    % handles returned by a multiple panel figure such as gplotmatrix.
+
+    % Simulate X and y with 3 groups
+    X = rand(100,4);
+    y = [rand(10,1); rand(20,1)+1; rand(70,1)+2];
+    group= [2*ones(10,1); ones(20,1); zeros(70,1)];
+
     % Generate the scatter matrix
     [H,AX,bigax] = gplotmatrix(X,y,group);
 
     % Set the DisplayName property (i.e. the texts of the legend) in all panels.
     % Note that in the gplotmatrix only one legend is visible.
-    set(H(:,:,1),'DisplayName','group 1');
-    set(H(:,:,2),'DisplayName','group 2');
-    set(H(:,:,3),'DisplayName','group 3');
+    set(H(:,:,1),'DisplayName','group 10');
+    set(H(:,:,2),'DisplayName','group 20');
+    set(H(:,:,3),'DisplayName','group 30');
 
     % Get the handles of the legend to update
     hLines  = findobj(AX(1,end), 'type', 'line');
 
     % Update the legend and make them clickable
-    clickableMultiLegend(hLines);
+    clickableMultiLegend(hLines,'FontSize',14);
 
-    % % % Get the new legend texts directly from the plot
-    % % % To take account a change in property names of the legend object in 2016b
-    % % if verLessThan('matlab','9.1')
-    % %     legstring='LegendPeerHandle';
-    % % else
-    % %     legstring='LayoutPeers';
-    % % end
-    % % legnew = get(getappdata(AX(1,end),legstring),'String');
-    % % 
-    % % % Get the handles of the legend to update
-    % % hLines  = findobj(AX(1,end), 'type', 'line');
-    % % 
-    % % % Update the legend and make them clickable
-    % % clickableMultiLegend(sort(hLines), legnew{:});
+%}
 
-    % Now, it is possible to click with the mouse on the different entries
-    % to hide/show a particular group of units. For example, clicking on the
-    % entry "group 2" in the legend we hide group 2.
+%{
+    % clickableMultiLegend again with the line objects handles, with a change in the legend order.
 
-    % Function gplotmatrix generates the legend texts automatically, based on
-    % the values in the vector defined by option 'group'. In the example above we
-    % have re-defined manually the legend texts set by option 'group' (which are
-    % '1', '2' and '3') as "group 1", "group 2" and "group 3". More conveniently,
-    % especially when the number of groups is not known in advance, one may
-    % re-define the legend texts in a more general way as follows:
+    % Simulate X and y with 3 groups
+    X = rand(100,4);
+    y = [rand(10,1); rand(20,1)+1; rand(70,1)+2];
+    group= [2*ones(10,1); ones(20,1); zeros(70,1)];
 
-    % it is convenient to reshape the gplotmatrix handles array to make it
-    % more manageable: while H is a 3-dimensional array with the third
-    % dimension associated to the groups, newH is 2-dimensional with lines
-    % associated to the subplots of the scatterplot and columns associated
-    % to the groups.
+    % Generate the scatter matrix
+    [H,AX,bigax] = gplotmatrix(X,y,group);
+
+    % Get the new legend texts directly from the plot
+    % (takes into account a change in the legend property names in 2016b)
+    if verLessThan('matlab','9.1')
+        legstring='LegendPeerHandle';
+    else
+        legstring='LayoutPeers';
+    end
+    leg = get(getappdata(AX(1,end),legstring),'String');
+
+    % Get the handles of the legend to update
+    hLines  = findobj(AX(1,end), 'type', 'line');
+
+    % Change the order of the legend strings, for exaple by sorting
+    hLines = sort(hLines);
+
+    % Update the legend and make them clickable
+    clickableMultiLegend(hLines, leg{:},'FontSize',14);
+
+%}
+
+%{
+    % clickableMultiLegend again with the line objects handles, with changes in the legend text.
+
+    % Here we make a gplotmatrix plot clickable, then we change the labels
+    % after a convenient reshape of its handles array: while H is a 3-dimensional
+    % array with the third dimension associated to the groups, newH is 2-dimensional 
+    % with lines associated to the subplots of the scatterplot and columns
+    % associated to the groups. This simplifies the redefinition of the 
+    % DisplayName property.
+
+    % Simulate X and y with 3 groups
+    X = rand(100,4);
+    y = [rand(10,1); rand(20,1)+1; rand(70,1)+2];
+    group= [2*ones(10,1); ones(20,1); zeros(70,1)];
+
+    % Generate the scatter matrix
+    [H,AX,bigax] = gplotmatrix(X,y,group);
+
+    % make the legend clickable
+    clickableMultiLegend('FontSize',14);
+
+    % reshape the line handles array
     nleg = numel(hLines);
     newH = reshape(H,numel(H)/nleg,nleg);
+
     % redefine the legend texts
     for i = 1 : nleg
         set(newH(:,i),'DisplayName',['Redefined group n. ' num2str(i)]);
     end
+
     % If the legend texts were clickable before the re-definition, they
     % will remain clickable.
 %}
 
 
 %% Beginning of code
-
-% This preample documents an issue that concerns the legend function, which
-% can be very slow because of a 'drawnow' call. Please report to the FSDA
-% team any issue that might be related to this problem.
-%
-% We report below few guidelines on the problem mainly taken from
-% http://undocumentedmatlab.com/articles/plot-performance of Yan Altman.
-%
-% Force the legend to be static.
-%ax=gca;
-% % set(ax,'LegendColorbarListeners',[]); This does not work anymore
-%setappdata(ax,'LegendColorbarManualSpace',1);
-%setappdata(ax,'LegendColorbarReclaimSpace',1);
-
-% DrawMode is to avoid checking which objects need to be displayed on top
-% of the others; Matlab will redraw objects following the order in which
-% they were created.
-% Clipping is to not waste time to check whether data beyond xlim/ylim need
-% to be excluded from display.
-% NextPlot is to avoid many automatic checking and property reset.
-%set(ax,'DrawMode','fast','Clipping','off','NextPlot','replacechildren');
-
-% Additional intervention: disabling legend for specific plot lines using:
-% hasbehavior(hPlotLineToDisable,'legend',false);
-
-%% Make the legend clickable
-
+ 
 drawnow;
 
 xlim manual;
 
-lgd = legend(varargin{:});
+% fix the DisplayName property in case of multiple panels before applying the callback function
+if nargin > 0 
+
+    % ensure to work on the axes handle to which a legend belongs
+    hLeg = findobj(gcf,'tag','legend');
+    if ~isempty(hLeg)
+        axes(hLeg.Axes);
+    end
+
+    % 
+    lgd = legend(varargin{:});
+    fixDisplayName(gcf);
+
+else
+
+    leg = fixDisplayName(gcf);
+    lgd = legend(leg);
+
+end
+
+% apply the callback for making the legend clickable
 set(lgd, 'ItemHitFcn', @(src, event)togglevisibility(event.Peer));
 varargout={lgd};
 
@@ -184,10 +255,10 @@ axis manual;
         % whichFigs contains the handle(s) of the target figures. When it
         % is set to groot, clickableMultiLegend switches on/off all figures
         % containing objects with the same DisplayName. If it is set to,
-        % for example, parentFigs (the ancestor), then clickableMultiLegend 
-        % switches on/off only the active figure. Try the first example.
-        whichFigs  = groot;
+        % for example, parentFigs (the ancestor), then clickableMultiLegend
+        % switches on/off only the active figure. 
         %parentFig = ancestor(plotHandle,'Figure');
+        whichFigs  = groot;
 
         % Toggle the visibility of the plot handle (groot vs parentFig)
         allPlots = findall(whichFigs, 'DisplayName',plotHandle.DisplayName);
@@ -198,7 +269,7 @@ axis manual;
                 allPlots(i).Visible = 'on';
             end
         end
-        
+
         h1 = findall(groot, '-not','Type','Line','-not','Type','Axes','-and','Tag',plotHandle.DisplayName);
         if ~isempty(h1)
             ccur = get(h1(1),'FaceColor');
@@ -211,6 +282,44 @@ axis manual;
                 cori = cell2mat(cori(1,:));
                 set(h1, 'FaceColor',cori, 'EdgeColor','k');
             end
+        end
+
+    end
+
+    function out = fixDisplayName(hfig)
+
+        if ~isempty(findobj(hfig, 'Tag', 'PlotMatrixBigAx'))
+
+            % Get the handle to the legend and the legend entries
+            hLegend        = findobj(hfig, 'Type', 'Legend');
+            %legendEntries  = fliplr(hLegend.String);
+            legendEntries  = hLegend.String;
+            nlegendEntries = numel(legendEntries);
+
+            % Get the handles of the panels
+            axesObjects = findobj(hfig, 'Type', 'axes');
+            
+            % Go over the axes
+            for i = 1:numel(axesObjects)
+                % Not all the axes refer to a panel
+                if isa(axesObjects(i).Children, 'matlab.graphics.chart.primitive.Line')
+                    % disp(['Panel ', num2str(i), ' contains a line plot'])
+                    % Assign the same DisplayName property to each group in each panel
+                    for g = 1:nlegendEntries
+                        axesObjects(i).Children(g).DisplayName = legendEntries{g};
+                    end
+                else
+                    % disp(['Panel ', num2str(i), ' does not contain a line plot'])
+                end
+            end            
+
+            % Get the input for the subsequent legend/clickableMultiLegend
+            out  = findobj(axesObjects(1), 'type', 'line');
+
+        else
+
+            out = [];
+
         end
 
     end
