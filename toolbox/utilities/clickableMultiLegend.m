@@ -52,6 +52,14 @@ function [varargout] = clickableMultiLegend(varargin)
     clickableMultiLegend;
 %}
 
+%{ 
+    % ClickableMultilegend applied to a plotmatrix without groups.
+    % In this case, the argument is used to give a name to the units 
+    % of the group. 
+    gplotmatrix(randn(50,2));
+    clickableMultiLegend('The units in the plot','FontSize',14);
+%}
+
 %{
    % ClickableMultilegend applied to a single scatter with several groups.
     % Simulate 3 groups
@@ -229,24 +237,34 @@ drawnow;
 
 xlim manual;
 
-% fix the DisplayName property in case of multiple panels before applying the callback function
-if nargin > 0 
+% Fix the DisplayName property in case of multiple panels before applying the callback function
 
-    % ensure to work on the axes handle to which a legend belongs
+if nargin > 0 % ClickableMultiLegend used with arguments
+
+    % Get legend(s) in the figure
     hLeg = findobj(gcf,'tag','legend');
-    if numel(hLeg)>1
-        hLeg = hLeg(1);
+    if numel(hLeg)>1 
+        hLeg = hLeg(1); % if several panels have a legend, keep just one
     end
+    % Ensure to work on the axes handle to which a legend belongs
     if ~isempty(hLeg)
         axes(hLeg.Axes);
+    else
+        allaxes = gcf().Children;
+        axes(allaxes(1));
     end
 
-    % 
+    % if numel(hLeg) == 0 && ischar(varargin{:})
+    %     legend('data');
+    % end
+    % set the legend names chosen by the user
     lgd = legend(varargin{:});
+    % set the DisplayName properties accordingly
     fixDisplayName(gcf);
 
-else
+else % ClickableMultiLegend used without arguments
 
+    % set the DisplayName properties
     leg = fixDisplayName(gcf);
     lgd = legend(leg);
 
