@@ -45,6 +45,13 @@ function [varargout] = clickableMultiLegend(varargin)
 %
 % Examples
 
+%{ 
+    % ClickableMultilegend applied to a plotmatrix without groups.
+    % In this case, ClickableMultilegend has no effect on the plot.
+    gplotmatrix(randn(50,2));
+    clickableMultiLegend;
+%}
+
 %{
    % ClickableMultilegend applied to a single scatter with several groups.
     % Simulate 3 groups
@@ -86,7 +93,7 @@ function [varargout] = clickableMultiLegend(varargin)
     % Generate the scatter matrix
     gplotmatrix(X,y,group);
 
-    % Withut arguments, the effect is on the default legend
+    % Without arguments, the effect is on the default legend
     clickableMultiLegend();
 
 %}
@@ -291,7 +298,7 @@ axis manual;
 
     function out = fixDisplayName(hfig)
 
-        if ~isempty(findobj(hfig, 'Tag', 'PlotMatrixBigAx'))
+        if ~isempty(findobj(hfig, 'Tag', 'PlotMatrixBigAx')) && ~isempty(findobj(hfig, 'Type', 'Legend'))
 
             % Get the handle to the legend and the legend entries
             hLegend        = findobj(hfig, 'Type', 'Legend');
