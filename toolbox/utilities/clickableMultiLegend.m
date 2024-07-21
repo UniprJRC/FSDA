@@ -227,6 +227,9 @@ if nargin > 0
 
     % ensure to work on the axes handle to which a legend belongs
     hLeg = findobj(gcf,'tag','legend');
+    if numel(hLeg)>1
+        hLeg = hLeg(1);
+    end
     if ~isempty(hLeg)
         axes(hLeg.Axes);
     end
