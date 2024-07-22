@@ -78,7 +78,7 @@ jobs:
       inputs:
         path: $(System.DefaultWorkingDirectory)/toolbox/tests-$(categoryName)
         artifact: Test-$(categoryName)
-    - task: PublishCodeCoverageResults@1
+    - task: PublishCodeCoverageResults@2
       condition: succeededOrFailed()
       inputs:
         codeCoverageTool: 'Cobertura'
