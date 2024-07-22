@@ -15,7 +15,7 @@ jobs:
      environment:
        CATEGORY_TO_TEST: << parameters.q >>  # setup a parametric environment variable to be used by MATLAB testing script "runAllMyTestsFS.m"
      machine:
-         image: ubuntu-2204:2022.07.1
+         image: default
      steps:
         - checkout
         - matlab/install
@@ -24,6 +24,7 @@ jobs:
          #     MATLAB
          #     Optimization_Toolbox
          #     Statistics_and_Machine_Learning_Toolbox
+         #     Bioinformatic_Toolbox
          #     Parallel_Computing_Toolbox 
         - matlab/run-command:                   # previously `matlab -batch ...`   
            command:  "run ./toolbox/runAllMyTestsFS.m"    # run the testing script: the environment variable can be retrieved using 'var=getenv('CATEGORY_TO_TEST');'
