@@ -251,7 +251,9 @@ if nargin > 0 % ClickableMultiLegend used with arguments
         axes(hLeg.Axes);
     else
         allaxes = gcf().Children;
-        axes(allaxes(1));
+        if ishghandle(allaxes(1), 'axes')
+            axes(allaxes(1));
+        end
     end
 
     % if numel(hLeg) == 0 && ischar(varargin{:})
