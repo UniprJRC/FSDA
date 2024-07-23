@@ -1104,7 +1104,7 @@ for j=2:lalpha
         % if length(newl) >1 two labels do not have the correspondence
         % therefore automatic relabelling is not possible.
         newl=setdiff(seqk,newlab);
-        if length(newl)==1
+        if isscalar(newl)  % was length(newl)==1 - corrected for performance
             newlab(indmaxdist)=newl;
             
             if isequal(sort(newlab),seqk)
