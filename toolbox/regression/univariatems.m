@@ -285,7 +285,8 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
     % (see function regressCens) is more appropriate. We just use this
     % dataset to show the case in which one of the variables is categorial
     % and X is table.
-    XX=readtable("https://stats.idre.ucla.edu/stat/data/tobit.csv","ReadRowNames",true);
+    link="https://stats.idre.ucla.edu/stat/data/tobit.csv";
+    XX=readtable(link,"ReadRowNames",true);
     XX.prog=categorical(XX.prog);
     % Define y and X
     y=XX(:,"apt");
