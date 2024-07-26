@@ -187,7 +187,7 @@ function [out] = regressCens(y,X, varargin)
 %
 % Henningsen, A. (2012), Estimating Censored Regression Models in R using
 % the censReg Package,
-% [https://cran.r-project.org/web/packages/censReg/vignettes/censReg.pdf]
+% [ https://cran.r-project.org/web/packages/censReg/vignettes/censReg.pdf ]
 %
 % Kleiber C., Zeileis A. (2008), "Applied Econometrics with R", Springer, New York.
 %
@@ -262,7 +262,8 @@ function [out] = regressCens(y,X, varargin)
     % “truly” equal in aptitude. The same is true of students who answer all of
     % the questions incorrectly. All such students would have a score of 200,
     % although they may not all be of equal aptitude.
-    XX=readtable("https://stats.idre.ucla.edu/stat/data/tobit.csv","ReadRowNames",true);
+    tabname="https://stats.idre.ucla.edu/stat/data/tobit.csv";
+    XX=readtable(tabname,"ReadRowNames",true);
     XX.prog=categorical(XX.prog);
     % The dataset contains 200 observations. The academic aptitude variable is
     % "apt", the reading and math test scores are read and math respectively. The
