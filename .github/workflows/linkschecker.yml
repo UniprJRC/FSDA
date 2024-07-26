@@ -9,8 +9,8 @@ jobs:
     - uses: actions/checkout@master
     - uses: gaurav-nelson/github-action-markdown-link-check@1.0.15
       with:
-        use-verbose-mode: 'yes'
-        use-quiet-mode: 'no'
+        use-verbose-mode: 'no'
+        use-quiet-mode: 'yes'
         file-extension: '.m'
         config-file: 'mlc_config.json'
 
