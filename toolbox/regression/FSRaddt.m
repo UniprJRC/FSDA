@@ -27,6 +27,22 @@ function [out]=FSRaddt(y,X,varargin)
 %                    Example - 'DataVars',[2 4]
 %                    Data Types - double
 %
+%           h   :   The number of observations that have determined the
+%                    least trimmed squares estimator. Scalar.
+%                    h is an integer greater or
+%                    equal than [(n+size(X,2)+1)/2] but smaller then n
+%                    Example - 'h',round(n*0,75)
+%                    Data Types - double
+%
+%        ilr   :    Apply the ilr transformation. Boolean.
+%                   In presence of compositional data, if this option is
+%                   set to true, for each column of X function pivotCoord
+%                   is invoked and the added variable whose test is
+%                   monitored is the first coordinate of the ilr
+%                   transformation. The default value of ilr is false.
+%                    Example - 'ilr',false
+%                    Data Types - logical
+%
 %    intercept :    Indicator for constant term. true (default) | false.
 %                   Indicator for the constant term (intercept) in the fit,
 %                    specified as the comma-separated pair consisting of
@@ -35,11 +51,21 @@ function [out]=FSRaddt(y,X,varargin)
 %                   Example - 'intercept',false
 %                   Data Types - boolean
 %
-%           h   :      The number of observations that have determined the
-%                       least trimmed squares estimator. Scalar.
-%                       h is an integer greater or
-%                       equal than [(n+size(X,2)+1)/2] but smaller then n
-%                       Example - 'h',round(n*0,75)
+%       init    :       Search initialization. Scalar.
+%                       Scalar which specifies the initial subset size to start
+%                       monitoring exceedances of minimum deletion residual, if
+%                       init is not specified it will be set equal to:
+%                       p+1, if the sample size is smaller than 40;
+%                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%                       Example - 'init',100 starts monitoring from step m=100
+%                       Data Types - double
+%
+%       lms     :      Criterion to use to find the initial subset to
+%                       initialize the search. Scalar, vector or structure.
+%                       If lms=1 (default) Least Median of Squares is
+%                       computed, else Least Trimmed of Squares is computed. Else
+%                       (default) no plot is produced
+%                       Example - 'lms',1
 %                       Data Types - double
 %
 %       nsamp   :       Number of subsamples which will be extracted to find the
@@ -50,23 +76,6 @@ function [out]=FSRaddt(y,X,varargin)
 %                       extract all subsets otherwise just 1000.
 %                       Example - 'nsamp',1000
 %                        Data Types - double
-%
-%       lms     :      Criterion to use to find the initial subset to
-%                       initialize the search. Scalar, vector or structure.
-%                       If lms=1 (default) Least Median of Squares is
-%                       computed, else Least Trimmed of Squares is computed. Else
-%                       (default) no plot is produced
-%                       Example - 'lms',1
-%                       Data Types - double
-%
-%       init    :       Search initialization. Scalar.
-%                       Scalar which specifies the initial subset size to start
-%                       monitoring exceedances of minimum deletion residual, if
-%                       init is not specified it will be set equal to:
-%                       p+1, if the sample size is smaller than 40;
-%                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%                       Example - 'init',100 starts monitoring from step m=100
-%                       Data Types - double
 %
 %       plots   :       Plot on the screen. Scalar.
 %                       If plots=1 a plot with forward deletion
@@ -320,6 +329,8 @@ vvarargin=varargin;
 % turn
 p1=p-1;
 
+
+
 %% User options
 
 % If the number of all possible subsets is <1000 the default is to extract
@@ -337,12 +348,14 @@ end
 
 DataVars='';
 msg=true;
+ilr=false;
+
 options=struct('h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',0,...
     'init',init,'nameX','','lwdenv',2,'quant',[0.005 0.995],'lwdt',2,'xlimx','','ylimy','',...
     'titl','','labx','Subset size m','laby','Deletion t statistics', ...
     'FontSize',12,'SizeAxesNum',10,'nocheck',false,'intercept',true, ...
-    'DataVars', DataVars,'msg',msg);
+    'DataVars', DataVars,'msg',msg,'ilr',ilr);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -369,6 +382,7 @@ plo=options.plots;
 nsamp=options.nsamp;
 DataVars=options.DataVars;
 msg=options.msg;
+ilr=options.ilr;
 
 % intcolumn = the index of the first constant column found in X, or empty.
 % Used here to check if X includes the constant term for the intercept.
@@ -441,11 +455,29 @@ for i=vars
     % Initialize matrix Un
     Un=Uni;
 
-    %w: the variable to test;
-    %Xred: the remaining variables.
+    % w: the variable to test;
+    % Xred: the remaining variables.
     w=X(:,i);
     Xred=X;
     Xred(:,i)=[];
+
+    if ilr== true
+        % Put variable to test in first position and all the other
+        % variables as subsequent columns and transform into pivot
+        % coordinates
+        Xtmp=pivotCoord([w Xred(:,2:end)]);
+        % Redefine w as the first column of Xtmp
+        w=Xtmp(:,1);
+        if intcolumn ==true
+            % Redefine Xred with the column of ones and all the other columns of Xtmp
+            Xred=[ones(n,1) Xtmp(:,2:end)];
+        else
+            % Redefine Xred with the column of ones and all the other columns of Xtmp
+            Xred=Xtmp(:,2:end);
+        end
+        % The search proceeds as before using the redefined variables Xred
+        % and w
+    end
 
     % Find initial subset to initialize the search (in the search which
     % excludes variable w
@@ -494,7 +526,11 @@ for i=vars
             badd=Xbadd\yb;
             yhatadd=Xbadd*badd;
             resadd=yb-yhatadd;
-            S2add=resadd'*resadd/(mm-p);
+            if ilr==false
+                S2add=resadd'*resadd/(mm-p);
+            else
+                S2add=resadd'*resadd/(mm-p1);
+            end
             Tadd=badd(end)/sqrt(S2add *covb(end,end));
 
             % Store added tstat
@@ -533,8 +569,8 @@ for i=vars
                     Un(mm-init+1,2:(length(unit)+1))=unit;
                 else
                     if msg==true
-                    disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
-                    disp(['Number of units which entered=' int2str(length(unit))]);
+                        disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
+                        disp(['Number of units which entered=' int2str(length(unit))]);
                     end
                     Un(mm-init+1,2:end)=unit(1:10);
                 end
