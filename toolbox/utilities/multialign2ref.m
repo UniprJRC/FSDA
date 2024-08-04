@@ -3,15 +3,15 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 %
 %<a href="matlab: docsearchFS('multialign2ref')">Link to the help function</a>
 %
-% This function performs multialignment of set of sequences not aligned
-% (Seqs2align) to a set of reference sequences already aligned (refSeqs).
-% In order to achieve this target function multialign of the BioInformatics
-% toolbox is called several times with all the default options. Note that
-% if the alignment of a sequence inside Seqs2align changes the reference
-% sequences we call again function multialign using the 'Name',Value,
-% GapOpen',100000 in order to allow the possibility of creating gaps or
-% adding additional characters in the reference sequence. If the new call
-% to multilign:
+% This function performs multialignment of set of Amino or nucleotide
+% sequences not aligned (Seqs2align) to a set of reference sequences
+% already aligned (refSeqs). In order to achieve this target function
+% multialign of the BioInformatics toolbox is called several times with all
+% the default options. Note that if the alignment of a sequence inside
+% Seqs2align changes the reference sequences we call again function
+% multialign using the 'Name',Value, GapOpen',100000 in order to allow the
+% possibility of creating gaps or adding additional characters in the
+% reference sequence. If the new call to multilign:
 % 1) creates gap(s) in the reference sequences (refSeqs) we delete the
 % characters corresponding to the gaps in the aligned sequence
 % and store this information inside boolean variable usedGap of output
