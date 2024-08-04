@@ -35,8 +35,9 @@ function [out]=FSRaddt(y,X,varargin)
 %                    Data Types - double
 %
 %        ilr   :    Apply the ilr transformation. Boolean.
-%                   In presence of compositional data, if this option is
-%                   set to true, for each column of X function pivotCoord
+%                   This option can be set to true if the matrix of independent 
+%                   variables X contains compositional data. Then, for each 
+%                   column of X function pivotCoord
 %                   is invoked and the added variable whose test is
 %                   monitored is the first coordinate of the ilr
 %                   transformation. The default value of ilr is false.
