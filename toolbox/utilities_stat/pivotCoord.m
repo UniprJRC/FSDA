@@ -1,5 +1,5 @@
 function [Xilr] = pivotCoord(X,varargin)
-%pivotCoord transforms into Pivot coordinates as a special case of isometric logratio coordinates
+%pivotCoord transforms into pivot coordinates as a special case of isometric logratio coordinates
 %
 %<a href="matlab: docsearchFS('pivotCoord')">Link to the help page for this function</a>
 %
