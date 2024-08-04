@@ -4,7 +4,7 @@ function varargout = dsxy2figxy(varargin)
 %
 % Required input arguments:
 %
-%   [figx figy] = dsxy2figxy([x1 y1],[x2 y2])
+%   [figx, figy] = dsxy2figxy([x1 y1],[x2 y2])
 %   figpos = dsxy2figxy([x1 y1 width height])
 %
 %       x1,x2,y1,y2:  scalars (in plot coordinates)
@@ -54,8 +54,20 @@ function varargout = dsxy2figxy(varargin)
     plot(x,sin(x));
     % set(gcf,'Units','normalized');
     % set(gcf,'Units','points');
-    [figx figy] = dsxy2figxy([0 pi],[0 1]);
+    [figx figy] = aux.dsxy2figxy([0 pi],[0 1]);
     annotation('textarrow',figx,figy)
+%}
+
+%{
+    %% Plot a double arrow 
+    % Add a double arrow from (1,2) to say (3,4):
+    x = -pi:pi/10:3*pi;
+    plot(x,5*sin(x));
+    % set(gcf,'Units','normalized');
+    % set(gcf,'Units','points');
+    [figx, figy] = aux.dsxy2figxy([1 3],[2 4]);
+    annotation('doublearrow',figx,figy)
+    grid  on
 %}
 
 %% Beginning of code
