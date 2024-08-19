@@ -63,7 +63,9 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   then .m file are converted for all specified subfolders.
 %                   If dirpath is a charater containing a single file
 %                   in the current folder, just this file will be
-%                   converted.
+%                   converted. In this case last case file README.md will
+%                   not be modified (because it is assumed one just wants
+%                   to regeenerate a single file)
 %                   Example - 'dirpath',pwd
 %                   Data Types - cell array of characters or char
 %                   Remark: dirpath can be conveniently created
@@ -214,6 +216,20 @@ function [Incl, Excluded]=m2ipynb(varargin)
     % dirpath contains 
     dirpath=findDir(pwd,'InclDir',InclDir,'ExclDir',ExclDir);
     [Incl,Excl]=m2ipynb('run',false,'dirpath',dirpath);
+%}
+
+%{
+
+    % Example 3 of the use of option dirpath.
+    % In this case dirpath is a character which contains the single file
+    % which needs to be converted
+    SingleFileToConvert=which('addFSDA2path');
+    m2ipynb('dirpath',SingleFileToConvert)
+    % In this case the output is a 0×4 empty cell array because addFSDA2path
+    % does not contain at the end of the file the string  '%InsideREADME'
+    % If you wish to try this option with files which have this string
+    % please clone the GitHub folder of FigMonitoringBook using
+    % !git clone https://github.com/UniprJRC/FigMonitoringBook.git
 %}
 
 %% Beginning of code
@@ -434,82 +450,89 @@ for j=1:ldirpath
         % d=d(boo);
     end
 
-    % Below is the typical file which has to be automatically created
-    % | FileName | Description | Open in MATLAB on line | Jupiter notebook |
-    % |---|---|---|---|
-    % |MentalIllness.m |Contaminated illness data.<br/> This file creates Figure 4.33.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/MentalIllness.m)| [[ipynb](MentalIllness.ipynb)]
-    % |Stars.m|Stars data.<br/> This file creates Figures 4.1-4.4, 4.9-4.11|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/Stars.m)| [[ipynb](Stars.ipynb)]
-    % |SurgicalUnit.m|Surgical Unit data.<br/> This file creates Figures 4.30-4.33.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/SurgicalUnit.m)| [[ipynb](SurgicalUnit.ipynb)]
-    % |Wool.m|Wool data.<br/> This file creates Figures 4.5-4.8.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/Wool.m)| [[ipynb](Wool.ipynb)]
+    % README.md file will modified just if the user a chosen to convert a
+    % set of files and not a single file
+    if Folder==true
 
-    if append2README ==true
-        % Create a table in markup language and append it at the end of the
-        % README.md file
-        fid = fopen('README.md'); % open file
-        if fid==-1
-            fstring1='';
-        else
-            fstring=fscanf(fid,'%c');
-            fclose(fid);
+        % Below is the typical file which has to be automatically created
+        % | FileName | Description | Open in MATLAB on line | Jupiter notebook |
+        % |---|---|---|---|
+        % |MentalIllness.m |Contaminated illness data.<br/> This file creates Figure 4.33.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/MentalIllness.m)| [[ipynb](MentalIllness.ipynb)]
+        % |Stars.m|Stars data.<br/> This file creates Figures 4.1-4.4, 4.9-4.11|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/Stars.m)| [[ipynb](Stars.ipynb)]
+        % |SurgicalUnit.m|Surgical Unit data.<br/> This file creates Figures 4.30-4.33.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/SurgicalUnit.m)| [[ipynb](SurgicalUnit.ipynb)]
+        % |Wool.m|Wool data.<br/> This file creates Figures 4.5-4.8.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/Wool.m)| [[ipynb](Wool.ipynb)]
 
-            % findTBL=regexp(fstring,'(|*)\s*FileName\s*|\s*Description\s*|\s*Script\s*\s*Jupiter');
-            findTBL=regexp(fstring,'(|*)\s*FileName\s*|\s*Description');
-
-            if ~isempty(findTBL)
-                fstring1=fstring(1:findTBL(1)-2);
+        if append2README ==true
+            % Create a table in markup language and append it at the end of the
+            % README.md file
+            fid = fopen('README.md'); % open file
+            if fid==-1
+                fstring1='';
             else
-                fstring1=fstring;
+                fstring=fscanf(fid,'%c');
+                fclose(fid);
+
+                % findTBL=regexp(fstring,'(|*)\s*FileName\s*|\s*Description\s*|\s*Script\s*\s*Jupiter');
+                findTBL=regexp(fstring,'(|*)\s*FileName\s*|\s*Description');
+
+                if ~isempty(findTBL)
+                    fstring1=fstring(1:findTBL(1)-2);
+                else
+                    fstring1=fstring;
+                end
+            end
+
+            %Include inside dout output of j-th folder which has been analyzed
+            if ~isempty(dout)
+
+                % Create table
+                TBL='| FileName | Description | Open in MATLAB on line | Jupiter notebook | \r |---|---|---|---| \r ';
+
+                for i = 1:size(dout,1)
+
+                    % | Income1 |[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap1/Income1main.m) |
+                    FileName=dout{i,1};
+                    posSep=regexp(dirpathj,filesep);
+                    folderName=[dirpathj(posSep(end)+1:end) '/'];
+                    % folderName='';
+                    postrepo=['&file=' folderName '/' FileName ')'];
+                    FileNameNoExt=FileName(1:end-2);
+                    folderName='';
+                    ipy=['| [[ipynb](' folderName FileNameNoExt '.ipynb)]'];
+                    Row2add=[prerepo repoName postrepo ipy];
+                    TBL=[TBL '|' FileName '|' dout{i,2} '<br/> ' dout{i,3} '|' Row2add '\r']; %#ok<AGROW>
+                    %  [[ipynb](/cap4/ARregression.ipynb)]
+
+                end
+                TBLmarkup=sprintf(TBL);
+                file1ID=fopen([dirpathj filesep 'README.md'],'w');
+
+                outstring=[fstring1 TBLmarkup];
+                fprintf(file1ID,'%s',outstring);
+                fclose('all');
+
+
+                Incl(iout:(iout+size(dout,1)-1),1:3)=dout;
+                Incl(iout:(iout+size(dout,1)-1),4)=repelem({dirpathj},size(dout,1),1);
+                iout=iout+size(dout,1);
+
             end
         end
-
-        %Include inside dout output of j-th folder which has been analyzed
-        if ~isempty(dout)
-
-            % Create table
-            TBL='| FileName | Description | Open in MATLAB on line | Jupiter notebook | \r |---|---|---|---| \r ';
-
-            for i = 1:size(dout,1)
-
-                % | Income1 |[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap1/Income1main.m) |
-                FileName=dout{i,1};
-                posSep=regexp(dirpathj,filesep);
-                folderName=[dirpathj(posSep(end)+1:end) '/'];
-                % folderName='';
-                postrepo=['&file=' folderName '/' FileName ')'];
-                FileNameNoExt=FileName(1:end-2);
-                folderName='';
-                ipy=['| [[ipynb](' folderName FileNameNoExt '.ipynb)]'];
-                Row2add=[prerepo repoName postrepo ipy];
-                TBL=[TBL '|' FileName '|' dout{i,2} '<br/> ' dout{i,3} '|' Row2add '\r']; %#ok<AGROW>
-                %  [[ipynb](/cap4/ARregression.ipynb)]
-
-            end
-            TBLmarkup=sprintf(TBL);
-            file1ID=fopen([dirpathj filesep 'README.md'],'w');
-
-            outstring=[fstring1 TBLmarkup];
-            fprintf(file1ID,'%s',outstring);
-            fclose('all');
-
-
-            Incl(iout:(iout+size(dout,1)-1),1:3)=dout;
-            Incl(iout:(iout+size(dout,1)-1),4)=repelem({dirpathj},size(dout,1),1);
-            iout=iout+size(dout,1);
-
-        end
+    else
+        % in this case just a sinfle file has been converted
     end
+
+
+    cd(currentPath);
+    Incl=Incl(1:iout-1,:);
+    Excluded=Excluded(1:iExcluded-1,:);
+
+    if printOutputCell==true
+        disp(Incl)
+    end
+
 end
-cd(currentPath);
-Incl=Incl(1:iout-1,:);
-Excluded=Excluded(1:iExcluded-1,:);
-
-if printOutputCell==true
-    disp(Incl)
 end
-
-end
-
-
 function [H1line,H2line, catBoolean] = get_H1lineandCategory(filename,searchTag)
 %GET H1 LINE and file category through input option searchTag
 
@@ -559,7 +582,7 @@ if strcmp(ext,'.m')
     end
     fclose(fid);
 end
-
-
 end
+
+
 %FScategory:UTIGEN
