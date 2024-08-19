@@ -65,7 +65,7 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   in the current folder, just this file will be
 %                   converted. In this case last case file README.md will
 %                   not be modified (because it is assumed one just wants
-%                   to regeenerate a single file)
+%                   to regenerate a single file)
 %                   Example - 'dirpath',pwd
 %                   Data Types - cell array of characters or char
 %                   Remark: dirpath can be conveniently created
