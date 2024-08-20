@@ -331,7 +331,12 @@ for j=1:ldirpath
     elseif Folder==true % isempty(dirpath)
         % Find all files which have extension .m in the current folder
         dirpathj=dirpath;
-        d = dir([dirpathj filesep '*.m']);
+        dM = dir([dirpathj filesep '*.m']);
+        dR = dir([dirpathj filesep '*.R']);
+        d=[dM;dR];
+        % Sort in alphabetical order the files
+        [~,sortIndex] = sort(lower({d.name}));
+        d = d(sortIndex);
     else
         % input is a single m file
         assert(isfile(dirpath),'If dirpath is a char it must an .m file in the current folder')
@@ -384,11 +389,17 @@ for j=1:ldirpath
         ij=1;
         cd(dirpathj)
         for i = 1:length(d)
-            % create mfilename (that is name of the file without .m extension) from
-            % file name
-            d(i).mfilename = regexprep(d(i).name,'\.m$','');
+
             FileName=d(i).name;
 
+            % create filenameNoExt (that is name of the file without extension) from
+            % file name
+
+            % d(i).mfilename = regexprep(d(i).name,'\.m$','');
+
+            [~,filenameNoExt,ext]=fileparts(FileName);
+            d(i).mfilename=filenameNoExt;
+            d(i).ext=ext;
 
 
             if strcmp(d(i).name,'m2ipynb.m')
@@ -399,25 +410,45 @@ for j=1:ldirpath
                     H2line=regexprep(H2line,'\n',' ');
                 catch
                     catBoolean=false;
-                    % error('FSDA:m2ipynb:WrongInputFile',['error while parsing file :' d(i).name])
                 end
             end
             % Convert file to mlx and subsequently to ipynb format
-            if catBoolean ==true
+            if catBoolean ==true && strcmp(ext,'.m')
                 if msg==true
                     disp(['Converting file: ' FileName])
                 end
 
-                FileNameMLX=[FileName(1:end-2) '.mlx'];
+                FileNameMLX=[filenameNoExt '.mlx'];
+
+                % try
                 matlab.internal.liveeditor.openAndSave(FileName,FileNameMLX);
-                %  try
+                % catch
+                %    error('FSDA:m2ipynb:WrongInputFile',['error converting file  to mlx:' d(i).name])
+                % end
+
+                % If FileName contains the string runExcluded than .mlx
+                % file is not run
                 if contains(FileName,runExcluded)
                     export(FileNameMLX,'Format','ipynb','Run',false,'CatchError',CatchError);
                 else
-                    export(FileNameMLX,'Format','ipynb','Run',runMLXfile,'CatchError',CatchError);
+                    % If runMLXfile is true then mlx file is
+                    % executed
+                    FileNameipynb=[filenameNoExt '.ipynb'];
+
+                    if runMLXfile ==true
+                        export(FileNameMLX,'Format','ipynb','Run',true,'CatchError',CatchError);
+                        disp(['File '  FileNameipynb ' after running mlx file'])
+                    else
+                        % If runMLXfile is false then file ipynb is created
+                        % just if it does not exist
+                        if exist([filenameNoExt '.ipynb'],"file")==2
+                            disp(['File ' FileNameipynb ' not modified because already existing and option run is false'])
+                        else
+                            export(FileNameMLX,'Format','ipynb','Run',false,'CatchError',CatchError);
+                            disp(['File '  FileNameipynb ' created without running mlx file'])
+                        end
+                    end
                 end
-                FileNameipynb=[FileName(1:end-2) '.ipynb'];
-                disp(['File '  num2str(FileNameipynb) ' created'])
                 % catch
                 %     warning('FSDA:m2ipynb:WrongInputFile',['CatchError in file ' FileName])
                 %     % error('FSDA:m2ipynb:WrongInputFile','Source code error in original .m file')
@@ -431,6 +462,16 @@ for j=1:ldirpath
                     delete(FileNameMLX);
                 end
                 ij=ij+1;
+
+                % In this situation we are deadling with an R file
+            elseif catBoolean ==true && strcmp(ext,'.R')
+                dout{ij,1}=FileName;
+                dout{ij,2}=H1line;
+                dout{ij,3}=H2line;
+                ij=ij+1;
+            else
+                % File does not have to be included inside README.md
+                % because catBoolean is false
             end
         end
     end
@@ -496,10 +537,16 @@ for j=1:ldirpath
                     folderName=[dirpathj(posSep(end)+1:end) '/'];
                     % folderName='';
                     postrepo=['&file=' folderName '/' FileName ')'];
-                    FileNameNoExt=FileName(1:end-2);
+                    [~,FileNameNoExt,ext]=fileparts(FileName);
+                    % FileNameNoExt=FileName(1:end-2);
                     folderName='';
-                    ipy=['| [[ipynb](' folderName FileNameNoExt '.ipynb)]'];
-                    Row2add=[prerepo repoName postrepo ipy];
+                    if strcmp(ext,'.R')
+                        Row2add=['[Open](' FileName ')'];
+                    else
+                        ipy=['| [[ipynb](' folderName FileNameNoExt '.ipynb)]'];
+                        Row2add=[prerepo repoName postrepo ipy];
+                    end
+
                     TBL=[TBL '|' FileName '|' dout{i,2} '<br/> ' dout{i,3} '|' Row2add '\r']; %#ok<AGROW>
                     %  [[ipynb](/cap4/ARregression.ipynb)]
 
@@ -522,7 +569,6 @@ for j=1:ldirpath
         % in this case just a sinfle file has been converted
     end
 
-
     cd(currentPath);
     Incl=Incl(1:iout-1,:);
     Excluded=Excluded(1:iExcluded-1,:);
@@ -543,45 +589,56 @@ end
 [~,~,ext] = fileparts(filename);
 H1line = ''; % default output
 if strcmp(ext,'.m')
-    fid = fopen(filename); % open file
-    tline = fgetl(fid); % read first line
-    while ischar(tline)
-        k = strfind(tline,'%'); % find comment
-        if ~isempty(k)
-            k = k(1);
-            ispercents = false(size(tline(k:end)));
-            ispercents(strfind(tline(k:end),'%'))=true;
-            start = k+find(~(isspace(tline(k:end)) | ispercents),1,'first')-1;
-            if ~isempty(start)
-                tline = tline(start:end); % remove leading space/percent
-                H1line = tline;
-                H1line = strtrim(H1line);
-                if ~isempty(H1line)
-                    H1line(1) = upper(H1line(1)); % capitalize first letter
-                end
-            end
-            tline = -1; % set tline to numeric
-        else
-            tline = fgetl(fid); % read next line
-        end
+    commentSign='%';
+elseif   strcmp(ext,'.R')
+    commentSign='#';
+    if ~isempty(searchTag)
+        searchTag=['#' searchTag(2:end) ];
     end
-
-    % now get category
-    fstring=fscanf(fid,'%c');
-
-    findPercentage=strfind(fstring,'%%');
-    fstringSel=fstring(1:findPercentage(1)-1);
-    fstringSel=strrep(fstringSel,'%','');
-    H2line=removeExtraSpacesLF(fstringSel);
-
-
-    if  ~contains(fstring,searchTag)
-        catBoolean=false;
-    else
-        catBoolean=true;
-    end
-    fclose(fid);
+else
+    % file does not have .m or .R extension
+    error('FSDA:m2ipynb:WrongInputOpt','Just files with m or R extension')
 end
+
+fid = fopen(filename); % open file
+tline = fgetl(fid); % read first line
+while ischar(tline)
+    k = strfind(tline,commentSign); % find comment
+    if ~isempty(k)
+        k = k(1);
+        ispercents = false(size(tline(k:end)));
+        ispercents(strfind(tline(k:end),commentSign))=true;
+        start = k+find(~(isspace(tline(k:end)) | ispercents),1,'first')-1;
+        if ~isempty(start)
+            tline = tline(start:end); % remove leading space/percent
+            H1line = tline;
+            H1line = strtrim(H1line);
+            if ~isempty(H1line)
+                H1line(1) = upper(H1line(1)); % capitalize first letter
+            end
+        end
+        tline = -1; % set tline to numeric
+    else
+        tline = fgetl(fid); % read next line
+    end
+end
+
+% now get category
+fstring=fscanf(fid,'%c');
+
+findPercentage=strfind(fstring,[commentSign commentSign]);
+fstringSel=fstring(1:findPercentage(1)-1);
+fstringSel=strrep(fstringSel,commentSign,'');
+H2line=removeExtraSpacesLF(fstringSel);
+
+
+if  contains(fstring,searchTag)
+    catBoolean=true;
+else
+    catBoolean=false;
+end
+fclose(fid);
+
 end
 
 
