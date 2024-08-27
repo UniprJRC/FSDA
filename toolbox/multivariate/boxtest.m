@@ -19,14 +19,14 @@ function out = boxtest(Y,group,varargin)
 %               Data Types - single | double
 %
 % group :       Grouping variable.
-%               Numeric vector | logical vector | character array | cell
-%               array of character vectors.
-%               group is a grouping variable defined as a categorical
+%               Grouping variable defined as a categorical
 %               variable, vector, character array, or cell array of
 %               character vectors. Two observations are in the same group
 %               if they have the same value in the group array. The
 %               observations in each group represent a sample from a
 %               population.
+%               Data Types - Numeric vector | logical vector | character array | cell
+%               array of character vectors | string array.
 %
 %
 % Optional input arguments:
