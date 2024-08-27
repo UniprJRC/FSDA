@@ -1,16 +1,23 @@
 function [Incl, Excluded]=m2ipynb(varargin)
-%m2ipynb  convert selected m files into Jupyter notebook files
+%m2ipynb  converts m files into Jupyter notebook files and automatically creates README.md file with links to Open in MATALB On line
 %
 %<a href="matlab: docsearchFS('m2ipynb')">Link to the help function</a>
 %
 %   m2ipynb transforms m files which have a predefined label first
 %   into mlx files and then into Jupiter notebook files. This file also
-%   automatically appends inside README.md files a table written in markup
-%   language. To understand how this table looks like see
+%   automatically creates (or appends to) README.md file a table written in
+%   markup language which contains the list of converted files. For the m
+%   files which are converted the button "Open in MATALB On line" with the associated link is created.
+%   To understand how this table looks like see
 %   https://github.com/UniprJRC/FigMonitoringBook/tree/main/cap1 or
 %   https://github.com/UniprJRC/FigMonitoringBook/tree/main/cap2 or
 %   https://github.com/UniprJRC/FigMonitoringBook/tree/main/cap3 or every
-%   other chapter in the book
+%   other chapter in the book. Note that R files can also be included in
+%   the list. See for example 
+%   https://github.com/UniprJRC/FigMonitoringBook/tree/main/cap8. 
+%   Remark: note that if the README.md file already exists, the part of the
+%   README.md file before the markdown table with the list of files is not
+%   touched.
 %
 % Required input arguments:
 %
@@ -18,7 +25,9 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %
 %
 %   append2README: append or not the list of filtered files to README.md
-%                   file. Boolean. By default the list of filtered files in
+%                   file. 
+%                   Boolean. 
+%                   By default the list of filtered files in
 %                   the specififed folder will be appended to the README.md
 %                   file. If this table already exists inside the
 %                   README.md, it will be replaced with the current one.
@@ -36,36 +45,43 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   Example - 'CatchError',false
 %                   Data Types - logical
 %
-%  category :       label inside the files which have to be translated into
-%                   ipynb format. Charater or string. As default all .m
-%                   files which contain the label '%InsideREADME' will be
-%                   converted into mlx format and later into ipynb format.
-%                   They will also be included  in the table inside the
-%                   README.md file
-%                   Example - 'category','##myPersonalLabel##'
+%  category :       label inside the files which specifies whether the file
+%                   to be converted to ipynb format and included into
+%                   README.md file.
+%                   Charater or string. 
+%                   As default all .m files which contain the label
+%                   '%InsideREADME' will be converted into mlx format and
+%                   later into ipynb format. These will also be included
+%                   in the table inside the README.md file.  Also all .R
+%                   files which contain the label '#InsideREADME' will be
+%                   included in the README.md file. In the case of .R files
+%                   instead of the button Open in MATLAB On line there is
+%                   simply the link to open the file inside GitHub.
+%                   Example - 'category','##myPersonalLabel##' 
 %                   Data Types - character or string
 %
 %
 %
 % deleteMLXfiles : delete or not the .mlx files after their conversion to
 %                   jupiter notebook format.
-%                   Boolean. The default is false, that is .mlx are note
+%                   Boolean. 
+%                   The default is false, that is .mlx are note
 %                   deleted after their conversion to ipynb format.
 %                   Example - 'deleteMLXfiles',true
 %                   Data Types - logical
 %
 %    dirpath:       path to use or file to convert.
-%                   Cell array of characters or character. Absolute path of
-%                   the folder(s) for which m2ipynb files must be created.
-%                   If dirpath is not specified or it is empty all .m files
-%                   in the current folder with the category label will be
-%                   converted. If dirpath is a cell array of characters
-%                   then .m file are converted for all specified subfolders.
-%                   If dirpath is a charater containing a single file
-%                   in the current folder, just this file will be
-%                   converted. In this case last case file README.md will
-%                   not be modified (because it is assumed one just wants
-%                   to regenerate a single file)
+%                   Cell array of characters or character. 
+%                   Absolute path of the folder(s) for which m2ipynb files
+%                   must be created. If dirpath is not specified or it is
+%                   empty all .m files in the current folder with the
+%                   category label will be converted. If dirpath is a cell
+%                   array of characters then .m file are converted for all
+%                   specified subfolders. If dirpath is a charater
+%                   containing a single file in the current folder, just
+%                   this file will be converted. In this case last case
+%                   file README.md will not be modified (because it is
+%                   assumed one just wants to regenerate a single file)
 %                   Example - 'dirpath',pwd
 %                   Data Types - cell array of characters or char
 %                   Remark: dirpath can be conveniently created
@@ -165,13 +181,14 @@ function [Incl, Excluded]=m2ipynb(varargin)
 
 %{
     % m2ipynb with all default options.
-    % Convert first to .mlx and then to .ipynn all .m files in the current
-    % folder which contain '%InsideREADME' and append the table to
+    % Convert first to .mlx and then to .ipynb all .m files in the current
+    % folder which contain the string '%InsideREADME' and append the table to
     % README.md
     out=m2ipynb();
 %}
 
 %{
+    %  Example of m2ipynb with an optional argument.
     % As before but do not run the mlx files.
     out=m2ipynb('run',false);
 %}
