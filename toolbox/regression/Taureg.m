@@ -27,8 +27,8 @@ function [out , varargout] = Taureg(y, X, varargin)
 %
 %         bdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers
-%               the algorithm should resist. In this case any value greater
-%               than 0 but smaller or equal than 0.5 will do fine (default=0.5).
+%               the algorithm should resist. In this case, any value greater
+%               than 0, but smaller or equal than 0.5, will do fine (default=0.5).
 %               Note that given bdp nominal
 %               efficiency is automatically determined.
 %                 Example - 'bdp',0.4
@@ -41,9 +41,9 @@ function [out , varargout] = Taureg(y, X, varargin)
 %                 Example - 'eff',0.99
 %                 Data Types - double
 %
-%     rhofunc : rho function. String. String which specifies the rho
-%               function which must be used to weight the residuals.
-%               Possible values are
+%     rhofunc : rho function. String. String that specifies the rho
+%               function, which must be used to weight the residuals.
+%               Possible values are:
 %               'bisquare'
 %               'optimal'
 %               'hyperbolic'
@@ -62,7 +62,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               See PDrho.m and PDpsi.m.
 %               'AS' uses  Andrew's sine $\rho$ and $\psi$ functions.
 %               See ASrho.m and ASpsi.m.
-%               The default is bisquare
+%               The default is bisquare;
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - character
 %
@@ -71,27 +71,27 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               For hyperbolic rho function it is possible to set up the
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
-%               a, b and c (the default values are a=2, b=4, c=8)
+%               a, b and c (the default values are a=2, b=4, c=8).
 %                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %
-%       nsamp   : Number of subsamples which will be extracted to find the
-%                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
+%       nsamp   : Number of subsamples that will be extracted to find the
+%                 robust estimator. Scalar. If nsamp=0, all subsets will be extracted.
 %                 They will be (n choose p).
-%                 If the number of all possible subset is <1000 the
-%                 default is to extract all subsets otherwise just 1000.
+%                 If the number of all possible subset is <1000, the
+%                 default is to extract all subsets, otherwise just 1000.
 %                 Example - 'nsamp',1000
 %                 Data Types - single | double
 %
-%    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
+%    refsteps : Number of refining iterations. Scalar. Number of refining iterations in each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'nsamp',1000
+%                 Example - 'refsteps',1000
 %                 Data Types - single | double
 %
 %     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
-%                 Example - 'nsamp',1000
+%                 Example - 'reftol',1000
 %                 Data Types - single | double
 %
 %refstepsbestr: number of refining iterations for each best subset. Scalar.
@@ -112,7 +112,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               Value of tolerance for the iterative
 %               procedure for finding the minimum value of the scale
 %               for each subset and each of the best subsets
-%               (It is used by subroutine minscale.m)
+%               (it is used by subroutine minscale.m).
 %               The default value is 1e-7;
 %                 Example - 'minsctol',1e-7
 %                 Data Types - single | double
@@ -120,32 +120,32 @@ function [out , varargout] = Taureg(y, X, varargin)
 %      bestr  : number of "best betas" to remember. Scalar. Scalar defining
 %               number of "best betas" to remember from the
 %               subsamples. These will be later iterated until convergence
-%               (default=5)
+%               (default=5).
 %                 Example - 'bestr',10
 %                 Data Types - single | double
 %
-%     conflev :  Confidence level which is
+%     conflev :  Confidence level that is
 %               used to declare units as outliers. Scalar.
-%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               Usually conflev=0.95, 0.975, 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
-%               Default value is 0.975
+%               Default value is 0.975;
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %
 %        msg  : Level of output to display. Scalar. It controls whether
 %                 to display or not messages on the screen.
-%               If msg==1 (default) messages are displayed
+%               If msg==1 (default), messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               and the warnings about
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
-%               'MATLAB:nearlySingularMatrix' are set to off
-%               else no message is displayed on the screen
+%               'MATLAB:nearlySingularMatrix' are set to off,
+%               else no message is displayed on the screen.
 %                 Example - 'msg',0
 %                 Data Types - single | double
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
-%               true no check is performed on matrix y and matrix X. Notice
-%               that y and X are left unchanged. In other words the
+%               true, no check is performed on matrix y and matrix X. Notice
+%               that y and X are left unchanged. In other words, the
 %               additional column of ones for the intercept is not added.
 %               As default nocheck=false.
 %               Example - 'nocheck',true
@@ -155,12 +155,12 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               If plots = 1, generates a plot with the robust residuals
 %               against index number. The confidence level used to draw the
 %               confidence bands for the residuals is given by the input
-%               option conflev. If conflev is not specified a nominal 0.975
+%               option conflev. If conflev is not specified, a nominal 0.975
 %               confidence interval will be used.
 %                 Example - 'plots',0
 %                 Data Types - single | double
 %
-%       yxsave : Save matrices X and y. Scalar. If yxsave is equal to 1 the
+%       yxsave : Save matrices X and y. Scalar. If yxsave is equal to 1, the
 %               response vector y and data matrix X are saved into the output
 %                structure out.
 %               Default is 0, i.e. no saving is done.
@@ -169,32 +169,32 @@ function [out , varargout] = Taureg(y, X, varargin)
 %
 %  Output:
 %
-%  out :     A structure containing the following fields
+%  out :     A structure containing the following fields:
 %
-%            out.beta = vector containing the Tau estimator of regression
-%                       coefficients
+%            out.beta = vector containing the tau estimator of regression
+%                       coefficients.
 %            out.scale= scalar containing the estimate of the tau scale
 %                       (sigma). This is the value of the objective function
-%                        tau_scale = s_scale * average (\rho_2 (scaled residuals))
+%                        tau_scale = s_scale * average (\rho_2 (scaled residuals)).
 %              out.bs = p x 1 vector containing the units forming best subset
 %                       associated with tau estimate of regression coefficient.
 %        out.residuals= n x 1 vector containing the estimates of the robust
-%                       scaled residuals
+%                       scaled residuals.
 %        out.outliers = this output is present only if conflev has been
 %                       specified. It is a vector containing the list of
 %                       the units declared as outliers using confidence
-%                       level specified in input scalar conflev
-%         out.conflev = confidence level which is used to declare outliers.
+%                       level specified in input scalar conflev.
+%         out.conflev = confidence level that is used to declare outliers.
 %                       Remark: scalar out.conflev will be used to draw the
 %                       horizontal line (confidence band) in the plot.
-%         out.singsub = Number of subsets wihtout full rank. Notice that
+%         out.singsub = Number of subsets without full rank. Notice that
 %                       out.singsub > 0.1*(number of subsamples) produces a
-%                       warning
-%         out.weights = n x 1 vector containing the estimates of the weights
-%         out.rhofunc = string identifying the rho function which has been
-%                       used
-%    out.rhofuncparam = vector which contains the additional parameters
-%                       for the specified rho function which have been
+%                       warning.
+%         out.weights = n x 1 vector containing the estimates of the weights.
+%         out.rhofunc = string identifying the rho function that has been
+%                       used.
+%    out.rhofuncparam = vector that contains the additional parameters
+%                       for the specified rho function that have been
 %                       used. For hyperbolic rho function the value of
 %                       k =sup CVC. For Hampel rho function the parameters
 %                       a, b and c. This field is present only if input
@@ -232,7 +232,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 % The kernel of the function is based on a MATLAB code downloaded from the
 % web page of Dr. Matias Saliban-Barrera. However, all routines and
 % subroutines have been completely redesigned, with considerable increase
-% of the computational performance. Moreover in this function there is the
+% of the computational performance. Moreover in this function, there is the
 % possibility of choosing the rho (psi) function.
 %
 % Copyright 2008-2024.
@@ -361,7 +361,7 @@ nsampdef=min(1000,ncomb);
 
 % default value of number of refining iterations (C steps) for each extracted subset
 refstepsdef=3;
-% default value of tolerance for the refining steps convergence for  each extracted subset
+% default value of tolerance for the refining steps convergence for each extracted subset
 reftoldef=1e-6;
 % default value of number of best betas to remember
 bestrdef=5;
@@ -373,7 +373,7 @@ reftolbestrdef=1e-8;
 % both for each extracted subset and each of the best subsets
 minsctoldef=1e-7;
 
-% rho (psi) function which has to be used to weight the residuals
+% rho (psi) function, which has to be used to weight the residuals
 rhofuncdef='bisquare';
 % rhofuncdef='optimal';
 % rhofuncdef='hampel';
@@ -450,9 +450,8 @@ if strcmp(rhofunc,'bisquare')
     % and Leroy (1987)
 
 
-    % Compute tuning constant associated to the requested breakdown
-    % point
-    % For bdp =0.5 and Tukey biweight rho function c1=1.5476
+    % Compute tuning constant associated to the requested breakdown point.
+    % For bdp=0.5 and Tukey biweight rho function c1=1.5476
     c1=TBbdp(bdp,1);
     % kc1 = E(rho) = sup(rho)*bdp
     kc1=TBrho(c1,c1)*bdp;
@@ -461,9 +460,9 @@ if strcmp(rhofunc,'bisquare')
     % c2 = consistency factor for a given value of efficiency
     c2=TBeff(eff,1);
     % bdp2 = E(rho_2).
-    % Note that if \rho is standardized in such a way that \rho(c)=1
-    % E(rho_2) is nothing but the breakdown point associated to c2
-    % else it is bdp2*sup(rho)
+    % Note that if \rho is standardized in such a way that \rho(c)=1,
+    % E(rho_2) is nothing but the breakdown point associated to c2,
+    % else it is bdp2*sup(rho).
     kc2=TBc(c2,1)*TBrho(c2,c2);
 
 
@@ -474,18 +473,17 @@ if strcmp(rhofunc,'bisquare')
 
 elseif strcmp(rhofunc,'optimal')
 
-    % Compute tuning constant associated to the requested breakdown
-    % point
+    % Compute tuning constant associated to the requested breakdown point.
     c1=OPTbdp(bdp,1);
     % kc1 = E(rho) = sup(rho)*bdp
     kc1=OPTrho(c1,c1)*bdp;
 
     % Compute tuning constant associated to the requested nominal efficiency
-    % c2 = consistency factor for a given value of efficiency
+    % c2 = consistency factor for a given value of efficiency.
     c2=OPTeff(eff,1);
     % b2 = E(rho_2).
-    % Note that given that \rho is standardized in such a way that \rho(c)=1
-    % E(rho_2) is nothing but the breakdown point associated to c2
+    % Note that given that \rho is standardized in such a way that
+    % \rho(c)=1, E(rho_2) is nothing but the breakdown point associated to c2.
     kc2=OPTc(c2,1);
 
     psifunc.c1=c1;
@@ -525,8 +523,7 @@ elseif strcmp(rhofunc,'hyperbolic')
 
     else
 
-        % Compute tuning constant associated to the requested breakdown
-        % point
+        % Compute tuning constant associated to the requested breakdown point.
         [c1,A1,B1,d1]=HYPbdp(bdp,1,kdef);
         % kc1 = E(rho) = sup(rho)*bdp
         kc1=HYPrho(c1,[c1,kdef,A1,B1,d1])*bdp;
@@ -576,9 +573,9 @@ elseif strcmp(rhofunc,'hyperbolic')
         % c2 = consistency factor for a given value of efficiency
         [c2,A2,B2,d2]=HYPeff(eff,1,kdef);
         % b2 = E(rho_2).
-        % Note that given that if \rho is standardized in such a way that \rho(c)=1
-        % E(rho_2) is nothing but the breakdown point associated to c2
-        % else it is bdp2*sup(rho)
+        % Note that given that if \rho is standardized in such a way that
+        % \rho(c)=1, E(rho_2) is nothing but the breakdown point associated
+        % to c2, else it is bdp2*sup(rho).
         kc2=HYPc(c2,1,'k',kdef,'param',[A2 B2 d2])*HYPrho(c2,[c2 kdef A2 B2 d2]);
     end
 
@@ -600,8 +597,7 @@ elseif strcmp(rhofunc,'hampel')
     end
     rhofuncparam=abc;
 
-    % Compute tuning constant associated to the requested breakdown
-    % point
+    % Compute tuning constant associated to the requested breakdown point.
     c1=HAbdp(bdp,1,abc);
     % kc = E(rho) = sup(rho)*bdp
     kc1=HArho(c1*abc(3),[c1; abc])*bdp;
@@ -611,9 +607,9 @@ elseif strcmp(rhofunc,'hampel')
     % c2 = consistency factor for a given value of efficiency
     c2=HAeff(eff,1,abc);
     % b2 = E(rho_2).
-    % Note that given that if \rho is standardized in such a way that \rho(c)=1
-    % E(rho_2) is nothing but the breakdown point associated to c2
-    % else it is bdp2*sup(rho)
+    % Note that, given that, if \rho is standardized in such a way that \rho(c)=1
+    % E(rho_2) is nothing but the breakdown point associated to c2,
+    % else it is bdp2*sup(rho).
     kc2=HAc(c2,1,'param',abc)* HArho(c2*abc(3),[c2; abc]);
 
     psifunc.c1=[c1;abc];
@@ -633,8 +629,8 @@ elseif strcmp(rhofunc,'mdpd')
     c2=PDeff(eff);
     % b2 = E(rho_2).
     % Note that given that if \rho is standardized in such a way that \rho(c)=1
-    % E(rho_2) is nothing but the breakdown point associated to c2
-    % else it is bdp2*sup(rho)
+    % E(rho_2) is nothing but the breakdown point associated to c2,
+    % else it is bdp2*sup(rho).
     kc2=PDc(c2);
 
     psifunc.c1=c1;
@@ -683,22 +679,22 @@ besttauscales = 1e20 * ones(bestr,1);
 bestscales = besttauscales;
 
 worsts = Inf;
-% the worst (largest estimate of the tau scale) among the bestr best ones
+% the worst (largest estimate of the tau scale) among the 'bestr' best ones
 worsttau = Inf;
 % worstres = vector of residuals associated with worsttau
 worstres = y;
 
-% singsub = scalar which will contain the number of singular subsets which
-% are extracted (that is the subsets of size p which are not full rank)
+% singsub = scalar which will contain the number of singular subsets that
+% are extracted (that is, the subsets of size p that are not full rank)
 singsub=0;
 
-% ij is a scalar used to ensure that the best first bestr non singular
+% ij is a scalar used to ensure that the best first 'bestr' non singular
 % subsets are stored
 ij=1;
 
-%% Extract in the rows of matrix C the indexes of all required subsets
+%% Extract in the rows of matrix C the indexes of all required subsets.
 [C,nselected] = subsets(nsamp,n,p,ncomb,msg);
-% Store the indices in varargout
+% Store the indices in varargout.
 if nargout==2
     varargout={C};
 end
@@ -713,25 +709,25 @@ for i = 1:nselected
 
     if i <= tsampling, tic; end
 
-    % extract a subset of size p
+    % extract a subset of size p.
     index = C(i,:);
 
     Xb = X(index,:);
     yb = y(index);
 
-    % beta estimate
+    % beta estimate.
     beta = Xb\yb;
 
     if ~isnan(beta(1)) && ~isinf(beta(1))
 
-        % do refsteps refining (concentration) steps
+        % do refsteps refining (concentration) steps.
         if refsteps>0
             tmp = IRWLSregTau(y, X, beta, psifunc, refsteps, reftol);
             betarw = tmp.betarw;
             scalerw = tmp.scalerw;
             resrw = y - X * betarw;
         else
-            % no refining steps
+            % no refining steps.
             betarw = beta;
             resrw = y - X * betarw;
             scalerw = median(abs(resrw))/.6745;
@@ -741,23 +737,23 @@ for i = 1:nselected
         % To find the best estimate of the tau scale, save first the best bestr
         % scales (deriving from non singular subsets) and, from iteration
         % bestr+1 (associated to another non singular subset), replace the
-        % worst scale with a better one as follows
+        % worst scale with a better one as follows:
         if ij > bestr
             % Condition 1 and 2 to understand whether this subset may
-            % produce a smaller estimate ot the tau scale
-            % Condition 1: equation (2.5) of SBWZ08
+            % produce a smaller estimate of the tau scale.
+            % Condition 1: equation (2.5) of SBWZ08.
             % This condition is necessary and sufficient to obtain a
-            % smaller value of the s scale
+            % smaller value of the s scale,
             % but it is just necessary (not sufficient) to obtain a
-            % smaller estimate of the tau scale
+            % smaller estimate of the tau scale.
 
-            % Use function handle hrho. For example if
+            % Use function handle hrho. For example, if
             % for optimal psi hrho=OPTrho
             % scaletest1 = mean(OPTrho(resrw/worsts,c1)) < kc1;
             scaletest1=mean(feval(hrho,resrw/worsts,c1))< kc1;
 
             % Condition 2: equation (2.6) of SBWZ08
-            % Also this condition is necessary but not sufficient
+            % Also this condition is necessary, but not sufficient.
             % scaletest2 = sum(OPTrho(resrw/worsts,c2)) < sum(OPTrho(worstres/worsts,c2));
             scaletest2=sum(feval(hrho,resrw/worsts,c2))< sum(feval(hrho,worstres/worsts,c2));
 
@@ -766,18 +762,18 @@ for i = 1:nselected
                 % Find M estimator of the scale using consistency factor
                 % c1 (associated to break down point)
                 news = Mscale(resrw, psifunc, scalerw, minsctol);
-                % Find associated value of the tau scale
+                % Find associated value of the tau scale.
                 % To be precise newtau is \tan(beta)*sqrt(bdp2). See equation
-                % (1.3) of SBWZ08 therefore outside the loop it will be
+                % (1.3) of SBWZ08, therefore outside the loop it will be
                 % necessary to divide newtau by sqrt bdp2.
-                % Note that in this case rhoOptfun uses consistency factor c2
-                % (associated to nominal asymptotic efficiency)
+                % Note that, in this case, rhoOptfun uses consistency factor c2
+                % (associated to nominal asymptotic efficiency).
 
                 % newtau = news * sqrt(mean(OPTrho(resrw/news,c2)));
                 newtau = news * sqrt(mean(feval(hrho,resrw/news,c2)));
 
                 % Given that the two previous conditions were just necessary but not
-                % sufficient the following if is necessary
+                % sufficient, the following if is necessary.
                 if newtau < worsttau
                     bestscales(worstind) = news;
                     besttauscales(worstind) = newtau;
@@ -785,7 +781,7 @@ for i = 1:nselected
                     bestbetas(worstind,:) = betarw';
                     [worsttau,worstind] = max(besttauscales);
                     worsts = bestscales(worstind);
-                    % vector worstres will be the input of condition 2
+                    % vector worstres will be the input of condition 2.
                     worstres = y - X * bestbetas(worstind,:)';
                 end
             end
@@ -804,7 +800,7 @@ for i = 1:nselected
             if ij==bestr
                 [worsttau,worstind] = max(besttauscales);
                 worsts = bestscales(worstind);
-                % vector worstres will be the input of condition 2
+                % vector worstres will be the input of condition 2.
                 worstres = y - X * bestbetas(worstind,:)';
             end
             ij=ij+1;
@@ -813,12 +809,12 @@ for i = 1:nselected
         singsub=singsub+1;
     end
 
-    % Write total estimation time to compute final estimate
+    % Write total estimation time to compute final estimate.
     if i <= tsampling
-        % sampling time until step tsampling
+        % sampling time until step tsampling.
         time(i)=toc;
     elseif i==tsampling+1
-        % stop sampling and print the estimated time
+        % stop sampling and print the estimated time.
         if msg==1
             fprintf('Total estimated time to complete tau estimate: %5.2f seconds \n', nselected*median(time));
         end
@@ -828,7 +824,7 @@ end
 
 % perform C-steps on best 'bestr' solutions, till convergence or for a
 % maximum of refstepsbestr steps using a convergence tolerance as specified
-% by scalar reftolbestr
+% by scalar reftolbestr.
 
 superbesttauscale = Inf;
 
@@ -855,34 +851,34 @@ superbestscale = Mscale(y-X*superbestbeta, psifunc, superbestscale, minsctol);
 superbesttauscale = superbestscale * sqrt(mean(feval(hrho,(y-X*superbestbeta)/superbestscale,c2)));
 
 
-% Store in output structure \beta, s, best subset and vector of S-weights
+% Store in output structure \beta, s, best subset and vector of S-weights.
 out.beta = superbestbeta;
 
-% Rescale the estimate of the scale with the breakdownpoint associated with
-% consistency factor c2
+% Rescale the estimate of the scale with the breakdown point associated with
+% consistency factor c2.
 superbesttauscale = superbesttauscale / sqrt(kc2);
 
 out.scale = superbesttauscale;
 out.bs = superbestsubset;
 out.weights = weights;
 
-% compute and store in output structure the Tau robust scaled residuals
+% compute and store in output structure the Tau robust scaled residuals.
 out.residuals=(y-X*out.beta)/out.scale;
 
-% Store in output structure the number of singular subsets
+% Store in output structure the number of singular subsets.
 out.singsub=singsub;
 if singsub/nselected>0.1
     disp('------------------------------')
     disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
 end
 
-% Restore the previous state of the warnings
+% Restore the previous state of the warnings.
 warning(warnrank.state,'MATLAB:rankDeficientMatrix');
 warning(warnsing.state,'MATLAB:singularMatrix');
 warning(warnnear.state,'MATLAB:nearlySingularMatrix');
 
 
-% Store in output structure the outliers found with confidence level conflev
+% Store in output structure the outliers found with confidence level conflev.
 conflev = options.conflev;
 out.conflev = conflev;
 
@@ -891,10 +887,10 @@ seq = 1:n;
 out.outliers = seq( abs(out.residuals)>norminv(conflev) );
 
 out.rhofunc=rhofunc;
-% In case of Hampel or hyperbolic tangent estimator store the additional
-% parameters which have been used
-% For Hampel store a vector of length 3 containing parameters a, b and c
-% For hyperbolic store the value of k= sup CVC
+% In the case of the Hampel or hyperbolic tangent estimator, store the additional
+% parameters that have been used.
+% For Hampel store a vector of length 3 containing parameters a, b and c.
+% For hyperbolic store the value of k=sup CVC.
 if exist('rhofuncparam','var')
     out.rhofuncparam=rhofuncparam;
 end
@@ -902,18 +898,18 @@ end
 
 if options.yxsave
     if options.intercept==true
-        % Store X (without the column of ones if there is an intercept)
+        % Store X (without the column of ones if there is an intercept).
         out.X=X(:,2:end);
     else
         out.X=X;
     end
-    % Store response
+    % Store response.
     out.y=y;
 end
 
 out.class = 'Taureg';
 
-% Plot resindexplot with outliers highlighted
+% Plot resindexplot with outliers highlighted.
 if options.plots==1
     laby='Scaled tau residuals';
     resindexplot(out.residuals,'conflev',out.conflev,'laby',laby,'numlab',out.outliers);
@@ -935,27 +931,27 @@ function outIRWLS = IRWLSregTau(y, X, initialbeta, psifunc, refsteps, reftol, in
 % initialbeta : p x 1 vector containing initial estimate of beta
 %     psifunc : a structure specifying the class of rho function to use, the
 %               consistency factor, and the value associated with the
-%               Expectation of rho in correspondence of the consistency
-%               factor
-%               psifunc must contain the following fields
+%               expectation of rho in correspondence of the consistency
+%               factor.
+%               psifunc must contain the following fields:
 %               c1 = consistency factor associated to required
-%                    breakdown point
-%               kc1= Expectation for rho associated with c1
+%                    breakdown point;
+%               kc1= expectation for rho associated with c1;
 %               c2 = consistency factor associated to required
-%                    nominal efficiency
-%               class = string identyfing the rho (psi) function to use.
+%                    nominal efficiency;
+%               class = string identifying the rho (psi) function to use.
 %                    Admissible values for class are 'bisquare', 'optimal'
-%                    'hyperbolic', 'hampel', 'mdpd' and 'AS'
-%               Remark: if class is 'hyperbolic' it is also necessary to
-%                   specify parameters k (sup CVC), A, B and d
-%               Remark: if class is 'hampel' it is also necessary to
-%                   specify parameters a, b and c
+%                    'hyperbolic', 'hampel', 'mdpd' and 'AS';
+%               Remark: if class is 'hyperbolic', it is also necessary to
+%                   specify parameters k (sup CVC), A, B and d;
+%               Remark: if class is 'hampel', it is also necessary to
+%                   specify parameters a, b and c.
 %
 %
 %  Optional input arguments:
 %
-%   refsteps  : scalar, number of refining (IRLS) steps
-%   reftol    : relative convergence tolerance
+%   refsteps  : scalar, number of refining (IRLS) steps.
+%   reftol    : relative convergence tolerance.
 %               Default value is 1e-7
 % initialscale: scalar, initial estimate of the scale. If not defined,
 %               scaled MAD of residuals is used.
@@ -963,9 +959,9 @@ function outIRWLS = IRWLSregTau(y, X, initialbeta, psifunc, refsteps, reftol, in
 %  Output:
 %
 %  The output consists of a structure 'outIRWLS' containing the following fields:
-%      betarw  : p x 1 vector. Estimate of beta after refsteps refining steps
-%     scalerw  : scalar. Estimate of scale after refsteps refining step
-%     weights  : n x 1 vector. Weights assigned to each observation
+%      betarw  : p x 1 vector. Estimate of beta after refsteps refining steps;
+%     scalerw  : scalar. Estimate of scale after refsteps refining step;
+%     weights  : n x 1 vector. Weights assigned to each observation.
 %
 % In the IRWLS procedure the value of beta and the value of the scale are
 % updated in each step
@@ -975,10 +971,10 @@ function outIRWLS = IRWLSregTau(y, X, initialbeta, psifunc, refsteps, reftol, in
 % Remark:
 % if psifunc = hyperbolic
 %   c1 and c2 will be vectors of length 5
-%   containing parameters ctuning,ktuning,A,B,d
+%   containing parameters ctuning, ktuning, A, B, d
 % if psifunc = hampel
 %   c1 and c2 will be vectors of length 4
-%   containing parameters ctuning,a,b,c
+%   containing parameters ctuning, a, b, c
 % else (Tukey biweight and hyperbolic) c1 is a scalar
 c1=psifunc.c1;
 
@@ -994,10 +990,10 @@ if (nargin < 6)
     reftol=1e-7;
 end
 
-% Residuals for the initialbeta
+% Residuals for the initialbeta.
 res = y - X * initialbeta;
 
-% The scaled MAD of residuals is the initial scale estimate default value
+% The scaled MAD of residuals is the initial scale estimate default value.
 if (nargin < 7)
     initialscale = median(abs(res))/.6745;
 end
@@ -1061,7 +1057,7 @@ while (betadiff > reftol) && (iter < refsteps)
     Xw = bsxfun(@times, X, sqweights);
     yw = y .* sqweights;
 
-    % New estimate of beta from (re)weighted regression (RWLS)
+    % New estimate of beta from (re)weighted regression (RWLS).
     newbeta = Xw\yw;
 
 
@@ -1074,7 +1070,7 @@ while (betadiff > reftol) && (iter < refsteps)
 
     %  betadiff = norm(beta - newbeta)/sqrt(p);
 
-    % betadiff is linked to the tolerance (specified in scalar reftol)
+    % betadiff is linked to the tolerance (specified in scalar reftol).
     betadiff = norm(beta - newbeta,1) / norm(beta,1);
 
 
