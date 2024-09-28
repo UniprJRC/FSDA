@@ -140,16 +140,6 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
 %}
 
 %{
-    %%  Example of call to grpstatsFS to create conf int for the mean
-    load citiesItaly.mat
-    % Note that in this case meanci has in output two columns
-    stats={"meanci" 'mean'};
-    % Confidence interval and the sample means
-    TBL=grpstatsFS(citiesItaly,[],stats);
-    disp(TBL) 
-%}
-
-%{
     %%  Example of call to grpstatsFS to create conf int for the mean.
     load citiesItaly.mat
     % Note that in this case meanci has in output two columns
