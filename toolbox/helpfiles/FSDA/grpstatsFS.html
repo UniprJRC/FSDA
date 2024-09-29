@@ -1,0 +1,238 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>grpstatsFS</title><meta content="refpage" name="chunktype"><meta content="function:grpstatsFS" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="grpstatsFS calls grpstats and reshapes the output in a much better way." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">grpstatsFS</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">grpstatsFS with just one input argument.</a></li><li><a class="intrnllnk" href="#Example_2">grpstatsFS with second input the grouping variable.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example of call to grpstatsFS with personalized statistics.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example of call to grpstatsFS with function handles.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of call to grpstatsFS to create conf int for the mean
+    load citiesItaly.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Example of call to grpstatsFS to create conf int for the mean.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Example of call to grpstatsFS to create conf int for the mean with groups.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Example of use of option Alpha.</a></li><li><a class="intrnllnk" href="#ExtraExample_7">Example of the use of option DataVars.</a></li><li><a class="intrnllnk" href="#ExtraExample_8">Example of the use of option DataVars with VarNames.</a></li><li><a class="intrnllnk" href="#ExtraExample_9">Example of the use of option DataVars with VarNames and grouping variable.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_TBL">TBL</a></li><li><a class="intrnllnk" href="#input_argument_groupvars">groupvars</a></li><li><a class="intrnllnk" href="#input_argument_whichstats">whichstats</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_Alpha">Alpha</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_DataVars">DataVars</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_VarNames">VarNames</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_statTable">statTable</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">grpstatsFS</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">grpstatsFS calls grpstats and reshapes the output in a much better way</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">statTable=grpstatsFS(TBL, groupvars, whichstats)</code><span class="syntax_example"><a class="intrnllnk" href="grpstatsFS.html#Example_1">example</a></span></li><li><code class="synopsis">statTable=grpstatsFS(TBL, groupvars, whichstats,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="grpstatsFS.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>grpstatsFS calls grpstats, but shows the output in much better way. The
+   output of grpstatsFS is a table with a number of rows equal to the
+   number of variables for which statistics are computed. The number of
+   columns of this table is equal to the number of statistics which are
+   computed. In presence of a grouping variable the number of rows of the
+   output table remains the same, but the number of columns is equal to the
+   number of statistics multiplied by the number of groups. The statistics which
+   are computed by the default are the two (non robust and robust) indexes
+   of location, (mean and median) the two (non robust and robust) indexes
+   of spread (standard deviation and scaled MAD) and the two (non robust
+   and robust) indexes of skewness. The robust index of skewness is the
+   medcouple. The scaled MAD is defined as 1.4826(med|x-med(x)|).</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="grpstatsFS.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_statTable"><code>statTable</code></a>=grpstatsFS(<a class="intrnllnk" href="#inputarg_TBL"><code>TBL</code></a>,<a class="intrnllnk" href="#inputarg_groupvars"><code>groupvars</code></a>,<a class="intrnllnk" href="#inputarg_whichstats"><code> whichstats</code></a>)</code></span>grpstatsFS with just one input argument.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="grpstatsFS.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_statTable"><code>statTable</code></a>=grpstatsFS(<a class="intrnllnk" href="#inputarg_TBL"><code>TBL</code></a>,<a class="intrnllnk" href="#inputarg_groupvars"><code>groupvars</code></a>,<a class="intrnllnk" href="#inputarg_whichstats"><code>whichstats</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>grpstatsFS with second input the grouping variable.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> grpstatsFS with just one input argument.</li></span></a></span></h3><div class="collapse"><p>
+     Load a table<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% Compute mean, median,  std, MAD, skewness and medcouple
+% for the 7 variables of the input table citiesItaly
+TBL=grpstatsFS(citiesItaly);
+disp(TBL)</pre></div></div><pre class="codeoutput">                   mean     median     std       MAD      skewness    medcouple
+                  ______    ______    ______    ______    ________    _________
+
+    addedval       18096     18469    4941.6    6001.8     0.1079      -0.12451
+    depos         7769.1    7661.1    2841.4    3150.5     1.0734      -0.03612
+    pensions       10044    9975.2    1230.8    1170.6    0.31692      0.089163
+    unemploy      10.173      6.42    7.8789    4.8778     1.0687       0.61846
+    export         23.11     21.53    15.642    16.457     0.5797      0.066667
+    bankrup       30.467     29.62     12.11     11.49     1.0067     -0.010969
+    billsoverd    44.614      40.6    22.783    19.496    0.98031        0.1586
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> grpstatsFS with second input the grouping variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% The first 46 rows are referred to provinces located in northern Italy and
+% the remaining in centre-south Italy.
+zone=[repelem("N",46) repelem("CS",57)]';
+% Add zone to citiesItaly
+citiesItaly.zone=zone;
+TBL=grpstatsFS(citiesItaly,"zone");
+% First 6 columns are referred to province of the north.
+% The remaning columns to the other provinces.
+disp(TBL)</pre></div></div><pre class="codeoutput">                  meanN     medianN     stdN      MADN     skewnessN    medcoupleN    meanCS    medianCS    stdCS     MADCS     skewnessCS    medcoupleCS
+                  ______    _______    ______    ______    _________    __________    ______    ________    ______    ______    __________    ___________
+
+    addedval       22071     21936     2926.4    2136.5     0.78292     -0.024878      14888      14049     3760.7    3500.3     0.83573        0.23097  
+    depos         9614.6    9407.5     2214.3    1052.6      2.9736     -0.054686     6279.7     5506.5     2389.6    1810.8      1.5434        0.37286  
+    pensions       10798     10658     891.71    716.05      0.8251       0.14446     9434.9     9465.1     1129.5    1103.6     0.95725       -0.15654  
+    unemploy      4.4713      4.34     1.6834    1.7643     0.81049     0.0022075     14.774      15.25     7.9086    10.126     0.35304       -0.10805  
+    export        30.366    29.025     13.042     13.84     0.48928      0.088586     17.255      12.94     15.193    14.366      1.1879        0.29376  
+    bankrup       27.855    27.745     10.451    10.215     0.73877      -0.10754     32.575      31.64     13.009    12.691      1.0051       0.010132  
+    billsoverd    31.775      30.2     14.368    10.156      1.2639      0.056604     54.975      52.34     23.127    19.422     0.68542       0.069632  
+
+</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS with personalized statistics.</li></span></a></span></h3><div class="collapse"><p>
+     The second element is empty, that is there is no grouping variable.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% Just compute mean and median
+stats=["mean" "median"];
+TBL=grpstatsFS(citiesItaly,[],stats);
+disp(TBL)</pre></div></div><pre class="codeoutput">                   mean     median
+                  ______    ______
+
+    addedval       18096     18469
+    depos         7769.1    7661.1
+    pensions       10044    9975.2
+    unemploy      10.173      6.42
+    export         23.11     21.53
+    bankrup       30.467     29.62
+    billsoverd    44.614      40.6
+
+</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS with function handles.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% multiple types of summary statistics specified as a cell
+stats={"mean","std",@skewness};
+TBL=grpstatsFS(citiesItaly,[],stats);
+disp(TBL)</pre></div></div><pre class="codeoutput">                   mean      std      skewness
+                  ______    ______    ________
+
+    addedval       18096    4941.6     0.1079 
+    depos         7769.1    2841.4     1.0734 
+    pensions       10044    1230.8    0.31692 
+    unemploy      10.173    7.8789     1.0687 
+    export         23.11    15.642     0.5797 
+    bankrup       30.467     12.11     1.0067 
+    billsoverd    44.614    22.783    0.98031 
+
+</pre></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS to create conf int for the mean
+    load citiesItaly.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% Note that in this case meanci has in output two columns
+stats={"meanci" 'mean'};
+% Confidence interval and the sample means
+TBL=grpstatsFS(citiesItaly,[],stats);
+disp(TBL)</pre></div></div><pre class="codeoutput">                  meanCIinf    meanCIsup     mean 
+                  _________    _________    ______
+
+    addedval        17131        19062       18096
+    depos          7213.7       8324.4      7769.1
+    pensions       9803.2        10284       10044
+    unemploy       8.6327       11.712      10.173
+    export         20.053       26.167       23.11
+    bankrup        28.101       32.834      30.467
+    billsoverd     40.161       49.066      44.614
+
+</pre></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS to create conf int for the mean.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% Note that in this case meanci has in output two columns
+stats={"meanci" 'mean'};
+% Confidence interval for the sample means
+TBL=grpstatsFS(citiesItaly,[],stats);
+disp(TBL)</pre></div></div><pre class="codeoutput">                  meanCIinf    meanCIsup     mean 
+                  _________    _________    ______
+
+    addedval        17131        19062       18096
+    depos          7213.7       8324.4      7769.1
+    pensions       9803.2        10284       10044
+    unemploy       8.6327       11.712      10.173
+    export         20.053       26.167       23.11
+    bankrup        28.101       32.834      30.467
+    billsoverd     40.161       49.066      44.614
+
+</pre></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS to create conf int for the mean with groups.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% Note that in this case meanci has in output two columns
+stats={"meanci" 'mean'};
+% The first 46 rows are referred to provinces located in northern Italy and
+% the remaining in centre-south Italy.
+zone=[repelem("N",46) repelem("CS",57)]';
+% Add zone to citiesItaly
+citiesItaly.zone=zone;
+% Confidence interval for the sample means separated for the 2 groups
+TBL=grpstatsFS(citiesItaly,"zone",stats);
+disp(TBL)</pre></div></div><pre class="codeoutput">                  meanCIinfN    meanCIsupN    meanN     meanCIinfCS    meanCIsupCS    meanCS
+                  __________    __________    ______    ___________    ___________    ______
+
+    addedval         21202         22940       22071       13891          15886        14888
+    depos             8957         10272      9614.6      5645.6         6913.7       6279.7
+    pensions         10533         11063       10798      9135.3         9734.6       9434.9
+    unemploy        3.9714        4.9712      4.4713      12.675         16.872       14.774
+    export          26.493        34.239      30.366      13.224         21.286       17.255
+    bankrup         24.752        30.959      27.855      29.124         36.027       32.575
+    billsoverd      27.508        36.042      31.775      48.839         61.111       54.975
+
+</pre></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option Alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% Note that in this case meanci has in output two columns
+stats={"meanci" 'mean'};
+% The first 46 rows are referred to provinces located in northern Italy and
+% the remaining in centre-south Italy.
+zone=[repelem("N",46) repelem("CS",57)]';
+% Add zone to citiesItaly
+citiesItaly.zone=zone;
+% 99 per cent confidence intervals for the sample means separated for the 2 groups
+TBL=grpstatsFS(citiesItaly,"zone",stats,'Alpha',0.01);
+disp(TBL)</pre></div></div><pre class="codeoutput">                  meanCIinfN    meanCIsupN    meanN     meanCIinfCS    meanCIsupCS    meanCS
+                  __________    __________    ______    ___________    ___________    ______
+
+    addedval         20911         23232       22071       13560          16217        14888
+    depos           8736.5         10493      9614.6      5435.7         7123.6       6279.7
+    pensions         10445         11152       10798        9036         9833.9       9434.9
+    unemploy        3.8037        5.1389      4.4713       11.98         17.567       14.774
+    export          25.194        35.538      30.366      11.889         22.621       17.255
+    bankrup         23.711            32      27.855      27.981          37.17       32.575
+    billsoverd      26.077        37.473      31.775      46.807         63.143       54.975
+
+</pre></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option DataVars.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% Note that in this case meanci has in output two columns
+stats={"meanci" 'mean'};
+% The first 46 rows are referred to provinces located in northern Italy and
+% the remaining in centre-south Italy.
+zone=[repelem("N",46) repelem("CS",57)]';
+% Add zone to citiesItaly
+citiesItaly.zone=zone;
+% Confidence interval for the sample means separated for the 2 groups
+TBL=grpstatsFS(citiesItaly,"zone",stats,'DataVars',["addedval" "unemploy"]);
+disp(TBL)</pre></div></div><pre class="codeoutput">                meanCIinfN    meanCIsupN    meanN     meanCIinfCS    meanCIsupCS    meanCS
+                __________    __________    ______    ___________    ___________    ______
+
+    addedval       21202         22940       22071       13891          15886        14888
+    unemploy      3.9714        4.9712      4.4713      12.675         16.872       14.774
+
+</pre></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option DataVars with VarNames.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% Note that in this case meanci has in output two columns
+stats={"median" 'mean'};
+TBL=grpstatsFS(citiesItaly,[],stats, ...
+'DataVars',[1 2 5],'VarNames', ...
+["Robust location" "Non robust location"]);
+disp(TBL)</pre></div></div><pre class="codeoutput">                Robust location    Non robust location
+                _______________    ___________________
+
+    addedval         18469                18096       
+    depos           7661.1               7769.1       
+    export           21.53                23.11       
+
+</pre></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option DataVars with VarNames and grouping variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+% Note that in this case meanci has in output two columns
+stats={"meanci" 'mean'};
+% The first 46 rows are referred to provinces located in northern Italy and
+% the remaining in centre-south Italy.
+zone=[repelem("N",46) repelem("CS",57)]';
+% Add zone to citiesItaly
+citiesItaly.zone=zone;
+% Confidence interval for the sample means separated for the 2 groups
+TBL=grpstatsFS(citiesItaly,"zone",stats, ...
+'DataVars',["addedval" "unemploy"],'VarNames', ...
+["Mean: lower confidence interval" "Mean: upper confidence interval" "Sample mean"]);
+disp(TBL)</pre></div></div><pre class="codeoutput">                Mean: lower confidence intervalN    Mean: upper confidence intervalN    Sample meanN    Mean: lower confidence intervalCS    Mean: upper confidence intervalCS    Sample meanCS
+                ________________________________    ________________________________    ____________    _________________________________    _________________________________    _____________
+
+    addedval                  21202                               22940                     22071                     13891                                15886                      14888    
+    unemploy                 3.9714                              4.9712                    4.4713                    12.675                               16.872                     14.774    
+
+</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_TBL" class="clearfix"> </div> <h3 id="input_argument_TBL" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>TBL</code> &#8212; Input data. </span>  </a><span class="example_desc">Table.</span></span></h3> <div class="collapse"> <p><p>Table containing n observations on p variables.</p> <p>
+               Rows of TBL represent observations, and columns
+               represent variables. If it necessary to compute the
+               statistics for subgroups, TBL must include at least one
+               grouping variable, which you specify using groupvars.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_groupvars" class="clearfix"> </div> <h3 id="input_argument_groupvars" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>groupvars</code> &#8212; grouping variable. </span>  </a><span class="example_desc">Identifiers for the grouping variables in input TBL.</span></span></h3> <div class="collapse"> <p>If groupvars is [] then the output refers to the overall
+               sample. For additional information on groupvars see the
+               help of grpstats. For example 
+                   Example - 'groupvars',2 
+                   </p> <p class="datatypelist"><strong> Data Types: </strong><code>character vector | string array | cell array of character vectors | vector of positive integers | logical vector | []</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_whichstats" class="clearfix"> </div> <h3 id="input_argument_whichstats" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>whichstats</code> &#8212; Types of summary statistics. </span>  </a><span class="example_desc">Name of the statistics which have to be computed.</span></span></h3> <div class="collapse"> <p><p>For additional information on whichstats see the help of
+              grpstats. If whichstats is empty or it is not specified, the
+              summary statistics which are computed are ["mean" "median"
+              "std" "MAD" "skewness" "medcouple"];</p> <p>
+               Example - ["mean" "std"]
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code> character vector | string array | function handle | cell array of character vectors or function handles.</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'Alpha',0.01
+</code>,<code> 'DataVars',[2 4]
+</code>,<code> 'VarNames',["location" "robust location"];
+</code></code></span></div><div class="expandableContent"><div id="inputarg_Alpha" class="clearfix"></div><h3 id="input_argument_namevalue_Alpha" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Alpha</code> &#8212;Significance level.</span></a><span class="example_desc">scalar in [0 1).</span></span></h3><div class="collapse">	<p><p>Significance level for confidence and prediction intervals.</p> <p>
+              For additional information on Alpha see the help of
+              grpstats.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Alpha',0.01
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> double</code></p></div></div><div class="expandableContent"><div id="inputarg_DataVars" class="clearfix"></div><h3 id="input_argument_namevalue_DataVars" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>DataVars</code> &#8212;Table variables for which to compute summary statistics.</span></a><span class="example_desc">for additional information on Alpha see the help of               grpstats.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'DataVars',[2 4]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> character vector | string array | cell array of character vectors | vector of positive integers | logical vector</code></p></div></div><div class="expandableContent"><div id="inputarg_VarNames" class="clearfix"></div><h3 id="input_argument_namevalue_VarNames" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>VarNames</code> &#8212;Variable names for output table.</span></a><span class="example_desc">cell array | characters               | string array.</span></span></h3><div class="collapse">	<p><p>Note that the length of VarNames must be equal to the
+               number of statistics which are computed. Variable (column)
+               names for the output table statTable, specified as a string
+               array or a cell array of character vectors. By default,
+               grpstatsFS removes the @ if it is present in the name of
+               the statistic. In presence of a grouping variable
+               grpstatsFS appends the name corresponding to each
+               category of the groups.</p> <p> 
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'VarNames',["location" "robust location"];
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> character vector | string array | cell array of character vectors | vector of positive integers | logical vector</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_statTable" class="clearfix"></div><h3 id="output_argument_statTable" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>statTable</code> &#8212;Summary statistics for the table input TBL.</span></a><span class="example_desc">table with p rows. 
+             Table</span></span></h3><div class="collapse"><p><p>
+             The rows are referred to the variables of the input table
+             and the columns to the requested statistics.</p> <p>
+             The number of columns of statTable is equal to
+             the number of requested statistics multiplied by
+             the number of groups.</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/grpstats.html'))" itemprop="url"><span itemprop="name"><code>grpstats</code></span></a></span> | <span itemprop="seealso"><a href="medcouple.html" itemprop="url"><span itemprop="name"><code>medcouple</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
