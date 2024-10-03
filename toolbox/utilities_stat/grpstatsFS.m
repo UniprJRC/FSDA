@@ -7,14 +7,18 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
 %   output of grpstatsFS is a table with a number of rows equal to the
 %   number of variables for which statistics are computed. The number of
 %   columns of this table is equal to the number of statistics which are
-%   computed. In presence of a grouping variable the number of rows of the
+%   computed. By default, the statistics which are computed are the two
+%   (non robust and robust) indexes of location, (mean and median) the two
+%   (non robust and robust) indexes of spread (standard deviation and
+%   scaled MAD) and the two (non robust and robust) indexes of skewness.
+%   The robust index of skewness is the medcouple. The scaled MAD is
+%   defined as 1.4826(med|x-med(x)|).
+%   In presence of a grouping variable the number of rows of the
 %   output table remains the same, but the number of columns is equal to the
-%   number of statistics multiplied by the number of groups. The statistics which
-%   are computed by the default are the two (non robust and robust) indexes
-%   of location, (mean and median) the two (non robust and robust) indexes
-%   of spread (standard deviation and scaled MAD) and the two (non robust
-%   and robust) indexes of skewness. The robust index of skewness is the
-%   medcouple. The scaled MAD is defined as 1.4826(med|x-med(x)|).
+%   number of statistics multiplied by the number of groups. With option
+%   'OutputFormat' 'nested' which is similar to option  'OutputFormat' in
+%   function pivot, it is possible to display the results using nested
+%   tables.
 %
 %  Required input arguments:
 %
@@ -69,6 +73,14 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
 %               Example - 'VarNames',["location" "robust location"];
 %               Data Types -  character vector | string array | cell array of character vectors | vector of positive integers | logical vector
 %
+% OutputFormat : Column hierarchy output format. 'flat' (default) | 'nested'
+%                In presence of one or more grouping variable, this option
+%                specifies whether the label of each statistic must be
+%                concatenated with the categories of the grouping variables
+%                or the overall output table must contain nested tables
+%                each referred to a different statistic.
+%               Example - 'OutputFormat','nested';
+%               Data Types -  character | string
 %
 %  Output:
 %
@@ -222,6 +234,22 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
     disp(TBL)
 %}
 
+%{
+    %%  Example of the use of option OutputFormat.
+    load citiesItaly.mat
+    % Two measures of location and dispersion
+    stats={'mean' 'median' 'std' @(x)1.4826*mad(x,1)};
+    % The first 46 rows are referred to provinces located in northern Italy and
+    % the remaining in centre-south Italy.
+    zone=[repelem("N",46) repelem("CS",57)]';
+    % Add zone to citiesItaly
+    citiesItaly.zone=zone;
+    % Requested statistics for the 2 groups using nested tables
+    TBL=grpstatsFS(citiesItaly,"zone",stats,'OutputFormat','nested');
+    format bank
+    disp(TBL)
+%}
+
 %% Beginning of code
 if nargin<2
     groupvars=[];
@@ -231,24 +259,36 @@ end
 % Normalize MAD is one of the statistics which is computed
 mads=@(x)median(abs(x-median(x)))/norminv(0.75);
 
+% Option which controls whether to show the results using or not nested
+% tables
+OutputFormat='flat';
+
 if nargin<3 || isempty(whichstats)
     whichstats={"@mean" "@median" "@std" mads "@skewness" "@medcouple"};
     nomiStat=["mean" "median" "std" "MAD" "skewness" "medcouple"];
+    predefined=true;
 else
+    predefined=false;
+end
+
+if nargin>=3
 
     [varargin{:}] = convertStringsToChars(varargin{:});
 
-    if iscell(whichstats)
-        nomiStat=cellfun(@char,whichstats,'UniformOutput',false);
-    else
-        nomiStat=whichstats;
+    if predefined ==false
+        if iscell(whichstats)
+            nomiStat=cellfun(@char,whichstats,'UniformOutput',false);
+        else
+            nomiStat=whichstats;
+        end
+        nomiStat=strrep(nomiStat,"@","");
     end
-    nomiStat=strrep(nomiStat,"@","");
 
     fnd=find(nomiStat=="meanci");
     if ~isempty(fnd)
         nomiStat=[nomiStat(1:(fnd-1)) "meanCIinf" "meanCIsup" nomiStat(fnd+1:end)];
     end
+
 end
 
 if ~isempty(varargin)
@@ -272,12 +312,21 @@ if ~isempty(varargin)
         varargin([fvarNames-1 fvarNames])=[];
     end
 
+    % Check if OutputFormat is present inside varargin
+    checkOutputFormat = strcmp(UserOptions,'OutputFormat')>0;
+    if any(checkOutputFormat)==true
+        fcheckOutputFormat=2*find(checkOutputFormat);
+        lmsval = varargin{fcheckOutputFormat};
+        OutputFormat=lmsval;
+        varargin([fcheckOutputFormat-1 fcheckOutputFormat])=[];
+    end
+
+
 else
-    if istable(TBL)
+    if istable(TBL) || istimetable(TBL)
         vnames=TBL.Properties.VariableNames;
     else
-        error('FSDA:grpstatsFS:WrongInp','grpstatsFS just supports a table in input')
-        % vnames="TBL"+string(1:size(TBL,2));
+        error('FSDA:grpstatsFS:WrongInp','grpstatsFS just supports a table or a timetable in input')
     end
 end
 if ~isempty(groupvars)
@@ -289,19 +338,36 @@ lgroupvars=length(groupvars);
 ngroups=size(tabTutti,1);
 lstats=length(nomiStat);
 if ngroups>1
+
     str=string(tabTutti{:,1:lgroupvars});
-    % if size(str,2)>1
+
     str= join(str  ,"_",2);
-    % end
     nomivar=nomiStat'+str'; %  tabTutti{:,1:lgroupsvars}';
     nomivar=nomivar(:);
+
+    % nomivarNested is used just if OutputFormat is nested
+    nomivarNested=nomiStat'+strings(1,length(str));
+    nomivarNested=nomivarNested(:);
 
     statArray=zeros(p,lstats*ngroups);
 
     for j=1:ngroups
         statArray(:,(lstats*(j-1)+1):(lstats*j))=reshape(tabTutti{j,(2+lgroupvars):end},lstats,p)';
     end
-    statTable=array2table(statArray,"RowNames",vnames,"VariableNames",nomivar);
+
+    if strcmp(OutputFormat,'flat')==true
+        statTable=array2table(statArray,"RowNames",vnames,"VariableNames",nomivar);
+    else
+        CE=cell(lstats,1);
+        for i=1:lstats
+            boo=strcmp(nomivarNested,nomiStat(i));
+            nomiboo=nomivar(boo);
+            nomiboo1=strrep(nomiboo,nomiStat(i),"");
+            CE{i}=array2table(statArray(:,boo),"VariableNames",nomiboo1);
+        end
+        statTable=table(CE{:},'RowNames',vnames,'VariableNames',nomiStat);
+    end
+
 else
     statArray=reshape(tabTutti{1,2:end},lstats,p)';
     statTable=array2table(statArray,"RowNames",vnames,"VariableNames",nomiStat);
