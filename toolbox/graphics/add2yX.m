@@ -323,7 +323,10 @@ nbrush = get(H(:,1,end), 'UserData');
 
 if nAX > 1
     for i=1:nAX
-        H(1,i,:) = fliplr(hPlotMatrixAxC{i,:}');
+        hi=hPlotMatrixAxC{i,:}';
+        % Just find 'Type','Line'
+        hi=findobj(hi,'Type','Line');
+        H(1,i,:) = flip(hi);
         if i==1
             if ngroups == 1
                 y = get(H(1,i,:),'YData')';
@@ -552,8 +555,8 @@ for i = 1:length(AX)
 
     % Add the labels for the last selected group.
     if strcmp('1',labeladd) && ngroups > 1
-        xlimits = get(AX(i),'Xlim'); 
-        
+        xlimits = get(AX(i),'Xlim');
+
         % ylimits = get(AX(i),'Ylim');
         % dx = (xlimits(2)-xlimits(1))*0.01*length(AX);
         % dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
