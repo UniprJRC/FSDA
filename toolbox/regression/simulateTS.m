@@ -401,7 +401,7 @@ function [out] = simulateTS(T,varargin)
     %% Example of the use of option StartDate.
     % Suppose that the initial observation refers to February 2016.
     StartDate=[2016 2];
-    % The x axis of the plots contains the dates using format mmm-yyyy.
+    % The x axis of the plots contains the dates using format mmm-yy.
     rng(1)
     model=struct;
     model.trend=2;

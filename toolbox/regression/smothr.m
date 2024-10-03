@@ -191,7 +191,7 @@ function ysmo=smothr(l,x,y,w)
     plot(x,ysmo,'-','LineWidth',2)
     title('Supersmoother with all the default options')
     xlabel('Speed')
-    % ylabel('Distance')
+    ylabel('Distance')
 %}
 
 %{
@@ -255,7 +255,7 @@ if l==4 % Transformation is forced to be linear.
     sumxyw=sum(w.*x.*y);
     sumx2w=sum((x.^2).*w);
     a=sumxyw/(sumx2w-(sumxw^2)/sumw);
-    % The slope of the LS line is a
+    % The slope of the LS line is variable a
     % The intercept of the LS line is -a*meanx+meany
     ysmo=a*(x-meanx)+meany;
     
