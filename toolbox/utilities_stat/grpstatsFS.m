@@ -28,8 +28,8 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
 %               Identifiers for the grouping variables in input TBL.
 %               If groupvars is [] then the output refers to the overall
 %               sample. For additional information on groupvars see the
-%               help of grpstats. For example 
-%                   Example - 'groupvars',2 
+%               help of grpstats. For example
+%                   Example - 'groupvars',2
 %                   Data Types - character vector | string array | cell array of character vectors | vector of positive integers | logical vector | []
 %
 %  whichstats: Types of summary statistics.
@@ -65,14 +65,14 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
 %               grpstatsFS removes the @ if it is present in the name of
 %               the statistic. In presence of a grouping variable
 %               grpstatsFS appends the name corresponding to each
-%               category of the groups. 
+%               category of the groups.
 %               Example - 'VarNames',["location" "robust location"];
 %               Data Types -  character vector | string array | cell array of character vectors | vector of positive integers | logical vector
 %
 %
 %  Output:
 %
-% statTable : table with p rows. 
+% statTable : table with p rows.
 %             Table containing summary statistics for the table input TBL.
 %             The rows are referred to the variables of the input table
 %             and the columns to the requested statistics.
@@ -227,6 +227,7 @@ if nargin<2
     groupvars=[];
 end
 
+
 % Normalize MAD is one of the statistics which is computed
 mads=@(x)median(abs(x-median(x)))/norminv(0.75);
 
@@ -234,6 +235,8 @@ if nargin<3 || isempty(whichstats)
     whichstats={"@mean" "@median" "@std" mads "@skewness" "@medcouple"};
     nomiStat=["mean" "median" "std" "MAD" "skewness" "medcouple"];
 else
+
+    [varargin{:}] = convertStringsToChars(varargin{:});
 
     if iscell(whichstats)
         nomiStat=cellfun(@char,whichstats,'UniformOutput',false);
@@ -282,16 +285,21 @@ if ~isempty(groupvars)
 end
 p=length(vnames);
 tabTutti=grpstats(TBL,groupvars,whichstats,varargin{:});
+lgroupvars=length(groupvars);
 ngroups=size(tabTutti,1);
 lstats=length(nomiStat);
 if ngroups>1
-    nomivar=nomiStat'+tabTutti{:,1}';
+    str=string(tabTutti{:,1:lgroupvars});
+    % if size(str,2)>1
+    str= join(str  ,"_",2);
+    % end
+    nomivar=nomiStat'+str'; %  tabTutti{:,1:lgroupsvars}';
     nomivar=nomivar(:);
 
     statArray=zeros(p,lstats*ngroups);
 
     for j=1:ngroups
-        statArray(:,(lstats*(j-1)+1):(lstats*j))=reshape(tabTutti{j,3:end},lstats,p)';
+        statArray(:,(lstats*(j-1)+1):(lstats*j))=reshape(tabTutti{j,(2+lgroupvars):end},lstats,p)';
     end
     statTable=array2table(statArray,"RowNames",vnames,"VariableNames",nomivar);
 else
