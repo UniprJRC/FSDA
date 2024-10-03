@@ -336,7 +336,13 @@ axis manual;
                     % disp(['Panel ', num2str(i), ' contains a line plot'])
                     % Assign the same DisplayName property to each group in each panel
                     for g = 1:nlegendEntries
-                        axesObjects(i).Children(g).DisplayName = legendEntries{g};
+                        nam=axesObjects(i).Children(g).DisplayName;
+                        namdis=strcmp(nam,legendEntries);
+                        if any(namdis)
+                            axesObjects(i).Children(g).DisplayName=legendEntries{namdis};
+                        else
+                            axesObjects(i).Children(g).DisplayName = legendEntries{g};
+                        end
                     end
                 else
                     % disp(['Panel ', num2str(i), ' does not contain a line plot'])
