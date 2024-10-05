@@ -472,7 +472,7 @@ function [p, h] = distribspec(pd, specs, region, varargin)
 
 
 %{
-    % Exmple with the Chi2 distribution with v degrees of freedom.
+    % Example with the Chi2 distribution with v degrees of freedom.
     % Set the degrees of freedom.
     v=6;
     % Create the Chi2 with v degrees of freedom
@@ -896,8 +896,12 @@ end
 %% plot the distribution
 
 % initialise figure
-nspecfig = figure;
-nspecaxes = axes;
+% nspecfig = figure;
+% nspecaxes = axes;
+% 
+nspecfig = gcf;
+nspecaxes=gca;
+
 set(nspecaxes, 'Parent', nspecfig);
 set(nspecaxes,'Nextplot','add');
 
@@ -1017,7 +1021,7 @@ switch region
 
 
         % fill regions with user-defined or default color
-        if (ischar(userColor) && numel(userColor)==1) || (isnumeric(userColor) && size(userColor,1)==1)
+        if (ischar(userColor) && isscalar(userColor)) || (isnumeric(userColor) && size(userColor,1)==1)
             xfill = [pll;  x(k1); ll          ; ul;          x(k2); pul  ];
             yfill = [ypll; y(k1); flipud(yll) ; flipud(yul); y(k2); ypul ];
 
