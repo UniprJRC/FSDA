@@ -139,6 +139,8 @@ function add2yX(H,AX,BigAx,varargin)
     % The legengs are not clickable
     add2yX(H,AX,BigAx)
     % Now the legends become clickable
+    % As an alternative it was enough to use
+    % clickableMultiLegend
 %}
 
 %{
