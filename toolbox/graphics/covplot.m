@@ -262,7 +262,8 @@ vv=size(residuals,1);
 % 1,2; 1,3; ....  v-1,v;
 aco=triu(ones(v,v));
 ind = find(abs(aco)>0);
-[I,J]=ind2sub(v,ind);
+% From 2024b 
+[I,J]=ind2sub([v, 1],ind);
 numtext=cellstr([num2str(I) repmat(',',vv,1) num2str(J)]);
 
 % laby= label used for the y-axis of the malfwdplot.
