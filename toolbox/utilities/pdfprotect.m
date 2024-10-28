@@ -107,6 +107,13 @@ if nargin < 1
 end
 
 
+% FileExists=(inputfile);
+% [pathstrcf,name,ext]=fileparts(FileWithFullPath);
+% 
+% if isempty(pathstrcf)
+%     error('FSDA:publishFS:WrongFile','SourceNotFound');
+% end
+
 
 % default parameters values
 watermark = '(C)DSconMATLAB';
@@ -171,10 +178,11 @@ if ismac
 elseif ispc
     % get the path to python
     pythonpath = fullfile(getenv('USERPROFILE'), 'miniconda3');
-    pythoncode = which('pdf_encryption_wm_creation.py');
-    % [pythoncode1]=fileparts(pythoncode);
+    pythoncode = which('pdfprotect.m');
+    [pythoncode1]=fileparts(pythoncode);
+    pythoncode2=[pythoncode1 filesep 'private' filesep 'pdf_encryption_wm_creation.py'];
     % compose the string
-    str=[ pythonpath '\python ' pythoncode sp inputfile sp ...
+    str=[ pythonpath '\python ' pythoncode2 sp inputfile sp ...
         watermark sp outputfile sp print_flag sp edit_flag sp password_text];
 else
     % linux: TODO!
