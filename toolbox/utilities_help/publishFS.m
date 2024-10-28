@@ -1903,7 +1903,9 @@ if length(startIndexEx)>length(sintax)
         catch
             warning('Title of example with missing description')
             disp(listExtraEx{j})
-            error('FSDA:publishFS:WrongInputExtraEx',['Description of Extra example ' num2str(j) ' is missing'])
+            disp('Please add an extra line which shows what the example does.')
+            error('FSDA:publishFS:WrongInputExtraEx',['Description of example ' num2str(size(listEx,1)+j) ' is missing'])
+
         end
 
         findescriptionEx=inicr(jj);
