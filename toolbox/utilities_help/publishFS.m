@@ -2427,7 +2427,7 @@ if nargout>0
         % one output and this is not varargout
         % else if there is varargout the initialpoint is the string
         % "Optional Output:"
-        if length(listargouts)==1 && strcmp(listargouts,'varargout') ==0
+        if isscalar(listargouts) && strcmp(listargouts,'varargout') ==0
             inipoint=regexp(fstringsel,listargouts{i});
         elseif  i<length(listargouts)
             inipoint=regexp(fstringsel,[listargouts{i} '\s{0,11}:']);
@@ -3936,7 +3936,7 @@ newl=sort([newlinewithColon newlinewithSemiColon newlinewithFullStop]);
 
 if ~isempty(newl)
     descrlongHTML=['<p>' descrlong(1:newl(1))];
-    if length(newl)==1
+    if isscalar(newl)
         descrlongHTML=[descrlongHTML '</p> <p>' descrlong(newl(1)+1:end)];
     else
         for j=1:(length(newl)-1)
@@ -3963,7 +3963,7 @@ if ~isempty(IniRefFilem)
 
         namewithoutHTML=descrlongHTML(IniRefFilem(i):FinRefFilem(i)-2);
         namewithHTML=[namewithoutHTML '.html'];
-        if i==1 && length(IniRefFilem)==1
+        if i==1 && isscalar(IniRefFilem)
             descrlongHTMLwithref=[descrlongHTMLwithref descrlongHTML(1:IniRefFilem(i)-1) ...
                 '<a href="' namewithHTML '">' namewithoutHTML '</a>'...
                 descrlongHTML(FinRefFilem(i)+1:end)];
@@ -4021,7 +4021,7 @@ if ~isempty(IniRefhttp)
 
         FinRefhttp(i)=IniRefhttp(i)+length(namehttp);
 
-        if i==1 && length(IniRefhttp)==1
+        if i==1 && isscalar(IniRefhttp)
             descrHTTPwithref=[descrHTTPwithref descrHTTP(1:IniRefhttp(i)-1) ...
                 ' <a href="' namehttp '">' namehttp '</a>'...
                 descrHTTP(FinRefhttp(i)+1:end)];
@@ -4256,7 +4256,7 @@ function descrlongHTML=formatHTMLwithList(descrlong)
 newl=regexp(descrlong,'\[\d*\]');
 if ~isempty(newl)
     descrlongHTML=[descrlong(1:newl(1)-3) '<hr>[<b>1</b>] '];
-    if length(newl)==1
+    if isscalar(newl)
         descrlongHTML=[descrlongHTML descrlong(newl(1)+3:end)];
     else
         for j=1:(length(newl)-1)
