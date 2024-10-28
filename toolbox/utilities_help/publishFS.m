@@ -1896,8 +1896,15 @@ if length(startIndexEx)>length(sintax)
                 break
             end
         end
-        jj=jjbreak;
 
+        % Check if example description has been added
+        try
+            jj=jjbreak;
+        catch
+            warning('Title of example with missing description')
+            disp(listExtraEx{j})
+            error('FSDA:publishFS:WrongInputExtraEx',['Description of Extra example ' num2str(j) ' is missing'])
+        end
 
         findescriptionEx=inicr(jj);
         strdescrEx=stri(endtitle+1:findescriptionEx);
@@ -3912,7 +3919,7 @@ newlinewithFullStop=regexp(descrlong,'\.\s*\r');
 [volwithfullstop]=regexp(descrlong,'\s[v-V]ol\.s*\r')+4;
 [authnamewithfullstop]=regexp(descrlong,'[A-Z]\.\s*\r\s*\(.{4,5}\)')+1;
 
-exceptions=[ppwithfullstop iewithfullstop ispaceewithfullstop 
+exceptions=[ppwithfullstop iewithfullstop ispaceewithfullstop
     volwithfullstop authnamewithfullstop];
 newlinewithFullStop=setdiff(newlinewithFullStop,exceptions);
 
