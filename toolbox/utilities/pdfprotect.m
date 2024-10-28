@@ -107,6 +107,7 @@ if nargin < 1
 end
 
 
+
 % default parameters values
 watermark = '(C)DSconMATLAB';
 outputfile = 'outputfile.pdf';
@@ -170,8 +171,10 @@ if ismac
 elseif ispc
     % get the path to python
     pythonpath = fullfile(getenv('USERPROFILE'), 'miniconda3');
+    pythoncode = which('pdf_encryption_wm_creation.py');
+    % [pythoncode1]=fileparts(pythoncode);
     % compose the string
-    str=[ pythonpath '\python pdf_encryption_wm_creation.py ' inputfile sp ...
+    str=[ pythonpath '\python ' pythoncode sp inputfile sp ...
         watermark sp outputfile sp print_flag sp edit_flag sp password_text];
 else
     % linux: TODO!
