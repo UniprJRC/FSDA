@@ -118,8 +118,8 @@ end
 % default parameters values
 watermark = '(C)DSconMATLAB';
 outputfile = 'outputfile.pdf';
-print_flag = false;
-edit_flag= false;
+print_flag = 'F';
+edit_flag = 'F';
 password_text = 'DSconMATLAB24';
 
 
@@ -196,6 +196,9 @@ end
 if status ~=0
      error('FSDA:pdfprotect:callerror','The call to python function was unsuccessful, please check miniconda setup ans python path.');
 end
+
+% delete watermark temporary file
+delete watermark_layer.pdf
 
 % returns the status of calling the python pdf protectiong function
 out=status;
