@@ -11,8 +11,8 @@ function [out] = VIOM(y,X,dw,varargin)
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. A vector with n elements that
-%               contains the response
-%               variable.  It can be either a row or a column vector.
+%               contains the response variable. 
+%               It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
@@ -31,22 +31,22 @@ function [out] = VIOM(y,X,dw,varargin)
 %               Example - 'intercept',false
 %               Data Types - boolean
 %   mult:       Indicator for joint weights estimate. Boolean.
-%               If mult==true the weights are jointly estimated by iterative REML.
+%               If mult==true, the weights are jointly estimated by iterative REML.
 %               Default is mult==false and singularly optimal weights are
 %               estimated using REML closed form solution.
 %               Example - 'mult',false
 %               Data Types - boolean
 %   trim:       Units flagged as possible MSOM outliers. Vector. Vector
-%               which contains the units (row numbers) that are forced to
+%               that contains the units (row numbers) that are forced to
 %               have 0 weights. By default no units are trimmed, i.e. trim==[].
 %               Example - 'trim',[1,2,3]
 %               Data Types - double
 %   trsh:       Threshold on residuals. Scalar.
-%               If thrsh>0 all the (standard) residuals greater than trsh
+%               If trsh>0, all the (standard) residuals greater than trsh
 %               are set to 0. [[TBA:modify to studentized or scaled residuals]]
-%               If trsh<1 all the estimated weights smaller than trsh are
+%               If trsh<1, all the estimated weights smaller than trsh are
 %               forced to be 0.
-%               If trsh==0 (default option) no weights are forced to be 0.
+%               If trsh==0 (default option), no weights are forced to be 0.
 %               (Note: It might be useful to reduce the computational burden).
 %               Example - 'trsh',5
 %               Data Types - double
@@ -99,7 +99,7 @@ function [out] = VIOM(y,X,dw,varargin)
     y=randn(n,1);
     y(1:5)=y(1:5)*2;
     [out]=VIOM(y,X, 1:5);
-    % Show the weights associated to each unit
+    % Show the weights associated to each unit.
     figure
     boxplot(out.w)
     out.w(1:5);
@@ -161,16 +161,16 @@ if nargin>3
     options=struct('intercept', intercept, 'mult', mult, ...
         'trsh', 0, 'trim', trim, 'cook', cook);
     
-    % Check if number of supplied options is valid
+    % Check if number of supplied options is valid.
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:VIOM:WrongInput','wrong input for VIOM.');
     end
-    % Check if user options are valid options
+    % Check if user options are valid options.
     aux.chkoptions(options,UserOptions)
     
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the options chosen by the user.
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
@@ -203,9 +203,9 @@ end
 dw=dw(:);
 
 
-% clean units
+% clean units.
 cll = setdiff(1:n, [dw; trim]);
-% weights vector
+% weights vector.
 w = ones(n, 1);
 if ~isnan(trim)
     w(trim) = 0;
@@ -215,7 +215,7 @@ end
 
 % [TBA: optional input beta vector]
 % [TBA: possible double trimming: on res and w]
-% remove residuals>trsh in order treat them as MSOM since the begin
+% remove residuals>trsh in order treat them as MSOM from the beginning.
 % (it allows us to save some computing time)
 if trsh >= 1
     e = y - X * regress(y(cll), X(cll,:));
@@ -224,22 +224,22 @@ if trsh >= 1
 else
     ind_excl = [];
 end
-% remove excluded units
+% remove excluded units.
 dww = setdiff(dw, ind_excl);
 n_dww = length(dww);
 
-% some outliers have to be downweighted
+% some outliers have to be downweighted.
 if any(~isnan(dww) & ~isnan(dw))
     
-    % joint estimate all weights
+    % joint estimate all weights.
     if mult == true
         
-        % downweight ALL outliers
-        % NOTE: we use REMLE in a mixed model as Thompson (1985)
+        % downweight ALL outliers.
+        % NOTE: we use REMLE in a mixed model as Thompson (1985).
         dum = dummyvar(1:n);
         dum = dum(:, dww);
         dum = mat2cell(dum, n, ones(1,n_dww));
-        % [TBA: we might use fminunc as optimizer]
+        % [TBA: we might use fminunc as optimizer].
         lme = fitlmematrix(X, y, dum, [], 'CovariancePattern', ...
             cellstr(string(repmat('Diagonal', n_dww, 1))), ...
             'FitMethod', 'REML', 'Exclude', [ind_excl, trim]);
@@ -248,7 +248,7 @@ if any(~isnan(dww) & ~isnan(dw))
         [V,S,~] = covarianceParameters(lme);
         w(dww) = 1 ./ (1 + cell2mat(V) ./ S);
         if trsh <1 && trsh>0
-            % set to 0 weights smaller than a trsh
+            % set to 0 weights smaller than a trsh.
             w(dw(w(dw)<trsh)) = 0;
             w1=sqrt(w);
             Xw=bsxfun(@times,X,w1);
@@ -262,24 +262,24 @@ if any(~isnan(dww) & ~isnan(dw))
             % beta = (X'*W*X)\X'*W*y;
         end
         
-        % singularly estimate each weight
-        % i.e. assuming that one outlier per time is included in the robust fit
+        % singularly estimate each weight.
+        % i.e. assuming that one outlier per time is included in the robust fit.
     else
         
-        % downweight EACH outlier independently
-        % NOTE: we use the closed form solution of Thompson, 1985
-        % we simulate the inclusion of each outlier independently
+        % downweight EACH outlier independently.
+        % NOTE: we use the closed form solution of Thompson, 1985.
+        % We simulate the inclusion of each outlier independently
         nn = n - length(trim) - length(dw) + 1;
         
-        % initialize result
-        % leverage values
+        % initialize result. 
+        % leverage values.
         h = nan(length(dw), 1);
         % std. deviation
         sigma = nan(length(dw), 1);
         %
         r_incl_i = nan(length(dw), 1);
         
-        % needed quantities to simulate the inclusion of each outlier
+        % needed quantities to simulate the inclusion of each outlier.
         % ([TBA] we might simply use MSOM updating formulas)
         % ([TBA] we might extract these quantities from FSR)
         for out_i = 1:length(dw)
@@ -314,18 +314,18 @@ if any(~isnan(dww) & ~isnan(dw))
                     warning('FSDA:VIOM:PossibleWrongCandidates','t^2<1 in VIOM for unit: %s, ', string(j));
             end
             
-            % boo = boolean vector which selects just the elements of dw in which t.^2 > 1
+            % boo = boolean vector that selects just the elements of dw in which t.^2 > 1
             boo=t.^2 > 1;
             t = t(boo);
             h = h(boo);
             r_incl_i=r_incl_i(boo);
             sigma = sigma(boo);
         else
-            % select all elements of dw
+            % select all elements of dw.
             boo=true(length(dw),1);
         end
         
-        % Cook et al. (1982) formula
+        % Cook et al. (1982) formula.
         if cook==1
             t = sqrt(((n - p) / n)) .* r_incl_i ./ (sigma .* sqrt(1 - h));
             b = t.^2 .* (n + 2 .* h - 1) -2 * h * (n - p);
@@ -346,14 +346,14 @@ if any(~isnan(dww) & ~isnan(dw))
             
         end
         
-        % enforce real part
+        % enforce real part.
         if ~isreal(w)
             warning('FSDA:VIOM:NotReal','w is not real in VIOM')
         end
-        % est weights
+        % est weights.
         w(dw(t.^2 > 1)) = real(1./w(dw(t.^2 > 1)));
         if trsh <1 && trsh >0
-            % set to 0 weights smaller than a trsh
+            % set to 0 weights smaller than a trsh. 
             w(dw(w(dw)<trsh)) = 0;
         end
         % OLD inefficient code
