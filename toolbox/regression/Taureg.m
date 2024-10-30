@@ -500,7 +500,7 @@ elseif strcmp(rhofunc,'hyperbolic')
     end
     rhofuncparam=kdef;
 
-    % Use (if possible) precalculated values of c,A,b,d and kc
+    % Use (if possible) precalculated values of c,A,B,d and kc
     if kdef == 4 && bdp==0.5
         c1 =2.158325031399727;
         A1 =1.627074124322223e-04;

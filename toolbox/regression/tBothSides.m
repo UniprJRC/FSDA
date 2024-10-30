@@ -34,15 +34,15 @@ function [out] = tBothSides(y, X, varargin)
 %               lambda to apply to both sides of the equation. If la is
 %               empty (default), lambda will be estimated by the non linear
 %               least squares routine. If la is given, the supplied value
-%               will be used transform both sides of the equation and only
+%               will be used to transform both sides of the equation, and only
 %               beta parameters will be used.
 %                 Example - 'la',0.5
 %                 Data Types - double
 %
 %   modelfun   : non linear function to use.
 %                function_handle or empty value (default). If
-%                modelfun is empty the link between X and \beta is assumed
-%                to be linear else it is necessary to specify a function
+%                modelfun is empty, the link between X and \beta is assumed
+%                to be linear, else it is necessary to specify a function
 %                (using @) that accepts two arguments, a coefficient vector
 %                and the array X and returns the vector of fitted values
 %                from the non linear model y. For example, to specify the
@@ -52,8 +52,8 @@ function [out] = tBothSides(y, X, varargin)
 %                 Data Types - function_handle or empty value
 %
 %  beta0       :  empty value or vector containing initial values for the
-%                 coefficients just in case modelfun is non empty.
-%                 If modelfun is empty this argument is ignored.
+%                 coefficients just in case modelfun is not empty.
+%                 If modelfun is empty, this argument is ignored.
 %                 Example - 'beta0',[0.5 0.2 0.1]
 %                 Data Types - double
 %
@@ -61,19 +61,19 @@ function [out] = tBothSides(y, X, varargin)
 %                 empty value. If optional input parameter la is empty, it
 %                 is possible to specify the initial value to use in the
 %                 non linear least squares routine. This argument is
-%                 ignored if la is nont empty.
-%                 Example - 'la',1
+%                 ignored if la is not empty.
+%                 Example - 'la0',1
 %                 Data Types - double
 %
 %  intercept :  Indicator for constant term. true (default) | false.
-%               If true, and modelfun is empty (that is if the link between
-%               X and beta is linear) a model with constant term will be
-%               fitted (default), else no constant term will be included.
+%               If true, and modelfun is empty (that is, if the link between
+%               X and beta is linear), a model with constant term will be
+%               fitted (default); otherwise no constant term will be included.
 %               This argument is ignored if modelfun is not empty.
 %               Example - 'intercept',true
 %               Data Types - boolean
 %
-%    family :   parametric transformation to use. String. String which
+%    family :   parametric transformation to use. String. String that
 %               identifies the family of transformations which
 %               must be used. Character. Possible values are 'BoxCox'
 %               (default) or 'YJ'.
@@ -91,16 +91,15 @@ function [out] = tBothSides(y, X, varargin)
 %               Example - 'family','YJ'
 %               Data Types - char
 %
-%   prolik  :   Monitor profile log likelihood for lambda. Empty value (default),
-%               scalar or structure. It
-%               specifies whether it is necessary to
-%               show the profile log likelihood of lambda
+%   prolik  :   Monitor profile loglikelihood for lambda. Empty value (default),
+%               scalar or structure. It specifies whether it is necessary to
+%               show the profile log likelihood of lambda.
 %               If prolik is a Boolean and is equal to true, the plot of
 %               the profile loglikelihood is produced together with a 95
 %               per cent confidence interval. The default value of prolik
 %               is false, that is no plot is produced.
 %               If prolik is a structure it may contain the following fields:
-%                   prolik.conflev = scalar between 0 and 1 determining
+%                prolik.conflev = scalar between 0 and 1 determining
 %                                 confidence level for 
 %                                 lambda based on the asymptotic chi1^2 of
 %                                 twice the loglikelihood ratio.
@@ -109,14 +108,14 @@ function [out] = tBothSides(y, X, varargin)
 %                                 minimum and maximum values of lambda in
 %                                 the plots of profile loglikelihoods. The
 %                                 default value of xlim is [-2 2];
-%                   prolik.LineWidth = line width of the vertical lines
+%              prolik.LineWidth = line width of the vertical lines
 %                                 defining confidence levels of the
 %                                 transformation parameters.
 %                 Example -'prolik',true
 %                 Data Types - Boolean or struct
 %
 %  dispresults :  Display results on the screen. Boolean.
-%                 If dispresults is true (default) it is possible to see on the
+%                 If dispresults is true (default), it is possible to see on the
 %                 screen table Btable.
 %                 Example - 'dispresults',false
 %                 Data Types - Boolean
@@ -125,42 +124,42 @@ function [out] = tBothSides(y, X, varargin)
 %
 %  out :     A structure containing the following fields
 %
-%             out.betaout =  Column vector containing estimated beta
-%                       coefficients (including the intercept if requested)
-%                       and input option la is empty estimate of lambda (in
-%                       the last element)
-%             out.covB =   Matrix containing variance covariance matrix of
+%          out.betaout = Column vector containing estimated beta
+%                        coefficients (including the intercept if requested)
+%                        and input option la is empty estimate of lambda (in
+%                        the last element)
+%             out.covB = Matrix containing variance covariance matrix of
 %                        estimated coefficients
 %           out.Btable = table containing estimated beta coefficients,
-%                       standard errors, t-stat and p-values
-%                       The content of matrix B is as follows:
-%                       1st col = beta coefficients and lambda (in the last
-%                       element if input option la is empty).
-%                       2nd col = standard errors;
-%                       3rd col = t-statistics;
-%                       4th col = p values. 
-%                       Remark:  note that the pseudo-model technique (see
-%                       CR p. 126) is used and this method only produces
-%                       consistent estiates of the standard errors of beta
-%                       and not of lambda. If the user is interested in an
-%                       asymptotic consistent confidence interval for
-%                       lambda it is necessary to use input option prolik.
-%            out.scale= scalar containing the estimate of the scale
-%                       (sigma). The estimate of the scale is the maximum
-%                       likelihood estimated corrected for the degrees of
-%                       freedom. It uses equation (4.18) of CR.
+%                        standard errors, t-stat and p-values
+%                        The content of matrix B is as follows:
+%                        1st col = beta coefficients and lambda (in the last
+%                        element if input option la is empty).
+%                        2nd col = standard errors;
+%                        3rd col = t-statistics;
+%                        4th col = p values. 
+%                        Remark:  note that the pseudo-model technique (see
+%                        CR p. 126) is used and this method only produces
+%                        consistent estimates of the standard errors of beta
+%                        and not of lambda. If the user is interested in an
+%                        asymptotic consistent confidence interval. for
+%                        lambda it is necessary to use input option prolik.
+%            out.scale=  scalar containing the estimate of the scale
+%                        (sigma). The estimate of the scale is the maximum
+%                        likelihood estimated corrected for the degrees of
+%                        freedom. It uses equation (4.18) of CR.
 %         out.residuals= n x 1 vector containing the estimates of the 
-%                        scaled residuals in the transformed scale. That is
+%                        scaled residuals in the transformed scale. That is,
 %                        residuals in the transformed scale divided by the estimate
 %                        of the scale. 
 %             out.yhat=  n x 1 vector containing the fitted values in the
-%                       original scale.
-%          out.yhattra= n x 1 vector containing the fitted values in the
-%                       transformed scale. Transformation which is used is
-%                       Box Cox or Yao and Johnson.
-%          out.ytra= n x 1 vector containing the response values in the
-%                       transformed scale. Transformation which is used is
-%                       Box Cox or Yao and Johnson.
+%                        original scale.
+%          out.yhattra=  n x 1 vector containing the fitted values in the
+%                        transformed scale. Transformation that is used is
+%                        Box Cox or Yao and Johnson.
+%             out.ytra=  n x 1 vector containing the response values in the
+%                        transformed scale. Transformation that is used is
+%                        Box Cox or Yao and Johnson.
 %
 % More About:
 %
@@ -173,7 +172,7 @@ function [out] = tBothSides(y, X, varargin)
 % deterministic relationships between concentrations of reactants and
 % products and time and temperature. A well-known simple example is the
 % Michaelis-Menten model for enzyme kinetics in which the response goes
-% from zero to an asymptotic value $V_{\mbox{max}}$.  Transforming the
+% from zero to an asymptotic value $V_{\mbox{max}}$. Transforming the
 % response to $y^{\lambda}$ would result in a different range for the
 % transformed response.
 % 
@@ -193,7 +192,7 @@ function [out] = tBothSides(y, X, varargin)
 %  $y(\lambda)/\dot{y}^{\lambda}$, as the response and the similarly
 %  transformed value of $\eta$ as the model. Carroll and Ruppert comment
 %  that, unless $\lambda$ is fixed, it is not possible to use standard
-%  nonlinear regression routines for this minimization as such  routings
+%  nonlinear regression routines for this minimization as such routines
 %  typically do not allow the response to depend upon unknown parameters.
 %  They reformulate the problem in terms of a `pseudo model'. This is what
 %  is implemented in this routine.
@@ -256,8 +255,8 @@ function [out] = tBothSides(y, X, varargin)
     xlabel('Concentration')
     ylabel('y')
 
-    % In this case both lambda and the beta coefficients are estimated
-    % A linear link between X and beta is assumed
+    % In this case both, lambda and the beta coefficients are estimated
+    % A linear link between X and beta is assumed.
     out=tBothSides(y, X);
     disp(out.Btable)
 %}
@@ -277,9 +276,9 @@ function [out] = tBothSides(y, X, varargin)
 
     X=[x';x([1:6 8])'; repmat(x(:),7,1)];
     y=yy';
-    % In this case only the beta coefficients are estimated
+    % In this case, only the beta coefficients are estimated.
     la=0.063;
-    % A linear link between X and beta is assumed
+    % A linear link between X and beta is assumed.
     out=tBothSides(y, X,'la',la);
 %}
 
@@ -323,16 +322,16 @@ function [out] = tBothSides(y, X, varargin)
     y=XX(:,3);
 
     % Call of tBothSides non linear link between X and beta.
-    % In this case modelfun (function which specifies the link between X and beta) and
+    % In this case, modelfun (function which specifies the link between X and beta) and
     % the vector of initial regression coefficients is specified.
     % This is the spawner recruiter model. See CR for more details.
     modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 
-    % Initial value of beta coefficients
+    % Initial value of beta coefficients.
     bini=[3; 0.0009];
 
     % The link between X and beta is specified inside modelfun given at the end
-    % of the example
+    % of the example.
     out=tBothSides(y, X,'modelfun',modelfun,'beta0',bini,'family','BoxCox','dispresults',true);
 
     % Plot the original values together with estimated median regression lines
@@ -344,11 +343,11 @@ function [out] = tBothSides(y, X, varargin)
     upConfInt= normBoxCox(out.yhattra+1.65*out.scale,1,laest,'inverse',true,'Jacobian',false);
     lowConfInt= normBoxCox(out.yhattra-1.65*out.scale,1,laest,'inverse',true,'Jacobian',false);
     [Xsor,indXsor]=sort(X);
-    % Plot the estimated median recruitment
+    % Plot the estimated median recruitment.
     plot(Xsor,out.yhat(indXsor),'r-')
-    % Plot the estimated 95th percentile of recruitment
+    % Plot the estimated 95th percentile of recruitment.
     plot(Xsor,upConfInt(indXsor),'r--')
-    % Plot the estimated 5th percentile of recruitment
+    % Plot the estimated 5th percentile of recruitment.
     plot(Xsor,lowConfInt(indXsor),'r--')
     ylabel('Recruiters')
     xlabel('Spawners')
@@ -356,7 +355,7 @@ function [out] = tBothSides(y, X, varargin)
 
 
 %{
-    % Example where only beta coefficents are estimated and initial values for beta are provided.
+    % Example where only beta coefficients are estimated and initial values for beta are provided.
     x=[0.476	0.924	1.905	3.696	7.619	14.874	30.474	59.134];
     yy=[0.05706	0.11781	0.25071	0.49596	1.03928	2.14635	4.24397	8.53848...
         0.057	0.11615	0.25398	0.4807	1.03659	2.09495		    8.41333...
@@ -382,7 +381,7 @@ function [out] = tBothSides(y, X, varargin)
 
 %{
     % Example of the use of option dispresults.
-    % modelfun is the function which specifies the link between X and beta
+    % modelfun is the function which specifies the link between X and beta.
     % This is the spawner recruiter model. See CR for more details.
     x=[0.476	0.924	1.905	3.696	7.619	14.874	30.474	59.134];
     yy=[0.05706	0.11781	0.25071	0.49596	1.03928	2.14635	4.24397	8.53848...
@@ -397,7 +396,7 @@ function [out] = tBothSides(y, X, varargin)
 
     X=[x';x([1:6 8])'; repmat(x(:),7,1)];
     y=yy';
-    % Initial value of beta coefficients
+    % Initial value of beta coefficients.
     bini=[3; 0.0009];
     modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
     out=tBothSides(y, X,'modelfun',modelfun,'dispresults',true,'beta0',bini);
@@ -411,7 +410,7 @@ function [out] = tBothSides(y, X, varargin)
 %{
     % Example of the use of option prolik.
     % This is the spawner recruiter model. See CR for more details.
-    % modelfun is the function which specifies the link between X and beta
+    % modelfun is the function that specifies the link between X and beta.
         x=[0.476	0.924	1.905	3.696	7.619	14.874	30.474	59.134];
     yy=[0.05706	0.11781	0.25071	0.49596	1.03928	2.14635	4.24397	8.53848...
         0.057	0.11615	0.25398	0.4807	1.03659	2.09495		    8.41333...
@@ -556,14 +555,14 @@ Btable.Properties.RowNames=bnames;
 out.Btable=Btable;
 
 % residualsRawtra = residuals in the transformed scale
-% transformed scale is BoxCox or Yeo and JOhnson
+% transformed scale is BoxCox or Yeo and Johnson
 % yhat = fitted values in the original scale = f(x beta)
 % yhattra = fitted values in the transformed scale = f(x,beta)^lambda
 [residualsRawtra,yhat,yhattra,sigmahat,ytransf]=afterMLE(betaout,X);
 % Note that
 % residualsRaw=ytra-yhattra;
 
-% Alternative way to find raw residuals
+% Alternative way to find raw residuals.
 % Convert raw residuals from pseudomodel = -[y(lambda) - f(x,beta,lambda)]/G^lambda
 % into the true raw residuals
 % true residuals = y(lambda)-f(x,beta,lambda)
@@ -575,13 +574,13 @@ out.Btable=Btable;
 % out.scale=scale;
 out.scale=sigmahat;
 
-% Store scaled residuals
+% Store scaled residuals.
 out.residuals=residualsRawtra/sigmahat;
-% Fitted values in the original scale
+% Fitted values in the original scale.
 out.yhat=yhat;
-% Fitted values in the transformed scale
+% Fitted values in the transformed scale.
 out.yhattra=yhattra;
-% y in the transformed scale
+% y in the transformed scale.
 out.ytra=ytransf;
 
 if dispresults==true
@@ -594,8 +593,7 @@ if  ~isempty(prolik)
         conflev=0.95;
          xlimla=[-2 2];
     elseif isstruct(prolik) 
-        % Check if confidence level has been specified by the
-        % user
+        % Check if confidence level has been specified by the user.
         
         fprolik=fieldnames(prolik);
         
@@ -617,8 +615,8 @@ if  ~isempty(prolik)
         
     end
     
-    % seqla = vector which contains the xlimits for lambda in the profile
-    % loglikelihood plots
+    % seqla = vector that contains the xlimits for lambda in the profile
+    % loglikelihood plots.
     seqla=xlimla(1):0.01:xlimla(2);
   
     Loglik=[seqla' zeros(length(seqla),1)];
@@ -684,7 +682,7 @@ end
             end
             
         else
-            % Yeo and JOhnson transformation (without the Jacobian)
+            % Yeo and Johnson transformation (without the Jacobian)
             ytra=normYJ(y,1,lam,'Jacobian',false);
             etatra=normYJ(eta,1,lam,'Jacobian',false);
         end
@@ -695,8 +693,8 @@ end
 % The routine below computes raw residuals in the transformed scale (res),
 % fitted values in the original scale (eta= estimated median fitted values),
 % fitted values in the transformed scale (etatra) and
-% transformed response values (ytra)
-% Note that raw residuals in the transformed scale (res=ytra-etatra)
+% transformed response values (ytra).
+% Note that raw residuals in the transformed scale (res=ytra-etatra).
     function [res,eta,etatra,sigmahat,ytra]=afterMLE(betalambda,X)
         
         if Estimatelambda==true
