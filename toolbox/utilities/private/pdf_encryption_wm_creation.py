@@ -34,7 +34,8 @@ inputfile_text=args.parameters[0]
 watermark_text="(C)DSconMATLAB"
 outputfile_text="outputfile.pdf"
 permissions=0b0000
-password_text = 'DSconMATLAB24'
+password_owner = 'DSconMATLAB24'
+password_user = ""
 
 #if optional parameters are present
 
@@ -72,9 +73,22 @@ if len(args.parameters)==6:
     edit_flag=args.parameters[4]
     if edit_flag=="T" or edit_flag=="true":
         permissions=-1
-    password_text=args.parameters[5]
+    password_owner=args.parameters[5]
 
-
+if len(args.parameters)==7:
+    watermark_text=args.parameters[1]
+    outputfile_text=args.parameters[2]   
+    print_flag=args.parameters[3]
+    if print_flag=="T" or print_flag=="true":
+        permissions=0b0100
+    edit_flag=args.parameters[4]
+    if edit_flag=="T" or edit_flag=="true":
+        permissions=-1
+    password_owner=args.parameters[5]
+    password_user=args.parameters[6]
+    if password_user=="F":
+        password_user=''
+    
 
 def makeWatermark(text):
     pdf = canvas.Canvas("watermark_layer.pdf", pagesize=A4)
@@ -114,7 +128,7 @@ def watermark(
     # 0b0000 sets to 0 most bits of the permissions_flag de facto restricting any action on the PDF content.
     # note that the variable 'permissions_flag' is treated like a 16 bit binary flag table 
     # replicating Table 3.20 of the PDF 1.7 specification.
-    writer.encrypt(user_password='', owner_pwd=password_text, permissions_flag=permissions)
+    writer.encrypt(user_password=password_user, owner_pwd=password_owner, permissions_flag=permissions)
 
 
     with open(pdf_result, "wb") as fp:
