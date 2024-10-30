@@ -15,51 +15,50 @@ function out=pdfprotect(inputfile, varargin)
 %
 % Required input arguments:
 %
-% inputfile:    Input pdf file. Character. Input pdf file specified as a
+% inputfile:    Input pdf file. String scalar | Character vector. Input pdf file specified as a
 %               char vector is the original file to be encrypted protected.
+%               Can be specified with or without extension.
 %
 %
 %  Optional input arguments:
 %
-% watermark:  text of the watermark. Character. The text that will be printed
-%           diagonally in grey and in a big size font (85 points) on
-%           each page of the manuscript.
-%           Example - 'watermark', '(C)FSDA toolbox'
-%           Data Types - char
-%
-% outputfile: name of the outputfile. Character. The name of the pdf file to be
-%           encrypted, password protected and permission edited.
-%           default vslue is the inpufileENC.pdf that is we append the suffix ENC
-%           to the inputfilename
-%           Example - 'outputfile', 'myoutputfile.pdf'
-%           Data Types - char
-%
-% print:    print permission flag. Boolean. This flag controls the user permission to print the
-%           document, can be either true or false.
-%           Example - 'print', true
-%           Data Types - boolean
 %
 % edit:     edit permission flag. Boolean. This flag controls the user permission to edit and copy
-%           any content of the document, can be either true or false .
+%           any content of the document, can be either true or false.
 %           Example - 'edit', false
 %           Data Types - boolean
 %
+% outputfile: name of the outputfile. String scalar | Character vector. The
+%           name of the pdf file to be encrypted, password protected and
+%           permission edited. Can be specified with or without extension.
+%           default value is the inpufileENC.pdf that is we append the
+%           suffix ENC to the inputfilename Example - 'outputfile',
+%           'myoutputfile.pdf' Data Types - char
 %
-% passedit: owner encryption password. Character. This argument should
-%           contain the pdf owner password for encrypting the pdf and access the
-%           permission flags.
+% passedit: owner encryption password. String scalar | Character vector. If the password is set you need to supply the
+%           password to modify and print the document.
 %           The default password is 'FSDA'.
 %           Example - 'passedit', 'MyPassword1'
 %           Data Types - char
 %
-% passread: user password. Character. This argument should
-%           contain the pdf owner password for encrypting the pdf and access the
-%           permission flags.
+% passopen: user password. String scalar | Character vector. If the password is set you need to supply the
+%           password to view the document.
 %           The default password is not set.
 %           Example - 'passread', 'MyPassword2'
 %           Data Types - char
-
-
+%
+% print:    print permission flag. Boolean. This flag controls the user permission to print the
+%           document, can be either true (deny) or false (allow).
+%           Example - 'print', true
+%           Data Types - boolean
+%
+%
+% watermark:  text of the watermark. String scalar | Character vector. The text that will be printed
+%           diagonally in grey and in a big size font (85 points) on
+%           each page of the manuscript. The default value fo the watermark
+%           is '' that is no watermark is added.
+%           Example - 'watermark', '(C)FSDA toolbox'
+%           Data Types - char
 %
 % Output:
 %
@@ -115,7 +114,7 @@ function out=pdfprotect(inputfile, varargin)
     % to each page of the manuscript and specify the edit password and read
     % password as well.
     pdfprotect('sourcefile','watermark','FSDAToolbox','print',false, 'edit',false,'outputfile', ...
-       'mypdf', 'passedit','bigsecret', 'passread','easyguess')
+       'mypdf', 'passedit','bigsecret', 'passopen','easyguess')
 
 %}
 
@@ -125,17 +124,15 @@ function out=pdfprotect(inputfile, varargin)
 
 if nargin < 1
     error('FSDA:pdfprotect:missingInputs','A required input argument (input file name) is missing.')
+else
+inputfile=convertStringsToChars(inputfile);
 end
-
-
-
 
 
 % allows use of strings as arguments
 if nargin > 1
     [varargin{:}] = convertStringsToChars(varargin{:});
 end
-
 
 
 % add pdf extension to inputfile if needed
@@ -149,7 +146,7 @@ elseif isempty(ext) & ~isempty(pathstrcf)
     % the input pdf file is in a different folder
     inputfile = [pathstrcf filesep inputfile '.pdf'];
 else
-    inputfile = [name '.' ext];
+    inputfile = [name ext];
 end
 
 
@@ -161,13 +158,11 @@ end
 
 % default parameters values
 watermark = 'F';
-outputfile = 'outputfile.pdf';
+outputfile = 'inpufileENC.pdf';
 print = 'F';
 edit = 'F';
 passedit = 'FSDA';
-passread = 'F';
-
-
+passopen = 'F';
 
 
 
@@ -176,7 +171,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
 
     options = struct('watermark',watermark, 'outputfile', outputfile, ...
-        'print', print, 'edit',edit, 'passedit', passedit, 'passread', passread);
+        'print', print, 'edit',edit, 'passedit', passedit, 'passopen', passopen);
 
 
     % Check if number of supplied options is valid
@@ -193,8 +188,13 @@ if ~isempty(UserOptions)
         options.(varargin{j})=varargin{j+1};
     end
 
+    if isempty(options.watermark)
+        watermark='F';
+    else
     % sanitize the watermark text
     watermark=matlab.lang.makeValidName(options.watermark);
+    end
+
     outputfile=options.outputfile;
 
 
@@ -220,7 +220,7 @@ if ~isempty(UserOptions)
         edit='F';
     end
     passedit=options.passedit;
-    passread=options.passread;
+    passopen=options.passopen;
 end
 
 
@@ -248,14 +248,14 @@ elseif ispc
     pythoncode2=[pythoncode1 filesep 'private' filesep 'pdf_encryption_wm_creation.py'];
     % compose the string
     str=[ pythonpath '\python ' pythoncode2 sp inputfile sp ...
-        watermark sp outputfile sp print sp edit sp passedit sp passread];
+        watermark sp outputfile sp print sp edit sp passedit sp passopen];
 else
     % linux: TODO!
     disp('Sorry, Linux version is not available at the moment....')
     out=-1;
     return
 end
-disp(str)
+% disp(str)
 [status,~]=system(str);
 
 if status ~=0
