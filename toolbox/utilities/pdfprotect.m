@@ -104,8 +104,8 @@ function out=pdfprotect(inputfile, varargin)
    matlab.internal.liveeditor.openAndSave(which(FileName),FileNameMLX);
    % Create file tmptmp.pdf
    export(FileNameMLX);
+   % Extract file name without extension
    [~,NameWithoutExtension]=fileparts(FileNameMLX);
-   
    % delete temporary mlx file
    delete(FileNameMLX);
 
@@ -113,34 +113,97 @@ function out=pdfprotect(inputfile, varargin)
    % encrypt and protect a file revoking all authorizations to copy and
    % print.
    pdfprotect(NameWithoutExtension);
-   disp('File named "tmptmpENC.pdf" has been created')
+   
+   disp('Files named "tmptmpENC.pdf" has been created')
    disp('in the current folder. In this file editing and printing is disabled')
+   disp('Original input file tmptmp.pdf on the other hand is not protected')
 %}
 
 %{
-   % Example with watermark option.
-   % encrypt and protect a file revoking all authorizations to copy and
+   %% Example with watermark option.
+   % Encrypt and protect a file revoking all authorizations to copy and
    % print and add a custom watermark to each page of the manuscript.
-    pdfprotect('sourcefile','watermark','(C)FSDAToolbox')
+
+   % Create pdf file tmptmpENC.pdf 
+   % create .m file==> transform to mlx ==> export to pdf
+   FileName='addFSDA2path.m';
+   FileNameMLX='tmptmp.mlx';
+   matlab.internal.liveeditor.openAndSave(which(FileName),FileNameMLX);
+   % Create file tmptmp.pdf
+   export(FileNameMLX);
+   % Extract file name without extension
+   [~,NameWithoutExtension]=fileparts(FileNameMLX);
+   % delete temporary mlx file
+   delete(FileNameMLX);
+
+   % Call to pdfprotect with all default options
+   % encrypt and protect a file revoking all authorizations to copy and
+   % print.
+   pdfprotect(NameWithoutExtension,'watermark','secret');
+   
+   disp('Files named "tmptmpENC.pdf" has been created')
+   disp('in the current folder. In this file editing and printing is disabled')
+   disp('and a watermark with text "Secret" has been added')
+   disp('Original input file tmptmp.pdf on the other hand is not protected')
+
 %}
 
 
 %{
-    % Example with watermark and print options.
-    % encrypt and protect a file revoking copy and paste authorizations but
-    % allow manuscript printing and add a custom watermark to each page of 
-    % the manuscript.
-    pdfprotect('sourcefile','watermark','(C) FSDA Toolbox','print_flag',true)
+   %% Example with watermark and print option.
+   % Encrypt and protect a file revoking copy and paste authorizations but
+   % allow manuscript printing and add a custom watermark to each page of 
+   % the manuscript.
+   % Create pdf file tmptmpENC.pdf 
+   % create .m file==> transform to mlx ==> export to pdf
+   FileName='addFSDA2path.m';
+   FileNameMLX='tmptmp.mlx';
+   matlab.internal.liveeditor.openAndSave(which(FileName),FileNameMLX);
+   % Create file tmptmp.pdf
+   export(FileNameMLX);
+   % Extract file name without extension
+   [~,NameWithoutExtension]=fileparts(FileNameMLX);
+   % delete temporary mlx file
+   delete(FileNameMLX);
+
+   % Call to pdfprotect with all default options
+   % encrypt and protect a file revoking all authorizations to copy and
+   % print.
+   pdfprotect(NameWithoutExtension,'watermark','FSDA_Toolbox','print',true);
+  
+   disp('Files named "tmptmpENC.pdf" has been created')
+   disp('in the current folder. In this file editing is disabled')
+   disp('printing is allowed and a watermark with text "FSDA_Toolbox" has been added')
+   disp('Original input file tmptmp.pdf on the other hand is not protected')
 %}
 
 %{
-    % Example with all the available options. encrypt and protect a file
-    % revoking copy, paste and print authorizations add a custom watermark
-    % to each page of the manuscript and specify the edit password and read
-    % password as well.
-    pdfprotect('sourcefile','watermark','FSDAToolbox','print',false, 'edit',false,'outputfile', ...
-       'mypdf', 'passedit','bigsecret', 'passopen','easyguess')
+   %% Example with personalized passwords and name of output file.
+   % Encrypt and protect a file
+   % revoking copy, paste and print authorizations add a custom watermark
+   % to each page of the manuscript, specify the edit password and read
+   % password as well. Also specify name of output file
+   % Create pdf file tmptmpENC.pdf 
+   % create .m file==> transform to mlx ==> export to pdf
+   FileName='addFSDA2path.m';
+   FileNameMLX='tmptmp.mlx';
+   matlab.internal.liveeditor.openAndSave(which(FileName),FileNameMLX);
+   % Create file tmptmp.pdf
+   export(FileNameMLX);
+   % Extract file name without extension
+   [~,NameWithoutExtension]=fileparts(FileNameMLX);
+   % delete temporary mlx file
+   delete(FileNameMLX);
 
+   % Call to pdfprotect with options passedit, 
+   % passopen and outputfile
+   pdfprotect(NameWithoutExtension,'outputfile', ...
+       'mypdfENC', 'passedit','bigsecret', 'passopen','easyguess')
+  
+   disp('File named "mypdfENC.pdf" has been created')
+   disp('in the current folder. In this file editing is disabled')
+   disp('printing is disables. There is also a pwd to open file.')
+   disp('Original input file tmptmp.pdf on the other hand is not protected')
 %}
 
 
@@ -258,12 +321,12 @@ if ismac
     out=-1;
     return
 
-    % get the name of the MacOS current USER
-    [~,curruser]=system('id -un');
-    pythonpath=['/Users/' curruser '/miniconda3/bin/'];
-    % compose the string
-    str=[ pythonpath '/python pdf_encryption_wm_creation.py ' inputfile sp ...
-        watermark sp outputfile sp print_flag sp edit_flag sp password_text];
+    % % get the name of the MacOS current USER
+    % [~,curruser]=system('id -un');
+    % pythonpath=['/Users/' curruser '/miniconda3/bin/'];
+    % % compose the string
+    % str=[ pythonpath '/python pdf_encryption_wm_creation.py ' inputfile sp ...
+    %     watermark sp outputfile sp print_flag sp edit_flag sp password_text];
 
 elseif ispc
     % get the path to python
