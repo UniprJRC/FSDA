@@ -1317,8 +1317,8 @@ for iii=1:numel(AX)
 end
 
 % default legend
-if isnotstructy ~=1
-    set(H,'DisplayName',' Units');
+if isnotstructy ~=1 || ngroups == 1  
+    set(H,'DisplayName',' Units'); 
 end
 
 for i = 1:length(AX)

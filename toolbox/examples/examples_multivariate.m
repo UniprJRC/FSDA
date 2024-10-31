@@ -887,7 +887,7 @@ set(plot1,{'LineStyle'},slintyp(1:v1));
 
 aco=triu(ones(v,v));
 ind = find(abs(aco)>0);
-[I,J]=ind2sub(v,ind);
+[I,J]=ind2sub([v, 1],ind);
 lab=cellstr([num2str(I) num2str(J)]);
 text(S2cov(end,1)*ones(v1,1),S2cov(end,2:end)',lab)
 

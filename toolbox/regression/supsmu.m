@@ -10,7 +10,7 @@ function smo = supsmu(x,y,varargin)
 %    Email:   dmschwarz=ieee*org, dmschwarz=urgrad*rochester*edu
 %    Real_email = regexprep(Email,{'=','*'},{'@','.'})
 %    See the section "More About" of this file for the details of 
-%    of the modifications which have been made.
+%    the modifications that have been made.
 %
 %
 % Required input arguments:
@@ -20,14 +20,14 @@ function smo = supsmu(x,y,varargin)
 %               as a vector of length n, where n is the number of
 %               observations.
 %    y  :       y values for smoothing. Vector. 
-%               Response variable which has to be smoothed, specified as a
+%               The response variable, which has to be smoothed, is specified as a
 %               vector of length n, where n is the number of observations.
 %
 %  Optional input arguments:
 %
 %       Weights  : weights for the observations. Vector. Row or column vector of
 %                positive numbers of length n containing the weights associated to each
-%                observations. If w is not specified we assume $w=1$ for $i=1,
+%                observations. If w is not specified, we assume $w=1$ for $i=1,
 %                2, \ldots, n$.
 %                Example - 'Weights',1:n
 %                Data Types - double
@@ -40,15 +40,15 @@ function smo = supsmu(x,y,varargin)
 %                Example - 'Span',0.2
 %                Data Types - double
 %
-%     Period  : Sets the period of periodic data.  Scalar. Default is Inf
-%               (infinity) which implies that the data is not periodic.
+%     Period  : Sets the period of periodic data. Scalar. The default is Inf
+%               (infinity), which implies that the data is not periodic.
 %               Can also be set to zero for the same effect.
 %                Example - 'Period',1
 %                Data Types - double
 %
 %   Alpha     : Sets a small-span penalty to produce a greater smoothing
-%               effect.  0 < Alpha < 10, where 0 does nothing and 10
-%               produces the maximum effect.  Default = 0. This parameter
+%               effect. 0 < Alpha < 10, where 0 does nothing and 10
+%               produces the maximum effect. Default = 0. This parameter
 %               controls the smoothness of the fitted curve. Values up to
 %               10 indicate increasing smoothness.
 %                Example - 'Alpha',5
@@ -56,7 +56,7 @@ function smo = supsmu(x,y,varargin)
 %
 %   Unsorted  : Sorted or unsorted data. Boolean. 
 %               If the data points are not already sorted in order of the x
-%               values then setting this to true will sort them.
+%               values, then setting this to true will sort them.
 %               Default is false.
 %                Example - 'Unsorted',5
 %                Data Types - true
@@ -72,18 +72,18 @@ function smo = supsmu(x,y,varargin)
 %
 %
 % The supersmoother algorithm computes three separate smooth curves from
-% the input data with symmetric spans of 0.05*n, 0.2*n and 0.5*n, where n
-% is the number of data points.  The best of the three smooth curves is
+% the input data with symmetric spans of 0.05*n, 0.2*n, and 0.5*n, where n
+% is the number of data points. The best of the three smooth curves is
 % chosen for each predicted point using leave-one-out cross validation. The
-% best spans are then smoothed by a fixed-span smoother (span = 0.2*n) and
+% best spans are then smoothed by a fixed-span smoother (span = 0.2*n), and
 % the prediction is computed by linearly interpolating between the three
-% smooth curves.  This final smooth curve is then smmothed again with a
+% smooth curves. This final smooth curve is then smoothed again with a
 % fixed-span smoother (span = 0.05*n).
 %
-% According to comments by Friedman, "For small samples (n < 40) or if
+% According to comments by Friedman, "for small samples (n < 40) or if
 % there are substantial serial correlations between observations close in
 % x-value, then a prespecified fixed span smoother (span > 0) should be
-% used.  Reasonable span values are 0.2 to 0.4."
+% used. Reasonable span values are 0.2 to 0.4."
 %
 %    This function is basically equal to the 
 %   function supsmu written in MALTAB by Douglas M. Schwarz.
@@ -92,14 +92,14 @@ function smo = supsmu(x,y,varargin)
 %
 %    The following modifications with respect to the original function have
 %    been made:
-%    [1] In case of constant values of x over a span program was producng
-%    NA. Modifications have been done in the subroutinesto cope with this
+%    [1] In case of constant values of x over a span program was producing
+%    NA. Modifications have been done in the subroutines to cope with this
 %    case. 
 %    [2] The formula for the cross validation residuals in presence of
 %    constant values has been introduced.
 %    [3] All the Mlint suggestions have been incorporated. 
 %    [4] The help has been put inside the FSDA style.
-%    [5] A series of examples which explore the different options has been
+%    [5] A series of examples that explore the different options have been
 %    added.
 %    
 %
@@ -134,7 +134,7 @@ function smo = supsmu(x,y,varargin)
 %}
 
 %{
-    %% Example of use of option Span.
+    %% An example of the use of the option Span.
     x = linspace(0,1,201);
     y = sin(2.5*x) + 0.05*randn(1,201);
     smo = supsmu(x,y,'Span',0.3);
@@ -149,7 +149,7 @@ function smo = supsmu(x,y,varargin)
 % Input checks.
 narginchk(2,Inf)
 
-% x and y must be vectors with same number of points (at least 5).
+% x and y must be vectors with the same number of points (at least 5).
 sy = size(y);
 n = length(y);
 if ~isvector(x) || ~isvector(y) || length(x) ~= n || n < 5
@@ -231,8 +231,8 @@ if ~isscalar(prop.unsorted)
 end
 
 
-% Select one of four smooth functions.  Each smooth function has been
-% speed optimized for the specific conditions.
+% Select one of four smooth functions. Each smooth function has been
+% speed-optimized for the specific conditions.
 smooth_fcn_selector = 2*isempty(prop.weights) + (prop.period == 0);
 switch smooth_fcn_selector
     case 0 % use weights, periodic
@@ -256,7 +256,7 @@ if prop.unsorted
     end
 end
 
-% If prop.span > 0 then we have a fixed span smooth.
+% If prop.span > 0, then we have a fixed span smooth.
 if prop.span > 0
     smo = smooth(x,y,prop.weights,prop.span,prop.period);
     smo = reshape(smo,sy);
@@ -284,10 +284,10 @@ nspans = length(spans);
 %         scale=x(j)-x(i);
 %     end
 % end
-% % Tolerance for the deviance of x over the span 
-% % If the deviance of x over the span is smaller than vsmlsq then x is
-% % considered constant and the smoothed valued is simply the weighted
-% % arithmetic average over the span
+% % Tolerance for the deviance of x over the span.
+% % If the deviance of x over the span is smaller than vsmlsq, then x is
+% % considered constant, and the smoothed value is simply the weighted
+% % arithmetic average over the span.
 % eps=0.001;
 % vsmlsq=(eps*scale)^2;
 
@@ -301,7 +301,7 @@ for i = 1:nspans % row 627 of avas.f
     acvr_smo(:,i) = smooth(x,abs_cv_res,prop.weights,spans(2),prop.period);
 end
 
-% Select which smooth curve has smallest error using cross validation.
+% Select which smooth curve has the smallest error using cross-validation.
 [resmin,index] = min(acvr_smo,[],2);
 span_cv = spans(index);
 
@@ -364,7 +364,7 @@ function [smo,acvr] = smooth_wt_aper(x,y,w,span,~)
 % Get the dimensions of the input.
 n = length(y);
 
-m = max(round(0.5*span*n),2); % m is  ibw in the Fortran program
+m = max(round(0.5*span*n),2); % m is ibw in the Fortran program
 k = 2*m + 1;
 
 wy = w.*y;
@@ -393,12 +393,12 @@ a = (sums(:,4).*sums(:,3) - sums(:,2).*sums(:,5))./denom;
 b = (sums(:,1).*sums(:,5) - sums(:,2).*sums(:,4))./denom;
 smo = a + b.*x;
 
-% Check the presence of NaN inside smo
-% NaN are due to constant values of x over the span
+% Check the presence of NaN inside smo.
+% NaN are due to constant values of x over the span.
 NaNsmo=isnan(smo);
 
 % The smoothed values are simply equal to the weighted average of y over
-% the span, if x is constant over the span
+% the span, if x is constant over the span:
 if sum(NaNsmo)>0
     smo(NaNsmo)=sums(NaNsmo,4)./sums(NaNsmo,1);
 end
@@ -410,8 +410,8 @@ if nargout > 1
     a_cv = (sums_cv(:,4).*sums_cv(:,3) - sums_cv(:,2).*sums_cv(:,5))./denom_cv;
     b_cv = (sums_cv(:,1).*sums_cv(:,5) - sums_cv(:,2).*sums_cv(:,4))./denom_cv;
     smo_cv = a_cv + b_cv.*x;
-    % Check the presence of NaN inside smo_cv
-    % NaN are due to constant values of x over the span
+    % Check the presence of NaN inside smo_cv.
+    % NaN are due to constant values of x over the span.
     NaNsmo_cv=isnan(smo_cv);
     
     acvr = abs(smo_cv - y);
@@ -422,7 +422,7 @@ if nargout > 1
     
 end
 
-% If there are consecutive values of x which are equal than take the
+% If there are consecutive values of x that are equal, then take the
 % weighted arithmetic average of the corresponding smoothed values
 consval=x(2:end)-x(1:end-1)==0;
 if max(consval)>0
@@ -520,12 +520,12 @@ a = (sums(:,3).*sums(:,2) - sums(:,1).*sums(:,4))./denom;
 b = (k.*sums(:,4) - sums(:,1).*sums(:,3))./denom;
 smo = a + b.*x;
 
-% Check the presence of NaN inside smo
-% NaN are due to constant values of x over the span
+% Check the presence of NaN inside smo.
+% NaN are due to constant values of x over the span.
 NaNsmo=isnan(smo);
 
 % The smoothed values are simply equal to the weighted average of y over
-% the span, if x is constant over the span
+% the span, if x is constant over the span:
 if sum(NaNsmo)>0
     smo(NaNsmo)=sums(NaNsmo,4)./sums(NaNsmo,1);
 end
@@ -537,8 +537,8 @@ if nargout > 1
     b_cv = ((k-1).*sums_cv(:,4) - sums_cv(:,1).*sums_cv(:,3))./denom_cv;
     smo_cv = a_cv + b_cv.*x;
     
-        % Check the presence of NaN inside smo_cv
-    % NaN are due to constant values of x over the span
+    % Check the presence of NaN inside smo_cv.
+    % NaN are due to constant values of x over the span.
     NaNsmo_cv=isnan(smo_cv);
     
     acvr = abs(smo_cv - y);

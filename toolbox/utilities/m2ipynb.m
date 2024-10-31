@@ -1,16 +1,23 @@
 function [Incl, Excluded]=m2ipynb(varargin)
-%m2ipynb  convert selected m files into Jupyter notebook files
+%m2ipynb  converts m files into Jupyter notebook files and automatically creates README.md file with links to Open in MATALB On line
 %
 %<a href="matlab: docsearchFS('m2ipynb')">Link to the help function</a>
 %
 %   m2ipynb transforms m files which have a predefined label first
 %   into mlx files and then into Jupiter notebook files. This file also
-%   automatically appends inside README.md files a table written in markup
-%   language. To understand how this table looks like see
+%   automatically creates (or appends to) README.md file a table written in
+%   markup language which contains the list of converted files. For the m
+%   files which are converted the button "Open in MATALB On line" with the associated link is created.
+%   To understand how this table looks like see
 %   https://github.com/UniprJRC/FigMonitoringBook/tree/main/cap1 or
 %   https://github.com/UniprJRC/FigMonitoringBook/tree/main/cap2 or
 %   https://github.com/UniprJRC/FigMonitoringBook/tree/main/cap3 or every
-%   other chapter in the book
+%   other chapter in the book. Note that R files can also be included in
+%   the list. See for example 
+%   https://github.com/UniprJRC/FigMonitoringBook/tree/main/cap8. 
+%   Remark: note that if the README.md file already exists, the part of the
+%   README.md file before the markdown table with the list of files is not
+%   touched.
 %
 % Required input arguments:
 %
@@ -18,7 +25,9 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %
 %
 %   append2README: append or not the list of filtered files to README.md
-%                   file. Boolean. By default the list of filtered files in
+%                   file. 
+%                   Boolean. 
+%                   By default the list of filtered files in
 %                   the specififed folder will be appended to the README.md
 %                   file. If this table already exists inside the
 %                   README.md, it will be replaced with the current one.
@@ -36,34 +45,43 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %                   Example - 'CatchError',false
 %                   Data Types - logical
 %
-%  category :       label inside the files which have to be translated into
-%                   ipynb format. Charater or string. As default all .m
-%                   files which contain the label '%InsideREADME' will be
-%                   converted into mlx format and later into ipynb format.
-%                   They will also be included  in the table inside the
-%                   README.md file
-%                   Example - 'category','##myPersonalLabel##'
+%  category :       label inside the files which specifies whether the file
+%                   to be converted to ipynb format and included into
+%                   README.md file.
+%                   Charater or string. 
+%                   As default all .m files which contain the label
+%                   '%InsideREADME' will be converted into mlx format and
+%                   later into ipynb format. These will also be included
+%                   in the table inside the README.md file.  Also all .R
+%                   files which contain the label '#InsideREADME' will be
+%                   included in the README.md file. In the case of .R files
+%                   instead of the button Open in MATLAB On line there is
+%                   simply the link to open the file inside GitHub.
+%                   Example - 'category','##myPersonalLabel##' 
 %                   Data Types - character or string
 %
 %
 %
 % deleteMLXfiles : delete or not the .mlx files after their conversion to
 %                   jupiter notebook format.
-%                   Boolean. The default is false, that is .mlx are note
+%                   Boolean. 
+%                   The default is false, that is .mlx are note
 %                   deleted after their conversion to ipynb format.
 %                   Example - 'deleteMLXfiles',true
 %                   Data Types - logical
 %
 %    dirpath:       path to use or file to convert.
-%                   Cell array of characters or character. Absolute path of
-%                   the folder(s) for which m2ipynb files must be created.
-%                   If dirpath is not specified or it is empty all .m files
-%                   in the current folder with the category label will be
-%                   converted. If dirpath is a cell array of characters
-%                   then .m file are converted for all specified subfolders.
-%                   If dirpath is a charater containing a single file
-%                   in the current folder, just this file will be
-%                   converted.
+%                   Cell array of characters or character. 
+%                   Absolute path of the folder(s) for which m2ipynb files
+%                   must be created. If dirpath is not specified or it is
+%                   empty all .m files in the current folder with the
+%                   category label will be converted. If dirpath is a cell
+%                   array of characters then .m file are converted for all
+%                   specified subfolders. If dirpath is a charater
+%                   containing a single file in the current folder, just
+%                   this file will be converted. In this case last case
+%                   file README.md will not be modified (because it is
+%                   assumed one just wants to regenerate a single file)
 %                   Example - 'dirpath',pwd
 %                   Data Types - cell array of characters or char
 %                   Remark: dirpath can be conveniently created
@@ -163,13 +181,14 @@ function [Incl, Excluded]=m2ipynb(varargin)
 
 %{
     % m2ipynb with all default options.
-    % Convert first to .mlx and then to .ipynn all .m files in the current
-    % folder which contain '%InsideREADME' and append the table to
+    % Convert first to .mlx and then to .ipynb all .m files in the current
+    % folder which contain the string '%InsideREADME' and append the table to
     % README.md
     out=m2ipynb();
 %}
 
 %{
+    %  Example of m2ipynb with an optional argument.
     % As before but do not run the mlx files.
     out=m2ipynb('run',false);
 %}
@@ -214,6 +233,20 @@ function [Incl, Excluded]=m2ipynb(varargin)
     % dirpath contains 
     dirpath=findDir(pwd,'InclDir',InclDir,'ExclDir',ExclDir);
     [Incl,Excl]=m2ipynb('run',false,'dirpath',dirpath);
+%}
+
+%{
+
+    % Example 3 of the use of option dirpath.
+    % In this case dirpath is a character which contains the single file
+    % which needs to be converted
+    SingleFileToConvert=which('addFSDA2path');
+    m2ipynb('dirpath',SingleFileToConvert)
+    % In this case the output is a 0×4 empty cell array because addFSDA2path
+    % does not contain at the end of the file the string  '%InsideREADME'
+    % If you wish to try this option with files which have this string
+    % please clone the GitHub folder of FigMonitoringBook using
+    % !git clone https://github.com/UniprJRC/FigMonitoringBook.git
 %}
 
 %% Beginning of code
@@ -315,7 +348,12 @@ for j=1:ldirpath
     elseif Folder==true % isempty(dirpath)
         % Find all files which have extension .m in the current folder
         dirpathj=dirpath;
-        d = dir([dirpathj filesep '*.m']);
+        dM = dir([dirpathj filesep '*.m']);
+        dR = dir([dirpathj filesep '*.R']);
+        d=[dM;dR];
+        % Sort in alphabetical order the files
+        [~,sortIndex] = sort(lower({d.name}));
+        d = d(sortIndex);
     else
         % input is a single m file
         assert(isfile(dirpath),'If dirpath is a char it must an .m file in the current folder')
@@ -368,11 +406,17 @@ for j=1:ldirpath
         ij=1;
         cd(dirpathj)
         for i = 1:length(d)
-            % create mfilename (that is name of the file without .m extension) from
-            % file name
-            d(i).mfilename = regexprep(d(i).name,'\.m$','');
+
             FileName=d(i).name;
 
+            % create filenameNoExt (that is name of the file without extension) from
+            % file name
+
+            % d(i).mfilename = regexprep(d(i).name,'\.m$','');
+
+            [~,filenameNoExt,ext]=fileparts(FileName);
+            d(i).mfilename=filenameNoExt;
+            d(i).ext=ext;
 
 
             if strcmp(d(i).name,'m2ipynb.m')
@@ -383,25 +427,45 @@ for j=1:ldirpath
                     H2line=regexprep(H2line,'\n',' ');
                 catch
                     catBoolean=false;
-                    % error('FSDA:m2ipynb:WrongInputFile',['error while parsing file :' d(i).name])
                 end
             end
             % Convert file to mlx and subsequently to ipynb format
-            if catBoolean ==true
+            if catBoolean ==true && strcmp(ext,'.m')
                 if msg==true
                     disp(['Converting file: ' FileName])
                 end
 
-                FileNameMLX=[FileName(1:end-2) '.mlx'];
+                FileNameMLX=[filenameNoExt '.mlx'];
+
+                % try
                 matlab.internal.liveeditor.openAndSave(FileName,FileNameMLX);
-                %  try
+                % catch
+                %    error('FSDA:m2ipynb:WrongInputFile',['error converting file  to mlx:' d(i).name])
+                % end
+
+                % If FileName contains the string runExcluded than .mlx
+                % file is not run
                 if contains(FileName,runExcluded)
                     export(FileNameMLX,'Format','ipynb','Run',false,'CatchError',CatchError);
                 else
-                    export(FileNameMLX,'Format','ipynb','Run',runMLXfile,'CatchError',CatchError);
+                    % If runMLXfile is true then mlx file is
+                    % executed
+                    FileNameipynb=[filenameNoExt '.ipynb'];
+
+                    if runMLXfile ==true
+                        export(FileNameMLX,'Format','ipynb','Run',true,'CatchError',CatchError);
+                        disp(['File '  FileNameipynb ' after running mlx file'])
+                    else
+                        % If runMLXfile is false then file ipynb is created
+                        % just if it does not exist
+                        if exist([filenameNoExt '.ipynb'],"file")==2
+                            disp(['File ' FileNameipynb ' not modified because already existing and option run is false'])
+                        else
+                            export(FileNameMLX,'Format','ipynb','Run',false,'CatchError',CatchError);
+                            disp(['File '  FileNameipynb ' created without running mlx file'])
+                        end
+                    end
                 end
-                FileNameipynb=[FileName(1:end-2) '.ipynb'];
-                disp(['File '  num2str(FileNameipynb) ' created'])
                 % catch
                 %     warning('FSDA:m2ipynb:WrongInputFile',['CatchError in file ' FileName])
                 %     % error('FSDA:m2ipynb:WrongInputFile','Source code error in original .m file')
@@ -415,6 +479,16 @@ for j=1:ldirpath
                     delete(FileNameMLX);
                 end
                 ij=ij+1;
+
+                % In this situation we are deadling with an R file
+            elseif catBoolean ==true && strcmp(ext,'.R')
+                dout{ij,1}=FileName;
+                dout{ij,2}=H1line;
+                dout{ij,3}=H2line;
+                ij=ij+1;
+            else
+                % File does not have to be included inside README.md
+                % because catBoolean is false
             end
         end
     end
@@ -434,82 +508,94 @@ for j=1:ldirpath
         % d=d(boo);
     end
 
-    % Below is the typical file which has to be automatically created
-    % | FileName | Description | Open in MATLAB on line | Jupiter notebook |
-    % |---|---|---|---|
-    % |MentalIllness.m |Contaminated illness data.<br/> This file creates Figure 4.33.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/MentalIllness.m)| [[ipynb](MentalIllness.ipynb)]
-    % |Stars.m|Stars data.<br/> This file creates Figures 4.1-4.4, 4.9-4.11|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/Stars.m)| [[ipynb](Stars.ipynb)]
-    % |SurgicalUnit.m|Surgical Unit data.<br/> This file creates Figures 4.30-4.33.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/SurgicalUnit.m)| [[ipynb](SurgicalUnit.ipynb)]
-    % |Wool.m|Wool data.<br/> This file creates Figures 4.5-4.8.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/Wool.m)| [[ipynb](Wool.ipynb)]
+    % README.md file will modified just if the user a chosen to convert a
+    % set of files and not a single file
+    if Folder==true
 
-    if append2README ==true
-        % Create a table in markup language and append it at the end of the
-        % README.md file
-        fid = fopen('README.md'); % open file
-        if fid==-1
-            fstring1='';
-        else
-            fstring=fscanf(fid,'%c');
-            fclose(fid);
+        % Below is the typical file which has to be automatically created
+        % | FileName | Description | Open in MATLAB on line | Jupiter notebook |
+        % |---|---|---|---|
+        % |MentalIllness.m |Contaminated illness data.<br/> This file creates Figure 4.33.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/MentalIllness.m)| [[ipynb](MentalIllness.ipynb)]
+        % |Stars.m|Stars data.<br/> This file creates Figures 4.1-4.4, 4.9-4.11|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/Stars.m)| [[ipynb](Stars.ipynb)]
+        % |SurgicalUnit.m|Surgical Unit data.<br/> This file creates Figures 4.30-4.33.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/SurgicalUnit.m)| [[ipynb](SurgicalUnit.ipynb)]
+        % |Wool.m|Wool data.<br/> This file creates Figures 4.5-4.8.|[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap4/Wool.m)| [[ipynb](Wool.ipynb)]
 
-            % findTBL=regexp(fstring,'(|*)\s*FileName\s*|\s*Description\s*|\s*Script\s*\s*Jupiter');
-            findTBL=regexp(fstring,'(|*)\s*FileName\s*|\s*Description');
-
-            if ~isempty(findTBL)
-                fstring1=fstring(1:findTBL(1)-2);
+        if append2README ==true
+            % Create a table in markup language and append it at the end of the
+            % README.md file
+            fid = fopen('README.md'); % open file
+            if fid==-1
+                fstring1='';
             else
-                fstring1=fstring;
+                fstring=fscanf(fid,'%c');
+                fclose(fid);
+
+                % findTBL=regexp(fstring,'(|*)\s*FileName\s*|\s*Description\s*|\s*Script\s*\s*Jupiter');
+                findTBL=regexp(fstring,'(|*)\s*FileName\s*|\s*Description');
+
+                if ~isempty(findTBL)
+                    fstring1=fstring(1:findTBL(1)-2);
+                else
+                    fstring1=fstring;
+                end
+            end
+
+            %Include inside dout output of j-th folder which has been analyzed
+            if ~isempty(dout)
+
+                % Create table
+                TBL='| FileName | Description | Open in MATLAB on line | Jupiter notebook | \r |---|---|---|---| \r ';
+
+                for i = 1:size(dout,1)
+
+                    % | Income1 |[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap1/Income1main.m) |
+                    FileName=dout{i,1};
+                    posSep=regexp(dirpathj,filesep);
+                    folderName=[dirpathj(posSep(end)+1:end) '/'];
+                    % folderName='';
+                    postrepo=['&file=' folderName '/' FileName ')'];
+                    [~,FileNameNoExt,ext]=fileparts(FileName);
+                    % FileNameNoExt=FileName(1:end-2);
+                    folderName='';
+                    if strcmp(ext,'.R')
+                        Row2add=['[Open](' FileName ')'];
+                    else
+                        ipy=['| [[ipynb](' folderName FileNameNoExt '.ipynb)]'];
+                        Row2add=[prerepo repoName postrepo ipy];
+                    end
+
+                    TBL=[TBL '|' FileName '|' dout{i,2} '<br/> ' dout{i,3} '|' Row2add '\r']; %#ok<AGROW>
+                    %  [[ipynb](/cap4/ARregression.ipynb)]
+
+                end
+                TBLmarkup=sprintf(TBL);
+                file1ID=fopen([dirpathj filesep 'README.md'],'w');
+
+                outstring=[fstring1 TBLmarkup];
+                fprintf(file1ID,'%s',outstring);
+                fclose('all');
+
+
+                Incl(iout:(iout+size(dout,1)-1),1:3)=dout;
+                Incl(iout:(iout+size(dout,1)-1),4)=repelem({dirpathj},size(dout,1),1);
+                iout=iout+size(dout,1);
+
             end
         end
-
-        %Include inside dout output of j-th folder which has been analyzed
-        if ~isempty(dout)
-
-            % Create table
-            TBL='| FileName | Description | Open in MATLAB on line | Jupiter notebook | \r |---|---|---|---| \r ';
-
-            for i = 1:size(dout,1)
-
-                % | Income1 |[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FigMonitoringBook&file=/cap1/Income1main.m) |
-                FileName=dout{i,1};
-                posSep=regexp(dirpathj,filesep);
-                folderName=[dirpathj(posSep(end)+1:end) '/'];
-                % folderName='';
-                postrepo=['&file=' folderName '/' FileName ')'];
-                FileNameNoExt=FileName(1:end-2);
-                folderName='';
-                ipy=['| [[ipynb](' folderName FileNameNoExt '.ipynb)]'];
-                Row2add=[prerepo repoName postrepo ipy];
-                TBL=[TBL '|' FileName '|' dout{i,2} '<br/> ' dout{i,3} '|' Row2add '\r']; %#ok<AGROW>
-                %  [[ipynb](/cap4/ARregression.ipynb)]
-
-            end
-            TBLmarkup=sprintf(TBL);
-            file1ID=fopen([dirpathj filesep 'README.md'],'w');
-
-            outstring=[fstring1 TBLmarkup];
-            fprintf(file1ID,'%s',outstring);
-            fclose('all');
-
-
-            Incl(iout:(iout+size(dout,1)-1),1:3)=dout;
-            Incl(iout:(iout+size(dout,1)-1),4)=repelem({dirpathj},size(dout,1),1);
-            iout=iout+size(dout,1);
-
-        end
+    else
+        % in this case just a sinfle file has been converted
     end
+
+    cd(currentPath);
+    Incl=Incl(1:iout-1,:);
+    Excluded=Excluded(1:iExcluded-1,:);
+
+    if printOutputCell==true
+        disp(Incl)
+    end
+
 end
-cd(currentPath);
-Incl=Incl(1:iout-1,:);
-Excluded=Excluded(1:iExcluded-1,:);
-
-if printOutputCell==true
-    disp(Incl)
 end
-
-end
-
-
 function [H1line,H2line, catBoolean] = get_H1lineandCategory(filename,searchTag)
 %GET H1 LINE and file category through input option searchTag
 
@@ -520,46 +606,57 @@ end
 [~,~,ext] = fileparts(filename);
 H1line = ''; % default output
 if strcmp(ext,'.m')
-    fid = fopen(filename); % open file
-    tline = fgetl(fid); % read first line
-    while ischar(tline)
-        k = strfind(tline,'%'); % find comment
-        if ~isempty(k)
-            k = k(1);
-            ispercents = false(size(tline(k:end)));
-            ispercents(strfind(tline(k:end),'%'))=true;
-            start = k+find(~(isspace(tline(k:end)) | ispercents),1,'first')-1;
-            if ~isempty(start)
-                tline = tline(start:end); % remove leading space/percent
-                H1line = tline;
-                H1line = strtrim(H1line);
-                if ~isempty(H1line)
-                    H1line(1) = upper(H1line(1)); % capitalize first letter
-                end
+    commentSign='%';
+elseif   strcmp(ext,'.R')
+    commentSign='#';
+    if ~isempty(searchTag)
+        searchTag=['#' searchTag(2:end) ];
+    end
+else
+    % file does not have .m or .R extension
+    error('FSDA:m2ipynb:WrongInputOpt','Just files with m or R extension')
+end
+
+fid = fopen(filename); % open file
+tline = fgetl(fid); % read first line
+while ischar(tline)
+    k = strfind(tline,commentSign); % find comment
+    if ~isempty(k)
+        k = k(1);
+        ispercents = false(size(tline(k:end)));
+        ispercents(strfind(tline(k:end),commentSign))=true;
+        start = k+find(~(isspace(tline(k:end)) | ispercents),1,'first')-1;
+        if ~isempty(start)
+            tline = tline(start:end); % remove leading space/percent
+            H1line = tline;
+            H1line = strtrim(H1line);
+            if ~isempty(H1line)
+                H1line(1) = upper(H1line(1)); % capitalize first letter
             end
-            tline = -1; % set tline to numeric
-        else
-            tline = fgetl(fid); % read next line
         end
-    end
-
-    % now get category
-    fstring=fscanf(fid,'%c');
-
-    findPercentage=strfind(fstring,'%%');
-    fstringSel=fstring(1:findPercentage(1)-1);
-    fstringSel=strrep(fstringSel,'%','');
-    H2line=removeExtraSpacesLF(fstringSel);
-
-
-    if  ~contains(fstring,searchTag)
-        catBoolean=false;
+        tline = -1; % set tline to numeric
     else
-        catBoolean=true;
+        tline = fgetl(fid); % read next line
     end
-    fclose(fid);
+end
+
+% now get category
+fstring=fscanf(fid,'%c');
+
+findPercentage=strfind(fstring,[commentSign commentSign]);
+fstringSel=fstring(1:findPercentage(1)-1);
+fstringSel=strrep(fstringSel,commentSign,'');
+H2line=removeExtraSpacesLF(fstringSel);
+
+
+if  contains(fstring,searchTag)
+    catBoolean=true;
+else
+    catBoolean=false;
+end
+fclose(fid);
+
 end
 
 
-end
 %FScategory:UTIGEN

@@ -335,8 +335,12 @@ axis manual;
                 if isa(axesObjects(i).Children, 'matlab.graphics.chart.primitive.Line')
                     % disp(['Panel ', num2str(i), ' contains a line plot'])
                     % Assign the same DisplayName property to each group in each panel
-                    for g = 1:nlegendEntries
-                        axesObjects(i).Children(g).DisplayName = legendEntries{g};
+                    if i==1, indice = zeros(nlegendEntries,1); end
+                    for g = 1:nlegendEntries                     
+                        if i==1
+                            [~, indice(g)] = ismember({axesObjects(i).Children(g).DisplayName}, legendEntries);
+                        end
+                        axesObjects(i).Children(g).DisplayName = legendEntries{indice(g)};
                     end
                 else
                     % disp(['Panel ', num2str(i), ' does not contain a line plot'])

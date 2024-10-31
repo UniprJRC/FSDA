@@ -52,7 +52,7 @@ function [medout , varargout] = medcouple(z, mcm, wmm)
 %
 % More About:
 %
-%﻿The fast algorithm for the medcouple (Brys G., Hubert M. and Struyf A., 
+%﻿ The fast algorithm for the medcouple (Brys G., Hubert M. and Struyf A., 
 % 2004) is a robust measure of skewness used to adjust the whiskers of a
 % boxplot (Hubert M. and Vandervierenb E., 2008) and avoid wrong
 % declaration of outliers in asymmetric univariate data. The medcouple
@@ -293,7 +293,7 @@ function [medout , varargout] = medcouple(z, mcm, wmm)
 
 % Check for proper number of arguments */
 if nargin > 3
-    error('Wrong number of input arguments');
+    error('FSDA:medcouple:WrongInputOpt','Wrong number of input arguments');
 end
 
 if nargin < 3 || ~ismember(wmm , [0,1,2]) || isempty(wmm)
@@ -310,7 +310,7 @@ z(sum(~isfinite(z),2)>0,:)=[];
 [n,m] = size(z);
 
 if (m~=1 && n==1)
-    error('Input must be a columnvector');
+    error('FSDA:medcouple:WrongInputOpt','Input must be a columnvector');
 end
 
 if (n>50000)

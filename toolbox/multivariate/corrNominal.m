@@ -8,6 +8,9 @@ function out=corrNominal(N, varargin)
 % (uncertainty coefficient).
 % All these indexes measure the association among two unordered qualitative
 % variables.
+% If the input table is 2-by-2 indexes theta (cross product ratio),
+% Q=(theta-1)/(theta+1) and U=Q=(sqrt(theta)-1)/(sqrt(theta)+1)
+% are also computed
 % Additional details about these indexes can be found in the "More About"
 % section or in the "Output section" of this document.
 %
@@ -76,7 +79,7 @@ function out=corrNominal(N, varargin)
 %               Data Types - double
 %
 %  conflimMethodCramerV:   method to compute confidence interval for CramerV.
-%               Character. 
+%               Character.
 %               Character which identifies the method to use to compute the
 %               confidence interval for Cramer index. Default value is
 %               'ncchisq'. Possible values are 'ncchisq', 'ncchisqadj',
@@ -129,7 +132,7 @@ function out=corrNominal(N, varargin)
 %                        centrality parameter $\Delta$ of the
 %                        $\chi^2$ distribution with $df=(I-1)(J-1)$ degrees of
 %                        freedom. (see Smithson (2003); pp. 39-41) $[\Delta_L
-%                        \Delta_U]$. If input option conflimMethodCramerV is 
+%                        \Delta_U]$. If input option conflimMethodCramerV is
 %                        'ncchisq', confidence interval for $\Delta$ is
 %                        transformed into one for $V$ by the following
 %                        transformation
@@ -140,7 +143,7 @@ function out=corrNominal(N, varargin)
 %                        \[
 %                        V_U=\sqrt{\frac{\Delta_U }{n \min[(I-1),(J-1)]}}
 %                        \]
-%                        If input option conflimMethodCramerV is 
+%                        If input option conflimMethodCramerV is
 %                        'ncchisqadj', confidence interval for $\Delta$ is
 %                        transformed into one for $V$ by the following
 %                        transformation
@@ -189,6 +192,14 @@ function out=corrNominal(N, varargin)
 %                        (third column), upper confidence limit (fourth column).
 %                        This output is present just if your MATLAB
 %                        version is not<2013b.
+% out.theta          =   cross product ratio. This index is computed just
+%                        if the input table is 2-by-2
+% out.Q              =   cross product ratio in the interval [-1 1] using 
+%                        the Q rescaling Q=(th-1)/(th+1). This index is computed just
+%                        if the input table is 2-by-2
+% out.U              =   cross product ratio in the interval [-1 1] using 
+%                        the U rescaling U=(sqrt(th)-1)/(sqrt(th)+1). This index is computed just
+%                        if the input table is 2-by-2
 %
 % More About:
 %
@@ -257,7 +268,17 @@ function out=corrNominal(N, varargin)
 %                       knowledge of x reduces error in predicting values
 %                       of y by 85 per cent (when variation measure which
 %                       is used is the entropy index)
-%
+%                       Remark: if the contingency table is of size 2x2 the
+%                       following indexes are also computed theta=cross
+%                       product ratio, index $Q$ 
+%                       \[
+%                       Q= \frac{\theta-1}{\theta+1}
+%                       \]
+%                       and $U$
+%                       \[
+%                       U= \frac{\sqrt{\theta}-1}{\sqrt{\theta}+1}
+%                       \]
+% 
 % See also crosstab, rcontFS, CressieRead, corr, corrOrdinal
 %
 % References:
@@ -402,6 +423,21 @@ function out=corrNominal(N, varargin)
     disp(array2table(ConfintV,'RowNames',method,'VariableNames',{'Lower' 'Upper'}))
 %}
 
+%{
+    %% CorrNominal when input is 2 by 2
+    % Indexes theta=cross product ratio, 
+    % Q and U are also computed.
+    % X=advertisment memory (rows)
+    % Y=product purchase (columns)
+    N= [87 188;
+        42 406];
+    nam=["Yes" "No"];
+    Ntable=array2table(N,"RowNames",nam,"VariableNames",nam);
+    disp('Input 2x2 contingency table')
+    table(Ntable,RowNames=["X=advertisment memory" "advertisment memory "],VariableNames="Y=Product purchase")
+    out=corrNominal(Ntable)
+%}
+
 %% Beginning of code
 
 % Check MATLAB version. If it is not smaller than 2013b than output is
@@ -449,7 +485,7 @@ end
 dispresults=true;
 NoStandardErrors=false;
 conflev=0.95;
-    conflimMethodCramerV='ncchisq';
+conflimMethodCramerV='ncchisq';
 
 options=struct('Lr',{Lr},'Lc',{Lc},'datamatrix',false,...
     'dispresults',dispresults,'NoStandardErrors',NoStandardErrors,...
@@ -467,7 +503,7 @@ if ~isempty(UserOptions)
         % Check if user options are valid options
         aux.chkoptions(options,UserOptions)
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     if nargin > 2
         for i=1:2:length(varargin)
@@ -483,7 +519,7 @@ if ~isempty(UserOptions)
 end
 
 % Extract labels for rows and columns
-if verMatlab ==0 && (istable(N) || istimetable(N)) 
+if verMatlab ==0 && (istable(N) || istimetable(N))
     Ntable=N;
     N=table2array(N);
 else
@@ -495,7 +531,7 @@ else
             error('FSDA:CorrNominal:WrongInputOpt','Wrong length of row labels');
         end
     end
-    
+
     if isempty(Lc)
         Lc=cellstr(num2str((1:J)'));
     else
@@ -534,6 +570,14 @@ Phi=sqrt(Chi2/n);
 
 % Cramer index
 CramerV=Phi/sqrt(min([I-1 J-1]));
+
+if I==2 && J==2
+    % theta= cross product ratio
+    th=N(1,1)*N(2,2)/(N(1,2)*N(2,1));
+    % theta nell'intervallo [-1 1], indexes Q and U
+    Q=(th-1)/(th+1);
+    U=(sqrt(th)-1)/(sqrt(th)+1);
+end
 
 % Goodman and Kruskal lambda
 ndotjmax=max(ndotj);
@@ -576,10 +620,10 @@ if NoStandardErrors
     setauyx=NaN;     ztauyx=NaN;     pvaltauyx=NaN;
     seHyx=NaN;     zHyx=NaN;    pvalHyx=NaN;
 else
-    
+
     %  n * sum(N(i, )^2/sum.row[i])
     nerrunconditional=n^2- n*sum(N(:).^2 ./ nidotmat(:));
-    
+
     nerrconditional= n^2- sum(ndotj.^2);
     errunconditional = nerrunconditional/(n^2);
     errconditional = nerrconditional/(n^2);
@@ -591,18 +635,18 @@ else
     %                     vartauCR =vartauCR + N(i,j)*(-2*errunconditional*ndotj(j)/n +errconditional*(2*N(i,j)/nidot(i)-sum( (N(i,:)/nidot(i)).^2)) - f)^2/(n^2 * errconditional^4);
     %                 end
     %             end
-    
+
     Ndivnidot=repmat(sum((N./nidotmat).^2,2),1,J);
     vartauyx=sum( N(:).* (-2*errunconditional*ndotjmat(:)/n +errconditional*(2*N(:)./nidotmat(:)-Ndivnidot(:) ) - f).^2 )/(n^2 * errconditional^4);
     setauyx=sqrt(vartauyx);
-    
+
     % Find standard error for Cramer V
     % use external routine ncci to find confidence interval for non
     % centrality parameter of the chi2 distribution
     df=(I-1)*(J-1);
     k=min(I,J);
-    
-    
+
+
     if strcmp(conflimMethodCramerV,'ncchisq')
         [LoC]=lochi(Chi2,df,conflev);
         [HoC]=hichi(Chi2,df,conflev);
@@ -625,15 +669,15 @@ else
     end
     ConfIntCramerV(1)=max([0 ConfIntCramerV(1)]);
     ConfIntCramerV(2)=min([1 ConfIntCramerV(2)]);
-    
+
     % use external routine ncpci to find confidence interval
     % ncpConfInt=ncpci(Chi2,'X2',df,'confLevel',conflev);
     % ConfIntCramerV=sqrt((ncpConfInt+df)/(n*(k-1)));
-    
+
     % Store confidence intervals
     seCramerV=(CramerV-ConfIntCramerV(1))/talpha;
-    
-    
+
+
     % The asymptotic variance of Gk index is given by
     %
     % \[
@@ -650,7 +694,7 @@ else
     %
     seqJ=1:J;
     seqI=1:I;
-    
+
     % column index associated to maximal column frequency
     %rmax = max_j n_ij
     nijmax=max(N,[],2);
@@ -667,14 +711,14 @@ else
             Lcol(i) = min(seqJ(N(i,:) == nijmax(i)));
         end
     end
-    
+
     varGKlambdayx= (n - sum(nijmax)) * (sum(nijmax) + ndotjmax -2*(sum(nijmax(seqI(Lcol == Lcolmax)))))/(n-ndotjmax)^3;
     seGKlambdayx=sqrt(varGKlambdayx);
-    
+
     % variance of uncertainty coefficient of Theil
     varHyx=sum(N(boo).*(  Hy*log(N(boo)./nidotmat(boo)) +(Hx-Hxy)*log(ndotjmat(boo)/n) ).^2)/(n^2*Hy^4);
     seHyx=sqrt(varHyx);
-    
+
     % Compute zscores and p-values
     zCramerV = CramerV/seCramerV; % z-score
     pvalCramerV = 2*(1 - normcdf(abs(zCramerV))); %p-value (two-sided)
@@ -684,7 +728,7 @@ else
     pvaltauyx = 2*(1 - normcdf(abs(ztauyx))); %p-value (two-sided)
     zHyx = Hyx/seHyx; % z-score
     pvalHyx = 2*(1 - normcdf(abs(zHyx))); %p-value (two-sided)
-    
+
 end
 
 % Store results in output structure out
@@ -735,8 +779,15 @@ if verMatlab ==0
     out.TestIndtable=TestIndtable;
 end
 
+% Store 2x2 contingency table indexes
+if I==2 && J==2
+out.theta=th;
+out.Q=Q;
+out.U=U;
+end
+
 if dispresults == true
-    
+
     disp('Chi2 index')
     disp(Chi2)
     disp('pvalue Chi2 index')
@@ -745,10 +796,25 @@ if dispresults == true
     disp(Phi)
     disp('Cramer''s V ')
     disp(CramerV)
-    
+
+
+    if I==2 && J==2
+        disp('-------------------------------')
+        disp('2x2 contingency table indexes')
+        disp('th=cross product ratio')
+        disp(th)
+        disp('Cross product ratio in the interval [-1 1]. Index Q=(th-1)/(th+1)')
+        disp(Q)
+        disp('Cross product ratio in the interval [-1 1]. Index U=(sqrt(th)-1)/(sqrt(th)+1)')
+        disp(U)
+        disp('-------------------------------')
+    end
+
+
+
     if NoStandardErrors == false
         if verMatlab ==0
-            
+
             % Test H_0
             % Test of independence
             disp('Test of H_0: independence between rows and columns')
@@ -756,7 +822,7 @@ if dispresults == true
             disp('-----------------------------------------')
             disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
             disp(ConfLimtable);
-            
+
         else
             % Test H_0
             % Test of independence

@@ -12,7 +12,7 @@ function [out] = simulateLM(n,varargin)
 % 6) the distribution to use to generate the ys.
 % 7) the MSOM contamination in Xs and ys.
 % 8) the VIOM contamination in ys.
-% 
+%
 %  Required input arguments:
 %
 %         n  :  sample size. Scalar. n is a positive integer
@@ -22,9 +22,15 @@ function [out] = simulateLM(n,varargin)
 %  Optional input arguments:
 %
 %      R2 :  Squared multiple correlation coefficient (R2). Scalar. The
-%            requested value of R2. A number in the
-%            interval [0 1] that specifies the requested value of R2.
-%            The default is to simulate regression data with R2=0;
+%            requested value of R2. A number in the interval [0 1] that
+%            specifies the asymptotic requested value of R2. The default is
+%            to simulate regression data with R2=0; Note that the value of
+%            R2 is the one in the population not in the sample in the sense
+%            that if, for example 'R2',00 the sample data (expecially if n
+%            is very small) can have a value which is slightly different
+%            from the prefixed one. If the exact value of R2 is required
+%            then the user has to use option exactR2. See below for further
+%            details.
 %                 Example - 'R2',0.90
 %                 Data Types - double
 %
@@ -59,7 +65,7 @@ function [out] = simulateLM(n,varargin)
 %                 Data Types - double
 %   distriby : distribution to use to simulate the response. Character.
 %              Character that specifies the distribution to use to
-%              simulate the values of the explanatory variables. The
+%              simulate the values of the response. The
 %              default is to use the Standard normal distribution.
 %                 Example - 'distriby', 'Lognormal'
 %                 Data Types - double
@@ -71,6 +77,15 @@ function [out] = simulateLM(n,varargin)
 %              with parameters mu and sigma respectively equal to 2 and 10.
 %                 Example - 'distribypars', '[2 10]'
 %                 Data Types - double
+%
+%    exactR2    : exact value of R2. Boolean.
+%                 If exactR2 is the sample data have the requested value of
+%                 R2. The default is exactR2 equal to false, that is just
+%                 asymptotically, the sample data have a value of R2 equal
+%                 to the one which is specified in option R2.
+%                 Example - 'exactR2', true
+%                 Data Types - logical
+%
 %       nexpl   : number of explanatory variables. If vector beta is
 %                 supplied, nexpl is equal to length(beta). Similarly if
 %                 SigmaX is supplied nexpl is set equal to size(SigmaX,1).
@@ -91,33 +106,33 @@ function [out] = simulateLM(n,varargin)
 %                 Example - 'plots',false
 %                 Data Types - single | double
 %
-%       pMSOM   : Proportion of MSOM outliers. The default is 10% MSOM 
+%       pMSOM   : Proportion of MSOM outliers. The default is 10% MSOM
 %                 contamination.
 %                 Example - 'pMSOM',0.25
 %                 Data Types - double
-% 
-%       pVIOM   : Proportion of VIOM outliers (non-overlapping with MSOM). 
+%
+%       pVIOM   : Proportion of VIOM outliers (non-overlapping with MSOM).
 %                 The default is 10% VIOM contamination.
 %                 Example - 'pVIOM',0.25
 %                 Data Types - double
-% 
+%
 %   shiftMSOMe  : Mean-shift on the error terms for MSOM outliers.
 %                 Default value shiftMSOMe==10.
 %                 Example - 'shiftMSOMe',-3
 %                 Data Types - double
-% 
-%   predxMSOM   : Predictors subject to a mean shift by MSOM. It is a 
+%
+%   predxMSOM   : Predictors subject to a mean shift by MSOM. It is a
 %                 p-dimensional vector indexing design matrix columns.
 %                 Default value is to contaminate only the non-zero
 %                 entries of beta_true (excluding the intercept).
 %                 Example - 'predxMSOM',true(2,1)
 %                 Data Types - boolean
-% 
+%
 %   shiftMSOMx  : Mean-shift on the predictor terms for MSOM outliers.
 %                 Default value shiftMSOMx==10.
 %                 Example - 'shiftMSOMx',3
 %                 Data Types - double
-% 
+%
 %   inflVIOMe   : Variance-inflation for the errors subject to a VIOM.
 %                 Default value is inflVIOMe==10.
 %                 Example - 'inflVIOMe',5
@@ -147,8 +162,8 @@ function [out] = simulateLM(n,varargin)
 %
 % References:
 %
-% Insolia, L., F. Chiaromonte, and M. Riani (2020a). 
-% "A Robust Estimation Approach for Mean-Shift and Variance-Inflation Outliers". 
+% Insolia, L., F. Chiaromonte, and M. Riani (2020a).
+% "A Robust Estimation Approach for Mean-Shift and Variance-Inflation Outliers".
 % Festschrift in Honor of R. Dennis Cook pp 17–41.
 %
 %
@@ -262,7 +277,7 @@ shiftMSOMe = -10;
 predxMSOM = '';
 shiftMSOMx = 10;
 inflVIOMe = 10;
-
+exactR2=false;
 
 options=struct('R2',R2,...
     'beta',beta,'SigmaX',SigmaX,...
@@ -271,7 +286,7 @@ options=struct('R2',R2,...
     'nexpl',nexpl,'intercept',intercept,'plots',plots, ...
     'SNR', SNR, 'pMSOM', pMSOM, 'pVIOM', pVIOM, ...
     'shiftMSOMe', shiftMSOMe, 'predxMSOM', predxMSOM, ...
-    'shiftMSOMx', shiftMSOMx, 'inflVIOMe', inflVIOMe);
+    'shiftMSOMx', shiftMSOMx, 'inflVIOMe', inflVIOMe,'exactR2',exactR2);
 
 
 %% User options
@@ -280,12 +295,12 @@ options=struct('R2',R2,...
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    
+
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:simulateLM:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    
+
     % Check if all the specified optional arguments were present in
     % structure options. Remark: the nocheck option has already been dealt
     % by routine chkinputR.
@@ -295,17 +310,17 @@ if ~isempty(UserOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
         error('FSDA:simulateLM:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
-    
+
     % Check the presence of input options beta, SigmaX and nexpl.
     betaboo=max(strcmp(UserOptions,'beta'))==1;
     SigmaXboo=max(strcmp(UserOptions,'SigmaX'))==1;
     nexplboo=max(strcmp(UserOptions,'nexpl'))==1;
-    
+
     % Write in structure 'options' the options chosen by the user.
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     R2=options.R2;
     nexpl=options.nexpl;
     beta=options.beta;
@@ -317,6 +332,7 @@ if ~isempty(UserOptions)
     distribypars = options.distribypars;
     plots=options.plots;
     intercept=options.intercept;
+    exactR2=options.exactR2;
     SNR = options.SNR;
     pMSOM = options.pMSOM;
     pVIOM = options.pVIOM;
@@ -335,21 +351,21 @@ if ~isempty(UserOptions)
     if SNR<=0
         error('FSDA:simulateLM:WrongOpt','SNR must be greater than zero');
     end
-    
+
     % Preliminary checks both beta, nexpl and SigmaX have been supplied.
     if betaboo==true && SigmaXboo==true && nexplboo==true
-        
+
         if nexpl~=size(SigmaX,1)
             error('FSDA:simulateLM:WrongOpt',['Length of supplied vector beta ' ...
                 'must be equal to number of rows (columns) of matrix SigmaX']);
         end
-        
+
         if nexpl~=length(beta)
             error('FSDA:simulateLM:WrongOpt',['Length of supplied vector beta ' ...
                 'must be equal to number of rows (columns) of matrix SigmaX']);
         end
     end
-    
+
     % Preliminary checks just beta and SigmaX have been supplied.
     if betaboo==true && SigmaXboo==true && nexplboo==false
         nexpl=length(betaboo);
@@ -358,7 +374,7 @@ if ~isempty(UserOptions)
                 'must be equal to number of rows (columns) of matrix SigmaX']);
         end
     end
-    
+
     % Preliminary checks just beta and nexpl have been supplied.
     if betaboo==true && SigmaXboo==false  && nexpl==true
         nexpl=length(beta);
@@ -368,7 +384,7 @@ if ~isempty(UserOptions)
         end
         SigmaX=eye(nexpl);
     end
-    
+
     % Preliminary checks just SigmaX and nexpl have been supplied.
     if betaboo==false && SigmaXboo==true && nexplboo==true
         nexplchk=size(SigmaXboo,1);
@@ -378,60 +394,60 @@ if ~isempty(UserOptions)
         end
         beta=ones(nexpl,1);
     end
-    
+
     % Preliminary checks just beta has been supplied.
     if betaboo==true &&  SigmaXboo == false && nexplboo==false
         nexpl=length(beta);
         SigmaX=eye(nexpl);
     end
-    
+
     % Preliminary checks just SigmaX has been supplied.
     if betaboo==false &&  SigmaXboo == true && nexplboo==false
         nexpl=size(SigmaX,1);
         beta=ones(nexpl,1);
     end
-    
+
     % Preliminary checks just nexpl has been supplied.
     if betaboo==false &&  SigmaXboo == false && nexplboo==true
         beta=ones(nexpl,1);
         SigmaX=eye(nexpl);
     end
-    
+
     [T,err] = cholcov(SigmaX);
     if err ~= 0
         error('FSDA:mvnrnd:BadCovariance2DSymPos','WrongSigma');
     end
     lXpars=length(distribXpars);
-    
+
     %% checks on the explanatory variables.
     if ischar(distribX)
-    if lXpars==1
-        X = random(distribX,distribXpars,n,nexpl);
-    elseif lXpars==2
-        X = random(distribX,distribXpars(1),distribXpars(2),n,nexpl);
-    elseif lXpars==3
-        X = random(distribX,distribXpars(1),distribXpars(2),distribXpars(3),n,nexpl);
-    else
-        X = random(distribX,distribXpars(1),distribXpars(2),distribXpars(3),distribXpars(4),n,nexpl);
-    end
-    % Generate the X in such a way their corr is SigmaX.
-    X=X*T;
+        if lXpars==1
+            X = random(distribX,distribXpars,n,nexpl);
+        elseif lXpars==2
+            X = random(distribX,distribXpars(1),distribXpars(2),n,nexpl);
+        elseif lXpars==3
+            X = random(distribX,distribXpars(1),distribXpars(2),distribXpars(3),n,nexpl);
+        else
+            X = random(distribX,distribXpars(1),distribXpars(2),distribXpars(3),distribXpars(4),n,nexpl);
+        end
+        % Generate the X in such a way their corr is SigmaX.
+        X=X*T;
     else
         % In this case, the user has directly supplied matrix X.
         % Make sure that the size of X is n-by-nexpl.
         X=distribX;
         [nchk,nexplchk]=size(X);
-         if nchk~=n
+        if nchk~=n
             error('FSDA:simulateLM:WrongOpt',['supplied matrix X must have  '  ...
                 num2str(n) ' rows']);
-         end
-         if nexpl~=nexplchk
+        end
+        if nexpl~=nexplchk
             error('FSDA:simulateLM:WrongOpt',['supplied matrix X must have '  ...
                 num2str(nexpl) ' columns']);
-         end
+        end
     end
-    
-    
+
+
     lypars=length(distribypars);
     if lypars==1
         err = random(distriby,distribypars,n,1);
@@ -442,35 +458,57 @@ if ~isempty(UserOptions)
     else
         err = random(distriby,distribypars(1),distribypars(2),distribypars(3),distribypars(4),n,1);
     end
-    
+
     p=nexpl+intercept;
-    
+
     % Divide by std and multiply by a small sample correction factor.
-     err=sqrt((n)/(n-p))*err/std(err,1);
+    err=sqrt((n)/(n-p))*err/std(err,1);
     % err=err/std(err,1);
-    
+
     if R2>0 && isempty(SNR)
         % Find var(\epsilon) which produces a value of R2 centered around
         % the one which has been requested.
         vareps=(intercept+beta'*SigmaX*beta)*((1 - R2)/R2);
         y=intercept+X*beta(:)+err*sqrt(vareps);
+        if exactR2==true
+            step=100;
+            outTMP=fitlm(X,y);
+            while abs(outTMP.Rsquared.Ordinary-R2)>0.01
+                if outTMP.Rsquared.Ordinary >R2
+                    while outTMP.Rsquared.Ordinary>R2
+                        vareps=vareps+step;
+                        y=intercept+X*beta(:)+err*sqrt(vareps);
+                        outTMP=fitlm(X,y);
+                    end
+                    step=step/2;
+                elseif outTMP.Rsquared.Ordinary <R2
+                    while outTMP.Rsquared.Ordinary<R2
+                        vareps=vareps-step;
+                        vareps=max(vareps,1e-05);
+                        y=intercept+X*beta(:)+err*sqrt(vareps);
+                        outTMP=fitlm(X,y);
+
+                    end
+                    step=step/2;
+                end
+            end
+        end
     elseif ~isempty(SNR)
         vareps = var(X*beta(:)) / SNR;
         y=intercept+X*beta(:)+err*sqrt(vareps);
     else
         y=intercept+err;
     end
-    
+
     if plots==true
         yXplot(y,X);
     end
 end
 
-
 %% add contamination as MSOM and VIOM
-    
+
 if pMSOM + pVIOM >0
-    
+
     eu = err*sqrt(vareps);
     Xu = X;
 
@@ -480,7 +518,7 @@ if pMSOM + pVIOM >0
     indMSOM = randperm(n, nMSOM);
     % MSOM (also on X).
     Xc = Xu;
-    Xc(indMSOM, predxMSOM) = Xu(indMSOM, predxMSOM) + shiftMSOMx; 
+    Xc(indMSOM, predxMSOM) = Xu(indMSOM, predxMSOM) + shiftMSOMx;
     ec = eu;
     ec(indMSOM) = eu(indMSOM) + shiftMSOMe;
 
@@ -497,7 +535,7 @@ if pMSOM + pVIOM >0
     indcont = unique([indMSOM, indVIOM]);
     % clean obs indexes
     indkeep = setdiff(1:n, indcont);
-    
+
     if plots==true
         indunit = zeros(n, 1);
         indunit(indMSOM) = 1;
@@ -513,7 +551,7 @@ if pMSOM + pVIOM >0
     out.ind_MSOM = indMSOM;
     out.ind_VIOM = indVIOM;
     out.vareps = vareps;
-    
+
 end
 
 out.X = X;

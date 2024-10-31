@@ -6,12 +6,12 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
 % In the situations in which the number of potential explanatory variables
 % is very large it is necessary to preliminary understand the subset of
 % variables which surely must be excluded before running the proper
-% variable selection procedure.  This procedure estimates a univariate
+% variable selection procedure. This procedure estimates a univariate
 % regression model (with intercept) between each column of X and the
-% response. Just the variables which have an R2 greater than (or a
+% response. Just the variables that have an R2 greater than (or a
 % $p$-value smaller than) a certain threshold in the univariate regressions
 % are retained. The p-value or R2 threshold are based on robust univariate
-% models (with intercept) but the unrobust models can be chosen using
+% models (with intercept), but the unrobust models can be chosen using
 % option thresh. Option fsr enables the user to select the preferred robust
 % regression procedure.
 %
@@ -28,15 +28,15 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
 %
 %       X :     Predictor variables. Matrix or table. Data matrix of
 %               explanatory variables (also called 'regressors') of
-%               dimension (n-by-p). Note that in this case p can be gerater
+%               dimension (n-by-p). Note that, in this case, p can be greater
 %               than n. Rows of X represent observations, and columns
 %               represent variables. Missing values (NaN's) and infinite
 %               values (Inf's) are allowed, since observations (rows) with
 %               missing or infinite values will automatically be excluded
-%               from the computations. If X is table for the variables
+%               from the computations. If X is table for the variables,
 %               which are defined as categorical function dummyvar is
-%               called and the p-value (R2) refers to the univariate model
-%               with all the level (minus 1) of the categorical variable.
+%               called, and the p-value (R2) refers to the univariate model
+%               with all the levels (minus 1) of the categorical variable.
 %                 Data Types - matrix or table
 %
 % Optional input arguments:
@@ -51,8 +51,8 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
 %
 %         h   : The number of observations that have determined the robust
 %               regression estimator for each univariate regression. Scalar.
-%               h is an integer greater or equal than [(n+p+1)/2] but
-%               smaller then n
+%               h is an integer greater or equal than [(n+p+1)/2], but
+%               smaller than n.
 %                 Example - 'h',round(n*0,75)
 %                 Data Types - double
 %
@@ -64,12 +64,11 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
 %                 Example - 'lms',1
 %                 Data Types - double
 %
-%     nsamp   : Number of subsamples which will be extracted to find the
+%     nsamp   : Number of subsamples that will be extracted to find the
 %                 robust estimator. Scalar.
-%               Number of subsamples which will be extracted to find the
-%               robust estimator. If nsamp=0, all subsets will be extracted.
+%               If nsamp=0, all subsets will be extracted.
 %               They will be (n choose p).
-%               Remark. If the number of all possible subset is <1000 the
+%               Remark. If the number of all possible subset is <1000, the
 %               default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000
 %                 Data Types - double
@@ -78,87 +77,90 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
 %               characters or string array.
 %               Cell array of characters or string array of length p containing the
 %               names of the explanatory variables.
-%               If PredictorNames is a missing and X is not a table
+%               If PredictorNames is missing and X is not a table,
 %               the following sequence of strings will be
 %               automatically created for labelling the column of matrix X
-%               ("X1", "X2", "X3", ..., "Xp")
+%               ("X1", "X2", "X3", ..., "Xp").
 %               Example - 'PredictorNames',{'X1','X2'}
 %               Data Types - cell array of characters or string array
 %
 %
-%   thresh:  threshold which defines the variables to retain. Scalar or struct.
-%               The default value of thresh is 0.10 that is all variables
+%   thresh:  threshold that defines the variables to retain. Scalar or struct.
+%               The default value of thresh is 0.10, that is all variables
 %               which in univariate robust regression had a p-value smaller
 %               than 0.10 are retained.
 %               If thresh is a struct it is possible to specify whether the
 %               threshold is based on (robust) p-values or (robust) R2.
-%               If thresh is a struct it may contain one of the the following fields
-%               thresh.pval = all variables which in univariate regression
-%                   have a p-value smaller or equal than thresh.pval are
+%               If thresh is a struct it may contain one of the the
+%               following fields:
+%               thresh.pval = all variables that, in univariate regression,
+%                   have a p-value smaller or equal to thresh.pval are
 %                   selected.
-%               thresh.pvalrob = all variables which in univariate regression
-%                   have a robust p-value smaller or equal than thresh.pvalr are
+%               thresh.pvalrob = all variables that, in univariate
+%               regression,
+%                   have a robust p-value smaller or equal to thresh.pvalr are
 %                   selected.
-%               thresh.R2 = all variables which in univariate regression
-%                   have a R2 square greater or equal than thresh.R2 are
+%               thresh.R2 = all variables that, in univariate regression,
+%                   have a R2 square greater or equal to thresh.R2 are
 %                   selected.
-%               thresh.R2rob = all variables which in univariate regression
-%                   have a robust R2 square greater or equal than thresh.R2r are
+%               thresh.R2rob = all variables that, in univariate
+%               regression,
+%                   have a robust R2 square greater or equal to thresh.R2r are
 %                   selected.
-%                   Note that if thresh is a struct with both
+%                   Note that, if thresh is a struct with both
 %                   fields an error is produced because just one between
-%                   thresh.pval, thresh.pvalrob, thresh.R2, thresh.R2rob must be present
+%                   thresh.pval, thresh.pvalrob, thresh.R2, thresh.R2rob
+%                   must be present.
 %               Example - 'thresh',0.10
 %               Data Types - double
 %
-%  theoreticalSigns: theoretical sign which the beta from univariate
+%  theoreticalSigns: theoretical sign that the beta from univariate
 %               regression must have. Vector of length p.
-%               1 denotes a positive sign for the corresponding variable
+%               1 denotes a positive sign for the corresponding variable,
 %               while -1 denotes a negative sign for the corresponding
-%               variable. 0 denotes that any sign is possible. For example
-%               if p is equal to 5 if theoreticalSigns=[1 1 0 -1 1] means
-%               that variables 1, 2 and 5 must have a positive robust
-%               estimate of the slope in the univariate regression while
+%               variable. 0 denotes that any sign is possible. For example,
+%               if p is equal to 5, if theoreticalSigns=[1 1 0 -1 1] means
+%               that variables 1, 2, and 5 must have a positive robust
+%               estimate of the slope in the univariate regression, while
 %               variable 4 must have a negative estimate for the robust
-%               beta cofficient. Finally, variable 3 can have any sign.
-%               Example - 'theoreticalSigns',[-1 1 1 0 -1]. If
-%               theoreticalSigns is empty or it is not specified no filter
+%               beta coefficient. Finally, variable 3 can have any sign.
+%               Example - 'theoreticalSigns',[-1 1 1 0 -1]. 
+%               If theoreticalSigns is empty or it is not specified, no filter
 %               based on sign is applied.
 %               Data Types - double
 %
 %
 % Output:
 %
-%         Tsel:   Details of the variables which were
-%                 important from univariate analysis. 
-%                 table. 
+%         Tsel:   Details of the variables that were
+%                 important from univariate analysis. table. 
 %                 The details of table Tsel are as follows.
 %                 The rownames of this table contain the names of the
 %                 variables.
 %               1st col: the indexes of the important variables
-%               2nd-4th col: estimates of beta pvalue and R2 from non robust
+%               2nd-4th col: estimates of beta p-value and R2 from non robust
 %                   univariate regression
-%               5th-7th col: estimates of beta pvalue and R2 from robust
+%               5th-7th col: estimates of beta p-value and R2 from robust
 %                   univariate regression
 %               8th col: number of units declared as outliers in robust
 %                   univariate regression.
 %               The rows of table Tsel are ordered in terms of variable
-%               importance in the sense that row 1 refers to the variable
+%               importance, in the sense that row 1 refers to the variable
 %               with highest robust R2 (smallest robust p-value). Row 2
 %               contains the variable with the second highest robust R2
 %               (second smallest robust p-value)...
 %               If no explanatory variable survives the criteria, Tsel is a
-%               0×8 empty table
+%               0×8 empty table.
 %
-%        Texcl:   Details of the variables which were
+%        Texcl:   Details of the variables that were
 %                 not important from univariate analysis. table.
 %                 The details of table Texcl are as follows. 
 %               The rownames of this table contain the names of the
 %               selected variables.
 %               1st col: the indexes of the important variables;
-%               2nd-4th col: estimates of beta pvalue and R2 from non robust
+%               2nd-4th col: estimates of beta p-value and R2 from non robust
 %                   univariate regression;
-%               5th-7th col: estimates of beta pvalue and R2 from robust
+%               5th-7th col: estimates of beta p-value and R2 from robust
 %                   univariate regression;
 %               8th col: number of units declared as outliers in robust
 %                   univariate regression.
@@ -183,10 +185,10 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
     n=30;
     out=simulateLM(n,'R2',0.8);
     y=out.y;
-    % Just the first 3 variables are significant
+    % Just the first 3 variables are significant.
     X=[out.X randn(n,57)];
     Tsel=univariatems(y,X);
-    disp('Table with the details of the vars which are significant in univ. regr.')
+    disp('Table with the details of the vars that are significant in univ. regr.')
 %}
 
 %{
@@ -195,10 +197,10 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
     n=30;
     out=simulateLM(n,'R2',0.5);
     y=out.y;
-    % Just the first 3 variables are significant
+    % Just the first 3 variables are significant.
     X=[out.X randn(n,7)];
-    % The variables which are retained are those for which the robust p-value
-    % of univiate regression is not greater than 0.2
+    % The variables that are retained are those for which the robust p-value
+    % of univariate regression is not greater than 0.2
     mypval=0.20;
     Tsel=univariatems(y,X,'thresh',mypval);
 %}
@@ -208,10 +210,10 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
     n=30;
     out=simulateLM(n,'R2',0.8,'nexpl',5);
     y=out.y;
-    % Just the first 10 variables are significant
+    % Just the first 10 variables are significant.
     X=[out.X randn(n,20)];
-    % The variables which are retained are those for which the robust R2 
-    % of univariate regression is not smaller than 0.08
+    % The variables that are retained are those for which the robust R2 
+    % of univariate regression is not smaller than 0.08.
     thresh=struct;
     thresh.R2rob=0.08;
     Tsel=univariatems(y,X,'thresh',thresh);
@@ -224,9 +226,9 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
     n=30;
     out=simulateLM(n,'R2',0.8);
     y=out.y;
-    % Just variables 6:8 are significant
+    % Just variables 6:8 are significant.
     X=[randn(n,5) out.X randn(n,52)];
-    % Use a threshold of p-values based on non robust models
+    % Use a threshold of p-values based on non robust models.
     Tsel=univariatems(y,X);
     Xtab=array2table(X(:,Tsel.i),'VariableNames',Tsel.Properties.RowNames);
     mdl=stepwiselm(Xtab,y,'Upper','linear','Verbose',0);
@@ -262,16 +264,16 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
     thresh.pval=0.10;
     out=simulateLM(n,'R2',0.8);
     y=out.y;
-    % Just the first 3 variables are significant
+    % Just the first 3 variables are significant.
     X=[out.X randn(n,57)];
     % Suppose that it is known that variable 11:20 must have a positive sign in
-    % univariate regressions
+    % univariate regressions.
     theoreticalSigns=zeros(1,size(X,2));
     theoreticalSigns(11:20)=1;
     % and that variables 41:50 must have a negative sign in
-    % univariate regressions
+    % univariate regressions.
     theoreticalSigns(41:50)=-1;
-    % call to univariatems with option theoreticalSigns
+    % call to univariatems with option theoreticalSigns.
     [Tsel,Texcl]=univariatems(y,X,'theoreticalSigns',theoreticalSigns); 
 %}
 
@@ -281,9 +283,9 @@ function [Tsel, Texcl] = univariatems(y,X,varargin)
     % Consider the situation in which we have a measure of academic aptitude
     % (scaled 200-800) which we want to model using reading and math test
     % scores, as well as, the type of program the student is enrolled in
-    % (academic, general, or vocational). For this example tobit regression
+    % (academic, general, or vocational). For this example, tobit regression
     % (see function regressCens) is more appropriate. We just use this
-    % dataset to show the case in which one of the variables is categorial
+    % dataset to show the case in which one of the variables is categorical
     % and X is table.
     link="https://stats.idre.ucla.edu/stat/data/tobit.csv";
     XX=readtable(link,"ReadRowNames",true);
@@ -327,11 +329,11 @@ options=struct('fsr',fsr,'h',h,'nsamp',nsamp, ...
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
+    % Check if number of supplied options is valid.
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:univariatems:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
-    % Check if user options are valid options
+    % Check if user options are valid options.
     aux.chkoptions(options,UserOptions)
 end
 
@@ -340,12 +342,12 @@ if nargin<2
 end
 
 if nargin >2
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the options chosen by the user.
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 
-    % Get options chosen by the user
+    % Get options chosen by the user.
     lms=options.lms;
     nsamp=options.nsamp;
     h=options.h;
@@ -356,7 +358,7 @@ if nargin >2
         PredictorNames=options.PredictorNames;
     else
         if ~isempty(options.PredictorNames)
-            warning('FSDA:univariatems:toomanyInputs','labels names are supplied but are ignored because X is a table and already contains the variable names');
+            warning('FSDA:univariatems:toomanyInputs','labels names are supplied, but are ignored because X is a table and already contains the variable names');
         end
     end
     thresh=options.thresh;
@@ -386,12 +388,12 @@ for j=1:p
     if sum(~ismissing(Xj))>4
         outj=fitlm(Xj,y);
         if length(outj.Coefficients.Estimate)>1
-            % Non robust analysis
+            % Non robust analysis.
             Betaj=outj.Coefficients.Estimate(2);
             R2j=outj.Rsquared.Ordinary;
             pval=coefTest(outj);
 
-            % Robust analysis
+            % Robust analysis.
             if fsr== false
                 outjROB=LXS(y,Xj,'msg',0,'h',h,'nsamp',nsamp,'lms',lms,'conflev',1-0.01/n);
             else
@@ -416,14 +418,14 @@ end
 
 R2betT=array2table(R2bet,"RowNames",PredictorNames,'VariableNames',{'i', 'b' 'R2' 'pval' 'brob' 'R2rob' 'pvalrob' 'nout'});
 
-% Delete all the explanatory variables which have a sign which is not
-% in agreement with theory
+% Delete all the explanatory variables that have a sign which is not
+% in agreement with theory.
 if ~isempty(theoreticalSigns)
     booToKeep=sign(R2betT.brob).*theoreticalSigns(:)>=0;
     R2betT=R2betT(booToKeep,:);
 end
 
-% Now we select the variable according to the criteria
+% Now we select the variable according to the criteria.
 if isstruct(thresh)
     if length(fieldnames(thresh))>1
         error('FSDA:univariatems:WrgInp','struct thresh must have just one fieldname')
