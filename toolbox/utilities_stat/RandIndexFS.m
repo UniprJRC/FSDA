@@ -52,8 +52,8 @@ function [AR,RI,MI,HI]=RandIndexFS(c1,c2, noisecluster)
 %                 cluster. These points are not takern into account for the
 %                 computation of the Rand type indexes. The default is to
 %                 consider all points in order to compute the ARI index.
-%                 Example - 0 (in this case the units which in of the
-%                 two partitions have 0 class are not taken into account in the
+%                 Example - 0 (in this case the units which in both
+%                 partitions have 0 class label are not taken into account in the
 %                 index calculations)
 %                 Data Types - double or character
 %
@@ -213,8 +213,7 @@ else
     
 end
 
-% From the contingency table it is necessary to remove the noise
-% clusterclass
+% From the contingency table it is necessary to remove the 'noisecluster' class
 
 
 n=sum(sum(C));
