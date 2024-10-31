@@ -334,9 +334,18 @@ elseif ispc
     pythoncode = which('pdfprotect.m');
     [pythoncode1]=fileparts(pythoncode);
     pythoncode2=[pythoncode1 filesep 'private' filesep 'pdf_encryption_wm_creation.py'];
-    % compose the string
-    str=[ pythonpath '\python ' pythoncode2 sp inputfile sp ...
-        watermark sp outputfile sp print sp edit sp passedit sp passopen];
+% check if output file is already open
+    [fstatus, errmsg]=fopen(outputfile,"w");
+    if fstatus<0
+        disp('The output file is already open, please close it.')
+        disp(errmsg)
+        return
+    else
+        fclose(fstatus);
+        % compose the string
+        str=[ pythonpath '\python ' pythoncode2 sp inputfile sp ...
+            watermark sp outputfile sp print sp edit sp passedit sp passopen];
+    end
 else
     % linux: TODO!
     disp('Sorry, Linux version is not available at the moment....')
