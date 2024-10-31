@@ -94,7 +94,8 @@ function out=pdfprotect(inputfile, varargin)
 % Examples:
 
 %{
-   % Example with all default values.
+
+   %% Example with all default values.
    % encrypt and protect a file revoking all authorizations to copy and
    % print.
    % Create pdf file tmptmpENC.pdf 
@@ -114,9 +115,10 @@ function out=pdfprotect(inputfile, varargin)
    % print.
    pdfprotect(NameWithoutExtension);
    
-   disp('Files named "tmptmpENC.pdf" has been created')
+   disp('File named "tmptmpENC.pdf" has been created')
    disp('in the current folder. In this file editing and printing is disabled')
-   disp('Original input file tmptmp.pdf on the other hand is not protected')
+   disp('Original input file tmptmp.pdf, on the other hand, is not protected')
+
 %}
 
 %{
@@ -139,17 +141,18 @@ function out=pdfprotect(inputfile, varargin)
    % Call to pdfprotect with all default options
    % encrypt and protect a file revoking all authorizations to copy and
    % print.
-   pdfprotect(NameWithoutExtension,'watermark','secret');
+   pdfprotect(NameWithoutExtension,'watermark','Secret');
    
-   disp('Files named "tmptmpENC.pdf" has been created')
+   disp('File named "tmptmpENC.pdf" has been created')
    disp('in the current folder. In this file editing and printing is disabled')
    disp('and a watermark with text "Secret" has been added')
-   disp('Original input file tmptmp.pdf on the other hand is not protected')
+   disp('Original input file tmptmp.pdf, on the other hand, is not protected')
 
 %}
 
 
 %{
+
    %% Example with watermark and print option.
    % Encrypt and protect a file revoking copy and paste authorizations but
    % allow manuscript printing and add a custom watermark to each page of 
@@ -174,10 +177,12 @@ function out=pdfprotect(inputfile, varargin)
    disp('Files named "tmptmpENC.pdf" has been created')
    disp('in the current folder. In this file editing is disabled')
    disp('printing is allowed and a watermark with text "FSDA_Toolbox" has been added')
-   disp('Original input file tmptmp.pdf on the other hand is not protected')
+   disp('Original input file tmptmp.pdf, on the other hand, is not protected')
+
 %}
 
 %{
+
    %% Example with personalized passwords and name of output file.
    % Encrypt and protect a file
    % revoking copy, paste and print authorizations add a custom watermark
@@ -198,12 +203,13 @@ function out=pdfprotect(inputfile, varargin)
    % Call to pdfprotect with options passedit, 
    % passopen and outputfile
    pdfprotect(NameWithoutExtension,'outputfile', ...
-       'mypdfENC', 'passedit','bigsecret', 'passopen','easyguess')
+       'mypdfENC', 'passedit','FSDA', 'passopen','easyguess')
   
    disp('File named "mypdfENC.pdf" has been created')
    disp('in the current folder. In this file editing is disabled')
-   disp('printing is disables. There is also a pwd to open file.')
-   disp('Original input file tmptmp.pdf on the other hand is not protected')
+   disp('printing is disabled. There is also a pwd to open the file.')
+   disp('Original input file tmptmp.pdf, on the other hand, is not protected')
+
 %}
 
 
