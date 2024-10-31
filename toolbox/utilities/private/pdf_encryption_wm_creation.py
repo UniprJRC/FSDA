@@ -41,14 +41,20 @@ password_user = ""
 
 if len(args.parameters)==2:
     watermark_text=args.parameters[1]
+    if watermark_text=="F":
+        watermark_text=''
    
 
 if len(args.parameters)==3:
     watermark_text=args.parameters[1]
+    if watermark_text=="F":
+        watermark_text=''
     outputfile_text=args.parameters[2]
 
 if len(args.parameters)==4:
     watermark_text=args.parameters[1]
+    if watermark_text=="F":
+        watermark_text=''
     outputfile_text=args.parameters[2]   
     print_flag=args.parameters[3]
     if print_flag=="T" or print_flag=="true":
@@ -56,6 +62,8 @@ if len(args.parameters)==4:
 
 if len(args.parameters)==5:
     watermark_text=args.parameters[1]
+    if watermark_text=="F":
+        watermark_text=''
     outputfile_text=args.parameters[2]   
     print_flag=args.parameters[3]
     if print_flag=="T" or print_flag=="true":
@@ -66,6 +74,8 @@ if len(args.parameters)==5:
 
 if len(args.parameters)==6:
     watermark_text=args.parameters[1]
+    if watermark_text=="F":
+        watermark_text=''
     outputfile_text=args.parameters[2]   
     print_flag=args.parameters[3]
     if print_flag=="T" or print_flag=="true":
@@ -77,6 +87,8 @@ if len(args.parameters)==6:
 
 if len(args.parameters)==7:
     watermark_text=args.parameters[1]
+    if watermark_text=="F":
+        watermark_text=''
     outputfile_text=args.parameters[2]   
     print_flag=args.parameters[3]
     if print_flag=="T" or print_flag=="true":
