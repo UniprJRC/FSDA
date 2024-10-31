@@ -3,7 +3,7 @@ function out=pdfprotect(inputfile, varargin)
 %
 %<a href="matlab: docsearchFS('pdfprotect')">Link to the help page for this function</a>
 %
-%   This function protect pdf files against printing and copying content.
+%   This function protects pdf files against printing and copying content.
 %   Also, when needed, can add a watermark diagonally on all pages of the manuscript.
 %   Please note that the output pdf file will be encrypted, so it is better to
 %   save the original document for backup purposes.
@@ -15,55 +15,64 @@ function out=pdfprotect(inputfile, varargin)
 %
 % Required input arguments:
 %
-% inputfile:    Input pdf file. String scalar | Character vector. Input pdf file specified as a
+% inputfile:    Input pdf file. String scalar | Character vector. 
+%               Input pdf file specified as a
 %               char vector is the original file to be encrypted protected.
 %               Can be specified with or without extension.
+%           Data Types - char or string
 %
 %
 %  Optional input arguments:
 %
 %
-% edit:     edit permission flag. Boolean. This flag controls the user permission to edit and copy
-%           any content of the document, can be either true or false.
+% edit:     edit permission flag. Boolean. This flag controls the user
+%           permission to edit and copy any content of the document, can be
+%           either true or false. The default value of edit is false, that
+%           is you cannot edit the file. 
 %           Example - 'edit', false
 %           Data Types - boolean
 %
-% outputfile: name of the outputfile. String scalar | Character vector. The
-%           name of the pdf file to be encrypted, password protected and
+% outputfile: name of the outputfile. String scalar | Character vector. 
+%           Name of the pdf file to be encrypted, password protected and
 %           permission edited. Can be specified with or without extension.
-%           default value is the inpufileENC.pdf that is we append the
-%           suffix ENC to the inputfilename Example - 'outputfile',
-%           'myoutputfile.pdf' Data Types - char
+%           Default value is inpufileENC.pdf that is we append the
+%           suffix ENC to the inputfilename 
+%           Example - 'outputfile','myoutputfile.pdf' 
+%           Data Types - char or string
 %
 % passedit: owner encryption password. String scalar | Character vector. If the password is set you need to supply the
 %           password to modify and print the document.
 %           The default password is 'FSDA'.
 %           Example - 'passedit', 'MyPassword1'
-%           Data Types - char
+%           Data Types - char or string
 %
 % passopen: user password. String scalar | Character vector. If the password is set you need to supply the
 %           password to view the document.
-%           The default password is not set.
+%           If this option is not specified 
+%           the password to open the file is not set.
 %           Example - 'passread', 'MyPassword2'
-%           Data Types - char
+%           Data Types - char or string
 %
-% print:    print permission flag. Boolean. This flag controls the user permission to print the
-%           document, can be either true (deny) or false (allow).
+% print:    print permission flag. Boolean. 
+%           This flag controls the user permission to print the
+%           document, can be either true (allow) or false (deny).
+%           The default value of print is false.            
 %           Example - 'print', true
 %           Data Types - boolean
 %
 %
-% watermark:  text of the watermark. String scalar | Character vector. The text that will be printed
-%           diagonally in grey and in a big size font (85 points) on
-%           each page of the manuscript. The default value fo the watermark
-%           is '' that is no watermark is added.
+% watermark:  text of the watermark. String scalar | Character vector. 
+%           The text that will be printed diagonally in grey and in a big
+%           size font (85 points) on each page of the manuscript. The
+%           default value fo the watermark is '' that is no watermark is
+%           added.
 %           Example - 'watermark', '(C)FSDA toolbox'
-%           Data Types - char
+%           Data Types - char or string
 %
 % Output:
 %
 %         out:  return status. Scalar. Returns the status of calling the python pdf protectiong
-%         function, -1 indicates failure.
+%               function, -1 indicates failure.
 %
 % See also:
 %
@@ -88,11 +97,27 @@ function out=pdfprotect(inputfile, varargin)
    % Example with all default values.
    % encrypt and protect a file revoking all authorizations to copy and
    % print.
-    pdfprotect('sourcefile.pdf')
+   % Create pdf file tmptmpENC.pdf 
+   % create .m file==> transform to mlx ==> export to pdf
+   FileName='addFSDA2path.m';
+   FileNameMLX='tmptmp.mlx';
+   matlab.internal.liveeditor.openAndSave(which(FileName),FileNameMLX);
+   % Create file tmptmp.pdf
+   export(FileNameMLX);
+   [~,NameWithoutExtension]=fileparts(FileNameMLX);
+   
+   % delete temporary mlx file
+   delete(FileNameMLX);
+
+   % Call to pdfprotect with all default options
+   % encrypt and protect a file revoking all authorizations to copy and
+   % print.
+   pdfprotect(NameWithoutExtension);
+   disp('File named "tmptmpENC.pdf" has been created')
+   disp('in the current folder. In this file editing and printing is disabled')
 %}
 
 %{
-
    % Example with watermark option.
    % encrypt and protect a file revoking all authorizations to copy and
    % print and add a custom watermark to each page of the manuscript.
@@ -158,7 +183,7 @@ end
 
 % default parameters values
 watermark = 'F';
-outputfile = 'inpufileENC.pdf';
+outputfile = [name 'ENC.pdf'];
 print = 'F';
 edit = 'F';
 passedit = 'FSDA';
