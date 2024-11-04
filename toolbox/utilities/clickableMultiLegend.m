@@ -218,6 +218,7 @@ function [varargout] = clickableMultiLegend(varargin)
     clickableMultiLegend('FontSize',14);
 
     % reshape the line handles array
+    hLines  = findobj(AX(1,end), 'type', 'line');
     nleg = numel(hLines);
     newH = reshape(H,numel(H)/nleg,nleg);
 
