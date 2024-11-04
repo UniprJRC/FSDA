@@ -7,11 +7,13 @@ function out=pdfprotect(inputfile, varargin)
 %   Also, when needed, can add a watermark diagonally on all pages of the manuscript.
 %   Please note that the output pdf file will be encrypted, so it is better to
 %   save the original document for backup purposes.
-%   pdfprotect assumes that the user installed miniconda (a Python distribution)
+%   REMARK1: pdfprotect assumes that the user installed miniconda (a Python distribution)
 %   with all the default options. If this is not the case, the user should
 %   edit the path to Python executable inside MATLAB code of this function
 %   according to the custom setup.
-%
+%   REMARK2: also the following Python packages should be installed: PyPDF2,
+%   reportlab, pathlib, typing and argparse.
+%   e.g. pip install PyPDF2 reportlab pathlib typing argparse
 %
 % Required input arguments:
 %
