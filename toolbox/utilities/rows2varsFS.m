@@ -82,8 +82,9 @@ function T2=rows2varsFS(T1, varargin)
     disp('Original table (first 5 rows)')
     head(T1,5)
     T2=rows2vars(T1);
+    disp('Output of rows2vars (first 5 columns)')
     disp(head(T2(:,1:5)))
-    disp('Output of rows2varsFS ')
+    disp('Output of rows2varsFS (first 5 columns)')
     T2fs=rows2varsFS(T1);
     disp(head(T2fs(:,1:5)))
 %}
@@ -94,6 +95,7 @@ function T2=rows2varsFS(T1, varargin)
     T1 = table(Gender,Age,Height,Weight,'RowNames',LastName);
     disp('Original table (first 5 rows)')
     head(T1,5)
+    disp('Output of rows2vars (first 5 columns)')
     T2=rows2vars(T1,'DataVariables',["Gender" "Age"]);
     disp(head(T2(:,1:5)))
     disp('Output of rows2varsFS ')
