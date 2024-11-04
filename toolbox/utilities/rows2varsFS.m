@@ -6,7 +6,7 @@ function T2=rows2varsFS(T1, varargin)
 % MATLAB function rows2vars transforms T1 of size n-by-p into T2 of size
 % p-by-(n+1). The first column of T2 is called OriginalVariableNames and
 % contains the names of the table variables from T1 and the RowNames of T2
-% are empty. FSDA function rows2vars transforms T1 of size n-by-p into T2 of
+% are empty. FSDA function rows2varsFS transforms T1 of size n-by-p into T2 of
 % size p-by-n. The names of the variables of T1 become the names of the
 % rows of T2. For example, if T1 has two rows and five columns,
 % after the call T2=rows2varsFS(T1) has five rows and 5 columns.
@@ -68,7 +68,7 @@ function T2=rows2varsFS(T1, varargin)
     disp('Original table (first 5 rows)')
     disp(head(T1,5))
     disp('Output of rows2vars (first 5 columns)')
-    T2=rows2vars(T1);
+    T2=rows2vars(T1)
     disp(head(T2(:,1:5)))
     disp('Output of rows2varsFS (first 5 columns)')
     T2fs=rows2varsFS(T1);
@@ -80,7 +80,7 @@ function T2=rows2varsFS(T1, varargin)
     load patients
     T1 = table(Gender,Age,Height,Weight,'RowNames',LastName);
     disp('Original table (first 5 rows)')
-    head(T3,5)
+    head(T1,5)
     T2=rows2vars(T1);
     disp(head(T2(:,1:5)))
     disp('Output of rows2varsFS ')
@@ -137,3 +137,4 @@ end
 Tmp.Properties.RowNames=Tmp{:,1};
 T2=Tmp(:,2:end);
 end
+%FScategory:UTIGEN
