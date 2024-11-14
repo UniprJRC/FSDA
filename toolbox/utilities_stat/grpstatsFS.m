@@ -253,6 +253,8 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
 %% Beginning of code
 if nargin<2
     groupvars=[];
+else
+    groupvars=string(groupvars);
 end
 
 
@@ -336,6 +338,11 @@ p=length(vnames);
 tabTutti=grpstats(TBL,groupvars,whichstats,varargin{:});
 lgroupvars=length(groupvars);
 ngroups=size(tabTutti,1);
+
+if ischar(nomiStat)
+    nomiStat=string(nomiStat);
+end
+
 lstats=length(nomiStat);
 if ngroups>1
 
