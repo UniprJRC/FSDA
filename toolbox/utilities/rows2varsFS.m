@@ -76,7 +76,7 @@ function T2=rows2varsFS(T1, varargin)
 %}
 
 %{
-    %% Example with RowNames in the original table
+    %% Example with RowNames in the original table.
     load patients
     T1 = table(Gender,Age,Height,Weight,'RowNames',LastName);
     disp('Original table (first 5 rows)')
