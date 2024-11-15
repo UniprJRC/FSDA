@@ -19,10 +19,59 @@
 
 # [Flexible Robust Statistics Data Analysis](https://github.com/UniprJRC/FSDA/)
 
+## FSDA release  2024b is out. (November 2024)
+
+New Features and Changes
+
+MODEL SELECTION
+
+New routine [univariatems](http://rosa.unipr.it/FSDA/univariatems.html) which enables to exclude  variables which are are surely not significant. The step is  preliminary to (robust) variable selection.
 
 
 
-## NEWS: FSDA release  2024a is out. (April 2024)
+ROBUST CENSORED REGRESSION
+
+New set of of routines for censored regression (including transformations). All these routines contain inside file name the word "Cens". The tobit model is a particular case of censored regression. More specifically. 
+ 
+New function regressCens for censored regression
+
+New function [FSRedaCens](http://rosa.unipr.it/FSDA/FSRedaCens.html) to monitor the residuals in censored regression
+
+New function [regressCensTra](http://rosa.unipr.it/FSDA/regressCensTra.html) which computes the mle of transformation parameter and signed sqrt likelihood ratio test in the censored regression model
+
+New function [FSRfanCens](http://rosa.unipr.it/FSDA/FSRfanCens.html) which monitors the signed sqrt root likelihood ratio test 
+
+DATASETS
+
+New regression datasets, affairs and Esselunga
+
+TRANSFORMATION
+
+New option bsb in functions normYJ and normBoxCox
+
+DISTRIBUTIONS
+
+New functions [tobitcdf](http://rosa.unipr.it/FSDA/tobitcdf.html), [tobitpdf](http://rosa.unipr.it/FSDA/tobitpdf.html), [tobitrnd](http://rosa.unipr.it/FSDA/tobitrnd.html) and [tobitinv](http://rosa.unipr.it/FSDA/tobitinv.html) which compute the cdf, pdf, random numnber geneation and quantiles in the generalized tobit distribution
+
+REGRESSION
+New option exactR2 inside [simulateLM](http://rosa.unipr.it/FSDA/simulateLM.html)
+
+GRAPHICS
+New option h in [fanplotFS](http://rosa.unipr.it/FSDA/fanplotFS.html)
+  in order to send the output figure to subplots
+
+DATASETS
+New dataset inttrade
+
+STATISTICAL UTILITIES
+New function [grpstatsFS](http://rosa.unipr.it/FSDA/grpstatsFS.html) which extends function grpstat and shows the output in much better way.
+
+UTILITIES
+New function [rows2varsFS](http://rosa.unipr.it/FSDA/rows2varsFS.html)  which extends function rows2vars of MATLAB to reorient table or timetable.
+
+
+
+## FSDA release  2024a is out. (April 2024)
 
 
 #### GRAPHICS 
