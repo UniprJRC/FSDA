@@ -23,13 +23,12 @@
 
 New Features and Changes
 
-MODEL SELECTION
+**MODEL SELECTION**
 
 New routine [univariatems](http://rosa.unipr.it/FSDA/univariatems.html) which enables to exclude  variables which are are surely not significant. The step is  preliminary to (robust) variable selection.
 
 
-
-ROBUST CENSORED REGRESSION
+**ROBUST CENSORED REGRESSION**
 
 New set of of routines for censored regression (including transformations). All these routines contain inside file name the word "Cens". The tobit model is a particular case of censored regression. More specifically. 
  
@@ -41,34 +40,45 @@ New function [regressCensTra](http://rosa.unipr.it/FSDA/regressCensTra.html) whi
 
 New function [FSRfanCens](http://rosa.unipr.it/FSDA/FSRfanCens.html) which monitors the signed sqrt root likelihood ratio test 
 
-DATASETS
+**DATASETS**
 
 New regression datasets, affairs and Esselunga
 
-TRANSFORMATION
+**TRANSFORMATION**
 
 New option bsb in functions normYJ and normBoxCox
 
-DISTRIBUTIONS
+**DISTRIBUTIONS**
 
 New functions [tobitcdf](http://rosa.unipr.it/FSDA/tobitcdf.html), [tobitpdf](http://rosa.unipr.it/FSDA/tobitpdf.html), [tobitrnd](http://rosa.unipr.it/FSDA/tobitrnd.html) and [tobitinv](http://rosa.unipr.it/FSDA/tobitinv.html) which compute the cdf, pdf, random numnber geneation and quantiles in the generalized tobit distribution
 
-REGRESSION
+**REGRESSION**
+
 New option exactR2 inside [simulateLM](http://rosa.unipr.it/FSDA/simulateLM.html)
 
-GRAPHICS
+**GRAPHICS**
+
 New option h in [fanplotFS](http://rosa.unipr.it/FSDA/fanplotFS.html)
   in order to send the output figure to subplots
 
-DATASETS
+**DATASETS**
+
 New dataset inttrade
 
-STATISTICAL UTILITIES
+**ANALYSIS OF CONTINGENCY TABLES**
+
+Additional indexes added to [corrNominal](http://rosa.unipr.it/FSDA/corrNominal.html) 
+
+
+**STATISTICAL UTILITIES**
+
 New function [grpstatsFS](http://rosa.unipr.it/FSDA/grpstatsFS.html) which extends function grpstat and shows the output in much better way.
 
-UTILITIES
+**UTILITIES**
+
 New function [rows2varsFS](http://rosa.unipr.it/FSDA/rows2varsFS.html)  which extends function rows2vars of MATLAB to reorient table or timetable.
 
+New function [pdfprotect](http://rosa.unipr.it/FSDA/pdfprotect.html) which protects pdf files against printing and copying content and can add a watermark diagonally on all pages of the manuscript.
 
 
 ## FSDA release  2024a is out. (April 2024)
