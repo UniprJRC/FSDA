@@ -1,4 +1,4 @@
-function out = computeStatFromPDF(Namefilepdf, sessione)
+function out = computeStatFromPDF2(Namefilepdf, sessione)
 % FSDA undocumented to compute final mark from pdf input file
 
 % second argument session can be E= estiva, or I= invernale or P =
@@ -46,14 +46,15 @@ startnaf = strfind(str,"La Sig.ra");
 endnaf = strfind(str,"nata il");
 
 startcorso = strfind(str, 'Ultimo piano di studio seguito ed anni accademici di iscrizion');
-endcorso = strfind(str, "Insegnamento In Piano");
-endcorso=endcorso(1:2:length(endcorso)-1);
+% endcorso = strfind(str, "Insegnamento In Piano");
+endcorso = strfind(str, "Percorso");
+%endcorso=endcorso(1:2:length(endcorso)-1);
 
 startrel = strfind(str, "Primo relatore:");
 endrel = strfind(str, "Tipo della tesi:");
 
 starttitle = strfind(str,"Titolo tesi:");
-endtitle = strfind(str, "Primo relatore:");
+endtitle = strfind(str, "Titolo Inglese della tesi:");
 
 
 
@@ -121,7 +122,8 @@ for j=1:n
     % titolo tesi
     start = starttitle(j);
     fin = endtitle(j);
-     tmp = extractBetween(str,start+13,fin-1);
+    %tmp = extractBetween(str,start+13,fin-1);
+    tmp = extractBetween(str,start+0,fin-3);
 %     % refine the search
 %     % search for 'Materia' and 'Titolo ing.'
 %     % if exist take the minimum
@@ -141,7 +143,7 @@ for j=1:n
  % solution #2 search for 3 consecutive CRLF    
     retcar = regexp(tmp, '[\n]{3,}');
   try
-    laureandi{j,4} = extractBetween(str,start+13,start+13+retcar(1));
+    laureandi{j,4} = extractBetween(tmp,retcar(end)+3,strlength(tmp));
   
  %   laureandi{j,4} = extractBetween(str,start+13,fin(1)-5);
     catch ME
