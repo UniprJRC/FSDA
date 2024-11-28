@@ -33,7 +33,7 @@ function out = boxtest(Y,group,varargin)
 %
 %     Fapprox : Test based on F approximation. Boolean. If Fapprox is
 %               true, the asymptotic F distribution of the value of Box
-%               test is also computed. On the other hand is
+%               test is also computed. On the other hand, if
 %               Fapprox is false (default) just the chi2 approximation is
 %               computed.
 %               Example - 'Fapprox',true
@@ -41,7 +41,7 @@ function out = boxtest(Y,group,varargin)
 %
 % dispresults : Display results. Boolean. If dispresults is
 %               true, the value of the test and the associated p-value
-%               will be shown on the screen. On the other hand is
+%               will be shown on the screen. On the other hand, if
 %               dispresults is false (default) nothing is shown on the
 %               screen.
 %               Example - 'dispresults',true
@@ -49,15 +49,15 @@ function out = boxtest(Y,group,varargin)
 %
 %  Output:
 %
-%    out:   structure which contains the following fields
+%    out:   structure, which contains the following fields
 %           out.LR   =  scalar which contains Box test (uncorrected)
 %                       for equality of covariances.
-%                       This is -2ln M (see 'More About section' for the
+%                       This is -2ln M (see 'More About' section for the
 %                       definition of M).
 %  out.LRchi2approx  =  scalar which contains Box test (corrected)
 %                       for equality of covariances. This version is
 %                       called $\chi^2$ approximation of the Box test.
-%                       This is $-2(1-c_1)\ln M$ (see further details for the
+%                       This is $-2(1-c_1)\ln M$ (see 'further details' for the
 %                       definition of $c_1$ and $M$). This value must
 %                       be compared with a $\chi^2$ with $0.5v(v+1)(g-1)$
 %                       degrees of freedom.
@@ -67,11 +67,11 @@ function out = boxtest(Y,group,varargin)
 %     out.LRFapprox  =  scalar which contains the $F$ approximation of Box
 %                       test of homogeneity of covariances. This field is
 %                       given just if input option Fapprox is true.
-%  out.LRFapprox_pval =  scalar which contains the p-value of
+% out.LRFapprox_pval =  scalar which contains the p-value of
 %                       $F$ approximation of Box test of homogeneity of
 %                       covariances. This field is given just if input
 %                       option Fapprox is true.
-%       out.Spl       = pooled variance covariance matrix.
+%            out.Spl = pooled variance covariance matrix.
 %
 %
 % More About:
@@ -91,13 +91,13 @@ function out = boxtest(Y,group,varargin)
 % \]
 %
 % where $S_i$ is the covariance matrix of group $i$ and $S_{pl}$ is the
-% pooled sample covariance matrix. It is clear that we must have $n_i-1>v$
+% pooled sample covariance matrix. It is clear that we must have $n_i-1>v$;
 % otherwise $|S_i|=0$ for some $i$ and $M$ would be zero. The statistic $M$
 % is a modification of the likelihood ratio test and varies between 0 and 1
 % with values near 1 favouring $H_0$ and values near 0 leading to the
 % rejection of $H_0$ (see Rencher (2002) p. 256 for further details). The
 % quantity $-2 \ln M$ is approximately distributed as a $\chi^2$
-% distribution and is given in $\mbox{out.LR}$.  The quantity $-2(1-c_1) \ln  M$
+% distribution and is given in $\mbox{out.LR}$. The quantity $-2(1-c_1) \ln  M$
 % (where $c_1$ is a small sample correction factor) is usually called
 % correct Box test and is approximately distributed as a $\chi^2$ with $0.5
 % (g-1) v(v+1)$ degrees of freedom. We reject $H_0$ if 
@@ -137,25 +137,25 @@ function out = boxtest(Y,group,varargin)
 
 %{
     % Box test for Iris data.
-    % load iris data
+    % load iris data.
     load fisheriris
-    % Compute Box test of equality of covariance matrices
+    % Compute Box test of equality of covariance matrices.
     out=boxtest(meas,species);
 %}
 
 %{
     %% Box test for Iris data displaying results.
-    % load iris data
+    % load iris data.
     load fisheriris
-    % Compute Box test of equality of covariance matrices
+    % Compute Box test of equality of covariance matrices.
     out=boxtest(meas,species,'dispresults',true);
 %}
 
 %{
     %% Box test for Iris with option Fapprox.
-    % load iris data
+    % load iris data.
     load fisheriris
-    % Compute Box test of equality of covariance matrices
+    % Compute Box test of equality of covariance matrices.
     out=boxtest(meas,species,'dispresults',true,'Fapprox',true)
 %}
 
@@ -168,7 +168,7 @@ if nargin<2
     error('FSDA:boxtest:missingInputs','Grouping variable is missing')
 end
 
-% test version for releases older than 2013b in order to use option upper inside cdf
+% test version for releases older than 2013b in order to use option upper inside cdf.
 vertest=verLessThan('matlab','8.2.0');
 
 Fapprox=false;
@@ -180,15 +180,15 @@ if nargin > 2
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
+        % Check if number of supplied options is valid.
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:boxtest:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        % Check if user options are valid options
+        % Check if user options are valid options.
         aux.chkoptions(options,UserOptions)
     end
     
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the options chosen by the user.
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
@@ -197,7 +197,7 @@ if nargin > 2
 end
 
 
-% Convert group to cell array from character array, make it a column
+% Convert group to cell array from character array, make it a column.
 if (ischar(group))
     group = cellstr(group);
 end
@@ -206,22 +206,22 @@ if (size(group, 1) == 1)
     group = group';
 end
 
-% Make sure inputs have the correct size
+% Make sure inputs have the correct size.
 n = size(Y,1);
 if (size(group,1) ~= n)
     error(message('FSDA:boxtest:InputSizeMismatch'));
 end
 
-% Remove missing Y columns first in case this eliminates a group
+% Remove missing Y columns first in case this eliminates a group.
 nonan = (sum(isnan(Y), 2) == 0);
 Y = Y(nonan,:);
 group = group(nonan,:);
 
-% Convert group to indices 1,...,g and separate names
+% Convert group to indices 1,...,g and separate names.
 [groupnum, gnames] = grp2idx(group);
 ngroups = length(gnames);
 
-% Remove NaN values again
+% Remove NaN values again.
 nonan = ~isnan(groupnum);
 if (~all(nonan))
     groupnum = groupnum(nonan);
@@ -230,7 +230,7 @@ end
 
 [n,p] = size(Y);
 realgroups = ismember(1:ngroups,groupnum);
-% g = number of groups
+% g = number of groups.
 g = sum(realgroups);
 
 % W = within sum of squares matrix
@@ -296,7 +296,7 @@ else
 end
 
 % Also compute if requested F approximation of the test and associated
-% p-value
+% p-value.
 if Fapprox == true
     c2=((p-1)*(p+2)/(6*(g-1)))* ( sum(1./((sz-1).^2)) -1/(sum(sz-1))^2);
     a1=0.5*(g-1)*p*(p+1);
@@ -339,10 +339,10 @@ end
 
 out=struct;
 out.LR=LR;
-% Store chi2 version of LR test
+% Store chi2 version of LR test.
 out.LRchi2approx=LRchi2approx;
 out.LRchi2approx_pval=LRchi2approx_pval;
-% Store F version of LR test
+% Store F version of LR test.
 if Fapprox== true
     out.LRFapprox=LRFapprox;
     out.LRFapprox_pval=LRFapprox_pval;

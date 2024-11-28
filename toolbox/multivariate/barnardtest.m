@@ -14,7 +14,7 @@ function pval=barnardtest(N,varargin)
 %
 %       N    :    Contingency table (default) or n-by-2 input dataset.
 %                 Matrix or Table.
-%                 Matrix or table which contains the input contingency
+%                 Matrix or table that contains the input contingency
 %                 table (say of size I-by-J) or the original data matrix.
 %                 In this last case N=crosstab(N(:,1),N(:,2)). As default
 %                 procedure assumes that the input is a contingency table.
@@ -23,17 +23,17 @@ function pval=barnardtest(N,varargin)
 %
 %   resolution: The resolution of the search space for the nuisance
 %               parameter.
-%               Scalar. Small number which defines the resolution. See the
-%               More About section for more details.
+%               Scalar. Small number that defines the resolution. See the
+%               "More About" section for more details.
 %               The default value of the resolution is 0.001.
 %               Example - 'resolution',0.01
 %               Data Types - single | double
 %
-% datamatrix :  Data matrix or contingency table. Boolean.
-%               If datamatrix is true the first input argument N is forced
-%               to be interpreted as a data matrix, else if the input
-%               argument is false N is treated as a contingency table. The
-%               default value of datamatrix is false, that is the procedure
+%   datamatrix: Data matrix or contingency table. Boolean.
+%               If datamatrix is true, the first input argument N is forced
+%               to be interpreted as a data matrix; otherwise if the input
+%               argument is false, N is treated as a contingency table. The
+%               default value of datamatrix is false; that is, the procedure
 %               automatically considers N as a contingency table.
 %               Example - 'datamatrix',true
 %               Data Types - logical
@@ -42,7 +42,7 @@ function pval=barnardtest(N,varargin)
 %  Output:
 %
 %         pval:  p-value of the test. Scalar.
-%                pval is the p-value, i.e. the probability of
+%                pval is the p-value, i.e., represents the probability of
 %                observing the given result, or one more extreme, by
 %                chance if the null hypothesis of independence between
 %                rows and columns is true. Small values of pval cast doubt
@@ -70,7 +70,7 @@ function pval=barnardtest(N,varargin)
 %
 % Barnard's test considers all tables with category sizes $c_1$ and $c_2$ for a
 % given $p$. The p-value is the sum of probabilities of the tables having a
-% score in the rejection region, e.g. having significantly large difference
+% score in the rejection region, e.g., having a significantly large difference
 % in proportions for a two-sided test. The p-value of the test is the
 % maximum p-value calculated over all $p$ between 0 and 1. The input
 % resolution parameter controls the resolution to search for.
@@ -123,7 +123,7 @@ function pval=barnardtest(N,varargin)
 
 %{
     %%  Barnard test with all the default options.
-    % N= 2x2 Input contingency table
+    % N= 2x2 Input contingency table.
     N=[8,14; 1,3];
     pval=barnardtest(N);
     disp(['The p-value of the test is: ' num2str(pval)])
@@ -131,11 +131,11 @@ function pval=barnardtest(N,varargin)
 
 %{
     %%  Resolution option.
-    % N= 2x2 Input contingency table
+    % N= 2x2 Input contingency table.
     N=[20,14; 10,13];
-    % pvalue with the default resolution (0.001)
+    % p-value with the default resolution (0.001).
     pval001=barnardtest(N);
-    % p value with a resolution of 0.01
+    % p-value with a resolution of 0.01.
     pval01=barnardtest(N,'resolution',0.01);
     disp(['The p-value with a resolution 0.01 is: ' num2str(pval01)])
     disp(['The p-value a resolution 0.001 is: ' num2str(pval001)])
@@ -158,9 +158,9 @@ function pval=barnardtest(N,varargin)
 %{
     % An example when the input is a datamatrix.
     N=[40,14;10,30];
-    % Recreate the orginal data matrix
+    % Recreate the original data matrix.
     X=crosstab2datamatrix(N);
-    % barnardtest when input is a datamatrix
+    % barnardtest when input is a datamatrix.
     pval=barnardtest(X,'datamatrix',true);
 %}
 
@@ -171,20 +171,20 @@ function pval=barnardtest(N,varargin)
     pval=barnardtest(N);
     % our p-value is 0.456054
     % This value coincides with the R implementation (package barnard)
-    % based on a C routine. On the other hand the vectorized implementation
-    % of Barnard test http://www.mathworks.com/matlabcentral/fileexchange/25760
-    % called using mybarnard(N,1000) gives a p-value of   0.456051 
+    % based on a C routine. On the other hand, the vectorized implementation
+    % of the Barnard test http://www.mathworks.com/matlabcentral/fileexchange/25760
+    % called using mybarnard(N,1000) gives a p-value of 0.456051.
 %}
 
 
 %% Beginning of code
 
 % Check MATLAB version. If it is not smaller than 2013b than output is
-% shown in table format
+% shown in table format.
 verMatlab=verLessThan('matlab','8.2.0');
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
-% last case the contingency table is built using the first two columns of the
+% last case, the contingency table is built using the first two columns of the
 % input dataset).
 if ~isempty(varargin)
     [varargin{:}] = convertStringsToChars(varargin{:});
@@ -200,12 +200,12 @@ else
 end
 
 % If input is a datamatrix it is necessary to construct the contingency
-% table
+% table.
 if datamatrix == true
     N =crosstab(N(:,1),N(:,2));
 end
 
-% 1. The deafault resolution of the search space.
+% 1. The default resolution of the search space.
 resolution=0.001;
 
 [varargin{:}] = convertStringsToChars(varargin{:});
@@ -216,15 +216,15 @@ if ~isempty(UserOptions)
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
+        % Check if number of supplied options is valid.
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:barnardtest:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        % Check if user options are valid options
+        % Check if user options are valid options.
         aux.chkoptions(options,UserOptions)
     end
     
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the options chosen by the user.
     if nargin > 2
         for i=1:2:length(varargin)
             options.(varargin{i})=varargin{i+1};
@@ -233,7 +233,7 @@ if ~isempty(UserOptions)
     resolution=options.resolution;
 end
 
-% transform table in array
+% transform table in array.
 if verMatlab ==0 && istable(N)
     N=table2array(N);
 end
@@ -304,7 +304,7 @@ for p=0:resolution:1
     
     for i = 0:c1
         
-        % The loop below is replaced by a series of vectorized instructions
+        % The loop below is replaced by a series of vectorized instructions.
         %         for j = 0:c2
         %             if p>0
         %                 S(rI) = exp(F1(end)-F1(end-i)-F1(i+1)+ F2(end)-F2(end-j)-F2(j+1) +(i+j)*log(p)+(C-(i+j))*log(1-p));
