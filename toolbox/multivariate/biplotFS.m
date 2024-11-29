@@ -1,5 +1,5 @@
 function biplotFS(Y,varargin)
-%biplotFS calls biplotAPP.mlapp to show a dynamic biplot
+%biplotFS calls biplotAPP.mlapp to show a dynamic biplot.
 %
 %<a href="matlab: docsearchFS('biplotFS')">Link to the help function</a>
 % 
@@ -13,8 +13,8 @@ function biplotFS(Y,varargin)
 % \]
 % where $U_{(2)}$ is $n \times 2$ matrix (first two columns of $U$)  
 % and $V_{(2)}$ is $p \times 2$  (first two columns of matrix $V$,
-% $\Gamma_{(2)}^*$ is a $2 \times 2$ diagonal matrix 
-% which contains the frist two largest singular values of matrix $Z$ 
+% $\Gamma_{(2)}^*$ is a $2 \times 2$ diagonal matrix, 
+% which contains the first two largest singular values of matrix $Z$ 
 % (square root of the eigenvalues of matrix $Z^TZ=(n-1)R$) where $R$ is the
 % correlation matrix.
 %
@@ -53,7 +53,7 @@ function biplotFS(Y,varargin)
 % \[
 % \sqrt{n-1} U_{(2)}= Z  V_{(2)} \Gamma_{(2)}^{-1}
 % \]
-% that is row points are the standardized principal components scores.
+% that is, row points are the standardized principal components scores.
 % \[
 % cov (\sqrt{n-1} U_{(2)}) = I_2= \left(
 %                                   \begin{array}{cc}
@@ -66,10 +66,10 @@ function biplotFS(Y,varargin)
 % \[
 %  \Gamma_{(2)}  V_{(2)}^T
 % \]
-%  that is the arrows are associated with the correlations between the
-%  variables and the first two principal components
-%  The length of the arrow is exactly equal to the communality of the asoociated variable.
-%  In this case the unit circle is also shown on the screen and option axis
+%  that is, the arrows are associated with the correlations between the
+%  variables and the first two principal components.
+%  The length of the arrow is exactly equal to the communality of the associated variable.
+%  In this case, the unit circle is also shown on the screen and option axis
 %  equal is set.
 %
 % On the other hand, if $\omega=1$ and $\alpha=1$
@@ -78,7 +78,7 @@ function biplotFS(Y,varargin)
 % \[
 % \sqrt{n-1} U_{(2)} \Gamma_{(2)} = Z  V_{(2)}
 % \]
-% In this case the row points are the (non normalized) scores, that is 
+% In this case, the row points are the (non normalized) scores, that is 
 %  \[
 % cov(\sqrt{n-1} U_{(2)} \Gamma_{(2)})  =cov( Z  V_{(2)})= \left(
 %                                   \begin{array}{cc}
@@ -92,10 +92,10 @@ function biplotFS(Y,varargin)
 %  \[
 % V_{(2)}^T 
 %  \]
-% Also in this case the unit circle is given and option axis equal is set. 
+% Also in this case, the unit circle is given and option axis equal is set. 
 % 
 % In general if $\omega$ decreases, the length of the arrows increases
-% and the coordinates of row points are squeezed towards the origin
+% and the coordinates of row points are squeezed towards the origin.
 %
 % In the app it is also possible to color row points depending on the
 % orthogonal distance ($OD_i$) of each observation to the PCA subspace.
@@ -107,9 +107,9 @@ function biplotFS(Y,varargin)
 % OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
 % \]
 %
-% If optional input argument bsb or bdp is specified it is possible to have
-% in the app two tabs which enable the user to select the breakdown point
-% of the analysis of the subset size to use in the svd. The units which are
+% If an optional input argument, bsb or bdp, is specified, it is possible to have
+% in the app two tabs that enable the user to select the breakdown point
+% of the analysis of the subset size to use in the svd. The units that are
 % declared as outliers or the units outside the subset are shown in the
 % plot with filled circles.
 %
@@ -127,70 +127,70 @@ function biplotFS(Y,varargin)
 %
 %  Optional input arguments:
 %
-%      bsb       : units forming subset on which to perform PCA. vector.
-%                  Vector containing the list of the untis to use to
-%                  compute the svd. The other units are projected in the
-%                  space of the first two PC. bsb can be either a numeric
-%                  vector of length m (m<=n) containin the list of the
-%                  units (e.g. 1:50) or a logical vector of length n
-%                  containing the true for the units which have to be used
-%                  in the calculation of svd. For example bsb=true(n,1),
-%                  bsb(13)=false; excludes from the svd unit number 13.
-%                  Note that if bsb is supplied bdp must be empty.
-%                 Example - 'bsb',[2 10:90 93]
-%                 Data Types - double or logical 
+%      bsb    : units forming a subset on which to perform PCA. vector.
+%               Vector containing the list of the units to use to
+%               compute the svd. The other units are projected in the
+%               space of the first two PC. bsb can be either a numeric
+%               vector of length m (m<=n), containing the list of the
+%               units (e.g., 1:50), or a logical vector of length n
+%               containing the true for the units that have to be used
+%               in the calculation of svd. For example, bsb=true(n,1),
+%               bsb(13)=false; excludes from the svd unit number 13.
+%               Note that if bsb is supplied, bdp must be empty.
+%               Example - 'bsb',[2 10:90 93]
+%               Data Types - double or logical 
 %
-%         bdp :  breakdown point. Scalar.
+%       bdp   : breakdown point. Scalar.
 %               It measures the fraction of outliers the algorithm should
-%               resist. In this case any value greater than 0 but smaller
-%               or equal than 0.5 will do fine. Note that if bdp is
-%               supplied bsb must be empty.
-%                 Example - 'bdp',0.4
-%                 Data Types - double
+%               resist. In this case, any value greater than 0, but smaller
+%               or equal than 0.5, will do fine. Note that if bdp is
+%               supplied, bsb must be empty.
+%               Example - 'bdp',0.4
+%               Data Types - double
 %
 %
-%    standardize : standardize data. boolean. Boolean which specifies
-%               whether to standardize the variables, that is we operate on
+% standardize : standardize data. boolean. Boolean that specifies
+%               whether to standardize the variables, that is, we operate on
 %               the correlation matrix (default) or simply remove column
 %               means (in this last case we operate on the covariance
 %               matrix).
-%                   Example - 'standardize',false
-%                   Data Types - boolean
+%               Example - 'standardize',false
+%               Data Types - boolean
 %
-%  alpha  : svd parameter. Scalar. Scalar in the interval [0 1] (see
-%           section additional details for more help). This parameter can
-%           be controllad by the corresponding sliding bar when the app is
-%           shown.
-%                   Example - 'alpha',0.6
-%                   Data Types - double
+%       alpha : svd parameter. Scalar. Scalar in the interval [0 1] (see
+%               section "additional details" for more help). This parameter can
+%               be controlled by the corresponding sliding bar when the app is
+%               shown.
+%               Example - 'alpha',0.6
+%               Data Types - double
 %
-%  omega  : svd parameter. Scalar. Scalar in the interval [0 1] (see
-%           section additional details for more help). This parameter can
-%           be controllad by the corresponding sliding bar when the app is
-%           shown.
-%                   Example - 'omega',1
-%                   Data Types - double
+%       omega : svd parameter. Scalar. Scalar in the interval [0 1] (see
+%               section "additional details" for more help). This parameter can
+%               be controlled by the corresponding sliding bar when the app is
+%               shown.
+%               Example - 'omega',1
+%               Data Types - double
 %
-% showRowPoints : hide or show row point. Boolean. If showRowPoints is true
-%                   row points are shown in the biplot (default) else there are hidden.
-%                   Example - 'standardize',false
-%                   Data Types - boolean
+% showRowPoints : hide or show row point. Boolean. If showRowPoints is true,
+%                 row points are shown in the biplot (default); otherwise they are hidden.
+%                 Example - 'standardize',false
+%                 Data Types - boolean
 %
-%  showRowNames : hide or show labels of row points. Boolean. If showRowNames is true
-%                   labels of row names are shown in the biplot  else (default) there are hidden.
-%                   Example - 'showRowNames',false
-%                   Data Types - boolean
+%  showRowNames : hide or show labels of row points. Boolean. If showRowNames is true,
+%                 labels of row names are shown in the biplot, otherwise (default) they are hidden.
+%                 Example - 'showRowNames',false
+%                 Data Types - boolean
 %
-%  showArrows : hide or show arrows. Boolean. If showArrows is true
-%                   arrows (associated labels) labels are shown in the biplot  (default) 
-%                   else there are hidden.
-%                   Example - 'showArrows',false
-%                   Data Types - boolean
+%    showArrows : hide or show arrows. Boolean. If showArrows is true,
+%                 arrows (associated labels) labels are shown in the biplot (default);
+%                 otherwise they are hidden.
+%                 Example - 'showArrows',false
+%                 Data Types - boolean
 %
 % Output:  
-%         when the biplotAPP is closed in the base workspace a new variable
-%         called bsbfinalFromAPP is created which contains a logical vector
-%         of length n containing true for the units which have been used in
+%         when the biplotAPP is closed, in the base workspace, a new variable
+%         called bsbfinalFromAPP is created, which contains a logical vector
+%         of length n containing true for the units that have been used in
 %         the svd.
 %         
 %
@@ -214,9 +214,9 @@ function biplotFS(Y,varargin)
     %% use of biplotFS on the ingredients dataset.
     load hald
     % Operate on the correlation matrix (default).
-    % use standardized principal components (for row points) and
+    % Use standardized principal components (for row points) and
     % correlation between variables and principal components (for column
-    % points, arrows)
+    % points, arrows).
     close all
     biplotFS(ingredients,'omega',1,'alpha',0);
 %}
