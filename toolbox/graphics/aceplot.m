@@ -360,7 +360,8 @@ if tyOriginal ==true
         xlabel('y')
         title('Plot of ty vs. y')
     else
-        ylabel('Transformed y')
+        % ylabel('Transformed y')
+        ylabel("Transformed "+ VarNames(end))
         xlabel(VarNames(end))
         title("Plot of t"+ VarNames(end)+ " vs. "+ VarNames(end))
     end
