@@ -338,7 +338,7 @@ if contrib2Chi2==false
     colorbar(axes1)
 else
     % lgd.Layout.Tile = 'east';
-    blgd=bubblelegend('Location','northeastoutside');
+    bubblelegend('Location','northeastoutside');
     % blgd.Layout.Tile = 'east';
 end
 grid('on')
