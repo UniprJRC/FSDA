@@ -28,6 +28,23 @@ function [h,Ntable] = balloonplot(N,varargin)
 %               Example - 'ax',myaxes
 %               Data Types - Axes object
 %
+% contrib2Chi2: bubble chart of contribution to chi2 statistic test.
+%               Boolean. If this option is true, squared Pearson rediduals
+%               are computed and shown through bubble chart. Squared
+%               Pearson residuals associated with positive (negative)
+%               associations are shown in blue (red). Pearson residuals are
+%               defined as ${n_{ij}-n_{ij}^*})/{\sqrt{n_{ij}^*}$ where
+%               $n_{ij}$ is the $i,j$ entry of the input contingency table N and
+%               $n_{ij}^*$ is the theoretical frequency under the
+%               independence hypothesis. The sum of the squares of the
+%               Pearson residuals is equal to the $Chi^2$ statistic to test
+%               the independence between rows and columns of the
+%               contingency table. The default value of contrib2Chi2 is
+%               false that is no transformation is done on the orginal
+%               contingency table.
+%               Example - 'contrib2Chi2',true
+%               Data Types - boolean
+%
 % datamatrix  : Data matrix or contingency table. Boolean. If
 %               datamatrix is true the first input argument N is forced to
 %               be interpreted as a data matrix, else if the input argument
@@ -142,6 +159,32 @@ function [h,Ntable] = balloonplot(N,varargin)
     disp(Ntable)
 %}
 
+%{
+   %% balloonplot with option contrib2Chi2.
+   % Load the Housetasks data (a contingency table containing the
+    % frequency of execution of 13 house tasks in the couple).
+    N=[156	14	2	4;
+        124	20	5	4;
+        77	11	7	13;
+        82	36	15	7;
+        53	11	1	57;
+        32	24	4	53;
+        33	23	9	55;
+        12	46	23	15;
+        10	51	75	3;
+        13	13	21	66;
+        8	1	53	77;
+        0	3	160	2;
+        0	1	6	153];
+    rowslab={'Laundry' 'Main-meal' 'Dinner' 'Breakfast' 'Tidying' 'Dishes' ...
+        'Shopping' 'Official' 'Driving' 'Finances' 'Insurance'...
+        'Repairs' 'Holidays'};
+    colslab={'Wife'	'Alternating'	'Husband'	'Jointly'};
+    Ntable=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+    % Call to balloonplot with option 'contrib2Chi2',true
+    balloonplot(Ntable,'contrib2Chi2',true);
+%}
+
 %% Beginning of code
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
@@ -188,8 +231,9 @@ else
     Lc=cellstr(strcat('c',num2str((1:J)')));
 end
 ax='';
+contrib2Chi2=false;
 options=struct('Lr',{Lr},'Lc',{Lc},'datamatrix',false,...
-    'ax',ax);
+    'ax',ax,'contrib2Chi2',contrib2Chi2);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -203,7 +247,7 @@ if ~isempty(UserOptions)
         % Check if user options are valid options
         aux.chkoptions(options,UserOptions)
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     if nargin > 2
         for i=1:2:length(varargin)
@@ -215,7 +259,7 @@ if ~isempty(UserOptions)
     ax=options.ax;
     Lr=matlab.lang.makeValidName(Lr);
     Lc=matlab.lang.makeValidName(Lc);
-    
+    contrib2Chi2=options.contrib2Chi2;
 end
 
 % Extract labels for rows and columns
@@ -233,7 +277,7 @@ else
             error('FSDA:balloonplot:WrongInputOpt','Wrong length of row labels');
         end
     end
-    
+
     if isempty(Lc)
         Lc=cellstr(num2str((1:J)'));
     else
@@ -252,11 +296,31 @@ ycoo=ycoo(:);
 xcoo=repmat(1:J,I,1);
 xcoo=xcoo(:);
 Nvector=N(:);
-if isempty(ax)
-    h=bubblechart(xcoo,ycoo,Nvector,Nvector);
+
+if contrib2Chi2==false
+    if isempty(ax)
+        h=bubblechart(xcoo,ycoo,Nvector,Nvector);
+    else
+        h=bubblechart(ax,xcoo,ycoo,Nvector,Nvector);
+    end
 else
-    h=bubblechart(ax,xcoo,ycoo,Nvector,Nvector);
+    % tiledlayout(1,1);
+    % nexttile
+    Ntheo=sum(N,2)*sum(N,1)/sum(N,"all");
+    Res=(N-Ntheo)./sqrt(Ntheo);
+    Res2=Res.^2;
+    Res2=round(Res2,2);
+    boo=Res(:)>0;
+    bubblechart(xcoo(boo),ycoo(boo),Res2(boo),'b');
+    hold('on')
+    h=bubblechart(xcoo(~boo),ycoo(~boo),Res2(~boo),'r');
+    hold('off')
+    legend('Pos.','Neg.','Location','best');
+    title('Pearson residuals$^2: (\pm) ({n_{ij}-n_{ij}^*})^2/{{n_{ij}^*}}$', ...
+        'Interpreter','latex','FontSize',16)
+    h=gcf;
 end
+
 axes1=gca;
 jall=1:J;
 % If there are more than 70 columns just show a sistematic sample of
@@ -270,7 +334,13 @@ else
 end
 set(axes1,'YTick',1:I,'YTickLabel',flip(Lr),'TickLabelInterpreter','none');
 bubblesize([3 20])
-colorbar(axes1)
+if contrib2Chi2==false
+    colorbar(axes1)
+else
+    % lgd.Layout.Tile = 'east';
+    blgd=bubblelegend('Location','northeastoutside');
+    % blgd.Layout.Tile = 'east';
+end
 grid('on')
 
 end

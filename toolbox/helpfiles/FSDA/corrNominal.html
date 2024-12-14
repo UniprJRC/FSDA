@@ -1,6 +1,4 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>corrNominal</title><meta content="refpage" name="chunktype"><meta content="function:corrNominal" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="corrNominal measures strength of association between two unordered (nominal) categorical variables.." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">corrNominal</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">corrNominal with all the default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of option conflev.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">corrNominal with option dispresults.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example which starts from the original data matrix.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of option datamatrix combined with X defined as table.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Example: compare confidence interval for Cramer V.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">CorrNominal when input is 2 by 2
-     Indexes theta=cross product ratio, 
-     Q and U are also computed.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_N">N</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_NoStandardErrors">NoStandardErrors</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Lr">Lr</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Lc">Lc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datamatrix">datamatrix</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflimMethodCramerV">conflimMethodCramerV</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">corrNominal</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">corrNominal measures strength of association between two unordered (nominal) categorical variables.</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=corrNominal(N)</code><span class="syntax_example"><a class="intrnllnk" href="corrNominal.html#Example_1">example</a></span></li><li><code class="synopsis">out=corrNominal(N,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="corrNominal.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>corrNominal computes $\chi2$, $\Phi$, Cramer's $V$, Goodman-Kruskal's
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>corrNominal</title><meta content="refpage" name="chunktype"><meta content="function:corrNominal" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="corrNominal measures strength of association between two unordered (nominal) categorical variables.." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">corrNominal</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">corrNominal with all the default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of option conflev.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">corrNominal with option dispresults.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example which starts from the original data matrix.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of option datamatrix combined with X defined as table.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Example: compare confidence interval for Cramer V.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">CorrNominal when input is 2 by 2.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Example of call to CorrNominal with optional input arguments plots.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_N">N</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflimMethodCramerV">conflimMethodCramerV</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Lr">Lr</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Lc">Lc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datamatrix">datamatrix</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_NoStandardErrors">NoStandardErrors</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">corrNominal</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">corrNominal measures strength of association between two unordered (nominal) categorical variables.</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=corrNominal(N)</code><span class="syntax_example"><a class="intrnllnk" href="corrNominal.html#Example_1">example</a></span></li><li><code class="synopsis">out=corrNominal(N,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="corrNominal.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>corrNominal computes $\chi2$, $\Phi$, Cramer's $V$, Goodman-Kruskal's
  $\lambda_{y|x}$, Goodman-Kruskal's  $\tau_{y|x}$, and Theil's $H_{y|x}$
  (uncertainty coefficient).</p> <p>
  All these indexes measure the association among two unordered qualitative
@@ -17,70 +15,70 @@
 80	250	30	140
 30	50	0	120];
 out=corrNominal(N);</pre></div></div><pre class="codeoutput">Chi2 index
-  221.2405
+        221.24
 
 pvalue Chi2 index
-   5.6588e-45
+          0.00
 
 Phi index
-    0.4704
+          0.47
 
 Cramer's V 
-    0.3326
+          0.33
 
 Test of H_0: independence between rows and columns
-                   Coeff         se       zscore       pval   
-                  ________    ________    ______    __________
+                  Coeff     se     zscore    pval
+                  _____    ____    ______    ____
 
-    CramerV         0.3326    0.024431    13.614             0
-    GKlambdayx     0.22581    0.028383    7.9556    1.7764e-15
-    tauyx         0.091674    0.013524    6.7788    1.2121e-11
-    Hyx            0.08716    0.011265    7.7374    1.0214e-14
+    CramerV       0.33     0.02    13.61     0.00
+    GKlambdayx    0.23     0.03     7.96     0.00
+    tauyx         0.09     0.01     6.78     0.00
+    Hyx           0.09     0.01     7.74     0.00
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                   Value      StandardError    ConflimL    ConflimU
-                  ________    _____________    ________    ________
+                  Value    StandardError    ConflimL    ConflimU
+                  _____    _____________    ________    ________
 
-    CramerV         0.3326      0.024431        0.28471    0.37287 
-    GKlambdayx     0.22581      0.028383        0.17018    0.28144 
-    tauyx         0.091674      0.013524       0.065168    0.11818 
-    Hyx            0.08716      0.011265       0.065082    0.10924 
+    CramerV       0.33         0.02           0.28        0.37  
+    GKlambdayx    0.23         0.03           0.17        0.28  
+    tauyx         0.09         0.01           0.07        0.12  
+    Hyx           0.09         0.01           0.07        0.11  
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of option conflev.</li></span></a></span></h3><div class="collapse"><p>
       Use data from Goodman Kruskal (1954).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[1768   807    189 47
 946   1387    746 53
 115    438    288 16];
 out=corrNominal(N,'conflev',0.99);</pre></div></div><pre class="codeoutput">Chi2 index
-   1.0735e+03
+       1073.51
 
 pvalue Chi2 index
-  1.1244e-228
+          0.00
 
 Phi index
-    0.3973
+          0.40
 
 Cramer's V 
-    0.2810
+          0.28
 
 Test of H_0: independence between rows and columns
-                   Coeff         se        zscore    pval
-                  ________    _________    ______    ____
+                  Coeff     se     zscore    pval
+                  _____    ____    ______    ____
 
-    CramerV        0.28095    0.0088396    31.784     0  
-    GKlambdayx     0.19239     0.012158    15.825     0  
-    tauyx         0.080883    0.0046282    17.476     0  
-    Hyx           0.075341    0.0041619    18.102     0  
+    CramerV       0.28     0.01    31.78     0.00
+    GKlambdayx    0.19     0.01    15.83     0.00
+    tauyx         0.08     0.00    17.48     0.00
+    Hyx           0.08     0.00    18.10     0.00
 
 -----------------------------------------
 Indexes and 99% confidence limits
-                   Value      StandardError    ConflimL    ConflimU
-                  ________    _____________    ________    ________
+                  Value    StandardError    ConflimL    ConflimU
+                  _____    _____________    ________    ________
 
-    CramerV        0.28095      0.0088396       0.25818     0.30241
-    GKlambdayx     0.19239       0.012158       0.16108     0.22371
-    tauyx         0.080883      0.0046282      0.068962    0.092805
-    Hyx           0.075341      0.0041619      0.064621    0.086061
+    CramerV       0.28         0.01           0.26        0.30  
+    GKlambdayx    0.19         0.01           0.16        0.22  
+    tauyx         0.08         0.00           0.07        0.09  
+    Hyx           0.08         0.00           0.06        0.09  
 
 </pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrNominal with option dispresults.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[ 6 14 17 9;
 30 32 17 3];
@@ -142,140 +140,140 @@ out=corrNominal(Ntable,'conflimMethodCramerV',method{i});
 ConfintV(i,:)=out.ConfLimtable{'CramerV',3:4};
 end
 disp(array2table(ConfintV,'RowNames',method,'VariableNames',{'Lower' 'Upper'}))</pre></div></div><pre class="codeoutput">Chi2 index
-   21.0290
+         21.03
 
 pvalue Chi2 index
-    0.0018
+          0.00
 
 Phi index
-    0.1328
+          0.13
 
 Cramer's V 
-    0.1328
+          0.13
 
 Test of H_0: independence between rows and columns
-                   Coeff         se        zscore      pval   
-                  ________    _________    ______    _________
+                  Coeff     se     zscore    pval
+                  _____    ____    ______    ____
 
-    CramerV        0.13282      0.04149    3.2013    0.0013679
-    GKlambdayx           0            0       NaN          NaN
-    tauyx         0.017642    0.0078826    2.2381     0.025218
-    Hyx           0.021875    0.0095422    2.2924     0.021883
+    CramerV       0.13     0.04     3.20     0.00
+    GKlambdayx    0.00     0.00      NaN      NaN
+    tauyx         0.02     0.01     2.24     0.03
+    Hyx           0.02     0.01     2.29     0.02
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                   Value      StandardError    ConflimL     ConflimU
-                  ________    _____________    _________    ________
+                  Value    StandardError    ConflimL    ConflimU
+                  _____    _____________    ________    ________
 
-    CramerV        0.13282        0.04149       0.051504     0.17582
-    GKlambdayx           0              0              0           0
-    tauyx         0.017642      0.0078826      0.0021921    0.033091
-    Hyx           0.021875      0.0095422      0.0031721    0.040577
+    CramerV       0.13         0.04           0.05        0.18  
+    GKlambdayx    0.00         0.00           0.00        0.00  
+    tauyx         0.02         0.01           0.00        0.03  
+    Hyx           0.02         0.01           0.00        0.04  
 
 Chi2 index
-   21.0290
+         21.03
 
 pvalue Chi2 index
-    0.0018
+          0.00
 
 Phi index
-    0.1328
+          0.13
 
 Cramer's V 
-    0.1328
+          0.13
 
 Test of H_0: independence between rows and columns
-                   Coeff         se        zscore       pval   
-                  ________    _________    ______    __________
+                  Coeff     se     zscore    pval
+                  _____    ____    ______    ____
 
-    CramerV        0.13282     0.023037    5.7657    8.1331e-09
-    GKlambdayx           0            0       NaN           NaN
-    tauyx         0.017642    0.0078826    2.2381      0.025218
-    Hyx           0.021875    0.0095422    2.2924      0.021883
+    CramerV       0.13     0.02     5.77     0.00
+    GKlambdayx    0.00     0.00      NaN      NaN
+    tauyx         0.02     0.01     2.24     0.03
+    Hyx           0.02     0.01     2.29     0.02
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                   Value      StandardError    ConflimL     ConflimU
-                  ________    _____________    _________    ________
+                  Value    StandardError    ConflimL    ConflimU
+                  _____    _____________    ________    ________
 
-    CramerV        0.13282       0.023037       0.087671     0.18959
-    GKlambdayx           0              0              0           0
-    tauyx         0.017642      0.0078826      0.0021921    0.033091
-    Hyx           0.021875      0.0095422      0.0031721    0.040577
+    CramerV       0.13         0.02           0.09        0.19  
+    GKlambdayx    0.00         0.00           0.00        0.00  
+    tauyx         0.02         0.01           0.00        0.03  
+    Hyx           0.02         0.01           0.00        0.04  
 
 Chi2 index
-   21.0290
+         21.03
 
 pvalue Chi2 index
-    0.0018
+          0.00
 
 Phi index
-    0.1328
+          0.13
 
 Cramer's V 
-    0.1328
+          0.13
 
 Test of H_0: independence between rows and columns
-                   Coeff         se        zscore      pval   
-                  ________    _________    ______    _________
+                  Coeff     se     zscore    pval
+                  _____    ____    ______    ____
 
-    CramerV        0.13282     0.028675     4.632    3.621e-06
-    GKlambdayx           0            0       NaN          NaN
-    tauyx         0.017642    0.0078826    2.2381     0.025218
-    Hyx           0.021875    0.0095422    2.2924     0.021883
+    CramerV       0.13     0.03     4.63     0.00
+    GKlambdayx    0.00     0.00      NaN      NaN
+    tauyx         0.02     0.01     2.24     0.03
+    Hyx           0.02     0.01     2.29     0.02
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                   Value      StandardError    ConflimL     ConflimU
-                  ________    _____________    _________    ________
+                  Value    StandardError    ConflimL    ConflimU
+                  _____    _____________    ________    ________
 
-    CramerV        0.13282       0.028675       0.076621     0.18818
-    GKlambdayx           0              0              0           0
-    tauyx         0.017642      0.0078826      0.0021921    0.033091
-    Hyx           0.021875      0.0095422      0.0031721    0.040577
+    CramerV       0.13         0.03           0.08        0.19  
+    GKlambdayx    0.00         0.00           0.00        0.00  
+    tauyx         0.02         0.01           0.00        0.03  
+    Hyx           0.02         0.01           0.00        0.04  
 
 Chi2 index
-   21.0290
+         21.03
 
 pvalue Chi2 index
-    0.0018
+          0.00
 
 Phi index
-    0.1328
+          0.13
 
 Cramer's V 
-    0.1328
+          0.13
 
 Test of H_0: independence between rows and columns
-                   Coeff         se        zscore       pval   
-                  ________    _________    ______    __________
+                  Coeff     se     zscore    pval
+                  _____    ____    ______    ____
 
-    CramerV        0.13282     0.028646    4.6366    3.5418e-06
-    GKlambdayx           0            0       NaN           NaN
-    tauyx         0.017642    0.0078826    2.2381      0.025218
-    Hyx           0.021875    0.0095422    2.2924      0.021883
+    CramerV       0.13     0.03     4.64     0.00
+    GKlambdayx    0.00     0.00      NaN      NaN
+    tauyx         0.02     0.01     2.24     0.03
+    Hyx           0.02     0.01     2.29     0.02
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                   Value      StandardError    ConflimL     ConflimU
-                  ________    _____________    _________    ________
+                  Value    StandardError    ConflimL    ConflimU
+                  _____    _____________    ________    ________
 
-    CramerV        0.13282       0.028646       0.076676     0.18824
-    GKlambdayx           0              0              0           0
-    tauyx         0.017642      0.0078826      0.0021921    0.033091
-    Hyx           0.021875      0.0095422      0.0031721    0.040577
+    CramerV       0.13         0.03           0.08        0.19  
+    GKlambdayx    0.00         0.00           0.00        0.00  
+    tauyx         0.02         0.01           0.00        0.03  
+    Hyx           0.02         0.01           0.00        0.04  
 
-                   Lower       Upper 
-                  ________    _______
+                  Lower    Upper
+                  _____    _____
 
-    ncchisq       0.051504    0.17582
-    ncchisqadj    0.087671    0.18959
-    fisher        0.076621    0.18818
-    fisheradj     0.076676    0.18824
+    ncchisq       0.05     0.18 
+    ncchisqadj    0.09     0.19 
+    fisher        0.08     0.19 
+    fisheradj     0.08     0.19 
 
-</pre></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorrNominal when input is 2 by 2
+</pre></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorrNominal when input is 2 by 2.</li></span></a></span></h3><div class="collapse"><p>
      Indexes theta=cross product ratio, 
-     Q and U are also computed.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% X=advertisment memory (rows)
+     Q and U are also computed.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% X=advertisment memory (rows)
 % Y=product purchase (columns)
 N= [87 188;
 42 406];
@@ -289,57 +287,57 @@ ans =
 
   2&times;1 table
 
-                             Y=Product purchase
-                             __________________
+                               Y=Product purchase  
+                             ______________________
 
-                                    Yes    No  
-                                    ___    ___ 
-                                               
-    X=advertisment memory    Yes    87     188 
-    advertisment memory      No     42     406 
+                                     Yes       No  
+                                    _____    ______
+                                                   
+    X=advertisment memory    Yes    87.00    188.00
+    advertisment memory      No     42.00    406.00
 
 Chi2 index
-   57.6071
+         57.61
 
 pvalue Chi2 index
-   3.2006e-14
+          0.00
 
 Phi index
-    0.2823
+          0.28
 
 Cramer's V 
-    0.2823
+          0.28
 
 -------------------------------
 2x2 contingency table indexes
 th=cross product ratio
-    4.4734
+          4.47
 
 Cross product ratio in the interval [-1 1]. Index Q=(th-1)/(th+1)
-    0.6346
+          0.63
 
 Cross product ratio in the interval [-1 1]. Index U=(sqrt(th)-1)/(sqrt(th)+1)
-    0.3580
+          0.36
 
 -------------------------------
 Test of H_0: independence between rows and columns
-                   Coeff         se       zscore       pval   
-                  ________    ________    ______    __________
+                  Coeff     se     zscore    pval
+                  _____    ____    ______    ____
 
-    CramerV        0.28227    0.037189    7.5902    3.1974e-14
-    GKlambdayx           0           0       NaN           NaN
-    tauyx         0.079678    0.020787    3.8331    0.00012653
-    Hyx           0.082782    0.021327    3.8816    0.00010376
+    CramerV       0.28     0.04     7.59     0.00
+    GKlambdayx    0.00     0.00      NaN      NaN
+    tauyx         0.08     0.02     3.83     0.00
+    Hyx           0.08     0.02     3.88     0.00
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                   Value      StandardError    ConflimL    ConflimU
-                  ________    _____________    ________    ________
+                  Value    StandardError    ConflimL    ConflimU
+                  _____    _____________    ________    ________
 
-    CramerV        0.28227      0.037189        0.20938    0.35516 
-    GKlambdayx           0             0              0          0 
-    tauyx         0.079678      0.020787       0.038937    0.12042 
-    Hyx           0.082782      0.021327       0.040983    0.12458 
+    CramerV       0.28         0.04           0.21        0.36  
+    GKlambdayx    0.00         0.00           0.00        0.00  
+    tauyx         0.08         0.02           0.04        0.12  
+    Hyx           0.08         0.02           0.04        0.12  
 
 
 out = 
@@ -348,40 +346,103 @@ out =
 
                N: [2&times;2 double]
           Ntable: [2&times;2 table]
-            Chi2: 57.6071
-        Chi2pval: 3.2006e-14
-             Phi: 0.2823
-         CramerV: [0.2823 0.0372 7.5902 3.1974e-14]
+            Chi2: 57.61
+        Chi2pval: 0.00
+             Phi: 0.28
+         CramerV: [0.28 0.04 7.59 0.00]
       GKlambdayx: [0 0 NaN NaN]
-           tauyx: [0.0797 0.0208 3.8331 1.2653e-04]
-             Hyx: [0.0828 0.0213 3.8816 1.0376e-04]
+           tauyx: [0.08 0.02 3.83 0.00]
+             Hyx: [0.08 0.02 3.88 0.00]
          ConfLim: [4&times;4 double]
     ConfLimtable: [4&times;4 table]
          TestInd: [4&times;4 double]
     TestIndtable: [4&times;4 table]
-           theta: 4.4734
-               Q: 0.6346
-               U: 0.3580
+           theta: 4.47
+               Q: 0.63
+               U: 0.36
 
-</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
+</pre></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to CorrNominal with optional input arguments plots.</li></span></a></span></h3><div class="collapse"><p>
+    Load the Housetasks data (a contingency table containing the
+     frequency of execution of 13 house tasks in the couple).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[156	14	2	4;
+124	20	5	4;
+77	11	7	13;
+82	36	15	7;
+53	11	1	57;
+32	24	4	53;
+33	23	9	55;
+12	46	23	15;
+10	51	75	3;
+13	13	21	66;
+8	1	53	77;
+0	3	160	2;
+0	1	6	153];
+rowslab={'Laundry' 'Main-meal' 'Dinner' 'Breakfast' 'Tidying' 'Dishes' ...
+'Shopping' 'Official' 'Driving' 'Finances' 'Insurance'...
+'Repairs' 'Holidays'};
+colslab={'Wife'	'Alternating'	'Husband'	'Jointly'};
+Ntable=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+% Call to corrNominal with option 'plots',true
+corrNominal(Ntable,'plots',true);</pre></div></div><pre class="codeoutput">Chi2 index
+       1944.46
+
+pvalue Chi2 index
+             0
+
+Phi index
+          1.06
+
+Cramer's V 
+          0.61
+
+Test of H_0: independence between rows and columns
+                  Coeff     se     zscore    pval
+                  _____    ____    ______    ____
+
+    CramerV       0.61     0.02    36.50     0.00
+    GKlambdayx    0.51     0.02    27.56     0.00
+    tauyx         0.41     0.01    29.50     0.00
+    Hyx           0.41     0.01    29.66     0.00
+
+-----------------------------------------
+Indexes and 95% confidence limits
+                  Value    StandardError    ConflimL    ConflimU
+                  _____    _____________    ________    ________
+
+    CramerV       0.61         0.02           0.58        0.63  
+    GKlambdayx    0.51         0.02           0.47        0.54  
+    tauyx         0.41         0.01           0.38        0.43  
+    Hyx           0.41         0.01           0.38        0.44  
+
+</pre><a href='http://rosa.unipr.it/fsda/corrNominal.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\corrNominal_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\corrNominal_02.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
                  table (say of size I-by-J) or the original data matrix.</p> <p>
                  In this last case N=crosstab(N(:,1),N(:,2)). As default
                  procedure assumes that the input is a contingency table.</p><p>
                  If N is a data matrix (supplied as a a n-by-2 cell array
                  of strings, or n-by-2 array or n-by-2 table) optional
-                 input datamatrix must be set to true.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'NoStandardErrors',true
+                 input datamatrix must be set to true.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'conflev',0.99
+</code>,<code> 'conflimMethodCramerV','fisheradj'
 </code>,<code> 'dispresults',false
 </code>,<code> 'Lr',{'a' 'b' 'c'}
 </code>,<code> 'Lc',{'c1' c2' 'c3' 'c4'}
 </code>,<code> 'datamatrix',true
-</code>,<code> 'conflev',0.99
-</code>,<code> 'conflimMethodCramerV','fisheradj'
-</code></code></span></div><div class="expandableContent"><div id="inputarg_NoStandardErrors" class="clearfix"></div><h3 id="input_argument_namevalue_NoStandardErrors" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>NoStandardErrors</code> &#8212;Just indexes without standard errors and p-values.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>if NoStandardErrors is true just the indexes are computed
-               without standard errors and p-values. That is no
-               inferential measure is given. The default value of
-               NoStandardErrors is false.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'NoStandardErrors',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is true (default) it is possible to see on
+</code>,<code> 'NoStandardErrors',true
+</code>,<code> 'plots',true
+</code></code></span></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence levels to be used to
+               compute confidence intervals.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value of conflev is 0.95, that
+               is 95 per cent confidence intervals
+               are computed for all the indexes (note that this option is
+               ignored if NoStandardErrors=true).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflimMethodCramerV" class="clearfix"></div><h3 id="input_argument_namevalue_conflimMethodCramerV" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflimMethodCramerV</code> &#8212;method to compute confidence interval for CramerV.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character which identifies the method to use to compute the
+               confidence interval for Cramer index. Default value is
+               'ncchisq'. Possible values are 'ncchisq', 'ncchisqadj',
+               'fisher' or 'fisheradj'; 'ncchisq' uses the non central
+               chi2. 'ncchisq' uses the non central chi2 adjusted for the
+               degrees of fredom. 'fisher' uses the Fisher
+               z-transformation and 'fisheradj' uses the fisher
+               z-transformation and bias correction.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflimMethodCramerV','fisheradj'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is true (default) it is possible to see on
                the screen all the summary results of the analysis.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_Lr" class="clearfix"></div><h3 id="input_argument_namevalue_Lr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lr</code> &#8212;Vector of row labels.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p><p>Cell containing the labels of the rows of the input
@@ -401,22 +462,23 @@ out =
                containing the two grouping variables or a numeric array of
                size n-by-2 or a table of size n-by-2.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datamatrix',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence levels to be used to
-               compute confidence intervals.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value of conflev is 0.95, that
-               is 95 per cent confidence intervals
-               are computed for all the indexes (note that this option is
-               ignored if NoStandardErrors=true).</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflimMethodCramerV" class="clearfix"></div><h3 id="input_argument_namevalue_conflimMethodCramerV" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflimMethodCramerV</code> &#8212;method to compute confidence interval for CramerV.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character which identifies the method to use to compute the
-               confidence interval for Cramer index. Default value is
-               'ncchisq'. Possible values are 'ncchisq', 'ncchisqadj',
-               'fisher' or 'fisheradj'; 'ncchisq' uses the non central
-               chi2. 'ncchisq' uses the non central chi2 adjusted for the
-               degrees of fredom. 'fisher' uses the Fisher
-               z-transformation and 'fisheradj' uses the fisher
-               z-transformation and bias correction.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflimMethodCramerV','fisheradj'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>N</code></td><td><p><p>$I$-by-$J$-array containing contingency table
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_NoStandardErrors" class="clearfix"></div><h3 id="input_argument_namevalue_NoStandardErrors" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>NoStandardErrors</code> &#8212;Just indexes without standard errors and p-values.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>if NoStandardErrors is true just the indexes are computed
+               without standard errors and p-values. That is no
+               inferential measure is given. The default value of
+               NoStandardErrors is false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'NoStandardErrors',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;balloonplot of squared Pearson residuals and Pareto plot
+                  of squared Pearson residuals.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If plots is true the following two plots of Pearson squared
+                  residuals are shown on the screen.</p> <p>
+                  1) a bubble plot (ballonplot);</p> <p>
+                  2) a Pareto plot.</p> <p>
+                  In both plots entries of the contingency table
+                  associated with positive association (positive residuals) are
+                  shown in blue while those associated with negative
+                  association (negative residuals) are shown in red.</p> <p>
+                  The default value of plots is false.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>N</code></td><td><p><p>$I$-by-$J$-array containing contingency table
                         referred to active rows (i.e. referred to the rows which
                         participated to the fit).</p> <p>
                         The $(i,j)$-th element is equal to $n_{ij}$,
@@ -501,11 +563,21 @@ out =
                         (third column), upper confidence limit (fourth column).</p> <p>
                         This output is present just if your MATLAB
                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>theta</code></td><td><p>cross product ratio. This index is computed just
-                        if the input table is 2-by-2</p></td></tr><tr valign="top"><td><code>Q</code></td><td><p>cross product ratio in the interval [-1 1] using 
+                        if the input table is 2-by-2</p></td></tr><tr valign="top"><td><code>Q</code></td><td><p>cross product ratio in the interval [-1 1] using
                         the Q rescaling Q=(th-1)/(th+1). This index is computed just
-                        if the input table is 2-by-2</p></td></tr><tr valign="top"><td><code>U</code></td><td><p>cross product ratio in the interval [-1 1] using 
+                        if the input table is 2-by-2</p></td></tr><tr valign="top"><td><code>U</code></td><td><p>cross product ratio in the interval [-1 1] using
                         the U rescaling U=(sqrt(th)-1)/(sqrt(th)+1). This index is computed just
                         if the input table is 2-by-2</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+                       In the contingency table N of size $I \times J$,
+                       whose i,j entry is $n_{ij}$, the Pearson
+                       residuals are defined as
+                       $\frac{n_{ij}-n_{ij}^*}{\sqrt{n_{ij}^*}}$ where
+                       $n_{ij}^*$ is the theoretical frequency under the
+                       independence hypothesis. The sum of the squares of
+                       the Pearson residuals is equal to the $\chi^2$
+                       statistic to test the independence between rows and
+                       columns of the contingency table.</p> <p>
+
                        $\lambda_{y|x}$ is a measure of association that
                        reflects the proportional reduction in error when
                        values of the independent variable (variable in the
@@ -573,7 +645,7 @@ out =
                        is used is the entropy index)
                        Remark: if the contingency table is of size 2x2 the
                        following indexes are also computed theta=cross
-                       product ratio, index $Q$ 
+                       product ratio, index $Q$
                        </p>\[
                        Q= \frac{\theta-1}{\theta+1}
                        \]
@@ -581,7 +653,7 @@ out =
                        \[
                        U= \frac{\sqrt{\theta}-1}{\sqrt{\theta}+1}
                        \]
- 
+
 </p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Agresti, A. (2002), "Categorical Data Analysis", John Wiley & Sons. [pp.</p> <p>
  23-26]</p></p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1959), Measures of association for
  cross classifications II: Further Discussion and References,

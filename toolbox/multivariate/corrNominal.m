@@ -28,14 +28,27 @@ function out=corrNominal(N, varargin)
 %
 %  Optional input arguments:
 %
-%  NoStandardErrors:  Just indexes without standard errors and p-values.
-%               Boolean.
-%               if NoStandardErrors is true just the indexes are computed
-%               without standard errors and p-values. That is no
-%               inferential measure is given. The default value of
-%               NoStandardErrors is false.
-%               Example - 'NoStandardErrors',true
-%               Data Types - Boolean
+%  conflev:     Confidence levels to be used to
+%               compute confidence intervals. Scalar.
+%               The default value of conflev is 0.95, that
+%               is 95 per cent confidence intervals
+%               are computed for all the indexes (note that this option is
+%               ignored if NoStandardErrors=true).
+%               Example - 'conflev',0.99
+%               Data Types - double
+%
+%  conflimMethodCramerV:   method to compute confidence interval for CramerV.
+%               Character.
+%               Character which identifies the method to use to compute the
+%               confidence interval for Cramer index. Default value is
+%               'ncchisq'. Possible values are 'ncchisq', 'ncchisqadj',
+%               'fisher' or 'fisheradj'; 'ncchisq' uses the non central
+%               chi2. 'ncchisq' uses the non central chi2 adjusted for the
+%               degrees of fredom. 'fisher' uses the Fisher
+%               z-transformation and 'fisheradj' uses the fisher
+%               z-transformation and bias correction.
+%               Example - 'conflimMethodCramerV','fisheradj'
+%               Data Types - character
 %
 %  dispresults :  Display results on the screen. Boolean.
 %               If dispresults is true (default) it is possible to see on
@@ -69,27 +82,30 @@ function out=corrNominal(N, varargin)
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %
-%  conflev:     Confidence levels to be used to
-%               compute confidence intervals. Scalar.
-%               The default value of conflev is 0.95, that
-%               is 95 per cent confidence intervals
-%               are computed for all the indexes (note that this option is
-%               ignored if NoStandardErrors=true).
-%               Example - 'conflev',0.99
-%               Data Types - double
 %
-%  conflimMethodCramerV:   method to compute confidence interval for CramerV.
-%               Character.
-%               Character which identifies the method to use to compute the
-%               confidence interval for Cramer index. Default value is
-%               'ncchisq'. Possible values are 'ncchisq', 'ncchisqadj',
-%               'fisher' or 'fisheradj'; 'ncchisq' uses the non central
-%               chi2. 'ncchisq' uses the non central chi2 adjusted for the
-%               degrees of fredom. 'fisher' uses the Fisher
-%               z-transformation and 'fisheradj' uses the fisher
-%               z-transformation and bias correction.
-%               Example - 'conflimMethodCramerV','fisheradj'
-%               Data Types - character
+%  NoStandardErrors:  Just indexes without standard errors and p-values.
+%               Boolean.
+%               if NoStandardErrors is true just the indexes are computed
+%               without standard errors and p-values. That is no
+%               inferential measure is given. The default value of
+%               NoStandardErrors is false.
+%               Example - 'NoStandardErrors',true
+%               Data Types - Boolean
+%
+%    plots       : balloonplot of squared Pearson residuals and Pareto plot
+%                  of squared Pearson residuals. Boolean.
+%                  If plots is true the following two plots of Pearson squared
+%                  residuals are shown on the screen.
+%                  1) a bubble plot (ballonplot);
+%                  2) a Pareto plot.
+%                  In both plots entries of the contingency table
+%                  associated with positive association (positive residuals) are
+%                  shown in blue while those associated with negative
+%                  association (negative residuals) are shown in red.
+%                  The default value of plots is false.
+%               Example - 'plots',true
+%               Data Types - Boolean
+%
 %
 %  Output:
 %
@@ -194,14 +210,24 @@ function out=corrNominal(N, varargin)
 %                        version is not<2013b.
 % out.theta          =   cross product ratio. This index is computed just
 %                        if the input table is 2-by-2
-% out.Q              =   cross product ratio in the interval [-1 1] using 
+% out.Q              =   cross product ratio in the interval [-1 1] using
 %                        the Q rescaling Q=(th-1)/(th+1). This index is computed just
 %                        if the input table is 2-by-2
-% out.U              =   cross product ratio in the interval [-1 1] using 
+% out.U              =   cross product ratio in the interval [-1 1] using
 %                        the U rescaling U=(sqrt(th)-1)/(sqrt(th)+1). This index is computed just
 %                        if the input table is 2-by-2
 %
 % More About:
+%
+%                       In the contingency table N of size $I \times J$,
+%                       whose i,j entry is $n_{ij}$, the Pearson
+%                       residuals are defined as
+%                       $\frac{n_{ij}-n_{ij}^*}{\sqrt{n_{ij}^*}}$ where
+%                       $n_{ij}^*$ is the theoretical frequency under the
+%                       independence hypothesis. The sum of the squares of
+%                       the Pearson residuals is equal to the $\chi^2$
+%                       statistic to test the independence between rows and
+%                       columns of the contingency table.
 %
 %                       $\lambda_{y|x}$ is a measure of association that
 %                       reflects the proportional reduction in error when
@@ -270,7 +296,7 @@ function out=corrNominal(N, varargin)
 %                       is used is the entropy index)
 %                       Remark: if the contingency table is of size 2x2 the
 %                       following indexes are also computed theta=cross
-%                       product ratio, index $Q$ 
+%                       product ratio, index $Q$
 %                       \[
 %                       Q= \frac{\theta-1}{\theta+1}
 %                       \]
@@ -278,7 +304,7 @@ function out=corrNominal(N, varargin)
 %                       \[
 %                       U= \frac{\sqrt{\theta}-1}{\sqrt{\theta}+1}
 %                       \]
-% 
+%
 % See also crosstab, rcontFS, CressieRead, corr, corrOrdinal
 %
 % References:
@@ -424,7 +450,7 @@ function out=corrNominal(N, varargin)
 %}
 
 %{
-    %% CorrNominal when input is 2 by 2
+    %% CorrNominal when input is 2 by 2.
     % Indexes theta=cross product ratio, 
     % Q and U are also computed.
     % X=advertisment memory (rows)
@@ -437,6 +463,33 @@ function out=corrNominal(N, varargin)
     table(Ntable,RowNames=["X=advertisment memory" "advertisment memory "],VariableNames="Y=Product purchase")
     out=corrNominal(Ntable)
 %}
+
+%{
+   %% Example of call to CorrNominal with optional input argument plots.
+   % Load the Housetasks data (a contingency table containing the
+    % frequency of execution of 13 house tasks in the couple).
+    N=[156	14	2	4;
+        124	20	5	4;
+        77	11	7	13;
+        82	36	15	7;
+        53	11	1	57;
+        32	24	4	53;
+        33	23	9	55;
+        12	46	23	15;
+        10	51	75	3;
+        13	13	21	66;
+        8	1	53	77;
+        0	3	160	2;
+        0	1	6	153];
+    rowslab={'Laundry' 'Main-meal' 'Dinner' 'Breakfast' 'Tidying' 'Dishes' ...
+        'Shopping' 'Official' 'Driving' 'Finances' 'Insurance'...
+        'Repairs' 'Holidays'};
+    colslab={'Wife'	'Alternating'	'Husband'	'Jointly'};
+    Ntable=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+    % Call to corrNominal with option 'plots',true
+    corrNominal(Ntable,'plots',true);
+%}
+
 
 %% Beginning of code
 
@@ -486,10 +539,11 @@ dispresults=true;
 NoStandardErrors=false;
 conflev=0.95;
 conflimMethodCramerV='ncchisq';
+plots=false;
 
 options=struct('Lr',{Lr},'Lc',{Lc},'datamatrix',false,...
     'dispresults',dispresults,'NoStandardErrors',NoStandardErrors,...
-    'conflev',conflev,'conflimMethodCramerV',conflimMethodCramerV);
+    'conflev',conflev,'conflimMethodCramerV',conflimMethodCramerV,'plots',plots);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -520,6 +574,8 @@ end
 
 % Extract labels for rows and columns
 if verMatlab ==0 && (istable(N) || istimetable(N))
+    Lr=N.Properties.RowNames;
+    Lc=N.Properties.VariableNames;
     Ntable=N;
     N=table2array(N);
 else
@@ -560,7 +616,9 @@ nidot=sum(N,2);
 Ntheo=(nidot*ndotj/n);
 
 % Chi2 index
-Chi2=sum(((N(:)-Ntheo(:)).^2)./Ntheo(:));
+res=N(:)-Ntheo(:);
+contr2Chi2=(res.^2)./Ntheo(:);
+Chi2=sum(contr2Chi2);
 
 % pvalue of Chi2 test
 Chi2pval=chi2cdf(Chi2, (I-1)*(J-1),'upper');
@@ -781,9 +839,9 @@ end
 
 % Store 2x2 contingency table indexes
 if I==2 && J==2
-out.theta=th;
-out.Q=Q;
-out.U=U;
+    out.theta=th;
+    out.Q=Q;
+    out.U=U;
 end
 
 if dispresults == true
@@ -844,8 +902,40 @@ if dispresults == true
     end
 end
 
+plots=options.plots;
+if plots==true
+    % balloonplot is called with option  'contrib2Chi2',true
+    balloonplot(Ntable,'contrib2Chi2',true);
+    figure
+    nomiContribChi2=string(Lr(:))+"-"+string(Lc(:)');
+    % Pareto plot of individual contributions
+    [parhdl,axesPareto]=pareto(contr2Chi2,nomiContribChi2(:),0.6);
+
+    b=parhdl(1);
+    [~,indsor]=sort(contr2Chi2,'descend');
+    boo=res<0;
+    boosor=boo(indsor);
+    ax=axis;
+    nummod=floor(ax(2));
+    hold('on')
+    bar(b.XData(boosor),b.YData(boosor),'FaceColor','r')
+    hold('off')
+
+    % Add text labels
+    linelabels = string(round(100*parhdl(2).YData/Chi2,2));
+    text(axesPareto(2),parhdl(2).XData(1:nummod),parhdl(2).YData(1:nummod),linelabels(1:nummod),...
+        'Interpreter','none');
+    title('Pareto plot of individual contributions to Chi2 index')
+    ax=gca;
+    ax.Children=ax.Children([1 3 2]);
+    labels=["Cum proportion" "Pos. residuals" "Neg. residuals"];
+    legend(labels,'Location','best');
 end
 
+
+end
+
+%% Beginning of subfunctions
 % lochi compute lower confidence interval of chi2
 function [Lochi] = lochi(chival,df,conf)
 ulim = 1 - (1 - conf)/2;
