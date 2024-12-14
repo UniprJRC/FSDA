@@ -762,7 +762,7 @@ else
     for i=1:I
         testi= N(i, intersect(seqJ(N(i,:) ==ndotjmax), seqJ(N(i,:) == nidotmax)));
         if testi==n
-            Lcol(i) = min(testi==n);
+            Lcol(i) = all(testi==n);
         elseif N(i, Lcolmax) == ndotjmax
             Lcol(i) = Lcolmax;
         else
