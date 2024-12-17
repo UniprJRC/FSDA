@@ -1,5 +1,5 @@
 function [outSC]=Score(y,X,varargin)
-%Score computes the score test for transformation
+%Score computes the score test for Box-Cox transformation
 %
 %<a href="matlab: docsearchFS('Score')">Link to the help function</a>
 %
