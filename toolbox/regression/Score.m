@@ -50,6 +50,24 @@ function [outSC]=Score(y,X,varargin)
 %               Example - 'nocheck',true
 %               Data Types - boolean
 %
+%      tukey1df : Tukey's one df test. Boolean.
+%                 Tukey's one degree of freedome test for non-additivity.
+%                 The constructed variable is given by
+%                 \[
+%                  w_T(\lambda)= (\hat z(\lambda) - \overline  z(\lambda))^2 / 2 \overline  z(\lambda)
+%                 \]
+%                 where $z(\lambda)$ is the transformed response, and
+%                 $\hat z(\lambda)$ are the fitted values on the
+%                 transformed response. The t test on the constructed
+%                 variable above provides a test from departures from the
+%                 assumed linear model and is known in the literature as
+%                 Tukey's one degree of freedome test for non-additivity.
+%                 If tukey1df is true the test is computed and returned
+%                 inside output structure with fieldname ScoreT else
+%                 (default) the value of the test is not computed.
+%               Example - 'tukey1df',true
+%               Data Types - boolean
+%
 %  Output:
 %
 %  The output consists of a structure 'outSC' containing the following fields:
@@ -61,8 +79,12 @@ function [outSC]=Score(y,X,varargin)
 %                            specified, the vector will be of length 5 and
 %                            contains the values of the score test for the
 %                            5 most common values of lambda.
+%        outSC.ScoreT   =    value of the Tukey's one degree of freedome
+%                            test for non-additivity. Scalar. This output
+%                            is produced only if optional input tukey1df is
+%                            true.
 %        outSC.Lik      =    value of the likelihood. Scalar. This output
-%                           is produced only if input value Lik=1.
+%                           is produced only if optional input Lik=1.
 %
 % See also: FSRfan, ScoreYJ, ScoreYJpn, normBoxCox, normYJ
 %
@@ -122,11 +144,12 @@ if min(y)<0
 end
 
 Likboo=false;
+tukey1df=false;
 la=[-1 -0.5 0 0.5 1];
 if coder.target('MATLAB')
-    
-    options=struct('Lik',Likboo,'la',la,'nocheck',false,'intercept',false);
-    
+
+    options=struct('Lik',Likboo,'la',la,'nocheck',false,'intercept',false,'tukey1df',tukey1df);
+
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -144,9 +167,10 @@ if nargin > 2
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    
+
     la=options.la;
     Likboo=options.Lik;
+    tukey1df=options.tukey1df;
 end
 
 
@@ -154,6 +178,9 @@ end
 %  values of \lambda specified in vector la.
 lla=length(la);
 Sc=zeros(lla,1);
+if tukey1df == true
+    ScT=Sc;
+end
 
 % Lik is a vector which contains the likelihoods for diff. values of la.
 Lik=Sc;
@@ -178,25 +205,25 @@ for i=1:lla
         ylaim1=ylai-1;
         z=ylaim1/laiGlaim1;
         w=(ylai.*logy-ylaim1*(1/lai+logG))/laiGlaim1;
-        
+
         % OLD slow code
         % z=(y.^la(i)-1)/(la(i)*G^(la(i)-1));
         % w=(y.^la(i).*log(y)-(y.^la(i)-1)*(1/la(i)+log(G)))/(la(i)*G^(la(i)-1));
     end
-    
-    % Define augmented X matrix.
-    Xw=[X w];
-    [Q,R] = qr(Xw,0);
-    beta = R\(Q'*z);
-    residuals = z - Xw*beta;
-    % Sum of squares of residuals.
-    sse = norm(residuals)^2;
-    % Compute t stat for constructed added variable.
-    ri = R\eye(p+1);
-    xtxi = ri*ri';
-    se = sqrt(diag(xtxi*sse/(n-p-1)));
-    Sc(i) = -beta(end)/se(end);
-    
+
+    % Compute tstat on costructed variable
+    eyepplus1=eye(p+1);
+    [tstatw,sse]=ScoreCore(z,X,w,n,p,eyepplus1);
+    Sc(i)=tstatw;
+    if tukey1df == true
+        b=X\z;
+        zhat=X*b;
+        mz=sum(z)/n;
+        w=(zhat -mz).^2/(2*mz);
+        tstatw=ScoreCore(z,X,w,n,p,eyepplus1);
+        ScT(i)=tstatw; 
+    end
+
     % Store the value of the likelihood for the model which also contains
     % the constructed variable.
     if Likboo==true
@@ -206,8 +233,11 @@ end
 
 % Store values of the score test inside structure outSC.
 outSC.Score=Sc;
+if tukey1df == true
+    outSC.ScoreT=ScT;
+end
 
-% Store values of the likelihood inside structure outSC.
+% Store values of the likelihood inside structure outSC
 if Likboo==true
     outSC.Lik=Lik;
 else
@@ -215,4 +245,20 @@ else
 end
 
 end
+
+function [tstatw,sse]=ScoreCore(z,X,w,n,p,eyepplus1)
+% Define augmented X matrix.
+Xw=[X w];
+[Q,R] = qr(Xw,0);
+beta = R\(Q'*z);
+residuals = z - Xw*beta;
+% Sum of squares of residuals.
+sse = norm(residuals)^2;
+% Compute t stat of constructed added variable.
+ri = R\eyepplus1;
+xtxi = ri*ri';
+se = sqrt(diag(xtxi*sse/(n-p-1)));
+tstatw= -beta(end)/se(end);
+end
+
 %FScategory:REG-Transformations

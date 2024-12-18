@@ -74,7 +74,7 @@ function brushedUnits=fanplotFS(out,varargin)
 %               h : the axis handle of a figure where to send fanplotFS.
 %                   axis handle. This option be used to host the fanplotFS in
 %                   a subplot of a complex figure formed by different
-%                   panels 
+%                   panels
 %                   Example -'h',h1 where h1=subplot(2,1,1)
 %                   Data Types - Axes object (supplied as a scalar)
 %
@@ -1057,6 +1057,77 @@ else % else plot on separate panels
     ylabel(ht,laby,'Fontsize',FontSize);
 
 end
+
+if ismember('ScoreT',fieldnames(out))
+    ScoT=out.ScoreT;
+    figure
+    plot1=plot(ScoT(:,1),ScoT(:,2+intercept:end),'LineWidth',lwd);
+    set(gcf,'Tag','pl_tukey1df')
+
+    % Specify the line type for the units inside vector units
+    slin={'-';'--';':';'-.'};
+    slin=repmat(slin,ceil(lla/4),1);
+    set(plot1,{'LineStyle'},slin(1:lla));
+
+
+    if ~isempty(xlimx)
+        xlim(xlimx);
+    else
+        xlim(xrange)
+    end
+
+    if isempty(ylimy)
+        ylim([ylim1 ylim2]);
+    else
+        % Use limits specified by the user
+        ylim(ylimy);
+    end
+
+    % PLOT THE CONFIDENCE BANDS OF THE SCORE TESTS
+    rangeaxis=axis;
+
+    if dfvary==true
+        conflev=(1+conflev)/2;
+        % df = m-p
+        Tdelenv=tinv(repmat(conflev,length(ScoT(:,1)),1),repmat(ScoT(:,1),1,length(conflev))-p);
+
+        for i=1:length(conflev)
+            % Add adaptive confidence bands
+            line(ScoT(:,[1 1]),[-Tdelenv(:,i) Tdelenv(:,i)],'LineWidth',lwdenv,'color','r','Tag','env');
+        end
+    else
+        quant = sqrt(chi2inv(conflev,1));
+        numconflev=length(conflev);
+        V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
+        QUANT=[[quant;quant],[ -quant;-quant]];
+        % Assign to the confidence lines Tag env so that they cannot be selected
+        % with options databrush
+        line(V, QUANT,'LineWidth',lwdenv,'color','r','Tag','env');
+    end
+
+    % Add labels at the end of the search
+
+
+    if isempty(flabstep)
+        % Add labels at the end of the search
+        text(finalvalue*ones(lla,1),ScoT(end,2+intercept:end)',las,'FontSize',FontSize);
+    else
+        % Add labels in the steps specified by flabstep
+        for ii=1:length(flabstep)
+            posii=find(ScoT(:,1)>=flabstep(ii),1);
+            if ~isempty(posii)
+                text(ScoT(posii,1)*ones(lla,1),ScoT(posii,2+intercept:end)'+0.1,las,'FontSize',FontSize);
+            end
+        end
+    end
+
+    title('Tukey 1 df test');
+    % Add to the plot the x and y labels
+    xlabel(labx,'Fontsize',FontSize);
+    ylabel(laby,'Fontsize',FontSize);
+
+end
+
 %% Set the datatooltip for the fanplot
 
 if ~isempty(options.datatooltip)

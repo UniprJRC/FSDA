@@ -6,8 +6,7 @@ function [out]=FSRfan(y,X,varargin)
 % The transformations for negative and positive responses were determined
 % by Yeo and Johnson (2000) by imposing the smoothness condition that the
 % second derivative of zYJ(λ) with respect to y be smooth at y = 0.
-% However,
-% some authors, for example Weisberg (2005), query the physical
+% However,some authors, for example Weisberg (2005), query the physical
 % interpretability of this constraint, which is often violated in data
 % analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
 % Yeo-Johnson transformation to allow two values of the transformations
@@ -162,6 +161,24 @@ function [out]=FSRfan(y,X,varargin)
 %                the parameters of the optimization routine.
 %               Example - 'scoremle',true
 %               Data Types - logical
+%
+%      tukey1df : Tukey's one df test. Boolean.
+%                 Tukey's one degree of freedome test for non-additivity.
+%                 The constructed variable is given by
+%                 \[
+%                  w_T(\lambda)= (\hat z(\lambda) - \overline  z(\lambda))^2 / 2 \overline  z(\lambda)
+%                 \]
+%                 where $z(\lambda)$ is the transformed response, and
+%                 $\hat z(\lambda)$ are the fitted values on the
+%                 transformed response. The t test on the constructed
+%                 variable above provides a test from departures from the
+%                 assumed linear model and is known in the literature as
+%                 Tukey's one degree of freedome test for non-additivity.
+%                 If tukey1df is true the test is computed and returned
+%                 inside output structure with fieldname ScoreT else
+%                 (default) the value of the test is not computed.
+%               Example - 'tukey1df',true
+%               Data Types - boolean
 %
 %    usefmin :  use solver to find MLE of lambda. Boolean or struct.
 %               This option takes effect only when input option 'family' is
@@ -321,6 +338,17 @@ function [out]=FSRfan(y,X,varargin)
 %               of the fwd search for la(end).
 %               Note that this output is present only if input option
 %               scoremle is true
+%  out.ScoreT = (n-init+1) x length(la)+1 matrix containing the values of the
+%               Tukey's one degree of freedome test for non-additivity for
+%               each value of the transformation parameter.
+%               1st col = fwd search index;
+%               2nd col = value of the Tukey's test in each step
+%               of the fwd search for la(1);
+%               ...........
+%               end col = value of the Tukey's test in each step
+%               of the fwd search for la(end).
+%               Note that this output is present only if input option
+%               tukey1df is true.
 %    out.laMLE = (n-init+1) x 2*length(la)+1 matrix containing the values of the
 %               maximum likelihood estimate of laP and laN.
 %               Columns 2:3 are associated with the search which has
@@ -623,6 +651,7 @@ end
 family='BoxCox';
 scoremle=false;
 usefmin=true;
+tukey1df=false;
 plo=1;
 lms=1;
 conflev=0.99;
@@ -653,7 +682,7 @@ if coder.target('MATLAB')
             'laby',laby,'xlimx',xlimx,'ylimy',ylimy,'lwd',lwd,...
             'lwdenv',lwdenv,'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,...
             'tag',tag,'intercept',intercept,'msg',msg,'nocheck',nocheck,'family',family,...
-            'scoremle',scoremle,'usefmin',usefmin);
+            'scoremle',scoremle,'usefmin',usefmin,'tukey1df',tukey1df);
         
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
@@ -678,6 +707,8 @@ if nargin > 2
     family=options.family;
     la=options.la;
     init=options.init;
+    tukey1df=options.tukey1df;
+
     if coder.target('MATLAB')
         plo=options.plots;
         scoremle=options.scoremle;
@@ -767,14 +798,10 @@ end
 % Initialize matrix which will contain the score test
 Sco=[((init):n)'  NaN(n-init+1,lla)];
 
-% if BoxCox==-1
-%     Scop=Sco;
-%     Scon=Sco;
-% elseif BoxCox==-2
+ScoT=Sco;
 Scop=Sco;
 Scon=Sco;
 Scob=Sco;
-% end
 
 if scoremle == true
     Scomle=Sco;
@@ -867,22 +894,30 @@ for i=1:lla
             if (mm>=init)
                 if BoxCox==1
                     % Compute and store the value of the score test
-                    [outSC]=Score(yb,Xb,'la',la(i),'nocheck',true,'Lik',false);
+                    [outSC]=Score(yb,Xb,'la',la(i),'nocheck',true,'Lik',false,'tukey1df',tukey1df);
                     % Store score test for the units belonging to subset
                     Sco(mm-init+1,i+1)=outSC.Score(1);
+
+                if tukey1df==true
+                    % Store Tukey's one df test for non-additivity
+                     ScoT(mm-init+1,i+1)=outSC.ScoreT(1);
+                end
+
                     
                 elseif BoxCox==0
                     % Compute and store the value of the score test using Yeo
                     % and Johnson transformation (just the global test)
-                    [outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',true,'Lik',false);
+                    [outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',true,'Lik',false,'tukey1df',tukey1df);
                     % Store score test for the units belonging to subset
                     Sco(mm-init+1,i+1)=outSC.Score(1);
+
+               if tukey1df==true
+                    % Store Tukey's one df test for non-additivity
+                     ScoT(mm-init+1,i+1)=outSC.ScoreT(1);
+                end
+
                     
                 elseif BoxCox==-1 || BoxCox==-2
-                    %[outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',true);
-                    % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',true);
-                    % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',true);
-                    %                     if i==1
                     
                     if coder.target('MATLAB')
                         if mm==init
@@ -905,7 +940,7 @@ for i=1:lla
                 if scoremle == true
                     Scomle(mm-init+1,i+1)=outSCpn.Score(1,5);
                 end
-                
+               
             end
             
             % Implicitly control the rank of Xb checking the condition number
@@ -989,6 +1024,10 @@ end
 out=struct;
 
 out.Score=Sco;
+if tukey1df == true
+    out.ScoreT=ScoT;
+end
+
 out.la=la;
 out.bs=binit;
 out.Un=Un;
@@ -1007,6 +1046,7 @@ else
     out.Scoren=NaN;
     out.Scoreb=NaN;
 end
+
 
 if scoremle == true
     out.Scoremle=Scomle;

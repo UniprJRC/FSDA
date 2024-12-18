@@ -6,7 +6,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. A vector with n elements that
-%               contains the response variable. 
+%               contains the response variable.
 %               It can be either a row or a column vector.
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
@@ -48,6 +48,24 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %                 unchanged. In other words, the additional column of ones
 %                 for the intercept is not added. As default nocheck=false.
 %               Example - 'nocheck',true
+%               Data Types - boolean
+%
+%      tukey1df : Tukey's one df test. Boolean.
+%                 Tukey's one degree of freedome test for non-additivity.
+%                 The constructed variable is given by
+%                 \[
+%                  w_T(\lambda)= (\hat z(\lambda) - \overline  z(\lambda))^2 / 2 \overline  z(\lambda)
+%                 \]
+%                 where $z(\lambda)$ is the transformed response, and
+%                 $\hat z(\lambda)$ are the fitted values on the
+%                 transformed response. The t test on the constructed
+%                 variable above provides a test from departures from the
+%                 assumed linear model and is known in the literature as
+%                 Tukey's one degree of freedome test for non-additivity.
+%                 If tukey1df is true the test is computed and returned
+%                 inside output structure with fieldname ScoreT else
+%                 (default) the value of the test is not computed.
+%               Example - 'tukey1df',true
 %               Data Types - boolean
 %
 %  Output:
@@ -143,12 +161,13 @@ vvarargin=varargin;
 
 la=[-1 -0.5 0 0.5 1];
 Likboo=false;
+tukey1df=false;
 
 if coder.target('MATLAB')
-    
+
     if nargin>2
-        options=struct('Lik',Likboo,'la',la,'nocheck',false,'intercept',false); % ,'mingreater0',mingreater0);
-        
+        options=struct('Lik',Likboo,'la',la,'nocheck',false,'intercept',false,'tukey1df',tukey1df); % ,'mingreater0',mingreater0);
+
         [varargin{:}] = convertStringsToChars(varargin{:});
         UserOptions=varargin(1:2:length(varargin));
         % Check if number of supplied options is valid.
@@ -165,9 +184,10 @@ if nargin > 2
         options.(varargin{i})=varargin{i+1};
     end
 
-la=options.la;
-% mingreater0=options.mingreater0;
-Likboo=options.Lik;
+    la=options.la;
+    % mingreater0=options.mingreater0;
+    Likboo=options.Lik;
+    tukey1df=options.tukey1df;
 end
 
 
@@ -175,6 +195,11 @@ end
 %  values of \lambda specified in vector la.
 lla=length(la);
 Sc=zeros(lla,1);
+
+if tukey1df == true
+    ScT=Sc;
+end
+
 
 % Lik is a vector that contains the likelihoods for diff. values of la.
 if Likboo==true
@@ -198,11 +223,11 @@ G=exp(logG);
 for i=1:lla
     z=y; % Initialized z and w.
     w=y;
-    
+
     lai=la(i);
     % Glaminus1=G^(lai-1);
     Glaminus1=exp((lai-1)*logG);
-    
+
     % Define transformed and constructed variable
     % transformation for non negative values.
     % Compute transformed values and constructed variables depending on lambda
@@ -220,7 +245,7 @@ for i=1:lla
         z(nonnegs)=znonnegs;
         w(nonnegs)=znonnegs.*(logvpos/2-logG);
     end
-    
+
     % Transformation and constructed variables for negative values.
     if   abs(lai-2)>1e-8 % la not equal 2
         twomlambdai=2-lai;
@@ -229,36 +254,34 @@ for i=1:lla
         qneg=twomlambdai* Glaminus1;
         znegs=(1-vnegtwomlambdai )  /qneg;
         z(negs)=znegs;
-        
+
         k=logG-1/twomlambdai;
         w(negs)=(  vnegtwomlambdai .*  (logvneg+k)   -k  )/qneg;
-        
+
     else  % la equals 2
         znegs=-logvneg/G;
         z(negs)=znegs;
         w(negs)=logvneg.*(logvneg/2+logG)/G;
     end
-    
-    % Compute residual sum of squares for null (reduced) model.
+
     betaR=X\z;
-    residualsR = z - X*betaR;
+    zhat=X*betaR;
+    residualsR = z - zhat;
+    % Compute residual sum of squares for null (reduced) model.
     % Sum of squares of residuals.
-    SSeR = norm(residualsR)^2;
-    
-    
-    % Define augmented X matrix for overall constructed variable.
-    Xw=[X w];
-    
-    % New code
-    beta=Xw\z;
-    residuals = z - Xw*beta;
-    % Sum of squares of residuals.
-    SSe = norm(residuals)^2;
-    Ftestnum=(SSeR-SSe);
-    Ftestden=SSe/(n-p-1);
-    Ftest=Ftestnum/Ftestden;
-    Sc(i)=-sign(beta(end))*sqrt(Ftest);
-    
+    residualsR2=(residualsR).^2;
+    SSeR = sum(residualsR2);
+
+    [tstatw,SSe]=ScoreYJCore(z,X,w,n,p,SSeR);
+    Sc(i)=tstatw;
+
+    if tukey1df == true
+        mz=sum(z)/n;
+        w=(zhat -mz).^2/(2*mz);
+        tstatw=ScoreYJCore(z,X,w,n,p,SSeR);
+        ScT(i)=tstatw;
+    end
+
     % Store the value of the likelihood for the model which also contains
     % the constructed variable.
     if Likboo==true
@@ -268,6 +291,9 @@ end
 
 % Store values of the score test inside structure outSC.
 outSC.Score=Sc;
+if tukey1df==true
+    outSC.ScoreT=ScT;
+end
 
 % Store values of the likelihood inside structure outSC.
 if Likboo==true
@@ -276,5 +302,22 @@ else
     outSC.Lik=NaN;
 end
 
+end
+
+
+function [tstatw,SSe]=ScoreYJCore(z,X,w,n,p,SSeR)
+
+% Define augmented X matrix for overall constructed variable.
+Xw=[X w];
+
+% New code
+beta=Xw\z;
+residuals = z - Xw*beta;
+% Sum of squares of residuals.
+SSe = norm(residuals)^2;
+Ftestnum=(SSeR-SSe);
+Ftestden=SSe/(n-p-1);
+Ftest=Ftestnum/Ftestden;
+tstatw=-sign(beta(end))*sqrt(Ftest);
 end
 %FScategory:REG-Transformations
