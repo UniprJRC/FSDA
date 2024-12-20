@@ -30,7 +30,7 @@ function [h,Ntable] = balloonplot(N,varargin)
 %
 % contrib2Chi2: bubble chart of contribution to chi2 statistic test.
 %               Boolean. If this option is true, squared Pearson rediduals
-%               are computed and shown through bubble chart. Squared
+%               are comp    uted and shown through bubble chart. Squared
 %               Pearson residuals associated with positive (negative)
 %               associations are shown in blue (red). Pearson residuals are
 %               defined as ${n_{ij}-n_{ij}^*})/{\sqrt{n_{ij}^*}$ where
