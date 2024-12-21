@@ -1699,6 +1699,7 @@ if ~isempty(datatooltip)
     hTargetlwd=[];
     hTargetcol=[];
     f=getfield(rendererinfo,'GraphicsRenderer');
+    disp(f)
     if ~isempty(f)
         %chkgpu=gpuDevice; %#ok<NASGU>
         % datacursormode on;
