@@ -1698,8 +1698,8 @@ if ~isempty(datatooltip)
     hTarget=[];
     hTargetlwd=[];
     hTargetcol=[];
-    f=getfield(opengl('data'),'Software');
-    if ~f
+    f=getfield(rendererinfo,'GraphicsRenderer');
+    if ~isempty(f)
         %chkgpu=gpuDevice; %#ok<NASGU>
         % datacursormode on;
         hdt = datacursormode;
