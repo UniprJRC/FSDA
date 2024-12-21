@@ -1698,12 +1698,7 @@ if ~isempty(datatooltip)
     hTarget=[];
     hTargetlwd=[];
     hTargetcol=[];
-    f=getfield(rendererinfo,'GraphicsRenderer');
-    disp('ShowContentF')
-    disp(f)
-    if ~isempty(f)
-        %chkgpu=gpuDevice; %#ok<NASGU>
-        % datacursormode on;
+    try
         hdt = datacursormode;
         set(hdt,'Enable','on');
         % If options.datatooltip is not a struct then use our default options
@@ -1718,7 +1713,7 @@ if ~isempty(datatooltip)
         % Declare a custom datatooltip update function to display additional
         % information about the selected unit
         set(hdt,'UpdateFcn',{@resfwdplotLbl,out,LineColor});
-    else
+    catch
 
         disp('No graphical device, interactive datatooltip not enabled')
     end

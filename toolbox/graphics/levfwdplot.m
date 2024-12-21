@@ -1214,8 +1214,6 @@ if ~isempty(options.datatooltip)
     hTargetlwd=[];
     hTargetcol=[];
     try
-        % chkgpu=gpuDeviceCount; 
-        % datacursormode on;
         hdt = datacursormode;
         set(hdt,'Enable','on');
         % If options.datatooltip is not a struct then use our default options
