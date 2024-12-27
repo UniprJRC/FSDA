@@ -313,9 +313,12 @@ else
     boo=Res(:)>0;
     bubblechart(xcoo(boo),ycoo(boo),Res2(boo),'b');
     hold('on')
-    h=bubblechart(xcoo(~boo),ycoo(~boo),Res2(~boo),'r');
+    bubblechart(xcoo(~boo),ycoo(~boo),Res2(~boo),'r');
     hold('off')
-    legend('Pos.','Neg.','Location','best');
+    clickableMultiLegend('Pos.','Neg.','Location','best');
+    % Lock SizeLimits for consistency
+    bubblelim(gca,[min(min(Res2)) max(max(Res2))]);
+
     title('Pearson residuals$^2: (\pm) ({n_{ij}-n_{ij}^*})^2/{{n_{ij}^*}}$', ...
         'Interpreter','latex','FontSize',16)
     h=gcf;
