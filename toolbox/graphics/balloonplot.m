@@ -28,9 +28,10 @@ function [h,Ntable] = balloonplot(N,varargin)
 %               Example - 'ax',myaxes
 %               Data Types - Axes object
 %
-% contrib2Chi2: bubble chart of contribution to chi2 statistic test.
-%               Boolean. If this option is true, squared Pearson rediduals
-%               are comp    uted and shown through bubble chart. Squared
+% contrib2Index: bubble chart of contribution to a statistic index.
+%               Boolean or matrix (table) of size IxJ. 
+%               If this option is true, squared Pearson rediduals
+%               are computed and shown through bubble chart. Squared
 %               Pearson residuals associated with positive (negative)
 %               associations are shown in blue (red). Pearson residuals are
 %               defined as ${n_{ij}-n_{ij}^*})/{\sqrt{n_{ij}^*}$ where
@@ -39,9 +40,11 @@ function [h,Ntable] = balloonplot(N,varargin)
 %               independence hypothesis. The sum of the squares of the
 %               Pearson residuals is equal to the $Chi^2$ statistic to test
 %               the independence between rows and columns of the
-%               contingency table. The default value of contrib2Chi2 is
+%               contingency table. The default value of contrib2INdex is
 %               false that is no transformation is done on the orginal
-%               contingency table.
+%               contingency table. If contrib2INdex is equal to a matrix of
+%               size IxJ the balloon plots shows circles which are
+%               proportional to the absolute values of this matrix.
 %               Example - 'contrib2Chi2',true
 %               Data Types - boolean
 %
@@ -160,9 +163,10 @@ function [h,Ntable] = balloonplot(N,varargin)
 %}
 
 %{
-   %% balloonplot with option contrib2Chi2.
+   %% balloonplot with option contrib2Index as boolean.
    % Load the Housetasks data (a contingency table containing the
     % frequency of execution of 13 house tasks in the couple).
+    % This ia a German sample in young, married, heterosexual couples in the late 1970s,
     N=[156	14	2	4;
         124	20	5	4;
         77	11	7	13;
@@ -180,9 +184,22 @@ function [h,Ntable] = balloonplot(N,varargin)
         'Shopping' 'Official' 'Driving' 'Finances' 'Insurance'...
         'Repairs' 'Holidays'};
     colslab={'Wife'	'Alternating'	'Husband'	'Jointly'};
+    % If the DimensionNames is set the xlabel and ylabel will be added
+    % automatically.
+    Ntable.Properties.DimensionNames=["Repartition in the couple" "13 housetasks"];
     Ntable=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
-    % Call to balloonplot with option 'contrib2Chi2',true
-    balloonplot(Ntable,'contrib2Chi2',true);
+    % Call to balloonplot with option 'contrib2Index' boolean equal to
+    % true. In this case the contributions to the Chi2 statistic
+    % are shown. The color is associated to the sign.
+    balloonplot(Ntable,'contrib2Index',true);
+%}
+
+
+%{
+    %% Example of ballonplot with  option contrib2Index as a matrix.
+    load SportHealth.mat
+    out=corrOrdinal(SportHealth);
+    balloonplot(SportHealth,'contrib2Index',out.IndCont2CminusD)
 %}
 
 %% Beginning of code
@@ -231,9 +248,9 @@ else
     Lc=cellstr(strcat('c',num2str((1:J)')));
 end
 ax='';
-contrib2Chi2=false;
+contrib2Index=[];
 options=struct('Lr',{Lr},'Lc',{Lc},'datamatrix',false,...
-    'ax',ax,'contrib2Chi2',contrib2Chi2);
+    'ax',ax,'contrib2Index',contrib2Index);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -259,7 +276,7 @@ if ~isempty(UserOptions)
     ax=options.ax;
     Lr=matlab.lang.makeValidName(Lr);
     Lc=matlab.lang.makeValidName(Lc);
-    contrib2Chi2=options.contrib2Chi2;
+    contrib2Index=options.contrib2Index;
 end
 
 % Extract labels for rows and columns
@@ -297,36 +314,55 @@ xcoo=repmat(1:J,I,1);
 xcoo=xcoo(:);
 Nvector=N(:);
 
-if contrib2Chi2==false
+if isempty(contrib2Index)
     if isempty(ax)
         h=bubblechart(xcoo,ycoo,Nvector,Nvector);
     else
         h=bubblechart(ax,xcoo,ycoo,Nvector,Nvector);
     end
-else
-    % tiledlayout(1,1);
-    % nexttile
-    Ntheo=sum(N,2)*sum(N,1)/sum(N,"all");
-    Res=(N-Ntheo)./sqrt(Ntheo);
-    Res2=Res.^2;
-    Res2=round(Res2,2);
-    boo=Res(:)>0;
-    bubblechart(xcoo(boo),ycoo(boo),Res2(boo),'b');
+else % In this case contrib2Index is a scalar logical or a vector
+    if isequal(contrib2Index,true)
+        % tiledlayout(1,1);
+        % nexttile
+        Ntheo=sum(N,2)*sum(N,1)/sum(N,"all");
+        Res=(N-Ntheo)./sqrt(Ntheo);
+        boopos=Res(:)>0;
+        booneg=Res(:)<0;
+        Res2=Res.^2;
+        Res2=round(Res2,2);
+    else
+        Res2=contrib2Index;
+        boopos=Res2(:)>0;
+        booneg=Res2(:)<0;
+    end
+
+    bubblechart(xcoo(boopos),ycoo(boopos),Res2(boopos),'b');
     hold('on')
-    bubblechart(xcoo(~boo),ycoo(~boo),Res2(~boo),'r');
+    % Show contributions with negative sign in red
+    bubblechart(xcoo(booneg),ycoo(booneg),Res2(booneg),'r');
+
+    boozero=Res2(:)==0;
+    if any(boozero)
+        disp('Circles associated with 0 contribution are not shown')
+    end
+
     hold('off')
     clickableMultiLegend('Pos.','Neg.','Location','best');
     % Lock SizeLimits for consistency
     bubblelim(gca,[min(min(Res2)) max(max(Res2))]);
 
-    title('Pearson residuals$^2: (\pm) ({n_{ij}-n_{ij}^*})^2/{{n_{ij}^*}}$', ...
-        'Interpreter','latex','FontSize',16)
+
+    if isequal(contrib2Index,true)
+        title('Pearson residuals$^2: (\pm) ({n_{ij}-n_{ij}^*})^2/{{n_{ij}^*}}$', ...
+            'Interpreter','latex','FontSize',16)
+    end
     h=gcf;
+
 end
 
 axes1=gca;
 jall=1:J;
-% If there are more than 70 columns just show a sistematic sample of
+% If there are more than 70 columns just show a systematic sample of
 % (approximately) 70 of them
 if J<=70
     set(axes1,'XTick',jall,'XTickLabel',Lc,'TickLabelInterpreter','none');
@@ -337,7 +373,7 @@ else
 end
 set(axes1,'YTick',1:I,'YTickLabel',flip(Lr),'TickLabelInterpreter','none');
 bubblesize([3 20])
-if contrib2Chi2==false
+if isempty(contrib2Index)
     colorbar(axes1)
 else
     % lgd.Layout.Tile = 'east';
@@ -346,5 +382,14 @@ else
 end
 grid('on')
 
+
+% Add xlabel and ylabel to the balloonplot if they are present inside 
+% DimensionNames
+if ~strcmp(Ntable.Properties.DimensionNames{1},'Row')
+    xlabel(Ntable.Properties.DimensionNames{1})
+end
+if ~strcmp(Ntable.Properties.DimensionNames{2},'Variables')
+    ylabel(Ntable.Properties.DimensionNames{2})
+end
 end
 %FScategory:VIS-Mult

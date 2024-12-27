@@ -89,6 +89,21 @@ function out=corrOrdinal(N, varargin)
 %               ignored if NoStandardErrors=true).
 %               Example - 'conflev',0.99
 %               Data Types - double
+%    plots:    balloonplot and Pareto plot
+%              of individual contributions to $C-D$. Boolean.
+%              If plots is true the following two plots of individual
+%              contributions to the numerator of correlation indexesare shown on the screen.
+%              1) a bubble plot (ballonplot);
+%              2) a Pareto plot.
+%              In both plots entries of the contingency table associated
+%              with positive association (that is number of concordant
+%              pairs greater than number of discordant pairs) are shown in
+%              blue while those associated with negative association (that
+%              is number of concordant pairs smaller than number of
+%              discordant pairs are shown in red. The default value of
+%              plots is false.
+%              Example - 'plots',true
+%              Data Types - Boolean
 %
 %  Output:
 %
@@ -135,6 +150,12 @@ function out=corrOrdinal(N, varargin)
 %                   (third column), upper confidence limit (fourth column).
 %                   Note that the standard errors in this table are computed not
 %                   assuming the null hypothesis of independence.
+% out.IndContr2CminusD = IxJ array containing individual contributions to
+%                   the commpon numerator of all the indexes above (namely
+%                   C-D).
+% out.IndContr2CminusDtable = IxJ table containing individual contributions to
+%                   the commpon numerator of all the indexes above (namely
+%                   C-D).
 %
 %
 % More About:
@@ -145,6 +166,9 @@ function out=corrOrdinal(N, varargin)
 % variable also is higher on the other variable, and a pair of observations
 % is discordant if the subject who is higher on one variable is lower on
 % the other variable.
+% More formally, a pair (i,j), i=1, 2, ..., n is concordant if
+% (x(i)-x(j)) $\times$ (y(i)-y(j))>0.
+% It is discordant if (x(i)-x(j) ) $\times$ (y(i)-y(j))<0
 % Let $C$ be the total number of concordant pairs (concordances) and $D$
 % the total number of discordant pairs (discordances) . If $C > D$ the
 % variables have a positive association, but if $C < D$ then the variables
@@ -319,7 +343,7 @@ function out=corrOrdinal(N, varargin)
 %
 % Goktas, A. and Oznur, I. (2011), A comparision of the most commonly used
 % measures of association for doubly ordered square contingency tables via
-% simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37, 
+% simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37,
 %
 % Goodman, L.A. and Kruskal, W.H. (1954), Measures of association for
 % cross classifications, "Journal of the American Statistical
@@ -444,15 +468,11 @@ function out=corrOrdinal(N, varargin)
     % and 'Very satisfied') for a sample of 300 persons
     % Input data is matlab table Ntable:
     N = [24 23 30;19 43 57;13 33 58];
-    rownam={'Less_than_5000',  'Between_5000_and_25000' 'Greater_than_25000'};
-    colnam= {'Dissatisfied' 'Moderately_satisfied' 'Very_satisfied'};
-    if verLessThan('matlab','8.2.0') ==0
-        Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(rownam),'VariableNames',matlab.lang.makeValidName(colnam));
-        %  Check relationship
-        out=corrOrdinal(Ntable);
-    else
-        out=corrOrdinal(N);
-    end
+    rownam={'LessThan5000',  'Between5000And25000' 'GreaterThan25000'};
+    colnam= {'Dissatisfied' 'ModeratelySatisfied' 'VerySatisfied'};
+    Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(rownam),'VariableNames',matlab.lang.makeValidName(colnam));
+    % Check relationship
+    out=corrOrdinal(Ntable);
 %}
 
 %{
@@ -465,17 +485,18 @@ function out=corrOrdinal(N, varargin)
     labels_rows= {'Sufficient' 'Good' 'Very_good'};
     labels_columns= {'Sufficient' 'Good' 'Very_good'};
     out=corrOrdinal(N,'Lr',labels_rows,'Lc',labels_columns,'dispresults',false);
-    if verLessThan('matlab','8.2.0') ==0
-        % out.Ntable uses labels for rows and columns which are supplied
-        disp(out.Ntable)
-    end
+    % out.Ntable uses labels for rows and columns which are supplied
+    disp(out.Ntable)
+%}
+
+%{
+    %% Example of use of option plots.
+    % Exercise Frequency vs. Self-Reported Health
+    load SportHealth.mat
+    out=corrOrdinal(SportHealth,'plots',true);
 %}
 
 %% Beginning of code
-
-% Check MATLAB version. If it is not smaller than 2013b than output is
-% shown in table format
-verMatlab=verLessThan('matlab','8.2.0');
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
 % last case the contingency table is built using the first two columns of the
@@ -519,9 +540,11 @@ end
 dispresults=true;
 NoStandardErrors=false;
 conflev=0.95;
+plots=false;
 
 options=struct('Lr',{Lr},'Lc',{Lc},'datamatrix',false,...
-    'dispresults',dispresults,'NoStandardErrors',NoStandardErrors,'conflev',conflev);
+    'dispresults',dispresults,'NoStandardErrors',NoStandardErrors, ...
+    'conflev',conflev,'plots',plots);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -535,7 +558,7 @@ if ~isempty(UserOptions)
         % Check if user options are valid options
         aux.chkoptions(options,UserOptions)
     end
-    
+
     % Write in structure 'options' the options chosen by the user
     if nargin > 2
         for i=1:2:length(varargin)
@@ -547,12 +570,14 @@ if ~isempty(UserOptions)
     conflev=options.conflev;
     Lr  = options.Lr;
     Lc  = options.Lc;
-    
+    plots=options.plots;
 end
 
 % Extract labels for rows and columns
-if verMatlab ==0 && istable(N)
+if istable(N)
     Ntable=N;
+    Lr=N.Properties.RowNames;
+    Lc=N.Properties.VariableNames;
     N=table2array(N);
 else
     if isempty(Lr)
@@ -560,21 +585,19 @@ else
     else
         % Check that the length of Lr is equal to I
         if length(Lr)~=I
-            error('Wrong length of row labels');
+            error('FSDA:CorrOrdinal:WrongInput','Wrong length of row labels');
         end
     end
-    
+
     if isempty(Lc)
         Lc=cellstr(num2str((1:J)'));
     else
         % Check that the length of Lc is equal to J
         if length(Lc)~=J
-            error('Wrong length of column labels');
+            error('FSDA:CorrOrdinal:WrongInput','Wrong length of column labels');
         end
     end
-    if verMatlab ==0
-        Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(Lr),'VariableNames',matlab.lang.makeValidName(Lc));
-    end
+    Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(Lr),'VariableNames',matlab.lang.makeValidName(Lc));
 end
 
 
@@ -582,7 +605,7 @@ end
 
 n = sum(sum(N)); %sample size
 
-if NoStandardErrors == true
+if NoStandardErrors == true && plots==false
     % Fast way to compute number of concordances and discordances if the
     % standard errors are not required
     C=0;
@@ -599,40 +622,40 @@ if NoStandardErrors == true
             end
         end
     end
-    
+
 else
     % con = nr \times nc matrix which will contain concordant pairs
     con = zeros(I,J);
     % dis = nr \times nc matrix which will contain discordace pairs
     dis = con;
-    
+
     for i = 1:I
         for j = 1:J
-            % xgyg = xgreater and y greater
+            % xgyg = x greater and y greater
             xgyg=N(i+1:I,j+1:J);
-            % xsys = xsmaller and y smaller
+            % xsys = x smaller and y smaller
             xsys=N(1:i-1,1:j-1);
             % store concordant pairs with i,j
             con(i,j) =   sum(xgyg(:))+ sum(xsys(:));
-            % xgys = xgreater and y smaller
+            % xgys = x greater and y smaller
             xgys=N(i+1:I,1:j-1);
-            % xsyg = xsmaller and y greater
+            % xsyg = x smaller and y greater
             xsyg=N(1:i-1,j+1:J);
             % store discordant pairs with i,j
             dis(i,j) =   sum(xgys(:))+ sum(xsyg(:));
         end
     end
-    
-    C = sum(sum(N.*con))/2; %number of concordances
-    D = sum(sum(N.*dis))/2; %number of discordances
-    
+
+    Ncon=N.*con/2;
+    Ndis=N.*dis/2;
+    C = sum(Ncon,'all'); % number of concordant pairs
+    D = sum(Ndis,'all');  % number of discordant pairs
+
 end
 
 out=struct;
 out.N=N;
-if verMatlab ==0
-    out.Ntable=Ntable;
-end
+out.Ntable=Ntable;
 
 % totpairs= total number of pairs
 totpairs=0.5*n*(n-1);
@@ -658,7 +681,7 @@ tauc=m*2*(C-D)/( n^2 *(m-1));
 wr=n^2-sum(nidot.^2);
 som = 2*(C-D)/wr;
 
-if NoStandardErrors
+if NoStandardErrors && plots == false
     segamH0=NaN;  zgam=NaN;  pvalgam=NaN;
     setauaH0=NaN; ztaua=NaN; pvaltaua=NaN;
     setaubH0=NaN; ztaub=NaN; pvaltaub=NaN;
@@ -670,32 +693,32 @@ if NoStandardErrors
     setauc=NaN;
     sesom=NaN;
 else
-    
+
     % Compute required elements to find standard errors of the various indexes
     wc=n^2-sum(ndotj.^2);
-    
+
     d=con-dis;
     sumdij2nij=sum( N(:) .* (d(:).^2) );
-    
+
     %%  Goodman-Kruskal's gamma statistic
     % Find the standard error of the Goodman-Kruskal's gamma statistic
     s2gam=  (4/ (C+D)^4 )*sum(N(:).* ((D*con(:)-C*dis(:)).^2) );
-    
+
     % The lines below contain an alternative formula to compute the
     % variance
     %  psi = 2*(D*con-C*dis)/(C+D)^2;
     % s2 = Goodman-Kruskal's gamma variance
     % s2gamCHK = sum(sum(N.*(psi.^2))) - sum(sum((N.*psi)))^2;
-    
-    % segam = Goodman-Kruskal's asymtotic standard error
+
+    % segam = Goodman-Kruskal's asymptotic standard error
     segam = sqrt(s2gam);
     % Standard error used to find the value of the test under the independence
     % hypothesis.
     segamH0=sqrt((1/(C+D)^2)*( sumdij2nij  - 4*(C-D)^2/n  ));
-    
+
     zgam = gam/segamH0; % z-score
     pvalgam = 2*(1 - normcdf(abs(zgam))); %p-value (two-sided)
-    
+
     %% tau-a statistic
     % Find standard error of tau-a
     Ci=con-dis;
@@ -703,13 +726,13 @@ else
     Cbar=sum(Ci)/n;
     % setaua = standard error used to compute the confidence interval
     setaua= sqrt( 2/(n*(n-1)) * ((2*(n-2))/(n*(n-1)^2)* sum((Ci(:) - Cbar).^2) + 1 - taua^2));
-    
+
     % setauaH0 = standard error used to find the value of the test under the independence
     % hypothesis.
     setauaH0 = sqrt(2*(2*n+5)/(9*n*(n-1)));
     ztaua = taua/setauaH0; % z-score
     pvaltaua = 2*(1 - normcdf(abs(ztaua))); %p-value (two-sided)
-    
+
     %% tau-b statistic
     % For computationl purposes it is better to use relative frequencies
     % rather than absolute frequencies
@@ -722,46 +745,46 @@ else
         (Pdiff * repmat(nidot/n,1,J) * delta2)/delta1;
     % setaub = standard errot used to compute the confidence interval
     setaub= sqrt(( (  sum(Pi(:) .* tauij(:).^2) - sum(Pi(:) .* tauij(:)).^2)/(delta1 * delta2)^4)/n);
-    
+
     % The formula written in the help section (which uses the absolute
     % frequencies rather than the relative frequencies would be
     %     w=sqrt(wr*wc);
     %     tauijCHK=(2*n*d+2*(C-D)*repmat(ndotj/n,I,1) ) * w/n^2 + ...
     %         2*(C-D)* repmat(nidot/n,1,J) * sqrt(wc/wr);
     %     setaubCHK= sqrt((n/w^4)*  (   n*sum(N(:) .* tauijCHK(:).^2) -    sum(N(:) .* tauijCHK(:)).^2   ));
-    
+
     % Formula below from the computational point of view is highly
     % inefficient
     %v=nidot*ones(1,J)+wc*ones(I,1)*ndotj;
     %setaubnew=sqrt((1/w^4)*( sum( N(:).*(  (2*w.*d(:)+taub*v(:)).^2 ) ) -n^3 *taub^2*((wr+wc)^2)));
-    
+
     % Standard error used to find the value of the test under the independence
     % hypothesis.
     setaubH0=sqrt( (4/(wr*wc))*(sumdij2nij - (2*(C-D))^2/n ));
     ztaub = taub/setaubH0; % z-score
     pvaltaub = 2*(1 - normcdf(abs(ztaub))); %p-value (two-sided)
-    
+
     %% (Stuart's) tau-c statistic
     % setauc = standard errot used to compute the confidence interval
     setauc= sqrt( 4*m^2/((m-1)^2*n^4) *  (sumdij2nij- 4*(C-D)^2/n ));
-    
+
     % Standard error used to find the value of the test under the independence
     % hypothesis.
     setaucH0=setauc;
-    
+
     ztauc = tauc/setaucH0; % z-score
     pvaltauc = 2*(1 - normcdf(abs(ztauc))); %p-value (two-sided)
-    
+
     %% Somers' D statistic
     % Find standard error of Somers D stat
     nidotrep=repmat(nidot,1,J);
-    
+
     % sesom = standard errot used to compute the confidence interval
     sesom=sqrt((4/(wr.^4)) *  sum( N(:) .* ((wr*(con(:)-dis(:))) - (2*(C-D))*(n-nidotrep(:)) ).^2));
-    
+
     % sesomH0 = standard error used to test the independence hypothesis
     sesomH0= sqrt( 4/(wr^2) * (sumdij2nij   - (2*(C-D))^2/n ));
-    
+
     zsom = som/sesomH0; % z-score
     pvalsom = 2*(1 - normcdf(abs(zsom))); %p-value (two-sided)
 end
@@ -791,10 +814,8 @@ TestInd=[gam segamH0 zgam pvalgam;
 out.TestInd=TestInd;
 rownam={'gamma' 'taua' 'taub' 'tauc' 'dyx'};
 colnamTestInd={'Coeff' 'se' 'zscore' 'pval'};
-if verMatlab ==0
-    TestIndtable=array2table(TestInd,'RowNames',rownam,'VariableNames',colnamTestInd);
-    out.TestIndtable=TestIndtable;
-end
+TestIndtable=array2table(TestInd,'RowNames',rownam,'VariableNames',colnamTestInd);
+out.TestIndtable=TestIndtable;
 
 % Store confidence intervals
 talpha=-norminv((1-conflev)/2);
@@ -809,46 +830,66 @@ ConfLim(ConfLim<0)=0;
 out.ConfLim=ConfLim;
 colnamConfInt={'Value' 'StandardError' 'ConflimL' 'ConflimU'};
 
-if verMatlab ==0
-    ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnamConfInt);
-    out.ConfLimtable=ConfLimtable;
-end
+ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnamConfInt);
+out.ConfLimtable=ConfLimtable;
+    
+NconMinusNdis=Ncon-Ndis;
+out.IndContr2CminusD=NconMinusNdis;
+IndContr2CminusDtable=Ntable;
+IndContr2CminusDtable{:,:}=NconMinusNdis;
+out.IndContr2CminusDtable=IndContr2CminusDtable;
 
 if dispresults == true
     if NoStandardErrors == false
-        if verMatlab ==0
-            
-            % Test H_0
-            % Test of independence
-            disp('Test of H_0: independence between rows and columns')
-            disp('The standard errors are computed under H_0')
-            disp(TestIndtable);
-            disp('-----------------------------------------')
-            disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
-            disp('The standard error are computed under H_1')
-            disp(ConfLimtable);
-        else
-            % Test H_0
-            % Test of independence
-            disp('Test of H_0: independence between rows and columns')
-            disp('The standard errors are computed under H_0')
-            disp(colnamTestInd)
-            disp(TestInd);
-            disp('-----------------------------------------')
-            disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
-            disp('The standard error are computed under H_1')
-            disp(colnamConfInt)
-            disp(ConfLim);
-        end
-        
+        % Test H_0
+        % Test of independence
+        disp('Test of H_0: independence between rows and columns')
+        disp('The standard errors are computed under H_0')
+        disp(TestIndtable);
+        disp('-----------------------------------------')
+        disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
+        disp('The standard error are computed under H_1')
+        disp(ConfLimtable);
     else
         disp('-----------------------------------------')
-        if verMatlab ==0
-            disp(TestIndtable(:,1));
-        else
-            disp(TestInd(:,1));
-        end
+        disp(TestIndtable(:,1));
     end
+end
+
+if plots==true
+    % Apply flipud in order to have an increasing order in the y coordinate
+    balloonplot(flipud(Ntable),'contrib2Index',flipud(NconMinusNdis));
+    % balloonplot(Ntable,'contrib2Index',NconMinusNdis);
+
+    title('Individual components of $(C-D)$ C=conc. pairs, D=disc. pairs', ...
+        'Interpreter','latex','FontSize',16)
+    figure
+    nomiContribCminusD=string(Lr(:))+"-"+string(Lc(:)');
+    % Pareto plot of individual contributions
+    % Transform NconMinusNdis into a column vector.
+    contr2CminusD=NconMinusNdis(:);
+    [parhdl,axesPareto]=pareto(abs(contr2CminusD),nomiContribCminusD(:));
+
+    b=parhdl(1);
+    [~,indsor]=sort(abs(contr2CminusD),'descend');
+    boo=NconMinusNdis<0;
+    boosor=boo(indsor);
+    ax=axis;
+    nummod=floor(ax(2));
+    hold('on')
+    bar(b.XData(boosor),b.YData(boosor),'FaceColor','r')
+    hold('off')
+
+    % Add text labels
+    Chi2=sum(abs(contr2CminusD));
+    linelabels = string(round(100*parhdl(2).YData/Chi2,2));
+    text(axesPareto(2),parhdl(2).XData(1:nummod),parhdl(2).YData(1:nummod),linelabels(1:nummod),...
+        'Interpreter','none');
+    title('Pareto plot of individual components of $(C-D)$','Interpreter','latex','FontSize',16)
+    ax=gca;
+    ax.Children=ax.Children([1 3 2]);
+    labels=["Cum proportion" "Pos. c_{ij}-d_{ij}" "Neg. c_{ij}-d_{ij}"];
+    legend(labels,'Location','best');
 end
 
 end

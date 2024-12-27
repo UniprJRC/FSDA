@@ -198,16 +198,12 @@ function out=corrNominal(N, varargin)
 % out.TestIndtable  =    4-by-4 table containing index values (first column),
 %                        standard errors (second column), zscores (third column),
 %                        p-values (fourth column).
-%                        This output is present just if your MATLAB
-%                        version is not<2013b.
 %   out.ConfLim    =     4-by-4 array containing index values (first column),
 %                        standard errors (second column), lower confidence limit
 %                        (third column), upper confidence limit (fourth column).
 % out.ConfLimtable  =    4-by-4 table containing index values (first column),
 %                        standard errors (second column), lower confidence limit
 %                        (third column), upper confidence limit (fourth column).
-%                        This output is present just if your MATLAB
-%                        version is not<2013b.
 % out.theta          =   cross product ratio. This index is computed just
 %                        if the input table is 2-by-2
 % out.Q              =   cross product ratio in the interval [-1 1] using
@@ -490,12 +486,7 @@ function out=corrNominal(N, varargin)
     corrNominal(Ntable,'plots',true);
 %}
 
-
 %% Beginning of code
-
-% Check MATLAB version. If it is not smaller than 2013b than output is
-% shown in table format
-verMatlab=verLessThan('matlab','8.2.0');
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
 % last case the contingency table is built using the first two columns of the
@@ -573,7 +564,7 @@ if ~isempty(UserOptions)
 end
 
 % Extract labels for rows and columns
-if verMatlab ==0 && (istable(N) || istimetable(N))
+if istable(N) || istimetable(N)
     Lr=N.Properties.RowNames;
     Lc=N.Properties.VariableNames;
     Ntable=N;
@@ -596,9 +587,7 @@ else
             error('FSDA:CorrNominal:WrongInputOpt','Wrong length of column labels');
         end
     end
-    if verMatlab ==0
-        Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(Lr),'VariableNames',matlab.lang.makeValidName(Lc));
-    end
+    Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(Lr),'VariableNames',matlab.lang.makeValidName(Lc));
 end
 
 [I,J] = size(N);
@@ -616,9 +605,9 @@ nidot=sum(N,2);
 Ntheo=(nidot*ndotj/n);
 
 % Chi2 index
-res=N(:)-Ntheo(:);
-contr2Chi2=(res.^2)./Ntheo(:);
-Chi2=sum(contr2Chi2);
+res=N-Ntheo;
+contr2Chi2=(res.^2)./Ntheo;
+Chi2=sum(contr2Chi2,'all');
 
 % pvalue of Chi2 test
 Chi2pval=chi2cdf(Chi2, (I-1)*(J-1),'upper');
@@ -792,9 +781,7 @@ end
 % Store results in output structure out
 out=struct;
 out.N=N;
-if verMatlab ==0
-    out.Ntable=Ntable;
-end
+out.Ntable=Ntable;
 
 out.Chi2=Chi2;
 out.Chi2pval=Chi2pval;
@@ -818,10 +805,8 @@ ConfLim(ConfLim>1)=1;
 ConfLim(ConfLim<0)=0;
 out.ConfLim=ConfLim;
 colnamConfLim={'Value' 'StandardError' 'ConflimL' 'ConflimU'};
-if verMatlab ==0
-    ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnamConfLim);
-    out.ConfLimtable=ConfLimtable;
-end
+ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnamConfLim);
+out.ConfLimtable=ConfLimtable;
 
 % Store results to test independence hypothesis
 TestInd=[CramerV seCramerV  zCramerV  pvalCramerV;
@@ -832,10 +817,8 @@ TestInd=[CramerV seCramerV  zCramerV  pvalCramerV;
 rownam={'CramerV' 'GKlambdayx' 'tauyx' 'Hyx'};
 colnamTestInd={'Coeff' 'se' 'zscore' 'pval'};
 out.TestInd=TestInd;
-if verMatlab ==0
-    TestIndtable=array2table(TestInd,'RowNames',rownam,'VariableNames',colnamTestInd);
-    out.TestIndtable=TestIndtable;
-end
+TestIndtable=array2table(TestInd,'RowNames',rownam,'VariableNames',colnamTestInd);
+out.TestIndtable=TestIndtable;
 
 % Store 2x2 contingency table indexes
 if I==2 && J==2
@@ -871,44 +854,32 @@ if dispresults == true
 
 
     if NoStandardErrors == false
-        if verMatlab ==0
 
-            % Test H_0
-            % Test of independence
-            disp('Test of H_0: independence between rows and columns')
-            disp(TestIndtable);
-            disp('-----------------------------------------')
-            disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
-            disp(ConfLimtable);
+        % Test H_0
+        % Test of independence
+        disp('Test of H_0: independence between rows and columns')
+        disp(TestIndtable);
+        disp('-----------------------------------------')
+        disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
+        disp(ConfLimtable);
 
-        else
-            % Test H_0
-            % Test of independence
-            disp('Test of H_0: independence between rows and columns')
-            disp(colnamTestInd)
-            disp(TestInd);
-            disp('-----------------------------------------')
-            disp(['Indexes and ' num2str(conflev*100) '% confidence limits'])
-            disp(colnamConfLim)
-            disp(ConfLim);
-        end
     else
         disp('-----------------------------------------')
-        if verMatlab ==0
-            disp(TestIndtable(:,1));
-        else
-            disp(TestInd(:,1));
-        end
+        disp(TestIndtable(:,1));
     end
 end
 
 plots=options.plots;
 if plots==true
-    % balloonplot is called with option  'contrib2Chi2',true
-    balloonplot(Ntable,'contrib2Chi2',true);
+    % balloonplot is called with option  'contrib2Index',true
+    balloonplot(Ntable,'contrib2Index',true);
+    title('Pearson residuals$^2: (\pm) ({n_{ij}-n_{ij}^*})^2/{{n_{ij}^*}}$', ...
+        'Interpreter','latex','FontSize',16)
     figure
     nomiContribChi2=string(Lr(:))+"-"+string(Lc(:)');
     % Pareto plot of individual contributions
+    % Transform contrChi2 into a column vector.
+    contr2Chi2=contr2Chi2(:);
     [parhdl,axesPareto]=pareto(contr2Chi2,nomiContribChi2(:),0.6);
 
     b=parhdl(1);
