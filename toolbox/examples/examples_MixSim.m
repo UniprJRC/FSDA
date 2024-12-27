@@ -142,20 +142,19 @@ ex3 = MixSim(2, 4, 'BarOmega' , 0.05, 'sph' , true, 'hom' , true,  'tol', [1e-10
 %% Example for Section 3.2, analysis of degree of overlapping of Fisher Iris data
 clearvars -except RandomDataFromR; close all;
 % iris data
-Y=load('ir.txt');
+load fisheriris.mat
+Y=meas;
 p=size(Y,2);
-gr=repmat(1:3,50,1);
-id=gr(:);
-spmplot(Y,id);
-K = max(id);
-
-%estimate mixture parameters
+id=string(species);
 t = tabulate(id);
-Pi = t(:,3);
+Pi = cell2mat(t(:,3));
+spec=unique(id);
+K=length(spec); 
+S=zeros(p,p,K);
 Mu = grpstats(Y,id,{'mean'});
-S(:,:,1) = cov(Y(id==1,:));
-S(:,:,2) = cov(Y(id==2,:));
-S(:,:,3) = cov(Y(id==3,:));
+for j=1:K
+S(:,:,j) = cov(Y(id==spec(j),:));
+end
 
 % overlap
 [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(K, p, Pi, Mu, S); %#ok<ASGLU>
@@ -334,28 +333,6 @@ Q8 = MixSim(4, 1, 'MaxOmega' , 0.1, 'R_seed', R_seed);
 gscatter(A8(:,1), A8(:,2), id8);
 
 
-%% Example of Section 3.4 plot (a) "MCM2012 JSS"
-clearvars -except RandomDataFromR; close all;
-% this cell demos the pdplot: not yet implemented
-
-% iris data
-Y=load('ir.txt');
-p=size(Y,2);
-gr=repmat(1:3,50,1);
-id=gr(:);
-spmplot(Y,id);
-K = max(id);
-
-%estimate mixture parameters
-t = tabulate(id);
-Pi = t(:,3);
-Mu = grpstats(Y,id,{'mean'}); %#ok<NASGU>
-S(:,:,1) = cov(Y(id==1,:));
-S(:,:,2) = cov(Y(id==2,:));
-S(:,:,3) = cov(Y(id==3,:)); %#ok<NASGU>
-
-%pdplot, not yet implemented
-%pdplot(Pi, Mu, S);
 
 %% Example of Section 3.4 plot (b), 6 groups in 4 dimensions with prespecified average overlap
 clearvars -except RandomDataFromR; close all;
