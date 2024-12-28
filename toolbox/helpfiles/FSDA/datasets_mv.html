@@ -31,7 +31,9 @@ document.write(divsbefore);
 	<!-- -->
 	<!-- -->
 	
-	<h2 class="title">Multivariate Data Sets</h2>
+	<h2 class="title">Multivariate Data Sets (data matrices and contingency 
+	tables)</h2>
+	<p class="title">Data matrices </p>
 
 <table border="2" cellpadding="4" cellspacing="0" class="body">
   <colgroup><col width="30%">
@@ -77,43 +79,13 @@ document.write(divsbefore);
         and contains 18 attributes of the image.</td>
     </tr>
       <tr>
-      <td bgcolor="#F2F2F2"><tt>car</tt></td>
-      <td bgcolor="#F2F2F2">The car dataset is a contingency table referred to 
-	  number of adults out of 1578 stating that a particular make of vehicle had 
-	  a specific quality. In all there are 11713 counts. These data are taken 
-	  from the 2014 Auto Brand Perception survey by Consumer Reports.</td>
-      </tr>
-      <tr>
       <td bgcolor="#F2F2F2"><tt>clus2over</tt></td>
       <td bgcolor="#F2F2F2">The clus2over dataset, introduced by Atkinson and
         Riani (2007), is a synthetic dataset with 1000 five-dimensional
         observations generated from two multi-normal distributions.</td>
       </tr>
-      <tr>
-      <td bgcolor="#F2F2F2"><tt>clothes</tt></td>
-      <td bgcolor="#F2F2F2">The clothes data contains a contingency table between the 28 member states of the
-European Union (data collected well before Brexit) and 5 price segments. These
-are occurrences of country trade flows, for a wide set of clothes:
-x1 denotes the lowest price segment and x5 the highest price segment. In all there are 4373 counts.</td>
-      </tr>
-      <tr>
-      <td bgcolor="#F2F2F2"><tt>clothes33</tt></td>
-      <td bgcolor="#F2F2F2">The clothes33 data contains a contingency table between the 28 member states of the
-European Union (data collected well before Brexit) and 33 price segments. These
-are occurrences of country trade flows, for a wide set of clothes:
-x1 denotes the lowest price segment and x33 the highest price segment. In all there are 11874 counts.</td>
-      </tr>
-      <tr>
-      <td bgcolor="#F2F2F2"><tt>csdPerceptions</tt></td>
-      <td bgcolor="#F2F2F2">The csdPerceptions dataset contains a contingency table displaying the proportion 
-      of people in a sample to associate various attributes 
-      with different brands of carbonated soft drink (CSD). The contingency 
-	  table has size 8x11. In the rows there are the 8 brands and in the columns 
-	  the 11 attributes. This dataset has been used very much in the 
-	  correspondence analysis literature. </td>
-      </tr>
     <tr>
-      <td bgcolor="#F2F2F2">citiesItaly</td>
+      <td bgcolor="#F2F2F2"><tt>citiesItaly</tt></td>
       <td bgcolor="#F2F2F2">The citiesItaly dataset contains 107 records for the 
 	  107 provinces of Italy for seven indicators concerning the quality of 
 	  life: The 7 variables are:<br>addedval = added value per capita<br>depost 
@@ -296,20 +268,6 @@ x1 denotes the lowest price segment and x33 the highest price segment. In all th
         - y7: milk dry substance;<br>
         - y8: cheese produced. </td>
     </tr>
-      <tr>
-      <td bgcolor="#F2F2F2"><tt>mobilephone</tt></td>
-      <td bgcolor="#F2F2F2">The mobilephone dataset contains a contingency table displaying the 
-	  number 
-      of people in a sample to associate various mobile carriers with various attributes. The contingency 
-	  table has size 8x11. In the rows there are the 8 brands and in the columns 
-	  the 19 attributes. This dataset has been used very much in the 
-	  correspondence analysis literature. <span>The correspondence analysis 
-	  chart quickly allows us to see that One-tel was seen by consumers as being 
-	  associated with Here today, gone tomorrow (the company was in financial 
-	  trouble at the time of the study), the new entrants to the market, AAPT 
-	  and Virgin are shown as Don’t know much about them and the market leader, 
-	  Telstra, skews towards Good coverage and Bureaucratic.</span></td>
-      </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>mussels</tt></td>
       <td bgcolor="#F2F2F2">The horse mussels dataset, introduced by Cook and
@@ -381,6 +339,18 @@ x1 denotes the lowest price segment and x33 the highest price segment. In all th
         141-158) and two outliers (units 159 and 160). The sizes of the groups
         are therefore 80, 60, 18 and 2.</td>
     </tr>
+      <tr>
+      <td bgcolor="#F2F2F2"><tt>USA</tt></td>
+      <td bgcolor="#F2F2F2">The data set wine is a part of one given in Hettich
+        and Bay (1999). It contains, for each of 59 wines grown in the same
+        region in Italy, the quantities of 13 constituents. The original
+        purpose of the analysis (DeVel, Aeberhard and Coomans, 1993) was to
+        classify wines from different cultivars by means of these measurements.
+        Here we report only one cultivar. The plots of the classical squared
+        distances as a function of observation number and their Q-Q plots with
+        respect to the Chi2 distribution do not show any clear outliers. By
+        using a robust estimate, at least seven points stand out clearly. </td>
+      </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>wine</tt></td>
       <td bgcolor="#F2F2F2">The data set wine is a part of one given in Hettich
@@ -412,6 +382,66 @@ document.write(barra);
 	<!--close row-offcanvas--></div>
 <!--close class="row-offcanvas row-offcanvas-left" -->
 
-</body>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="title">Contingency tables </p>
+
+<table border="2" cellpadding="4" cellspacing="0" class="body">
+  <colgroup><col width="30%">
+    <col width="70%">
+  </colgroup>
+  <tbody>
+    <tr valign="top">
+      <th bgcolor="#B2B2B2" valign="top">File</th>
+      <th bgcolor="#B2B2B2" valign="top">Description of Data Set</th>
+    </tr>
+      <tr>
+      <td bgcolor="#F2F2F2"><tt>car</tt></td>
+      <td bgcolor="#F2F2F2">The car dataset is a contingency table referred to 
+	  number of adults out of 1578 stating that a particular make of vehicle had 
+	  a specific quality. In all there are 11713 counts. These data are taken 
+	  from the 2014 Auto Brand Perception survey by Consumer Reports.</td>
+      </tr>
+	  <tr>
+      <td bgcolor="#F2F2F2"><tt>clothes</tt></td>
+      <td bgcolor="#F2F2F2">The clothes data contains a contingency table between the 28 member states of the
+European Union (data collected well before Brexit) and 5 price segments. These
+are occurrences of country trade flows, for a wide set of clothes:
+x1 denotes the lowest price segment and x5 the highest price segment. In all there are 4373 counts.</td>
+      </tr>
+	  <tr>
+      <td bgcolor="#F2F2F2"><tt>clothes33</tt></td>
+      <td bgcolor="#F2F2F2">The clothes33 data contains a contingency table between the 28 member states of the
+European Union (data collected well before Brexit) and 33 price segments. These
+are occurrences of country trade flows, for a wide set of clothes:
+x1 denotes the lowest price segment and x33 the highest price segment. In all there are 11874 counts.</td>
+      </tr>
+	  <tr>
+      <td bgcolor="#F2F2F2"><tt>csdPerceptions</tt></td>
+      <td bgcolor="#F2F2F2">The csdPerceptions dataset contains a contingency table displaying the proportion 
+      of people in a sample to associate various attributes 
+      with different brands of carbonated soft drink (CSD). The contingency 
+	  table has size 8x11. In the rows there are the 8 brands and in the columns 
+	  the 11 attributes. This dataset has been used very much in the 
+	  correspondence analysis literature. </td>
+      </tr>
+	  <tr>
+      <td bgcolor="#F2F2F2"><tt>mobilephone</tt></td>
+      <td bgcolor="#F2F2F2">The mobilephone dataset contains a contingency table displaying the 
+	  number 
+      of people in a sample to associate various mobile carriers with various attributes. The contingency 
+	  table has size 8x11. In the rows there are the 8 brands and in the columns 
+	  the 19 attributes. This dataset has been used very much in the 
+	  correspondence analysis literature. <span>The correspondence analysis 
+	  chart quickly allows us to see that One-tel was seen by consumers as being 
+	  associated with Here today, gone tomorrow (the company was in financial 
+	  trouble at the time of the study), the new entrants to the market, AAPT 
+	  and Virgin are shown as Don’t know much about them and the market leader, 
+	  Telstra, skews towards Good coverage and Bureaucratic.</span></td>
+      </tr>
+  </tbody>
+</table>
+
+	</body>
 
 </html>
