@@ -490,11 +490,23 @@ function out=corrOrdinal(N, varargin)
 %}
 
 %{
-    %% Example of use of option plots.
+    %% Example 1 of use of option plots.
     % Exercise Frequency vs. Self-Reported Health
     load SportHealth.mat
     out=corrOrdinal(SportHealth,'plots',true);
+    % It is clear the positive relationship between 
+    % 'Self-Reported Health' and 'Exercise Frequency'
 %}
+
+%{
+    %% Example 2 of use of option plots.
+    % Opinion on the movied watched and age interval
+    load cinema.mat
+    out=corrOrdinal(cinema,'plots',true);
+    % It is clear the negative relationship between 
+    % age and satisfaction towards the watched movie
+%}
+
 
 %% Beginning of code
 
