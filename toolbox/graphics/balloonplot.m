@@ -29,7 +29,7 @@ function [h,Ntable] = balloonplot(N,varargin)
 %               Data Types - Axes object
 %
 % contrib2Index: bubble chart of contribution to a statistic index.
-%               Boolean or matrix (table) of size IxJ. 
+%               Boolean or matrix (table) of size IxJ.
 %               If this option is true, squared Pearson rediduals
 %               are computed and shown through bubble chart. Squared
 %               Pearson residuals associated with positive (negative)
@@ -329,11 +329,16 @@ else % In this case contrib2Index is a scalar logical or a vector
         boopos=Res(:)>0;
         booneg=Res(:)<0;
         Res2=Res.^2;
+        % In this case the size of the bubbles is proportional to the
+        % squared Pearson residuals
         Res2=round(Res2,2);
     else
         Res2=contrib2Index;
         boopos=Res2(:)>0;
         booneg=Res2(:)<0;
+        % In this case the size of the bubbles is proportional to the
+        % absolute values of the contribution to the contingency table index
+        Res2=abs(Res2);
     end
 
     bubblechart(xcoo(boopos),ycoo(boopos),Res2(boopos),'b');
@@ -383,7 +388,7 @@ end
 grid('on')
 
 
-% Add xlabel and ylabel to the balloonplot if they are present inside 
+% Add xlabel and ylabel to the balloonplot if they are present inside
 % DimensionNames
 if ~strcmp(Ntable.Properties.DimensionNames{1},'Row')
     xlabel(Ntable.Properties.DimensionNames{1})
