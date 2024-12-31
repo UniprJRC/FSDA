@@ -38,26 +38,26 @@ out=corrOrdinal(N);
 % zero, this indicates a strong positive association between the
 % written and the oral examination.</pre></div></div><pre class="codeoutput">Test of H_0: independence between rows and columns
 The standard errors are computed under H_0
-             Coeff     se     zscore    pval
-             _____    ____    ______    ____
+              Coeff        se       zscore       pval   
+             _______    ________    ______    __________
 
-    gamma    0.50     0.10     5.09     0.00
-    taua     0.18     0.05     3.86     0.00
-    taub     0.31     0.06     5.09     0.00
-    tauc     0.27     0.05     5.09     0.00
-    dyx      0.31     0.06     5.09     0.00
+    gamma        0.5    0.098239    5.0896     3.588e-07
+    taua     0.18342    0.047553    3.8571    0.00011474
+    taub     0.30557    0.060038    5.0896     3.588e-07
+    tauc     0.27375    0.053786    5.0896     3.588e-07
+    dyx      0.31466    0.061823    5.0896     3.588e-07
 
 -----------------------------------------
 Indexes and 95% confidence limits
 The standard error are computed under H_1
-             Value    StandardError    ConflimL    ConflimU
-             _____    _____________    ________    ________
+              Value     StandardError    ConflimL    ConflimU
+             _______    _____________    ________    ________
 
-    gamma    0.50         0.09           0.33        0.67  
-    taua     0.18         0.01           0.16        0.21  
-    taub     0.31         0.06           0.19        0.42  
-    tauc     0.27         0.05           0.17        0.38  
-    dyx      0.31         0.06           0.20        0.43  
+    gamma        0.5        0.0876       0.32831     0.67169 
+    taua     0.18342      0.011904       0.16009     0.20675 
+    taub     0.30557       0.05852       0.19087     0.42027 
+    tauc     0.27375      0.053786       0.16833     0.37917 
+    dyx      0.31466      0.059899       0.19726     0.43205 
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare calculation of tau-b with that which comes from
      Matlab function corr.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Starting from a contingency table, create the original data matrix to
@@ -119,41 +119,41 @@ out=corrOrdinal(SportHealth,'plots',true);
 % It is clear the positive relationship between 
 % 'Self-Reported Health' and 'Exercise Frequency'</pre></div></div><pre class="codeoutput">Test of H_0: independence between rows and columns
 The standard errors are computed under H_0
-             Coeff     se     zscore    pval
-             _____    ____    ______    ____
+              Coeff        se       zscore    pval
+             _______    ________    ______    ____
 
-    gamma    0.59     0.05    11.19     0.00
-    taua     0.34     0.04     8.82     0.00
-    taub     0.46     0.04    11.19     0.00
-    tauc     0.45     0.04    11.19     0.00
-    dyx      0.45     0.04    11.19     0.00
+    gamma    0.59385    0.053088    11.186     0  
+    taua     0.33958     0.03852    8.8157     0  
+    taub     0.45635    0.040796    11.186     0  
+    tauc     0.45128    0.040343    11.186     0  
+    dyx       0.4525    0.040451    11.186     0  
 
 -----------------------------------------
 Indexes and 95% confidence limits
 The standard error are computed under H_1
-             Value    StandardError    ConflimL    ConflimU
-             _____    _____________    ________    ________
+              Value     StandardError    ConflimL    ConflimU
+             _______    _____________    ________    ________
 
-    gamma    0.59         0.05           0.50        0.69  
-    taua     0.34         0.01           0.32        0.36  
-    taub     0.46         0.04           0.38        0.54  
-    tauc     0.45         0.04           0.37        0.53  
-    dyx      0.45         0.04           0.37        0.53  
+    gamma    0.59385       0.04837       0.49905     0.68866 
+    taua     0.33958      0.011291       0.31745     0.36171 
+    taub     0.45635      0.040331        0.3773      0.5354 
+    tauc     0.45128      0.040343       0.37221     0.53036 
+    dyx       0.4525      0.040106       0.37389     0.53111 
 
 </pre><a href='http://rosa.unipr.it/fsda/corrOrdinal.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\corrOrdinal_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\corrOrdinal_02.png" alt=""> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 of use of option plots.</li></span></a></span></h3><div class="collapse"><p>
-     Opinion on the movied watched and age interval<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cinema.mat
+     Opinion on the movie watched and age interval<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cinema.mat
 out=corrOrdinal(cinema,'plots',true);
 % It is clear the negative relationship between 
 % age and satisfaction towards the watched movie</pre></div></div><pre class="codeoutput">Test of H_0: independence between rows and columns
 The standard errors are computed under H_0
-             Coeff     se     zscore    pval
-             _____    ____    ______    ____
+              Coeff         se       zscore        pval   
+             ________    ________    _______    __________
 
-    gamma    -0.22    0.03    -6.60     0.00
-    taua     -0.11    0.02    -6.01     0.00
-    taub     -0.16    0.02    -6.60     0.00
-    tauc     -0.15    0.02    -6.60     0.00
-    dyx      -0.13    0.02    -6.60     0.00
+    gamma    -0.22239    0.033693    -6.6004    4.0994e-11
+    taua     -0.10884    0.018121    -6.0064    1.8967e-09
+    taub     -0.15598    0.023632    -6.6004    4.0994e-11
+    tauc     -0.14501     0.02197    -6.6004    4.0994e-11
+    dyx      -0.12946    0.019614    -6.6004    4.0994e-11
 
 -----------------------------------------
 Indexes and 95% confidence limits
@@ -161,11 +161,11 @@ The standard error are computed under H_1
              Value    StandardError    ConflimL    ConflimU
              _____    _____________    ________    ________
 
-    gamma    0.00         0.03           0.00        0.00  
-    taua     0.00         0.00           0.00        0.00  
-    taub     0.00         0.02           0.00        0.00  
-    tauc     0.00         0.02           0.00        0.00  
-    dyx      0.00         0.02           0.00        0.00  
+    gamma      0         0.033312         0           0    
+    taua       0        0.0035492         0           0    
+    taub       0         0.023518         0           0    
+    tauc       0          0.02197         0           0    
+    dyx        0         0.019609         0           0    
 
 Warning: Ignoring extra legend entries. 
 </pre><a href='http://rosa.unipr.it/fsda/corrOrdinal.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\corrOrdinal_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\corrOrdinal_04.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
@@ -249,10 +249,10 @@ Warning: Ignoring extra legend entries.
                    standard errors (second column), lower confidence limit
                    (third column), upper confidence limit (fourth column).</p> <p>
                    Note that the standard errors in this table are computed not
-                   assuming the null hypothesis of independence.</p></p></td></tr><tr valign="top"><td><code>IndContr2CminusD</code></td><td><p>IxJ array containing individual contributions to
-                   the commpon numerator of all the indexes above (namely
-                   C-D).</p></td></tr><tr valign="top"><td><code>IndContr2CminusDtable</code></td><td><p>IxJ table containing individual contributions to
-                   the commpon numerator of all the indexes above (namely
+                   assuming the null hypothesis of independence.</p></p></td></tr><tr valign="top"><td><code>Contrib2CminusD</code></td><td><p>IxJ array containing individual contributions to
+                   the common numerator of all the indexes above (namely
+                   C-D).</p></td></tr><tr valign="top"><td><code>Contrib2CminusDtable</code></td><td><p>IxJ table containing individual contributions to
+                   the common numerator of all the indexes above (namely
                    C-D).</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
 
  All these indexes are based on concordant and discordant pairs.</p> <p>
@@ -260,9 +260,9 @@ Warning: Ignoring extra legend entries.
  variable also is higher on the other variable, and a pair of observations
  is discordant if the subject who is higher on one variable is lower on
  the other variable.</p> <p>
- More formally, a pair (i,j), i=1, 2, ..., n is concordant if
- (x(i)-x(j)) $\times$ (y(i)-y(j))&gt;0.</p> <p>
- It is discordant if (x(i)-x(j) ) $\times$ (y(i)-y(j))&lt;0
+ More formally, a pair $(i,j)$, $i=1, 2, ..., n$ is concordant if
+ $(x(i)-x(j)) \times (y(i)-y(j))&gt;0$.</p> <p>
+ It is discordant if $(x(i)-x(j) ) \times (y(i)-y(j))&lt;0$.</p> <p>
  Let $C$ be the total number of concordant pairs (concordances) and $D$
  the total number of discordant pairs (discordances) . If $C &gt; D$ the
  variables have a positive association, but if $C &lt; D$ then the variables

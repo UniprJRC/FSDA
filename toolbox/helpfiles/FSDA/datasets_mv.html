@@ -212,6 +212,50 @@ document.write(divsbefore);
       </td>
     </tr>
       <tr>
+      <td bgcolor="#F2F2F2"><tt>fat</tt></td>
+      <td bgcolor="#F2F2F2">Phisical measurements of 251 males. The variables 
+	  are<br>
+        <br>
+        -
+        body_fat: Percent body fat using Brozek's equation, 457/Density - 414.2<br>
+	  -
+body_fat_siri: Percent body fat using Siri's equation, 495/Density - 450<br>
+	  -
+density: Density (gm/cm^2)<br>
+        -
+        age: Age (yrs)<br>
+	  -
+weight: Weight (lbs)<br>
+	  -
+height: Height (inches)<br>
+	  -
+BMI: Adiposity index = Weight/Height^2 (kg/m^2)<br>
+	  - ffweight: Fat Free Weight = (1 - fraction of body fat) * Weight, using Brozek's formula (lbs)<br>
+	  -
+neck: Neck circumference (cm)<br>
+	  -
+chest: Chest circumference (cm)<br>
+	  -
+abdomen: Abdomen circumference (cm) "at the umbilicus and level with the iliac crest"<br>
+	  -
+hip: Hip circumference (cm)<br>
+	  - thigh: Thigh circumference (cm)<br>
+	  -
+knee: Knee circumference (cm)<br>
+	  -
+ankle: Ankle circumference (cm)<br>
+	  -
+bicep: Extended biceps circumference (cm)<br>
+	  - forearm: Forearm circumference (cm)<br>
+	  -
+wrist: Wrist circumference (cm) "distal to the styloid processes"<br>Note that 
+	  observation 182 in the original dataset has been removed because <span>it 
+	  reported a percent body fat estimate equal to 0. The purpose is to predict 
+	  body_fat from the other measurements.</span><br><span>The source of the 
+	  data is attributed to Dr. A. Garth Fisher, Human Performance Research 
+	  Center, Brigham Young University, Provo, Utah 84602,</span></td>
+      </tr>
+      <tr>
       <td bgcolor="#F2F2F2"><tt>fondi</tt></td>
       <td bgcolor="#F2F2F2">The fondi data set, introduced by Zani (2000),
         consists of 103 investment funds operating in Italy since April 1996.
@@ -234,12 +278,30 @@ document.write(divsbefore);
 	  which allows different transformations for positive and negative responses is neede to analyze these data. </span><br>
       </td>
     </tr>
-    <tr>
+      <tr>
       <td bgcolor="#F2F2F2"><tt>head</tt></td>
       <td bgcolor="#F2F2F2">The Swiss Heads dataset was introduced by B. Flury
         and H. Riedwyl (1988). It contains information on six variables
         describing the dimensions of the heads of 200 twenty year old Swiss
         soldiers.</td>
+      </tr>
+    <tr>
+      <td bgcolor="#F2F2F2"><tt>hprice</tt></td>
+      <td bgcolor="#F2F2F2">Sales prices of 546 houses in the city of Windsor, 
+	  Ontario, Canada, during July, August and September, 1987.<br>The variables 
+	  are<br>- lotsize: the lot size of a property in square feet <br>- 
+	  bedrooms: number of bedrooms <br>- bathrms: number of full bathrooms <br>- 
+	  stories number of stories excluding basement&nbsp; <br>- driveway does the 
+	  house has a driveway? <br>- recroom does the house has a recreational 
+	  room? <br>- fullbase: does the house has a full finished basement? <br>- 
+	  gashw: does the house uses gas for hot water heating? <br>- airco: does 
+	  the house has central air conditioning? <br>- garagepl: number of garage 
+	  places <br>- prefarea: is the house located in the preferred neighbourhood 
+	  of the city?<br>-price: sale price of a house.<br><br>The reference is 
+	  Verbeek, Marno (2004) A Guide to Modern Econometrics, John Wiley and Sons, 
+	  chapter 3. Journal of Applied Econometrics data archive :
+	  <a href="http://qed.econ.queensu.ca/jae/">http://qed.econ.queensu.ca/jae/</a> 
+	  .</td>
     </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>milk</tt></td>
@@ -435,8 +497,8 @@ x1 denotes the lowest price segment and x33 the highest price segment. In all th
       </tr>
 	  <tr>
       <td bgcolor="#F2F2F2"><tt>SportHealth</tt></td>
-      <td bgcolor="#F2F2F2">The dataset SportHealth contains a contingency table between "Physical Activity Frequency" and self assesment "Quality of Life Ratings".
-      The number of people interviewed is 303.</td>
+      <td bgcolor="#F2F2F2">The SportHealth dataset contains a contingency table between "Physical Activity Frequency" and self assesment "Quality of Life Ratings". 
+	  The number of people interviewed is 303.</td>
       </tr>
   </tbody>
 </table>

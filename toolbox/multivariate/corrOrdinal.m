@@ -150,11 +150,11 @@ function out=corrOrdinal(N, varargin)
 %                   (third column), upper confidence limit (fourth column).
 %                   Note that the standard errors in this table are computed not
 %                   assuming the null hypothesis of independence.
-% out.IndContr2CminusD = IxJ array containing individual contributions to
-%                   the commpon numerator of all the indexes above (namely
+% out.Contrib2CminusD = IxJ array containing individual contributions to
+%                   the common numerator of all the indexes above (namely
 %                   C-D).
-% out.IndContr2CminusDtable = IxJ table containing individual contributions to
-%                   the commpon numerator of all the indexes above (namely
+% out.Contrib2CminusDtable = IxJ table containing individual contributions to
+%                   the common numerator of all the indexes above (namely
 %                   C-D).
 %
 %
@@ -166,9 +166,9 @@ function out=corrOrdinal(N, varargin)
 % variable also is higher on the other variable, and a pair of observations
 % is discordant if the subject who is higher on one variable is lower on
 % the other variable.
-% More formally, a pair (i,j), i=1, 2, ..., n is concordant if
-% (x(i)-x(j)) $\times$ (y(i)-y(j))>0.
-% It is discordant if (x(i)-x(j) ) $\times$ (y(i)-y(j))<0
+% More formally, a pair $(i,j)$, $i=1, 2, ..., n$ is concordant if
+% $(x(i)-x(j)) \times (y(i)-y(j))>0$.
+% It is discordant if $(x(i)-x(j) ) \times (y(i)-y(j))<0$.
 % Let $C$ be the total number of concordant pairs (concordances) and $D$
 % the total number of discordant pairs (discordances) . If $C > D$ the
 % variables have a positive association, but if $C < D$ then the variables
@@ -500,7 +500,7 @@ function out=corrOrdinal(N, varargin)
 
 %{
     %% Example 2 of use of option plots.
-    % Opinion on the movied watched and age interval
+    % Opinion on the movie watched and age interval
     load cinema.mat
     out=corrOrdinal(cinema,'plots',true);
     % It is clear the negative relationship between 
@@ -746,7 +746,7 @@ else
     pvaltaua = 2*(1 - normcdf(abs(ztaua))); %p-value (two-sided)
 
     %% tau-b statistic
-    % For computationl purposes it is better to use relative frequencies
+    % For computational purposes it is better to use relative frequencies
     % rather than absolute frequencies
     Pi=N/n; % matrix of relative frequencies
     pdiff=(con-dis)/n;
@@ -755,7 +755,7 @@ else
     delta2=sqrt(1 - sum((ndotj/n).^2));
     tauij=(2 * pdiff + Pdiff * repmat(ndotj/n,I,1) ) * delta2 * delta1 + ...
         (Pdiff * repmat(nidot/n,1,J) * delta2)/delta1;
-    % setaub = standard errot used to compute the confidence interval
+    % setaub = standard error used to compute the confidence interval
     setaub= sqrt(( (  sum(Pi(:) .* tauij(:).^2) - sum(Pi(:) .* tauij(:)).^2)/(delta1 * delta2)^4)/n);
 
     % The formula written in the help section (which uses the absolute
@@ -788,7 +788,7 @@ else
     pvaltauc = 2*(1 - normcdf(abs(ztauc))); %p-value (two-sided)
 
     %% Somers' D statistic
-    % Find standard error of Somers D stat
+    % Find standard error of Somers' D stat
     nidotrep=repmat(nidot,1,J);
 
     % sesom = standard errot used to compute the confidence interval
@@ -846,10 +846,10 @@ ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnamConfInt
 out.ConfLimtable=ConfLimtable;
     
 NconMinusNdis=Ncon-Ndis;
-out.IndContr2CminusD=NconMinusNdis;
-IndContr2CminusDtable=Ntable;
-IndContr2CminusDtable{:,:}=NconMinusNdis;
-out.IndContr2CminusDtable=IndContr2CminusDtable;
+out.Contrib2CminusD=NconMinusNdis;
+Contrib2CminusDtable=Ntable;
+Contrib2CminusDtable{:,:}=NconMinusNdis;
+out.Contrib2CminusDtable=Contrib2CminusDtable;
 
 if dispresults == true
     if NoStandardErrors == false

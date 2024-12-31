@@ -186,8 +186,8 @@ function [h,Ntable] = balloonplot(N,varargin)
     colslab={'Wife'	'Alternating'	'Husband'	'Jointly'};
     % If the DimensionNames is set the xlabel and ylabel will be added
     % automatically.
-    Ntable.Properties.DimensionNames=["Repartition in the couple" "13 housetasks"];
     Ntable=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+    Ntable.Properties.DimensionNames=["Repartition in the couple" "13 housetasks"];
     % Call to balloonplot with option 'contrib2Index' boolean equal to
     % true. In this case the contributions to the Chi2 statistic
     % are shown. The color is associated to the sign.
@@ -199,7 +199,7 @@ function [h,Ntable] = balloonplot(N,varargin)
     %% Example of ballonplot with  option contrib2Index as a matrix.
     load SportHealth.mat
     out=corrOrdinal(SportHealth);
-    balloonplot(SportHealth,'contrib2Index',out.IndCont2CminusD)
+    balloonplot(SportHealth,'contrib2Index',out.Contrib2CminusD)
 %}
 
 %% Beginning of code
