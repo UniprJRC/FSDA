@@ -100,6 +100,30 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         a set of good units, the id number for the outliers should be the
 %         larger (see optional field 'labeladd' of option 'plo' for details).
 %
+%    order  :   Order of the variables in the scatterplot matrix. Character
+%               or string. Order in which the variables are shown inside
+%               spmplot. Possible values are:
+%               "alphabet"=alphabetical order is used;
+%               "original"= the order in the input argument Y is preserved
+%                   (this is the default option);
+%               "AOE" = the angular order of the first two eigenvectors is used. 
+%                  More precisely, the order of the variables is calculated from 
+%                  the order of the angles, $a_i$:
+%                  \[
+%                  a_i= tan^{-1}(e_{i1}/e_{i1}) \qquad \mbox{if} \qquad e_{i1}>0;
+%                  \]
+%                  \[
+%                  a_i= tan^{-1}(e_{i1}/e_{i1})+\pi \qquad \mbox{if} \qquad e_{i1} \leq 0.
+%                  \]
+%                  where $e_1=(e_{11}, \ldots, e_{p1})'$ and
+%                  $e_2=(e_{12}, \ldots, e_{p2})'$ are the first two
+%                  eigenvectors associated with the first two largest
+%                  eigenvalues of the correlation matrix. Additional
+%                  information can be found in Friendly (2002).
+%               "FPC" = for the first principal component order.
+%                   Example - 'order','FPC'
+%                   Data Types - char or string
+%
 %   overlay :   Superimposition on the panels out of the main diagonal of
 %               the scatter matrix. Scalar, char or structure. It specifies
 %               what to add in the background for the panels specified in
@@ -399,6 +423,12 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %
 % See also: gplotmatrix, yXplot, boxplotb
+%
+% References:
+%
+% Friendly M. (2002), Corrgrams: Exploratory Displays for Correlation
+% Matrices. The American Statistician, v. 56, pp. 316–324, 
+% https://doi.org/10.1198/000313002533
 %
 % Copyright 2008-2024.
 % Written by FSDA team
@@ -972,6 +1002,27 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     spmplot(head,'colorBackground',true);
 %}
 
+%{
+    %% Example 1 of use of option order.
+    % The order of the variables is based on the angles between the first
+    % two eigenvectors associated to the largest eigenvalues.
+    load mtcars
+    typespm=struct;
+    typespm.lower='circle';
+    typespm.upper='circle';
+    spmplot(mtcars,'typespm',typespm,'order','AOE');
+%}
+
+%{
+    %% Example 2 of use of option order.
+    % The order of the variables is based on the first
+    % eigenvector associated to the largest eigenvalue.
+    load mtcars
+    typespm=struct;
+    typespm.lower='circle';
+    typespm.upper='square';
+    spmplot(mtcars,'typespm',typespm,'order','FPC');
+%}
 
 
 %% Beginning of code
@@ -1083,6 +1134,7 @@ if nargin>1
         units='';
         typespm='full';
         colorBackground=false;
+        orderSPM="original";
         if length(varargin)>3
             disp('spmplot has been called in the old format without name pairs')
             disp('In this case only the first four arguments "Y,group,plo,dispopt" are considered')
@@ -1117,7 +1169,7 @@ if nargin>1
             'selunit',selthdef,'datatooltip',0,...
             'nameY','','nameYrot',90,'nameYlength',0,...
             'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
-            'undock', '','colorBackground',false,'typespm','full');
+            'undock', '','colorBackground',false,'typespm','full','order',[]);
 
         [varargin{:}] = convertStringsToChars(varargin{:});
         UserOptions=varargin(1:2:length(varargin));
@@ -1153,6 +1205,7 @@ if nargin>1
         colorBackground=options.colorBackground;
         typespm=options.typespm;
         plo=options.plo;
+        orderSPM=string(options.order);
         %plo.nameY=options.nameY;
         %plo.nameYrot=options.nameYrot;
         %plo.nameYlength=options.nameYlength;
@@ -1233,7 +1286,47 @@ else
     units           = '';
     colorBackground = false;
     typespm         = 'full';
+    orderSPM        = "original";
 end
+
+if orderSPM ~="original"
+    if orderSPM=="alphabet"
+        [~,ordlab]=sort(string(namesFromTable));
+        % Reorder Y and namesFromTable using the alphabetical order
+        RnotComputed=true;
+    elseif orderSPM=="AOE" || orderSPM=="FPC"
+        R=corr(Y);
+        [V,~]=eig(R);
+        e1=V(:,end);
+        if sum(sign(e1))<0
+            e1=-e1;
+        end
+        if orderSPM=="AOE"
+            e2=V(:,end-1);
+            if sum(sign(e2))<0
+                 e2=-e2;
+            end
+            alpha=atan(e2./e1);
+            boo=e1<=0;
+            alpha(boo)=alpha(boo)+pi;
+        else
+            alpha=e1;
+        end
+        [~,ordlab]=sort(alpha,'ascend');
+
+
+        R=R(ordlab,ordlab);
+        RnotComputed=false;
+    else
+            error('FSDA:spmplot:WrongInputOpt','order can be just  "original", "alphabet", "AOE" or "FPC".');
+    end
+
+    Y=Y(:,ordlab);
+    namesFromTable=namesFromTable(ordlab);
+else
+    RnotComputed=true;   
+end
+
 
 ngroups=length(unique(group));
 seq= (1:n)';
@@ -1427,6 +1520,9 @@ end
 if lunigroup==1
     doleg = 'off';
 end
+
+
+
 
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 %[H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'grpbars',nameY);
@@ -1692,7 +1788,9 @@ else
 end
 
 if colorBackground==true || lowerORupper==true
-    R=corr(Y);
+    if RnotComputed==true
+        R=corr(Y);
+    end
     if sum(sum(isnan(R)))
         R(isnan(R)) = 0;
         warning('FSDA:spmplot:InvalidDataset','The correlation between some variables is NaN: these values are set to zero.');
