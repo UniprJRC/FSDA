@@ -15,70 +15,70 @@
 80	250	30	140
 30	50	0	120];
 out=corrNominal(N);</pre></div></div><pre class="codeoutput">Chi2 index
-        221.24
+  221.2405
 
 pvalue Chi2 index
-          0.00
+   5.6588e-45
 
 Phi index
-          0.47
+    0.4704
 
 Cramer's V 
-          0.33
+    0.3326
 
 Test of H_0: independence between rows and columns
-                  Coeff     se     zscore    pval
-                  _____    ____    ______    ____
+                   Coeff         se       zscore       pval   
+                  ________    ________    ______    __________
 
-    CramerV       0.33     0.02    13.61     0.00
-    GKlambdayx    0.23     0.03     7.96     0.00
-    tauyx         0.09     0.01     6.78     0.00
-    Hyx           0.09     0.01     7.74     0.00
+    CramerV         0.3326    0.024431    13.614             0
+    GKlambdayx     0.22581    0.028383    7.9556    1.7764e-15
+    tauyx         0.091674    0.013524    6.7788    1.2121e-11
+    Hyx            0.08716    0.011265    7.7374    1.0214e-14
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                  Value    StandardError    ConflimL    ConflimU
-                  _____    _____________    ________    ________
+                   Value      StandardError    ConflimL    ConflimU
+                  ________    _____________    ________    ________
 
-    CramerV       0.33         0.02           0.28        0.37  
-    GKlambdayx    0.23         0.03           0.17        0.28  
-    tauyx         0.09         0.01           0.07        0.12  
-    Hyx           0.09         0.01           0.07        0.11  
+    CramerV         0.3326      0.024431        0.28471    0.37287 
+    GKlambdayx     0.22581      0.028383        0.17018    0.28144 
+    tauyx         0.091674      0.013524       0.065168    0.11818 
+    Hyx            0.08716      0.011265       0.065082    0.10924 
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of option conflev.</li></span></a></span></h3><div class="collapse"><p>
       Use data from Goodman Kruskal (1954).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[1768   807    189 47
 946   1387    746 53
 115    438    288 16];
 out=corrNominal(N,'conflev',0.99);</pre></div></div><pre class="codeoutput">Chi2 index
-       1073.51
+   1.0735e+03
 
 pvalue Chi2 index
-          0.00
+  1.1244e-228
 
 Phi index
-          0.40
+    0.3973
 
 Cramer's V 
-          0.28
+    0.2810
 
 Test of H_0: independence between rows and columns
-                  Coeff     se     zscore    pval
-                  _____    ____    ______    ____
+                   Coeff         se        zscore    pval
+                  ________    _________    ______    ____
 
-    CramerV       0.28     0.01    31.78     0.00
-    GKlambdayx    0.19     0.01    15.83     0.00
-    tauyx         0.08     0.00    17.48     0.00
-    Hyx           0.08     0.00    18.10     0.00
+    CramerV        0.28095    0.0088396    31.784     0  
+    GKlambdayx     0.19239     0.012158    15.825     0  
+    tauyx         0.080883    0.0046282    17.476     0  
+    Hyx           0.075341    0.0041619    18.102     0  
 
 -----------------------------------------
 Indexes and 99% confidence limits
-                  Value    StandardError    ConflimL    ConflimU
-                  _____    _____________    ________    ________
+                   Value      StandardError    ConflimL    ConflimU
+                  ________    _____________    ________    ________
 
-    CramerV       0.28         0.01           0.26        0.30  
-    GKlambdayx    0.19         0.01           0.16        0.22  
-    tauyx         0.08         0.00           0.07        0.09  
-    Hyx           0.08         0.00           0.06        0.09  
+    CramerV        0.28095      0.0088396       0.25818     0.30241
+    GKlambdayx     0.19239       0.012158       0.16108     0.22371
+    tauyx         0.080883      0.0046282      0.068962    0.092805
+    Hyx           0.075341      0.0041619      0.064621    0.086061
 
 </pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrNominal with option dispresults.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[ 6 14 17 9;
 30 32 17 3];
@@ -140,136 +140,136 @@ out=corrNominal(Ntable,'conflimMethodCramerV',method{i});
 ConfintV(i,:)=out.ConfLimtable{'CramerV',3:4};
 end
 disp(array2table(ConfintV,'RowNames',method,'VariableNames',{'Lower' 'Upper'}))</pre></div></div><pre class="codeoutput">Chi2 index
-         21.03
+   21.0290
 
 pvalue Chi2 index
-          0.00
+    0.0018
 
 Phi index
-          0.13
+    0.1328
 
 Cramer's V 
-          0.13
+    0.1328
 
 Test of H_0: independence between rows and columns
-                  Coeff     se     zscore    pval
-                  _____    ____    ______    ____
+                   Coeff         se        zscore      pval   
+                  ________    _________    ______    _________
 
-    CramerV       0.13     0.04     3.20     0.00
-    GKlambdayx    0.00     0.00      NaN      NaN
-    tauyx         0.02     0.01     2.24     0.03
-    Hyx           0.02     0.01     2.29     0.02
+    CramerV        0.13282      0.04149    3.2013    0.0013679
+    GKlambdayx           0            0       NaN          NaN
+    tauyx         0.017642    0.0078826    2.2381     0.025218
+    Hyx           0.021875    0.0095422    2.2924     0.021883
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                  Value    StandardError    ConflimL    ConflimU
-                  _____    _____________    ________    ________
+                   Value      StandardError    ConflimL     ConflimU
+                  ________    _____________    _________    ________
 
-    CramerV       0.13         0.04           0.05        0.18  
-    GKlambdayx    0.00         0.00           0.00        0.00  
-    tauyx         0.02         0.01           0.00        0.03  
-    Hyx           0.02         0.01           0.00        0.04  
+    CramerV        0.13282        0.04149       0.051504     0.17582
+    GKlambdayx           0              0              0           0
+    tauyx         0.017642      0.0078826      0.0021921    0.033091
+    Hyx           0.021875      0.0095422      0.0031721    0.040577
 
 Chi2 index
-         21.03
+   21.0290
 
 pvalue Chi2 index
-          0.00
+    0.0018
 
 Phi index
-          0.13
+    0.1328
 
 Cramer's V 
-          0.13
+    0.1328
 
 Test of H_0: independence between rows and columns
-                  Coeff     se     zscore    pval
-                  _____    ____    ______    ____
+                   Coeff         se        zscore       pval   
+                  ________    _________    ______    __________
 
-    CramerV       0.13     0.02     5.77     0.00
-    GKlambdayx    0.00     0.00      NaN      NaN
-    tauyx         0.02     0.01     2.24     0.03
-    Hyx           0.02     0.01     2.29     0.02
+    CramerV        0.13282     0.023037    5.7657    8.1331e-09
+    GKlambdayx           0            0       NaN           NaN
+    tauyx         0.017642    0.0078826    2.2381      0.025218
+    Hyx           0.021875    0.0095422    2.2924      0.021883
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                  Value    StandardError    ConflimL    ConflimU
-                  _____    _____________    ________    ________
+                   Value      StandardError    ConflimL     ConflimU
+                  ________    _____________    _________    ________
 
-    CramerV       0.13         0.02           0.09        0.19  
-    GKlambdayx    0.00         0.00           0.00        0.00  
-    tauyx         0.02         0.01           0.00        0.03  
-    Hyx           0.02         0.01           0.00        0.04  
+    CramerV        0.13282       0.023037       0.087671     0.18959
+    GKlambdayx           0              0              0           0
+    tauyx         0.017642      0.0078826      0.0021921    0.033091
+    Hyx           0.021875      0.0095422      0.0031721    0.040577
 
 Chi2 index
-         21.03
+   21.0290
 
 pvalue Chi2 index
-          0.00
+    0.0018
 
 Phi index
-          0.13
+    0.1328
 
 Cramer's V 
-          0.13
+    0.1328
 
 Test of H_0: independence between rows and columns
-                  Coeff     se     zscore    pval
-                  _____    ____    ______    ____
+                   Coeff         se        zscore      pval   
+                  ________    _________    ______    _________
 
-    CramerV       0.13     0.03     4.63     0.00
-    GKlambdayx    0.00     0.00      NaN      NaN
-    tauyx         0.02     0.01     2.24     0.03
-    Hyx           0.02     0.01     2.29     0.02
+    CramerV        0.13282     0.028675     4.632    3.621e-06
+    GKlambdayx           0            0       NaN          NaN
+    tauyx         0.017642    0.0078826    2.2381     0.025218
+    Hyx           0.021875    0.0095422    2.2924     0.021883
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                  Value    StandardError    ConflimL    ConflimU
-                  _____    _____________    ________    ________
+                   Value      StandardError    ConflimL     ConflimU
+                  ________    _____________    _________    ________
 
-    CramerV       0.13         0.03           0.08        0.19  
-    GKlambdayx    0.00         0.00           0.00        0.00  
-    tauyx         0.02         0.01           0.00        0.03  
-    Hyx           0.02         0.01           0.00        0.04  
+    CramerV        0.13282       0.028675       0.076621     0.18818
+    GKlambdayx           0              0              0           0
+    tauyx         0.017642      0.0078826      0.0021921    0.033091
+    Hyx           0.021875      0.0095422      0.0031721    0.040577
 
 Chi2 index
-         21.03
+   21.0290
 
 pvalue Chi2 index
-          0.00
+    0.0018
 
 Phi index
-          0.13
+    0.1328
 
 Cramer's V 
-          0.13
+    0.1328
 
 Test of H_0: independence between rows and columns
-                  Coeff     se     zscore    pval
-                  _____    ____    ______    ____
+                   Coeff         se        zscore       pval   
+                  ________    _________    ______    __________
 
-    CramerV       0.13     0.03     4.64     0.00
-    GKlambdayx    0.00     0.00      NaN      NaN
-    tauyx         0.02     0.01     2.24     0.03
-    Hyx           0.02     0.01     2.29     0.02
+    CramerV        0.13282     0.028646    4.6366    3.5418e-06
+    GKlambdayx           0            0       NaN           NaN
+    tauyx         0.017642    0.0078826    2.2381      0.025218
+    Hyx           0.021875    0.0095422    2.2924      0.021883
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                  Value    StandardError    ConflimL    ConflimU
-                  _____    _____________    ________    ________
+                   Value      StandardError    ConflimL     ConflimU
+                  ________    _____________    _________    ________
 
-    CramerV       0.13         0.03           0.08        0.19  
-    GKlambdayx    0.00         0.00           0.00        0.00  
-    tauyx         0.02         0.01           0.00        0.03  
-    Hyx           0.02         0.01           0.00        0.04  
+    CramerV        0.13282       0.028646       0.076676     0.18824
+    GKlambdayx           0              0              0           0
+    tauyx         0.017642      0.0078826      0.0021921    0.033091
+    Hyx           0.021875      0.0095422      0.0031721    0.040577
 
-                  Lower    Upper
-                  _____    _____
+                   Lower       Upper 
+                  ________    _______
 
-    ncchisq       0.05     0.18 
-    ncchisqadj    0.09     0.19 
-    fisher        0.08     0.19 
-    fisheradj     0.08     0.19 
+    ncchisq       0.051504    0.17582
+    ncchisqadj    0.087671    0.18959
+    fisher        0.076621    0.18818
+    fisheradj     0.076676    0.18824
 
 </pre></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorrNominal when input is 2 by 2.</li></span></a></span></h3><div class="collapse"><p>
      Indexes theta=cross product ratio, 
@@ -287,79 +287,85 @@ ans =
 
   2&times;1 table
 
-                               Y=Product purchase  
-                             ______________________
+                             Y=Product purchase
+                             __________________
 
-                                     Yes       No  
-                                    _____    ______
-                                                   
-    X=advertisment memory    Yes    87.00    188.00
-    advertisment memory      No     42.00    406.00
+                                    Yes    No  
+                                    ___    ___ 
+                                               
+    X=advertisment memory    Yes    87     188 
+    advertisment memory      No     42     406 
 
 Chi2 index
-         57.61
+   57.6071
 
 pvalue Chi2 index
-          0.00
+   3.2006e-14
 
 Phi index
-          0.28
+    0.2823
 
 Cramer's V 
-          0.28
+    0.2823
 
 -------------------------------
 2x2 contingency table indexes
 th=cross product ratio
-          4.47
+    4.4734
 
 Cross product ratio in the interval [-1 1]. Index Q=(th-1)/(th+1)
-          0.63
+    0.6346
 
 Cross product ratio in the interval [-1 1]. Index U=(sqrt(th)-1)/(sqrt(th)+1)
-          0.36
+    0.3580
 
 -------------------------------
 Test of H_0: independence between rows and columns
-                  Coeff     se     zscore    pval
-                  _____    ____    ______    ____
+                   Coeff         se       zscore       pval   
+                  ________    ________    ______    __________
 
-    CramerV       0.28     0.04     7.59     0.00
-    GKlambdayx    0.00     0.00      NaN      NaN
-    tauyx         0.08     0.02     3.83     0.00
-    Hyx           0.08     0.02     3.88     0.00
+    CramerV        0.28227    0.037189    7.5902    3.1974e-14
+    GKlambdayx           0           0       NaN           NaN
+    tauyx         0.079678    0.020787    3.8331    0.00012653
+    Hyx           0.082782    0.021327    3.8816    0.00010376
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                  Value    StandardError    ConflimL    ConflimU
-                  _____    _____________    ________    ________
+                   Value      StandardError    ConflimL    ConflimU
+                  ________    _____________    ________    ________
 
-    CramerV       0.28         0.04           0.21        0.36  
-    GKlambdayx    0.00         0.00           0.00        0.00  
-    tauyx         0.08         0.02           0.04        0.12  
-    Hyx           0.08         0.02           0.04        0.12  
+    CramerV        0.28227      0.037189        0.20938    0.35516 
+    GKlambdayx           0             0              0          0 
+    tauyx         0.079678      0.020787       0.038937    0.12042 
+    Hyx           0.082782      0.021327       0.040983    0.12458 
 
 
 out = 
 
   struct with fields:
 
-               N: [2&times;2 double]
-          Ntable: [2&times;2 table]
-            Chi2: 57.61
-        Chi2pval: 0.00
-             Phi: 0.28
-         CramerV: [0.28 0.04 7.59 0.00]
-      GKlambdayx: [0 0 NaN NaN]
-           tauyx: [0.08 0.02 3.83 0.00]
-             Hyx: [0.08 0.02 3.88 0.00]
-         ConfLim: [4&times;4 double]
-    ConfLimtable: [4&times;4 table]
-         TestInd: [4&times;4 double]
-    TestIndtable: [4&times;4 table]
-           theta: 4.47
-               Q: 0.63
-               U: 0.36
+                     N: [2&times;2 double]
+                Ntable: [2&times;2 table]
+                  Chi2: 57.6071
+              Chi2pval: 3.2006e-14
+                   Phi: 0.2823
+               CramerV: [0.2823 0.0372 7.5902 3.1974e-14]
+            GKlambdayx: [0 0 NaN NaN]
+                 tauyx: [0.0797 0.0208 3.8331 1.2653e-04]
+                   Hyx: [0.0828 0.0213 3.8816 1.0376e-04]
+               ConfLim: [4&times;4 double]
+          ConfLimtable: [4&times;4 table]
+               TestInd: [4&times;4 double]
+          TestIndtable: [4&times;4 table]
+                 theta: 4.4734
+                     Q: 0.6346
+                     U: 0.3580
+          Contrib2Chi2: [2&times;2 double]
+     Contrib2Chi2table: [2&times;2 table]
+           Contrib2Hyx: [2&times;2 double]
+      Contrib2Hyxtable: [2&times;2 table]
+         Contrib2tauyx: [2&times;2 double]
+    Contrib2tauyxtable: [2&times;2 table]
 
 </pre></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to CorrNominal with optional input argument plots.</li></span></a></span></h3><div class="collapse"><p>
     Load the Housetasks data (a contingency table containing the
@@ -383,35 +389,35 @@ colslab={'Wife'	'Alternating'	'Husband'	'Jointly'};
 Ntable=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
 % Call to corrNominal with option 'plots',true
 corrNominal(Ntable,'plots',true);</pre></div></div><pre class="codeoutput">Chi2 index
-       1944.46
+   1.9445e+03
 
 pvalue Chi2 index
-             0
+     0
 
 Phi index
-          1.06
+    1.0559
 
 Cramer's V 
-          0.61
+    0.6096
 
 Test of H_0: independence between rows and columns
-                  Coeff     se     zscore    pval
-                  _____    ____    ______    ____
+                   Coeff        se       zscore    pval
+                  _______    ________    ______    ____
 
-    CramerV       0.61     0.02    36.50     0.00
-    GKlambdayx    0.51     0.02    27.56     0.00
-    tauyx         0.41     0.01    29.50     0.00
-    Hyx           0.41     0.01    29.66     0.00
+    CramerV       0.60963    0.016701    36.502     0  
+    GKlambdayx    0.50787    0.018427    27.561     0  
+    tauyx         0.40671    0.013787      29.5     0  
+    Hyx           0.40833    0.013767    29.659     0  
 
 -----------------------------------------
 Indexes and 95% confidence limits
-                  Value    StandardError    ConflimL    ConflimU
-                  _____    _____________    ________    ________
+                   Value     StandardError    ConflimL    ConflimU
+                  _______    _____________    ________    ________
 
-    CramerV       0.61         0.02           0.58        0.63  
-    GKlambdayx    0.51         0.02           0.47        0.54  
-    tauyx         0.41         0.01           0.38        0.43  
-    Hyx           0.41         0.01           0.38        0.44  
+    CramerV       0.60963      0.016701       0.57689     0.63133 
+    GKlambdayx    0.50787      0.018427       0.47175     0.54398 
+    tauyx         0.40671      0.013787       0.37969     0.43374 
+    Hyx           0.40833      0.013767       0.38134     0.43531 
 
 </pre><a href='http://rosa.unipr.it/fsda/corrNominal.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\corrNominal_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\corrNominal_02.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
                  table (say of size I-by-J) or the original data matrix.</p> <p>
@@ -563,7 +569,11 @@ Indexes and 95% confidence limits
                         the Q rescaling Q=(th-1)/(th+1). This index is computed just
                         if the input table is 2-by-2</p></td></tr><tr valign="top"><td><code>U</code></td><td><p>cross product ratio in the interval [-1 1] using
                         the U rescaling U=(sqrt(th)-1)/(sqrt(th)+1). This index is computed just
-                        if the input table is 2-by-2</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+                        if the input table is 2-by-2</p></td></tr><tr valign="top"><td><code>Contrib2Chi2</code></td><td><p><p>I x J array containing the contributions (with
+                        sign) to the Chi2 index.</p> <p>
+                        Note that sum(abs(out.Contrib2chi),'all')=out.Chi2.</p></p></td></tr><tr valign="top"><td><code>Contrib2Chi2table</code></td><td><p>same of out.Contrib2chi but in table format</p></td></tr><tr valign="top"><td><code>Contrib2Hyx</code></td><td><p><p>I x J array containing the contributions to the Hyx index.</p> <p>
+                        Note that sum(out.Contrib2Hyx,'all')=out.Hyx.</p></p></td></tr><tr valign="top"><td><code>Contrib2Hyxtable</code></td><td><p>same of out.Contrib2Hyx but in table format</p></td></tr><tr valign="top"><td><code>Contrib2tauyx</code></td><td><p><p>I x J array containing the contributions to the tauyx index.</p> <p>
+                        Note that sum(out.Contrib2tauyx,'all')=out.tauyx.</p></p></td></tr><tr valign="top"><td><code>Contrib2tauyxtable</code></td><td><p>same of out.Contrib2tauyx but in table format</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
                        In the contingency table N of size $I \times J$,
                        whose i,j entry is $n_{ij}$, the Pearson
                        residuals are defined as

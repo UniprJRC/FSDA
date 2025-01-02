@@ -212,6 +212,17 @@ function out=corrNominal(N, varargin)
 % out.U              =   cross product ratio in the interval [-1 1] using
 %                        the U rescaling U=(sqrt(th)-1)/(sqrt(th)+1). This index is computed just
 %                        if the input table is 2-by-2
+% out.Contrib2Chi2   =    I x J array containing the contributions (with
+%                        sign) to the Chi2 index.
+%                        Note that sum(abs(out.Contrib2chi),'all')=out.Chi2.
+% out.Contrib2Chi2table = same of out.Contrib2chi but in table format
+%
+% out.Contrib2Hyx   =    I x J array containing the contributions to the Hyx index.
+%                        Note that sum(out.Contrib2Hyx,'all')=out.Hyx.
+% out.Contrib2Hyxtable = same of out.Contrib2Hyx but in table format
+% out.Contrib2tauyx    =    I x J array containing the contributions to the tauyx index.
+%                        Note that sum(out.Contrib2tauyx,'all')=out.tauyx.
+% out.Contrib2tauyxtable = same of out.Contrib2tauyx but in table format
 %
 % More About:
 %
@@ -605,9 +616,11 @@ nidot=sum(N,2);
 Ntheo=(nidot*ndotj/n);
 
 % Chi2 index
-res=N-Ntheo;
-contr2Chi2=(res.^2)./Ntheo;
-Chi2=sum(contr2Chi2,'all');
+Res=N-Ntheo;
+% contr2Chi2 = contribution of the single cells of the contingency table to
+% the Chi2 index
+Contrib2Chi2=sign(Res).*(Res.^2)./Ntheo;
+Chi2=sum(abs(Contrib2Chi2),'all');
 
 % pvalue of Chi2 test
 Chi2pval=chi2cdf(Chi2, (I-1)*(J-1),'upper');
@@ -621,7 +634,7 @@ CramerV=Phi/sqrt(min([I-1 J-1]));
 if I==2 && J==2
     % theta= cross product ratio
     th=N(1,1)*N(2,2)/(N(1,2)*N(2,1));
-    % theta nell'intervallo [-1 1], indexes Q and U
+    % theta in the interval [-1 1], indexes Q and U
     Q=(th-1)/(th+1);
     U=(sqrt(th)-1)/(sqrt(th)+1);
 end
@@ -639,8 +652,10 @@ sumdotj2=sum(ndotj.^2);
 boo=(N(:)~=0);
 
 % tau index (proportional reduction in variation of Goodman and Kruskal),
-% when variation is mesured using Gini's coefficient
-tauyx= (  n*sum(N(:).^2./nidotmat(:))-sumdotj2)/(n^2-sumdotj2);
+% when variation is measured using Gini's coefficient
+% tauyx= (  n*sum(N(:).^2./nidotmat(:))-sumdotj2)/(n^2-sumdotj2);
+Contrib2tauyx= (  n*(N.^2./nidotmat)-sumdotj2/(I*J))./(n^2-sumdotj2);
+tauyx=sum(Contrib2tauyx,'all');
 
 % see equation (4.4.3) GK JASA 1963 or p. 120 of GK Measures of association
 % NumA=sum( ((N(:)./nidotmat(:)).*(1-sum( (ndotjmat(:)/n).^2 )) - (ndotjmat(:)/n).*(1-(1/n)*(N(:).^2 ./ nidotmat(:))) ).^2 .*N(:)/n)  ;
@@ -652,7 +667,10 @@ tauyx= (  n*sum(N(:).^2./nidotmat(:))-sumdotj2)/(n^2-sumdotj2);
 % H index = proportional reduction in variation when variation is measured
 % using the entropy
 % H index (uncertainty coefficient) of Theil
-Hyx= -sum(N(boo).*log(N(boo)./Ntheo(boo))  )/sum(ndotj.*log(ndotj/n));
+% Hyx= -sum(N(boo).*log(N(boo)./Ntheo(boo))  )/sum(ndotj.*log(ndotj/n));
+Contrib2Hyx= -(N.*log(N./Ntheo)  )./sum(ndotj.*log(ndotj/n));
+Contrib2Hyx(isnan(Contrib2Hyx))=0;
+Hyx=sum(Contrib2Hyx,'all');
 
 Hx=-sum( (nidot/n).*log(nidot/n));
 Hy=-sum( (ndotj/n).*log(ndotj/n));
@@ -675,7 +693,7 @@ else
     errunconditional = nerrunconditional/(n^2);
     errconditional = nerrconditional/(n^2);
     f = errconditional * (errunconditional + 1) - 2 * errunconditional;
-    % Unefficient implementation using loops
+    % Un-efficient implementation using loops
     %            vartauCR=0;
     %             for i=1:I
     %                 for j=1:J
@@ -827,6 +845,22 @@ if I==2 && J==2
     out.U=U;
 end
 
+% Store Contributions to indexes
+out.Contrib2Chi2=Contrib2Chi2;
+Contrib2Chi2table=Ntable;
+Contrib2Chi2table{:,:}=Contrib2Chi2;
+out.Contrib2Chi2table=Contrib2Chi2table;
+
+out.Contrib2Hyx=Contrib2Hyx;
+Contrib2Hyxtable=Ntable;
+Contrib2Hyxtable{:,:}=Contrib2Hyx;
+out.Contrib2Hyxtable=Contrib2Hyxtable;
+
+out.Contrib2tauyx=Contrib2tauyx;
+Contrib2tauyxtable=Ntable;
+Contrib2tauyxtable{:,:}=Contrib2tauyx;
+out.Contrib2tauyxtable=Contrib2tauyxtable;
+
 if dispresults == true
 
     disp('Chi2 index')
@@ -878,13 +912,13 @@ if plots==true
     figure
     nomiContribChi2=string(Lr(:))+"-"+string(Lc(:)');
     % Pareto plot of individual contributions
-    % Transform contrChi2 into a column vector.
-    contr2Chi2=contr2Chi2(:);
-    [parhdl,axesPareto]=pareto(contr2Chi2,nomiContribChi2(:),0.6);
+    % Transform Contrib2Chi2 into a column vector.
+    Contrib2Chi2vec=abs(Contrib2Chi2(:));
+    [parhdl,axesPareto]=pareto(Contrib2Chi2vec,nomiContribChi2(:),0.6);
 
     b=parhdl(1);
-    [~,indsor]=sort(contr2Chi2,'descend');
-    boo=res<0;
+    [~,indsor]=sort(Contrib2Chi2vec,'descend');
+    boo=Res<0;
     boosor=boo(indsor);
     ax=axis;
     nummod=floor(ax(2));

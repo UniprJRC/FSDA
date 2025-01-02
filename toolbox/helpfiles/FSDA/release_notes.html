@@ -110,19 +110,35 @@ document.write(divsbefore);</script>
 			<td style="vertical-align: top; height: 669px; width: 414px;">
 			V &gt;8.7.6.8<br>2025a prerelease</td>
 			<td style="vertical-align: top; height: 669px;">
-				ANALYSIS OF CONTINGENCY TABLES<br><br>New option plots inside
-				<a href="corrNominal.html">corrNominal</a>. If plots is true, 
-				the contribution to the Chi2 statistics are shown in a 
-				balloonplot and Pareto plot of contributions are shown on the 
-				screen. The contributions have 2 colours depending on the sign 
-				of the residual,<br><br>New option contrib2Chi2 inside
-				<a href="balloonplot.html">balloonplot</a>.<br><br>New option 
+				ANALYSIS OF CONTINGENCY TABLES<br><br>Function
+				<a href="corrNominal.html">corrNominal</a>.now returns in output 
+				the contribution of the single cells of the contingency table to 
+				Chi2 (Chi2 index), Hyx (<span>uncertainty coefficient of Theil), 
+				tauyx proportional reduction in variation of Goodmand and 
+				Kruskal. Function returns them both in array and table format.<br>
+				<br>Function
+				<a href="corrOrdinal.html">corrOrdinal</a>.now returns in output 
+				the contribution of the single cells to the numerator of all the 
+				ordinal indexes (namely C-D).</span><br><br>New option plots inside
+				<a href="corrNominal.html">corrNominal</a> and corrOrdinal. If plots is true, 
+				the contribution to the Chi2 statistics or to (C-D) are shown in a 
+				balloonplot and Pareto plot. The contributions have 2 colours depending on the sign 
+				of the residual,<br><br>New option contrib2Index inside
+				<a href="balloonplot.html">balloonplot</a>.<br><br>
+				TRANSFORMATIONS<br><br>New option 
 				tukey1df inside function <a href="Score.html">Score</a>,
 				<a href="ScoreYJ.html">ScoreYJ</a> and <a href="FSRfan.html">
 				FSRfan</a>. If this option is true, the Tukey's one degree of 
-				freedom test for non additivity is computed and monitored. </td>
+				freedom test for non additivity is computed and monitored. <br>
+				<br>GRAPHICS<br>New option order inside <a href="spmplot.html">
+				spmplot</a> to improve the visualization by placing similar 
+				variables next to each other. <br><br>New option inside typespm 
+				of <a href="spmplot.html">spmplot</a>which enables to show 
+				instead of the scatters colored number of the correlation 
+				coefficient depending on the value.<br><br> </td>
 			<td style="vertical-align: top; width: 20%; height: 669px;">Oldest 
-			version of MATLAB which is supported is R202020a</td>
+			version of MATLAB which is supported is R202020a<br><br>Old function 
+			fanplot is deleted because it is replaced by fanplotFS</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px;"> 
 			
 			&nbsp;</td>
