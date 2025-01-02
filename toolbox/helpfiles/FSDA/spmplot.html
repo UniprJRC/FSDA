@@ -493,12 +493,14 @@ spmplot(mtcars,'typespm',typespm,'order','FPC');</pre></div></div><a href='http
 
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'group',group
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_order" class="clearfix"></div><h3 id="input_argument_namevalue_order" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>order</code> &#8212;Order of the variables in the scatterplot matrix.</span></a><span class="example_desc">character               | string.</span></span></h3><div class="collapse">	<p><p>Order in which the variables are shown inside
-               spmplot. Possible values are:
+               spmplot. Variable reordering can be used to improve the
+               visualization by placing similar variables next to each other.</p> <p>
+               Possible values are:
                "alphabet"=alphabetical order is used;</p> <p>
                "original"= the order in the input argument Y is preserved
                    (this is the default option);</p> <p>
-               "AOE" = the angular order of the first two eigenvectors is used.</p><p> 
-                  More precisely, the order of the variables is calculated from 
+               "AOE" = the angular order of the first two eigenvectors is used.</p><p>
+                  More precisely, the order of the variables is calculated from
                   the order of the angles, $a_i$:
                   </p>\[
                   a_i= tan^{-1}(e_{i1}/e_{i1}) \qquad \mbox{if} \qquad e_{i1}&gt;0;
@@ -645,7 +647,8 @@ spmplot(mtcars,'typespm',typespm,'order','FPC');</pre></div></div><a href='http
                More precisely, typespm.lower controls how the part below
                the diagonal is shown and typespm.upper controls the upper
                part. Possible entries of typespm.lower or typespm.upper
-               are "scatter", "circle", "square" "number" and "none";</p><p>
+               are "scatter", "circle", "square" "number" (number without
+               color), "cnumber" (colored number) and "none".</p><p> 
                For example if</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>lower</code></td><td><p>"number" and</p></td></tr><tr valign="top"><td><code>upper</code></td><td><p>"circle", the correlations in the part below
                the diagonal are shown with numbers and the upper part with
                circles. Similarly, if typespm.lower="none" and</p></td></tr><tr valign="top"><td><code>scatter</code></td><td><p><p>"none" just the upper part of the scatter
@@ -653,7 +656,7 @@ spmplot(mtcars,'typespm',typespm,'order','FPC');</pre></div></div><a href='http
                be characters or strings.</p> <p>
                typespm='lower' is equivalent to typespm=struct;</p><p>
                typespm.lower='scatter', typespm.upper='number';</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'typespm','lower'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_undock" class="clearfix"></div><h3 id="input_argument_namevalue_undock" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>undock</code> &#8212;Panel to undock and visualize separately.</span></a><span class="example_desc">matrix | logical               matrix.</span></span></h3><div class="collapse">	<p><p>If undock='' (default), no panel is extracted. If
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar char or string  or alternatively a struct</code></p></div></div><div class="expandableContent"><div id="inputarg_undock" class="clearfix"></div><h3 id="input_argument_namevalue_undock" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>undock</code> &#8212;Panel to undock and visualize separately.</span></a><span class="example_desc">matrix | logical               matrix.</span></span></h3><div class="collapse">	<p><p>If undock='' (default), no panel is extracted. If
                undock is a r-by-2 matrix, it specifies the r coordinates
                of the scatter plot matrix to undock and visualize
                separately in a bivariate plot (i.e. for panels out of the
@@ -758,5 +761,5 @@ spmplot(mtcars,'typespm',typespm,'order','FPC');</pre></div></div><a href='http
 
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Friendly M. (2002), Corrgrams: Exploratory Displays for Correlation
- Matrices. The American Statistician, v. 56, pp. 316–324, 
+ Matrices. The American Statistician, v. 56, pp. 316–324,
  <a href="https://doi.org/10.1198/000313002533">https://doi.org/10.1198/000313002533</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/gplotmatrix.html'))" itemprop="url"><span itemprop="name"><code>gplotmatrix</code></span></a></span> | <span itemprop="seealso"><a href="yXplot.html" itemprop="url"><span itemprop="name"><code>yXplot</code></span></a></span> | <span itemprop="seealso"><a href="boxplotb.html" itemprop="url"><span itemprop="name"><code>boxplotb</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

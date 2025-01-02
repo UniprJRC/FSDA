@@ -280,7 +280,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               More precisely, typespm.lower controls how the part below
 %               the diagonal is shown and typespm.upper controls the upper
 %               part. Possible entries of typespm.lower or typespm.upper
-%               are "scatter", "circle", "square" "number" and "none";
+%               are "scatter", "circle", "square" "number" (number without
+%               color), "cnumber" (colored number) and "none". 
 %               For example if typespm.lower="number" and
 %               typespm.upper="circle", the correlations in the part below
 %               the diagonal are shown with numbers and the upper part with
@@ -1026,6 +1027,17 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     spmplot(mtcars,'typespm',typespm,'order','FPC');
 %}
 
+ %{
+    %% Example of use of option order with cnumber.
+    % The order of the variables is based on the first
+    % eigenvector associated to the largest eigenvalue.
+    load mtcars
+    typespm=struct;
+    typespm.lower='circle';
+    % Number whose size and color depends on the corresponding rxy
+    typespm.upper='cnumber';
+    spmplot(mtcars,'typespm',typespm,'order','FPC');
+%}
 
 %% Beginning of code
 
@@ -1939,12 +1951,12 @@ if  lowerORupper ==true
 
                     elseif method=="number" ||  method== "cnumber"   % method contains "number"
 
-                        if lunigroup==1 % just one group (number of cnumber) 
+                        if lunigroup==1 % just one group (number of cnumber)
                             if method=="number"
                                 % Show number without color
                                 text(AX(i,j),0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
                                     'Units','normalized','HorizontalAlignment','center','Interpreter','Latex')
-                            else
+                            else  % colored number
                                 % Show number with color which depends on
                                 % the value of R(i,j)
                                 ind=find(index<=R(i,j),1,'last');
@@ -1963,7 +1975,7 @@ if  lowerORupper ==true
                             end
                         end
 
-                    elseif method=="circle" || method =="square" || method =="number" %% TO DO remove here || method =="number" 
+                    elseif method=="circle" || method =="square"
                         % create new axes in position i,j
                         a=axes('Position',AX(i,j).Position);
                         a.XTick='';
@@ -1976,54 +1988,45 @@ if  lowerORupper ==true
                         pos = [center-radius 2*radius 2*radius];
 
                         if lunigroup==1
-                            if method=="number"
-                                text(0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
-                                    'Units','normalized','HorizontalAlignment','center')
+                            ind=find(index<=R(i,j),1,'last');
+                            % rectangle('Position',pos, 'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
+                            if method=="circle"
+                                rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
                             else
-                                ind=find(index<=R(i,j),1,'last');
-                                % rectangle('Position',pos, 'FaceColor', cmap(ind, :), 'EdgeColor', cmap(ind, :))
-                                if method=="circle"
-                                    rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
-                                else
-                                    rectangle('Position',pos, 'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
-                                end
+                                rectangle('Position',pos, 'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
                             end
                         else
-                            if method=="number"
-                                text(0.2,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
-                                    'Units','normalized','HorizontalAlignment','center')
+                            radius = max(abs(R(i,j)), 0.0001) * 3;
+                            radius=radius/lunigroup;
+                            center=[-2 0];
+                            pos = [center-radius 2*radius 2*radius];
+                            ind=find(index<=R(i,j),1,'last');
+                            if method=="circle"
+                                rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
                             else
-                                radius = max(abs(R(i,j)), 0.0001) * 3;
-                                radius=radius/lunigroup;
-                                center=[-2 0];
-                                pos = [center-radius 2*radius 2*radius];
-                                ind=find(index<=R(i,j),1,'last');
-                                if method=="circle"
-                                    rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
+                                rectangle('Position',pos, 'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
+                            end
+
+                            step=3/lunigroup;
+                            center=[2 -3-step];
+                            for jjj=1:lunigroup
+                                if method=="number"
+                                    text(0.6,jjj/(lunigroup+1),num2str(Rgroup(i,j,jjj),2), ...
+                                        'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj))
+
                                 else
-                                    rectangle('Position',pos, 'FaceColor', [cmap(ind, :) , abs(R(i,j))], 'EdgeColor', cmap(ind, :))
-                                end
-
-                                step=3/lunigroup;
-                                center=[2 -3-step];
-                                for jjj=1:lunigroup
-                                    if method=="number"
-                                        text(0.6,jjj/(lunigroup+1),num2str(Rgroup(i,j,jjj),2), ...
-                                            'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj))
-
+                                    radius=  max(abs(Rgroup(i,j,jjj)), 0.0001)* 3/lunigroup;
+                                    center(2)=center(2)+2*step;
+                                    pos = [center-radius 2*radius 2*radius];
+                                    ind=find(index<=Rgroup(i,j,jjj),1,'last');
+                                    if method=="circle"
+                                        rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', [cmap(ind, :) , abs(Rgroup(i,j,jjj))] , 'EdgeColor', cmap(ind, :))
                                     else
-                                        radius=  max(abs(Rgroup(i,j,jjj)), 0.0001)* 3/lunigroup;
-                                        center(2)=center(2)+2*step;
-                                        pos = [center-radius 2*radius 2*radius];
-                                        ind=find(index<=Rgroup(i,j,jjj),1,'last');
-                                        if method=="circle"
-                                            rectangle('Position',pos, 'Curvature',[1 1],'FaceColor', [cmap(ind, :) , abs(Rgroup(i,j,jjj))] , 'EdgeColor', cmap(ind, :))
-                                        else
-                                            rectangle('Position',pos,'FaceColor', [cmap(ind, :) , abs(Rgroup(i,j,jjj))] , 'EdgeColor', cmap(ind, :))
-                                        end
+                                        rectangle('Position',pos,'FaceColor', [cmap(ind, :) , abs(Rgroup(i,j,jjj))] , 'EdgeColor', cmap(ind, :))
                                     end
                                 end
                             end
+
                         end
 
                         % axis equal is very slow: replaced
