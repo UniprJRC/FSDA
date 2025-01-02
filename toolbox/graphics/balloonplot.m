@@ -46,7 +46,7 @@ function [h,Ntable] = balloonplot(N,varargin)
 %               size IxJ the balloon plots shows circles which are
 %               proportional to the absolute values of this matrix.
 %               Example - 'contrib2Chi2',true
-%               Data Types - boolean
+%               Data Types - boolean or array or table of the same size of N 
 %
 % datamatrix  : Data matrix or contingency table. Boolean. If
 %               datamatrix is true the first input argument N is forced to
@@ -202,6 +202,16 @@ function [h,Ntable] = balloonplot(N,varargin)
     balloonplot(SportHealth,'contrib2Index',out.Contrib2CminusD)
 %}
 
+%{
+    %% Example where contrib2Index is a table.
+    load SportHealth.mat
+    out=corrNominal(SportHealth);
+    out.Contrib2Hyxtable
+    % Contribution to Hyx index from each cell of the table
+    balloonplot(SportHealth,'contrib2Index', out.Contrib2Hyxtable)
+    title(['Contribution of each single cell to Hyx=' num2str(out.Hyx(1))])
+%}
+    
 %% Beginning of code
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
@@ -333,6 +343,18 @@ else % In this case contrib2Index is a scalar logical or a vector
         % squared Pearson residuals
         Res2=round(Res2,2);
     else
+        % Check that the size of Contrib2Index is IxJ
+        if ~isequal(size(contrib2Index),[I J])
+            disp("Size of current contingency table")
+            disp([I,J])
+            disp("Size of Contrib2Index")
+            disp(size(contrib2Index))
+            error('FSDA:balloonplot:WrongInputOpt','Size of Contrib2Index must be equal to the current contingency table.');
+        end
+
+        if istable(contrib2Index)
+            contrib2Index=contrib2Index{:,:};
+        end
         Res2=contrib2Index;
         boopos=Res2(:)>0;
         booneg=Res2(:)<0;
