@@ -102,12 +102,14 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %    order  :   Order of the variables in the scatterplot matrix. Character
 %               or string. Order in which the variables are shown inside
-%               spmplot. Possible values are:
+%               spmplot. Variable reordering can be used to improve the
+%               visualization by placing similar variables next to each other.
+%               Possible values are:
 %               "alphabet"=alphabetical order is used;
 %               "original"= the order in the input argument Y is preserved
 %                   (this is the default option);
-%               "AOE" = the angular order of the first two eigenvectors is used. 
-%                  More precisely, the order of the variables is calculated from 
+%               "AOE" = the angular order of the first two eigenvectors is used.
+%                  More precisely, the order of the variables is calculated from
 %                  the order of the angles, $a_i$:
 %                  \[
 %                  a_i= tan^{-1}(e_{i1}/e_{i1}) \qquad \mbox{if} \qquad e_{i1}>0;
@@ -289,7 +291,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               typespm='lower' is equivalent to typespm=struct;
 %               typespm.lower='scatter', typespm.upper='number';
 %                   Example - 'typespm','lower'
-%                   Data Types - char or struct
+%                   Data Types - scalar char or string  or alternatively a struct
 %
 %   undock   :  Panel to undock and visualize separately. Matrix or logical
 %               matrix. If undock='' (default), no panel is extracted. If
@@ -427,7 +429,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % References:
 %
 % Friendly M. (2002), Corrgrams: Exploratory Displays for Correlation
-% Matrices. The American Statistician, v. 56, pp. 316–324, 
+% Matrices. The American Statistician, v. 56, pp. 316–324,
 % https://doi.org/10.1198/000313002533
 %
 % Copyright 2008-2024.
@@ -1304,7 +1306,7 @@ if orderSPM ~="original"
         if orderSPM=="AOE"
             e2=V(:,end-1);
             if sum(sign(e2))<0
-                 e2=-e2;
+                e2=-e2;
             end
             alpha=atan(e2./e1);
             boo=e1<=0;
@@ -1318,13 +1320,13 @@ if orderSPM ~="original"
         R=R(ordlab,ordlab);
         RnotComputed=false;
     else
-            error('FSDA:spmplot:WrongInputOpt','order can be just  "original", "alphabet", "AOE" or "FPC".');
+        error('FSDA:spmplot:WrongInputOpt','order can be just  "original", "alphabet", "AOE" or "FPC".');
     end
 
     Y=Y(:,ordlab);
     namesFromTable=namesFromTable(ordlab);
 else
-    RnotComputed=true;   
+    RnotComputed=true;
 end
 
 
@@ -1908,7 +1910,7 @@ if  lowerORupper ==true
                         set(findobj(AX(i,j),'Type','line'),'Visible','off');
 
                         if ~isempty(hlegend)
-                            if isstruct(typespm) && typespm.upper~="none" && typespm.upper~="number" && typespm.upper~="circle" && typespm.upper~="square"
+                            if isstruct(typespm) && typespm.upper~="none" && typespm.upper~="number" && typespm.upper~="cnumber" && typespm.upper~="circle" && typespm.upper~="square"
                                 for iii = 1:lunigroup
                                     hl(iii).Color = hlColors(iii,:);
                                 end
@@ -1920,7 +1922,7 @@ if  lowerORupper ==true
                         cla(AX(i,j));
                     end
 
-                    if method=="none"
+                    if method=="none"  % methods = none
                         %axis off
                         if j==1
                             qqq=get(AX(i,j),'YTickLabel');
@@ -1935,12 +1937,22 @@ if  lowerORupper ==true
                             AX(p+1,j+1).XTickLabel    = qqq;
                         end
 
-                    elseif method=="number"
+                    elseif method=="number" ||  method== "cnumber"   % method contains "number"
 
-                        if lunigroup==1
-                            text(AX(i,j),0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
-                                'Units','normalized','HorizontalAlignment','center','Interpreter','Latex')
-                        else
+                        if lunigroup==1 % just one group (number of cnumber) 
+                            if method=="number"
+                                % Show number without color
+                                text(AX(i,j),0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                                    'Units','normalized','HorizontalAlignment','center','Interpreter','Latex')
+                            else
+                                % Show number with color which depends on
+                                % the value of R(i,j)
+                                ind=find(index<=R(i,j),1,'last');
+                                text(AX(i,j),0.5,0.5,num2str(R(i,j),2),'FontSize',Rresc(i,j), ...
+                                    'Units','normalized','HorizontalAlignment','center','Interpreter','Latex', ...
+                                    'Color', cmap(ind, :))
+                            end
+                        else % more than one group (number of cnumber)
                             text(AX(i,j),0.2,0.5,['\bf ' num2str(R(i,j),2)],'FontSize',Rresc(i,j), ...
                                 'Units','normalized','HorizontalAlignment','center','Interpreter','Latex')
 
@@ -1951,7 +1963,7 @@ if  lowerORupper ==true
                             end
                         end
 
-                    elseif method=="circle" || method =="square" || method =="number"
+                    elseif method=="circle" || method =="square" || method =="number" %% TO DO remove here || method =="number" 
                         % create new axes in position i,j
                         a=axes('Position',AX(i,j).Position);
                         a.XTick='';
