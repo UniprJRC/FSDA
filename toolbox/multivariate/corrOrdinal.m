@@ -704,6 +704,8 @@ if NoStandardErrors && plots == false
     setaub=NaN;
     setauc=NaN;
     sesom=NaN;
+    NconMinusNdis=NaN;
+    Contrib2CminusDtable=NaN;
 else
 
     % Compute required elements to find standard errors of the various indexes
@@ -799,6 +801,12 @@ else
 
     zsom = som/sesomH0; % z-score
     pvalsom = 2*(1 - normcdf(abs(zsom))); %p-value (two-sided)
+
+    % Contribution to the final index
+    NconMinusNdis=Ncon-Ndis;
+    Contrib2CminusDtable=Ntable;
+    Contrib2CminusDtable{:,:}=NconMinusNdis;
+
 end
 
 % Store results for Goodman-Kruskal's gamma statistic
@@ -844,11 +852,8 @@ colnamConfInt={'Value' 'StandardError' 'ConflimL' 'ConflimU'};
 
 ConfLimtable=array2table(ConfLim,'RowNames',rownam,'VariableNames',colnamConfInt);
 out.ConfLimtable=ConfLimtable;
-    
-NconMinusNdis=Ncon-Ndis;
+
 out.Contrib2CminusD=NconMinusNdis;
-Contrib2CminusDtable=Ntable;
-Contrib2CminusDtable{:,:}=NconMinusNdis;
 out.Contrib2CminusDtable=Contrib2CminusDtable;
 
 if dispresults == true
