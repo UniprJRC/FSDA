@@ -1292,9 +1292,16 @@ else
     % Ylagged = matrix which contains lagged values of Y
     Ylagged=zeros(T,lARp);
     yToUseforLagged=y;
+    % model.ARtentout contains the list of the units preliminary declared
+    % as outliers (first column) and corresponding fitted values (second
+    % column). The outlying y values to be used to compute the
+    % autoregressive component are replaced by the fittet values.
     if ~isempty(model.ARtentout)
         yToUseforLagged(model.ARtentout(:,1))=model.ARtentout(:,2);
     end
+    % A similar replacement has to be done for units in y that are missing.
+    % Here we take the mean of the non-missing values around the missings.
+    yToUseforLagged = fillNaNWithAdjacentMean(yToUseforLagged);
 
     for j=1:lARp
         selj=ARp(j);
@@ -3430,4 +3437,59 @@ if rewcorfac <=0 || rewcorfac>50
     %  end
 end
 end
+
+%% Function to fill NaN values with adjacent means
+
+function X = fillNaNWithAdjacentMean(X)
+
+    nanIdx = find(isnan(X));
+    if isempty(nanIdx)
+        return;
+
+    else
+
+        % Create arrays for left and right adjacent values
+        nnanIdx   = numel(nanIdx);
+        leftVals  = zeros(nnanIdx,1);
+        rightVals = zeros(nnanIdx,1);
+        
+        % For each NaN, get adjacent values
+        for i = 1:nnanIdx
+            idx = nanIdx(i);
+            
+            % Find nearest non-NaN value to the left
+            leftIdx = idx - 1;
+            while leftIdx >= 1 && isnan(X(leftIdx))
+                leftIdx = leftIdx - 1;
+            end
+            if leftIdx >= 1
+                leftVals(i) = X(leftIdx);
+            else
+                leftVals(i) = NaN;
+            end
+            
+            % Find nearest non-NaN value to the right
+            rightIdx = idx + 1;
+            while rightIdx <= length(X) && isnan(X(rightIdx))
+                rightIdx = rightIdx + 1;
+            end
+            if rightIdx <= length(X)
+                rightVals(i) = X(rightIdx);
+            else
+                rightVals(i) = NaN;
+            end
+        end
+        
+        % Calculate means and handle edge cases
+        means = (leftVals + rightVals) / 2;
+        
+        % Handle cases where only one adjacent value exists
+        means(isnan(leftVals))  = rightVals(isnan(leftVals));
+        means(isnan(rightVals)) = leftVals(isnan(rightVals));
+        
+        % Fill the NaN values with calculated means
+        X(nanIdx) = means;
+    end
+end
+
 %FScategory:REG-Regression
