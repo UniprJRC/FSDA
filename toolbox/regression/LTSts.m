@@ -1340,7 +1340,7 @@ p=pini+varampl+lshiftYN*2;
 if coder.target('MATLAB')
     % if lshift=-1, then tentative level shifts are considered for positions
     % p+1, p+2, ..., T-p-1
-    if length(lshift)==1 && lshift==-1
+    if isscalar(lshift) && lshift==-1
         % lshift=(p+1):(T-p);
         lshift=min([(p+1),5]):max([(T-p),T-4]);
     end
