@@ -1301,8 +1301,10 @@ else
     end
     % A similar replacement has to be done for units in y that are missing.
     % Here we take the mean of the non-missing values around the missings.
+    % To be chcked: can we use the fitted values instead? 
+    % likyhat(beta0,yToUseforLagged)
     yToUseforLagged = fillNaNWithAdjacentMean(yToUseforLagged);
-
+    
     for j=1:lARp
         selj=ARp(j);
         Ylagged(:,j)=[yToUseforLagged(1:selj); yToUseforLagged(1:end-selj)];
