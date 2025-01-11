@@ -2350,7 +2350,7 @@ end
 
 % Store matrix B in table format (with labels for rows and columns)
 if coder.target('MATLAB')
-    Btable=array2table(B,'RowNames',string(lab)','VariableNames',{'Coeff','SE','t','pval'});
+    Btable=array2table(B,'RowNames',string(lab(2-intercept:end,:))','VariableNames',{'Coeff','SE','t','pval'});
 else
     Btable=array2table(B,'VariableNames',{'Coeff','SE','t','pval'});
 end
@@ -2946,8 +2946,13 @@ end
 % to call this function to compute fitted values for the units specified in bsb
     function obj=lik(beta0)
 
-        yhattrend=Xtrend(bsb,:)*beta0(1:trend+1);
-        npar=trend+1;
+        if intercept ==true
+            yhattrend=Xtrend(bsb,:)*beta0(1:trend+1);
+            npar=trend+1;
+        else
+            yhattrend=Xtrend(bsb,:)*beta0(2:trend+1);
+            npar=trend;
+        end       
 
         if seasonal >0
             if seasonal<s/2
