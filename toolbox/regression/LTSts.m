@@ -1419,8 +1419,13 @@ if h==T
     nsampsubsequentsteps=1;
     SmallSampleCor=1;
 else
-    nsamp=options.nsamp;        % Number of subsets to extract
-    nsampsubsequentsteps=round(nsamp/2);
+    if isscalar(options.nsamp)                 
+        nsamp=options.nsamp;                 % Number of subsets to extract in first LS              
+        nsampsubsequentsteps=round(nsamp/2); % Number of subsets to extract in subsequesnt LS
+    elseif numel(options.nsamp) == 2
+        nsamp=options.nsamp(1);        
+        nsampsubsequentsteps=options.nsamp(2);
+    end
     SmallSampleCor=options.SmallSampleCor; % small sample correction factor
 end
 
