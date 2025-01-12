@@ -210,6 +210,14 @@ function r = mFNChygernd(m, w, n,    ntrials, accuracy)
     legend(["Theoretical probabilities" "Relative frequencies"])
 %}
 
+%{
+    % Example where there are equal weights.
+    m=[60 60 60 60];
+    w=[1 1 10 1];
+    r=mFNChygernd(m, w, 80);
+%}
+
+
 %% Beginning of code
 
 if nargin < 3
