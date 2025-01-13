@@ -285,8 +285,8 @@ p2=p1;
             % tabl(xi+3)
             p1(xi+1-remove1)=y;
             tabl=p1;
-            disp(['nu='  num2str(nu)])
-            disp(tabl)
+            %disp(['nu='  num2str(nu)])
+            %disp(tabl)
         end
         p1 = p2;
     end
