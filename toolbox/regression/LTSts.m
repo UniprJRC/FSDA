@@ -1392,15 +1392,27 @@ else
 end
 
 % Check number of subsamples to extract
-if options.nsamp>ncomb
+nsamp_gt_ncomb = false;
+if any(options.nsamp>ncomb)
+    nsamp_gt_ncomb = true;
     if options.msg==true
-        disp('Number of subsets to extract greater than (n p). It is set to (n p)');
+        disp('Number of subsets to extract greater than (n p)');
     end
-    options.nsamp=0;
 elseif  options.nsamp<0
     error('FSDA:LTSts:WrongInput','Number of subsets to extract must be 0 (all) or a positive number');
 end
 
+% adjust nsamp if it is greater than (n p)
+if nsamp_gt_ncomb
+    if isscalar(options.nsamp)
+        options.nsamp    = ncomb;
+        disp(['It is reduced to (n p)=' num2str(ncomb)]);
+    elseif numel(options.nsamp) == 2
+        options.nsamp(1) = min(options.nsamp(1) , ncomb);
+        options.nsamp(2) = min(options.nsamp(2) , ncomb);
+        disp(['It is reduced to nsamp(1)=' num2str(options.nsamp(1)) ' and nsamp(2)=' num2str(options.nsamp(2))]);
+    end
+end
 
 h=floor(options.h);         % Number of data points on which estimates are based
 
@@ -1512,8 +1524,7 @@ if lshiftYN==1
     % vector.
     LSH = lshift(:)';
     % total number of subsets to pass to procedure subsets.
-    ncombLSH=bc(T-1-nummissing,pini+1);
-
+    ncombLSH = bc(T-1-nummissing,pini+1);  %DDD
 else
     LSH=0;
     ncombLSH=0;
