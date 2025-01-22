@@ -105,24 +105,24 @@ order1=1:colors;
 order3=order1;
 weights=w;
 
-% for i=1:colors
-%     c = order1(i);
-%     k = i;
-%     w = weights(c);
-%     if (source(c)==0)
-%         w = 0;       %  // zero number treated as zero weight
-%     end
-%
-%     for j=i+1:colors
-%         c2 = order1(j);
-%         if weights(c2) > w && source(c2)
-%             w = weights(c2);  k = j;
-%         end
-%     end
-%     order1(i) = order1(k);
-%     order1(k) = c;
-% end
-[~,order1]=sort(weights,'descend');
+ % // sort by weight, heaviest first
+for i=1:colors
+    c = order1(i);
+    k = i;
+    w = weights(c);
+    if (source(c)==0)
+        w = 0;       %  // zero number treated as zero weight
+    end
+
+    for j=i+1:colors
+        c2 = order1(j);
+        if weights(c2) > w && source(c2)
+            w = weights(c2);  k = j;
+        end
+    end
+    order1(i) = order1(k);
+    order1(k) = c;
+end
 
 urn=m(order1);
 osource=urn;
@@ -150,10 +150,10 @@ if (n >= N)
 end
 
 
-if (n > N / 2)
+if n > (N /2) 
     % // improve accuracy by symmetry transformation
     j=colors;
-    for i=1:j
+    for i=1:(j-1)
         % // reverse order list
         c = order1(i);
 
@@ -169,7 +169,6 @@ else
 end
 
 
-
 %// copy source and weights into ordered lists
 %// and pool together colors with same weight
 % colors2= number of colors left
@@ -183,7 +182,12 @@ for i=1:(colors)
     if (i==1 || weights(c) ~= w)
         c2=c2+1;
         x = source(c);
-        oweights(c2) = weights(c);
+        if invert == true
+            oweights(c2) = 1/weights(c);
+        else
+             oweights(c2)=weights(c);
+        end
+
         w = weights(c);
     else
         x = x+ source(c);              %  // join colors with same weight
@@ -370,7 +374,11 @@ for i=1:colors
         destination(c1) = osample(c2);
     else
         %// split colors with same weight that have been treated as one
-        x = aux.FisherNCHypergeometricrnd(osample(c2), source(c1), osource(c2));
+        % x = aux.FisherNCHypergeometricrnd(osample(c2), source(c1), osource(c2));
+
+        % M. K. N
+    x = hygernd(osource(c2), source(c1), osample(c2));
+
         destination(c1) = x;
         osample(c2) = osample(c2) - x;
         osource(c2) = osource(c2) - source(c1);
