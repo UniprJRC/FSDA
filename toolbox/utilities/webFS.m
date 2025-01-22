@@ -28,7 +28,7 @@ end
 
 if strcmp(PersonalvalueDOC,'WEB')
     disp('In order to be able to see the FSDA documentation locally,')
-    disp('it is necessary in ''Home|Preferences'' to set ''Documentation Location''')
+    disp('it is necessary in ''Home|Preferences (Settings)'' to set ''Documentation Location''')
     disp('to ''Installed Locally''')
     varargin{:}=['http://rosa.unipr.it/FSDA/' nameFile ext];
 else
