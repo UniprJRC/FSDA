@@ -348,12 +348,15 @@ function out=CorAna(N, varargin)
 %                         row space or vice-versa. This type of map is called
 %                         asymmetric biplot.
 % out.InertiaRows     =   $I$-by-$2$ matrix containing absolute and relative
-%                         contribution of each row to total inertia.
-%                         The inertia of a point is the squared distance
-%                         of point $d_i^2$ to the centroid. The absolute
-%                         contribution of a point to total inertia is the
-%                         inertia of the point multiplied by the point
-%                         mass.
+%                         contribution of each row to TotalInertia.
+%                         The inertia of a point is the squared distance of
+%                         point $d_i^2$ to the centroid multiplied by its
+%                         point mass (and is given in the first column). 
+%                         The sum of the inertia of the points
+%                         is the total inertia. The relative contribution
+%                         of each row is the absolute contribution of each
+%                         row divided by the TotalInertia (and is given in
+%                         the second column).
 %                         1st column = absolute contribution of each row
 %                         to TotalInertia. The sum of values of the first
 %                         column is equal to TotalInertia;
@@ -361,12 +364,15 @@ function out=CorAna(N, varargin)
 %                         to TotalInertia. The sum of the values of the
 %                         second column is equal to 1.
 % out.InertiaCols     =   $J$-by-$2$ matrix containing absolute and relative
-%                         contribution of each column to total inertia.
-%                         The inertia of a point is the squared distance
-%                         of point $d_i^2$ to the centroid. The absolute
-%                         contribution of a point to total inertia is the
-%                         inertia of the point multiplied by the point
-%                         mass.
+%                         contribution of each column to total inertia. The
+%                         inertia of a point is the squared distance of
+%                         point $d_i^2$ to the centroid multiplied by the
+%                         mass (and is given in the first column).
+%                         The sum of the inertia of the points
+%                         is the total inertia. The relative contribution
+%                         of each row is the absolute contribution of each
+%                         row divided by the TotalInertia (and is given in
+%                         the second column).
 %                         1st column = absolute contribution of each
 %                         column to TotalInertia. The sum of values of the
 %                         first column is equal to TotalInertia;
