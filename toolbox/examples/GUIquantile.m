@@ -320,8 +320,13 @@ else
         xlabel('$x_i$','Interpreter','latex','FontSize',16)
         ylabel('Cumulative distribution function $F(x_i)$','Interpreter','latex','FontSize',16)
 
-        if DiscreteData==false
+        if DiscreteData==false & ~isempty(indexxz)
+
             plot([xbars;x(indexxz+2)],fcum(indexxz:indexxz+1))
+        else
+            indexxz=1;
+            plot([0 x(indexxz+1)],[0 fcum(indexxz)])
+
         end
     end
 
