@@ -1405,12 +1405,11 @@ end
 % adjust nsamp if it is greater than (n p)
 if nsamp_gt_ncomb
     if isscalar(options.nsamp)
-        options.nsamp    = ncomb;
         disp(['It is reduced to (n p)=' num2str(ncomb)]);
+        options.nsamp    = ncomb;
     elseif numel(options.nsamp) == 2
+        disp(['nsamp(1) reduced from ' num2str(options.nsamp(1)) ' to ' num2str(ncomb) ]);
         options.nsamp(1) = min(options.nsamp(1) , ncomb);
-        options.nsamp(2) = min(options.nsamp(2) , ncomb);
-        disp(['It is reduced to nsamp(1)=' num2str(options.nsamp(1)) ' and nsamp(2)=' num2str(options.nsamp(2))]);
     end
 end
 
@@ -1524,7 +1523,13 @@ if lshiftYN==1
     % vector.
     LSH = lshift(:)';
     % total number of subsets to pass to procedure subsets.
-    ncombLSH = bc(T-1-nummissing,pini+1);  %DDD
+    ncombLSH = bc(T-1-nummissing,pini+1);  
+    if numel(options.nsamp) == 2
+        if options.msg == 1 && options.nsamp(2) > ncombLSH
+            disp(['nsamp(2) > ncombLSH: only ' num2str(ncombLSH) , 'samples are used' ]);
+        end
+        nsampsubsequentsteps = min(options.nsamp(2) , ncombLSH);
+    end
 else
     LSH=0;
     ncombLSH=0;
