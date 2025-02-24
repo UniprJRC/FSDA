@@ -581,10 +581,14 @@ else
     intercept=0;
 end
 
-if strcmp(out.class,'FSRfan')
+if strcmp(out.class,'FSRfan') || strcmp(out.class,'FSRfanCens')
     fanplotScore=true;
     Sco=out.Score;
-    laby='Score test statistic';
+    if strcmp(out.class,'FSRfan')
+        laby='Score test statistic';
+    else
+        laby='Log-likelihood test statistic';
+    end
     labx= 'Subset size m';
 
     la=out.la(:);
