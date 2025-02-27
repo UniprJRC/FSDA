@@ -531,7 +531,7 @@ end
 
 %% Start of the forward search
 if nocheck==false && rank(Xb)~=p
-    warning('FSDA:FSReda:NoFullRank','The provided initial subset does not form full rank matrix');
+    warning('FSDA:FSReda:NoFullRank','Initial subset does not form full rank matrix');
     % FS loop will not be performed
 else
     for mm=ini0:n
