@@ -182,15 +182,6 @@ function plotopt=resfwdplot(out,varargin)
 %                   Remark: bground='' is equivalent to bground.thresh=-Inf
 %                   that is all trajectories are considered relevant.
 %
-%       tag     :    Personalized plot tag. String. String which identifies
-%                   the handle of the plot which
-%                   is about to be created. The default is to use tag
-%                   'pl_resfwd'. Note that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created.
-%                   Example - 'tag','myplot'
-%                   Data Types - char
 %
 %   datatooltip :   interactive clicking. Empty value, scalar or
 %                   structure.
@@ -378,6 +369,17 @@ function plotopt=resfwdplot(out,varargin)
 %                   is 0 that is just a snapshot is shown on the screen.
 %                   Example - 'movieLength',5
 %                   Data Types - single or double
+%
+%       tag     :    Personalized plot tag. String or char. 
+%                   String which identifies
+%                   the handle of the plot which
+%                   is about to be created. The default is to use tag
+%                   'pl_resfwd'. Note that if the program finds a plot which
+%                   has a tag equal to the one specified by the user, then
+%                   the output of the new plot overwrites the existing one
+%                   in the same window else a new window is created.
+%                   Example - 'tag','myplot'
+%                   Data Types - char or string
 % Output:
 %
 %   plotopt : options which have been used to create the plot. Cell array
