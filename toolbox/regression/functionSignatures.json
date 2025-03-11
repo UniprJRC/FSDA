@@ -1,13 +1,136 @@
 {
     "_schemaVersion": "1.0.0",
-    "FSR":
-  {
+
+    "ace": 
+    {
+      "inputs":
+     [
+      {"name":"y", "kind":"required", "type":["numeric","vector"], "purpose" : "Response variable"},
+      {"name":"X", "kind":"required", "type":["numeric","2d"], "purpose" : "Predictor variables"}
+
+     ],
+"description":"computes alternative conditional expectation"
+    },
+    "addt": {
+        "inputs":
+    [
+         {"name":"y", "kind":"required", "type":["numeric","vector"], "purpose":"Response variable"},
+         {"name":"X", "kind":"required", "type":["numeric","2d"], "purpose":"Predictor variables"},
+         {"name":"w", "kind":"required", "type":["numeric","vector"], "purpose":"Predictor variables"},
+         {"name":"intercept", "kind":"namevalue", "type":["logical","scalar"], "purpose":"Indicator for constant term"},
+         {"name":"la", "kind":"namevalue", "type":["logical","double"], "purpose":"Transformation parameter"},
+         {"name":"nocheck", "kind":"namevalue", "type":["logical","scalar"], "purpose":"Check input arguments"},
+         {"name":"plots", "kind":"namevalue", "type":["numeric","scalar"], "purpose":"Plot on the screen"},
+         {"name":"FontSize", "kind":"namevalue", "type":["numeric","scalar"], "purpose":"Label font size inside plot"},
+         {"name":"SizeAxesNum", "kind":"namevalue", "type":["numeric","scalar"], "purpose":"Font size of axes numbers"},
+         {"name":"textlab", "kind":"namevalue", "type":["numeric","scalar"], "purpose":"Labels of units in the plot"},
+         {"name":"units", "kind":"namevalue", "type":["numeric","vector"], "purpose":"Units to remove"}
+
+
+    ],
+        "description":"Produces the t test for an additional explanatory variable"
+},
+    "avas":
+    {
+      "inputs":
+     [
+      {"name":"y", "kind":"required", "type":["numeric","vector"], "purpose" : "Response variable"},
+      {"name":"X", "kind":"required", "type":["numeric","2d"], "purpose" : "Predictor variables"},
+
+     {"name":"delrsq","kind":"namevalue","type":["double","scalar"],"purpose":"termination threshold"},
+     {"name":"l","kind":"namevalue", "type":["double", "choices={'','1=monotonic transformation','2=periodic transformation','3=non monotonic transformation','4=linear transformation','5=categorical variable'}"]},
+     {"name":"maxit","kind":"namevalue","type":["double","scalar"],"purpose":"maximum number of iterations for the outer loop"},
+     {"name":"maxBestSol","kind":"namevalue","type":["double","scalar"],"purpose":"criterion to define the maximum number of admissible solutions to show in the augmented star plot"},
+     {"name":"w", "kind":"namevalue","type":["numeric","vector"], "purpose":"weights for the observations"}
+
+     ],
+
+      "description":"Computes additivity and variance stabilization for regression"
+
+    },
+
+    "avasms": 
+    {
+     "inputs":
+     
+        [
+        {"name":"y", "kind":"required", "type":["numeric","vector"], "purpose" : "Response variable"},
+        {"name":"X", "kind":"required", "type":["numeric","2d"], "purpose" : "Predictor variables"},
+
+        {"name":"critBestSol","kind":"namevalue","type":["double","scalar"],"purpose":"criterion to define the maximum number of admissible solutions to show in the augmented star plot"},
+        {"name":"delrsq","kind":"namevalue","type":["double","scalar"],"purpose":"termination threshold"},
+        {"name":"l","kind":"namevalue", "type":["double", "choices={'','1=monotonic transformation','2=periodic transformation','3=non monotonic transformation','4=linear transformation','5=variabile categorica'}"]},
+        {"name":"maxit","kind":"namevalue","type":["double","scalar"],"purpose":"maximum number of iterations for the outer loop"},
+        {"name":"maxBestSol","kind":"namevalue","type":["double","scalar"],"purpose":"criterion to define the maximum number of admissible solutions to show in the augmented star plot"},
+        {"name":"nterm", "kind":"namevalue","type":["double","scalar"],"purpose":" minimum number of consecutive iteration below the threshold to terminate the outer loop"},
+        {"name":"solOrdering", "kind":"namevalue","type":["double","scalar"],"purpose":"criterion to order the solutions in the augmented star plot"},
+        {"name":"w", "kind":"namevalue","type":["numeric","vector"], "purpose":"weights for the observations"}
+  
+    ],
+      "description":"Computes avas using a series of alternative options"
+
+    },
+
+"boxcoxR": 
+{
+"inputs":
+[
+  {"name":"y", "kind":"required", "type":["numeric","vector"], "purpose" : "Response variable"},
+  {"name":"X", "kind":"required", "type":["numeric","2d"], "purpose" : "Predictor variables"},
+
+  {"name":"intercept", "kind":"namevalue", "type":"logical", "purpose":"Indicator for constant term"},
+  {"name":"family", "kind":"namevalue", "type":["string"], "purpose":"Indicator for constant term"},
+  {"name":"nocheck", "kind":"namevalue", "type":["logical","scalar"], "purpose":"Check input arguments"},
+  {"name":"conflev", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"confidence level of the bands"},
+  {"name":"laseq", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Sequence of values of lambda to consider"},
+  {"name":"laseqPos", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Transformation for positive observations"},
+  {"name":"laseqNeg", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Transformation for negative observations"},
+  {"name":"plots", "kind":"namevalue", "type":"logical", "purpose":"Profile log likelihood for lambda"},
+  {"name":"usefmin", "kind":"namevalue", "type":"logical", "purpose":"Use solver to find MLE of lambda"}
+
+],
+    "description":"finds MLE of lambda in linear regression (and confidence interval) using Box Cox, YJ or extended YJ  transformation"
+},
+
+"estregimeTAR": 
+{
+"inputs":
+[
+  {"name":"y", "kind":"required", "type":["numeric","vector"], "purpose" : "Response variable"},
+  {"name":"X", "kind":"required", "type":["numeric","2d"], "purpose" : "Predictor variables"}
+],
+    "description":"estregimeTAR estimate a regression model with OLS in one of the regimes of a TAR model"
+},
+
+    "fanBIC": 
+{
+"inputs":
+[
+  {"name":"y", "kind":"required", "type":["numeric","vector"], "purpose" : "Response variable"},
+  {"name":"X", "kind":"required", "type":["numeric","2d"], "purpose" : "Predictor variables"},
+
+  {"name":"intercept", "kind":"namevalue", "type":"logical", "purpose":"Indicator for constant term"},
+  {"name":"family", "kind":"namevalue", "type":["string"], "purpose":"Indicator for constant term"},
+  {"name":"nocheck", "kind":"namevalue", "type":["logical","scalar"], "purpose":"Check input arguments"},
+  {"name":"conflev", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"confidence level of the bands"},
+  {"name":"laseq", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Sequence of values of lambda to consider"},
+  {"name":"laseqPos", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Transformation for positive observations"},
+  {"name":"laseqNeg", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Transformation for negative observations"},
+  {"name":"plots", "kind":"namevalue", "type":"logical", "purpose":"Profile log likelihood for lambda"},
+  {"name":"usefmin", "kind":"namevalue", "type":"logical", "purpose":"Use solver to find MLE of lambda"}
+
+],
+    "description":"finds MLE of lambda in linear regression (and confidence interval) using Box Cox, YJ or extended YJ  transformation"
+},
+
+
+
+   "FSR": {
      "inputs":
      [
         {"name":"y", "kind":"required", "type":["numeric","vector"], "purpose":"Response variable"},
         {"name":"X", "kind":"required", "type":["numeric","2d"], "purpose":"Predictor variables"},
-
-        {"name":"bsbmfullrank", "kind":"namevalue", "type":["logical","scalar"],"purpose":"Dealing with singular X matrix"},
+        {"name":"bsbmfullrank", "kind":"namevalue", "type":["logical","scalar"],"purpose":"Dealing with singular X matrix" },
         {"name":"bonflev", "kind":"namevalue", "type":["scalar"],"purpose":"Signal to use to identify outliers"},
         {"name":"h", "kind":"namevalue", "type":["numeric","scalar"],"purpose":"The number of observations that have determined the least trimmed squares estimator"},
         {"name":"init", "kind":"namevalue", "type":["numeric","scalar"], "purpose":"Search initialization"},
@@ -28,6 +151,11 @@
         {"name":"xlim", "kind":"namevalue", "type":["numeric","vector","numel=2"], "purpose":"Control x scale in plot"},
         {"name":"ylim", "kind":"namevalue", "type":["numeric","vector","numel=2"], "purpose":"Control y scale in plot"}
          
-     ]
-  }
+
+        
+        
+     ],
+      "description":"Computes forward search estimator in linear regression"
+
+   }
 }
