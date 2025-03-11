@@ -38,7 +38,7 @@ jobs:
           
       - name: Cache MATLAB
         id: cache-matlab
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ runner.tool_cache }}/MATLAB
           key: ${{ matrix.platform }}-${{ matrix.release }}
@@ -56,7 +56,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run MATLAB Tests
-        uses: matlab-actions/run-build@v1
+        uses: matlab-actions/run-build@v2
         with:
           tasks: test
           
