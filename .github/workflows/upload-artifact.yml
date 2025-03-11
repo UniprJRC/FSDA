@@ -100,7 +100,7 @@ jobs:
 
       # Sets up MATLAB on the GitHub Actions runner
       - name: Setup MATLAB
-        uses: matlab-actions/setup-matlab@v2-beta
+        uses: matlab-actions/setup-matlab@v2
         with:
           release: ${{ env.MATLAB_RELEASE }}
             
