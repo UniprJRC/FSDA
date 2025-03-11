@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Checkout on your repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # - name: Download helpsearch-v3
       #   if: ${{ always() }}
@@ -93,7 +93,7 @@ jobs:
       # use that instead of doing the install.    
       - name: Cache MATLAB
         id: cache-matlab
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ runner.tool_cache }}/MATLAB
           key: ${{ env.MATLAB_RELEASE }}-ubuntu-latest
@@ -106,7 +106,7 @@ jobs:
             
       # Runs buildtool in the root of the repository, triggering the `toolbox` task
       - name: Run MLTBX build
-        uses: matlab-actions/run-build@v1
+        uses: matlab-actions/run-build@v2
         with: 
           tasks: toolbox
       
