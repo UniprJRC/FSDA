@@ -1,24 +1,23 @@
 function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin)
-%multialignHeader extract date and country name from fasta sequence
+%multialignHeader extracts date and country name from fasta sequence
 %
 %<a href="matlab: docsearchFS('multialignHeader')">Link to the help function</a>
 %
 % This function takes as input a vector of structures (Seqs) with fields
 % Sequence and Header. Inside field Header it extracts the name of the
-% country and the submission date. The name of the country is associated with
-% the corresponding continent (unless optional input argument addContinent
-% is false). Inside field Sequence it counts for the
-% presence of particular symbols. The output is a table with height equal
-% to the length of Seqs. The number of columns in output table is equal to
-% the number of fields in Seqs + 5 extra columns for the particular symbols,
-% + 3 extra columns referred to Country name, Continent name and Submission
-% date.
+% country and the submission date. The name of the country is associated
+% with the corresponding continent (unless optional input argument
+% addContinent is false). Inside field Sequence it counts the presence of
+% particular symbols. The output is a table with height equal to the length
+% of Seqs. The number of columns in output table is equal to the number of
+% fields in Seqs + 5 extra columns for the particular symbols, + 3 extra
+% columns referred to Country name, Continent name and Submission date.
 %
 %
 % Required input arguments:
 %
 %
-%        Seqs : Sequences which have to be analized. Vector of structures.
+%        Seqs : Sequences which have to be analyzed. Vector of structures.
 %               Vector of structures of length n with the fields
 %               Seqs.Sequence = for the residues and
 %               Seqs.Header = or (or 'Seqs.Name') for the labels.
@@ -32,16 +31,14 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 %  addContinent  : add or not the name of the continent.
 %                Boolean. If addContinent is true (default)
 %                the categorical vector containing the corresponding
-%                continente for each country is added.
-%                The categories insise this categorial vector are
-% 
+%                continent for each country is added.
 %                 Example - 'addContinent','false'
 %                 Data Types - boolean
 %
 %
 % Output:
 %
-% T : table of height n (same lenght of input vector of structures).
+% T : table of height n (same length of input vector of structures).
 %       Table containing detailed information (country name, continent and date) 
 %       for each sequence. The input sequences can be aligned or not aligned. 
 %       1st col = Header (in cell format)
@@ -56,11 +53,11 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 %       named usedGap and usedDeletion are present (boolean format).
 %
 %  indexWrongCountry :  numeric vector containing the numbers referred to
-%       the rows of T for which it was not possibile to find the Country
+%       the rows of T for which it was not possible to find the Country
 %       name. A warning is given if this vector is not empty. 
 %
 %  indexEmptyDate    :  numeric vector containing the numbers referred to
-%       the rows of T for which it was not possibile to extract the date.
+%       the rows of T for which it was not possible to extract the date.
 %       A warning is given if this vector is not empty. 
 %
 % See also: multialign, multialign2ref

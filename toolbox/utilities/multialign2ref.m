@@ -11,7 +11,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 % Seqs2align changes the reference sequences we call again function
 % multialign using the 'Name',Value, GapOpen',100000 in order to allow the
 % possibility of creating gaps or adding additional characters in the
-% reference sequence. If the new call to multilign:
+% reference sequence. If the new call to multialign:
 % 1) creates gap(s) in the reference sequences (refSeqs) we delete the
 % characters corresponding to the gaps in the aligned sequence
 % and store this information inside boolean variable usedGap of output
@@ -24,7 +24,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 % reference sequence is kept fixed and all the aligned sequences will have
 % the same number of characters of the reference sequences. We also store
 % the information about the sequences which could not be aligned inside
-% second output argument WrngAlignment. So far with the hundreds of milions
+% second output argument WrngAlignment. So far with the hundreds of millions
 % of sequences we have aligned this case never took place.
 %
 % Required input arguments:
@@ -47,7 +47,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 %                Boolean or positive integer. If UseParallel is true
 %                the parallel computing toolbox is used.
 %                 Example - 'UseParallelValue','false'
-%                 Data Types - boolean or positive ingeer
+%                 Data Types - boolean or positive integer
 %
 % ScoringMatrix : scoring method to use for the alignment. Character
 %               vector or string. This option specifies the scoring method
@@ -75,7 +75,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 %
 % Output:
 %
-% Seqsaligned : Sequences which have bene aligned. Vector of structures.
+% Seqsaligned : Sequences which have been aligned. Vector of structures.
 %               Vector of structures of the same length n of input
 %               Seqs2align with the following 4 fields.
 %               Seqsaligned.Sequence =  n aligned sequences
@@ -92,7 +92,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 %
 % WrngAlignment: sequences which could not be aligned. Vector.
 %                Vector containing the numbers of sequences for which
-%                usedGap and usedDeletion uwas not sufficient to produce
+%                usedGap and usedDeletion was not sufficient to produce
 %                the alignment. For example if WrngAlignment=[400 800] the
 %                it was not possible to align sequences 400 and 800. If
 %                WrngAlignment is en empty value all sequences could be
@@ -119,7 +119,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
     % Load fastafile containing original covid and other sequences
     Seqs2align = fastaread("X01sel.txt");
     
-    % Load fasta file containig the 5 covid variants
+    % Load fasta file containing the 5 covid variants
     % (Alpha, Beta, Delta, Gamma, Omicron)
     variants = fastaread('Variants.txt');
     
@@ -140,7 +140,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
     % Load fastafile containing original covid and other sequences
     Seqs2align = fastaread("X01sel.txt");
     
-    % Load fasta file containig the 5 covid variants
+    % Load fasta file containing the 5 covid variants
     % (Alpha, Beta, Delta, Gamma, Omicron)
     variants = fastaread('Variants.txt');
     
@@ -161,7 +161,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
     % Load fastafile containing original covid and other sequences
     Seqs2align = fastaread("X01sel.txt");
     
-    % Load fasta file containig the 5 covid variants
+    % Load fasta file containing the 5 covid variants
     % (Alpha, Beta, Delta, Gamma, Omicron)
     variants = fastaread('Variants.txt');
     
@@ -173,7 +173,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
     % Remove initial covid sequence from Seqs2align
     Seqs2align=[Seqs2align(2:101)];
     
-    %Call of multialgin2ref with all default arguments
+    %Call of multialign2ref with all default arguments
     [Seqsaligned,WrngAlignment]=multialign2ref(refSequences,Seqs2align);
 %}
 
@@ -281,7 +281,7 @@ for i=1:(floor(nSeqs2align/steplength)+1)
             end
 
             if ~isequal(refSeqs,p1j(1:nrefSeqs))
-                % Retry tthe multialign using option 'GapOpen',100000
+                % Retry the multialign using option 'GapOpen',100000
                 if defaultScoringMatrix ==true
                     p1j = multialign([refSeqs; Seqs2align(sel(j))] ,'UseParallel',true,'GapOpen',100000);
                 else
