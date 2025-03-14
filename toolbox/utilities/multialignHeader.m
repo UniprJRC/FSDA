@@ -18,11 +18,11 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 % Required input arguments:
 %
 %
-%  Seqs2align : Sequences which have to be analized. Vector of structures.
+%        Seqs : Sequences which have to be analized. Vector of structures.
 %               Vector of structures of length n with the fields
-%               Seqs2align.Sequence = for the residues and
-%               Seqs2align.Header = or (or 'Seqs2align.Name') for the labels.
-%               Remark: note that Seqs2align can have other fields. These
+%               Seqs.Sequence = for the residues and
+%               Seqs.Header = or (or 'Seqs.Name') for the labels.
+%               Remark: note that Seqs can have other fields. These
 %               additional fields will appear as columns in the output
 %               table.
 %                 Data Types - array of struct
@@ -59,11 +59,11 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 %       the rows of T for which it was not possibile to find the Country
 %       name. A warning is given if this vector is not empty. 
 %
-%  indexWrongDate    :  numeric vector containing the numbers referred to
+%  indexEmptyDate    :  numeric vector containing the numbers referred to
 %       the rows of T for which it was not possibile to extract the date.
 %       A warning is given if this vector is not empty. 
 %
-% See also multialign, multialign2ref.
+% See also: multialign, multialign2ref
 %
 % References:
 %
@@ -72,7 +72,7 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('multialign2ref')">Link to the help function</a>
+%<a href="matlab: docsearchFS('multialignHeader')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -114,13 +114,22 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
     disp(head(T))
 %}
 
+%{
+    % Example with wrong country name and missing date.
+    % Load fastafile containing original covid and other sequences
+    Seqs = fastaread("X01sel.txt");
+    % Add a record where it is impossible to find both the date and 
+    % the country
+    Seqs(end+1).Header='Spike	hCoV-19/SSSS/NC-IBV-97020613/2021	wrong date  wrong date';
+    Seqs(end).Sequence="XXXXXX-----XXX????";
+    T=multialignHeader(Seqs,'addContinent',false);
+%}
+
 %% Beginning of code
 
 addContinent=true;
-verbose=true;
 
-options=struct('addContinent',addContinent, ...
-    'verbose',verbose);
+options=struct('addContinent',addContinent);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -295,7 +304,7 @@ T=[T d1];
 indexEmptyDate=seq(isnat(T.Date));
 
 if ~isempty(indexEmptyDate)
-    disp('Records for which date was impossible to retrieve')
+    disp('Records for which date was impossible to find date')
     Xempty=T(indexEmptyDate,:);
     Xempty.Properties.RowNames=string(indexEmptyDate);
     disp(Xempty)
@@ -311,12 +320,12 @@ Wld=readtable(FileName,"Sheet","CountryContinent","TextType","string");
 NomiAll=[Wld.Entity; "Animal"];
 % wrongNameForCountry is the vector which contains all country names taht
 % have been found but are not present inside NomiAll
-indexWrongCountry=setdiff(T.Country,NomiAll);
+[indexWrongCountry,indCountry]=setdiff(T.Country,NomiAll);
 
 
 if ~isempty(indexWrongCountry)
-    disp('Records for which detected country name is wrong')
-    XwrongNameForCountry=T(indexWrongCountry,:);
+    disp('Records with wrong country name')
+    XwrongNameForCountry=T(indCountry,:);
     XwrongNameForCountry.Properties.RowNames=string(indexWrongCountry);
     disp(XwrongNameForCountry)
     warning('FSDA:multialignHeader:WngCountry','Wrong country names in output table');
