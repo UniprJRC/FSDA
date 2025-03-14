@@ -17,6 +17,13 @@
 
 [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FSDA&project=FSDA.prj)
 
+## 🤝 Support
+
+Contributions, issues, feature requests and sponsorship are all welcome!
+
+Give a ⭐️ if you like this project!
+
+
 # [Flexible Robust Statistics Data Analysis](https://github.com/UniprJRC/FSDA/)
 
 ## FSDA release  2024b is out. (November 2024)
@@ -466,5 +473,6 @@ If you think that something not described in these
 notes went wrong please do not hesitate to send an e-mail to
 
 <FSDA@unipr.it>
+
 
 
