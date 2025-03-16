@@ -1537,6 +1537,14 @@ end
 
 
 
+% Check is there is already a figure containing options.tag
+% If this is the case replace figure with option.tag with the new figure
+% else create a new figure
+htag=findobj('-depth',1,'tag',tag);
+if isempty(htag)
+    figure;
+end
+
 
 [H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'hist',nameY,nameY);
 %[H,AX,BigAx] = gplotmatrix(Y,[],group,clr(unigroup),charsym,siz,doleg,'grpbars',nameY);
