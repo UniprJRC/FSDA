@@ -77,7 +77,7 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 
 %{
     %% Example of multialignHeader without optional arguments.
-    % Load fastafile containing original covid and other sequences
+    % Load fasta file containing original covid and other sequences
     Seqs = fastaread("X01sel.txt");
     
     % Call of multialignHeader with all default arguments
@@ -89,7 +89,7 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 
 %{
     %% Example of multialignHeader with 3 output arguments.
-    % Load fastafile containing original covid and other sequences
+    % Load fasta file containing original covid and other sequences
     Seqs = fastaread("X01sel.txt");
     
     % Call of multialignHeader with all default arguments
@@ -104,7 +104,7 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 
 %{
     %% Example of multialignHeader with optional arguments.
-    % Load fastafile containing original covid and other sequences
+    % Load fasta file containing original covid and other sequences
     Seqs = fastaread("X01sel.txt");
     T=multialignHeader(Seqs,'addContinent',false);
     disp('Output table (first 8 rows)')
@@ -113,7 +113,7 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 
 %{
     % Example with wrong country name and missing date.
-    % Load fastafile containing original covid and other sequences
+    % Load fasta file containing original covid and other sequences
     Seqs = fastaread("X01sel.txt");
     % Add a record where it is impossible to find both the date and 
     % the country
@@ -267,7 +267,7 @@ if ~isempty(badname)
     end
 end
 
-%& Laod correct country names  using file .xlsx
+%& Load correct country names  using file .xlsx
 % which is inside subfolder privateFS of utilities
 FileName=which('clickableMultiLegend.m');
 filepath=fileparts(FileName);
