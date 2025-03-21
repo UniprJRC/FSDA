@@ -725,7 +725,8 @@ if h==n
     
     RAW.md=md;
     RAW.cor=RAW.cov./(sqrt(diag(RAW.cov))*sqrt(diag(RAW.cov))');
-    
+    RAW.outliers=[];
+
     weights=md<thresh;
     RAW.weights=weights;
     
