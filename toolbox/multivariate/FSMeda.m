@@ -267,6 +267,7 @@ if nargin<2
 end
 
 [n,v]=size(Y);
+bsb=bsb(:);
 
 hdef=floor(n*0.6);
 options=struct('init',hdef,'plots',0,'msg',1,'scaled',0,'nocheck',0);
@@ -603,11 +604,7 @@ else
             MAL(:,mm-init1+1)=MD;
         end
         
-        %         if verLessThan2017a
         MDsor=sort(MD);
-        %         else
-        %             MDsor=sort(MD,'ComparisonMethod','real');
-        %         end
         
         if mm>=init1
             if mm<=percn
