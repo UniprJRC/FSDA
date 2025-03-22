@@ -92,13 +92,6 @@ function out=pcaFS(Y,varargin)
 %                 Example - 'bsb',[2 10:90 93]
 %                 Data Types - double or logical
 %
-%         bdp :  breakdown point. Scalar.
-%               It measures the fraction of outliers the algorithm should
-%               resist. In this case any value greater than 0 but smaller
-%               or equal than 0.5 will do fine. Note that if bdp is
-%               supplied bsb must be empty.
-%                 Example - 'bdp',0.4
-%                 Data Types - double
 %
 %    standardize : standardize data. boolean. Boolean which specifies
 %               whether to standardize the variables, that is we operate on
@@ -153,6 +146,8 @@ function out=pcaFS(Y,varargin)
 %         out:   structure which contains the following fields
 %
 %out.Rtable = p-by-p correlation matrix in table format.
+%
+%     out.class = character vector containing pcaFS.
 %
 % out.explained = p \times 3 matrix containing respectively
 %                1st col = eigenvalues;
@@ -214,6 +209,7 @@ function out=pcaFS(Y,varargin)
 %                 the PCA subspace is remote from the typical projections.
 %                 These points have a large score distance and a large
 %                 orthogonal distance.
+% 
 %
 % See also: pca, biplotFS
 %
