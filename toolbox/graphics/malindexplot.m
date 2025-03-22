@@ -10,7 +10,7 @@ function MCDenv=malindexplot(md,v,varargin)
 %        distances (in squared units) or a structure containing fields md
 %        and Y. In this second case md is a structure with the following
 %        fields:
-%        md.md = contains the Mahalanobis distances (this field is compulsory);
+%        md.md = contains the Mahalanobis distances in squared units (this field is compulsory);
 %        md.Y = contains the original data matrix whose Mahalanobis
 %        distances have been computed (this field is compulsory is option
 %           databrush is used).
