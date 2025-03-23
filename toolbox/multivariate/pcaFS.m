@@ -310,6 +310,8 @@ if isstruct(robust) || (islogical(robust) && robust ==true)
 
     if isstruct(robust)
         if isfield(robust,'bsb') % User has chosen a prespecified subset of units to use
+            bsb=robust.bsb;
+            bsbini=false(n,1);
             bsbini(bsb)=true;
             bsb=bsbini;
 
