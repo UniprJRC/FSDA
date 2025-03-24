@@ -157,7 +157,7 @@ function [out]=FSM(Y,varargin)
 %         out:   structure which contains the following fields
 %
 %out.outliers=  k x 1 vector containing the list of the units declared as
-%               outliers or NaN if the sample is homogeneous
+%               outliers or empty value if the sample is homogeneous
 % out.mmd    =  (n-init) x 2 matrix.
 %               1st col = fwd search index;
 %               2nd col = value of minimum Mahalanobis Distance in each step
@@ -1375,10 +1375,11 @@ if ndecl>0
     group(outliers)=2;
     
 else
-    outliers=NaN;
+    % Create 1x0 empty double array 
+    outliers=zeros(1,0);
 end
 
-%compute locatione and covariance matrix
+%compute location and covariance matrix
 goodobs=setdiff(1:n,outliers);
 loc=mean(Y(goodobs,:));
 cova=cov(Y(goodobs,:));
