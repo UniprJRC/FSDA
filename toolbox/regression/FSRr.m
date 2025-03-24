@@ -82,7 +82,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %         out:   structure which contains the following fields
 %
 % out.outliers  =  k x 1 vector containing the list of the units declared
-%                  outliers by procedure FSR or NaN, if the sample is
+%                  outliers by procedure FSR or empty value, if the sample is
 %                  homogeneous.
 % out.beta      =  p-by-1 vector containing the estimated regression parameter
 %                  by procedure FSR.
@@ -267,6 +267,19 @@ function [out , varargout] = FSRr(y, X, varargin)
         close(f1); close(f2); close(f3); close(f4);
 %}
 
+%{
+
+    % An example with p greater than 1 for X.
+    n=200; p=5;
+    X = rand(n,p);
+    X=sortrows(X,p);
+    y = sum(X,2)+randn(n,1);
+    
+    [out1 , xnew1 , ypred1, yci1] = ...
+        FSRr(y,X,'alpha',0.01,...
+        'fullreweight',true ,'plotsPI',1,'plots',0);
+%}
+
 %% Beginning of code
 
 % The first four options below are specific for this function, all the others
@@ -293,7 +306,7 @@ if ~isempty(UserOptions)
     % in structure options
     inpchk       = isfield(options,UserOptions);
     WrongOptions = UserOptions(inpchk==0);
-    
+
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
         error('FSDA:FSRmdr:WrongInputOpt','In total %d non-existent user options found.', length(WrongOptions));
@@ -347,13 +360,8 @@ R2th            = options.R2th;
 plotsPI         = options.plotsPI;
 
 % ListOut vector containing the outliers
-if ~isnan(outFSR.ListOut)
-    ListOut = outFSR.ListOut;
-    ListIn  = setdiff(seq,ListOut);
-else
-    ListOut = '';
-    ListIn = seq;
-end
+ListOut = outFSR.ListOut;
+ListIn  = setdiff(seq,ListOut);
 nlistIn=length(ListIn);
 
 % Find S2 using units not declared as outliers using FSR
@@ -452,38 +460,45 @@ end
 out.rstud=rstud;
 
 if nargout > 0 || plotsPI==1
-    
+
     minX=min(X(:,end));
     maxX=max(X(:,end));
-    
-    xnew=(minX:((maxX-minX)/1000):maxX)';
-    if intercept==true
-        xnew=[ones(length(xnew),1) xnew];
-        hasintercept=true;
+
+    if size(X,2)-intercept==1
+        xnew=(minX:((maxX-minX)/1000):maxX)';
+        if intercept==true
+            xnew=[ones(length(xnew),1) xnew];
+            hasintercept=true;
+        else
+            hasintercept=false;
+        end
     else
-        hasintercept=false;
+        xnew=linspace(minX,maxX,n)';
+        xnew=[X(:,1:end-1) xnew];
+        hasintercept=intercept;
     end
+
     % Var cov matrix of regression coefficients
     Sigma = (inv(mAm))*S2b;
-    
+
     sim   = false;
     pred  = true;
     [ypred , yci] = predci(xnew,beta,Sigma,S2b,dfe,alpha,sim,pred,hasintercept);
-    
+
     varargout = {xnew , ypred, yci};
-    
+
     if plotsPI==1
-        
+
         % PI_LOWER_BOUND = yci(:,1);
         % PI_UPPER_BOUND = yci(:,2);
         figure('name','Prediction Interval');
         hold('on');
         plot(X(:,end),y,'o');
         plot(xnew(:,end),ypred,'Color','k','LineWidth',1.5,'LineStyle','--');
-        
+
         plot(xnew(:,end),yci(:,1),'Color','r','LineWidth',1);
         plot(xnew(:,end),yci(:,2),'Color','r','LineWidth',1);
-        
+
         if R2th < 1
             if R2b > R2th
                 tit2 = ['with variance of residuals adjusted to correct R2 from ' num2str(R2b,4) ' to ' num2str(R2th,4)];
