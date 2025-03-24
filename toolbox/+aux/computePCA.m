@@ -2,6 +2,9 @@ function  [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwith
 % Compute all PCA quantities (this function is not intended to be called
 % directly)
 [n,v]=size(Y);
+if isempty(bsb)
+    bsb=true(n,1);
+end
 Ybsb=Y(bsb,:);
 nbsb=size(Ybsb,1);
 

@@ -209,7 +209,7 @@ function out=pcaFS(Y,varargin)
 %                 the PCA subspace is remote from the typical projections.
 %                 These points have a large score distance and a large
 %                 orthogonal distance.
-% 
+%
 %
 % See also: pca, biplotFS
 %
@@ -234,12 +234,18 @@ function out=pcaFS(Y,varargin)
 %}
 
 %{
-    %% use of pcaFS on the ingredients dataset.
+    %% Use of pcaFS on the ingredients dataset.
     load hald
     % Operate on the covariance matrix.
     out=pcaFS(ingredients,'standardize',false,'biplot',0);
 %}
 
+%{
+    %% use of pcaFS with option robust true.
+    load citiesItaly;
+    % Use all default options
+    out=pcaFS(citiesItaly,'robust',true);
+%}
 
 %% Beginning of code
 [n,v]=size(Y);
@@ -304,18 +310,19 @@ else
     rownames=cellstr(num2str((1:n)','%d'));
 end
 
-bsb=true(n,1);
+bsb=[];
 
-if isstruct(robust) || (islogical(robust) && robust ==true)
+if isstruct(robust) || islogical(robust) 
 
     if isstruct(robust)
         if isfield(robust,'bsb') % User has chosen a prespecified subset of units to use
-            bsb=robust.bsb;
-            bsbini=false(n,1);
-            bsbini(bsb)=true;
-            bsb=bsbini;
-
+            
+            bsb=false(n,1);
+            bsb(robust.bsb)=true;
+          
         elseif  isfield(robust,'class')
+            bsb=true(n,1);
+
             class=robust.class;
             if strcmp(class,'MCD')
                 % User has chosen MCD
@@ -362,14 +369,13 @@ if isstruct(robust) || (islogical(robust) && robust ==true)
         else
             error('FSDA:pcaFS:missingCLASS','Specify a class among "FS", "MCD" or "MM"')
         end
-
+   
     else % in this case robust is a scalar boolean
 
         if robust == true
+            bsb=true(n,1);
             outFS=FSM(Y,'bonflev',0.99,'msg',0,'plots',0);
             bsb(outFS.outliers)=false;
-        else
-            bsb=true(n,1);
         end
     end
 end
@@ -564,7 +570,8 @@ end
 
 
 % The part above which has been commented is done inside the function below
-% In this way the function can be called without pcaFS
+% In this way the function which does PCA computations can be called
+% without pcaFS
 [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT, ...
     score,scoreT,orthDist,scoreDist]=aux.computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots);
 
