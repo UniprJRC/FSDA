@@ -369,7 +369,7 @@ function [out, varargout] = SDest(Y,varargin)
 %}
 
 %{
-    % SDest with exctracted subsamples.
+    % SDest with extracted subsamples.
     n=200;
     v=3;
     randn('state', 123456);
