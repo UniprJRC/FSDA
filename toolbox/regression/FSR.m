@@ -310,7 +310,7 @@ function [out]=FSR(y,X,varargin)
 %         out:   structure which contains the following fields
 %
 % out.ListOut  = row vector containing the list of the units declared as
-%                outliers or NaN if the sample is homogeneous. If
+%                outliers or empty if the sample is homogeneous. If
 % out.outliers = out.ListOut. This field is added for homogeneity with the
 %                other robust estimators and is equal to out.ListOut.
 % out.beta   =  p-by-1 vector containing the estimated regression
