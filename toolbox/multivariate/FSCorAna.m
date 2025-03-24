@@ -129,7 +129,7 @@ function out = FSCorAna(N,varargin)
 %         out:   structure which contains the following fields
 %
 %out.outliers=  k x 1 vector containing the list of the units declared as
-%               outliers or NaN if the sample is homogeneous
+%               outliers or empty value if the sample is homogeneous
 %   out.mmd=    n-init-by-5 matrix which contains the monitoring of minimum
 %               MD  at each step of
 %               the forward search.
