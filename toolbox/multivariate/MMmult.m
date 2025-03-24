@@ -173,7 +173,8 @@ function [out , varargout] = MMmult(Y,varargin)
 %                     Remark: covariance = auxscale^2 * shape
 %     out.weights  =  n x 1 vector. Weights assigned to each observation
 %     out.outliers =  1 x k vectors containing the outliers which
-%                           have been found
+%                           have been found or empty value if no outlier is
+%                           found.
 %     out.Sloc     =  1 x v vector with S estimate of location
 %     out.Sshape   =  v x v matrix with S estimate of the shape matrix
 %     out.Scov     =  v x v matrix with S estimate of the covariance matrix
