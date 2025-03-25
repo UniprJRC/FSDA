@@ -100,6 +100,29 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         a set of good units, the id number for the outliers should be the
 %         larger (see optional field 'labeladd' of option 'plo' for details).
 %
+%    nameY  :   Vector of length v containing the names of the variables.
+%               String array of cell array of characters. Note that this
+%               optional argument is ignored if Y is a table. In this last
+%               case the variableNames are used.
+%                   Example - 'nameY',["aa" "bb" "cc"]
+%                   Data Types - cell array of characters or string array
+%
+%    nameYrot :   Angle (in degrees) for the labels of the variables.
+%                 The default is 90, which means no rotation with respect
+%                 to the MATLAB default. The setting nameYrot = 0 produces
+%                 a rotation perpendicular to the axes, which is often used
+%                 in R graphics. Intermediate values are of course possible.
+%                   Example - 'nameYrot',30
+%                   Data Types - numeric scalar.
+%
+% nameYlength :   scalar indicating the maximum length of the labels
+%                of the variables. It is used to shorten the labels when
+%                they are too long. The default value is 0, which indicates
+%                that the labels length should not be changed.
+%                   Example - 'nameYlength',3
+%                   Data Types - numeric scalar.
+%
+%
 %    order  :   Order of the variables in the scatterplot matrix. Character
 %               or string. Order in which the variables are shown inside
 %               spmplot. Variable reordering can be used to improve the
@@ -281,7 +304,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               the diagonal is shown and typespm.upper controls the upper
 %               part. Possible entries of typespm.lower or typespm.upper
 %               are "scatter", "circle", "square" "number" (number without
-%               color), "cnumber" (colored number) and "none". 
+%               color), "cnumber" (colored number) and "none".
 %               For example if typespm.lower="number" and
 %               typespm.upper="circle", the correlations in the part below
 %               the diagonal are shown with numbers and the upper part with
@@ -495,6 +518,14 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
 %}
 
+%{
+    % Example of use of options 'nameY', 'nameYlength' and 'nameYrot'.
+    % In this example these options are passed as Name/Values.
+    nameY=["aaaawew" "bbccccc" "ccdddd"];
+    % Truncated the name of the variables to 3 characters and rotate
+    % the labels by 45 degrees.
+    spmplot(Y,'nameY',nameY,'nameYlength',3,'nameYrot',45);
+%}
 
 %{
     % Call of spmplot without name/value pairs.
@@ -1027,7 +1058,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     spmplot(mtcars,'typespm',typespm,'order','FPC');
 %}
 
- %{
+%{
     %% Example of use of option order with cnumber.
     % The order of the variables is based on the first
     % eigenvector associated to the largest eigenvalue.
@@ -1054,6 +1085,12 @@ symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';
 symdef=repmat(symdef,2,1);
 sizdef=[];
 dolegdef='on';
+nameY='';
+nameYlength      = 0;
+
+% This ensures the MATLAB standard for the labels orientation.
+% Used in instructions containing the 'Rotation' option.
+nameYrot      = 90;
 
 % This is the background color of the MATLAB figures
 MATLAB_def_gray = [0.94 0.94 0.94];
@@ -1181,7 +1218,7 @@ if nargin>1
         one=ones(n,1);
         options=struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),...
             'selunit',selthdef,'datatooltip',0,...
-            'nameY','','nameYrot',90,'nameYlength',0,...
+            'nameY',nameY,'nameYrot',nameYrot,'nameYlength',nameYlength,...
             'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
             'undock', '','colorBackground',false,'typespm','full','order',[]);
 
@@ -1220,9 +1257,9 @@ if nargin>1
         typespm=options.typespm;
         plo=options.plo;
         orderSPM=string(options.order);
-        %plo.nameY=options.nameY;
-        %plo.nameYrot=options.nameYrot;
-        %plo.nameYlength=options.nameYlength;
+        nameY=options.nameY;
+        nameYlength=options.nameYlength;
+        nameYrot=options.nameYrot;
     end
 
     %%
@@ -1369,6 +1406,7 @@ if isstruct(plo)
         nameY=plo.nameY;
     else
         if isempty(namesFromTable)
+
             nameY=cellstr(num2str((1:v)','Y%d'));
         else
             nameY=namesFromTable;
@@ -1472,9 +1510,7 @@ else
             nameY=namesFromTable;
         end
     else
-        if isempty(namesFromTable)
-            nameY = '';
-        else
+        if ~isempty(namesFromTable)
             nameY=namesFromTable;
         end
     end
@@ -1487,12 +1523,7 @@ else
     numtext=cellstr(num2str(seq,'%d'));
 
     TickLabelsFormat = 'auto';
-    nameYlength      = 0;
-
-    % This ensures the MATLAB standard for the labels orientation.
-    % Used in instructions containing the 'Rotation' option.
-    nameYrot      = 90;
-
+    
 end
 
 %% The group
