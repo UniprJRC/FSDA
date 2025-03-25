@@ -118,10 +118,14 @@ function T2=rows2varsFS(T1, varargin)
 
 %{
     %% Example of use of option 'VariableNamingRule'.
-    % Go to the folder where bostonTT is located.
-    openExample('matlab/ReorientTimetableRowsExample')
-    load bostonTT
-    T1=Boston;
+    nam={'Temp' 'WindSpeed' 'Rain'};  
+    BB=[59.5000    0.1000    0.0500
+       63.0000    2.3000    0.0800
+       61.7000    3.1000    0.1300
+       55.4000    5.7000    0.1500
+       62.3000    2.6000    0.8700
+       58.8000    6.2000    0.3300];
+    T1= array2timetable(BB,'VariableNames',nam,'RowTimes',datetime(2024,4,1:6));
     disp('Original table (first 5 rows)')
     head(T1,5)
     T2=rows2vars(T1,'VariableNamingRule','preserve');
