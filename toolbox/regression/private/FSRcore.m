@@ -135,7 +135,7 @@ function [out]=FSRcore(INP,model,options)
 %
 %     out :     A structure containing the following fields
 % out.ListOut  =  k x 1 vector containing the list of the units declared as
-%                 outliers or NaN if the sample is homogeneous.
+%                 outliers or empty if the sample is homogeneous.
 % out.outliers =  out.ListOut. This field is added for homogeneity with the
 %                 other robust estimators.
 % out.beta   =  p-by-1 vector containing the estimated regression
@@ -1409,7 +1409,7 @@ if ndecl>0
 else
     % No outlier is found.
     % Store the values of beta coefficients in final step of the fwd search
-    ListOut=NaN;
+    ListOut=zeros(1,0);
     if strcmp(model,'H')
         Hetero=INP.Hetero;
         hetero=Hetero(end,2:end);
