@@ -260,6 +260,7 @@ function [out] = FSRedaCens(y,X,bsb,varargin)
     % t-stat monitoring.
     n=200;
     p=3;
+    rng default
     rng(123456)
     X=randn(n,p);
     % Uncontaminated data
@@ -290,6 +291,7 @@ function [out] = FSRedaCens(y,X,bsb,varargin)
 
 %{
     %%  Outliers and a Lower Threshold example.
+    rng default
     rng(2)
     n=300;
     lambda=-0.5;
