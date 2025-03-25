@@ -1,0 +1,11 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>logfactorial</title> <meta content="refpage" name="chunktype"><meta content="function:logfactorial " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="logfactorial Returns the logarithm of the factorial" itemprop="description" name="description" /><h1 itemprop="title">logfactorial</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/logfactorial.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/logfactorial.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/logfactorial.html">http://rosa.unipr.it/FSDA/logfactorial.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: logfactorial</em></p><P>logfactorial</P><P>Returns the logarithm of the factorial</P><h2>Description</h2><P>Factorials grow very quickly and results exceed the limits of computer
+ floating point arithmetic already for 200! It is therefore more
+ convenient to work with the logarithms of factorials. $log(n!) = log(1) +
+ log(2) + log(3) + \ldots + log(n)$ would do the work but it is too slow
+ to iterate the various log computations. There are alternatives to this
+ naive approach. The first is to express the factorial in terms of the
+ gamma function: $n! = \Gamma(n+1)$. The second is to use Stirling's
+ approximation: $log \Gamma(n) \approx (n – 1/2) \log(n) – n  + (1/2)
+ log(2 \pi) + 1/(12 n) – 1/(360 n^3) + 1/(1260 n^5) – \ldots$ which uses
+ Bernoulli's numbers.</P><h2>References</h2><P>Li, Y.C. (2006), A note on an identity of the gamma function and Stirling
+ formula, "Real Analysis Exchange", Vol. 32 (1), pp.267–271.</P></html>

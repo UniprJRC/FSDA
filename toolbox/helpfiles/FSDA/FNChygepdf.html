@@ -33,9 +33,10 @@
  balls are independent and there is no dependence between draws. One may
  as well take all $n$ balls at the same time. Each ball has no "knowledge"
  of what happens to the other balls.</p> <p>
- More formally, if the total number $n$ of balls taken is known then the
- conditional distribution of the number of taken red balls for given $n$ is
- Fisher's noncentral hypergeometric distribution.</p> <p> 
+ More formally, if the total number $n$ of balls taken is not known before
+ the experiment (i.e n is determined just after the experiment), then the
+ conditional distribution of the number of taken red balls for given $n$
+ is Fisher's noncentral hypergeometric distribution.</p> <p>
 
  These two distributions have important applications in evolutionary
  biology and population genetics. If animals of a particular species are
@@ -100,12 +101,12 @@ xlabel('Number of successes')
 ylabel('Point mass function')
 title(['M=' num2str(M) ' K=' num2str(K)  ' n=' num2str(n) ' odds=' num2str(odds)])</pre></div></div><a href='http://rosa.unipr.it/fsda/FNChygepdf.html#Example_2'><img vspace="5" hspace="5" src="images\FNChygepdf_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Comparison between Wallenius and Fisher.</li></span></a></span></h3><div class="collapse"><p>
      we have 20 balls in the urn<div class="programlisting"><div class="codeinput"><pre class="matlab-code">M  = 20;
-%initially, in the urn we have 250 red and 250 white balls
+%initially, in the urn we have 10 red and 10 white balls
 K  = M/2;
 % we extract 3 balls without replacement
 n  = 3;
-%red balls have a probability ten times greater to be extracted thab white balls
-odds  = 5;
+%red balls have a probability ten times greater to be extracted than white balls
+odds  = 10;
 % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
 % 3 balls without replacement.
 x = (0:n)';
@@ -126,12 +127,12 @@ xlabel('Number of successes')
      up to some very small epsilon.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">%
 % we have 20 balls in the urn
 M  = 20;
-% initially, in the urn we have 250 red and 250 white balls
+% initially, in the urn we have 10 red and 10 white balls
 K  = M/2;
 % we extract 3 balls without replacement
 n  = 3;
-% red balls have a probability ten times greater to be extracted thab white balls
-odds  = 5;
+% red balls have a probability ten times greater to be extracted than white balls
+odds  = 10;
 % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
 % 3 balls without replacement.
 x = (0:n)';
@@ -145,12 +146,12 @@ assert(all(ismembertol(Fpdfa,Fpdfb,1E-12)), "Property 1 not verified.");</pre></
      up to some very small epsilon.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">%
 % we have 20 balls in the urn
 M  = 20;
-% initially, in the urn we have 250 red and 250 white balls
+% initially, in the urn we have 10 red and 10 white balls
 K  = M/2;
 % we extract 3 balls without replacement
 n  = 3;
-% red balls have a probability ten times greater to be extracted thab white balls
-odds  = 5;
+% red balls have a probability ten times greater to be extracted than white balls
+odds  = 10;
 % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
 % 3 balls without replacement.
 x = (0:n)';
@@ -164,12 +165,12 @@ assert(all(ismembertol(Fpdfa,Fpdfb,1E-12)), "Property 2 not verified.");</pre></
      up to some very small epsilon.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">%
 % we have 20 balls in the urn
 M  = 20;
-% initially, in the urn we have 250 red and 250 white balls
+% initially, in the urn we have 10 red and 10 white balls
 K  = M/2;
 % we extract 3 balls without replacement
 n  = 3;
-% red balls have a probability ten times greater to be extracted thab white balls
-odds  = 5;
+% red balls have a probability ten times greater to be extracted than white balls
+odds  = 10;
 % We compute the probability of getting 0, 1, 2 or 3 red balls in drawing
 % 3 balls without replacement.
 x = (0:n)';

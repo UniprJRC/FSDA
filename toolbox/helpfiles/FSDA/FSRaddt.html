@@ -46,19 +46,19 @@ Total estimated time to complete LMS:  0.00 seconds
 Number of subsets to extract greater than (n p). It is set to (n p)
 Total estimated time to complete LMS:  0.00 seconds 
 Number of subsets to extract greater than (n p). It is set to (n p)
-Total estimated time to complete LMS:  0.10 seconds 
+Total estimated time to complete LMS:  0.17 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 14.1%
 Total estimated time to complete LMS:  0.00 seconds 
 Total estimated time to complete LMS:  0.00 seconds 
 Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 14.4%
+Warning: Number of subsets without full rank equal to 14.5%
+Total estimated time to complete LMS:  0.01 seconds 
 Total estimated time to complete LMS:  0.00 seconds 
-Total estimated time to complete LMS:  0.00 seconds 
-Total estimated time to complete LMS:  0.00 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 15.2%
+Warning: Number of subsets without full rank equal to 13.5%
 </pre><a href='http://rosa.unipr.it/fsda/FSRaddt.html#Example_2'><img vspace="5" hspace="5" src="images\FSRaddt_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSRaddt with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Example of use of FSRaddt with plot of deletion t with personalized line
      width for the envelopes and personalized confidence interval.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
@@ -122,8 +122,9 @@ Total estimated time to complete LMS:  0.01 seconds
                     least trimmed squares estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>h is an integer greater or
                     equal than [(n+size(X,2)+1)/2] but smaller then n
                     </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0,75)
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ilr" class="clearfix"></div><h3 id="input_argument_namevalue_ilr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ilr</code> &#8212;Apply the ilr transformation.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>In presence of compositional data, if this option is
-                   set to true, for each column of X function pivotCoord
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ilr" class="clearfix"></div><h3 id="input_argument_namevalue_ilr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ilr</code> &#8212;Apply the ilr transformation.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>This option can be set to true if the matrix of independent 
+                   variables X contains compositional data. Then, for each 
+                   column of X function pivotCoord
                    is invoked and the added variable whose test is
                    monitored is the first coordinate of the ilr
                    transformation. The default value of ilr is false.</p> <p>

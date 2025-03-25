@@ -34,9 +34,10 @@
  balls are independent and there is no dependence between draws. One may
  as well take all $n$ balls at the same time. Each ball has no "knowledge"
  of what happens to the other balls.</p> <p>
- More formally, if the total number $n$ of balls taken is known then the
- conditional distribution of the number of taken red balls for given $n$ is
- Fisher's noncentral hypergeometric distribution.</p> <p> 
+ More formally, if the total number $n$ of balls taken is not known before
+ the experiment (i.e n is determined just after the experiment), then the
+ conditional distribution of the number of taken red balls for given $n$
+ is Fisher's noncentral hypergeometric distribution.</p> <p>
 
  These two distributions have important applications in evolutionary
  biology and population genetics. If animals of a particular species are
@@ -69,7 +70,7 @@ w=[1, 2.5, 1.8];
 n=10; 
 % Generate a random variate from this distribution
 r = mWNChygernd(m,w, n);
-disp(r);</pre></div></div><pre class="codeoutput">     3     5     2
+disp(r);</pre></div></div><pre class="codeoutput">          1.00          5.00          4.00
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 5 random variates from a multivariate non central Wallenius distribution.</li></span></a></span></h3><div class="collapse"><p>
      m = number of balls of each type in the urn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">m=[20,30,20, 10];
@@ -81,11 +82,11 @@ n=10;
 ntrials=5;
 R = mWNChygernd(m,w, n, ntrials);
 % R is matrix of size ntrials-by-length(m)
-disp(R);</pre></div></div><pre class="codeoutput">     0     0     0    10
-     1     2     0     7
-     0     1     2     7
-     0     1     0     9
-     0     2     1     7
+disp(R);</pre></div></div><pre class="codeoutput">             0             0          1.00          9.00
+          1.00          2.00             0          7.00
+             0          2.00             0          8.00
+             0          1.00             0          9.00
+             0             0             0         10.00
 
 </pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Check agreement between theoretical and empirical relative frequencies.</li></span></a></span></h3><div class="collapse"><p>
      define the weights for each color<div class="programlisting"><div class="codeinput"><pre class="matlab-code">weights=[5,2,1]'; 

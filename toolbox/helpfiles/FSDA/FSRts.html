@@ -40,11 +40,25 @@ Summary of the exceedances
            1          99         999        9999       99999
            4           0           0           0           0
 
+
+ans = 
+
+  Legend ( Units) with properties:
+
+         String: {' Units'}
+       Location: 'northeast'
+    Orientation: 'vertical'
+       FontSize: 7.2000
+       Position: [0.8160 0.8622 0.0795 0.0371]
+          Units: 'normalized'
+
+  Use GET to show all properties
+
 </pre><a href='http://rosa.unipr.it/fsda/FSRts.html#Example_2'><img vspace="5" hspace="5" src="images\FSRts_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRts_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_04.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSRts with optional arguments in time series with outliers.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
      three harmonics, no explanatory variables and a signal to noise ratio
-     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+     equal to 20.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 model=struct;
 model.trend=[];
 model.trendb=[];
@@ -64,7 +78,7 @@ out=FSRts(y,'model',model1);</pre></div></div></p></div></div><div id="Extr
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
      three harmonics, no explanatory variables and a signal to noise ratio
-     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+     equal to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 model=struct;
 model.trend=[];
 model.trendb=[];
@@ -101,11 +115,11 @@ Summary of the exceedances
            1          99         999        9999       99999
           16           9           6           6           5
 
-</pre><a href='http://rosa.unipr.it/fsda/FSRts.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSRts_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRts_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_08.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option lms as struct.</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/FSRts.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSRts_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRts_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_07.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option lms as struct.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
      three harmonics, no explanatory variables and a signal to noise ratio
-     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+     equal to 20.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 model=struct;
 model.trend=[];
 model.trendb=[];
@@ -147,11 +161,11 @@ Summary of the exceedances
            1          99         999        9999       99999
           16           9           7           7           6
 
-</pre><a href='http://rosa.unipr.it/fsda/FSRts.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRts_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRts_10.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_11.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_12.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Automatic outlier and level shift detection.</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/FSRts.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRts_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRts_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_10.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_11.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Automatic outlier and level shift detection.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
      three harmonics, no explanatory variables and a signal to noise ratio
-     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+     equal to 20.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 model=struct;
 model.trend=[];
 model.trendb=[];
@@ -170,8 +184,8 @@ model1.trend=1;              % linear trend
 model1.s=12;                 % monthly time series
 model1.seasonal=104;
 model1.lshift=-1;
-% Automatically serch for outliers and level shift
-out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRts.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRts_13.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRts_14.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_15.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_16.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+% Automatically search for outliers and level shift
+out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRts.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRts_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRts_13.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_14.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_15.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
 </code>,<code> 'nsamp',1000
 </code>,<code> 'lms',1
@@ -192,9 +206,9 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                which will be used. The model structure contains the following
                fields:
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
-                         data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
+                         data s=12 (default), for quarterly data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 1 implies linear trend with intercept (default),
-                       trend = 2 implies quadratic trend ...</p><p>
+                       trend = 2 implies quadratic trend and so on.</p><p>
                        Admissible values for trend are, 0, 1, 2 and 3.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
                         frequencies, i.e. harmonics, in the seasonal
                         component. Possible values for seasonal are
@@ -205,35 +219,35 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                         if seasonal =2 we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
-                        Note that when $s$ is even the sine term disappears
+                        Note that when $s$ is even, the sine term disappears
                         for $j=s/2$ and so the maximum number of
                         trigonometric parameters is $s-1$.</p> <p>
-                        If seasonal is a number greater than 100 then it
+                        If seasonal is a number greater than 100, then it
                         is possible to specify how the seasonal component
                         grows over time.</p> <p>
                         For example, seasonal =101 implies a seasonal
-                        component which just uses one frequency
+                        component which just uses one frequency,
                         which grows linearly over time as follows:
                         $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
                         \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
                         For example, seasonal =201 implies a seasonal
-                        component which just uses one frequency
+                        component which just uses one frequency,
                         which grows in a quadratic way over time as
                         follows:
                         $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p><p>
                         seasonal =0 implies a non seasonal model.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
                          values of nexpl extra covariates which are likely
-                         to affect y.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p><p>positive integer which specifies to position
+                         to affect y.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p><p>positive integer which specifies the position
                          to include the level shift component.</p> <p>
-                         For example if model.posLS =13 then the
+                         For example, if model.posLS =13, then the
                          explanatory variable $I(t \geq 13})$ is created.</p><p>
                          If this field is not present or if it is empty,
                          the level shift component is not included.</p></p></td></tr><tr valign="top"><td><code>B</code></td><td><p><p>column vector or matrix containing the initial
                          values of parameter estimates which have to be
                          used in the maximization procedure. If model.B is
                          a matrix, then initial estimates are extracted
-                         from the first colum of this matrix. If this
+                         from the first column of this matrix. If this
                          field is empty or if this field is not present,
                          the initial values to be used in the maximization
                          procedure are referred to the OLS parameter
@@ -253,21 +267,21 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples which will be extracted to find the
                  robust estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nsamp=0 all subsets will be extracted.</p> <p>
                  They will be (n choose p).</p> <p>
-                 If the number of all possible subset is &lt;1000 the
+                 If the number of all possible subset is &lt;1000, the
                  default is to extract all subsets otherwise just 1000.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initial subset to initialize
-                 the search.</span></a><span class="example_desc">scalar,  vector | structure.</span></span></h3><div class="collapse">	<p><p>lms specifies
+                 the search.</span></a><span class="example_desc">scalar, vector | structure.</span></span></h3><div class="collapse">	<p><p>lms specifies
                  the criterion to use to find the initial subset to
                  initialize the search (LTS with concentration steps or
                  subset supplied directly by the user).</p> <p>
                  The default value is 1 (Least trimmed squares
                  is computed to initialize the search).</p> <p>
-                 If lms is a struct it is possible to control a
+                 If lms is a struct, it is possible to control a
                  series of options for concentration steps (for more
                  details see function LTSts.m)
                  If, on the other hand, the user wants to initialize the
-                 search with a prespecified set of units there are two
+                 search with a prespecified set of units, there are two
                  possibilities:
                  1) lms can be a vector with length greater than 1 which
                  contains the list of units forming the initial subset. For
@@ -281,7 +295,7 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                  lms=struct;</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bsb</code></td><td><p>3;</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that have determined the least
                  trimmed squares estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>h is an integer
-                 greater or equal than p but smaller then n. Generally if
+                 greater or equal than p, but smaller then n. Generally, if
                  the purpose is outlier detection h=[0.5*(n+p+1)] (default
                  value). h can be smaller than this threshold if the
                  purpose is to find subgroups of homogeneous observations.</p> <p>
@@ -289,23 +303,23 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                  initialize the search. The default value of h which is
                  used is round(0.75*T).</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0.55)
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots=1 (default) the plot of minimum deletion
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots=1 (default), the plot of minimum deletion
                  residual with envelopes based on T observations and the
                  scatterplot matrix with the outliers highlighted is
                  produced together with a two panel plot.</p> <p>
-                 The upper panel contains the orginal time series with
+                 The upper panel contains the original time series with
                  fitted values. The bottom panel will contain the plot
                  of robust residuals against index number. The confidence
-                 level which is used to draw the horizontal lines associated
-                 with the bands for the residuals is 0.999.</p> <p>
-                 If plots=2 the user can also monitor the intermediate
+                 level, which is used to draw the horizontal lines associated
+                 with the bands for the residuals, is 0.999.</p> <p>
+                 If plots=2, the user can also monitor the intermediate
                  plots based on envelope superimposition.</p> <p>
                  Else no plot is produced.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Start of monitoring point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It specifies the point where to initialize the search and
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Start of monitoring point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search and
                start monitoring required diagnostics. If it is not
-               specified it is set equal floor(0.5*(T+1))
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
+               specified, it is set equal floor(0.5*(T+1)).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments inside input option model.</span></a><span class="example_desc">as default nocheck=false.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_bivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_bivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds
                  one or more least squares lines, based on
@@ -338,14 +352,14 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                    coefficient of Xi in the multivariate regression and
                    avconst is the effect of all the other explanatory
                    variables different from Xi evaluated at their centroid
-                   (that is overline{y}'C))
+                   (that is overline{y}'C)).</p> <p>
                  multivarfit = '2'
-                   equal to multivarfit ='1' but this time we also add the
+                   equal to multivarfit ='1', but this time we also add the
                    line based on the group of unselected observations
                    (i.e. the normal units).</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'multivarfit','1'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labeladd" class="clearfix"></div><h3 id="input_argument_namevalue_labeladd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labeladd</code> &#8212;Add outlier labels in plot.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>If this option is
-                 '1',  we label the outliers with the
+                 '1', we label the outliers with the
                  unit row index in matrices X and y. The default value is
                  labeladd='', i.e. no label is added.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labeladd','1'
@@ -371,32 +385,32 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                  strongly non normal and, thus, the general signal
                  detection rule based on consecutive exceedances cannot be
                  used. In this case bonflev can be:
-                 - a scalar smaller than 1 which specifies the confidence
+                 - a scalar smaller than 1, which specifies the confidence
                    level for a signal and a stopping rule based on the
                    comparison of the minimum MD with a
-                   Bonferroni bound. For example if bonflev=0.99 the
+                   Bonferroni bound. For example, if bonflev=0.99 the
                    procedure stops when the trajectory exceeds for the
                    first time the 99% bonferroni bound.</p> <p>
-                 - A scalar value greater than 1. In this case the
+                 - A scalar value greater than 1. In this case, the
                    procedure stops when the residual trajectory exceeds
                    for the first time this value.</p> <p>
                  Default value is '', which means to rely on general rules
                  based on consecutive exceedances.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bonflev',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It controls whether
-                 to display or not messages on the screen
-                 If msg==1 (default) messages are displayed on the screen about
-                   step in which signal took place
-                 else no message is displayed on the screen.</p> <p>
+                 to display or not messages on the screen.</p> <p>
+                 If msg==1 (default), messages are displayed on the screen about
+                   step in which signal took place,
+                 else no message is displayed on the screen.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;Dealing with singluar X matrix.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>This option tells
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;Dealing with singular X matrix.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>This option tells
                  how to behave in case subset at step m
                  (say bsbm) produces a singular X. In other words,
                  this options controls what to do when rank(X(bsbm,:)) is
-                 smaller then number of explanatory variables. If
-                 bsbmfullrank =1 (default) these units (whose number is
+                 smaller than number of explanatory variables. If
+                 bsbmfullrank =1 (default), these units (whose number is
                  say mnofullrank) are constrained to enter the search in
-                 the final n-mnofullrank steps else the search continues
+                 the final n-mnofullrank steps, else the search continues
                  using as estimate of beta at step m the estimate of beta
                  found in the previous step.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbmfullrank',1
@@ -409,7 +423,7 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                  fsr_resuperplot for the plot of resuperimposed envelopes. The
                  first plot with 4 panel of resuperimposed envelopes has
                  tag fsr_resuperplot1, the second  fsr_resuperplot2 ...</p> <p>
-                 If tag is character or a cell of characters of length 1,
+                 If tag is a character or a cell of characters of length 1,
                  it is possible to specify the tag for the plot of mdr
                  based on all the observations;</p> <p>
                  If tag is a cell of length 2 it is possible to control
@@ -420,15 +434,15 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                  the names of the plots of resuperimposed envelopes.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag',{'plmdr' 'plyXplot'};
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char or cell</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ListOut</code></td><td><p>k x 1 vector containing the list of the units declared as
-                outliers or NaN if the sample is homogeneous</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>out.ListOut. This field is added for homogeneity with the
+                outliers or NaN if the sample is homogeneous.</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>out.ListOut. This field is added for homogeneity with the
                 other robust estimators.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p><p>Matrix containing estimated beta coefficients,
-                       standard errors, t-stat and p-values
+                       standard errors, t-stat and p-values.</p> <p>
                        The content of matrix out.beta is as follows:
                        1st col = beta coefficients
                         The order of the beta coefficients is as follows:
                         1) trend elements (if present). If the trend is
-                        of order two there are r+1 coefficients if the
-                        intercept is present otherwise there are just r
+                        of order two, there are r+1 coefficients if the
+                        intercept is present; otherwise, there are just r
                         components;</p> <p>
                         2) linear part of seasonal component 2, 4, 6, ...,
                         s-2, s-1 coefficients (if present);</p> <p>
@@ -437,12 +451,14 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                         on the time series under study (X);</p> <p>
                         4) non linear part of seasonal component, that is
                         varying amplitude. If varying amplitude is of order
-                        k there are k coefficients (if present);</p> <p>
-                        5) level shift component (if present). In this case
+                        k, there are k coefficients (if present);</p> <p>
+                        5) level shift component (if present). In this
+                        case,
                         there are two coefficients, the second (which is
-                        also the last element of vector beta) is an integer
+                        also the last element of vector beta) is an
+                        integer,
                         which specifies the time in which level shift takes
-                        place and the first (which is also the penultime
+                        place and the first (which is also the penultimate
                         element of vector beta) is a real number which
                         identifies the magnitude of the upward (downward)
                         level shift;</p> <p>
@@ -456,11 +472,11 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
    Exflag  :   Reason nlinfit stopped. Integer matrix.</p> <p>
                (n-init+1) x 2 matrix containing information about the
                result  of the maximization procedure.</p><p>
-               If the model is non linear out.Exflag(i,2) is equal to 1
+               If the model is non linear, out.Exflag(i,2) is equal to 1
                if at step out.Exflag(i,1) the maximization procedure did not produce
                warnings or the warning was different from
-               "ILL Conditiioned Jacobian". For any other warning
-               which is produced (for example,
+               "ILL Conditioned Jacobian". For any other warning
+               that is produced (for example,
                "Overparameterized", "IterationLimitExceeded",
                'MATLAB:rankDeficientMatrix") out.Exflag(i,2) is equal
                to -1;</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 matrix which contains the unit(s) included
@@ -468,24 +484,24 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                REMARK: in every step the new subset is compared with the
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one.</p> <p>
-               Un(1,2) for example contains the unit included in step
+               Un(1,2), for example, contains the unit included in step
                init+1.</p><p>
                Un(end,2) contains the units included in the final step
                of the search.</p></p></td></tr><tr valign="top"><td><code>nout</code></td><td><p><p>2 x 5 matrix containing the number of times mdr went out
                of particular quantiles.</p> <p>
                First row contains quantiles 1 99 99.9 99.99 99.999.</p><p>
                Second row contains the frequency distribution.</p></p></td></tr><tr valign="top"><td><code>constr</code></td><td><p>This output is produced only if the search found at a
-               certain step X is a singular matrix. In this case the
+               certain step X is a singular matrix. In this case, the
                search runs in a constrained mode, that is including the
                units which produced a non singular matrix in the last n-constr
                steps. out.constr is a vector which contains the list of
                units which produced a singular X matrix</p></td></tr><tr valign="top"><td><code>Exflag</code></td><td><p><p>Reason nlinfit stopped. Integer matrix.</p> <p>
                (n-init+1) x 2 matrix containing information about the
-               result  of the maximization procedure.</p><p>
-               If the model is non linear out.Exflag(i,2) is equal to 1
+               result of the maximization procedure.</p> <p>
+               If the model is non linear, out.Exflag(i,2) is equal to 1;</p><p>
                if at step out.Exflag(i,1) the maximization procedure did not produce
                warnings or the warning was different from
-               "ILL Conditiioned Jacobian". For any other warning
+               "ILL Conditioned Jacobian". For any other warning
                which is produced (for example,
                "Overparameterized", "IterationLimitExceeded",
                'MATLAB:rankDeficientMatrix") out.Exflag(i,2) is equal

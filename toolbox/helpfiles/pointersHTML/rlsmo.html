@@ -2,9 +2,9 @@
    can be called directly when it is necessary to smooth a set of values
    using local regressions. Note that the x values must be non decreasing.</P><h2>More About</h2><P>
  This function makes use of subroutine smth.
- The sintax of $smth$ is $[smo] = smth(x,y,w,span,cross)$. $x$, $y$ and
+ The syntax of $smth$ is $[smo] = smth(x,y,w,span,cross)$. $x$, $y$ and
  $w$ are 3 vectors of length $n$ containing respectively the $x$
- coordinates, the $y$ coordinates and the weights. Input paramter $span$ is
+ coordinates, the $y$ coordinates and the weights. Input parameter $span$ is
  a scalar in the interval (0 1] which defines the length of the elements
  in the local regressions.
  More precisely, if $span$ is in (0 1), the length of elements in the
@@ -14,7 +14,7 @@
  
  Parameter $cross$ is a Boolean scalar. If it is set to true, it specifies
  that, to compute the local regression centered on unit $i$, unit $i$ must
- be deleted. Therefore for example, 
+ be deleted. Therefore, for example, 
  [1] if $m$ is 3 and $cross$ is true, the
  smoothed value for observation $i$ uses a local regression with $x$
  coordinates $(x(i-1), x(i+1))$, $y$ coordinates $(y(i-1), y(i+1))$ and
@@ -28,11 +28,11 @@
  smoothed values for observation 1 uses a local regression based on
  $(x(1), x(2))$, $(y(1), y(2))$, and  $(w(1), w(2))$ while the smoothed
  value for observation $n$ uses a local regression based on $(x(n-1),
- x(n))$, $(y(n-1), y(n))$, and  $(w(n-1), w(n))$.
+ x(n))$, $(y(n-1), y(n))$, and $(w(n-1), w(n))$.
  
  [3] If $m=5$ and $cross$ is true, the smoothed value for observations $i$
  uses a local regression based on observations $(i-2), (i-1), (i+1),
- (i+2)$, for $i=3, \ldots, n-2$.  The smoothed values for observation 1
+ (i+2)$, for $i=3, \ldots, n-2$. The smoothed values for observation 1
  uses observations 2 and 3, the smoothed value for observations 2 uses
  observations 1, 3 and 4 ... 
  [4] If $m$ is 5 and $cross$ is false, the

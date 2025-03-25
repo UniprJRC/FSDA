@@ -16,7 +16,7 @@ bsbini=[97    77    12     2    26    95    10    60    94   135     7    61   1
 104  114  146  172  180  203  237  271  305  310  362  390    % Nov
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
 y=(y(:));
-% Define the model  and show the monitoring units plots.
+% Define the model and show the monitoring units plots.
 model=struct;
 model.trend=1;              % linear trend
 model.s=12;                 % monthly time series
@@ -53,31 +53,31 @@ plot(seqr,BB','bx');
 xlabel('Subset size m');
 ylabel('Monitoring units plot');
 % The plot, which monitors the units belonging to subset in each step of
-% the forward search shows that independently of the initial starting
+% the forward search, shows that independently of the initial starting
 % point the contaminated units (31:40) are always the last to enter the
-% forward search.</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRtsbsb.html#Example_3'><img vspace="5" hspace="5" src="images\FSRtsbsb_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRtsbsb_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRtsbsb_04.png" alt=""> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+% forward search.</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRtsbsb.html#Example_3'><img vspace="5" hspace="5" src="images\FSRtsbsb_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRtsbsb_03.png" alt=""> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial subset. </span>  </a><span class="example_desc">Vector | 0.</span></span></h3> <div class="collapse"> <p>If
-               bsb=0 then the procedure starts with p units randomly
-               chosen else if bsb is not 0 the search will start with
-               m0=length(bsb)</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',100 starts monitoring from step m=100
+               bsb=0, then the procedure starts with p units randomly
+               chosen, else if bsb is not 0, the search will start with
+               m0=length(bsb).</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',100 starts monitoring from step m=100
 </code>,<code> 'model', model
 </code>,<code> 'nocheck',false
 </code>,<code> 'plots',1
 </code>,<code> 'bsbmfullrank',1
-</code></code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Start of monitoring point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It specifies the point where to initialize the search and
+</code></code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Start of monitoring point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search and
                start monitoring required diagnostics. If it is not
-               specified it is set equal floor(0.5*(T+1))
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
+               specified, it is set equal floor(0.5*(T+1)).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>A structure which specifies the model
                which will be used. The model structure contains the following
                fields:
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
-                         data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
+                         data s=12 (default), for quarterly data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 1 implies linear trend with intercept (default),
-                       trend = 2 implies quadratic trend ...</p><p>
+                       trend = 2 implies quadratic trend and so on.</p><p>
                        Admissible values for trend are, 0, 1, 2 and 3.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
                         frequencies, i.e. harmonics, in the seasonal
-                        component. Possible values for seasonal are
+                        component). Possible values for seasonal are
                         $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
                         For example:
                         if seasonal =1 (default) we have:
@@ -88,7 +88,7 @@ ylabel('Monitoring units plot');
                         Note that when $s$ is even the sine term disappears
                         for $j=s/2$ and so the maximum number of
                         trigonometric parameters is $s-1$.</p> <p>
-                        If seasonal is a number greater than 100 then it
+                        If seasonal is a number greater than 100, then it
                         is possible to specify how the seasonal component
                         grows over time.</p> <p>
                         For example, seasonal =101 implies a seasonal
@@ -104,16 +104,16 @@ ylabel('Monitoring units plot');
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p><p>
                         seasonal =0 implies a non seasonal model.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
                          values of nexpl extra covariates which are likely
-                         to affect y.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p><p>positive integer which specifies to position
+                         to affect y.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p><p>positive integer which specifies the position
                          to include the level shift component.</p> <p>
-                         For example if model.posLS =13 then the
+                         For example, if model.posLS =13 then the
                          explanatory variable $I(t \geq 13})$ is created.</p><p>
                          If this field is not present or if it is empty,
                          the level shift component is not included.</p></p></td></tr><tr valign="top"><td><code>B</code></td><td><p><p>column vector or matrix containing the initial
                          values of parameter estimates which have to be used in the
                          maximization procedure. If model.B is a matrix,
                          then initial estimates are extracted from the
-                         first colum of this matrix. If this field is
+                         first column of this matrix. If this field is
                          empty or if this field is not present, the
                          initial values to be used in the maximization
                          procedure are referred to the OLS parameter
@@ -123,22 +123,22 @@ ylabel('Monitoring units plot');
                                 Remark: the default model is for monthly data with a linear
                trend (2 parameters) + seasonal component with just one
                harmonic (2 parameters), no additional explanatory
-               variables and no level shift that is
+               variables and no level shift that is:
                                model=struct;</p> <p>
                                model.s=12;</p> <p>
                                model.trend=1;</p> <p>
                                model.seasonal=1;</p> <p>
                                model.X='';</p><p>
                                model.posLS='';</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If nocheck is equal to true no check is performed on
-               supplied structure model
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true, no check is performed on
+               supplied structure model.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbsteps" class="clearfix"></div><h3 id="input_argument_namevalue_bsbsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbsteps</code> &#8212;Save the units forming subsets in selected steps.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It specifies for which steps of the fwd search it is
                necessary to save the units forming subset. If bsbsteps is
-               0 we store the units forming subset in all steps. The
-               default is store the units forming subset in all steps if
+               0, we store the units forming subset in all steps. The
+               default is to store the units forming subset in all steps if
                n&lt;=5000, else to store the units forming subset at steps
-               init and steps which are multiple of 100. For example, as
+               init and steps which are multiples of 100. For example, as
                default, if n=7530 and init=6, units forming subset are
                stored for
                m=init, 100, 200, ..., 7500.</p> <p>
@@ -148,12 +148,12 @@ ylabel('Monitoring units plot');
                  is produced on the screen).</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;What to do in case subset at step m (say bsbm) produces a
-               non singular X.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>This options controls what to do when rank(X(bsbm,:)) is
-               smaller then number of explanatory variables.</p> <p>
-               If bsbmfullrank = 1 (default is 1) these units (whose number
+               non singular X.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>This option controls what to do when rank(X(bsbm,:)) is
+               smaller than the number of explanatory variables.</p> <p>
+               If bsbmfullrank = 1 (default is 1), these units (whose number
                is say mnofullrank) are constrained to enter the search in
-               the final n-mnofullrank steps else the search continues
-               using as estimate of beta at step m the estimate of beta
+               the final n-mnofullrank steps, else the search continues
+               using as estimate of beta at step m, the estimate of beta
                found in the previous step.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbmfullrank',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_Un" class="clearfix"></div><h3 id="output_argument_Un" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Un</code> &#8212;Units included in each step.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p>
@@ -162,7 +162,7 @@ ylabel('Monitoring units plot');
                REMARK: in every step the new subset is compared with the
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one.</p> <p>
-               Un(1,2) for example contains the unit included in step
+               Un(1,2), for example, contains the unit included in step
                init+1.</p><p>
                Un(end,2) contains the units included in the final step
                of the search.</p></p></div></div><div class="expandableContent"><div id="outputarg_BB" class="clearfix"></div><h3 id="output_argument_BB" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BB</code> &#8212;Units belonging to subset in each step or selected steps.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p>
@@ -173,7 +173,7 @@ ylabel('Monitoring units plot');
                More precisely:
                BB(:,1) contains the units forming subset in step bsbsteps(1);</p> <p>
                ....;</p> <p>
-               BB(:,end) contains the units forming subset in step  bsbsteps(end);</p> <p>
+               BB(:,end) contains the units forming subset in step bsbsteps(end);</p> <p>
                Row 1 of matrix BB is referred to unit 1;</p> <p>
                ......;</p> <p>
                Row n of matrix BB is referred to unit n;</p><p>

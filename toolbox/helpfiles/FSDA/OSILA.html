@@ -8,7 +8,7 @@ out=OSILA(Y,k);
 % Check the result
 sorY=sort(Y);
 disp([out,sorY(k)])
-disp(['Distance = ' num2str(abs(out-sorY(k)))])</pre></div></div><pre class="codeoutput">   -2.6991   -2.6991
+disp(['Distance = ' num2str(abs(out-sorY(k)))])</pre></div></div><pre class="codeoutput">         -2.70         -2.70
 
 Distance = 0
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> OSILA with alpha supplied and n calculated.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=10^7;
@@ -23,9 +23,9 @@ out2=OSILA(Y,k);
 t2=toc(s2);
 disp(['Execution time with n = 50: ' num2str(t1)])
 disp(['Execution time with n optimal: ' num2str(t2)])
-disp(['Execution time difference: ' num2str(t1-t2)])</pre></div></div><pre class="codeoutput">Execution time with n = 50: 0.014141
-Execution time with n optimal: 0.013231
-Execution time difference: 0.0009102
+disp(['Execution time difference: ' num2str(t1-t2)])</pre></div></div><pre class="codeoutput">Execution time with n = 50: 0.01793
+Execution time with n optimal: 0.016413
+Execution time difference: 0.0015172
 </pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> OSILA with n (sample dimension) supplied and alpha empty (default value).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=10^7;
 Y=randn(N,1);
 k=34580;
@@ -38,9 +38,9 @@ out2=OSILA(Y,k);
 t2=toc(s2);
 disp(['Execution time with n = 50: ' num2str(t1)])
 disp(['Execution time with n optimal: ' num2str(t2)])
-disp(['Execution time difference: ' num2str(t1-t2)])</pre></div></div><pre class="codeoutput">Execution time with n = 50: 0.020064
-Execution time with n optimal: 0.014729
-Execution time difference: 0.0053352
+disp(['Execution time difference: ' num2str(t1-t2)])</pre></div></div><pre class="codeoutput">Execution time with n = 50: 0.021237
+Execution time with n optimal: 0.018409
+Execution time difference: 0.002828
 </pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> OSILA: Execution time difference with respect to the naive procedure.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=10^7;
 Y=randn(N,1);
 k=34580;
@@ -53,9 +53,9 @@ out=sorY(k);
 t2=toc(s2);
 disp(['Execution time OSILA: ' num2str(t1)])
 disp(['Execution time naive: ' num2str(t2)])
-disp(['Execution time difference: ' num2str(t1-t2)])</pre></div></div><pre class="codeoutput">Execution time OSILA: 0.014079
-Execution time naive: 0.14986
-Execution time difference: -0.13578
+disp(['Execution time difference: ' num2str(t1-t2)])</pre></div></div><pre class="codeoutput">Execution time OSILA: 0.01918
+Execution time naive: 0.18722
+Execution time difference: -0.16804
 </pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; a set of N numbers. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Vector containing a set of N numbers.</p> <p>
                  Data Type - double</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; order statistic index. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>An integer between 1 and N indicating 
        the desired order statistic.</p> <p>

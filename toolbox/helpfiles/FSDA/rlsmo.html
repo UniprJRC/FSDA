@@ -26,7 +26,7 @@ title(['span chosen by cross validation= ' num2str(span)])</pre></div></div></
                a vector of length n, where n is the number of
                observations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_w" class="clearfix"> </div> <h3 id="input_argument_w" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>w</code> &#8212; weights for the observations. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Row or column vector of
            length n containing the weights associated to each
-           observations. If w is not specified we assum $w=1$ for $i=1,
+           observations. If w is not specified we assume $w=1$ for $i=1,
            2, \ldots, n$.</p> <p>
            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>1:n
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_span" class="clearfix"> </div> <h3 id="input_argument_span" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>span</code> &#8212; length of the local regressions. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Scalar in the
@@ -38,23 +38,23 @@ title(['span chosen by cross validation= ' num2str(span)])</pre></div></div></
            cross validation residual sum of squares is chosen. The
            smoothing procedure is called using the best value of cvspan
            and the smoothed values are found without cross validation.</p> <p>
-           If span is not 0 but is a value in
+           If span is not 0, but is a value in
            the interval (0, 1], the local regression have length n*span and
            the smoothed values are found without cross validation.</p><p>
            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>0.4
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_smo" class="clearfix"></div><h3 id="output_argument_smo" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>smo</code> &#8212;smoothed values.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p> A vector with the same dimension
                of y containing smoothed values, that is the y values on
-               the fitted curve. The smoothed values come from linear
+               the fitted curve. The smoothed values come from
                local linear regressions whose length is specified by input
                parameter span.</p></div></div><div class="expandableContent"><div id="outputarg_span" class="clearfix"></div><h3 id="output_argument_span" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>span</code> &#8212;length of the local regressions.</span></a><span class="example_desc">Scalar</span></span></h3><div class="collapse"><p> Scalar in the
                interval [0, 1] which specifies the length of the local
-               regressions which has been used. For example if span=0.3
+               regressions which has been used. For example, if span=0.3
                approximately 30 per cent of consecutive observations are
                used in order to compute the local regressions.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
  This function makes use of subroutine smth.</p> <p>
- The sintax of $smth$ is $[smo] = smth(x,y,w,span,cross)$. $x$, $y$ and
+ The syntax of $smth$ is $[smo] = smth(x,y,w,span,cross)$. $x$, $y$ and
  $w$ are 3 vectors of length $n$ containing respectively the $x$
- coordinates, the $y$ coordinates and the weights. Input paramter $span$ is
+ coordinates, the $y$ coordinates and the weights. Input parameter $span$ is
  a scalar in the interval (0 1] which defines the length of the elements
  in the local regressions.</p> <p>
  More precisely, if $span$ is in (0 1), the length of elements in the
@@ -64,7 +64,7 @@ title(['span chosen by cross validation= ' num2str(span)])</pre></div></div></
  
  Parameter $cross$ is a Boolean scalar. If it is set to true, it specifies
  that, to compute the local regression centered on unit $i$, unit $i$ must
- be deleted. Therefore for example, <hr>[<b>1</b>] if $m$ is 3 and $cross$ is true, the
+ be deleted. Therefore, for example, <hr>[<b>1</b>] if $m$ is 3 and $cross$ is true, the
  smoothed value for observation $i$ uses a local regression with $x$
  coordinates $(x(i-1), x(i+1))$, $y$ coordinates $(y(i-1), y(i+1))$ and
  $w$ coordinates  $(w(i-1), w(i+1))$, $i=2, \ldots, n-1$. The smoothed
@@ -76,10 +76,10 @@ title(['span chosen by cross validation= ' num2str(span)])</pre></div></div></
  smoothed values for observation 1 uses a local regression based on
  $(x(1), x(2))$, $(y(1), y(2))$, and  $(w(1), w(2))$ while the smoothed
  value for observation $n$ uses a local regression based on $(x(n-1),
- x(n))$, $(y(n-1), y(n))$, and  $(w(n-1), w(n))$.</p> <p>
+ x(n))$, $(y(n-1), y(n))$, and $(w(n-1), w(n))$.</p> <p>
  <hr>[<b>3</b>] If $m=5$ and $cross$ is true, the smoothed value for observations $i$
  uses a local regression based on observations $(i-2), (i-1), (i+1),
- (i+2)$, for $i=3, \ldots, n-2$.  The smoothed values for observation 1
+ (i+2)$, for $i=3, \ldots, n-2$. The smoothed values for observation 1
  uses observations 2 and 3, the smoothed value for observations 2 uses
  observations 1, 3 and 4 ...</p> <p> <hr>[<b>4</b>] If $m$ is 5 and $cross$ is false, the
  smoothed value for observations $i$ uses a local regression based on

@@ -5,7 +5,7 @@ X=randn(n,p);
 y=randn(n,1);
 y(1:5)=y(1:5)*2;
 [out]=VIOM(y,X, 1:5);
-% Show the weights associated to each unit
+% Show the weights associated to each unit.
 figure
 boxplot(out.w)
 out.w(1:5);
@@ -34,9 +34,9 @@ y(1:5)=y(1:5)*2;
 y(6:15)=y(6:15)+10;
 [out]=VIOM(y,X,1:5,'mult',1,'trim',6:15);
 out.w(1:15);
-out.beta;</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
-               contains the response
-               variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p>Data matrix of explanatory
+out.beta;</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that
+               contains the response variable.</p> <p> 
+               It can be either a row or a column vector.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p>Data matrix of explanatory
                variables (also called 'regressors')
                of dimension (n x p-1). Rows of X represent observations, and
                columns represent variables.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_dw" class="clearfix"> </div> <h3 id="input_argument_dw" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>dw</code> &#8212; Candidate VIOM outliers. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Vector containing the
@@ -51,19 +51,19 @@ out.beta;</pre></div></div></p></div></div></div></div></div><div class="
                else no constant term will be included.</p> <p>
                true (default) | false.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_mult" class="clearfix"></div><h3 id="input_argument_namevalue_mult" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mult</code> &#8212;Indicator for joint weights estimate.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If mult==true the weights are jointly estimated by iterative REML.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_mult" class="clearfix"></div><h3 id="input_argument_namevalue_mult" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mult</code> &#8212;Indicator for joint weights estimate.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If mult==true, the weights are jointly estimated by iterative REML.</p> <p>
                Default is mult==false and singularly optimal weights are
                estimated using REML closed form solution.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'mult',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_trim" class="clearfix"></div><h3 id="input_argument_namevalue_trim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>trim</code> &#8212;Units flagged as possible MSOM outliers.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector
-               which contains the units (row numbers) that are forced to
+               that contains the units (row numbers) that are forced to
                have 0 weights. By default no units are trimmed, i.e. trim==[].</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'trim',[1,2,3]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_trsh" class="clearfix"></div><h3 id="input_argument_namevalue_trsh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>trsh</code> &#8212;Threshold on residuals.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If thrsh&gt;0 all the (standard) residuals greater than trsh
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_trsh" class="clearfix"></div><h3 id="input_argument_namevalue_trsh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>trsh</code> &#8212;Threshold on residuals.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If trsh&gt;0, all the (standard) residuals greater than trsh
                are set to 0. [[TBA:modify to studentized or scaled residuals]]
-               If trsh&lt;1 all the estimated weights smaller than trsh are
+               If trsh&lt;1, all the estimated weights smaller than trsh are
                forced to be 0.</p> <p>
-               If trsh==0 (default option) no weights are forced to be 0.</p> <p>
+               If trsh==0 (default option), no weights are forced to be 0.</p> <p>
                (Note: It might be useful to reduce the computational burden).</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'trsh',5
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cook" class="clearfix"></div><h3 id="input_argument_namevalue_cook" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cook</code> &#8212;Use Cook et al.</span></a><span class="example_desc">(1982) formula to estimate single weights               using MLE.</span></span></h3><div class="collapse">	<p><p>Scalar. Default cook==0 and Thompson (1985) formula

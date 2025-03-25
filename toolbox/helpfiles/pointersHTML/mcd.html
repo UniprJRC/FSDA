@@ -43,5 +43,16 @@
  derivation of the factor is discussed by Barabesi et al. (2023), Trimming
  heavy-tailed multivariate data, submitted.
 
+
+ About the consistency factor. The consistency factor, which is applied 
+ to the scatter matrix to account for the effect of trimming observations,
+ can be computed based on the nominal trimming percentage, which is
+ $1-bdp$, or based on the empirical one, which is $h/n$. The two values
+ can slightly differ if $n$ is small. By default, we use the nominal
+ value. This means that the RAW residuals are based on the nominal value
+ $1-bdp$. On the other hand, note that currently the REW residuals are
+ based on the empirical $h/n$ to reflect the empirical nature of the
+ reweighted approach.
+
 </P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
  and Methods", Wiley, New York.</P></html>

@@ -33,9 +33,9 @@ refSequences=multialign(refSequences);
 Seqs2align=[Seqs2align(2:101)];
 %Call of multialgin2ref with all default arguments
 Seqsaligned=multialign2ref(refSequences,Seqs2align);</pre></div></div><pre class="codeoutput">Process started
-   14-Mar-2025 17:30:59
+   25-Mar-2025 21:54:35
 
-Total estimated time (seconds)=5.3148
+Total estimated time (seconds)=5.8085
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example without using the parallel computing toolbox.</li></span></a></span></h3><div class="collapse"><p>
      Load fastafile containing original covid and other sequences<div class="programlisting"><div class="codeinput"><pre class="matlab-code">Seqs2align = fastaread("X01sel.txt");
 % Load fasta file containing the 5 covid variants
@@ -61,9 +61,9 @@ refSequences=multialign(refSequences);
 Seqs2align=[Seqs2align(2:101)];
 %Call of multialign2ref with all default arguments
 [Seqsaligned,WrngAlignment]=multialign2ref(refSequences,Seqs2align);</pre></div></div><pre class="codeoutput">Process started
-   14-Mar-2025 17:31:08
+   25-Mar-2025 21:54:46
 
-Total estimated time (seconds)=5.1054
+Total estimated time (seconds)=8.0907
 </pre></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_refSeqs" class="clearfix"> </div> <h3 id="input_argument_refSeqs" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>refSeqs</code> &#8212; Reference sequences already aligned. </span>  </a><span class="example_desc">Vector of structures.</span></span></h3> <div class="collapse"> <p>Vector of structures of length a with the fields 
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Sequence</code></td><td><p>for the residues and</p></td></tr><tr valign="top"><td><code>Header</code></td><td><p>(or 'refSeqs.Name') for the labels.</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Seqs2align" class="clearfix"> </div> <h3 id="input_argument_Seqs2align" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Seqs2align</code> &#8212; Sequences which have to be aligned. </span>  </a><span class="example_desc">Vector of structures.</span></span></h3> <div class="collapse"> <p>Vector of structures of length n with the fields 
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Sequence</code></td><td><p>for the residues and</p></td></tr><tr valign="top"><td><code>Header</code></td><td><p>or (or 'Seqs2align.Name') for the labels.</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'UseParallelValue','false'

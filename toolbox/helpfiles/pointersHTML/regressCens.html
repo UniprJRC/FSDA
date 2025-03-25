@@ -1,0 +1,62 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>regressCens</title> <meta content="refpage" name="chunktype"><meta content="function:regressCens " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="regressCens Computes estimates of regression parameters under the censored (Tobit) model" itemprop="description" name="description" /><h1 itemprop="title">regressCens</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/regressCens.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/regressCens.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/regressCens.html">http://rosa.unipr.it/FSDA/regressCens.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: regressCens</em></p><P>regressCens</P><P>Computes estimates of regression parameters under the censored (Tobit) model</P><h2>Description</h2><P>The model is estimated by Maximum Likelihood (ML) assuming a Gaussian
+ (normal) distribution of the error term. The maximization of the
+ likelihood function is done by function fminunc of the optimization toolbox.</P><h2>More About</h2><P>
+
+ The issue is one where data is censored such that while we observe the
+ value, it is not the true value, which would extend beyond the range of
+ the observed data. This is very commonly seen in cases where the
+ dependent variable has been given some arbitrary cutoff at the lower or
+ upper end of the range, often resulting in floor or ceiling effects
+ respectively. The conceptual idea is that we are interested in modeling
+ the underlying latent variable that would not have such restriction if it
+ was actually observed.
+
+ In the standard Tobit model (Tobin 1958), we have a dependent variable $y$ that is left-censored at zero:
+ \begin{eqnarray}
+ y_i^* & = & x_i^{\prime} \beta+\varepsilon_i \\
+ y_i   =  &  0            & \text { if } y_i^* \leq 0 \\
+ y_i   =  &  y_i^*        &  \text { if } y_i^*&gt;0
+ \end{eqnarray}
+
+ Here the subscript $i=1, \ldots, n$ indicates the observation,
+ $y_i^*$ is an unobserved ("latent") variable,
+ $x_i$ is a vector of explanatory variables,
+ $\beta$ is a vector of unknown parameters, and
+ $\varepsilon_i$ is a disturbance term.
+
+ The censored regression model is a generalisation of the standard Tobit model.
+ The dependent variable can be either left-censored, right-censored, or
+ both left-censored and right-censored, where the lower and/or upper limit
+ of the dependent variable can be any number:
+ \begin{eqnarray}
+  y_i^*=x_i^{\prime} \beta+\varepsilon_i     \\
+  y_i & = &     a       \qquad  \text { if } y_i^* \leq a    \\
+      & = &   y_i^*     \qquad  \text { if } a&lt;y_i^*&lt;b    \\
+      & = &    b        \qquad  \text { if } y_i^* \geq b
+\end{eqnarray}
+
+ Here $a$ is the lower limit and $b$ is the upper limit of the dependent variable. If $a=-\infty$ or $b=\infty$, the dependent variable is not left-censored or right-censored, respectively.
+
+ Censored regression models (including the standard Tobit model) are usually estimated by the Maximum Likelihood (ML) method. Assuming that the disturbance term $\varepsilon$ follows a normal distribution with mean 0 and variance $\sigma^2$, the log-likelihood function is
+ \begin{aligned}
+ \log L=\sum_{i=1}^N  & \left[  I_i^a \log \Phi\left(\frac{a-x_i^{\prime} \beta}{\sigma}\right)+I_i^b \log \Phi\left(\frac{x_i^{\prime} \beta-b}{\sigma}\right)  \right. \\
+ & \left.+\left(1-I_i^a-I_i^b\right)\left(\log \phi\left(\frac{y_i-x_i^{\prime} \beta}{\sigma}\right)-\log \sigma\right)\right],
+ \end{aligned}
+
+ where $\phi( \cdot)$ and $\Phi( \cdot )$ denote the probability density
+ function and the cumulative distribution function, respectively, of
+ the standard normal distribution, and $I_i^a$ and $I_i^b$ are indicator
+ functions with
+
+ \begin{eqnarray}
+ I_i^a & = &  1  \text { if } y_i=a   \\
+       & = &  0   \text { if } y_i&gt;a  \\
+ I_i^b & = &  1  \text { if } y_i=b   \\
+       & = &  0  \text { if } y_i&lt;b   \\
+ \end{eqnarray}
+
+ In this file the censored log likelihood above is maximized with respect
+ to the parameter vector $(\beta', \sigma)$ using routine fminunc of the
+ optimization toolbox
+
+</P><h2>References</h2><P>Greene, W.H. (2008), "Econometric Analysis, Sixth Edition", Prentice Hall, pp. 871-875.</P></html>

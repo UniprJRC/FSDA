@@ -1,0 +1,23 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>FM_cov_matrix</title> <meta content="refpage" name="chunktype"><meta content="function:FM_cov_matrix " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FM_cov_matrix Computes the integrated variance-covariance matrix of any number of processes from discrete observations, via the Fourier-Malliavin estimator with Fejer kernel" itemprop="description" name="description" /><h1 itemprop="title">FM_cov_matrix</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/FM_cov_matrix.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/FM_cov_matrix.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/FM_cov_matrix.html">http://rosa.unipr.it/FSDA/FM_cov_matrix.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: FM_cov_matrix</em></p><P>FM_cov_matrix</P><P>Computes the integrated variance-covariance matrix of any number of processes from discrete observations, via the Fourier-Malliavin estimator with Fejer kernel</P><h2>Description</h2><P>FM_cov_matrix computes the integrated variance-covariance matrix of any number of processes from discrete observations over the time horizon [0,T], 
+ using the Fourier-Malliavin estimator with Fejer kernel</P><h2>More About</h2><P>
+ We assume that vectors xi contain discrete observations from a d-dimensional diffusion
+ process $(x_1,..,x_d)$ following the Ito stochastic differential equation 
+ $$dx_i(t)= \sigma_i(t) \ dW_i(t) + b_i(t) \ dt, \quad i=1,...,d,$$ 
+ where, for all i, $W_i$ is a Brownian motion defined on the filtered probability space 
+ $(\Omega, (\mathcal{F}_t)_{t \in [0,T]}, P)$, while $\sigma_i$ and $b_i$ are random processes,
+ adapted to  $\mathcal{F}_t$.
+ See the Reference for further  mathematical details.
+ The integrated covariance of the process $(x_i,x_j)$ on $[0,T]$ is defined as
+ $$IC_{ij,[0,T]}:=\rho_{ij} \, \int_0^T \sigma_i(t) \sigma_j(t) \, dt$$
+ where $\rho_{ij}$ denotes the correlation between $W_i$ and $W_j$.
+ 
+ For any positive integer $n_i$, let $\mathcal{S}^i_{n_i}:=\{ 0=t^i_{0}\leq \cdots
+ \leq t^i_{n_i}=T  \}$ be the observation times for the $i$-th asset. Moreover, let $\delta_l(x^i):=
+ x^i(t^i_{l+1})-x^i(t^i_l)$ be the increments of $x^i$. 
+ The Fourier estimator of the integrated covariance with fejer kernel on $[0,T]$ is
+ given by 
+ $$T c_0(c_{n_i,n_j,N})={T^2\over {N+1}} \sum_{|k|\leq N} \left( 1- \frac{|k|}{N+1}\right)c_{k}(dx^i_{n_1})c_{-k}(dx^j_{n_2}),$$
+
+ $$c_k(dx^i_{n_i})= {1\over {T}} \sum_{l=0}^{n_i-1} e^{-{\rm i}\frac{2\pi}{T}kt^i_l}\delta_{l}(x_i).$$
+ 
+</P><h2>References</h2><P>Mancino, M.E., Recchioni, M.C., Sanfelici, S. (2017), Fourier-Malliavin Volatility Estimation. Theory and Practice, "Springer Briefs in Quantitative Finance", Springer.</P></html>

@@ -50,7 +50,7 @@ out =
      nsamp is the number of subsamples to use in the frequentist analysis of first
      year, in order to find initial subset using LMS.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 nsamp=3000;
-% threshold to be used to increase susbet of good units
+% threshold to be used to increase subset of good units
 threshold=300;
 bonflev=0.99; % Bonferroni confidence level to be used for first year
 bonflevB=0.99; % Bonferroni confidence level to be used for subsequent years
@@ -223,7 +223,7 @@ hold('off')
 % good units, plotted as (+)
 plot(X04(u04g)',y04(u04g)','Marker','+','LineStyle','none','Color','b')
 hold('on')
-% units below the treshold, plotted as (X)
+% units below the threshold, plotted as (X)
 plot(X04(u04i)',y04(u04i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')
 % outliers, plotted as (O)
 plot(X04(u04o)',y04(u04o)','Marker','o','LineStyle','none','Color','r')
@@ -238,7 +238,7 @@ title('Frequentist - 2004');</pre></div></div><a href='http://rosa.unipr.it/fsd
 % nsamp is the number of subsamples to use in the frequentist analysis of first
 % year, in order to find initial subset using LMS.
 nsamp=3000;
-% threshold to be used to increase susbet of good units
+% threshold to be used to increase subset of good units
 threshold=300;
 bonflev=0.99; % Bonferroni confidence level
 % Load 2002 Fishery dataset
@@ -421,7 +421,7 @@ Summary of the exceedances
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta0</code></td><td><p>p-times-1 vector containing prior mean of \beta</p></td></tr><tr valign="top"><td><code>R</code></td><td><p><p>p-times-p positive definite matrix which can be
                        interpreted as X0'X0 where X0 is a n0 x p matrix
                        coming from previous experiments (assuming that the
-                       intercept is included in the model.</p> <p>
+                       intercept is included in the model).</p> <p>
 
                The prior distribution of $\tau_0$ is a gamma distribution with
                parameters $a_0$ and $b_0$, that is
@@ -520,31 +520,31 @@ Summary of the exceedances
                    line based on the group of unselected observations
                    (i.e. the normal units).</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'multivarfit','1'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labeladd" class="clearfix"></div><h3 id="input_argument_namevalue_labeladd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labeladd</code> &#8212;Add outlier labels in plot.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>If this option is '1',  we label the outliers with the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labeladd" class="clearfix"></div><h3 id="input_argument_namevalue_labeladd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labeladd</code> &#8212;Add outlier labels in plot.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>If this option is '1', we label the outliers with the
                  unit row index in matrices X and y. The default value is
                  labeladd='', i.e. no label is added.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labeladd','1'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;Add variable labels in plot.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p>cell array of strings of length p containing the labels of
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;Add variable labels in plot.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p>Cell array of strings of length p containing the labels of
                  the variables of the regression dataset. If it is empty
                  (default) the sequence X1, ..., Xp will be created
                  automatically
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'NameVar1','NameVar2'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;Add response label.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>character containing the label of the response
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;Add response label.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>Character containing the label of the response
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','NameOfResponse'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_ylim" class="clearfix"></div><h3 id="input_argument_namevalue_ylim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>vector with two elements controlling minimum and maximum
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_ylim" class="clearfix"></div><h3 id="input_argument_namevalue_ylim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Vector with two elements controlling minimum and maximum
                  on the y axis. Default value is '' (automatic scale)
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim','[0,10]' sets the minim value to 0 and the
-</code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlim" class="clearfix"></div><h3 id="input_argument_namevalue_xlim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlim</code> &#8212;Control x scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>vector with two elements controlling minimum and maximum
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim','[0,10]' sets the minimum value to 0 and the
+</code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlim" class="clearfix"></div><h3 id="input_argument_namevalue_xlim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlim</code> &#8212;Control x scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Vector with two elements controlling minimum and maximum
                  on the x axis. Default value is '' (automatic scale)
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlim','[0,10]' sets the minim value to 0 and the
-</code>               max to 10 on the x axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>option to be used if the distribution of the data is
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlim','[0,10]' sets the minimum value to 0 and the
+</code>               max to 10 on the x axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option to be used if the distribution of the data is
                  strongly non normal and, thus, the general signal
                  detection rule based on consecutive exceedances cannot be
                  used. In this case bonflev can be:
                  - a scalar smaller than 1 which specifies the confidence
                    level for a signal and a stopping rule based on the
                    comparison of the minimum MD with a
-                   Bonferroni bound. For example if bonflev=0.99 the
+                   Bonferroni bound. For example, if bonflev=0.99, the
                    procedure stops when the trajectory exceeds for the
                    first time the 99% bonferroni bound.</p> <p>
                  - A scalar value greater than 1. In this case the
@@ -553,7 +553,7 @@ Summary of the exceedances
                  Default value is '', which means to rely on general rules
                  based on consecutive exceedances.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bonflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>scalar which controls whether to display or not messages
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether to display or not messages
                  on the screen
                  If msg==1 (default) messages are displayed on the screen about
                    step in which signal took place and ....</p> <p>
@@ -579,11 +579,11 @@ Summary of the exceedances
                  the names of the plots of resuperimposed envelopes.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag',{'plmdr' 'plyXplot'};
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char or cell array of characters</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ListOut</code></td><td><p>k x 1 vector containing the list of the units declared as
-               outliers or NaN if the sample is homogeneous. This field in
-               future releases will be deleted bacause it will be replaced
+               outliers or empty if the sample is homogeneous. This field in
+               future releases will be deleted because it will be replaced
                by out.outliers.</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>k x 1 vector containing the list of the units declared as
-               outliers or NaN if the sample is homogeneous.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the posterior mean of $\beta$
-               (regression coefficents),
+               outliers or empty if the sample is homogeneous.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the posterior mean of $\beta$
+               (regression coefficients),
                $\beta = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$ in step
                $n-k$</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scalar. This is the reciprocal of the square root of the
                posterior estimate of $\tau$ in step $n-k$</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>(n-init) x 2 matrix:
@@ -594,7 +594,7 @@ Summary of the exceedances
                REMARK: in every step the new subset is compared with the
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one.</p> <p>
-               Un(1,2) for example contains the unit included in step
+               Un(1,2), for example, contains the unit included in step
                init+1.</p><p>
                Un(end,2) contains the units included in the final step
                of the search.</p></p></td></tr><tr valign="top"><td><code>nout</code></td><td><p><p>2 x 5 matrix containing the number of times mdr went out

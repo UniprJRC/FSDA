@@ -8,8 +8,8 @@
  \]
  where $U_{(2)}$ is $n \times 2$ matrix (first two columns of $U$)  
  and $V_{(2)}$ is $p \times 2$  (first two columns of matrix $V$,
- $\Gamma_{(2)}^*$ is a $2 \times 2$ diagonal matrix 
- which contains the frist two largest singular values of matrix $Z$ 
+ $\Gamma_{(2)}^*$ is a $2 \times 2$ diagonal matrix, 
+ which contains the first two largest singular values of matrix $Z$ 
  (square root of the eigenvalues of matrix $Z^TZ=(n-1)R$) where $R$ is the
  correlation matrix.
 
@@ -48,7 +48,7 @@
  \[
  \sqrt{n-1} U_{(2)}= Z  V_{(2)} \Gamma_{(2)}^{-1}
  \]
- that is row points are the standardized principal components scores.
+ that is, row points are the standardized principal components scores.
  \[
  cov (\sqrt{n-1} U_{(2)}) = I_2= \left(
                                    \begin{array}{cc}
@@ -61,10 +61,10 @@
  \[
   \Gamma_{(2)}  V_{(2)}^T
  \]
-  that is the arrows are associated with the correlations between the
-  variables and the first two principal components
-  The length of the arrow is exactly equal to the communality of the asoociated variable.
-  In this case the unit circle is also shown on the screen and option axis
+  that is, the arrows are associated with the correlations between the
+  variables and the first two principal components.
+  The length of the arrow is exactly equal to the communality of the associated variable.
+  In this case, the unit circle is also shown on the screen and option axis
   equal is set.
 
  On the other hand, if $\omega=1$ and $\alpha=1$
@@ -73,7 +73,7 @@
  \[
  \sqrt{n-1} U_{(2)} \Gamma_{(2)} = Z  V_{(2)}
  \]
- In this case the row points are the (non normalized) scores, that is 
+ In this case, the row points are the (non normalized) scores, that is 
   \[
  cov(\sqrt{n-1} U_{(2)} \Gamma_{(2)})  =cov( Z  V_{(2)})= \left(
                                    \begin{array}{cc}
@@ -87,10 +87,10 @@
   \[
  V_{(2)}^T 
   \]
- Also in this case the unit circle is given and option axis equal is set. 
+ Also in this case, the unit circle is given and option axis equal is set. 
  
  In general if $\omega$ decreases, the length of the arrows increases
- and the coordinates of row points are squeezed towards the origin
+ and the coordinates of row points are squeezed towards the origin.
 
  In the app it is also possible to color row points depending on the
  orthogonal distance ($OD_i$) of each observation to the PCA subspace.
@@ -102,8 +102,8 @@
  OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
  \]
 
- If optional input argument bsb or bdp is specified it is possible to have
- in the app two tabs which enable the user to select the breakdown point
- of the analysis of the subset size to use in the svd. The units which are
+ If an optional input argument, bsb or bdp, is specified, it is possible to have
+ in the app two tabs that enable the user to select the breakdown point
+ of the analysis of the subset size to use in the svd. The units that are
  declared as outliers or the units outside the subset are shown in the
  plot with filled circles.</P></html>

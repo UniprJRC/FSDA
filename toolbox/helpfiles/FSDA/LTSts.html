@@ -149,7 +149,7 @@ legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaT
 numpar = {'model parameters:' , 'A=1, B=6, G=1, $\delta_1=0$'};
 title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Contaminated time series with upward level shift.</li></span></a></span></h3><div class="collapse"><p>
      Model with linear trend, six harmonics for seasonal component and
-     varying amplitude using a linear trend).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
+     varying amplitude using a linear trend (3).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
 y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 118  126  150  180  196  188  233  277  301  318  342  391    % Feb
@@ -183,7 +183,7 @@ str=strcat('A=1, B=1, G=0, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Contaminated time series with downward level shift.</li></span></a></span></h3><div class="collapse"><p>
      Model with linear trend, three harmonics for seasonal component and
-     varying amplitude using a linear trend).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
+     varying amplitude using a linear trend (4).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
 y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 118  126  150  180  196  188  233  277  301  318  342  391    % Feb
@@ -232,7 +232,7 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 y=(y(:));
 y1=log(y);
 % Model with linear trend, two harmonics for seasonal component and
-% varying amplitude using a linear trend).
+% varying amplitude using a linear trend (5).
 model=struct;
 model.trend=1;              % linear trend
 model.s=12;                 % monthly time series
@@ -280,7 +280,7 @@ model.X=[];
 lshiftlocref=struct;
 % Set window length for local refinement.
 lshiftlocref.wlength=10;
-% Set tuning constant to use insde Huber rho function
+% Set tuning constant to use inside Huber rho function
 lshiftlocref.huberc=1.5;
 % Estimate the parameters
 [out]=LTSts(y1,'model',model,'nsamp',500,...
@@ -324,7 +324,7 @@ model.X=[];
 lshiftlocref=struct;
 % Set window length for local refinement.
 lshiftlocref.wlength=10;
-% Set tuning constant to use insde Huber rho function
+% Set tuning constant to use inside Huber rho function
 lshiftlocref.huberc=1.5;
 % Estimate the parameters
 [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
@@ -366,7 +366,7 @@ model.X=[];
 lshiftlocref=struct;
 % Set window length for local refinement.
 lshiftlocref.wlength=10;
-% Set tuning constant to use insde Huber rho function
+% Set tuning constant to use inside Huber rho function
 lshiftlocref.huberc=1.5;
 close all
 % Estimate the parameters
@@ -409,30 +409,30 @@ title(findobj(gcf,'Tag','FSRts:ts'),'P12119085, FS with default conflev');
 outLTS5 = LTSts(Y5,'model',model,'plots',1,'conflev',0.99,'msg',0);
 title(findobj(gcf,'Tag','LTSts:ts'),'P17049075, LTS with conflev=0.99');
 outFRS5 = FSRts(Y5,'model',model,'plots',1);
-title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div><pre class="codeoutput">                  Coeff         SE           t           pval   
-                _________    _________    ________    __________
+title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div><pre class="codeoutput">                 Coeff      SE       t       pval
+                _______    ____    ______    ____
 
-    b_trend1       115.27       4.5051      25.586    2.0728e-26
-    b_trend2        1.592      0.27465      5.7965    9.1325e-07
-    b_cos1        -2.8294       3.9154    -0.72265        0.4741
-    b_sin1        -12.419       4.6909     -2.6475      0.011544
-    b_cos2        -9.0708       4.6584     -1.9472      0.058559
-    b_sin2        -22.604       4.7099     -4.7992    2.2402e-05
-    b_varaml    -0.015796    0.0042445     -3.7215    0.00060891
-    b_lshift      -112.62       7.6319     -14.756    8.9212e-18
+    b_trend1     115.27    4.51     25.59    0.00
+    b_trend2       1.59    0.27      5.80    0.00
+    b_cos1        -2.83    3.92     -0.72    0.47
+    b_sin1       -12.42    4.69     -2.65    0.01
+    b_cos2        -9.07    4.66     -1.95    0.06
+    b_sin2       -22.60    4.71     -4.80    0.00
+    b_varaml      -0.02    0.00     -3.72    0.00
+    b_lshift    -112.62    7.63    -14.76    0.00
 
 Level shift position t=27
-                  Coeff         SE           t          pval   
-                _________    _________    _______    __________
+                Coeff      SE       t       pval
+                ______    ____    ______    ____
 
-    b_trend1        55.14       3.8549     14.304    2.5537e-17
-    b_trend2      0.89673      0.19848     4.5181    5.4202e-05
-    b_cos1         15.545       4.1497     3.7461    0.00056646
-    b_sin1          3.612       4.2659    0.84671        0.4022
-    b_cos2        -32.496       4.2541    -7.6387    2.4573e-09
-    b_sin2        -16.057        4.313    -3.7229    0.00060638
-    b_varaml    -0.022594    0.0018596     -12.15    5.2846e-15
-    b_lshift      -79.413       5.6981    -13.937    6.0952e-17
+    b_trend1     55.14    3.85     14.30    0.00
+    b_trend2      0.90    0.20      4.52    0.00
+    b_cos1       15.54    4.15      3.75    0.00
+    b_sin1        3.61    4.27      0.85    0.40
+    b_cos2      -32.50    4.25     -7.64    0.00
+    b_sin2      -16.06    4.31     -3.72    0.00
+    b_varaml     -0.02    0.00    -12.15    0.00
+    b_lshift    -79.41    5.70    -13.94    0.00
 
 Level shift position t=34
 Level shift for t=14
@@ -461,8 +461,22 @@ Level shift for t=35
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
-           1          99         999        9999       99999
-           1           2           0           0           0
+          1.00         99.00        999.00       9999.00      99999.00
+          1.00          2.00             0             0             0
+
+
+ans = 
+
+  Legend ( Units) with properties:
+
+         String: {' Units'}
+       Location: 'northeast'
+    Orientation: 'vertical'
+       FontSize: 7.20
+       Position: [0.82 0.86 0.08 0.04]
+          Units: 'normalized'
+
+  Use GET to show all properties
 
 Level shift for t=14
 Level shift for t=15
@@ -490,8 +504,22 @@ Level shift for t=35
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
-           1          99         999        9999       99999
-           0           5           1           0           0
+          1.00         99.00        999.00       9999.00      99999.00
+             0          5.00          1.00             0             0
+
+
+ans = 
+
+  Legend ( Units) with properties:
+
+         String: {' Units'}
+       Location: 'northeast'
+    Orientation: 'vertical'
+       FontSize: 7.20
+       Position: [0.82 0.86 0.08 0.04]
+          Units: 'normalized'
+
+  Use GET to show all properties
 
 </pre><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\LTSts_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_16.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_17.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_18.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_19.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_20.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series. Note that
@@ -513,18 +541,18 @@ Summary of the exceedances
 </code>,<code> 'yxsave',1
 </code>,<code> 'plots',1
 </code></code></span></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
-               the algorithm should resist. In this case any value greater
-               than 0 but smaller or equal than 0.5 will do fine. Please
+               the algorithm should resist. In this case, any value greater
+               than 0, but smaller or equal than 0.5, will do fine. Please
                specify h or bdp, but not both.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',0.4
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar between 0 and 1 containing
-               Confidence level which is used to declare units as
+               confidence level which is used to declare units as
                outliers. Usually conflev=0.95, 0.975 0.99 (individual
                alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous
                alpha). Default value is 0.975.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results of final fit.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is
-               true,  labels of coefficients, estimated coefficients,
+               true, labels of coefficients, estimated coefficients,
                standard errors, tstat and p-values are shown on the
                screen in a fully formatted way. The default value of
                dispresults is false.</p> <p>
@@ -532,31 +560,31 @@ Summary of the exceedances
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that determined the least
                trimmed squares estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>h is an integer greater
                than p (number of columns of matrix X including the
-               intercept but smaller then n. If the purpose is outlier
-               detection than h does not have to be smaller than
+               intercept, but smaller than n. If the purpose is outlier
+               detection, then h does not have to be smaller than
                [0.5*(T+p+1)]. The default value of h is [0.75*T]. Note
-               that if h is supplied input argument bdp is ignored.</p> <p>
+               that if h is supplied, input argument bdp is ignored.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0.75)
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
                  specified as the comma-separated pair consisting of
                  'Intercept' and either true to include or false to remove
                  the constant term from the model.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_lshiftlocref" class="clearfix"></div><h3 id="input_argument_namevalue_lshiftlocref" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lshiftlocref</code> &#8212;Parameters for local shift refinement.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>This option is used just if model.lshift is greater then 0.</p> <p>
-               In order to precisely identify level shift position it is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_lshiftlocref" class="clearfix"></div><h3 id="input_argument_namevalue_lshiftlocref" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lshiftlocref</code> &#8212;Parameters for local shift refinement.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>This option is used just if model.lshift is greater than 0.</p> <p>
+               In order to precisely identify level shift position, it is
                necessary to consider a local sum of squares varying the
                position of the level shift around the first tentative
                position keeping all the other parameters fixed. This
                structure contains the following fields:
-       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>wlength</code></td><td><p>scalar greater than 0 which
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>wlength</code></td><td><p><p>scalar greater than 0 which
                    identifies the length of the window. The default value
-                   is 15, that is the tentative level shift position
+                   is 15, that is the tentative level shift position;</p> <p>
                    varies from tl-15, tl-15, ..., tl+14, tl+15, where tl is
-                   the best preliminary tentative level shift position.</p></td></tr><tr valign="top"><td><code>typeres</code></td><td><p>scalar which identifies the type of
+                   the best preliminary tentative level shift position.</p></p></td></tr><tr valign="top"><td><code>typeres</code></td><td><p>scalar which identifies the type of
                    residuals to consider. If typerres =1, the local
                    residuals sum of squares is based on huberized (scaled)
                    residuals (this is the default
-                   choice) else raw residuals are used.</p></td></tr><tr valign="top"><td><code>huberc</code></td><td><p>tuning constant for Huber estimator just
+                   choice), else raw residuals are used.</p></td></tr><tr valign="top"><td><code>huberc</code></td><td><p>tuning constant for Huber estimator just
                    in case lshiftlocref.typeres=1. The default value is 2.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lshiftlocref',lshiftlocref.typeres=2
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_lts" class="clearfix"></div><h3 id="input_argument_namevalue_lts" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lts</code> &#8212;structure which controls a set of options of the
                maximization procedure.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>Structure with the
@@ -573,14 +601,14 @@ Summary of the exceedances
                                the refining steps
                                The default value is 1e-6;</p></td></tr><tr valign="top"><td><code>reftolbestr</code></td><td><p><p>scalar. Default value of tolerance for
                                the refining steps for each of the best
-                               subsets The default value is 1e-8.</p> <p>
+                               subsets. The default value is 1e-8.</p> <p>
                               Remark: if lts is an empty value all default values of
               structure lts will be used.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lts',lts
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>A structure which specifies the model
                which will be used. The model structure contains the following
                fields:
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
-                         data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
+                         data s=12 (default), for quarterly data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 0 implies no trend;</p> <p>
                        trend = 1 implies linear trend with intercept (default);</p> <p>
                        trend = 2 implies quadratic trend;</p> <p>
@@ -598,10 +626,10 @@ Summary of the exceedances
                         if seasonal =2 we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
-                        Note that when $s$ is even the sine term disappears
+                        Note that when $s$ is even, the sine term disappears
                         for $j=s/2$ and so the maximum number of
                         trigonometric parameters is $s-1$.</p> <p>
-                        If seasonal is a number greater than 100 then it
+                        If seasonal is a number greater than 100, then it
                         is possible to specify how the seasonal component
                         grows over time.</p> <p>
                         For example, seasonal = 101 implies a seasonal
@@ -631,10 +659,10 @@ Summary of the exceedances
                          then it is associated to the positions of level
                          shifts which have to be considered. The most
                          significant one is included in the fitted model.</p> <p>
-                         For example if model.lshift =[13 20 36] a
+                         For example, if model.lshift =[13 20 36] a
                          tentative level shift is imposed in position
                          $t=13$, $t=20$ and $t=36$. The most significant
-                         among these positions in included in the final
+                         among these positions is included in the final
                          model. In other words, the following extra
                          parameters are added to the final model:
                          $\beta_{LS1}* I(t \geq \beta_{LS2})$ where
@@ -645,7 +673,7 @@ Summary of the exceedances
                          function.</p> <p>
                          As a particular case, if model.lshift =13 then a
                          level shift in position $t=13$ is added to the
-                         model. In other words the following additional
+                         model. In other words, the following additional
                          parameters are added: $\beta_{LS1}* I(t \geq 13)$
                          where $\beta_{LS1}$ is a real number and $I$
                          denotes the indicator function.</p> <p>
@@ -674,7 +702,7 @@ Summary of the exceedances
                                 Remark: the default model is for monthly data with a linear
                trend (2 parameters) + seasonal component with just one
                harmonic (2 parameters), no additional explanatory
-               variables and no level shift that is
+               variables and no level shift that is:
                                model=struct;</p> <p>
                                model.s=12;</p> <p>
                                model.trend=1;</p> <p>
@@ -683,19 +711,19 @@ Summary of the exceedances
                                model.lshift=0;</p><p>
                Using the notation of the paper RPRH we have A=1, B=1; and
                $\delta_1=0$.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Messages on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>Scalar which controls whether to display or not messages
-               on the screen. If msg==true (default) messages are displayed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Messages on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether to display or not messages
+               on the screen. If msg==true (default), messages are displayed on
                the screen about estimated time to compute the estimator
                and the warnings about 'MATLAB:rankDeficientMatrix',
                'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
-               are set to off else no message is displayed on the screen
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',true
+               are set to off, else no message is displayed on the screen.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_nbestindexes" class="clearfix"></div><h3 id="input_argument_namevalue_nbestindexes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nbestindexes</code> &#8212;position of the best solutions.</span></a><span class="example_desc">positive integer.</span></span></h3><div class="collapse">	<p><p>For each
-               tentative level shift solution, it is interesenting to
+               tentative level shift solution, it is interesting to
                understand whether best solutions of target function come
                from subsets associated with current level shift solution
                or from best solutions from previous tentative level shift
-               position.  The indexes from 1 to lts.bestr/2 are associated
+               position. The indexes from 1 to lts.bestr/2 are associated
                with subsets just extracted. The indexes from lts.bestr/2+1
                to lts.bestr are associated with best solutions from
                previous tentative level shift. More precisely:
@@ -705,17 +733,17 @@ Summary of the exceedances
                from previous tentative level shift;</p> <p>
                ...</p> <p>
                nbestindexes is an integer which specifies how many indexes
-               we want to store. The default value of nbestindexes  is 3.</p><p>
+               we want to store. The default value of nbestindexes is 3.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nbestindexes',5
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no
                check is performed on matrix y and matrix X. Notice that y
-               and X are left unchanged. In other words the additioanl
+               and X are left unchanged. In other words, the additional
                column of ones for the intercept is not added. As default
                nocheck=false. The controls on h, bdp and nsamp still remain.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;number of subsamples to extract.</span></a><span class="example_desc">scalar | vector of length 2.</span></span></h3><div class="collapse">	<p><p>Vector of length 1 or 2 which controls the number of
                subsamples which will be extracted to find the robust
-               estimator. If lshift is not equal to 0 then nsamp(1)
+               estimator. If lshift is not equal to 0, then nsamp(1)
                controls the number of subsets which have to be extracted
                to find the solution for t=lshift(1). nsamp(2) controls the
                number of subsets which have to be extracted to find the
@@ -731,7 +759,7 @@ Summary of the exceedances
                is to extract [nsamp/2] subsamples for t=lshift(1),
                lshift(2), ... Therefore, for example, in order to extract
                600 subsamples for t=lshift(1) and 300 subsamples for t=
-               lshift(2) ... you can use nsamp =600 or nsamp=[600 300].</p> <p>
+               lshift(2) ... you can use nsamp=600 or nsamp=[600 300].</p> <p>
                The default value of nsamp is 1000;</p> <p>
                                 Remark: if nsamp=0 all subsets will be extracted.</p> <p>
                They will be (n choose p).</p><p>
@@ -747,9 +775,9 @@ Summary of the exceedances
                  value is 1e-03.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftolALS',1e-05
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_SmallSampleCor" class="clearfix"></div><h3 id="input_argument_namevalue_SmallSampleCor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>SmallSampleCor</code> &#8212;Small sample correction factor to control empirical size of
-               the test.</span></a><span class="example_desc">scalar equal to 1 | 2 (default) | 3 | 4.</span></span></h3><div class="collapse">	<p><p>- If SmallSampleCor=1 in the reweighting step the nominal
+               the test.</span></a><span class="example_desc">scalar equal to 1 | 2 (default) | 3 | 4.</span></span></h3><div class="collapse">	<p><p>- If SmallSampleCor=1 in the reweighting step, the nominal
                  threshold based on $\chi^2_{0.99}$ is multiplied by the
-                 small sample correction factor which guarrantees that the
+                 small sample correction factor which guarantees that the
                  empirical size of the test is equal to the nominal size.</p> <p>
                  Given that the correction factors were obtained through
                  simulation for a linear model, the number of explanatory
@@ -764,7 +792,7 @@ Summary of the exceedances
                - If SmallSampleCor =2 Gervini and Yohai procedure is called
                  with 'iterating' false and 'alpha' 0.99 is invoked, that is:
                  weights=GYfilt(stdres,'iterating',false,'alpha',0.99);</p> <p>
-               - If SmallSampleCor =3 Gervini and Yohai procedure  called
+               - If SmallSampleCor =3 Gervini and Yohai procedure is called
                  with 'iterating' true and 'alpha' 0.99 is invoked, that is:
                  weights=GYfilt(stdres,'iterating',true,'alpha',0.99);</p> <p>
                - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
@@ -776,13 +804,13 @@ Summary of the exceedances
                 Default is 0, i.e. no saving is done.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'yxsave',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a two panel plot will be shown on the screen.</p> <p>
-               The upper panel contains the orginal time series with
+               The upper panel contains the original time series with
                fitted values. The bottom panel will contain the plot
                of robust residuals against index number. The confidence
                level which is used to draw the horizontal lines associated
                with the bands for the residuals is specified in input
-               option conflev. If conflev is missing a nominal 0.975
-               confidence interval will be used. If plots =2 the following
+               option conflev. If conflev is missing, a nominal 0.975
+               confidence interval will be used. If plots =2, the following
                additional plots will be shown on the screen.</p> <p>
                1) Boxplot of the distribution of the lts.bestr values of
                the target function for each tentative level shift position;</p> <p>
@@ -807,13 +835,13 @@ Summary of the exceedances
 
      <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>B</code></td><td><p><p>Matrix containing estimated beta coefficients,
                        (including the intercept when options.intercept=true)
-                       standard errors, t-stat and p-values
+                       standard errors, t-stat and p-values.</p> <p>
                        The content of matrix B is as follows:
-                       1st col = beta coefficients
+                       1st col = beta coefficients.</p> <p>
                         The order of the beta coefficients is as follows:
                         1) trend elements (if present). If the trend is
-                        of order two there are r+1 coefficients if the
-                        intercept is present otherwise there are just r
+                        of order two, there are r+1 coefficients if the
+                        intercept is present, otherwise there are just r
                         components;</p> <p>
                         2) linear part of seasonal component 2, 4, 6, ...,
                         s-2, s-1 coefficients (if present);</p> <p>
@@ -825,12 +853,12 @@ Summary of the exceedances
                         component.</p> <p>
                         4) non linear part of seasonal component, that is
                         varying amplitude. If varying amplitude is of order
-                        k there are k coefficients (if present);</p> <p>
+                        k, there are k coefficients (if present);</p> <p>
                         5) level shift component (if present). In out.B it
                         is shown just the real number which identifies the
                         magnitude of the upward (downward) level shift.</p> <p>
                         The integer which specifies the time in which
-                        level shift takes place is given in output
+                        level shift takes place, is given in output
                         out.posLS.</p> <p>
                        2nd col = standard errors;</p> <p>
                        3rd col = t-statistics;</p><p>
@@ -838,20 +866,20 @@ Summary of the exceedances
                        initial LTS estimator, i.e. the value of h.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p><p>Vector containing the units with the smallest p+k
                        squared residuals before the reweighting step,
                        where p is the total number of the parameters in
-                       the model and p+k is smallest number of units such
+                       the model and p+k is the smallest number of units such
                        that the design matrix is full rank.</p> <p>
                        out.bs can be used to initialize the forward
-                       search.</p></p></td></tr><tr valign="top"><td><code>Hsubset</code></td><td><p>matrix of size T-by-r
+                       search.</p></p></td></tr><tr valign="top"><td><code>Hsubset</code></td><td><p><p>matrix of size T-by-r
                        containing units forming best H subset for each
-                       tentative level shift which is considered. r is
-                       number of tentative level shift positions whicha re
-                       considered. For example if model.lshift=[13 21 40]
+                       tentative level shift which is considered. r is the
+                       number of tentative level shift positions which are
+                       considered. For example, if model.lshift=[13 21 40],
                        r is equal to 3. Units belonging to subset are
                        given with their row number, units not belonging to
-                       subset have missing values
+                       subset have missing values.</p> <p>
                        This output is present just if input option
-                       model.lshift is not equal to 0.</p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p>(row) vector containing level shift positions which
-                       have been tested. out.lshift  =0 means that
+                       model.lshift is not equal to 0.</p></p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p>(row) vector containing level shift positions which
+                       have been tested. out.lshift=0 means that
                        level position has not been investigated.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p>scalar associated with best tentative level shift
                        position. This output is present just if input
                        option model.lshift is not equal to 0.</p></td></tr><tr valign="top"><td><code>numscale2</code></td><td><p>matrix of size lts.bestr-by-(T-2*lshift) containing
@@ -873,14 +901,14 @@ Summary of the exceedances
                        containing local sum of squares of residuals in
                        order to decide best position of level shift:
                        1st col = position of level shift;</p> <p>
-                       2nd col = local sum of squares of huberized residuals;</p> <p>
+                       2nd col = local sum of squares of Huberized residuals;</p> <p>
                        3rd col = local sum of squares of raw residuals.</p><p>
                        This output is present just if input option
                        model.lshift is not equal to 0.</p></p></td></tr><tr valign="top"><td><code>RES</code></td><td><p>Matrix of size T-by-(T-lshift) containing scaled
                        residuals for all the T units of the original time
                        series monitored in steps lshift+1, lshift+2, ...,
                        T-lshift, where lshift+1 is the first tentative
-                       level shift position, lshift +2 is the second level
+                       level shift position, lshift+2 is the second level
                        shift position, and so on. This output is present
                        just if input option model.lshift is not equal to 0.</p></td></tr><tr valign="top"><td><code>yhat</code></td><td><p><p>vector of fitted values after final (NLS=non linear
                        least squares) step.</p> <p>
@@ -899,12 +927,12 @@ Summary of the exceedances
                      is a correction factor to make the estimator
                      consistent.</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p><p>confidence level which is used to declare outliers.</p> <p>
                        Remark: scalar out.conflev will be used to draw the
-                       horizontal lines (confidence bands) in the plots</p></p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>vector containing the list of the units declared
+                       horizontal lines (confidence bands) in the plots.</p></p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>vector containing the list of the units declared
                        as outliers using confidence level specified in
-                       input scalar conflev.</p></td></tr><tr valign="top"><td><code>outliersPval</code></td><td><p>p-value of the units declared as outliers.</p></td></tr><tr valign="top"><td><code>singsub</code></td><td><p>Number of subsets wihtout full rank. Notice that if
+                       input scalar conflev.</p></td></tr><tr valign="top"><td><code>outliersPval</code></td><td><p>p-value of the units declared as outliers.</p></td></tr><tr valign="top"><td><code>singsub</code></td><td><p>Number of subsets without full rank. Notice that if
                        this number is greater than 0.1*(number of
-                       subsamples) a warning is produced on the screen</p></td></tr><tr valign="top"><td><code>invXX</code></td><td><p><p>$cov(\beta)/\hat \sigma^2$. p-by-p, square matrix.</p> <p>
-                       If the model is linear out.invXX  is equal to
+                       subsamples) a warning is produced on the screen.</p></td></tr><tr valign="top"><td><code>invXX</code></td><td><p><p>$cov(\beta)/\hat \sigma^2$. p-by-p, square matrix.</p> <p>
+                       If the model is linear, out.invXX is equal to
                        $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$
                        where $A$ is the matrix of partial derivatives. More
                        precisely:

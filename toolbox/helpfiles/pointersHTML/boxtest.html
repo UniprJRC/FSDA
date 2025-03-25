@@ -17,13 +17,13 @@
  \]
 
  where $S_i$ is the covariance matrix of group $i$ and $S_{pl}$ is the
- pooled sample covariance matrix. It is clear that we must have $n_i-1&gt;v$
+ pooled sample covariance matrix. It is clear that we must have $n_i-1&gt;v$;
  otherwise $|S_i|=0$ for some $i$ and $M$ would be zero. The statistic $M$
  is a modification of the likelihood ratio test and varies between 0 and 1
  with values near 1 favouring $H_0$ and values near 0 leading to the
  rejection of $H_0$ (see Rencher (2002) p. 256 for further details). The
  quantity $-2 \ln M$ is approximately distributed as a $\chi^2$
- distribution and is given in $\mbox{out.LR}$.  The quantity $-2(1-c_1) \ln  M$
+ distribution and is given in $\mbox{out.LR}$. The quantity $-2(1-c_1) \ln  M$
  (where $c_1$ is a small sample correction factor) is usually called
  correct Box test and is approximately distributed as a $\chi^2$ with $0.5
  (g-1) v(v+1)$ degrees of freedom. We reject $H_0$ if 

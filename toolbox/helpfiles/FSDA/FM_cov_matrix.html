@@ -12,7 +12,7 @@ data={x1,t1}; % Create the cell array of values-times data; x1 is a row or colum
 var_cov_matrix = FM_cov_matrix(floor(n/2),T,data)</pre></div></div><pre class="codeoutput">
 var_cov_matrix =
 
-    0.5274
+    0.3357
 
 </pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call of FM_cov_matrix with two processes.</li></span></a></span></h3><div class="collapse"><p>
      The following example estimates the integrated variance-covariance of two processes from discrete samples of different sizes. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">T=1; 
@@ -25,8 +25,8 @@ data={x1,t1,x2,t2}; % Create the cell array of values-times data; xi is a row or
 var_cov_matrix = FM_cov_matrix(N,T,data)</pre></div></div><pre class="codeoutput">
 var_cov_matrix =
 
-    1.0193   -0.0207
-   -0.0207    0.9737
+    1.0156   -0.0736
+   -0.0736    1.0163
 
 </pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call of FM_cov_matrix with three processes.</li></span></a></span></h3><div class="collapse"><p>
      The following example estimates the integrated variance-covariance of three processes from discrete samples of different sizes. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">T=1; 
@@ -39,9 +39,9 @@ N=2500; % cutting freq.
 var_cov_matrix = FM_cov_matrix(N,T,data)</pre></div></div><pre class="codeoutput">
 var_cov_matrix =
 
-    0.9930   -0.0243    0.0193
-   -0.0243    1.0220   -0.0143
-    0.0193   -0.0143    0.9860
+    0.9733   -0.0078    0.0021
+   -0.0078    0.9411   -0.0224
+    0.0021   -0.0224    0.9928
 
 </pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Cutting frequency. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_T" class="clearfix"> </div> <h3 id="input_argument_T" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>T</code> &#8212; Estimation horizon. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_data" class="clearfix"> </div> <h3 id="input_argument_data" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>data</code> &#8212; Observed process values and observation times. </span>  </a><span class="example_desc">Cell array.</span></span></h3> <div class="collapse"> <p>Cell array containing vectors of process values and observation times of different sizes.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_var_cov_matrix" class="clearfix"></div><h3 id="output_argument_var_cov_matrix" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>var_cov_matrix</code> &#8212;Integrated variances-covariance matrix.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p> Returns a
                    data matrix d x d of double.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>

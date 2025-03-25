@@ -34,9 +34,10 @@
  balls are independent and there is no dependence between draws. One may
  as well take all $n$ balls at the same time. Each ball has no "knowledge"
  of what happens to the other balls.</p> <p>
- More formally, if the total number $n$ of balls taken is known then the
- conditional distribution of the number of taken red balls for given $n$ is
- Fisher's noncentral hypergeometric distribution.</p> <p> 
+ More formally, if the total number $n$ of balls taken is not known before
+ the experiment (i.e n is determined just after the experiment), then the
+ conditional distribution of the number of taken red balls for given $n$
+ is Fisher's noncentral hypergeometric distribution.</p> <p>
 
  These two distributions have important applications in evolutionary
  biology and population genetics. If animals of a particular species are
@@ -82,7 +83,7 @@ In total the urn contains 70 balls.
 But the weight of getting the 3 balls is 1, 2.5 and 1.8;
 The probability of getting 8 red balls, 10, white and 6 black balls
 in an extraction without replacement is 
-    0.0036
+          0.00
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>In presence of just two colors in the urn it is possible to use  WNChygepdf or mWNChygepdf.</li></span></a></span></h3><div class="collapse"><p>
      We have M balls in the urn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">M  = 200;

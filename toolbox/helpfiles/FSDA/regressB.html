@@ -117,14 +117,14 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                mean $\beta_0$ and (conditional on $\tau_0$) covariance
                $(1/\tau_0) (X_0'X_0)^{-1}$.</p><p>
                $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_beta0" class="clearfix"> </div> <h3 id="input_argument_beta0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>beta0</code> &#8212; Prior mean of $\beta$. </span>  </a><span class="example_desc">p-times-1 vector.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_R" class="clearfix"> </div> <h3 id="input_argument_R" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>R</code> &#8212; Matrix associated with covariance matrix of $\beta$. </span>  </a><span class="example_desc">p-times-p
-               positive definite matrix.</span></span></h3> <div class="collapse"> <p>It can be interpreted as X0'X0 where X0 is a n0 x p
+               positive definite matrix.</span></span></h3> <div class="collapse"> <p><p>It can be interpreted as X0'X0 where X0 is a n0 x p
                matrix coming from previous experiments (assuming that the
-               intercept is included in the model)
+               intercept is included in the model).</p> <p>
 
                The prior distribution of $\tau_0$ is a gamma distribution with
                parameters $a_0$ and $b_0$, that is:
 
-                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
+                </p>\[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
                        \qquad   E(\tau_0)= a_0/b_0               \]</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_tau0" class="clearfix"> </div> <h3 id="input_argument_tau0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>tau0</code> &#8212; Prior estimate of tau. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Prior estimate of $\tau=1/ \sigma^2 =a_0/b_0$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_n0" class="clearfix"> </div> <h3 id="input_argument_n0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n0</code> &#8212; Number of previous experiments. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Sometimes it helps
                to think of the prior information as coming from n0
                previous experiments. Therefore we assume that matrix X0
@@ -141,9 +141,9 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;units forming subset.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>m x 1 vector.</p> <p>
                The default value of bsb is 1:n1, that is all n1 units are
-               used to compute beta1
+               used to compute beta1.</p> <p>
                               REMARK: if bsb='' (empty value) just prior information is
-               used
+               used.</p><p>
 
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsb',[3 5]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_c" class="clearfix"></div><h3 id="input_argument_namevalue_c" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>c</code> &#8212;it can be used to control the prior information
@@ -177,21 +177,21 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                of input option conflev.</p> <p>
                3) posterior odds for $\beta_j=0$.</p><p>
                4) posterior model probability of the model which excludes
-               variable j
+               variable j.s
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'stats',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence levels to be used to
-               compute HPDI.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>This input option is used just if input
+               compute HPDI.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>This input option is used just if input
                stats=1. The default value of conflev is [0.95 0.99] that
                is 95 per cent and 99 per cent HPDI confidence intervals
-               are computed
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.99 0.999]
+               are computed.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.99 0.999]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                matrix y and matrix X. Notice that y and X are left
-               unchanged. In other words the additional column of ones for
+               unchanged. In other words, the additional column of ones for
                the intercept is not added. As default nocheck=false.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta1</code></td><td><p>p x 1 vector containing posterior mean (conditional on
-               $\tau_0$) of $\beta$ (regression coefficents)
+               $\tau_0$) of $\beta$ (regression coefficients)
                $ \beta_1 = (c \times R + X'X)^{-1} (c \times R \times \beta_0 + X'y)$</p></td></tr><tr valign="top"><td><code>a1</code></td><td><p><p>shape parameter of the posterior gamma distribution of
                $\tau$ ($\sigma^2$). Scalar.</p> <p>
                $a1 = 0.5 (c*n_0 + n_1)$
@@ -211,7 +211,7 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                transformed respectively into Xm'Xm and Xm'ym and m where
                Xm=X(bsb,:), ym=y(bsb) and m=length(bsb), therefore all the
                previous quantities are estimated just using the units
-               forming subset</p></p></td></tr><tr valign="top"><td><code>tau1</code></td><td><p><p>posterior estimate of $\tau$. Scalar.</p> <p>
+               forming subset.</p></p></td></tr><tr valign="top"><td><code>tau1</code></td><td><p><p>posterior estimate of $\tau$. Scalar.</p> <p>
                $\tau_1$ is obtained as $a_1/b_1$</p></p></td></tr><tr valign="top"><td><code>covbeta1</code></td><td><p>p x p matrix containing covariance matrix
                (conditional on $\tau_1$) of $\beta_1$
                $covbeta1 = cov(\beta_1)= (1/\tau_1) * (c*R + X'X)^{-1}$
@@ -221,7 +221,7 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                parameters of the posterior distribution of $\sigma^2$).</p> <p>
                Remember that if $X\sim IG(a,b)$, then  $E(X)=b/(a-1)$.</p></p></td></tr><tr valign="top"><td><code>res</code></td><td><p><p>n1-times-2 matrix.</p> <p>
                1st column = raw residuals
-               res(i,1) is computed as y(i) - X(i,:)*beta1 where beta1 is
+               res(i,1) is computed as y(i) - X(i,:)*beta1, where beta1 is
                computed using the units forming subset.</p> <p>
                In the Bayesian approach they are the posterior means of
                the $\epsilon_i$ and can be interpreted as point estimates of
@@ -235,7 +235,7 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                hii = X(i,:)* (c*R + Xm'*Xm)^{-1} * X(i,:)'.</p><p>
 
        The additional output which follows is produced just if input
-       scalar stats is equal 1</p></p></td></tr><tr valign="top"><td><code>beta1HPD</code></td><td><p><p>p-by-2*length(conflev) matrix HPDI of \hat \beta.</p> <p>
+       scalar stats is equal 1.</p></p></td></tr><tr valign="top"><td><code>beta1HPD</code></td><td><p><p>p-by-2*length(conflev) matrix HPDI of \hat \beta.</p> <p>
                (HPDI stands for Highest Posterior Density Interval)
                1st column =lower bound of HPDI associated with conflev(1).</p> <p>
                2st column =upper bound of HPDI associated with conflev(1).</p> <p>
@@ -251,7 +251,7 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                with conflev(end).</p> <p>
                2*length(conflev) element (last element) = upper bound of
                HPDI associated with conflev(end).</p><p>
-               Remark: confidence levels are based on the Gamma distribution</p></p></td></tr><tr valign="top"><td><code>sigma21HPD</code></td><td><p><p>1-by-2*length(conflev) matrix HPDI of $\hat \sigma^2_1$.</p> <p>
+               Remark: confidence levels are based on the Gamma distribution.</p></p></td></tr><tr valign="top"><td><code>sigma21HPD</code></td><td><p><p>1-by-2*length(conflev) matrix HPDI of $\hat \sigma^2_1$.</p> <p>
                1st element =lower bound of HPDI associated with conflev(1).</p> <p>
                2st element =upper bound of HPDI associated with conflev(1).</p> <p>
                ...</p> <p>
@@ -261,20 +261,20 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                HPDI associated with conflev(end).</p><p>
                Remark: confidence levels are based on the inverse-gamma distribution</p></p></td></tr><tr valign="top"><td><code>Bpval</code></td><td><p><p>p-by-1 vector containing Bayesian p-values.</p> <p>
                p-value = P(|t| &gt; | \hat \beta /se(\hat beta) |)
-               = prob. of beta different from 0</p></p></td></tr><tr valign="top"><td><code>postodds</code></td><td><p><p>p-by-1 vector which contains posterior odds for
+               = prob. of beta different from 0.</p></p></td></tr><tr valign="top"><td><code>postodds</code></td><td><p><p>p-by-1 vector which contains posterior odds for
                betaj=0.</p> <p>
-               For example the posterior odd of betaj=0 is p(y| model
+               For example, the posterior odd of betaj=0 is p(y| model
                which contains all expl variables except the one associated
                with betaj) divided by p(y| model which contains all expl
                variables).</p><p>
-               Warning: postodds can be computed just if n1&gt;=p</p></p></td></tr><tr valign="top"><td><code>modelprob</code></td><td><p><p>p-by-1 vector which contains  posterior model probability
+               Warning: postodds can be computed just if n1&gt;=p</p></p></td></tr><tr valign="top"><td><code>modelprob</code></td><td><p><p>p-by-1 vector which contains posterior model probability
                of the model which excludes variable j.</p> <p>
-               For example if modelprob(j)= 0.28, that is if the
+               For example, if modelprob(j)= 0.28, that is if the
                probability of the model which does not contain variable j
                is equal to 0.28, it means that there is a 28 per cent
                chance that $\beta_j=0$ and a 72 per cent chance that it is
                not.</p><p>
-               Warning: modelprob can be computed just if n1&gt;=p</p></p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p> The density of the gamma distribution (which we denote with $G(a,b)$) with parameters $a$ and $b$ is
+               Warning: modelprob can be computed just if n1&gt;=p.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p> The density of the gamma distribution (which we denote with $G(a,b)$) with parameters $a$ and $b$ is
      \[
      f_G(x,a,b)=  \frac{b^a}{\Gamma(a)}
       x^{a-1} \exp(-b x)
@@ -287,7 +287,7 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
      \]<p>
      The mean  (for $a&gt;1$) is $b/(a-1)$ and the variance (for $a&gt;2$) is $\frac{b^2}{(a-1)^2(a-2)}$.</p> <p>
 
-     With the above parameterizations if $X\sim G(a,b)$, then $Y=1/X$  has
+     With the above parameterizations if $X\sim G(a,b)$, then $Y=1/X$ has
      an $IG(a, b)$.</p> <p>
 
      The posterior distribution of
@@ -299,7 +299,16 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
           &=&   (R+ X^TX)^{-1} (R \beta_0 + X^TX \hat \beta) \\
           &=&   (I-A) \beta_0 + A \hat \beta,
      \end{eqnarray*}
-     with $A= (R+ X^TX)^{-1} X^TX$. This last expression shows that the posterior estimate $\hat \beta_1$ is a matrix weighted average of the prior mean $\beta_0$ and the classical OLS estimate  $\hat \beta$, with weights $I-A$ and $A$. If prior information is strong elements of $R$ will be large, and $A$ will be small, so that the posterior mean gives most weight to the prior mean. In the classical approach these weights are fixed, while with the forward search technique as the subset size grows, the weight assigned to A becomes stronger and stronger, so we can dynamically see how the estimate changes as the effect of the prior becomes less important.</p> <p>
+     with $A= (R+ X^TX)^{-1} X^TX$. This last expression shows that the 
+     posterior estimate $\hat \beta_1$ is a matrix weighted average of 
+     the prior mean $\beta_0$ and the classical OLS estimate  $\hat \beta$, 
+     with weights $I-A$ and $A$. If prior information is strong, elements 
+     of $R$ will be large, and $A$ will be small, so that the posterior mean 
+     gives most weight to the prior mean. In the classical approach these weights 
+     are fixed, while with the forward search technique as the subset size grows, 
+     the weight assigned to A becomes stronger and stronger, so we can 
+     dynamically see how the estimate changes as the effect of the prior 
+     becomes less important.</p> <p>
 
      The posterior distribution of $\tau$ is $G(a_1, b_1)$ where
      \begin{equation}\label{a1}
@@ -323,4 +332,4 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
      \]
 
 </p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Chaloner, K. and Brant, R. (1988), A Bayesian Approach to Outlier
- Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.</p></div><div><p>Koop G. (2003), "Bayesian Econometrics", Wiley, New York. [Chapt. 3]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/mvregress.html'))" itemprop="url"><span itemprop="name"><code>regress</code></span></a></span> | </div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.</p></div><div><p>Koop G. (2003), "Bayesian Econometrics", Wiley, New York. [Chapt. 3]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'FSDA/GUIregress.html'))" itemprop="url"><span itemprop="name"><code>regress</code></span></a></span> | </div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

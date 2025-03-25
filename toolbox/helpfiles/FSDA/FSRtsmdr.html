@@ -57,7 +57,7 @@ y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
 y=(y(:));
 % Compute minimum deletion residual and analyze the units entering
-% subset in each step of the fwd search (matrix Un).  As is well known,
+% subset in each step of the fwd search (matrix Un). As is well known,
 % the FS provides an ordering of the data from those most in agreement
 % with a suggested model (which enter the first steps) to those least in
 % agreement with it (which are included in the final steps).
@@ -140,8 +140,8 @@ out=LTSts(y,'model',model');
 bs=indres(1:50);
 [mdr,Un,BB,Bols,S2,Exflag] =FSRtsmdr(y,bs,'model',model,'init',length(bs)+1,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRtsmdr.html#Example_5'><img vspace="5" hspace="5" src="images\FSRtsmdr_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_6" class="example_module expandableContent"><div id="Example_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_7" class="example_module expandableContent"><div id="Example_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial subset. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>If bsb=0
-               (default) then the procedure starts with p units randomly
-               chosen else if bsb is not 0 the search will start with
+               (default), then the procedure starts with p units randomly
+               chosen; else if bsb is not 0, the search will start with
                m0=length(bsb). p is the total number of regression
                parameters which have to be estimated.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',100 starts monitoring from step m=100
 </code>,<code> 'model', model
@@ -149,20 +149,20 @@ bs=indres(1:50);
 </code>,<code> 'nocheck',true
 </code>,<code> 'msg',1
 </code>,<code> 'bsbmfullrank',1
-</code>,</code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Start of monitoring point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It specifies the point where to initialize the search and
+</code>,</code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Start of monitoring point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search and
                start monitoring required diagnostics. If it is not
-               specified it is set equal floor(0.5*(T+1))
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
+               specified it is set equal floor(0.5*(T+1)).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>A structure which specifies the model
                which will be used. The model structure contains the following
                fields:
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
-                         data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
+                         data s=12 (default), for quarterly data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 1 implies linear trend with intercept (default),
-                       trend = 2 implies quadratic trend ...</p><p>
+                       trend = 2 implies quadratic trend and so on.</p><p>
                        Admissible values for trend are, 0, 1, 2 and 3.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
                         frequencies, i.e. harmonics, in the seasonal
-                        component. Possible values for seasonal are
+                        component). Possible values for seasonal are
                         $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
                         For example:
                         if seasonal =1 (default) we have:
@@ -170,10 +170,10 @@ bs=indres(1:50);
                         if seasonal =2 we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
-                        Note that when $s$ is even the sine term disappears
+                        Note that when $s$ is even, the sine term disappears
                         for $j=s/2$ and so the maximum number of
                         trigonometric parameters is $s-1$.</p> <p>
-                        If seasonal is a number greater than 100 then it
+                        If seasonal is a number greater than 100, then it
                         is possible to specify how the seasonal component
                         grows over time.</p> <p>
                         For example, seasonal =101 implies a seasonal
@@ -189,16 +189,16 @@ bs=indres(1:50);
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p><p>
                         seasonal =0 implies a non seasonal model.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
                          values of nexpl extra covariates which are likely
-                         to affect y.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p><p>positive integer which specifies to position
+                         to affect y.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p><p>positive integer which specifies the position
                          to include the level shift component.</p> <p>
-                         For example if model.posLS =13 then the
+                         For example, if model.posLS =13 then the
                          explanatory variable $I(t \geq 13})$ is created.</p><p>
                          If this field is not present or if it is empty,
                          the level shift component is not included.</p></p></td></tr><tr valign="top"><td><code>B</code></td><td><p><p>column vector or matrix containing the initial
                          values of parameter estimates which have to be used in the
                          maximization procedure. If model.B is a matrix,
                          then initial estimates are extracted from the
-                         first colum of this matrix. If this field is
+                         first column of this matrix. If this field is
                          empty or if this field is not present, the
                          initial values to be used in the maximization
                          procedure are referred to the OLS parameter
@@ -208,16 +208,16 @@ bs=indres(1:50);
                                 Remark: the default model is for monthly data with a linear
                trend (2 parameters) + seasonal component with just one
                harmonic (2 parameters), no additional explanatory
-               variables and no level shift that is
+               variables and no level shift that is:
                                model=struct;</p> <p>
                                model.s=12;</p> <p>
                                model.trend=1;</p> <p>
                                model.seasonal=1;</p> <p>
                                model.X='';</p><p>
                                model.posLS='';</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If equal to one a plot of
-               minimum deletion residual appears  on the screen with 1%,
-               50% and 99% confidence bands else (default) no plot is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If equal to one, a plot of
+               minimum deletion residual appears on the screen with 1%,
+               50% and 99% confidence bands, else (default) no plot is
                shown.</p> <p>
                               Remark: the plot which is produced is very simple. In order
                to control a series of options in this plot and in order to
@@ -226,52 +226,52 @@ bs=indres(1:50);
 
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments inside structure model.</span></a><span class="example_desc">as default               nocheck=false.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It controls whether to
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It controls whether to
                display or not messages about great interchange on the
-               screen If msg==1 (default)
-               messages are displayed on the screen
-               else no message is displayed on the screen
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_constr" class="clearfix"></div><h3 id="input_argument_namevalue_constr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>constr</code> &#8212;Constrained search.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>r x 1 vector which contains the
+               screen. If msg==1 (default),
+               messages are displayed on the screen,
+               else no message is displayed on the screen.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_constr" class="clearfix"></div><h3 id="input_argument_namevalue_constr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>constr</code> &#8212;Constrained search.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>r x 1 vector which contains the
                list of units which are forced to join the search in the
                last r steps. The default is constr=''.  No constraint is
-               imposed
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'constr',[1:10] forces the first 10 units to join
-</code>               the subset in the last 10 steps</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;What to do in case subset at step m (say bsbm) produces a
+               imposed.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'constr',[1:10] forces the first 10 units to join
+</code>               the subset in the last 10 steps.</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;What to do in case subset at step m (say bsbm) produces a
                non singular X.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>This options controls what to do when rank(X(bsbm,:)) is
-               smaller then number of explanatory variables.</p> <p>
-               If bsbmfullrank = 1 (default is 1) these units (whose number
+               smaller than the number of explanatory variables.</p> <p>
+               If bsbmfullrank = 1 (default is 1), these units (whose number
                is say mnofullrank) are constrained to enter the search in
-               the final n-mnofullrank steps else the search continues
+               the final n-mnofullrank steps, else the search continues
                using as estimate of beta at step m the estimate of beta
                found in the previous step.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbmfullrank',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbsteps" class="clearfix"></div><h3 id="input_argument_namevalue_bsbsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbsteps</code> &#8212;Save the units forming subsets.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It specifies for
                which steps of the fwd search it
                is necessary to save the units forming subsets. If bsbsteps
-               is 0 we store the units forming subset in all steps. The
-               default is store the units forming subset in all steps if
-               T&lt;=5000, else to store the units forming subset at steps
-               init and steps which are multiple of 100. For example, as
+               is 0, we store the units forming subset in all steps. The
+               default is: store the units forming subset in all steps if
+               T&lt;=5000; else to store the units forming subset at steps
+               init and steps which are multiples of 100. For example, as
                default, if T=753 and init=6,
                units forming subset are stored for
                m=init, 100, 200, 300, 400, 500 and 600.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbsteps',[100 200] stores the unis forming
 </code>               subset in steps 100 and 200.</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_mdr" class="clearfix"></div><h3 id="output_argument_mdr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mdr</code> &#8212;Monitoring of minimum
-               deletion residual at each step of the forward search.</span></a><span class="example_desc"><code>T -init -by- 2 </code>matrix</span></span></h3><div class="collapse"><p><p>
+               deletion residual at each step of the forward search.</span></a><span class="example_desc"><code>T-init -by- 2 </code>matrix</span></span></h3><div class="collapse"><p><p>
                1st col = fwd search index (from init to T-1).</p> <p>
                2nd col = minimum deletion residual.</p><p>
                REMARK: if in a certain step of the search matrix is
                singular, this procedure checks how many observations
-               produce a singular matrix. In this case mdr is a column
+               produce a singular matrix. In this case, mdr is a column
                vector which contains the list of units for which matrix X
                is non singular.</p></p></div></div><div class="expandableContent"><div id="outputarg_Un" class="clearfix"></div><h3 id="output_argument_Un" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Un</code> &#8212;Units included in each step.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p>
-               (T-init) x 11 Matrix which contains the unit(s) included
+               (T-init) x 11: Matrix which contains the unit(s) included
                in the subset at each step of the search.</p> <p>
                REMARK: in every step the new subset is compared with the
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one.</p> <p>
-               Un(1,2) for example contains the unit included in step
+               Un(1,2), for example, contains the unit included in step
                init+1.</p><p>
                Un(end,2) contains the units included in the final step
                of the search.</p></p></div></div><div class="expandableContent"><div id="outputarg_BB" class="clearfix"></div><h3 id="output_argument_BB" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BB</code> &#8212;Units belonging to subset in each step.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p>
@@ -285,24 +285,24 @@ bs=indres(1:50);
                ......</p> <p>
                (T-1)-th row has number T-1 in correspondence of the steps in
                    which unit T-1 is included inside subset and a missing
-                   value for the other steps;</p><p>
+                   value for the other steps;</p> <p>
                T-th row has number Tn in correspondence of the steps in
                    which unit T is included inside subset and a missing
-                   value for the other steps
+                   value for the other steps.</p><p>
                The size of matrix BB is T x (T-init+1) if option input
-               bsbsteps is 0 else the size is T-by-length(bsbsteps).</p></p></div></div><div class="expandableContent"><div id="outputarg_Bols" class="clearfix"></div><h3 id="output_argument_Bols" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Bols</code> &#8212;beta coefficents.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
-               (T-init+1) x (p+1) matrix containing the monitoring of
+               bsbsteps is 0, else the size is T-by-length(bsbsteps).</p></p></div></div><div class="expandableContent"><div id="outputarg_Bols" class="clearfix"></div><h3 id="output_argument_Bols" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Bols</code> &#8212;beta coefficients.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
+               (T-init+1) x (p+1): matrix containing the monitoring of
                estimated beta coefficients in each step of the forward
                search.</p></div></div><div class="expandableContent"><div id="outputarg_S2" class="clearfix"></div><h3 id="output_argument_S2" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>S2</code> &#8212;S2 and R2.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
-               (T-init+1) x 3 matrix containing the monitoring of S2 (2nd
-               column)and R2 (third column) in each step of the forward
+               (T-init+1) x 3: matrix containing the monitoring of S2 (2nd
+               column) and R2 (third column) in each step of the forward
                search.</p></div></div><div class="expandableContent"><div id="outputarg_Exflag" class="clearfix"></div><h3 id="output_argument_Exflag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Exflag</code> &#8212;Reason nlinfit stopped.</span></a><span class="example_desc"><code> Integer </code>matrix</span></span></h3><div class="collapse"><p><p>
-               (T-init+1) x 2 matrix containing information about the
-               result  of the maximization procedure.</p> <p>
-               If the model is non linear out.Exflag(i,2) is equal to 1
-               if at step out.Exflag(i,1) the maximization procedure did not produce
+               (T-init+1) x 2: matrix containing information about the
+               result of the maximization procedure.</p> <p>
+               If the model is non linear, out.Exflag(i,2) is equal to 1.</p><p>
+               If at step out.Exflag(i,1) the maximization procedure did not produce
                warnings or the warning was different from
-               "ILL Conditiioned Jacobian". For any other warning
+               "ILL Conditioned Jacobian". For any other warning
                which is produced (for example,
                "Overparameterized", "IterationLimitExceeded",
                'MATLAB:rankDeficientMatrix") out.Exflag(i,2) is equal

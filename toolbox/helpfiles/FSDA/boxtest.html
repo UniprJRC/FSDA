@@ -2,40 +2,40 @@
  are equal. Note that Box test is sensitive to departures from
  normality. If the samples come from non-normal distributions, then Box
  test may simply be testing for non-normality.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="boxtest.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=boxtest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_group"><code>group</code></a>)</code></span>Box test for Iris data.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="boxtest.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=boxtest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_group"><code>group</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Box test for Iris data displaying results.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Box test for Iris data.</li></span></a></span></h3><div class="collapse"><p>
-     load iris data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris
-% Compute Box test of equality of covariance matrices
+     load iris data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris
+% Compute Box test of equality of covariance matrices.
 out=boxtest(meas,species);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Box test for Iris data displaying results.</li></span></a></span></h3><div class="collapse"><p>
-     load iris data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris
-% Compute Box test of equality of covariance matrices
+     load iris data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris
+% Compute Box test of equality of covariance matrices.
 out=boxtest(meas,species,'dispresults',true);</pre></div></div><pre class="codeoutput">*****************************************************************
 Test of homogeneity of covariances (without correction factor)
-     1.466632492125116e+02
+  146.6632
 
 LRchi2approx = Chi2 approximation of Box test of homogeneity of covariances
-     1.409430499234975e+02
+  140.9430
 
 p value of the Chi2 approximation of Box test
-     3.352034178317562e-20
+   3.3520e-20
 
 *****************************************************************
 </pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Box test for Iris with option Fapprox.</li></span></a></span></h3><div class="collapse"><p>
-     load iris data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris
-% Compute Box test of equality of covariance matrices
+     load iris data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris
+% Compute Box test of equality of covariance matrices.
 out=boxtest(meas,species,'dispresults',true,'Fapprox',true)</pre></div></div><pre class="codeoutput">*****************************************************************
 Test of homogeneity of covariances (without correction factor)
-     1.466632492125116e+02
+  146.6632
 
 LRchi2approx = Chi2 approximation of Box test of homogeneity of covariances
-     1.409430499234975e+02
+  140.9430
 
 p value of the Chi2 approximation of Box test
-     3.352034178317562e-20
+   3.3520e-20
 
 LRFapprox = F approximation of Box test of homogeneity of covariances
-   7.045261695711880
+    7.0453
 
 p value of the F approximation of Box test
-     3.578106019823562e-20
+   3.5781e-20
 
 *****************************************************************
 
@@ -43,11 +43,11 @@ out =
 
   struct with fields:
 
-                   LR: 1.466632492125116e+02
-         LRchi2approx: 1.409430499234975e+02
-    LRchi2approx_pval: 3.352034178317562e-20
-            LRFapprox: 7.045261695711880
-       LRFapprox_pval: 3.578106019823562e-20
+                   LR: 146.6632
+         LRchi2approx: 140.9430
+    LRchi2approx_pval: 3.3520e-20
+            LRFapprox: 7.0453
+       LRFapprox_pval: 3.5781e-20
                   Spl: [4&times;4 double]
 
 </pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v
@@ -67,24 +67,24 @@ out =
 </code>,<code> 'dispresults',true
 </code></code></span></div><div class="expandableContent"><div id="inputarg_Fapprox" class="clearfix"></div><h3 id="input_argument_namevalue_Fapprox" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Fapprox</code> &#8212;Test based on F approximation.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If Fapprox is
                true, the asymptotic F distribution of the value of Box
-               test is also computed. On the other hand is
+               test is also computed. On the other hand, if
                Fapprox is false (default) just the chi2 approximation is
                computed.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Fapprox',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is
                true, the value of the test and the associated p-value
-               will be shown on the screen. On the other hand is
+               will be shown on the screen. On the other hand, if
                dispresults is false (default) nothing is shown on the
                screen.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure, which contains the following fields
    <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>LR</code></td><td><p><p>scalar which contains Box test (uncorrected)
                        for equality of covariances.</p> <p>
-                       This is -2ln M (see 'More About section' for the
+                       This is -2ln M (see 'More About' section for the
                        definition of M).</p></p></td></tr><tr valign="top"><td><code>LRchi2approx</code></td><td><p><p>scalar which contains Box test (corrected)
                        for equality of covariances. This version is
                        called $\chi^2$ approximation of the Box test.</p> <p>
-                       This is $-2(1-c_1)\ln M$ (see further details for the
+                       This is $-2(1-c_1)\ln M$ (see 'further details' for the
                        definition of $c_1$ and $M$). This value must
                        be compared with a $\chi^2$ with $0.5v(v+1)(g-1)$
                        degrees of freedom.</p></p></td></tr><tr valign="top"><td><code>LRchi2approx_pval</code></td><td><p>scalar which contains the p-value of
@@ -110,13 +110,13 @@ out =
  \]<p>
 
  where $S_i$ is the covariance matrix of group $i$ and $S_{pl}$ is the
- pooled sample covariance matrix. It is clear that we must have $n_i-1&gt;v$
+ pooled sample covariance matrix. It is clear that we must have $n_i-1&gt;v$;</p> <p>
  otherwise $|S_i|=0$ for some $i$ and $M$ would be zero. The statistic $M$
  is a modification of the likelihood ratio test and varies between 0 and 1
  with values near 1 favouring $H_0$ and values near 0 leading to the
  rejection of $H_0$ (see Rencher (2002) p. 256 for further details). The
  quantity $-2 \ln M$ is approximately distributed as a $\chi^2$
- distribution and is given in $\mbox{out.LR}$.  The quantity $-2(1-c_1) \ln  M$
+ distribution and is given in $\mbox{out.LR}$. The quantity $-2(1-c_1) \ln  M$
  (where $c_1$ is a small sample correction factor) is usually called
  correct Box test and is approximately distributed as a $\chi^2$ with $0.5
  (g-1) v(v+1)$ degrees of freedom. We reject $H_0$ if 

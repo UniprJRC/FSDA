@@ -229,7 +229,7 @@ function [brushedUnits,BrushedUnits]=mmdrsplot(out,varargin)
     bs=fre(1:m0,1);
     [outeda]=FSMeda(Y,bs);
     [out]=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
-    mmdrsplot(out)
+    mmdrsplot(out);
 
 %}
 

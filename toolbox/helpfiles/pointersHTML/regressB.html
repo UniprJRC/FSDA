@@ -11,7 +11,7 @@
      \]
      The mean  (for $a&gt;1$) is $b/(a-1)$ and the variance (for $a&gt;2$) is $\frac{b^2}{(a-1)^2(a-2)}$.
 
-     With the above parameterizations if $X\sim G(a,b)$, then $Y=1/X$  has
+     With the above parameterizations if $X\sim G(a,b)$, then $Y=1/X$ has
      an $IG(a, b)$.
 
      The posterior distribution of
@@ -23,7 +23,16 @@
           &=&   (R+ X^TX)^{-1} (R \beta_0 + X^TX \hat \beta) \\
           &=&   (I-A) \beta_0 + A \hat \beta,
      \end{eqnarray*}
-     with $A= (R+ X^TX)^{-1} X^TX$. This last expression shows that the posterior estimate $\hat \beta_1$ is a matrix weighted average of the prior mean $\beta_0$ and the classical OLS estimate  $\hat \beta$, with weights $I-A$ and $A$. If prior information is strong elements of $R$ will be large, and $A$ will be small, so that the posterior mean gives most weight to the prior mean. In the classical approach these weights are fixed, while with the forward search technique as the subset size grows, the weight assigned to A becomes stronger and stronger, so we can dynamically see how the estimate changes as the effect of the prior becomes less important.
+     with $A= (R+ X^TX)^{-1} X^TX$. This last expression shows that the 
+     posterior estimate $\hat \beta_1$ is a matrix weighted average of 
+     the prior mean $\beta_0$ and the classical OLS estimate  $\hat \beta$, 
+     with weights $I-A$ and $A$. If prior information is strong, elements 
+     of $R$ will be large, and $A$ will be small, so that the posterior mean 
+     gives most weight to the prior mean. In the classical approach these weights 
+     are fixed, while with the forward search technique as the subset size grows, 
+     the weight assigned to A becomes stronger and stronger, so we can 
+     dynamically see how the estimate changes as the effect of the prior 
+     becomes less important.
 
      The posterior distribution of $\tau$ is $G(a_1, b_1)$ where
      \begin{equation}\label{a1}

@@ -1,0 +1,23 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>multialign2ref</title> <meta content="refpage" name="chunktype"><meta content="function:multialign2ref " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="multialign2ref Performs multialignment to reference sequences" itemprop="description" name="description" /><h1 itemprop="title">multialign2ref</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/multialign2ref.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/multialign2ref.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/multialign2ref.html">http://rosa.unipr.it/FSDA/multialign2ref.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: multialign2ref</em></p><P>multialign2ref</P><P>Performs multialignment to reference sequences</P><h2>Description</h2><P>This function performs multialignment of set of Amino or nucleotide
+ sequences not aligned (Seqs2align) to a set of reference sequences
+ already aligned (refSeqs). In order to achieve this target function
+ multialign of the BioInformatics toolbox is called several times with all
+ the default options. Note that if the alignment of a sequence inside
+ Seqs2align changes the reference sequences we call again function
+ multialign using the 'Name',Value, GapOpen',100000 in order to allow the
+ possibility of creating gaps or adding additional characters in the
+ reference sequence. If the new call to multialign:
+ 1) creates gap(s) in the reference sequences (refSeqs) we delete the
+ characters corresponding to the gaps in the aligned sequence
+ and store this information inside boolean variable usedGap of output
+ table SeqsMultiAligned.
+ 2) creates additional characters at the end of the reference sequences
+ (refSeqs) we delete the additional characters and store this information
+ inside boolean vector usedDeletion of output table SeqsMultiAligned.
+
+ As a result of this process the number of sites (characters) in the
+ reference sequence is kept fixed and all the aligned sequences will have
+ the same number of characters of the reference sequences. We also store
+ the information about the sequences which could not be aligned inside
+ second output argument WrngAlignment. So far with the hundreds of millions
+ of sequences we have aligned this case never took place.</P></html>

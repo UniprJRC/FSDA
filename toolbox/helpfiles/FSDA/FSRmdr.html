@@ -19,7 +19,7 @@ X=fishery{:,1};
 [out]=LXS(y,X,'nsamp',10000);
 [mdr] = FSRmdr(y,X,out.bs,'init',60);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Analyze units entering the search in the final steps.</li></span></a></span></h3><div class="collapse"><p>
      Compute minimum deletion residual and analyze the units entering
-     subset in each step of the fwd search (matrix Un).  As is well known,
+     subset in each step of the fwd search (matrix Un). As is well known,
      the FS provides an ordering of the data from those most in agreement
      with a suggested model (which enter the first steps) to those least in
      agreement with it (which are included in the final steps).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('fishery');
@@ -93,8 +93,32 @@ plot(Bols(:,1),Bols(:,j))
 xlabel('Subset size m');
 ylabel(['b' num2str(j-2)]);
 end
-end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/FSRmdr.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRmdr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRmdr_02.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
+end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
+Warning: Rank problem in step 10: 
+Observations
+  Columns 1 through 13
+
+    22    97    16    48     3     8   119    33    37    39    98     2     5
+
+  Columns 14 through 26
+
+     6    12    13    14    15    19    20    21    25    27    28    30    31
+
+  Columns 27 through 39
+
+    36    38    40    41    49    50    54    56    57    60    62    63    64
+
+  Columns 40 through 52
+
+    66    70    73    75    79    81    82    84    85    86    89    91   104
+
+  Columns 53 through 64
+
+   107   108   110   111   113   116   117   120   121   122   125   128
+
+produce a singular matrix
+NoFullRank in initial subset, please rerun FSRmdr
+</pre></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
      In this example the units forming subset are stored just for
      selected steps.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('hawkins.txt');
 y=hawkins(:,9);
@@ -119,8 +143,8 @@ end</pre></div></div><pre class="codeoutput">Total estimated time to complete L
     60
 
 </pre></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option threshlevoutX.</li></span></a></span></h3><div class="collapse"><p>
-     In this example a set of remote units is added to a cloud of points.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The purpose of this example is to show that in presence of units very far
-% from the bulk of th data (bad or good elverage points) it is necessary to
+     In this example, a set of remote units is added to a cloud of points.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The purpose of this example is to show that in presence of units very far
+% from the bulk of the data (bad or good leverage points) it is necessary to
 % bound their effect putting a constraint on their leverage hi=xi'(X'X)xi
 rng(10000)
 n=100;
@@ -148,7 +172,7 @@ ylim(xylim(3:4));
 ylabel('mdr')
 title('Monitoring of mdr with bound on the leverage')</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 Warning: Upper limit of y axis of the mdr forward plot set to 20 
-</pre><a href='http://rosa.unipr.it/fsda/FSRmdr.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\FSRmdr_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+</pre><a href='http://rosa.unipr.it/fsda/FSRmdr.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\FSRmdr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -178,17 +202,17 @@ Warning: Upper limit of y axis of the mdr forward plot set to 20
 </code>,<code> 'plots',1
 </code></code></span></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;What to do in case subset at step m (say bsbm) produces a
                non singular X.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>This options controls what to do when rank(X(bsbm,:)) is
-               smaller then number of explanatory variables.</p> <p>
-               If bsbmfullrank = 1 (default is 1) these units (whose number
+               smaller than number of explanatory variables.</p> <p>
+               If bsbmfullrank = 1 (default is 1), these units (whose number
                is say mnofullrank) are constrained to enter the search in
-               the final n-mnofullrank steps else the search continues
-               using as estimate of beta at step m the estimate of beta
+               the final n-mnofullrank steps, else the search continues
+               using as an estimate of beta at step m the estimate of beta
                found in the previous step.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbmfullrank',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbsteps" class="clearfix"></div><h3 id="input_argument_namevalue_bsbsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbsteps</code> &#8212;Save the units forming subsets.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It specifies for
                which steps of the fwd search it
                is necessary to save the units forming subsets. If bsbsteps
-               is 0 we store the units forming subset in all steps. If
+               is 0, we store the units forming subset in all steps. If
                bsbsteps=[] or omitted, the default is to store the units
                forming subset in all steps if n&lt;=5000, else to store the
                units forming subset at steps init and steps which are
@@ -215,22 +239,22 @@ Warning: Upper limit of y axis of the mdr forward plot set to 20
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_internationaltrade" class="clearfix"></div><h3 id="input_argument_namevalue_internationaltrade" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>internationaltrade</code> &#8212;criterion for updating subset.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If internationaltrade is true (default is false) residuals
                which have large of the final column of X (generally
                quantity) are reduced. Note that this guarantees that
-               leverge units which have a large value of  X will tend to
+               leverage units which have a large value of X will tend to
                stay in the subset. This option is particularly useful in
                the context of international trade data where we
                regress value (value=price*Q) on quantity (Q). In other
                words, we use the residuals as if we were regressing y/X
                (that is price) on the vector of ones.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'internationaltrade',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It controls whether to
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It controls whether to
                display or not messages about great interchange on the
-               screen If msg==1 (default)
-               messages are displayed on the screen
-               else no message is displayed on the screen
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
+               screen. If msg==1 (default),
+               messages are displayed on the screen,
+               else no message is displayed on the screen.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If nocheck is equal to true no
                check is performed on matrix y and matrix X. Notice that y
-               and X are left unchanged. In other words the additioanl
+               and X are left unchanged. In other words, the additional
                column of ones for the intercept is not added. As default
                nocheck=false. The controls on h, alpha and nsamp still remain
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
@@ -241,14 +265,14 @@ Warning: Upper limit of y axis of the mdr forward plot set to 20
                the data (represented by $X(m^*)$) will have a huge value
                of $h_i(m^*)$ and consequently of the deletion residuals.</p> <p>
                In order to tackle this problem it is possible to put a
-               bound to the value of $h_i(m^*)$. For example
-               threshlevoutX=r imposes the contrainst that $h_i(m^*)$
+               bound to the value of $h_i(m^*)$. For example,
+               threshlevoutX=r imposes the constraint that $h_i(m^*)$
                cannot exceed $r \times p/m$. The default value of
                threshlevoutX is empty, which means that no threshold is
                imposed.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'threshlevoutX',5
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If equal to one a plot of
-               minimum deletion residual appears  on the screen with 1%,
+               minimum deletion residual appears on the screen with 1%,
                50% and 99% confidence bands else (default) no plot is
                shown.</p> <p>
                               Remark: the plot which is produced is very simple. In order
@@ -264,7 +288,7 @@ Warning: Upper limit of y axis of the mdr forward plot set to 20
                2nd col = minimum deletion residual.</p><p>
                REMARK: if in a certain step of the search matrix is
                singular, this procedure checks how many observations
-               produce a singular matrix. In this case mdr is a column
+               produce a singular matrix. In this case, mdr is a column
                vector which contains the list of units for which matrix X
                is non singular.</p></p></div></div><div class="expandableContent"><div id="outputarg_Un" class="clearfix"></div><h3 id="output_argument_Un" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Un</code> &#8212;Units included in each step.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p>
                (n-init) x 11 Matrix which contains the unit(s) included
@@ -272,7 +296,7 @@ Warning: Upper limit of y axis of the mdr forward plot set to 20
                REMARK: in every step the new subset is compared with the
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one.</p> <p>
-               Un(1,2) for example contains the unit included in step
+               Un(1,2), for example, contains the unit included in step
                init+1.</p><p>
                Un(end,2) contains the units included in the final step
                of the search.</p></p></div></div><div class="expandableContent"><div id="outputarg_BB" class="clearfix"></div><h3 id="output_argument_BB" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BB</code> &#8212;Units belonging to subset in each step.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p>
@@ -290,15 +314,15 @@ Warning: Upper limit of y axis of the mdr forward plot set to 20
                n-th row has number n in correspondence of the steps in
                    which unit n is included inside subset and a missing
                    value for the other steps
-               The size of matrix BB is n x (n-init+1) if option input
-               bsbsteps is 0 else the size is n-by-length(bsbsteps).</p></p></div></div><div class="expandableContent"><div id="outputarg_Bols" class="clearfix"></div><h3 id="output_argument_Bols" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Bols</code> &#8212;OLS coefficents.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
+               The size of matrix BB is n x (n-init+1), if option input
+               bsbsteps is 0, else the size is n-by-length(bsbsteps).</p></p></div></div><div class="expandableContent"><div id="outputarg_Bols" class="clearfix"></div><h3 id="output_argument_Bols" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Bols</code> &#8212;OLS coefficients.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
                (n-init+1) x (p+1) matrix containing the monitoring of
                estimated beta coefficients in each step of the forward
                search.</p></div></div><div class="expandableContent"><div id="outputarg_S2" class="clearfix"></div><h3 id="output_argument_S2" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>S2</code> &#8212;S2 and R2.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
                (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
                column)and R2 (third column) in each step of the forward
                search.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
-               Let $S^{(m)}_* \in \cal{M}$ be the  optimum subset of size $m$,
+               Let $S^{(m)}_* \in \cal{M}$ be the optimum subset of size $m$,
                for which the matrix of regressors is $X(m^*)$. Least squares
                applied to this subset yields parameter estimates
                $\hat{\beta}(m^*)$ and $s^2(m^*)$, the mean square estimate of
@@ -320,14 +344,14 @@ Warning: Upper limit of y axis of the mdr forward plot set to 20
                \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}}  = \frac{e_{i}(m^*)} {
                \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}},
                \end{equation}
-               where $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$;  the leverage
+               where $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$; the leverage
                of each observation depends on $S^{(m)}_*$. Let the observation
                nearest to those constituting $S^{(m)}_*$ be
                $i_{\mbox{min}}$ where
                </p>\[
                i_{\mbox{min}} = \arg \min | r^*_i(m^*)| \; \mbox{for} \; i \notin S^{(m)}_*,
                \]<p>
-               the observation with the minimum absolute deletion  residual among
+               the observation with the minimum absolute deletion residual among
                those not in $S^{(m)}_*$. This function computes
                $r_i^*(m^*)$ for $m^*=init, init+1, \ldots, n-1$.</p> <p>
 

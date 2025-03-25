@@ -172,10 +172,14 @@ Output of rows2varsFS (first 5 columns)
     Systolic     {[                    124]}    {[        109]}    {[                      125]}    {[        117]}    {[                    122]}
     Diastolic    {[                     93]}    {[         77]}    {[                       83]}    {[         75]}    {[                     80]}
 
-</pre></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option 'VariableNamingRule'.</li></span></a></span></h3><div class="collapse"><p>
-     Go to the folder where bostonTT is located.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">openExample('matlab/ReorientTimetableRowsExample')
-load bostonTT
-T1=Boston;
+</pre></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option 'VariableNamingRule'.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">nam={'Temp' 'WindSpeed' 'Rain'};  
+BB=[59.5000    0.1000    0.0500
+63.0000    2.3000    0.0800
+61.7000    3.1000    0.1300
+55.4000    5.7000    0.1500
+62.3000    2.6000    0.8700
+58.8000    6.2000    0.3300];
+T1= array2timetable(BB,'VariableNames',nam,'RowTimes',datetime(2024,4,1:6));
 disp('Original table (first 5 rows)')
 head(T1,5)
 T2=rows2vars(T1,'VariableNamingRule','preserve');
@@ -184,30 +188,30 @@ disp(head(T2(:,1:5)))
 disp('Output of rows2varsFS (first 5 columns)')
 T2fs=rows2varsFS(T1,'VariableNamingRule','preserve');
 disp(head(T2fs(:,1:5)))</pre></div></div><pre class="codeoutput">Original table (first 5 rows)
-           Time            Temp    WindSpeed    Rain
-    ___________________    ____    _________    ____
+       Time        Temp    WindSpeed    Rain
+    ___________    ____    _________    ____
 
-    2016-06-09 06:03:00    59.5       0.1       0.05
-    2016-06-09 12:00:23      63       2.3       0.08
-    2016-06-09 18:02:57    61.7       3.1       0.13
-    2016-06-10 06:01:47    55.4       5.7       0.15
-    2016-06-10 12:06:00    62.3       2.6       0.87
+    01-Apr-2024    59.5       0.1       0.05
+    02-Apr-2024      63       2.3       0.08
+    03-Apr-2024    61.7       3.1       0.13
+    04-Apr-2024    55.4       5.7       0.15
+    05-Apr-2024    62.3       2.6       0.87
 
 Output of rows2vars (first 5 columns)
-    OriginalVariableNames    2016-06-09 06:03:00    2016-06-09 12:00:23    2016-06-09 18:02:57    2016-06-10 06:01:47
-    _____________________    ___________________    ___________________    ___________________    ___________________
+    OriginalVariableNames    01-Apr-2024    02-Apr-2024    03-Apr-2024    04-Apr-2024
+    _____________________    ___________    ___________    ___________    ___________
 
-        {'Temp'     }               59.5                     63                   61.7                   55.4        
-        {'WindSpeed'}                0.1                    2.3                    3.1                    5.7        
-        {'Rain'     }               0.05                   0.08                   0.13                   0.15        
+        {'Temp'     }           59.5             63           61.7           55.4    
+        {'WindSpeed'}            0.1            2.3            3.1            5.7    
+        {'Rain'     }           0.05           0.08           0.13           0.15    
 
 Output of rows2varsFS (first 5 columns)
-                 2016-06-09 06:03:00    2016-06-09 12:00:23    2016-06-09 18:02:57    2016-06-10 06:01:47    2016-06-10 12:06:00
-                 ___________________    ___________________    ___________________    ___________________    ___________________
+                 01-Apr-2024    02-Apr-2024    03-Apr-2024    04-Apr-2024    05-Apr-2024
+                 ___________    ___________    ___________    ___________    ___________
 
-    Temp                59.5                     63                   61.7                   55.4                   62.3        
-    WindSpeed            0.1                    2.3                    3.1                    5.7                    2.6        
-    Rain                0.05                   0.08                   0.13                   0.15                   0.87        
+    Temp            59.5             63           61.7           55.4           62.3    
+    WindSpeed        0.1            2.3            3.1            5.7            2.6    
+    Rain            0.05           0.08           0.13           0.15           0.87    
 
 </pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_T1" class="clearfix"> </div> <h3 id="input_argument_T1" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>T1</code> &#8212; Origianal table. </span>  </a><span class="example_desc">table or timetable.</span></span></h3> <div class="collapse"> <p>Input table, specified as a table or timetable of size n-by-p.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bonflev',0.99
 </code>,<code> 'VariableNamingRule','preserve'

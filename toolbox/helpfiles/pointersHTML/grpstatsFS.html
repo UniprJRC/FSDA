@@ -1,0 +1,16 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>grpstatsFS</title> <meta content="refpage" name="chunktype"><meta content="function:grpstatsFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="grpstatsFS Calls grpstats and reshapes the output in a much better way" itemprop="description" name="description" /><h1 itemprop="title">grpstatsFS</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/grpstatsFS.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/grpstatsFS.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/grpstatsFS.html">http://rosa.unipr.it/FSDA/grpstatsFS.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: grpstatsFS</em></p><P>grpstatsFS</P><P>Calls grpstats and reshapes the output in a much better way</P><h2>Description</h2><P>grpstatsFS calls grpstats, but shows the output in much better way. The
+   output of grpstatsFS is a table with a number of rows equal to the
+   number of variables for which statistics are computed. The number of
+   columns of this table is equal to the number of statistics which are
+   computed. By default, the statistics which are computed are the two
+   (non robust and robust) indexes of location, (mean and median) the two
+   (non robust and robust) indexes of spread (standard deviation and
+   scaled MAD) and the two (non robust and robust) indexes of skewness.
+   The robust index of skewness is the medcouple. The scaled MAD is
+   defined as 1.4826(med|x-med(x)|).
+   In presence of a grouping variable the number of rows of the
+   output table remains the same, but the number of columns is equal to the
+   number of statistics multiplied by the number of groups. With option
+   'OutputFormat' 'nested' which is similar to option  'OutputFormat' in
+   function pivot, it is possible to display the results using nested
+   tables.</P></html>

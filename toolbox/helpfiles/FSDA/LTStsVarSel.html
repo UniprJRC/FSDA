@@ -115,15 +115,15 @@ model.trend=1;                  % linear trend
 model.trendb=[0 1];             % parameters of the linear trend
 model.s=12;                     % monthly time series
 model.seasonal=1;               % 1 harmonic
-model.seasonalb=[2 3];        % parameter for one harmonic
-model.lshiftb=50;              % level shift amplitude
+model.seasonalb=[2 3];          % parameter for one harmonic
+model.lshiftb=50;               % level shift amplitude
 model.lshift= 35;               % level shift position
-model.signal2noiseratio = 30;  % signal to noise ratio
+model.signal2noiseratio = 30;   % signal to noise ratio
 model.ARp=1;
 model.ARb=0.9;
-n = 50;                        % sample size
+n = 50;                         % sample size
 tmp = rand(n,1);
-model.X = tmp;          % a extra covariate
+model.X = tmp;                  % a extra covariate
 model.Xb = 1;                   % beta coefficient of the covariate
 % generate data
 out_sim=simulateTS(n,'plots',1,'model',model);
@@ -157,13 +157,13 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
 </code>,<code> 'plots',1
 </code>,<code> 'msg',1
 </code>,<code> 'dispresults',true
-</code></code></span></div><div class="expandableContent"><div id="inputarg_firstTestLS" class="clearfix"></div><h3 id="input_argument_namevalue_firstTestLS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>firstTestLS</code> &#8212;initial test for presence of level shift.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>if
+</code></code></span></div><div class="expandableContent"><div id="inputarg_firstTestLS" class="clearfix"></div><h3 id="input_argument_namevalue_firstTestLS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>firstTestLS</code> &#8212;initial test for presence of level shift.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If
                firstTestLS is true, we immediately find the position of
                the level shift in a model which does not contain
-               autoregressive terms, the seasonal specification is 101 If
+               autoregressive terms, the seasonal specification is 101. If
                the level shift component is significant we pass the level
                shift component in fixed position to the variable selection
-               procedure.  Note also that the units declared as outliers
+               procedure. Note also that the units declared as outliers
                with a p-value smaller than 0.001 are used to form
                model.ARtentout. model.ARtentout is used in the subsequent
                steps of the variable selection procedure, every time there
@@ -177,16 +177,16 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                convenience, we list the fields also here:
 
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
-                         data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
+                         data s=12 (default), for quarterly data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 0 implies no trend,
                        trend = 1 implies linear trend with intercept,
                        trend = 2 implies quadratic trend,
                        trend = 3 implies cubic trend.</p> <p>
                        Admissible values for trend are, 0, 1, 2 and 3.</p><p>
-                       In the paper RPRH to denote the order of the trend
+                       In the paper RPRH to denote the order of the trend,
                        symbol A is used. If this field is not present into
                        input structure model, model.trend=2 is used.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
-                        frequencies, i.e. harmonics, in the seasonal
+                        frequencies), i.e. harmonics, in the seasonal
                         component. Possible values for seasonal are
                         $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
                         For example:
@@ -195,10 +195,10 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                         if seasonal =2 we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
-                        Note that when $s$ is even the sine term disappears
+                        Note that when $s$ is even, the sine term disappears
                         for $j=s/2$ and so the maximum number of
                         trigonometric parameters is $s-1$.</p> <p>
-                        If seasonal is a number greater than 100 then it
+                        If seasonal is a number greater than 100, then it
                         is possible to specify how the seasonal component
                         grows over time.</p> <p>
                         For example, seasonal = 101 implies a seasonal
@@ -213,8 +213,8 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                         $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
                         seasonal =0 implies a non seasonal model.</p> <p>
-                       In the paper RPRH to denote the number of
-                       frequencies of the seasonal component
+                       In the paper RPRH, to denote the number of
+                       frequencies of the seasonal component,
                        symbol B is used, while symbol G is used to denote
                        the order of the trend of the seasonal component.</p> <p>
                        Therefore, for example, model.seasonal=201
@@ -230,10 +230,10 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                          then it is associated to the positions of level
                          shifts which have to be considered. The most
                          significant one is included in the fitted model.</p> <p>
-                         For example if model.lshift =[13 20 36] a
+                         For example, if model.lshift =[13 20 36], a
                          tentative level shift is imposed in position
                          $t=13$, $t=20$ and $t=36$. The most significant
-                         among these positions in included in the final
+                         among these positions is included in the final
                          model. In other words, the following extra
                          parameters are added to the final model:
                          $\beta_{LS1}* I(t \geq \beta_{LS2})$ where
@@ -275,7 +275,7 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                trend (3 parameters) + seasonal component with three
                harmonics which grows in a cubic way over time (9 parameters),
                no additional explanatory variables, no level shift
-               and no AR component that is
+               and no AR component that is:
                                model=struct;</p> <p>
                                model.s=12;</p> <p>
                                model.trend=2;</p> <p>
@@ -305,7 +305,7 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                600 subsamples for t=lshift(1) and 300 subsamples for t=
                lshift(2) ... you can use nsamp =600 or nsamp=[600 300].</p> <p>
                The default value of nsamp is 1000;</p> <p>
-                                Remark: if nsamp=0 all subsets will be extracted.</p> <p>
+                                Remark: if nsamp=0 ,all subsets will be extracted.</p> <p>
                They will be (n choose p).</p><p>
 
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',500
@@ -318,8 +318,8 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                shown on the screen.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Messages on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether LTSts will display or not
-               messages on the screen. Deafault is msg=0, that is no
-               messages are displayed on the screen. If msg==1 messages
+               messages on the screen. Default is msg=0, that is no
+               messages are displayed on the screen. If msg==1, messages
                displayed on the screen are about estimated time to compute
                the estimator and the warnings about
                'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
@@ -342,7 +342,7 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                     model.lshift = the optimal level shift position.</p><p>
                     model.X = a matrix containing the values of the extra
                       covariates which are likely to affect y. If the
-                      imput model specifies autoregressive components
+                      input model specifies autoregressive components
                       in model.ARp, then the selected ones will be also
                       included in model.X.</p></p></div></div><div class="expandableContent"><div id="outputarg_reduced_model" class="clearfix"></div><h3 id="output_argument_reduced_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reduced_model</code> &#8212;Output fields of the optimal model.</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>
                     The fields are those of function LTSts (refer to
@@ -373,7 +373,7 @@ disp(out_model_3N)</pre></div></div></p></div></div></div></div></div><di
                       using final weights.</p> <p>
                     out.conflev = confidence level used to declare outliers.</p> <p>
                     out.outliers = vector of the units declared outliers.</p> <p>
-                    out.singsub = number of subsets wihtout full rank.</p> <p>
+                    out.singsub = number of subsets without full rank.</p> <p>
                     out.y = response vector y.</p> <p>
                     out.X = data matrix X containing trend, seasonal, expl
                        (with autoregressive component) and lshift.</p> <p>

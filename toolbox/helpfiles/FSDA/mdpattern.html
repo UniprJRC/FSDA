@@ -81,15 +81,15 @@ plots=false;
 % the content of two output matrices in the command window.
 dispresults=true;
 [Mispat,tMisAndOut]=mdpattern(Xtable,'plots',false,'dispresults',dispresults);</pre></div></div><pre class="codeoutput">Table which shows missing values patterns
-                   NrowsWithPattern    age    hyp    bmi    chl    NvarWithMis
-                   ________________    ___    ___    ___    ___    ___________
+                   NrowsWithPattern    age     hyp     bmi      chl     NvarWithMis
+                   ________________    ____    ____    ____    _____    ___________
 
-    Pattern1              13            1      1      1      1          0     
-    Pattern2               3            1      1      1      0          1     
-    Pattern3               1            1      1      0      1          1     
-    Pattern4               1            1      0      0      1          2     
-    Pattern5               7            1      0      0      0          3     
-    totPatOrMis           25            0      8      9     10         27     
+    Pattern1            13.00          1.00    1.00    1.00     1.00        0.00   
+    Pattern2             3.00          1.00    1.00    1.00     0.00        1.00   
+    Pattern3             1.00          1.00    1.00    0.00     1.00        1.00   
+    Pattern4             1.00          1.00    0.00    0.00     1.00        2.00   
+    Pattern5             7.00          1.00    0.00    0.00     0.00        3.00   
+    totPatOrMis         25.00          0.00    8.00    9.00    10.00       27.00   
 
 0 means missing value and 1 represents non missing value
 First column contains the number of observations for each pattern
@@ -98,13 +98,13 @@ The sum of the numbers in the first column is n, that is the total number of row
 The last column shows the number of variables with missing values for that particular pattern
 ------------------------
 Missing value and outlier report
-            Mean     Median     Stdev      MAD      Count_miss    Perc_miss    outInf    outSup
-           ______    ______    _______    ______    __________    _________    ______    ______
+            Mean     Median    Stdev     MAD     Count_miss    Perc_miss    outInf    outSup
+           ______    ______    _____    _____    __________    _________    ______    ______
 
-    age      1.76        2     0.83066    1.4826         0            0          0         0   
-    bmi    26.562    26.75      4.2152    4.5961         9           36          0         0   
-    hyp    1.2353        1     0.43724         0         8           32          0         4   
-    chl     191.4      187      45.215    28.169        10           40          3         1   
+    age      1.76      2.00     0.83     1.48       0.00          0.00       0.00      0.00 
+    bmi     26.56     26.75     4.22     4.60       9.00         36.00       0.00      0.00 
+    hyp      1.24      1.00     0.44     0.00       8.00         32.00       0.00      4.00 
+    chl    191.40    187.00    45.22    28.17      10.00         40.00       3.00      1.00 
 
 Columns outInf and outSup contain the number of units which are
 above x0.75+1.5*IQR or below x0.25-1.5*IQR, where IQR is the interquartile range

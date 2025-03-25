@@ -38,7 +38,7 @@ outFORE=forecastTS(outEST,'model',model,'plots',1);</pre></div></div><a href='h
      A time series of 100 observations is simulated from a model which
      contains a quadratic trend, a seasonal component with two harmonics
      no explanatory variables and a level shift in position 30 with size
-     5000 and a signal to noise ratio egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+     5000 and a signal to noise ratio equal to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 rng(1)
 model=struct;
 model.trend=2;
@@ -212,7 +212,7 @@ model.ARb=[0.2 0.7];
 model.ARIMAX=true;
 T=100;
 out=simulateTS(T,'model',model,'plots',1);
-% Fit a model imposing linear trend, sesonal component and AR(2)
+% Fit a model imposing linear trend, seasonal component and AR(2)
 y=out.y;
 nfore=20;
 Xall=1e+2*randn(T+nfore,1);
@@ -279,7 +279,7 @@ model.ARIMAX=true;
 T=150;
 out=simulateTS(T,'model',model,'plots',1);
 yall=out.y;
-% Fit a model imposing linear trend, sesonal component and AR(2)
+% Fit a model imposing linear trend, seasonal component and AR(2)
 y=out.y(1:100);
 nfore=50;
 model=struct;
@@ -317,7 +317,7 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                         there are two coefficients, the second (which is
                         also the last element of vector beta) is an integer
                         which specifies the time in which level shift takes
-                        place and the first (which is also the penultime
+                        place and the first (which is also the penultimate
                         element of vector beta) is a real number which
                         identifies the magnitude of the upward (downward)
                         level shift;</p> <p>
@@ -369,7 +369,7 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                        will not contain a trend. The default value
                        of model.trend is 1.</p></p></td></tr><tr valign="top"><td><code>s</code></td><td><p><p>scalar greater than zero which specifies the
                        length of the seasonal period. For monthly
-                       data (default) s=12, for quartely data s=4, ...</p> <p>
+                       data (default) s=12, for quarterly data s=4, ...</p> <p>
                        The default value of model.s is 12 (that is monthly
                        data are assumed)</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
                         frequencies, i.e. harmonics, in the seasonal
@@ -400,7 +400,7 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p><p>
                        If this field is an empty double (default) the
                        simulated time series will not contain a seasonal
-                       component.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>explanatory variabels. Matrix of size
+                       component.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>explanatory variables. Matrix of size
                        (length(y)+nfore)-by-nexpl.</p> <p>
                        If model.X is a matrix of size (length(y)+nfore)-by-nexpl, it
                        contains the values of nexpl extra covariates which
@@ -428,7 +428,7 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                 level which is used to produce the bands. The default
                 value of conflev is 0.99.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.999
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots == 1 a plot with the real time series  with fitted
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots == 1 a plot with the real time series with fitted
                values and forecasts (with confidence bands) will appear on
                the screen. This plot is tagged forecastTS.</p> <p>
                The default value of plot is 0, that is no plot is shown on
@@ -463,7 +463,7 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                to save the file on the disk.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'FileNameOutput',['C:' filesep 'myoutput' fielsep 'savesimdata.txt']
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Character</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results of final fit.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is
-               true,  labels of coefficients, estimated coefficients,
+               true, labels of coefficients, estimated coefficients,
                standard errors, tstat and p-values are shown on the
                screen in a fully formatted way. The default value of
                dispresults is false.</p> <p>

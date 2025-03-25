@@ -34,9 +34,10 @@
  balls are independent and there is no dependence between draws. One may
  as well take all $n$ balls at the same time. Each ball has no "knowledge"
  of what happens to the other balls.</p> <p>
- More formally, if the total number $n$ of balls taken is known then the
- conditional distribution of the number of taken red balls for given $n$ is
- Fisher's noncentral hypergeometric distribution.</p> <p> 
+ More formally, if the total number $n$ of balls taken is not known before
+ the experiment (i.e n is determined just after the experiment), then the
+ conditional distribution of the number of taken red balls for given $n$
+ is Fisher's noncentral hypergeometric distribution.</p> <p>
 
  These two distributions have important applications in evolutionary
  biology and population genetics. If animals of a particular species are
@@ -82,7 +83,7 @@ In total the urn contains 70 balls.
 But the weight of getting the 3 balls is 1, 2.5 and 1.8;
 The probability of getting 8 red balls, 10, white and 6 black balls
 in an extraction without replacement is 
-    0.0064
+          0.01
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>In presence of just two colors in the urn it is possible to use  FNChygepdf or mFNChygepdf.</li></span></a></span></h3><div class="collapse"><p>
      We have M balls in the urn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">M  = 200;
@@ -101,7 +102,7 @@ XX=[x n-x];
 m=[K M-K]; w=[100 1];
 wpdfCHK=mFNChygepdf(XX,m,w);
 assert(isequal(wpdf,wpdfCHK),'Call to FNChygepdf produces different results from call to mFNChygepdf')</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Check that the sum of densities is 1.</li></span></a></span></h3><div class="collapse"><p>
-     define the weights for each color<div class="programlisting"><div class="codeinput"><pre class="matlab-code">weights=[5,2,1]'; 
+     Define the weights for each color<div class="programlisting"><div class="codeinput"><pre class="matlab-code">weights=[5,2,1]'; 
 % Define urn composition
 m=[12 25 18];   
 % Number of balls which are drawn.
@@ -132,9 +133,12 @@ labx=categorical(lab,lab);
 bar(labx,Wpdf)
 title(['weights=[' num2str(weights') '] m=[' num2str(m) '] n=' num2str(numberBallsExtracted)])
 ylabel('Multivariate Fisher non central density')</pre></div></div><a href='http://rosa.unipr.it/fsda/mFNChygepdf.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\mFNChygepdf_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between Wallenius and Fisher.</li></span></a></span></h3><div class="collapse"><p>
-    weights=[100,2,1]';  define the weights for each color
-    m=[12 25 18];    Define urn composition
-    numberBallsExtracted=5;      Number of balls which are drawn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Define all possible cases in which for numberBallsExtracted;
+     Define the weights for each color<div class="programlisting"><div class="codeinput"><pre class="matlab-code">weights=[100,2,1]'; 
+% Define urn composition
+m=[12 25 18];   
+% Number of balls which are drawn.
+numberBallsExtracted=5;     
+% Define all possible cases in which for numberBallsExtracted;
 numcolors = length(m);      % Length of each permutation
 % Create all possible permutations (with repetition) of numcolors
 C = cell(numcolors, 1);         % Preallocate a cell array

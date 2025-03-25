@@ -32,8 +32,8 @@ plot(seqr,BB','bx');
 xlabel('Subset size m');
 ylabel('Monitoring units plot');
 % The plot, which monitors the units belonging to subset in each step of
-% the forward search shows that apart from unit 11 which enters the
-% search in step m=78 all the other contaminated units enter the search
+% the forward search, shows that apart from unit 11, which enters the
+% search in step m=78, all the other contaminated units enter the search
 % in the last 19 steps.
 % if we consider the seed state=500, we obtain a plot showing that the
 % 20 contaminated units enter the search in the final 20 steps.
@@ -53,7 +53,7 @@ plot(seqr,BB','bx');
 xlabel('Subset size m');
 ylabel('Monitoring units plot');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 Total estimated time to complete LMS:  0.01 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/FSRbsb.html#Example_3'><img vspace="5" hspace="5" src="images\FSRbsb_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRbsb_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRbsb_04.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with monitoring from step 60.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('fishery');
+</pre><a href='http://rosa.unipr.it/fsda/FSRbsb.html#Example_3'><img vspace="5" hspace="5" src="images\FSRbsb_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRbsb_03.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with monitoring from step 60.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('fishery');
 y=fishery{:,2};
 X=fishery{:,1};
 [out]=LXS(y,X,'nsamp',10000);
@@ -123,7 +123,7 @@ X=fishery{:,1};
                REMARK: in every step the new subset is compared with the
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one.</p> <p>
-               Un(1,2) for example contains the unit included in step
+               Un(1,2), for example, contains the unit included in step
                init+1.</p><p>
                Un(end,2) contains the units included in the final step
                of the search.</p></p></div></div><div class="expandableContent"><div id="outputarg_BB" class="clearfix"></div><h3 id="output_argument_BB" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BB</code> &#8212;Units belonging to subset in each step or selected steps.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p>
@@ -134,7 +134,7 @@ X=fishery{:,1};
                More precisely:
                BB(:,1) contains the units forming subset in step bsbsteps(1);</p> <p>
                ....;</p> <p>
-               BB(:,end) contains the units forming subset in step  bsbsteps(end);</p> <p>
+               BB(:,end) contains the units forming subset in step bsbsteps(end);</p> <p>
                Row 1 of matrix BB is referred to unit 1;</p> <p>
                ......;</p> <p>
                Row n of matrix BB is referred to unit n;</p><p>

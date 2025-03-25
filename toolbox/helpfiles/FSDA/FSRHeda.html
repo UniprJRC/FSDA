@@ -6,38 +6,22 @@ X=XX(:,1);
 X=X./max(X);
 Z=log(X);
 [out]=LXS(y,X,'nsamp',1000);
-out1=FSRHeda(y,X,Z,out.bs);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
-Warning: interchange greater than 10 when m=26
-Warning: interchange greater than 10 when m=27
-Warning: interchange greater than 10 when m=67
-Warning: Matrix is singular, close to singular or badly scaled. Results may be
-inaccurate. RCOND = NaN. 
-Warning: interchange greater than 10 when m=68
-Warning: interchange greater than 10 when m=69
-Warning: interchange greater than 10 when m=70
+out1=FSRHeda(y,X,Z,out.bs);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+Warning: interchange greater than 10 when m=23
 m=100
-Warning: interchange greater than 10 when m=165
-Warning: interchange greater than 10 when m=166
-Warning: interchange greater than 10 when m=167
-Warning: interchange greater than 10 when m=168
-Warning: interchange greater than 10 when m=169
-Warning: interchange greater than 10 when m=170
-Warning: interchange greater than 10 when m=171
-Warning: interchange greater than 10 when m=172
-Warning: interchange greater than 10 when m=180
-Warning: interchange greater than 10 when m=181
-Warning: interchange greater than 10 when m=182
-Warning: interchange greater than 10 when m=183
+Warning: interchange greater than 10 when m=188
 m=200
-Warning: interchange greater than 10 when m=225
 m=300
+Warning: interchange greater than 10 when m=315
+Warning: interchange greater than 10 when m=322
+Warning: interchange greater than 10 when m=330
+Warning: interchange greater than 10 when m=354
 m=400
-Warning: interchange greater than 10 when m=482
-Warning: interchange greater than 10 when m=483
-Warning: interchange greater than 10 when m=484
-Warning: interchange greater than 10 when m=485
-Warning: interchange greater than 10 when m=486
+Warning: interchange greater than 10 when m=499
 m=500
+Warning: interchange greater than 10 when m=502
+Warning: interchange greater than 10 when m=507
+Warning: interchange greater than 10 when m=509
 m=600
 m=700
 m=800
@@ -122,8 +106,8 @@ y(1:10)=y(1:10)+5;
 [outLXS]=LXS(y,X,'nsamp',10000);
 % Forward Search
 [out]=FSRHeda(y,X,log(X),outLXS.bs);
-%The monitoring residuals plot shows a set of positive residuals which
-%starting from the central part of the search tend to have a residual much
+%The monitoring residuals plot shows a set of positive residuals which,
+%starting from the central part of the search, tend to have a residual much
 %larger than that of the other units.
 resfwdplot(out);
 %The minimum deletion residual from m=90 starts going above the 99% threshold.
@@ -134,7 +118,7 @@ lwdenv=2;
 xlimx=[10 100];
 subplot(2,2,1);
 plot(out.nor(:,1),out.nor(:,2));
-title('Asimmetry test');
+title('Asymmetry test');
 xlim(xlimx);
 quant=chi2inv(0.99,1);
 v=axis;
@@ -154,44 +138,43 @@ line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
 title('Normality test');
 xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Warning: Using 'state' to set RANDN's internal state causes RAND, RANDI, and
 RANDN to use legacy random number generators.  This syntax is not recommended.
-See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the
-old syntax. 
+See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old
+syntax. 
 Total estimated time to complete LMS:  0.04 seconds 
-Warning: Rank deficient, rank = 7, tol =  8.759214e-04. 
-Warning: Rank deficient, rank = 7, tol =  1.140309e-03. 
-Warning: Rank deficient, rank = 3, tol =  1.480703e-02. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  1.832917e-16. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  3.338014e-20. 
-Warning: Rank deficient, rank = 2, tol =  1.082400e+03. 
-Warning: Rank deficient, rank = 2, tol =  3.007266e+03. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  3.564858e-17. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  2.647638e-19. 
-Warning: Matrix is singular, close to singular or badly scaled. Results may be
-inaccurate. RCOND = NaN. 
-Warning: Rank deficient, rank = 8, tol =  3.376048e+00. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  2.275251e-21. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  5.189491e-20. 
+Warning: Maximum number of iterations has been reached without convergence 
+Warning: Rank deficient, rank = 4, tol =  8.442463e+02. 
+Warning: Rank deficient, rank = 4, tol =  2.985030e+03. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  2.273737e-19. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.224297e-16. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  5.733923e-19. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.230897e-19. 
+Warning: Rank deficient, rank = 2, tol =  5.549350e+02. 
+Warning: Rank deficient, rank = 2, tol =  7.704086e+03. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  2.900250e-20. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  4.727190e-18. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  5.961423e-18. 
 Warning: Rank deficient, rank = 1, tol =  1.282522e+03. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  4.246314e-20. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  4.246314e-20. 
 Warning: Rank deficient, rank = 2, tol =  1.237249e+03. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  1.913104e-20. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.913104e-20. 
 Warning: Rank deficient, rank = 1, tol =  1.344331e+03. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  4.246314e-20. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  4.246314e-20. 
 Warning: Rank deficient, rank = 2, tol =  2.495266e+03. 
 Warning: Rank deficient, rank = 2, tol =  6.170946e+03. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  1.720547e-16. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  4.146527e-20. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.720547e-16. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  4.146527e-20. 
 Warning: Imaginary parts of complex X and/or Y arguments ignored. 
 </pre><a href='http://rosa.unipr.it/fsda/FSRHeda.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRHeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRHeda_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRHeda_03.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
      beta and sigma2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% House price data
@@ -217,7 +200,7 @@ close all
 for j=1:p
 subplot(nr,nc,j);
 hold('on')
-% plot 95% and 99% HPD  trajectories
+% plot 95% and 99% HPD trajectories
 plot(outEDA.Bgls(:,1),outEDA.betaINT(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
 plot(outEDA.Bgls(:,1),outEDA.betaINT(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
 % plot estimate of beta1_j
@@ -255,15 +238,15 @@ xlabel('Subset size m','FontSize',FontSize);
 % Add multiple title
 suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...
 num2str(xlimL) ',' num2str(xlimU) ...
-']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.17 seconds 
+']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.30 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 37.5%
+Warning: Number of subsets without full rank equal to 38.1%
 Warning: Matrix is singular, close to singular or badly scaled. Results may be
 inaccurate. RCOND = NaN. 
 Warning: Matrix is singular, close to singular or badly scaled. Results may be
 inaccurate. RCOND = NaN. 
-Warning: Rank problem in step 6: Beta coefficients are used from the most
-recent correctly computed step 
+Warning: Rank problem in step 6: Beta coefficients are used from the most recent
+correctly computed step 
 Warning: Matrix is singular, close to singular or badly scaled. Results may be
 inaccurate. RCOND = NaN. 
 Warning: Matrix is singular, close to singular or badly scaled. Results may be
@@ -274,10 +257,10 @@ Warning: Maximum number of iteration has been reached without convergence
 Warning: Maximum number of iteration has been reached without convergence 
 Warning: Maximum number of iteration has been reached without convergence 
 Warning: Maximum number of iteration has been reached without convergence 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  2.229039e-24. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  2.531461e-22. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  2.229039e-24. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  2.531461e-22. 
 Warning: Rank problem in step 16: Beta coefficients are used from the most
 recent correctly computed step 
 Warning: Rank problem in step 17: Beta coefficients are used from the most
@@ -1056,12 +1039,12 @@ Warning: Rank problem in step 401: Beta coefficients are used from the most
 recent correctly computed step 
 Warning: Rank problem in step 402: Beta coefficients are used from the most
 recent correctly computed step 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  3.601941e-24. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  2.837818e-20. 
-Warning: Matrix is close to singular or badly scaled. Results may be
-inaccurate. RCOND =  1.069719e-18. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  3.601941e-24. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  2.837818e-20. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.069719e-18. 
 m=500
 </pre><a href='http://rosa.unipr.it/fsda/FSRHeda.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRHeda_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables. </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
@@ -1083,14 +1066,14 @@ m=500
                \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
                \gamma_{r} X(i,Z(r)))
                \]
-               Therefore, if for example the explanatory variables
+               Therefore, if, for example, the explanatory variables
                responsible for heteroscedasticity are columns 3 and 5
-               of matrix X, it is possible to use both the sintax:
+               of matrix X, it is possible to use both the syntax:
                     FSRHeda(y,X,X(:,[3 5]))
-               or the sintax:
+               or the syntax:
                     FSRHeda(y,X,[3 5])</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial
                subset. </span>  </a><span class="example_desc">Vector or scalar.</span></span></h3> <div class="collapse"> <p>If bsb=0 (default) then the procedure starts with p
-               units randomly chosen else if bsb is not 0 the search will
+               units randomly chosen, else if bsb is not 0 the search will
                start with m0=length(bsb).</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',false
 </code>,<code> 'init',100 starts monitoring from step m=100
 </code>,<code> 'tstat','trad'
@@ -1105,23 +1088,23 @@ m=500
                  the constant term from the model.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search
-                       and start monitoring required diagnostics. if init is not
+                       and start monitoring required diagnostics. If init is not
                        specified it will be set equal to :
                        p+1, if the sample size is smaller than 40;</p> <p>
                        min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
                        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tstat" class="clearfix"></div><h3 id="input_argument_namevalue_tstat" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tstat</code> &#8212;the kind of t-statistics which have to be monitored.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>tstat = 'trad' implies  monitoring of traditional t
-                       statistics (out.Tgls). In this case the estimate of \sigma^2 at step m
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tstat" class="clearfix"></div><h3 id="input_argument_namevalue_tstat" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tstat</code> &#8212;the kind of t-statistics which have to be monitored.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>tstat = 'trad' implies monitoring of traditional t
+                       statistics (out.Tgls). In this case, the estimate of \sigma^2 at step m
                        is based on s^2_m (notice that s^2_m&lt;&lt;\sigma^2 when m/n is
                        small) tstat = 'scal' (default) implies monitoring of
-                       rescaled t statistics In this scale the estimate of
+                       rescaled t statistics. In this scale the estimate of
                        \sigma^2 at step m is based on s^_m / var_truncnorm(m/n)
                        where var_truncnorm(m/n) is the variance of the truncated
                        normal distribution.</p> <p>
                        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tstat','trad'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If nocheck is equal to true no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If nocheck is equal to true, no check is performed on
                        matrix y and matrix X. Notice that y and X are left
-                       unchanged. In other words the additional column of ones for
+                       unchanged. In other words, the additional column of ones for
                        the intercept is not added. As default nocheck=false. The
                        controls on h, alpha and nsamp still remain
                        </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
@@ -1130,9 +1113,9 @@ m=500
                        is 95% and 99% confidence intervals are computed.</p> <p>
                        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.90 0.93]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_gridsearch" class="clearfix"></div><h3 id="input_argument_namevalue_gridsearch" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>gridsearch</code> &#8212;Algorithm to be used.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If gridsearch ==1 grid search will be used else the
-                       scoring algorith will be used.</p> <p>
+                       scoring algorithm will be used.</p> <p>
                                               REMARK: the grid search has only been implemented when
-                       there is just one explantory variable which controls
+                       there is just one explanatory variable which controls
                        heteroskedasticity
                        Example - 'gridsearch',1
                        Data Types - double
@@ -1169,7 +1152,7 @@ m=500
                ...;</p><p>
                last column = units forming subset in the final step (all
                units).</p></p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>n-init x 3 matrix which contains the monitoring of minimum
-               deletion residual or (m+1)ordered residual  at each step of
+               deletion residual or (m+1)ordered residual at each step of
                the forward search:
                1st col = fwd search index (from init to n-1);</p> <p>
                2nd col = minimum deletion residual;</p> <p>
@@ -1192,7 +1175,7 @@ m=500
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = monitoring of unbiased S2;</p> <p>
                3rd col = monitoring of R2;</p><p>
-               4th col = monitoring of rescaled S2. In this case the
+               4th col = monitoring of rescaled S2. In this case, the
                estimate of $\sigma^2$ at step m is divided by the
                consistency factor (to make the estimate asymptotically
                unbiased).</p></p></td></tr><tr valign="top"><td><code>coo</code></td><td><p><p>(n-init+1) x 3 matrix containing the monitoring of Cook or
@@ -1201,13 +1184,13 @@ m=500
                2nd col = monitoring of Cook distance;</p><p>
                3rd col = monitoring of modified Cook distance.</p></p></td></tr><tr valign="top"><td><code>Tgls</code></td><td><p>(n-init+1) x (p+1) matrix containing the monitoring of
                estimated t-statistics (as specified in option input 'tstat'
-               in each step of the forward search.</p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 Matrix which contains the unit(s)
+               in each step of the forward search).</p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 Matrix which contains the unit(s)
                included in the subset at each step of the fwd search.</p> <p>
                REMARK: in every step the new subset is compared with the
                old subset. Un contains the unit(s) present in the new
-               subset but not in the old one Un(1,2) for example contains
-               the unit included in step init+1 Un(end,2) contains the
-               units included in the final step of the search</p></p></td></tr><tr valign="top"><td><code>betaINT</code></td><td><p><p>Confidence intervals for the elements of $\beta$.</p> <p>
+               subset, but not in the old one. Un(1,2), for example, contains
+               the unit included in step init+1. Un(end,2) contains the
+               units included in the final step of the search.</p></p></td></tr><tr valign="top"><td><code>betaINT</code></td><td><p><p>Confidence intervals for the elements of $\beta$.</p> <p>
                  betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D
                  array.</p> <p>
                  Each third dimension refers to an element of beta:
@@ -1222,9 +1205,9 @@ m=500
                  The last two columns contain the lower
                  and upper confidence limits associated with conflev(end).</p><p>
 
-                 For example betaint(:,3:4,5) contain the lower and upper
+                 For example, betaint(:,3:4,5) contains the lower and upper
                  confidence limits for the fifth element of beta using
-                 confidence level specified in the second element of input
+                 confidence level specified in the second element of the input
                  option conflev.</p></p></td></tr><tr valign="top"><td><code>sigma2INT</code></td><td><p><p>confidence interval for $\sigma^2$.</p> <p>
                 1st col = fwd search index;</p> <p>
                 2nd col = lower confidence limit based on conflev(1);</p> <p>

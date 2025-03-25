@@ -27,9 +27,9 @@ significant LS at position 36 (pval = 1.7337e-10)
 significant LS at position 79 (pval = 4.793e-06)
 significant LS at position 41 (pval = 0)
 significant LS at position 101 (pval = 0.0096827)
-</pre><a href='http://rosa.unipr.it/fsda/LTStsLSmult.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\LTStsLSmult_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTStsLSmult_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_08.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_09.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_16.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_17.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 1.
+</pre><a href='http://rosa.unipr.it/fsda/LTStsLSmult.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\LTStsLSmult_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTStsLSmult_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_08.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_09.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTStsLSmult_16.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 1.
  Detection of multiple Level Shifts followed by variable selection on the
- dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load TTsugar   % UA-LT
+ dataset of the example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load TTsugar   % UA-LT
 yin2   = sugar{:,1};
 out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
 'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
@@ -42,7 +42,7 @@ model.X = outX(:,3:end);
 [out_LTSts]=LTSts(yin2,'model',out_model_1,...
 'plots',1,'msg',0,'dispresults',1,'SmallSampleCor',1,'conflev',1-0.01/length(yin2));</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple level shift and variable selection.</li></span></a></span></h3><div class="collapse"><p> Example 2.
      Detection of multiple Level Shifts followed by variable selection on the
-     dataset of example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load TTplant 
+     dataset of the example before.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load TTplant 
 yin2   = plant{:,1};
 out = LTStsLSmult(yin2,'maxLS',4,'alphaLTS',0.01,...
 'alphaLS',0.01,'thresLS',0.01,'plots',1,'msg',1);
@@ -107,8 +107,8 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                T=length(y).</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alphaLTS',0.1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
-               the algorithm should resist. In this case any value greater
-               than 0 but smaller or equal than 0.5 will do fine. Default
+               the algorithm should resist. In this case, any value greater
+               than 0, but smaller or equal than 0.5, will do fine. Default
                value 0.1.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',0.4
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_maxLS" class="clearfix"></div><h3 id="input_argument_namevalue_maxLS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>maxLS</code> &#8212;maximum number of Level Shifts.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Maximum number of
@@ -118,7 +118,7 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                which will be used. The model structure contains the following
                fields:
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
-                         data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
+                         data s=12 (default), for quarterly data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 0 implies no trend;</p> <p>
                        trend = 1 implies linear trend with intercept (default);</p> <p>
                        trend = 2 implies quadratic trend;</p> <p>
@@ -127,17 +127,17 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                         frequencies, i.e. harmonics, in the seasonal
                         component. Possible values for seasonal are
                         $0,1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
-                        If seasonal =0 we assume there is no seasonal
+                        If seasonal=0, we assume there is no seasonal
                         component.</p> <p>
-                        If seasonal =1 (default) we have:
+                        If seasonal=1 (default) we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;</p> <p>
-                        if seasonal =2 we have:
+                        if seasonal=2 we have:
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
-                        Note that when $s$ is even the sine term disappears
+                        Note that when $s$ is even, the sine term disappears
                         for $j=s/2$ and so the maximum number of
                         trigonometric parameters is $s-1$.</p> <p>
-                        If seasonal is a number greater than 100 then it
+                        If seasonal is a number greater than 100, then it
                         is possible to specify how the seasonal component
                         grows over time.</p> <p>
                         For example, seasonal = 101 implies a seasonal
@@ -151,9 +151,9 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                         follows:
                         $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
-                        seasonal =0 implies a non seasonal model.</p> <p>
-                       In the paper RPRH to denote the number of
-                       frequencies of the seasonal component
+                        seasonal=0 implies a non seasonal model.</p> <p>
+                       In the paper RPRH, to denote the number of
+                       frequencies of the seasonal component,
                        symbol B is used, while symbol G is used to denote
                        the order of the trend of the seasonal component.</p><p>
                        Therefore, for example, model.seasonal=201
@@ -171,27 +171,27 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                        and corresponding fitted values (second column) or
                        empty scalar. If model.ARtentout is not empty, when
                        the autoregressive component is present, the y
-                       values which are used to compute the autoregressive
-                       component are replaced by model.tentout(:,2) for
+                       values, which are used to compute the autoregressive
+                       component, are replaced by model.tentout(:,2) for
                        the units contained in model.tentout(:,1)
                                 Remark: the default model is for monthly data with no
                trend (1 parameter) + seasonal component with just one
                harmonic (2 parameters), no additional explanatory
-               variables and no level shift that is
+               variables and no level shift that is:
                                model=struct;</p> <p>
                                model.s=12;</p> <p>
                                model.trend=0;</p> <p>
                                model.seasonal=1;</p><p>
                                model.X=[];</p></p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p>0;</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Messages on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>Scalar which controls whether to display or not messages
-               on the screen. If msg==true (default) messages are displayed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Messages on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether to display or not messages
+               on the screen. If msg==true (default), messages are displayed on
                the screen about estimated time to compute the estimator
                and the warnings about 'MATLAB:rankDeficientMatrix',
                'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
-               are set to off else no message is displayed on the screen
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',true
+               are set to off, else no message is displayed on the screen.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_sampleLS" class="clearfix"></div><h3 id="input_argument_namevalue_sampleLS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>sampleLS</code> &#8212;vector of the positions in which Level Shift should be
-               tested.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It is be the vector for the parameter 
+               tested.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It is the vector for the parameter 
                    model.lshift of the LTSts function.</p> <p>
                    Default is 3.</p><p> 
                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'sampleLS', [5 16 27 35]
@@ -204,7 +204,7 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                Default is 20.</p><p> 
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'thresLS', 50
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a two panel plot will be shown on the screen.</p> <p>
-               The upper panel contains the orginal time series with
+               The upper panel contains the original time series with
                fitted values. The bottom panel will contain the plot
                of robust residuals against index number. The confidence
                level which is used to draw the horizontal lines associated
