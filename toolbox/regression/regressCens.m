@@ -516,3 +516,5 @@ end
             +obsBetween.*(log( normpdf((yin-yhat)/sigma)+1e-12 )-log(sigma)));
     end
 end
+
+%FScategory:REG-Regression

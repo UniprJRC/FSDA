@@ -5,7 +5,7 @@ function [out] = regressCensTra(y,X, varargin)
 %<a href="matlab: docsearchFS('regressCensTra')">Link to the help function</a>
 %
 % This routines estimates the regression coefficients, sigma and the
-% trasformation parameter lambda. The model is estimated by Maximum
+% transformation parameter lambda. The model is estimated by Maximum
 % Likelihood (ML) assuming a Gaussian (normal) distribution of the error
 % term in the transformed scale. The maximization of the likelihood
 % function is done by function fmincon of the optimization toolbox.
@@ -580,3 +580,5 @@ end
             +obsBetween.*(log( normpdf((ytra-yhat)/sigma)+1e-12 )-log(sigma)));
     end
 end
+
+%FScategory:REG-Regression

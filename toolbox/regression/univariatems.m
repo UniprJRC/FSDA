@@ -463,3 +463,5 @@ end
 Texcl=R2betT(~boo,:);
 
 end
+
+%FScategory:REG-Regression

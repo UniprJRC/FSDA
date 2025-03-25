@@ -148,4 +148,7 @@ var_cov_matrix = FM_cov_matrix(N,T,data)
     end
 
     var_cov_matrix=real((c_p*c_p')/(N+1)); % already includes conjugation
-end
+ end
+
+
+%FScategory:FMvol

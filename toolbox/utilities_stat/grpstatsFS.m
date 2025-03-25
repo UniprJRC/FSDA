@@ -380,3 +380,4 @@ else
     statTable=array2table(statArray,"RowNames",vnames,"VariableNames",nomiStat);
 end
 end
+%FScategory:UTISTAT
