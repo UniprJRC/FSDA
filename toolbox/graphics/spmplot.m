@@ -524,7 +524,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     nameY=["aaaawew" "bbccccc" "ccdddd"];
     % Truncated the name of the variables to 3 characters and rotate
     % the labels by 45 degrees.
-    spmplot(Y,'nameY',nameY,'nameYlength',3,'nameYrot',45);
+    spmplot(randn(30,3),'nameY',nameY,'nameYlength',3,'nameYrot',45);
 %}
 
 %{
