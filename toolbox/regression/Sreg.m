@@ -251,7 +251,7 @@ function [out , varargout] = Sreg(y,X,varargin)
     % Sreg with optimal rho function. 
     n=200;
     p=3;
-    randn('state', 123456);
+    rng(123456);
     X=randn(n,p);
     % Uncontaminated data.
     y=randn(n,1);
