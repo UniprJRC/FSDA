@@ -1031,8 +1031,8 @@ outcell=cell(lalpha,1);
 MU=zeros(k,v,lalpha);
 SIGMA=cell(lalpha,1);
 
-%parfor (j=1:lalpha, numpool)
-for j=1:lalpha
+parfor (j=1:lalpha, numpool)
+%for j=1:lalpha
     outj  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt, ...
         equalweights,hh(j),nselected,k,restrnum,restrfactor,userepmat,nParam, DfMmex);
     
@@ -1136,7 +1136,7 @@ for j=2:lalpha
         % therefore automatic relabelling is not possible.
         newl=setdiff(seqk,newlab);
         notinseqk=setdiff(seqk,newl);
-        if length(newl)==1 && length(notinseqk)==1
+        if isscalar(newl) && isscalar(notinseqk)
             newlab(indmaxdist)=notinseqk;
             if isequal(sort(newlab),seqk)
                 MU(:,:,j)=MU(newlab,:,j);
@@ -1367,7 +1367,7 @@ if d>0
                 ylabel('y2')
             end
             
-            clickableMultiLegend(hh)
+            clickableMultiLegend(hh);
             if jk>2
                 legend hide
             end
