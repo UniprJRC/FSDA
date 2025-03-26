@@ -3,10 +3,10 @@ function out=CorAna(N, varargin)
 %
 % Correspondence analysis is a statistical technique that provides a
 % graphical representation of contingency tables.
-% The function also deals with "supplementary points", that is additional
-% rows and columns which have meaningful profiles that are projected onto
-% the low-dimensional subspace and their positions relative to the active
-% elements is determined. The typical results consist of a set of
+% The function also deals with "supplementary points", that is, additional
+% rows and columns that have meaningful profiles that are projected onto
+% the low-dimensional subspace, and their positions relative to the active
+% elements are determined. The typical results consist of a set of
 % eigenvalues, a table with the row coordinates, and a table with the
 % column coordinates. The eigenvalues provide information of the
 % variability in the data. The row coordinates provide information about
@@ -22,7 +22,7 @@ function out=CorAna(N, varargin)
 %                 2D Array or Table.
 %                 2D array or table or timetable which contains the input contingency
 %                 table (say of size I-by-J) or the original data matrix X.
-%                 In this last case N=crosstab(X(:,1),X(:,2)). As default
+%                 In this last case N=crosstab(X(:,1),X(:,2)), as default
 %                 procedure assumes that the input is a contingency table.
 %
 %  Optional input arguments:
@@ -36,7 +36,7 @@ function out=CorAna(N, varargin)
 %       Lr   :  Vector of row labels. Cell.
 %               Cell containing the labels of the rows of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table, because in this case  Lr=N.Properties.RowNames;
+%               table, because in this case Lr=N.Properties.RowNames;
 %               Example - 'Lr',{'a' 'b' 'c'}
 %               Data Types - cell array of strings
 %
@@ -55,77 +55,78 @@ function out=CorAna(N, varargin)
 %                       If indexes or cell array of strings are supplied in
 %                       a vector, we assume that supplementary rows belong
 %                       to contingency table N. For example:
-%                       - if Sup.r=[2 5] (that is Sup.r is a numeric vector
+%                       - if Sup.r=[2 5] (that is, Sup.r is a numeric vector
 %                         which contains row indexes) we use rows 2 and 5
 %                         of the input contingency table as supplementary
 %                         rows.
 %                       - if Sup.r={'Junior-Managers' 'Senior-Employees'}
-%                         (that is Sup.r is a cell array of strings) we use
+%                         (that is, Sup.r is a cell array of strings) we use
 %                         rows named 'Junior-Managers' and
 %                         'Senior-Employees' of the input contingency table
 %                         as supplementary rows. Of course the length of
 %                         Sup.r must be smaller than the number of rows of
 %                         the contingency matrix divided by 2.
-%                      - if Sup.r is a table, or a 2D array
+%                      - if Sup.r is a table, or a 2D array,
 %                         supplementary rows do not belong to N. Note that
 %                         if Sup.r is a table, the labels of the rows are
-%                         taken directly from the table. If on the other
-%                         hand Sup.r is a matrix the names of the rows
+%                         taken directly from the table. If, on the other
+%                         hand, Sup.r is a matrix, the names of the rows
 %                         of the supplementary units can be given using
 %                         Sup.Lr as a cell array of strings.
-%               Sup.Lr = cell array of strings containing the labels of the
+%              Sup.Lr = cell array of strings containing the labels of the
 %                       supplementary units if Sup.r is a 2D numeric array.
 %               Sup.c = vector containing column indexes or vector of cell
 %                       array of strings or table or 2D numeric array
-%                       use as supplementary columns, or table or 2D
+%                       used as supplementary columns, or table or 2D
 %                       numeric array containing supplementary rows.
 %                       If indexes or cell array of strings are supplied in
 %                       a vector, we assume that supplementary columns belong
 %                       to contingency table N. For example:
-%                       - if Sup.c=[2 3] (that is Sup.c is a
-%                       numeric vector which contains column indexes) we use
+%                       - If Sup.c = [2 3] (that is, Sup.c is a
+%                       numeric vector that contains column indexes), we use
 %                       columns 2 and 3 of the input contingency table as
 %                       supplementary columns.
-%                       - if Sup.c={'Smokers' 'NonSmokers'}
-%                        (that is Sup.c is a cell array of strings) we use
+%                       - If Sup.c = {'Smokers' 'NonSmokers'}
+%                        (that is, Sup.c is a cell array of strings), we use
 %                        columns of the contingency table labeled
 %                        'Smokers' and 'NonSmokers' of the input
 %                        contingency table N as supplementary columns.
 %                        Of course the length of Sup.c must be smaller than
 %                        the number of columns of the contingency matrix
 %                        divided by 2.
-%                       - If Sup.c is a table, or a 2D array
+%                       - If Sup.c is a table, or a 2D array,
 %                         supplementary columns do not belong to N. Note that
 %                         if Sup.c is a table, the labels of the columns are
-%                         taken directly from the table. If on the other
-%                         hand Sup.c is a matrix the names of the columns
+%                         taken directly from the table. If, on the other
+%                         hand, Sup.c is a matrix, the names of the columns
 %                         of the supplementary units can be given using
 %                         Sup.Lc as a cell array of strings.
-%               Sup.Lc = cell array of strings containing the labels of the
-%                       supplementary units if Sup.r is a 2D numeric array.
-%                       Example - 'Sup',Sup=struct; Sup.c={'c2' 'c4'}
+%              Sup.Lc = cell array of strings containing the labels of the
+%                       supplementary units, if Sup.r is a 2D numeric array.
+%                       Example - 'Sup', Sup=struct; Sup.c={'c2' 'c4'}
 %                       Data Types - struct
-%                       REMARK: The default value of Sup is a missing value
-%                       that is we assume that there are no supplementary
+%                       REMARK: The default value of Sup is a missing
+%                       value;
+%                       that is, we assume that there are no supplementary
 %                       rows or columns.
 %
 % datamatrix  : Data matrix or contingency table. Boolean. If
-%               datamatrix is true the first input argument N is forced to
-%               be interpreted as a data matrix, else if the input argument
-%               is false N is treated as a contingency table. The default
-%               value of datamatrix is false, that is the procedure
+%               datamatrix is true, the first input argument N is forced to
+%               be interpreted as a data matrix; else, if the input argument
+%               is false, N is treated as a contingency table. The default
+%               value of datamatrix is false; that is, the procedure
 %               automatically considers N as a contingency table (in array
 %               or table format). If datamatrix is true, N can be an array
 %               or a table of size n-by-2. Note that if N has more than two
-%               columns correspondence analysis is based on the first two
+%               columns, correspondence analysis is based on the first two
 %               columns of N (and a warning is produced).
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %
 %       plots : Plot on the screen. Scalar or structure.
-%               If plots = 1, a plot which shows the Principal
+%               If plots = 1, a plot that shows the principal
 %               coordinates of rows and columns is shown on the screen. If
-%               plots is a structure it may contain the following fields:
+%               plots is a structure, it may contain the following fields:
 %               plots.alpha = type of plot, scalar in the interval [0 1] or
 %               a string identifying the type of coordinates to use in the
 %               plot.
@@ -134,18 +135,18 @@ function out=CorAna(N, varargin)
 %                   standard coordinates. Distances between row points are
 %                   (approximated) chi-squared distances
 %                   (row-metric-preserving). The position of the row points
-%                   are at the weighted average of the column points.
-%                   Note that 'rowprincipal' can also be specified setting
+%                   is at the weighted average of the column points.
+%                   Note that 'rowprincipal' can also be specified by setting
 %                   plots.alpha=1.
 %               If $plots.alpha='colprincipal'$, the column
 %                   coordinates are referred to as principal coordinates
 %                   and the row coordinates as standard coordinates.
 %                   Distances between column points are (approximated)
 %                   chi-squared distances (column-metric-preserving). The
-%                   position of the column points are at the weighted
+%                   position of the column points is at the weighted
 %                   average of the row points.
 %                   Note that 'colprincipal' can also be
-%                   specified setting plots.alpha=0.
+%                   specified by setting plots.alpha=0.
 %               If $plots.alpha='symbiplot'$, the row and column coordinates
 %                   are scaled similarly. The sum of weighted squared
 %                   coordinates for each dimension is equal to the
@@ -154,7 +155,7 @@ function out=CorAna(N, varargin)
 %                   particularly useful if one is primarily interested in
 %                   the relationships between categories of row and column
 %                   variables rather than in the distances among rows or
-%                   among columns. 'symbiplot' can also be specified
+%                   among columns. 'symbiplot' can also be specified by
 %                   setting plots.alpha=0.5;
 %               If $plots.alpha='bothprincipal'$, both the rows and columns
 %                   are depicted in principal coordinates. Such a plot is
@@ -163,16 +164,16 @@ function out=CorAna(N, varargin)
 %                   does not provide a feasible solution in the sense that
 %                   it does not approximate matrix
 %                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$.
-%              plots.FontSize = scalar which specifies the font size of row
+%              plots.FontSize = scalar, which specifies the font size of row
 %                   (column) labels. The default value is 10.
-%              plots.MarkerSize = scalar which specifies the marker size
+%              plots.MarkerSize = scalar, which specifies the marker size
 %                   of symbols associated with rows or columns. The default
 %                   value is 10.
 %                 Example - 'plots',1
 %                 Data Types - scalar double | struct
 %
 %  dispresults :  Display results on the screen. Boolean.
-%                 If dispresults is true (default) it is possible to see on the
+%                 If dispresults is true (default), it is possible to see on the
 %                 screen all the summary results of the analysis.
 %                 Example - 'dispresults',false
 %                 Data Types - Boolean
@@ -191,24 +192,24 @@ function out=CorAna(N, varargin)
 %
 %  Output:
 %
-%  out :     A structure containing the following fields
+%  out :     A structure containing the following fields:
 %
 %
 % 		out.Lr         =  cell of length $I$ containing the labels of
-%                         active rows (i.e. the rows which participated to
+%                         active rows (i.e., the rows that participated in
 %                         the fit).
 % 		out.Lc         =  cell of length $J$ containing the labels of
-%                         active columns (i.e. the columns which participated to
+%                         active columns (i.e., the columns that participated in
 %                         the fit).
 % 		out.N         =   $I$-by-$J$-array containing contingency table
-%                         referred to active rows and active columns (i.e.
-%                         referred to the rows/columns which participated
-%                         to the fit). The $(i,j)$-th element is equal to
+%                         referred to active rows and active columns (i.e.,
+%                         referred to the rows/columns that participated
+%                         in the fit). The $(i,j)$-th element is equal to
 %                         $n_{ij}$,
 %                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
 %                         sum of the elements of out.P is $n$ (the grand
 %                         total).
-% 		out.Ntable    =   Same as out.N but in table format (with row and
+% 		out.Ntable    =   Same as out.N, but in table format (with row and
 %                         column names).
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
@@ -217,20 +218,19 @@ function out=CorAna(N, varargin)
 % 		out.n         =   Grand total. out.n is equal to sum(sum(out.N)).
 %                         This is the number of observations.
 % 		out.Nhat      =   $I$-by-$J$-array containing contingency table
-%                         referred to active rows (i.e. referred to the rows which
-%                         participated to the fit) under the independence hypothesis.
+%                         referred to active rows (i.e., referred to the rows that
+%                         participated in the fit) under the independence hypothesis.
 %                         The $(i,j)$-th element is equal to $n_{i.}n_{.j}/n$,
 %                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
 %                         sum of the elements of out.Nhat is $n$ (the grand
 %                         total).
-% 		out.Nhattable    =   Same as out.Nhat but in table format (with row and
+% 		out.Nhattable =   Same as out.Nhat, but in table format (with row and
 %                         column names).
 % 		out.P         =   $I$-by-$J$-array containing correspondence matrix
 %                         (proportions). The $(i,j)$-th element is equal to
 %                         $n_{ij}/n$, $i=1, 2, \ldots, I$ and $j=1, 2,
-%                         \ldots, J$.  The sum of the elements of out.P is
-%                         1.
-% 		out.Ptable    =   Same as out.P but in table format (with row and
+%                         \ldots, J$. The sum of the elements of out.P is 1.
+% 		out.Ptable    =   Same as out.P, but in table format (with row and
 %                         column names).
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
@@ -240,7 +240,7 @@ function out=CorAna(N, varargin)
 %                         \]
 %                         $r$ is also the centroid of column profiles.
 % 		out.Dr        =   Square matrix of size $I$ containing on the
-%                         diagonal the row masses.  This is matrix $D_r$.
+%                         diagonal the row masses. This is matrix $D_r$.
 %                         \[
 %                           D_r=diag(r)
 %                         \]
@@ -341,22 +341,19 @@ function out=CorAna(N, varargin)
 %                         between row points or the distance between column
 %                         points can be really interpreted.
 %                         The distance between any row and column items is
-%                         not meaningful! You can only make a general
+%                         not meaningful! You can only make general
 %                         statements about the observed pattern. In order to
 %                         interpret the distance between column and row
 %                         points, the column profiles must be presented in
-%                         row space or vice-versa. This type of map is called
+%                         row space or vice versa. This type of map is called
 %                         asymmetric biplot.
 % out.InertiaRows     =   $I$-by-$2$ matrix containing absolute and relative
-%                         contribution of each row to TotalInertia.
-%                         The inertia of a point is the squared distance of
-%                         point $d_i^2$ to the centroid multiplied by its
-%                         point mass (and is given in the first column). 
-%                         The sum of the inertia of the points
-%                         is the total inertia. The relative contribution
-%                         of each row is the absolute contribution of each
-%                         row divided by the TotalInertia (and is given in
-%                         the second column).
+%                         contribution of each row to total inertia.
+%                         The inertia of a point is the squared distance
+%                         of point $d_i^2$ to the centroid. The absolute
+%                         contribution of a point to total inertia is the
+%                         inertia of the point multiplied by the point
+%                         mass.
 %                         1st column = absolute contribution of each row
 %                         to TotalInertia. The sum of values of the first
 %                         column is equal to TotalInertia;
@@ -364,15 +361,12 @@ function out=CorAna(N, varargin)
 %                         to TotalInertia. The sum of the values of the
 %                         second column is equal to 1.
 % out.InertiaCols     =   $J$-by-$2$ matrix containing absolute and relative
-%                         contribution of each column to total inertia. The
-%                         inertia of a point is the squared distance of
-%                         point $d_i^2$ to the centroid multiplied by the
-%                         mass (and is given in the first column).
-%                         The sum of the inertia of the points
-%                         is the total inertia. The relative contribution
-%                         of each row is the absolute contribution of each
-%                         row divided by the TotalInertia (and is given in
-%                         the second column).
+%                         contribution of each column to total inertia.
+%                         The inertia of a point is the squared distance
+%                         of point $d_i^2$ to the centroid. The absolute
+%                         contribution of a point to total inertia is the
+%                         inertia of the point multiplied by the point
+%                         mass.
 %                         1st column = absolute contribution of each
 %                         column to TotalInertia. The sum of values of the
 %                         first column is equal to TotalInertia;
@@ -387,10 +381,10 @@ function out=CorAna(N, varargin)
 %                         $\lambda_2=\gamma_{22}^2$ .... The sum of each
 %                         column of matrix Point2InertiaRows is equal to 1.
 %                           Remark: the points with the larger value of
-%                           Point2Inertia are those which contribute the
+%                           Point2Inertia are those that contribute the
 %                           most to the definition of the dimension. If the
 %                           row contributions were uniform, the expected
-%                           value would be 1/size(contingeny_table,1) For a
+%                           value would be 1/size(contingeny_table,1). For a
 %                           given dimension, any row with a contribution
 %                           larger than this threshold could be considered
 %                           as important in contributing to that dimension.
@@ -399,14 +393,14 @@ function out=CorAna(N, varargin)
 %                         dimension. The sum of each column of matrix
 %                         Point2InertiaCols is equal to 1.
 % out.Dim2InertiaRows  =  $I$-by-$K$ matrix containing relative
-%                         contributions of latent dimensions to inertia of
+%                         contributions of latent dimensions to the inertia of
 %                         the row points. These numbers can be
-%                         interpreted as squared correlations and measures
+%                         interpreted as squared correlations and measure
 %                         the degree of association between row points
 %                         and a particular axis. The sum of
 %                         each row of matrix Dim2InertiaRows is equal to 1.
 % out.Dim2InertiaCols  =  $J$-by-$K$ matrix containing relative
-%                         contributions of latent dimensions to inertia of
+%                         contributions of latent dimensions to the inertia of
 %                         the column points. These numbers can be
 %                         interpreted as squared correlations and measure
 %                         the degree of association between columns points
@@ -414,19 +408,19 @@ function out=CorAna(N, varargin)
 %                         matrix Dim2InertiaCols is equal to 1.
 % out.cumsumDim2InertiaRows  =  $I$-by-$K$ matrix containing cumulative
 %                         sum of the contributions of latent dimensions to
-%                         inertia of the row points. These cumulative sums
+%                         the inertia of the row points. These cumulative sums
 %                         are equivalent to the communalities in PCA.
 %                         The last column of matrix cumsumDim2InertiaRows
 %                         is equal to 1.
 % out.cumsumDim2InertiaCols  =  $J$-by-$K$ matrix containing cumulative
 %                          sum of the contributions of latent dimensions to
-%                          inertia of the column points. These cumulative sums
+%                          the inertia of the column points. These cumulative sums
 %                          are equivalent to the communalities in PCA.
 %                          The last column of matrix cumsumDim2InertiaCols
 %                          is equal to 1.
 % out.sqrtDim2InertiaRows = $I$-by-$K$ matrix containing correlation of
 %                          rows points with latent dimension axes. Similar
-%                          to component loadings in PCA
+%                          to component loadings in PCA.
 % out.sqrtDim2InertiaCols = $I$-by-$K$ matrix containing correlation of
 %                          column points with latent dimension axes. Similar
 %                          to component loadings in PCA.
@@ -448,50 +442,50 @@ function out=CorAna(N, varargin)
 %                         $k=2$,
 %                         First column contains the row masses (vector
 %                         $r$).
-%                         Second column contains the scores of first dimension.
-%                         Third column contains the scores of second dimension.
-%                         Fourth column contains the inertia of each
-%                         point, where inertia of point is the squared
+%                         The second column contains the scores of the first dimension.
+%                         The third column contains the scores of the second dimension.
+%                         The fourth column contains the inertia of each
+%                         point, where the inertia of a point is the squared
 %                         distance of point $d_i^2$ to the centroid.
-%                         Fifth column contains the relative contribution
+%                         The fifth column contains the relative contribution
 %                         of each point to the explanation of the inertia
 %                         of the first dimension. The sum of the elements
 %                         of this column is equal to 1.
-%                         Sixth column contains the relative contribution
+%                         The sixth column contains the relative contribution
 %                         of each point to the explanation of the inertia
 %                         of the second dimension. The sum of the elements
 %                         of this column is equal to 1.
-%                         Seventh column contains the relative
+%                         The seventh column contains the relative
 %                         contribution of the first dimension to the
 %                         explanation of the inertia of the point.
-%                         Eight column contains the relative
+%                         The eighth column contains the relative
 %                         contribution of the second dimension to the
 %                         explanation of the inertia of the point.
 %   out.OverviewCols  =   $J$-times-(k*3+2) table containing an overview
 %                         of row points. More precisely if we suppose that $k=2$
 %                         First column contains the column masses (vector
 %                         $c$).
-%                         Second column contains the scores of first dimension.
-%                         Third column contains the scores of second dimension.
-%                         Fourth column contains the inertia of each
-%                         point, where inertia of point is the squared
+%                         The second column contains the scores of the first dimension.
+%                         The third column contains the scores of the second dimension.
+%                         The fourth column contains the inertia of each
+%                         point, where the inertia of a point is the squared
 %                         distance of point $d_i^2$ to the centroid.
-%                         Fifth column contains the relative contribution
+%                         The fifth column contains the relative contribution
 %                         of each point to the explanation of the inertia
 %                         of the first dimension. The sum of the elements
 %                         of this column is equal to 1.
-%                         Sixth column contains the relative contribution
+%                         The sixth column contains the relative contribution
 %                         of each point to the explanation of the inertia
 %                         of the second dimension. The sum of the elements
 %                         of this column is equal to 1.
-%                         Seventh column contains the relative
+%                         The seventh column contains the relative
 %                         contribution of the first dimension to the
 %                         explanation of the inertia of the point.
-%                         Eight column contains the relative
+%                         The eighth column contains the relative
 %                         contribution of the second dimension to the
 %                         explanation of the inertia of the point.
 % 		out.LrSup         =  cell containing the labels of the
-%                         supplementary rows (i.e. the rows whicg did not
+%                         supplementary rows (i.e. the rows which did not
 %                         participate to the fit).
 % 		out.LcSup         =  cell containing the labels of
 %                         supplementary columns (i.e. the columns which did
@@ -509,7 +503,7 @@ function out=CorAna(N, varargin)
 %                         supplementary columns.
 %                         If there are no supplementary columns this field
 %                         is not present.
-% out.SupColsNtable  =   Same as out.SupColsN but in table format (with row and
+% out.SupColsNtable  =    Same as out.SupColsN but in table format (with row and
 %                         column names). This is the contingency table referred
 %                         to supplementary columns.
 %                         If there are no supplementary columns this field
@@ -667,7 +661,7 @@ function out=CorAna(N, varargin)
     cl=["Big" "Athletic" "Friendly"	"Trainable" "Resourceful" "Animal" "Lucky"];
     Ntable=array2table(N,"RowNames",rl,"VariableNames",cl);
     out=CorAna(Ntable);
-    % In the center of the map we have Wallaby and Lucky. Does this mean
+    % In the center of the map, we have Wallaby and Lucky. Does this mean
     % wallabies are lucky animals? No. Wallaby is pretty average on all the
     % variables being measured. As it has nothing that differentiates it, the
     % result is that it is in the middle of the map (i.e., near the origin).
@@ -679,7 +673,7 @@ function out=CorAna(N, varargin)
 %% Beginning of code
 
 % Check MATLAB version. If it is not smaller than 2014a, output is
-% also shown in table format
+% also shown in table format.
 verMatlab=verLessThan('matlab','8.3.0');
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
@@ -699,7 +693,7 @@ else
 end
 
 % If input is a datamatrix it is necessary to construct the contingency
-% table
+% table.
 if datamatrix == true
     if size(N,2)>2
         warning('FSDA:CorAna:TooManyVars','Input array or table has more than 2 columns. CorAna uses the first two');
@@ -710,39 +704,39 @@ if datamatrix == true
         [N,~,~,labelsTab] =crosstab(N(:,1),N(:,2));
     end
     [I,J]=size(N);
-    % default labels for rows of contingency table
+    % default labels for rows of contingency table.
     Lr=labelsTab(1:I,1);
-    % default labels for columns of contingency table
+    % default labels for columns of contingency table.
     Lc=labelsTab(1:J,2);
     if ~verMatlab
-        % Make valid names
+        % Make valid names.
         Lr=matlab.lang.makeValidName(Lr);
         Lc=matlab.lang.makeValidName(Lc);
     end
 else
     [I,J]=size(N);
     % Size of N
-    % default labels for rows of contingency table
+    % default labels for rows of contingency table.
     Lr=cellstr(strcat('r',num2str((1:I)')));
-    % default labels for columns of contingency table
+    % default labels for columns of contingency table.
     Lc=cellstr(strcat('c',num2str((1:J)')));
 end
 
-% default value for supplementary units
+% default value for supplementary units.
 Sup='';
 k=2;
 plots=1;
 
-% Default font size for labels of rows or colums to add to the plot
+% Default font size for labels of rows or columns to add to the plot
 FontSizedef=10;
 MarkerSizedef=10;
 dispresults=true;
 
 % Dimensions to show in the plot. The default is to show the first two
 % dimensions.
-% d1= dimension to show in the x axis of correspondence analysis plot
+% d1= dimension to show in the x axis of correspondence analysis plot.
 d1=1;
-% d2= dimension to show in the y axis of correspondence analysis plot
+% d2= dimension to show in the y axis of correspondence analysis plot.
 d2=2;
 
 options=struct('Lr',{Lr},'Lc',{Lc},'k',k,'Sup',Sup,'plots',plots,'datamatrix',false,...
@@ -753,15 +747,15 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
+        % Check if number of supplied options is valid.
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:CorAna:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        % Check if user options are valid options
+        % Check if user options are valid options.
         aux.chkoptions(options,UserOptions)
     end
 
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the options chosen by the user.
     if nargin > 2
         for i=1:2:length(varargin)
             options.(varargin{i})=varargin{i+1};
@@ -782,7 +776,7 @@ if ~isempty(UserOptions)
 
 end
 
-% Extract labels for rows and columns
+% Extract labels for rows and columns.
 if ~verMatlab && (istable(N) || istimetable(N))
     Lc=N.Properties.VariableNames;
     if istimetable(N)
@@ -796,7 +790,7 @@ else
     if isempty(Lr)
         Lr=cellstr(num2str((1:I)'));
     else
-        % Check that the length of Lr is equal to I
+        % Check that the length of Lr is equal to I.
         if length(Lr)~=I
             error('FSDA:CorAna:WrongInputOpt','Wrong length of row labels');
         end
@@ -805,7 +799,7 @@ else
     if isempty(Lc)
         Lc=cellstr(num2str((1:J)'));
     else
-        % Check that the length of Lc is equal to J
+        % Check that the length of Lc is equal to J.
         if length(Lc)~=J
             error('FSDA:CorAna:WrongInputOpt','Wrong length of column labels');
         end
@@ -816,7 +810,7 @@ else
 end
 
 % Nred will contain the contingency table after removing supplementary rows
-% and columns (if supplementary rows and columns belong to the table)
+% and columns (if supplementary rows and columns belong to the table).
 Nred = N;
 
 if ~verMatlab
@@ -827,16 +821,16 @@ end
 
 if ~isempty(Sup)
 
-    % if Sup.r (Sup.c) is a cell or is character or it is a numeric vector,
-    % then the supplementary rows (columns) belong to the the actual
-    % contingency table, else if Sup.r (Sup.c) is a Matlab table then the
-    % supplementary units do not belong to the actual contingency table N
+    % If Sup.r (Sup.c) is a cell or a character or it is a numeric vector,
+    % then the supplementary rows (columns) belong to the actual
+    % contingency table; else, if Sup.r (Sup.c) is a Matlab table, then the
+    % supplementary units do not belong to the actual contingency table N.
 
     if isfield(Sup,'r')
 
         if iscell(Sup.r) || ischar(Sup.r)
-            % find the indexes of the rows of matrix N to delete (rows to
-            % use as supplementary rows)
+            % Find the indexes of the rows of matrix N to delete (rows to
+            % use as supplementary rows).
             if ~verMatlab
                 Sup.r=matlab.lang.makeValidName(Sup.r);
             end
@@ -853,7 +847,7 @@ if ~isempty(Sup)
             LrSup = Lr;
             LrSup = LrSup(Indexesr);
             % Delete the labels of contingency table associated to
-            % supplementary rows
+            % supplementary rows.
             Lr(Indexesr) = [];
 
         elseif ~verMatlab && istable(Sup.r)
@@ -863,7 +857,7 @@ if ~isempty(Sup)
             SupRowsNtable=Sup.r;
         elseif  ~isvector(Sup.r)
             Indexesr='';
-            % In this case there is a matrix (not a table) and labels are supplied separately
+            % In this case, there is a matrix (not a table) and labels are supplied separately.
             SupRowsN=Sup.r;
             LrSup=Sup.Lr;
             if ~verMatlab
@@ -877,16 +871,16 @@ if ~isempty(Sup)
             end
             LrSup=Lr;
             LrSup = LrSup(Indexesr);
-            % Delete the labels of contingency table associated to supplementary rows
+            % Delete the labels of contingency table associated to supplementary rows.
             Lr(Indexesr)=[];
         end
     else
         Indexesr='';
         LrSup='';
     end
-    % end of part referred to labels for supplementary rows
+    % end of part referred to labels for supplementary rows.
 
-    % beginning of part referred to labels for supplementary columns
+    % beginning of the part referred to labels for supplementary columns.
     if isfield(Sup,'c')
         if iscell(Sup.c) || ischar(Sup.c)
             if ~verMatlab
@@ -894,7 +888,7 @@ if ~isempty(Sup)
             end
 
             % Find the indexes of the rows to delete (rows to use as
-            % supplementary rows)
+            % supplementary rows).
             Indexesc=zeros(length(Sup.c),1);
             for i=1:length(Sup.c)
                 if iscell(Sup.c)
@@ -906,7 +900,7 @@ if ~isempty(Sup)
             LcSup=Lc;
             LcSup = LcSup(Indexesc);
             % Delete the labels of contingency table associated to
-            % supplementary rows
+            % supplementary rows.
             Lc(Indexesc)=[];
 
         elseif ~verMatlab && istable(Sup.c)
@@ -917,7 +911,7 @@ if ~isempty(Sup)
 
         elseif  ~isvector(Sup.c)
             Indexesc='';
-            % In this case there is a matrix (not a table) and labels are supplied separately
+            % In this case, there is a matrix (not a table) and labels are supplied separately.
             SupColsN=Sup.c;
             LcSup=Sup.Lc;
             if ~verMatlab
@@ -932,7 +926,7 @@ if ~isempty(Sup)
             LcSup=Lc;
             LcSup = LcSup(Indexesc);
             % Delete the labels of contingency table associated to
-            % supplementary rows
+            % supplementary rows.
             Lc(Indexesc)=[];
 
         end
@@ -942,8 +936,8 @@ if ~isempty(Sup)
     end
 
 
-    % if ~isempty(Indexesr) this means that supplementary rows belong to
-    % matrix N
+    % if ~isempty(Indexesr), means that supplementary rows belong to
+    % matrix N.
     if ~isempty(Indexesr)
         % Contingency table referred to supplementary rows.
         if ~isempty(Indexesc)
@@ -966,8 +960,8 @@ if ~isempty(Sup)
     end
 
 
-    % if ~isempty(Indexesc) this means that supplementary columns belong to
-    % matrix N
+    % if ~isempty(Indexesc), means that supplementary columns belong to
+    % matrix N.
     if ~isempty(Indexesc)
         % Contingency table referred to supplementary columns.
         if ~isempty(Indexesr)
@@ -996,42 +990,42 @@ end
 out.Lr=string(Lr);
 out.Lc=Lc;
 
-% Store contingency table (in 2D array format)
+% Store contingency table (in 2D array format).
 out.N=Nred;
 
 if ~verMatlab
-    % Store contingency table (in Matlab table format)
+    % Store contingency table (in Matlab table format).
     out.Ntable = Nredtable;
 end
 
 [I,J]=size(Nred);
 
-%vectors of ones
+%vectors of ones.
 onesI = ones(I,1);
 onesJ = ones(J,1);
 
-%grand total
+%grand total.
 n=sum(sum(Nred));
 
-out.I=I;        %number of active rows (excluding supplementary rows)
-out.J=J;        %number of active columns (excluding supplementary columns)
-out.n=n;        %grand total
+out.I=I;        %number of active rows (excluding supplementary rows).
+out.J=J;        %number of active columns (excluding supplementary columns).
+out.n=n;        %grand total.
 
-% P = correspondence matrix  containing relative frequencies
+% P = correspondence matrix containing relative frequencies.
 P = (1/n) * Nred;
 
-% r= vector which contains row masses = centroids of the column profiles
+% r = vector which contains row masses = centroids of the column profiles.
 r  = P * onesJ ;
 
 % Column masses = centroids of the row profiles r' * Dr^(-1) * P = 1' * P = c'
 c  = (onesI' * P)';
 
-% Nhat = expected frequencies under the independence hypothesis
+% Nhat = expected frequencies under the independence hypothesis.
 Nhat=(r*c')*n;
 out.Nhat=Nhat;
 
 if verMatlab==0
-    % Store Nhat in table or timetable format
+    % Store Nhat in a table or a timetable format.
     if isdatetime(Lr)
         Nhattable=array2timetable(Nhat,'RowTimes',Lr,'VariableNames',Lc);
     else
@@ -1042,7 +1036,7 @@ end
 
 out.P=P;
 if verMatlab==0
-    % Store P in table format
+    % Store P in a table format.
     if isdatetime(Lr)
         Ptable=array2timetable(P,'RowTimes',Lr,'VariableNames',Lc);
     else
@@ -1063,51 +1057,51 @@ out.Dc = Dc;        %column masses (diagonal matrix)
 ProfilesRows = Dr^(-1) * P;
 out.ProfilesRows = ProfilesRows;
 
-% Column profiles  (equation 4.14)
+% Column profiles (equation 4.14)
 ProfilesCols = P * Dc^(-1);
 out.ProfilesCols = ProfilesCols;
 
-% K = minimum number of dimensions
+% K = minimum number of dimensions.
 K = min(I-1,J-1);
 out.K = K;
 
-% k= number of retained dimensions
+% k = number of retained dimensions.
 out.k = k;
 
-% Standarized residuals
+% Standardized residuals.
 %
-% Residuals   = Dr^(1/2) * (Dr^(-1) * P - Ir * c') * Dc^(-1/2) = Dr^(-1/2) * (P - r * c') * Dc^(-1/2);
+% Residuals = Dr^(1/2) * (Dr^(-1) * P - Ir * c') * Dc^(-1/2) = Dr^(-1/2) * (P - r * c') * Dc^(-1/2);
 % Residualsij = sqrt( (p_{ij} - r_ic_j)^2 /r_ic_j ) =(p_{ij} - r_ic_j)/sqrt(r_ic_j)
 % Chi-square distances
-Residuals     =  Dr^(-1/2) * (P - r * c') * Dc^(-1/2);
+Residuals = Dr^(-1/2) * (P - r * c') * Dc^(-1/2);
 out.Residuals = Residuals;
 
 % SVD of Residuals = U*Gam*V'
 [U,Gam,V] = svd(Residuals);
 Gam = Gam(1:K,1:K);
-U   = U(:,1:K);
-V   = V(:,1:K);
+U = U(:,1:K);
+V = V(:,1:K);
 
-% Total inertia
+% Total inertia.
 % TotalInertia = sum_i sum_j (pij - ricj)^2 / ricj = chis/n
 TotalInertia     = sum(sum(Residuals.^2));
 out.TotalInertia = TotalInertia;
 
-% Chi-square statistic for the contingency table
+% Chi-square statistic for the contingency table.
 %
 % chi2     = n * sum_i sum_j (pij - ricj)^2 / ricj
 % Chi2stat = onesI'* (Residuals.*Residuals) * onesJ * n;
 Chi2stat     = n*TotalInertia;
 out.Chi2stat = Chi2stat;
 
-% Cramer's V
+% Cramer's V.
 out.CramerV = sqrt(Chi2stat/(n*(min(I,J)-1)));
 
 % Principal inertias
 % eigenvalues of Residuals'*Residuals
 % percentages of the total inertia
 
-% cumsumTotalInertia = cumulative proportion of explained inertia
+% cumsumTotalInertia = cumulative proportion of explained inertia.
 Gam2 = Gam.^2;
 cumsumTotalInertia = cumsum(diag(Gam2))/TotalInertia;
 
@@ -1163,7 +1157,7 @@ InertiaCols = Dc*sum(ColsPri.*ColsPri,2);
 InertiaCols_relative=InertiaCols / TotalInertia;
 out.InertiaCols = [InertiaCols InertiaCols_relative];
 
-% Contributions of rows to inertia of the dimension
+% Contributions of rows to the inertia of the dimension
 % Absolute row contributions: contributions of points to axes.
 Point2InertiaRows = Dr*RowsSta.*RowsSta;
 out.Point2InertiaRows = Point2InertiaRows;
@@ -1173,25 +1167,25 @@ out.Point2InertiaRows = Point2InertiaRows;
 Point2InertiaCols = Dc*ColsSta.*ColsSta;
 out.Point2InertiaCols = Point2InertiaCols;
 
-% Squared correlations of row points with axes
+% Squared correlations of row points with axes.
 Dim2InertiaRows = diag(InertiaRows)^(-1)*Dr*(RowsPri.*RowsPri);
 % Relative row contributions: contributions of axes (latent dimension) to
-% points; squared correlations of rows with axes
+% points; squared correlations of rows with axes.
 out.Dim2InertiaRows=Dim2InertiaRows;
 
 % Squared correlations of column points with axes. Relative columns
 % contributions: contributions of axes to points; squared correlations of
-% points with axes
+% points with axes.
 Dim2InertiaCols = diag(InertiaCols)^(-1)*Dc*(ColsPri.*ColsPri);
 out.Dim2InertiaCols=Dim2InertiaCols;
 
 % Cumulative sum of quality of display for each row in the reduced space.
-% The qualities are equivalent to the communalities in PCA
+% The qualities are equivalent to the communalities in PCA.
 cumsumDim2InertiaRows = cumsum(Dim2InertiaRows,2);
 out.cumsumDim2InertiaRows = cumsumDim2InertiaRows;
 
-% Cumulative sum of quality of display for each colum  in the reduced space.
-% The qualities are equivalent to the communalities in PCA
+% Cumulative sum of quality of display for each column in the reduced space.
+% The qualities are equivalent to the communalities in PCA.
 cumsumDim2InertiaCols = cumsum(Dim2InertiaCols,2);
 out.cumsumDim2InertiaCols = cumsumDim2InertiaCols;
 
@@ -1204,7 +1198,7 @@ sqrtDim2InertiaCols = sign(ColsPri).*sqrt(Dim2InertiaCols);
 out.sqrtDim2InertiaCols = sqrtDim2InertiaCols;
 
 if exist('Sup','var')
-    %Supplementary rows
+    %Supplementary rows.
     if isfield(Sup,'r')
 
         % The sum of each row of h must be equal to 1
@@ -1240,8 +1234,8 @@ if isstruct(plots) || plots==1
     FontSizeAxisLabels=12;
 
     if isstruct(plots)
-        % This anonymous function anables to extract the variable name to a
-        % string
+        % This anonymous function enables to extract the variable name into a
+        % string.
         ExtractVariableName=@(x) inputname(1);
 
         if isfield(plots,'alpha')
@@ -1262,8 +1256,8 @@ if isstruct(plots) || plots==1
 
             elseif strcmp(plots.alpha,'symbiplot')
                 % equivalent to alpha=0.5
-                typeR='RowsSym';        % rows are in symmetrical coordinates
-                typeC='ColsSym';        % columns are in symmetrical coordinates
+                typeR='RowsSym';        % rows are in symmetric coordinates
+                typeC='ColsSym';        % columns are in symmetric coordinates
                 titl='Biplot symmetrical model $\alpha=0.5$ $X=D_r^{-1/2}U\Gamma^{1/2} $ and $Y= D_c^{-1/2} \Gamma V^{1/2}$';
 
                 typeRdesc='Row scores in symmetric coordinates';
@@ -1297,7 +1291,7 @@ if isstruct(plots) || plots==1
                     warning('FSDA:CorAna:WrongInputOpt',['Input string ''' plots.alpha ''' is  not found'])
                     disp('Possible strings are')
                     disp(listStrings)
-                    error('FSDA:CorAna:WrongInputOpt','Please use one of the above strings')
+                    error('FSDA:CorAna:WrongInputOpt','Please use one of the strings above')
                 end
             end
         else
@@ -1338,7 +1332,7 @@ if isstruct(plots) || plots==1
     symbolsupcols='^';
     % Color for symbols and text for rows points
     colorrows='b';
-    % Color for symbols and text for  column rows
+    % Color for symbols and text for column rows
     colorcols='r';
     % Color for symbols and text for supplementary row points
     colorsuprows='b';
@@ -1360,8 +1354,8 @@ if isstruct(plots) || plots==1
 
     eval(['plot(' typeC '(:,' d1str '),' typeC '(:,' d2str '),' propC ')'])
 
-    % Add labels for row points and column points
-    % addx = adds a small right horizontal displacement for labels
+    % Add labels for row points and column points.
+    % addx = adds a small right horizontal displacement for labels.
     % addx=0.04;
     ax=axis;
     addx=(ax(2)-ax(1))/50;
@@ -1370,11 +1364,11 @@ if isstruct(plots) || plots==1
 
     title(titl,'Interpreter','Latex');
 
-    % Labels for axes
+    % Labels for axes.
     xlabel(['Dimension ',sprintf('%2.0f',d1),' (',sprintf('%5.1f',InertiaExplained(d1,3)*100),'%)'],'FontName', FontName, 'FontSize', FontSizeAxisLabels);
     ylabel(['Dimension ',sprintf('%2.0f',d2),' (',sprintf('%5.1f',InertiaExplained(d2,3)*100),'%)'],'FontName', FontName, 'FontSize', FontSizeAxisLabels);
 
-    % Add points and text associated to supplementary rows
+    % Add points and text associated to supplementary rows.
     if isstruct(Sup) && isfield(Sup,'r')
         propsupR=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolsuprows ,''',''Color'',''', colorsuprows , ''',''MarkerFaceColor'',''', colorsuprows ,...
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
@@ -1384,7 +1378,7 @@ if isstruct(plots) || plots==1
 
     end
 
-    % Add points and text associated to supplementary columns
+    % Add points and text associated to supplementary columns.
     if isstruct(Sup) && isfield(Sup,'c')
         propsupC=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolsupcols ,''',''Color'',''', colorsupcols , ''',''MarkerFaceColor'',''', colorsupcols ,...
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
@@ -1393,7 +1387,7 @@ if isstruct(plots) || plots==1
         eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),LcSup,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
     end
 
-    % Make axis equal and add cartesian axes
+    % Make the axis equal and add Cartesian axes
     axis(gca,'equal')
     xline(0); yline(0);
  else
@@ -1401,7 +1395,7 @@ if isstruct(plots) || plots==1
     typeC='ColsPri';        % columns are in principal coordinates
     CAplot=false;
 end
-% Score Rows and ScoreCols respectively contain scores for rows and columns
+% Score Rows and ScoreCols respectively, contain scores for rows and columns
 ScoreRows=eval(typeR);
 ScoreCols=eval(typeC);
 
@@ -1409,7 +1403,7 @@ ScoreCols=eval(typeC);
 % InertiaExplained is a matrix with 4 columns.
 % First column contains the singular values (the sum of the squared singular values is the
 % total inertia)
-% Second column contains the eigenvalues  (the sum of the eigenvalues is the
+% Second column contains the eigenvalues (the sum of the eigenvalues is the
 % total inertia)
 % Third column contains the variance explained by each latent dimension.
 % Fourth column contains the cumulative variance explained by each
@@ -1459,7 +1453,7 @@ if dispresults==true
 
     VarNamesforTab={'Scores', 'CntrbPnt2In' 'CntrbDim2In'};
     % CntrbPnt2In = relative contribution of points to explain total Inertia
-    % CntrbDim2In = relative contribution of latent dimension to exaplin total
+    % CntrbDim2In = relative contribution of latent dimension to explain total
     %               Inertia
     disp('ROW POINTS')
     disp(['Results for dimension: ' d1str])
@@ -1538,13 +1532,13 @@ if dispresults==true
 
 
 
-    % Point2Inertia= relative contribution or each point to the inertia of the
+    % Point2Inertia= relative contribution on each point to the inertia of the
     % dimension.
-    % The points  with the larger value of Point2Inertia are those which contribute the
+    % The points with the larger value of Point2Inertia are those that contribute the
     % most to the definition of the dimension. If the row contributions
-    % were uniform, the expected value would be 1/size(contingeny_table,1)
+    % were uniform, the expected value would be 1/size(contingeny_table,1).
     % For a given dimension, any row with a
-    % contribution larger than this threshold could be considered as
+    % contribution larger than this threshold, could be considered as
     % important in contributing to that dimension.
 
     % Dim2Inertia= contribution of dimension to the inertia of point
@@ -1554,7 +1548,7 @@ if dispresults==true
     % the squared cosine (cos2) or the squared correlations.
     % Dim2Inertia measures the degree of association between points
     % (rows/columns) and a particular axis.
-    % The values of the cos2 are forced to be between 0 and 1
+    % The values of the cos2 are forced to be between 0 and 1.
     % If a row item is well represented by two dimensions, the sum of the
     % Dim2Inertia is close to one.
 
@@ -1566,11 +1560,11 @@ if dispresults==true
     % Overview for supplementary column points
 end
 
-% Store labels of supplementary rows and supplementary units
+% Store labels of supplementary rows and supplementary units.
 out.LrSup = LrSup;
 out.LcSup = LcSup;
 
-% Store information for supplementary rows and columns (if they are present)
+% Store information for supplementary rows and columns (if they are present).
 if exist('Sup','var')
     %Supplementary rows
     if isfield(Sup,'r')
