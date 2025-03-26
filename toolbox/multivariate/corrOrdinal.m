@@ -9,7 +9,7 @@ function out=corrOrdinal(N, varargin)
 % variables and go between -1 and 1. The sign of the coefficient indicates
 % the direction of the relationship, and its absolute value indicates the
 % strength, with larger absolute values indicating stronger
-% relationships. Values close to an absolute value of 1 indicate a strong
+% relationships. Values close to an absolute value of 1, indicate a strong
 % relationship between the two variables. Values close to 0 indicate little
 % or no relationship. More in detail:
 % $\gamma$ is a symmetric measure of association.
@@ -20,7 +20,7 @@ function out=corrOrdinal(N, varargin)
 % into account. Even if $\tau_b$ ranges from -1 to 1, a value of -1 or
 % +1 can be obtained only from square tables.
 % $\tau_c$ (also called Stuart-Kendall $\tau_c$) is a symmetric measure of
-% association which makes an adjustment for table size in addition to a
+% association that makes an adjustment for table size in addition to a
 % correction for ties. Even if $\tau_c$ ranges from -1 to 1, a value of -1
 % or +1 can be obtained only from square tables.
 % Somers' $d$ is an asymmetric extension of $\tau_b$ in that it uses a
@@ -36,16 +36,16 @@ function out=corrOrdinal(N, varargin)
 %
 %       N    :    Contingency table (default) or n-by-2 input dataset.
 %                 Matrix or Table.
-%                 Matrix or table which contains the input contingency
+%                 Matrix or table that contains the input contingency
 %                 table (say of size I-by-J) or the original data matrix.
-%                 In this last case N=crosstab(N(:,1),N(:,2)). As default
+%                 In this last case N=crosstab(N(:,1),N(:,2)): as default,
 %                 procedure assumes that the input is a contingency table.
 %
 %  Optional input arguments:
 %
 %   NoStandardErrors:  Just indexes without standard errors and p-values.
 %               Boolean.
-%               if NoStandardErrors is true just the indexes are computed
+%               If NoStandardErrors is true, just the indexes are computed
 %               without standard errors and p-values. That is no
 %               inferential measure is given. The default value of
 %               NoStandardErrors is false.
@@ -53,7 +53,7 @@ function out=corrOrdinal(N, varargin)
 %               Data Types - Boolean
 %
 % dispresults : Display results on the screen. Boolean.
-%               If dispresults is true (default) it is possible to see on the
+%               If dispresults is true (default), it is possible to see on the
 %               screen all the summary results of the analysis.
 %               Example - 'dispresults',false
 %               Data Types - Boolean
@@ -61,23 +61,23 @@ function out=corrOrdinal(N, varargin)
 %       Lr   :  Vector of row labels. Cell.
 %               Cell containing the labels of the rows of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table. because in this case  Lr=N.Properties.RowNames;
+%               table, because in this case Lr=N.Properties.RowNames;
 %               Example - 'Lr',{'a' 'b' 'c'}
 %               Data Types - cell array of strings
 %
 %       Lc   :  Vector of column labels. Cell.
 %               Cell containing the labels of the columns of the input
 %               contingency matrix N. This option is unnecessary if N is a
-%               table because in this case Lc=N.Properties.VariableNames;
+%               table, because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
 %
 % datamatrix :  Data matrix or contingency table. Boolean.
-%               If datamatrix is true the first input argument N is forced
-%               to be interpreted as a data matrix, else if the input
-%               argument is false N is treated as a contingency table. The
+%               If datamatrix is true, the first input argument N is forced
+%               to be interpreted as a data matrix; else, if the input
+%               argument is false, N is treated as a contingency table. The
 %               default value of datamatrix is false, that is the procedure
-%               automatically considers N as a contingency table
+%               automatically considers N as a contingency table.
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %
@@ -91,16 +91,16 @@ function out=corrOrdinal(N, varargin)
 %               Data Types - double
 %    plots:    balloonplot and Pareto plot
 %              of individual contributions to $C-D$. Boolean.
-%              If plots is true the following two plots of individual
-%              contributions to the numerator of correlation indexesare shown on the screen.
-%              1) a bubble plot (ballonplot);
+%              If plots is true, the following two plots of individual
+%              contributions to the numerator of correlation indexes are shown on the screen.
+%              1) a bubble plot (balloonplot);
 %              2) a Pareto plot.
 %              In both plots entries of the contingency table associated
-%              with positive association (that is number of concordant
-%              pairs greater than number of discordant pairs) are shown in
-%              blue while those associated with negative association (that
-%              is number of concordant pairs smaller than number of
-%              discordant pairs are shown in red. The default value of
+%              with positive association (that is, the number of concordant
+%              pairs greater than the number of discordant pairs) are shown in
+%              blue, while those associated with negative association (that
+%              is,the number of concordant pairs smaller than the number of
+%              discordant pairs) are shown in red. The default value of
 %              plots is false.
 %              Example - 'plots',true
 %              Data Types - Boolean
@@ -109,24 +109,24 @@ function out=corrOrdinal(N, varargin)
 %
 %         out:   structure which contains the following fields:
 %
-% 		out.N    =  $I$-by-$J$-array containing contingency table
+% 		out.N    =  $I$-by-$J$-array containing a contingency table
 %                   referred to active rows (i.e. referred to the rows which
-%                   participated to the fit).
+%                   participated in the fit).
 %                   The $(i,j)$-th element is equal to $n_{ij}$,
 %                   $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
 %                   sum of the elements of out.N is $n$ (the grand
 %                   total).
-% 	out.Ntable   =  Same as out.N but in table format (with row and
+% 	 out.Ntable  =  Same as out.N, but in table format (with row and
 %                   column names).
 %                   This output is present just if your MATLAB
 %                   version is not<2013b.
-%      out.gam   =  1 x 4 vector which contains Goodman and Kruskall gamma index,
+%       out.gam  =  1 x 4 vector which contains Goodman and Kruskall gamma index,
 %                   standard error, test and p-value.
 %      out.taua  =  1 x 4 vector which contains index $\tau_a$,
 %                   standard error, test and p-value.
 %      out.taub  =  1 x 4 vector which contains index $\tau_b$,
 %                   standard error, test and p-value.
-%       out.tauc =  1 x 4 vector which contains index $\tau_c$,
+%      out.tauc  =  1 x 4 vector which contains index $\tau_c$,
 %                   standard error, test and p-value.
 %       out.som  =  1 x 4 vector which contains Somers index $d_{y|x}$,
 %                   standard error, test and p-value.
@@ -170,7 +170,7 @@ function out=corrOrdinal(N, varargin)
 % $(x(i)-x(j)) \times (y(i)-y(j))>0$.
 % It is discordant if $(x(i)-x(j) ) \times (y(i)-y(j))<0$.
 % Let $C$ be the total number of concordant pairs (concordances) and $D$
-% the total number of discordant pairs (discordances) . If $C > D$ the
+% the total number of discordant pairs (discordances). If $C > D$ the
 % variables have a positive association, but if $C < D$ then the variables
 % have a negative association.
 %
@@ -259,7 +259,7 @@ function out=corrOrdinal(N, varargin)
 % d_{ij}=a_{ij}- b_{ij}
 % \]
 %
-% The variance of $\gamma$  assuming the independence hypothesis is:
+% The variance of $\gamma$ assuming the independence hypothesis is:
 % \[
 % var_0(\gamma) =\frac{1}{(C + D)^2} \left( \sum_{i=1}^I \sum_{j=1}^J
 %  n_{ij} d_{ij}^2  -4(C-D)^2/n  \right)
@@ -276,7 +276,7 @@ function out=corrOrdinal(N, varargin)
 % \overline d = \sum_{i=1}^I \sum_{j=1}^J d_{ij} /n  \qquad \mbox{with $i,j$ such that $N(i,j)>0$}
 % \]
 %
-% The variance of $\tau_a$  assuming the independence hypothesis is:
+% The variance of $\tau_a$ assuming the independence hypothesis is:
 % \[
 % var_0(\tau_a) =\frac{2 (2n+5)}{9n(n-1) }
 % \]
@@ -293,7 +293,7 @@ function out=corrOrdinal(N, varargin)
 %  w_c/w_r} \qquad \mbox{and} \qquad w= \sqrt{w_rw_c}
 % \]
 %
-% The variance of $\tau_b$  assuming the independence hypothesis is:
+% The variance of $\tau_b$ assuming the independence hypothesis is:
 % \[
 % var_0(\tau_b) =\frac{4}{w_r w_c}  \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
 % \]
@@ -306,7 +306,7 @@ function out=corrOrdinal(N, varargin)
 %
 %
 %
-% The variance of $\tau_c$  assuming the independence hypothesis is:
+% The variance of $\tau_c$ assuming the independence hypothesis is:
 % \[
 % var_0(\tau_c) =var(\tau_c)
 % \]
@@ -322,7 +322,7 @@ function out=corrOrdinal(N, varargin)
 % w_r= n^2- \sum_{i=1}^I n_{i.}^2
 % \]
 %
-% The variance of $d_{y|x}$  assuming the independence hypothesis is:
+% The variance of $d_{y|x}$ assuming the independence hypothesis is:
 % \[
 % var_0(d_{y|x}) = \frac{4}{w_r^2} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
 % \]
@@ -341,7 +341,7 @@ function out=corrOrdinal(N, varargin)
 % Agresti, A. (2010), "Analysis of Ordinal Categorical Data", Second Edition,
 % Wiley, New York, pp. 194-195.
 %
-% Goktas, A. and Oznur, I. (2011), A comparision of the most commonly used
+% Goktas, A. and Oznur, I. (2011), A comparison of the most commonly used
 % measures of association for doubly ordered square contingency tables via
 % simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37,
 %
@@ -402,9 +402,9 @@ function out=corrOrdinal(N, varargin)
 %{
     %%  corrOrdinal with all the default options.
     % Rows of N indicate the results of a written test with levels:
-    % 'Sufficient' 'Good' Very good'
+    % 'Sufficient' 'Good' Very good'.
     % Columns of N indicate the results of an oral test with levels:
-    % 'Sufficient' 'Good' Very good'
+    % 'Sufficient' 'Good' Very good'.
     N=[20    40    20;
        10    45    45;
         0     5    15];
@@ -415,10 +415,10 @@ function out=corrOrdinal(N, varargin)
 %}
 
 %{
-    %% Compare calculation of tau-b with that which comes from
-    % Matlab function corr.
+    %% Compare the calculation of tau-b with that which comes from
+    % the Matlab function corr.
     % Starting from a contingency table, create the original data matrix to
-    % te able to call corr.
+    % be able to call corr.
     N=[20    23    20;
        21    25    22;
        18     18    19];
@@ -434,17 +434,17 @@ function out=corrOrdinal(N, varargin)
     x31=[3*ones(n31,1) 1*ones(n31,1)];
     x32=[3*ones(n32,1) 2*ones(n32,1)];
     x33=[3*ones(n33,1) 3*ones(n33,1)];
-    % X original data matrix
+    % X original data matrix.
     X=[x11; x12; x13; x21; x22; x23; x31; x32; x33];
-    % Find taub and pvalue of taub using MATLAB routine corr
+    % Find tau-b and p-value of tau-b using MATLAB routine corr.
     [RHO,pval]=corr(X,'type','Kendall');
     % Compute tau-b using FSDA corrOrdinal routine.
     out=corrOrdinal(X,'datamatrix',true,'dispresults',false);
     disp(['tau-b from MATLAB routine corr=' num2str(RHO(1,2))])
     disp(['tau-b from FSDA routine corrOrdinal=' num2str(out.taub(1))])
-    % Remark the p-values are slightly different
-    disp(['pvalue of H0:taub=0 from MATLAB routine corr=' num2str(pval(1,2))])
-    disp(['pvalue of H0:taub=0 from FSDA routine corrOrdinal=' num2str(out.taub(4))])
+    % Remark the p-values are slightly different.
+    disp(['p-value of H0:taub=0 from MATLAB routine corr=' num2str(pval(1,2))])
+    disp(['p-value of H0:taub=0 from FSDA routine corrOrdinal=' num2str(out.taub(4))])
 %}
 
 %{
@@ -455,7 +455,7 @@ function out=corrOrdinal(N, varargin)
 %}
 
 %{
-    % corrOrdinal with with option NoStandardErrors.
+    % corrOrdinal with option NoStandardErrors.
     N=[26 26 23 18  9;
        6  7  9 14 23];
     out=corrOrdinal(N,'NoStandardErrors',true);
@@ -465,13 +465,13 @@ function out=corrOrdinal(N, varargin)
     % Income and job satisfaction.
     % Relationship between the income (with levels '< 5000' '5000-25000' and
     % '>25000') and  job satisfaction (with levels 'Dissatisfied' 'Moderately satisfied'
-    % and 'Very satisfied') for a sample of 300 persons
-    % Input data is matlab table Ntable:
+    % and 'Very satisfied') for a sample of 300 persons.
+    % Input data is the matlab table Ntable:
     N = [24 23 30;19 43 57;13 33 58];
     rownam={'LessThan5000',  'Between5000And25000' 'GreaterThan25000'};
     colnam= {'Dissatisfied' 'ModeratelySatisfied' 'VerySatisfied'};
     Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(rownam),'VariableNames',matlab.lang.makeValidName(colnam));
-    % Check relationship
+    % Check relationship.
     out=corrOrdinal(Ntable);
 %}
 
@@ -481,30 +481,30 @@ function out=corrOrdinal(N, varargin)
     N=[20    40    20;
        10    45    45;
         0     5    15];
-    % labels for rows and columns
+    % labels for rows and columns.
     labels_rows= {'Sufficient' 'Good' 'Very_good'};
     labels_columns= {'Sufficient' 'Good' 'Very_good'};
     out=corrOrdinal(N,'Lr',labels_rows,'Lc',labels_columns,'dispresults',false);
-    % out.Ntable uses labels for rows and columns which are supplied
+    % out.Ntable uses labels for rows and columns which are supplied.
     disp(out.Ntable)
 %}
 
 %{
     %% Example 1 of use of option plots.
-    % Exercise Frequency vs. Self-Reported Health
+    % Exercise Frequency vs. Self-Reported Health.
     load SportHealth.mat
     out=corrOrdinal(SportHealth,'plots',true);
     % It is clear the positive relationship between 
-    % 'Self-Reported Health' and 'Exercise Frequency'
+    % 'Self-Reported Health' and 'Exercise Frequency'.
 %}
 
 %{
     %% Example 2 of use of option plots.
-    % Opinion on the movie watched and age interval
+    % Opinion on the movie watched and age interval.
     load cinema.mat
     out=corrOrdinal(cinema,'plots',true);
     % It is clear the negative relationship between 
-    % age and satisfaction towards the watched movie
+    % age and satisfaction towards the watched movie.
 %}
 
 
@@ -527,7 +527,7 @@ else
 end
 
 % If input is a datamatrix it is necessary to construct the contingency
-% table
+% table. 
 if datamatrix == true
     if istable(N)
         [N,~,~,labels] =crosstab(N{:,1},N{:,2});
@@ -536,16 +536,16 @@ if datamatrix == true
     end
 
     [I,J]=size(N);
-    % default labels for rows of contingency table
+    % default labels for rows of contingency table.
     Lr=labels(1:I,1);
-    % default labels for columns of contingency table
+    % default labels for columns of contingency table.
     Lc=labels(1:J,2);
 else
     [I,J]=size(N);
     % Size of N
-    % default labels for rows of contingency table
+    % default labels for rows of contingency table.
     Lr=cellstr(strcat('r',num2str((1:I)')));
-    % default labels for columns of contingency table
+    % default labels for columns of contingency table.
     Lc=cellstr(strcat('c',num2str((1:J)')));
 end
 
@@ -563,15 +563,15 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
+        % Check if number of supplied options is valid.
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:CorrOrdinal:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
-        % Check if user options are valid options
+        % Check if user options are valid options.
         aux.chkoptions(options,UserOptions)
     end
 
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the options chosen by the user.
     if nargin > 2
         for i=1:2:length(varargin)
             options.(varargin{i})=varargin{i+1};
@@ -585,7 +585,7 @@ if ~isempty(UserOptions)
     plots=options.plots;
 end
 
-% Extract labels for rows and columns
+% Extract labels for rows and columns.
 if istable(N)
     Ntable=N;
     Lr=N.Properties.RowNames;
@@ -595,7 +595,7 @@ else
     if isempty(Lr)
         Lr=cellstr(num2str((1:I)'));
     else
-        % Check that the length of Lr is equal to I
+        % Check that the length of Lr is equal to I.
         if length(Lr)~=I
             error('FSDA:CorrOrdinal:WrongInput','Wrong length of row labels');
         end
@@ -604,7 +604,7 @@ else
     if isempty(Lc)
         Lc=cellstr(num2str((1:J)'));
     else
-        % Check that the length of Lc is equal to J
+        % Check that the length of Lc is equal to J.
         if length(Lc)~=J
             error('FSDA:CorrOrdinal:WrongInput','Wrong length of column labels');
         end
@@ -619,7 +619,7 @@ n = sum(sum(N)); %sample size
 
 if NoStandardErrors == true && plots==false
     % Fast way to compute number of concordances and discordances if the
-    % standard errors are not required
+    % standard errors are not required.
     C=0;
     D=0;
     for i=1:I
@@ -638,7 +638,7 @@ if NoStandardErrors == true && plots==false
 else
     % con = nr \times nc matrix which will contain concordant pairs
     con = zeros(I,J);
-    % dis = nr \times nc matrix which will contain discordace pairs
+    % dis = nr \times nc matrix which will contain discordance pairs
     dis = con;
 
     for i = 1:I
@@ -680,7 +680,7 @@ ndotj=sum(N,1);
 gam = (C - D)/(C + D);
 % Tau-a index
 taua = (C - D)/totpairs;
-% Taub-b index
+% Tau-b index
 % Tx = number of pairs tied on X
 Tx=sum(nidot.*(nidot-1)/2);
 % Ty = number of pairs tied on Y
@@ -689,7 +689,7 @@ taub=(C - D)/sqrt( (totpairs-Tx)*(totpairs-Ty) );
 % Tau-c index
 m=min(I,J);
 tauc=m*2*(C-D)/( n^2 *(m-1));
-% Somers index
+% Somers' index
 wr=n^2-sum(nidot.^2);
 som = 2*(C-D)/wr;
 
@@ -720,7 +720,7 @@ else
 
     % The lines below contain an alternative formula to compute the
     % variance
-    %  psi = 2*(D*con-C*dis)/(C+D)^2;
+    % psi = 2*(D*con-C*dis)/(C+D)^2;
     % s2 = Goodman-Kruskal's gamma variance
     % s2gamCHK = sum(sum(N.*(psi.^2))) - sum(sum((N.*psi)))^2;
 
@@ -731,25 +731,25 @@ else
     segamH0=sqrt((1/(C+D)^2)*( sumdij2nij  - 4*(C-D)^2/n  ));
 
     zgam = gam/segamH0; % z-score
-    pvalgam = 2*(1 - normcdf(abs(zgam))); %p-value (two-sided)
+    pvalgam = 2*(1 - normcdf(abs(zgam))); % p-value (two-sided)
 
     %% tau-a statistic
-    % Find standard error of tau-a
+    % Find standard error of tau-a.
     Ci=con-dis;
     Ci=Ci(N~=0);
     Cbar=sum(Ci)/n;
-    % setaua = standard error used to compute the confidence interval
+    % setaua = standard error used to compute the confidence interval.
     setaua= sqrt( 2/(n*(n-1)) * ((2*(n-2))/(n*(n-1)^2)* sum((Ci(:) - Cbar).^2) + 1 - taua^2));
 
     % setauaH0 = standard error used to find the value of the test under the independence
     % hypothesis.
     setauaH0 = sqrt(2*(2*n+5)/(9*n*(n-1)));
     ztaua = taua/setauaH0; % z-score
-    pvaltaua = 2*(1 - normcdf(abs(ztaua))); %p-value (two-sided)
+    pvaltaua = 2*(1 - normcdf(abs(ztaua))); % p-value (two-sided)
 
     %% tau-b statistic
     % For computational purposes it is better to use relative frequencies
-    % rather than absolute frequencies
+    % rather than absolute frequencies.
     Pi=N/n; % matrix of relative frequencies
     pdiff=(con-dis)/n;
     Pdiff=2*(C-D)/n^2;
@@ -761,14 +761,14 @@ else
     setaub= sqrt(( (  sum(Pi(:) .* tauij(:).^2) - sum(Pi(:) .* tauij(:)).^2)/(delta1 * delta2)^4)/n);
 
     % The formula written in the help section (which uses the absolute
-    % frequencies rather than the relative frequencies would be
+    % frequencies rather than the relative frequencies) would be
     %     w=sqrt(wr*wc);
     %     tauijCHK=(2*n*d+2*(C-D)*repmat(ndotj/n,I,1) ) * w/n^2 + ...
     %         2*(C-D)* repmat(nidot/n,1,J) * sqrt(wc/wr);
     %     setaubCHK= sqrt((n/w^4)*  (   n*sum(N(:) .* tauijCHK(:).^2) -    sum(N(:) .* tauijCHK(:)).^2   ));
 
     % Formula below from the computational point of view is highly
-    % inefficient
+    % inefficient.
     %v=nidot*ones(1,J)+wc*ones(I,1)*ndotj;
     %setaubnew=sqrt((1/w^4)*( sum( N(:).*(  (2*w.*d(:)+taub*v(:)).^2 ) ) -n^3 *taub^2*((wr+wc)^2)));
 
@@ -776,10 +776,10 @@ else
     % hypothesis.
     setaubH0=sqrt( (4/(wr*wc))*(sumdij2nij - (2*(C-D))^2/n ));
     ztaub = taub/setaubH0; % z-score
-    pvaltaub = 2*(1 - normcdf(abs(ztaub))); %p-value (two-sided)
+    pvaltaub = 2*(1 - normcdf(abs(ztaub))); % p-value (two-sided)
 
     %% (Stuart's) tau-c statistic
-    % setauc = standard errot used to compute the confidence interval
+    % setauc = standard error used to compute the confidence interval.
     setauc= sqrt( 4*m^2/((m-1)^2*n^4) *  (sumdij2nij- 4*(C-D)^2/n ));
 
     % Standard error used to find the value of the test under the independence
@@ -787,20 +787,20 @@ else
     setaucH0=setauc;
 
     ztauc = tauc/setaucH0; % z-score
-    pvaltauc = 2*(1 - normcdf(abs(ztauc))); %p-value (two-sided)
+    pvaltauc = 2*(1 - normcdf(abs(ztauc))); % p-value (two-sided)
 
     %% Somers' D statistic
-    % Find standard error of Somers' D stat
+    % Find standard error of Somers' D stat.
     nidotrep=repmat(nidot,1,J);
 
-    % sesom = standard errot used to compute the confidence interval
+    % sesom = standard error used to compute the confidence interval.
     sesom=sqrt((4/(wr.^4)) *  sum( N(:) .* ((wr*(con(:)-dis(:))) - (2*(C-D))*(n-nidotrep(:)) ).^2));
 
-    % sesomH0 = standard error used to test the independence hypothesis
+    % sesomH0 = standard error used to test the independence hypothesis.
     sesomH0= sqrt( 4/(wr^2) * (sumdij2nij   - (2*(C-D))^2/n ));
 
     zsom = som/sesomH0; % z-score
-    pvalsom = 2*(1 - normcdf(abs(zsom))); %p-value (two-sided)
+    pvalsom = 2*(1 - normcdf(abs(zsom))); % p-value (two-sided)
 
     % Contribution to the final index
     NconMinusNdis=Ncon-Ndis;
@@ -809,22 +809,22 @@ else
 
 end
 
-% Store results for Goodman-Kruskal's gamma statistic
+% Store results for Goodman-Kruskal's gamma statistic.
 out.gam=[gam segamH0 zgam pvalgam];
 
-% Store results for tau-a statistic
+% Store results for tau-a statistic.
 out.taua=[taua setauaH0 ztaua pvaltaua];
 
-% Store results for tau-b statistic
+% Store results for tau-b statistic.
 out.taub=[taub setaubH0 ztaub pvaltaub];
 
-% Store results for tau-c statistic
+% Store results for tau-c statistic.
 out.tauc=[tauc setaucH0 ztauc pvaltauc];
 
-% Store results for Somers  statistic
+% Store results for Somers statistic.
 out.som=[som sesomH0 zsom pvalsom];
 
-% Store results to test independence hypothesis
+% Store results to test independence hypothesis.
 TestInd=[gam segamH0 zgam pvalgam;
     taua setauaH0 ztaua pvaltaua;
     taub setaubH0 ztaub pvaltaub;
@@ -837,7 +837,7 @@ colnamTestInd={'Coeff' 'se' 'zscore' 'pval'};
 TestIndtable=array2table(TestInd,'RowNames',rownam,'VariableNames',colnamTestInd);
 out.TestIndtable=TestIndtable;
 
-% Store confidence intervals
+% Store confidence intervals.
 talpha=-norminv((1-conflev)/2);
 gamconflim=[gam segam gam-talpha*segam gam+talpha*segam];
 tauaconflim=[taua setaua taua-talpha*setaua taua+talpha*setaua];
