@@ -730,9 +730,12 @@ else
     else
         error('FSDA:CorrNominal:WrongInputOptforConfIntCramerV','Possible values are ''ncchisq'' ''ncchisqadj'' ''fisher'' ''fisheradj''');
     end
-    ConfIntCramerV(1)=max([0 ConfIntCramerV(1)]);
-    ConfIntCramerV(2)=min([1 ConfIntCramerV(2)]);
-
+    if ~isnan( ConfIntCramerV(1))
+        ConfIntCramerV(1)=max([0 ConfIntCramerV(1)]);
+    end
+    if ~isnan( ConfIntCramerV(2))
+        ConfIntCramerV(2)=min([1 ConfIntCramerV(2)]);
+    end
 
     % Store confidence intervals
     seCramerV=(CramerV-ConfIntCramerV(1))/talpha;
@@ -940,7 +943,9 @@ end
 function [Lochi] = lochi(chival,df,conf)
 ulim = 1 - (1 - conf)/2;
 lc =[0.001, chival/2, chival];
-while ncx2cdf(chival,df,lc(1)) < ulim
+iter=0;
+while ncx2cdf(chival,df,lc(1)) < ulim && iter<1000
+    iter=iter+1;
     if chi2cdf(chival, df) < ulim
         Lochi=[0, chi2cdf(chival, df)];
         return
@@ -950,7 +955,9 @@ while ncx2cdf(chival,df,lc(1)) < ulim
 end
 
 diff = 1;
-while (diff > 1e-05)
+iter=0;
+while (diff > 1e-05) && iter<1000
+    iter=iter+1;
     if ncx2cdf(chival,df,lc(2))  < ulim
         lc = [lc(1), (lc(1) + lc(2))/2, lc(2)];
     else
@@ -961,21 +968,31 @@ while (diff > 1e-05)
     ucdf = ncx2cdf(chival,df,lc(2));
 end
 Lochi=[lc(2), ucdf];
+if iter==1000
+    disp('Lack of convergence in lower confidence interval for CramerV index')
+    Lochi(1)=NaN;
+end
 end
 
 % hichi computes upper confidence interval of chi2.
 function [Hichi] = hichi(chival,df,conf)
 uc =[chival, 2 * chival, 3 * chival];
 llim =  (1 - conf)/2;
-while ncx2cdf(chival,df,uc(1)) < llim
+iter=0;
+while ncx2cdf(chival,df,uc(1)) < llim && iter<1000
+    iter=iter+1;
     uc=[uc(1)/4, uc(1), uc(3)];
 end
-while ncx2cdf(chival,df,uc(3)) > llim
+iter=0;
+while ncx2cdf(chival,df,uc(3)) > llim && iter<1000
+    iter=iter+1;
     uc=[uc(1), uc(3), uc(3)+chival];
 end
 
 diff = 1;
-while (diff > 1e-05)
+iter=0;
+while (diff > 1e-05) && iter<1000
+    iter=iter+1;
     if ncx2cdf(chival,df,uc(2))  < llim
         uc = [uc(1), (uc(1) + uc(2))/2, uc(2)];
     else
@@ -986,6 +1003,10 @@ while (diff > 1e-05)
     lcdf = ncx2cdf(chival,df,uc(2));
 end
 Hichi=[uc(2), lcdf];
+if iter==1000
+    disp('Lack of convergence in upper confidence interval for CramerV index')
+    Hichi(1)=NaN;
+end
 end
 
 %FScategory:MULT-Categorical
