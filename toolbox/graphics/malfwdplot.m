@@ -112,7 +112,7 @@ function plotopt=malfwdplot(out,varargin)
 %                       select the trajectories to highlight.
 %                       If length(fthresh)=1 the highlighted trajectories
 %                       are those units that throughout the search had
-%                       at leat once a MD greater (in absolute value)
+%                       at least once a MD greater (in absolute value)
 %                       than fthresh. The default value of fthresh is 2.5.
 %                       If length(fthresh)=2 the highlighted trajectories
 %                       are those of units that throughout the search had
@@ -275,15 +275,17 @@ function plotopt=malfwdplot(out,varargin)
 %       label   :   row labels. Cell of characters of vector of strings.
 %                   Cell or vector of strings containing the labels
 %                   of the n units. This optional argument is used for
-%                   datattoltip and brushing. If label is present the
+%                   datatooltip and brushing. If label is present the
 %                   rownames of the units will be used  during brushing and
-%                   in the datatootip.
+%                   in the datatooltip. 
 %                   If this field is not present labels
 %                   row1, ..., rown will be automatically created and
 %                   included in the pop up datatooltip window and the
 %                   numbers 1:n will be used for the brushed trajectories.
+%                   Moreover the elements inside label are used to label
+%                   the units in the plot. 
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell
+%                   Data Types - cell array of characters or string array
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
@@ -923,7 +925,7 @@ x=(n-nsteps+1):n;
 
 % fthresh=2.5^2;
 v=size(Y,2);
-fthresh=v+2*sqrt(2*v);
+fthresh=v+2*sqrt(2*v); % chi2inv(0.9,v); %
 
 
 % selthdef= threshold to select the MDs labelled in the malfwdplot.
@@ -941,7 +943,7 @@ if isfield(out,'class')
     if strcmp(out.class,'FSCorAnaeda')
         [I,J]=size(out.N);
         fthresh=chi2inv(0.99,(J-1)*(I-1))/(out.mmd(end,1)+1);
-        fthresh=quantile(out.MAL(:,1),0.75)
+        fthresh=quantile(out.MAL(:,1),0.75);
     end
 
 else
@@ -1227,7 +1229,7 @@ SizeAxesLab=standard.SizeAxesLab;
 xlabel(labx,'Fontsize',SizeAxesLab);
 ylabel(laby,'Fontsize',SizeAxesLab);
 
-% FontSizeAxes = font size for the axes numbers
+% SizeAxesNum = font size for the axes numbers
 SizeAxesNum=standard.SizeAxesNum;
 % Specify the FontSize of the number on the axes
 set(gca,'FontSize',SizeAxesNum)
@@ -1435,7 +1437,7 @@ if ~isempty(options.bground)
     else
         if length(bthresh)>1
             units=seq(selmax>bthresh(2) | selmin<bthresh(1));
-        elseif length(bthresh)==1
+        elseif isscalar(bthresh)
             units=seq(selmax>bthresh | selmin<-bthresh);
         end
     end

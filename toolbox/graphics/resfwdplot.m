@@ -142,18 +142,18 @@ function plotopt=resfwdplot(out,varargin)
 %                   Remark: if fground='' no unit is highlighted and no
 %                   label is inserted into the plot.
 %
-%         bground : characterictics of the trajectories in background.
+%         bground : characteristics of the trajectories in background.
 %                   Structure.
 %                    Structure which specifies the trajectories in background,
-%                   i.e. the trajectories corresponding to "unimmportant"
+%                   i.e. the trajectories corresponding to "unimportant"
 %                   units in the central part of the data. The structure
 %                   also specifies the style used in the plot to give them
 %                   less emphasis, so that to not distract the eye of the
 %                   analyst from the trajectories of the relevant units.
 %                   The structure contains the following fields:
 %                   bground.bthresh = numeric vector of length 1 or 2 which
-%                       specifies how to define the unimmportant trajectories.
-%                       Unimmportant trajectories will be plotted using a
+%                       specifies how to define the unimportant trajectories.
+%                       Unimportant trajectories will be plotted using a
 %                       colormap, in greysh or will be hidden.
 %                       - If length(thresh)=1 the irrelevant units are
 %                         those which always had a residual smaller
@@ -607,7 +607,7 @@ function plotopt=resfwdplot(out,varargin)
 %{
     % Interactive_example
     % Example of the use of rectangular brush.
-    %  We havesuperimposed labels
+    %  We have superimposed labels
     %   for the brushed units and persistent labels in the plot which has
     %   been brushed.
     n=100;
@@ -630,7 +630,7 @@ function plotopt=resfwdplot(out,varargin)
     % Interactive_example
     % Example of persistent brushing.
     %   Example of the use of persistent non cumulative brush. Every time a
-    %   brushing action is performed previous highlightments are removed
+    %   brushing action is performed previous highlights are removed
     n=100;
     y=randn(n,1);
     X=randn(n,4);
@@ -648,8 +648,8 @@ function plotopt=resfwdplot(out,varargin)
     % Interactive_example
     % Example of persistent cumulative brush.
     %   Example of the use of persistent cumulative brush. Every time a
-    %   brushing action is performed current highlightments are added to
-    %   previous highlightments
+    %   brushing action is performed current highlights are added to
+    %   previous highlights
     n=100;
     y=randn(n,1);
     X=randn(n,4);
