@@ -10,9 +10,12 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %  Required input arguments:
 %
-%    y:         Time series to analyze. Vector. A row or a column vector
+%    y:         Time series to analyze. Vector or timetable. A row or a column vector
 %               with T elements, which contains the time series. Note that
-%               y may contain missing values.
+%               y may contain missing values. If y is a timetable then
+%               times of the timetable are shown in the plot of y and
+%               fitted values.
+%                 Data Types - double or timetable
 %
 %
 %  Optional input arguments:
@@ -1074,6 +1077,13 @@ if nargin<1
     error('FSDA:LTSts:MissingInputs','Input time series is missing');
 end
 
+if istimetable(y)
+    isTT=true;
+    rowTimes=y.Properties.RowTimes;
+    y=y{:,1};
+else
+    isTT=false;
+end
 % setting global variable yin
 yin = y;
 
@@ -1301,10 +1311,10 @@ else
     end
     % A similar replacement has to be done for units in y that are missing.
     % Here we take the mean of the non-missing values around the missings.
-    % To be chcked: can we use the fitted values instead? 
+    % To be chcked: can we use the fitted values instead?
     % likyhat(beta0,yToUseforLagged)
     yToUseforLagged = fillNaNWithAdjacentMean(yToUseforLagged);
-    
+
     for j=1:lARp
         selj=ARp(j);
         Ylagged(:,j)=[yToUseforLagged(1:selj); yToUseforLagged(1:end-selj)];
@@ -1430,11 +1440,11 @@ if h==T
     nsampsubsequentsteps=1;
     SmallSampleCor=1;
 else
-    if isscalar(options.nsamp)                 
-        nsamp=options.nsamp;                 % Number of subsets to extract in first LS              
+    if isscalar(options.nsamp)
+        nsamp=options.nsamp;                 % Number of subsets to extract in first LS
         nsampsubsequentsteps=round(nsamp/2); % Number of subsets to extract in subsequesnt LS
     elseif numel(options.nsamp) == 2
-        nsamp=options.nsamp(1);        
+        nsamp=options.nsamp(1);
         nsampsubsequentsteps=options.nsamp(2);
     end
     SmallSampleCor=options.SmallSampleCor; % small sample correction factor
@@ -1523,7 +1533,7 @@ if lshiftYN==1
     % vector.
     LSH = lshift(:)';
     % total number of subsets to pass to procedure subsets.
-    ncombLSH = bc(T-1-nummissing,pini+1);  
+    ncombLSH = bc(T-1-nummissing,pini+1);
     if numel(options.nsamp) == 2
         if options.msg == 1 && options.nsamp(2) > ncombLSH
             disp(['nsamp(2) > ncombLSH: only ' num2str(ncombLSH) , 'samples are used' ]);
@@ -2531,10 +2541,19 @@ if coder.target('MATLAB')
         % Time series + fitted values
         figure
         htmp = subplot(2,1,1);
-        plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
-        hold('on');
-        plot(yhat,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
 
+        if isTT==true
+            namVar=["y" "Fitted values"];
+            TT=array2timetable([yin yhat],'RowTimes',rowTimes,'VariableNames',namVar);
+            hh=plot(TT,namVar,'LineWidth',1);
+            hh(1).LineStyle=syb{1};
+            hh(2).LineStyle=syb{2};
+            hold('on')
+        else
+            plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
+            hold('on');
+            plot(yhat,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
+        end
         set(htmp,'Tag','LTSts:ts');
         %xlabel('Time','FontSize',FontSize);
         ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
@@ -2550,7 +2569,11 @@ if coder.target('MATLAB')
 
         % mark outliers with their severity
         if ~isempty(residuals)
-            seq = 1:T;
+            if isTT
+                seq=rowTimes;
+            else
+                seq = 1:T;
+            end
             quant = sqrt(chi2inv(conflev,1));
             resboo=out.residuals(out.outliers);
             th=8;resboo(abs(resboo)>th)=th;
@@ -2564,8 +2587,9 @@ if coder.target('MATLAB')
         % plot the vertical line of the level shift position and the associated
         % label on the X axis
         if isfield(out,'posLS') && ~isempty(out.posLS)
-            line(out.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
-            text(out.posLS , yaxlim(1) , num2str(out.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
+            xline(seq(out.posLS),'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k')
+            % OLD line(out.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
+            text(seq(out.posLS) , yaxlim(1) , num2str(out.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
         end
 
         % Index plot of robust residuals
@@ -2581,7 +2605,9 @@ if coder.target('MATLAB')
         else
             set(h2,'FontSize',SizeAxesNum,'Box','on');
         end
-        set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
+        if ~isTT
+            set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
+        end
     end
 
     if plots==2 && lshiftYN==1
@@ -2982,7 +3008,7 @@ end
         else
             yhattrend=Xtrend(bsb,:)*beta0(2:trend+1);
             npar=trend;
-        end       
+        end
 
         if seasonal >0
             if seasonal<s/2
@@ -3465,54 +3491,54 @@ end
 
 function X = fillNaNWithAdjacentMean(X)
 
-    nanIdx = find(isnan(X));
-    if isempty(nanIdx)
-        return;
+nanIdx = find(isnan(X));
+if isempty(nanIdx)
+    return;
 
-    else
+else
 
-        % Create arrays for left and right adjacent values
-        nnanIdx   = numel(nanIdx);
-        leftVals  = zeros(nnanIdx,1);
-        rightVals = zeros(nnanIdx,1);
-        
-        % For each NaN, get adjacent values
-        for i = 1:nnanIdx
-            idx = nanIdx(i);
-            
-            % Find nearest non-NaN value to the left
-            leftIdx = idx - 1;
-            while leftIdx >= 1 && isnan(X(leftIdx))
-                leftIdx = leftIdx - 1;
-            end
-            if leftIdx >= 1
-                leftVals(i) = X(leftIdx);
-            else
-                leftVals(i) = NaN;
-            end
-            
-            % Find nearest non-NaN value to the right
-            rightIdx = idx + 1;
-            while rightIdx <= length(X) && isnan(X(rightIdx))
-                rightIdx = rightIdx + 1;
-            end
-            if rightIdx <= length(X)
-                rightVals(i) = X(rightIdx);
-            else
-                rightVals(i) = NaN;
-            end
+    % Create arrays for left and right adjacent values
+    nnanIdx   = numel(nanIdx);
+    leftVals  = zeros(nnanIdx,1);
+    rightVals = zeros(nnanIdx,1);
+
+    % For each NaN, get adjacent values
+    for i = 1:nnanIdx
+        idx = nanIdx(i);
+
+        % Find nearest non-NaN value to the left
+        leftIdx = idx - 1;
+        while leftIdx >= 1 && isnan(X(leftIdx))
+            leftIdx = leftIdx - 1;
         end
-        
-        % Calculate means and handle edge cases
-        means = (leftVals + rightVals) / 2;
-        
-        % Handle cases where only one adjacent value exists
-        means(isnan(leftVals))  = rightVals(isnan(leftVals));
-        means(isnan(rightVals)) = leftVals(isnan(rightVals));
-        
-        % Fill the NaN values with calculated means
-        X(nanIdx) = means;
+        if leftIdx >= 1
+            leftVals(i) = X(leftIdx);
+        else
+            leftVals(i) = NaN;
+        end
+
+        % Find nearest non-NaN value to the right
+        rightIdx = idx + 1;
+        while rightIdx <= length(X) && isnan(X(rightIdx))
+            rightIdx = rightIdx + 1;
+        end
+        if rightIdx <= length(X)
+            rightVals(i) = X(rightIdx);
+        else
+            rightVals(i) = NaN;
+        end
     end
+
+    % Calculate means and handle edge cases
+    means = (leftVals + rightVals) / 2;
+
+    % Handle cases where only one adjacent value exists
+    means(isnan(leftVals))  = rightVals(isnan(leftVals));
+    means(isnan(rightVals)) = leftVals(isnan(rightVals));
+
+    % Fill the NaN values with calculated means
+    X(nanIdx) = means;
+end
 end
 
 %FScategory:REG-Regression
