@@ -33,7 +33,7 @@ spmplot(head,'plo',plo);</pre></div></div><a href='http://rosa.unipr.it/fsda/sp
      In this example these options are passed as Name/Values.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">nameY=["aaaawew" "bbccccc" "ccdddd"];
 % Truncated the name of the variables to 3 characters and rotate
 % the labels by 45 degrees.
-spmplot(Y,'nameY',nameY,'nameYlength',3,'nameYrot',45);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Call of spmplot without name/value pairs.</li></span></a></span></h3><div class="collapse"><p>
+spmplot(randn(30,3),'nameY',nameY,'nameYlength',3,'nameYrot',45);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Call of spmplot without name/value pairs.</li></span></a></span></h3><div class="collapse"><p>
      Iris data: scatter plot matrix with univariate boxplots on the main
      diagonal.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 load fisheriris;
@@ -529,10 +529,10 @@ spmplot(mtcars,'typespm',typespm,'order','FPC');</pre></div></div><a href='http
                   More precisely, the order of the variables is calculated from
                   the order of the angles, $a_i$:
                   </p>\[
-                  a_i= tan^{-1}(e_{i1}/e_{i1}) \qquad \mbox{if} \qquad e_{i1}&gt;0;
+                  a_i= tan^{-1}(e_{i2}/e_{i1}) \qquad \mbox{if} \qquad e_{i1}&gt;0;
                   \]
                   \[
-                  a_i= tan^{-1}(e_{i1}/e_{i1})+\pi \qquad \mbox{if} \qquad e_{i1} \leq 0.
+                  a_i= tan^{-1}(e_{i2}/e_{i1})+\pi \qquad \mbox{if} \qquad e_{i1} \leq 0.
                   \]<p>
                   where $e_1=(e_{11}, \ldots, e_{p1})'$ and
                   $e_2=(e_{12}, \ldots, e_{p2})'$ are the first two

@@ -135,10 +135,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                  More precisely, the order of the variables is calculated from
 %                  the order of the angles, $a_i$:
 %                  \[
-%                  a_i= tan^{-1}(e_{i1}/e_{i1}) \qquad \mbox{if} \qquad e_{i1}>0;
+%                  a_i= tan^{-1}(e_{i2}/e_{i1}) \qquad \mbox{if} \qquad e_{i1}>0;
 %                  \]
 %                  \[
-%                  a_i= tan^{-1}(e_{i1}/e_{i1})+\pi \qquad \mbox{if} \qquad e_{i1} \leq 0.
+%                  a_i= tan^{-1}(e_{i2}/e_{i1})+\pi \qquad \mbox{if} \qquad e_{i1} \leq 0.
 %                  \]
 %                  where $e_1=(e_{11}, \ldots, e_{p1})'$ and
 %                  $e_2=(e_{12}, \ldots, e_{p2})'$ are the first two
