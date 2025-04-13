@@ -58,6 +58,68 @@ function out=pcaFS(Y,varargin)
 %
 %  Optional input arguments:
 %
+%
+%     biplot     : launch app biplotFS. Scalar. If biplot is 1
+%                   (default) app biplotFS is automatically launched. With
+%                   this app it is possible to show in a dynamic way the
+%                   rows points (PC coordinates), the arrows, the row
+%                   labels and control with a scrolling bar the length of
+%                   the arrows and the spread of row points.
+%                   Example - 'biplot',0
+%                   Data Types - double
+%
+%  dispresults   : show the results in the command window. If dispresults
+%                   is true, the percentage of variance explained together
+%                   with the loadings, the criteria for deciding the number
+%                   of components to retain and the 5 units with the
+%                   largest score and orthogonal distance (combined) are
+%                   shown in the command window.
+%                   Example - 'dispresults',false
+%                    Data Types - char
+%
+%    Latitude    : Latitude coordinates in degrees of the rows. nx1 vector containint the
+%                   numerical values of latitudes for each row.
+%                   If vectors Latitude and Longitude are present once
+%                   brushing of the units in biplotAPP is done, the
+%                   geobubble of the brushed units automatically
+%                   appears. The size of the bubble is proportional to the
+%                   value of the first principal component while the color
+%                   of the bubbles depends on the value of the second
+%                   principal component.
+%                   Example - 'Latitude',[54 43.2 ... 47]
+%                    Data Types - vector with elements in the range [–90, 90]
+%
+%    Longitude    : Longitude coordinates in degrees of the rows. nx1 vector containint the
+%                   numerical values of latitudes for each row.
+%                   If vectors Latitude and Longitude are present once
+%                   brushing of the units in biplotAPP is done, the
+%                   geobubble of the brushed units automatically
+%                   appears. The size of the bubble is proportional to the
+%                   value of the first principal component while the color
+%                   of the bubbles depends on the value of the second
+%                   principal component.
+%                   Example - 'Longitude',[54 43.2 ... 47]
+%                    Data Types - vector with elements in the range [–90, 90]
+%
+%  NumComponents : the number of components desired. Specified as a
+%                  scalar integer $k$ satisfying $0 < k \leq p$. When
+%                  specified, pcaFS returns the first $k$ columns of
+%                  out.coeff and out.score. If NumComponents is not
+%                  specified pcaFS returns the minimum number of components
+%                  which cumulatively enable to explain a percentage of
+%                  variance which is equal at least to $0.95^p$. If this
+%                  threshold is exceeded already by the first PC, pcaFS
+%                  still returns the first two PCs.
+%                   Example - 'NumComponents',2
+%                    Data Types - char
+%
+%      plots     : plots on the screen. Scalar. If plots is 1 (default) it is
+%                   possible to show on the screen the scree plot of the
+%                   variance explained, the plot of the loadings for the
+%                   first two PCs.
+%                   Example - 'plots',0
+%                   Data Types - double
+%
 %       robust   : robust principal components. boolean or struct. If
 %               robust is a scalar boolean equal to true (default), FS is
 %               applied and using a Bonferronized confidence level units
@@ -92,7 +154,6 @@ function out=pcaFS(Y,varargin)
 %                 Example - 'bsb',[2 10:90 93]
 %                 Data Types - double or logical
 %
-%
 %    standardize : standardize data. boolean. Boolean which specifies
 %               whether to standardize the variables, that is we operate on
 %               the correlation matrix (default) or simply remove column
@@ -100,45 +161,6 @@ function out=pcaFS(Y,varargin)
 %               matrix).
 %                   Example - 'standardize',false
 %                   Data Types - boolean
-%
-%      plots     : plots on the screen. Scalar. If plots is 1 (default) it is
-%                   possible to show on the screen the scree plot of the
-%                   variance explained, the plot of the loadings for the
-%                   first two PCs.
-%                   Example - 'plots',0
-%                   Data Types - double
-%
-%     biplot     : launch app biplotFS. Scalar. If biplot is 1
-%                   (default) app biplotFS is automatically launched. With
-%                   this app it is possible to show in a dynamic way the
-%                   rows points (PC coordinates), the arrows, the row
-%                   labels and control with a scrolling bar the length of
-%                   the arrows and the spread of row points.
-%                   Example - 'biplot',0
-%                   Data Types - double
-%
-%
-%  dispresults   : show the results in the command window. If dispresults
-%                   is true, the percentage of variance explained together
-%                   with the loadings, the criteria for deciding the number
-%                   of components to retain and the 5 units with the
-%                   largest score and orthogonal distance (combined) are
-%                   shown in the command window.
-%                   Example - 'dispresults',false
-%                    Data Types - char
-%
-%  NumComponents : the number of components desired. Specified as a
-%                  scalar integer $k$ satisfying $0 < k \leq p$. When
-%                  specified, pcaFS returns the first $k$ columns of
-%                  out.coeff and out.score. If NumComponents is not
-%                  specified pcaFS returns the minimum number of components
-%                  which cumulatively enable to explain a percentage of
-%                  variance which is equal at least to $0.95^p$. If this
-%                  threshold is exceeded already by the first PC, pcaFS
-%                  still returns the first two PCs.
-%                   Example - 'NumComponents',2
-%                    Data Types - char
-%
 %
 % Output:
 %
@@ -255,12 +277,14 @@ biplot=1;
 dispresults=true;
 NumComponents=[];
 robust=false;
+Latitude=[];
+Longitude=[];
 
 if nargin>1
     options=struct('plots',plots, ...
         'standardize',standardize,'biplot', biplot,...
         'dispresults',dispresults,'NumComponents',NumComponents,...
-        'robust',robust);
+        'robust',robust,'Latitude',Latitude,'Longitude',Longitude);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -296,6 +320,8 @@ if nargin>1
     dispresults=options.dispresults;
     NumComponents=options.NumComponents;
     robust=options.robust;
+    Longitude=options.Longitude;
+    Latitude=options.Latitude;
 end
 
 if istable(Y)
@@ -592,7 +618,7 @@ out.scoreDist=scoreDist;
 out.class='pcaFS';
 
 if biplot==1
-    biplotAPP(Ztable,'standardize',standardize,'bsb',bsb)
+    biplotAPP(Ztable,'standardize',standardize,'bsb',bsb,'Latitude',Latitude,'Longitude',Longitude)
 end
 
 end

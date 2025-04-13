@@ -148,6 +148,33 @@ function biplotFS(Y,varargin)
 %               Example - 'bdp',0.4
 %               Data Types - double
 %
+%    Latitude    : Latitude coordinates in degrees of the rows. nx1 vector containint the
+%                   numerical values of latitudes for each row.
+%                   If vectors Latitude and Longitude are present once
+%                   brushing of the units in biplotAPP is done, the
+%                   geobubble of the brushed units automatically
+%                   appears. The size of the bubble is proportional to the
+%                   value of the first principal component while the color
+%                   of the bubbles depends on the value of the second
+%                   principal component.
+%                   Example - 'Latitude',[54 43.2 ... 47]
+%                    Data Types - vector with elements in the range [–90, 90]
+%
+%    Longitude    : Longitude coordinates in degrees of the rows. nx1 vector containint the
+%                   numerical values of latitudes for each row.
+%                   If vectors Latitude and Longitude are present once
+%                   brushing of the units in biplotAPP is done, the
+%                   geobubble of the brushed units automatically
+%                   appears. The size of the bubble is proportional to the
+%                   value of the first principal component while the color
+%                   of the bubbles depends on the value of the second
+%                   principal component.
+%                   Example - 'Longitude',[54 43.2 ... 47]
+%                    Data Types - vector with elements in the range [–90, 90]
+%                   Remark: Latitude and Longitude can also be passed as
+%                   columns of the input table. In this last case these two
+%                   variables are ignore in the computation of PCA and are
+%                   just used when brushing is invoked.
 %
 % standardize : standardize data. boolean. Boolean that specifies
 %               whether to standardize the variables, that is, we operate on
