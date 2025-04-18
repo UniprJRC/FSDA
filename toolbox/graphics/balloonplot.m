@@ -418,5 +418,7 @@ end
 if ~strcmp(Ntable.Properties.DimensionNames{2},'Variables')
     ylabel(Ntable.Properties.DimensionNames{2})
 end
+hf = gcf;
+set(hf,'Tag','baloonplot');
 end
 %FScategory:VIS-Mult
