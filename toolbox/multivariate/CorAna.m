@@ -1341,6 +1341,7 @@ if isstruct(plots) || plots==1
     % Just in case Lr is of type datetime 
 
     figure
+    set(gcf, 'Tag', 'corresplot');
     hold('on')
     % Plot row points
     propR=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolrows ,''',''Color'',''', colorrows , ...

@@ -907,6 +907,7 @@ if plots==true
     ax.Children=ax.Children([1 3 2]);
     labels=["Cum proportion" "Pos. c_{ij}-d_{ij}" "Neg. c_{ij}-d_{ij}"];
     legend(labels,'Location','best');
+     set(gcf, 'Tag', 'Paretoplot');
 end
 
 end
