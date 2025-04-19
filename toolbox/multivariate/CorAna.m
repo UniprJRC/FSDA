@@ -1340,8 +1340,8 @@ if isstruct(plots) || plots==1
     colorsupcols='r';
     % Just in case Lr is of type datetime 
 
-    figure
-    set(gcf, 'Tag', 'corresplot');
+    figure('Tag', 'pl_CorAna')
+    
     hold('on')
     % Plot row points
     propR=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolrows ,''',''Color'',''', colorrows , ...

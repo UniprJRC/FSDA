@@ -877,10 +877,11 @@ if plots==true
     % Apply flipud in order to have an increasing order in the y coordinate
     balloonplot(flipud(Ntable),'contrib2Index',flipud(NconMinusNdis));
     % balloonplot(Ntable,'contrib2Index',NconMinusNdis);
-
     title('Individual components of $(C-D)$ C=conc. pairs, D=disc. pairs', ...
-        'Interpreter','latex','FontSize',16)
-    figure
+        'Interpreter','latex','FontSize',16);
+
+    figure('Tag', 'pl_paretoplot');
+
     nomiContribCminusD=string(Lr(:))+"-"+string(Lc(:)');
     % Pareto plot of individual contributions
     % Transform NconMinusNdis into a column vector.
@@ -907,7 +908,8 @@ if plots==true
     ax.Children=ax.Children([1 3 2]);
     labels=["Cum proportion" "Pos. c_{ij}-d_{ij}" "Neg. c_{ij}-d_{ij}"];
     legend(labels,'Location','best');
-     set(gcf, 'Tag', 'Paretoplot');
+     
+    %set(gcf, 'Tag', 'pl_paretoplot');
 end
 
 end
