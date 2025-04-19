@@ -1880,10 +1880,12 @@ for i = 1:p
             end
 
             % Add background color
-            if colorBackground==true
+            if colorBackground==true 
                 ax=axis;
-                h = patch([ax(1:2)';ax(2);ax(1)],[ax(3);ax(3);ax(4);ax(4)],cmapBackground(posBackground(i,j),:));
-                set(h,'facealpha',0.25);
+                if ~and(i==1,j==p)
+                    h = patch([ax(1:2)';ax(2);ax(1)],[ax(3);ax(3);ax(4);ax(4)],cmapBackground(posBackground(i,j),:));
+                    set(h,'facealpha',0.25);
+                end
                 % legend(end)
             end
         end
