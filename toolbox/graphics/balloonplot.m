@@ -75,7 +75,6 @@ function [h,Ntable] = balloonplot(N,varargin)
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
 %
-%
 %  Output:
 %
 %      h :    returns the BubbleChart object. Use h to modify properties of
@@ -211,6 +210,35 @@ function [h,Ntable] = balloonplot(N,varargin)
     balloonplot(SportHealth,'contrib2Index', out.Contrib2Hyxtable)
     title(['Contribution of each single cell to Hyx=' num2str(out.Hyx(1))])
 %}
+
+%{ 
+    % Analyse several datasets and visualise them only at the end.
+
+    % Set the default figure visibility to off
+    set(0, 'DefaultFigureVisible', 'off');
+
+    load SportHealth.mat
+    out=corrNominal(SportHealth);
+    out.Contrib2Hyxtable
+    balloonplot(SportHealth,'contrib2Index', out.Contrib2Hyxtable);
+
+    load smoke
+    [h,Ntable]=balloonplot(smoke,'datamatrix',true);
+
+    % the figures remain invisible for 5 seconds
+    disp('Figures generated! They remain invisible for 3 seconds');
+    pause(5);
+
+    % now they become visible again
+    h_figures = findobj('Type', 'figure', 'Tag', 'pl_balloonplot');
+    set(h_figures, 'Visible', 'on');
+
+    % Do not forget to set again the default figure visibility to on!
+    set(0, 'DefaultFigureVisible', 'on');
+
+    cascade;
+
+%}
     
 %% Beginning of code
 
@@ -324,6 +352,8 @@ xcoo=repmat(1:J,I,1);
 xcoo=xcoo(:);
 Nvector=N(:);
 
+figure('Tag','pl_balloonplot');
+
 if isempty(contrib2Index)
     if isempty(ax)
         h=bubblechart(xcoo,ycoo,Nvector,Nvector);
@@ -419,7 +449,7 @@ if ~strcmp(Ntable.Properties.DimensionNames{2},'Variables')
     ylabel(Ntable.Properties.DimensionNames{2})
 end
 
-set(gcf,'Tag','pl_baloonplot');
+%set(gcf,'Tag','pl_balloonplot');
 
 end
 %FScategory:VIS-Mult
