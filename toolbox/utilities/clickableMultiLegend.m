@@ -253,7 +253,8 @@ if nargin > 0 % ClickableMultiLegend used with arguments
     else
         allaxes = gcf().Children;
         if ishghandle(allaxes(1), 'axes')
-            axes(allaxes(1));
+            %axes(allaxes(1));
+            set(gcf, 'CurrentAxes', allaxes(1));
         end
     end
 
@@ -358,7 +359,6 @@ axis manual;
         end
 
     end
-
 end
 
 %FScategory:UTIGEN
