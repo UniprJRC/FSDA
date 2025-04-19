@@ -328,8 +328,8 @@ init=options.init;
 labeladd=options.labeladd;
 bivarfit=options.bivarfit;
 multivarfit=options.multivarfit;
-xlim=options.xlim;
-ylim=options.ylim;
+xlimits=options.xlim;
+ylimits=options.ylim;
 nameX=options.nameX;
 namey=options.namey;
 msg=options.msg;
@@ -342,7 +342,7 @@ bsbmfullrank=options.bsbmfullrank;
     'nsamp',nsamp,'lms',lms,'plots',plots,...
     'init',init,...
     'labeladd',labeladd,'bivarfit',bivarfit,'multivarfit',multivarfit,...
-    'xlim',xlim,'ylim',ylim,'nameX',nameX,'namey',namey,...
+    'xlim',xlimits,'ylim',ylimits,'nameX',nameX,'namey',namey,...
     'msg',msg,'nocheck',nocheck,'intercept',intercept,'bonflev',bonflev,...
     'bsbmfullrank',bsbmfullrank);
 
@@ -468,14 +468,14 @@ if nargout > 0 || plotsPI==1
         xnew=(minX:((maxX-minX)/1000):maxX)';
         if intercept==true
             xnew=[ones(length(xnew),1) xnew];
-            hasintercept=true;
+            %hasintercept=true;
         else
-            hasintercept=false;
+            %hasintercept=false;
         end
     else
         xnew=linspace(minX,maxX,n)';
         xnew=[X(:,1:end-1) xnew];
-        hasintercept=intercept;
+        %hasintercept=intercept;
     end
 
     % Var cov matrix of regression coefficients
@@ -483,7 +483,8 @@ if nargout > 0 || plotsPI==1
 
     sim   = false;
     pred  = true;
-    [ypred , yci] = predci(xnew,beta,Sigma,S2b,dfe,alpha,sim,pred,hasintercept);
+    %[ypred , yci] = predci(xnew,beta,Sigma,S2b,dfe,alpha,sim,pred,hasintercept);
+    [ypred , yci] = predci(xnew,beta,Sigma,S2b,dfe,alpha,sim,pred,intercept);
 
     varargout = {xnew , ypred, yci};
 
