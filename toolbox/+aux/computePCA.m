@@ -206,7 +206,7 @@ if plots==1
         gb.SizeLegendTitle = "First PC (size)";
         gb.ColorLegendTitle = "Second PC (color)";
     elseif ~isempty(Latitude) ||  ~isempty(Longitude) 
-
+            error('FSDA:pcaFS:WrongInputOpt','Both Latitude and Longitude must be given.');
     else
     end
 

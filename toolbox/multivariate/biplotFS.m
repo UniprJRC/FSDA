@@ -176,23 +176,6 @@ function biplotFS(Y,varargin)
 %                   variables are ignore in the computation of PCA and are
 %                   just used when brushing is invoked.
 %
-%  shapefile  : name of shapefile associated with the rows. Character or string.
-%               Name of the shapefiles containing the containing the
-%               geometric details of the rows. The shape file, which is
-%               loaded using function readgeotable, must have n rows and
-%               the n rows must have the same order of the n rows of Y. The
-%               default value of shapefile is empty that is we assume that
-%               no shapefile is given. If shapefile is given an additional
-%               GUI containing the areas colored using
-%               the first PC is shown. The function which is used to show
-%               the plot depends on the fact that the mapping toolbox is
-%               installed or not. If the mapping toolbox is installed
-%               function geoscatter is called and the plot uses latitudes
-%               and longitudes. On the other hand, if the mapping toolbox
-%               is not installed function mapshow is used and the plot is
-%               shown in shape coordinates without projection.
-%                   Example - 'shapefile','shapefileName'
-%                    Data Types - char or string.
 %
 % standardize : standardize data. boolean. Boolean that specifies
 %               whether to standardize the variables, that is, we operate on
