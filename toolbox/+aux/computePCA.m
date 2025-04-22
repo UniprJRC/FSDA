@@ -1,4 +1,5 @@
-function  [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT,score,scoreT,orthDist,scoreDist]=computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots)
+function  [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT,score,scoreT,orthDist,scoreDist] = ...
+    computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile)
 % Compute all PCA quantities (this function is not intended to be called
 % directly)
 [n,v]=size(Y);
@@ -190,5 +191,105 @@ if plots==1
     % and whose projection on the PCA subspace is remote from the typical
     % projections.
 
-end
+    %% Show the plot of latitude and longitude
+
+    if ~isempty(Latitude) &&  ~isempty(Longitude) 
+        delete(findobj(0, 'type', 'figure','tag','pl_latlong'));
+        figure('Name','geobubble','tag','pl_latlong')
+
+        % Divide the second PC into 4 classes
+        cate=discretize(score(:,2),linspace(min(score(:,2)),max(score(:,2)),4),'categorical');
+
+        % Add title and legend titles
+        gb=geobubble(Latitude,Longitude,score(:,1),cate,'Basemap','topographic','MapLayout','maximized');
+        gb.Title = "Geobubble of all units";
+        gb.SizeLegendTitle = "First PC (size)";
+        gb.ColorLegendTitle = "Second PC (color)";
+    elseif ~isempty(Latitude) ||  ~isempty(Longitude) 
+
+    else
+    end
+
+    if ~isempty(ShapeFile)
+        LatLongAPP(Ztable,score,ShapeFile)
+    end
+
+
+    % % ShapeFile
+    % if ~isempty(ShapeFile)
+    %
+    %
+    %     delete(findobj(0, 'type', 'figure','tag','pl_geoplot'));
+    %     figure('Name','geoplot','tag','pl_geoplot')
+    %     % Specify the variable for which the colors have to be set
+    %     colorIntensity = score(:,1);
+    %     Xgeotable = readgeotable(ShapeFile);
+    %
+    %     % Define a colorbar from green to red
+    %     numColors=50;
+    %     customGradient = interp1([0;1],[0 1 0; 1 0 0],linspace(0,1,numColors));
+    %
+    %
+    %     % Check if Mapping toolbox is installed
+    %     instTOO=struct2table(ver);
+    %     if any(string(instTOO{:,1})=="Mapping Toolbox")
+    %
+    %         geoaxes
+    %         % Add to the geotable the Variable which contains the colors
+    %         Xgeotable.ColorVar=colorIntensity;
+    %         geoplot(Xgeotable,'ColorVariable','ColorVar');
+    %         colormap(customGradient);
+    %         h=colorbar;
+    %         h.Label.String='Color based on first PC';
+    %         geobasemap('topographic')
+    %
+    %         % Add labels in the centroids of the shapes
+    %         % estract XY pairs coords of enclosing poligons for each row of input table
+    %         Xtab= geotable2table(Xgeotable, ["X" "Y"]);
+    %         % Obtain the averate latitute and longitude for each row
+    %         info = shapeinfo(ShapeFile);
+    %         proj = info.CoordinateReferenceSystem;
+    %         arrlonglat=zeros(n,2);
+    %         for i = 1:n
+    %             [lat, lon] = projinv(proj, Xtab.X{i},Xtab.Y{i});  % Convert to lat/lon
+    %             arrlonglat(i,1:2)=[mean(lat,'omitmissing') mean(lon,'omitmissing')];
+    %         end
+    %
+    %         % Show the labels
+    %         text(arrlonglat(:,1), arrlonglat(:,2),rownames)
+    %
+    %     else % mapping toolbox is not installed
+    %
+    %         fc=customGradient(round(rescale(colorIntensity,1,numColors)),:);
+    %         polygon=mapshow(Xgeotable, "FaceAlpha",0.9);
+    %         for i=1:n
+    %             set(polygon.Children(i), 'FaceColor', fc(i,:),"FaceAlpha",0.9);
+    %         end
+    %         colormap(customGradient);
+    %         rang=[min(colorIntensity) max(colorIntensity)];
+    %         h=colorbar;
+    %         h.Label.String='Color based on first PC';
+    %         soglie=linspace(min(rang),max(rang),6);
+    %         valori=(soglie-min(soglie))/(max(soglie)-min(soglie));
+    %         h.Ticks=valori;
+    %         h.TickLabels=string(soglie);
+    %
+    %         % Add labels in the centroids of the shapes
+    %         arrlonglat=zeros(n,2);
+    %         % estract XY pairs coords of enclosing poligons for each row of input table
+    %         Xtab= geotable2table(Xgeotable, ["X" "Y"]);
+    %
+    %         for i=1:n
+    %             % prima creiamo degli oggetti poligonali
+    %             polObj= polyshape(Xtab.X{i,1}, ...
+    %                 Xtab.Y{i,1});
+    %             [centX,centY]=centroid(polObj);
+    %             % popoliamo i vettori
+    %             arrlonglat(i,1:2)=[centX centY];
+    %         end
+    %         text(arrlonglat(:,1), arrlonglat(:,2),rownames)
+    %
+    %
+    %     end
+    % end
 end

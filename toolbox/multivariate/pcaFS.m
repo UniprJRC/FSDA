@@ -279,12 +279,14 @@ NumComponents=[];
 robust=false;
 Latitude=[];
 Longitude=[];
+ShapeFile='';
 
 if nargin>1
     options=struct('plots',plots, ...
         'standardize',standardize,'biplot', biplot,...
         'dispresults',dispresults,'NumComponents',NumComponents,...
-        'robust',robust,'Latitude',Latitude,'Longitude',Longitude);
+        'robust',robust,'Latitude',Latitude,'Longitude',Longitude, ...
+        'ShapeFile',ShapeFile);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -322,6 +324,7 @@ if nargin>1
     robust=options.robust;
     Longitude=options.Longitude;
     Latitude=options.Latitude;
+    ShapeFile=options.ShapeFile;
 end
 
 if istable(Y)
@@ -599,7 +602,7 @@ end
 % In this way the function which does PCA computations can be called
 % without pcaFS
 [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT, ...
-    score,scoreT,orthDist,scoreDist]=aux.computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots);
+    score,scoreT,orthDist,scoreDist]=aux.computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile);
 
 out=struct;
 out.Rtable=Rtable;
@@ -617,8 +620,9 @@ out.orthDist=orthDist;
 out.scoreDist=scoreDist;
 out.class='pcaFS';
 
+
 if biplot==1
-    biplotAPP(Ztable,'standardize',standardize,'bsb',bsb,'Latitude',Latitude,'Longitude',Longitude)
+    biplotAPP(Ztable,'standardize',standardize,'bsb',bsb,'Latitude',Latitude,'Longitude',Longitude,'ShapeFile',ShapeFile)
 end
 
 end
