@@ -211,7 +211,7 @@ if plots==1
     end
 
     if ~isempty(ShapeFile)
-        LatLongAPP(Ztable,score,ShapeFile)
+        geoplotAPP(Ztable,score,ShapeFile)
     end
 
 
