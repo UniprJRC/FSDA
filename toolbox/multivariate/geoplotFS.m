@@ -35,13 +35,9 @@ function geoplotFS(Y,score,ShapeFile)
 %               Name of the ShapeFile containing the containing the
 %               geometric details of the rows. The ShapeFile, which is
 %               loaded using function readgeotable, must have n rows and
-%               the n rows must have the same order of the n rows of Y.  The function which is used to show
-%               the plot depends on the fact that the mapping toolbox is
-%               installed or not. If the mapping toolbox is installed
-%               function geoscatter is called and the plot uses latitudes
-%               and longitudes. On the other hand, if the mapping toolbox
-%               is not installed function mapshow is used and the plot is
-%               shown in shape coordinates without projection.
+%               the n rows must have the same order of the n rows of Y.
+%               Remark: note that this option can be used just is the
+%               "Mapping toolbox" is installed.
 %                   Example - 'ShapeFile','shapefileName'
 %                    Data Types - char or string or geotable.
 % 
@@ -68,7 +64,7 @@ function geoplotFS(Y,score,ShapeFile)
 
 %{
     %% Example where second input argument is a numeric scalar.
-    
+    a=struct2table(ver);
     MappingInstalled=any(string(a{:,1})=="Mapping Toolbox");
     if MappingInstalled ==true
         load citiesItaly2024.mat

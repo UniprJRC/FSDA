@@ -163,15 +163,11 @@ function out=pcaFS(Y,varargin)
 %               default value of shapefile is empty that is we assume that
 %               no shapefile is given. If ShapeFile is given an additional
 %               GUI containing the areas colored using
-%               the first PC is shown. The function which is used to show
-%               the plot depends on the fact that the mapping toolbox is
-%               installed or not. If the mapping toolbox is installed
-%               function geoscatter is called and the plot uses latitudes
-%               and longitudes. On the other hand, if the mapping toolbox
-%               is not installed function mapshow is used and the plot is
-%               shown in shape coordinates without projection.
+%               the first PC is shown. 
 %                   Example - 'ShapeFile','shapefileName'
 %                    Data Types - char or string or geotable.
+%               Remark: note that this option can be used just is the
+%               "Mapping toolbox" is installed.
 %
 %    standardize : standardize data. boolean. Boolean which specifies
 %               whether to standardize the variables, that is we operate on
@@ -282,11 +278,38 @@ function out=pcaFS(Y,varargin)
 %}
 
 %{
-    %% use of pcaFS with option robust true.
+    %% Use of pcaFS with option robust true.
     load citiesItaly;
     % Use all default options
     out=pcaFS(citiesItaly,'robust',true);
 %}
+
+%{
+    %% Use of pcaFS with options Latitude and Longitude.
+    load citiesItaly2024.mat
+    X=citiesItaly2024;
+    % Retrieve Latitude and Longitude of each province
+    LatLong=X.Properties.UserData{2};
+    Latitude=LatLong(:,1);
+    Longitude=LatLong(:,2);
+    out=pcaFS(X,'Latitude',Latitude,'Longitude',Longitude);
+%}
+
+%{
+    %% Use of pcaFS with option ShapeFile.
+    % Note that this option requires the Mapping Toolbox to be installed.
+    a=struct2table(ver);
+    MappingInstalled=any(string(a{:,1})=="Mapping Toolbox");
+    if MappingInstalled ==true
+        load citiesItaly2024.mat
+        X=citiesItaly2024;
+        ShapeFile=X.Properties.UserData{1};
+        out=pcaFS(X,"ShapeFile",ShapeFile,'biplot',0);
+    else
+           disp('This option requires that the "mapping toolbox" is installed') 
+    end
+%}
+
 
 %% Beginning of code
 [n,v]=size(Y);
