@@ -68,11 +68,17 @@ function geoplotFS(Y,score,ShapeFile)
 
 %{
     %% Example where second input argument is a numeric scalar.
-    load citiesItaly2024.mat
-    X=citiesItaly2024;
-    ShapeFile=X.Properties.UserData{1};
-    % Show the geoplot of the third variable of table X
-    geoplotFS(X,3,ShapeFile)
+    
+    MappingInstalled=any(string(a{:,1})=="Mapping Toolbox");
+    if MappingInstalled ==true
+        load citiesItaly2024.mat
+        X=citiesItaly2024;
+        ShapeFile=X.Properties.UserData{1};
+        % Show the geoplot of the third variable of table X
+        geoplotFS(X,3,ShapeFile)
+    else
+       disp('This function requires the "mapping toolbox" is installed') 
+    end
 %}
 
 %{
