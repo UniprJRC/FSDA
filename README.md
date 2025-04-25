@@ -28,7 +28,9 @@ Give a ⭐️ if you like this project!
 
 ## FSDA release  2025a is out. (April 2025)
 
-New Features and Changes 
+New Features and Changes [release_notes](https://https://github.com/UniprJRC/FSDA/blob/master/toolbox/helpfiles/FSDA/release_notes.html)
+
+In order to run the new features run the file below and enjoy!!!
 
 | FileName | View :eyes:| Run ▶️ | Jupiter notebook |
 | -------- | ---- | --- | ---- |
