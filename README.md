@@ -34,7 +34,7 @@ In order to run the new features run the file below and enjoy!!!
 
 | FileName | View :eyes:| Run ▶️ | Jupiter notebook |
 | -------- | ---- | --- | ---- |
-|`New_features_FSDA2025a`: examples with the new features  | [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://viewer.mathworks.com/?viewer=live_code&url=https%3A%2F%2Fwww.mathworks.com%2Fmatlabcentral%2Fmlc-downloads%2Fdownloads%2Ff026de45-4ab8-44ed-85a3-1549ae68987b%2F1741121020%2Ffiles%2FsimulatedData.mlx&embed=web) |  [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=https://github.com/UniprJRC/FSDA&file=toolbox/doc/New_features_FSDA2025a.mlx) | [New_features_FSDA2025a.ipynb](https://github.com/UniprJRC/FSDA/blob/master/toolbox/doc/New_features_FSDA2025a.ipynb) |
+|`New_features_FSDA2025a`: examples with the new features  | [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://viewer.mathworks.com/?viewer=live_code&url=https%3A%2F%2Fwww.mathworks.com%2Fmatlabcentral%2Fmlc-downloads%2Fdownloads%2Ff026de45-4ab8-44ed-85a3-1549ae68987b%2F1741121020%2Ffiles%2FsimulatedData.mlx&embed=web) |  [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FSDA&file=toolbox/doc/New_features_FSDA2025a.mlx) | [New_features_FSDA2025a.ipynb](https://github.com/UniprJRC/FSDA/blob/master/toolbox/doc/New_features_FSDA2025a.ipynb) |
 
 
 
