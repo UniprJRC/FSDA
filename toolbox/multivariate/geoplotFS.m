@@ -7,7 +7,7 @@ function geoplotFS(Y,score,ShapeFile)
 % In the app it is also possible choose the variabile of Y to show, the
 % type of plot (i.e. in latitude and longitude coordinates or in the
 % original coordinates of ShapeFile), the direction of the colorbar.
-%
+% Note that this function requires that the "mapping toolbox" is installed.
 %
 %
 %  Required input arguments:
@@ -30,13 +30,13 @@ function geoplotFS(Y,score,ShapeFile)
 %                   Example - 'ShapeFile','shapefileName'
 %                    Data Types - char or string numeric scalar or nxp array.
 %
-%  ShapeFile  : name of ShapeFile or geospatial table containg shapes. 
+%  ShapeFile  : name of ShapeFile or geotable containg shapes. 
 %               Character or string or geotable.
 %               Name of the ShapeFile containing the containing the
 %               geometric details of the rows. The ShapeFile, which is
 %               loaded using function readgeotable, must have n rows and
 %               the n rows must have the same order of the n rows of Y.
-%               Remark: note that this option can be used just is the
+%               Remark: note that this option can be used just if the
 %               "Mapping toolbox" is installed.
 %                   Example - 'ShapeFile','shapefileName'
 %                    Data Types - char or string or geotable.
