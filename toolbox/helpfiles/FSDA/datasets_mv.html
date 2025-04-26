@@ -7,7 +7,16 @@
 document.write(headJS);
 </script>
 <!--Insert title of the page-->
+
+<head>
 <title>FSDA main page</title>
+<style type="text/css">
+.auto-style1 {
+	color: #FF0000;
+}
+</style>
+</head>
+
 <!--Beginning of body-->
 <body id="responsive_offcanvas">
 
@@ -118,8 +127,18 @@ document.write(divsbefore);
 	  <a href="https://github.com/IlSole24ORE/QDV2024">IlSole24ORE/QDV2024</a> <br>
 	  <br>Inside <tt>citesItaly2024.Properties.UserData</tt> it is possible to find a 
 	  cell array with two elements.<br>The first element contains the geotable with 
-	  the shape information for each province.<br>The second element contains an 
-	  array of size 107x2 with the Latitudes and Longintudes for each province.</td>
+	  the shape information for each province. Note that in order to properly 
+	  load the geotable you need to have the mapping toolbox installed, 
+	  otherwise the following warning is issued<br><br>
+	  <span class="auto-style1">Warning: Cannot load an object of class 
+	  'mappolyshape':</span><br class="auto-style1"><span class="auto-style1">
+	  Its class cannot be found. </span><br class="auto-style1">
+	  <span class="auto-style1">Warning:</span><br class="auto-style1">
+	  <br class="auto-style1"><span class="auto-style1">The variable 'Shape' 
+	  failed to load, and has been replaced with an empty array. This might have</span><br class="auto-style1">
+	  <span class="auto-style1">happened if its class does not exist on the 
+	  path. </span><br><br>The second element contains an 
+	  array of size 107x2 with the Latitudes and Longitudes for each province.</td>
     </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>DS12</tt></td>
