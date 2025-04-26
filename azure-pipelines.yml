@@ -58,6 +58,7 @@ jobs:
           Parallel_Computing_Toolbox 
           Statistics_and_Machine_Learning_Toolbox
           Econometrics_Toolbox
+          Mapping_Toolbox
           Bioinformatics_Toolbox
           Optimization_Toolbox
     - task: RunMATLABCommand@0 
