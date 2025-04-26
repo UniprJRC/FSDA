@@ -423,7 +423,7 @@ if ~isempty(LrSup)
     RowsStaSup=out.RowsStaSup;
     RowsPriSup=out.RowsPriSup;
     RowsSymSup=out.RowsSymSup;
-    
+
     for i=1:length(changedimsign)
         if changedimsign(i) == true
             RowsStaSup(:,dim(i))=-RowsStaSup(:,dim(i));
@@ -438,7 +438,7 @@ if ~isempty(LcSup)
     ColsStaSup=out.ColsStaSup;
     ColsPriSup=out.ColsPriSup;
     ColsSymSup=out.ColsSymSup;
-    
+
     for i=1:length(changedimsign)
         if changedimsign(i) == true
             ColsStaSup(:,dim(i))=-ColsStaSup(:,dim(i));
@@ -446,7 +446,7 @@ if ~isempty(LcSup)
             ColsSymSup(:,dim(i))=-ColsSymSup(:,dim(i));
         end
     end
-    
+
     SupColsN=out.SupColsN;
 end
 
@@ -463,16 +463,16 @@ if isstruct(plots)
     plotsdef.ColorColsSup='r';
     plotsdef.MarkerFaceColorRows='auto';
     plotsdef.MarkerFaceColorRowsSup='b';
-    
+
     fld=fieldnames(plots);
-    
+
     % Check if user options inside plots are valid options
     aux.chkoptions(plotsdef,fld)
-    
+
     % This anonymous function anables to extract the variable name to a
     % string
     ExtractVariableName=@(x) inputname(1);
-    
+
     if isfield(plots,'alpha')
         if strcmp(plots.alpha,'rowprincipal')
             typeR='RowsPri'; % rows are in principal coordinates
@@ -480,15 +480,15 @@ if isstruct(plots)
             titl={'Mooplot starting from rows principal coordinates, and columns standard coordinates'};
             typeRSup='RowsPriSup';
             typeCSup='ColsStaSup';
-            
+
         elseif strcmp(plots.alpha,'colprincipal')
             typeR='RowsSta'; % rows are in standard coordinates
             typeC='ColsPri'; % columns are in principal coordinates
             titl={'Mooplot starting from rows standard coordinates, and columns principal coordinates'};
             typeRSup='RowsStaSup';
             typeCSup='ColsPriSup';
-            
-            
+
+
         elseif strcmp(plots.alpha,'symbiplot')
             % equivalent to alpha=0.5
             typeR='RowsSym';        % rows are in symmetrical coordinates
@@ -496,22 +496,22 @@ if isstruct(plots)
             titl='Moonplot starting from rows and columns in symmetrical coordinates';
             typeRSup='RowsSymSup';
             typeCSup='ColsSymSup';
-            
-            
+
+
         elseif strcmp(plots.alpha,'bothprincipal')
             typeR='RowsPri';        % rows are in principal coordinates
             typeC='ColsPri';        % columns are in principal coordinates
             titl={'Moonplot starting from rows and cols in principal coordinates.'};
             typeRSup='RowsPriSup';
             typeCSup='ColsPriSup';
-            
+
         elseif strcmp(plots.alpha,'bothstandard')
             typeR='RowsSta';        % rows are in standard coordinates
             typeC='ColsSta';        % columns are in standard coordinates
             titl={'Moonplot starting from rows and cols in standard coordinates.'};
             typeRSup='RowsStaSup';
             typeCSup='ColsStaSup';
-            
+
         elseif strcmp(plots.alpha,'rowgab')
             %  If plots.alpha='rowgab'  rows are in principal coordinates
             %  and columns are in standard coordinates multiplied by the
@@ -521,13 +521,13 @@ if isstruct(plots)
             typeC=ExtractVariableName(ColsStaDc);
             titl={'Moonplot starting from rows principal coordinates, and columns standard coordinates times masses'};
             typeRSup='RowsPriSup';
-            
+
             if ~isempty(LcSup)
                 ColsStaDcSup=diag(sum(SupColsN,1)/n)*ColsStaSup;
                 typeCSup=ExtractVariableName(ColsStaDcSup);
             end
-            
-            
+
+
         elseif strcmp(plots.alpha,'colgab')
             % If plots.alpha='colgab'  columns are in principal coordinates
             % and rows are in standard coordinates multiplied by the
@@ -537,13 +537,13 @@ if isstruct(plots)
             typeC='ColsPri';        % columns are in principal coordinates
             titl={'Moonplot starting from rows standard coordinates multiplied by masses ' , ...
                 'and columns principal coordinates'};
-            
+
             if ~isempty(LrSup)
                 RowsStaDrSup=diag(sum(SupRowsN,2)/n)*RowsStaSup;
                 typeRSup=ExtractVariableName(RowsStaDrSup);
             end
             typeCSup='ColsPriSup';
-            
+
         elseif strcmp(plots.alpha,'rowgreen')
             %  If plots.alpha='rowgreen'  rows are in principal
             %  coordinates and columns are in standard coordinates
@@ -554,12 +554,12 @@ if isstruct(plots)
             titl={'Mooplot starting from rows principal coordinates, and column standard coordinates ' , ...
                 'times sqrt of masses'};
             typeRSup='RowsPriSup';        % rows are in principal coordinates
-            
+
             if ~isempty(LcSup)
                 ColsStaDcSqrtSup=(diag(sum(SupColsN,1)/n))^(1/2)*ColsStaSup;
                 typeCSup= ExtractVariableName(ColsStaDcSqrtSup);
             end
-            
+
         elseif strcmp(plots.alpha,'colgreen')
             %  If plots.alpha='colgreen' columns in principal coordinates
             %  and rows in standard coordinates multiplied by the square
@@ -603,7 +603,7 @@ if isstruct(plots)
                 error('FSDA:moonplot:WrongInputOpt','Please use one of the above strings')
             end
         end
-        
+
     else
         typeR='RowsPri';        % rows are in principal coordinates
         typeC='ColsPri';        % columns are in principal coordinates
@@ -611,15 +611,15 @@ if isstruct(plots)
         typeRSup='RowsPriSup';
         typeCSup='ColsPriSup';
     end
-    
-    
+
+
     if isfield(plots,'FontSizeSup')
         FontSizeSup=plots.FontSizeSup;
     else
         FontSizeSup=FontSizedef;
     end
-    
-    
+
+
     if isfield(plots,'MarkerSize')
         MarkerSize=plots.MarkerSize;
     else
@@ -630,38 +630,38 @@ if isstruct(plots)
     else
         SymbolRows='o';
     end
-    
+
     if isfield(plots,'SymbolRowsSup')
         SymbolRowsSup=plots.SymbolRowsSup;
     else
         SymbolRowsSup='o';
     end
-    
-    
+
+
     if isfield(plots,'ColorRows')
         ColorRows=plots.ColorRows;
     else
         ColorRows='b';
     end
-    
+
     if isfield(plots,'ColorRowsSup')
         ColorRowsSup=plots.ColorRowsSup;
     else
         ColorRowsSup='b';
     end
-    
+
     if isfield(plots,'MarkerFaceColorRows')
         MarkerFaceColorRows=plots.MarkerFaceColorRows;
     else
         MarkerFaceColorRows='auto';
     end
-    
+
     if isfield(plots,'MarkerFaceColorRowsSup')
         MarkerFaceColorRowsSup=plots.MarkerFaceColorRowsSup;
     else
         MarkerFaceColorRowsSup=ColorRowsSup;
     end
-    
+
     if isfield(plots,'ColorCols')
         ColorCols=plots.ColorCols;
     else
@@ -672,18 +672,18 @@ if isstruct(plots)
     else
         ColorColsSup='r';
     end
-    
-    
+
+
 else
-    
+
     typeR='RowsPri';        % rows are in principal coordinates
     typeC='ColsPri';        % columns are in principal coordinates
     typeRSup='RowsPriSup';
     typeCSup='ColsPriSup';
-    
+
     titl={'Moonplot starting from rows and cols in principal coordinates'};
-    
-    
+
+
     FontSize=FontSizedef;
     FontSizeSup=FontSize;
     MarkerSize=MarkerSizedef;
@@ -708,14 +708,14 @@ Cacols= eval(typeC);
 
 if isempty(h)
 
-% Create the figure that will host the moonplot
-hfig = figure('Name', 'moonplot', 'NumberTitle', 'off',...
-    'Tag','pl_CorAna','Position', [100 100 600 600]);
+    % Create the figure that will host the moonplot
+    hfig = figure('Name', 'moonplot', 'NumberTitle', 'off',...
+        'Tag','pl_CorAna','Position', [100 100 600 600]);
 else
-   % Note that if the figure has to be sent to h axes it is convenient to
+    % Note that if the figure has to be sent to h axes it is convenient to
     % set the figure in the current axes with Visible off
     hfig = figure('Name', 'moonplot', 'NumberTitle', 'off',...
-        'Tag','pl_CorAna','Visible','off','Position', [100 100 600 600]);   
+        'Tag','pl_CorAna','Visible','off','Position', [100 100 600 600]);
 end
 
 % Get figure's axis
@@ -755,14 +755,14 @@ text(CarowsST(:,1)+addx,CarowsST(:,2)+addy,Lr,'Color',ColorRows)
 if ~isempty(LrSup)
     CarowsSup= eval(typeRSup);
     CarowsSupST=CarowsSup/sqrt(corrRows);
-%     plot(afig,CarowsSupST(:,d1),CarowsSupST(:,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
-%         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
-%     text(CarowsSupST(:,d1)+addx , CarowsSupST(:,d2)+addy, LrSup,'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
+    %     plot(afig,CarowsSupST(:,d1),CarowsSupST(:,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
+    %         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
+    %     text(CarowsSupST(:,d1)+addx , CarowsSupST(:,d2)+addy, LrSup,'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
 
     plot(afig,CarowsSupST(indexesLrSupNew,d1),CarowsSupST(indexesLrSupNew,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
     text(CarowsSupST(indexesLrSupNew,d1)+addx , CarowsSupST(indexesLrSupNew,d2)+addy, LrSup(indexesLrSupNew),'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
-    
+
     for ii=1:length(indexesLrSupBoth)
         plot(afig,CarowsSupST(indexesLrSupBoth(ii),d1),CarowsSupST(indexesLrSupBoth(ii),d2),'LineStyle','none','Marker',SymbolRowsSup ,...
             'Color', ColorRowsSup , 'LineWidth',1,'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize*fracLrSupBoth(ii))
@@ -795,16 +795,16 @@ end
 % Add points and text associated to supplementary columns
 if ~isempty(LcSup)
     CacolsSup= eval(typeCSup);
-    
+
     dsSup=sqrt(sum(CacolsSup(:,dim).^2,2));
     Fsize01Sup=dsSup/max(ds);
     % FontSizeSup not necessarily in the interval [7 18]
     FsizeSup=7+Fsize01Sup*11;
     % The sum of squares of the rows of matrix CacolsSupST is 1
     CacolsSupST=CacolsSup(:,dim)./dsSup;
-    
+
     rotatSup=atan2d(CacolsSup(:,dim(2)),CacolsSup(:,dim(1)));
-    
+
     for i=1:length(LcSup)
         if  rotatSup(i)>-90 && rotatSup(i)<90
             t=text(CacolsSupST(i,1),CacolsSupST(i,2),LcSup(i),'FontSize',FsizeSup(i),...
@@ -839,40 +839,40 @@ ylab=['Dimension ',sprintf('%2.0f',d2),' (',sprintf('%5.1f',InertiaExplained(d2,
 if ~isempty(h)
     % Eventually send the moonplot into a different figure/subplot
     hfigh = get(h,'Parent');
-    
+
     set(hfigh,'Name','Moonplot','NumberTitle','off');
     set(h,'Tag','pl_subplot');
-    
-        xlabel(h,xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+
+    xlabel(h,xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
     ylabel(h,ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
     title(h,titl,'Interpreter','Latex');
 
     copyobj(allchild(afig),h);
     pause(0.0000001);
-    
-    vv=axis(h);
-line(h,[vv(1);vv(2)],[0;0],'LineStyle','--')
-line(h,[0;0],[vv(3);vv(4)],'LineStyle','--')
 
-% Add cross in the origin of the axes
-text(h,0,0,'+','FontSize',20,'HorizontalAlignment','center')
+    vv=axis(h);
+    line(h,[vv(1);vv(2)],[0;0],'LineStyle','--')
+    line(h,[0;0],[vv(3);vv(4)],'LineStyle','--')
+
+    % Add cross in the origin of the axes
+    text(h,0,0,'+','FontSize',20,'HorizontalAlignment','center')
 
     delete(hfig);
 else
-      xlabel(xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+    xlabel(xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
     ylabel(ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
     % Make axes equal and add cartesian axes
     axis(gca,'equal')
     vv=axis;
     line([vv(1);vv(2)],[0;0])
     line([0;0],[vv(3);vv(4)])
-    title(titl,'Interpreter','Latex');  
-vv=axis;
-line([vv(1);vv(2)],[0;0],'LineStyle','--')
-line([0;0],[vv(3);vv(4)],'LineStyle','--')
+    title(titl,'Interpreter','Latex');
+    vv=axis;
+    line([vv(1);vv(2)],[0;0],'LineStyle','--')
+    line([0;0],[vv(3);vv(4)],'LineStyle','--')
 
-% Add cross in the origin of the axes
-text(0,0,'+','FontSize',20,'HorizontalAlignment','center')
+    % Add cross in the origin of the axes
+    text(0,0,'+','FontSize',20,'HorizontalAlignment','center')
 end
 
 
