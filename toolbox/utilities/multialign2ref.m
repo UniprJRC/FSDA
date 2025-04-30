@@ -9,16 +9,15 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 % multialign of the BioInformatics toolbox is called several times with all
 % the default options. Note that if the alignment of a sequence inside
 % Seqs2align changes the reference sequences we call again function
-% multialign using the 'Name',Value, GapOpen',100000 in order to allow the
+% multialign using the 'Name',Value, 'GapOpen',100000 in order to allow the
 % possibility of creating gaps or adding additional characters in the
-% reference sequence. If the new call to multialign:
-% 1) creates gap(s) in the reference sequences (refSeqs) we delete the
-% characters corresponding to the gaps in the aligned sequence
-% and store this information inside boolean variable usedGap of output
-% table SeqsMultiAligned.
-% 2) creates additional characters at the end of the reference sequences
+% reference sequence. If the new call to multialign with the option 'GapOpen', 100000:
+% 1) does not change the reference sequences (refSeqs) we flag with 1 in
+% the corresponding element of the field usedGapOpen of output structure
+% Seqsaligned.
+% 2) creates additional characters in the middle or at the end of the reference sequences
 % (refSeqs) we delete the additional characters and store this information
-% inside boolean vector usedDeletion of output table SeqsMultiAligned.
+% inside boolean vector usedDeletion of output structure Seqsaligned.
 %
 % As a result of this process the number of sites (characters) in the
 % reference sequence is kept fixed and all the aligned sequences will have
@@ -81,7 +80,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 %               Seqsaligned.Sequence =  n aligned sequences
 %               Seqsaligned.Header = containing the labels  (this field did
 %                   not change from input Seqs2align.Header).
-%               Seqsaligned.usedGap =  boolean containing true for the
+%               Seqsaligned.usedGapOpen =  boolean containing true for the
 %                   sequence in which in order to compute the alignment it
 %                   was necessary to modify option 'GapOpen', to 100000
 %               Seqsaligned.usedDeletion =  boolean containing true when
@@ -92,7 +91,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 %
 % WrngAlignment: sequences which could not be aligned. Vector.
 %                Vector containing the numbers of sequences for which
-%                usedGap and usedDeletion was not sufficient to produce
+%                usedGapOpen and usedDeletion was not sufficient to produce
 %                the alignment. For example if WrngAlignment=[400 800] the
 %                it was not possible to align sequences 400 and 800. If
 %                WrngAlignment is en empty value all sequences could be
@@ -232,8 +231,8 @@ seq100boo=false(nSeqs2align,1);
 seq100boo(seq100)=true;
 
 WrngAlignment=zeros(1000,1);
-usedGap=zeros(1000,1);
-usedDeletion=usedGap;
+usedGapOpen=zeros(1000,1);
+usedDeletion=usedGapOpen;
 ijWrngAlignment=0;
 ijusedGap=0; ijusedDeletion=0;
 
@@ -322,8 +321,8 @@ for i=1:(floor(nSeqs2align/steplength)+1)
                     % In this case the original sequences did not change
                     % thanks to option 'GapOpen',100000
                     ijusedGap=ijusedGap+1;
-                    usedGap(ijusedGap)=sel(j);
-                    % Seqsaligned.usedGap(sel(j))=true;
+                    usedGapOpen(ijusedGap)=sel(j);
+                    % Seqsaligned.usedGapOpen(sel(j))=true;
                     Seqsaligned(sel(j))=p1j(end);
                 end
             else
@@ -345,17 +344,17 @@ for i=1:(floor(nSeqs2align/steplength)+1)
     % disp(i)
 end
 %
-usedGap=usedGap(1:ijusedGap);
+usedGapOpen=usedGapOpen(1:ijusedGap);
 usedDeletion=usedDeletion(1:ijusedDeletion);
 WrngAlignment=WrngAlignment(1:ijWrngAlignment);
 
-% Add fields usedGap and usedDeletion to Seqsaligned
-[Seqsaligned.usedGap] = deal(false);
+% Add fields usedGapOpen and usedDeletion to Seqsaligned
+[Seqsaligned.usedGapOpen] = deal(false);
 [Seqsaligned.usedDeletion] = deal(false);
-% Insert true in correspondence of usedDeletion and usedGap
+% Insert true in correspondence of usedDeletion and usedGapOpen
 % of the corresponding fields
 [Seqsaligned(usedDeletion).usedDeletion] = deal(true);
-[Seqsaligned(usedGap).usedGap] = deal(true);
+[Seqsaligned(usedGapOpen).usedGapOpen] = deal(true);
 
 end
 
