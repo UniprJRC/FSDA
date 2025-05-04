@@ -783,7 +783,7 @@ end
 % Autoregressive recursion
 if length(ARp)>1 || ARp>0
     % Separate autoregressive and other explanatory variables component
-    yhatXAR=yhatX(:,1:ARp);
+    yhatXAR=yhatX(:,1:ARp);  %WARNING: TO DO,TO CHECK: yhatX puo avere una sola colonna.
     yhatXexpl=yhatX(:,ARp+1:end);
 
     % Find final fitted values
