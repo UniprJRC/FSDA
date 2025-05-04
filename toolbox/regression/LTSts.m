@@ -2344,7 +2344,7 @@ else
     b_AR='noauto';
 end
 
-b_X    =    ['b_explX1'; 'b_explX2'; 'b_explX3'; 'b_explX4'; 'b_explX5'; 'b_explX6'; 'b_explX7'; 'b_explX8'; 'b_explX9'];
+b_X    =    ['b_explX1'; 'b_explX2'; 'b_explX3'; 'b_explX4'; 'b_explX5'; 'b_explX6'; 'b_explX7'; 'b_explX8'; 'b_explX9'; 'b_expX10'; 'b_expX11'; 'b_expX12'; 'b_expX13'; 'b_expX14'; 'b_expX15'; 'b_expX16'; 'b_expX17'; 'b_expX18'];
 b_varampl = ['b_varaml'; 'b_varam2'; 'b_varam3'];
 b_lshift  = ['b_lshift' ; 't_lshift'];
 

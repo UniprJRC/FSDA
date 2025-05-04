@@ -359,7 +359,7 @@ startLS     = options.startLS;
 sampleLS    = options.sampleLS;
 model       = options.model;
 
-T = length(y);
+T = size(y,1);
 
 
 LSpos       = nan(maxLS,1);
@@ -368,7 +368,9 @@ LSpval      = LSpos;
 LSsignif    = true;
 ij=1;
 
-model.X=[];
+if ~isfield(model,'X') 
+    model.X=[];
+end
 if T>thresLS
     if isempty(sampleLS) 
         model.lshift = startLS:T-startLS;
@@ -379,7 +381,9 @@ if T>thresLS
     end
 end
 while LSsignif==true &&  ij<=maxLS
-    outTent=LTSts(y,'model',model,'conflev',1-alphaLTS/T,'plots',0,'msg',0,'bdp',bdp);
+    %outTent=LTSts(y,'model',model,'conflev',1-alphaLTS/T,'plots',0,'msg',0,'bdp',bdp);
+    % to check: see help  
+    outTent=LTSts(y,'model',model,'conflev',1-alphaLTS,'plots',0,'msg',0,'bdp',bdp);
     %in case there is no LS or only 1, save some results
     if T <= thresLS
         outTent.LevelShiftPval = NaN;
@@ -421,9 +425,12 @@ end
 %% after having detected LS, call LTSts to identify outliers, etc
 
 model.lshift = 0;
-outLTSts = LTSts(y,'model',model,'conflev',1-alphaLTS/T,'plots',plots,'msg',0,'bdp',bdp,'yxsave',true);
+%outLTSts = LTSts(y,'model',model,'conflev',1-alphaLTS/T,'plots',plots,'msg',0,'bdp',bdp,'yxsave',true);
+%to check: see help
+outLTSts = LTSts(y,'model',model,'conflev',1-alphaLTS,'plots',plots,'msg',0,'bdp',bdp,'yxsave',true);
 yhat = outLTSts.yhat;
 outliers = outLTSts.outliers;
+outliers_Pval = outLTSts.outliersPval;
 goodobs = 1:T;  
 goodobs(outliers)=[];
 res = (y-yhat);
@@ -446,6 +453,10 @@ out.LSpos = LSpos;
 out.LSpval = LSpval;
 out.LSud = LSud; 
 out.outliers = outliers;
+out.outliers_Pval = outliers_Pval;
 out.outX = outX;
+out.Btable=outLTSts.Btable;
+out.yhat=outLTSts.yhat;
+out.outLTSts=outLTSts;
 end
 %FScategory:REG-Regression
