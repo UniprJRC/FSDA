@@ -28,7 +28,12 @@ Give a ⭐️ if you like this project!
 
 ## FSDA release  2025a is out. (April 2025)
 
-New Features and Changes [release_notes](http://rosa.unipr.it/FSDA/release_notes.html)
+
+| New Features and Changes ||
+| --- | --- |
+| [release_notes (HTML file)](http://rosa.unipr.it/FSDA/release_notes.html)
+| <a href="https://youtu.be/yx569ZBGd58">   Release notes (YouTube video) <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo" width="100"></a>|
+<br>
 
 In order to run the new features run the file below and enjoy!!!
 
@@ -38,7 +43,7 @@ In order to run the new features run the file below and enjoy!!!
 
 
 
-## FSDA release  2024b is out. (November 2024)
+## FSDA release  2024b is out (November 2024)
 
 New Features and Changes
 
