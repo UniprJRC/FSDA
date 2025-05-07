@@ -1,30 +1,32 @@
-function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin)
+function [T, WrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin)
 %multialignHeader extracts date and country name from fasta sequence
 %
 %<a href="matlab: docsearchFS('multialignHeader')">Link to the help function</a>
 %
-% This function takes as input a vector of structures (Seqs) with fields
+% This function takes as input a vector of structures or a table (Seqs) with fields
 % Sequence and Header. Inside field Header it extracts the name of the
 % country and the submission date. The name of the country is associated
 % with the corresponding continent (unless optional input argument
 % addContinent is false). Inside field Sequence it counts the presence of
-% particular symbols. The output is a table with height equal to the length
-% of Seqs. The number of columns in output table is equal to the number of
+% particular symbols. The output is a table with height equal to
+% height(Seqs). The number of columns in output table is equal to the number of
 % fields in Seqs + 5 extra columns for the particular symbols, + 3 extra
-% columns referred to Country name, Continent name and Submission date.
+% columns referred to Country_name, Continent_name and Submission_date.
 %
 %
 % Required input arguments:
 %
 %
-%        Seqs : Sequences which have to be analyzed. Vector of structures.
-%               Vector of structures of length n with the fields
+%        Seqs : Sequences which have to be analyzed. 
+%               Vector of structures or table.
+%               Vector of structures of length n or table with n rows with
+%               the fields 
 %               Seqs.Sequence = for the residues and
 %               Seqs.Header = or (or 'Seqs.Name') for the labels.
 %               Remark: note that Seqs can have other fields. These
 %               additional fields will appear as columns in the output
 %               table.
-%                 Data Types - array of struct
+%                 Data Types - array of struct or table
 %
 % Optional input arguments:
 %
@@ -35,10 +37,19 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 %                 Example - 'addContinent','false'
 %                 Data Types - boolean
 %
+% countPartSymb : add or not the 5 extra columns for the particular
+%                   symbols. Boolean. 
+%                   If countPartSymb is true (default)
+%                   five additional columns named
+%                   "n?"    "nX"    "n-"    "n*"    "n$"
+%                  area added to output table which count for each sequence
+%                  the number of  ?, X, -, *, $.
+%                 Example - 'countPartSymb','false'
+%                 Data Types - boolean
 %
 % Output:
 %
-% T : table of height n (same length of input vector of structures).
+% T : table of height n (same length of input vector of structures or input table).
 %       Table containing detailed information (country name, continent and date) 
 %       for each sequence. The input sequences can be aligned or not aligned. 
 %       1st col = Header (in cell format)
@@ -52,9 +63,10 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
 %       the output of function multialign2ref then two additional columns
 %       named usedGap and usedDeletion are present (boolean format).
 %
-%  indexWrongCountry :  numeric vector containing the numbers referred to
-%       the rows of T for which it was not possible to find the Country
-%       name. A warning is given if this vector is not empty. 
+%    WrongCountry :  string array containing the strings referred to
+%       the country names for which it was not possible to find the
+%       reference Country name. A warning is given if this vector is not
+%       empty.
 %
 %  indexEmptyDate    :  numeric vector containing the numbers referred to
 %       the rows of T for which it was not possible to extract the date.
@@ -122,11 +134,41 @@ function [T, indexWrongCountry, indexEmptyDate]= multialignHeader(Seqs, varargin
     T=multialignHeader(Seqs,'addContinent',false);
 %}
 
+%{
+    % Another example with wrong country names and dates.
+    % Find the rows of input sequence for which it was not possible to find the
+    % country
+    Seqs = fastaread("X01sel.txt");
+    % Add a record where it is impossible to find both the date and
+    % the country
+    Seqs(5).Header='Spike	hCoV-19/ItaIta/NC-IBV-97020613/2021	wrong date  wrong date';
+    Seqs(end+1).Header='Spike	hCoV-19/SSSS/NC-IBV-97020613/2021	wrong date  wrong date';
+    Seqs(end).Sequence="XXXXXX-----XXX????";
+    [T, WrongCountry, indexEmptyDate]=multialignHeader(Seqs,'addContinent',false);
+    
+    s1n=1:length(Seqs);
+    T1=T;
+    indexnumber=(1:length(Seqs))';
+    T1=addvars(T1,indexnumber,'before',1);
+    for i=1:length(WrongCountry)
+        boo=T1.Country==WrongCountry(i);
+        disp(T1(boo,:))
+    end
+%}
+
+%{
+    % Example with input a table and option countPartSymb.
+    Seqs = fastaread("X01sel.txt");
+    Seqs=struct2table(Seqs);
+    T=multialignHeader(Seqs,'addContinent',false,'countPartSymb',false);
+%}
+
 %% Beginning of code
 
 addContinent=true;
+countPartSymb=true;
 
-options=struct('addContinent',addContinent);
+options=struct('addContinent',addContinent,'countPartSymb',countPartSymb);
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -146,11 +188,18 @@ if nargin > 2
     end
 end
 addContinent=options.addContinent;
+countPartSymb=options.countPartSymb;
 
-% n = number of sequences to analyze
-n=length(Seqs);
+% Check if Seqs is a table or a vector of structures
+if istable(Seqs)
+    T=Seqs;
+    n=size(T,1);
+else
+    % n = number of sequences to analyze
+    n=length(Seqs);
+    T=struct2table(Seqs);
+end
 
-T=struct2table(Seqs);
 varNames=string(T.Properties.VariableNames);
 T(:,varNames=="Country" | varNames=="Date")=[];
 varNames=string(T.Properties.VariableNames);
@@ -170,8 +219,11 @@ end
 %% Country and data extraction loop
 CountryIni=strings(n,1);
 DateStr=strings(n,1);
-% Find symbols: ?, X, -, *, $ inside sequences
-NumberPartSymb=zeros(n,5);
+if countPartSymb == true
+    % Find symbols: ?, X, -, *, $ inside sequences
+    NumberPartSymb=zeros(n,5);
+end
+
 
 %%
 pw = aux.PoolWaitbar(n, 'Progress bar inside multialignHeader');
@@ -183,12 +235,13 @@ parfor i= 1:n
     % Add the waitbar
     increment(pw);
 
+    if countPartSymb == true
     % strSeq=X{i,2};
     strSeq=sequence{i};
 
-    NumberPartSymb(i,:)=[length(strfind(strSeq,'?')) length(strfind(strSeq,'X'))  length(strfind(strSeq,'-')) ...
-        length(strfind(strSeq,'*'))    length(strfind(strSeq,'$')) ];
-
+     NumberPartSymb(i,:)=[length(strfind(strSeq,'?')) length(strfind(strSeq,'X'))  length(strfind(strSeq,'-')) ...
+         length(strfind(strSeq,'*'))    length(strfind(strSeq,'$')) ];
+    end
 
     %% Extract the country and the date from header
 
@@ -267,7 +320,7 @@ if ~isempty(badname)
     end
 end
 
-%& Load correct country names  using file .xlsx
+%& Load reference country names  using file .xlsx
 % which is inside subfolder privateFS of utilities
 FileName=which('clickableMultiLegend.m');
 filepath=fileparts(FileName);
@@ -293,9 +346,11 @@ T=addvars(T,Country,'After','Sequence');
 Date=datetime(DateStr);
 T=addvars(T,Date,'After','Sequence');
 
-d1=array2table(NumberPartSymb,'VariableNames',["n?" "nX" "n-" "n*" "n$"]);
+if  countPartSymb == true
+    d1=array2table(NumberPartSymb,'VariableNames',["n?" "nX" "n-" "n*" "n$"]);
 
-T=[T d1];
+    T=[T d1];
+end
 
 %% Check whether there are no dates with missing values
 indexEmptyDate=seq(isnat(T.Date));
@@ -315,15 +370,15 @@ Wld=readtable(FileName,"Sheet","CountryContinent","TextType","string");
 
 % Wld.Entity contains the list of all the country names
 NomiAll=[Wld.Entity; "Animal"];
-% wrongNameForCountry is the vector which contains all country names taht
+% wrongNameForCountry is the vector which contains all country names that
 % have been found but are not present inside NomiAll
-[indexWrongCountry,indCountry]=setdiff(T.Country,NomiAll);
+[WrongCountry,indCountry]=setdiff(T.Country,NomiAll);
 
 
-if ~isempty(indexWrongCountry)
+if ~isempty(WrongCountry)
     disp('Records with wrong country name')
     XwrongNameForCountry=T(indCountry,:);
-    XwrongNameForCountry.Properties.RowNames=string(indexWrongCountry);
+    XwrongNameForCountry.Properties.RowNames=string(WrongCountry);
     disp(XwrongNameForCountry)
     warning('FSDA:multialignHeader:WngCountry','Wrong country names in output table');
 end
