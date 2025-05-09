@@ -732,7 +732,9 @@ corrRows=(max(sum2))*1.10;
 CarowsST=Carows(:,dim)/sqrt(corrRows);
 theta=0:0.01:2*pi;
 hold('on')
-plot(sin(theta),cos(theta))
+stheta=sin(theta);
+ctheta=cos(theta);
+plot(stheta,ctheta);
 
 % Plot row points
 plot(afig,CarowsST(:,d1),CarowsST(:,d2),'LineStyle','none','Marker',SymbolRows ,'Color', ColorRows , ...
