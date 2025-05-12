@@ -234,7 +234,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 % Examples:
 
 %{
-    %% Example of use of FSRfanBICpn with all default options.
+    %% Example of use of fanBICpn with all default options.
     % Load the Investment funds data.
     YY=load('fondi_large.txt');
     y=YY(:,2);
