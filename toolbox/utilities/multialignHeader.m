@@ -321,10 +321,8 @@ if ~isempty(badname)
 end
 
 %& Load reference country names  using file .xlsx
-% which is inside subfolder privateFS of utilities
-FileName=which('clickableMultiLegend.m');
-filepath=fileparts(FileName);
-FileName=[filepath filesep 'privateFS' filesep 'continents-according-to-our-world-in-data.xlsx'];
+% which is inside subfolder multivariate_regression
+FileName='continents-according-to-our-world-in-data.xlsx';
 
 try
     Nam=readtable(FileName,"Sheet","WrongNames","TextType","string");
