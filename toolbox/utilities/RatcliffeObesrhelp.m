@@ -1,4 +1,4 @@
-function [ROsim,ROsimT]=RatcliffeObesrhelp(STR, varargin)
+function [ROsim,ROsimT,ROord]=RatcliffeObesrhelp(STR, varargin)
 %RatcliffeObesrhelp computes the Ratcliffe Obershelp algorithm to measure the similarity between two texts
 %
 %<a href="matlab: docsearchFS('RatcliffeObesrhelp')">Link to the help function</a>
@@ -66,6 +66,22 @@ function [ROsim,ROsimT]=RatcliffeObesrhelp(STR, varargin)
 %                       Example - 'remStopWords',true
 %                       Data Types - logical
 %
+%  thresh    :  Threshold to define significant similarities.
+%               Numeric scalar.
+%               Threshold to use in order to extract the pairs with the
+%               highest similarities inside output ROord. The default value
+%               of thresh is 0.7.
+%                       Example - 'thresh',0.6
+%                       Data Types - numeric scalar in the interval [0 1].
+% 
+%   plots    :  Show the heatmap of the similarities.
+%               Logical value.
+%               If plots is true a heatmap of the Ratcliffe Obershelp
+%               similarities is shown on the screen. The default value of
+%               plot is false.
+%                       Example - 'plots',true
+%                       Data Types - scalar logical
+%
 %  Output:
 %
 %         ROsim:   array with Ratcliffe Obershelp similarity measures.
@@ -83,6 +99,14 @@ function [ROsim,ROsimT]=RatcliffeObesrhelp(STR, varargin)
 %                   the other cases the  RowNames (VariableNames) of ROsimT
 %                   are equal to "str1", ..., "strn", where n is the number
 %                   of elements of STR or rows of the input table.
+%         ROord:    Table with significant similarities.
+%                   Table with the details of elements of STR above
+%                   threhold. ROord has two columns. The first column
+%                   (called "Top_similarities") contains the details of the
+%                   pairs which have a value of Ratcliffe Obesrhelp index
+%                   above threshold. The second column contains the value
+%                   of the RO index. Rows are ordered in non decreasing
+%                   order of the RO index.
 %
 %
 % More About:
@@ -179,10 +203,13 @@ function [ROsim,ROsimT]=RatcliffeObesrhelp(STR, varargin)
 comparisonType="str";
 compTypeNumeric=1;
 remStopWords=false;
+thresh=0.7;
+plots=false;
 
 if nargin > 1
 
-    options=struct('comparisonType',comparisonType,'remStopWords',remStopWords);
+    options=struct('comparisonType',comparisonType,'remStopWords',remStopWords, ...
+        'thresh',thresh,'plots',plots);
 
     UserOptions=varargin(1:2:length(varargin));
 
@@ -200,6 +227,7 @@ if nargin > 1
 
     comparisonType=options.comparisonType;
     remStopWords=options.remStopWords;
+    thresh=options.thresh;
 
     % Make sure that comparisonType contains
     % either "str" or "file" or "ext".
@@ -347,6 +375,25 @@ end
 % Create the associated table
 ROsimT=array2table(ROsim,"RowNames",nameRows,"VariableNames",nameRows);
 
+
+    % Construct third output argument
+    %ROsim1=ROsim;
+    %ROsim1(logical(eye(numComparisons)))=NaN;
+     ROsim1=ROsim-eye(numComparisons);
+       X=ROsim1 > thresh;
+   % Find row and col indexes 
+    [row,col]=find(X);
+    % Find linear indexes
+    [linind]=find(X);
+    Top_similarities=[nameRows(row) nameRows(col)];
+    RO_index=ROsim(linind);
+    T=table(Top_similarities,RO_index);
+    [~,ord]=sort(RO_index,'descend');
+    ROord=T(ord,:);
+
+    if plots==true
+        heatmap(nameRows,nameRows,ROsim1,'Interpreter','none','MissingDataColor','w')
+    end
 end
 
 % Begin of inner functions
@@ -416,6 +463,8 @@ score = length(lcs);
 % $K_m$ is defined as some longest common substring plus recursively the
 % number of matching characters in the non-matching regions on both sides
 % of the longest common substring.
+% Note that the function is recursive in the sense that
+% NumberOfMatchingCharacters calls itself recursively
 Km = score + NumberOfMatchingCharacters(s1(1:start1-1), s2(1:start2-1)) ...
     + NumberOfMatchingCharacters(s1(start1+length(lcs):end), s2(start2+length(lcs):end));
 end
