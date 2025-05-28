@@ -28,12 +28,15 @@ function [ROsim,ROsimT]=RatcliffeObesrhelp(STR, varargin)
 %               On the other hand, if STR=["filename1.m"
 %               "fn.txt" "f3.prn"] and optional input argument
 %               comparisonType="file", then the contents of files named
-%               "filename1.m",  "fn.txt" and "f3.prn" are compared. Finally
-%               if STR=["*.m", "*.mlx"] and comparisonType="ext" then all
-%               files in the current folder which have extensions .m and
-%               .mlx are compared. Note that when ".mlx" extension is used
-%               the files are preliminarly transformed into .m format in
-%               order to perform the comparison.
+%               "filename1.m",  "fn.txt" and "f3.prn" are compared.
+%               Note that in this case STR can contain the full path name
+%               of the files (i.e. for example for two files beloginng to
+%               FSDA: STR=[string(which('FSR')); string(which('FSRaddt'))].
+%               Finally if STR=["*.m", "*.mlx"] and comparisonType="ext"
+%               then all files in the current folder which have extensions
+%               .m and .mlx are compared. Note that when ".mlx" extension
+%               is used the files are preliminarly transformed into .m
+%               format in order to perform the comparison.
 %       Data type: string array | character vector | cell array of character vectors | cell array of string arrays | table
 %
 % Optional input arguments:
@@ -75,22 +78,22 @@ function [ROsim,ROsimT]=RatcliffeObesrhelp(STR, varargin)
 %                   main diagonal are equal to 1. The RowNames
 %                   (VariableNames) of ROsimT are equal to the names of the
 %                   files which have been selected, if optional input
-%                   option comparisonType is equal to "file" or "ext", or
-%                   are equal to the RowNames of STR if STR is a table. In
-%                   all the other cases the  RowNames
-%                   (VariableNames) of ROsimT are equal to "str1", ...,
-%                   "strn", where n is the number of elements of STR.
+%                   comparisonType is equal to "file" or "ext", or are
+%                   equal to the RowNames of STR if STR is a table. In all
+%                   the other cases the  RowNames (VariableNames) of ROsimT
+%                   are equal to "str1", ..., "strn", where n is the number
+%                   of elements of STR or rows of the input table.
 %
 %
 % More About:
 %
 % The similarity of two strings $S_1$ and $S_2$ in the Gestalt pattern
-% matching (Ratcliff/Obershelp pattern recognition) is determined by twice
+% matching (Ratcliff/Obershelp pattern recognition) algorithm is determined by twice
 % the number of matching characters $K_m$ divided by the total number of
 % characters of both strings ($|S_1| + |S_2|$). The matching characters
 % $K_m$ are defined as some longest common substring plus recursively the
 % number of matching characters in the non-matching regions on both sides
-% of the longest common substring In symbols:
+% of the longest common substring. In symbols:
 %
 % \[
 %   S_{RO} = \frac{ 2K_m }{ |S_1| + |S_2| }
@@ -139,13 +142,35 @@ function [ROsim,ROsimT]=RatcliffeObesrhelp(STR, varargin)
     %% Another example where input is a set of strings.
     S1="GESTALT PATTERN MATCHING";
     S2="GESTALT PRACTICE";
-    STR=[S1;S2];
+    S3="VARIATION OF GESTALT PRACTICE";
+    STR=[S1;S2;S3];
     % RatcliffeObesrhelp is called with two output arguments
     [ROsim,ROsimT]=RatcliffeObesrhelp(STR);
     disp('Show table of similarity indexes')
     disp(ROsimT)
     disp('Note that the index is not commutative (not symmetric)')
 %}
+
+
+%{
+    % Example of use of option comparisonType.
+    % The contents of the files 'FSR', 'FSRaddt' an 'addt' are compared.
+    STR=[string(which('FSR')); string(which('FSRaddt')); string(which('addt'))];
+    [ROsim,ROsimT]=RatcliffeObesrhelp(STR,'comparisonType','file');
+    disp('Table of similarity scores')
+    disp(ROsimT)
+%}
+
+%{
+    % Example of use of option comparisonType together with remStopWords.
+    % To run this example the Text Analytics toolbox is needed.
+    % The contents of the files 'FSR', 'FSRaddt' an 'addt' are compared.
+    STR=[string(which('FSR')); string(which('FSRaddt')); string(which('addt'))];
+    [sMatrix,sTable]=RatcliffeObesrhelp(STR,'comparisonType','file','remStopWords',true);
+    disp(sTable)
+%}
+
+
 
 %% Beginning of code
 
@@ -157,8 +182,16 @@ remStopWords=false;
 
 if nargin > 1
 
-    % the 'options' struct in this implementation is provided by the for loop
     options=struct('comparisonType',comparisonType,'remStopWords',remStopWords);
+
+    UserOptions=varargin(1:2:length(varargin));
+
+    % Check if number of supplied options is valid
+    if length(varargin) ~= 2*length(UserOptions)
+        error('FSDA:RatcliffeObesrhelp:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    end
+    % Check if user options are valid options
+    aux.chkoptions(options,UserOptions)
 
     for i=1:2:(length(varargin)-1)
         options.(varargin{i})=varargin{i+1};
@@ -194,7 +227,7 @@ listOfFilesToDelete=[];
 % The user has supplied the list of file extensions inside STR
 if compTypeNumeric ==3
 
-    % If "*.mlx" is an extenmsion inside STR it is necessary to convert mlx
+    % If "*.mlx" is an extension inside STR it is necessary to convert mlx
     % files to m format
     if ismember("*.mlx",STR)
 
@@ -212,20 +245,19 @@ if compTypeNumeric ==3
             mFileName = [name, '.m'];
 
             if exist(mFileName,'file')~=2
-                % convert .mlx into formato .m
+                % convert .mlx into .m format
                 matlab.internal.liveeditor.openAndConvert(fileNames{i}, mFileName);
 
                 fprintf('Convert %s in temporary file %s\n', fileNames{i}, mFileName);
                 listOfFilesToDelete=[listOfFilesToDelete; string(mFileName)]; %#ok<AGROW>
             else
-
-                %  fprintf('Già Convertito %s in %s\n', fileNames{i}, mFileName);
+                fprintf('File %s not converted in %s because already present\n', fileNames{i}, mFileName);
             end
         end
 
         % If mlx extension was present make sure that the "*.m" is added to STR
         STR=unique([STR(:); "*.m"]);
-        % Remove "*.mlx" because already converted in .m format
+        % Remove "*.mlx" extension because the files have already been converted in .m format
         STR(STR=="*.mlx")=[];
     end
 
@@ -259,7 +291,7 @@ end
 
 
 
-%% Compute similarity matrix (not that the matrix is not symmetric)
+%% Compute similarity matrix (note that the matrix is not symmetric)
 
 % Initialize Ratcliffe Obershelp similarity matrix
 ROsim = zeros(numComparisons);
@@ -320,7 +352,7 @@ end
 % Begin of inner functions
 
 function similarity = ratcliffobershelp(str1, str2)
-% RATCLIFF_OBERSHELP computes the similarity between two strings
+% ratcliffobershelp computes the similarity score between two strings
 % using the Ratcliff/Obershelp algorithm.
 % see: https://yassineelkhal.medium.com/the-complete-guide-to-string-similarity-algorithms-1290ad07c6b7
 % for implementation and background literature
@@ -349,16 +381,16 @@ similarity = 2*Km/(length(str1)+length(str2));
 
 end
 
-function score = NumberOfMatchingCharacters(s1, s2)
+function Km = NumberOfMatchingCharacters(s1, s2)
 % case 1: empty string(s)
 if isempty(s1) || isempty(s2)
-    score = 0;
+    Km = 0;
     return
 end
 
 % case 2: identical strings
 if strcmp(s1, s2)
-    score = length(s1);
+    Km = length(s1);
     return
 end
 
@@ -366,13 +398,11 @@ end
 %  The algorithm focuses on finding and aligning the longest common
 %  substrings, which helps in recognizing significant similarities even in
 %  the presence of small differences.
-
-
 [lcs, start1, start2] = longest_common_substring(s1, s2);
 
 % Stop recursion when no more common substrings are found
 if isempty(lcs)
-    score = 0;
+    Km = 0;
     return
 end
 
@@ -381,7 +411,12 @@ score = length(lcs);
 % By recursively applying the algorithm to the segments of the strings, it
 % accounts for multiple overlapping matches, making it robust against minor
 % variations.
-score = score + NumberOfMatchingCharacters(s1(1:start1-1), s2(1:start2-1)) ...
+
+% The number of matching characters
+% $K_m$ is defined as some longest common substring plus recursively the
+% number of matching characters in the non-matching regions on both sides
+% of the longest common substring.
+Km = score + NumberOfMatchingCharacters(s1(1:start1-1), s2(1:start2-1)) ...
     + NumberOfMatchingCharacters(s1(start1+length(lcs):end), s2(start2+length(lcs):end));
 end
 
