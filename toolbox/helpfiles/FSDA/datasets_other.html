@@ -56,25 +56,59 @@ document.write(divsbefore);
       <td></td>
     </tr>
     <tr>
-        <td bgcolor="#F2F2F2" style="width: 799px"><tt>Variants </tt></td>
-          <td bgcolor="#F2F2F2"> Covid-19 FASTA file variants sequences. 
+        <td bgcolor="#F2F2F2" style="width: 799px">&nbsp;</td>
+          <td bgcolor="#F2F2F2"> BioInformatic datasets</td>
+        </tr>
+    <tr>
+        <td bgcolor="#F2F2F2" style="width: 799px; height: 194px;"><tt>Variants.txt </tt></td>
+          <td bgcolor="#F2F2F2" style="height: 194px"> Covid-19 FASTA file variants sequences. 
           <br>
-          Data sample is a struct array with fields: Header and Sequence. The Header contains the name of virus variants. The sequence represents the amino acid sequences of variants identified by the World Health Organization.
+		When the file is loaded using fastared function (of the bioInfomatics 
+		  toolbox) the output is a struct array with fields: Header and Sequence. The Header contains the name of virus variants. The sequence represents the amino acid sequences of variants identified by the World Health Organization.
   
   
             </td>
         </tr>
       <tr>
-      <td bgcolor="#F2F2F2" style="width: 799px"><tt>X02sel </tt></td>
+      <td bgcolor="#F2F2F2" style="width: 799px"><tt>X01sel.txt</tt> and <tt>X02sel.txt</tt></td>
         <td bgcolor="#F2F2F2"> Covid-19 FASTA file sequences. 
 		<br>
-		Data sample is a struct array with fields: Header and Sequence. The Header contains information related 
-        to the laboratory where the sequence analysis was performed. The information used in the code
-         includes: the date, the country, and the living organism carrying the virus. The sequence represents the amino acid 
+		When the file is loaded using fastared function (of the bioInfomatics 
+		toolbox), the output is a struct array with fields: Header and Sequence. The Header contains information related 
+        to the laboratory where the sequence analysis was performed, the date, the country, and the living organism carrying the virus. 
+		Note that the format in which the date or the country is stored is very 
+		heterogeneous. The sequence represents the amino acid 
          sequence to be aligned with the original strain of COVID-19 and the subsequent variants identified by the World Health Organization.
-
-
-		  </td>
+		<br>X01sel has a length equal to 461 while X02sel has a length equal to&nbsp; 
+		501. The data come from the <a href="https://gisaid.org/">GISAID - 
+		gisaid.org</a> database.</td>
+      </tr>
+     
+      <tr>
+      <td bgcolor="#F2F2F2" style="width: 799px">&nbsp;</td>
+        <td bgcolor="#F2F2F2"> &nbsp;</td>
+      </tr>
+     
+      <tr>
+      <td bgcolor="#F2F2F2" style="width: 799px">&nbsp;</td>
+        <td bgcolor="#F2F2F2"> Geographic datasets</td>
+      </tr>
+     
+      <tr>
+      <td bgcolor="#F2F2F2" style="width: 799px"><span class="auto-style1">
+	  continents-according-to-our-world-in-data.xlsx</span></td>
+        <td bgcolor="#F2F2F2"> The original version of the file comes from
+		<a href="https://github.com/Mike-Honey/covid-19-genomes/">
+		https://github.com/Mike-Honey/covid-19-genomes/</a> <br>It contains a 
+		lot of information for each country of the world: code, continent, 
+		latitude, longitude, alpha-2 code, alpha-3 code, numeric code, <br>
+		<span>Alpha-2 code – a two-letter code that represents a&nbsp;</span>country 
+		name<span>, recommended as the general purpose code Alpha-3 code – a 
+		three-letter code that represents a country name, which is usually more 
+		closely related to the country name. For more information on numeric 
+		code see </span>
+		<a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric">ISO 3166-1 
+		numeric - Wikipedia</a></td>
       </tr>
      
   </tbody>
@@ -95,6 +129,9 @@ document.write(barra);
 	<!--END.CLASS body_trail_container-->
 	<!--close row-offcanvas--></div>
 <!--close class="row-offcanvas row-offcanvas-left" -->
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
 </body>
 
