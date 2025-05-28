@@ -228,6 +228,7 @@ if nargin > 1
     comparisonType=options.comparisonType;
     remStopWords=options.remStopWords;
     thresh=options.thresh;
+    plots=options.plots;
 
     % Make sure that comparisonType contains
     % either "str" or "file" or "ext".
