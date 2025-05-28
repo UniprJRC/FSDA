@@ -131,7 +131,7 @@ function [ROsim,ROsimT]=RatcliffeObesrhelp(STR, varargin)
 % Examples:
 
 %{
-    %%  Example where input is a set of strings
+    %%  Example where input is a set of strings.
     STR=["hello"; "hello world"];
     ROsim=RatcliffeObesrhelp(STR);
     disp('Matrix of similarity similarities')
