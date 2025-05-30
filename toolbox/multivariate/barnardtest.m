@@ -109,7 +109,7 @@ function pval=barnardtest(N,varargin)
 % The FSDA team wishes to thank Dr. Ivano Azzini for the current implementation
 % of the Barnard test.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

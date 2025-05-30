@@ -45,7 +45,7 @@ function out=OSILA(X,k,alpha,n)
 % statistics in very large arrays." Computational Statistics, p. 1-26.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

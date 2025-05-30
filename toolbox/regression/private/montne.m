@@ -7,7 +7,7 @@ function ymon=montne(y)
 %   monotonically non-decreasing. This routine uses the "pool adjacent
 %   violators" algorithm (PAVA).
 
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

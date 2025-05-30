@@ -57,7 +57,7 @@ function [x,V,t] = Heston1D(T,n,parameters,rho,x0,V0)
 %
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('Heston1D')">Link to the help function</a>

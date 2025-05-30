@@ -43,7 +43,7 @@
 %   of Statistics, Vol.36, 1324-1345. 
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 
 %

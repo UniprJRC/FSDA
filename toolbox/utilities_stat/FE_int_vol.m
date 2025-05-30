@@ -62,7 +62,7 @@ function ivar = FE_int_vol(x,t, varargin)
 %
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FE_int_vol')">Link to the help function</a>

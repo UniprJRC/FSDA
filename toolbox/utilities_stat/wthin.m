@@ -80,7 +80,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 % 86(414), 343-353.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

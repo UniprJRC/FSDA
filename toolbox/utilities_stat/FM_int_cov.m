@@ -59,7 +59,7 @@ function C_int = FM_int_cov(x1,x2,t1,t2,T,varargin)
 %
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FM_int_cov')">Link to the help function</a>

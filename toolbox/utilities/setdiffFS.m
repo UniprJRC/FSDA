@@ -34,7 +34,7 @@ function c=setdiffFS(a,b)
 % Very Large Datasets, "Journal of Statistical Software"
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

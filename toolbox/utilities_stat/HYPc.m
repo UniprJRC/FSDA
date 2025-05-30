@@ -82,7 +82,7 @@ function [bdp,eff,A,B,d] = HYPc(c,v,varargin)
 % "Journal of the American Statistical Association", Vol. 76,
 % pp. 643-648 [HRR]
 
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

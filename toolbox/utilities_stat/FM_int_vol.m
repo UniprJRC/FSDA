@@ -55,7 +55,7 @@ function V_int = FM_int_vol(x,t,T,varargin)
 % Sanfelici, S., Toscano, G. (2024), The Fourier-Malliavin Volatility (FMVol) MATLAB toolbox, available on ArXiv.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FM_int_vol')">Link to the help function</a>

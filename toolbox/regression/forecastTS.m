@@ -277,7 +277,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 % "Econometrics and Statistics". [RPRH]
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by Marco Riani, Domenico Perrotta, Peter Rousseeuw and Mia Hubert
 %
 %

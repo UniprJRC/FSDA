@@ -476,7 +476,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % Analysis and Classification", Vol. 13, pp. 227–257,
 % https://doi.org/10.1007/s11634-018-0331-4
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help page for this function</a>

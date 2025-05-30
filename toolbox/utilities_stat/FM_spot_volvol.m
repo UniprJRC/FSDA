@@ -77,7 +77,7 @@ function [VV_spot, tau_out] = FM_spot_volvol(x,t,T,varargin)
 %
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FM_spot_volvol')">Link to the help function</a>

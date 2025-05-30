@@ -64,7 +64,7 @@ function ceff = HAeff(eff,v,abc)
 % Exploratory Data Analysis", Wiley, New York.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

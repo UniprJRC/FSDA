@@ -151,7 +151,7 @@ function out = txmerge(Y, k, g, varargin)
 %   Robust Clustering Under General Assumptions. Advances in Intelligent 
 %   Systems and Computing, vol 1433. Springer, Cham. 
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 % <a href="matlab: docsearchFS('txmerge')">Link to the help page for this function</a>

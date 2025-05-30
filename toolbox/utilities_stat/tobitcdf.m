@@ -68,7 +68,7 @@ function tobcdf = tobitcdf(x,   mu,sigma, left, right)
 % Variables, "Econometrica", 26, pp. 24-36.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 %
 %<a href="matlab: docsearchFS('tobitcdf')">Link to the help function</a>
 %

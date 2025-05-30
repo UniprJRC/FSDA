@@ -90,7 +90,7 @@ function y=triu2vec(A,k)
 % perspective", Springer.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('triu2vec')">Link to the help function</a>

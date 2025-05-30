@@ -72,7 +72,7 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2, noisecluster)
 % [ https://en.wikipedia.org/wiki/Fowlkes-Mallows_index ]
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FowlkesMallowsIndex')">Link to the help function</a>

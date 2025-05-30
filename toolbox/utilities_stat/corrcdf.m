@@ -64,7 +64,7 @@ function y = corrcdf(x, rho, n, varargin)
 % correlation distribution function
 % https://www.mathworks.com/matlabcentral/fileexchange/45785-sample-correlation-distribution-function/
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

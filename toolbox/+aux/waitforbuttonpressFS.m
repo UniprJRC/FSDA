@@ -1,7 +1,7 @@
 function [ss]=waitforbuttonpressFS
 %waitforbuttonpressFS produces a warning message when user closes the figure he is interacting with 
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

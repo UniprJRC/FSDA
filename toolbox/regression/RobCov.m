@@ -206,7 +206,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % Statistical Computation and Simulation, Vol. 92, pp. 724-747, 
 % https://doi.org/10.1080/00949655.2021.1972300
 % 
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % FSDA toolbox
 %
 %

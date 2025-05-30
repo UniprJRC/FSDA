@@ -225,7 +225,7 @@ function [out] = regressCensTra(y,X, varargin)
 % Tobin, J. (1958), Estimation of Relationships for Limited Dependent
 % Variables, "Econometrica", 26, pp. 24-36.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

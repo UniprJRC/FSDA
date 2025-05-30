@@ -52,7 +52,7 @@ function setToolboxStartEnd(toolboxFile, varargin)
 % Note that this routine is java based.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

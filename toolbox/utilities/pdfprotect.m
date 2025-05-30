@@ -84,7 +84,7 @@ function out=pdfprotect(inputfile, varargin)
 % Official documentation concerning the PDF 1.7 specifications,
 % https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/pdfreference1.7old.pdf
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

@@ -59,7 +59,7 @@ function [out]  = restreigenmemopt(eigenvalues, niini, restr, tol, userepmat)
 % algorithm for robust constrained clustering,
 %"Computational Satistics and Data Analysis", Vol. 61, pp. 124-136.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 % DETAILS. This algorithm solves the minimization problem with constraints

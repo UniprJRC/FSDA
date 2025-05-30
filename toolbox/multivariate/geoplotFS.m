@@ -52,7 +52,7 @@ function geoplotFS(Y,score,ShapeFile)
 % References:
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('geoplotFS')">Link to the help function</a>

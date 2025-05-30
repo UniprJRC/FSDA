@@ -60,7 +60,7 @@ function [Xilr] = pivotCoord(X,varargin)
 % (2024), Applied Robust Statistics through the Monitoring Approach,
 % Heidelberg: Springer Nature.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

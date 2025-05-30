@@ -327,7 +327,7 @@ function outCTLnew=ctlcurvesplot(outCTL,varargin)
 % References:
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('ctlcurvesplot')">Link to the help function</a>

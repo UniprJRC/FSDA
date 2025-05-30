@@ -59,7 +59,7 @@ function list = findFile(root,varargin)
 %
 % References:
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

@@ -135,7 +135,7 @@ function h  = carbikeplotGPCM(RelSol,varargin)
 %
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('carbikeplotGPCM')">Link to the help function</a>

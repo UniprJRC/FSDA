@@ -456,7 +456,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % Matrices. The American Statistician, v. 56, pp. 316–324,
 % https://doi.org/10.1198/000313002533
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('spmplot')">Link to the help function</a>

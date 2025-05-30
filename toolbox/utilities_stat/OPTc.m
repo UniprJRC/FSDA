@@ -60,7 +60,7 @@ function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
 % and Methods", Wiley, New York.                                                                            
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('OPTc')">Link to the help page for this function</a>

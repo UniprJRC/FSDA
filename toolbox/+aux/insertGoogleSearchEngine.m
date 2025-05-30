@@ -31,7 +31,7 @@ function FilesWithProblems=insertGoogleSearchEngine(InputCell,varargin)
 %                       FilesWithProblems is empty.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 % $LastChangedDate:                      $ Date of the last commit
 

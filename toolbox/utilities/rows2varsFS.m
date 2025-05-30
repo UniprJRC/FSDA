@@ -50,7 +50,7 @@ function T2=rows2varsFS(T1, varargin)
 %
 % References:
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

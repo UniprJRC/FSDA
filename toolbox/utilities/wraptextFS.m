@@ -94,7 +94,7 @@ function strFormatted = wraptextFS(str, varargin)
 % https://www.mathworks.com/matlabcentral/fileexchange/53176-wraptext
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

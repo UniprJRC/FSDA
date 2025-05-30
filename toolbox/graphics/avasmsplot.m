@@ -144,7 +144,7 @@ function BigAx=avasmsplot(BestSol,varargin)
 %   for Multiple Regression via Additivity and Variance Stabilization,
 %   submitted.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

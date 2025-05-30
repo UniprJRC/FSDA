@@ -564,7 +564,7 @@ function out=CorAna(N, varargin)
 % and Henk A.L. Kiers (University of Groningen, Groningen, The Netherlands)
 % (See References).
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

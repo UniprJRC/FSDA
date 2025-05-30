@@ -33,7 +33,7 @@ function alpha = PDeff(eff)
 %  Analysis, Entropy, Vol. 22, 399. 
 %  https://www.mdpi.com/1099-4300/22/4/399 
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

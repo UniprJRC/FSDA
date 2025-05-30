@@ -405,7 +405,7 @@ function [out]=FSRfan(y,X,varargin)
 % Transformation: Review and Extensions, "Statistical Science", Vol. 36,
 % pp. 239-255, https://doi.org/10.1214/20-STS778
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

@@ -216,7 +216,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %   of Statistics, Vol. 36, 1324-1345. 
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tkmeans')">Link to the help function</a>

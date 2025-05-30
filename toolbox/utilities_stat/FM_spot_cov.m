@@ -74,7 +74,7 @@ function [C_spot, tau_out] = FM_spot_cov(x1,x2,t1,t2,T,varargin)
 %
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FM_spot_cov')">Link to the help function</a>

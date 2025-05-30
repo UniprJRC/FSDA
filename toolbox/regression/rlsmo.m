@@ -110,7 +110,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 %  discussion), "Statistical Science", Vol 1, pp. 297-318
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

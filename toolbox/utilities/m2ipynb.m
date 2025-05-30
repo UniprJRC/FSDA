@@ -170,7 +170,7 @@ function [Incl, Excluded]=m2ipynb(varargin)
 %
 % References:
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('m2ipynb')">Link to the help page for this function</a>

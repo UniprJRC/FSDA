@@ -244,7 +244,7 @@ function [RAW,REW,varargout] = mcdeda(Y,varargin)
 % "Statistical Methods and Applications (with discussion)",
 % Vol. 27, pp. 559–587. [CRAC2018]
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

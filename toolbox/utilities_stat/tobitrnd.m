@@ -78,7 +78,7 @@ function r = tobitrnd(mu,sigma, left, right,   mm,nn,oo)
 % Variables, "Econometrica", 26, pp. 24-36.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

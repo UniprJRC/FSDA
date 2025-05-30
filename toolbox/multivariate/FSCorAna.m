@@ -176,7 +176,7 @@ function out = FSCorAna(N,varargin)
 % Atkinson, A.C., Riani, M. and Cerioli, A. (2004), "Exploring multivariate
 % data with the forward search", Springer Verlag, New York.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

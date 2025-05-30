@@ -53,7 +53,7 @@ function psiAS=ASpsi(u,c)
 % "Technometrics", V. 16, pp. 523-531, https://doi.org/10.1080/00401706.1974.10489233
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

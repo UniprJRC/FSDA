@@ -49,7 +49,7 @@ function [Wcdf] = WNChygecdf(x,M,K,n,odds, accuracy)
 % Distribution, "Communications in Statistics - Simulation and
 % Computation", Vol. 37, pp. 258-273.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 %
 %<a href="matlab: docsearchFS('WNChygecdf')">Link to the help function</a>
 %

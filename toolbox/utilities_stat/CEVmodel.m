@@ -48,7 +48,7 @@ function [S,A]=CEVmodel(t,x)
 %
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('CEVmodel')">Link to the help function</a>

@@ -61,7 +61,7 @@ function ivar = FE_int_vol_Fejer(x,t, varargin)
 %
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FE_int_vol_Fejer')">Link to the help function</a>

@@ -58,7 +58,7 @@ function pdf = twdpdf(x,alpha,theta,delta)
 % Institute, Calcutta", pp. 579-604.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

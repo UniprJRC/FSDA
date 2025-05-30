@@ -79,7 +79,7 @@ function cutoff = msdcutoff(conflev,v,nu)
 % Theory and Methods", Wiley, New York.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

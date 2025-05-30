@@ -209,7 +209,7 @@ function [out , varargout] = MMmult(Y,varargin)
 % been completely redesigned, with considerable increase of the
 % computational performance.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

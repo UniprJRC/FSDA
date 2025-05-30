@@ -46,7 +46,7 @@ function [logfn] = logfactorial(n,method)
 % 33687-log-factorial-of-large-positive-numbers), 
 % MATLAB Central File Exchange. Retrieved April 3, 2024.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 %
 %<a href="matlab: docsearchFS('logfactorial')">Link to the help function</a>
 %

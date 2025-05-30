@@ -143,7 +143,7 @@ function [ROsim,ROsimT,ROord]=RatcliffeObesrhelp(STR, varargin)
 %   [https://www.drdobbs.com/database/pattern-matching-the-gestalt-approach/184407970?pgno=5]
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %
@@ -327,7 +327,8 @@ ROsim = zeros(numComparisons);
 
 % Compute similarity between each pair of strings (or of files)
 for i = 1:numComparisons
-    for j = 1:numComparisons
+
+    parfor j = 1:numComparisons
 
         if compTypeNumeric>1
             % In this case the inputs are the file names

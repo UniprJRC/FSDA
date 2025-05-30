@@ -1,7 +1,7 @@
 function options = supplyDefaultOptions(options)
 % Supply default options for any that are missing.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 %
 %$LastChangedDate::                      $: Date of the last commit
 

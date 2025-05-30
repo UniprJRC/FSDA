@@ -73,7 +73,7 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 %   parsimonious model-based clustering, Statistics and Computing, vol. 32,
 %   https://doi.org/10.1007/s11222-021-10061-3
 % 
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

@@ -43,7 +43,7 @@ function UNIPRrunCluster(IPaddress)
 % High Performance Computing Facilities of the University of Parma.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

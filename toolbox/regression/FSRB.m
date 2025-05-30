@@ -309,7 +309,7 @@ function [out]=FSRB(y,X,varargin)
 % Regression with the Forward Search: Theory and Data Analysis, "Test",
 % Vol. 26, pp. 869-886, https://doi.org/10.1007/s11749-017-0542-6
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

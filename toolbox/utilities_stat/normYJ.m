@@ -66,7 +66,7 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 % improve normality or symmetry, "Biometrika", Vol. 87, pp. 954-959.
 %
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %

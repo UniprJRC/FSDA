@@ -56,7 +56,7 @@ function x = WNChygeinv(p,M,K,n,odds)
 % Distribution, "Communications in Statistics - Simulation and
 % Computation", Vol. 37, pp. 258-273.
 %
-% Copyright 2008-2024.
+% Copyright 2008-2025.
 % Written by FSDA team
 %
 %
