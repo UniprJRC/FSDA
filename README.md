@@ -46,177 +46,21 @@ In order to run the new features run the file below and enjoy!!!
 |`New_features_FSDA2025a`: examples with the new features  | [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://viewer.mathworks.com/?viewer=live_code&url=https%3A%2F%2Fwww.mathworks.com%2Fmatlabcentral%2Fmlc-downloads%2Fdownloads%2F8e8c500e-aff8-451e-a8c3-34923090f70d%2F1745602619%2Ffiles%2Fdoc%2FNew_features_FSDA2025a.mlx&embed=web) |  [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FSDA&file=toolbox/doc/New_features_FSDA2025a.mlx) | [New_features_FSDA2025a.ipynb](https://github.com/UniprJRC/FSDA/blob/master/toolbox/doc/New_features_FSDA2025a.ipynb) |
 
 
+## Running Examples on MATLAB Online
 
-## FSDA release  2024b is out (November 2024)
-
-New Features and Changes
-
-**MODEL SELECTION**
-
-New routine [univariatems](http://rosa.unipr.it/FSDA/univariatems.html) which enables to exclude  variables which are are surely not significant. The step is  preliminary to (robust) variable selection.
+Get started with some example scripts right away using MATLAB Online. You can view or run each of the examples listed below. Sample data are downloaded when executing the scripts.
 
 
-**ROBUST CENSORED REGRESSION**
+### **Exploratory data analysis** 
+FSDA has a series of functions which complement those of the Statistics and Machine Learning toolbox.
 
-New set of of routines for censored regression (including transformations). All these routines contain inside file name the word "Cens". The tobit model is a particular case of censored regression. More specifically. 
- 
-New function regressCens for censored regression
+| Name | Analysis Type |  View | Run |
+| --- | --- | --- | --- |
+| Missing data analysis. Discover any structure of missing observations in the data and produces a report about lower and upper univriate outliers. | Call to function [mdpattern](http://rosa.unipr.it/FSDA/mdpattern.html)  | [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://viewer.mathworks.com/?viewer=live_code&url=https%3A%2F%2Fwww.mathworks.com%2Fmatlabcentral%2Fmlc-downloads%2Fdownloads%2F8e8c500e-aff8-451e-a8c3-34923090f70d%2F1745602619%2Ffiles%2Fdoc%2FNew_features_FSDA2025a.mlx&embed=web) |  [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FSDA&file=toolbox/doc/Missing_Data.mlx) | 
+Compare robust and non robust indexes. Create histograms with grouping variable and clickable legend. | Call to functions [grpstatsFS](http://rosa.unipr.it/FSDA/grpstatsFS.html), [histFS](http://rosa.unipr.it/FSDA/histFS.html) and [clickableMultiLegend](http://rosa.unipr.it/FSDA/clickableMultiLegend.html) | [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://viewer.mathworks.com/?viewer=live_code&url=https%3A%2F%2Fwww.mathworks.com%2Fmatlabcentral%2Fmlc-downloads%2Fdownloads%2F8e8c500e-aff8-451e-a8c3-34923090f70d%2F1745602619%2Ffiles%2Fdoc%2FNew_features_FSDA2025a.mlx&embed=web) |  [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FSDA&file=toolbox/doc/Descriptive_Statistics_With_Grouping_Variable.mlx) |
+| Label the outliers in the boxplots |  Call to function [add2boxplot](http://rosa.unipr.it/FSDA/add2boxplot.html)|  [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://viewer.mathworks.com/?viewer=live_code&url=https%3A%2F%2Fwww.mathworks.com%2Fmatlabcentral%2Fmlc-downloads%2Fdownloads%2F8e8c500e-aff8-451e-a8c3-34923090f70d%2F1745602619%2Ffiles%2Fdoc%2FNew_features_FSDA2025a.mlx&embed=web) |  [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FSDA&file=toolbox/doc/Label_Univariate_Outliers_in_Boxplot.mlx) |
 
-New function [FSRedaCens](http://rosa.unipr.it/FSDA/FSRedaCens.html) to monitor the residuals in censored regression
-
-New function [regressCensTra](http://rosa.unipr.it/FSDA/regressCensTra.html) which computes the mle of transformation parameter and signed sqrt likelihood ratio test in the censored regression model
-
-New function [FSRfanCens](http://rosa.unipr.it/FSDA/FSRfanCens.html) which monitors the signed sqrt root likelihood ratio test 
-
-**DATASETS**
-
-New regression datasets, affairs and Esselunga
-
-**TRANSFORMATION**
-
-New option bsb in functions normYJ and normBoxCox
-
-**DISTRIBUTIONS**
-
-New functions [tobitcdf](http://rosa.unipr.it/FSDA/tobitcdf.html), [tobitpdf](http://rosa.unipr.it/FSDA/tobitpdf.html), [tobitrnd](http://rosa.unipr.it/FSDA/tobitrnd.html) and [tobitinv](http://rosa.unipr.it/FSDA/tobitinv.html) which compute the cdf, pdf, random numnber geneation and quantiles in the generalized tobit distribution
-
-**REGRESSION**
-
-New option exactR2 inside [simulateLM](http://rosa.unipr.it/FSDA/simulateLM.html)
-
-**GRAPHICS**
-
-New option h in [fanplotFS](http://rosa.unipr.it/FSDA/fanplotFS.html)
-  in order to send the output figure to subplots
-
-**DATASETS**
-
-New dataset inttrade
-
-**ANALYSIS OF CONTINGENCY TABLES**
-
-Additional indexes added to [corrNominal](http://rosa.unipr.it/FSDA/corrNominal.html) 
-
-
-**STATISTICAL UTILITIES**
-
-New function [grpstatsFS](http://rosa.unipr.it/FSDA/grpstatsFS.html) which extends function grpstat and shows the output in much better way.
-
-**UTILITIES**
-
-New function [rows2varsFS](http://rosa.unipr.it/FSDA/rows2varsFS.html)  which extends function rows2vars of MATLAB to reorient table or timetable.
-
-New function [pdfprotect](http://rosa.unipr.it/FSDA/pdfprotect.html) which protects pdf files against printing and copying content and can add a watermark diagonally on all pages of the manuscript.
-
-
-## FSDA release  2024a is out. (April 2024)
-
-
-#### GRAPHICS 
-  
-Function `fanplotFS.m` now accepts in input not only the output of `FSReda` and [`FSRaddt`](http://rosa.unipr.it/FSDA/FSRaddt.html)
-but also the output of `FSReda`, `Sregeda` and `MMregeda`. `fanplotFS` can be used also to monitor the t-statistics 
-coming from FS or S or MM regression.  
-  
-New option `corres` inside [`resfwdplot`](http://rosa.unipr.it/FSDA/resfwdplot.html). If `corres` is `true` a 3 panel plot showing the correlations of 
-adjacent residuals is added to the monitoring residual plot.  
-  
-New options `colorBackground` in [`spmplot`](http://rosa.unipr.it/FSDA/spmplot.html) in order to have a background color of each scatter which depends 
-on the value of the correlation coefficient.  
-  
-New option `typespm` which enables the user to control how the  lower (upper) part of the scatter plot matrix is shown. 
-It is possible to repalce the scatter with the correlation coefficients given as   `"circle"`, `"square"` `"number"`. 
-Finally it is also possible to suppress the scatter.  
-  
-`avasmsplot` now returns the handle to the big (invisible) axes framing the subaxes of the plot.  
-  
-New optional arguments in [`aceplot`](http://rosa.unipr.it/FSDA/aceplot.html). Now it is possible to show just selected plots with or without the plot of 
-the transformation for the explanatory variables.  
-  
-New optional arguments `addxline`, `flabstep` and `multiPanel` in [`fanplotFS`](http://rosa.unipr.it/FSDA/fanplotFS.html)  
-  
-New optional argument `msg` in [`FSRaddt`](http://rosa.unipr.it/FSDA/FSRaddt.html)  
-   
-#### REGRESSION
-  
-Functions [`Sregeda`](http://rosa.unipr.it/FSDA/Sregeda.html), [`MMregeda`](http://rosa.unipr.it/FSDA/MMregeda.html), now also report the values of the t-statistics of the regression
-coefficients.   
-  
-#### UTILITIES STAT  
-  
-New functions  [`pivotCoord`](http://rosa.unipr.it/FSDA/pivotCoord.html) and [`pivotCoordInv`](http://rosa.unipr.it/FSDA/pivotCoordInv.html) to transform the data into 
-compute isometric logratio coordinates and viceversa.  
-New function `logfactorial` to compute `log(x!)` with high precision where x is not necessarily an integer.  
-  
-#### DATASETS  
-  
-New [regression datasets](http://rosa.unipr.it/FSDA/datasets_reg.html), `D1`, `D2`, `D3`, `inttrade1`, `inttrade2`, `inttrade3`, `cement`, `air_pollution`, 
-`valueadded` and `nci60`, added.  
-  
-#### DISTRIBUTION  
-  
-New functions [`WNChygepdf`](http://rosa.unipr.it/FSDA/WNChygepdf.html), [`WNChygecdf`](http://rosa.unipr.it/FSDA/WNChygecdf.html), [`WNChygeinv`](http://rosa.unipr.it/FSDA/WNChygeinv.html), 
-[`WNChygernd`](http://rosa.unipr.it/FSDA/WNChygernd.html), [`FNChygepdf`](http://rosa.unipr.it/FSDA/FNChygepdf.html), [`FNChygecdf`](http://rosa.unipr.it/FSDA/FNChygecdf.html), 
-[`FNChygeinv`](http://rosa.unipr.it/FSDA/FNChygeinv.html), [`FNChygernd`](http://rosa.unipr.it/FSDA/FNChygernd.html) for the extended hypergeometric distribution. 
-
-All the functions which start with WNC refer to the Wallenius non central hypergeometric distribution, while all 
-the functions which start with FNC refer to the Fisher non central hypergeometric distribution.  
-
-New functions [`mWNChygepdf`](http://rosa.unipr.it/FSDA/mWNChygepdf.html), [`mWNChygernd`](http://rosa.unipr.it/FSDA/mWNChygernd.html),  [`mFNChygepdf`](http://rosa.unipr.it/FSDA/mFNChygepdf.html), 
-[`mFNChygernd`](http://rosa.unipr.it/FSDA/mFNChygernd.html) to compute the density and to generate random number from the multivariate Wallenius 
-and multivariate Fisher non central hypergeometric distribution. All these functions are a translation from C++ 
-of the routines of Fog (2008), library [BiasedUrn](https://cran.r-project.org/web/packages/BiasedUrn/vignettes/UrnTheory.pdf).  
-  
-#### VOLATILITY
-  
-A collection of routines 
-1. to compute the integrated variance from a diffusion process via the Fourier estimator using Dirichlet or Fejer kernel; 
-2. to computes the integrated variance, quarticity, leverage of a diffusion process via the 
-Fourier-Malliavin estimator, routines written by S. Sanfelici and G. Toscano, (2024).  
-  
-#### MULTIVARIATE  
-  
-Functions for robust correspondence analysis completely redesigned [`mcdCorAna`](http://rosa.unipr.it/FSDA/mcdCorAna.html) (mcd in correspondece analysis), 
-[`FSCorAna`](http://rosa.unipr.it/FSDA/FSCorAna.html) (automatic outlier detection based on the Forward Search) and [`FSCorAnaenv`](http://rosa.unipr.it/FSDA/FSCorAnaenv.html) 
-(envelope creation of minimum Mahalanobis distance and inertia explained), [`FSCorAnaeda`](http://rosa.unipr.it/FSDA/FSCorAnaeda.html) 
-(FS in correspondence analysis with exploratory data analysis purposes).  
-  
-#### APPS 
-  
-`CorAnaAPP` which enables an interactive robust data analysis of the contingency tables  
-  
-Oldest version of MATLAB which is supported is now R2019a.  
-  
-Funcion `fanplot.m` in order to avoid conflicts with function `fanplot` of the Financial Toolbox has been renamed `fanplotFS.m`. 
-Old function `fanplot.m` has been left in the folder but it will be removed in a future release.
-  
-Function `playbackdemoFS.m` has been removed.  
-  
-Thanks to MathWorks support now the FSDA tree has a new structure which improves the toolbox's polish, 
-ease of maintenance, and developer/user experience. More specifically, subfolder `+aux` has been created
-in order to host the routines which do no have to be called directly by the user. 
-Subfolders private have been added to each folder in order to host routines which are called just by the corresponding 
-parent folder.
-
-
-
-## NEWS: new features (January 2024)
-
-Now FSDA is compliant with [MATLAB Toolbox Best Practices](https://github.com/mathworks/toolboxdesign).
-Thanks to the constant support of Rob Purser and Bensingh Pancras we were able to migrate the FSDA toolbox to the new structure which improves the toolbox's polish, ease of maintenance, and developer/user experience.
-In addition to being more GitHub-friendly, being in the  *standard format* allows for a number of additional features that we are now attempting to leverage, such as `namespaces` and `internal` folders, among many other things.
-When a toolbox hits the 300 functions mark, it's time to do some housekeeping!
-
-## NEWS: new features (June 2023)
-
-1. Now FSDA supports the new [buildtool](https://github.com/UniprJRC/FSDA/tree/master/toolbox/utilities_help/build) feature (follow the link for more info) to create new releases on GitHub automatically leveraging
-the sinergy of the new buildtool functionalities, (see an overview in the [documentation](https://it.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html), available since R2022b)  MATLAB scripts and GitHub Actions.
-Releasing a new FSDA release was a manual, multi-step process, that involved a lot of tasks in different environments, now the process runs entirely on GitHub and is consistent and fast.
-(Our thanks goes to Jos Martin, Rob Purser, Bensingh Pancras, Andy Campbell, Mark Cafaro et. al. that supported us with the implementation of this new feature)
-
-2. Now FSDA is also availble as a [Docker](https://github.com/UniprJRC/FSDA/tree/master/docker) (follow the link for more info) so if you need to run simulations on a HPC facility on Singularity/Apptainer or you just want to try FSDA with all the features you can follow this link and download a full fledged FSDA docker (yes it works also locally on WSL/WSL2!). 
-Once a new release is created, a docker of FSDA is automatically build and can be easily pulled.
-(Our thanks go to Jos Martin that helped us a lot on this project).
+---
 
 ## FSDA
 
