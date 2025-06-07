@@ -154,7 +154,7 @@ function out=pcaFS(Y,varargin)
 %                 Example - 'bsb',[2 10:90 93]
 %                 Data Types - double or logical
 %
-%  ShapeFile  : name of ShapeFile or geospatial table containg shapes. 
+%  ShapeFile  : name of ShapeFile or geospatial table containg shapes.
 %               Character or string or geotable.
 %               Name of the ShapeFile containing the containing the
 %               geometric details of the rows. The ShapeFile, which is
@@ -163,7 +163,7 @@ function out=pcaFS(Y,varargin)
 %               default value of shapefile is empty that is we assume that
 %               no shapefile is given. If ShapeFile is given an additional
 %               GUI containing the areas colored using
-%               the first PC is shown. 
+%               the first PC is shown.
 %                   Example - 'ShapeFile','shapefileName'
 %                    Data Types - char or string or geotable.
 %               Remark: note that this option can be used just is the
@@ -383,14 +383,14 @@ end
 
 bsb=[];
 
-if isstruct(robust) || islogical(robust) 
+if isstruct(robust) || islogical(robust)
 
     if isstruct(robust)
         if isfield(robust,'bsb') % User has chosen a prespecified subset of units to use
-            
+
             bsb=false(n,1);
             bsb(robust.bsb)=true;
-          
+
         elseif  isfield(robust,'class')
             bsb=true(n,1);
 
@@ -409,6 +409,9 @@ if isstruct(robust) || islogical(robust)
                 end
                 outMCD=mcd(Y,'bdp',bdp,'conflev',conflev,'plots',0);
                 bsb(outMCD.outliers)=false;
+                if sum(bsb)==n
+                    nooutlier();
+                end
 
 
             elseif strcmp(class,'MM') % user has chosen MM estimators
@@ -426,6 +429,11 @@ if isstruct(robust) || islogical(robust)
 
                 outMM=MMmult(Y,'eff',eff,'conflev',conflev);
                 bsb(outMM.outliers)=false;
+
+                if sum(bsb)==n
+                    nooutlier();
+                end
+
             elseif strcmp(class,'FS') % user has chosen FS
                 if isfield(robust,'conflev')
                     conflev=robust.conflev;
@@ -434,19 +442,26 @@ if isstruct(robust) || islogical(robust)
                 end
                 outFS=FSM(Y,'bonflev',conflev,'plots',0,'msg',0);
                 bsb(outFS.outliers)=false;
+                if sum(bsb)==n
+                    nooutlier();
+                end
+
             else
                 error('FSDA:pcaFS:wrongCLASS','Admissible classes are "FS", "MCD" or "MM"')
             end
         else
             error('FSDA:pcaFS:missingCLASS','Specify a class among "FS", "MCD" or "MM"')
         end
-   
+
     else % in this case robust is a scalar boolean
 
         if robust == true
             bsb=true(n,1);
             outFS=FSM(Y,'bonflev',0.99,'msg',0,'plots',0);
             bsb(outFS.outliers)=false;
+            if sum(bsb)==n
+                nooutlier();
+            end
         end
     end
 end
@@ -667,6 +682,17 @@ if biplot==1
     biplotAPP(Ztable,'standardize',standardize,'bsb',bsb,'Latitude',Latitude,'Longitude',Longitude,'ShapeFile',ShapeFile)
 end
 
+end
+
+% Message to show when robust option has been used but no outlier has been
+% found
+function nooutlier()
+disp('--------------------------------------------')
+disp('No outlier has been found by robust analysis')
+disp('                              ')
+disp('To explore a different confidence level or a different robust method')
+disp('Click on the Check box "Robust analysis" in the FSDA dynamic bixplot')
+disp('--------------------------------------------')
 end
 
 %FScategory:MULT-Multivariate
