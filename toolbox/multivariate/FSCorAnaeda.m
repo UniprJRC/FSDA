@@ -66,6 +66,13 @@ function out = FSCorAnaeda(N,varargin)
 %               Example - 'plots',0
 %               Data Types - double
 %
+% resc :        Rescale or not the envelopes. Boolean. It controls whether to rescale or not the envelopes of min
+%               MD when if in the initial part of the search  is steadily
+%               above or below the 5 and 95 per cent confidence bands. The
+%               default value of resc is true.
+%                 Example - 'resc',false
+%                 Data Types - logical
+%
 %  msg  :       It controls whether to display or not messages
 %               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displayed on the screen
@@ -264,10 +271,11 @@ init1=floor(n*0.5);
 plots=0;
 % Simultaneous confidence envelope to declare the outliers
 conflev=0.99;
+resc=true;
 
 if nargin > 1
 
-    options=struct('init',init1,'plots',plots,'msg',1,'bsb',[],'conflev',conflev);
+    options=struct('init',init1,'plots',plots,'msg',1,'bsb',[],'conflev',conflev,'resc',resc);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -290,6 +298,7 @@ if nargin > 1
     msg=options.msg;
     plots=options.plots;
     bsb=options.bsb;
+    resc=options.resc;
 end
 
 if isempty(bsb)
@@ -517,7 +526,8 @@ if plots==1
     disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
     [gmin] = FSCorAnaenv(RAW,'prob',quant,'init',init1);
 
-    resc=true;
+    % Trajectory of mmd is rescaled it in the initial part it is outside
+    % the envelopes
     if resc==true
         warmup=500;
         warmup=min([find(mmd(:,1)>round(n/2),1),warmup]);
@@ -560,7 +570,6 @@ out.MAL=MAL;
 out.BB=BB;
 out.mmd=mmd;
 out.ine=ine;
-% out.detS=detS;
 out.Un=Un;
 out.N=N;
 out.Ntable=Ntable;
