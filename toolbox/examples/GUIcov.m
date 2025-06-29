@@ -35,7 +35,7 @@ function out = GUIcov(x,y,w)
 %    out = detailed output to compute the index. struct.
 %          Structure containing the following fields.
 %          out.data = table with n+1 rows (where n is the length of x)
-%                   containing what is shown in the GUI. 
+%                   containing what is shown in the GUI.
 %                   Last row contains the totals.
 %          out.cov = scalar containing the covariance.
 %
@@ -64,7 +64,7 @@ function out = GUIcov(x,y,w)
 %{
     % Example of unweighted covariance.
     % The data below are referred to monthly income of 13 families and
-    % their corrisponding free time expenditure (See page 223 of [MRZ]).
+    % their corresponding free time expenditure (See page 223 of [MRZ]).
     % x= monthly income of 13 families.
     % y= free time expenditure.
     x=[1330 1225 1225 1400 1575 2050 1750 2240 1225 1730 1470 2730 1380];
@@ -112,7 +112,7 @@ if istable(x)
             ij=ij+1;
         end
     end
-    
+
 else
     if nargin<3
         unweighted=true;
@@ -128,7 +128,7 @@ seq=(1:lenx)';
 
 
 if unweighted==true % unweighted standard deviation
-    
+
     sumx=sum(x);
     mx=sumx/lenx;
     sumy=sum(y);
@@ -144,12 +144,12 @@ if unweighted==true % unweighted standard deviation
     numxy=sum(xmmxymmy);
     covxy=numxy/lenx;
     header={'i' 'x_i' 'y_i' '(x_i-M_X)' '(y_i-M_Y)' '(x_i - M_X )y_i' '(y_i - M_Y) x_i' '(x_i-M_X)(y_i-M_Y)'};
-    
+
     corpus=[seq, x,y, xmmx, ymmy, xmmxy, ymmyx, xmmxymmy];
-    
+
     footer=[NaN sum(x) sum(y) 0 0, numx, numy, numxy];
     strtitle='Details of covariance $(cov(x,y))$ calculation';
-    
+
 else % weighted covariance
     w=w(:);
     n=sum(w);
@@ -160,16 +160,16 @@ else % weighted covariance
     xmmx=x-mx;
     ymmy=y-my;
     xyw=xmmx.*ymmy.*w;
-    
+
     numxy=sum(xyw);
     covxy=numxy/n;
     header={'i' 'x_i' 'y_i' 'w_i' '(x_i-M_X)' '(y_i-M_Y)' '(x_i-M_X)(y_i-M_Y)w_i'};
-    
+
     corpus=[seq, x,y,w, xmmx, ymmy, xyw];
-    
+
     footer=[NaN sum(x) sum(y) n NaN NaN, numxy];
     strtitle='Details of weighted covariance calculation';
-    
+
 end
 
 str=strForSchool(header, corpus, footer);
@@ -197,14 +197,24 @@ set(gcf,'Visible','on')
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
 if unweighted==true
-dim = [.56 .88 0.1 0.1];
-    strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad $' ...
-        '\boldmath{$M_Y$}= $\frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
+    dim = [.56 .88 0.1 0.1];
+    if verLessThanFS('25.1')
+
+        strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad $' ...
+            '\boldmath{$M_Y$}= $\frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
+    else
+        strmean=['$M_X = \frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad ' ...
+            'M_Y = \frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
+    end
 else
-dim = [.46 .90 0.09 0.09];
-    strmean=['\boldmath{$M_X$}=$\frac{ \sum_{i=1}^n x_i w_i}{\sum_{i=1}^n w_i}$   = $\frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad $' ...
-             '\boldmath{$M_Y$}=$\frac{ \sum_{i=1}^n y_i w_i}{\sum_{i=1}^n w_i}$= $\frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
-    
+    dim = [.46 .90 0.09 0.09];
+    if verLessThanFS('25.1')
+        strmean=['\boldmath{$M_X$}=$\frac{ \sum_{i=1}^n x_i w_i}{\sum_{i=1}^n w_i}$   = $\frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad $' ...
+            '\boldmath{$M_Y$}=$\frac{ \sum_{i=1}^n y_i w_i}{\sum_{i=1}^n w_i}$= $\frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
+    else
+        strmean=['$M_X = \frac{ \sum_{i=1}^n x_i w_i}{\sum_{i=1}^n w_i}$   = $\frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad ' ...
+            'M_Y = \frac{ \sum_{i=1}^n y_i w_i}{\sum_{i=1}^n w_i}$= $\frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
+    end
 end
 annotation('textbox',dim,'FitBoxToText','on','String',strmean,'Interpreter','latex','FontSize',fs);
 
@@ -216,14 +226,29 @@ dim = [.01 .05 0.1 0.1];
 
 % strfin = text at the end of the GUI
 if unweighted==true
-    strfin=['\boldmath{$cov(x,y)$}=$\frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)}{n}'...
-        '=\frac{\sum_{i=1}^n  (x_i-M_X) y_i }{n} = \frac{\sum_{i=1}^n  (y_i-M_Y) x_i }{n}'...
-        '= \frac{' num2str(numx) '}{' num2str(lenx) '}=' ...
-        num2str(covxy) '$'];
+    if verLessThanFS('25.1')
+
+        strfin=['\boldmath{$cov(x,y)$}=$\frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)}{n}'...
+            '=\frac{\sum_{i=1}^n  (x_i-M_X) y_i }{n} = \frac{\sum_{i=1}^n  (y_i-M_Y) x_i }{n}'...
+            '= \frac{' num2str(numx) '}{' num2str(lenx) '}=' ...
+            num2str(covxy) '$'];
+    else
+        strfin=['$cov(x,y) = \frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)}{n}'...
+            '=\frac{\sum_{i=1}^n  (x_i-M_X) y_i }{n} = \frac{\sum_{i=1}^n  (y_i-M_Y) x_i }{n}'...
+            '= \frac{' num2str(numx) '}{' num2str(lenx) '}=' ...
+            num2str(covxy) '$'];
+
+    end
 else
-    strfin=['\boldmath{$cov(x,y)$}=$\frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)w_i}{\sum_{i=1}^n w_i}'...
-        '= \frac{' num2str(numxy) '}{' num2str(n) '}=' ...
-        num2str(covxy) '$'];
+    if verLessThanFS('25.1')
+        strfin=['\boldmath{$cov(x,y)$}=$\frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)w_i}{\sum_{i=1}^n w_i}'...
+            '= \frac{' num2str(numxy) '}{' num2str(n) '}=' ...
+            num2str(covxy) '$'];
+    else
+        strfin=['$cov(x,y) = \frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)w_i}{\sum_{i=1}^n w_i}'...
+            '= \frac{' num2str(numxy) '}{' num2str(n) '}=' ...
+            num2str(covxy) '$'];
+    end
 end
 
 fs1=20;

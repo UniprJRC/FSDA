@@ -10,7 +10,7 @@ function out = GUIcorr(x,y,w)
 %           contains the contingency table associated with the joint
 %           probability distribution. In this case, the second input
 %           argument y is not necessary. If x is a table, weighted
-%           correation is computed where the weights are the values inside
+%           correlation is computed where the weights are the values inside
 %           the contingency table.
 %       Data Types - vector of doubles or table
 %
@@ -62,7 +62,7 @@ function out = GUIcorr(x,y,w)
 %{
     % Example of unweighted covariance.
     % The data below are referred to monthly income of 13 families and
-    % their corrisponding free time expenditure (See page 223 of [MRZ]).
+    % their corresponding free time expenditure (See page 223 of [MRZ]).
     % x= monthly income of 13 families.
     % y= free time expenditure.
     x=[1330 1225 1225 1400 1575 2050 1750 2240 1225 1730 1470 2730 1380];
@@ -221,13 +221,23 @@ annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex',
 
 if unweighted==true
     dim = [.56 .88 0.1 0.1];
-    strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad $' ...
-        '\boldmath{$M_Y$}= $\frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
+    if verLessThanFS('25.1')
+        strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad $' ...
+            '\boldmath{$M_Y$}= $\frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
+    else
+        strmean=['$M_X = \frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad ' ...
+            'M_Y = \frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
+    end
+
 else
     dim = [.46 .90 0.09 0.09];
-    strmean=['\boldmath{$M_X$}=$\frac{ \sum_{i=1}^n x_i w_i}{\sum_{i=1}^n w_i}$   = $\frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad $' ...
-        '\boldmath{$M_Y$}=$\frac{ \sum_{i=1}^n y_i w_i}{\sum_{i=1}^n w_i}$= $\frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
-
+    if verLessThanFS('25.1')
+        strmean=['\boldmath{$M_X$}=$\frac{ \sum_{i=1}^n x_i w_i}{\sum_{i=1}^n w_i}$   = $\frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad $' ...
+            '\boldmath{$M_Y$}=$\frac{ \sum_{i=1}^n y_i w_i}{\sum_{i=1}^n w_i}$= $\frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
+    else
+        strmean=['$M_X = \frac{ \sum_{i=1}^n x_i w_i}{\sum_{i=1}^n w_i}   = \frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad ' ...
+            'M_Y= \frac{ \sum_{i=1}^n y_i w_i}{\sum_{i=1}^n w_i} = \frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
+    end
 end
 annotation('textbox',dim,'FitBoxToText','on','String',strmean,'Interpreter','latex','FontSize',fs);
 
@@ -239,14 +249,25 @@ dim = [.01 .05 0.1 0.1];
 
 % strfin = text at the end of the GUI
 if unweighted==true
-
-    strfin=['\boldmath{$corr(x,y)$}=$\frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)}{ \sqrt{\sum_{i=1}^n  (x_i-M_X)^2   \sum_{i=1}^n  (y_i-M_Y)^2 }}'...
-        '= \frac{' num2str(numxy) '}{\sqrt{' num2str(sumxmmx2) '\times' num2str(sumymmy2) '}}=' ...
-        num2str(rxy) '$'];
+    if verLessThanFS('25.1')
+        strfin=['\boldmath{$corr(x,y)$}=$\frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)}{ \sqrt{\sum_{i=1}^n  (x_i-M_X)^2   \sum_{i=1}^n  (y_i-M_Y)^2 }}'...
+            '= \frac{' num2str(numxy) '}{\sqrt{' num2str(sumxmmx2) '\times' num2str(sumymmy2) '}}=' ...
+            num2str(rxy) '$'];
+    else
+        strfin=['$ corr(x,y) = \frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)}{ \sqrt{\sum_{i=1}^n  (x_i-M_X)^2   \sum_{i=1}^n  (y_i-M_Y)^2 }}'...
+            '= \frac{' num2str(numxy) '}{\sqrt{' num2str(sumxmmx2) '\times' num2str(sumymmy2) '}}=' ...
+            num2str(rxy) '$'];
+    end
 else
-    strfin=['\boldmath{$corr(x,y)$}=$\frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)w_i}{ \sqrt{\sum_{i=1}^n  (x_i-M_X)^2w_i   \sum_{i=1}^n  (y_i-M_Y)^2 w_i }}'...
-        '= \frac{' num2str(numxy) '}{\sqrt{' num2str(sumxmmx2) '\times' num2str(sumymmy2) '}}=' ...
-        num2str(rxy) '$'];
+    if verLessThanFS('25.1')
+        strfin=['\boldmath{$corr(x,y)$}=$\frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)w_i}{ \sqrt{\sum_{i=1}^n  (x_i-M_X)^2w_i   \sum_{i=1}^n  (y_i-M_Y)^2 w_i }}'...
+            '= \frac{' num2str(numxy) '}{\sqrt{' num2str(sumxmmx2) '\times' num2str(sumymmy2) '}}=' ...
+            num2str(rxy) '$'];
+    else
+        strfin=['$corr(x,y) = \frac{\sum_{i=1}^n (x_i-M_X) (y_i-M_Y)w_i}{ \sqrt{\sum_{i=1}^n  (x_i-M_X)^2w_i   \sum_{i=1}^n  (y_i-M_Y)^2 w_i }}'...
+            '= \frac{' num2str(numxy) '}{\sqrt{' num2str(sumxmmx2) '\times' num2str(sumymmy2) '}}=' ...
+            num2str(rxy) '$'];
+    end
 end
 
 fs1=20;

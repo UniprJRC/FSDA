@@ -78,7 +78,7 @@ function out = GUIconcentration(Q, varargin)
 %}
 
 %{
-    %% Concentrartion index using approximate formula.
+    %% Concentration index using approximate formula.
     % The families in a certain area have been classified 
     % according to their annual income.
     % This is exercise 1.28 from [CMR] - page 59.

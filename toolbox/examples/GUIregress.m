@@ -503,18 +503,46 @@ else
     psm='+';
 end
 
+if verLessThanFS('25.1')
+    bstr='\boldmath{$b$} = ';
+    astr='\boldmath{$a$} = ';
+    Mxstr='\boldmath{$M_X$} = ';
+    Mystr='\boldmath{$M_Y$} = ';
+    yhat1='\boldmath{$\hat y_1$}=';
+    yhat2='\boldmath{$\hat y_2$}=';
+    yhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} ='];
+    R2stri='\boldmath{$R^2$}=$';
+else
+    bstr='$b$ = ';
+    astr='$a$ = ';
+    Mxstr='M_X= ';
+    Mystr='M_Y= ';
+    yhat1='$\hat y_1 =$';
+    yhat2='$\hat y_2 =$';
+    yhatn=['$\hat y_{' num2str(lenx)  '} = $ '];
+    R2stri='$R^2 =';
+end
+
 % Textbox of means and a
 if unweighted==true
-    strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad $' ...
-        '\boldmath{$M_Y$}= $\frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
-    if intercept==true
-        stramean=['\boldmath{$a$}= $M_Y - b M_X =' num2str(my) psm num2str(abs(b)) '\times' num2str(abs(mx)) '=' num2str(a) '$'];
+
+    if verLessThanFS('25.1')
+        strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad $' ...
+            '\boldmath{$M_Y$}= $\frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
     else
-        stramean='\boldmath{$a$}=0';
+        strmean=['$' Mxstr ' \frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  ' \qquad ' ...
+            Mystr '\frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) ' $'];
     end
+    if intercept==true
+        stramean=[astr ' $M_Y - b M_X =' num2str(my) psm num2str(abs(b)) '\times' num2str(abs(mx)) '=' num2str(a) '$'];
+    else
+        stramean=[astr '0'];
+    end
+
+
 else
-    strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad $' ...
-        '\boldmath{$M_Y$}= $\frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
+    strmean=[Mxstr '$\frac{' num2str(sumxw) '}{' num2str(n) '}=' num2str(mx)  '\qquad $' ...
+        Mystr '$\frac{' num2str(sumyw) '}{' num2str(n) '}=' num2str(my) '$'];
 end
 
 
@@ -525,23 +553,24 @@ else
 end
 if timeseries==true
     if interpType==1
-        stryhat1=['\boldmath{$\hat y_1$}= $a+b  =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) '=' num2str(yhat(1)) '$'];
-        stryhat2=['\boldmath{$\hat y_2$}= $a+b \times 2 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
-        stryhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} = $ a+b \times'  num2str(lenx) ' =' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) '=' num2str(yhat(lenx)) '$'];
+        stryhat1=[yhat1 ' $a+b  =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) '=' num2str(yhat(1)) '$'];
+        stryhat2=[yhat2 ' $a+b \times 2 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
+        stryhatn=[yhatn '$ a+b \times'  num2str(lenx) ' =' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) '=' num2str(yhat(lenx)) '$'];
 
     elseif interpType==2 % exponential function
-        stryhat1=['\boldmath{$\hat y_1$}= $\exp(a+b  )= \exp(' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) ')=' num2str(yhat(1)) '$'];
-        stryhat2=['\boldmath{$\hat y_2$}= $\exp(a+b \times 2) = \exp(' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
-        stryhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} = $ \exp(a+b \times'  num2str(lenx) ') = \exp(' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) ')=' num2str(yhat(lenx)) '$'];
+        stryhat1=[ yhat1 ' $\exp(a+b  )= \exp(' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) ')=' num2str(yhat(1)) '$'];
+        stryhat2=[yhat2 ' $\exp(a+b \times 2) = \exp(' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
+        stryhatn=[yhatn ' $ \exp(a+b \times'  num2str(lenx) ') = \exp(' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) ')=' num2str(yhat(lenx)) '$'];
+
     elseif interpType==3   % power function
-        stryhat1=['\boldmath{$\hat y_1$}= $\exp(a)  = \exp(' num2str(a) ') =' num2str(yhat(1)) '$'];
-        stryhat2=['\boldmath{$\hat y_2$}= $\exp(a) \times 2^b  = \exp(' num2str(a) ') \times 2^{' num2str(b)  '}=' num2str(yhat(2)) '$'];
-        stryhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} = $ \exp(a)'  num2str(xori(lenx)) '^{ '  num2str(b) '}=' num2str(yhat(lenx)) '$'];
+        stryhat1=[yhat1 ' $\exp(a)  = \exp(' num2str(a) ') =' num2str(yhat(1)) '$'];
+        stryhat2=[yhat2 ' $\exp(a) \times 2^b  = \exp(' num2str(a) ') \times 2^{' num2str(b)  '}=' num2str(yhat(2)) '$'];
+        stryhatn=[yhatn ' $ \exp(a)'  num2str(xori(lenx)) '^{ '  num2str(b) '}=' num2str(yhat(lenx)) '$'];
     end
 else
-    stryhat1=['\boldmath{$\hat y_1$}= $a+b x_1 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) '=' num2str(yhat(1)) '$'];
-    stryhat2=['\boldmath{$\hat y_2$}= $a+b x_2 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
-    stryhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} = $ a+b x_{' num2str(lenx) '} =' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) '=' num2str(yhat(lenx)) '$'];
+    stryhat1=[yhat1 ' $a+b x_1 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) '=' num2str(yhat(1)) '$'];
+    stryhat2=[yhat2 ' $a+b x_2 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
+    stryhatn=[yhatn ' $ a+b x_{' num2str(lenx) '} =' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) '=' num2str(yhat(lenx)) '$'];
 end
 stryhati='...';
 
@@ -565,35 +594,36 @@ fs1=20;
 annotation(h,'textbox',dim,'FitBoxToText','on','String',strtitle,'Interpreter','latex','FontSize',fs1);
 annotation(h1,'textbox',dim,'FitBoxToText','on','String',strtitle1,'Interpreter','latex','FontSize',fs1);
 
+
 % strfin = text at the end of the GUI
 if unweighted==true
     if intercept==true
         if timeseries==true
             if interpType==1  % linear
-                strbcoeff=['\boldmath{$b$}=$ \frac{T\sum_{t=1}^T t y_i - \sum_{t=1}^T t \sum_{t=1}^T y_i}{T \sum_{t=1}^T t^2 - \left( \sum_{t=1}^T t \right)^2}'...
+                strbcoeff=[bstr '$\frac{T\sum_{t=1}^T t y_i - \sum_{t=1}^T t \sum_{t=1}^T y_i}{T \sum_{t=1}^T t^2 - \left( \sum_{t=1}^T t \right)^2}'...
                     '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                     '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                     num2str(b) '$'];
-                stracoeff=['\boldmath{$a$}=$ \frac{\sum_{t=1}^n y_i \sum_{i=1}^n t^2 - \sum_{t=1}^n t \sum_{i=1}^n t y_i}{T \sum_{t=1}^n t^2 - \left( \sum_{t=1}^T t \right)^2}'...
+                stracoeff=[astr '$ \frac{\sum_{t=1}^n y_i \sum_{i=1}^n t^2 - \sum_{t=1}^n t \sum_{i=1}^n t y_i}{T \sum_{t=1}^n t^2 - \left( \sum_{t=1}^T t \right)^2}'...
                     '= \frac{' num2str(sumy) ' \times ' num2str(sumx2) signsumx num2str(abs(sumx)) ' \times ' num2str(sumxy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                     '= \frac{' num2str(numa) '}{' num2str(denb) '}=' ...
                     num2str(a) '$'];
             elseif interpType==2 % exponential
-                strbcoeff=['\boldmath{$b$}=$ \frac{T\sum_{t=1}^T t log y_t - \sum_{t=1}^T t \sum_{t=1}^T log y_t}{T \sum_{t=1}^T t^2 - \left( \sum_{t=1}^T t \right)^2}'...
+                strbcoeff=[bstr '$ \frac{T\sum_{t=1}^T t log y_t - \sum_{t=1}^T t \sum_{t=1}^T log y_t}{T \sum_{t=1}^T t^2 - \left( \sum_{t=1}^T t \right)^2}'...
                     '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                     '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                     num2str(b) '$'];
-                stracoeff=['\boldmath{$a$}=$ \frac{\sum_{t=1}^n log y_t \sum_{i=1}^n t^2 - \sum_{t=1}^n t \sum_{i=1}^n t log y_t}{T \sum_{t=1}^n t^2 - \left( \sum_{t=1}^T t \right)^2}'...
+                stracoeff=[ astr '$ \frac{\sum_{t=1}^n log y_t \sum_{i=1}^n t^2 - \sum_{t=1}^n t \sum_{i=1}^n t log y_t}{T \sum_{t=1}^n t^2 - \left( \sum_{t=1}^T t \right)^2}'...
                     '= \frac{' num2str(sumy) ' \times ' num2str(sumx2) signsumx num2str(abs(sumx)) ' \times ' num2str(sumxy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                     '= \frac{' num2str(numa) '}{' num2str(denb) '}=' ...
                     num2str(a) '$'];
 
             elseif  interpType==3  % power
-                strbcoeff=['\boldmath{$b$}=$ \frac{T\sum_{t=1}^T log(t) log y_t - \sum_{t=1}^T log(t) \sum_{t=1}^T log y_t}{T \sum_{t=1}^T log(t)^2 - \left( \sum_{t=1}^T log(t) \right)^2}'...
+                strbcoeff=[bstr '$ \frac{T\sum_{t=1}^T log(t) log y_t - \sum_{t=1}^T log(t) \sum_{t=1}^T log y_t}{T \sum_{t=1}^T log(t)^2 - \left( \sum_{t=1}^T log(t) \right)^2}'...
                     '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                     '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                     num2str(b) '$'];
-                stracoeff=['\boldmath{$a$}=$ \frac{\sum_{t=1}^T log y_t \sum_{i=1}^T log(t)^2 - \sum_{t=1}^T log(t) \sum_{i=1}^T log(t) log y_t}{T \sum_{t=1}^n log(t)^2 - \left( \sum_{t=1}^T log(t) \right)^2}'...
+                stracoeff=[astr '$ \frac{\sum_{t=1}^T log y_t \sum_{i=1}^T log(t)^2 - \sum_{t=1}^T log(t) \sum_{i=1}^T log(t) log y_t}{T \sum_{t=1}^n log(t)^2 - \left( \sum_{t=1}^T log(t) \right)^2}'...
                     '= \frac{' num2str(sumy) ' \times ' num2str(sumx2) signsumx num2str(abs(sumx)) ' \times ' num2str(sumxy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                     '= \frac{' num2str(numa) '}{' num2str(denb) '}=' ...
                     num2str(a) '$'];
@@ -601,46 +631,48 @@ if unweighted==true
 
             end
         else
-            strbcoeff=['\boldmath{$b$}=$ \frac{n\sum_{i=1}^n x_i y_i - \sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n \sum_{i=1}^n x_i^2 - \left( \sum_{i=1}^n x_i \right)^2}'...
+            strbcoeff=[bstr ' $ \frac{n\sum_{i=1}^n x_i y_i - \sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n \sum_{i=1}^n x_i^2 - \left( \sum_{i=1}^n x_i \right)^2}'...
                 '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                 '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                 num2str(b) '$'];
-            stracoeff=['\boldmath{$a$}=$ \frac{\sum_{i=1}^n y_i \sum_{i=1}^nx_i^2 - \sum_{i=1}^n x_i \sum_{i=1}^n x_i y_i}{n \sum_{i=1}^n x_i^2 - \left( \sum_{i=1}^n x_i \right)^2}'...
+            stracoeff=[ astr ' $ \frac{\sum_{i=1}^n y_i \sum_{i=1}^nx_i^2 - \sum_{i=1}^n x_i \sum_{i=1}^n x_i y_i}{n \sum_{i=1}^n x_i^2 - \left( \sum_{i=1}^n x_i \right)^2}'...
                 '= \frac{' num2str(sumy) ' \times ' num2str(sumx2) signsumx num2str(abs(sumx)) ' \times ' num2str(sumxy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                 '= \frac{' num2str(numa) '}{' num2str(denb) '}=' ...
                 num2str(a) '$'];
         end
-        strR2=['\boldmath{$R^2$}=$ \frac{DEV(\hat{y})}{DEV(y)} '...
+
+        strR2=[R2stri ' \frac{DEV(\hat{y})}{DEV(y)} '...
             '= \frac{' num2str(devyhat)  '}{' num2str(devy) '}=' ...
             num2str(R2) '$'];
-        strR2bis=['\boldmath{$R^2$}=$ 1-\frac{DEV(e)}{DEV(y)}' ...
+        strR2bis=[R2stri ' 1-\frac{DEV(e)}{DEV(y)}' ...
             '= 1-\frac{' num2str(deve) '}{' num2str(devy) '}=' ...
             num2str(R2) '$'];
     else % intercept = false
         if timeseries==true
             if interpType==1
-                strbcoeff=['\boldmath{$b$}=$ \frac{\sum_{t=1}^T t y_t}{ \sum_{t=1}^T t^2 }'...
+                strbcoeff=[bstr ' $\frac{\sum_{t=1}^T t y_t}{ \sum_{t=1}^T t^2 }'...
                     '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                     num2str(b) '$'];
             elseif interpType==2
-                strbcoeff=['\boldmath{$b$}=$ \frac{\sum_{t=1}^T t log(y_t)}{ \sum_{t=1}^T t^2 }'...
+                strbcoeff=[bstr '$\frac{\sum_{t=1}^T t log(y_t)}{ \sum_{t=1}^T t^2 }'...
                     '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                     num2str(b) '$'];
             elseif interpType==3
-                strbcoeff=['\boldmath{$b$}=$ \frac{\sum_{t=1}^T log(t) log(y_t)}{ \sum_{t=1}^T log(t)^2 }'...
+                strbcoeff=[bstr '$\frac{\sum_{t=1}^T log(t) log(y_t)}{ \sum_{t=1}^T log(t)^2 }'...
                     '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                     num2str(b) '$'];
             end
         else
-            strbcoeff=['\boldmath{$b$}=$ \frac{\sum_{i=1}^n x_i y_i}{ \sum_{i=1}^n x_i^2 }'...
+            strbcoeff=[ bstr '$\frac{\sum_{i=1}^n x_i y_i}{ \sum_{i=1}^n x_i^2 }'...
                 '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                 num2str(b) '$'];
         end
-        stracoeff='\boldmath{$a$}=0';
-        strR2=['\boldmath{$R^2$}=$ \frac{ \sum_{i=1}^n \hat y_i^2 }{ \sum_{i=1}^n y_i^2} '...
+        stracoeff=[astr '0'];
+
+        strR2=[R2stri '\frac{ \sum_{i=1}^n \hat y_i^2 }{ \sum_{i=1}^n y_i^2} '...
             '= \frac{' num2str(devyhat)  '}{' num2str(devy) '}=' ...
             num2str(R2) '$'];
-        strR2bis=['\boldmath{$R^2$}=$ 1-\frac{\sum_{i=1}^n e_i^2 }{\sum_{i=1}^n y_i^2}' ...
+        strR2bis=[R2stri '1-\frac{\sum_{i=1}^n e_i^2 }{\sum_{i=1}^n y_i^2}' ...
             '= 1-\frac{' num2str(deve) '}{' num2str(devy) '}=' ...
             num2str(R2) '$'];
     end
@@ -650,7 +682,7 @@ end
 
 
 % Textboxes for b= and a=
-fs1=20;
+fs1=14;
 dimbcoeff = [.01 .16 0.1 0.1];
 dimacoeff = [.01 .02 0.1 0.1];
 annotation(h,'textbox',dimacoeff,'FitBoxToText','on','String',stracoeff,'Interpreter','latex','FontSize',fs1);
@@ -704,15 +736,26 @@ if ~isempty(inferential)
     annotation(h2,'textbox',dim,'FitBoxToText','on','String',str2,'Interpreter','latex','FontSize',fs);
 
 
+    if verLessThanFS('25.1')
+        strini='\boldmath{$';
+        strfin='$}';
+        strfin2='$}';
+        strcl='$ ';
+    else
+        strini='$';
+        strfin=' ';
+        strcl='';
+        strfin2='$';
+    end
+
+    strs=[strini 's= \sqrt{\frac{DEV(E)}{n-2}} ' strfin '=' strcl '\sqrt{\frac{' num2str(deve) '}{' num2str(lenx-2) '}}=' num2str(s)  '$'];
 
 
-    strs=['\boldmath{$s= \sqrt{\frac{DEV(E)}{n-2}} $}= $\sqrt{\frac{' num2str(deve) '}{' num2str(lenx-2) '}}=' num2str(s)  '$'];
-
-    strstderrb=['\boldmath{$s_b= s \sqrt{\frac{1}{\sum_{i=1}^n (x_i -M_X)^2}} = '  num2str(s)   '\sqrt{\frac{' num2str(1) '}{' num2str(sumxmx2) '}}= $ $' num2str(stderrb) '$}' ];
+    strstderrb=[strini 's_b= s \sqrt{\frac{1}{\sum_{i=1}^n (x_i -M_X)^2}} = '  num2str(s)   '\sqrt{\frac{' num2str(1) '}{' num2str(sumxmx2) '}}= ' strcl strcl num2str(stderrb) strfin2 ];
 
     if intercept==true
-        strstderra=['\boldmath{$s_a= s \sqrt{\frac{1}{n} +\frac{\overline{x}^2}{\sum_{i=1}^n (x_i -M_X)^2}} $= $'  num2str(s)   '\sqrt{\frac{' num2str(1) '}{' num2str(lenx) '}+\frac{' num2str(mx) '^2}{' num2str(sumxmx2) '}}= $ $' ...
-            num2str(stderra) '$}' ];
+        strstderra=[strini 's_a= s \sqrt{\frac{1}{n} +\frac{\overline{x}^2}{\sum_{i=1}^n (x_i -M_X)^2}}' strcl '=' strcl  num2str(s)  '\sqrt{ \frac{' num2str(1) '}{' num2str(lenx) '}+\frac{' num2str(mx) '^2}{' num2str(sumxmx2) '}}=' strcl strcl ...
+            num2str(stderra) strfin2 ];
     else
         strstderra='\boldmath{$NA$}';
     end
@@ -734,13 +777,13 @@ if ~isempty(inferential)
 
     if intercept == true
         dimstderra = [posp .63+rr 0.1 0.1];
-        annotation(h2,'textbox',dimstderra,'FitBoxToText','on','String',strstderra,'Interpreter','latex','FontSize',fs);
+        annotation(h2,'textbox',dimstderra,'FitBoxToText','on','String',strstderra,'Interpreter','latex','FontSize',fs,'EdgeColor',[1 1 1]);
         strSE='Standard error of intercept and slope';
     else
         strSE='Standard error of slope';
     end
     dimstderrb = [posp .54+rr 0.1 0.1];
-    annotation(h2,'textbox',dimstderrb,'FitBoxToText','on','String',strstderrb,'Interpreter','latex','FontSize',fs);
+    annotation(h2,'textbox',dimstderrb,'FitBoxToText','on','String',strstderrb,'Interpreter','latex','FontSize',fs,'EdgeColor',[1 1 1]);
 
     annotation(h2,'textbox',dimstrs,'FitBoxToText','on','String',strSE,'Interpreter','latex','FontSize',fs1);
 
@@ -751,12 +794,12 @@ if ~isempty(inferential)
     annotation(h2,'textbox',dimstrtstat,'FitBoxToText','on','String',strtstat,'Interpreter','latex','FontSize',fs1);
 
     if intercept == true
-        strta=['\boldmath{$t_a= \frac{a}{s_a} = \frac{' num2str(a) '}{' num2str(stderra) '}= $ $' num2str(ta) '$}' '$\qquad p$-value=$Pr(|T({' num2str(lenx-2) '})|>|t_a|)=' num2str(pvala) '$'];
+        strta=[strini 't_a= \frac{a}{s_a} = \frac{' num2str(a) '}{' num2str(stderra) '}= ' strcl strcl num2str(ta) strfin  strcl '\qquad p' strcl '-value=' strcl 'Pr(|T({' num2str(lenx-2) '})|>|t_a|)=' num2str(pvala) '$'];
         dimstrta = [posp .34+rr 0.1 0.1];
         annotation(h2,'textbox',dimstrta,'FitBoxToText','on','String',strta,'Interpreter','latex','FontSize',fs);
     end
 
-    strtb=['\boldmath{$t_b= \frac{b}{s_b} = \frac{' num2str(b) '}{' num2str(stderrb) '}= $ $' num2str(tb) '$}' '$\qquad p$-value=$Pr(|T({' num2str(lenx-2) ')}|>|t_b|)=' num2str(pvalb) '$'];
+    strtb=[strini 't_b= \frac{b}{s_b} = \frac{' num2str(b) '}{' num2str(stderrb) '}= ' strcl strcl num2str(tb) strfin  strcl '\qquad p' strcl '-value=' strcl 'Pr(|T({' num2str(lenx-2) ')}|>|t_b|)=' num2str(pvalb) '$'];
     dimstrtb = [posp .27+rr 0.1 0.1];
     annotation(h2,'textbox',dimstrtb,'FitBoxToText','on','String',strtb,'Interpreter','latex','FontSize',fs);
 
@@ -802,6 +845,7 @@ if plots==true
     else
         labx='x_i';
     end
+    drawnow
     figure
     hold('on')
 

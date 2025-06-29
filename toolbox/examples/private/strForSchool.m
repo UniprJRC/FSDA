@@ -15,17 +15,31 @@ end
 rightAlignment=true;
 
 if rightAlignment==true
-    FirstLine='$\begin{array}{rrrrrrrr} \\ $\boldmath{$';
+    if verLessThanFS('25.1')
+        FirstLine='$\begin{array}{rrrrrrrr} \\ $\boldmath{$';
+    else
+        FirstLine='$\begin{array}{rrrrrrrr} \\ '; % added
+    end
 else
     FirstLine='$\matrix{ $\boldmath{$';
 end
 
 for i=1:length(header)
     if i<length(header)
-        FirstLine=[FirstLine header{i} '$}$ & $\boldmath{$'];
+        if verLessThanFS('25.1')
+
+            FirstLine=[FirstLine header{i} '$}$ & $\boldmath{$'];
+        else
+            FirstLine=[FirstLine header{i} ' & ']; % added
+        end
     else
         if rightAlignment==true
-            FirstLine=[FirstLine header{i} '$}$ \\'];
+            if verLessThanFS('25.1')
+
+                FirstLine=[FirstLine header{i} '$}$ \\'];
+            else
+                FirstLine=[FirstLine header{i} ' \\ '];
+            end
         else
             FirstLine=[FirstLine header{i} '$}$ \cr'];
         end
@@ -150,7 +164,7 @@ if length(str)>1100
     end
     strbis=str;
     while length(strbis) >1100 % 1200
-            strbis=[str(1:startIndex(a)-2) toinsert str(startIndex(b)-1:end)];
+        strbis=[str(1:startIndex(a)-2) toinsert str(startIndex(b)-1:end)];
         a=a-1;
         b=b+1;
     end

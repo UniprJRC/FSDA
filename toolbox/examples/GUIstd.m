@@ -31,7 +31,7 @@ function out = GUIstd(x,w)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. 
+%    out = detailed output to compute the index. Table.
 %          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %
@@ -86,13 +86,13 @@ seq=(1:lenx)';
 if nargin<2 || (nargin==2 && isscalar(w)) % unweighted standard deviation
     nummeanx=sum(x);
     mx=nummeanx/lenx;
-    
+
     header={'i' 'x_i' '(x_i-M)' '(x_i-M)^2'};
-    
+
     dev2=(x-mx).^2;
     corpus=[seq, x, x-mx, dev2];
     sumdev2=sum(dev2);
-    
+
     footer=[NaN sum(x) 0 sumdev2];
     if nargin<2
         w=0;
@@ -103,11 +103,11 @@ if nargin<2 || (nargin==2 && isscalar(w)) % unweighted standard deviation
         den=lenx;
     end
     strtitle='Details of standard deviation $(\sigma)$ calculation';
-    
+
 else % weighted std
     w=w(:);
     xw=x.*w;
-    
+
     den=sum(w);
     nummeanx=sum(xw);
     mx=nummeanx/den;
@@ -118,7 +118,7 @@ else % weighted std
     sumdev2=sum(dev2);
     footer=[NaN NaN sum(w) sum(xw) 0 sumdev2];
     strtitle='Details of weighted standard deviation calculation';
-    
+
 end
 sigmax=sqrt(sumdev2/den);
 
@@ -139,7 +139,11 @@ set(gcf,'Visible','on')
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
 dim = [.7 .7 0.1 0.1];
-strmean=['\boldmath{$M$}= $\frac{' num2str(nummeanx) '}{' num2str(lenx) '}=' num2str(mx) '$'];
+if verLessThanFS('25.1')
+    strmean=['\boldmath{$M$}= $\frac{' num2str(nummeanx) '}{' num2str(lenx) '}=' num2str(mx) '$'];
+else
+    strmean=['$M= \frac{' num2str(nummeanx) '}{' num2str(lenx) '}=' num2str(mx) '$'];
+end
 annotation('textbox',dim,'FitBoxToText','on','String',strmean,'Interpreter','latex','FontSize',fs);
 
 dim = [.2 .9 0.1 0.1];

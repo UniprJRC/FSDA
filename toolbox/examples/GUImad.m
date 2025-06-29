@@ -361,21 +361,36 @@ axis('off')
 set(gcf,'Visible','on')
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
+
 if nargin<3 % no weights
     if flag==1 || flag ==2
+        if verLessThanFS('25.1')
+            indexeq='\boldmath{$Me$}= $';
+        else
+            indexeq= '$Me=';
+        end
+
         if mod(lenx,2)==0 % n is even
             poslow=lenx/2;
             posup=lenx/2+1;
             xlow=xord(poslow);
             xup=xord(posup);
-            strmedian=['\boldmath{$Me$}= $\frac{x_{(' num2str(poslow) ')}+x_{(' num2str(posup) ')}}{' num2str(2) '}= \frac{' num2str(xlow) '+' num2str(xup) '}{' num2str(2) '}=' num2str(Me) '$'];
+            strmedian=[indexeq ' \frac{x_{(' num2str(poslow) ')}+x_{(' num2str(posup) ')}}{' num2str(2) '}= \frac{' num2str(xlow) '+' num2str(xup) '}{' num2str(2) '}=' num2str(Me) '$'];
+
         else
             posMe=(lenx+1)/2;
-            strmedian=['\boldmath{$Me$}= $x_{(' num2str(posMe) ')}=' num2str(Me) '$'];
+
+            strmedian=[indexeq 'x_{(' num2str(posMe) ')}=' num2str(Me) '$'];
         end
     elseif flag==0 % S_M
         sumx=sum(x);
-        strmedian=['\boldmath{$M$}=$\frac{\sum_{i=1}^n x_i}{n}=\frac{' num2str(sumx) '}{' num2str(n) '}='  num2str(M) '$'];
+        if verLessThanFS('25.1')
+            indexeq='\boldmath{$M$}= $';
+        else
+            indexeq= '$M=';
+        end
+
+        strmedian=[ indexeq '\frac{\sum_{i=1}^n x_i}{n}=\frac{' num2str(sumx) '}{' num2str(n) '}='  num2str(M) '$'];
     end
 
     if  flag ==1 % unweighted MAD

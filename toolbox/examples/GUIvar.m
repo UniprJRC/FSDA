@@ -134,7 +134,12 @@ set(gcf,'Visible','on')
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
 dim = [.7 .7 0.1 0.1];
-strmean=['\boldmath{$M$}= $\frac{' num2str(nummeanx) '}{' num2str(lenx) '}=' num2str(mx) '$'];
+ if verLessThanFS('25.1')
+     strmean=['\boldmath{$M$}= $\frac{' num2str(nummeanx) '}{' num2str(lenx) '}=' num2str(mx) '$'];
+ else
+     strmean=['$M = \frac{' num2str(nummeanx) '}{' num2str(lenx) '}=' num2str(mx) '$'];
+ end
+
 annotation('textbox',dim,'FitBoxToText','on','String',strmean,'Interpreter','latex','FontSize',fs);
 
 dim = [.2 .9 0.1 0.1];

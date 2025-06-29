@@ -160,7 +160,7 @@ str=strForSchool(header, corpus, footer);
 % b=a+1;
 % % toinsert=['\cr ' repmat('&',1,length(header)) ' '];
 % toinsert=['\\ ' repmat('&',1,length(header)) ' '];
-% 
+%
 % while length(str) >1150 % 1200
 %     str=[str(1:startIndex(a)-2) toinsert str(startIndex(b)-1:end)];
 %     a=a-1;
@@ -177,7 +177,11 @@ set(gcf,'Visible','on')
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
 dim = [.56 .88 0.1 0.1];
-strmean=['\boldmath{$M_y$}= $\frac{' num2str(sumy) '}{' num2str(leny) '}=' num2str(my) '$'];
+if verLessThanFS('25.1')
+    strmean=['\boldmath{$M_y$}= $\frac{' num2str(sumy) '}{' num2str(leny) '}=' num2str(my) '$'];
+else
+    strmean=['$M_y = \frac{' num2str(sumy) '}{' num2str(leny) '}=' num2str(my) '$'];
+end
 annotation('textbox',dim,'FitBoxToText','on','String',strmean,'Interpreter','latex','FontSize',fs);
 
 dim = [.02 .9 0.1 0.1];
@@ -187,9 +191,15 @@ annotation('textbox',dim,'FitBoxToText','on','String',strtitle,'Interpreter','la
 dim = [.01 .05 0.1 0.1];
 
 Tstr=num2str(leny);
-strfin=['\boldmath{$corr(y_t,y_{t-' lagstr '})$}=$\frac{\sum_{t=' num2str(lag+1) '}^{' Tstr '} (y_t-M_y) (y_{t-' lagstr '}-M_y)}{ \sum_{t=1}^{' Tstr '}(y_t-M_y)^2  }'...
-    '= \frac{' num2str(numcorr) '}{' num2str(devyt) '}=' ...
-    num2str(ryylagged) '$'];
+if verLessThanFS('25.1')
+    strfin=['\boldmath{$corr(y_t,y_{t-' lagstr '})$}=$\frac{\sum_{t=' num2str(lag+1) '}^{' Tstr '} (y_t-M_y) (y_{t-' lagstr '}-M_y)}{ \sum_{t=1}^{' Tstr '}(y_t-M_y)^2  }'...
+        '= \frac{' num2str(numcorr) '}{' num2str(devyt) '}=' ...
+        num2str(ryylagged) '$'];
+else
+    strfin=['$corr(y_t,y_{t-' lagstr '}) = \frac{\sum_{t=' num2str(lag+1) '}^{' Tstr '} (y_t-M_y) (y_{t-' lagstr '}-M_y)}{ \sum_{t=1}^{' Tstr '}(y_t-M_y)^2  }'...
+        '= \frac{' num2str(numcorr) '}{' num2str(devyt) '}=' ...
+        num2str(ryylagged) '$'];
+end
 
 fs1=20;
 annotation('textbox',dim,'FitBoxToText','on','String',strfin,'Interpreter','latex','FontSize',fs1);

@@ -175,7 +175,13 @@ set(gcf,'Visible','on')
 annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 
 dim = [.7 .7 0.1 0.1];
-strmean=['\boldmath{$M$}= $\frac{' num2str(nummeanx) '}{' num2str(n) '}=' num2str(mx) '$'];
+ if verLessThanFS('25.1')
+    indexeq='\boldmath{$M$}= $';
+else
+   indexeq= '$M=';
+ end
+ 
+strmean=[indexeq '\frac{' num2str(nummeanx) '}{' num2str(n) '}=' num2str(mx) '$'];
 annotation('textbox',dim,'FitBoxToText','on','String',strmean,'Interpreter','latex','FontSize',fs);
 
 dim = [.2 .9 0.1 0.1];
@@ -186,7 +192,7 @@ Fisherind=corr*sqrt(n)*sumdev3/sumdev2^1.5;
 nstr=num2str(n);
 
 if nargin<3 % all weights equal to 1
-    if flag==0 % unbiased inded
+    if flag==0 % unbiased index
         gammaind=' \frac{\sqrt{n(n-1)}}{n-2} \gamma(X)=  \frac{\sqrt{n(n-1)}}{n-2}  \frac{\sqrt n \sum_{i=1}^n (x_i -M(X))^3 }{\left[    \sum_{i=1}^n (x_i -M(X))^2 \right]^{3/2}}';
         gammaind=['\gamma_{u}(X)= ' gammaind];
         strfin=[' \it $' gammaind '=\frac{\sqrt{' nstr ' \times ' num2str(n-1) '}}{' num2str(n-2) '}  \frac{ \sqrt{' nstr '} \times'  num2str(sumdev3) '}{' num2str(sumdev2) '^{1.5}}=' num2str(Fisherind) '$'];
