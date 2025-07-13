@@ -78,9 +78,29 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
 %                specifies whether the label of each statistic must be
 %                concatenated with the categories of the grouping variables
 %                or the overall output table must contain nested tables
-%                each referred to a different statistic.
+%                each referred to a different statistic. Note that this
+%                option is not present inside grpstats.
 %               Example - 'OutputFormat','nested';
 %               Data Types -  character | string
+%
+% plots : graphical output using errorbar plot. Scalar or struct
+%                This option enables to show the errorbar plot of the required
+%                statistics for each level of the grouping variable. When
+%                plots=1, if inside option whichstats there is
+%                meanci the errorplot which shows the confidence interval
+%                for each level of the grouping variables for all variable
+%                present in the input table is shown. If inside whichstats
+%                meanci is not present the errorplot is based on the first
+%                element of whichstats. If plots is a struct it is possible
+%                to specify inside field plots.selStats the statistics for
+%                which the plot has to be shown. For example 
+%               if whichstats is equal to ["mean" "var" "meanci"] and
+%               plots=struct; plots.selStats=["var" "mean"]; then the error
+%               plot for the statistics variance and mean is shown in two
+%               separate graphical windows. The default
+%               value of plots is 0, that is no plot is shown.
+%               Example - 'plots',0;
+%               Data Types -  numeric scalar | struct
 %
 %  Output:
 %
@@ -93,7 +113,7 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
 %             the number of groups.
 %
 %
-% See also: grpstats, medcouple
+% See also: grpstats, medcouple, errorbar
 %
 % References:
 %
@@ -250,6 +270,15 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
     disp(TBL)
 %}
 
+%{
+    %% Use of options plots as a scalar.
+    load citiesItaly.mat
+    zone=[repelem("N",46) repelem("CS",57)]';
+    citiesItaly.zone=zone;
+    % Show the confidence interval of the mean for ech variable
+    TBL=grpstatsFS(citiesItaly,"zone",["var" "meanci"],'plots',1);
+%}
+
 %% Beginning of code
 if nargin<2
     groupvars=[];
@@ -321,10 +350,22 @@ if ~isempty(varargin)
         lmsval = varargin{fcheckOutputFormat};
         OutputFormat=lmsval;
         varargin([fcheckOutputFormat-1 fcheckOutputFormat])=[];
+        UserOptions=varargin(1:2:length(varargin));
     end
 
+    % Check if plots is present inside varargin
+    checkplots = strcmp(UserOptions,'plots')>0;
+    if any(checkplots)==true
+        fcheckOutputFormat=2*find(checkplots);
+        lmsval = varargin{fcheckOutputFormat};
+        plots=lmsval;
+        varargin([fcheckOutputFormat-1 fcheckOutputFormat])=[];
+    else
+        plots=0;
+    end
 
 else
+    plots=0;
     if istable(TBL) || istimetable(TBL)
         vnames=TBL.Properties.VariableNames;
     else
@@ -375,9 +416,88 @@ if ngroups>1
         statTable=table(CE{:},'RowNames',vnames,'VariableNames',nomiStat);
     end
 
+    plo=plots;
+    if isstruct(plo) || (~isstruct(plo) && plo~=0)
+        if isstruct(plo)
+
+            fplo=fieldnames(plo);
+            d=find(strcmp('selStats',fplo));
+            if d>0
+                selStats=plo.selStats;
+            else
+                selStats="meanCI";
+            end
+        
+        else
+            swhichstats=string(whichstats);
+            if isscalar(swhichstats)
+                selStats=swhichstats;
+                selStats=replace(selStats,"meanci","meanCI");
+            elseif any(swhichstats=="meanci")
+                selStats="meanCI";
+            else
+                % Just do the plot for the first statistic
+                selStats=swhichstats(1);
+                selStats=replace(selStats,"meanci","meanCI");
+            end
+        end
+
+        nam=tabTutti.Properties.RowNames;
+        dx=0.25;
+        x=linspace(1-dx,1+dx,ngroups);
+
+        for ii=1:length(selStats)
+            % Select the columns meanCI
+
+            if selStats(ii)=="meanCI"
+                boo=contains(nomivarNested,selStats(ii));
+                meanCI=true;
+            else
+                boo=strcmp(nomivarNested,selStats(ii));
+                meanCI=false;
+            end
+
+            % This is equivalent to statTable{:,boo} if  not nested
+            statArraySEL=statArray(:,boo);
+            if ii>1
+                figure
+            end
+            tiledlayout("flow" );
+
+            for j=1:length(vnames)
+                nexttile
+                hold on
+
+                % Loop on the grouping variables
+                for jj=1:ngroups
+                    if meanCI==true
+                    var=(jj-1)*2+1:jj*2;
+                    statj=statArraySEL(j,var);
+                    mstatj=mean(statj,2);
+                    else
+                    mstatj=statArraySEL(j,jj);
+                    statj=[mstatj mstatj];
+                    
+                    end
+
+                    errorbar(repelem(x(jj),p,1), mstatj, statj(2)-mstatj, 'o'); % 'o' specifies the marker type
+                end
+                xticks(x)
+                xticklabels(nam)
+                ax = gca;
+                ax.TickLabelInterpreter = 'none';
+                xlim([x(1)-0.05 x(end)+0.05])
+                title(vnames(j))
+            end
+            sgtitle(selStats(ii))
+        end
+    end
 else
     statArray=reshape(tabTutti{1,2:end},lstats,p)';
     statTable=array2table(statArray,"RowNames",vnames,"VariableNames",nomiStat);
 end
+
+
+
 end
 %FScategory:UTISTAT
