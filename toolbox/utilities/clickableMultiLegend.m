@@ -293,7 +293,9 @@ axis manual;
         whichFigs  = groot;
 
         % Toggle the visibility of the plot handle (groot vs parentFig)
+       % scatter visibility
         allPlots = findall(whichFigs, 'DisplayName',plotHandle.DisplayName);
+       if length(allPlots)>1
         for i = 1:length(allPlots)
             if (allPlots(i).Visible)
                 allPlots(i).Visible = 'off';
@@ -301,7 +303,9 @@ axis manual;
                 allPlots(i).Visible = 'on';
             end
         end
+       end
 
+        % histogram visibility
         h1 = findall(groot, '-not','Type','Line','-not','Type','Axes','-and','Tag',plotHandle.DisplayName);
         if ~isempty(h1)
             ccur = get(h1(1),'FaceColor');
@@ -309,9 +313,12 @@ axis manual;
             if ~isequal(ccur , [1 1 1])
                 set(h1, 'UserData',get(h1,'FaceColor'));
                 set(h1, 'FaceColor','w', 'EdgeColor','k');
+                
             else
                 cori = get(h1(1),'UserData');
-                cori = cell2mat(cori(1,:));
+                if iscell(cori)
+                    cori = cell2mat(cori(1,:));
+                end
                 set(h1, 'FaceColor',cori, 'EdgeColor','k');
             end
         end

@@ -7,15 +7,25 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %
 %     y        : vector of n elements to bin. Vector. Vector which contains
 %                the elements which have to be binned.
-%     nbins    : the number of bins. Scalar. The elements of of input vector
-%                y are binned into nbins equally spaced containers.
-%     gy       : identifier vector. Vector. Vector of n numeric identifiers
-%                for the group of each element in y. If there are k groups
-%                in y, unique(gy) = k.
+%               Data Types - numeric vector
+%     nbins    : number of bins or bin edges. Scalar or vector.
+%                If nbins is a scalar, then we assume that it is referred
+%                to the number of bins. Alternatively if nbins is a numeric
+%                vector of length>1, we assume that  nbins(1) is the leading
+%                edge of the first bin, and nbins(end) is the trailing edge
+%                of the last bin elements. The elements of input vector y
+%                are binned into nbins equally spaced containers if nbins
+%                is a scalar or into length(nbins)-1 containers if nbins is
+%                not a scalar.
+%               Data Types - numeric vector
+%     gy       : identifier vector. Vector. Vector of n numeric or non numeric
+%                identifiers for the group of each element in y. If there
+%                are k groups in y, unique(gy) = k.
+%               Data Types - numeric vector or cell array of character vectors or string array
 %
 %  Optional input arguments:
 %
-%     gylab     : legend labels. String | cell of strings.
+%     gylab     : legend labels. vector of strings | cell array of character vectors.
 %                 Legend labels identifying the groups of each element in y.
 %                 length(gylab) = length(unique(gy)) must hold.
 %                 If not specified, gylab is set to '' and legends are not
@@ -24,7 +34,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %                 If gylab is a cell of strings of length 3, e.g. gylab =
 %                 {'G1' 'G2' 'G3'}, such strings are used for the legends.
 %               Example - {'G1' 'G2'}
-%               Data Types - cell array of strings or char
+%               Data Types - cell array of character vectors or string array
 %
 %     ax        : plots into ax instead of gca. Axis handle. The axis handle
 %                 where to plot the grouped histogram (e.g. a traditional
@@ -33,7 +43,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %               Data Types - graphics handle
 %
 %     barcolors : colors of the bars. char or matrix.
-%                Vector containing the strings of the colors to use 
+%                Vector containing the strings of the colors to use
 %                (e.g. 'rgy') or RGB matrix of the colors used for the
 %                groups (e.g. [1 0 0; 0 0 1]). If the number of colors
 %                supplied is smaller than the number of groups the program
@@ -58,7 +68,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %        hb     : Bar array handles. Vector. A vector containing the
 %                 handles to the barseries objects.
 %
-% See also hist
+% See also hist, histogram
 %
 % References:
 %
@@ -163,6 +173,15 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
         tabulateFS(W);
 %}
 
+%{
+   %% Example of second input argument a vector containing the edges.  
+    load citiesItaly.mat
+    zone=[repelem("N",46) repelem("CS",57)]';
+    edges=[0 15000:5000:35000];
+    lege={'CS' 'N'};
+    freq1=histFS(citiesItaly.addedval,edges,zone,lege);
+%}
+
 %% Beginning of code
 
 if nargin < 7 || not(isvector(W) && ~isscalar(W))
@@ -189,7 +208,7 @@ if nargin >= 4
     if ischar(gylab) && isempty(gylab)
         doleg = 0;
     end
-    if iscell(gylab)
+    if iscell(gylab) || isstring(gylab)
         if isempty(gylab)
             gylab = cell(1,ngroups);
             for i = 1 : ngroups
@@ -212,9 +231,16 @@ end
 y = y(:);
 n = size(y,1);
 
-[~,x]   = hist(y,nbins);       % bins locations
+% x are the centers of the bins
+if length(nbins)>1
+    x=(nbins(1:end-1)+nbins(2:end))/2;
+    nbins=length(x);
+else
+    [~,x]   = hist(y,nbins);       % bins locations
+end
 xc      = repmat(x,n,1);       % repeated bin locations
-yr      = repmat(y,1,nbins);   % repeated data for each bin
+yr = repmat(y,1,nbins);   % repeated data for each bin
+
 dist    = abs(yr-xc);          % distance between data and bin centers
 
 % use dist to assign data to bins
@@ -228,9 +254,9 @@ for i = 1 : nbins
     if ~Wempty
         bingW=W(bins==i);
     end
-    
+
     for j=1:ngroups
-        
+
         if Wempty
             % build matrix of labels of groups in each bin
             ng(i,j)=sum(bing==groups(j));
@@ -249,7 +275,7 @@ else
     C = textscan(barcolors, '%1c');
     C = C{:};
     assert(size(C,1) >= ngroups ,'Number of supplied colors smaller than number of groups')
-    
+
     Crgb = zeros(size(C,1),3);
     for i=1:size(C,1)
         switch C(i)
@@ -282,7 +308,7 @@ end
 % Draw a bar for each element in bm at locations specified in x.
 % Notice that x is a vector defining the x-axis intervals for the vertical
 % bars. Function bar groups the elements of each row in bm at corresponding
-% locations in x. 
+% locations in x.
 hb = bar(ax,x,ng,'stacked','FaceColor','flat','BarWidth',1);
 
 % In the next 4 lines we color the bar by setting with a loop the FaceColor
@@ -297,11 +323,14 @@ end
 % add clickable legends, so that to show/hide grouped bins
 if doleg
     caxis(caxis);
-    clickableMultiLegend(hb, gylab{:});
-    axis(axis);
+    gylab=string(gylab);
     for i=1:numel(hb)
-        set(findobj(hb(i),'Type','patch'),'DisplayName',gylab{i},'EdgeColor','k');
+        % hbi=findobj(hb(i),'Type','patch');
+        hbi=findobj(hb(i),'Type','bar');
+        set(hbi,'DisplayName',gylab(i),'EdgeColor','k','Tag',gylab(i));
     end
+    clickableMultiLegend(hb, gylab);
+    axis(axis);
 end
 
 end
