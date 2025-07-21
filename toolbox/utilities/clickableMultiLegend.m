@@ -45,14 +45,14 @@ function [varargout] = clickableMultiLegend(varargin)
 %
 % Examples
 
-%{ 
+%{
     % ClickableMultilegend applied to a plotmatrix without groups.
     % In this case, ClickableMultilegend has no effect on the plot.
     gplotmatrix(randn(50,2));
     clickableMultiLegend;
 %}
 
-%{ 
+%{
     % ClickableMultilegend applied to a plotmatrix without groups.
     % In this case, the argument is used to give a name to the units 
     % of the group. 
@@ -233,7 +233,7 @@ function [varargout] = clickableMultiLegend(varargin)
 
 
 %% Beginning of code
- 
+
 drawnow;
 
 xlim manual;
@@ -244,7 +244,7 @@ if nargin > 0 % ClickableMultiLegend used with arguments
 
     % Get legend(s) in the figure
     hLeg = findobj(gcf,'tag','legend');
-    if numel(hLeg)>1 
+    if numel(hLeg)>1
         hLeg = hLeg(1); % if several panels have a legend, keep just one
     end
     % Ensure to work on the axes handle to which a legend belongs
@@ -288,22 +288,24 @@ axis manual;
         % is set to groot, clickableMultiLegend switches on/off all figures
         % containing objects with the same DisplayName. If it is set to,
         % for example, parentFigs (the ancestor), then clickableMultiLegend
-        % switches on/off only the active figure. 
+        % switches on/off only the active figure.
         %parentFig = ancestor(plotHandle,'Figure');
         whichFigs  = groot;
 
         % Toggle the visibility of the plot handle (groot vs parentFig)
-       % scatter visibility
+        % scatter visibility. 
         allPlots = findall(whichFigs, 'DisplayName',plotHandle.DisplayName);
-       if length(allPlots)>1
-        for i = 1:length(allPlots)
-            if (allPlots(i).Visible)
-                allPlots(i).Visible = 'off';
-            else
-                allPlots(i).Visible = 'on';
+        % Do not enter here if there is just a bar plot 
+        % (possibly created with histFS)
+        if length(allPlots)>1 && string([allPlots.Type])~="Bar"
+            for i = 1:length(allPlots)
+                if (allPlots(i).Visible)
+                    allPlots(i).Visible = 'off';
+                else
+                    allPlots(i).Visible = 'on';
+                end
             end
         end
-       end
 
         % histogram visibility
         h1 = findall(groot, '-not','Type','Line','-not','Type','Axes','-and','Tag',plotHandle.DisplayName);
@@ -313,7 +315,7 @@ axis manual;
             if ~isequal(ccur , [1 1 1])
                 set(h1, 'UserData',get(h1,'FaceColor'));
                 set(h1, 'FaceColor','w', 'EdgeColor','k');
-                
+
             else
                 cori = get(h1(1),'UserData');
                 if iscell(cori)
@@ -337,7 +339,7 @@ axis manual;
 
             % Get the handles of the panels
             axesObjects = findobj(hfig, 'Type', 'axes');
-            
+
             % Go over the axes
             for i = 1:numel(axesObjects)
                 % Not all the axes refer to a panel
@@ -345,7 +347,7 @@ axis manual;
                     % disp(['Panel ', num2str(i), ' contains a line plot'])
                     % Assign the same DisplayName property to each group in each panel
                     if i==1, indice = zeros(nlegendEntries,1); end
-                    for g = 1:nlegendEntries                     
+                    for g = 1:nlegendEntries
                         if i==1
                             [~, indice(g)] = ismember({axesObjects(i).Children(g).DisplayName}, legendEntries);
                         end
@@ -354,7 +356,7 @@ axis manual;
                 else
                     % disp(['Panel ', num2str(i), ' does not contain a line plot'])
                 end
-            end            
+            end
 
             % Get the input for the subsequent legend/clickableMultiLegend
             out  = findobj(axesObjects(1), 'type', 'line');
