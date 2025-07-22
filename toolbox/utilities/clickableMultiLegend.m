@@ -297,7 +297,10 @@ axis manual;
         allPlots = findall(whichFigs, 'DisplayName',plotHandle.DisplayName);
         % Do not enter here if there is just a bar plot 
         % (possibly created with histFS)
-        if length(allPlots)>1 && string([allPlots.Type])~="Bar"
+        ax=gca;
+        kids=ax.Children;
+        types=get(kids,'type');
+        if numel(kids) > 1 && sum(strcmp(types,'bar'))==0
             for i = 1:length(allPlots)
                 if (allPlots(i).Visible)
                     allPlots(i).Visible = 'off';
