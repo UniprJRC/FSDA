@@ -1885,7 +1885,12 @@ for i = 1:p
                 if ~and(i==1,j==p)
                     h = patch([ax(1:2)';ax(2);ax(1)],[ax(3);ax(3);ax(4);ax(4)],cmapBackground(posBackground(i,j),:));
                     set(h,'facealpha',0.25);
+                end 
+                if and(and(i==1,j==p) , and(strcmp(lower,'number') , strcmp(upper,'scatter')))
+                    h = patch([ax(1:2)';ax(2);ax(1)],[ax(3);ax(3);ax(4);ax(4)],cmapBackground(posBackground(i,j),:));
+                    set(h,'facealpha',0.25);
                 end
+
                 % legend(end)
             end
         end
