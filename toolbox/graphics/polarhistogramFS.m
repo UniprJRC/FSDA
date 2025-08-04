@@ -260,7 +260,7 @@ tiledlayout("flow")
 % Normalize in the interval (0 2*pi) (extremes excluded)
 [Y02pi,C,S]=normalize(Y(:,DataVars),"range",[1e-10 2*pi-1e-10]);
 names=names(DataVars);
-% Y02pi=2*pi.*Y01.*0.999+1e-10;
+
 
 
 H=gobjects(max(1,length(ugr)),length(DataVars));
@@ -273,11 +273,17 @@ for j=1:length(DataVars)
         edgesPolar=linspace(0,2*pi,nbins+1);
     else
         minj=min(Y(:,DataVars(j))); maxj=max(Y(:,DataVars(j)));
-        nbins(nbins<minj | nbins>maxj)=[]; %#ok<AGROW>
-
+        nbins1=nbins;
+        nbins1(nbins<minj | nbins>maxj)=[]; 
+        if numel(nbins) < 1
+            error('FSDA:polarhistogramFS:WrongInputOpt', ...
+                'Number of supplied options is invalid. Wrong edges, 2 or more edges are needed. None of the edges is inside the interval [min max]');
+        end
         % Normalize edgesPolar inside [0 2*pi]
-        edgesPolar=normalize([minj nbins maxj],"Range",[0 2*pi]);
-        edgesPolar=edgesPolar(2:(end-1));
+        edgesPolar=normalize([minj nbins1 maxj],"Range",[0 2*pi]);
+        if length(edgesPolar) > 3
+            edgesPolar=edgesPolar(2:(end-1));
+        end
     end
 
 
