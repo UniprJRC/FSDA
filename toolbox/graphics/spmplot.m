@@ -1801,6 +1801,8 @@ fig = ancestor(BigAx,'figure');
 % The instruction below is necessary otherwise for example the instruction
 % title will not be put on top of the screen but on top of the last panel
 % on the bottom right
+% Also make sure that the current figure is fig
+figure(fig)
 set(gcf,'CurrentAx',BigAx)
 
 % Also set Title and X/YLabel visibility to on and strings to empty
