@@ -270,17 +270,20 @@ function [out]=FSM(Y,varargin)
 
 %{
     % Forgery Swiss banknotes examples.
-
     load('swiss_banknotes');
     Y=swiss_banknotes{:,:};
     % Monitor the exceedances of Minimum Mahalanobis Distance
-    [out]=FSM(Y(101:200,:),'plots',1);
-
+    [out1]=FSM(Y(101:200,:),'plots',1);
+    figuresWithTag = findobj('Type', 'figure', 'Tag', 'pl_spm');
+    set(figuresWithTag,'Tag','spm1');
+    
     % Control minimum and maximum on the x axis
     plots=struct;
     plots.xlim=[60 90];
-    [out]=FSM(Y(101:200,:),'plots',plots);
-
+    [out2]=FSM(Y(101:200,:),'plots',plots);
+    figuresWithTag = findobj('Type', 'figure', 'Tag', 'pl_spm');
+    set(figuresWithTag,'Tag','spm2');
+    
     % Monitor the exceedances of Minimum Mahalanobis Distance using normal coordinates for mmd.
     plots.ncoord=1;
     [out]=FSM(Y(101:200,:),'plots',plots);
@@ -728,8 +731,8 @@ if coder.target('MATLAB')
         
         % get screen size [left, bottom, width, height]
         scrsz = get(0,'ScreenSize');
-        
         figure1 = figure('Position',[1 scrsz(4)/2.5 scrsz(3)/3 scrsz(4)/2],'PaperSize',[20.98 29.68],'Name','Envelopes based on all the observations');
+        
         axes1 = axes('Parent',figure1);
         
         % Create a pan-handle for the figure ...
@@ -1389,7 +1392,7 @@ md=mahalFS(Y,loc,cova);
 if coder.target('MATLAB')
     if v<=15
         if isstruct(plo) || (~isstruct(plo) && plo~=0)
-            figure('Tag','pl_spm_outliers');
+            % figure('Tag','pl_spm_outliers');
             if ~isstruct(plo)
                 spmplot(Y,group,1);
             else
