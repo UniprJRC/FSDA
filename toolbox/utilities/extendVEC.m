@@ -5,12 +5,16 @@ function [ext] = extendVEC(x, index, value)
 %
 % Required input arguments:
 %
-% x:        Vector to be extended. It can be either a row or a column vector.
+% x:        Vector to be extended. Numeric vector.
+%           It can be either a row or a column vector.
+%
 % index:    A vector containing the positions where to add value inside x.
+%           Numeric vector with integer elements.
 %           The index values are sorted so that the code starts to insert
 %           the element "value" from the smallest position.
-% value:    The element to insert in x for the extension. It could be a
-%           number, string, NaN, Inf, etc...
+%
+% value:    The element to insert in x for the extension. Scalar. 
+%           Any numeric scalar, including NaN, Inf, and -Inf is allowed
 %
 %
 % Optional input arguments:
@@ -34,13 +38,29 @@ function [ext] = extendVEC(x, index, value)
 %$LastChangedDate:: 2020-06-09 16:58:50 #$: Date of the last commit
 %
 % Example:
+
 %{
-% Example 1: Row vector extended with the inclusion of multiple elements "Inf" in the tail.
-  x = [1 2 3 4 5 6];
+  %% Row vector extended with the inclusion of multiple elements "Inf" in the tail.
+  x = 1:6;
   index = [2 5 11];
-  ext = extendVEC(x, index, Inf)
+  ext = extendVEC(x, index, Inf);
 %}
 
+%{
+% Column vector extended with the inclusion of multiple elements "Inf" in the tail.
+  x = (1:6);
+  index = [2 5 11];
+  ext = extendVEC(x, index, Inf);
+%}
+
+
+%{
+  % vector extended with the inclusion of multiple elements 99 in the tail.
+  % In this case index is a column vector.
+  x = (1:6);
+  index = [3 5 6]';
+  ext = extendVEC(x, index, 99);
+%}
 
 %% Beginning of code
 
@@ -48,59 +68,40 @@ function [ext] = extendVEC(x, index, value)
 if nargin<1 || isempty(x)==1
     error('FSDA:extendVEC:MissingInputs','Input vector x not specified.');
 end
-
-[n1, n2] = size(x);
-
-if min(n1,n2)>1
-    error('FSDA:extendVEC:Wrongx','x must be a vector.');
-end
+validateattributes(x,{'numeric'},{'vector'})
 
 % The second argument which is passed is index.
 if nargin<2 || isempty(index)==1
     error('FSDA:extendVEC:MissingInputs','Input vector index not specified.');
 end
-
-[k1, k2] = size(index);
-
-if min(k1,k2)>1
-    error('FSDA:extendVEC:Wrongindex','index must be a vector.');
-end
+% index = numeric vector with integer elements
+validateattributes(index, {'numeric'}, {'vector', 'integer'});
 
 % The third argument which is passed is value.
 if nargin<3 || isempty(value)==1
     error('FSDA:extendVEC:MissingInputs','Input value not specified.');
 end
 
-[k1, k2] = size(value);
+% Any numeric scalar, including NaN, Inf, and -Inf is allowed
+validateattributes(value, {'numeric'}, {'scalar'});
 
-if k1~=1 || k2~=1
-    error('FSDA:extendVEC:Wrongvalue','value must contain a singular entry.');
+
+index = sort(index(:))'; % Make sure that index becomes a row vector
+ext = x(:)'; % Make sure theat ext becomes a row vector
+
+for r = index
+    if r == 1
+        ext = [value ext]; %#ok<*AGROW>
+    elseif r <= length(ext)
+        ext = [ext(1:(r-1)) value ext(r:end)];
+    else
+        ext = [ext repmat(value, 1, r-length(ext))];
+    end
 end
-
-index = sort(index);
-
-ext = x;
-
-if n1==1 % x is a row vector.
-    for r = index
-        if r == 1
-            ext = [value ext]; %#ok<*AGROW>
-        elseif r <= length(ext)
-            ext = [ext(1:(r-1)) value ext(r:end)];
-        else
-            ext = [ext repmat(value, 1, r-length(ext))];
-        end
-    end
-else % x is a column vector.
-    for r = index
-        if r == 1
-            ext = [value; ext];
-        elseif r <= length(ext)
-            ext = [ext(1:(r-1)); value; ext(r:end)];
-        else
-            ext = [ext; repmat(value, r-length(ext), 1)];
-        end
-    end
+% Force ext to be either a row or column vector depending on the initial
+% dimension of x
+if size(x,1)>1
+    ext=ext';
 end
 
 end
