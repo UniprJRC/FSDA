@@ -1090,7 +1090,7 @@ else
             strpar = [strpar , char(pd.ParameterNames(np)) '=' num2str(pd.ParameterValues(np)) ' ']; %#ok<AGROW>
         end
     end
-    title({strpar ; strprob ; ['$lb =$ ' num2str(lb) ' -- ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
+    title({strpar ; strprob ; ['$lb =$ ' num2str(lb) ' and ' '$ub =$ ' num2str(ub)]}, 'interpreter' , 'latex' , 'FontSize', 14);
 end
 
 % axis and labels
