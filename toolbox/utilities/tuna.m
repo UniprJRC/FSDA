@@ -125,6 +125,7 @@ try
     options = weboptions('ContentType', 'json', 'Timeout', 15);
     data = webread(apiURL, options);
 catch ME
+    disp(['web site <a href="' apiURL '">"' apiURL '"</a> not reachable']);
     error('FSDA:tuna:GitHubUnreachable','Could not query GitHub API: %s', ME.message);
 end
 
