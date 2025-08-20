@@ -572,6 +572,43 @@ function [outFORE] = forecastTS(outEST,varargin)
     plot(1:length(yall),yall)
 %}
 
+%{
+    % Another Example of both explanatory variables and AR component.
+    % AR(2) model with fixed seasonal
+    rng(1000)
+    model=struct;
+    model.trend=1;
+    model.trendb=[5,0.01];
+    model.seasonal=2;
+    model.seasonalb=0.1*[2 4 0.1 2];
+    model.signal2noiseratio=10;
+    model.ARp=[1 2];
+    model.ARb=[0.2 0.3];
+    model.ARIMAX=true;
+    T=150;
+    out=simulateTS(T,'model',model,'plots',1);
+    yall=out.y;
+    X=randn(T,3);
+    % Fit a model imposing linear trend, seasonal component and AR(2)
+    Treduced=100;
+    y=out.y(1:Treduced);
+    nfore=50;
+    model=struct;
+    model.trend=1;
+    model.seasonal=2;
+    % No level shift
+    model.lshift=0;
+    model.ARp=[1 2];
+    model.X=X(1:Treduced,:);
+    out=LTSts(y,'model',model,'plots',1,'dispresults',true);
+    % Now forecasts
+    % Note that the full set of rows of  X is supplied
+    model.X=X;
+    forecastTS(out,'model',model,'nfore',50,'conflev',0.75)
+    hold('on')
+    plot(1:length(yall),yall)
+%}
+
 %% Beginning of code
 
 if nargin<1
@@ -720,7 +757,7 @@ if length(ARp)>6
 end
 if length(ARp)>1 || ARp>0
 
-       yToUseforLagged=y;
+    yToUseforLagged=y;
     if ~isempty(model.ARtentout)
         yToUseforLagged(model.ARtentout(:,1))=model.ARtentout(:,2);
     end
@@ -774,7 +811,7 @@ if length(betaout)~=p
     disp(['Number of supplied regression parameters=' num2str(length(betaout))])
     disp(['Number of parameters in input structure model=' num2str(p)])
     disp('...')
-    error('FSDA:forecast:WrongInput','Wrong input model')
+    error('FSDA:forecastTS:WrongInput','Wrong input model')
 end
 
 [yhat,yhattrend,yhatseaso,yhatX,yhatlshift]=lik(betaout);
@@ -783,8 +820,10 @@ end
 % Autoregressive recursion
 if length(ARp)>1 || ARp>0
     % Separate autoregressive and other explanatory variables component
-    yhatXAR=yhatX(:,1:ARp);  %WARNING: TO DO,TO CHECK: yhatX puo avere una sola colonna.
-    yhatXexpl=yhatX(:,ARp+1:end);
+    %yhatXAR=yhatX(:,1:ARp);  %WARNING: TO DO,TO CHECK: yhatX puo avere una sola colonna.
+    yhatXAR=0;
+    % yhatXexpl=yhatX(:,ARp+1:end);
+    yhatXexpl=yhatX;
 
     % Find final fitted values
     % yFore contains in the first n positions the real values of the time
@@ -1041,7 +1080,7 @@ end
 % underlying components
 if  plots==2
     lwd=1;
-figure
+    figure
     % Plot the different components of the time series (including forecast period)
     nexttile
     hold('on')
