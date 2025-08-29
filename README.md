@@ -352,10 +352,12 @@ contained in the subfolder (FSDAfolder)/toolbox/apps.
     and have the purpose to let the user familiarize with the toolbox
     
 # Acknowledgements
- We certainly cannot fail to thank Rob Purser, Vijay Iyer, Jos
-Martin, Andy Campbell, Fred Smith, Adam Sifounakis, Mark Cafaro, David Bozinsky,
+We certainly cannot fail to thank Rob Purser, Vijay Iyer, Jos
+Martin, Andy Campbell, Fred Smith, Adam Sifounakis, Mark Cafaro, David Buzinski,
 Eric Ludlam, Dave Foti, Todd Flanagan, Chris Kollett, Jeff Alderson... to be completed.
 
+
+# Contact us
 If you think that something not described in these
 notes went wrong please do not hesitate to send an e-mail to
 
