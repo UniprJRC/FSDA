@@ -199,6 +199,7 @@ function [h,Ntable] = balloonplot(N,varargin)
     load SportHealth.mat
     out=corrOrdinal(SportHealth);
     balloonplot(SportHealth,'contrib2Index',out.Contrib2CminusD)
+    title(['Indice \gamma=' num2str(out.gam(1))])
 %}
 
 %{
