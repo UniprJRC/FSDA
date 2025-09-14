@@ -912,7 +912,12 @@ if plots==true
     % Pareto plot of individual contributions
     % Transform Contrib2Chi2 into a column vector.
     Contrib2Chi2vec=abs(Contrib2Chi2(:));
-    [parhdl,axesPareto]=pareto(Contrib2Chi2vec,nomiContribChi2(:),0.6);
+    if I*J<=12
+        thresh=0.7;
+    else
+        thresh=0.6;
+    end
+        [parhdl,axesPareto]=pareto(Contrib2Chi2vec,nomiContribChi2(:),thresh);
 
     b=parhdl(1);
     [~,indsor]=sort(Contrib2Chi2vec,'descend');
