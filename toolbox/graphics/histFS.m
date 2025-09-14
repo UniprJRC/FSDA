@@ -33,12 +33,14 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %                 If gylab = {}, default legend labels are generated.
 %                 If gylab is a cell of strings of length 3, e.g. gylab =
 %                 {'G1' 'G2' 'G3'}, such strings are used for the legends.
+%                 Note that this is a positional input argument.
 %               Example - {'G1' 'G2'}
 %               Data Types - cell array of character vectors or string array
 %
 %     ax        : plots into ax instead of gca. Axis handle. The axis handle
 %                 where to plot the grouped histogram (e.g. a traditional
 %                 histogram plot to be superimposed). Default is gca.
+%                 Note that this is a positional input argument.
 %               Example - gca
 %               Data Types - graphics handle
 %
@@ -48,11 +50,13 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %                groups (e.g. [1 0 0; 0 0 1]). If the number of colors
 %                supplied is smaller than the number of groups the program
 %                displays an error.
+%                 Note that this is a positional input argument.
 %               Example - 'rgy'
 %               Data Types - character or numeric matrix
 %
 %     W         : Weights. Vector. Vector which contains optional weights
 %                 associated to the elements of y.
+%                 Note that this is a positional input argument.
 %               Example - [10 20 3000]
 %               Data Types - numeric vector
 %  Output:
@@ -104,6 +108,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
       y = randn(500,1);
       groups = randi(4,500,1);
       nbins = 10;
+      % 4th positional input argument is the legend labels.
       [ng, hb] = histFS(y,nbins,groups,{'BMW','FIAT','VOLVO','FERRARI'});
       title('The same, with personalized legends','interpreter','latex','FontSize',18);
 %}
@@ -114,6 +119,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
       y = randn(500,1);
       groups = randi(4,500,1);
       nbins = 10;
+      % 6th positional input argument is the colors
       [ng, hb] = histFS(y,nbins,groups,{'BMW','FIAT','VOLVO','FERRARI'},gca,'kgbr');
       title('FERRARI must be red! Color sequence changed to kgbr','interpreter','latex','FontSize',18);
 %}
