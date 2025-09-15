@@ -180,7 +180,6 @@ function out = dempk(Y, k, g, varargin)
     g = 0.01;
     DEMP2 = dempk(X, k*5, g, 'plots', 'contour');
 
-    cascade;
 %}
 
 %{
@@ -230,7 +229,6 @@ function out = dempk(Y, k, g, varargin)
 
     DEMP = dempk(X, k, g, 'tkmeansOpt', tkmeansOpt, 'plots', 'ellipse');
 
-    cascade;
 %}
 
 %{
@@ -272,7 +270,6 @@ function out = dempk(Y, k, g, varargin)
 
     DEMP = dempk(X, k, g, 'linkagearg', linkagearg, 'plots', 'ellipse');
 
-    cascade;
 %}
 
 %{
@@ -317,7 +314,6 @@ function out = dempk(Y, k, g, varargin)
     g = 0.025;
     DEMP = dempk(X, k, g, 'alpha', alpha, 'plots', 'contourf');
     
-    cascade;
 %}
 
 %{
@@ -357,7 +353,6 @@ function out = dempk(Y, k, g, varargin)
     % setting alpha greater than the noise level (almost always appropriate)
     out = dempk(Y, k, G, 'alpha', alpha+0.04, 'tkmeansOut', 1, 'plots', 1);
 
-    cascade;
 %}
 
 
