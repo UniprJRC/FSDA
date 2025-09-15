@@ -2763,7 +2763,7 @@ else
     inipointCopyright=regexp(fstring,'Copyright');
 
     if ~isempty(inipointAcknowledgements)
-        Acknowledgements=fstring(inipointAcknowledgements+19:inipointCopyright-1);
+        Acknowledgements=fstring(inipointAcknowledgements(1)+19:inipointCopyright-1);
         if strcmp(Acknowledgements(1),':')
             Acknowledgements=Acknowledgements(2:end);
         end
