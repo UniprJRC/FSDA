@@ -175,8 +175,12 @@ for i=1:nfiles
     
     % disp(['Filename ' FilesIncluded{i,1}])
     disp(['File ' FilesIncluded{i,1} '  Number  ' num2str(i) ' of ' num2str(nfiles)])
+    try
+        Ex=OUT{i,1}.Ex;
+    catch ME
+        error(['Error: ' ME, 'File ' FilesIncluded{i,1} ' could not be processed by publishFS.'])
+    end
     
-    Ex=OUT{i,1}.Ex;
     
     Extra=OUT{i,1}.ExtraEx;
     Excomb=[Ex;Extra];
