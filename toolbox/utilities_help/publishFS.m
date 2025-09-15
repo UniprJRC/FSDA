@@ -3705,8 +3705,7 @@ if ~isempty(OptArgsVarargin)
         posoptionsfin=posoptionsfin(1);
         NamePairs=fstring(posoptionsini:posoptionsfin-1);
         findFirstRoundBracket=regexp(NamePairs,'(');
-        NamePairs=NamePairs(findFirstRoundBracket+1:end);
-
+        NamePairs=NamePairs(findFirstRoundBracket(1)+1:end);
         % Remove (if present) "..." symbols, carriage returns and white spaces
         % from, string NamePairs
         posThreeFullStops=regexp(NamePairs,'\.');
