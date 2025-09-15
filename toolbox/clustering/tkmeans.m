@@ -259,7 +259,6 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     contOpt.cmap = summer 
     out=tkmeans(Y(:,1:2),3,0.1,'plots',contOpt)
 
-    cascade
 %}
 
 %{
@@ -280,7 +279,6 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     out=tkmeans(Y(:,1:2),2,0.1,'plots',1);
     out=tkmeans(Y(:,1:2),5,0.15,'plots',1);
 
-    cascade
 %}
 
 %{
@@ -296,7 +294,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     out=tkmeans(Y(:,1:2),3,0,'plots',1);
     out=tkmeans(Y(:,1:2),2,0.05,'plots',1);
 
-    cascade
+
 %}
 
 %% Beginning of code 
