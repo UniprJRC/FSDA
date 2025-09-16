@@ -219,7 +219,6 @@ function [out] = overlapmap(D, varargin)
     out2 = tkmeans(Y, k*4, 0.05, 'plots', 1);
     overl_2 = overlapmap(out2);
 
-    cascade;
 %}
 
 
@@ -247,7 +246,6 @@ function [out] = overlapmap(D, varargin)
     out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true);
     overl_2 = overlapmap(out_2, 'omegaStar', 0.0025, 'plots', 'contourf', 'userColors', summer);
 
-    cascade;
 %}
 
 %{
@@ -287,8 +285,6 @@ function [out] = overlapmap(D, varargin)
 
     out = tclust(X, 10, 0.05, 100, 'plots', 'contour', 'Ysave', true);
     overlapmap(out, 'plots', 'contourf');
-
-    cascade;
 %}
 
 %{
@@ -324,8 +320,6 @@ function [out] = overlapmap(D, varargin)
     
     % overlap map with interctive mode
     overl = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf');
-
-    cascade;
 %}
 
 %{
@@ -354,9 +348,8 @@ function [out] = overlapmap(D, varargin)
  
     % overlap map with interctive mode
     out = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf');
-
-    cascade;
 %}
+
 %% Beginning of code
 
 % ... Checking required inputs ...
@@ -689,19 +682,19 @@ if isreal(overMorder)
     % to the dimension of the map) [To Enhance]
     axes(ax);
     if k<=4
-        text(ones(1, k)+0:k, 1:k, num2str(ord(1:end)), ...
+        text(ones(1, k)+ (0:(k-1)), 1:k, num2str(ord), ...
             'FontWeight','bold','FontSize',18,'HorizontalAlignment','right','VerticalAlignment','baseline');
     elseif k<=7
-        text(ones(1, k)/1.1+0:k, 0.1+(1:k), num2str(ord(1:end)), ...
+        text(ones(1, k)/1.1 +(0:(k-1)) , 0.1+(1:k), num2str(ord), ...
             'FontWeight','bold','FontSize',16,'HorizontalAlignment','right','VerticalAlignment','baseline');
     elseif k<=15
-        text(ones(1, k)/1.2+0:k, 0.3+(1:k), num2str(ord(1:end)), ...
+        text(ones(1, k)/1.2 +(0:(k-1)), 0.3+(1:k), num2str(ord), ...
             'FontWeight','bold','FontSize',14,'HorizontalAlignment','right','VerticalAlignment','baseline');
     elseif k<=35
-        text(ones(1, k)/2+0:k, 0.3+(1:k), num2str(ord(1:end)), ...
+        text(ones(1, k)/2 +(0:(k-1)), 0.3+(1:k), num2str(ord), ...
             'FontWeight','bold','FontSize',12,'HorizontalAlignment','right','VerticalAlignment','baseline');
     else
-        text(ones(1, k)/2.5+0:k, 0.3+(1:k), num2str(ord(1:end)), ...
+        text(ones(1, k)/2.5 +(0:(k-1)), 0.3+(1:k), num2str(ord), ...
             'FontWeight','bold','FontSize',10,'HorizontalAlignment','right','VerticalAlignment','baseline');
     end
     % Add box and grid
