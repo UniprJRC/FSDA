@@ -324,18 +324,24 @@ end
 sp=' ';
 
 if ismac
-      % linux: TODO!
-    disp('Sorry, MacOS version is not available at the moment....')
-    out=-1;
-    return
-
-    % % get the name of the MacOS current USER
-    % [~,curruser]=system('id -un');
-    % pythonpath=['/Users/' curruser '/miniconda3/bin/'];
-    % % compose the string
-    % str=[ pythonpath '/python pdf_encryption_wm_creation.py ' inputfile sp ...
-    %     watermark sp outputfile sp print_flag sp edit_flag sp password_text];
-
+     % get the path to python
+    pythonEnv = pyenv;
+    pythonpath=char(pythonEnv.Executable);
+    pythoncode = which('pdfprotect.m');
+    [pythoncode1]=fileparts(pythoncode);
+    pythoncode2=[pythoncode1 filesep 'private' filesep 'pdf_encryption_wm_creation.py'];
+% check if output file is already open
+    [fstatus, errmsg]=fopen(outputfile,"w");
+    if fstatus<0
+        disp('The output file is already open, please close it.')
+        disp(errmsg)
+        return
+    else
+        fclose(fstatus);
+        % compose the string
+        str=[pythonpath ' ' pythoncode2 sp inputfile sp ...
+            watermark sp outputfile sp print sp edit sp passedit sp passopen];
+    end
 elseif ispc
     % get the path to python
     pythonpath = fullfile(getenv('USERPROFILE'), 'miniconda3');
