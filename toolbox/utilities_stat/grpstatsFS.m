@@ -84,21 +84,22 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
 %               Data Types -  character | string
 %
 % plots : graphical output using errorbar plot. Scalar or struct
-%                This option enables to show the errorbar plot of the required
-%                statistics for each level of the grouping variable. When
-%                plots=1, if inside option whichstats there is
-%                meanci the errorplot which shows the confidence interval
-%                for each level of the grouping variables for all variable
-%                present in the input table is shown. If inside whichstats
-%                meanci is not present the errorplot is based on the first
-%                element of whichstats. If plots is a struct it is possible
-%                to specify inside field plots.selStats the statistics for
-%                which the plot has to be shown. For example 
+%                This option enables to show the errorbar plot of the
+%                required statistics (for each level of the grouping
+%                variable if the grouping variable is present). When
+%                plots=1, if inside option whichstats there is meanci the
+%                errorplot which shows the confidence interval for each
+%                level of the grouping variables for all variable present
+%                in the input table is shown. If inside whichstats meanci
+%                is not present the errorplot is based on the first element
+%                of whichstats. If plots is a struct it is possible to
+%                specify inside field plots.selStats the statistics for
+%                which the plot has to be shown. For example
 %               if whichstats is equal to ["mean" "var" "meanci"] and
 %               plots=struct; plots.selStats=["var" "mean"]; then the error
 %               plot for the statistics variance and mean is shown in two
-%               separate graphical windows. The default
-%               value of plots is 0, that is no plot is shown.
+%               separate graphical windows. The default value of plots is
+%               0, that is no plot is shown.
 %               Example - 'plots',0;
 %               Data Types -  numeric scalar | struct
 %
@@ -279,6 +280,22 @@ function [statTable]=grpstatsFS(TBL, groupvars, whichstats, varargin)
     TBL=grpstatsFS(citiesItaly,"zone",["var" "meanci"],'plots',1);
 %}
 
+%{
+    %% Example of option plots and no grouping variable.
+    load citiesItaly.mat
+    % rescale all the variables in the interval [0 1];
+    CIT=normalize(citiesItaly,"range");
+    figure
+    lab=CIT.Properties.VariableNames;
+    boxchart(CIT,lab)
+    xticklabels(lab) 
+    title('Boxplots of normalized data in [0 1]')
+    figure
+    grpstatsFS(CIT,[],["meanci" "mean" "median"],'plots',1);
+    disp("Note that the confidence intervals for variables 2 and 6 are much lower")
+    disp("than the others due to the presence of outlying observations")
+%}
+
 %% Beginning of code
 if nargin<2
     groupvars=[];
@@ -416,88 +433,100 @@ if ngroups>1
         statTable=table(CE{:},'RowNames',vnames,'VariableNames',nomiStat);
     end
 
-    plo=plots;
-    if isstruct(plo) || (~isstruct(plo) && plo~=0)
-        if isstruct(plo)
 
-            fplo=fieldnames(plo);
-            d=find(strcmp('selStats',fplo));
-            if d>0
-                selStats=plo.selStats;
-            else
-                selStats="meanCI";
-            end
-        
-        else
-            swhichstats=string(whichstats);
-            if isscalar(swhichstats)
-                selStats=swhichstats;
-                selStats=replace(selStats,"meanci","meanCI");
-            elseif any(swhichstats=="meanci")
-                selStats="meanCI";
-            else
-                % Just do the plot for the first statistic
-                selStats=swhichstats(1);
-                selStats=replace(selStats,"meanci","meanCI");
-            end
-        end
-
-        nam=tabTutti.Properties.RowNames;
-        dx=0.25;
-        x=linspace(1-dx,1+dx,ngroups);
-
-        for ii=1:length(selStats)
-            % Select the columns meanCI
-
-            if selStats(ii)=="meanCI"
-                boo=contains(nomivarNested,selStats(ii));
-                meanCI=true;
-            else
-                boo=strcmp(nomivarNested,selStats(ii));
-                meanCI=false;
-            end
-
-            % This is equivalent to statTable{:,boo} if  not nested
-            statArraySEL=statArray(:,boo);
-            if ii>1
-                figure
-            end
-            tiledlayout("flow" );
-
-            for j=1:length(vnames)
-                nexttile
-                hold on
-
-                % Loop on the grouping variables
-                for jj=1:ngroups
-                    if meanCI==true
-                    var=(jj-1)*2+1:jj*2;
-                    statj=statArraySEL(j,var);
-                    mstatj=mean(statj,2);
-                    else
-                    mstatj=statArraySEL(j,jj);
-                    statj=[mstatj mstatj];
-                    
-                    end
-
-                    errorbar(repelem(x(jj),p,1), mstatj, statj(2)-mstatj, 'o'); % 'o' specifies the marker type
-                end
-                xticks(x)
-                xticklabels(nam)
-                ax = gca;
-                ax.TickLabelInterpreter = 'none';
-                xlim([x(1)-0.05 x(end)+0.05])
-                title(vnames(j))
-            end
-            sgtitle(selStats(ii))
-        end
-    end
 else
     statArray=reshape(tabTutti{1,2:end},lstats,p)';
     statTable=array2table(statArray,"RowNames",vnames,"VariableNames",nomiStat);
 end
 
+plo=plots;
+if isstruct(plo) || (~isstruct(plo) && plo~=0)
+    if isstruct(plo)
 
+        fplo=fieldnames(plo);
+        d=find(strcmp('selStats',fplo));
+        if d>0
+            selStats=plo.selStats;
+        else
+            selStats="meanCI";
+        end
+
+    else
+        swhichstats=string(whichstats);
+        if isscalar(swhichstats)
+            selStats=swhichstats;
+            selStats=replace(selStats,"meanci","meanCI");
+        elseif any(swhichstats=="meanci")
+            selStats="meanCI";
+        else
+            % Just do the plot for the first statistic
+            selStats=swhichstats(1);
+            selStats=replace(selStats,"meanci","meanCI");
+        end
+    end
+
+    nam=tabTutti.Properties.RowNames;
+    dx=0.25;
+    x=linspace(1-dx,1+dx,ngroups);
+
+    if ngroups==1
+        nomivarNested=repelem(selStats,1,2);
+    end
+
+    for ii=1:length(selStats)
+        % Select the columns meanCI
+
+        if selStats(ii)=="meanCI"
+            boo=contains(nomivarNested,selStats(ii));
+            meanCI=true;
+        else
+            boo=strcmp(nomivarNested,selStats(ii));
+            meanCI=false;
+        end
+
+        % This is equivalent to statTable{:,boo} if  not nested
+        statArraySEL=statArray(:,boo);
+        if ngroups==1
+            xL=min(statArraySEL,[],'all');
+            xU=max(statArraySEL,[],'all');
+        end
+
+        if ii>1
+            figure
+        end
+        tiledlayout("flow" );
+
+        for j=1:length(vnames)
+            nexttile
+            hold on
+
+            % Loop on the grouping variables
+            for jj=1:ngroups
+                if meanCI==true
+                    var=(jj-1)*2+1:jj*2;
+                    statj=statArraySEL(j,var);
+                    mstatj=mean(statj,2);
+                else
+                    mstatj=statArraySEL(j,jj);
+                    statj=[mstatj mstatj];
+
+                end
+
+                errorbar(repelem(x(jj),p,1), mstatj, statj(2)-mstatj, 'o'); % 'o' specifies the marker type
+                if ngroups==1
+                    ylim([xL xU])
+                end
+            end
+            xticks(x)
+            xticklabels(nam)
+            ax = gca;
+            ax.TickLabelInterpreter = 'none';
+            xlim([x(1)-0.05 x(end)+0.05])
+            title(vnames(j))
+        end
+        sgtitle(selStats(ii))
+    end
+end
 
 end
 %FScategory:UTISTAT
