@@ -470,7 +470,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
     x=linspace(1-dx,1+dx,ngroups);
 
     if ngroups==1
-        nomivarNested=repelem(selStats,1,2);
+        nomivarNested=nomiStat';
     end
 
     for ii=1:length(selStats)

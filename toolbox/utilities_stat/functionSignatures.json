@@ -1,0 +1,18 @@
+{
+
+   "grpstatsFS":
+    {
+        "inputs":
+        [
+            {"name":"tbl", "kind":"required", "type":[["table"], ["timetable"]]},
+            {"name":"groupvar",  "description":"Grouping variable or [] if there is no grouping variable", "kind":"required", "type":[["choices=tbl.Properties.VariableNames"], ["cellstr"], ["vector", "integer", ">0"], ["logical", "vector"], ["char"],["double"]]},
+            {"name":"whichstats",  "description":"Statistics which need to be computed", "kind":"required", "type":[["choices={'mean', 'sem', 'numel', 'gname', 'std', 'var', 'min', 'max', 'range', 'meanci', 'predci'}"], ["function_handle"], ["char"]]},
+            {"name":"Alpha", "kind":"namevalue", "type":["double", "scalar", ">=0", "<=1"]},
+            {"name":"DataVars", "kind":"namevalue", "type":[["choices=tbl.Properties.VariableNames"], ["choices=tbl.Properties.VarNames"], ["logical", "vector"], ["double", "vector", ">0"], ["cellstr"], ["char"]]},
+            {"name":"VarNames", "kind":"namevalue", "type":[["cellstr"], ["string"]]},
+            {"name":"plots", "description":"Show the errorbar plot", "kind":"namevalue", "type":["logical", "scalar"]},
+            {"name":"OutputFormat",  "description":"Nested or non nested tables when there is more than one grouping variable", "kind":"namevalue", "type":[["choices={'flat', 'nested'}"]]}
+        ]
+    }
+}
+
