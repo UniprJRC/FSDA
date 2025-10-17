@@ -19,12 +19,23 @@
     {
         "inputs":
         [
-            {"name":"x", "kind":"required"},
-            {"name":"rho", "description":"population correlation coefficient", "kind":"required", "type":["double", "scalar", ">=-1", "<=1"]},
-            {"name":"n", "description":"sample size", "kind":"required"},
-            {"name":"upper", "kind":"ordered", "type":"choices={'upper'}"}
+            {"name":"x", "description":"Values at which to evaluate cdf", "kind":"required"},
+            {"name":"rho", "description":"Population correlation coefficient", "kind":"required", "type":["double", "scalar", ">=-1", "<=1"]},
+            {"name":"n", "description":"Sample size", "kind":"required", "type":["numeric", "scalar", "integer"]},
+            {"name":"upper", "description":"Lower or upper tail", "kind":"ordered", "type":"choices={'upper'}"}
+        ]
+    },
+
+    "corrpdf":
+    {
+        "inputs":
+        [
+            {"name":"x", "description":"Values at which to evaluate pdf", "kind":"required"},
+            {"name":"rho", "description":"Population correlation coefficient", "kind":"required", "type":["double", "scalar", ">=-1", "<=1"]},
+            {"name":"n", "description":"Sample size", "kind":"required", "type":["numeric", "scalar", "integer"]}
         ]
     }
+
 
 }
 
