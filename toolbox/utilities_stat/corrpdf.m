@@ -161,15 +161,15 @@ function y = corrpdf(r, rho, n)
 
 %% Beginning of code
 
-if numel(r)>1 && numel(n)==1 &&  numel(rho)==1
+if numel(r)>1 && isscalar(n) &&  isscalar(rho)
     n=repmat(n,size(r));
     rho=repmat(rho,size(r));
     y=zeros(size(rho));
-elseif numel(r)==1 && numel(n)>1 &&  numel(rho)==1
+elseif isscalar(r) && numel(n)>1 &&  isscalar(rho)
     r=repmat(r,size(n));
     rho=repmat(rho,size(n));
     y=zeros(size(n));
-elseif numel(r)==1 && numel(n)==1 &&  numel(rho)>1
+elseif isscalar(r) && isscalar(n) &&  numel(rho)>1
     r=repmat(r,size(rho));
     n=repmat(n,size(rho));
     y=zeros(size(rho));

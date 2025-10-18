@@ -78,7 +78,7 @@ function y = corrcdf(x, rho, n, varargin)
 
 %{
     %% An example where x, rho and n are all scalars.
-    % Find Pr(r<x|rho=0.1|n=12).
+    % Find Pr(r<x|rho=0.1, n=12).
     x=0;
     rho=0.1;
     n=12;
