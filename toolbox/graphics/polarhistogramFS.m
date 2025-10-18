@@ -101,6 +101,7 @@ function H = polarhistogramFS(Y, varargin)
 %{
     % Use of FaceAlpha.
     load citiesItaly
+    zone=[repelem("N",46) repelem("CS",57)]';
     polarhistogramFS(citiesItaly,'DataVars',1:4,'groupvars',zone,'nbins',10,'FaceAlpha',0.01);
 %}
 
