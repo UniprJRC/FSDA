@@ -1,4 +1,4 @@
-function y = corrinv(p, rho, n)
+function x = corrinv(p, rho, n)
 %computes the quantiles of the sampling distribution of the correlation coefficient
 %
 % Inverse of the cumulative distribution function of the sampling
@@ -16,13 +16,13 @@ function y = corrinv(p, rho, n)
 %               A scalar input functions as a constant matrix of the same
 %               size as the other input.
 %               Data Types - single | double
-%    rho :      value of the correlation coefficient in the population.
+%    rho :      Value of the correlation coefficient in the population.
 %               Scalar, vector or matrix or 3D array. If rho is not a
 %               scalar all the 3 input arguments (p,rho and n) must have
 %               the same size or just the numel of one of the 3 input
 %               arguments must be greater than 1
 %               Data Types - single | double
-%    n :        sample size.
+%    n :        Sample size.
 %               Scalar, vector or matrix or 3D array. If n is not a
 %               scalar all the 3 input arguments (p,rho and n) must have
 %               the same size or just the numel of one of the 3 input
@@ -35,13 +35,9 @@ function y = corrinv(p, rho, n)
 %
 %  Output:
 %
-%    y:         CDF value. Scalar, vector or matrix or 3D array of the same size
-%               of input arguments x, rho and n. $y=\int_{-\infty}^x f_{t}(x |
-%               \rho,n) dt$ is the value of the cdf of the distribution of
-%               the correlation coefficient evaluated at x.
-%    x:         inverse CDF value. Scalar, vector or matrix or 3D array of the same size
-%               of input arguments p, rho and n. $p=\int_0^x f_{r}(r | \rho,n) dr$ is the
-%               inverse of the sample correlation coefficient cdf given
+%    x:         Inverse cdf value. Scalar, vector or matrix or 3D array of the same size
+%               of input arguments p, rho and n. $p=\int_{-1}^x f_{r}(r | \rho,n) dr$ is the
+%               inverse of the sample correlation coefficient cdf, given
 %               $\rho$, the population correlation coefficient and the
 %               sample size $n$, for the corresponding
 %               probabilities in p.
@@ -84,7 +80,6 @@ function y = corrinv(p, rho, n)
     p=0.3;
     rho=0.1;
     n=12;
-    xs=num2str(x);
     rhos=num2str(rho);
     ns=num2str(n);
     x030=corrinv(p,rho,n);
@@ -103,7 +98,7 @@ function y = corrinv(p, rho, n)
     ns=num2str(n);
     x=corrinv(p,rho,n);
     nam={['rho=' rhos, ', n=' ns]};
-    Xt=array2table(x,"RowNames","Q"+p,"VariableNames",nam);
+    Xt=array2table(x,"RowNames","x"+p,"VariableNames",nam);
     disp(Xt)
 %}
 
@@ -113,47 +108,55 @@ function y = corrinv(p, rho, n)
     rho=(0:0.1:0.8)';
     n=12;
         x=corrinv(p,rho,n);
-    nam={['x' num2str(p) 'when, n=' num2str(n)]};
+    nam={['x' num2str(p) ' when, n=' num2str(n)]};
     Xt=array2table(x,"RowNames","rho="+rho,"VariableNames",nam);
     disp(Xt)
 %}
 
 %% Beginning of code
 arguments
-    p {mustBeNumeric, mustBeReal, mustBeInRange(p, 0, 1,'exclusive')}
-    rho {mustBeNumeric, mustBeReal, mustBeInRange(rho, -1, 1)}
+    p {mustBeNumeric, mustBeReal, mustBeInRange(p, 0, 1)}
+    rho {mustBeNumeric, mustBeReal, mustBeInRange(rho, -1, 1,'exclusive')}
     n {mustBeNumeric, mustBeInteger, mustBePositive}
 end
 
 if numel(p)>1 && isscalar(n) &&  isscalar(rho)
     n=repmat(n,size(p));
     rho=repmat(rho,size(p));
-    y=zeros(size(rho));
+    x=zeros(size(rho));
 elseif isscalar(p) && numel(n)>1 &&  isscalar(rho)
     p=repmat(p,size(n));
     rho=repmat(rho,size(n));
-    y=zeros(size(n));
+    x=zeros(size(n));
 elseif isscalar(p) && isscalar(n) &&  numel(rho)>1
     p=repmat(p,size(rho));
     n=repmat(n,size(rho));
-    y=zeros(size(rho));
+    x=zeros(size(rho));
 else
     % In this case rho, p and n all have the same size
     assert(isequal(size(rho),size(p),size(n)),'rho, p and n have different sizes')
-    y=zeros(size(rho));
+    x=zeros(size(rho));
 end
 
-% Define function handle to CDF (assumed available)
-% corrcdf(r, n) should return CDF evaluated at r
+% Define function handle to cdf (assumed available)
+% corrcdf(r, n) should return cdf evaluated at r
 for i = 1:numel(p)
-    target_p = p(i);
+    if p(i)==0
+        x(i)=-Inf;
+    elseif p(i)==1
+        x(i)=Inf;
+    else
+        target_p = p(i);
 
-    % Define root function: CDF(r) - p = 0
-    f = @(r) corrcdf(r, rho(i), n(i)) - target_p;
+        % Define root function: cdf(r) - p = 0
+        f = @(r) corrcdf(r, rho(i), n(i)) - target_p;
 
-    % The correlation coefficient is bounded in [-1, 1]
-    % Use fzero with a good initial guess
-    y(i) = fzero(f, [ -0.9999, 0.9999 ]);
+        % The correlation coefficient is bounded in [-1, 1]
+        % but it make sense to compute the quantiles when rho
+        % is strictly inside [-1, 1].
+        % Use fzero with a good initial guess
+        x(i) = fzero(f, [ -0.999999, 0.999999 ]);
+    end
 end
 end
 

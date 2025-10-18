@@ -34,6 +34,16 @@
             {"name":"rho", "description":"Population correlation coefficient", "kind":"required", "type":["double", "scalar", ">=-1", "<=1"]},
             {"name":"n", "description":"Sample size", "kind":"required", "type":["numeric", "scalar", "integer"]}
         ]
+    },
+
+     "corrinv":
+    {
+        "inputs":
+        [
+            {"name":"p", "description":"Probability at which to evaluate inverse cdf", "kind":"required"},
+            {"name":"rho", "description":"Population correlation coefficient", "kind":"required", "type":["double", "scalar", ">=-1", "<=1"]},
+            {"name":"n", "description":"Sample size", "kind":"required", "type":["numeric", "scalar", "integer"]}
+        ]
     }
 
 
