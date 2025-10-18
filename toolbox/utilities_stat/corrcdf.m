@@ -178,11 +178,11 @@ else
     uflag=false;
 end
 
-if numel(x)>1 && numel(n)==1 &&  numel(rho)==1
+if numel(x)>1 && isscalar(n) &&  isscalar(rho)
     n=repmat(n,size(x));
     rho=repmat(rho,size(x));
     y=zeros(size(rho));
-elseif numel(x)==1 && numel(n)>1 &&  numel(rho)==1
+elseif isscalar(x) && numel(n)>1 &&  isscalar(rho)
     x=repmat(x,size(n));
     rho=repmat(rho,size(n));
     y=zeros(size(n));
