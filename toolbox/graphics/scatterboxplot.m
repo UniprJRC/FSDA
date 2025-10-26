@@ -127,9 +127,10 @@ end
 
 boxplot(h(2),x,group,'orientation','horizontal',...
     'label','','color',clr);
-set(h(2:3),'XTickLabel','');
 boxplot(h(3),y,group,'orientation','horizontal',...
     'label', '','color',clr);
+set(h(2:3),'XTickLabel','','YtickLabel','');
+
 view(h(3),[270,90]);  % Rotate the Y plot
 axis(h(1),'auto');    % Sync axes
 hold off;
