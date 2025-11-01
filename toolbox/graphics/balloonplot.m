@@ -30,22 +30,22 @@ function [h,Ntable] = balloonplot(N,varargin)
 %
 % contrib2Index: bubble chart of contribution to a statistic index.
 %               Boolean or matrix (table) of size IxJ.
-%               If this option is true, squared Pearson rediduals
+%               If this option is true, squared Pearson residuals
 %               are computed and shown through bubble chart. Squared
 %               Pearson residuals associated with positive (negative)
 %               associations are shown in blue (red). Pearson residuals are
-%               defined as ${n_{ij}-n_{ij}^*})/{\sqrt{n_{ij}^*}$ where
+%               defined as $\frac{n_{ij}-n_{ij}^*}{\sqrt{n_{ij}^*}}$ where
 %               $n_{ij}$ is the $i,j$ entry of the input contingency table N and
 %               $n_{ij}^*$ is the theoretical frequency under the
 %               independence hypothesis. The sum of the squares of the
-%               Pearson residuals is equal to the $Chi^2$ statistic to test
+%               Pearson residuals is equal to the $\chi^2$ statistic to test
 %               the independence between rows and columns of the
-%               contingency table. The default value of contrib2INdex is
+%               contingency table. The default value of contrib2Index is
 %               false that is no transformation is done on the orginal
-%               contingency table. If contrib2INdex is equal to a matrix of
+%               contingency table. If contrib2Index is equal to a matrix of
 %               size IxJ the balloon plots shows circles which are
 %               proportional to the absolute values of this matrix.
-%               Example - 'contrib2Chi2',true
+%               Example - 'contrib2Index',true
 %               Data Types - boolean or array or table of the same size of N 
 %
 % datamatrix  : Data matrix or contingency table. Boolean. If
