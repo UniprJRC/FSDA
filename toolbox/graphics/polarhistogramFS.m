@@ -51,7 +51,7 @@ function H = polarhistogramFS(Y, varargin)
 %
 %    H       :  array of graphic objects. Graphic object of size
 %               length(groupvars)-by-length(DataVars).  In position i,j it
-%               contains the handle for ith level of groupvars for variable
+%               contains the handle for i-th level of groupvars for variable
 %               DataVars.
 %
 % See also polarhistogram
@@ -307,8 +307,11 @@ for j=1:length(DataVars)
         set(gca,'ThetaTickLabel',string(edgesOriginal));
     end
     title(names(j))
+    legend(ugr)
+    legend hide
     if j==length(DataVars) &&  ~isempty(ugr)
-        legend(ugr)
+        legend show
+        clickableMultiLegend;
     end
 
 end

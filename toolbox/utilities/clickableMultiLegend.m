@@ -7,7 +7,7 @@ function [varargout] = clickableMultiLegend(varargin)
 % label in the legend, the graphics (line or patch) objects associated to
 % that label in all subplots are turned on and off (hide/show).
 %
-% The extention to multiple plots is realised by looking for graphics
+% The extension to multiple plots is realized by looking for graphics
 % objects with the same DisplayName property of the one associated to the
 % legend label. Therefore, the function should work also through plots in
 % different figures.
@@ -235,8 +235,17 @@ function [varargout] = clickableMultiLegend(varargin)
 %% Beginning of code
 
 drawnow;
+currentAxes=gca;
 
-xlim manual;
+% Set the axes to manual mode for consistent scaling
+% axis(currentAxes, 'manual');
+
+if strcmp(currentAxes.Type,'polaraxes')
+    thetalim manual
+else
+    xlim manual
+end
+
 
 % Fix the DisplayName property in case of multiple panels before applying the callback function
 
