@@ -828,7 +828,66 @@
 
         "description":"Draws the Correspondence Analysis (CA) moonplot"
     },
-
+"polarhistogramFS":
+    {
+        "inputs":
+        [
+            {"name":"pax", "kind":"ordered", "type":"matlab.graphics.axis.PolarAxes"},
+            {"mutuallyExclusiveGroup":
+             [
+                 [
+                     {"name":"Y", "kind":"required", "type":"numeric"},
+                     {"name":"DataVars", "kind":"ordered", "type":"table", "purpose":"Table variables for which to compute polarhistograms"}
+                 ],
+                 [
+                     {"name":"Y", "kind":"required", "type":"numeric"},
+                     {"name":"nbins", "kind":"ordered", "type":["numeric","positive","scalar"]}
+                 ],
+                 [
+                     {"name":"Y", "kind":"required", "type":"numeric"},
+                     {"name":"groupvars", "kind":"required", "type":[["choices=tbl.Properties.VariableNames"], ["cellstr"], ["vector", "integer", ">0"], ["logical", "vector"], ["char"],["double"]], "description":"Grouping variable or [] if there is no grouping variable"},
+                 ],
+                 [
+                     {"name":"Y", "kind":"required", "type":"numeric"},
+                     {"name":"edges", "kind":"required", "type":["numeric","vector"]}
+                 ],
+                 [
+                     {"name":"Y", "kind":"required", "type":"numeric"},
+                     {"name":"'BinEdges'", "kind":"required", "type":["char", "choices={'BinEdges'}"]},
+                     {"name":"edges", "kind":"required", "type":"numeric"},
+                     {"name":"'BinEdges'", "kind":"required", "type":["char", "choices={'BinCounts'}"]},
+                     {"name":"counts", "kind":"required", "type":"numeric"}
+                 ]
+             ]
+            },
+            {"name":"opts", "kind":"properties", "type":"matlab.graphics.chart.primitive.Histogram"}
+        ],
+        "outputs":
+        [
+            {"name":"H", "type":"matlab.graphics.chart.primitive.Histogram"}
+        ],
+        "taskInfo":
+        {
+            "VisualizeTaskInfo":
+            {
+                "params":
+                [
+                    {"name":"theta", "description":"MATLAB:graphics:visualizedatatask:ThetaChannel"},
+                    {"name":"Edges", "optional":true},
+                    {"name":"NumBins", "description":"MATLAB:histogram:NumBinsLabel", "type":"numeric", "kind":"properties"},
+                    {"name":"BinMethod", "description":"MATLAB:histogram:BinMethodLabel", "type":"choices={'auto','scott','fd','integers','sturges','sqrt'}", "kind":"properties"},
+                    {"name":"BinWidth", "description":"MATLAB:histogram:BinWidthLabel", "type":"numeric", "kind":"properties"},
+                    {"name":"DisplayStyle", "description":"MATLAB:histogram:DisplayStyleLabel", "type":"choices={'bar','stairs'}", "kind":"properties"},
+                    {"name":"LineStyle", "description":"MATLAB:graphics:visualizedatatask:LineStyleDesc", "type":"choices={'-','--',':','-.','none'}", "kind":"properties"}
+                ],
+                "icon":"polarHistogramPlot",
+                "description":"MATLAB:plots:Tool_polarhistogram_Description",
+                "categories":"MATLAB:graphics:visualizedatatask:PolarPlotsLabel",
+                "codeFunction":"matlab.visualize.task.internal.codegen.generateGeoPolarVizCode",
+                "supportsOverlay": true
+            }
+        }
+    },
     "resfwdplot":
     {
         "inputs":
