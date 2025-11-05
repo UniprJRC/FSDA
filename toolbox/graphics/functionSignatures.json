@@ -834,7 +834,7 @@
         [
       
                      {"name":"Y", "kind":"required", "type":[["table"], ["timetable"]]},
-                     {"name":"DataVars", "kind":"namevalue", "type":[["choices=tbl.Properties.VariableNames"], ["choices=tbl.Properties.VarNames"], ["logical", "vector"], ["double", "vector", ">0"], ["cellstr"], ["char"]], "purpose":"Table variables for which to compute polarhistograms"},
+                     {"name":"DataVars", "kind":"namevalue", "type":[["choices=Y.Properties.VariableNames"], ["choices=Y.Properties.VarNames"], ["logical", "vector"], ["double", "vector", ">0"], ["cellstr"], ["char"]], "purpose":"Table variables for which to compute polarhistograms"},
                      {"name":"nbins", "kind":"namevalue", "type":["numeric","vector"], "purpose":"number of bins (scalar) or bin edges (vector)"},
                      {"name":"groupvars", "kind":"namevalue", "type":[["choices=tbl.Properties.VariableNames"], ["cellstr"], ["vector", "integer", ">0"], ["logical", "vector"], ["char"],["double"]], "purpose":"Grouping variable or [] if there is no grouping variable"},  
                      {"name":"opts", "kind":"properties", "type":"matlab.graphics.chart.primitive.Histogram"}
@@ -852,7 +852,7 @@
         [
       
                      {"name":"Y", "kind":"required", "type":["double", "2d"]},
-                     {"name":"DataVars", "kind":"namevalue", "type":[["logical", "vector"], ["double", "vector", ">0"]], "purpose":"numners indicating variables for which to compute polarhistograms"},
+                     {"name":"DataVars", "kind":"namevalue", "type":[["logical", "vector"], ["double", "vector", ">0"]], "purpose":"Numbers indicating variables for which to compute polarhistograms"},
                      {"name":"nbins", "kind":"namevalue", "type":["numeric","vector"], "purpose":"number of bins (scalar) or bin edges (vector)"},
                      {"name":"groupvars", "kind":"namevalue", "type":[["vector", "integer", ">0"], ["logical", "vector"],["double"]], "purpose":"Grouping variable or [] if there is no grouping variable"},  
                      {"name":"opts", "kind":"properties", "type":"matlab.graphics.chart.primitive.Histogram"}
