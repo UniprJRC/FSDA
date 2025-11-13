@@ -233,11 +233,14 @@ end
 p=size(Y,2);
 if isempty(DataVars)
     DataVars=1:p;
-elseif iscellstr(DataVars) | isstring(DataVars) % DataVars is a string
+elseif iscellstr(DataVars) | isstring(DataVars) | ischar(DataVars) % DataVars is a string
     if istable(Y)
         DataVarsInput=string(DataVars);
-        [~,DataVars]=ismember(DataVarsInput,Y.Properties.VariableNames);
-        if min(DataVars)==0
+        DataVars=ismember(Y.Properties.VariableNames,DataVarsInput);
+        seqp=1:p;
+        DataVars=seqp(DataVars);
+
+        if all(DataVars==0)
             error('FSDA:polarhistogramFS:WrongInputOpt','Variable names not all found inside the input table')
         end
     else
