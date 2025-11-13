@@ -3,7 +3,7 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/UniprJRC/FSDA)
 [![View FSDA on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda)
 [![Documentation](https://img.shields.io/badge/HTML_Documentation-Mathworks_style-chocolate.svg)](http://rosa.unipr.it/FSDA/guide.html) 
-[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.chemolab.2012.03.017-blue.svg?style=flat-square&logo=crossref&logoColor=white])](https://doi.org/10.1016/j.chemolab.2012.03.017)
+[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.chemolab.2012.03.017-blue.svg])](https://doi.org/10.1016/j.chemolab.2012.03.017)
 
 [![Hits](https://hits.sh/github.com/UniprJRC/FSDA.svg?extraCount=9846)](https://hits.sh/github.com/UniprJRC/FSDA/)
 [![CircleCI](https://circleci.com/gh/UniprJRC/FSDA.svg?style=svg)](https://circleci.com/gh/UniprJRC/FSDA)
