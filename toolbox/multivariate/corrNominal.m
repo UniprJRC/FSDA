@@ -407,7 +407,7 @@ function out=corrNominal(N, varargin)
 %}
 
 %{
-    % Example of option datamatrix combined with X defined as table.
+      Example of option datamatrix combined with X defined as table.
     % Initial contingency matrix (2D array).
     N=[75   126
         76   203
@@ -416,6 +416,7 @@ function out=corrNominal(N, varargin)
         24   110
         41   222
         19   141];
+    % The sample size n is 1367
     % Labels of the contingency matrix
     Party={'ACTIVIST DEMOCRATIC', 'DEMOCRATIC', ...
         'SIMPATIZING DEMOCRATIC', 'INDEPENDENT', ...
@@ -424,12 +425,13 @@ function out=corrNominal(N, varargin)
     DeathPenalty={'AGAINST' 'FAVORABLE'};
     Ntable=array2table(N,'RowNames',Party,'VariableNames',DeathPenalty);
     % From the contingency table reconstruct, the original data matrix now
-    % using FSDA function.
-    % The output is a cell array.
+    % using FSDA function crosstab2datamatrix.
+    % The output of the call to crosstab2datamatrix is a cell array.
     Xcell=crosstab2datamatrix(Ntable);
+    % Xtable contains 1367 rows (sample size).
     Xtable=cell2table(Xcell);
-    % call function corrNominal using first argument as input data matrix
-    % in table format and option datamatrix set to true
+    % Call to function corrNominal using first argument as input data matrix
+    % (in table format) and option datamatrix set to true
     out=corrNominal(Xtable,'datamatrix',true);
 %}
 
