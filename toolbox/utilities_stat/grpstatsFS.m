@@ -452,7 +452,12 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
         end
 
     else
-        swhichstats=string(whichstats);
+        try
+            % note that if there is a function handle string does not work
+            swhichstats=string(whichstats);
+        catch
+            swhichstats=string(nomiStat);
+        end
         if isscalar(swhichstats)
             selStats=swhichstats;
             selStats=replace(selStats,"meanci","meanCI");
@@ -512,7 +517,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
 
                 end
 
-                errorbar(repelem(x(jj),p,1), mstatj, statj(2)-mstatj, 'o'); % 'o' specifies the marker type
+                errorbar(repelem(x(jj),p,1), mstatj, statj(2)-mstatj, 'o','LineWidth',1); % 'o' specifies the marker type
                 if ngroups==1
                     ylim([xL xU])
                 end
