@@ -14,7 +14,7 @@ function out=pcaFS(Y,varargin)
 %       components;
 %   5) returns the communalities for each variable with respect to the
 %       first k principal components in table format;
-%   6) retuns the orthogonal distance ($OD_i$) of each observation to the
+%   6) returns the orthogonal distance ($OD_i$) of each observation to the
 %      PCA subspace. For example, if the subspace is defined by the first two
 %      principal components, $OD_i$ is computed as:
 %      \[
@@ -33,7 +33,7 @@ function out=pcaFS(Y,varargin)
 %      \]
 %      where $l_1$ and $l_2$ are the first two eigenvalues of $Z'Z/(n-1)$.
 %   8) calls app biplotFS which enables to obtain an interactive biplot in
-%      which points, rowslabels or arrows can be shown or hidden. This app
+%      which points, row labels or arrows can be shown or hidden. This app
 %      also gives the possibility of controlling the length of the arrows
 %      and the position of the row points through two interactive slider
 %      bars. In the app it is also possible to color row points depending
@@ -77,7 +77,7 @@ function out=pcaFS(Y,varargin)
 %                   Example - 'dispresults',false
 %                    Data Types - char
 %
-%    Latitude    : Latitude coordinates in degrees of the rows. nx1 vector containint the
+%    Latitude    : Latitude coordinates in degrees of the rows. nx1 vector containing the
 %                   numerical values of latitudes for each row.
 %                   If vectors Latitude and Longitude are present once
 %                   brushing of the units in biplotAPP is done, the
@@ -154,7 +154,7 @@ function out=pcaFS(Y,varargin)
 %                 Example - 'bsb',[2 10:90 93]
 %                 Data Types - double or logical
 %
-%  ShapeFile  : name of ShapeFile or geospatial table containg shapes.
+%  ShapeFile  : name of ShapeFile or geospatial table containing shapes.
 %               Character or string or geotable.
 %               Name of the ShapeFile containing the containing the
 %               geometric details of the rows. The ShapeFile, which is
@@ -163,7 +163,11 @@ function out=pcaFS(Y,varargin)
 %               default value of shapefile is empty that is we assume that
 %               no shapefile is given. If ShapeFile is given an additional
 %               GUI containing the areas colored using
-%               the first PC is shown.
+%               the first PC is shown. If this file is given in the biplot
+%               once a particular area is selected the map showing the
+%               shape of the associated points is shown automatically on
+%               the screen (for more information see the release notes of
+%               FSDA 2025b).
 %                   Example - 'ShapeFile','shapefileName'
 %                    Data Types - char or string or geotable.
 %               Remark: note that this option can be used just is the
