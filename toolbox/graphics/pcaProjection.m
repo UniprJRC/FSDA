@@ -273,15 +273,6 @@ V = Vini(:,ord);
 scatter3(Xtilde(:,1),Xtilde(:,2),Xtilde(:,3))
 hold('on')
 
-
-hold on
-for j=1:3
-    if AddAxes(j) == true
-        addLinePCj(V,Xtilde,j,LineWidthAxes);
-    end
-end
-
-
 xlabel(varnames(1))
 ylabel(varnames(2))
 zlabel(varnames(3))
@@ -296,6 +287,13 @@ else
     textscatter3(Xtilde(:,1),Xtilde(:,2),Xtilde(:,3),rownames,'TextDensityPercentage',TextDensityPercentage)
     TextAnToolbox=true;
 end
+
+for j=1:3
+    if AddAxes(j) == true
+        addLinePCj(V,Xtilde,j,LineWidthAxes,TextAnToolbox);
+    end
+end
+
 
 xlabel(varnames(1))
 
@@ -313,7 +311,7 @@ plot3([Xhat(:,1) Xtilde(:,1)]', [Xhat(:,2) Xtilde(:,2)]', [Xhat(:,3) Xtilde(:,3)
 
 for j=1:3
     if AddAxes(j) == true
-        addLinePCj(V,Xtilde,1,LineWidthAxes)
+        addLinePCj(V,Xtilde,1,LineWidthAxes,TextAnToolbox)
     end
 end
 
@@ -340,7 +338,7 @@ scatter3(Xtilde(:,1),Xtilde(:,2),Xtilde(:,3))
 hold('on')
 for j=1:3
     if AddAxes(j) == true
-        addLinePCj(V,Xtilde,j,LineWidthAxes);
+        addLinePCj(V,Xtilde,j,LineWidthAxes,TextAnToolbox);
     end
 end
 
@@ -442,7 +440,7 @@ end
 
 for j=1:3
     if AddAxes(j) == true
-        addLinePCj(V,XX1,j,LineWidthAxes);
+        addLinePCj(V,XX1,j,LineWidthAxes,TextAnToolbox);
     end
 end
 
@@ -453,7 +451,7 @@ zlabel(varnames(3))
 
 end
 
-function addLinePCj(V,Xtilde,j,lwd)
+function addLinePCj(V,Xtilde,j,lwd,TextAnToolbox)
 vj=V(:,j);
 Xhatj = Xtilde*(vj*vj');
 % Take two points to draw this line
@@ -464,15 +462,10 @@ Xhatj = Xtilde*(vj*vj');
 line([Xhatj(indminXj,1); Xhatj(indmaxXj,1)], [Xhatj(indminXj,2); Xhatj(indmaxXj,2)], ...
     [Xhatj(indminXj,3); Xhatj(indmaxXj,3)],'LineWidth',lwd);
 
-
-info = ver('textanalytics');
-if isempty(info)
-    fprintf('Text Analytics Toolbox is NOT installed.\n Units labels will not be shown.');
-else
+if TextAnToolbox ==true
     textscatter3(Xhatj(indmaxXj,1), Xhatj(indmaxXj,2), ...
         Xhatj(indmaxXj,3),"PC"+j);
 end
-
 
 end
 
