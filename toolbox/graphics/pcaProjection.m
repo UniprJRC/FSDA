@@ -9,13 +9,13 @@ function pcaProjection(Y,varargin)
 %   the original and projected spaces.
 %   More precisely 6 distinct plots are created:
 %   1. A 3D scatterplot with the line associated with the 1st PC.
-%   2. A 3D scatterplot with main line and orthogonal projections.
-%   3. A 3D scatterplot with orthogonal projections onto first 2 PCs plane
-%   of first 2 PC.
+%   2. A 3D scatterplot with the principal line and orthogonal projections.
+%   3. A 3D scatterplot with orthogonal projections onto the plane
+%       of the first 2 PCs.
 %   4. A 3D scatterplot projections onto the first three PCs.
-%   5. A 3D scatterplot with the principal ellipsoid in the original coordinates space.
-%   6. A 3D scatterplot with the principal ellipsoid in the projected coordinates space.
-
+%   5. A 3D scatterplot with the principal ellipsoid in the projected coordinates space.
+%   6. A 3D scatterplot with the principal ellipsoid in the original coordinates space.
+%
 %
 %  Required input arguments:
 %
@@ -152,7 +152,7 @@ function pcaProjection(Y,varargin)
     % Call to pcaProjection with option addPCaxes and LineWidthAxes.
     close all
     load citiesItaly.mat
-    % Just show first principal axe
+    % Just show first principal axis
     AddAxes=[true false false];
     % Line width of the axes
     l=4;
@@ -291,8 +291,10 @@ title("3D scatter plot with the line associated with first PC")
 info = ver('textanalytics');
 if isempty(info)
     fprintf('Text Analytics Toolbox is NOT installed.\n Units labels will not be shown.');
+    TextAnToolbox=false;
 else
     textscatter3(Xtilde(:,1),Xtilde(:,2),Xtilde(:,3),rownames,'TextDensityPercentage',TextDensityPercentage)
+    TextAnToolbox=true;
 end
 
 xlabel(varnames(1))
@@ -318,10 +320,7 @@ end
 title("3D scatter plot with main line and orthogonal projections")
 
 
-info = ver('textanalytics');
-if isempty(info)
-    fprintf('Text Analytics Toolbox is NOT installed.\n Units labels will not be shown.');
-else
+if TextAnToolbox==true
     textscatter3(Xtilde(:,1),Xtilde(:,2),Xtilde(:,3),rownames,'TextDensityPercentage',TextDensityPercentage)
 end
 
@@ -355,10 +354,7 @@ end
 
 
 
-info = ver('textanalytics');
-if isempty(info)
-    fprintf('Text Analytics Toolbox is NOT installed.\n Units labels will not be shown.');
-else
+if TextAnToolbox==true
     textscatter3(Xtilde(:,1),Xtilde(:,2),Xtilde(:,3),rownames, ...
         'TextDensityPercentage',TextDensityPercentage);
 end
@@ -380,13 +376,10 @@ title('3D scatter plot of projections onto the first three principal components'
 
 
 
-info = ver('textanalytics');
-if isempty(info)
-    fprintf('Text Analytics Toolbox is NOT installed.\n Units labels will not be shown.');
-else
+if TextAnToolbox==true
     textscatter3(Xtilde*v1,Xtilde*v2,Xtilde*v3,rownames,'TextDensityPercentage',TextDensityPercentage);
-    xlabel('PC1'); ylabel('PC2'); zlabel('PC3');
 end
+xlabel('PC1'); ylabel('PC2'); zlabel('PC3');
 
 
 
@@ -413,10 +406,7 @@ surf(xr,yr,zr,'FaceColor','none')
 
 
 
-info = ver('textanalytics');
-if isempty(info)
-    fprintf('Text Analytics Toolbox is NOT installed.\n Units labels will not be shown.');
-else
+if TextAnToolbox==true
     textscatter3(Xtilde*v1,Xtilde*v2,Xtilde*v3,rownames,'TextDensityPercentage',TextDensityPercentage);
 end
 
@@ -444,10 +434,7 @@ XX1=XX*V';
 nfac=sqrt(size(XX1,1));
 surf(reshape(XX1(:,1),nfac,nfac),reshape(XX1(:,2),nfac,nfac),reshape(XX1(:,3),nfac,nfac),'FaceAlpha',0.1,'FaceColor','none');
 
-info = ver('textanalytics');
-if isempty(info)
-    fprintf('Text Analytics Toolbox is NOT installed.\n Units labels will not be shown.');
-else
+if TextAnToolbox==true
     textscatter3(Xtilde(:,1),Xtilde(:,2),Xtilde(:,3),rownames,'TextDensityPercentage',TextDensityPercentage);
 end
 
