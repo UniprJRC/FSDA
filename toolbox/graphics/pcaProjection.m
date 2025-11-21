@@ -123,7 +123,7 @@ function pcaProjection(Y,varargin)
 
 %{
     % Call to pcaProjection with option TextDensityPercentage.
-    % If TextDensityPercentage=100 then all labels are shown
+    % If TextDensityPercentage=0 then the labels are not shown
     load citiesItaly.mat
     pcaProjection(citiesItaly,'DataVars',[2 6 7],'TextDensityPercentage',0)
 %}
