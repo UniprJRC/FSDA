@@ -109,7 +109,7 @@
         "inputs":
         [
             {"name":"N", "kind":"required", "type":[["single", "2d"], ["double", "2d"]], "purpose":"Contingency table (default) or n-by-2 input dataset"},
-            {"name":"Conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
+            {"name":"conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
             {"name":"conflimMethodCramerV", "kind":"namevalue", "type":["char", "choices={'ncchisq', 'ncchisqadj', 'fisher', 'fisheradj'}"], "purpose":"Method to compute confidence inteval for Cramer's V"},
             {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display results on screen"},
             {"name":"Lr", "kind":"namevalue", "type":"cell:Lr", "purpose":"Vector of row labels"},
@@ -132,7 +132,7 @@
         "inputs":
         [
             {"name":"N", "kind":"required", "type":"table", "purpose":"Contingency table (default) or n-by-2 input dataset"},
-            {"name":"Conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
+            {"name":"conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
             {"name":"conflimMethodCramerV", "kind":"namevalue", "type":["char", "choices={'ncchisq', 'ncchisqadj', 'fisher', 'fisheradj'}"], "purpose":"Method to compute confidence inteval for Cramer's V"},
             {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display results on screen"},
             {"name":"datamatrix", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Data matrix or contingency table"},
@@ -158,7 +158,7 @@
             {"name":"Lr", "kind":"namevalue", "type":"cell:Lr", "purpose":"Vector of row labels"},
             {"name":"Lc", "kind":"namevalue", "type":"cell:Lc", "purpose":"Vector of column labels"},
             {"name":"datamatrix", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Data matrix or contingency table"},
-            {"name":"Conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
+            {"name":"conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
             {"name":"plots", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display balloonplot and pareto plot of individual contributions to C-D"}
         ],
 
@@ -178,7 +178,7 @@
             {"name":"NoStandardErrors", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Just indexes without standard errors and p-values"},
             {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display results on screen"},
             {"name":"datamatrix", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Data matrix or contingency table"},
-            {"name":"Conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
+            {"name":"conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
             {"name":"plots", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display balloonplot and pareto plot of individual contributions to C-D"}
         ],
 
