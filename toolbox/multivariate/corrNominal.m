@@ -407,7 +407,7 @@ function out=corrNominal(N, varargin)
 %}
 
 %{
-      Example of option datamatrix combined with X defined as table.
+    %  Example of option datamatrix combined with X defined as table.
     % Initial contingency matrix (2D array).
     N=[75   126
         76   203

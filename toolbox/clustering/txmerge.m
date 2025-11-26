@@ -222,7 +222,6 @@ function out = txmerge(Y, k, g, varargin)
     % saving tkmeans output
     txOut = 1;
     txsol = txmerge(X, k, g, 'txOpt', txOpt, 'plots', 'ellipse');
-    cascade;
 %}
 
 %{

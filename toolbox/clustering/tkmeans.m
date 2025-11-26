@@ -252,7 +252,6 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     out=tkmeans(Y(:,1:2),3,0.1,'plots','contour');
     out=tkmeans(Y(:,1:2),3,0.1,'plots','contourf');
     out=tkmeans(Y(:,1:2),3,0.1,'plots','boxplotb');
-    cascade;
 
     % using a structure for plots
     contOpt = struct;
