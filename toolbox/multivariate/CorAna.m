@@ -102,7 +102,7 @@ function out=CorAna(N, varargin)
 %                         of the supplementary units can be given using
 %                         Sup.Lc as a cell array of strings.
 %              Sup.Lc = cell array of strings containing the labels of the
-%                       supplementary units, if Sup.r is a 2D numeric array.
+%                       supplementary units, if Sup.c is a 2D numeric array.
 %                       Example - 'Sup', Sup=struct; Sup.c={'c2' 'c4'}
 %                       Data Types - struct
 %                       REMARK: The default value of Sup is a missing
