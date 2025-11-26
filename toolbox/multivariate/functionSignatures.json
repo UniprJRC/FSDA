@@ -1,0 +1,216 @@
+{
+    "_schemaVersion": "1.0.0",
+
+    "_typedefs": {
+
+        "Lr": {
+
+            "purpose":"Cell array of strings containing the labels of the rows of the input",
+            "type":["cell", "size=1,N"],
+            "elements":{
+                "type":[["string"], ["char"]]
+            }
+        },
+
+        "Lc": {
+
+            "purpose":"Cell array of strings containing the labels of the columns of the input",
+            "type":["cell", "size=1,N"],
+            "elements":{
+                "type":[["string"], ["char"]]
+            }
+        },
+
+        "Sup_CorAna": {
+
+            "purpose":"Structure containing indexes or names of supplementary rows or columns",
+            "type":"struct",
+            "fields":[
+                {"name":"r", "type":[["single", "vector"], ["double", "vector"], ["cell"]], "purpose":"vector containing row indexes or vector of cell array of strings or table or 2D numeric array, containing supplementary rows"},
+                {"name":"Lr", "type":"cell", "purpose":"cell array of strings containing the labels of the supplementary units if Sup.r is a 2D numeric array"},
+                {"name":"c", "type":[["single", "vector"], ["double", "vector"], ["cell"]], "purpose":"vector containing column indexes or vector of cell array of strings or table or 2D numeric array use as supplementary columns, or table or 2D numeric array containing supplementary rows"},
+                {"name":"Lc", "type":"cell", "purpose":"cell array of strings containing the labels of the supplementary units if Sup.c is a 2D numeric array"}
+            ]
+        },
+
+        "Plots_CorAna": {
+
+            "purpose":"Correspondence analysis plots additional options",
+            "type":"struct",
+            "fields":[
+                {"name":"alpha", "type":[["numeric", "scalar"], ["char"], ["string"]], "purpose":"Type of plot displayed"},
+                {"name":"FontSize", "type":["numeric", "scalar"], "purpose":"Font size of labels"},
+                {"name":"MarkerSize", "type":["numeric", "scalar"], "purpose":"Size of plot markers"}
+            ]
+        },
+
+        "robust_pcaFS": {
+
+            "purpose":"Specify Robust PC, called by pcaFS",
+            "type":"struct",
+            "fields":[
+                {"name":"bsb", "type":["logical", "vector"], "purpose":"units forming subset on which to compute the svd"},
+                {"name":"conflev", "type":["numeric", "scalar"], "purpose":"confidence level for outliers"},
+                {"name":"class", "type":["char", "choices={'FS', 'MCD', 'MM'}"], "purpose":"Choose between Forward Search, Minimum Covariance Determinator or MM estimators"},
+                {"name":"bdp", "type":["double", "scalar"], "purpose":"Fractions of outliers the algorithm should resist"},
+                {"name":"eff", "type":"double", "purpose":"nominal efficiency to use for MM estimator"}
+            ]
+        }
+    },
+
+    "CorAna":
+    {
+        "inputs":
+        [
+            {"name":"N", "kind":"required", "type":[["single", "2d"], ["double", "2d"]], "purpose":"Contingency table (default) or n-by-2 input dataset"},
+            {"name":"k", "kind":"namevalue", "type":["double", "size=1,1"], "purpose":"Number of dimensions to retain"},
+            {"name":"Lr", "kind":"namevalue", "type":"cell:Lr", "purpose":"Vector of row labels"},
+            {"name":"Lc", "kind":"namevalue", "type":"cell:Lc", "purpose":"Vector of column labels"},
+            {"name":"Sup", "kind":"namevalue", "type":"struct:Sup_CorAna", "purpose":"Structure containing indexes or names of supplementary rows or columns"},
+            {"name":"datamatrix", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Data matrix or contingency table"},
+            {"name":"plots", "kind":"namevalue", "type":[["struct:Plots_CorAna"], ["numeric", "scalar", "choices={0,1}"]], "purpose":"Display plots on screen"},
+            {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display results on screen"},
+            {"name":"d1", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Dimension to show on the horizontal axis"},
+            {"name":"d2", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Dimension to show on the vertical axis"}
+        ],
+
+        "outputs":
+        [
+            {"name":"out", "type":"struct", "purpose":"Structure containing the output of the function"}
+        ],
+
+        "description":"Perform correspondence analysis"
+    },
+
+    "CorAna":
+    {
+        "inputs":
+        [
+            {"name":"N", "kind":"required", "type":"table", "purpose":"Contingency table (default) or n-by-2 input dataset"},
+            {"name":"k", "kind":"namevalue", "type":["double", "size=1,1"], "purpose":"Number of dimensions to retain"},
+            {"name":"Sup", "kind":"namevalue", "type":"struct:Sup_CorAna", "purpose":"Structure containing indexes or names of supplementary rows or columns"},
+            {"name":"datamatrix", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Data matrix or contingency table"},
+            {"name":"plots", "kind":"namevalue", "type":[["struct:Plots_CorAna"], ["numeric", "scalar", "choices={0,1}"]], "purpose":"Display plots on screen"},
+            {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display results on screen"},
+            {"name":"d1", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Dimension to show on the horizontal axis"},
+            {"name":"d2", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Dimension to show on the vertical axis"}
+        ],
+
+        "outputs":
+        [
+            {"name":"out", "type":"struct", "purpose":"Structure containing the output of the function"}
+        ],
+
+        "description":"Perform correspondence analysis"
+    },
+
+    "corrNominal": 
+    {
+        "inputs":
+        [
+            {"name":"N", "kind":"required", "type":[["single", "2d"], ["double", "2d"]], "purpose":"Contingency table (default) or n-by-2 input dataset"},
+            {"name":"Conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
+            {"name":"conflimMethodCramerV", "kind":"namevalue", "type":["char", "choices={'ncchisq', 'ncchisqadj', 'fisher', 'fisheradj'}"], "purpose":"Method to compute confidence inteval for Cramer's V"},
+            {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display results on screen"},
+            {"name":"Lr", "kind":"namevalue", "type":"cell:Lr", "purpose":"Vector of row labels"},
+            {"name":"Lc", "kind":"namevalue", "type":"cell:Lc", "purpose":"Vector of column labels"},
+            {"name":"datamatrix", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Data matrix or contingency table"},
+            {"name":"NoStandardErrors", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Just indexes without standard errors and p-values"},
+            {"name":"plots", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display balloonplot and pareto plot of squared Pearson residuals"}
+        ],
+
+        "outputs":
+        [
+            {"name":"out", "type":"struct", "purpose":"Structure containing the output of the function"}
+        ],
+
+        "description":"corrNominal measures strength of association between two unordered (nominal) categorical variables"
+    },
+
+    "corrNominal": 
+    {
+        "inputs":
+        [
+            {"name":"N", "kind":"required", "type":"table", "purpose":"Contingency table (default) or n-by-2 input dataset"},
+            {"name":"Conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
+            {"name":"conflimMethodCramerV", "kind":"namevalue", "type":["char", "choices={'ncchisq', 'ncchisqadj', 'fisher', 'fisheradj'}"], "purpose":"Method to compute confidence inteval for Cramer's V"},
+            {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display results on screen"},
+            {"name":"datamatrix", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Data matrix or contingency table"},
+            {"name":"NoStandardErrors", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Just indexes without standard errors and p-values"},
+            {"name":"plots", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display balloonplot and pareto plot of squared Pearson residuals"}
+        ],
+
+        "outputs":
+        [
+            {"name":"out", "type":"struct", "purpose":"Structure containing the output of the function"}
+        ],
+
+        "description":"corrNominal measures strength of association between two unordered (nominal) categorical variables"
+    },
+
+    "corrOrdinal":
+    {
+        "inputs":
+        [
+            {"name":"N", "kind":"required", "type":[["single", "2d"], ["double", "2d"]], "purpose":"Contingency table (default) or n-by-2 input dataset"},
+            {"name":"NoStandardErrors", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Just indexes without standard errors and p-values"},
+            {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display results on screen"},
+            {"name":"Lr", "kind":"namevalue", "type":"cell:Lr", "purpose":"Vector of row labels"},
+            {"name":"Lc", "kind":"namevalue", "type":"cell:Lc", "purpose":"Vector of column labels"},
+            {"name":"datamatrix", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Data matrix or contingency table"},
+            {"name":"Conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
+            {"name":"plots", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display balloonplot and pareto plot of individual contributions to C-D"}
+        ],
+
+        "outputs":
+        [
+            {"name":"out", "type":"struct", "purpose":"Structure containing the output of the function"}
+        ],
+
+        "description":"corrOrdinal measures strength of association between two ordered categorical variables"
+    },
+
+    "corrOrdinal":
+    {
+        "inputs":
+        [
+            {"name":"N", "kind":"required", "type":"table", "purpose":"Contingency table (default) or n-by-2 input dataset"},
+            {"name":"NoStandardErrors", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Just indexes without standard errors and p-values"},
+            {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display results on screen"},
+            {"name":"datamatrix", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Data matrix or contingency table"},
+            {"name":"Conflev", "kind":"namevalue", "type":["double", "scalar"], "purpose":"Confidence level to be used to compute confidence intervals"},
+            {"name":"plots", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display balloonplot and pareto plot of individual contributions to C-D"}
+        ],
+
+        "outputs":
+        [
+            {"name":"out", "type":"struct", "purpose":"Structure containing the output of the function"}
+        ],
+
+        "description":"corrOrdinal measures strength of association between two ordered categorical variables"
+    },
+
+    "pcaFS":
+    {
+        "inputs":
+        [
+            {"name":"Y", "kind":"required", "type":[["double"], ["single"], ["table"]], "purpose":"Input data"},
+            {"name":"biplot", "kind":"namevalue", "type":["numeric", "scalar", "choices={0,1}"], "purpose":"Launch app biplotFS"},
+            {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Show the results in the command window"},
+            {"name":"Latitude", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Latitude coordinates in degrees of the rows"},
+            {"name":"Longitude", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Longitude coordinates in degrees of the rows"},
+            {"name":"NumComponents", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Number of Principal Components to retain"},
+            {"name":"robust", "kind":"namevalue", "type":[["logical", "scalar"], ["struct:robust_pcaFS"]], "purpose":"Robust principal components"},
+            {"name":"ShapeFile", "kind":"namevalue", "type":[["char"], ["string"], ["table"]], "purpose":"name of ShapeFile or geospatial table containing shapes"},
+            {"name":"standardize", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Standardize data"}
+        ],
+
+        "outputs":
+        [
+            {"name":"out", "type":"struct", "purpose":"Structure containing the output of the function"}
+        ],
+
+        "description":"pcaFS performs Principal Component Analysis (PCA) on raw data"
+    }
+
+}

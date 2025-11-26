@@ -111,7 +111,7 @@ function out=pcaFS(Y,varargin)
 %                  threshold is exceeded already by the first PC, pcaFS
 %                  still returns the first two PCs.
 %                   Example - 'NumComponents',2
-%                    Data Types - char
+%                    Data Types - single|double
 %
 %      plots     : plots on the screen. Scalar. If plots is 1 (default) it is
 %                   possible to show on the screen the scree plot of the
