@@ -253,18 +253,22 @@ if standardize==true
     Xtilde = Xtilde ./ std(Xtilde);
 end
 
-% S = covariance (correlation) matrix calculated in matrix form
-S = Xtilde'*Xtilde/(n-1);
+nbsb=size(Xtilde,1);
+[~,Gamma,V]=svd(Xtilde,'econ');
+Gam=diag(Gamma)/sqrt(nbsb-1);
 
-% Eigenvalues and eigenvectors of S
-[Vini,Lambdaini] = eig(S);
-
-[~,ord] = sort(diag(Lambdaini),'descend');
-% La is the  vector with the sorted eigenvalues
-La = diag(Lambdaini(ord,ord));
-Gam=sqrt(La);
-% V contains corresponding eigenvectors
-V = Vini(:,ord);
+% % S = covariance (correlation) matrix calculated in matrix form
+% S = Xtilde'*Xtilde/(n-1);
+%
+% % Eigenvalues and eigenvectors of S
+% [Vini,Lambdaini] = eig(S);
+%
+% [~,ord] = sort(diag(Lambdaini),'descend');
+% % La is the  vector with the sorted eigenvalues
+% La = diag(Lambdaini(ord,ord));
+% Gam=sqrt(La);
+% % V contains corresponding eigenvectors
+% V = Vini(:,ord);
 
 %% Scatter 3D with  principal line
 % Principal line = line associated with the direction of maximum variability
@@ -379,8 +383,6 @@ if TextAnToolbox==true
 end
 xlabel('PC1'); ylabel('PC2'); zlabel('PC3');
 
-
-
 color='k';
 
 for j=1:3
@@ -463,8 +465,16 @@ line([Xhatj(indminXj,1); Xhatj(indmaxXj,1)], [Xhatj(indminXj,2); Xhatj(indmaxXj,
     [Xhatj(indminXj,3); Xhatj(indmaxXj,3)],'LineWidth',lwd);
 
 if TextAnToolbox ==true
-    textscatter3(Xhatj(indmaxXj,1), Xhatj(indmaxXj,2), ...
-        Xhatj(indmaxXj,3),"PC"+j);
+
+    signindmaxXj=sign([Xhatj(indmaxXj,1); Xhatj(indmaxXj,2);  Xhatj(indmaxXj,3) ]);
+
+    if isequal(sign(vj),signindmaxXj)
+        textscatter3(Xhatj(indmaxXj,1), Xhatj(indmaxXj,2), ...
+            Xhatj(indmaxXj,3),"PC"+j);
+    else
+        textscatter3(Xhatj(indminXj,1), Xhatj(indminXj,2), ...
+            Xhatj(indminXj,3),"PC"+j);
+    end
 end
 
 end
