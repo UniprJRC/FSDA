@@ -1,5 +1,5 @@
 function  [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT,score,scoreT,orthDist,scoreDist] = ...
-    computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile,interpretation)
+    computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile,smartEVchart)
 % Compute all PCA quantities (this function is not intended to be called
 % directly)
 [n,v]=size(Y);
@@ -168,7 +168,7 @@ if plots==1
     end
 
     %% Plot coefficients with line
-    if interpretation ==true
+    if smartEVchart ==true
         for j=1:NumComponents
             figure('Name',['Eigenvector' num2str(j)],'Tag',['pl_eigenvect' num2str(j)])
 
