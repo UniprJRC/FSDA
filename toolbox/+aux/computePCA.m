@@ -1,5 +1,5 @@
 function  [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT,score,scoreT,orthDist,scoreDist] = ...
-    computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile)
+    computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile,interpretation)
 % Compute all PCA quantities (this function is not intended to be called
 % directly)
 [n,v]=size(Y);
@@ -167,6 +167,102 @@ if plots==1
         title(['Correlations  with PC' num2str(i)])
     end
 
+    %% Plot coefficients with line
+    if interpretation ==true
+        for j=1:NumComponents
+            figure('Name',['Eigenvector' num2str(j)],'Tag',['pl_eigenvect' num2str(j)])
+
+            si=repelem("+",v,1);
+            pos=V(:,j)>0;
+            si(~pos)="";
+
+
+            st=si+string(V(:,j))+"*"+varnames';
+            % Ordinare gli elementi dal più grande al più piccolo
+            [~,indsor]=sort(abs(V(:,j)),'descend');
+
+            st1=st(indsor);
+            st2="PC" + string(j) + "="+ strjoin(st1');
+            cst2=char(st2);
+            spaces=strfind(st2,' ');
+
+            pos=find(cumsum(spaces'>90:90:(180+max(spaces)))==1);
+            pos=pos- (0:length(spaces):(length(spaces)*(length(pos)-1)))';
+            cst2(spaces(pos))=newline;
+            st2=string(cst2);
+
+
+            xlabels=categorical(varnames,varnames);
+            [~,sor]=sort(V(:,j));
+
+            subplot(2,1,1)
+
+            b=bar(varnames(sor), V(sor,j),'g');
+            b.FaceColor = 'flat';       % allow per-bar colors
+
+            xtips=b(1).XData;
+            ytips=b(1).YData;
+            % The alternative instructions below only work from MATLAB
+            % 2019b
+            %   xtips = b.XEndPoints;
+            %   ytips = b.YEndPoints;
+            barlabels = string(round(V(sor,j),2));
+            ax=gca;
+            ax.XTickLabel={};
+            % ax.XTick = 1:v;
+
+            for i=1:v
+                if  b.YEndPoints(i)<0
+                    b.CData(i,:)=[1.0000, 0, 0];
+                    text(xtips(i),ytips(i),barlabels(i),'HorizontalAlignment','center',...
+                        'VerticalAlignment','top')
+                    text(i, ax.YLim(1) - 0.05*diff(ax.YLim), string(b.XData(i)), ...
+                        'HorizontalAlignment','center', 'VerticalAlignment','top', ...
+                        'Color', [1 0 0], 'Parent', ax);
+                else
+                    b.CData(i,:)=[0 0 1];
+                    text(xtips(i),ytips(i),barlabels(i),'HorizontalAlignment','center',...
+                        'VerticalAlignment','bottom')
+                    text(i, ax.YLim(1) - 0.05*diff(ax.YLim), string(b.XData(i)), ...
+                        'HorizontalAlignment','center', 'VerticalAlignment','top', ...
+                        'Color', [0 0 1], 'Parent', ax);
+                end
+            end
+
+            title(st2)
+            h2=subplot(2,1,2);
+            zer=zeros(v,1);
+            cgt0=V(:,j)>0;
+            stem(h2,V(:,j),zer(:))
+            hold('on')
+            stem(h2,V(cgt0,j),zer(cgt0),'filled','Color','b')
+            stem(h2,V(~cgt0,j),zer(~cgt0),'filled','Color','r')
+
+            lab=rescaleFS(abs(V(:,j)),7,20);
+            for i=1:v
+                if V(sor(i),j)>0
+                    col='b';
+                else
+                    col='r';
+                end
+                if mod(i,2)==1
+                    horali='left';
+                    xlabi=string(xlabels(sor(i)));
+                else
+                    horali='right';
+                    xlabi=string(xlabels(sor(i)))  + "   ";
+                end
+
+                text(V(sor(i),j),zer(i)+0.05,xlabi,'Rotation',90, ...
+                    'FontSize',lab(sor(i)),'HorizontalAlignment',horali,'Color',col);
+            end
+            xline(0)
+            ax=gca;
+            ax.YTickLabel={};
+            % ylim([-1 1])
+        end
+    end
+
     %% Plot of orthogonal distance (Y) versus score distance (X)
     delete(findobj(0, 'type', 'figure','tag','pl_OutlierMap'));
     figure('Name','OutlierMap','tag','pl_OutlierMap')
@@ -193,7 +289,7 @@ if plots==1
 
     %% Show the plot of latitude and longitude
 
-    if ~isempty(Latitude) &&  ~isempty(Longitude) 
+    if ~isempty(Latitude) &&  ~isempty(Longitude)
         delete(findobj(0, 'type', 'figure','tag','pl_latlong'));
         figure('Name','geobubble','tag','pl_latlong')
 
@@ -205,14 +301,14 @@ if plots==1
         gb.Title = "Geobubble of all units";
         gb.SizeLegendTitle = "First PC (size)";
         gb.ColorLegendTitle = "Second PC (color)";
-    elseif ~isempty(Latitude) ||  ~isempty(Longitude) 
-            error('FSDA:pcaFS:WrongInputOpt','Both Latitude and Longitude must be given.');
+    elseif ~isempty(Latitude) ||  ~isempty(Longitude)
+        error('FSDA:pcaFS:WrongInputOpt','Both Latitude and Longitude must be given.');
     else
     end
 
     % Show the geoplot using the Shape file
     if ~isempty(ShapeFile)
-         geoplotAPP(Ztable,score,ShapeFile,bsb)
+        geoplotAPP(Ztable,score,ShapeFile,bsb)
     end
-  
+
 end

@@ -68,7 +68,7 @@ function out=pcaFS(Y,varargin)
 %                   Example - 'biplot',0
 %                   Data Types - double
 %
-%  dispresults   : show the results in the command window. If dispresults
+%  dispresults   : show the results in the command window. Boolean. If dispresults
 %                   is true, the percentage of variance explained together
 %                   with the loadings, the criteria for deciding the number
 %                   of components to retain and the 5 units with the
@@ -76,6 +76,22 @@ function out=pcaFS(Y,varargin)
 %                   shown in the command window.
 %                   Example - 'dispresults',false
 %                    Data Types - char
+%
+% interpretation: facilate interepretion of components. Boolean
+%                  If interpretation is true (default is false).
+%                  for each component a new plot is shown.
+%                  In the upper panel we show the the bar associated with
+%                  the elements of the eigenvectors sorted. Bars are shown
+%                  in blue or red depending on their respective sign. In
+%                  the bottom panel we show on a line the values of the
+%                  coefficients. Vertical labels have a magnitude which
+%                  depends on the importance of the respective coefficient.
+%                  Finally, the caption of the plot shows the equation of
+%                  corresponding component as a linear combintation of the
+%                  original (scaled) variables.
+%                   Example - 'interpretation',false
+%                    Data Types - logical
+%
 %
 %    Latitude    : Latitude coordinates in degrees of the rows. nx1 vector containing the
 %                   numerical values of latitudes for each row.
@@ -326,13 +342,14 @@ robust=false;
 Latitude=[];
 Longitude=[];
 ShapeFile='';
+interpretation=false;
 
 if nargin>1
     options=struct('plots',plots, ...
         'standardize',standardize,'biplot', biplot,...
         'dispresults',dispresults,'NumComponents',NumComponents,...
         'robust',robust,'Latitude',Latitude,'Longitude',Longitude, ...
-        'ShapeFile',ShapeFile);
+        'ShapeFile',ShapeFile,'interpretation',interpretation);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -371,6 +388,7 @@ if nargin>1
     Longitude=options.Longitude;
     Latitude=options.Latitude;
     ShapeFile=options.ShapeFile;
+    interpretation=options.interpretation;
 end
 
 if istable(Y)
@@ -663,7 +681,8 @@ end
 % In this way the function which does PCA computations can be called
 % without pcaFS
 [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT, ...
-    score,scoreT,orthDist,scoreDist]=aux.computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile);
+    score,scoreT,orthDist,scoreDist]=aux.computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults, ...
+    plots,Latitude,Longitude,ShapeFile,interpretation);
 
 out=struct;
 out.Rtable=Rtable;
