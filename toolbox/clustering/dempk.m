@@ -704,7 +704,6 @@ end
 
 if ~(isscalar(plots) && plots==0)
     
-    figure();
     % set(gcf,'numbertitle','off'. 'name','Merging of the components found by kmeans');
     
     if v == 1

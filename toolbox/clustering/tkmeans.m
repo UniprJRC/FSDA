@@ -711,7 +711,6 @@ if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % 
     if v==1
         
         % Univariate case: plot the histogram
-        figure;
         histFS(Y,length(Y),idx);
                 
     elseif v>=2
@@ -757,7 +756,6 @@ if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % 
         end
         
         % bivariate scatter or scatter matrix
-        figure;
         spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlay);
      
     end
