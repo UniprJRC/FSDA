@@ -587,15 +587,11 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     load fisheriris;
     plo=struct;
     plo.nameY={'SL','SW','PL','PW'};
-    figure
-    spmplot(meas,'group',species,'plo',plo,'dispopt','hist','undock',logical(eye(size(meas,2))));
-    cascade
+    spmplot(meas,'group',species,'plo',plo,'dispopt','hist','undock',logical(eye(size(meas,2))),'tag','myspm');
 
     % This example uses a matrix n x 2 to set the undocked panels
     close all;
-    figure
-    spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','boxplotb','undock',[1,3;2,4]);
-    cascade
+    spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','boxplotb','undock',[1,3;2,4],'tag','myspm');
 %}
 
 %{
@@ -611,7 +607,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     over.type = 'contourf';
     over.include = logical([1 0 0]);
     over.cmap = summer;
-    figure
     spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay',over);
 %}
 
@@ -2103,7 +2098,7 @@ if ~isempty(overlay)
     % if the option overlay is specified, add specific objects out of the main
     % diagonal for the groups specified in include
 
-    % use default values for missing informations
+    % use default values for missing information
     if ischar(overlay)
         % when is a char it becomes the field type
         charoverlay = overlay;
@@ -2207,7 +2202,7 @@ if ~isempty(overlay)
     end
 
     % For type='ellipse', in the field conflev the user provides
-    % the onfidence level which control the size of the ellipse.
+    % the confidence level which control the size of the ellipse.
     % The default value uses chi2inv(0.95,2) (see the function ellipse).
     % If the user choice is invalid, it is set to default.
     if strcmp(type, 'ellipse') && isfield(overlay, 'conflev')
@@ -2330,10 +2325,6 @@ if ~isempty(overlay)
         end
     end
 
-    if isempty(undock)
-        % restore the current main axes when undock has not to be used
-        axes(BigAx);
-    end
 end
 
 
