@@ -97,25 +97,24 @@ document.write(divsbefore);</script>
 	</p>
 	<table cellpadding="4" cellspacing="0" class="auto-style2" style="width: 90%;">
 		<colgroup>
-			<col><col><col><col width="40%">
+			<col><col><col width="40%">
 		</colgroup>
 		<thead>
 			<tr valign="top">
 				<th bgcolor="#b2b2b2" style="width: 61px; height: 143px;" valign="top">
 				Version (Release)</th>
-				<th bgcolor="#b2b2b2" style="width: 112%; height: 143px;" valign="top">
+				<th bgcolor="#b2b2b2" style="width: 114%; height: 143px;" valign="top">
 				New Features and Changes</th>
-				<th bgcolor="#b2b2b2" style="width: 5%; height: 143px;" valign="top">
-				Version Compatibility Considerations</th>
 				<th bgcolor="#b2b2b2" style="width: 5%; height: 143px" valign="top">
 				Released date.
-				Fixed Bugs, Known Problems and Notes</th>
+				Fixed Bugs, Known Problems,&nbsp; Notes and Compatibility 
+				Consideration</th>
 			</tr>
 		</thead>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">&gt;8.7.9.8 
 			(2025b)</td>
-			<td style="vertical-align: top; height: 669px; width: 112%;">MULTIVARIATE 
+			<td style="vertical-align: top; height: 669px; width: 114%;">MULTIVARIATE 
 			DATA<br><br>In the biplot of PCA brush units with geographical data 
 			has been extended to shape files. <br>
 			For example, once a shape file is supplied to function pcaFS as 
@@ -191,21 +190,19 @@ Alternative a modal window shows the current verison is not the last
 			and SportHearth added.
 			
 			<br>
-			<td style="vertical-align: top; width: 20%; height: 669px;">Oldest version 
-			of MATLAB which is supported is R2020b<br></td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
-			November 2025<br><br><br><br>Clickable legend in some specific 
-			conditions&nbsp; does not work anymore<br><br>app biplotAPP was 
-			hardly readabable with dark mode them so thanks to the suggestion of
+			December 2025<br><br><br>app biplotAPP was hardly readable with dark 
+			mode them so thanks to the suggestion of
 			<a href="https://github.com/UniprJRC/FSDA/issues/112">Giacomo Boschi</a> 
 			light theme has been forced.<br><br>Function pcaProjeciton was 
 			inspired by a post of <a href="https://github.com/matteozanettii">
-			Matteo Zanetti</a></td>
+			Matteo Zanetti</a><br><br>Oldest version 
+			of MATLAB which is supported is R2020b<br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
 			<strong>V &gt;8.7.8.2<br>2025a </strong></td>
-			<td style="vertical-align: top; height: 669px; width: 112%;">MULTIVARIATE 
+			<td style="vertical-align: top; height: 669px; width: 114%;">MULTIVARIATE 
 			DATA<br><br><br>New redesigned&nbsp; interactive biplot APP which is 
 			invoked calling <a href="pcaFS.html">pcaFS</a> or directy through function&nbsp;
 			<a href="biplotFS.html">biplotFS</a>.<br>
@@ -272,19 +269,18 @@ Alternative a modal window shows the current verison is not the last
 			show instead of the scatters colored numbers of the correlation coefficient 
 			depending on the value (see for example image below)<br>
 			<img alt="" src="plots/img1B.jpg"><br><br></td>
-			<td style="vertical-align: top; width: 20%; height: 669px;">Oldest version 
-			of MATLAB which is supported is R2020a<br><br>Old function fanplot is 
-			deleted because it is replaced by fanplotFS</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
 			April 2025<br><br><br>In order to homogenize the output of FSR, FSRB, FSRH and FSM with that 
 			of the other estimators when no unit is declared as outlier inside output 
 			structure out, field outliers is returned as a missing. Before out.outliers 
-			was returned as a scalar NaN when no outlier was present. </td>
+			was returned as a scalar NaN when no outlier was present. <br><br>Oldest version 
+			of MATLAB which is supported is R2020a<br><br>Old function fanplot is 
+			deleted because it is replaced by fanplotFS</td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
 			<strong>V 8.7.6.8<br>2024b&nbsp; </strong></td>
-			<td style="vertical-align: top; height: 669px; width: 112%;"><br>MODEL 
+			<td style="vertical-align: top; height: 669px; width: 114%;"><br>MODEL 
 			SELECTION<br><br>New routine <a href="univariatems.html">univariatems</a> 
 			which enables to exclude&nbsp; variables which are surely not significant. 
 			The step is&nbsp; preliminary to (robust) variable selection.<br>
@@ -322,11 +318,6 @@ Alternative a modal window shows the current verison is not the last
 			<a href="pdfprotect.html">pdfprotect</a> which protects pdf files against 
 			printing and copying content and can add a watermark diagonally on all 
 			pages of the manuscript. <br><br></td>
-			<td style="vertical-align: top; width: 20%; height: 669px;">Oldest version 
-			of MATLAB which is supported is R2019b<br><br>Arguments blocks are introduced 
-			to validate the input<br><br>Given that the behaviour of function legend 
-			has changed in 2024b function clikablemultilegend which enables to hide/show 
-			the groups interactively has been rewritten<br><br></td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
 			<span>October 2024 <br><br><br><br>In MATLAB 2024b when you access the documentation from an installed 
 			version of MATLAB, the documentation now opens in your system web browser. 
@@ -334,12 +325,16 @@ Alternative a modal window shows the current verison is not the last
 			versions of MATLAB we were using a script which automatically redirected 
 			to the Internet documentation of FSDA which is located at
 			<a href="http://rosa.unipr.it/FSDA">http://rosa.unipr.it/FSDA</a>. Now 
-			this automatic redirection does not work anymore.</span></td>
+			this automatic redirection does not work anymore.<br><br>Oldest version 
+			of MATLAB which is supported is R2019b<br><br>Arguments blocks are introduced 
+			to validate the input<br><br>Given that the behaviour of function legend 
+			has changed in 2024b function clikablemultilegend which enables to hide/show 
+			the groups interactively has been rewritten<br></span></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
 			<strong>V 8.7.5.1<br>release&nbsp; 2024a&nbsp; </strong></td>
-			<td style="vertical-align: top; height: 669px; width: 112%;"><br>GRAPHICS<br>
+			<td style="vertical-align: top; height: 669px; width: 114%;"><br>GRAPHICS<br>
 			<br>Function fanplotFS.m now accepts in input not only the output of 
 			FSReda and <a href="FSRaddt.html">FSRaddt</a>.&nbsp; but also the output 
 			of FSReda, Sregeda and MMregeda. fanplotFS can be used also to monitor 
@@ -403,24 +398,18 @@ Alternative a modal window shows the current verison is not the last
 			with exploratory data analysis purposes).<br><br>APPS <br><br>CorAnaAPP 
 			which enables an interactive robust data analysis of the contingency 
 			tables<br><br><br>&nbsp;<br></td>
-			<td style="vertical-align: top; width: 20%; height: 669px;">Oldest version 
+			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">April 2024 
+			<br><br>Oldest version 
 			of MATLAB which is supported is R2019a<br><br>Function fanplot.m in 
 			order to avoid conflicts with function fanplot of the Financial Toolbox 
 			has been renamed fanplotFS.m. Old function fanplot.m has been left in 
 			the folder but it will be removed in a future release<br><br>Function 
-			playbackdemoFS.m has been removed<br><br>Thanks to MathWorks support 
-			now the FSDA tree has a new structure which improves the toolbox's polish, 
-			ease of maintenance, and developer/user experience. More specifically, 
-			subfolder +aux has been created in order to host the routines which 
-			do no have to be called directly by the user. Subfolders private have 
-			been added to each folder in order to host routines which are called 
-			just by the corresponding parent folder. </td>
-			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">April 2024 </td>
+			playbackdemoFS.m has been removed<br><br><br> </td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
 			<strong>V 8.7.2.4<br>release&nbsp; 2023b&nbsp; </strong></td>
-			<td style="vertical-align: top; height: 669px; width: 112%;"><br>REGRESSION<br>
+			<td style="vertical-align: top; height: 669px; width: 114%;"><br>REGRESSION<br>
 			<br>New option DataVars inside <a href="FSRaddt.html">FSRaddt</a> which 
 			enables to select the variables for which t deletion tests have to be 
 			computed. <br><br>New option DataVars inside <a href="aceplot.html">
@@ -453,8 +442,6 @@ Alternative a modal window shows the current verison is not the last
 			(hierarchical) merging of the inflated number of components found by
 			<a href="tkmeans.html">tkmeans</a> or <a href="tclust.html">tclust</a>.
 			<br></td>
-			<td style="vertical-align: top; width: 20%; height: 669px;">Oldest version 
-			of MATLAB which is supported is R2018b</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
 			April 2023- October 
 			2023 <br><br><br>DOCUMENTATION BUG FIXED<br><br>If inside Home|Preferences the option &quot;Documentation 
@@ -470,7 +457,7 @@ Alternative a modal window shows the current verison is not the last
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
 			<strong>V 8.7.0.0<br>R 2023a&nbsp; </strong></td>
-			<td style="vertical-align: top; height: 669px; width: 112%;"><br>REGRESSION
+			<td style="vertical-align: top; height: 669px; width: 114%;"><br>REGRESSION
 			<br><br>Now function <a href="LTSts.html">LTSts</a> also accepts missing 
 			values in the response <br><br>GRAPHICS<br>New option Varnames in
 			<a href="aceplot.html">aceplot. </a><br>New option showBars in
@@ -512,20 +499,20 @@ Alternative a modal window shows the current verison is not the last
 			<br><br>New function <a href="GUIautocorr.html">GUIautocorr</a> which 
 			shows the calculations to obtain the autocorrelation.<br><br><br>
 			</td>
-			<td style="vertical-align: top; width: 20%; height: 669px;">Oldest version 
-			of MATLAB which is supported is R2018a</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
 			December 2022-April 
 			2023<br>
 			<br>Independently on the documentation location&nbsp; inside Home|Preferences&nbsp; 
 			the FSDA help which is called is the one inside
 			<a href="http://rosa.unipr.it/FSDA">http://rosa.unipr.it/FSDA</a>.<br>
+			<br><br>Oldest version 
+			of MATLAB which is supported is R2018a<br>
 			<br>&nbsp;</td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
 			<strong>V 8.6.3<br>R 2022b </strong></td>
-			<td style="vertical-align: top; height: 669px; width: 112%;">CLUSTERING 
+			<td style="vertical-align: top; height: 669px; width: 114%;">CLUSTERING 
 			DATASETS <br><br>New datasets spam,&nbsp; crabs and USArrest added
 			<br><br>MULTIVARIATE DATASETS<br><br>New dataset clothes added<br>
 			<br>REGRESSION&nbsp; DATASETS <br><br>New datasets P12119085full and 
@@ -535,18 +522,17 @@ Alternative a modal window shows the current verison is not the last
 			<a href="LTSts.html">LTSts</a> added in order to replace lagged values 
 			with estimated values in presence of an autoregressive component.
 			<br><br>.</td>
-			<td style="vertical-align: top; width: 20%; height: 669px;">Oldest version 
-			of MATLAB which is supported is R2017b</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
 			December 2022<br>
 			<br>In order to visualize properly the HTML FSDA help files, it is necessary 
 			inside Preferences to select as Documentation Location "Installed Locally" 
-			in MATLAB Help Preferences.<br></td>
+			in MATLAB Help Preferences.<br><br>Oldest version 
+			of MATLAB which is supported is R2017b<br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
 			<strong>V 8.6.0<br>R 2022b </strong></td>
-			<td style="vertical-align: top; height: 669px; width: 112%;">DATASETS
+			<td style="vertical-align: top; height: 669px; width: 114%;">DATASETS
 			<br><br>New datasets kidney, melody and wholesale, added to the section 
 			clustering datasets. Description added to datasets inside the table 
 			format <br><br>UTILITIES STAT <br><br>New functions
@@ -566,21 +552,20 @@ Alternative a modal window shows the current verison is not the last
 			<br><br>GUIs <br><br>New function <a href="GUIcorr.html">GUIcorr</a> 
 			added to show the calculations to compute the correlation coefficient
 			</td>
-			<td style="vertical-align: top; width: 20%; height: 669px;">All functions 
-			(OPTrho, OPTpsi, OPTpsider, OPTwei, OPTpsix, have been rewritten using 
-			as input the intervals, [0 c2/3], [(2/3)c c], &gt;c instead of the intervals 
-			[0 2c], [2c 3c], &gt;3c <br><br>Oldest version of MATLAB which is supported 
-			is R2017b</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
 			November 2022<br>
 			<br>In order to visualize properly the HTML FSDA help files, it is necessary 
 			inside Preferences to select as Documentation Location "Installed Locally" 
-			in MATLAB Help Preferences.<br></td>
+			in MATLAB Help Preferences.<br><br>All functions 
+			(OPTrho, OPTpsi, OPTpsider, OPTwei, OPTpsix, have been rewritten using 
+			as input the intervals, [0 c2/3], [(2/3)c c], &gt;c instead of the intervals 
+			[0 2c], [2c 3c], &gt;3c <br><br>Oldest version of MATLAB which is supported 
+			is R2017b<br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
 			<strong>V &gt;8.5.26<br>R 2022b </strong></td>
-			<td style="vertical-align: top; height: 669px; width: 112%;">DATASETS<br>
+			<td style="vertical-align: top; height: 669px; width: 114%;">DATASETS<br>
 			<br>New datasets kidney, melody and wholesale, added to the section 
 			clustering datasets.<br><br>UTILITIES STAT<br><br>New functions
 			<a href="Mlocation.html">Mlocation</a> and <a href="Mlocsca.html">Mlocsca</a> 
@@ -589,19 +574,18 @@ Alternative a modal window shows the current verison is not the last
 			<br>REGRESSION CLUSTERING<br><br><a href="tclustreg.html">tclustreg</a> 
 			returns in output the value of the objective function for each subset 
 			after the concentration steps.<br></td>
-			<td style="vertical-align: top; width: 20%; height: 669px;">All functions 
-			(OPTrho, OPTpsi, OPTpsider, OPTwei, OPTpsix, have been rewritten using 
-			as input the intervals, [0 c2/3], [(2/3)c c], &gt;c instead of the intervals 
-			[0 2c], [2c 3c], &gt;3c</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
 			October 2022<br><br>In order to visualize properly the HTML FSDA help files, it 
 			is necessary inside Preferences to select as Documentation Location &quot;Installed 
-			Locally&quot; in MATLAB Help Preferences.<br></td>
+			Locally&quot; in MATLAB Help Preferences.<br><br>All functions 
+			(OPTrho, OPTpsi, OPTpsider, OPTwei, OPTpsix, have been rewritten 
+			using as input the intervals, [0 c2/3], [(2/3)c c], &gt;c instead of 
+			the intervals [0 2c], [2c 3c], &gt;3c<br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 1802px; width: 61px;">
 			<strong>V 8.5.26<br>R 2022a </strong></td>
-			<td style="vertical-align: top; height: 1802px; width: 112%;">
+			<td style="vertical-align: top; height: 1802px; width: 114%;">
 			<p class="p1">GRAPHICS</p>
 			<p class="p1">New option PlotGroup in <a href="scatterboxplot.html">
 			scatterboxplot.m</a></p>
@@ -650,7 +634,6 @@ Alternative a modal window shows the current verison is not the last
 			<p class="p1">GRAPHICS</p>
 			<p class="p1">New options oneplot added to aceplot.m</p>
 			</td>
-			<td style="vertical-align: top; width: 20%; height: 1802px;">&nbsp;</td>
 			<td class="auto-style1" style="vertical-align: top; height: 1802px; width: 14%;">
 			April 2022<br><br>In order to visualize properly the HTML FSDA help files, it 
 			is necessary inside Preferences to select as Documentation Location &quot;Installed 
@@ -659,7 +642,7 @@ Alternative a modal window shows the current verison is not the last
 		<tr>
 			<td style="vertical-align: top; height: 1802px; width: 61px;">
 			<strong>V8.5.10<br>R 2021b&nbsp; </strong></td>
-			<td style="vertical-align: top; height: 1802px; width: 112%;">
+			<td style="vertical-align: top; height: 1802px; width: 114%;">
 			<p class="p5">ROBUST CLUSTERING</p>
 			<p class="p1">Likelihood ratio test inside ctlcurves.m and extended 
 			output which automatically detects a set of candidate solutions.</p>
@@ -698,18 +681,16 @@ Alternative a modal window shows the current verison is not the last
 			<p class="p1">New function <a href="setdiffFS.html">setdiffFS</a> in 
 			case input arguments just contain positive integer values.</p>
 			</td>
-			<td style="vertical-align: top; width: 20%; height: 1802px;">In a lot 
-			of functions the instruction coder.target('MATLAB') appears in order 
-			to cope with the MATLAB C coder requirements.<br><br>We stop supporting 
-			releases before 2016b.<br><br>Functions balloonplot and mdpattern use 
-			bubblechart routine and therefore only work with MATLAB 2020b or greater.</td>
 			<td class="auto-style1" style="vertical-align: top; height: 1802px; width: 14%;">
-			October 2021<br><br><br></td>
+			October 2021<br><br>In a lot of functions the instruction 
+			coder.target('MATLAB') appears in order to cope with the MATLAB C 
+			coder requirements.<br><br>Functions balloonplot and mdpattern use 
+			bubblechart routine and therefore only work with MATLAB 2020b or greater.<br><br><br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 1802px; width: 61px;">
 			<strong>V8.5.4 R2021a </strong></td>
-			<td style="vertical-align: top; height: 1802px; width: 112%;">
+			<td style="vertical-align: top; height: 1802px; width: 114%;">
 			<p class="p5">MULTIVARIATE ANALYSIS</p>
 			<p class="p1">New function <a href="pcaFS.html">pcaFS</a> which enables 
 			to visualize both the percentage of variable explained by the different 
@@ -786,19 +767,18 @@ Alternative a modal window shows the current verison is not the last
 			<a href="GUIregress.html">GUIregress.html</a></p>
 			<p class="p1">&nbsp;</p>
 			</td>
-			<td style="vertical-align: top; width: 20%; height: 1802px;">Routines 
-			pcaFS&nbsp; and biplotFS assume that at least MATLAB 2019b is installed.<br>
-			<br>We stop supporting releases before 2016a.</td>
 			<td class="auto-style1" style="vertical-align: top; height: 1802px; width: 14%;">
 			March 2021<br><br>Starting from MATLAB 2021a in order to view the FSDA html documentation 
 			it is necessary <br><span>on the Home tab, in the Environment section, 
 			click Preferences. Select MATLAB &gt; Help and change the Documentation 
 			Location.<br>In this case select&nbsp; </span><br>&nbsp;option &quot;installed 
-			locally&quot;.<br></td>
+			locally&quot;.<br><br><br>Routines 
+			pcaFS&nbsp; and biplotFS assume that at least MATLAB 2019b is installed.<br>
+			<br>We stop supporting releases before 2016a.<br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V8.3.0 (R2020b)</strong></td>
-			<td style="vertical-align: top; width: 112%;">
+			<td style="vertical-align: top; width: 114%;">
 			<p class="p5"></p>
 			<p class="p5">TRANSFORMATIONS IN REGRESSION</p>
 			<p class="p5">We have enriched the properties of the data transformations 
@@ -885,20 +865,19 @@ Alternative a modal window shows the current verison is not the last
 			<a href="datasets_clu.html">datasets clustering section</a> respectively
 			</p>
 			</td>
-			<td style="vertical-align: top; width: 20%;">We stop supporting releases 
-			before 2015b.<br><br><br>Functions FSRfan, ScoreYJ and ScoreYJall made 
-			faster</td>
 			<td class="auto-style1" style="vertical-align: top; width: 14%;">October 18th &nbsp;2020<br>
 			<br><br>Mathworks 
 			search engine in our HTML web pages in version 2020b works again.<br>
 			<br>Routines fanBICpn, tclustICgpcm and tclustICplot gpcm use routine 
 			heatmap introduced in MATLAB&nbsp; 2017a. <br><br>Routine tclustregeda 
 			to display the results uses function parallelplot introduced in Matlab 
-			2019a.<br><br><br></td>
+			2019a.<br><br>We stop supporting releases 
+			before 2015b.<br><br><br>Functions FSRfan, ScoreYJ and ScoreYJall made 
+			faster<br><br><br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V8.0 (R2020a)</strong></td>
-			<td style="vertical-align: top; width: 112%;">
+			<td style="vertical-align: top; width: 114%;">
 			<p class="p5">&nbsp;</p>
 			<p class="p5">ROBUST REGRESSION</p>
 			<p class="p5">New set of routines for minimum density power divergence 
@@ -963,16 +942,10 @@ Alternative a modal window shows the current verison is not the last
 			and therefore undocumented. <br><br>From this release we support older 
 			releases up to 2015a (however about 85% of the FSDA still runs with 
 			older versions of MATLAB up to 2012a). </td>
-			<td class="auto-style1" style="vertical-align: top; width: 14%;">April &nbsp;2020<br>
-			<br>Mathworks 
-			search engine in our HTML web pages in version 2020a does not work anylonger.<br>
-			To search for FSDA function it is necessary to use the supplemental 
-			software search engine.<br><br>Corrected small bug in LTSts in case 
-			of level shift with very small series.<br><br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V7.1 (R2019b)</strong></td>
-			<td style="vertical-align: top; width: 112%;">
+			<td style="vertical-align: top; width: 114%;">
 			<p class="p5">This is the first release which is distributed from Mathworks 
 			marketplace and from github platform. </p>
 			<p class="p5">TRANSFORMATION IN REGRESSION </p>
@@ -1002,17 +975,10 @@ Alternative a modal window shows the current verison is not the last
 			not need anymore the presence of MEX files. This modification has been 
 			made necessary because at present Mathworks toolbox packaging does not 
 			support mex files.<br></td>
-			<td class="auto-style1" style="vertical-align: top; width: 14%;">October &nbsp;2019<br>
-			<br>Fixed 
-			a bug in <a href="tclustICplot.html">tclutICplot</a><br>New function 
-			startup.m has been added to the main folder of FSDA which copies all 
-			HTML documentation files in subfolder (FSDA root)/helpfiles/FSDA into 
-			(MATLAB docroot/help). The files can be copied in Windows system just 
-			if the user has administrator privileges. <br><br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V7.0 (R2019a)</strong></td>
-			<td style="vertical-align: top; width: 112%;">
+			<td style="vertical-align: top; width: 114%;">
 			<p class="p5">CLUSTER ANALYSIS</p>
 			<p class="p5">Function <a href="tclustreg.html">tclustreg</a> has been 
 			considerably enhanced. Now the function includes: (i) robust BIC, (ii) 
@@ -1111,16 +1077,15 @@ Alternative a modal window shows the current verison is not the last
 			<p class="p1">&nbsp;</p>
 			<p class="p1">&nbsp;</p>
 			</td>
-			<td style="vertical-align: top; width: 20%;">This is the last release 
-			where we&nbsp; we support old releases up to 2012a. <br></td>
 			<td class="auto-style1" style="vertical-align: top; width: 14%;">May &nbsp;2019<br>
 			<br>Fixed 
 			a bug in mtR when the user wanted to continue the simulation using a 
-			negative seed<br><br></td>
+			negative seed<br><br>This is the last release 
+			where we&nbsp; we support old releases up to 2012a. <br><br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V6.1 (R2018b)</strong></td>
-			<td style="vertical-align: top; width: 112%;">
+			<td style="vertical-align: top; width: 114%;">
 			<p class="p1">(1) New function <a href="qqplotFS.html">qqplotFS</a> 
 			that enables to create a qqplot of residuals with confidence bands
 			</p>
@@ -1143,7 +1108,6 @@ Alternative a modal window shows the current verison is not the last
 			to create in a automatic way the bibliography from the citations present 
 			inside the .m files.</p>
 			</td>
-			<td style="vertical-align: top; width: 20%;"><br></td>
 			<td class="auto-style1" style="vertical-align: top; width: 14%;">September &nbsp;2018<br>
 			<br><br>Fixed 
 			a problem in the brushing from spmplot and on the diagonal there are 
@@ -1155,7 +1119,7 @@ Alternative a modal window shows the current verison is not the last
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V6.0 (R2018a)</strong></td>
-			<td style="vertical-align: top; width: 112%;">
+			<td style="vertical-align: top; width: 114%;">
 			<p class="p1">(1) New function <a href="tclusteda.html">tclusteda</a> 
 			that helps choosing the best tclust model. It computes
 			<a href="tclust.html">tclust</a> for different values of the trimming 
@@ -1197,24 +1161,23 @@ Alternative a modal window shows the current verison is not the last
 			<a href="ClusterRelabel.html">ClusterRelabel</a>, to track the indexes 
 			permutations used to rearch a desired cluster labelling.</p>
 			</td>
-			<td style="vertical-align: top; width: 20%;">From release 2018a we support 
-			old releases up to 2012a. <br><br>From 2018a the use of subfunctions 
-			tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS which compute inverse, pdf, cdf 
-			of the T and F distribution are not supported anymore.<br><br>Following 
-			the feedback provided by our users, Function UnitsSameCluster (which 
-			was introduced in R2017a) has been renamed (for better readability)
-			<a href="ClusterRelabel.html">ClusterRelabel</a></td>
 			<td class="auto-style1" style="vertical-align: top; width: 14%;">May&nbsp; 2018<br>
 			<br>Fixed 
 			a series of problems associated to MATLAB 2018a. For example now empty 
 			variables which will contain numbers have been initialized with [], 
 			while empty variables which contain characters are initialized with 
 			' '. See for example functions <a href="yXplot.html">yXplot</a> and
-			<a href="spmplot.html">spmplot</a>.</td>
+			<a href="spmplot.html">spmplot</a>.<br><br>From release 2018a we support 
+			old releases up to 2012a. <br><br>From 2018a the use of subfunctions 
+			tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS which compute inverse, pdf, cdf 
+			of the T and F distribution are not supported anymore.<br><br>Following 
+			the feedback provided by our users, Function UnitsSameCluster (which 
+			was introduced in R2017a) has been renamed (for better readability)
+			<a href="ClusterRelabel.html">ClusterRelabel</a></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V5.1 (R2017b)</strong></td>
-			<td style="vertical-align: top; width: 112%;">
+			<td style="vertical-align: top; width: 114%;">
 			<p class="p5"><span class="s1">FSDA has introduced&nbsp;two new&nbsp;categories 
 			of tools, one for (robust) time series analysis; another for analyzing 
 			categorical data and contingency tables. More precisely:</span></p>
@@ -1266,7 +1229,6 @@ Alternative a modal window shows the current verison is not the last
 			enriched to superimpose ellipses, density and contour functions to data 
 			and extract single panels from the scatter matrix.</span></p>
 			</td>
-			<td style="vertical-align: top; width: 20%;">&nbsp;</td>
 			<td class="auto-style1" style="vertical-align: top; width: 14%;">November 2017<br>
 			<br>Various 
 			inconsistencies in the browsing of the documentation pages and the bibliography 
@@ -1274,7 +1236,7 @@ Alternative a modal window shows the current verison is not the last
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V5.0 (R2017a)</strong></td>
-			<td style="vertical-align: top; width: 112%;">CLUSTERING <br>Function
+			<td style="vertical-align: top; width: 114%;">CLUSTERING <br>Function
 			<a href="tclustreg.html">tclustreg</a> now includes trimmed Cluster 
 			Weighted Restricted Models.
 			<p></p>
@@ -1315,7 +1277,6 @@ Alternative a modal window shows the current verison is not the last
 			in order to take as input the output of procedures which monitor robust 
 			estimators.<br><br></p>
 			</td>
-			<td style="vertical-align: top; width: 20%;">&nbsp;</td>
 			<td style="vertical-align: top; width: 14%;">May 2017 <br><br>Control version added in 
 			many graphical routines to take account the modifications in MATLAB 
 			2017a
@@ -1328,7 +1289,7 @@ Alternative a modal window shows the current verison is not the last
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><b>V4.1 (R2016b)</b></td>
-			<td style="vertical-align: top; width: 112%;">New functions for&nbsp; 
+			<td style="vertical-align: top; width: 114%;">New functions for&nbsp; 
 			bivariate density estimation and random thinning (<a href="kdebiv.html">kdebiv.m</a>,
 			<a href="rthin.html">rthin.m</a>) used to extend tclustreg.m features.<br>
 			<br>The FSDA help folder now contains XML files associated to the functions 
@@ -1336,19 +1297,18 @@ Alternative a modal window shows the current verison is not the last
 			or using a GUI the functions documentation, in html as well as in the 
 			function head. <br><br>New html documentation generated with
 			<a href="publishFS.html">publishFS</a>.<br></td>
-			<td style="vertical-align: top; width: 20%;">We are monitoring&nbsp; 
-			possible compatibility issues that may emerge from&nbsp; changes in 
-			the tagging policy of the graphical objects in MATLAB.<br></td>
 			<td style="vertical-align: top; width: 14%;">October 2016<br><br>add2spm modified to take 
 			into account a change in the property name of the legend object introduced 
 			in MATLAB R2016b<br>(LegendPeerHandle is now called LayoutPeers).
 			<br><br>A change in MATLAB R2016b&nbsp; function legend.m was affecting 
 			FSDA function add2yX (the legend was plotted twice). Bug fixed.<br>
-			<br>Bug affecting FSMeda only in the univariate case fixed.<br></td>
+			<br>Bug affecting FSMeda only in the univariate case fixed.<br><br>We are monitoring&nbsp; 
+			possible compatibility issues that may emerge from&nbsp; changes in 
+			the tagging policy of the graphical objects in MATLAB.<br><br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><b>V4.0 (R2016a)</b></td>
-			<td style="vertical-align: top; width: 112%;">Major release.<br><br>New 
+			<td style="vertical-align: top; width: 114%;">Major release.<br><br>New 
 			function, publishFS, introduced to generate documentation pages directly 
 			from the .m files. <br><br>New function, makecontentsfileFS, introduced 
 			to create a the list of files present in a FSDA folder and/or subfolders. 
@@ -1370,20 +1330,19 @@ Alternative a modal window shows the current verison is not the last
 			a certain efficiency (HUeff), the psi functions (HUpsi), its derivative 
 			(HUpsider), etc. For a full list, see functions under utilities_stats 
 			folder. <br><br><br></td>
-			<td style="vertical-align: top; width: 20%;">Documentation made compatible 
-			with the new MATLAB help navigation and browser-style, which was redesigned 
-			in release R2015b. <br><br><br></td>
 			<td style="vertical-align: top; width: 14%;">May 2016<br><br>Many small bugs fixed. 
 			Functions affected include tclust, tclustReg, position, MixSimReg.<br>
 			<br>ClickableMultiLegend made compatible with R2016a. <br><br>drawnow 
 			command introduced in several graphical functions, to solve episodic 
-			bugs in the generation of the plots.<br><br></td>
+			bugs in the generation of the plots.<br><br>Documentation made compatible 
+			with the new MATLAB help navigation and browser-style, which was redesigned 
+			in release R2015b. <br><br></td>
 		</tr>
 		<tr>
 			<td bgcolor="#f2f2f2" style="width: 61px">
 			<p><b>V3.1 (R2015b)</b></p>
 			</td>
-			<td style="width: 112%">Major release.
+			<td style="width: 114%">Major release.
 			<p>Function simdataset.m modified to allow the user to simulate outliers 
 			from different distributions and contamination schemes and/or contaminate 
 			existing datasets. </p>
@@ -1406,7 +1365,6 @@ Alternative a modal window shows the current verison is not the last
 			<p>New routine for automatic outlier detection in heteroskdastic regression 
 			(FSRH.m)</p>
 			</td>
-			<td style="width: 20%"><br></td>
 			<td style="width: 14%">September 2015<br><br>In function spmplot, the multiple histograms 
 			(boxplots) on the main diagonal of the scatter plot matrix is now working 
 			also with R2015a and R2015b.
@@ -1421,7 +1379,7 @@ Alternative a modal window shows the current verison is not the last
 			<td bgcolor="#f2f2f2" style="width: 61px">
 			<p><b>V3.0 (R2015a)</b></p>
 			</td>
-			<td bgcolor="#f2f2f2" style="width: 112%;">Major release.
+			<td bgcolor="#f2f2f2" style="width: 114%;">Major release.
 			<p>Added robust regression (tau) and multivariate estimators (Stahel-Donoho). 
 			Functions taureg.m and SDest.m. New weight functions (hyperbolic, Hampel 
 			and optimal).<br>New routine for robust Bayesian regression (i.e.
@@ -1441,10 +1399,6 @@ Alternative a modal window shows the current verison is not the last
 			New function to compute the cdf of the linear combination of non central 
 			chi-squared random variables (<a href="ncx2mixtcdf.html">ncx2mixtcdf</a>).</p>
 			</td>
-			<td bgcolor="#f2f2f2" style="width: 20%">
-			<p>Documentation made compatible with the new help system introduced 
-			with MATLAB R2015a</p>
-			</td>
 			<td bgcolor="#f2f2f2" style="width: 14%">
 			<p>&nbsp;</p>
 			<p>February 2015</p>
@@ -1452,13 +1406,15 @@ Alternative a modal window shows the current verison is not the last
 			<p>In function spmplot, the multiple histograms (boxplots) on the main 
 			diagonal of the scatter plot matrix do not work with R2015a because 
 			of recent changes in gplotmatrix. </p>
+			<p>Documentation made compatible with the new help system introduced 
+			with MATLAB R2015a</p>
 			</td>
 		</tr>
 		<tr>
 			<td bgcolor="#f2f2f2" style="width: 61px">
 			<p><b>V2.1 (R2013a)</b></p>
 			</td>
-			<td bgcolor="#f2f2f2" style="width: 112%;">
+			<td bgcolor="#f2f2f2" style="width: 114%;">
 			<p>New very fast implementation of the Forward Search for multivariate 
 			analysis (<a href="fsmmmd.html">FSMmmd</a>). Forward Search in regression 
 			modified to deal with the cases in which in a particular step of the 
@@ -1467,19 +1423,17 @@ Alternative a modal window shows the current verison is not the last
 			groups and multiple boxplots on the main diagonal (<a href="spmplot.html">spmplot</a>).<br>
 			</p>
 			</td>
-			<td bgcolor="#f2f2f2" style="width: 20%">
-			<p>Structure modified for compatibility with MATLAB R2012b to R2013a 
-			releases. Three APPs introduced in release R2013a. </p>
-			</td>
 			<td bgcolor="#f2f2f2" style="width: 14%">
 			<p><br>May 2013</p>
+			<p>Structure modified for compatibility with MATLAB R2012b to R2013a 
+			releases. Three APPs introduced in release R2013a</p>
 			</td>
 		</tr>
 		<tr valign="top">
 			<td bgcolor="#f2f2f2" style="width: 61px">
 			<p><b>V2.0 (R2011b)</b></p>
 			</td>
-			<td bgcolor="#f2f2f2" style="width: 112%;">
+			<td bgcolor="#f2f2f2" style="width: 114%;">
 			<p>Major release. Traditional robust estimators added including S, MM, 
 			MCD, MVE, (<a href="sreg.html">Sreg</a>, <a href="smult.html">Smult</a>,
 			<a href="mmreg.html">MMreg</a>, <a href="mmmult.html">MMmult</a>,
@@ -1487,40 +1441,33 @@ Alternative a modal window shows the current verison is not the last
 			and bivariate analysis (<a href="unibiv.html">unibiv</a>). New interactive 
 			plots and interactive graphics features.<br></p>
 			</td>
-			<td bgcolor="#f2f2f2" style="width: 20%">
-			<p>Redesigned the definition of many optional input parameters in terms 
-			of structures </p>
-			</td>
 			<td bgcolor="#f2f2f2" style="width: 14%">
 			<p><br>September 2011</p>
+			<p>Redesigned the definition of many optional input parameters in terms 
+			of structures </p>
 			</td>
 		</tr>
 		<tr valign="top">
 			<td bgcolor="#f2f2f2" style="width: 61px">
 			<p><b>V1.1 (R2010b)</b></p>
 			</td>
-			<td bgcolor="#f2f2f2" style="width: 112%;">
+			<td bgcolor="#f2f2f2" style="width: 114%;">
 			<p>Multivariate data analysis routines have been added. Function
 			<a href="resfwdplot.html">resfwdplot</a> considerably improved. <br>
 			</p>
 			</td>
-			<td bgcolor="#f2f2f2" style="width: 20%">
-			<p><br>-</p>
-			</td>
 			<td bgcolor="#f2f2f2" style="width: 14%">
 			<p><br>September 2010</p>
+			<p>A few functions use ~ to denote unused output parameters as from 
+			release 2009b</p>
 			</td>
 		</tr>
 		<tr>
 			<td bgcolor="#f2f2f2" style="width: 61px">
 			<p><b>V1.0 (R2010a)</b></p>
 			</td>
-			<td bgcolor="#f2f2f2" style="width: 112%;">
+			<td bgcolor="#f2f2f2" style="width: 114%;">
 			<p>-<br></p>
-			</td>
-			<td bgcolor="#f2f2f2" style="width: 20%">
-			<p>A few functions use ~ to denote unused output parameters as from 
-			release 2009b</p>
 			</td>
 			<td bgcolor="#f2f2f2" style="width: 14%">
 			<p><br>February 2010</p>
@@ -1528,8 +1475,7 @@ Alternative a modal window shows the current verison is not the last
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><br></td>
-			<td style="vertical-align: top; width: 112%;"><br></td>
-			<td style="vertical-align: top; width: 20%;"><br></td>
+			<td style="vertical-align: top; width: 114%;"><br></td>
 			<td style="vertical-align: top; width: 14%;"><br></td>
 		</tr>
 	</table>
