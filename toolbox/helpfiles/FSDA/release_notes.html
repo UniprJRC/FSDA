@@ -109,7 +109,7 @@ document.write(divsbefore);</script>
 				Version Compatibility Considerations</th>
 				<th bgcolor="#b2b2b2" style="width: 5%; height: 143px" valign="top">
 				Released date.
-				Fixed Bugs and Known Problems</th>
+				Fixed Bugs, Known Problems and Notes</th>
 			</tr>
 		</thead>
 		<tr>
@@ -128,7 +128,24 @@ out=pcaFS(X,'ShapeFile',ShapeFile);</code></pre>
 			<br>after clicking on Brush units in the biplot, once the units are selected 
 			in the biplot the associated shape file with the brushed units automatically 
 			appears on the screen<br><br>
-			<img alt="" height="906" src="plots/img2.jpg" width="1700"><br><br>STATISTICAL 
+			<img alt="" height="906" src="plots/img2.jpg" width="1700"><br><br>New function pcaProjection which shows
+   1. A 3D scatterplot with the line associated with the 1st PC.<br>
+   2. A 3D scatterplot with the principal line and orthogonal projections.<br>
+   3. A 3D scatterplot with orthogonal projections onto the plane
+       of the first 2 PCs. <br>
+   4. A 3D scatterplot projections onto the first three PCs. <br>
+   5. A 3D scatterplot with the principal ellipsoid in the projected coordinates space. <br>
+   6. A 3D scatterplot with the principal ellipsoid in the original coordinates space.<br>
+
+<br>For example the code<br><br>
+<pre><code class="python">load citiesItaly.mat
+pcaProjection(citiesItaly);
+</code></pre>
+produces<br><br>
+
+			
+			<img alt="" height="697" src="images/img4A.jpg" width="1700"><br><br>
+			<br><br>STATISTICAL 
 			UTILITIES<br><br>New option plots has been added to <code>grpstatsFS</code>. 
 			If option plots is true now the 95 confidence intervals (separated for 
 			each level of the grouping variable) are shown on the screen.<br>
@@ -178,7 +195,12 @@ Alternative a modal window shows the current verison is not the last
 			of MATLAB which is supported is R2020b<br></td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
 			November 2025<br><br><br><br>Clickable legend in some specific 
-			conditions&nbsp; does not work anymore</td>
+			conditions&nbsp; does not work anymore<br><br>app biplotAPP was 
+			hardly readabable with dark mode them so thanks to the suggestion of
+			<a href="https://github.com/UniprJRC/FSDA/issues/112">Giacomo Boschi</a> 
+			light theme has been forced.<br><br>Function pcaProjeciton was 
+			inspired by a post of <a href="https://github.com/matteozanettii">
+			Matteo Zanetti</a></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
