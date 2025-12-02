@@ -49,7 +49,7 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color, axesellipse)
 %                    Data Types - [0 0 1] (default) | RGB triplet | color string | 'none'
 %
 % axesellipse   : axes of the ellipse. Boolean. If axes is true (default)
-%                 dottted lines along the major axes of the ellipse are
+%                 dotted lines along the major axes of the ellipse are
 %                 drawn else just the ellipse contour appears.
 %                    Example - 'axesellipse', false
 %                    Data Types - Boolean
