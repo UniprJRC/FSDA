@@ -4,16 +4,15 @@
  multialign of the BioInformatics toolbox is called several times with all
  the default options. Note that if the alignment of a sequence inside
  Seqs2align changes the reference sequences we call again function
- multialign using the 'Name',Value, GapOpen',100000 in order to allow the
+ multialign using the 'Name',Value, 'GapOpen',100000 in order to allow the
  possibility of creating gaps or adding additional characters in the
- reference sequence. If the new call to multialign:
- 1) creates gap(s) in the reference sequences (refSeqs) we delete the
- characters corresponding to the gaps in the aligned sequence
- and store this information inside boolean variable usedGap of output
- table SeqsMultiAligned.</p> <p>
- 2) creates additional characters at the end of the reference sequences
+ reference sequence. If the new call to multialign with the option 'GapOpen', 100000:
+ 1) does not change the reference sequences (refSeqs) we flag with 1 in
+ the corresponding element of the field usedGapOpen of output structure
+ Seqsaligned.</p> <p>
+ 2) creates additional characters in the middle or at the end of the reference sequences
  (refSeqs) we delete the additional characters and store this information
- inside boolean vector usedDeletion of output table SeqsMultiAligned.</p><p>
+ inside boolean vector usedDeletion of output structure Seqsaligned.</p><p>
 
  As a result of this process the number of sites (characters) in the
  reference sequence is kept fixed and all the aligned sequences will have
@@ -33,9 +32,9 @@ refSequences=multialign(refSequences);
 Seqs2align=[Seqs2align(2:101)];
 %Call of multialgin2ref with all default arguments
 Seqsaligned=multialign2ref(refSequences,Seqs2align);</pre></div></div><pre class="codeoutput">Process started
-   25-Mar-2025 21:54:35
+   03-Dec-2025 10:39:31
 
-Total estimated time (seconds)=5.8085
+Total estimated time (seconds)=5.8035
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example without using the parallel computing toolbox.</li></span></a></span></h3><div class="collapse"><p>
      Load fastafile containing original covid and other sequences<div class="programlisting"><div class="codeinput"><pre class="matlab-code">Seqs2align = fastaread("X01sel.txt");
 % Load fasta file containing the 5 covid variants
@@ -61,9 +60,9 @@ refSequences=multialign(refSequences);
 Seqs2align=[Seqs2align(2:101)];
 %Call of multialign2ref with all default arguments
 [Seqsaligned,WrngAlignment]=multialign2ref(refSequences,Seqs2align);</pre></div></div><pre class="codeoutput">Process started
-   25-Mar-2025 21:54:46
+   03-Dec-2025 10:39:41
 
-Total estimated time (seconds)=8.0907
+Total estimated time (seconds)=5.6188
 </pre></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_refSeqs" class="clearfix"> </div> <h3 id="input_argument_refSeqs" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>refSeqs</code> &#8212; Reference sequences already aligned. </span>  </a><span class="example_desc">Vector of structures.</span></span></h3> <div class="collapse"> <p>Vector of structures of length a with the fields 
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Sequence</code></td><td><p>for the residues and</p></td></tr><tr valign="top"><td><code>Header</code></td><td><p>(or 'refSeqs.Name') for the labels.</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Seqs2align" class="clearfix"> </div> <h3 id="input_argument_Seqs2align" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Seqs2align</code> &#8212; Sequences which have to be aligned. </span>  </a><span class="example_desc">Vector of structures.</span></span></h3> <div class="collapse"> <p>Vector of structures of length n with the fields 
        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Sequence</code></td><td><p>for the residues and</p></td></tr><tr valign="top"><td><code>Header</code></td><td><p>or (or 'Seqs2align.Name') for the labels.</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'UseParallelValue','false'
@@ -89,7 +88,7 @@ Total estimated time (seconds)=8.0907
                Vector of structures of the same length n of input
                Seqs2align with the following 4 fields.</p><p>
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Sequence</code></td><td><p>n aligned sequences</p></td></tr><tr valign="top"><td><code>Header</code></td><td><p>containing the labels  (this field did
-                   not change from input Seqs2align.Header).</p></td></tr><tr valign="top"><td><code>usedGap</code></td><td><p>boolean containing true for the
+                   not change from input Seqs2align.Header).</p></td></tr><tr valign="top"><td><code>usedGapOpen</code></td><td><p>boolean containing true for the
                    sequence in which in order to compute the alignment it
                    was necessary to modify option 'GapOpen', to 100000</p></td></tr><tr valign="top"><td><code>usedDeletion</code></td><td><p><p>boolean containing true when
                    the sequences to align contained a number of
@@ -97,7 +96,7 @@ Total estimated time (seconds)=8.0907
                    sequences.</p> <p>
                  Data Types - array of struct</p></p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_WrngAlignment" class="clearfix"></div><h3 id="output_argument_WrngAlignment" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>WrngAlignment</code> &#8212;sequences which could not be aligned.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p>
                 Vector containing the numbers of sequences for which
-                usedGap and usedDeletion was not sufficient to produce
+                usedGapOpen and usedDeletion was not sufficient to produce
                 the alignment. For example if WrngAlignment=[400 800] the
                 it was not possible to align sequences 400 and 800. If
                 WrngAlignment is en empty value all sequences could be

@@ -154,7 +154,7 @@ databrush=struct;
 databrush.selectionmode='lasso';
 databrush.Pointer='fleur';
 resfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 6.</i>
-     Example of the use of rectangular brush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%  We havesuperimposed labels
+     Example of the use of rectangular brush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%  We have superimposed labels
 %   for the brushed units and persistent labels in the plot which has
 %   been brushed.
 n=100;
@@ -168,7 +168,7 @@ databrush.Label='on';
 databrush.RemoveLabels='off';
 resfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="Extraexample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 7.</i>
      Example of persistent brushing.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   Example of the use of persistent non cumulative brush. Every time a
-%   brushing action is performed previous highlightments are removed
+%   brushing action is performed previous highlights are removed
 n=100;
 y=randn(n,1);
 X=randn(n,4);
@@ -181,8 +181,8 @@ databrush.RemoveLabels='off';
 databrush.persist='off';
 resfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 8.</i>
      Example of persistent cumulative brush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   Example of the use of persistent cumulative brush. Every time a
-%   brushing action is performed current highlightments are added to
-%   previous highlightments
+%   brushing action is performed current highlights are added to
+%   previous highlights
 n=100;
 y=randn(n,1);
 X=randn(n,4);
@@ -478,16 +478,16 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                    label is inserted into the plot.</p> <p>
 
 </p></p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fground.LineWidth','1'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_bground" class="clearfix"></div><h3 id="input_argument_namevalue_bground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bground</code> &#8212;characterictics of the trajectories in background.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which specifies the trajectories in background,
-                   i.e. the trajectories corresponding to "unimmportant"
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_bground" class="clearfix"></div><h3 id="input_argument_namevalue_bground" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bground</code> &#8212;characteristics of the trajectories in background.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which specifies the trajectories in background,
+                   i.e. the trajectories corresponding to "unimportant"
                    units in the central part of the data. The structure
                    also specifies the style used in the plot to give them
                    less emphasis, so that to not distract the eye of the
                    analyst from the trajectories of the relevant units.</p> <p>
                    The structure contains the following fields:
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bthresh</code></td><td><p><p>numeric vector of length 1 or 2 which
-                       specifies how to define the unimmportant trajectories.</p> <p>
-                       Unimmportant trajectories will be plotted using a
+                       specifies how to define the unimportant trajectories.</p> <p>
+                       Unimportant trajectories will be plotted using a
                        colormap, in greysh or will be hidden.</p> <p>
                        - If length(thresh)=1 the irrelevant units are
                          those which always had a residual smaller

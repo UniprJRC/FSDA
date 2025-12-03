@@ -3,18 +3,18 @@ function pcaProjection(Y,varargin)
 %
 %<a href="matlab: docsearchFS('pcaProjection')">Link to the help function</a>
 %
-%   This function is intended for didactic purposes. It illustrates the
+%   pcaProjection is intended for didactic purposes. It illustrates the
 %   details of the orthogonal projection of trivariate points onto the space of the
 %   first 3 principal components and displays the principal ellipsoid in both
 %   the original and projected spaces.
 %   More precisely 6 distinct plots are created:
-%   1. A 3D scatterplot with the line associated with the 1st PC.
-%   2. A 3D scatterplot with the principal line and orthogonal projections.
-%   3. A 3D scatterplot with orthogonal projections onto the plane
+%   [1] A 3D scatterplot with the line associated with the 1st PC.
+%   [2] A 3D scatterplot with the principal line and orthogonal projections.
+%   [3] A 3D scatterplot with orthogonal projections onto the plane
 %       of the first 2 PCs.
-%   4. A 3D scatterplot projections onto the first three PCs.
-%   5. A 3D scatterplot with the principal ellipsoid in the projected coordinates space.
-%   6. A 3D scatterplot with the principal ellipsoid in the original coordinates space.
+%   [4] A 3D scatterplot projections onto the first three PCs.
+%   [5] A 3D scatterplot with the principal ellipsoid in the projected coordinates space.
+%   [6] A 3D scatterplot with the principal ellipsoid in the original coordinates space.
 %
 %
 %  Required input arguments:
@@ -490,3 +490,4 @@ elseif j==3
 else
 end
 end
+%FScategory:VIS-Mult

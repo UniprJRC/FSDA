@@ -234,6 +234,7 @@ function [out , varargout] = Sreg(y,X,varargin)
     % Run this code to see the output shown in the help file.
     n=200;
     p=3;
+    rng('default')
     rng(123456);
     X=randn(n,p);
     % Uncontaminated data.

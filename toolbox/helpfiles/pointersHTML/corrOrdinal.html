@@ -4,7 +4,7 @@
  variables and go between -1 and 1. The sign of the coefficient indicates
  the direction of the relationship, and its absolute value indicates the
  strength, with larger absolute values indicating stronger
- relationships. Values close to an absolute value of 1 indicate a strong
+ relationships. Values close to an absolute value of 1, indicate a strong
  relationship between the two variables. Values close to 0 indicate little
  or no relationship. More in detail:
  $\gamma$ is a symmetric measure of association.
@@ -15,7 +15,7 @@
  into account. Even if $\tau_b$ ranges from -1 to 1, a value of -1 or
  +1 can be obtained only from square tables.
  $\tau_c$ (also called Stuart-Kendall $\tau_c$) is a symmetric measure of
- association which makes an adjustment for table size in addition to a
+ association that makes an adjustment for table size in addition to a
  correction for ties. Even if $\tau_c$ ranges from -1 to 1, a value of -1
  or +1 can be obtained only from square tables.
  Somers' $d$ is an asymmetric extension of $\tau_b$ in that it uses a
@@ -34,7 +34,7 @@
  $(x(i)-x(j)) \times (y(i)-y(j))&gt;0$.
  It is discordant if $(x(i)-x(j) ) \times (y(i)-y(j))&lt;0$.
  Let $C$ be the total number of concordant pairs (concordances) and $D$
- the total number of discordant pairs (discordances) . If $C &gt; D$ the
+ the total number of discordant pairs (discordances). If $C &gt; D$ the
  variables have a positive association, but if $C &lt; D$ then the variables
  have a negative association.
 
@@ -123,7 +123,7 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:
  d_{ij}=a_{ij}- b_{ij}
  \]
 
- The variance of $\gamma$  assuming the independence hypothesis is:
+ The variance of $\gamma$ assuming the independence hypothesis is:
  \[
  var_0(\gamma) =\frac{1}{(C + D)^2} \left( \sum_{i=1}^I \sum_{j=1}^J
   n_{ij} d_{ij}^2  -4(C-D)^2/n  \right)
@@ -140,7 +140,7 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:
  \overline d = \sum_{i=1}^I \sum_{j=1}^J d_{ij} /n  \qquad \mbox{with $i,j$ such that $N(i,j)&gt;0$}
  \]
 
- The variance of $\tau_a$  assuming the independence hypothesis is:
+ The variance of $\tau_a$ assuming the independence hypothesis is:
  \[
  var_0(\tau_a) =\frac{2 (2n+5)}{9n(n-1) }
  \]
@@ -157,7 +157,7 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:
   w_c/w_r} \qquad \mbox{and} \qquad w= \sqrt{w_rw_c}
  \]
 
- The variance of $\tau_b$  assuming the independence hypothesis is:
+ The variance of $\tau_b$ assuming the independence hypothesis is:
  \[
  var_0(\tau_b) =\frac{4}{w_r w_c}  \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
  \]
@@ -170,7 +170,7 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:
 
 
 
- The variance of $\tau_c$  assuming the independence hypothesis is:
+ The variance of $\tau_c$ assuming the independence hypothesis is:
  \[
  var_0(\tau_c) =var(\tau_c)
  \]
@@ -186,7 +186,7 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:
  w_r= n^2- \sum_{i=1}^I n_{i.}^2
  \]
 
- The variance of $d_{y|x}$  assuming the independence hypothesis is:
+ The variance of $d_{y|x}$ assuming the independence hypothesis is:
  \[
  var_0(d_{y|x}) = \frac{4}{w_r^2} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
  \]

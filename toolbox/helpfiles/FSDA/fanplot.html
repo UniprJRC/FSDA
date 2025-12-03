@@ -13,13 +13,13 @@ y=XX(:,end);
 X=XX(:,1:end-1);
 % FSRfan and fanplot with all default options
 [out]=FSRfan(y,X);
-fanplotFS(out);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.13 seconds 
+fanplotFS(out);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.14 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 17.1%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 17.1%
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 17.1%
 Total estimated time to complete LMS:  0.01 seconds 
@@ -36,9 +36,9 @@ X=loyalty(:,1:3);
 % parameter
 la=[-1 -0.5 0 0.5 1];
 [out]=FSRfan(y,X,'la',la);
-fanplotFS(out);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+fanplotFS(out);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
 Total estimated time to complete LMS:  0.02 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.03 seconds 
 Total estimated time to complete LMS:  0.02 seconds 
 Total estimated time to complete LMS:  0.02 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/fanplot.html#Example_2'><img vspace="5" hspace="5" src="images\fanplot_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
@@ -123,7 +123,7 @@ X=gasoline{:,1};
 % In the code below, option highlight enables us to understand when units
 % [21 18 33 77] join the subset for the difference values of lambda
 fanplotFS(out,'highlight',[ 21 18 33 77]);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
-Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.00 seconds 
 Total estimated time to complete LMS:  0.00 seconds 
 Steps of entry of selected units when la= -1
     95    21
@@ -173,9 +173,9 @@ nameX={'F1','F2','F3'};
 [out]=FSRaddt(y,X,'plots',0);
 % out.la contains the names of the variables which have to be shown
 out.la=nameX;
-fanplotFS(out);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+fanplotFS(out);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 Total estimated time to complete LMS:  0.01 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/fanplot.html#ExtraExample_13'><img vspace="5" hspace="5" src="images\fanplot_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Data to plot. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>(n-init) x length(la)+1 matrix:
                1st col = fwd search index;</p> <p>
                2nd col = value of the score test in each step

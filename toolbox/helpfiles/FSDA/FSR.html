@@ -52,7 +52,7 @@ Final output
 Number of units declared as outliers=16
 Summary of the exceedances
            1          99         999        9999       99999
-           1          17          10           9           6
+           0          17          10           9           6
 
 </pre><a href='http://rosa.unipr.it/fsda/FSR.html#Example_2'><img vspace="5" hspace="5" src="images\FSR_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSR_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_04.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSR with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Monitor the exceedances from m=60 without showing plots.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
@@ -89,8 +89,8 @@ ans =
          String: {' Units'}
        Location: 'northeast'
     Orientation: 'vertical'
-       FontSize: 7.6500
-       Position: [0.8109 0.8613 0.0829 0.0381]
+       FontSize: 9
+       Position: [0.8640 0.8867 0.0340 0.0242]
           Units: 'normalized'
 
   Use GET to show all properties
@@ -178,7 +178,7 @@ set(clb,'FontSize',12);
 xlabel(xla);
 ylabel(yla);
 box
-cascade</pre></div></div><a href='http://rosa.unipr.it/fsda/FSR.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\FSR_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSR_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_10.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_11.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+cascade</pre></div></div><a href='http://rosa.unipr.it/fsda/FSR.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\FSR_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSR_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_09.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>

@@ -493,7 +493,7 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                        select the trajectories to highlight.</p> <p>
                        If length(fthresh)=1 the highlighted trajectories
                        are those units that throughout the search had
-                       at leat once a MD greater (in absolute value)
+                       at least once a MD greater (in absolute value)
                        than fthresh. The default value of fthresh is 2.5.</p><p>
                        If length(fthresh)=2 the highlighted trajectories
                        are those of units that throughout the search had
@@ -631,15 +631,17 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                        forced to be [0 0 1].</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>empty value, scalar or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_label" class="clearfix"></div><h3 id="input_argument_namevalue_label" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>label</code> &#8212;row labels.</span></a><span class="example_desc">cell of characters of vector of strings.</span></span></h3><div class="collapse">	<p><p>Cell or vector of strings containing the labels
                    of the n units. This optional argument is used for
-                   datattoltip and brushing. If label is present the
+                   datatooltip and brushing. If label is present the
                    rownames of the units will be used  during brushing and
-                   in the datatootip.</p> <p>
+                   in the datatooltip.</p> <p> 
                    If this field is not present labels
                    row1, ..., rown will be automatically created and
                    included in the pop up datatooltip window and the
-                   numbers 1:n will be used for the brushed trajectories.</p><p>
+                   numbers 1:n will be used for the brushed trajectories.</p> <p>
+                   Moreover the elements inside label are used to label
+                   the units in the plot.</p><p> 
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'label',{'Smith','Johnson','Robert','Stallone'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell array of characters or string array</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
                    is done. The activation of this option
                    (databrush is a scalar or a structure) enables the user
                    to select a set of trajectories in the current plot and

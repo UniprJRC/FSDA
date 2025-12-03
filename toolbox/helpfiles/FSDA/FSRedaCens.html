@@ -41,7 +41,7 @@ y=affairs{:,"affairs"};
 outLXS=LXS(y,X);
 [~,sor]=sort(abs(outLXS.residuals))
 out=FSRedaCens(y,X,sor(1:100));
-resfwdplot(out)</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.07 seconds 
+resfwdplot(out)</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
 Attention: there was an exact fit. Robust estimate of s^2 is &lt;1e-7
 
 sor =
@@ -649,6 +649,7 @@ sor =
    594
 
 m=100
+Warning: there are no uncensored observations 
 m=200
 m=300
 m=400
@@ -682,10 +683,49 @@ outLXS=LXS(yf,X);
 out=FSRedaCens(yf,X,outLXS.bs,'left',leftf,'right',rightf,'init',100);
 fground.funit=1:30;
 resfwdplot(out,'fground',fground);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  3.440395e-22. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  3.652843e-22. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  7.526618e-24. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  2.265409e-22. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  6.603410e-21. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.798020e-22. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  2.561114e-19. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  2.899712e-20. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  4.130698e-22. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.422141e-19. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.533060e-22. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  6.618250e-26. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.107271e-20. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.865440e-27. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  6.236248e-28. 
 m=100
 m=200
 m=300
-</pre><a href='http://rosa.unipr.it/fsda/FSRedaCens.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSRedaCens_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+Warning: steps that you have chosen outside the range of x
+are re-assigned to min(x) or to max(x)
+</pre><pre class="codeoutput error">Unable to perform assignment because the left and right sides have a different number of elements.
+
+Error in resfwdplot (line 1396)
+                indsteps(i)=find(x==steps(i));
+                ^^^^^^^^^^^
+Error in FSRedaCenstmp (line 38)
+resfwdplot(out,'fground',fground);
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>

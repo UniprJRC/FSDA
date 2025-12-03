@@ -501,7 +501,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %
 %<a href="matlab: docsearchFS('tclustregeda')">Link to the help function</a>
 %
-%$LastChangedDate:: 2018-01-29 18:52:14 #$: Date of the last commit
+%$LastChangedDate::  #$: Date of the last commit
 
 % Examples:
 

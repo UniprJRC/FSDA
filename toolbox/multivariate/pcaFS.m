@@ -171,9 +171,26 @@ function out=pcaFS(Y,varargin)
 %               the screen (for more information see the release notes of
 %               FSDA 2025b).
 %                   Example - 'ShapeFile','shapefileName'
-%                    Data Types - char or string or geotable.
+%                    Data Types - char or string or geotable
 %               Remark: note that this option can be used just is the
 %               "Mapping toolbox" is installed.
+%
+% smartEVchart  :  Eigenvectors shown as ordered-bar and line plots.
+%                  Boolean.
+%                  This plot facilitates the interpretation of the components.
+%                  If smartEVchart is true (default is false), a new plot 
+%                  is shown for each component.
+%                  In the upper panel, we show the bars associated with
+%                  the eigenvector elements, sorted by magnitude. Bars are
+%                  displayed in blue or red depending on their sign.
+%                  In the bottom panel, we show the coefficients arranged
+%                  along a line. The vertical labels have a magnitude
+%                  proportional to the importance of the corresponding
+%                  coefficient. Finally, the caption of the plot displays
+%                  the equation of the corresponding component as a linear
+%                  combination of the original (scaled) variables.
+%                   Example - 'smartEVchart',true
+%                    Data Types - boolean
 %
 %    standardize : standardize data. boolean. Boolean which specifies
 %               whether to standardize the variables, that is we operate on
@@ -183,23 +200,6 @@ function out=pcaFS(Y,varargin)
 %                   Example - 'standardize',false
 %                   Data Types - boolean
 %
-% smartEVchart:    Eigenvectors shown as ordered-bar and line plots.
-%                  Boolean.
-%                  This plot facilitates interpretation of the components.
-%                  If smartEVchart is true (default is false),
-%                  a new plot is shown for each component.
-%                  In the upper panel, we show the bars associated with
-%                  the eigenvector elements, sorted by magnitude. Bars are
-%                  displayed in blue or red depending on their sign.
-%                  In the bottom panel, we show the coefficients arranged
-%                  along a line. The vertical labels have a magnitude
-%                  proportional to the importance of the corresponding
-%                  coefficient.
-%                  Finally, the caption of the plot displays the equation of
-%                  the corresponding component as a linear combination of the
-%                  original (scaled) variables.
-%                  Example  - 'smartEVchart', false
-%                  Data Types - logical
 %
 % Output:
 %
