@@ -106,8 +106,7 @@ document.write(divsbefore);</script>
 				<th bgcolor="#b2b2b2" style="width: 114%; height: 143px;" valign="top">
 				New Features and Changes</th>
 				<th bgcolor="#b2b2b2" style="width: 5%; height: 143px" valign="top">
-				Released date.
-				Fixed Bugs, Known Problems,&nbsp; Notes and Compatibility 
+				Released date. Fixed Bugs, Known Problems,&nbsp; Notes and Compatibility 
 				Consideration</th>
 			</tr>
 		</thead>
@@ -116,88 +115,113 @@ document.write(divsbefore);</script>
 			(2025b)</td>
 			<td style="vertical-align: top; height: 669px; width: 114%;">MULTIVARIATE 
 			DATA<br><br>In the biplot of PCA brush units with geographical data 
-			has been extended to shape files. <br>
-			For example, once a shape file is supplied to function pcaFS as 
-			follows:<br><br>
+			has been extended to shape files. <br>For example, once a shape file 
+			is supplied to function pcaFS as follows:<br><br>
 			<pre><code class="python">
 load citiesItaly2024.mat
 X=citiesItaly2024;
 ShapeFile=X.Properties.UserData{1};
 out=pcaFS(X,'ShapeFile',ShapeFile);</code></pre>
-			<br>after clicking on Brush units in the biplot, once the units are selected 
-			in the biplot the associated shape file with the brushed units automatically 
-			appears on the screen<br><br>
-			<img alt="" height="906" src="plots/img2.jpg" width="1700"><br><br>New function pcaProjection which shows
-   1. A 3D scatterplot with the line associated with the 1st PC.<br>
-   2. A 3D scatterplot with the principal line and orthogonal projections.<br>
-   3. A 3D scatterplot with orthogonal projections onto the plane
-       of the first 2 PCs. <br>
-   4. A 3D scatterplot projections onto the first three PCs. <br>
-   5. A 3D scatterplot with the principal ellipsoid in the projected coordinates space. <br>
-   6. A 3D scatterplot with the principal ellipsoid in the original coordinates space.<br>
-
-<br>For example the code<br><br>
-<pre><code class="python">load citiesItaly.mat
-pcaProjection(citiesItaly);
-</code></pre>
-produces<br><br>
+			<br>after clicking on Brush units in the biplot, once the units are 
+			selected in the biplot the associated shape file with the brushed units 
+			automatically appears on the screen<br><br>
+			<img alt="" height="727" src="plots/img88.jpg" width="1700"><br>
+			
+			
+			<br><br>In the bitplotAPP Gui check box conf ell. has been added.<br>
+			<img alt="" height="377" src="plots/img7C.jpg" width="1700"><br>
 
 			
-			<img alt="" height="697" src="images/img4A.jpg" width="1700"><br><br>
-			<br><br>STATISTICAL 
-			UTILITIES<br><br>New option plots has been added to <code>grpstatsFS</code>. 
-			If option plots is true now the 95 confidence intervals (separated for 
-			each level of the grouping variable) are shown on the screen.<br>
-			<br>For example<br><br>
+			
+			
+			<br>New option smartEVchart&nbsp; inside pcaFS which enables to visualize 
+			the equation of each PC, the ordered elements of the eigenvector in 
+			bar&nbsp; and line plot. For example the instruction &nbsp; 
+			<pre><code class="python">
+load citiesItaly2024.mat 
+out=pcaFS(citiesItaly2024,'smartEVchart',true);
+			</code></pre>
+			<br>
+			produces the additional&nbsp; plot below for each PC.
+			<img alt="" height="906" src="plots/img64.jpg" width="1700"> <br>
+			<br><br>New function pcaProjection which shows 1. A 3D scatterplot with 
+			the line associated with the 1st PC.<br>2. A 3D scatterplot with the 
+			principal line and orthogonal projections.<br>3. A 3D scatterplot with 
+			orthogonal projections onto the plane of the first 2 PCs. <br>4. A 3D 
+			scatterplot projections onto the first three PCs. <br>5. A 3D scatterplot 
+			with the principal ellipsoid in the projected coordinates space. <br>
+			6. A 3D scatterplot with the principal ellipsoid in the original coordinates 
+			space.<br><br>For example the code<br><br>
+			<pre><code class="python">load citiesItaly.mat
+pcaProjection(citiesItaly);
+</code></pre>
+			produces<br><br>
+			<img alt="" height="697" src="images/img4A.jpg" width="1700"><br>
+			<br><br><br>STATISTICAL UTILITIES<br><br>New option plots has been added 
+			to <code>grpstatsFS</code>. If option plots is true now the 95 confidence 
+			intervals (separated for each level of the grouping variable) are shown 
+			on the screen.<br><br>For example<br><br>
 			<pre><code class="python">load citiesItaly.mat
 zone=[repelem("N",46) repelem("CS",57)]';
 citiesItaly.zone=zone;
 TBL=grpstatsFS(citiesItaly,'zone',"meanci", 'plots',1);
 </code></pre>
-			produces<br><br>
-&nbsp;<img alt="" height="854" src="plots/img3.gif" width="1700"><br><br>New function 
-			corrinv which computes the quantiles of the distribution of the sample 
-			correlation coefficient, given the sample size and the true correlation. 
-			Autocompletion has been added to this function<br><br>
-			<img alt="" src="images/imgC.jpg"><br><br><br><br>GRAPHICS<br>New function 
-			<code>polarhistogramFS</code> which enables to compute the polar histograms.<br>For 
-			example the code<br>
+			produces<br><br>&nbsp;<img alt="" height="854" src="plots/img3.gif" width="1700"><br>
+			<br>New function corrinv which computes the quantiles of the distribution 
+			of the sample correlation coefficient, given the sample size and the 
+			true correlation. Autocompletion has been added to this function<br>
+			<br><img alt="" src="images/imgC.jpg"><br><br><br><br>GRAPHICS<br>New 
+			function <code>polarhistogramFS</code> which enables to compute the 
+			polar histograms.<br>For example the code<br>
 			<pre><code class="python">
 load citiesItaly.mat
 zone=[repelem("N",46) repelem("CS",57)]';
 TBL=polarhistogramFS(citiesItaly,'groupvars',zone)</code></pre>
-			or the code<br><pre><code class="python">
+			or the code<br>
+			<pre><code class="python">
 load citiesItaly.mat
 zone=[repelem("N",46) repelem("CS",57)]';
 citiesItaly.zone=zone;
 TBL=polarhistogramFS(citiesItaly,'groupvars',"zone")
-</code></pre>produces<br><br>
+</code></pre>
+			produces<br><br>
 			<img alt="" height="681" src="images_help/img9.jpg" width="1700"><br>
 			<br>Note that the items in the legend are clickable so you can hide/show 
 			a particular group<br>
 			<img alt="" height="676" src="images_help/imgA.jpg" width="1700"><br>
-			<br>Autocompletion has been added to <code>polarhistogramFS</code>.<br><br>UTILITIES<br><br>New function <code>tuna </code> (toolbox update notification alert) to test whether the most 
-			recent version of FSDA has been installed. In the Command Window 
-			if you type <code>tuna </code>, if the most recent version of FSDA has been installed something like <br>
+			<br>Autocompletion has been added to <code>polarhistogramFS</code>.<br>
+			<br>UTILITIES<br><br>New function <code>tuna </code>(toolbox update 
+			notification alert) to test whether the most recent version of FSDA 
+			has been installed. In the Command Window if you type <code>tuna
+			</code>, if the most recent version of FSDA has been installed something 
+			like <br>
 			<pre><code class="python">
 Installed version of "FSDA": 8.7.9.8
 Latest available version: 8.7.9.8
 Toolbox FSDA is up-to-date.
 </code></pre>
-Alternative a modal window shows the current verison is not the last 
-			installed. When updating a new version of FSDA it is always better 
-			to remove the previous version.<br><br>DATASETS<br><br>New contingency tables housetasks, cinema 
-			and SportHearth added.
-			
-			<br>
+			Alternative a modal window shows the current verison is not the last 
+			installed. When updating a new version of FSDA it is always better to 
+			remove the previous version.<br><br>DATASETS<br><br>New contingency 
+			tables housetasks, cinema and SportHearth added. <br></td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
 			December 2025<br><br><br>app biplotAPP was hardly readable with dark 
-			mode them so thanks to the suggestion of
+			mode theme so thanks to the suggestion of
 			<a href="https://github.com/UniprJRC/FSDA/issues/112">Giacomo Boschi</a> 
-			light theme has been forced.<br><br>Function pcaProjeciton was 
-			inspired by a post of <a href="https://github.com/matteozanettii">
-			Matteo Zanetti</a><br><br>Oldest version 
-			of MATLAB which is supported is R2020b<br></td>
+			light theme has been forced.<br><br>Function pcaProjeciton was inspired 
+			by a post of <a href="https://github.com/matteozanettii">Matteo Zanetti</a><br>
+			<br>Option smartEVchart and check box show ellipse have been suggested by Professor&nbsp;<a href="https://www.unimib.it/paolo-mariani">Paolo 
+			Mariani</a>&nbsp;of the Univ. of Milan <br><br>Oldest version of MATLAB 
+			which is supported is R2020b<br><br><br>Bug fixes. Clickable 
+			multilegend issue fixed in prerelease R2026A
+			<br>
+			<p></p>
+		In order to be able to brush units inside the biplot you need to have the image processing toolbox installed.
+		<br>
+			<p></p>In order to be able to see the labels of the units inside pcaProjection 
+			you need to have the Text analytic toolbox.
+		
+		</td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
@@ -270,12 +294,13 @@ Alternative a modal window shows the current verison is not the last
 			depending on the value (see for example image below)<br>
 			<img alt="" src="plots/img1B.jpg"><br><br></td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
-			April 2025<br><br><br>In order to homogenize the output of FSR, FSRB, FSRH and FSM with that 
-			of the other estimators when no unit is declared as outlier inside output 
-			structure out, field outliers is returned as a missing. Before out.outliers 
-			was returned as a scalar NaN when no outlier was present. <br><br>Oldest version 
-			of MATLAB which is supported is R2020a<br><br>Old function fanplot is 
-			deleted because it is replaced by fanplotFS</td>
+			April 2025<br><br><br>In order to homogenize the output of FSR, FSRB, 
+			FSRH and FSM with that of the other estimators when no unit is declared 
+			as outlier inside output structure out, field outliers is returned as 
+			a missing. Before out.outliers was returned as a scalar NaN when no 
+			outlier was present. <br><br>Oldest version of MATLAB which is supported 
+			is R2020a<br><br>Old function fanplot is deleted because it is replaced 
+			by fanplotFS</td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
@@ -319,17 +344,18 @@ Alternative a modal window shows the current verison is not the last
 			printing and copying content and can add a watermark diagonally on all 
 			pages of the manuscript. <br><br></td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
-			<span>October 2024 <br><br><br><br>In MATLAB 2024b when you access the documentation from an installed 
-			version of MATLAB, the documentation now opens in your system web browser. 
-			Previously, the documentation opened in the Help browser. In the previous 
-			versions of MATLAB we were using a script which automatically redirected 
-			to the Internet documentation of FSDA which is located at
-			<a href="http://rosa.unipr.it/FSDA">http://rosa.unipr.it/FSDA</a>. Now 
-			this automatic redirection does not work anymore.<br><br>Oldest version 
-			of MATLAB which is supported is R2019b<br><br>Arguments blocks are introduced 
-			to validate the input<br><br>Given that the behaviour of function legend 
-			has changed in 2024b function clikablemultilegend which enables to hide/show 
-			the groups interactively has been rewritten<br></span></td>
+			<span>October 2024 <br><br><br><br>In MATLAB 2024b when you access the 
+			documentation from an installed version of MATLAB, the documentation 
+			now opens in your system web browser. Previously, the documentation 
+			opened in the Help browser. In the previous versions of MATLAB we were 
+			using a script which automatically redirected to the Internet documentation 
+			of FSDA which is located at <a href="http://rosa.unipr.it/FSDA">http://rosa.unipr.it/FSDA</a>. 
+			Now this automatic redirection does not work anymore.<br><br>Oldest 
+			version of MATLAB which is supported is R2019b<br><br>Arguments blocks 
+			are introduced to validate the input<br><br>Given that the behaviour 
+			of function legend has changed in 2024b function clikablemultilegend 
+			which enables to hide/show the groups interactively has been rewritten<br>
+			</span></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
@@ -398,13 +424,13 @@ Alternative a modal window shows the current verison is not the last
 			with exploratory data analysis purposes).<br><br>APPS <br><br>CorAnaAPP 
 			which enables an interactive robust data analysis of the contingency 
 			tables<br><br><br>&nbsp;<br></td>
-			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">April 2024 
-			<br><br>Oldest version 
-			of MATLAB which is supported is R2019a<br><br>Function fanplot.m in 
-			order to avoid conflicts with function fanplot of the Financial Toolbox 
-			has been renamed fanplotFS.m. Old function fanplot.m has been left in 
-			the folder but it will be removed in a future release<br><br>Function 
-			playbackdemoFS.m has been removed<br><br><br> </td>
+			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
+			April 2024 <br><br>Oldest version of MATLAB which is supported is R2019a<br>
+			<br>Function fanplot.m in order to avoid conflicts with function fanplot 
+			of the Financial Toolbox has been renamed fanplotFS.m. Old function 
+			fanplot.m has been left in the folder but it will be removed in a future 
+			release<br><br>Function playbackdemoFS.m has been removed<br><br>
+			<br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
@@ -443,10 +469,10 @@ Alternative a modal window shows the current verison is not the last
 			<a href="tkmeans.html">tkmeans</a> or <a href="tclust.html">tclust</a>.
 			<br></td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
-			April 2023- October 
-			2023 <br><br><br>DOCUMENTATION BUG FIXED<br><br>If inside Home|Preferences the option &quot;Documentation 
-			Location&quot; is set to &quot;Web&quot;, the FSDA help which is called 
-			is the one inside <a href="http://rosa.unipr.it/FSDA">http://rosa.unipr.it/FSDA</a>.<br>
+			April 2023- October 2023 <br><br><br>DOCUMENTATION BUG FIXED<br><br>
+			If inside Home|Preferences the option &quot;Documentation Location&quot; 
+			is set to &quot;Web&quot;, the FSDA help which is called is the one 
+			inside <a href="http://rosa.unipr.it/FSDA">http://rosa.unipr.it/FSDA</a>.<br>
 			<br>If inside Home|Preferences the option &quot;Documentation Location&quot; 
 			is set to &quot;Installed Locally&quot;, the FSDA help which is called 
 			is the one installed locally (during the first access to FSDA documentation 
@@ -500,13 +526,10 @@ Alternative a modal window shows the current verison is not the last
 			shows the calculations to obtain the autocorrelation.<br><br><br>
 			</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
-			December 2022-April 
-			2023<br>
-			<br>Independently on the documentation location&nbsp; inside Home|Preferences&nbsp; 
-			the FSDA help which is called is the one inside
-			<a href="http://rosa.unipr.it/FSDA">http://rosa.unipr.it/FSDA</a>.<br>
-			<br><br>Oldest version 
-			of MATLAB which is supported is R2018a<br>
+			December 2022-April 2023<br><br>Independently on the documentation location&nbsp; 
+			inside Home|Preferences&nbsp; the FSDA help which is called is the one 
+			inside <a href="http://rosa.unipr.it/FSDA">http://rosa.unipr.it/FSDA</a>.<br>
+			<br><br>Oldest version of MATLAB which is supported is R2018a<br>
 			<br>&nbsp;</td>
 		</tr>
 		<tr>
@@ -523,11 +546,10 @@ Alternative a modal window shows the current verison is not the last
 			with estimated values in presence of an autoregressive component.
 			<br><br>.</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
-			December 2022<br>
-			<br>In order to visualize properly the HTML FSDA help files, it is necessary 
-			inside Preferences to select as Documentation Location "Installed Locally" 
-			in MATLAB Help Preferences.<br><br>Oldest version 
-			of MATLAB which is supported is R2017b<br></td>
+			December 2022<br><br>In order to visualize properly the HTML FSDA help 
+			files, it is necessary inside Preferences to select as Documentation 
+			Location "Installed Locally" in MATLAB Help Preferences.<br><br>Oldest 
+			version of MATLAB which is supported is R2017b<br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
@@ -553,14 +575,13 @@ Alternative a modal window shows the current verison is not the last
 			added to show the calculations to compute the correlation coefficient
 			</td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
-			November 2022<br>
-			<br>In order to visualize properly the HTML FSDA help files, it is necessary 
-			inside Preferences to select as Documentation Location "Installed Locally" 
-			in MATLAB Help Preferences.<br><br>All functions 
-			(OPTrho, OPTpsi, OPTpsider, OPTwei, OPTpsix, have been rewritten using 
-			as input the intervals, [0 c2/3], [(2/3)c c], &gt;c instead of the intervals 
-			[0 2c], [2c 3c], &gt;3c <br><br>Oldest version of MATLAB which is supported 
-			is R2017b<br></td>
+			November 2022<br><br>In order to visualize properly the HTML FSDA help 
+			files, it is necessary inside Preferences to select as Documentation 
+			Location "Installed Locally" in MATLAB Help Preferences.<br><br>All 
+			functions (OPTrho, OPTpsi, OPTpsider, OPTwei, OPTpsix, have been rewritten 
+			using as input the intervals, [0 c2/3], [(2/3)c c], &gt;c instead of 
+			the intervals [0 2c], [2c 3c], &gt;3c <br><br>Oldest version of MATLAB 
+			which is supported is R2017b<br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
@@ -575,12 +596,12 @@ Alternative a modal window shows the current verison is not the last
 			returns in output the value of the objective function for each subset 
 			after the concentration steps.<br></td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
-			October 2022<br><br>In order to visualize properly the HTML FSDA help files, it 
-			is necessary inside Preferences to select as Documentation Location &quot;Installed 
-			Locally&quot; in MATLAB Help Preferences.<br><br>All functions 
-			(OPTrho, OPTpsi, OPTpsider, OPTwei, OPTpsix, have been rewritten 
-			using as input the intervals, [0 c2/3], [(2/3)c c], &gt;c instead of 
-			the intervals [0 2c], [2c 3c], &gt;3c<br></td>
+			October 2022<br><br>In order to visualize properly the HTML FSDA help 
+			files, it is necessary inside Preferences to select as Documentation 
+			Location &quot;Installed Locally&quot; in MATLAB Help Preferences.<br>
+			<br>All functions (OPTrho, OPTpsi, OPTpsider, OPTwei, OPTpsix, have 
+			been rewritten using as input the intervals, [0 c2/3], [(2/3)c c], &gt;c 
+			instead of the intervals [0 2c], [2c 3c], &gt;3c<br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 1802px; width: 61px;">
@@ -635,9 +656,10 @@ Alternative a modal window shows the current verison is not the last
 			<p class="p1">New options oneplot added to aceplot.m</p>
 			</td>
 			<td class="auto-style1" style="vertical-align: top; height: 1802px; width: 14%;">
-			April 2022<br><br>In order to visualize properly the HTML FSDA help files, it 
-			is necessary inside Preferences to select as Documentation Location &quot;Installed 
-			Locally&quot; in MATLAB Help Preferences.<br></td>
+			April 2022<br><br>In order to visualize properly the HTML FSDA help 
+			files, it is necessary inside Preferences to select as Documentation 
+			Location &quot;Installed Locally&quot; in MATLAB Help Preferences.<br>
+			</td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 1802px; width: 61px;">
@@ -682,10 +704,10 @@ Alternative a modal window shows the current verison is not the last
 			case input arguments just contain positive integer values.</p>
 			</td>
 			<td class="auto-style1" style="vertical-align: top; height: 1802px; width: 14%;">
-			October 2021<br><br>In a lot of functions the instruction 
-			coder.target('MATLAB') appears in order to cope with the MATLAB C 
-			coder requirements.<br><br>Functions balloonplot and mdpattern use 
-			bubblechart routine and therefore only work with MATLAB 2020b or greater.<br><br><br></td>
+			October 2021<br><br>In a lot of functions the instruction coder.target('MATLAB') 
+			appears in order to cope with the MATLAB C coder requirements.<br>
+			<br>Functions balloonplot and mdpattern use bubblechart routine and 
+			therefore only work with MATLAB 2020b or greater.<br><br><br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; height: 1802px; width: 61px;">
@@ -768,11 +790,11 @@ Alternative a modal window shows the current verison is not the last
 			<p class="p1">&nbsp;</p>
 			</td>
 			<td class="auto-style1" style="vertical-align: top; height: 1802px; width: 14%;">
-			March 2021<br><br>Starting from MATLAB 2021a in order to view the FSDA html documentation 
-			it is necessary <br><span>on the Home tab, in the Environment section, 
-			click Preferences. Select MATLAB &gt; Help and change the Documentation 
-			Location.<br>In this case select&nbsp; </span><br>&nbsp;option &quot;installed 
-			locally&quot;.<br><br><br>Routines 
+			March 2021<br><br>Starting from MATLAB 2021a in order to view the FSDA 
+			html documentation it is necessary <br><span>on the Home tab, in the 
+			Environment section, click Preferences. Select MATLAB &gt; Help and 
+			change the Documentation Location.<br>In this case select&nbsp;
+			</span><br>&nbsp;option &quot;installed locally&quot;.<br><br><br>Routines 
 			pcaFS&nbsp; and biplotFS assume that at least MATLAB 2019b is installed.<br>
 			<br>We stop supporting releases before 2016a.<br></td>
 		</tr>
@@ -865,13 +887,12 @@ Alternative a modal window shows the current verison is not the last
 			<a href="datasets_clu.html">datasets clustering section</a> respectively
 			</p>
 			</td>
-			<td class="auto-style1" style="vertical-align: top; width: 14%;">October 18th &nbsp;2020<br>
-			<br><br>Mathworks 
-			search engine in our HTML web pages in version 2020b works again.<br>
-			<br>Routines fanBICpn, tclustICgpcm and tclustICplot gpcm use routine 
-			heatmap introduced in MATLAB&nbsp; 2017a. <br><br>Routine tclustregeda 
-			to display the results uses function parallelplot introduced in Matlab 
-			2019a.<br><br>We stop supporting releases 
+			<td class="auto-style1" style="vertical-align: top; width: 14%;">October 
+			18th &nbsp;2020<br><br><br>Mathworks search engine in our HTML web pages 
+			in version 2020b works again.<br><br>Routines fanBICpn, tclustICgpcm 
+			and tclustICplot gpcm use routine heatmap introduced in MATLAB&nbsp; 
+			2017a. <br><br>Routine tclustregeda to display the results uses function 
+			parallelplot introduced in Matlab 2019a.<br><br>We stop supporting releases 
 			before 2015b.<br><br><br>Functions FSRfan, ScoreYJ and ScoreYJall made 
 			faster<br><br><br></td>
 		</tr>
@@ -1078,10 +1099,9 @@ Alternative a modal window shows the current verison is not the last
 			<p class="p1">&nbsp;</p>
 			</td>
 			<td class="auto-style1" style="vertical-align: top; width: 14%;">May &nbsp;2019<br>
-			<br>Fixed 
-			a bug in mtR when the user wanted to continue the simulation using a 
-			negative seed<br><br>This is the last release 
-			where we&nbsp; we support old releases up to 2012a. <br><br></td>
+			<br>Fixed a bug in mtR when the user wanted to continue the simulation 
+			using a negative seed<br><br>This is the last release where we&nbsp; 
+			we support old releases up to 2012a. <br><br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V6.1 (R2018b)</strong></td>
@@ -1109,10 +1129,9 @@ Alternative a modal window shows the current verison is not the last
 			inside the .m files.</p>
 			</td>
 			<td class="auto-style1" style="vertical-align: top; width: 14%;">September &nbsp;2018<br>
-			<br><br>Fixed 
-			a problem in the brushing from spmplot and on the diagonal there are 
-			the boxplots.&nbsp; See for more details the additional examples in
-			<a href="yXplot.html">yXplot</a> and <a href="spmplot.html">spmplot</a>.<br>
+			<br><br>Fixed a problem in the brushing from spmplot and on the diagonal 
+			there are the boxplots.&nbsp; See for more details the additional examples 
+			in <a href="yXplot.html">yXplot</a> and <a href="spmplot.html">spmplot</a>.<br>
 			<br>Improved option for thinning units inside
 			<a href="tclustreg.html">tclustreg</a><br><br>Solved minor bug in
 			<a href="FSM.html">FSM</a> when it was called with option 'bonflev'</td>
@@ -1161,14 +1180,13 @@ Alternative a modal window shows the current verison is not the last
 			<a href="ClusterRelabel.html">ClusterRelabel</a>, to track the indexes 
 			permutations used to rearch a desired cluster labelling.</p>
 			</td>
-			<td class="auto-style1" style="vertical-align: top; width: 14%;">May&nbsp; 2018<br>
-			<br>Fixed 
-			a series of problems associated to MATLAB 2018a. For example now empty 
-			variables which will contain numbers have been initialized with [], 
-			while empty variables which contain characters are initialized with 
-			' '. See for example functions <a href="yXplot.html">yXplot</a> and
-			<a href="spmplot.html">spmplot</a>.<br><br>From release 2018a we support 
-			old releases up to 2012a. <br><br>From 2018a the use of subfunctions 
+			<td class="auto-style1" style="vertical-align: top; width: 14%;">May&nbsp; 
+			2018<br><br>Fixed a series of problems associated to MATLAB 2018a. For 
+			example now empty variables which will contain numbers have been initialized 
+			with [], while empty variables which contain characters are initialized 
+			with ' '. See for example functions <a href="yXplot.html">yXplot</a> 
+			and <a href="spmplot.html">spmplot</a>.<br><br>From release 2018a we 
+			support old releases up to 2012a. <br><br>From 2018a the use of subfunctions 
 			tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS which compute inverse, pdf, cdf 
 			of the T and F distribution are not supported anymore.<br><br>Following 
 			the feedback provided by our users, Function UnitsSameCluster (which 
@@ -1229,10 +1247,9 @@ Alternative a modal window shows the current verison is not the last
 			enriched to superimpose ellipses, density and contour functions to data 
 			and extract single panels from the scatter matrix.</span></p>
 			</td>
-			<td class="auto-style1" style="vertical-align: top; width: 14%;">November 2017<br>
-			<br>Various 
-			inconsistencies in the browsing of the documentation pages and the bibliography 
-			have been fixed.</td>
+			<td class="auto-style1" style="vertical-align: top; width: 14%;">November 
+			2017<br><br>Various inconsistencies in the browsing of the documentation 
+			pages and the bibliography have been fixed.</td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><strong>V5.0 (R2017a)</strong></td>
@@ -1277,9 +1294,9 @@ Alternative a modal window shows the current verison is not the last
 			in order to take as input the output of procedures which monitor robust 
 			estimators.<br><br></p>
 			</td>
-			<td style="vertical-align: top; width: 14%;">May 2017 <br><br>Control version added in 
-			many graphical routines to take account the modifications in MATLAB 
-			2017a
+			<td style="vertical-align: top; width: 14%;">May 2017 <br><br>Control 
+			version added in many graphical routines to take account the modifications 
+			in MATLAB 2017a
 			<p></p>
 			<p>From MATLAB R2012a callback functions started to use new internal 
 			data structures. Interactive plots that use such callbacks (e.g. those 
@@ -1297,26 +1314,27 @@ Alternative a modal window shows the current verison is not the last
 			or using a GUI the functions documentation, in html as well as in the 
 			function head. <br><br>New html documentation generated with
 			<a href="publishFS.html">publishFS</a>.<br></td>
-			<td style="vertical-align: top; width: 14%;">October 2016<br><br>add2spm modified to take 
-			into account a change in the property name of the legend object introduced 
-			in MATLAB R2016b<br>(LegendPeerHandle is now called LayoutPeers).
-			<br><br>A change in MATLAB R2016b&nbsp; function legend.m was affecting 
-			FSDA function add2yX (the legend was plotted twice). Bug fixed.<br>
-			<br>Bug affecting FSMeda only in the univariate case fixed.<br><br>We are monitoring&nbsp; 
-			possible compatibility issues that may emerge from&nbsp; changes in 
-			the tagging policy of the graphical objects in MATLAB.<br><br></td>
+			<td style="vertical-align: top; width: 14%;">October 2016<br><br>add2spm 
+			modified to take into account a change in the property name of the legend 
+			object introduced in MATLAB R2016b<br>(LegendPeerHandle is now called 
+			LayoutPeers). <br><br>A change in MATLAB R2016b&nbsp; function legend.m 
+			was affecting FSDA function add2yX (the legend was plotted twice). Bug 
+			fixed.<br><br>Bug affecting FSMeda only in the univariate case fixed.<br>
+			<br>We are monitoring&nbsp; possible compatibility issues that may emerge 
+			from&nbsp; changes in the tagging policy of the graphical objects in 
+			MATLAB.<br><br></td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top; width: 61px;"><b>V4.0 (R2016a)</b></td>
-			<td style="vertical-align: top; width: 114%;">Major release.<br><br>New 
-			function, publishFS, introduced to generate documentation pages directly 
-			from the .m files. <br><br>New function, makecontentsfileFS, introduced 
-			to create a the list of files present in a FSDA folder and/or subfolders. 
-			It extends MATLAB function makecontentfilesFS. <br><br>.mlx files introduced 
-			for examples_multivariate and examples_regression.<br><br>New features 
-			added to the <a href="tclust.html">tclust</a> function, including determinant 
-			restriction and new adjusted BIC criterion for the estimation of the 
-			number of groups.<br><br>Added functions for reweighting
+			<td style="vertical-align: top; width: 114%;">Major release.<br><br>
+			New function, publishFS, introduced to generate documentation pages 
+			directly from the .m files. <br><br>New function, makecontentsfileFS, 
+			introduced to create a the list of files present in a FSDA folder and/or 
+			subfolders. It extends MATLAB function makecontentfilesFS. <br><br>.mlx 
+			files introduced for examples_multivariate and examples_regression.<br>
+			<br>New features added to the <a href="tclust.html">tclust</a> function, 
+			including determinant restriction and new adjusted BIC criterion for 
+			the estimation of the number of groups.<br><br>Added functions for reweighting
 			<a href="FSR.html">FSR</a> and <a href="FSRB.html">FSRB</a> (FSRr and 
 			FSRBr).<br><br>Functions FSR, FSRB and <a href="FSRH.html">FSRH</a> 
 			redesigned; a routing implementing the core of the Forward Search algorithm 
@@ -1330,13 +1348,13 @@ Alternative a modal window shows the current verison is not the last
 			a certain efficiency (HUeff), the psi functions (HUpsi), its derivative 
 			(HUpsider), etc. For a full list, see functions under utilities_stats 
 			folder. <br><br><br></td>
-			<td style="vertical-align: top; width: 14%;">May 2016<br><br>Many small bugs fixed. 
-			Functions affected include tclust, tclustReg, position, MixSimReg.<br>
-			<br>ClickableMultiLegend made compatible with R2016a. <br><br>drawnow 
-			command introduced in several graphical functions, to solve episodic 
-			bugs in the generation of the plots.<br><br>Documentation made compatible 
-			with the new MATLAB help navigation and browser-style, which was redesigned 
-			in release R2015b. <br><br></td>
+			<td style="vertical-align: top; width: 14%;">May 2016<br><br>Many small 
+			bugs fixed. Functions affected include tclust, tclustReg, position, 
+			MixSimReg.<br><br>ClickableMultiLegend made compatible with R2016a.
+			<br><br>drawnow command introduced in several graphical functions, to 
+			solve episodic bugs in the generation of the plots.<br><br>Documentation 
+			made compatible with the new MATLAB help navigation and browser-style, 
+			which was redesigned in release R2015b. <br><br></td>
 		</tr>
 		<tr>
 			<td bgcolor="#f2f2f2" style="width: 61px">
@@ -1365,9 +1383,9 @@ Alternative a modal window shows the current verison is not the last
 			<p>New routine for automatic outlier detection in heteroskdastic regression 
 			(FSRH.m)</p>
 			</td>
-			<td style="width: 14%">September 2015<br><br>In function spmplot, the multiple histograms 
-			(boxplots) on the main diagonal of the scatter plot matrix is now working 
-			also with R2015a and R2015b.
+			<td style="width: 14%">September 2015<br><br>In function spmplot, the 
+			multiple histograms (boxplots) on the main diagonal of the scatter plot 
+			matrix is now working also with R2015a and R2015b.
 			<p></p>
 			<p>The html documentation pages of some new functions are missing. As 
 			a consequence, some links may be broken. New complete documentation, 
