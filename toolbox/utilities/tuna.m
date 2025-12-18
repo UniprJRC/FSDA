@@ -9,10 +9,10 @@ function tuna(varargin)
 %   2. Queries the latest release from GitHub;
 %   3. Compares versions and, if the user has installed the latest version
 %    simply shows a message in the "Command Window". On the other hand,
-%   if the user has not installed the latest version notifies with a dialog 
+%   if the user has not installed the latest version notifies with a dialog
 %   and a message, and with a message in the Command Window.
 %   If no input argument is given tuna is applied to FSDA
-%   and checks whether the user has installed the latest version of FSDA, 
+%   and checks whether the user has installed the latest version of FSDA,
 %
 %  Required input arguments:
 %
@@ -116,6 +116,7 @@ if ~any(row)
 end
 
 installedVersion = addons.Version(row);
+id=addons.Identifier(row);
 fprintf('Installed version of "%s": %s\n', toolboxName, installedVersion{1});
 
 % Query GitHub API for latest release
@@ -139,11 +140,18 @@ fprintf('Latest available version: %s\n', latestVersion);
 
 % Compare versions
 if isUpdateAvailable(installedVersion{1}, latestVersion)
+
+    Extra=['or click on the uninstall link below\n'....
+        '\n'....
+        '\n'....
+        '\n'....
+        '\n'];
+
     msg = sprintf(['A new version of "%s" is available!\n\n' ...
         'Installed: %s\nLatest: %s\n\n' ...
         'Remove current version from Add-Ons|Manage Add Ons\n' ...
-        'before installing the new version.\n' ...
-        '\n'....
+        'before installing the new version\n' ...
+        Extra ...
         'To install the new version from the HOME tab\n' ...
         '"Add-Ons|Explore Add-Ons".\n' ...
         'In the search textbox type: "%s"'], ...
@@ -152,9 +160,9 @@ if isUpdateAvailable(installedVersion{1}, latestVersion)
 
     % Display popup
     try
-        customAlert(msg, 'Toolbox Update Available')
+    customAlert(msg, 'Toolbox Update Available',toolboxName,installedVersion{1},id)
     catch
-        fprintf(2, '%s\n', msg); % Fallback to Command Window
+    fprintf(2, '%s\n', msg); % Fallback to Command Window
     end
 else
     fprintf('Toolbox %s is up-to-date.\n',toolboxName);
@@ -184,9 +192,9 @@ for i = 1:len
 end
 end
 
-function customAlert(message, titleText)
+function customAlert(message, titleText,toolboxName,installedVersion,currentID)
 % Create a small uifigure with no decorations
-fig = uifigure('Name', titleText, 'Position', [100 100 400 300], ...
+fig = uifigure('Name', titleText, 'Position', [100 100 400 350], ...
     'Resize', 'on', 'WindowStyle', 'modal');
 
 % Remove the toolbar and menu
@@ -194,9 +202,27 @@ fig.MenuBar = 'none';
 fig.ToolBar = 'none';
 
 % Message label | [left bottom width height]
-uilabel(fig,'Text', message,'Position', [20 50 360 250], ...
+uilabel(fig,'Text', message,'Position', [20 50 360 330], ...
     'HorizontalAlignment', 'center', ...
     'FontSize', 14, 'WordWrap', 'off');
+
+pnl = uipanel(fig, ...
+    'Position', [60 160 335 35], ...
+    'Scrollable', 'off');
+yPos=20;
+uilabel(pnl, ...
+    'Text', sprintf('%s (v%s)', toolboxName, installedVersion), ...
+    'Position', [10 yPos-10 280 22]);
+% The Hyperlink component
+hl = uihyperlink(pnl, ...
+    'Text', 'Uninstall', ...
+    'FontColor', [0.85 0.33 0.1], ...
+    'Position', [250 yPos-10 80 22]);
+
+% This is the functional equivalent of the matlab: protocol.
+% We use an anonymous function to pass the ID to the callback.
+hl.HyperlinkClickedFcn = @(src, event) uninstallAction(fig, toolboxName, currentID,installedVersion);
+
 
 % OK button
 uibutton(fig, 'Text', 'OK','Position', [150 20 100 30], ...
@@ -204,5 +230,22 @@ uibutton(fig, 'Text', 'OK','Position', [150 20 100 30], ...
 % Set warning icon (default MATLAB icon)
 warnIcon = fullfile(matlabroot,'toolbox','matlab','icons','warning.gif');
 % btn.Icon = warnIcon;
-uiimage(fig, 'ImageSource', warnIcon, 'Position', [10 200 50 50]);
+uiimage(fig, 'ImageSource', warnIcon, 'Position', [10 160 50 50]);
+end
+
+
+% Callback function for the link
+function uninstallAction(fig, name, id,installedVersion)
+msg = sprintf('Are you sure you want to uninstall\n "%s" version "%s"?', name, installedVersion);
+selection = uiconfirm(fig, msg, 'Confirm Uninstall', 'Icon', 'warning');
+
+if strcmp(selection, 'OK')
+    try
+        fprintf('Uninstalling: %s...\n', name);
+        matlab.addons.uninstall(id);
+        uialert(fig, 'Add-on uninstalled. Now manually install the new version.', 'Success');
+    catch ME
+        uialert(fig, ME.message, 'Uninstall Failed');
+    end
+end
 end
