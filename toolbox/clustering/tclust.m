@@ -90,7 +90,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               The default value of zerotol is 1e-10.
 %      restrfactor.msg = boolean which if set equal to true enables to monitor
 %               the relative change of the estimates of lambda Gamma and
-%               Omega in each iteration. The defaul value of pa.msg is
+%               Omega in each iteration. The default value of pa.msg is
 %               false, that is nothing is displayed in each iteration.
 %   restrfactor.userepmat  = scalar, which specifies whether to use implicit
 %               expansion or bsxfun.  restrfactor.userepmat =2 implies implicit
@@ -100,7 +100,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               older than 2016b.
 %               Data Types - scalar or struct
 % restrfactor.usepreviousest = boolean, which specifies if for each refining
-%               step we use values of constrained determints and rotation
+%               step we use values of constrained determinants and rotation
 %               matrices found in the previous refining step. Default value
 %               is true.
 %               Data Types - boolean
@@ -273,7 +273,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               be based on a centroid, covariance matrix and sample size
 %               formed by the first 40 observations of matrix Y and the
 %               second centroid, cov matrix and sample size must be formed
-%               by the remainining 30 solutions.
+%               by the remaining 30 solutions.
 %               If priorSol is a struct it must contain the following
 %               fields.
 %               priorSol.cini = a matrix of size k-times-v containing the
@@ -382,7 +382,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 default colors of the color map used. The field 'cmap'
 %                 may be a three-column matrix of values in the range [0,1]
 %                 where each row is an RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
+%                 Check the colormap function for additional information.
 %               - plots='contour' adds in the background of the bivariate
 %                 scatterplots a contour plot. The colormap of the contour
 %                 is based on grey levels as default. This argument may
@@ -392,7 +392,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 color map used. The field 'cmap' may be a three-column
 %                 matrix of values in the range [0,1] where each row is an
 %                 RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
+%                 Check the colormap function for additional information.
 %               - plots='ellipse' superimposes confidence ellipses to
 %                 each group in the bivariate scatterplots. The size of the
 %                 ellipse is chi2inv(0.95,2), i.e. the confidence level used
@@ -451,7 +451,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       Remark: 0 denotes unassigned units.
 %
 %         out.postprob = n-by-k matrix containing posterior probabilities
-%                       out.postprob(i,j) contains posterior probabilitiy of unit
+%                       out.postprob(i,j) contains posterior probability of unit
 %                       i from component (cluster) j. For the trimmed units
 %                       posterior probabilities are 0.
 %
@@ -466,7 +466,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       counterparts of idx, muopt, sigmaopt and siz.
 %
 %          out.MIXMIX = BIC which uses parameters estimated using the
-%                       mixture loglikelihood and the maximized mixture
+%                       mixture log-likelihood and the maximized mixture
 %                       likelihood as goodness of fit measure.
 %                       Remark: this output is present only  if input option
 %                       mixt is >0.

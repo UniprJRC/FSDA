@@ -164,7 +164,7 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'plots',1
 %                 Data Types - single | double
 %
-%     numpool : number of pools for parellel computing. Scalar.
+%     numpool : number of pools for parallel computing. Scalar.
 %               If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
 %               the random starts over numpool parallel processes. If
@@ -291,8 +291,8 @@ function out  = tclustIC(Y,varargin)
 %         out:   structure which contains the following fields:
 %
 %                out.CLACLA = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the penalized
+%                   specified else it is a matrix of size length(kk)-times
+%                   length(cc) containing the value of the penalized
 %                   classification likelihood. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
 %
@@ -301,15 +301,15 @@ function out  = tclustIC(Y,varargin)
 %                   version is not<2013b).
 %
 %                out.IDXCLA = cell of size 5-times-8 if kk and cc are not
-%                   specififed else it is a cell of size length(kk)-times
+%                   specified else it is a cell of size length(kk)-times
 %                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
+%                   length n containing the assignment of each unit using
 %                   the classification model. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
 %
 %                out.MIXMIX = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the penalized
+%                   specified else it is a matrix of size length(kk)-times
+%                   length(cc) containing the value of the penalized
 %                   mixture likelihood. This output is present only if
 %                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
 %
@@ -318,8 +318,8 @@ function out  = tclustIC(Y,varargin)
 %                   version is not<2013b).
 %
 %                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the ICL. This
+%                   specified else it is a matrix of size length(kk)-times
+%                   length(cc) containing the value of the ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA' or
 %                   'whichIC' is 'ALL'.
 %
@@ -328,9 +328,9 @@ function out  = tclustIC(Y,varargin)
 %                   version is not<2013b).
 %
 %                out.IDXMIX = cell of size 5-times-8 if kk and cc are not
-%                   specififed else it is a cell of size length(kk)-times
+%                   specified else it is a cell of size length(kk)-times
 %                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
+%                   length n containing the assignment of each unit using
 %                   the mixture model. This output is present only if
 %                   'whichIC' is 'MIXMIX', 'MIXCLA' or 'ALL'.
 %

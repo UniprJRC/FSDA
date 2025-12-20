@@ -58,7 +58,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 % This function implements the algorithm described in
 % Fritz H., Garcia-Escudero, L.A. and Mayo-Iscar, A. (2013), A fast
 % algorithm for robust constrained clustering,
-%"Computational Satistics and Data Analysis", Vol. 61, pp. 124-136.
+%"Computational Statistics and Data Analysis", Vol. 61, pp. 124-136.
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -82,7 +82,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
    % Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4
    % First column of matrix eigenvalues contains the eigenvalues of the first group
    % Second column of matrix eigenvalues contains the eigenvalues of the second group
-   % Thrid column of matrix eigenvalues contains the eigenvalues of the third group
+   % Third column of matrix eigenvalues contains the eigenvalues of the third group
    % Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group
    rng(10,'twister')
    eigenvalues=abs(10*randn(3,4));
@@ -112,7 +112,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 
 %{
     % Compare speed.
-    % We compare the speed of restreigneasy with that of restreigen. We use
+    % We compare the speed of restreigeneasy with that of restreigen. We use
     % userepmat=2 if the current MATLAB version if >=R2017a or userepmat =1
     % if MATLAB version is >=R2013a but <R2017a else we use userepmat =0
     v=10;
@@ -179,10 +179,10 @@ n=sum(niini);
 
 % We assume that niini is a column vector
 % nis is a matrix which replicates in the columns the sizes of the goups
-% First row of nis = size of first group repated v times
-% Second row of nis = size of second group repated v times
+% First row of nis = size of first group repeated v times
+% Second row of nis = size of second group repeated v times
 % ....
-% kth row of nis = size of kth group repated v times
+% kth row of nis = size of kth group repeated v times
 
 nis=repmat(niini,1,v);
 

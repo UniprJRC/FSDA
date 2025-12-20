@@ -11,7 +11,7 @@ function Wpdf = WNChygepdf(x,M,K,n,odds, accuracy)
 %
 % To illustrate the meaning of Wallenius and Fisher' function parameters, let's use
 % the classical biased urn example, with $K$ red balls and  $M-K$ white balls,
-% totalling $M$ balls. $n$ balls are drawn at random from the urn
+% totaling $M$ balls. $n$ balls are drawn at random from the urn
 % without replacement. Each red ball has the weight $\omega_{1}$, and
 % each white ball has the weight $\omega_{2}$; the probability ratio of red over
 % white balls is then given by $odds = \omega_{1} / \omega_{2}$. Note that

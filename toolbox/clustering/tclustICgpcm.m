@@ -74,7 +74,7 @@ function out  = tclustICgpcm(Y, varargin)
 %               The default value of zerotol is 1e-10.
 %          pa.msg = boolean which if set equal to true enables to monitor
 %               the relative change of the estimates of lambda Gamma and
-%               Omega in each iteration. The defaul value of pa.msg is
+%               Omega in each iteration. The default value of pa.msg is
 %               false, that is nothing is displayed in each iteration.
 %   pa.userepmat  = scalar, which specifies whether to use implicit
 %                   expansion or bsxfun.  pa.userepmat =2 implies implicit
@@ -206,7 +206,7 @@ function out  = tclustICgpcm(Y, varargin)
 %               Information criterion as function of k for each value of
 %               $c_{det}$ given the best value of $c_{shw}$ to the best
 %               found value. The kind of information criterion which is
-%               dispalyed depends on input option whichIC. It can be BIC
+%               displayed depends on input option whichIC. It can be BIC
 %               for mixture likelihood (MIXMIX) or ICL (MIXCLA) or BIC
 %               for classification likelihood (CLACLA).
 %               The second plot is a heatmap of the information criterion
@@ -222,7 +222,7 @@ function out  = tclustICgpcm(Y, varargin)
 %                 Example - 'plots',1
 %                 Data Types - single | double
 %
-%     numpool : number of pools for parellel computing. Scalar.
+%     numpool : number of pools for parallel computing. Scalar.
 %               If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
 %               the random starts over numpool parallel processes. If
@@ -296,8 +296,8 @@ function out  = tclustICgpcm(Y, varargin)
 %               cdet is always set to 1. Similarly, if we find a shape
 %               different from the identity the sequence of values of cshw
 %               is investigated else cshw is set equal to 1. Moreover in
-%               this step we control the type of rotation. If warmp is
-%               false we always start from VVV specificationa and we
+%               this step we control the type of rotation. If warmup is
+%               false we always start from VVV specification and we
 %               investigate each value of cdet and cshw. On a later stage
 %               we investigate the optimal value of cshb and the type of
 %               rotation.
@@ -332,42 +332,42 @@ function out  = tclustICgpcm(Y, varargin)
 %         out:   structure which contains the following fields:
 %
 %                out.CLACLA = 3D array of size 5-times-8--times-8 if kk and
-%                   pa.cdet and pa.cshw are not specififed else it is a 3D
+%                   pa.cdet and pa.cshw are not specified else it is a 3D
 %                   array of size
 %                   length(kk)-times-length(pa.cdet)-times-length(pa.shw)
-%                   containinig the value of the penalized classification
+%                   containing the value of the penalized classification
 %                   likelihood. This output is present only if 'whichIC' is
 %                   'CLACLA'.
 %
 %                out.IDXCLA = 3D array of size 5-times-8--times-8 if kk and
-%                   pa.cdet and pa.cshw are not specififed else it is a 3D
+%                   pa.cdet and pa.cshw are not specified else it is a 3D
 %                   array of size
 %                   length(kk)-times-length(pa.cdet)-times-length(pa.shw)
-%                   containinig the assignment of each unit using
+%                   containing the assignment of each unit using
 %                   the classification model. This output is present only
 %                   if 'whichIC' is 'CLACLA'.
 %
 %                out.MIXMIX = 3D array of size 5-times-8-times-8 if kk and
-%                   pa.cdet and pa.cshw are not specififed else it is a 3D
+%                   pa.cdet and pa.cshw are not specified else it is a 3D
 %                   array of size
 %                   length(kk)-times-length(pa.cdet)-times-length(pa.shw)
-%                   containinig the value of the penalized mixture
+%                   containing the value of the penalized mixture
 %                   likelihood. This output is present only if 'whichIC' is
 %                   'MIXMIX'.
 %
 %                out.MIXCLA =D array of size 5-times-8-times-8 if kk and
-%                   pa.cdet and pa.cshw are not specififed else it is a 3D
+%                   pa.cdet and pa.cshw are not specified else it is a 3D
 %                   array of size
 %                   length(kk)-times-length(pa.cdet)-times-length(pa.shw)
-%                   containinig the value of ICL. This
+%                   containing the value of ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA'.
 %
 %
 %                out.IDXMIX = 3D array of size 5-times-8--times-8 if kk and
-%                   pa.cdet and pa.cshw are not specififed else it is a 3D
+%                   pa.cdet and pa.cshw are not specified else it is a 3D
 %                   array of size
 %                   length(kk)-times-length(pa.cdet)-times-length(pa.shw)
-%                   containinig the assignment of each unit using using
+%                   containing the assignment of each unit using using
 %                   the mixture model. This output is present only if
 %                   'whichIC' is 'MIXMIX'.
 %
@@ -423,7 +423,7 @@ function out  = tclustICgpcm(Y, varargin)
 %                       trimmed observations. Note that this is the
 %                       assignment which used best value of cshb;
 %
-%               out.pa = strcture containing the the gpcm parameters
+%               out.pa = structure containing the the gpcm parameters
 %                   (pa.pars, pa.shb, pa.shw, pa.cdet) for the best model.
 %
 %                out.Y  = Original data matrix Y. The field is present if
@@ -437,7 +437,7 @@ function out  = tclustICgpcm(Y, varargin)
 %                   values of candidate values of $c_{shb}$ which have been
 %                   used. Note that if max(cshb) is smaller or equal than
 %                   $cshwbest^((v-1)/v)$. The second column contains the
-%                   associated values of the information crterion. r is the
+%                   associated values of the information criterion. r is the
 %                   number of candidate values of cshb which have been
 %                   considered.
 %

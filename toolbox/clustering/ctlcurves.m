@@ -46,8 +46,8 @@ function out  = ctlcurves(Y, varargin)
 %           bands.nsimul = number of replicates to use to create the
 %                   confidence bands and likelihood ratio tests.
 %                   The default value of bands.nsimul is
-%                   60 in order to provide the output in a reasonal time.
-%                   Note that for stable results we recommentd a value of
+%                   60 in order to provide the output in a reasonable time.
+%                   Note that for stable results we recommend a value of
 %                   bands.nsimul equal to 100.
 %            bands.valSolution   = boolean which specifies if it is
 %                   necessary to perform an outlier detection procedure on
@@ -90,7 +90,7 @@ function out  = ctlcurves(Y, varargin)
 %                   extracted subsets.
 %            bands.crit = scalar which defines the empirical p-value which
 %                   is used to define a solution as significant and to
-%                   reject the null hypotesis of smaller groups in the
+%                   reject the null hypothesis of smaller groups in the
 %                   likelihood ratio test. The default value of crit is
 %                   0.02, that is when we test $k$ against $k+1$ given a certain
 %                   value of $\alpha$, if the empirical p-value is greater
@@ -283,7 +283,7 @@ function out  = ctlcurves(Y, varargin)
 %                 Data Types - single | double
 %
 %
-%     numpool : number of pools for parellel computing. Scalar.
+%     numpool : number of pools for parallel computing. Scalar.
 %               If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
 %               the random starts over numpool parallel processes. If
@@ -328,7 +328,7 @@ function out  = ctlcurves(Y, varargin)
 %                 Data Types - single | double
 %
 %       Ysave : save input matrix. Boolean.
-%               Boolan that is set to true to request that the input matrix Y
+%               Boolean that is set to true to request that the input matrix Y
 %               is saved into the output structure out. Default is 1, that
 %               is  matrix Y is saved inside output structure out.
 %                 Example - 'Ysave',false
@@ -365,7 +365,7 @@ function out  = ctlcurves(Y, varargin)
 %                       containing the final assignment for each value of k
 %                       and each value of alpha. More precisely, suppose
 %                       kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
-%                       vector of length(n) containing the containinig the
+%                       vector of length(n) containing the containing the
 %                       assignment of each unit obtained when alpha=0.1.
 %                       Elements equal to zero denote unassigned units.
 %           out.CTL    = matrix of size length(kk)-by-length(alpha)
@@ -402,11 +402,11 @@ function out  = ctlcurves(Y, varargin)
 %       out.CTLoptimalK = scalar, optimal number of clusters, stored
 %                        as a positive integer value.
 %       out.CTLoptimalIDX  = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups in correspodence of
+%                       each of the k groups in correspondence of
 %                       OptimalAlpha and OptimalK. Cluster names are
 %                       integer numbers from 1 to k. 0 indicates trimmed
 %                       observations. The fields which follow which start
-%                       with LRT refer to the likilhood ratio test
+%                       with LRT refer to the likelihood ratio test
 %
 %        out.LRTpval =  table with size length(kk)-1-times-length(alpha)
 %                           which stores the relative frequency in which

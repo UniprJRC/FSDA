@@ -46,24 +46,24 @@ function out = dempk(Y, k, g, varargin)
 %               (for v=1 the behaviour is forced to be as for plots=1):
 %               - plots='contourf' adds in the background of the bivariate
 %                 scatterplots a filled contour plot. The colormap of the
-%                 filled contour is based on grey levels as default.
+%                 filled contour is based on gray levels as default.
 %                 This argument may also be inserted in a field named 'type'
 %                 of a structure. In the latter case it is possible to
 %                 specify the additional field 'cmap', which changes the
 %                 default colors of the color map used. The field 'cmap'
 %                 may be a three-column matrix of values in the range [0,1]
 %                 where each row is an RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
+%                 Check the colormap function for additional information.
 %               - plots='contour' adds in the background of the bivariate
 %                 scatterplots a contour plot. The colormap of the contour
-%                 is based on grey levels as default. This argument may
+%                 is based on gray levels as default. This argument may
 %                 also be inserted in a field named 'type' of a structure.
 %                 In the latter case it is possible to specify the additional
 %                 field 'cmap', which changes the default colors of the
 %                 color map used. The field 'cmap' may be a three-column
 %                 matrix of values in the range [0,1] where each row is an
 %                 RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
+%                 Check the colormap function for additional information.
 %               - plots='ellipse' superimposes confidence ellipses to
 %                 each group in the bivariate scatterplots. The size of the
 %                 ellipse is chi2inv(0.95,2), i.e. the confidence level used

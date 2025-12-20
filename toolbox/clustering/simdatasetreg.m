@@ -12,7 +12,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %   realization from a multinomial distribution with probabilities given by
 %   mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25,
 %   0.25, 0.25) function Nk1=mnrnd( n-k, Pi) is used to generate k integer
-%   numbers (whose sum is n-k) from the multinominal distribution with
+%   numbers (whose sum is n-k) from the multinomial distribution with
 %   parameters n-k and Pi. The size of the groups is given by Nk1+1. The
 %   first Nk1(1)+1  observations are generated using vector of regression
 %   coefficients Beta(:,1) and variance S(1), ..., and the X simulated as
@@ -48,14 +48,14 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                       (Xdistrib.intercept=0) containing the parameters
 %                       sigma for each explanatory variable and each group.
 %                       The default value of Xdistrib.sigma is ones(p-1,k). 
-%                       Notethat  Xdistrib.sigma is used just if
+%                       Note that  Xdistrib.sigma is used just if
 %                       Xdistrib.type is 'normal' or 'halfnormal'.
 %                   Xdistrib.a = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters a
 %                       for each explanatory variable and each group. The
 %                       default value of Xdistrib.a is zeros(p-1, k).
-%                       Notethat  Xdistrib.a is used just if Xdistrib.type
+%                       Note that  Xdistrib.a is used just if Xdistrib.type
 %                       is 'uniform', that is if we have U(a, b).
 %                   Xdistrib.b = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
@@ -68,7 +68,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                       intercept is present) or p (if intercept is not
 %                       present) columns containing the values of the
 %                       explanatory variables for the k groups.
-%                       Notethat  Xdistrib.X is used just if Xdistrib.type
+%                       Note that  Xdistrib.X is used just if Xdistrib.type
 %                       is 'User'.
 %               Data Types - struct
 %
@@ -92,7 +92,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                  number = scalar, or vector of length f. The sum of the
 %                       elements of vector 'number' is equal to the total
 %                       number of outliers which are simulated.
-%                  alpha = scalar or vector of legth f containing the
+%                  alpha = scalar or vector of length f containing the
 %                       level(s) of simulated outliers. The default value
 %                       of alpha is 0.001.
 %                  maxiter = maximum number of trials to simulate outliers.
@@ -159,14 +159,14 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                  (default) no noise variable is added to the matrix of
 %                  simulated data.
 %                - If noisevars is a scalar equal to r, then r new noise
-%                  explnatory variables are added to the matrix of
+%                  explanatory variables are added to the matrix of
 %                  simulated data using the uniform distribution in the
 %                  range [min(X) max(X)].
 %                - If noisevars is a structure it may contain the following
 %                  fields:
 %                  noisevars.number= a scalar or a vector of length f. The sum of
 %                       elements of vector 'number' is equal to the total
-%                       number of noise variables to be addded.
+%                       number of noise variables to be added.
 %                  noisevars.distribution= string or cell array of strings of length
 %                       f which specifies the distribution to be used to
 %                       simulate the noise variables.
@@ -182,7 +182,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                         generate the data according to a Student T with 6
 %                         degrees of freedom.
 %                       * chisquare followed by a number which controls the
-%                         degreess of freedom. For example, chisquare8
+%                         degrees of freedom. For example, chisquare8
 %                         specifies to generate the data according to a Chi
 %                         square distribution with 8 degrees of freedom.
 %                  noisevars.interval= string or vector of length 2 or matrix of size
@@ -201,7 +201,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                   noisevars=struct;
 %                   noisevars.number=[3 2];
 %                   noisevars.distribution={'Chisquare5' 'T3'};
-%                adds 5 noise explaantory variables, the first 3 generated using
+%                adds 5 noise explanatory variables, the first 3 generated using
 %                the Chi2 with 5 degrees of freedom and the last two
 %                using the Student t with 3 degrees of freedom. Noise
 %                variables are generated in the interval min(X) max(X).
@@ -223,7 +223,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                of the responses for the k groups.
 %
 %           X  : Explanatory variables. Matrix. Matrix of size 
-%                (n + nout)-by-(p + nnoise) containinng the values of the
+%                (n + nout)-by-(p + nnoise) containing the values of the
 %                explanatory variables for the k groups. Noise coordinates
 %                are provided in the last nnoise columns.
 %

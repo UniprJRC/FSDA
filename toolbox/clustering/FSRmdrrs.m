@@ -70,7 +70,7 @@ function out=FSRmdrrs(y,X,varargin)
 %
 %  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no
 %               check is performed on matrix y and matrix X. Notice that y
-%               and X are left unchanged. In other words the additioanl
+%               and X are left unchanged. In other words the additional
 %               column of ones for the intercept is not added. As default
 %               nocheck=0. The controls on h, alpha and nsamp still remain.
 %               Example - 'nocheck',1
@@ -136,7 +136,7 @@ function out=FSRmdrrs(y,X,varargin)
 %               If internationaltrade is true (default is false) residuals
 %               which have large of the final column of X (generally
 %               quantity) are reduced. Note that this guarantees that
-%               leverge units which have a large value of  X will tend to
+%               leverage units which have a large value of  X will tend to
 %               stay in the subset. This option is particularly useful in
 %               the context of international trade data where we 
 %               regress value (value=price*Q) on quantity (Q). In other
@@ -310,7 +310,7 @@ function out=FSRmdrrs(y,X,varargin)
     % units of the second larger group. This trajectory just after the dip
     % collapses into the trajectory which starts from the second group.
     % Around steps 90-110 it is also possible to see two trajectories
-    % inside the bands which collaps into one around m=120. Please use
+    % inside the bands which collapse into one around m=120. Please use
     % mdrrsplot with option databrush in order to explore the units
     % belonging to subset. Here we limit ourselves to notice that around m
     % =180 all the units from second group are included into subset (plus

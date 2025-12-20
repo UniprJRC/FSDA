@@ -119,7 +119,7 @@ function [out] = MixSimreg(k,p,varargin)
 %               the distribution is fixed for each explanatory variable and
 %               each group; however, the parameters of the chosen
 %               distribution may vary across variables and groups. For
-%               example, once decided that the distibution of the X is
+%               example, once decided that the distribution of the X is
 %               uniform, the second variable of the first group can be
 %               defined in [a21 b21] while the third variable of the second
 %               group can be defined in [a32 b32].
@@ -135,7 +135,7 @@ function [out] = MixSimreg(k,p,varargin)
 %                   The other fields of Xdistrib depend on the distribution
 %                   which is chosen.
 %                   Xdistrib.type = string which identifies the kind of distribution. 
-%                   Possibile values are:
+%                   Possible values are:
 %                   'Normal'; NORMAL DISTRIBUTION N(mu, sigma); In this
 %                   case the use must supply mu and sigma.
 %                   'Uniform'; UNIFORM DISTRIBUTION U(a, b).
@@ -189,7 +189,7 @@ function [out] = MixSimreg(k,p,varargin)
 %                 parameters of the distribution.
 %                 The following options are admitted for betadistrib:
 %                  betadistrib.type = string which identifies the kind of distribution. 
-%                   Possibile values are:
+%                   Possible values are:
 %                   'Normal'; NORMAL DISTRIBUTION N(mu, sigma); In this
 %                   case the user must supply mu and sigma.
 %                   'Uniform'; UNIFORM DISTRIBUTION U(a, b).
@@ -297,7 +297,7 @@ function [out] = MixSimreg(k,p,varargin)
 %                      StdOmega is the standard deviation of the k*(k-1)/2
 %                      probabilities of overlapping.
 %
-%         out.rcMax  = vector of length 2. It containes the row and column
+%         out.rcMax  = vector of length 2. It contains the row and column
 %                      numbers associated with the pair of components
 %                      producing maximum overlap 'MaxOmega'
 %
@@ -416,7 +416,7 @@ function [out] = MixSimreg(k,p,varargin)
     %     0.5000    0.5000    2.0000
     %     0.5000    0.5000    0.5000
     %     0.5000    0.5000    0.5000
-    % Probabilitties of overlapping are evaluated at
+    % Probabilities of overlapping are evaluated at
     % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     yXplot(y,X(:,2:end),'group',id);
@@ -441,7 +441,7 @@ function [out] = MixSimreg(k,p,varargin)
     betadistrib.sigma=6;
     Q=MixSimreg(k,p,'BarOmega',0.01,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
     n=200;
-    % Probabilitties of overlapping are evaluated at
+    % Probabilities of overlapping are evaluated at
     % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
     % Q.betadistrib in this case is equal to
     %      type: 'Normal'
@@ -452,7 +452,7 @@ function [out] = MixSimreg(k,p,varargin)
 %}
 
 %{
-    % Example 4: Internation trade data example.
+    % Example 4: International trade data example.
     % All slopes are positive (beta generated using half normal) p=1 and there
     % is no intercept
     rng(10,'twister')

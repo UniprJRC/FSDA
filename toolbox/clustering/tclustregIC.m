@@ -166,7 +166,7 @@ function out  = tclustregIC(y,X,varargin)
 %                random numbers which are used to initialize the
 %                proportions of the groups. This option is effective just
 %                if nsamp is a matrix which contains pre-extracted
-%                subsamples and k is a scalat. The purpose of this option
+%                subsamples and k is a scalar. The purpose of this option
 %                is to enable the user to replicate the results.
 %                The default value of RandNumbForNini is empty,
 %                that is random numbers from uniform are used.
@@ -219,7 +219,7 @@ function out  = tclustregIC(y,X,varargin)
 %               Example -'h',h1 where h1=subplot(2,1,1)
 %               Data Types - Axes object (supplied as a scalar)
 %
-%     numpool : number of pools for parellel computing. Scalar.
+%     numpool : number of pools for parallel computing. Scalar.
 %               If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
 %               the random starts over numpool parallel processes. If
@@ -330,8 +330,8 @@ function out  = tclustregIC(y,X,varargin)
 %         out:   structure which contains the following fields:
 %
 %                out.CLACLA = matrix of size 5-times-8 if kk and ccsigmay are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the penalized
+%                   specified else it is a matrix of size length(kk)-times
+%                   length(cc) containing the value of the penalized
 %                   classification likelihood. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
 %
@@ -340,15 +340,15 @@ function out  = tclustregIC(y,X,varargin)
 %                   version is not<2013b).
 %
 %                out.IDXCLA = cell of size 5-times-8 if kk and cc are not
-%                   specififed else it is a cell of size length(kk)-times
+%                   specified else it is a cell of size length(kk)-times
 %                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
+%                   length n containing the assignment of each unit using
 %                   the classification model. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
 %
 %                out.MIXMIX = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the penalized
+%                   specified else it is a matrix of size length(kk)-times
+%                   length(cc) containing the value of the penalized
 %                   mixture likelihood. This output is present only if
 %                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
 %
@@ -357,8 +357,8 @@ function out  = tclustregIC(y,X,varargin)
 %                   version is not<2013b).
 %
 %                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the ICL. This
+%                   specified else it is a matrix of size length(kk)-times
+%                   length(cc) containing the value of the ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA' or
 %                   'whichIC' is 'ALL'.
 %
@@ -367,9 +367,9 @@ function out  = tclustregIC(y,X,varargin)
 %                   version is not<2013b).
 %
 %                out.IDXMIX = cell of size 5-times-8 if kk and cc are not
-%                   specififed else it is a cell of size length(kk)-times
+%                   specified else it is a cell of size length(kk)-times
 %                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
+%                   length n containing the assignment of each unit using
 %                   the mixture model. This output is present only if
 %                   'whichIC' is 'MIXMIX', 'MIXCLA' or 'ALL'.
 %
@@ -386,14 +386,14 @@ function out  = tclustregIC(y,X,varargin)
 %
 %                out.ccSigmaX = vector containing the values of c (values of the
 %                   restriction factor) which have been considered for the
-%                   covariance matrices of the esplnatory variables. This
+%                   covariance matrices of the explanatory variables. This
 %                   vector is equal to input optional argument ccsigmaX if
 %                   ccsigmaX had been specified and input option alphaX=1
-%                   otherwise it is equal to 12 if alphaX=1 and xxsigmaX
+%                   otherwise it is equal to 12 if alphaX=1 and ccsigmaX
 %                   has not been specified. Finally if input option alphaX
 %                   is not equal 1 out.ccsigmaX is an empty value
 %                out.alpha = scalar containing the trimming level which has
-%                   been used in the likelidood (it stores the values of input alphaLik).
+%                   been used in the likelihood (it stores the values of input alphaLik).
 %                out.alphaX = scalar containing information about
 %                   second-level trimming or constrained weighted model for X.
 %                out.X  = Original data matrix of explanatory variables.
@@ -505,7 +505,7 @@ function out  = tclustregIC(y,X,varargin)
     n=200;
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     yXplot(y,X,id);
-    % CWM with no contrainst on cov(X)
+    % CWM with no constraint on cov(X)
     out = tclustregIC(y,X(:,2:end),'alphaX',1,'ccSigmaX',10^10);
     tclustICplot(out,'whichIC','MIXMIX')
 %}
@@ -535,7 +535,7 @@ function out  = tclustregIC(y,X,varargin)
     % Extracts a set of best relevant solutions ...
     [outICsol] = tclustICsol(outIC,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',5,'ThreshRandIndex',0.7);
 
-    % ... and visualise them with the carbike plot, which highlights the most
+    % ... and visualize them with the carbike plot, which highlights the most
     % relevant one in intuitive way.
     [hcb,areas] = carbikeplot(outICsol,'SpuriousSolutions',false);
 
@@ -548,7 +548,7 @@ function out  = tclustregIC(y,X,varargin)
         if amax>0
             % take the true solution with larger area
             kopt = outICsol.CLACLAbs{truesoli(iamax),1};  % optimal number of groups
-            copt = outICsol.CLACLAbs{truesoli(iamax),2};  % optimal nrestriction factor
+            copt = outICsol.CLACLAbs{truesoli(iamax),2};  % optimal restriction factor
         else
             % if areas are all zero, take the true solution with larger k
             kopt = outICsol.CLACLAbs{truesoli(1),1};
@@ -569,7 +569,7 @@ function out  = tclustregIC(y,X,varargin)
     iARImax    = find(outEDA.Amon(:,2) == ARImax);
     alphaopt   = outEDA.Amon(iARImax(end),1);
 
-    % final clustering % with the parameters sugggested by the monitoring
+    % final clustering % with the parameters suggested by the monitoring
     outTCLUST    = tclustreg(y,X,kopt,copt,alphaopt,0,'intercept',intercept,'plots',1);
     idxTCLUST    = outTCLUST.idx;
 %}

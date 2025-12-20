@@ -44,7 +44,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %               'EVI','VEI','EEI','VII','EII'
 %            pa.shb = between groups shape constraint
 %            pa.shw = within groups shape constraint
-%            pa.zerotol = tolerance to decleare elements equal to 0.
+%            pa.zerotol = tolerance to declare elements equal to 0.
 %            pa.maxiterS = maximum number of iterations in presence of
 %            varying shape matrices.
 %            pa.userepmat = scalar (if =2 implicit expansion is used)

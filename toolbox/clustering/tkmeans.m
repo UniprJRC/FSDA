@@ -15,7 +15,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %
 %  Required input arguments:
 %
-%     Y:    Input data. Matrix. Data matrix containining n observations on 
+%     Y:    Input data. Matrix. Data matrix containing n observations on 
 %           v variables.
 %           Rows of Y represent observations, and columns
 %           represent variables.
@@ -53,7 +53,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %               whether cluster weights (1) shall be considered in the
 %               concentration and assignment steps. If weights=1 in the
 %               assignment step to the squared Euclidean distance of unit i
-%               to group j log n_j is substracted. The default is no
+%               to group j log n_j is subtracted. The default is no
 %               cluster weights.
 %                 Example - 'weights',1
 %                 Data Types - double
@@ -76,7 +76,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                 default colors of the color map used. The field 'cmap'
 %                 may be a three-column matrix of values in the range [0,1] 
 %                 where each row is an RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
+%                 Check the colormap function for additional information.
 %               - plots='contour' adds in the background of the bivariate
 %                 scatterplots a contour plot. The colormap of the contour 
 %                 is based on grey levels as default. This argument may 
@@ -86,7 +86,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                 color map used. The field 'cmap' may be a three-column 
 %                 matrix of values in the range [0,1] where each row is an 
 %                 RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
+%                 Check the colormap function for additional information.
 %               - plots='ellipse' superimposes confidence ellipses to
 %                 each group in the bivariate scatterplots. The size of the 
 %                 ellipse is chi2inv(0.95,2), i.e. the confidence level used 
@@ -122,7 +122,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                 Data Types - double
 %
 %        nomes: Estimated time message. Scalar. If nomes is equal to 1 no 
-%               message about estimated time to compute tkemans is
+%               message about estimated time to compute tkmeansa is
 %               displayed, else if nomes is equal to 0 (default), a message
 %               about estimated time is displayed.
 %                 Example - 'nomes',1
@@ -425,7 +425,7 @@ for i=1:nselected
         tic; 
     end
     
-    % lessthankgroups will be equal 1 if for a particlar subset less
+    % lessthankgroups will be equal 1 if for a particular subset less
     % than k groups are found
     lessthankgroups=0;
     

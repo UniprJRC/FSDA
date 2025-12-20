@@ -90,7 +90,7 @@ function [IDXrelabelled, idxMapping]  = ClusterRelabel(IDX,pivotunits)
 
 %{
     %% Example with detailed description of output element OldAndNewIndexes.
-    % Random seed to be example ro replicate the results.
+    % Random seed to be example to replicate the results.
     rng(1000)
     Y=load('geyser2.txt');
     k=3;

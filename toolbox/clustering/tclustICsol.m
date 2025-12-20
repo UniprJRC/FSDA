@@ -19,30 +19,30 @@ function out  = tclustICsol(IC,varargin)
 %                the following fields.
 %                IC.CLACLA = matrix of size length(kk)-by-length(cc) or of
 %                size length(kk)-by-length(alpha)
-%                   containinig the values of the penalized
+%                   containing the values of the penalized
 %                   classification likelihood (CLA).
 %                   This field is linked with out.IDXCLA.
 %                IC.IDXCLA = cell of size length(kk)-by-length(cc) or of
 %                   size length(kk)-by-length(alpha).
 %                   Each element of the cell is a vector of length n
-%                   containinig the assignment of each unit using the
+%                   containing the assignment of each unit using the
 %                   classification model.
 %                Remark: fields CLACLA and IDXCLA are linked together.
 %                   CLACLA and IDXCLA are compulsory just if optional input
 %                   argument 'whichIC' is 'CLACLA' or 'ALL'.
 %                IC.MIXMIX = matrix of size length(kk)-by-length(cc) or of
 %                   size length(kk)-by-length(alpha)
-%                   containinig the value of the penalized
+%                   containing the value of the penalized
 %                   mixture likelihood (BIC). This field is linked with
 %                   out.IDXMIX.
 %                IC.MIXCLA = matrix of size length(kk)-times length(cc) or of
 %                   size length(kk)-by-length(alpha)
-%                   containinig the value of the ICL. This field is linked
+%                   containing the value of the ICL. This field is linked
 %                   with out.IDXMIX.
 %                IC.IDXMIX = cell of size length(kk)-times length(cc) or of
 %                   size length(kk)-by-length(alpha).
 %                   Each element of the cell is a vector of length n
-%                   containinig the assignment of each unit using the
+%                   containing the assignment of each unit using the
 %                   mixture model.
 %                Remark 1: fields MIXMIX and IDXMIX are linked together.
 %                   MIXMIX and IDXMIX are compulsory just if optional input
@@ -63,7 +63,7 @@ function out  = tclustICsol(IC,varargin)
 %                IC.y =  original n-times-1 regression response on which the IC
 %                   (Information criterion). This input option is present
 %                   only if IC comes from tclustregIC.
-%                IC.X =  original n-times-p matrix of explanatory varaibles
+%                IC.X =  original n-times-p matrix of explanatory variables
 %                   on which the IC (Information criterion). This input
 %                   option is present only if IC comes from tclustregIC.
 %                 Data Types - struct
@@ -111,7 +111,7 @@ function out  = tclustICsol(IC,varargin)
 %                 Data Types - single | double
 %
 % SpuriousSolutions  :  Include or nor spurious solutions in the plot. Boolean.
-%                       As default spurios solutions are shown in the plot.
+%                       As default spurious solutions are shown in the plot.
 %                 Example - 'SpuriousSolutions',false
 %                 Data Types - single | double
 %
@@ -173,7 +173,7 @@ function out  = tclustICsol(IC,varargin)
 %               is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'
 %
 % out.ARIMIXtable = Table with the same meaning of matrix ARIMIX above.
-%                 A Matlab table has also been been given to faciliate the
+%                 A Matlab table has also been been given to facilitate the
 %                 interpretation of the rows and columns. The Rownames of
 %                 this table correspond to the values of k which are used
 %                 and the colNames of this table contain in a dynamic way
@@ -214,8 +214,8 @@ function out  = tclustICsol(IC,varargin)
 %               Remark: field ARICLA is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'CLACLA'
 %
-% out.ARICLAtable = Table with the same meaning of matrixo CLACLAari above.
-%                 A Matlab table has also been been given to faciliate the
+% out.ARICLAtable = Table with the same meaning of matrix CLACLAari above.
+%                 A Matlab table has also been been given to facilitate the
 %                 interpretation of the rows and columns. The Rownames of
 %                 this table correspond to the values of k which are used
 %                 and the colNames of this table contain in a dynamic way
@@ -250,7 +250,7 @@ function out  = tclustICsol(IC,varargin)
 %
 %          out.cc = vector containing the values of c (values of the
 %                   restriction factor) which have been considered. This
-%                   vector is equal to input argument Ic.cc.
+%                   vector is equal to input argument IC.cc.
 %
 %          out.alpha = vector containing the values of $\alpha$ (values of the
 %                   trimming level) which have been considered. This

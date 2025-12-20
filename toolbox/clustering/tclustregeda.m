@@ -31,11 +31,11 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %             matrices of the explanatory variables. Scalar or vector with two
 %             elements. If restrfact is a scalar it controls the
 %             differences among group scatters of the residuals. The value
-%             1 is the strongest restriction. If restrfactor is a vector
+%             1 is the strongest restriction. If restrfact is a vector
 %             with two elements the first element controls the differences
 %             among group scatters of the residuals and the second the
 %             differences among covariance matrices of the explanatory
-%             variables. Note that restrfactor(2) is used just if
+%             variables. Note that restrfact(2) is used just if
 %             input option $alphaX=1$, that is if constrained weighted
 %             model for X is assumed.
 %            Data Types - single|double
@@ -86,7 +86,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
 %               In the case of mixture modelling parameter mixt also
-%               controls which is the criterior to find the untrimmed units
+%               controls which is the criterion to find the untrimmed units
 %               in each step of the maximization
 %               If mixt >=1 mixture modelling is assumed else crisp
 %               assignment.
@@ -189,7 +189,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                 once.
 %                 The third plot shows ("PostProb") is a 4 panel parallel
 %                 coordinate plots which shows the monitoring of posterior
-%                 probabilities. Four versions of parallel coordinateds
+%                 probabilities. Four versions of parallel coordinates
 %                 plots are proposed. The first two use function
 %                 parallelcoords and refer respectively to all the units
 %                 (left panel) or the units which were trimmed or changed
@@ -198,7 +198,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                 parallelplot.
 %                 The fourth plot ("PostProb") is 4 panel parallel
 %                 coordinate plots which shows the monitoring of posterior
-%                 probabilities. Four versions of parallel coordinateds
+%                 probabilities. Four versions of parallel coordinates
 %                 plots are proposed. The first two use function
 %                 parallelcoords and refer respectively to all the units
 %                 (left panel) or the units which were trimmed or changed
@@ -245,7 +245,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                   Note that the trajectories of beta coefficients are
 %                   standardized in order to have all of them on a
 %                   comparable scale.
-%                 plots.alphasel = numeric vector which speciies for which
+%                 plots.alphasel = numeric vector which specifies for which
 %                   values of alpha it is possible to see the
 %                   classification (in plot gscatter) or the
 %                   superimposition of regression lines (in plot
@@ -366,15 +366,15 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                       sizes of the of the k groups.
 %
 %         out.Vopt  =  column vector of length(alphaLik) containing the
-%                      value of the target likelihod for each value of alphaLik.
+%                      value of the target likelihood for each value of alphaLik.
 %
 %
 %         out.Amon  =  Amon stands for alphaLik monitoring. Matrix of size
 %                      (length(alphaLik)-1)-by-7 which contains for two
 %                       consecutive values of alpha the monitoring of six
 %                       quantities (change in classification, change in
-%                       betas, sigmas, correted sigmas and if cwm also
-%                       centroid and coariance in the X space.
+%                       betas, sigmas, corrected sigmas and if cwm also
+%                       centroid and covariance in the X space.
 %                       1st col = value of alphaLik.
 %                       2nd col = ARI index.
 %                       3rd col = relative squared Euclidean distance between
@@ -421,7 +421,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                       of posterior probabilities.
 %
 %     out.units= structure containing the following fields:
-%                       units.UnitsTrmOrChgCla=units trimmed at least onece
+%                       units.UnitsTrmOrChgCla=units trimmed at least once
 %                           or changed classification at least once.
 %                       units.UnitsChgCla=units which changed
 %                           classification at least once (i.e. from group 1

@@ -1,5 +1,5 @@
 function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
-%restrdeterGPCM applies determinat restrictions for the 14 GPCM
+%restrdeterGPCM applies determinant restrictions for the 14 GPCM
 %
 %
 %<a href="matlab: docsearchFS('restrdeterGPCM')">Link to the help function</a>
@@ -24,7 +24,7 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 %           equal to 1 if the second letter of modeltype is I. This matrix
 %           can be constructed from routine restrshapepars
 %           Data Types - double
-%    OMG  : costrained rotation array. 3D array. p-by-p-by-k 3D array
+%    OMG  : constrained rotation array. 3D array. p-by-p-by-k 3D array
 %           containing in position (:,:,j) the rotation
 %           matrix $\Omega_j$ for group $j$, with $j=1, 2, \ldots, k$
 %           Data Types - double

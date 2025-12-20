@@ -196,7 +196,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                   distance (bottom panel). If this field is
 %                   not specified plots.name={'gscatter' 'monitor'} and
 %                   both figures will be shown.
-%                 plots.alphasel = numeric vector which speciies for which
+%                 plots.alphasel = numeric vector which specifies for which
 %                   values of alpha it is possible to see the classification.
 %                   For example if plots.alphasel =[ 0.05 0.02], the
 %                   classification will be shown just for alpha=0.05 and
@@ -388,7 +388,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %
 %
 % This procedure extends to tclust the so called monitoring
-% approach. The phylosophy is to investigate how the results change as the
+% approach. The philosophy is to investigate how the results change as the
 % trimming proportion alpha reduces. This function enables us to monitor
 % the change in classification (measured by the ARI index) and the change
 % in centroids and covariance matrices (measured by the squared euclidean

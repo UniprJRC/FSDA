@@ -32,16 +32,16 @@ function S=genSigmaGPCM(v, k, pa)
 %               ratio of the elements inside each component is greater or
 %               equal than that specified is pa.shw and at least one ratio
 %               among the ordered elements of each shape matrix is greater or
-%               equal tahn pa.shb. The successive application of routine
-%               restrSgimaGPCM guarrantes that the inequalites become
+%               equal than pa.shb. The successive application of routine
+%               restrSgimaGPCM guarantees that the inequalities become
 %               equalities. The default value of pa.exaxtrestriction is
 %               false therefore covariance matrices are generated without
 %               implying any constraint.  If pa.exactrestriction is true
 %               covariance matrices are generated with:
 %               1) max ratio between determinants equal to pa.cdet (if
-%               pa.cdet is specififed);
+%               pa.cdet is specified);
 %               2) at least a  ratio between the elements of each shape matrix greater or equal than
-%               pa.shw (if pa.shw is specififed);
+%               pa.shw (if pa.shw is specified);
 %               3) max ratio between the ordered elements of each shape
 %               matrices greater or equal than pa.shb).
 %             pa.cdet = scalar in the interval [1 Inf) which specifies the

@@ -57,7 +57,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %               overlap. MaxOmega is the maximum of
 %               OmegaMap(i,j)+OmegaMap(j,i) (i ~= j)=1, 2, ..., k.
 %
-%    StdOmega : Std of overlap. Scalar. Scalar assocaited with standard
+%    StdOmega : Std of overlap. Scalar. Scalar associated with standard
 %               deviation of overlap (that is the standard deviation of the
 %               0.5*k(k-1) pij (probabilities of overlapping).
 %

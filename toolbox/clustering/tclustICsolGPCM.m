@@ -19,30 +19,30 @@ function out  = tclustICsolGPCM(IC,varargin)
 %           IC : Information criterion to use. Structure. It contains
 %                the following fields.
 %                IC.CLACLA = 3D array of size
-%                   length(kk)-by-length(cdet)-by-length(cshw) containinig
+%                   length(kk)-by-length(cdet)-by-length(cshw) containing
 %                   the values of the penalized
 %                   classification likelihood (CLA).
 %                   This field is linked with IC.IDXCLA.
 %                IC.IDXCLA = 3D array of size
 %                   length(kk)-by-length(cdet)-by-length(csshw).
 %                   Each element of the cell is a vector of length n
-%                   containinig the assignment of each unit using the
+%                   containing the assignment of each unit using the
 %                   classification model.
 %                Remark: fields CLACLA and IDXCLA are linked together.
 %                   CLACLA and IDXCLA are compulsory just if optional input
 %                   argument 'whichIC' is 'CLACLA'.
 %                IC.MIXMIX = 3D array of size length(kk)-by-length(cdet)-by-length(cshw)
-%                   containinig the value of the penalized
+%                   containing the value of the penalized
 %                   mixture likelihood (BIC). This field is linked with
 %                   IC.IDXMIX.
 %                IC.MIXCLA = 3D array of size
-%                   length(kk)-by-length(cdet)-by-length(cshw) containinig
+%                   length(kk)-by-length(cdet)-by-length(cshw) containing
 %                   the value of the ICL. This field is linked with
 %                   IC.IDXMIX.
 %                IC.IDXMIX = 3D cell of size
 %                   length(kk)-by-length(cdet)-by-length(cshw).
 %                   Each element of the cell is a vector of length n
-%                   containinig the assignment of each unit using the
+%                   containing the assignment of each unit using the
 %                   mixture model.
 %                Remark 1: fields MIXMIX and IDXMIX are linked together.
 %                   MIXMIX and IDXMIX are compulsory just if optional input
@@ -104,7 +104,7 @@ function out  = tclustICsolGPCM(IC,varargin)
 %                 Data Types - single | double
 %
 % SpuriousSolutions  :  Include or nor spurious solutions in the plot. Boolean.
-%                       As default spurios solutions are shown in the plot.
+%                       As default spurious solutions are shown in the plot.
 %                 Example - 'SpuriousSolutions',false
 %                 Data Types - single | double
 %
@@ -378,7 +378,7 @@ ccshw=IC.ccshw;
 % Extract the values of alpha (trimming level)
 alpha=IC.alpha;
 
-% Prepare rownames and colsnames for table which will contain
+% Prepare rownames and colnames for table which will contain
 % in the rows the number of groups from
 % rownamesARI=strcat(cellstr(repmat('k=',length(kk),1)), cellstr(num2str(kk')));
 

@@ -99,7 +99,7 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
 % This function implements the algorithm described in 
 % Fritz H., Garcia-Escudero, L.A. and Mayo-Iscar, A. (2013), A fast
 % algorithm for robust constrained clustering,
-%"Computational Satistics and Data Analysis", Vol. 61, pp. 124-136.
+%"Computational Statistics and Data Analysis", Vol. 61, pp. 124-136.
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -123,7 +123,7 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
    % Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4
    % First column of matrix eigenvalues contains the eigenvalues of the first group
    % Second column of matrix eigenvalues contains the eigenvalues of the second group
-   % Thrid column of matrix eigenvalues contains the eigenvalues of the third group
+   % Third column of matrix eigenvalues contains the eigenvalues of the third group
    % Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group
    rng(10,'twister')
    eigenvalues=abs(10*randn(3,4));

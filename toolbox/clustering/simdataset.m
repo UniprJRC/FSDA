@@ -29,7 +29,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %   apply an inverse Box-Cox transformation providing a vector of
 %   coefficients 'lambda'. The value 1 implies that no transformation is
 %   needed for the corresponding coordinate. It is also possible to add
-%   outliers to an existing dataset by simply suppling as first argument
+%   outliers to an existing dataset by simply supplying as first argument
 %   the matrix of existing data.
 %
 %  Required input arguments:
@@ -69,7 +69,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                  number = scalar, or vector of length f. The sum of the
 %                       elements of vector 'number' is equal to the total
 %                       number of outliers which are simulated.
-%                  alpha = scalar or vector of legth f containing the
+%                  alpha = scalar or vector of length f containing the
 %                       level(s) of simulated outliers. The default value
 %                       of alpha is 0.001.
 %                  maxiter = maximum number of trials to simulate outliers.
@@ -130,7 +130,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                  fields:
 %                  noisevars.number= a scalar or a vector of length f. The sum of
 %                       elements of vector 'number' is equal to the total
-%                       number of noise variables to be addded.
+%                       number of noise variables to be added.
 %                  noisevars.distribution= string or cell array of strings of length
 %                       f which specifies the distribution to be used to
 %                       simulate the noise variables.
@@ -146,7 +146,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                         generate the data according to a Student T with 6
 %                         degrees of freedom.
 %                       * chisquare followed by a number which controls the
-%                         degreess of freedom. For example, chisquare8
+%                         degrees of freedom. For example, chisquare8
 %                         specifies to generate the data according to a Chi
 %                         square distribution with 8 degrees of freedom.
 %                  noisevars.interval= string or vector of length 2 or matrix of size
@@ -160,7 +160,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                         If interval is empty (default), the noise variables
 %                         are simulated uniformly between the smallest and
 %                         the largest coordinates of mean vectors.
-%                         If interval is 'minmax' the noise varaibles are
+%                         If interval is 'minmax' the noise variables are
 %                         simulated uniformly between the smallest and the
 %                         largest coordinates of the simulated data matrix.
 %                For example, the code:

@@ -5,7 +5,7 @@ function [out]  = restreigeneasy(eigenvalues, niini, restr, tol)
 %
 %   restreigeneasy restricts the eigenvalues according to the constraint
 %   specified in scalar restr. This function is a readable and
-%   understandble (but sometimes slower) version of routine restreigen.
+%   understandable (but sometimes slower) version of routine restreigen.
 %
 %  Required input arguments:
 %
@@ -45,7 +45,7 @@ function [out]  = restreigeneasy(eigenvalues, niini, restr, tol)
 % This function implements the algorithm described in
 % Fritz H., Garcia-Escudero, L.A. and Mayo-Iscar, A. (2013), A fast
 % algorithm for robust constrained clustering,
-%"Computational Satistics and Data Analysis", Vol. 61, pp. 124-136.
+%"Computational Statistics and Data Analysis", Vol. 61, pp. 124-136.
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -118,7 +118,7 @@ function [out]  = restreigeneasy(eigenvalues, niini, restr, tol)
    % Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4
    % First column of matrix eigenvalues contains the eigenvalues of the first group
    % Second column of matrix eigenvalues contains the eigenvalues of the second group
-   % Thrid column of matrix eigenvalues contains the eigenvalues of the third group
+   % Third column of matrix eigenvalues contains the eigenvalues of the third group
    % Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group
    rng(10,'twister')
    eigenvalues=abs(10*randn(3,4));
@@ -138,7 +138,7 @@ function [out]  = restreigeneasy(eigenvalues, niini, restr, tol)
 
 %{
     % Compare speed.
-    % We compare the speed of restreigneasy with that of restreigen. We use
+    % We compare the speed of restreigeneasy with that of restreigen. We use
     % userepmat=2 if the current MATLAB version if >=R2017a or userepmat =1
     % if MATLAB version is >=R2013a but <R2017a else we use userepmat =0
     v=10;

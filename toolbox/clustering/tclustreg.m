@@ -26,11 +26,11 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %             matrices of the explanatory variables. Scalar or vector with two
 %             elements. If restrfact is a scalar it controls the
 %             differences among group scatters of the residuals. The value
-%             1 is the strongest restriction. If restrfactor is a vector
+%             1 is the strongest restriction. If restrfact is a vector
 %             with two elements the first element controls the differences
 %             among group scatters of the residuals and the second the
 %             differences among covariance matrices of the explanatory
-%             variables. Note that restrfactor(2) is used just if
+%             variables. Note that restrfact(2) is used just if
 %             input option $alphaX=1$, that is if constrained weighted
 %             model for X is assumed.
 %            Data Types - single|double
@@ -65,7 +65,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %               variables across groups, so overcoming an intrinsic limitation
 %               of mixtures of regression, because they are implicitly
 %               assumed equally distributed. Note that if alphaX=1 it is
-%               also possible to apply using restrfactor(2) the constraints
+%               also possible to apply using restrfact(2) the constraints
 %               on the cov matrices of the explanatory variables.
 %               For further details about CWM see Garcia-Escudero et al.
 %               (2017) or Torti et al. (2018).
@@ -84,7 +84,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
 %               In the case of mixture modelling parameter mixt also
-%               controls which is the criterior to find the untrimmed units
+%               controls which is the criterion to find the untrimmed units
 %               in each step of the maximization
 %               If mixt >=1 mixture modelling is assumed else crisp
 %               assignment.
@@ -177,7 +177,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %   wtrim: Application of observation weights. Scalar or structure. If
 %           wtrim is a scalar, a flag taking values
 %          in [0, 1, 2, 3, 4], to control the application of weights on the
-%          observations for betaestimation.
+%          observations for beta estimation.
 %          -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
 %             algorithm reduces to the standard tclustreg algorithm.
 %          -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
@@ -227,7 +227,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            Data Types - double
 %
 %        cup  :  pdf upper limit. Scalar. The upper limit for the pdf used
-%                to compute the retantion probability. If cup = 1
+%                to compute the retention probability. If cup = 1
 %                (default), no upper limit is set.
 %                Example - cup, 0.8
 %                Data Types - scalar
@@ -349,7 +349,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %   out.postprobopt   = $n \times k$ matrix containing the final posterior
 %                           probabilities. out.postprobopt(i,j) contains
-%                           posterior probabilitiy of unit i from component
+%                           posterior probability of unit i from component
 %                           (cluster) j. For the trimmed units posterior
 %                           probabilities are 0. This output is always
 %                           produced (independently of the value of mixt).
@@ -410,7 +410,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %  density estimator.
 %  [2]
 %  The weighted version of tclustreg requires weighted sampling. This is
-%  now implemented in randsampleFS. A computaionally more efficient
+%  now implemented in randsampleFS. A computationally more efficient
 %  algorithm, based on a binary tree approach introduced by
 %      Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
 %      Sampling Without Replacement", SIAM Journal of Computing,

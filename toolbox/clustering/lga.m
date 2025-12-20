@@ -34,7 +34,7 @@ function out = lga(X,k,varargin)
 %               Example - 'stand','true'
 %               Data Types - char
 %
-%    silent : Text ouptut. Logical. If true, produces no text output during
+%    silent : Text output. Logical. If true, produces no text output during
 %             processing. The default value is false.
 %               Example - 'silent','true'
 %               Data Types - char
@@ -54,7 +54,7 @@ function out = lga(X,k,varargin)
 %           out.converged = logical. True if at least one solution has converged.
 %            out.nconverg = the number of converged solutions (out of biter starts).
 %                   out.X = the (scaled if selected) dataset.
-%                   out.hpcoeff =  best hyerplane
+%                   out.hpcoeff =  best hyperplane
 %              out.scaled = logical. Is the data scaled?
 %                   out.k = the number of clusters to be found.
 %               out.biter = the biter setting used.

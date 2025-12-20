@@ -68,15 +68,15 @@ function [out]  = MixSim(k,v,varargin)
 %                the inequality constraints <= sph.shw and <= sph.shb.
 %              sph.cdet = scalar which specifies the restriction factor
 %                for determinants across groups. If this field is empty or
-%                if this field is missing no contraint is imposed among
+%                if this field is missing no constraint is imposed among
 %                determinants.
 %              sph.shw = scalar which specifies the restriction factor for
 %                shape matrices within each group. If this field is empty
-%                or if this field is missing, no contraint is imposed among
+%                or if this field is missing, no constraint is imposed among
 %                the elements of each shape matrix of a particular group.
 %               sph.shb = scalar which specifies the restriction factor for
 %                shape matrices between each group. If this field is empty
-%                or if this field is missing, no contraint is imposed
+%                or if this field is missing, no constraint is imposed
 %                across the elements of each shape matrix between the
 %                groups.
 %               Example - 'sph',false
@@ -135,7 +135,7 @@ function [out]  = MixSim(k,v,varargin)
 %               Data Types - double
 %        resN : number of simulations. Scalar.
 %               Maximum number of mixture resimulations to find a
-%               similation setting with prespecified level of overlapping.
+%               simulation setting with prespecified level of overlapping.
 %               The default value of resN is 100
 %               Example - 'resN',20
 %               Data Types - double
@@ -214,7 +214,7 @@ function [out]  = MixSim(k,v,varargin)
 %       out.StdOmega = scalar. Value of standard deviation (std) of overlap.
 %                      StdOmega is the standard deviation of k*(k-1)/2
 %                      probabilities of overlapping
-%         out.rcMax  = vector of length 2. It containes the row and column
+%         out.rcMax  = vector of length 2. It contains the row and column
 %                      numbers associated with  the pair of components
 %                      producing maximum overlap 'MaxOmega'
 %          out.fail  = scalar, flag value. 0 represents successful mixture

@@ -13,15 +13,15 @@ function [out] = overlapmap(D, varargin)
 % (i.e. in a descriptive manner), or it becomes an interactive plot with a
 % left click on the color bar, which find and visualize the closest
 % components according to a specific threshold value $ \omega^* $ (i.e.
-% omegaStar), which specifies the minimum paiwise overlap threshold value
+% omegaStar), which specifies the minimum pairwise overlap threshold value
 % used to merge the components. The interactive process ends with a right
 % click on the white grid in the upper left corner of the plot, it also
 % updates the results creating in the workspace a new variable
-% 'userOverlap'. See the More About section for further informations.
+% 'userOverlap'. See the More About section for further information.
 %
 % Required input arguments:
 %
-%     D :       Informations to compute the overlap matrix. Structure.
+%     D :       Information to compute the overlap matrix. Structure.
 %               D is a structure which can have the following fields (not
 %               all of them are strictly required).
 %
@@ -31,7 +31,7 @@ function [out] = overlapmap(D, varargin)
 %               elements which assigns each unit to one of the k groups.
 %               REMARK - labels<=0 denotes trimmed units.
 %
-%       D.Y  =  Input data. Matrix. Data matrix containining n
+%       D.Y  =  Input data. Matrix. Data matrix containing n
 %               observations on v variables. Rows of Y represent
 %               observations, and columns represent variables. Missing
 %               values (NaN's) and infinite values (Inf's) are allowed,
@@ -56,7 +56,7 @@ function [out] = overlapmap(D, varargin)
 %               3rd col = percentage of observations in each
 %               component.
 %       REMARK: in case there is a field structure named emp containing the
-%               same informations, these ones will be used
+%               same information, these ones will be used
 %                   Data Types - struct
 %
 % Optional input arguments:
@@ -89,7 +89,7 @@ function [out] = overlapmap(D, varargin)
 %                 default colors of the color map used. The field 'cmap'
 %                 may be a three-column matrix of values in the range [0,1]
 %                 where each row is an RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
+%                 Check the colormap function for additional information.
 %               - plots='contour' adds in the background of the bivariate
 %                 scatterplots a contour plot. The colormap of the contour
 %                 is based on grey levels as default. This argument may
@@ -99,7 +99,7 @@ function [out] = overlapmap(D, varargin)
 %                 color map used. The field 'cmap' may be a three-column
 %                 matrix of values in the range [0,1] where each row is an
 %                 RGB triplet that defines one color.
-%                 Check the colormap function for additional informations.
+%                 Check the colormap function for additional information.
 %               - plots='ellipse' superimposes confidence ellipses to
 %                 each group in the bivariate scatterplots. The size of the
 %                 ellipse is chi2inv(0.95,2), i.e. the confidence level used
@@ -121,7 +121,7 @@ function [out] = overlapmap(D, varargin)
 %                   Data Types - single | double | string
 %
 % userColors:     Color used for the color map. Matrix or string. Check the
-%                 colormap function for more informations.
+%                 colormap function for more information.
 %                   Example - 'userColors', winter
 %                   Data Types - single | double | string
 %

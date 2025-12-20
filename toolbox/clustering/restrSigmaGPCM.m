@@ -17,7 +17,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lm
 %               Data Types - single|double
 %
 %   niini  : sizes of the groups. Vector. Vector of length k containing
-%           the size of the groups. ninini can be either a row or a columns
+%           the size of the groups. niini can be either a row or a columns
 %           vector.
 %               Data Types - single|double
 %
