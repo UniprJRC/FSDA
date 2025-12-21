@@ -22,13 +22,12 @@ function odds = mWNChygeodds(mu, m, n)
 % \[
 % p_1= \frac{K w_1}{K w_1 + (M-K) w_2} 
 % \] 
-% In the Wallenius distribution the
-% probability that the second ball picked is red depends on whether the
-% first ball was red or white. If the first ball was red then the above
-% formula is used with $K$ reduced by one. If the first ball was not red
-% then the above formula is used with $M-K$ reduced by one. The number of red
-% balls that we get in this experiment is a random variable with Wallenius'
-% noncentral hypergeometric distribution.
+% In the Wallenius distribution the probability that the second ball picked
+% is red depends on whether the first ball was red or white. If the first
+% ball was red then the above formula is used with $K$ reduced by one. If
+% the first ball was not red then the above formula is used with $M-K$
+% reduced by one. The number of red balls that we get in this experiment is
+% a random variable with Wallenius' noncentral hypergeometric distribution.
 %
 % The important fact that distinguishes Wallenius' distribution is that
 % there is competition between the balls. The probability that a particular
@@ -146,19 +145,13 @@ function odds = mWNChygeodds(mu, m, n)
 %}
 
 %{
-    % An example in which one of the odds is Inf.
-    % The vector of mean values is 
-    mu=[15, 30, 5];
-    % The number of balls inside the urn for each color
-    m=[20,30,20];
-    % The extracted sample is n=50
-    n=sum(mu);
-    disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.');
-    disp('In total the urn contains 70 balls.');
-    disp('What are the weight of getting the 3 balls (odds)?');
-    disp('given the above values of mu')
-    odds=mWNChygeodds(mu,m,n);
-    disp(odds);
+    % An example in which one of the odds is Inf. % The vector of mean
+    values is mu=[15, 30, 5]; % The number of balls inside the urn for each
+    color m=[20,30,20]; % The extracted sample is n=50 n=sum(mu); disp('We
+    have an urn with 3 groups of balls; 20 red, 30 white and 20 black.');
+    disp('In total the urn contains 70 balls.'); disp('What are the weight
+    of getting the 3 balls (odds)?'); disp('given the above values of mu')
+    odds=mWNChygeodds(mu,m,n); disp(odds);
 %}
 
 %{
@@ -166,7 +159,7 @@ function odds = mWNChygeodds(mu, m, n)
     m=[20,30,20];
     % The vector of mean values is 
     mu=[6, 0, 5];
-    % The extracted sample is n=50
+    % The extracted sample is n=10
     n=10;
     disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.');
     disp('In total the urn contains 70 balls.');

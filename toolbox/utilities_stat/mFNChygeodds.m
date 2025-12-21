@@ -9,26 +9,25 @@ function odds = mFNChygeodds(mu, m, n)
 % is the one of MATLAB hyge. The notation which is used inside
 % oddsMFNCHypergeo_from_mean is the original one of Fog.
 %
-% To illustrate the meaning of Wallenius and Fisher' function parameters, let's use
-% the classical biased urn example, with $K$ red balls and  $M-K$ white balls,
-% totalling $M$ balls. $n$ balls are drawn at random from the urn
-% without replacement. Each red ball has the weight $\omega_{1}$, and
-% each white ball has the weight $\omega_{2}$; the probability ratio of red over
-% white balls is then given by $odds = \omega_{1} / \omega_{2}$. Note that
-% the odds are fixed once and for all during the drawings.
+% To illustrate the meaning of Wallenius and Fisher' function parameters,
+% let's use the classical biased urn example, with $K$ red balls and  $M-K$
+% white balls, totalling $M$ balls. $n$ balls are drawn at random from the
+% urn without replacement. Each red ball has the weight $\omega_{1}$, and
+% each white ball has the weight $\omega_{2}$; the probability ratio of red
+% over white balls is then given by $odds = \omega_{1} / \omega_{2}$. Note
+% that the odds are fixed once and for all during the drawings.
 %
 % If the balls are taken one by one, the probability (say $p_1$) that the
 % first ball picked is red is equal to the weight fraction of red balls:
 % \[
 % p_1= \frac{K w_1}{K w_1 + (M-K) w_2}
 % \]
-% In the Wallenius distribution the
-% probability that the second ball picked is red depends on whether the
-% first ball was red or white. If the first ball was red then the above
-% formula is used with $K$ reduced by one. If the first ball was not red
-% then the above formula is used with $M-K$ reduced by one. The number of red
-% balls that we get in this experiment is a random variable with Wallenius'
-% noncentral hypergeometric distribution.
+% In the Wallenius distribution the probability that the second ball picked
+% is red depends on whether the first ball was red or white. If the first
+% ball was red then the above formula is used with $K$ reduced by one. If
+% the first ball was not red then the above formula is used with $M-K$
+% reduced by one. The number of red balls that we get in this experiment is
+% a random variable with Wallenius' noncentral hypergeometric distribution.
 %
 % The important fact that distinguishes Wallenius' distribution is that
 % there is competition between the balls. The probability that a particular
@@ -70,8 +69,8 @@ function odds = mFNChygeodds(mu, m, n)
 %
 %  Required input arguments:
 %
-%           mu   : Measured mean for each color. Vector. Length of vector mu is equal
-%                  to the number of colors.
+%           mu   : Measured mean for each color. Vector. Length of vector 
+%                  mu is equal to the number of colors.
 %                  The sum of the elements of mu must be equal to n.
 %                  Data Types - single|double
 %           m    : Initial number of balls of each color in the urn.
@@ -166,7 +165,7 @@ function odds = mFNChygeodds(mu, m, n)
     m=[20,30,20];
     % The vector of mean values is 
     mu=[6, 0, 5];
-    % The extracted sample is n=50
+    % The extracted sample is n=10
     n=10;
     disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.');
     disp('In total the urn contains 70 balls.');
