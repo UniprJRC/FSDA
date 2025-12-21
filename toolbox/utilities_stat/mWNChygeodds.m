@@ -187,13 +187,29 @@ function odds = mWNChygeodds(mu, m, n)
     disp(odds);
 %}
 
+%{
+    %% Comparison between Fisher and Wallenius odds.
+    % An example where one odd is much greater than the others
+    m=[200,300,200,10];
+    % The vector of mean values is 
+    mu=[6, 1, 5, 9];
+    % The extracted sample n
+    n=sum(mu);
+    oddsF=mFNChygeodds(mu,m,n);
+    oddsW=mWNChygeodds(mu,m,n);
+    % Row names and column names
+    rn="odds"+(1:length(mu));
+    cn=["Fisher" "Wallenius"];
+    oddsT=array2table([oddsF, oddsW],"RowNames",rn,"VariableNames",cn);
+    disp(oddsT);
+%}
+
 %% Beginning of code
 
 if nargin < 3
     error(message('FSDA:mWNChygeodds:TooFewInputs'));
 end
     odds = aux.oddsMWNCHypergeo_from_mean(mu,m,n);
-
 end
 
 %FScategory:ProbDist

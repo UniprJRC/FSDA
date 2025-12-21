@@ -17,9 +17,9 @@ odds = nan(colors,1);
 mu = mu(:);
 m  = m(:);
 
-%% Validate scalar parameters
-if n < 0
-    error("FSDA:oddsMWNCHypergeo_from_mean","n must be greater than 0")
+%% Validate parameters
+if n < 0 || any(m < 0)
+    error("FSDA:oddsMWNCHypergeo_from_mean","n and m must not be negative")
 end
 
 if length(mu)~=length(m)
@@ -27,7 +27,7 @@ if length(mu)~=length(m)
     warning("FSDA:oddsMWNCHypergeo_from_mean","Length of vectors mu and m must be the same");
 end
 
-%% Compute N = sum(m) and check m
+%% Compute N = sum(m) and check sum(m)
 N = sum(m);  % N = total number of balls in the urn
 sum_mu=sum(mu);
 
