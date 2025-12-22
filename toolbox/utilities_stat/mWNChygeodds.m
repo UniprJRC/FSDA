@@ -145,13 +145,19 @@ function odds = mWNChygeodds(mu, m, n)
 %}
 
 %{
-    % An example in which one of the odds is Inf. % The vector of mean
-    values is mu=[15, 30, 5]; % The number of balls inside the urn for each
-    color m=[20,30,20]; % The extracted sample is n=50 n=sum(mu); disp('We
-    have an urn with 3 groups of balls; 20 red, 30 white and 20 black.');
-    disp('In total the urn contains 70 balls.'); disp('What are the weight
-    of getting the 3 balls (odds)?'); disp('given the above values of mu')
-    odds=mWNChygeodds(mu,m,n); disp(odds);
+    % An example in which one of the odds is Inf. 
+    % The vector of mean values is 
+    mu=[15, 30, 5]; 
+    % The number of balls inside the urn for each color 
+    m=[20,30,20]; 
+    % The extracted sample is n=50 
+    n=sum(mu); 
+    disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.');
+    disp('In total the urn contains 70 balls.'); 
+    disp('What are the weight of getting the 3 balls (odds)?'); 
+    disp('given the above values of mu')
+    odds=mWNChygeodds(mu,m,n); 
+    disp(odds);
 %}
 
 %{
