@@ -187,17 +187,6 @@ function odds = mFNChygeodds(mu, m, n)
 %}
 
 %{
-    %% Comparison between Fisher and Vallenius odds.
-    m=[200,300,200,10];
-    % The vector of mean values is 
-    mu=[6, 1, 5, 9];
-    % The extracted sample n
-    n=sum(mu);
-    oddsF=mFNChygeodds(mu,m,n);
-    disp(odds);
-%}
-
-%{
     %% Comparison between Fisher and Wallenius odds.
     % An example where one odd is much greater than the others
     m=[200,300,200,10];
