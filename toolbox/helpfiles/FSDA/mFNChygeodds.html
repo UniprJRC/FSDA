@@ -2,34 +2,33 @@
     m=[20,30,20];
      The vector of mean values is 
     mu=[6, 0, 5];
-     The extracted sample is n=50
+     The extracted sample is n=10
     n=10;
-    disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">An example where one odd is much bigger.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Comparison between Fisher and Vallenius odds.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Comparison between Fisher and Wallenius odds.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_mu">mu</a></li><li><a class="intrnllnk" href="#input_argument_m">m</a></li><li><a class="intrnllnk" href="#input_argument_n">n</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_odds">odds</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mFNChygeodds</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mFNChygeodds returns Fisher multivariate non-central hypergeometric odds given means</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">odds=mFNChygeodds(mu, m, n)</code><span class="syntax_example"><a class="intrnllnk" href="mFNChygeodds.html#Example_1">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>This function calls function  oddsMFNCHypergeo_from_mean which is a
+    disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">An example where one odd is much bigger.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Comparison between Fisher and Wallenius odds.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_mu">mu</a></li><li><a class="intrnllnk" href="#input_argument_m">m</a></li><li><a class="intrnllnk" href="#input_argument_n">n</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_odds">odds</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mFNChygeodds</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mFNChygeodds returns Fisher multivariate non-central hypergeometric odds given means</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">odds=mFNChygeodds(mu, m, n)</code><span class="syntax_example"><a class="intrnllnk" href="mFNChygeodds.html#Example_1">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>This function calls function  oddsMFNCHypergeo_from_mean which is a
  translation into MATLAB of the corresponding C++ function of Fog (2008).</p> <p>
  The notation which is used in mFNChygeodds and the order of the arguments
  is the one of MATLAB hyge. The notation which is used inside
  oddsMFNCHypergeo_from_mean is the original one of Fog.</p> <p>
 
- To illustrate the meaning of Wallenius and Fisher' function parameters, let's use
- the classical biased urn example, with $K$ red balls and  $M-K$ white balls,
- totalling $M$ balls. $n$ balls are drawn at random from the urn
- without replacement. Each red ball has the weight $\omega_{1}$, and
- each white ball has the weight $\omega_{2}$; the probability ratio of red over
- white balls is then given by $odds = \omega_{1} / \omega_{2}$. Note that
- the odds are fixed once and for all during the drawings.</p><p>
+ To illustrate the meaning of Wallenius and Fisher' function parameters,
+ let's use the classical biased urn example, with $K$ red balls and  $M-K$
+ white balls, totalling $M$ balls. $n$ balls are drawn at random from the
+ urn without replacement. Each red ball has the weight $\omega_{1}$, and
+ each white ball has the weight $\omega_{2}$; the probability ratio of red
+ over white balls is then given by $odds = \omega_{1} / \omega_{2}$. Note
+ that the odds are fixed once and for all during the drawings.</p><p>
 
  If the balls are taken one by one, the probability (say $p_1$) that the
  first ball picked is red is equal to the weight fraction of red balls:
  </p>\[
  p_1= \frac{K w_1}{K w_1 + (M-K) w_2}
  \]<p>
- In the Wallenius distribution the
- probability that the second ball picked is red depends on whether the
- first ball was red or white. If the first ball was red then the above
- formula is used with $K$ reduced by one. If the first ball was not red
- then the above formula is used with $M-K$ reduced by one. The number of red
- balls that we get in this experiment is a random variable with Wallenius'
- noncentral hypergeometric distribution.</p> <p>
+ In the Wallenius distribution the probability that the second ball picked
+ is red depends on whether the first ball was red or white. If the first
+ ball was red then the above formula is used with $K$ reduced by one. If
+ the first ball was not red then the above formula is used with $M-K$
+ reduced by one. The number of red balls that we get in this experiment is
+ a random variable with Wallenius' noncentral hypergeometric distribution.</p> <p>
 
  The important fact that distinguishes Wallenius' distribution is that
  there is competition between the balls. The probability that a particular
@@ -110,12 +109,12 @@ disp(odds);</pre></div></div></p></div></div><div id="Extraexample_3" class
     m=[20,30,20];
      The vector of mean values is 
     mu=[6, 0, 5];
-     The extracted sample is n=50
+     The extracted sample is n=10
     n=10;
     disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">m=[20,30,20];
 % The vector of mean values is 
 mu=[6, 0, 5];
-% The extracted sample is n=50
+% The extracted sample is n=10
 n=10;
 disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.');
 disp('In total the urn contains 70 balls.');
@@ -137,17 +136,7 @@ mu=[6, 1, 5, 9];
 % The extracted sample n
 n=sum(mu);
 odds=mFNChygeodds(mu,m,n);
-disp(odds);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Comparison between Fisher and Vallenius odds.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">m=[200,300,200,10];
-% The vector of mean values is 
-mu=[6, 1, 5, 9];
-% The extracted sample n
-n=sum(mu);
-oddsF=mFNChygeodds(mu,m,n);
-disp(odds);</pre></div></div><pre class="codeoutput">    1.2857
-         0
-    1.0000
-
-</pre></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Comparison between Fisher and Wallenius odds.</li></span></a></span></h3><div class="collapse"><p>
+disp(odds);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Comparison between Fisher and Wallenius odds.</li></span></a></span></h3><div class="collapse"><p>
      An example where one odd is much greater than the others<div class="programlisting"><div class="codeinput"><pre class="matlab-code">m=[200,300,200,10];
 % The vector of mean values is 
 mu=[6, 1, 5, 9];
@@ -167,8 +156,8 @@ disp(oddsT);</pre></div></div><pre class="codeoutput">             Fisher     W
     odds3    0.82906      0.8312 
     odds4        291      75.596 
 
-</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_mu" class="clearfix"> </div> <h3 id="input_argument_mu" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>mu</code> &#8212; Measured mean for each color. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Length of vector mu is equal
-                  to the number of colors.</p> <p>
+</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_mu" class="clearfix"> </div> <h3 id="input_argument_mu" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>mu</code> &#8212; Measured mean for each color. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Length of vector 
+                  mu is equal to the number of colors.</p> <p>
                   The sum of the elements of mu must be equal to n.</p><p>
                   </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_m" class="clearfix"> </div> <h3 id="input_argument_m" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>m</code> &#8212; Initial number of balls of each color in the urn. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>The length of vector M is the number of colors
                   in the urn. M=sum(m) is the the total number of balls.</p> <p>
