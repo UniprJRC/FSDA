@@ -547,6 +547,61 @@
         "description":"Plots a probability density function between specification limits "
     },
 
+    "dumbbellPlot":
+    {
+        "inputs":
+        [
+            {"name":"tbl", "kind":"required", "type":"table", "purpose":"Input Data"},
+            {"name":"var1", "kind":"positional", "type":["choices=tbl.Properties.VariableNames"], "purpose":"First variable of the table to plot"},
+            {"name":"var2", "kind":"positional", "type":["choices=tbl.Properties.VariableNames"], "purpose":"Second variable of the table to plot"},
+            {"name":"var3", "kind":"positional", "type":["choices=tbl.Properties.VariableNames"], "purpose":"Third variable of the table to plot (in case of double plot)"},
+            {"name":"var4", "kind":"positional", "type":["choices=tbl.Properties.VariableNames"], "purpose":"Fourth variable of the table to plot (in case of double plot)"},
+            {"name":"plotType", "kind":"namevalue", "type":["choices={'single', 'double'}"], "purpose":"Type of plot to produce"},
+            {"name":"orientation", "kind":"namevalue", "type":["choices={'horizontal', 'vertical'}"], "purpose":"Horizontal (default) or Vertical plot"},
+            {"name":"labelX1", "kind":"namevalue", "type":[["string"], ["char"]], "purpose":"Legend label for the first set of data"},
+            {"name":"labelX2", "kind":"namevalue", "type":[["string"], ["char"]], "purpose":"Legend label for the second set of data"},
+            {"name":"Title", "kind":"namevalue", "type":[["string"], ["char"], ["cell"]], "purpose":"Titles for each plot"},
+            {"name":"YLabels", "kind":"namevalue", "type":[["string"], ["char"], ["cell"]], "purpose":"Tick labels for the data points"},
+            {"name":"Color", "kind":"namevalue", "type":[["numeric"], ["string"], ["char"], ["choices={'default', 'colorblind', 'ruby_jade', 'cherry_sky', 'red_blue'}"]], "purpose":"Color of the dots of the plot"},
+            {"name":"MarkerSize", "kind":"namevalue", "type":[["numeric", "scalar"], ["numeric", "vector"]], "purpose":"Set size of dots of the plot"},
+            {"name":"LineWidth", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Width of the lines connecting the dots"},
+            {"name":"TextSize", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Font size of descriptive text next to datapoints"},
+            {"name":"TextInside", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display text inside the dots"},
+            {"name":"AxesFontSize", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Set the font size for the axes"},
+            {"name":"ColorDist", "kind":"namevalue", "type":["choices={'false', 'directional', 'magnitude', 'robust'}"], "purpose":"Determine the method for bar colouring"},
+            {"name":"Background", "kind":"namevalue", "type":["choices={'none', 'bands'}"], "purpose":"Background of the plot"}
+        ],
+
+        "description":"Plots the Dumbbell Chart of the provided data."
+    },
+
+    "dumbbellPlot":
+    {
+        "inputs":
+        [
+            {"name":"X", "kind":"required", "type":["numeric", "vector"], "purpose":"Input Data"},
+            {"name":"X2", "kind":"required", "type":["numeric", "vector"], "purpose":"Second variable to plot"},
+            {"name":"X3", "kind":"positional", "type":["numeric", "vector"], "purpose":"First set of data to plot in the second graph (Only double plottype)"},
+            {"name":"X4", "kind":"positional", "type":["numeric", "vector"], "purpose":"Second set of data to plot in the second graph (Only double plottype)"},
+            {"name":"plotType", "kind":"namevalue", "type":["choices={'single', 'double'}"], "purpose":"Type of plot to produce"},
+            {"name":"orientation", "kind":"namevalue", "type":["choices={'horizontal', 'vertical'}"], "purpose":"Horizontal (default) or Vertical plot"},
+            {"name":"labelX1", "kind":"namevalue", "type":[["string"], ["char"]], "purpose":"Legend label for the first set of data"},
+            {"name":"labelX2", "kind":"namevalue", "type":[["string"], ["char"]], "purpose":"Legend label for the second set of data"},
+            {"name":"Title", "kind":"namevalue", "type":[["string"], ["char"], ["cell"]], "purpose":"Titles for each plot"},
+            {"name":"YLabels", "kind":"namevalue", "type":[["string"], ["char"], ["cell"]], "purpose":"Tick labels for the data points"},
+            {"name":"Color", "kind":"namevalue", "type":[["numeric"], ["string"], ["char"], ["choices={'default', 'colorblind', 'ruby_jade', 'cherry_sky', 'red_blue'}"]], "purpose":"Color of the dots of the plot"},
+            {"name":"MarkerSize", "kind":"namevalue", "type":[["numeric", "scalar"], ["numeric", "vector"]], "purpose":"Set size of dots of the plot"},
+            {"name":"LineWidth", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Width of the lines connecting the dots"},
+            {"name":"TextSize", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Font size of descriptive text next to datapoints"},
+            {"name":"TextInside", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Display text inside the dots"},
+            {"name":"AxesFontSize", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Set the font size for the axes"},
+            {"name":"ColorDist", "kind":"namevalue", "type":["choices={'false', 'directional', 'magnitude', 'robust'}"], "purpose":"Determine the method for bar colouring"},
+            {"name":"Background", "kind":"namevalue", "type":["choices={'none', 'bands'}"], "purpose":"Background of the plot"}
+        ],
+
+        "description":"Plots the Dumbbell Chart of the provided data."
+    },
+
     "fanplot":
     {
         "inputs":
