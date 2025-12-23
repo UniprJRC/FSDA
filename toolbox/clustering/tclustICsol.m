@@ -828,9 +828,6 @@ for i=1:nbestsol
     end
 end
 
-% if plots==1
-%     cascade
-% end
 end
 
 
@@ -864,9 +861,6 @@ for i=1:nbestsol
     end
 end
 
-if plots==1
-    cascade
-end
 end
 
 %FScategory:CLUS-RobClaMULT
