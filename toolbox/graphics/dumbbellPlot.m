@@ -196,6 +196,8 @@ function ax = dumbbellPlot(X, varargin)
 %}
 
 %% Beginning of code
+% import the object from +graphics/DumbellChart.m
+import graphics.DumbbellChart
 
 plotType= "single"; %default
 plotTypeidx= find(strcmp(varargin, "plotType"));
