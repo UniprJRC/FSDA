@@ -41,7 +41,7 @@ function ax = dumbbellPlot(X, varargin)
 %               Data Types - char or string
 %
 %   plotType   : Type of plot layout. Char or String.
-%               Determines wheter to create a single plot or a side by side
+%               Determines whether to create a single plot or a side by side
 %               plot. Admissible values are 'single' (default) or 'double'
 %               Example - 'plotType', 'double'
 %               Data Types - char or string
@@ -55,7 +55,7 @@ function ax = dumbbellPlot(X, varargin)
 %
 %   YLabels    : Custom tick labels. string or char or cell array.
 %              Custom labels for each category (row) in the plot. Must have
-%              the same lenght as the number of rows. If not provided,
+%              the same length as the number of rows. If not provided,
 %              default names will be used ('Row 1', 'Row 2',...)
 %              Example - 'YLabels', ["Product A", "Product B", "Product C"]
 %              Data Types - string | char | cell array
@@ -211,7 +211,7 @@ if nargin < 1
     error("dumbbellPlot:MissingRequiredInput", "Missing required input argument X")
 end
 
-% check X, it can be vector, or tabel
+% check X, it can be vector, or table
 if istable(X)
     switch width(X)
         case 1
