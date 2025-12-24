@@ -70,22 +70,21 @@
      We have 70 balls in a urn of 3 different colors.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Initially in the urn we have 20 red balls, 30 white and 20 black balls.
 m=[20,30,20];
 % The vector of mean values is 
-mu=[15, 30, 5];
+mu=[15, 25, 10];
 % The extracted sample is n=50
 n=50;
 disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.');
 disp('In total the urn contains 70 balls.');
-disp('What are the weight of getting the 3 balls (odds)?');
+disp('What are the weights of getting the 3 balls (odds)?');
 disp('given the above values of mu')
 odds=mFNChygeodds(mu,m,n);
 disp(odds);</pre></div></div><pre class="codeoutput">We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.
 In total the urn contains 70 balls.
-What are the weight of getting the 3 balls (odds)?
+What are the weights of getting the 3 balls (odds)?
 given the above values of mu
-Warning: Inf values in  odds 
-    1.0000
-       Inf
-    0.1111
+     3
+     5
+     1
 
 </pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Find the odds given mu, m and n.</li></span></a></span></h3><div class="collapse"><p>
      Vector of mu values<div class="programlisting"><div class="codeinput"><pre class="matlab-code">mu=[8 46 29 17]; 
@@ -169,7 +168,7 @@ disp(oddsT);</pre></div></div><pre class="codeoutput">             Fisher     W
                   Note that sum(mu) must be equal n, however, following
                   the original C++ implementation of Fog we allow
                   abs(sum(mu)-n)/n&lt;=0.1
-                  </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_odds" class="clearfix"></div><h3 id="output_argument_odds" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>odds</code> &#8212;Wallenius' odds (weights) for each color.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p>
+                  </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_odds" class="clearfix"></div><h3 id="output_argument_odds" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>odds</code> &#8212;Fisher' odds (weights) for each color.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p>
                   Vector containing the estimated odds for each color
                   given the input means. The reference color has odds=1.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Fog, A. (2008), Calculation Methods for Wallenius' Noncentral Hypergeometric
  Distribution, "Communications in Statistics - Simulation and

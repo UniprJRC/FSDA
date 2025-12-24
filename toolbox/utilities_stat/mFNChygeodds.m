@@ -93,7 +93,7 @@ function odds = mFNChygeodds(mu, m, n)
 %
 %  Output:
 %
-%          odds :  Wallenius' odds (weights) for each color. Vector.
+%          odds :  Fisher' odds (weights) for each color. Vector.
 %                  Vector containing the estimated odds for each color
 %                  given the input means. The reference color has odds=1.
 %
@@ -121,12 +121,12 @@ function odds = mFNChygeodds(mu, m, n)
     % Initially in the urn we have 20 red balls, 30 white and 20 black balls.
     m=[20,30,20];
     % The vector of mean values is 
-    mu=[15, 30, 5];
+    mu=[15, 25, 10];
     % The extracted sample is n=50
     n=50;
     disp('We have an urn with 3 groups of balls; 20 red, 30 white and 20 black.');
     disp('In total the urn contains 70 balls.');
-    disp('What are the weight of getting the 3 balls (odds)?');
+    disp('What are the weights of getting the 3 balls (odds)?');
     disp('given the above values of mu')
     odds=mFNChygeodds(mu,m,n);
     disp(odds);
