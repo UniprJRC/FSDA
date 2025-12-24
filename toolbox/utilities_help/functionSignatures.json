@@ -1,0 +1,67 @@
+{
+  "publishFS": {
+    "inputs": [
+      {
+        "name": "filename",
+        "kind": "required",
+        "type": [
+          ["file=*.m"],
+          ["matlabpathfile=*.m"],
+          [
+            "char",
+            "@(x) endsWith(x,matlab.io.internal.FileExtensions.TextExtensions,'IgnoreCase',true)"
+          ]
+        ]
+      },
+      {
+        "name": "Display",
+        "kind": "namevalue",
+        "type": ["logical", "scalar"]
+      },
+      {
+        "name": "ErrWrngSeeAlso",
+        "kind": "namevalue",
+        "type": ["logical", "scalar"]
+      },
+      {
+        "name": "evalCode",
+        "kind": "namevalue",
+        "type": ["logical", "scalar"]
+      },
+      {
+        "name": "imagesDir",
+        "kind": "namevalue",
+        "type": [
+          ["char"],
+          ["string", "scalar"]
+        ]
+      },
+      {
+        "name": "outputDir",
+        "kind": "namevalue",
+        "type": [
+          ["char"],
+          ["string", "scalar"]
+        ]
+      },
+      {
+        "name": "webhelp",
+        "kind": "namevalue",
+        "type": ["logical", "scalar"]
+      },
+      {
+        "name": "write2file",
+        "kind": "namevalue",
+        "type": ["logical", "scalar"]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "out",
+        "type": "struct"
+      }
+    ]
+  }
+}
+
+
