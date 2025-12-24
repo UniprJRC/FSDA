@@ -144,7 +144,7 @@ if plots==1
     text(axesPareto(2),h(2).XData,h(2).YData,linelabels,...
         'Interpreter','none');
     xlabel('Principal components')
-    ylabel('Explained variance (%)')
+    ylabel('Explained variance')
 
     %% Plot loadings
     xlabels=categorical(varnames,varnames);
