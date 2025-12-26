@@ -1,8 +1,8 @@
-function ax = dumbbellPlot(X, varargin)
-%dumbbellPlot creates a dumbbell chart comparing two sets of values
+function ax = dumbbellplot(X, varargin)
+%dumbbellplot creates a dumbbell chart comparing two sets of values
 %
 %
-%<a href="matlab: docsearchFS('dumbbellPlot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('dumbbellplot')">Link to the help function</a>
 %
 % A dumbbell plot is a data visualization used to compare two values per
 % category. Each category is represented by two points connected by a line,
@@ -133,7 +133,7 @@ function ax = dumbbellPlot(X, varargin)
 %
 %
 %
-%<a href="matlab: docsearchFS('dumbbellPlot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('dumbbellplot')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -145,7 +145,7 @@ function ax = dumbbellPlot(X, varargin)
     afterVals   = [61; 50; 68; 62; 48; 78; 45; 70; 60; 54]; 
     T = table(beforeVals, afterVals, ...
         'VariableNames', {'Before','After'},'RowNames',categories);
-    dumbbellPlot(T);
+    dumbbellplot(T);
 %}
 
 %{
@@ -161,7 +161,7 @@ function ax = dumbbellPlot(X, varargin)
     jun_morning = [115, 125, 120, 135];
     jun_evening = [122, 132, 128, 142];
     figure;
-    dumbbellPlot(jan_morning, jan_evening, jun_morning, jun_evening, ...
+    dumbbellplot(jan_morning, jan_evening, jun_morning, jun_evening, ...
         'plotType', 'double','orientation', 'vertical','labelX1', 'Morning', ...
       'labelX2', 'Evening','Title', {'January BP', 'June BP'},'YLabels', patients);
 %}
@@ -176,7 +176,7 @@ function ax = dumbbellPlot(X, varargin)
     importance = [300, 200, 150, 90, 450];
 
     figure;
-    dumbbellPlot(before_campaign, after_campaign, ...
+    dumbbellplot(before_campaign, after_campaign, ...
         'MarkerSize', importance, ...           
         'labelX1', 'Pre-Campaign', ...
         'labelX2', 'Post-Campaign', ...
@@ -191,7 +191,7 @@ function ax = dumbbellPlot(X, varargin)
     categories = {'Sales', 'Marketing', 'IT', 'HR', 'Finance', 'Operations'};
 
     figure;
-    dumbbellPlot(X1,X2, "YLabels", categories, "Title", "Horizontal Plot with background bands", ...
+    dumbbellplot(X1,X2, "YLabels", categories, "Title", "Horizontal Plot with background bands", ...
         "TextInside", true, "labelX1","Q1", "labelX2", "Q2", "Background", "bands");
 %}
 
@@ -205,12 +205,12 @@ if ~isempty(plotTypeidx)
     if plotTypeidx + 1 <= length(varargin)
         plotType = varargin{plotTypeidx + 1};
     else
-        error("dumbbellPlot:MissingPlotTypeValue", "plotType 'name',value argument requires a value")
+        error("dumbbellplot:MissingPlotTypeValue", "plotType 'name',value argument requires a value")
     end
 end
 %% Required input validation
 if nargin < 1
-    error("dumbbellPlot:MissingRequiredInput", "Missing required input argument X")
+    error("dumbbellplot:MissingRequiredInput", "Missing required input argument X")
 end
 
 % check X, it can be vector, or table
@@ -218,7 +218,7 @@ if istable(X)
     switch width(X)
         case 1
             if length(varargin) < 1
-                error("dumbbellPlot:MissingRequiredInput", "When X is a single-column table, a second set of values must be provided")
+                error("dumbbellplot:MissingRequiredInput", "When X is a single-column table, a second set of values must be provided")
             end
 
             X1= X{:,1};
@@ -226,7 +226,7 @@ if istable(X)
 
             if istable(varargin{1})
                 if width(varargin{1}) ~= 1
-                    error("dumbbellPlot:InvalidTableWidth", ...
+                    error("dumbbellplot:InvalidTableWidth", ...
                         "Second table argument must have exactly one column")
                 end
                 X2 = varargin{1}{:,1};
@@ -235,19 +235,19 @@ if istable(X)
 
             elseif isnumeric(varargin{1}) && isvector(varargin{1})
                 if length(varargin{1}) ~= length(X1)
-                    error("dumbbellPlot:DimensionMismatch", "X2 length must match X1 length")
+                    error("dumbbellplot:DimensionMismatch", "X2 length must match X1 length")
                 end
                 X2 = varargin{1};
                 labelX2= "X2";
                 vararginStart = 2;
             else
-                error("dumbbellPlot:WrongInput", ...
+                error("dumbbellplot:WrongInput", ...
                     "X2 must be a single-column table or numeric vector with compatible size")
             end
 
         case 2
             if plotType ~= "single"
-                error("dumbbellPlot:WrongInput", "Tables with 2 variables are only accepted if plotType is 'single'")
+                error("dumbbellplot:WrongInput", "Tables with 2 variables are only accepted if plotType is 'single'")
             end
 
             X1 = X{:,1};
@@ -270,7 +270,7 @@ if istable(X)
                     vararginStart = 1;
                 else
                     if length(varargin) < 4
-                        error("dumbbellPlot:MissingTableVariables", ...
+                        error("dumbbellplot:MissingTableVariables", ...
                             "When X is a multi-column table, you must specify 4 variable names for Value1, 2, 3 and 4 in a double plotType")
                     end
 
@@ -279,11 +279,11 @@ if istable(X)
                     varNames = {varargin{1}, varargin{2}, varargin{3}, varargin{4}};
                     for i = 1:4
                         if ~(ischar(varNames{i}) || isstring(varNames{i}))
-                            error("dumbbellPlot:InvalidVariableName", ...
+                            error("dumbbellplot:InvalidVariableName", ...
                                 "Variable name %d must be a string or character array", i);
                         end
                         if ~ismember(varNames{i}, X.Properties.VariableNames)
-                            error("dumbbellPlot:VariableNotFound", ...
+                            error("dumbbellplot:VariableNotFound", ...
                                 "Variable '%s' not found in table", varNames{i});
                         end
                     end
@@ -304,7 +304,7 @@ if istable(X)
 
             elseif plotType == "single"
                 if length(varargin) < 2
-                    error("dumbbellPlot:MissingTableVariables", ...
+                    error("dumbbellplot:MissingTableVariables", ...
                         "When X is a multi-column table, you must specify two variable names for Value1 and Value2")
                 end
 
@@ -313,17 +313,17 @@ if istable(X)
                 vararginStart= 3;
 
                 if ~(ischar(varName1) || isstring(varName1))
-                    error("dumbbellPlot:InvalidVariableName", "Variable name 1 must be a string or character array")
+                    error("dumbbellplot:InvalidVariableName", "Variable name 1 must be a string or character array")
                 end
                 if ~(ischar(varName2) || isstring(varName2))
-                    error("dumbbellPlot:InvalidVariableName", "Variable name 2 must be a string or character array")
+                    error("dumbbellplot:InvalidVariableName", "Variable name 2 must be a string or character array")
                 end
 
                 if ~ismember(varName1, X.Properties.VariableNames)
-                    error("dumbbellPlot:VariableNotFound", "Variable '%s' not found in table", varName1)
+                    error("dumbbellplot:VariableNotFound", "Variable '%s' not found in table", varName1)
                 end
                 if ~ismember(varName2, X.Properties.VariableNames)
-                    error("dumbbellPlot:VariableNotFound", "Variable '%s' not found in table", varName2)
+                    error("dumbbellplot:VariableNotFound", "Variable '%s' not found in table", varName2)
                 end
 
                 X1= X.(varName1);
@@ -343,17 +343,17 @@ if istable(X)
 
 elseif isvector(X) && isnumeric(X)
     if length(varargin) < 1
-        error("dumbbellPlot:MissingRequiredInput", "If X1 is a vector, a second vector is required")
+        error("dumbbellplot:MissingRequiredInput", "If X1 is a vector, a second vector is required")
     end
     if ~(isvector(varargin{1}) && isnumeric(varargin{1}))
-        error("dumbbellPlot:MissingRequiredInput", "Second input argument is not a numeric vector")
+        error("dumbbellplot:MissingRequiredInput", "Second input argument is not a numeric vector")
     end
 
     X1= X;
     X2= varargin{1};
     vararginStart= 2;
     if length(X1) ~= length(X2)
-        error("dumbbellPlot:DimensionMismatch", ...
+        error("dumbbellplot:DimensionMismatch", ...
             "All data vectors must have the same length");
     end
 
@@ -362,13 +362,13 @@ elseif isvector(X) && isnumeric(X)
     YLabels = cellstr("Row" + string(1:length(X1)));
     if plotType == "double"
         if length(varargin) < 3
-            error("dumbbellPlot:MissingRequiredInput", "If plotType is 'double', 4 sets of data must be inserted")
+            error("dumbbellplot:MissingRequiredInput", "If plotType is 'double', 4 sets of data must be inserted")
         end
         if ~(isvector(varargin{2}) && isnumeric(varargin{2}))
-            error("dumbbellPlot:MissingRequiredInput", "Third input argument is not a numeric vector")
+            error("dumbbellplot:MissingRequiredInput", "Third input argument is not a numeric vector")
         end
         if ~(isvector(varargin{3}) && isnumeric(varargin{3}))
-            error("dumbbellPlot:MissingRequiredInput", "Fourth input argument is not a numeric vector")
+            error("dumbbellplot:MissingRequiredInput", "Fourth input argument is not a numeric vector")
         end
 
         X3= varargin{2};
@@ -376,12 +376,12 @@ elseif isvector(X) && isnumeric(X)
         vararginStart= 4;
 
         if length(X3) ~= length(X1) || length(X4) ~= length(X1)
-            error("dumbbellPlot:DimensionMismatch", ...
+            error("dumbbellplot:DimensionMismatch", ...
                 "All data vectors must have the same length");
         end
     end
 else
-    error("dumbbellPlot:InvalidInputType", "X must be a table or a numeric vector")
+    error("dumbbellplot:InvalidInputType", "X must be a table or a numeric vector")
 end
 
 %% optional inputs
@@ -438,13 +438,13 @@ if isfield(UserOptions, "Title")
 
     if options.plotType == "single"
         if numel(tempTitle) ~= 1
-            warning("dumbbellPlot:TitleMismatch", "Single plot requires 1 title, default will be used")
+            warning("dumbbellplot:TitleMismatch", "Single plot requires 1 title, default will be used")
         else
             options.Title=string(tempTitle{1});
         end
     elseif options.plotType == "double"
         if numel(tempTitle) ~= 2
-            warning("dumbbellPlot:TitleMismatch", "Double plot requires 2 titles, default will be used")
+            warning("dumbbellplot:TitleMismatch", "Double plot requires 2 titles, default will be used")
         else
             options.Title=tempTitle;
         end
@@ -452,7 +452,7 @@ if isfield(UserOptions, "Title")
 end
 
 if isfield(UserOptions, "YLabels")
-    validateattributes(UserOptions.YLabels, {'string', 'char', 'cell'}, {}, 'dumbbellPlot', 'YLabels')
+    validateattributes(UserOptions.YLabels, {'string', 'char', 'cell'}, {}, 'dumbbellplot', 'YLabels')
 
     if iscell(UserOptions.YLabels)
         tempYLabels = UserOptions.YLabels;
@@ -461,14 +461,14 @@ if isfield(UserOptions, "YLabels")
     end
 
     if length(tempYLabels) ~= length(X1)
-        warning("dumbbellPlot:YLabelsMismatch", "Ylabels and X lenght does not match, default YLabels will be used")
+        warning("dumbbellplot:YLabelsMismatch", "Ylabels and X lenght does not match, default YLabels will be used")
     else
         options.YLabels= tempYLabels;
     end
 end
 
 if isfield(UserOptions, "orientation")
-    validateattributes(UserOptions.orientation, {'string', 'char'}, {}, 'dumbbellPlot', 'orientation')
+    validateattributes(UserOptions.orientation, {'string', 'char'}, {}, 'dumbbellplot', 'orientation')
     options.orientation= UserOptions.orientation;
 end
 
@@ -479,11 +479,11 @@ if isfield(UserOptions, "Color")
         try
             options.Color = validatecolor(UserOptions.Color, "multiple");
             if size(options.Color, 1) ~= 2
-                warning("dumbbellPlot:InvalidColor", "Color must provide exactly 2 valid colors, default palette will be used")
+                warning("dumbbellplot:InvalidColor", "Color must provide exactly 2 valid colors, default palette will be used")
                 options.Color = getColorPalette("default");
             end
         catch ME
-            warning("dumbbellPlot:InvalidColor", "Invalid Color, default palette will be used")
+            warning("dumbbellplot:InvalidColor", "Invalid Color, default palette will be used")
             options.Color = getColorPalette("default");
         end
     end
@@ -495,7 +495,7 @@ if isfield(UserOptions, "MarkerSize")
     elseif isnumeric(UserOptions.MarkerSize) && length(UserOptions.MarkerSize) == length(X1)
         options.MarkerSize= UserOptions.MarkerSize;
     else
-        warning("dumbbellPlot:InvalidMarkerSize", "Invalid Marker size provided, using default")
+        warning("dumbbellplot:InvalidMarkerSize", "Invalid Marker size provided, using default")
     end
 end
 
@@ -503,7 +503,7 @@ if isfield(UserOptions, "LineWidth")
     if isnumeric(UserOptions.LineWidth) && isscalar(UserOptions.LineWidth)
         options.LineWidth= UserOptions.LineWidth;
     else
-        warning("dumbbellPlot:InvalidLineWidth", "Invalid Line Width provided, using default")
+        warning("dumbbellplot:InvalidLineWidth", "Invalid Line Width provided, using default")
         options.LineWidth= 3.1;
     end
 end
@@ -512,7 +512,7 @@ if isfield(UserOptions, "TextSize")
     if isnumeric(UserOptions.TextSize) && isscalar(UserOptions.TextSize)
         options.TextSize= UserOptions.TextSize;
     else
-        warning("dumbbellPlot:InvalidTextSize", "Invalid Text size provided, using default")
+        warning("dumbbellplot:InvalidTextSize", "Invalid Text size provided, using default")
     end
 end
 
@@ -520,7 +520,7 @@ if isfield(UserOptions, "TextInside")
     if islogical(UserOptions.TextInside) && isscalar(UserOptions.TextInside)
         options.TextInside= UserOptions.TextInside;
     else
-        warning("dumbbellPlot:InvalidTextInside", "Text Inside needs to be a scalar logical (true or false) value!")
+        warning("dumbbellplot:InvalidTextInside", "Text Inside needs to be a scalar logical (true or false) value!")
     end
 end
 
@@ -531,11 +531,11 @@ if isfield(UserOptions, "ColorDist")
         % validate type
         validTypes = ["false", "directional", "magnitude", "robust"];
         if ~ismember(options.ColorDist, validTypes)
-            warning("dumbbellPlot:InvalidColorDist", ...
+            warning("dumbbellplot:InvalidColorDist", ...
                 "ColorDist must be 'false', 'directional', 'magnitude', or 'robust'. Using default (false)")   
         end
     else
-        warning("dumbbellPlot:InvalidColorDist", "ColorDist needs to be char or string")
+        warning("dumbbellplot:InvalidColorDist", "ColorDist needs to be char or string")
     end
 end
 
@@ -543,7 +543,7 @@ if isfield(UserOptions, "AxesFontSize")
     if isnumeric(UserOptions.AxesFontSize) && isscalar(UserOptions.AxesFontSize)
         options.AxesFontSize= UserOptions.AxesFontSize;
     else
-        warning("dumbbellPlot:InvalidFontSize","Invalid Font Size for axes provided, using default")
+        warning("dumbbellplot:InvalidFontSize","Invalid Font Size for axes provided, using default")
     end
 end
 
@@ -552,7 +552,7 @@ if isfield(UserOptions, "Background")
     if ismember(UserOptions.Background, validBG)
         options.Background= string(UserOptions.Background);
     else
-        warning("dumbbellPlot:InvalidBakgroundOption","Invalid Background option provided, using default (no background)")
+        warning("dumbbellplot:InvalidBakgroundOption","Invalid Background option provided, using default (no background)")
     end
 else
 end
@@ -707,7 +707,7 @@ end
                 colors = [0.88, 0.30, 0.30; % Coral Red
                     0.20, 0.42, 0.85]; % Royal blue
             otherwise
-                warning("dumbbellPlot:UnknownPalette", ...
+                warning("dumbbellplot:UnknownPalette", ...
                     "Unknown palette '%s', using default", paletteName);
                 colors = [0.92, 0.78, 0.38; 0.17, 0.44, 0.26];
         end
