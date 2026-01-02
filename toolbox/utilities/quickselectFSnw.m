@@ -337,7 +337,7 @@ if nargout == 4
     %D(1:kstar-1,:)  = sortrows(D(1:kstar-1,:));
 
     D = [D(:,1) .* (2*sWb - 1) , D(:,2) .* (2*sWb - 1)];
-    %D = [D(:,1) .* (sWb - not(sWb)) , D(:,2) .* (sWb - not(sWb))]; %ori
+    %D = [D(:,1) .* (sWb - not(sWb)) , D(:,2) .* (sWb - not(sWb))]; % ori
     varargout{1} = D;
 end
 
