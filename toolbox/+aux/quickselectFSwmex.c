@@ -36,6 +36,20 @@ void
     double buffer;
     double Le;
     
+    // Compute sum of weights for tolerance calculation
+    double sumW = 0.0;
+    for(int i = 0; i < n; i++)
+    {
+        sumW += W[i];
+    }
+    
+    // Scale p by sum of weights
+    p = p * sumW;
+    
+    // Numerical tolerance for Bleich-Overton condition
+    // Using machine epsilon scaled by weight sum magnitude
+    double tol = fabs(sumW) * 2.2204460492503131e-16 * 100.0;  // 100 * eps(sumW)
+    
     while ( BleichOverton )
     {
         position=-1;
@@ -88,13 +102,14 @@ void
         }
         
         // Checks on weights extends Bleich-Overton %%
-        double Le = 0;          // Le = sum(W(1:k-1));
+        Le = 0.0;          // Le = sum(W(1:k-1));
         for(int j = 0; j < k; j++)
         {
             Le += W[j];
         }
         
-        if ((Le-p<=0) && (p-Le-W[k]<=0))
+        // Apply tolerance to Bleich-Overton condition
+        if ((Le-p<=tol) && (p-Le-W[k]<=tol))
         {
             // The condition is met: stop computation.
             kD    = D[k];
@@ -133,4 +148,3 @@ void
     plhs[2]=mxCreateDoubleScalar(kstar);
     return;
 }
-
