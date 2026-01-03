@@ -343,7 +343,7 @@ k = ceil(n*p);
 
 % 3b. p is modified to treat the general case when sum of weights > 0 
 % but different than 1
-sumW = sum(W); tol = eps(sumW) * 100;
+sumW = sum(W); tol = eps(sumW) * 100; %TO DO: ADOPT IN MEX
 p = p*sumW;
 
 % 4. The external loop checks the condition on weights (point 6),  
