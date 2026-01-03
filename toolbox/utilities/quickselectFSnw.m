@@ -226,7 +226,7 @@ k = ceil(n*p);
 
 % 3b. p is modified to treat the general case when sum of weights > 0 
 % but different than 1
-sumW = sum(W);
+sumW = sum(W); tol = eps(sumW) * 100; 
 p = p*sumW;
 
 % 4. The external loop checks the condition on weights (point 6),  
@@ -289,7 +289,7 @@ while BleichOverton
     %    met, D is partially ordered and the optimal solution is reached.
     
     Le=sum(D(1:k-1,2));
-    if Le-p<=0 && p-Le-D(k,2)<=0
+    if Le-p<=tol && p-Le-D(k,2)<=tol
         % 6. The condition is met: stop computation.
         kD=D(k,1);
         kW=D(k,2);
