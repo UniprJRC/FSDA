@@ -547,7 +547,7 @@
         "description":"Plots a probability density function between specification limits "
     },
 
-    "dumbbellPlot":
+    "dumbbellplot":
     {
         "inputs":
         [
@@ -575,11 +575,11 @@
         "description":"Plots the Dumbbell Chart of the provided data."
     },
 
-    "dumbbellPlot":
+    "dumbbellplot":
     {
         "inputs":
         [
-            {"name":"X", "kind":"required", "type":["numeric", "vector"], "purpose":"Input Data"},
+            {"name":"X1", "kind":"required", "type":["numeric", "vector"], "purpose":"Input Data"},
             {"name":"X2", "kind":"required", "type":["numeric", "vector"], "purpose":"Second variable to plot"},
             {"name":"X3", "kind":"positional", "type":["numeric", "vector"], "purpose":"First set of data to plot in the second graph (Only double plottype)"},
             {"name":"X4", "kind":"positional", "type":["numeric", "vector"], "purpose":"Second set of data to plot in the second graph (Only double plottype)"},
