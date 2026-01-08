@@ -1987,7 +1987,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 ycoord=reshape(xy(:,xxlim+1:end),3*xxlim,1);
                 hold('on');
                 if strcmp('on',persist)
-                    % If necessary it isalso possible to specify a line
+                    % If necessary it is also possible to specify a line
                     % style for the brushed steps
                     % 'LineStyle',stypebrushed{ij},
                     plot(gca,xcoord,ycoord,'LineWidth',1.5,'color',ColorOrd(ij,:),'tag','brush_mdr');
