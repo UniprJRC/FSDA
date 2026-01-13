@@ -27,7 +27,7 @@ function geoplotFS(Y,score,ShapeFile, varargin)
 %               initial variable to use in the geoplot. Alternatively,
 %               score can contain a nxp array for example with the p
 %               principal components
-%                   Example - 'ShapeFile','shapefileName'
+%                   Example - 'score',outPCA.score
 %                    Data Types - char or string numeric scalar or nxp array.
 %
 %  ShapeFile  : name of ShapeFile or geotable containing shapes.
@@ -124,7 +124,7 @@ function geoplotFS(Y,score,ShapeFile, varargin)
 
 
 %% Beginning of code
-bsb=1:size(Y,1);
+ bsb=1:size(Y,1);
 
 if nargin>3
     options=struct('bsb',bsb);
