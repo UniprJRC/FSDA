@@ -256,7 +256,6 @@ function out = txmerge(Y, k, g, varargin)
     % additional input for clusterdata (i.e. hierOpt)
     linkagearg = 'weights';
     txsol = txmerge(X, k, g, 'tkm', 1,'linkagearg', linkagearg, 'plots', 'ellipse');
-    cascade;
 %}
 
 %{
@@ -294,7 +293,6 @@ function out = txmerge(Y, k, g, varargin)
     % txmerge using a cutoff g to detect the clusters based on DEMP
     g = 0.05;
     txsol2 = txmerge(X, k, g, 'alpha', alpha, 'dist', 1', 'plots', 'contourf');
-    cascade;
 %}
 
 %{
@@ -327,7 +325,6 @@ function out = txmerge(Y, k, g, varargin)
     txsol3 = txmerge(Y, k, g, 'alpha', alpha+0.04, 'txOut', 1, 'plots', 1);
     % using DEMP instead (usually effective)
     txsol3 = txmerge(Y, k, g, 'alpha', alpha+0.04, 'txOut', 1, 'dist', 1, 'plots', 1);
-    cascade;
 %}
 
 %% Beginning of code 
