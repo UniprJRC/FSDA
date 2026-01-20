@@ -1425,8 +1425,8 @@ set(AX,'NextPlot','add');
 
 styp=repmat(styp,ceil(n/13),1);
 
-% displays the boundary of the current axes.
-box on
+% displays the boundary for each panel
+set(AX,'Box','on')
 
 % set the specified tag in the current plot
 set(gcf,'tag',tag)
