@@ -217,10 +217,10 @@ plots=true;
 dispresults=false;
 Lc='';
 if nargin>1
-    
+
     options=struct('Lc',Lc,'plots',plots,...
         'dispresults',dispresults);
-    
+
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -233,7 +233,7 @@ if nargin>1
             % Check if user options are valid options
             aux.chkoptions(options,UserOptions)
         end
-        
+
         % Write in structure 'options' the options chosen by the user
         if nargin > 2
             for i=1:2:length(varargin)
@@ -261,8 +261,15 @@ else
     if istimetable(Y)
         Y=timetable2table(Y,'ConvertRowTimes',false);
     end
-    Yd=table2array(Y);
     Lc=Y.Properties.VariableNames;
+
+    % Transform categorical variables into numeric
+    Tc = Y;  % copy to avoid modifying original
+    catNames = Lc(varfun(@iscategorical, Y, 'OutputFormat','uniform'));
+    for k = catNames
+        Tc.(k{1}) = double(Tc.(k{1}));    % categorical -> integer codes (NaN for undefined)
+    end
+    Yd=table2array(Tc);
 end
 
 
@@ -307,10 +314,10 @@ for j=1:p
     ThreshSup=quart(2)+1.5*DI;
     outSUPj=sum(Yjnomiss>ThreshSup);
     outINFj=sum(Yjnomiss<ThreshInf);
-    
+
     tot=[mj medianj sigmaj madj countMissingj percMissingj outINFj outSUPj];
     MisAndOut(j,:)=tot;
-    
+
 end
 
 namesVariablesMisAndOut={'Mean' 'Median'   'Stdev' 'MAD'  'Count_miss' ...
@@ -366,17 +373,17 @@ if plots==true
     end
     set(ax2, 'XTick', get(ax1, 'XTick'), 'YTick', get(ax1, 'YTick'),'FontSize',fs);
     OppositeYTickLabels = string(flip(Yfin(1:end-1,end)));
-    
+
     % Set the x-tick and y-tick  labels for the second axes
     set(ax2 , 'TickLength' ,[0 0] , 'XMinorTick', 'off', ...
         'XTickLabel', YsorcolsVarNames,...
         'YTickLabel',OppositeYTickLabels);
-    
+
     % yyaxis right
     ylabel(ax2,'Number of variables with missing values')
-    
+
     linkaxes; % this is to link the limits of the top and bottom axses
-    
+
     % Plot explanation
     disp('Detailed explanation of the "Missing data pattern figure"')
     disp('Top axis contains the names of the variables.')
@@ -387,7 +394,7 @@ if plots==true
     disp('Right axis counts the variables with missing values and')
     disp('it is equal to the number of big circles in the corresponding row.')
     disp('The number of missing values for each variable is shown on the bottom axis.')
-    
+
 end
 
 end
