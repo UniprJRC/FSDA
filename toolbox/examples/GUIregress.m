@@ -408,7 +408,7 @@ if unweighted==true % unweighted regression
             corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
             footer1=[NaN sumy sumyhat sume deve devyhat devy];
         end
-        strtitle1='Total ($DEV(y)$), regression ($DEV(\hat y)$) and residual deviance ($DEV(e)$)';
+        strtitle1='Total ($SST$), regression ($SSR$) and residual deviance ($SSE$)';
     else % no intercept
         if timeseries==true
             if interpType==1 % linear
@@ -641,10 +641,10 @@ if unweighted==true
                 num2str(a) '$'];
         end
 
-        strR2=[R2stri ' \frac{DEV(\hat{y})}{DEV(y)} '...
+        strR2=[R2stri ' \frac{SSR}{SST} '...
             '= \frac{' num2str(devyhat)  '}{' num2str(devy) '}=' ...
             num2str(R2) '$'];
-        strR2bis=[R2stri ' 1-\frac{DEV(e)}{DEV(y)}' ...
+        strR2bis=[R2stri ' 1-\frac{SSE}{SST}' ...
             '= 1-\frac{' num2str(deve) '}{' num2str(devy) '}=' ...
             num2str(R2) '$'];
     else % intercept = false
@@ -748,7 +748,7 @@ if ~isempty(inferential)
         strfin2='$';
     end
 
-    strs=[strini 's= \sqrt{\frac{DEV(E)}{n-2}} ' strfin '=' strcl '\sqrt{\frac{' num2str(deve) '}{' num2str(lenx-2) '}}=' num2str(s)  '$'];
+    strs=[strini 's= \sqrt{\frac{SSE}{n-2}} ' strfin '=' strcl '\sqrt{\frac{' num2str(deve) '}{' num2str(lenx-2) '}}=' num2str(s)  '$'];
 
 
     strstderrb=[strini 's_b= s \sqrt{\frac{1}{\sum_{i=1}^n (x_i -M_X)^2}} = '  num2str(s)   '\sqrt{\frac{' num2str(1) '}{' num2str(sumxmx2) '}}= ' strcl strcl num2str(stderrb) strfin2 ];
