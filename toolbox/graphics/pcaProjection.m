@@ -224,7 +224,9 @@ if nargin>1
     end
 end
 
-if istable(Y)
+isMatlab = exist('istable','file') == 2;
+
+if isMatlab && istable(Y)
     Y=Y(:,DataVars);
     varnames=Y.Properties.VariableNames;
     rownames=Y.Properties.RowNames;
@@ -240,7 +242,6 @@ else
     varnames=cellstr(num2str((1:v)','Y%d'));
     rownames=cellstr(num2str((1:n)','%d'));
 end
-
 
 % X = array on which to perform projection
 X=Y;
@@ -350,7 +351,7 @@ plot3([Xhat2(:,1) Xtilde(:,1)]', [Xhat2(:,2) Xtilde(:,2)]', [Xhat2(:,3) Xtilde(:
 axis equal
 title("3D scatter plot: orthogonal projections onto first 2PC plane of first 2 PCs")
 
-if AddConstantPlane == true
+if isMatlab && AddConstantPlane == true
     constantplane(V(:,3),0)
 end
 
@@ -372,7 +373,9 @@ figure
 scatter3(Xtilde*v1,Xtilde*v2,Xtilde*v3)
 hold('on')
 axis equal
-constantplane('z',0);
+if isMatlab 
+    constantplane('z',0);
+end
 
 title('3D scatter plot of projections onto the first three principal components');
 
@@ -386,7 +389,7 @@ xlabel('PC1'); ylabel('PC2'); zlabel('PC3');
 color='k';
 
 for j=1:3
-    if AddAxes(j) == true
+    if isMatlab && AddAxes(j) == true
         add3Daxes(j,color,LineWidthAxes);
     end
 end
@@ -413,7 +416,7 @@ end
 
 
 for j=1:3
-    if AddAxes(j) == true
+    if isMatlab && AddAxes(j) == true
         add3Daxes(j,color,LineWidthAxes);
     end
 end
@@ -441,7 +444,7 @@ end
 
 
 for j=1:3
-    if AddAxes(j) == true
+    if isMatlab && AddAxes(j) == true
         addLinePCj(V,XX1,j,LineWidthAxes,TextAnToolbox);
     end
 end
