@@ -7,7 +7,7 @@ function out=pcaFS(Y,varargin)
 %   1) accepts an input X also as table;
 %   2) produces in table format the percentage of the variance explained
 %      single and cumulative of the various components and the associated
-%      scree plot, in order to decide about the number of components to
+%      Pareto plot, in order to decide about the number of components to
 %      retain.
 %   3) returns the loadings in table format and shows them graphically.
 %   4) provides guidelines about the automatic choice of the number of
@@ -20,11 +20,11 @@ function out=pcaFS(Y,varargin)
 %      \[
 %        OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
 %      \]
-%      where z_i is the i-th row of the original centered data matrix $Z$ of
-%      dimension $n \times v$ and $V_{(2)}=(v_1 v_2)$ is the matrix of size
-%      $p \times 2$ containing the first two eigenvectors of $Z'Z/(n-1)$. The
-%      observations with large $OD_i$ are not well represented in the space of
-%      the principal components.
+%      where $z_i$ is the i-th row of the original centered (standardized)
+%      data matrix $Z$ of dimension $n \times p$ and $V_{(2)}=(v_1 v_2)$ is
+%      the matrix of size $p \times 2$ containing the first two
+%      eigenvectors of $Z'Z/(n-1)$. The observations with large $OD_i$ are
+%      not well represented in the space of the principal components.
 %   7)  returns the score distance $SD_i$ of each observation. For example,
 %      if the subspace is defined by the first two principal components,
 %      $SD_i$ is computed as:
@@ -43,6 +43,8 @@ function out=pcaFS(Y,varargin)
 %      the breakdown point of the analysis or the subset size to use in the
 %      svd. The units which are declared as outliers or the units outside
 %      the subset are shown in the biplot with filled circles.
+%   9) enables to deal with geographical information (latitude and
+%      longitude) or Shape polygons of the units.
 %
 %
 %  Required input arguments:
@@ -115,12 +117,24 @@ function out=pcaFS(Y,varargin)
 %                   Example - 'NumComponents',2
 %                    Data Types - single|double
 %
-%      plots     : plots on the screen. Scalar. If plots is 1 (default) it is
-%                   possible to show on the screen the scree plot of the
-%                   variance explained, the plot of the loadings for the
-%                   first two PCs.
-%                   Example - 'plots',0
-%                   Data Types - double
+%   plots : Control the graphical output. Scalar, string, string array, 
+%           character array or cell array of character vectors.
+%           If plots is 1 or true (default), the following plots are displayed:
+%             - Pareto plot of the explained variance;
+%             - Loading plot for the first two principal components;
+%             - Outlier Map.
+%           If plots is 0 or false, no plots are produced.
+%           If plots is a string array or a cell array of character vectors,
+%           it specifies which plots to display. Valid plot identifiers are:
+%             "Explained"   = Pareto plot of the explained variance;
+%             "Loadings"    = Loading plot;
+%             "OutlierMap"  = Outlier Map.
+%           For example, to display both the Pareto plot of the explained
+%           variance and the loading plot, use:
+%             plots = {'Explained','Loadings'} or:
+%             plots = ["Explained","Loadings"]
+%           Example - 'plots', 0
+%           Data Types - double | logical | char | cell | string
 %
 %       robust   : robust principal components. boolean or struct. If
 %               robust is a scalar boolean equal to true (default), FS is
@@ -162,8 +176,8 @@ function out=pcaFS(Y,varargin)
 %               geometric details of the rows. The ShapeFile, which is
 %               loaded using function readgeotable, must have n rows and
 %               the n rows must have the same order of the n rows of Y. The
-%               default value of shapefile is empty that is we assume that
-%               no shapefile is given. If ShapeFile is given an additional
+%               default value of ShapeFile is empty that is we assume that
+%               no shape file is given. If ShapeFile is given an additional
 %               GUI containing the areas colored using
 %               the first PC is shown. If this file is given in the biplot
 %               once a particular area is selected the map showing the
@@ -330,7 +344,7 @@ function out=pcaFS(Y,varargin)
         ShapeFile=X.Properties.UserData{1};
         out=pcaFS(X,"ShapeFile",ShapeFile,'biplot',0);
     else
-           disp('This option requires that the "mapping toolbox" is installed') 
+        disp('This option requires that the "mapping toolbox" is installed') 
     end
 %}
 

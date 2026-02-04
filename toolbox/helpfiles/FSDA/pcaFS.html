@@ -2,7 +2,7 @@
    1) accepts an input X also as table;</p> <p>
    2) produces in table format the percentage of the variance explained
       single and cumulative of the various components and the associated
-      scree plot, in order to decide about the number of components to
+      Pareto plot, in order to decide about the number of components to
       retain.</p> <p>
    3) returns the loadings in table format and shows them graphically.</p> <p>
    4) provides guidelines about the automatic choice of the number of
@@ -15,11 +15,11 @@
       </p>\[
         OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
       \]<p>
-      where z_i is the i-th row of the original centered data matrix $Z$ of
-      dimension $n \times v$ and $V_{(2)}=(v_1 v_2)$ is the matrix of size
-      $p \times 2$ containing the first two eigenvectors of $Z'Z/(n-1)$. The
-      observations with large $OD_i$ are not well represented in the space of
-      the principal components.</p> <p>
+      where $z_i$ is the i-th row of the original centered (standardized)
+      data matrix $Z$ of dimension $n \times p$ and $V_{(2)}=(v_1 v_2)$ is
+      the matrix of size $p \times 2$ containing the first two
+      eigenvectors of $Z'Z/(n-1)$. The observations with large $OD_i$ are
+      not well represented in the space of the principal components.</p> <p>
    7)  returns the score distance $SD_i$ of each observation. For example,
       if the subspace is defined by the first two principal components,
       $SD_i$ is computed as:
@@ -37,7 +37,9 @@
       possible to have in the app two tabs which enable the user to select
       the breakdown point of the analysis or the subset size to use in the
       svd. The units which are declared as outliers or the units outside
-      the subset are shown in the biplot with filled circles.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="pcaFS.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=pcaFS(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Use of pcaFS with citiesItaly dataset.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="pcaFS.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=pcaFS(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Use of pcaFS on the ingredients dataset.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Use of pcaFS with citiesItaly dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly;
+      the subset are shown in the biplot with filled circles.</p><p>
+   9) enables to deal with geographical information (latitude and
+      longitude) or Shape polygons of the units.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="pcaFS.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=pcaFS(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Use of pcaFS with citiesItaly dataset.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="pcaFS.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=pcaFS(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Use of pcaFS on the ingredients dataset.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Use of pcaFS with citiesItaly dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly;
 % Use all default options
 out=pcaFS(citiesItaly);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use of pcaFS on the ingredients dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hald
 % Operate on the covariance matrix.
@@ -308,7 +310,7 @@ Units with the 5 largest values of (combined) score and orthogonal distance
 </code>,<code> 'Latitude',[54 43.2 ... 47]
 </code>,<code> 'Longitude',[54 43.2 ... 47]
 </code>,<code> 'NumComponents',2
-</code>,<code> 'plots',0
+</code>,<code> 'plots', 0
 </code>,<code> 'bsb',[2 10:90 93]
 </code>,<code> 'ShapeFile','shapefileName'
 </code>,<code> 'smartEVchart',true
@@ -352,12 +354,22 @@ Units with the 5 largest values of (combined) score and orthogonal distance
                   threshold is exceeded already by the first PC, pcaFS
                   still returns the first two PCs.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'NumComponents',2
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single|double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots is 1 (default) it is
-                   possible to show on the screen the scree plot of the
-                   variance explained, the plot of the loadings for the
-                   first two PCs.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_robust" class="clearfix"></div><h3 id="input_argument_namevalue_robust" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>robust</code> &#8212;robust principal components.</span></a><span class="example_desc">boolean | struct.</span></span></h3><div class="collapse">	<p>If
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single|double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Control the graphical output.</span></a><span class="example_desc">scalar, string, string array,            character array | cell array of character vectors.</span></span></h3><div class="collapse">	<p><p>If plots is 1 or true (default), the following plots are displayed:
+             - Pareto plot of the explained variance;</p> <p>
+             - Loading plot for the first two principal components;</p> <p>
+             - Outlier Map.</p> <p>
+           If plots is 0 or false, no plots are produced.</p> <p>
+           If plots is a string array or a cell array of character vectors,
+           it specifies which plots to display. Valid plot identifiers are:
+             "Explained"   = Pareto plot of the explained variance;</p> <p>
+             "Loadings"    = Loading plot;</p> <p>
+             "OutlierMap"  = Outlier Map.</p><p>
+           For example, to display both the Pareto plot of the explained
+           variance and the loading plot, use:
+             plots = {'Explained','Loadings'} or:
+             plots = ["Explained","Loadings"]
+           </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots', 0
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double | logical | char | cell | string</code></p></div></div><div class="expandableContent"><div id="inputarg_robust" class="clearfix"></div><h3 id="input_argument_namevalue_robust" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>robust</code> &#8212;robust principal components.</span></a><span class="example_desc">boolean | struct.</span></span></h3><div class="collapse">	<p>If
                robust is a scalar boolean equal to true (default), FS is
                applied and using a Bonferronized confidence level units
                are declared as outliers. If robust is a struct it is
@@ -388,8 +400,8 @@ Units with the 5 largest values of (combined) score and orthogonal distance
                geometric details of the rows. The ShapeFile, which is
                loaded using function readgeotable, must have n rows and
                the n rows must have the same order of the n rows of Y. The
-               default value of shapefile is empty that is we assume that
-               no shapefile is given. If ShapeFile is given an additional
+               default value of ShapeFile is empty that is we assume that
+               no shape file is given. If ShapeFile is given an additional
                GUI containing the areas colored using
                the first PC is shown. If this file is given in the biplot
                once a particular area is selected the map showing the

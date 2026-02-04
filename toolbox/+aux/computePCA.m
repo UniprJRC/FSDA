@@ -35,7 +35,7 @@ sigmas=sqrt(diag(R));
 [~,Gamma,V]=svd(Zbsb,'econ');
 Gamma=Gamma/sqrt(nbsb-1);
 
-% \Gamma*\Gamma = matrice degli autovalori della matrice di correlazione
+% \Gamma*\Gamma = Matrix of eigenvalues of the correlation (covariance) matrix
 La=Gamma.^2;
 la=diag(La);
 
@@ -130,41 +130,58 @@ if dispresults == true
     disp(selu')
 end
 
-if plots==1
+allPlots=["Explained" "Loadings" "OutlierMap"];
+
+if (islogical(plots) || isnumeric(plots)) && isscalar(plots)
+    if plots==1
+        showPlots=allPlots;
+    else
+        showPlots="";
+    end
+elseif iscellstr(plots) || ischar(plots) %#ok<ISCLSTR>
+    % Note that warning is suppressed because of routine convertStringsToChars
+    % Check whether input is a cell array of characters or a character array 
+    showPlots=string(plots);
+else
+    error('FSDA:pcaFS:WrongInputOpt',['input argument plots can be either 0/1 false/true' newline 'or a cell array of characters or a string array or a character array'])
+end
 
     %% Explained variance through Pareto plot
     % Delete figure if it already exists
-
-    delete(findobj(0, 'type', 'figure','tag','pl_eigen'));
-    figure('Name','Explained variance','Tag','pl_eigen')
-    [h,axesPareto]=pareto(explained(:,1),namerows);
-    % h(1) refers to the bars h(2) to the line
-    h(1).FaceColor='g';
-    linelabels = string(round(100*h(2).YData/sumla,2));
-    text(axesPareto(2),h(2).XData,h(2).YData,linelabels,...
-        'Interpreter','none');
-    xlabel('Principal components')
-    ylabel('Explained variance')
+    if ismember("Explained",showPlots)
+        delete(findobj(0, 'type', 'figure','tag','pl_eigen'));
+        figure('Name','Explained variance','Tag','pl_eigen')
+        [h,axesPareto]=pareto(explained(:,1),namerows);
+        % h(1) refers to the bars h(2) to the line
+        h(1).FaceColor='g';
+        linelabels = string(round(100*h(2).YData/sumla,2));
+        text(axesPareto(2),h(2).XData,h(2).YData,linelabels,...
+            'Interpreter','none');
+        xlabel('Principal components')
+        ylabel('Explained variance')
+    end
 
     %% Plot loadings
-    xlabels=categorical(varnames,varnames);
-    delete(findobj(0, 'type', 'figure','tag','pl_loadings'));
-    figure('Name','Loadings','Tag','pl_loadings')
+    if ismember("Loadings",showPlots)
+        xlabels=categorical(varnames,varnames);
+        delete(findobj(0, 'type', 'figure','tag','pl_loadings'));
+        figure('Name','Loadings','Tag','pl_loadings')
 
-    for i=1:NumComponents
-        subplot(NumComponents,1,i)
-        b=bar(xlabels, loadings(:,i),'g');
-        title(['Correlations with PC' num2str(i)])
-        xtips=b(1).XData;
-        ytips=b(1).YData;
-        % The alternative instructions below only work from MATLAB
-        % 2019b
-        %   xtips = b.XEndPoints;
-        %   ytips = b.YEndPoints;
-        barlabels = string(round(loadings(:,i),2));
-        text(xtips,ytips,barlabels,'HorizontalAlignment','center',...
-            'VerticalAlignment','bottom')
-        title(['Correlations  with PC' num2str(i)])
+        for i=1:NumComponents
+            subplot(NumComponents,1,i)
+            b=bar(xlabels, loadings(:,i),'g');
+            title(['Correlations with PC' num2str(i)])
+            xtips=b(1).XData;
+            ytips=b(1).YData;
+            % The alternative instructions below only work from MATLAB
+            % 2019b
+            %   xtips = b.XEndPoints;
+            %   ytips = b.YEndPoints;
+            barlabels = string(round(loadings(:,i),2));
+            text(xtips,ytips,barlabels,'HorizontalAlignment','center',...
+                'VerticalAlignment','bottom')
+            title(['Correlations  with PC' num2str(i)])
+        end
     end
 
     %% Plot coefficients with line
@@ -178,7 +195,7 @@ if plots==1
 
 
             st=si+string(V(:,j))+"*"+varnames';
-            % Ordinare gli elementi dal più grande al più piccolo
+            % Order the elements
             [~,indsor]=sort(abs(V(:,j)),'descend');
 
             st1=st(indsor);
@@ -263,32 +280,34 @@ if plots==1
         end
     end
 
-    %% Plot of orthogonal distance (Y) versus score distance (X)
-    delete(findobj(0, 'type', 'figure','tag','pl_OutlierMap'));
-    figure('Name','OutlierMap','tag','pl_OutlierMap')
-    group1=repelem("Normal units",n,1);
-    group1(bsb==0)="Outliers";
-    scatterboxplot(scoreDist,orthDist,'group',group1);
-    xlabel('Score distance')
-    ylabel('Orth. dist. from PCA subspace')
-    text(1.01,0,['Good' newline 'leverage' newline 'points'],'Units','normalized')
-    text(-0.05,0,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','right')
-    text(0.05,-0.05,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','left')
-    text(-0.05,1.05,'Orthogonal outliers','Units','normalized','HorizontalAlignment','left')
-    text(0.95,1.05,'Bad leverage points','Units','normalized','HorizontalAlignment','right')
-    text(1.01,0.95,['Bad' newline 'leverage' newline 'points'],'Units','normalized','HorizontalAlignment','left')
-    text(scoreDist(selu),orthDist(selu),rownames(selu),'HorizontalAlignment','left','VerticalAlignment','bottom');
-    % Good leverage points: points which lie close to the PCA space but far
-    % from the regular observations.
-    % Orthogonal outliers points: points which have a large orthogonal distance
-    % to the PCA space but cannot be seen when we look only at their
-    % projection on the PCA subspace.
-    % Bad leverage points: points which have a large orthogonal distance
-    % and whose projection on the PCA subspace is remote from the typical
-    % projections.
+    %% Plot of Orthogonal distance (Y) versus Score distance (X)
+    if ismember("OutlierMap",showPlots)
+
+        delete(findobj(0, 'type', 'figure','tag','pl_OutlierMap'));
+        figure('Name','OutlierMap','tag','pl_OutlierMap')
+        group1=repelem("Normal units",n,1);
+        group1(bsb==0)="Outliers";
+        scatterboxplot(scoreDist,orthDist,'group',group1);
+        xlabel('Score distance')
+        ylabel('Orth. dist. from PCA subspace')
+        text(1.01,0,['Good' newline 'leverage' newline 'points'],'Units','normalized')
+        text(-0.05,0,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','right')
+        text(0.05,-0.05,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','left')
+        text(-0.05,1.05,'Orthogonal outliers','Units','normalized','HorizontalAlignment','left')
+        text(0.95,1.05,'Bad leverage points','Units','normalized','HorizontalAlignment','right')
+        text(1.01,0.95,['Bad' newline 'leverage' newline 'points'],'Units','normalized','HorizontalAlignment','left')
+        text(scoreDist(selu),orthDist(selu),rownames(selu),'HorizontalAlignment','left','VerticalAlignment','bottom');
+        % Good leverage points: points which lie close to the PCA space but far
+        % from the regular observations.
+        % Orthogonal outliers points: points which have a large orthogonal distance
+        % to the PCA space but cannot be seen when we look only at their
+        % projection on the PCA subspace.
+        % Bad leverage points: points which have a large orthogonal distance
+        % and whose projection on the PCA subspace is remote from the typical
+        % projections.
+    end
 
     %% Show the plot of latitude and longitude
-
     if ~isempty(Latitude) &&  ~isempty(Longitude)
         delete(findobj(0, 'type', 'figure','tag','pl_latlong'));
         figure('Name','geobubble','tag','pl_latlong')
