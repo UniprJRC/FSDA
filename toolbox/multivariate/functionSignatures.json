@@ -203,7 +203,8 @@
             {"name":"robust", "kind":"namevalue", "type":[["logical", "scalar"], ["struct:robust_pcaFS"]], "purpose":"Robust principal components"},
             {"name":"ShapeFile", "kind":"namevalue", "type":[["char"], ["string"], ["table"]], "purpose":"name of ShapeFile or geospatial table containing shapes"},
             {"name":"standardize", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Standardize data"},
-            {"name":"smartEVchart", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Eigenvectors shown as ordered-bar and line plot"}
+            {"name":"smartEVchart", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Eigenvectors shown as ordered-bar and line plot"},
+	    {"name":"plots", "kind":"namevalue", "type":[["string"], ["char", "choices={'Explained', 'Loadings', 'OutlierMap'}"], ["cell"], ["double", "scalar"], ["logical", "scalar"]], "purpose":"Control the graphical output"}
         ],
 
         "outputs":
