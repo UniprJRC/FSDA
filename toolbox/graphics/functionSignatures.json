@@ -937,5 +937,38 @@
         ],
 
         "description":"Plots the trajectories of the monitored scaled (squared) residuals"
+    },
+      "spmplot":
+    {
+        "inputs":
+        [
+            {"name":"Y", "kind":"required", "type":[["numeric"], ["table"], ["struct"]], "purpose":"data matrix or structure from FSMeda"},
+            {"name":"group", "kind":"namevalue", "type":"numeric", "purpose":"grouping variable"},
+            {"name":"plo", "kind":"namevalue", "type":[["scalar"], ["struct"]], "purpose":"names, labels, colors, marker type"},
+            {"name":"dispopt", "kind":"namevalue", "type":"choices={'hist','box'}", "purpose":"what to put on the diagonal"},
+            {"name":"nameY", "kind":"namevalue", "type":[["cellstr"], ["string"]], "purpose":"variable labels"},
+            {"name":"nameYrot", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"angle for variable labels"},
+            {"name":"nameYlength", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"max length of variable labels"},
+            {"name":"order", "kind":"namevalue", "type":"choices={'original','alphabet','AOE','FPC'}", "purpose":"order of variables in the scatterplot matrix"},
+            {"name":"overlay", "kind":"namevalue", "type":[["scalar"], ["char"], ["struct"]], "purpose":"superimposition on off-diagonal panels"},
+            {"name":"colorBackground", "kind":"namevalue", "type":"logical", "purpose":"background color based on correlation"},
+            {"name":"typespm", "kind":"namevalue", "type":[["choices={'full','lower','upper'}"], ["struct"]], "purpose":"type of scatter plot matrix"},
+            {"name":"undock", "kind":"namevalue", "type":[["numeric"], ["logical"]], "purpose":"panels to undock and visualize separately"},
+            {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive clicking"},
+            {"name":"databrush", "kind":"namevalue", "type":[["numeric"], ["cell"]], "purpose":"interactive mouse brushing"},
+            {"name":"selunit", "kind":"namevalue", "type":[["numeric"], ["char"], ["cellstr"]], "purpose":"unit labelling"},
+            {"name":"tag", "kind":"namevalue", "type":"char", "purpose":"plot tag"},
+            {"name":"subsize", "kind":"namevalue", "type":"numeric", "purpose":"x axis control in malfwdplot"},
+            {"name":"selstep", "kind":"namevalue", "type":"numeric", "purpose":"position of text labels in malfwdplot"}
+        ],
+
+        "outputs":
+        [
+            {"name":"H", "type":"numeric", "purpose":"array of handles to the plotted points"},
+            {"name":"AX", "type":"numeric", "purpose":"handles to the individual subaxes"},
+            {"name":"BigAx", "type":"numeric", "purpose":"handle to big invisible axes"}
+        ],
+
+        "description":"Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal"
     }
 }
