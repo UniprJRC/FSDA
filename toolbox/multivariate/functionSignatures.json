@@ -58,6 +58,26 @@
         }
     },
 
+    "biplotFS":
+    {
+        "inputs":
+        [
+            {"name":"Y", "kind":"required", "type":[["numeric"], ["table"]], "purpose":"Input Data"},
+            {"name":"bsb", "kind":"namevalue", "type":[["numeric", "vector"], ["logical", "vector"]], "purpose":"Subset on which to perform PCA"},
+            {"name":"bdp", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Breakdown Point"},
+            {"name":"Latitude", "kind":"namevalue", "type":["double", "vector"], "purpose":"Latitude Coordinates in degrees of the rows"},
+            {"name":"Longitude", "kind":"namevalue", "type":["double", "vector"], "purpose":"Longitude Coordinates in degrees of the rows"},
+            {"name":"standardize", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Standardize data"},
+            {"name":"alpha", "kind":"namevalue", "type":["double", "scalar", ">=0", "<=1"], "purpose":"SVD alpha parameter"},
+            {"name":"omega", "kind":"namevalue", "type":["double", "scalar",  ">=0", "<=1"], "purpose":"SVD omega parameter"},
+            {"name":"showRowPoints", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Hide or show row points"},
+            {"name":"showRowNames", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Hide or show labels of row points"},
+            {"name":"showArrows", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Hide or show row arrows"}
+        ],
+
+        "description":"Call biplotAPP.mlapp to show a dynamic biplot"
+    },
+
     "CorAna":
     {
         "inputs":
