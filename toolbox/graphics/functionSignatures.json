@@ -409,6 +409,26 @@
         "description":"Produces a bar plot with different widths and colors for each bar"
     },
 
+    "biplotAPP":
+    {
+        "inputs":
+        [
+            {"name":"Y", "kind":"required", "type":[["numeric"], ["table"]], "purpose":"Input Data"},
+            {"name":"bsb", "kind":"namevalue", "type":[["numeric", "vector"], ["logical", "vector"]], "purpose":"Subset on which to perform PCA"},
+            {"name":"bdp", "kind":"namevalue", "type":["numeric", "scalar"], "purpose":"Breakdown Point"},
+            {"name":"Latitude", "kind":"namevalue", "type":["double", "vector"], "purpose":"Latitude Coordinates in degrees of the rows"},
+            {"name":"Longitude", "kind":"namevalue", "type":["double", "vector"], "purpose":"Longitude Coordinates in degrees of the rows"},
+            {"name":"standardize", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Standardize data"},
+            {"name":"alpha", "kind":"namevalue", "type":["double", "scalar", ">=0", "<=1"], "purpose":"SVD alpha parameter"},
+            {"name":"omega", "kind":"namevalue", "type":["double", "scalar",  ">=0", "<=1"], "purpose":"SVD omega parameter"},
+            {"name":"showRowPoints", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Hide or show row points"},
+            {"name":"showRowNames", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Hide or show labels of row points"},
+            {"name":"showArrows", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Hide or show row arrows"}
+        ],
+
+        "description":"Show dynamic PCA biplot"
+    },
+
     "boxplotb":
     {
         "inputs":
@@ -964,9 +984,9 @@
 
         "outputs":
         [
-            {"name":"H", "type":"numeric", "purpose":"array of handles to the plotted points"},
-            {"name":"AX", "type":"numeric", "purpose":"handles to the individual subaxes"},
-            {"name":"BigAx", "type":"numeric", "purpose":"handle to big invisible axes"}
+            {"name":"H", "type":"matlab.graphics.axis.Axes", "purpose":"array of handles to the plotted points"},
+            {"name":"AX", "type":"matlab.graphics.axis.Axes", "purpose":"handles to the individual subaxes"},
+            {"name":"BigAx", "type":"matlab.graphics.axis.Axes", "purpose":"handle to big invisible axes"}
         ],
 
         "description":"Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal"
