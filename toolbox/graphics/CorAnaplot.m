@@ -875,7 +875,7 @@ function CorAnaplot(out,varargin)
 %}
 
 %{
-    %% Correpondence analysis of the smoke data.
+    %% Correspondence analysis of the smoke data.
     % In this example we compare the results which are obtained using
     % option  plots.alpha='colprincipal'; (which implicitly implies
     % alpha=0) with those which come out imposing directly plots.alpha=0.
