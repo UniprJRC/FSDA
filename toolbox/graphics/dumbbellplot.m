@@ -23,10 +23,31 @@ function ax = dumbbellplot(X, varargin)
 %
 %  Optional input arguments:
 %
-%  orientation  : orientation of the plot. String or char.
-%                Admissible values are 'horizontal' (default) or 'vertical'
-%               Example - 'Orientation','vertical'
-%               Data Types - string or char
+% AxesFontSize : Font size of axis labels and ticks. Numeric scalar.
+%              Controls the font size of the axis labels.
+%              Example - 'AxesFontSize', 15
+%              Data Types - double
+%
+% Background : Style of background of the plot. String or char.
+%              Controls whether alternating background bands are displayed
+%              behind the plot. Admissible values: 'none' (default), 'bands'
+%              Example - 'Background', 'bands'
+%              Data Types - string | char
+%
+%   Color      : Color of the dots. string or char or 2x3 numeric array.
+%              Specifies the colors for the two sets of dots. Can be either
+%              a built-in palette ('default', 'colorblind', 'ruby_jade','cherry_sky', 'red_blue')
+%               or a 2x3 array of RGP triplets where each row defines the
+%               color of a set of dots.
+%              Example - 'Color', [0.88, 0.30, 0.30; 0.20, 0.42, 0.85]
+%              Data Types - string | char | array of 2 valid MATLAB colours
+%
+%   ColorDist  : Color mapping based on difference between points. String or char.
+%              Controls whether and how the connecting lines are colored based
+%              on the difference between the two values. 
+%              Admissible values are:'false' (default) 'directional','magnitude','robust'
+%              Example - 'ColorDist', 'directional'
+%              Data Types - string | char
 %
 %   labelX1    : Custom legend label for the first set of data. Char or string. 
 %               The Default label is "X1"  if X1 is numeric vector or the corresponding
@@ -40,11 +61,41 @@ function ax = dumbbellplot(X, varargin)
 %               Example - 'labelX2','mylabelAfter'
 %               Data Types - char or string
 %
+%   LineWidth  : Width of the bars of the plot. numeric scalar.
+%               Controls the thickness of the lines (bars) connecting each
+%               pair of dots in the dumbbell plot.
+%               Example - 'LineWidth', 2.5
+%               Data Types - Double
+%             
+%   MarkerSize : Size of the dots. numeric scalar or vector.
+%              If scalar, all markers use the same size. If vector, it must
+%              have the same length as the number of data pairs (rows), and
+%              each pair of dots will use the corresponding size value.
+%              Example - 'MarkerSize', 200
+%              Data Types - numeric scalar or vector
+%
+%  orientation  : orientation of the plot. String or char.
+%                Admissible values are 'horizontal' (default) or 'vertical'
+%               Example - 'Orientation','vertical'
+%               Data Types - string or char
+%
 %   plotType   : Type of plot layout. Char or String.
 %               Determines whether to create a single plot or a side by side
 %               plot. Admissible values are 'single' (default) or 'double'
 %               Example - 'plotType', 'double'
 %               Data Types - char or string
+%
+%   TextInside : Position of data value labels. Logical scalar.
+%              When true, numeric labels are displayed inside the marker dots.
+%              if false, labels are positioned outside the markers. 
+%              Example - 'TextInside', true
+%              Data Types - logical
+%
+%   TextSize   : Font size of data value labels. numeric scalar.
+%              Controls the font size of the numeric labels displayed
+%              near or inside the dots.
+%              Example - 'TextSize', 14
+%              Data Types - double
 %
 %   Title      : plot title(s). string or char or cell array.
 %               Title(s) for the chart(s). The number of input titles, must 
@@ -59,57 +110,6 @@ function ax = dumbbellplot(X, varargin)
 %              default names will be used ('Row 1', 'Row 2',...)
 %              Example - 'YLabels', ["Product A", "Product B", "Product C"]
 %              Data Types - string | char | cell array
-%
-%   Color      : Color of the dots. string or char or 2x3 numeric array.
-%              Specifies the colors for the two sets of dots. Can be either
-%              a built-in palette ('default', 'colorblind', 'ruby_jade','cherry_sky', 'red_blue')
-%               or a 2x3 array of RGP triplets where each row defines the
-%               color of a set of dots.
-%              Example - 'Color', [0.88, 0.30, 0.30; 0.20, 0.42, 0.85]
-%              Data Types - string | char | array of 2 valid MATLAB colours
-%             
-%   MarkerSize : Size of the dots. numeric scalar or vector.
-%              If scalar, all markers use the same size. If vector, it must
-%              have the same length as the number of data pairs (rows), and
-%              each pair of dots will use the corresponding size value.
-%              Example - 'MarkerSize', 200
-%              Data Types - numeric scalar or vector
-%
-%   LineWidth  : Width of the bars of the plot. numeric scalar.
-%               Controls the thickness of the lines (bars) connecting each
-%               pair of dots in the dumbbell plot.
-%               Example - 'LineWidth', 2.5
-%               Data Types - Double
-%
-%   TextSize   : Font size of data value labels. numeric scalar.
-%              Controls the font size of the numeric labels displayed
-%              near or inside the dots.
-%              Example - 'TextSize', 14
-%              Data Types - double
-%
-%   TextInside : Position of data value labels. Logical scalar.
-%              When true, numeric labels are displayed inside the marker dots.
-%              if false, labels are positioned outside the markers. 
-%              Example - 'TextInside', true
-%              Data Types - logical
-%
-% AxesFontSize : Font size of axis labels and ticks. Numeric scalar.
-%              Controls the font size of the axis labels.
-%              Example - 'AxesFontSize', 15
-%              Data Types - double
-%
-%   ColorDist  : Color mapping based on difference between points. String or char.
-%              Controls whether and how the connecting lines are colored based
-%              on the difference between the two values. 
-%              Admissible values are:'false' (default) 'directional','magnitude','robust'
-%              Example - 'ColorDist', 'directional'
-%              Data Types - string | char
-%
-% Background : Style of background of the plot. String or char.
-%              Controls whether alternating background bands are displayed
-%              behind the plot. Admissible values: 'none' (default), 'bands'
-%              Example - 'Background', 'bands'
-%              Data Types - string | char
 %
 %
 %
