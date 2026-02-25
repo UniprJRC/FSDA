@@ -5,15 +5,21 @@ function out = hpfilterFS(y, varargin)
 %
 % Model interpretation (Gaussian).
 %
-%   $Sy=y_{bsb} = Sm + S\epsilon$,        $\epsilon \sim N(0, \sigma_\epsilon^2)$;
-%   $D m = u$,                 $u   \sim N(0, (1/\lambda) I_n)$.
+%   $y=(y_1, y_2, \ldots, y_T)'$ is the observed time series. $y_bsb$ is a
+%   subset of units from $y$ of length $n_{bsb}$. 
+%
+%   $Sy=y_{bsb} = Sm + S\epsilon$,        $\epsilon \sim N(0, \sigma_\epsilon^2 I_{nbsb})$;
+%   $D m = u$,                 $u   \sim N(0, \sigma^2_\epsilon (1/\lambda) I_T)$.
 %
 %   HP ratio: $\lambda=\sigma^2_\epsilon/\sigma^2_u$,
-%             the greater, the smoother is the trend.
+%             the greater $\lambda$, the smoother is the trend.
 %
+%   $D$ is the Second-difference matrix of size (T-2 x T): 
+%       each row has [1 -2 1].
+%   $S$ is the selection matrix of size nbsb x T. Note that $SS'=I_{nbsb}$.  
 %
-% Conditioning on observed subset y_bsb = S y,
-% using W = S'S (diag 0/1).
+%   Conditioning on observed subset y_bsb = S y,
+%   using W = S'S (diag 0/1).
 %
 % Posterior mean:
 %   mhat = $\hat m= E(m|y_{bsb})=argmin_m ||S(y-m)||^2 + \lambda ||D m||^2$
@@ -128,7 +134,7 @@ function out = hpfilterFS(y, varargin)
 %               the screen. This plot is tagged forecastTS.
 %               The confidence bands which are shown depend on the input option
 %               predint.
-%               The default value of plot is 0, that is no plot is shown on
+%               The default value of plot is false, that is no plot is shown on
 %               the screen.
 %               Example - 'plots',true;
 %               Data Types - logical.
@@ -256,14 +262,14 @@ end
 conflev = 0.99;
 s=4;
 bsb=[];
-plots=true;
+plots=false;
 lambda=1600;
 ig_a0=[];
 ig_b0=[];
 
 % Method to use to estimate the residual variance
 sigma2_eps="MLaug";
-predint='';
+predint=[];
 
 if nargin > 1
 
@@ -332,14 +338,22 @@ else
 end
 nbsb=length(bsb);
 
-% Selection via diagonal weights: W = S'S (n x n), with 1 on observed entries
+% Selection via diagonal weights: W = S'S (n x n), with 1 on observed
+% entries
 w = zeros(T,1);
 w(bsb) = 1;
 W = spdiags(w, 0, T, T);   % sparse diagonal
 
-% Second-difference matrix D (n-2 x n): each row has [1 -2 1]
+% Second-difference matrix D (T-2 x T): each row has [1 -2 1]
 e = ones(T,1);
 D = spdiags([e -2*e e], 0:2, T-2, T);
+
+% % Build P = D'*D as 5-diagonal sparse matrix (T x T)
+% d0 = [1; 5; repmat(6,T-4,1); 5; 1];
+% d1b = [-2; repmat(-4,T-3,1); -2; 0];
+% d1a = [-2; -2; repmat(-4,T-3,1);-2];
+% d2 = e;
+% DtD = spdiags([d2 d1b d0 d1a d2], [-2 -1 0 1 2], T, T);
 
 % Solve for posterior mean of trend:
 A = W + lambda*(D'*D);
@@ -352,7 +366,7 @@ m_hat = Aready \ b;
 % Compute RSS ||y_bsb - S m_hat||^2
 r_obs = y(bsb) - m_hat(bsb);
 RSS = full(r_obs' * r_obs);
-% Compute Qhat =  + lambda ||D m_hat||^2
+% Compute Qhat =  RSS + lambda ||D m_hat||^2
 Qhat = RSS + lambda * full((D*m_hat)'*(D*m_hat));
 
 % Estimate of sigma^2 (fixed lambda)
@@ -418,20 +432,21 @@ end
 % Then var_m(idxMiss(j)) = X(idxMiss(j), j)
 
 if ~isempty(predint)
-    if predint=="all"
-        idxMiss=seq;
-    elseif predint=="nobsb"
-        % Forecasts for excluded indices:
-        idxMiss=setdiff(seq,bsb) ;
-    else
-        % predint must be equal to all or to nobsb
-        % otherwise produce an error
-        error('FSDA:hpfilterFS:InvalidInput', 'predint must be "all" or "nobsb"');
+    switch predint
+        case "all"
+            idxMiss=seq;
+        case "nobsb"
+            % Forecasts for excluded indices:
+            idxMiss=setdiff(seq,bsb) ;
+        otherwise
+            % predint must be equal to all or to nobsb
+            % otherwise produce an error
+            error('FSDA:hpfilterFS:InvalidInput', 'predint must be "all" or "nobsb" or []');
     end
 
 
     blockSize=1000;
-    var_m = diag_inv_sparse_block(A, blockSize,idxMiss);
+    var_m = diag_inv_sparse_block(Aready, blockSize,idxMiss);
 
     % kMiss=length(idxMiss);
     %
@@ -450,7 +465,7 @@ if ~isempty(predint)
 
     % Predictive variance adds observation noise variance
     predVar=NaN(T,1);
-    predVar(idxMiss) = var_m + sigma2_eps;
+    predVar(idxMiss) = var_m+ sigma2_eps;
 
     % z-quantile
     z = norminv((1+conflev)/2);
@@ -610,7 +625,7 @@ if nargin < 2 || isempty(blockSize)
     blockSize = 200;
 end
 
-n = size(A,1);
+n = A.MatrixSize(1);
 
 if nargin < 3 || isempty(idx)
     idx = (1:n)';
@@ -620,9 +635,6 @@ end
 
 k = length(idx);
 d = zeros(k,1);
-
-% One sparse Cholesky factorization
-Aready = decomposition(A, 'chol');
 
 % Process in blocks
 for startIdx = 1:blockSize:k
@@ -635,7 +647,7 @@ for startIdx = 1:blockSize:k
     E = sparse(I, 1:nb, 1, n, nb);
 
     % Solve A X = E_I
-    X = Aready \ E;
+    X = A \ E;
 
     % Extract diagonal elements (A^{-1})_{ii}
     % For each column j, diagonal entry is X(I(j), j)
