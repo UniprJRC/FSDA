@@ -233,7 +233,7 @@ function out = hpfilterFS(y, varargin)
     y = simulate(Mdl,n); 
     bsb = (1:round(n*0.9))';      
     % Prediction interval on all the observations (included and excluded)
-    out = hpfilterFS(y,'bsb',bsb,'predint','all'); 
+    out = hpfilterFS(y,'bsb',bsb,'predint','all','plots',true); 
 %}
 
 %{

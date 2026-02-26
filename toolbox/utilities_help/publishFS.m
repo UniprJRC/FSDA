@@ -3497,7 +3497,6 @@ if evalCode==true
             drawnow;
             AbsoluteFilename = fullfile(outputDir,'out_pretty.xml');
             import matlab.io.xml.transform.*
-            % import matlab.io.xml.dom.*
             tr = Transformer();
             writer = matlab.io.xml.dom.DOMWriter;
             % writer.Configuration.FormatPrettyPrint = true;   % indent + newlines
@@ -3656,7 +3655,7 @@ if evalCode==true
                 ij=ij+1;
 
                 % outstring(finout:finout+11)
-                % inclplint = point where output of the example must be included
+                % inclpoint = point where output of the example must be included
                 inclpoint=finout(1)+18;
                 % incl= string which contains the output of the code
                 incl=texttoadd{i+numexToExec};
