@@ -3447,7 +3447,8 @@ if evalCode==true
         filetmp=fopen(fullPathToScript,'w');
         addpath([outputDir fsep 'tmp'])
         % addpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
-        addpath([pathFSDAstr fsep 'utilities' fsep 'privateFS'])
+        path2privateFS=[pathFSDAstr fsep 'utilities' fsep 'privateFS'];
+        addpath(path2privateFS)
 
         %        addpath([pathstr fileseparator '\helpfiles\FSDA\tmp'])
         %        addpath([pathstr '\utilities\privateFS'])
@@ -3463,35 +3464,51 @@ if evalCode==true
         options = supplyDefaultOptions(options);
         options.codeToEvaluate=[name 'tmp'];
         options.createThumbnail=0;
-        [dom,cellBoundaries] = m2mxdom(ExToExec);
         prefix=name;
 
+        if verLessThanFS([26,1])
+            [dom,cellBoundaries] = m2mxdom(ExToExec);
+            [dom,laste] = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
+            
+            drawnow;
 
-        % file='C:\Users\MarcoAW\D\matlab\FSDA\examples\tmp.m';
-        [dom,laste] = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
-        %
-        drawnow;
+            ext='html';
+            AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
+            [xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
 
-        ext='html';
-        AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
-        [xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
-        drawnow;
+            drawnow;
 
-        % Now remove the temporary .m file with the examples which had been created
-        delete(fullPathToScript)
+            % load html output in a string and extract the parts which are required
+            if ismac || isunix
+                fileHTML = fopen(xResultURI(6:end), 'r+');
+            elseif ispc
+                fileHTML = fopen(xResultURI(7:end), 'r+');
+            else
+                fileHTML = fopen(xResultURI(6:end), 'r+');
+                disp('Cannot recognize platform: I use unix as default')
+            end
 
-        % load html output in a string and extract the parts which are required
-        if ismac || isunix
-            fileHTML = fopen(xResultURI(6:end), 'r+');
-        elseif ispc
-            fileHTML = fopen(xResultURI(7:end), 'r+');
+            % Insert the file into fstring
+            fstringHTML=fscanf(fileHTML,'%c');
+
         else
-            fileHTML = fopen(xResultURI(6:end), 'r+');
-            disp('Cannot recognize platform: I use unix as default')
+            [dom,cellBoundaries] = m2mxdomNEW(ExToExec);
+            [dom,laste] = evalmxdomNEW(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
+            drawnow;
+            AbsoluteFilename = fullfile(outputDir,'out_pretty.xml');
+            import matlab.io.xml.transform.*
+            % import matlab.io.xml.dom.*
+            tr = Transformer();
+            writer = matlab.io.xml.dom.DOMWriter;
+            % writer.Configuration.FormatPrettyPrint = true;   % indent + newlines
+            writeToFile(writer, dom, "out_pretty.xml");
+            filexsl=[path2privateFS filesep 'mxdom2simplehtml.xsl'];
+            fstringHTML=char(transformToString(tr, AbsoluteFilename, filexsl));
         end
 
-        % Insert the file into fstring
-        fstringHTML=fscanf(fileHTML,'%c');
+          % Now remove the temporary .m file with the examples which had been created
+            delete(fullPathToScript)
+
 
         totex=numexToExec+numextraexToExec;
         texttoadd=cell(totex,1);

@@ -37,7 +37,7 @@ n = 150;
 y = simulate(Mdl,n); 
 bsb = (1:round(n*0.9))';      
 % Prediction interval on all the observations (included and excluded)
-out = hpfilterFS(y,'bsb',bsb,'predint','all');</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Check equality with output of function hpfilter.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load Data_SchwertStock
+out = hpfilterFS(y,'bsb',bsb,'predint','all');</pre></div></div><a href='http://rosa.unipr.it/fsda/hpfilterFS.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\addt_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Check equality with output of function hpfilter.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load Data_SchwertStock
 TTM = rmmissing(DataTimeTableMth);
 % Aggregate the monthly data in the timetable to quarterly measurements.
 TTQ = convert2quarterly(TTM);
