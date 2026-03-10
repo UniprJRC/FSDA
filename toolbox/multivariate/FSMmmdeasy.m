@@ -5,7 +5,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. Matrix. 
+% Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -22,10 +22,10 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Optional input arguments:
 %
-% init :       Point where to start monitoring required diagnostics. Scalar. 
+% init :       Point where to start monitoring required diagnostics. Scalar.
 %              Note that if bsb is supplied, init>=length(bsb). If init is not
 %              specified it will be set equal to floor(n*0.6).
-%                 Example - 'init',50 
+%                 Example - 'init',50
 %                 Data Types - double
 %
 % plots :     It specify whether it is necessary to produce the plots of minimum Mahalanobis
@@ -33,14 +33,14 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %               the units not belonging to the subset is produced on the
 %               screen with 1% 50% and 99% confidence bands
 %               else (default) no plot is produced.
-%                 Example - 'plots',0 
+%                 Example - 'plots',0
 %                 Data Types - double
 %
 %  msg  :     It controls whether to display or not messages
 %               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen.
-%                 Example - 'msg',0 
+%                 Example - 'msg',0
 %                 Data Types - double
 %
 % Remark:       The user should only give the input arguments that have to
@@ -172,7 +172,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %}
 
 
-%% Beginning of code 
+%% Beginning of code
 
 
 [n,v]=size(Y);
@@ -186,7 +186,7 @@ hdef=floor(n*0.6);
 options=struct('init',hdef,'plots',0,'msg',1);
 
 if nargin<2
-        error('FSDA:FSMmmdeasy:missingInputs','Initial subset is missing')
+    error('FSDA:FSMmmdeasy:missingInputs','Initial subset is missing')
 end
 
 [varargin{:}] = convertStringsToChars(varargin{:});
@@ -277,36 +277,36 @@ if (rank(Y(bsb,:))<v)
     varargout={NaN};
     % FS loop will not be performed
 else
-    
+
     for mm = ini0:n
         % select subset
         Yb=Y(bsb,:);
-        
+
         if (mm>=init1) && nargout==3
             BB(bsb,mm-init1+1)=bsb;
         end
-        
+
         % Find vector of means inside subset
         % Note that ym is a row vector
         ym=mean(Yb);
-        
+
         % Squared Mahalanobis distances computed using QR decomposition
         % Ym=Y-one*ym;
         Ym = bsxfun(@minus,Y, ym);
-        
+
         [~,R]=qr(Ym(bsb,:),0);
-        
-        
+
+
         % Remark: u=(Ym/R)' should be much faster than u=inv(R')*Ym';
         u=(Ym/R)';
         % Compute square Mahalanobis distances
         mala(:,2)=((mm-1)*sum(u.^2,1))';
-        
+
         zs= sortrows(mala,2);
-        
+
         if mm<n
             % eval('mm');
-            
+
             if (mm>=init1)
                 ncl=setdiff(seq,bsb);
                 sncl=sortrows(mala(ncl,2));
@@ -314,16 +314,16 @@ else
                 % the units which form the group of potential outliers
                 mmd(mm-init1+1,2)=sqrt(sncl(1));
             end
-            
-            
+
+
             % store units forming old subset in vector oldbsb
             oldbsb=bsb;
-            
+
             % the dimension of subset increases by one unit.
             % vector bsb contains the indexes corresponding to the units of
             % the new subset
             bsb=zs(1:mm+1,1);
-            
+
             if (mm>=init1)
                 unit=setdiff(bsb,oldbsb);
                 if (length(unit)<=10)
@@ -338,11 +338,11 @@ else
             end
         else
         end
-        
+
         if nargout==3
             varargout={BB};
         end
-        
+
         % Plot minimum Mahalanobis distance with 1%, 50% and 99% envelopes
         if options.plots==1
             quant=[0.01;0.5;0.99];
@@ -350,7 +350,7 @@ else
             % the observations for the above quantiles.
             [gmin] = FSMenvmmd(n,v,'prob',quant,'init',init1);
             plot(mmd(:,1),mmd(:,2));
-            
+
             % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
             lwdenv=2;
             % Superimpose 50% envelope
@@ -358,11 +358,11 @@ else
             % Superimpose 1% and 99% envelope
             line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
             line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-            
+
             xlabel('Subset size m');
             ylabel('Monitoring of minimum Mahalanobis distance');
         end
-        
+
     end
 end
 
