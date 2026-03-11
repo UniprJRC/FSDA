@@ -103,9 +103,12 @@ if n>=300 && p<=5
     for i = 1:size(patt,1)
         % Select all rows of matrix X which have missing patter
         patti=patt(i,:);
+
         seli=all(isnanX==patti,2);
         pattiNot=~patti;
         Y_i = Y(seli,pattiNot);
+
+        pobs(seli)=p-sum(patti);
 
         % Extract observed parts of x, mu, and Sigma
         mu_obs = mu(pattiNot);          % p1 x 1
