@@ -5,7 +5,7 @@ function out = NAem(Y, varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. Matrix. n x p data matrix; n observations and v
+% Y :           Input data. Matrix. n x p data matrix; n observations and p
 %               variables possibly with missing values (NaN's). Rows of Y
 %               represent observations, and columns represent variables.
 %               Data Types - single | double
@@ -45,8 +45,8 @@ function out = NAem(Y, varargin)
 %
 %
 %         out:   structure which contains the following fields
-%              out.mus = final estimates of means
-%              out.sigs = final estimate of cov matrix
+%              out.loc = final estimates of means
+%              out.cov = final estimate of cov matrix
 %              out.iter = number of iterations to convergence.
 %              out.Yimp = empty value of matrix Y with imputed values
 %                   (depending on input option imputation)
@@ -100,7 +100,7 @@ function out = NAem(Y, varargin)
 %{
     %% Example of use of option imputation.
     p = 5;                % number of variables
-    n = 1000;             % number of observations
+    n = 10;             % number of observations
     rho = 0.9;            % target pairwise correlation (0<rho<1)
     
     % Covariance matrix (unit variances)
@@ -216,8 +216,8 @@ else
 end
 
 out=struct;
-out.mus = mus;
-out.sigs = sigs;
+out.loc = mus;
+out.cov = sigs;
 out.iter = iter;
 out.Yimp=Yimp;
 

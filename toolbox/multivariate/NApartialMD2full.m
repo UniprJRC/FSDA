@@ -32,14 +32,14 @@ function d2_adj = NApartialMD2full(d2, p, pobs, varargin)
 %            For example if typeresc=1,
 %            d2_adj(i) = chi2inv( chi2cdf(d2(i), poss(i)), p );
 %            for i=1, 2, ..., n.
-%           Notet that iIf poss(i) is 0 or d2(i) is NaN, result is NaN.
+%           Notet that if poss(i) is 0 or d2(i) is NaN, result is NaN.
 %
 %
 % Copyright 2008-2026.
 % Written by FSDA team
 %
 %
-% See also NApartialMD.m, NAem.m, NAimputeConditionalmean
+% See also: NApartialMD.m, NAem.m, NAimputeConditionalmean
 %
 %
 % References:

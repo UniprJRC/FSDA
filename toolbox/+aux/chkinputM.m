@@ -1,4 +1,4 @@
-function [X,n,p] = chkinputM(X, nnargin, vvarargin)
+function [X,n,p,hasMiss] = chkinputM(X, nnargin, vvarargin)
 %chkinputM makes some input parameters and user options checking in multivariate analysis
 %
 % Required input arguments:
@@ -29,6 +29,8 @@ function [X,n,p] = chkinputM(X, nnargin, vvarargin)
 %               rows after listwise exclusion.
 % p:            Number of columns of X (variables). Scalar.
 %               Number of variable in the input data matrix.
+% 
+% hasMiss  :    Booleann which is true if missing values are present
 %
 % See also
 %
@@ -76,7 +78,7 @@ else
     chkchk='';
 end
 
-% If nocheck=1, then skip checks on y and X
+% If nocheck=1, then skip checks on Y
 if ~isempty(chkchk) && vvarargin{2*chkchk}==1
     [n,p]=size(X);
 else
@@ -93,9 +95,14 @@ else
     % Check dimension consistency of X and y
     na.X=~isfinite(X*ones(size(X,2),1));
     
+    if any(na.X)
+        hasMiss=true;
+    else
+        hasMiss=false;
+    end    
     % Observations with missing or infinite values are removed from X and y
     ok=~(na.X);
-    X=X(ok,:);
+    % X=X(ok,:);
     % Now n is the new number of non missing observations
     n=length(X);
     % constcols = scalar vector of the indices of possible constant columns.
@@ -117,7 +124,7 @@ else
             int2str(size(X,1)) ' and p=' int2str(size(X,2)) ]);
     end
     
-    rk = rank(X);
+    rk = rank(X(ok,:));
     if rk < p
         error('FSDA:chkinputM:NoFullRank','Matrix X is singular');
     end

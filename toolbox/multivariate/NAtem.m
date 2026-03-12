@@ -77,8 +77,8 @@ function out = NAtem(Y, varargin)
 %
 %
 %         out:   structure which contains the following fields
-%              out.mus = final estimates of means
-%              out.sigs = final estimate of cov matrix
+%              out.loc = final estimates of means
+%              out.cov = final estimate of cov matrix
 %              out.iter = number of iterations to convergence.
 %              out.Yimp = empty value of matrix Y with imputed values
 %                   (depending on input option imputation)
@@ -214,8 +214,8 @@ else
 end
 
 
-out.mus = mus;
-out.sigs = sigs;
+out.loc = mus;
+out.cov = sigs;
 out.iter = iter;
 out.Yimp=Yimp;
 
