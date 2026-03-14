@@ -1,8 +1,8 @@
-function out = NAtem(Y, varargin)
-% NAtem  EM algorithm with trimming (TEM) for data with missing values.
+function out = mdTEM(Y, varargin)
+% mdTEM  EM algorithm with trimming (TEM) for data with missing values.
 %
 %
-%<a href="matlab: docsearchFS('NAtem')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdTEM')">Link to the help function</a>
 %
 % The algorithm:
 %  - At each iteration compute adjusted partial Mahalanobis distances
@@ -83,7 +83,8 @@ function out = NAtem(Y, varargin)
 %              out.Yimp = empty value of matrix Y with imputed values
 %                   (depending on input option imputation)
 %
-% See also: NAem, NAimputeConditionalmean.m, NApartialMD.m, NApartialMD2full
+%  
+% See also: mdEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
 %
 % References:
 %
@@ -91,7 +92,7 @@ function out = NAtem(Y, varargin)
 % Missing Data (3rd ed.). Hoboken, NJ: John Wiley & Sons.
 % van Buuren, S. (2018). Flexible Imputation of Missing Data (2nd ed.).
 % Boca Raton, FL: Chapman & Hall/CRC (Taylor & Francis Group).
-% Templ, M. (2025). Visualization and Imputation of Missing Values: With
+% Templ, M. (2023). Visualization and Imputation of Missing Values: With
 % Applications in R. Cham, Switzerland: Springer Nature. 
 % 
 %
@@ -100,7 +101,7 @@ function out = NAtem(Y, varargin)
 %
 %
 %
-%<a href="matlab: docsearchFS('NAtem')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mdTEM')">Link to the help page for this function</a>
 % 
 %$LastChangedDate::                      $: Date of the last commit
 

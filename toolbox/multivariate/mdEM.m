@@ -1,7 +1,7 @@
-function out = NAem(Y, varargin)
-% NAem  EM algorithm for data with missing values (no trimming).
+function out = mdEM(Y, varargin)
+% mdEM  EM algorithm for data with missing values (no trimming).
 %
-%<a href="matlab: docsearchFS('NAem')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdEM')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -51,7 +51,8 @@ function out = NAem(Y, varargin)
 %              out.Yimp = empty value of matrix Y with imputed values
 %                   (depending on input option imputation)
 %
-% See also: NAtem, NAimputeConditionalmean.m, NApartialMD.m, NApartialMD2full
+%  
+% See also: mdTEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
 %
 % References:
 %
@@ -59,7 +60,7 @@ function out = NAem(Y, varargin)
 % Missing Data (3rd ed.). Hoboken, NJ: John Wiley & Sons.
 % van Buuren, S. (2018). Flexible Imputation of Missing Data (2nd ed.).
 % Boca Raton, FL: Chapman & Hall/CRC (Taylor & Francis Group).
-% Templ, M. (2025). Visualization and Imputation of Missing Values: With
+% Templ, M. (2023). Visualization and Imputation of Missing Values: With
 % Applications in R. Cham, Switzerland: Springer Nature. 
 % 
 %
@@ -68,7 +69,7 @@ function out = NAem(Y, varargin)
 %
 %
 %
-%<a href="matlab: docsearchFS('NAem')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mdEM')">Link to the help page for this function</a>
 %edit 
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -90,7 +91,7 @@ function out = NAem(Y, varargin)
     missMask = rand(n,p) < missRate;
     Y=Yfull;
     Y(missMask) = NaN;
-    out=NAem(Y);
+    out=mdEM(Y);
     % Show true means and inputed means
     scatter(out.mus,muTrue)
     xlabel('Imputed means')
@@ -113,7 +114,7 @@ function out = NAem(Y, varargin)
     Y=Yfull;
     Y(missMask) = NaN;
     
-    out=NAem(Y,'imputation',true);
+    out=mdEM(Y,'imputation',true);
     % Mahalanobis distances using original matrix
     d2Ori=mahalFS(Yfull,mean(Yfull),cov(Yfull));
     % Calculate the Mahalanobis distance for the imputed data

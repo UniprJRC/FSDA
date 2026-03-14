@@ -1,7 +1,7 @@
-function d2_adj = NApartialMD2full(d2, p, pobs, varargin)
-% NApartialMD2full  rescale partial squared distances to full-dimension.
+function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
+% mdPartialMD2full  rescale partial squared distances to full-dimension.
 %
-%<a href="matlab: docsearchFS('NApartialMD2full')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdPartialMD2full')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -16,12 +16,12 @@ function d2_adj = NApartialMD2full(d2, p, pobs, varargin)
 %
 %  Optional input arguments:
 %
-%  typeresc : method to rescale. Positive integer.
+%  typeAdj : method to rescale. Positive integer.
 %             Method which must be used to rescale the variables.
-%             typeresc=1 use of asymptotic Chi2 distribution.
-%             typeresc=2 use of exact Beta distribution.
-%             typeresc=3 use of expectation correction
-%             typeresc=4 use of standardization correction.
+%             typeAdj=1 use of asymptotic Chi2 distribution.
+%             typeAdj=2 use of exact Beta distribution.
+%             typeAdj=3 use of expectation correction
+%             typeAdj=4 use of standardization correction.
 %                 Example - 'typeresc',1
 %                 Data Types - positive integer
 %
@@ -39,7 +39,7 @@ function d2_adj = NApartialMD2full(d2, p, pobs, varargin)
 % Written by FSDA team
 %
 %
-% See also: NApartialMD.m, NAem.m, NAimputeConditionalmean
+% See also: mdPartialMD.m, mdEM.m, mdImputeCondMean
 %
 %
 % References:
@@ -48,7 +48,7 @@ function d2_adj = NApartialMD2full(d2, p, pobs, varargin)
 % Missing Data (3rd ed.). Hoboken, NJ: John Wiley & Sons.
 % van Buuren, S. (2018). Flexible Imputation of Missing Data (2nd ed.).
 % Boca Raton, FL: Chapman & Hall/CRC (Taylor & Francis Group).
-% Templ, M. (2025). Visualization and Imputation of Missing Values: With
+% Templ, M. (2023). Visualization and Imputation of Missing Values: With
 % Applications in R. Cham, Switzerland: Springer Nature.
 %
 %
@@ -57,7 +57,7 @@ function d2_adj = NApartialMD2full(d2, p, pobs, varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('NApartialMD2full')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdPartialMD2full')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -81,7 +81,7 @@ function d2_adj = NApartialMD2full(d2, p, pobs, varargin)
     Y=Yfull;
     Y(missMask) = NaN;
     [d2partial,pobs]=NApartialMD(Y,mu,Sigma);
-    d2_adj=NApartialMD2full(d2partial,p,pobs);
+    d2_adj=mdPartialMD2full(d2partial,p,pobs);
 %}
 
 %% Beginning of code
@@ -98,7 +98,7 @@ if nargin>3
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:NApartialMD2full:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:mdPartialMD2full:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         aux.chkoptions(options,UserOptions)

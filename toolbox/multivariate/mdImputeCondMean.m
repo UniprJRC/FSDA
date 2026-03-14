@@ -1,7 +1,7 @@
-function Yimp = NAimputeConditionalmean(Y, mu, Sigma)
+function Yimp = mdImputeCondMean(Y, mu, Sigma)
 % Replace NaNs in Y by E[y_mis | y_obs, mu, Sigma] under MVN(mu,Sigma)
 %
-%<a href="matlab: docsearchFS('NAimputeConditionalmean')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdImputeCondMean')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -21,7 +21,7 @@ function Yimp = NAimputeConditionalmean(Y, mu, Sigma)
 %    Yimp :   matrix with imputed values. Matrix of size nxv. Matrix Yinp
 %            does not contain missing values.
 %
-% See also: NAem
+% See also: mdEM
 %
 %
 % References:
@@ -30,7 +30,7 @@ function Yimp = NAimputeConditionalmean(Y, mu, Sigma)
 % Missing Data (3rd ed.). Hoboken, NJ: John Wiley & Sons.
 % van Buuren, S. (2018). Flexible Imputation of Missing Data (2nd ed.).
 % Boca Raton, FL: Chapman & Hall/CRC (Taylor & Francis Group).
-% Templ, M. (2025). Visualization and Imputation of Missing Values: With
+% Templ, M. (2023). Visualization and Imputation of Missing Values: With
 % Applications in R. Cham, Switzerland: Springer Nature. 
 % 
 %
@@ -38,7 +38,7 @@ function Yimp = NAimputeConditionalmean(Y, mu, Sigma)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('NAimputeConditionalmean')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdImputeCondMean')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -54,7 +54,7 @@ function Yimp = NAimputeConditionalmean(Y, mu, Sigma)
     Sigma=eye(p);
     Y=Yfull;
     Y(randsample(n*p,10,false))=NaN;
-    Yinp=NAimputeConditionalmean(Y,MU,Sigma);
+    Yinp=mdImputeCondMean(Y,MU,Sigma);
 %}
 
 %% Beginning of code

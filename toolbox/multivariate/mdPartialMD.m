@@ -1,8 +1,8 @@
-function [d2, pobs] = NApartialMD(Y, mu, Sigma)
-% NApartialMD computes squared Mahalanobis distances using only observed entries.
+function [d2, pobs] = mdPartialMD(Y, mu, Sigma)
+% mdPartialMD computes squared Mahalanobis distances using only observed entries.
 %
 %
-%<a href="matlab: docsearchFS('NApartialMD')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdPartialMD')">Link to the help function</a>
 %
 % The function computes for each row i the (squared) Mahalanobis distance:
 %   d2(i) = (x_obs - mu_obs)' * inv(Sigma_obs_obs) * (x_obs - mu_obs)
@@ -31,7 +31,7 @@ function [d2, pobs] = NApartialMD(Y, mu, Sigma)
 %           poss(i)=0.
 %
 %
-% See also: NAem.m, NAimputeConditionalmean.m, NApartialMD2full
+% See also: mdEM, mdTEM.m, mdImputeCondMean.m, mdPartialMD2full
 %
 %
 % References:
@@ -40,14 +40,14 @@ function [d2, pobs] = NApartialMD(Y, mu, Sigma)
 % Missing Data (3rd ed.). Hoboken, NJ: John Wiley & Sons.
 % van Buuren, S. (2018). Flexible Imputation of Missing Data (2nd ed.).
 % Boca Raton, FL: Chapman & Hall/CRC (Taylor & Francis Group).
-% Templ, M. (2025). Visualization and Imputation of Missing Values: With
+% Templ, M. (2023). Visualization and Imputation of Missing Values: With
 % Applications in R. Cham, Switzerland: Springer Nature. 
 %
 %
 % Copyright 2008-2026.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('NApartialMD')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mdPartialMD')">Link to the help page for this function</a>
 %
 
 %{
@@ -66,7 +66,7 @@ function [d2, pobs] = NApartialMD(Y, mu, Sigma)
     S=cov(Yfull);
     Y=Yfull;
     Y(missMask) = NaN;
-    d2fast=NApartialMD(Y,mu,Sigma);
+    d2fast=mdPartialMD(Y,mu,Sigma);
 %}
 
 %{
@@ -85,7 +85,7 @@ function [d2, pobs] = NApartialMD(Y, mu, Sigma)
     S=cov(Yfull);
     Y=Yfull;
     Y(missMask) = NaN;
-    [d2fast,pobs]=NApartialMD(Y,mu,Sigma);
+    [d2fast,pobs]=mdPartialMD(Y,mu,Sigma);
 %}
 
 %% Beginning of code
