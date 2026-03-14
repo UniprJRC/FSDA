@@ -72,7 +72,6 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
     Sigma = (1-rho)*eye(p) + rho*ones(p);
     R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
     missRate = 0.01;     % MCAR missing probability per entry
-    
     % Generate samples ~ N(0,Sigma)
     Yfull = randn(n,p) * R;   % Strong positive correlation between the vars
     missMask = rand(n,p) < missRate;
@@ -80,7 +79,7 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
     S=cov(Yfull);
     Y=Yfull;
     Y(missMask) = NaN;
-    [d2partial,pobs]=NApartialMD(Y,mu,Sigma);
+    [d2partial,pobs]=mdPartialMD(Y,mu,Sigma);
     d2_adj=mdPartialMD2full(d2partial,p,pobs);
 %}
 

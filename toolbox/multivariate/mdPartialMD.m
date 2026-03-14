@@ -52,13 +52,17 @@ function [d2, pobs] = mdPartialMD(Y, mu, Sigma)
 
 %{
     % Example with just one output argument.
-    p = 5;                % number of variables
-    n = 100;             % number of observations
-    rho = 0.9;            % target pairwise correlation (0<rho<1)
+    % number of variables
+    p = 5;                
+    % number of observations
+    n = 100;             
+    % target pairwise correlation (0<rho<1)
+    rho = 0.9;            
     Sigma = (1-rho)*eye(p) + rho*ones(p);
-    R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
-    missRate = 0.01;     % MCAR missing probability per entry
-    
+    % upper-triangular such that Sigma = R'*R
+    R = chol(Sigma);      
+    % MCAR missing probability per entry
+    missRate = 0.01;     
     % Generate samples ~ N(0,Sigma)
     Yfull = randn(n,p) * R;   % Strong positive correlation between the vars
     missMask = rand(n,p) < missRate;
@@ -71,15 +75,20 @@ function [d2, pobs] = mdPartialMD(Y, mu, Sigma)
 
 %{
     % Example with two output arguments.
-    p = 5;                % number of variables
-    n = 100;             % number of observations
-    rho = 0.9;            % target pairwise correlation (0<rho<1)
+    % number of variables
+    p = 5;                
+    % number of observations
+    n = 100;             
+    % target pairwise correlation (0<rho<1)
+    rho = 0.9;            
     Sigma = (1-rho)*eye(p) + rho*ones(p);
-    R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
-    missRate = 0.01;     % MCAR missing probability per entry
-    
+    % upper-triangular such that Sigma = R'*R
+    R = chol(Sigma);      
+    % MCAR missing probability per entry
+    missRate = 0.01;     
     % Generate samples ~ N(0,Sigma)
-    Yfull = randn(n,p) * R;   % Strong positive correlation between the vars
+    % Strong positive correlation between the vars
+    Yfull = randn(n,p) * R;  
     missMask = rand(n,p) < missRate;
     mu=mean(Yfull)';
     S=cov(Yfull);

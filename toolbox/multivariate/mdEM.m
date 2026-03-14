@@ -76,7 +76,7 @@ function out = mdEM(Y, varargin)
 % Examples:
 
 %{
-    % Call to emNA with all the default options.
+    % Call to mdEM with all the default options.
     % True model (choose something correlated)
     p=5; n=200;
     A = randn(p);
@@ -93,7 +93,7 @@ function out = mdEM(Y, varargin)
     Y(missMask) = NaN;
     out=mdEM(Y);
     % Show true means and inputed means
-    scatter(out.mus,muTrue)
+    scatter(out.loc,muTrue)
     xlabel('Imputed means')
     ylabel('True means')
 %}
@@ -147,7 +147,7 @@ if nargin>1
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:emNA:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:mdEM:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         aux.chkoptions(options,UserOptions)
@@ -211,7 +211,7 @@ end
 
 %% EM single imputation of missing values (conditional means)
 if imputation ==true
-    Yimp = NAimputeConditionalmean(Y, mus, sigs);
+    Yimp = mdImputeCondMean(Y, mus, sigs);
 else
     Yimp=[];
 end
