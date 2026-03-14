@@ -126,7 +126,7 @@ if nargin>1
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:emNA:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:mdTEM:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         aux.chkoptions(options,UserOptions)
@@ -169,8 +169,8 @@ while (dif > tol) && (iter < maxiter)
     sigs_old = sigs;
 
     % Trimming step: compute adjusted partial Mahalanobis distances
-    [d2, poss] = NApartialMD(Y, mus, sigs);
-    d2_adj = NApartialMD2full(d2, p, poss,'typeAdj',typeAdj);
+    [d2, poss] = mdPartialMD(Y, mus, sigs);
+    d2_adj = mdPartialMD2full(d2, p, poss,'typeAdj',typeAdj);
 
     % rank and select the smallest n*(1-alpha)
     % We treat NaN distances as large (so they're trimmed)
@@ -209,7 +209,7 @@ end
 
 %% EM single imputation of missing values (conditional means)
 if imputation ==true
-    Yimp = NAimputeConditionalmean(Y, mus, sigs);
+    Yimp = mdImputeCondMean(Y, mus, sigs);
 else
     Yimp=[];
 end

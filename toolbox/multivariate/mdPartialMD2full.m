@@ -22,14 +22,14 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
 %             typeAdj=2 use of exact Beta distribution.
 %             typeAdj=3 use of expectation correction
 %             typeAdj=4 use of standardization correction.
-%                 Example - 'typeresc',1
+%                 Example - 'typeAdj',1
 %                 Data Types - positive integer
 %
 %  Output:
 %
 %   d2_adj : column vector of length n, where each element is the adjusted
 %            squared distance:
-%            For example if typeresc=1,
+%            For example if typeAdj=1,
 %            d2_adj(i) = chi2inv( chi2cdf(d2(i), poss(i)), p );
 %            for i=1, 2, ..., n.
 %           Notet that if poss(i) is 0 or d2(i) is NaN, result is NaN.
@@ -66,8 +66,11 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
 
 %{
     % Using beta rescaling.
-    p = 5;                % number of variables
-    n = 100;             % number of observations
+    % Prepare input data with missing values.
+    % number of variables
+    p = 5;                
+    % number of observations
+    n = 100;             
     rho = 0.9;            % target pairwise correlation (0<rho<1)
     Sigma = (1-rho)*eye(p) + rho*ones(p);
     R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
@@ -81,6 +84,29 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
     Y(missMask) = NaN;
     [d2partial,pobs]=mdPartialMD(Y,mu,Sigma);
     d2_adj=mdPartialMD2full(d2partial,p,pobs);
+%}
+
+%{
+    % Use of input option typeAdj.
+    % Prepare input data with missing values.
+    % number of variables
+    p = 5;                
+    % number of observations
+    n = 100;             
+    rho = 0.9;            % target pairwise correlation (0<rho<1)
+    Sigma = (1-rho)*eye(p) + rho*ones(p);
+    R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
+    missRate = 0.01;     % MCAR missing probability per entry
+    % Generate samples ~ N(0,Sigma)
+    Yfull = randn(n,p) * R;   % Strong positive correlation between the vars
+    missMask = rand(n,p) < missRate;
+    mu=mean(Yfull)';
+    S=cov(Yfull);
+    Y=Yfull;
+    Y(missMask) = NaN;
+    [d2partial,pobs]=mdPartialMD(Y,mu,Sigma);
+    % Chi2 rescaling
+    d2_adj=mdPartialMD2full(d2partial,p,pobs,'typeAdj',1);
 %}
 
 %% Beginning of code

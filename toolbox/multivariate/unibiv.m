@@ -8,8 +8,8 @@ function [fre]=unibiv(Y,varargin)
 % Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
-%               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
+%               Missing values (NaN's) are
+%               allowed, since observations (rows) with missing 
 %               values will automatically be excluded from the
 %               computations.
 %                Data Types - single|double
@@ -138,6 +138,9 @@ function [fre]=unibiv(Y,varargin)
 %}
 
 %% Beginning of code
+seqori=(1:size(Y,1))';
+[Y,tf]=rmmissing(Y,1);
+seqTrue=seqori(~tf);
 
 [n,v]=size(Y);
 
@@ -191,7 +194,7 @@ if plo==1
     end
     set(h,'tag',options.tag);
     set(h,'Name', 'Univariate boxplots and robust bivariate confidence ellipses', 'NumberTitle', 'off');
-    hold('all');
+    hold('on');
 end
 
 % bivT contains the frequency distribution of biv. outliers
@@ -494,7 +497,9 @@ for il=1:v      % il is linked to the rows
     
 end % endif of il=1:v
 
-fre=[seq univT bivT MDbiv];
+fre=[seqTrue univT bivT MDbiv];
+
+
 
 if plo==1
     hold('off')

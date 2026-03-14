@@ -100,10 +100,12 @@ function out = mdEM(Y, varargin)
 
 %{
     %% Example of use of option imputation.
-    p = 5;                % number of variables
-    n = 10;             % number of observations
-    rho = 0.9;            % target pairwise correlation (0<rho<1)
-    
+    % number of variables
+    p = 5;                
+    % number of observations
+    n = 100;            
+    % target pairwise correlation (0<rho<1)
+    rho = 0.9;            
     % Covariance matrix (unit variances)
     Sigma = (1-rho)*eye(p) + rho*ones(p);
     R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
@@ -113,13 +115,12 @@ function out = mdEM(Y, varargin)
     missMask = rand(n,p) < missRate;
     Y=Yfull;
     Y(missMask) = NaN;
-    
+    % md with missing imputation
     out=mdEM(Y,'imputation',true);
     % Mahalanobis distances using original matrix
     d2Ori=mahalFS(Yfull,mean(Yfull),cov(Yfull));
     % Calculate the Mahalanobis distance for the imputed data
     d2Imp = mahalFS(out.Yimp, mean(out.Yimp), cov(out.Yimp));
-    
     % Compare original with distances for the imputed data
     % Calculate the differences between original and imputed Mahalanobis distances
     scatter(d2Ori,d2Imp)
