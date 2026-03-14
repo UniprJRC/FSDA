@@ -6,7 +6,7 @@ function fstring=publishFunctionCate(InputCell, varargin)
 % This routine uses as input the cell which is created with routine
 % makecontentsfileFS.m and uses template file function-cateEmpty.html
 % which is contained inside:
-% (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
+% (main root of FSDA) filesep 'toolbox' filesep 'helpfiles' filesep 'FSDA;
 % to create in a fully automatic way the categorical list of
 % functions with automatic links for each category.
 % The output file will be created inside
