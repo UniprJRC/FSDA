@@ -3,7 +3,7 @@ function fstring=publishFunctionCate(InputCell, varargin)
 %
 %<a href="matlab: docsearchFS('publishFunctionCate')">Link to the help function</a>
 %
-% This routins uses as input the cell which is created with routine
+% This routine uses as input the cell which is created with routine
 % makecontentsfileFS.m and uses template file function-cateEmpty.html
 % which is contained inside:
 % (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
@@ -32,7 +32,7 @@ function fstring=publishFunctionCate(InputCell, varargin)
 %             (FSDA root)\helpfiles\FSDAweb.
 %             If webhelp is false (default), the output is produced in the path
 %             (FSDA root)\helpfiles\FSDA.
-%             Note that this option is valid just if outpuDir option below
+%             Note that this option is valid just if outputDir option below
 %             is omitted.
 %             Example - 'webhelp',true
 %             Data Types - logical
@@ -59,7 +59,7 @@ function fstring=publishFunctionCate(InputCell, varargin)
 %
 %       fstring:  string containing list of files in categorical order.
 %                String. This string contains the full HTML files which all
-%                hypertextual links to all HTML files for each category.
+%                hyper textual links to all HTML files for each category.
 %                The HTML file function-cate.html also produced inside
 %                input option "outputDir" folder.
 %
