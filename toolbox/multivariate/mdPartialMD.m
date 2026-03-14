@@ -147,3 +147,5 @@ else
         d2(i) = diff' * y;             % squared Mahalanobis distance
     end
 end
+
+%FScategory:MULT-MissingData

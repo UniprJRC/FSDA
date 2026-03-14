@@ -30,7 +30,7 @@ function out = mdTEM(Y, varargin)
 %                 Example - 'alpha',0.1
 %                 Data Types - single | double
 %
-%       mus     : intial mean. p x 1 vector or empty double.
+%       mus     : initial mean. p x 1 vector or empty double.
 %                 Initial  mean vector. If empty (default), column nanmeans
 %                 are used. 
 %                 Example - 'mus',[]
@@ -67,8 +67,8 @@ function out = mdTEM(Y, varargin)
 %                 Example - 'typeAdj',1
 %                 Data Types - single | double
 %
-%   imputation :  Also give the matrix of inputed values. Boolean.
-%                 if true structure out also contains the matrix of inputed values.
+%   imputation :  Also give the matrix of imputed values. Boolean.
+%                 if true structure out also contains the matrix of imputed values.
 %                 The default value of imputation is false.
 %                 Example - 'imputation',true
 %                 Data Types - logical
@@ -221,3 +221,5 @@ out.iter = iter;
 out.Yimp=Yimp;
 
 end
+
+%FScategory:MULT-MissingData
