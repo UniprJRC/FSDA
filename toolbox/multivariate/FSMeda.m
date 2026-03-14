@@ -254,19 +254,25 @@ function out = FSMeda(Y,bsb,varargin)
 %}
 
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
-Y = aux.chkinputM(Y,nnargin,vvarargin);
+[Y,n,v] = aux.chkinputM(Y,nnargin,vvarargin);
 
 if nargin<2
     error('FSDA:FSMeda:missingInputs','Initial subset is missing')
 end
 
-[n,v]=size(Y);
+if any(ismissing(Y),"all")
+    hasMiss=true;
+else
+    hasMiss=false;
+end
+
+
 bsb=bsb(:);
 
 hdef=floor(n*0.6);
@@ -292,8 +298,6 @@ if nargin > 2
 end
 
 scaled=options.scaled;
-
-verLessThan2016b=verLessThan('matlab','9.1');
 
 % And check if the optional user parameters are reasonable.
 
@@ -395,27 +399,27 @@ if n<32768
     bsb=int16(bsb);
     seq=int16((1:n)');
     minMDindex=zeros(1,1,'int16');
-    
+
     % unitadd and bsbradd will be vectors which contain the k units which
     % are added using k repeated minima. More precisely the units which
     % were not in the previous subset are included in vector unitadd, those
     % which were in the previous subset are included in vector bsbradd
     unitadd=zeros(nrepmin,1,'int16');
     bsbradd=unitadd;
-    
-    
+
+
 else
     bsb=int32(bsb);
     seq=int32((1:n)');
     minMDindex=zeros(1,1,'int32');
-    
+
     % unitadd and bsbradd will be vectors which contain the k units which
     % are added using k repeated minima. More precisely the units which
     % were not in the previous subset are included in vector unitadd, those
     % which were in the previous subset are included in vector bsbradd
     unitadd=zeros(nrepmin,1,'int32');
     bsbradd=unitadd;
-    
+
 end
 
 zeron1=false(n,1);
@@ -431,159 +435,178 @@ unit=zeros(ini0,1,'int16');
 lunit=length(unit);
 
 
-if (rank(Y(bsb,:))<v)
+if hasMiss==false && (rank(Y(bsb,:))<v)
     warning('FSDA:FSMeda:NoFullRank','The supplied initial subset is not full rank matrix');
     disp('FSMeda:message: FS loop will not be performed');
     out=struct;
 else
-    
+
     for mm = ini0:n
-        
+
         % Extract units forming subset
         if mm<=percn
             Yb=Y(bsb,:);
         else
             Yb=Y(bsbT,:);
         end
-        
-        
-        % Find vector of means inside subset
-        % Note that ym is a row vector
-        ym=sum(Yb,1)/mm;
-        
-        
-        % Ym = n-by-v matrix containing deviations from the means computed
-        % using units forming subset
-        % Ym=Y-one*ym;
-        if verLessThan2016b
-            Ym = bsxfun(@minus,Y, ym);
+
+        if hasMiss == true
+            % run EM with missingness to estimate mu and Sigma
+            tem = mdEM(Yb);
+
+            ym  = tem.loc;
+            covYb = tem.cov;
+
+            a=chi2inv(mm/n,v);
+            corr=(n./mm).*(chi2cdf(a,v+2));
+            covYbRescaled=covYb/corr;
+
+            % compute adjusted partial squared distances for ALL units
+            [d2p, poss] = mdPartialMD(Y, ym, covYbRescaled);
+            % rescaled MD for all units
+            d2_adj1 = mdPartialMD2full(d2p, v, poss);
+
+            %% MD (squared) distances without consistency factor
+            MD=d2_adj1/corr;
+
         else
+            % Find vector of means inside subset
+            % Note that ym is a row vector
+            ym=sum(Yb,1)/mm;
+
+
+            % Ym = n-by-v matrix containing deviations from the means computed
+            % using units forming subset
+            % Ym=Y-one*ym;
             Ym = Y - ym;
-        end
-        
-        
-        
-        if mm-lunit>v+1
-            
-            % Find new S
-            if lunit>1
-                % S0=S;
-                % Find units which left subset
-                % Inefficient code is
-                % unitout=setdiff(oldbsb,bsb);
-                
-                % unitoutT = Boolean for units which left subset
-                % ~oldbsbF = units which were in previous subset
-                % ~bsbT = units which are not in the current subset
-                % unitoutT=~oldbsbF & ~bsbT;
-                % Given that \not A intersect \not B = \not (A U B)
-                
-                if mm>percn || rankgap>nrepmin
-                    % unitoutT=~(~oldbsbT | bsbT);
-                    unitoutT = oldbsbT & ~bsbT;
-                    unitout=seq(unitoutT);
+
+
+
+            if mm-lunit>v+1
+
+                % Find new S
+                if lunit>1
+                    % S0=S;
+                    % Find units which left subset
+                    % Inefficient code is
+                    % unitout=setdiff(oldbsb,bsb);
+
+                    % unitoutT = Boolean for units which left subset
+                    % ~oldbsbF = units which were in previous subset
+                    % ~bsbT = units which are not in the current subset
+                    % unitoutT=~oldbsbF & ~bsbT;
+                    % Given that \not A intersect \not B = \not (A U B)
+
+                    if mm>percn || rankgap>nrepmin
+                        % unitoutT=~(~oldbsbT | bsbT);
+                        unitoutT = oldbsbT & ~bsbT;
+                        unitout=seq(unitoutT);
+                    end
+
+                    lunitout=length(unitout);
+                    mi=sum(Y(unitout,:),1)/lunitout;
+
+                    % bsbr units which remained in subset
+                    % old inefficient code
+                    % bsbr=setdiff(oldbsb,unitout);
+
+                    % If mm>percn or if rankgap is greater than nrepmin, the units
+                    % which remained in subset are found using Boolean
+                    % operations
+                    % else they were immediately stored when repeated minima
+                    % were taken
+                    if mm>percn || rankgap>nrepmin
+                        % oldbsbT = units which were in previous subset
+                        % bsbT = units which are in current subset
+                        bsbr=oldbsbT & bsbT;
+                    end
+                    mibsbr=sum(Y(bsbr,:),1)/(mm-1-lunitout);
+
+                    zi=sqrt(lunitout*(mm-1-lunitout)/(mm-1))*(mi-mibsbr);
+                    Szi=S*zi';
+                    % S=S+(S*(zi')*zi*S)/(1-zi*S*(zi'));
+                    S=S+Szi*(Szi')/(1-zi*Szi);
+                    if lunitout>1
+                        for i=1:lunitout
+                            zi=Y(unitout(i),:)-mi;
+                            Szi=S*zi';
+                            % S=S+(S*(zi')*zi*S)/(1-zi*S*(zi'));
+                            S=S+Szi*(Szi')/(1-zi*Szi);
+                        end
+                    end
+                else
+                    lunitout=0;
+                    mibsbr=meoldbsb;
                 end
-                
-                lunitout=length(unitout);
-                mi=sum(Y(unitout,:),1)/lunitout;
-                
-                % bsbr units which remained in subset
-                % old inefficient code
-                % bsbr=setdiff(oldbsb,unitout);
-                
-                % If mm>percn or if rankgap is greater than nrepmin, the units
-                % which remained in subset are found using Boolean
-                % operations
-                % else they were immediately stored when repeated minima
-                % were taken
-                if mm>percn || rankgap>nrepmin
-                    % oldbsbT = units which were in previous subset
-                    % bsbT = units which are in current subset
-                    bsbr=oldbsbT & bsbT;
-                end
-                mibsbr=sum(Y(bsbr,:),1)/(mm-1-lunitout);
-                
-                zi=sqrt(lunitout*(mm-1-lunitout)/(mm-1))*(mi-mibsbr);
+
+                % mi = mean of units entering subset
+                mi=sum(Y(unit,:),1)/lunit;
+                % zi=sqrt(kin*(mm-1-k)/(mm-1-k+kin))*(mi-mean(Y(bsbr,:),1));
+                zi=sqrt(lunit*(mm-1-lunitout)/(mm-1-lunitout+lunit))*(mi-mibsbr);
                 Szi=S*zi';
                 % S=S+(S*(zi')*zi*S)/(1-zi*S*(zi'));
-                S=S+Szi*(Szi')/(1-zi*Szi);
-                if lunitout>1
-                    for i=1:lunitout
-                        zi=Y(unitout(i),:)-mi;
+                S=S-Szi*(Szi')/(1+zi*Szi);
+                if lunit>1
+                    %mi=mean(Y(unit,:),1);
+                    for i=1:lunit
+                        zi=Y(unit(i),:)-mi;
                         Szi=S*zi';
-                        % S=S+(S*(zi')*zi*S)/(1-zi*S*(zi'));
-                        S=S+Szi*(Szi')/(1-zi*Szi);
+                        % S=S-(S*(zi')*zi*S)/(1+zi*S*(zi'));
+                        S=S-Szi*(Szi')/(1+zi*Szi);
                     end
                 end
-            else
-                lunitout=0;
-                mibsbr=meoldbsb;
-            end
-            
-            % mi = mean of units entering subset
-            mi=sum(Y(unit,:),1)/lunit;
-            % zi=sqrt(kin*(mm-1-k)/(mm-1-k+kin))*(mi-mean(Y(bsbr,:),1));
-            zi=sqrt(lunit*(mm-1-lunitout)/(mm-1-lunitout+lunit))*(mi-mibsbr);
-            Szi=S*zi';
-            % S=S+(S*(zi')*zi*S)/(1-zi*S*(zi'));
-            S=S-Szi*(Szi')/(1+zi*Szi);
-            if lunit>1
-                %mi=mean(Y(unit,:),1);
-                for i=1:lunit
-                    zi=Y(unit(i),:)-mi;
-                    Szi=S*zi';
-                    % S=S-(S*(zi')*zi*S)/(1+zi*S*(zi'));
-                    S=S-Szi*(Szi')/(1+zi*Szi);
+
+                % Compute Mahalanobis distance using updating formulae
+                % Note that up for n>30000 it seems faster to use bsxfun rather
+                % than .*
+                if n<30000
+                    MD=(mm-1)*sum((Ym*S).*Ym,2);
+                else
+                    MD=(mm-1)*sum(bsxfun(@times,mtimes(Ym,S),Ym),2);
                 end
+
+
+            else % In the initial step of the search the inverse is computed directly
+                if mm>percn
+                    S=inv(Ym(bsbT,:)'*Ym(bsbT,:));
+                    [~,R]=qr(Ym(bsbT,:),0);
+                else
+                    S=inv(Ym(bsb,:)'*Ym(bsb,:));
+                    [~,R]=qr(Ym(bsb,:),0);
+                end
+                if sum(isinf(S(:)))>0
+                    warning('FSDA:FSMmmd:NoFullRank',['Subset at step mm= ' num2str(mm) ' is not full rank matrix']);
+                    disp('FS loop will not be performed')
+                    out = nan;
+                    return
+                end
+
+                u=(Ym/R);
+                % Compute squared Mahalanobis distances
+                MD=(mm-1)*sum(u.^2,2);
             end
-            
-            % Compute Mahalanobis distance using updating formulae
-            % Note that up for n>30000 it seems faster to use bsxfun rather
-            % than .*
-            if n<30000
-                MD=(mm-1)*sum((Ym*S).*Ym,2);
-            else
-                MD=(mm-1)*sum(bsxfun(@times,mtimes(Ym,S),Ym),2);
-            end
-            
-            
-        else % In the initial step of the search the inverse is computed directly
-            if mm>percn
-                S=inv(Ym(bsbT,:)'*Ym(bsbT,:));
-                [~,R]=qr(Ym(bsbT,:),0);
-            else
-                S=inv(Ym(bsb,:)'*Ym(bsb,:));
-                [~,R]=qr(Ym(bsb,:),0);
-            end
-            if sum(isinf(S(:)))>0
-                warning('FSDA:FSMmmd:NoFullRank',['Subset at step mm= ' num2str(mm) ' is not full rank matrix']);
-                disp('FS loop will not be performed')
-                out = nan;
-                return
-            end
-            
-            u=(Ym/R);
-            % Compute squared Mahalanobis distances
-            MD=(mm-1)*sum(u.^2,2);
         end
-        
+
         MD=sqrt(MD);
-        
+
         if mm>=init1
-            
-            if mm<=percn
-                Ymbsb=Ym(bsb,:);
-            else
-                Ymbsb=Ym(bsbT,:);
+
+            if hasMiss == false
+                if mm<=percn
+                    Ymbsb=Ym(bsb,:);
+                else
+                    Ymbsb=Ym(bsbT,:);
+                end
+                % covYb=cov(Yb);
+                covYb=Ymbsb'*Ymbsb/(mm-1);
             end
-            % covYb=cov(Yb);
-            covYb=Ymbsb'*Ymbsb/(mm-1);
+
             detcovYb=det(covYb);
-            
+
             if scaled==1
                 MD=MD*(detcovYb^(1/(2*v)));
             end
-            
+
             if mm<=percn
                 BB(bsb,mm-init1+1)=bsb;
             else
@@ -591,21 +614,21 @@ else
             end
             % Store the means
             loc(mm-init1+1,2:end)=ym;
-            
+
             % Store the trace and the determinant
             detS(mm-init1+1,2:end)=[detcovYb sum(diag(covYb))];
-            
+
             % Store the elements of the covariance matrix
             aco=triu(covYb);
             aco=aco(abs(aco(:))>1e-15);
             S2cov(mm-init1+1,2:end)=aco';
-            
+
             % Store MD inside matrix MAL
             MAL(:,mm-init1+1)=MD;
         end
-        
+
         MDsor=sort(MD);
-        
+
         if mm>=init1
             if mm<=percn
                 % Store max and mmth ordered MD
@@ -615,32 +638,32 @@ else
                 msr(mm-init1+1,2:3)= [max(MD(bsbT)) MDsor(mm)];
             end
         end
-        
+
         if mm<n
-            
+
             % MDmod contains modified Mahalanobis distances. The
             % Mahalanobis distance of the units belonging to subset are set
             % to inf because we need to consider the minimum of the units
             % outside subset
             MDmod=MD;
-            
+
             if mm>percn
                 MDmod(bsbT)=Inf;
             else
                 MDmod(bsb)=Inf;
             end
-            
-            
+
+
             % oldbsbF=bsbF;
             oldbsb=bsb;
             oldbsbT=bsbT;
             % Take minimum distance of the units not belonging to subset
             [minMD,minMDindex(:)]=min(MDmod);
-            
+
             % MDltminT = n x 1 Boolean vector which is true if corresponding MD is
             % smaller or equal minMD
             MDltminT=MD<=minMD;
-            
+
             % MDltminbsb = n x 1 Boolean vector (if m>percn) or
             % int32 vector containing the units which certainly remain inside subset
             % i.e. those which have a true in MDltminT and belong to previous subset
@@ -649,21 +672,21 @@ else
             else
                 MDltminbsb=MDltminT(oldbsb);
             end
-            
-            
+
+
             % Find number of units of old subset which have a MD <= minMD
             mmtry=sum(MDltminbsb);
-            
+
             % rankgap is the difference between m+1 (size of new size) and
             % the number of units of old subset which have a distance <=
             % minMD. For example if rankgap is =3, three more units must be
             % added.
             rankgap=mm+1-mmtry;
-            
+
             if rankgap==1
                 % Just one new unit entered subset
                 unit= minMDindex;
-                
+
                 % Compute new bsbT and new bsb
                 if mm<=percn
                     % new bsb is equal to oldbsb plus unit which just entered
@@ -672,15 +695,15 @@ else
                 % bsbT is equal to old bsbT after adding a single true in
                 % correspondence of the unit which entered subset
                 bsbT(minMDindex)=true;
-                
+
             elseif rankgap>1 && rankgap <=nrepmin
-                
+
                 % MDmod is the vector of Mahalanobis distance which will have
                 % a Inf in correspondence of the units of old subset which
                 % had a MD smaller than minMD
                 MDmod=MD;
-                
-                
+
+
                 % Find bsbrini, i.e. the vector which will contain the
                 % units which remain in the subset in the next step
                 % Note that bsbrini is defined using Boolean vector bsbT
@@ -700,7 +723,7 @@ else
                     % unitout=bsb(~bsbini);
                     unitout=bsb(~bsbini);
                     MDmod(bsbrini)=Inf;
-                    
+
                 else
                     % bsbriniT = Boolean vector which is true if the
                     % corresponding unit belonged to previous subset and
@@ -709,10 +732,10 @@ else
                     % bsbriniT=MDltminT & bsbT;
                     bsbriniT= MDltminbsb;
                     MDmod(bsbriniT)=Inf;
-                    
+
                 end
-                
-                
+
+
                 kk=1; zz=1;
                 % In the following loop we add k units to form the new
                 % subset of m+1 units Note that if the difference between
@@ -720,7 +743,7 @@ else
                 % than at most rankgap minima must be calculated to find
                 % the the (m+1)-th order statistic
                 for jj=1:rankgap
-                    
+
                     [~,minMDindex(:)]=min(MDmod);
                     % minMDindex = index of the unit which is about to
                     % enter subset. We check whether unit minMDindex
@@ -747,7 +770,7 @@ else
                     % disp(posunit(posncl1))
                     MDmod(minMDindex)=Inf;
                 end
-                
+
                 % unit = vector containing all units which enter the new subset
                 % but did not belong to previous subset
                 unit=unitadd(1:kk-1);
@@ -755,7 +778,7 @@ else
                 % subset and were also in the previous subset
                 % bsb = units forming new subset.
                 if mm<=percn
-                    
+
                     bsbr=[bsbrini;bsbradd(1:zz-1)];
                     bsb=[bsbr;unit];
                 else
@@ -767,9 +790,9 @@ else
                     % -----------    bsbriniT(unit)=true;
                     bsbriniT(unit)=true;
                 end
-                
-                
-                
+
+
+
                 % Compute bsbT (Boolean vector which identifies new subset)
                 if mm<=percn
                     bsbT=zeron1;
@@ -777,20 +800,20 @@ else
                 else
                     bsbT=bsbriniT;
                 end
-                
+
             else %  rankgap>nrepmin
-                
+
                 % Old sorting
                 %                 [~,MDsor]=sort(MD);
                 %                 bsb=MDsor(1:mm+1);
                 %                 bsbT=zeron1;
                 %                 bsbT(bsb)=true;
-                
-                
+
+
                 % New sorting based on quickselectFS
                 [ksor]=quickselectFS(MD,mm+1,minMDindex);
                 bsbT=MD<=ksor;
-                
+
                 if sum(bsbT)==mm+1
                     if mm<=percn
                         bsb=seq(bsbT);
@@ -798,36 +821,36 @@ else
                 else
                     bsbmin=seq(MD<ksor);
                     bsbeq=seq(MD==ksor);
-                    
+
                     bsb=[bsbmin;bsbeq(1:mm+1-length(bsbmin))];
-                    
+
                     bsbT=zeron1;
                     bsbT(bsb)=true;
                 end
-                
+
                 % unit = vector containing units which just entered subset;
                 unit=find(bsbT & ~oldbsbT);
-                
+
             end
-            
-            
-            
+
+
+
             if mm>=init1
-                
+
                 % mmd contains minimum of Mahalanobis distances among
                 % the units which are not in the subset at step m
                 mmd(mm-init1+1,2:3)=[minMD MDsor(mm+1)];
-                
+
                 % store gap
                 gap(mm-init1+1,2:3)=mmd(mm-init1+1,2:3)-msr(mm-init1+1,2:3);
-                
+
             end
-            
+
             % store mean of units forming old subset
             meoldbsb=ym;
-            
+
             lunit=length(unit);
-            
+
             if (mm>=init1)
                 if (lunit<=10)
                     Un(mm-init1+1,2:(lunit+1))=unit;
@@ -842,9 +865,9 @@ else
         else
         end
     end
-    
-    
-    
+
+
+
     if scaled==1
         % Scale distances with ratio of determinants
         detcovY=(detcovYb^(1/(2*v)));
@@ -863,10 +886,10 @@ else
         mmd(:,2:3)=bsxfun(@times,mmd(:,2:3),corr(2:end)');
         % Rescale max MD
         msr(:,2:3)=bsxfun(@times,msr(:,2:3),corr');
-        
+
     end
-    
-    
+
+
     % Plot minimum Mahalanobis distance with 1%, 50% and 99% envelopes
     if options.plots==1
         figure;
@@ -875,11 +898,11 @@ else
         % the observations for the above quantiles.
         [gmin] = FSMenvmmd(n,v,'prob',quant,'init',init1,'scaled',scaled);
         plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
-        
+
         % include specified tag in the current plot
         set(gcf,'tag','pl_mmd');
         set(gcf,'Name', 'Monitoring of Minimum Mahalnobis distance', 'NumberTitle', 'off');
-        
+
         % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
         lwdenv=2;
         % Superimpose 50% envelope
@@ -887,22 +910,22 @@ else
         % Superimpose 1% and 99% envelope
         line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
         line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        
+
         xlabel('Subset size m');
         if scaled==1
             ylabel('Monitoring of scaled minimum Mahalanobis distance');
         else
             ylabel('Monitoring of minimum Mahalanobis distance');
         end
-        
+
     end
-    
-    
-    
+
+
+
     % Divide each column of detS by the final value at the end of the search
     detS(:,2)=detS(:,2)/detS(end,2);
     detS(:,3)=detS(:,3)/detS(end,3);
-    
+
     out.MAL=MAL;
     out.BB=BB;
     out.msr=msr;

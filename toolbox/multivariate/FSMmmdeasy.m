@@ -5,14 +5,16 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. Matrix.
-%               n x v data matrix; n observations and v variables. Rows of
-%               Y represent observations, and columns represent variables.
-%               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations.
-%                Data Types - single|double
+% Y :           Input data matrix.
+%               n x v matrix, where n is the number of observations and
+%               v is the number of variables. Each row corresponds to an
+%               observation and each column to a variable.
+%               Missing values (NaNs) are allowed.
+%               For observations containing missing entries, Mahalanobis
+%               distances are computed using the observed components only
+%               (partial Mahalanobis distances) and subsequently rescaled
+%               to make them comparable across different missingness patterns.
+%               Data Types - single | double
 % bsb :         Units forming subset. Vector. List of units forming the initial subset.
 %               If bsb=0 (default) then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with
@@ -28,8 +30,8 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %                 Example - 'init',50
 %                 Data Types - double
 %
-% plots :     It specify whether it is necessary to produce the plots of minimum Mahalanobis
-%                 distance. Scalar. If plots=1, a plot of the monitoring of minMD among
+% plots :     Plot of moniotinrg of minimum Mahalanobis distance. Scalar. 
+%               If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
 %               screen with 1% 50% and 99% confidence bands
 %               else (default) no plot is produced.
@@ -174,6 +176,11 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 
 %% Beginning of code
 
+if any(ismissing(Y),"all")
+    hasMiss=true;
+else
+    hasMiss=false;
+end
 
 [n,v]=size(Y);
 % Initialize matrix which will contain Mahalanobis distances in each step
@@ -286,21 +293,49 @@ else
             BB(bsb,mm-init1+1)=bsb;
         end
 
-        % Find vector of means inside subset
-        % Note that ym is a row vector
-        ym=mean(Yb);
+        if hasMiss==true
+              % run trimmed EM with missingness to estimate mu and Sigma
+            tem = mdEM(Yb);
 
-        % Squared Mahalanobis distances computed using QR decomposition
-        % Ym=Y-one*ym;
-        Ym = bsxfun(@minus,Y, ym);
+            ym  = tem.loc;
+            covYb = tem.cov;
 
-        [~,R]=qr(Ym(bsb,:),0);
+            a=chi2inv(mm/n,v);
+            corr=(n./mm).*(chi2cdf(a,v+2));
+            covYbRescaled=covYb/corr;
+
+            % compute adjusted partial squared distances for ALL units
+            [d2p, poss] = mdPartialMD(Y, ym, covYbRescaled);
+            % rescaled MD for all units
+            d2_adj1 = mdPartialMD2full(d2p, v, poss);
+
+            % MD distances (squared) without consistency factor
+            d2_adj=d2_adj1/corr;
+
+ 
+            % For monitoring we use sqrt distance like FSMeda
+            % Note that similarly to traditional implementation we do not use a
+            % rescaled cov. matrix
+            mala(:,2) = d2_adj;
+
+        else
+
+            % Find vector of means inside subset
+            % Note that ym is a row vector
+            ym=mean(Yb);
+
+            % Squared Mahalanobis distances computed using QR decomposition
+            % Ym=Y-one*ym;
+            Ym = Y-ym;
+
+            [~,R]=qr(Ym(bsb,:),0);
 
 
-        % Remark: u=(Ym/R)' should be much faster than u=inv(R')*Ym';
-        u=(Ym/R)';
-        % Compute square Mahalanobis distances
-        mala(:,2)=((mm-1)*sum(u.^2,1))';
+            % Remark: u=(Ym/R)' should be much faster than u=inv(R')*Ym';
+            u=(Ym/R)';
+            % Compute square Mahalanobis distances
+            mala(:,2)=((mm-1)*sum(u.^2,1))';
+        end
 
         zs= sortrows(mala,2);
 

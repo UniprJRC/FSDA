@@ -1,4 +1,4 @@
-function [X,n,p,hasMiss] = chkinputM(X, nnargin, vvarargin)
+function [X,n,p] = chkinputM(X, nnargin, vvarargin)
 %chkinputM makes some input parameters and user options checking in multivariate analysis
 %
 % Required input arguments:
@@ -82,8 +82,7 @@ end
 if ~isempty(chkchk) && vvarargin{2*chkchk}==1
     [n,p]=size(X);
 else
-    
-    % The second argument which is passed is X
+
     if nnargin<1 || isempty(X)
         error('FSDA:chkinputM:missingInputs','Input matrix X not specified.');
         
@@ -91,18 +90,15 @@ else
     elseif ~ismatrix(X)
         error('FSDA:chkinputM:WrongX','Invalid data set X.');
     end
-    
+    % p is the number of parameters to be estimated
+    p=size(X,2);
+
     % Check dimension consistency of X and y
-    na.X=~isfinite(X*ones(size(X,2),1));
-    
-    if any(na.X)
-        hasMiss=true;
-    else
-        hasMiss=false;
-    end    
-    % Observations with missing or infinite values are removed from X and y
-    ok=~(na.X);
-    % X=X(ok,:);
+    naX=sum(ismissing(X),2)==p;
+     
+    % Observations with all missing are removed from X 
+    ok=~(naX);
+    X=X(ok,:);
     % Now n is the new number of non missing observations
     n=length(X);
     % constcols = scalar vector of the indices of possible constant columns.
@@ -116,15 +112,13 @@ else
         end
     end
     
-    % p is the number of parameters to be estimated
-    p=size(X,2);
     
     if n < p
         error('FSDA:chkinputM:NSmallerP',['Need more observations than variables: n=' ...
             int2str(size(X,1)) ' and p=' int2str(size(X,2)) ]);
     end
     
-    rk = rank(X(ok,:));
+    rk = rank(rmmissing(X));
     if rk < p
         error('FSDA:chkinputM:NoFullRank','Matrix X is singular');
     end

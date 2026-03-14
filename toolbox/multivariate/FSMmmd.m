@@ -53,7 +53,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %                 Example - 'msg',0
 %                 Data Types - double
 %
-% nocheck :   It controls wether to perform checks on
+% nocheck :   It controls whether to perform checks on
 %               matrix Y. Boolean. If nocheck is equal to true no check is
 %               performed on matrix Y. As default nocheck=false.
 %                 Example - 'nocheck',false
@@ -143,7 +143,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 
 %{
     %% FSMmmd with optional arguments.
-    % Plotting the bandwith of the minimum Mahalanobis distance
+    % Plotting the envelope of the minimum Mahalanobis distance
     n=200;
     v=3;
     m0=4;
@@ -183,7 +183,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %{
     % Checking the units belonging to subset in each step of the search.
     % Personalized initial subset (large n). Each row of BB matrix
-    % is associated to a unit while each colum is associated to a step of the fwd search.
+    % is associated to a unit while each column is associated to a step of the fwd search.
     n=20000;
     v=3;
     m0=10;
@@ -202,7 +202,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %% Beginning of code
 
 % Input parameters checking
-%chkinputM does not do any check if option nocheck=true
+% chkinputM does not do any check if option nocheck=true
 nnargin=nargin;
 vvarargin=varargin;
 [Y,n,v] = aux.chkinputM(Y,nnargin,vvarargin);
@@ -466,14 +466,9 @@ else
             end
         end
         if hasMiss==true
-            % opts=struct;
-            % opts.typeAdj   = 1;   % recommended default from your simulations
-            % opts.maxiter   = 100;
-            % opts.tol       = 1e-5;
-            % opts.tol_sigma = true;
 
             % run trimmed EM with missingness to estimate mu and Sigma
-            tem = NAem(Yb);
+            tem = mdEM(Yb);
 
             ym  = tem.loc;
             covYb = tem.cov;
@@ -483,9 +478,9 @@ else
             covYbRescaled=covYb/corr;
 
             % compute adjusted partial squared distances for ALL units
-            [d2p, poss] = NApartialMD(Y, ym, covYbRescaled);
+            [d2p, poss] = mdPartialMD(Y, ym, covYbRescaled);
             % rescaled MD for all units
-            d2_adj1 = NApartialMD2full(d2p, v, poss);
+            d2_adj1 = mdPartialMD2full(d2p, v, poss);
 
             % MD distances (squared) without consistency factor
             d2_adj=d2_adj1/corr;

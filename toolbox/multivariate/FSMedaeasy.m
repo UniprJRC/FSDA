@@ -47,10 +47,10 @@ function out = FSMedaeasy(Y,bsb,varargin)
 %                 Data Types - double
 %
 % scaled:     It controls whether to monitor scaled Mahalanobis distances.
-%               Scalar. 
-%               If scaled=1  Mahalanobis distances 
+%               Scalar.
+%               If scaled=1  Mahalanobis distances
 %               monitored during the search are scaled using ratio of determinant.
-%               If scaled=2  Mahalanobis distances 
+%               If scaled=2  Mahalanobis distances
 %               monitored during the search are scaled using asymptotic consistency factor.
 %               The default value is 0 that is Mahalanobis distances are
 %               not scaled.
@@ -290,20 +290,26 @@ function out = FSMedaeasy(Y,bsb,varargin)
     malfwdplot(out,'standard',standard);
 %}
 
- 
+
 %% Beginning of code
 
 % Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;
-Y = aux.chkinputM(Y,nnargin,vvarargin);
+[Y,n,v] = aux.chkinputM(Y,nnargin,vvarargin); 
+
+if any(ismissing(Y),"all")
+    hasMiss=true;
+else
+    hasMiss=false;
+end
+
 
 if nargin<2
     error('FSDA:FSMeda:missingInputs','Initial subset is missing')
 end
 
-[n,v]=size(Y);
 seq=(1:n)';
 one=ones(n,1);
 
@@ -419,92 +425,126 @@ detS=msr;
 % Initialize the matrix which contains the values of MD
 mala=[seq zeros(n,1)];
 
-if (rank(Y(bsb,:))<v)
-    warning('FSDA:FSMedaeasy:NoFullRank','The supplied initial subset is not full rank matrix');
-    disp('FSMedaeasy:message: FS loop will not be performed');
-    out=struct;
-else
+% if (rank(Y(bsb,:))<v) TODO
+%     warning('FSDA:FSMedaeasy:NoFullRank','The supplied initial subset is not full rank matrix');
+%     disp('FSMedaeasy:message: FS loop will not be performed');
+%     out=struct;
+% else
     % this is to monitor the centroid position
     if options.plots==2 && v==2
         figure;
-        plot(Y(:,1),Y(:,2),'o'); 
-        
+        plot(Y(:,1),Y(:,2),'o');
+
         % include specified tag in the current plot
         set(gcf,'tag','pl_centroid');
         set(gcf,'Name', 'Monitoring the centroid position', 'NumberTitle', 'off');
-        
-        hold on;  
+
+        hold on;
     end
-    
+
     for mm = ini0:n
-        
+
         % select subset
         Yb=Y(bsb,:);
-        
-        
-        % Find vector of means inside subset. 
-        % Note that ym is a row vector
-        ym=mean(Yb);
-        
-        % this is to monitor the centroid position
-        if options.plots==2 && v==2
-            if ~mod(mm,20) || mm==1
-                text(ym(1),ym(2),num2str(mm),'FontSize',18);
-            else
-                plot(ym(1),ym(2),'r*');
+
+        if hasMiss==true
+   
+            % run EM with missingness to estimate mu and Sigma
+            tem = mdEM(Yb);
+
+            ym  = tem.loc;
+            covYb = tem.cov;
+
+                        a=chi2inv(mm/n,v);
+            corr=(n./mm).*(chi2cdf(a,v+2));
+            covYbRescaled=covYb/corr;
+
+            % compute adjusted partial squared distances for ALL units
+            [d2p, poss] = mdPartialMD(Y, ym, covYbRescaled);
+            % rescaled MD for all units
+            d2_adj1 = mdPartialMD2full(d2p, v, poss);
+            
+            d2_adj=d2_adj1/corr;
+            %% MD distances without consistency factor
+            % d2_adj=d2_adj*corr;
+
+            % For monitoring we use sqrt distance like FSMeda
+            % Note that similarly to traditional implementation we do not use a
+            % rescaled cov. matrix
+            mala(:,2) = sqrt(d2_adj);
+
+            if scaled==1
+                covYb=covYb*corr;
+                detcovYb=det(covYb);
+                mala(:,2)=mala(:,2)*(detcovYb^(1/(2*v)));
+            end
+        else
+
+            % Find vector of means inside subset.
+            % Note that ym is a row vector
+            ym=mean(Yb);
+
+            % this is to monitor the centroid position
+            if options.plots==2 && v==2
+                if ~mod(mm,20) || mm==1
+                    text(ym(1),ym(2),num2str(mm),'FontSize',18);
+                else
+                    plot(ym(1),ym(2),'r*');
+                end
+            end
+
+            % Squared Mahalanobis distances computed using QR decomposition
+            Ym=Y-one*ym;
+            [~,R]=qr(Ym(bsb,:),0);
+
+
+            % Remark: u=(Ym/R)' should be much faster than u=inv(R')*Ym';
+            u=(Ym/R)';
+            % Compute Mahalanobis distances
+            mala(:,2)=sqrt(((mm-1)*sum(u.^2,1)))';
+         
+            covYb=cov(Yb);
+
+            if scaled==1
+                detcovYb=det(covYb);
+                mala(:,2)=mala(:,2)*(detcovYb^(1/(2*v)));
             end
         end
-        
-        % Squared Mahalanobis distances computed using QR decomposition
-        Ym=Y-one*ym;
-        [~,R]=qr(Ym(bsb,:),0);
-        
-        
-        % Remark: u=(Ym/R)' should be much faster than u=inv(R')*Ym';
-        u=(Ym/R)';
-        % Compute Mahalanobis distances
-        mala(:,2)=sqrt(((mm-1)*sum(u.^2,1)))';
-        
-        if scaled==1
-            covYb=cov(Yb);
-            detcovYb=det(covYb);
-            mala(:,2)=mala(:,2)*(detcovYb^(1/(2*v)));
-        end
-        
+
+
         if (mm>=init1)
             BB(bsb,mm-init1+1)=bsb;
-            
+
             % Store the means
             loc(mm-init1+1,2:end)=ym;
-            
+
             % Store the trace and the determinant
             if scaled==1
                 detS(mm-init1+1,2:end)=[detcovYb sum(diag(covYb))];
             else
-                covYb=cov(Yb);
-                detS(mm-init1+1,2:end)=[det(covYb) sum(diag(covYb))];
+                               detS(mm-init1+1,2:end)=[det(covYb) sum(diag(covYb))];
             end
-            
+
             % Store the elements of the covariance matrix
             aco=triu(covYb);
             aco=aco(abs(aco(:))>1e-15);
             S2cov(mm-init1+1,2:end)=aco';
-            
+
             % Store MD inside matrix MAL
             MAL(:,mm-init1+1)=mala(:,2);
         end
-        
+
         zs=sortrows(mala,2);
-        
+
         if mm>=init1
             % Store max and mmth ordered MD
             msr(mm-init1+1,2:3)= [max(mala(bsb,2)) zs(mm,2)];
         end
-        
-        
+
+
         if mm<n
             % eval('mm');
-            
+
             if (mm>=init1)
                 ncl=setdiff(seq,bsb);
                 sncl=sortrows(mala(ncl,2));
@@ -513,17 +553,17 @@ else
                 % store gap
                 gap(mm-init1+1,2:3)=mmd(mm-init1+1,2:3)-msr(mm-init1+1,2:3);
             end
-            
-            
-            
+
+
+
             % store units forming old subset in vector oldbsb
             oldbsb=bsb;
-            
+
             % the dimension of subset increases by one unit.
             % vector bsb contains the indexes corresponding to the units of
             % the new subset
             bsb=zs(1:mm+1,1);
-            
+
             if (mm>=init1)
                 unit=setdiff(bsb,oldbsb);
                 if (length(unit)<=10)
@@ -538,8 +578,8 @@ else
             end
         end
     end % close FS loop
-    
-    
+
+
     if scaled==1
         % Scale distances with ratio of determinants
         detcovY=(detcovYb^(1/(2*v)));
@@ -558,10 +598,10 @@ else
         mmd(:,2:3)=bsxfun(@times,mmd(:,2:3),corr(2:end)');
         % Rescale max MD
         msr(:,2:3)=bsxfun(@times,msr(:,2:3),corr');
-        
+
     end
-    
-    
+
+
     % Plot minimum Mahalanobis distance with 1%, 50% and 99% envelopes
     if options.plots==1 || options.plots==2
         figure;
@@ -570,11 +610,11 @@ else
         % the observations for the above quantiles.
         [gmin] = FSMenvmmd(n,v,'prob',quant,'init',init1,'scaled',scaled);
         plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
-        
+
         % include specified tag in the current plot
         set(gcf,'tag','pl_mmd');
         set(gcf,'Name', 'Monitoring of Minimum Mahalnobis distance', 'NumberTitle', 'off');
-        
+
         % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
         lwdenv=2;
         % Superimpose 50% envelope
@@ -582,22 +622,22 @@ else
         % Superimpose 1% and 99% envelope
         line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
         line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        
+
         xlabel('Subset size m');
         if scaled==1
             ylabel('Monitoring of scaled minimum Mahalanobis distance');
         else
             ylabel('Monitoring of minimum Mahalanobis distance');
         end
-        
+
     end
-    
-    
-    
+
+
+
     % Divide each column of detS by the final value at the end of the search
     detS(:,2)=detS(:,2)/detS(end,2);
     detS(:,3)=detS(:,3)/detS(end,3);
-    
+
     out.MAL=MAL;
     out.BB=BB;
     out.msr=msr;
@@ -609,7 +649,7 @@ else
     out.Y=Y;
     out.Loc=loc;
     out.class='FSMeda';
-end
+%end
 
 end
 %FScategory:MULT-Multivariate
