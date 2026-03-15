@@ -44,7 +44,7 @@ function [X,n,p] = chkinputM(X, nnargin, vvarargin)
 % Example:
 %{
     %% example_producing_error
-    %To examplify the behaviour of chkinputM, we call function FSM with a
+    %To exemplify the behaviour of chkinputM, we call function FSM with a
     %X with more columns then rows.
     n=3;
     p=200;
@@ -110,6 +110,7 @@ else
         else
             disp('Warning: columns constant and just on of them has been kept!');
         end
+        p=size(X,2);
     end
     
     
