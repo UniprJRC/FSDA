@@ -12,7 +12,7 @@ function out = mdEM(Y, varargin)
 %
 %  Optional input arguments:
 %
-%       mus     : intial mean. p x 1 vector or empty double.
+%       mus     : initial mean. p x 1 vector or empty double.
 %                 Initial  mean vector. If empty (default), column nanmeans are used.
 %                 Example - 'mus',[]
 %                 Data Types - single | double

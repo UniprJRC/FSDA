@@ -30,14 +30,17 @@ if nargin < 4
     w = ones(n,1);
 end
 
-T1 = zeros(p,1);
-T2 = zeros(p,p);
+zerop1=zeros(p,1);
+zeropp=zeros(p);
+T1 = zerop1;
+T2 = zeropp;
 
 for i = 1:n
     x_i = X(i, :);
     w_i = w(i);
-    obs_ind = find(~isnan(x_i));     % observed indices
-    mis_ind = find(isnan(x_i));      % missing indices
+    isnanxi=isnan(x_i);
+    obs_ind = find(~isnanxi);     % observed indices
+    mis_ind = find(isnanxi);      % missing indices
 
     if isempty(mis_ind)
         % Case 1: no missing values in the row
@@ -70,12 +73,12 @@ for i = 1:n
         Sigma_mis_cond = Sigma_mis_mis - B * Sigma_obs_mis;
 
         % full expected vector
-        x_exp = zeros(p,1);
+        x_exp = zerop1;
         x_exp(obs_ind) = x_obs;
         x_exp(mis_ind) = x_mis_exp;
 
         % expected outer product matrix E[x x']
-        C_exp = zeros(p,p);
+        C_exp = zeropp;
         % observed-observed block = observed outer product
         C_exp(obs_ind, obs_ind) = x_obs * x_obs';
         % observed-missing and missing-observed cross-products (use expectation for missing)

@@ -5,15 +5,16 @@ function [out]=FSM(Y,varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data matrix.
-%               n x v matrix, where n is the number of observations and
-%               v is the number of variables. Each row corresponds to an
-%               observation and each column to a variable.
-%               Missing values (NaNs) are allowed.
+% Y :           Input data matrix. n x v matrix 2D array.
+%               n is the number of observations and v is the number of
+%               variables. Each row corresponds to an observation and each
+%               column to a variable. Missing values (NaNs) are allowed.
 %               For observations containing missing entries, Mahalanobis
 %               distances are computed using the observed components only
 %               (partial Mahalanobis distances) and subsequently rescaled
-%               to make them comparable across different missingness patterns.
+%               to make them comparable across different missingness
+%               patterns. Rows will all missing values are automatically
+%               excluded from the computations.
 %               Data Types - single | double
 %
 % Optional input arguments:

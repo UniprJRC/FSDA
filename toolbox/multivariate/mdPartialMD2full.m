@@ -20,7 +20,7 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
 %             Method which must be used to rescale the variables.
 %             typeAdj=1 use of asymptotic Chi2 distribution.
 %             typeAdj=2 use of exact Beta distribution.
-%             typeAdj=3 use of expectation correction
+%             typeAdj=3 use of expectation correction.
 %             typeAdj=4 use of standardization correction.
 %                 Example - 'typeAdj',1
 %                 Data Types - positive integer

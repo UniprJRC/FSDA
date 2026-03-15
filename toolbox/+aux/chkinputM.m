@@ -93,7 +93,7 @@ else
     % p is the number of parameters to be estimated
     p=size(X,2);
 
-    % Check dimension consistency of X and y
+    % Find the rows with all missing values
     naX=sum(ismissing(X),2)==p;
      
     % Observations with all missing are removed from X 
