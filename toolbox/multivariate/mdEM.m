@@ -106,9 +106,9 @@ function out = mdEM(Y, varargin)
 %{
     %% Example of use of option condmeanimp.
     % number of variables
-    p = 5;                
+    p = 15;                
     % number of observations
-    n = 100;            
+    n = 1000;            
     % target pairwise correlation (0<rho<1)
     rho = 0.9;            
     % Covariance matrix (unit variances)
@@ -138,9 +138,9 @@ function out = mdEM(Y, varargin)
 %{
     %% Example of use of option stochimp.
     % number of variables
-    p = 5;                
+    p = 15;                
     % number of observations
-    n = 100;            
+    n = 1000;            
     % target pairwise correlation (0<rho<1)
     rho = 0.9;            
     % Covariance matrix (unit variances)
@@ -172,12 +172,14 @@ sigs=[];
 maxiter=100;
 tol=1e-5;
 tol_sigma=true;
-imputation=false;
+condmeanimp=false;
+stochimp=false;
+
 
 
 if nargin>1
  options=struct('mus',mus,'sigs',sigs,'maxiter',maxiter,'tol',tol, ...
-     'tol_sigma',tol_sigma,'imputation',false);
+     'tol_sigma',tol_sigma,'condmeanimp',false,'stochimp',false);
 
  [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -199,7 +201,8 @@ if nargin>1
     maxiter=options.maxiter;
     tol=options.tol;
     tol_sigma=options.tol_sigma;
-    imputation=options.imputation;
+    condmeanimp=options.condmeanimp;
+    stochimp=options.stochimp;
 end
 
 
