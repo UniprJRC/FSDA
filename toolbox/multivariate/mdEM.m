@@ -34,10 +34,15 @@ function out = mdEM(Y, varargin)
 %                  If true use both mu and sigma diffs (default true)
 %                 Example - 'tol_sigma',false
 %                 Data Types - logical
-%   imputation :  Also give the matrix of inputed values. Boolean.
-%                 if true structure out also contains the matrix of inputed values.
-%                 The default value of imputation is false.
-%                 Example - 'imputation',true
+%   condmeanimp :  Also give the matrix of conditional mean imputed values. Boolean.
+%                 if true structure out also contains the matrix of imputed values.
+%                 The default value of condmeanimp is false.
+%                 Example - 'condmeanimp',true
+%                 Data Types - logical
+%   stochimp :     Also give the matrix of stochastic imputed values. Boolean.
+%                 if true structure out also contains the matrix of imputed values.
+%                 The default value of stochimp is false.
+%                 Example - 'stochimp',true
 %                 Data Types - logical
 %
 %
@@ -49,7 +54,7 @@ function out = mdEM(Y, varargin)
 %              out.cov = final estimate of cov matrix
 %              out.iter = number of iterations to convergence.
 %              out.Yimp = empty value of matrix Y with imputed values
-%                   (depending on input option imputation)
+%                   (depending on input option condmeanimp/stochimp)
 %
 %  
 % See also: mdTEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
@@ -99,7 +104,7 @@ function out = mdEM(Y, varargin)
 %}
 
 %{
-    %% Example of use of option imputation.
+    %% Example of use of option condmeanimp.
     % number of variables
     p = 5;                
     % number of observations
@@ -116,7 +121,7 @@ function out = mdEM(Y, varargin)
     Y=Yfull;
     Y(missMask) = NaN;
     % md with missing imputation
-    out=mdEM(Y,'imputation',true);
+    out=mdEM(Y,'condmeanimp',true);
     % Mahalanobis distances using original matrix
     d2Ori=mahalFS(Yfull,mean(Yfull),cov(Yfull));
     % Calculate the Mahalanobis distance for the imputed data
@@ -130,6 +135,37 @@ function out = mdEM(Y, varargin)
     grid on
 %}
 
+%{
+    %% Example of use of option stochimp.
+    % number of variables
+    p = 5;                
+    % number of observations
+    n = 100;            
+    % target pairwise correlation (0<rho<1)
+    rho = 0.9;            
+    % Covariance matrix (unit variances)
+    Sigma = (1-rho)*eye(p) + rho*ones(p);
+    R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
+    % Generate samples ~ N(0,Sigma)
+    Yfull = randn(n,p) * R;   % Strong positive correlation between the vars
+    missRate = 0.25;     % MCAR missing probability per entry
+    missMask = rand(n,p) < missRate;
+    Y=Yfull;
+    Y(missMask) = NaN;
+    % md with missing imputation
+    out=mdEM(Y,'stochimp',true);
+    % Mahalanobis distances using original matrix
+    d2Ori=mahalFS(Yfull,mean(Yfull),cov(Yfull));
+    % Calculate the Mahalanobis distance for the imputed data
+    d2Imp = mahalFS(out.Yimp, mean(out.Yimp), cov(out.Yimp));
+    % Compare original with distances for the imputed data
+    % Calculate the differences between original and imputed Mahalanobis distances
+    scatter(d2Ori,d2Imp)
+    % Add axis labels
+    xlabel('Original Mahalanobis Distances');
+    ylabel('Imputed Mahalanobis Distances');
+    grid on
+%}
 %% Beginning of code
 mus=[];
 sigs=[];
@@ -211,8 +247,10 @@ while (dif > tol) && (iter < maxiter)
 end
 
 %% EM single imputation of missing values (conditional means)
-if imputation ==true
+if condmeanimp == true
     Yimp = mdImputeCondMean(Y, mus, sigs);
+elseif stochimp == true
+    Yimp = mdImputeStochastic(Y, mus, sigs);
 else
     Yimp=[];
 end
