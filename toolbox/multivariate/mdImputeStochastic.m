@@ -54,7 +54,7 @@ function Yimp = mdImputeStochastic(Y, mu, Sigma)
 
 %{
 
-    % Example of imputation using conditional mean.
+    % Example of stochastic imputation, conditional mu and sigma.
     p=10; n=20;
     Yfull=randn(n,p);
     MU=median(Yfull); 
