@@ -57,7 +57,7 @@ function out = mdEM(Y, varargin)
 %                   (depending on input option condmeanimp/stochimp)
 %
 %  
-% See also: mdTEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
+% See also: mdTEM, mdImputeCondMean.m, mdImputeStochastic.m, mdPartialMD.m, mdPartialMD2full
 %
 % References:
 %
@@ -166,6 +166,7 @@ function out = mdEM(Y, varargin)
     ylabel('Imputed Mahalanobis Distances');
     grid on
 %}
+
 %% Beginning of code
 mus=[];
 sigs=[];
