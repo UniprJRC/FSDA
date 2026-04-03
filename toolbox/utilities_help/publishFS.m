@@ -1397,7 +1397,11 @@ sintax=cell(nargout+1+nOPTargin,1);
 if nOPTargin>0
     for j=1:nOPTargin
         if ~isempty(outargs)
-            sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs(1:commasIn(PosOpt(j)-1)-1) ')'];
+            if PosOpt(j)>1
+                sintax{j}=[outargs(2:commasOut(1)-1) '=' name InputArgs(1:commasIn(PosOpt(j)-1)-1) ')'];
+            else
+                sintax{j}=name;
+            end
         else
             if ~isempty(commasIn)
                 sintax{j}=[name InputArgs(1:commasIn(PosOpt(j)-1)-1) ')'];
