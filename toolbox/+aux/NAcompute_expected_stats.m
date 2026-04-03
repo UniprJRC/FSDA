@@ -1,4 +1,4 @@
-function [T1, T2] = NAcompute_expected_stats(X, mu, Sigma, w)
+function [T1, T2] = NAcompute_expected_stats(X, mu, Sigma, w, Patterns, G)
 % NAcompute_expected_stats  E-step: compute expected sums T1 and T2 with missing data.
 %
 %
@@ -29,7 +29,7 @@ function [T1, T2] = NAcompute_expected_stats(X, mu, Sigma, w)
 if nargin < 4
     w = ones(n,1);
 end
-if p>5
+if nargin<5 || isempty(Patterns)   % p>8
     zerop1=zeros(p,1);
     zeropp=zeros(p);
     T1 = zerop1;
@@ -98,13 +98,14 @@ else
     mu = mu(:);
     T1 = zeros(p,1, 'like', X);
     T2 = zeros(p,p, 'like', X);
-
-    % Missingness pattern
-    M = isnan(X);
-
-    % Group equal NaN patterns
-    [patterns, ~, G] = unique(M, 'rows', 'stable');
-    nPat = size(patterns,1);
+    % if nargin<5 || isempty(Patterns)
+    %     % Missingness pattern
+    %     M = isnan(X);
+    %
+    %     % Group equal NaN patterns
+    %     [Patterns, ~, G] = unique(M, 'rows', 'stable');
+    % end
+    nPat = size(Patterns,1);
 
     seqp = 1:p;
     muMuT = mu * mu.';
@@ -118,7 +119,7 @@ else
             continue
         end
 
-        pat = patterns(g,:);
+        pat = Patterns(g,:);
         obs_ind = seqp(~pat);
         mis_ind = seqp(pat);
 

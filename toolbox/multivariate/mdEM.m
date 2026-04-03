@@ -16,35 +16,65 @@ function out = mdEM(Y, varargin)
 %                 Initial  mean vector. If empty (default), column nanmeans are used.
 %                 Example - 'mus',[]
 %                 Data Types - single | double
+%
+%       Patterns: matrix of missingness patterns. 2D matrix of size kxp.
+%                 Logical or numeric matrix of size k x p, where each row
+%                 identifies a distinct pattern of missing values in Y.
+%                 A true (or 1) entry indicates that the corresponding
+%                 variable is missing, while a false (or 0) entry indicates
+%                 that it is observed.
+%                 If empty (default), missingness patterns are computed
+%                 internally from Y.
+%                 Supplying Patterns can save computing time when mdEM is
+%                 called repeatedly on data with the same missingness structure.
+%                 Example - 'Patterns',Patterns
+%                 Data Types - logical | double
+%
+%    idxPatterns: group membership for missingness patterns.
+%                 Numeric vector of length n.  idxPatterns contains, for
+%                 each row of Y, the index of the corresponding row of
+%                 Patterns. In other words, idxPatterns(i) = g means that
+%                 row i of Y has missingness pattern equal to
+%                 Patterns(g,:). If empty (default), idxPatterns is
+%                 computed internally together with Patterns.
+%                 Supplying idxPatterns can save computing time when mdEM is
+%                 called repeatedly on data with the same missingness structure.
+%                 Example - 'idxPatterns',idxPatterns
+%                 Data Types - single | double
+%
+%        maxiter:  maximum number of iterations. Positive integer.
+%                  The default value is 100
+%                 Example - 'maxiter',50
+%                 Data Types - single | double
+%
 %           sigs:  initial covariance matrix.
 %                  p x p matrix or empty double.
 %                  Initial p x p covariance matrix.
 %                  If empty, uses nan-cov
 %                 Example - 'sigs',eye(p)
 %                 Data Types - single | double
-%        maxiter:  maximum number of iterations. Positive integer.
-%                  The default value is 100
-%                 Example - 'maxiter',50
-%                 Data Types - single | double
+%
 %           tol :  tolerance for convergence. Positive real number.
 %                  The default value of the tolerance is 1e-5
 %                 Example - 'tol',1e-10
 %                 Data Types - single | double
+%
 %   tol_sigma  :   Use tolerance for both mu sigs. Boolean .
 %                  If true use both mu and sigma diffs (default true)
 %                 Example - 'tol_sigma',false
 %                 Data Types - logical
+%
 %   condmeanimp :  Also give the matrix of conditional mean imputed values. Boolean.
-%                 if true structure out also contains the matrix of imputed values.
+%                 if true structure out also contains the matrix of imputed values called Yimp.
 %                 The default value of condmeanimp is false.
 %                 Example - 'condmeanimp',true
 %                 Data Types - logical
+%
 %   stochimp :     Also give the matrix of stochastic imputed values. Boolean.
-%                 if true structure out also contains the matrix of imputed values.
+%                 if true structure out also contains the matrix of imputed values called stochYimp.
 %                 The default value of stochimp is false.
 %                 Example - 'stochimp',true
 %                 Data Types - logical
-%
 %
 %  Output:
 %
@@ -54,7 +84,10 @@ function out = mdEM(Y, varargin)
 %              out.cov = final estimate of cov matrix
 %              out.iter = number of iterations to convergence.
 %              out.Yimp = empty value of matrix Y with imputed values
-%                   (depending on input option condmeanimp/stochimp)
+%                   (only if input option condmeanimp is true)
+%              out.stochYimp = empty value of matrix Y with imputed values
+%                   (only if input option stochimp is true)
+%
 %
 %  
 % See also: mdTEM, mdImputeCondMean.m, mdImputeStochastic.m, mdPartialMD.m, mdPartialMD2full
@@ -157,13 +190,13 @@ function out = mdEM(Y, varargin)
     % Mahalanobis distances using original matrix
     d2Ori=mahalFS(Yfull,mean(Yfull),cov(Yfull));
     % Calculate the Mahalanobis distance for the imputed data
-    d2Imp = mahalFS(out.Yimp, mean(out.Yimp), cov(out.Yimp));
+    d2Imp = mahalFS(out.stochYimp, mean(out.stochYimp), cov(out.stochYimp));
     % Compare original with distances for the imputed data
     % Calculate the differences between original and imputed Mahalanobis distances
     scatter(d2Ori,d2Imp)
     % Add axis labels
     xlabel('Original Mahalanobis Distances');
-    ylabel('Imputed Mahalanobis Distances');
+    ylabel('Imputed Mahalanobis Distances (stochastic imputation)');
     grid on
 %}
 
@@ -175,12 +208,15 @@ tol=1e-5;
 tol_sigma=true;
 condmeanimp=false;
 stochimp=false;
+Patterns=[];
+idxPatterns=[];
 
 
 
 if nargin>1
  options=struct('mus',mus,'sigs',sigs,'maxiter',maxiter,'tol',tol, ...
-     'tol_sigma',tol_sigma,'condmeanimp',false,'stochimp',false);
+     'tol_sigma',tol_sigma,'condmeanimp',false,'stochimp',false, ...
+     'Patterns',Patterns,'idxPatterns',idxPatterns);
 
  [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -235,7 +271,7 @@ while (dif > tol) && (iter < maxiter)
     sigs_old = sigs;
 
     % E-step with equal weights (no trimming)
-    [T1, T2] = aux.NAcompute_expected_stats(Y, mus, sigs, w);
+    [T1, T2] = aux.NAcompute_expected_stats(Y, mus, sigs, w, Patterns, idxPatterns);
 
     % M-step
     [mus, sigs] = aux.NAmaximization_step(T1, T2, w);
@@ -250,13 +286,17 @@ while (dif > tol) && (iter < maxiter)
     end
 end
 
-%% EM single imputation of missing values (conditional means)
+%% EM imputation of missing values (conditional means or stochastic imputation)
 if condmeanimp == true
     Yimp = mdImputeCondMean(Y, mus, sigs);
-elseif stochimp == true
-    Yimp = mdImputeStochastic(Y, mus, sigs);
 else
     Yimp=[];
+end
+
+if stochimp == true
+    stochYimp = mdImputeStochastic(Y, mus, sigs);
+else
+    stochYimp=[];
 end
 
 out=struct;
@@ -264,6 +304,7 @@ out.loc = mus;
 out.cov = sigs;
 out.iter = iter;
 out.Yimp=Yimp;
+out.stochYimp=stochYimp;
 
 end
 
