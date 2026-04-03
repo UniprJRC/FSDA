@@ -49,11 +49,13 @@ function T = getTickers(market, nStocks)
 %{
     % Default market and default number of stocks.
     T = getTickers;
+    disp(T)
 %}
 
 %{
     % Ten representative tickers for Milan.
      T = getTickers('Milan');
+     disp(T)
 %}
 
 %{
