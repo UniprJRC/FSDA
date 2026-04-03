@@ -1,4 +1,4 @@
-function TT = getTickers(market, nStocks)
+function T = getTickers(market, nStocks)
 %getTickers returns representative ticker symbols for a market
 %
 %<a href="matlab: docsearchFS('getTickers')">Link to the help function</a>
