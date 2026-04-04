@@ -281,7 +281,7 @@ Symbol = [ ...
     "ISP.MI"
     "UCG.MI"
     "G.MI"
-    "STM.MI"
+    "STMMI.MI"
     "TIT.MI"
     "SRG.MI"
     "MB.MI"
