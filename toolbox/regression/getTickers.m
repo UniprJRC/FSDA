@@ -100,21 +100,24 @@ end
 marketLower = lower(strtrim(market));
 
 switch marketLower
-    case {'nasdaq','nasdaq us','us tech'}
+    case {'nasdaq','nasdaq us','us tech','nasdaq100','nasdaq-100'}
         Tfull = localNasdaq();
 
     case {'nyse','new york stock exchange'}
         Tfull = localNYSE();
 
-    case {'milan','borsa italiana','italy'}
+    case {'milan','borsa italiana','italy','ftsemib'}
         Tfull = localMilan();
 
-    case {'london','lse','london stock exchange','uk'}
+    case {'london','lse','london stock exchange','uk','ftse100'}
         Tfull = localLondon();
+
+    case {'sp500','s&p500','sp-500','standard and poor','standard & poor'}
+        Tfull = localSP500();
 
     otherwise
         error('FSDA:getTickers:WrongInputOpt', ...
-            'Unknown market. Allowed markets are ''Nasdaq'', ''NYSE'', ''Milan'' and ''London''.');
+            'Unknown market. Allowed markets are ''Nasdaq'', ''NYSE'', ''Milan'', ''London'', ''SP500''.');
 end
 
 % First row = market index, following rows = equities
@@ -411,6 +414,78 @@ Name = [ ...
     "Centrica"
     "Associated British Foods"
     "Ashtead Group"
+    ];
+
+T = table(Symbol, Name);
+
+end
+
+function T = localSP500()
+
+Symbol = [ ...
+    "^GSPC"
+    "AAPL"
+    "MSFT"
+    "NVDA"
+    "AMZN"
+    "GOOGL"
+    "META"
+    "BRK-B"
+    "TSLA"
+    "UNH"
+    "JNJ"
+    "V"
+    "XOM"
+    "PG"
+    "MA"
+    "HD"
+    "CVX"
+    "MRK"
+    "ABBV"
+    "KO"
+    "PEP"
+    "COST"
+    "AVGO"
+    "ADBE"
+    "CSCO"
+    "WMT"
+    "DIS"
+    "MCD"
+    "NFLX"
+    "CRM"
+    ];
+
+Name = [ ...
+    "S&P 500 Index"
+    "Apple"
+    "Microsoft"
+    "NVIDIA"
+    "Amazon"
+    "Alphabet Class A"
+    "Meta Platforms"
+    "Berkshire Hathaway B"
+    "Tesla"
+    "UnitedHealth"
+    "Johnson & Johnson"
+    "Visa"
+    "Exxon Mobil"
+    "Procter & Gamble"
+    "Mastercard"
+    "Home Depot"
+    "Chevron"
+    "Merck"
+    "AbbVie"
+    "Coca-Cola"
+    "PepsiCo"
+    "Costco"
+    "Broadcom"
+    "Adobe"
+    "Cisco"
+    "Walmart"
+    "Disney"
+    "McDonald's"
+    "Netflix"
+    "Salesforce"
     ];
 
 T = table(Symbol, Name);
