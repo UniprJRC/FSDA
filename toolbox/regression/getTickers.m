@@ -3,6 +3,15 @@ function T = getTickers(varargin)
 %
 %<a href="matlab: docsearchFS('getTickers')">Link to the help function</a>
 %
+%   getTickers, getYahoo and getFundamentals can be used jointly to build a
+%   complete workflow: from the selection of representative market tickers,
+%   to the retrieval and dynamic interactive plot of their price time
+%   series, and finally to the extraction of their fundamental financial
+%   information.
+%   For background on financial data and market analysis, see:
+%   Yahoo Finance API documentation https://finance.yahoo.com/ 
+%   and Damodaran  (2012).
+%
 % Required input arguments:
 %
 %
@@ -16,8 +25,11 @@ function T = getTickers(varargin)
 %               'NYSE'
 %               'Milan'    or 'FTSEMIB'
 %               'London'   or 'FTSE100'
+%               'DAX'      or 'DAX40'
+%               'CAC40'    or 'CAC'
+%               'Nikkei225' or 'Nikkei'
 %               Default is 'Nasdaq'.
-%               Example - 'market', 'Milan'
+%               Example - 'market', 'DAX'
 %               Data Types - char | string
 %
 % nStocks :     Number of representative stocks to return, excluding the
@@ -64,11 +76,16 @@ function T = getTickers(varargin)
 %               Table with variables:
 %               First column   = ticker symbol (ticker);
 %               Second column  = company name (Name);
-%               Third column = market capitalization (MarketCap) 
+%               Third column = market capitalization (MarketCap)
 %                   This variable is present only if RankByCap=true.
 %               The first row contains the market index if IncludeIndex=true.
 %
-% See also: getYahoo, getFundamentals
+% See also: getYahoo, getFundamentals, rsindex, candle, movavg
+%
+% References:
+%
+%  Damodaran, A. (2012). "Investment Valuation: Tools and Techniques for
+%  Determining the Value of Any Asset", 3rd Edition, Wiley.
 %
 % Copyright 2008-2026.
 % Written by FSDA team
@@ -113,6 +130,62 @@ function T = getTickers(varargin)
     T = getTickers('market','London','nStocks',20,'Source','dynamic','RankByCap',true);
 %}
 
+%{
+    % Top 10 DAX constituents using static representative list.
+    T = getTickers('market','DAX');
+%}
+
+%{
+    % Dynamic CAC 40 constituents.
+    T = getTickers('market','CAC40','Source','dynamic','nStocks',Inf);
+%}
+
+%{
+    % Top 20 Nikkei names ranked by market cap.
+    T = getTickers('market','Nikkei225','nStocks',20,'RankByCap',true);
+%}
+
+%{
+    Example of combined use of getTickers and getFundamentals.
+    T = getTickers('market','SP500','nStocks',10,'RankByCap',true);
+    disp(T)
+
+    % Retrieve fundamentals and verify ranking
+    F = getFundamentals(T.ticker(2:end),'Fields','basic');
+    disp(F(:,{'TickerSymbol','marketCap'}))
+%}
+
+%{
+    % Example of combined use of getTickers, getYahoo and getFundamentals.
+    % Step 1: get tickers
+    T = getTickers('market','CAC40','nStocks',5,'RankByCap',true);
+
+    % Step 2: get prices
+    P = getYahoo(T.ticker(2:end));
+
+    % Step 3: fundamentals
+    F = getFundamentals(T.ticker(2:end),'Fields','performance');
+
+    % Combine outputs manually
+    disp(T)
+    disp(F)
+%}
+
+%{
+    %% Example with full pipeline.
+    % STEP 1: Retrieve top tickers (static, no ranking).
+    T = getTickers('market','Nasdaq','nStocks',5);
+    disp(T)
+
+    % STEP 2: Download price data for those tickers.
+    out = getYahoo(T.ticker(2:end));  % skip index
+    disp(out)
+
+    % STEP 3: Retrieve fundamentals.
+    F = getFundamentals(T.ticker(2:end),'Fields','basic');
+    disp(F)
+%}
+
 %% Beginning of code
 
 
@@ -151,6 +224,11 @@ if nargin > 0
 
 end
 
+if isempty(Source)
+    Source = 'static';
+end
+
+Source = lower(strtrim(Source));
 
 if ~isscalar(nStocks) || ~isnumeric(nStocks) || isnan(nStocks) || nStocks < 1
     error('FSDA:getTickers:WrongInputOpt', ...
@@ -168,12 +246,8 @@ if strcmp(Source,'static') && isfinite(nStocks) && nStocks > 30
     nStocks = 30;
 end
 
-Source = lower(strtrim(Source));
 marketLower = lower(strtrim(market));
 
-if isempty(Source)
-    Source = 'static';
-end
 
 validSources = {'static','dynamic'};
 if ~ismember(Source, validSources)
@@ -186,7 +260,7 @@ end
 % ticker and Name.
 % If RankByCap=true, variable MarketCap is added later.
 % Depending on input option Source this information
-% Can be retrieved from a curated list or in a dynamic way.
+% can be retrieved from a curated list or in a dynamic way.
 [indexSymbol, indexName, U] = localMarketUniverse(marketLower, Source);
 
 if isempty(U) || height(U)==0
@@ -234,7 +308,6 @@ end
 % =========================================================================
 % LOCAL FUNCTIONS
 % =========================================================================
-
 function [indexSymbol, indexName, U] = localMarketUniverse(marketLower, Source)
 
 switch marketLower
@@ -261,8 +334,6 @@ switch marketLower
     case {'nyse','new york stock exchange'}
         indexSymbol = "^NYA";
         indexName   = "NYSE Composite";
-        % For NYSE use static list in both cases unless you later add a
-        % reliable dynamic source.
         U = localStaticNYSE();
 
     case {'milan','borsa italiana','italy','ftsemib'}
@@ -285,9 +356,43 @@ switch marketLower
             U = localStaticLondon();
         end
 
+    case {'dax','germany','de','dax40'}
+        indexSymbol = "^GDAXI";
+        indexName   = "DAX Index";
+        if strcmp(Source,'dynamic')
+            url = 'https://en.wikipedia.org/wiki/DAX';
+            U = localWikiConstituents(url);
+        else
+            U = localStaticDAX();
+        end
+
+    case {'cac','cac40','france','paris'}
+        indexSymbol = "^FCHI";
+        indexName   = "CAC 40 Index";
+        if strcmp(Source,'dynamic')
+            url = 'https://en.wikipedia.org/wiki/CAC_40';
+            U = localWikiConstituents(url);
+        else
+            U = localStaticCAC40();
+        end
+
+    case {'nikkei','nikkei225','japan','jp'}
+        indexSymbol = "^N225";
+        indexName   = "Nikkei 225 Index";
+        % Dynamic Wikipedia parsing is not straightforward here because the
+        % page uses sector sublists rather than a simple ticker table.
+
+        if strcmp(Source,'dynamic')
+            warning('FSDA:getTickers:NoDynamicSource', ...
+                ['Dynamic retrieval for Nikkei 225 is currently unavailable. ' ...
+                'Using static curated list instead.']);
+        end
+        U = localStaticNikkei225();
+
     otherwise
         error('FSDA:getTickers:WrongInputOpt', ...
-            'Unknown market. Allowed values are ''Nasdaq'', ''SP500'', ''NYSE'', ''Milan'', ''London''.');
+            ['Unknown market. Allowed values are ''Nasdaq'', ''SP500'', ''NYSE'', ' ...
+            '''Milan'', ''London'', ''DAX'', ''CAC40'', ''Nikkei225''.']);
 end
 
 end
@@ -389,12 +494,35 @@ if contains(url,'FTSE_100_Index')
     if ~endsWith(sym,'.L')
         sym = sym + ".L";
     end
+
+elseif contains(url,'DAX')
+    if ~endsWith(sym,'.DE')
+        sym = sym + ".DE";
+    end
+
+elseif contains(url,'CAC_40')
+    if ~endsWith(sym,'.PA') && ~endsWith(sym,'.AS')
+        % Most CAC members are .PA, but ArcelorMittal is commonly MT.AS
+        if sym == "MT"
+            sym = "MT.AS";
+        else
+            sym = sym + ".PA";
+        end
+    end
+
+    % elseif contains(url,'Nikkei_225')
+    %     if ~endsWith(sym,'.T')
+    %         sym = sym + ".T";
+    %     end
+
 elseif contains(url,'Nasdaq-100')
     % keep US tickers as they are
+
 elseif contains(url,'List_of_S%26P_500_companies')
     % keep US tickers as they are
 end
 end
+
 
 % -------------------------------------------------------------------------
 function U = localStaticNasdaq()
@@ -762,7 +890,221 @@ Name = [ ...
 U = table(ticker, Name);
 
 end
+function U = localStaticDAX()
 
+ticker = [ ...
+    "SAP.DE"
+    "SIE.DE"
+    "ALV.DE"
+    "AIR.DE"
+    "DTE.DE"
+    "MUV2.DE"
+    "MBG.DE"
+    "RHM.DE"
+    "BMW.DE"
+    "BAS.DE"
+    "BAYN.DE"
+    "ADS.DE"
+    "IFX.DE"
+    "DB1.DE"
+    "VOW3.DE"
+    "HEN3.DE"
+    "SHL.DE"
+    "DHL.DE"
+    "EOAN.DE"
+    "ENR.DE"
+    "BEI.DE"
+    "HEI.DE"
+    "QIA.DE"
+    "FRE.DE"
+    "CON.DE"
+    "HNR1.DE"
+    "MRK.DE"
+    "MTX.DE"
+    "SY1.DE"
+    "P911.DE"
+    ];
+
+Name = [ ...
+    "SAP"
+    "Siemens"
+    "Allianz"
+    "Airbus"
+    "Deutsche Telekom"
+    "Munich Re"
+    "Mercedes-Benz Group"
+    "Rheinmetall"
+    "BMW"
+    "BASF"
+    "Bayer"
+    "Adidas"
+    "Infineon"
+    "Deutsche Boerse"
+    "Volkswagen Pref"
+    "Henkel Pref"
+    "Siemens Healthineers"
+    "DHL Group"
+    "E.ON"
+    "Siemens Energy"
+    "Beiersdorf"
+    "Heidelberg Materials"
+    "QIAGEN"
+    "Fresenius"
+    "Continental"
+    "Hannover Rueck"
+    "Merck KGaA"
+    "MTU Aero Engines"
+    "Symrise"
+    "Porsche AG"
+    ];
+
+U = table(ticker, Name);
+
+end
+
+function U = localStaticCAC40()
+
+ticker = [ ...
+    "MC.PA"
+    "OR.PA"
+    "TTE.PA"
+    "SAN.PA"
+    "AIR.PA"
+    "AI.PA"
+    "SU.PA"
+    "EL.PA"
+    "BNP.PA"
+    "CS.PA"
+    "SAF.PA"
+    "DG.PA"
+    "RI.PA"
+    "CAP.PA"
+    "ORA.PA"
+    "ACA.PA"
+    "ENGI.PA"
+    "VIE.PA"
+    "WLN.PA"
+    "HO.PA"
+    "LR.PA"
+    "KER.PA"
+    "ML.PA"
+    "CA.PA"
+    "SGO.PA"
+    "STM.PA"
+    "BN.PA"
+    "PUB.PA"
+    "TEP.PA"
+    "AC.PA"
+    ];
+
+Name = [ ...
+    "LVMH"
+    "L'Oreal"
+    "TotalEnergies"
+    "Sanofi"
+    "Airbus"
+    "Air Liquide"
+    "Schneider Electric"
+    "EssilorLuxottica"
+    "BNP Paribas"
+    "AXA"
+    "Safran"
+    "Vinci"
+    "Pernod Ricard"
+    "Capgemini"
+    "Orange"
+    "Credit Agricole"
+    "Engie"
+    "Veolia"
+    "Worldline"
+    "Thales"
+    "Legrand"
+    "Kering"
+    "Michelin"
+    "Carrefour"
+    "Saint-Gobain"
+    "STMicroelectronics"
+    "Danone"
+    "Publicis"
+    "Teleperformance"
+    "Accor"
+    ];
+
+U = table(ticker, Name);
+
+end
+
+function U = localStaticNikkei225()
+
+ticker = [ ...
+    "7203.T"
+    "6758.T"
+    "6861.T"
+    "9983.T"
+    "9984.T"
+    "8306.T"
+    "8035.T"
+    "9432.T"
+    "9433.T"
+    "4063.T"
+    "6501.T"
+    "7974.T"
+    "7267.T"
+    "6954.T"
+    "4519.T"
+    "6098.T"
+    "8766.T"
+    "8058.T"
+    "8031.T"
+    "6981.T"
+    "6367.T"
+    "7751.T"
+    "6857.T"
+    "2914.T"
+    "4502.T"
+    "4568.T"
+    "6971.T"
+    "4661.T"
+    "6902.T"
+    "6503.T"
+    ];
+
+Name = [ ...
+    "Toyota Motor"
+    "Sony Group"
+    "Keyence"
+    "Fast Retailing"
+    "SoftBank Group"
+    "Mitsubishi UFJ Financial Group"
+    "Tokyo Electron"
+    "NTT"
+    "KDDI"
+    "Shin-Etsu Chemical"
+    "Hitachi"
+    "Nintendo"
+    "Honda Motor"
+    "Fanuc"
+    "Chugai Pharmaceutical"
+    "Recruit Holdings"
+    "Tokio Marine Holdings"
+    "Mitsubishi Corp"
+    "Mitsui & Co"
+    "Murata Manufacturing"
+    "Daikin Industries"
+    "Canon"
+    "Advantest"
+    "Japan Tobacco"
+    "Takeda Pharmaceutical"
+    "Daiichi Sankyo"
+    "Kyocera"
+    "Oriental Land"
+    "Denso"
+    "Mitsubishi Electric"
+    ];
+
+U = table(ticker, Name);
+
+end
 % -------------------------------------------------------------------------
 function mc = localGetMarketCaps(symbols, msg)
 

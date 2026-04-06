@@ -4,6 +4,16 @@ function [out]=getYahoo(ticker, varargin)
 % 
 %<a href="matlab: docsearchFS('getYahoo')">Link to the help function</a>
 %
+%
+%   getTickers, getYahoo and getFundamentals can be used jointly to build a
+%   complete workflow: from the selection of representative market tickers,
+%   to the retrieval and dynamic interactive plot of their price time
+%   series, and finally to the extraction of their fundamental financial
+%   information.
+%   For background on financial data and market analysis, see:
+%   Yahoo Finance API documentation https://finance.yahoo.com/ 
+%   and Damodaran  (2012).
+%
 % Required input arguments:
 %
 % ticker :      Ticker symbol(s). Character, string or cell array of char.
@@ -237,7 +247,12 @@ function [out]=getYahoo(ticker, varargin)
 % out.Message           = message describing the result.
 % out.class             = 'getYahoo'.
 %
-% See also: rsindex, candle, movavg
+% See also: getTickers, getFundamentals, rsindex, candle, movavg
+%
+% References:
+%
+%  Damodaran, A. (2012). "Investment Valuation: Tools and Techniques for
+%  Determining the Value of Any Asset", 3rd Edition, Wiley.
 %
 % Copyright 2008-2026.
 % Written by FSDA team
@@ -432,6 +447,20 @@ function [out]=getYahoo(ticker, varargin)
     TT = out.TT;
     plot(TT.t,TT.Close);
     title(ticker)
+%}
+
+
+%{
+    % Combined use of getTickers, getYahoo and getFundamentals.
+    T = getTickers('market','London','Source','dynamic','nStocks',15);
+    disp(T)
+
+    % Retrieve price data
+    out = getYahoo(T.ticker(2:end));
+
+    % Retrieve valuation metrics
+    F = getFundamentals(T.ticker(2:end),'Fields','valuation');
+    disp(F)
 %}
 
 %% Beginning of code

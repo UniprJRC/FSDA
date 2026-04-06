@@ -3,6 +3,15 @@ function T = getFundamentals(ticker, varargin)
 %
 %<a href="matlab: docsearchFS('getFundamentals')">Link to the help function</a>
 %
+%   getTickers, getYahoo and getFundamentals can be used jointly to build a
+%   complete workflow: from the selection of representative market tickers,
+%   to the retrieval and dynamic interactive plot of their price time
+%   series, and finally to the extraction of their fundamental financial
+%   information.
+%   For background on financial data and market analysis, see:
+%   Yahoo Finance API documentation https://finance.yahoo.com/ 
+%   and Damodaran  (2012).
+%
 % Required input arguments:
 %
 % ticker :     Ticker symbol(s). Character, string, string array or cell array of char.
@@ -60,6 +69,22 @@ function T = getFundamentals(ticker, varargin)
 %               columns contain all available information returned by Yahoo
 %               Finance through Python yfinance module.
 %
+%
+% See also: getYahoo, getTickers, rsindex, candle, movavg
+%
+% References:
+%
+%  Damodaran, A. (2012). "Investment Valuation: Tools and Techniques for
+%  Determining the Value of Any Asset", 3rd Edition, Wiley.
+%
+% Copyright 2008-2026.
+% Written by FSDA team
+%
+%<a href="matlab: docsearchFS('getFundamentals')">Link to the help page for this function</a>
+%
+%$LastChangedDate::                      $: Date of the last commit
+%
+
 % Examples:
 %
 %{
@@ -100,9 +125,10 @@ function T = getFundamentals(ticker, varargin)
 %}
 
 %{
-    % Rank by market capitalization
+    %% Rank by market capitalization
     T = getFundamentals(["AAPL","MSFT","NVDA"], ...
         'Fields','basic','RankBy','marketCap');
+    disp(T)
 %}
 
 %{
@@ -116,6 +142,19 @@ function T = getFundamentals(ticker, varargin)
     T = getFundamentals(["AAPL","MSFT","NVDA"], ...
         'Fields','performance','RankBy','returnOnEquity');
 %}
+
+%{
+    %% Example of combined use of getTickers with getFundamentals.
+    T = getTickers('market','DAX','nStocks',8,'RankByCap',true);
+
+    % Retrieve selected fields only
+    F = getFundamentals(T.ticker(2:end), ...
+        'Fields',{'marketCap','trailingPE','returnOnEquity'});
+
+    disp(F)
+%}
+
+
 
 %% Beginning of code
 
