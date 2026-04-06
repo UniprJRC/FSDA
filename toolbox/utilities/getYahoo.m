@@ -1,7 +1,7 @@
 function [out]=getYahoo(ticker, varargin)
 %getYahoo downloads financial time series from Yahoo Finance and optionally plots them using a customizable three-panel layout
 %
-% 
+%
 %<a href="matlab: docsearchFS('getYahoo')">Link to the help function</a>
 %
 %
@@ -11,8 +11,7 @@ function [out]=getYahoo(ticker, varargin)
 %   series, and finally to the extraction of their fundamental financial
 %   information.
 %   For background on financial data and market analysis, see:
-%   Yahoo Finance API documentation https://finance.yahoo.com/ 
-%   and Damodaran  (2012).
+%   Yahoo Finance API documentation https://finance.yahoo.com/
 %
 % Required input arguments:
 %
@@ -125,12 +124,12 @@ function [out]=getYahoo(ticker, varargin)
 %               Example - 'showMACrossovers',false
 %               Data Types - logical
 %
-% upColor     : Color for up candles (top panel) and bars (mid panel). RGB row vector. 
+% upColor     : Color for up candles (top panel) and bars (mid panel). RGB row vector.
 %               Default is [0 0.7 0].
 %               Example - 'upColor',[0 0.5 0]
 %               Data Types - double
 %
-% downColor   :  Color for down candles (top panel) and bars (mid panel). RGB row vector. 
+% downColor   :  Color for down candles (top panel) and bars (mid panel). RGB row vector.
 %               Default is [0.85 0 0].
 %               Example - 'downColor',[0.7 0 0]
 %               Data Types - double
@@ -253,6 +252,13 @@ function [out]=getYahoo(ticker, varargin)
 %
 %  Damodaran, A. (2012). "Investment Valuation: Tools and Techniques for
 %  Determining the Value of Any Asset", 3rd Edition, Wiley.
+%
+%  Cochrane, J. H. (2023). "Asset Pricing, Revised Edition",
+%  Princeton University Press, Princeton.
+%
+%  Koller, T., Goedhart, M., and Wessels, D. (2020).
+%  "Valuation: Measuring and Managing the Value of Companies,
+%  7th Edition", Wiley, Hoboken.
 %
 % Copyright 2008-2026.
 % Written by FSDA team
@@ -1463,3 +1469,5 @@ priority = {'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3
 idxAllowed = find(ismember(priority, allowed), 1, 'first');
 intervalOut = priority{idxAllowed};
 end
+
+%FScategory:UTI-FIN

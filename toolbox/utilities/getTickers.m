@@ -10,7 +10,6 @@ function T = getTickers(varargin)
 %   information.
 %   For background on financial data and market analysis, see:
 %   Yahoo Finance API documentation https://finance.yahoo.com/ 
-%   and Damodaran  (2012).
 %
 % Required input arguments:
 %
@@ -86,6 +85,14 @@ function T = getTickers(varargin)
 %
 %  Damodaran, A. (2012). "Investment Valuation: Tools and Techniques for
 %  Determining the Value of Any Asset", 3rd Edition, Wiley.
+%
+%  Cochrane, J. H. (2023). "Asset Pricing, Revised Edition",
+%  Princeton University Press, Princeton.
+%
+%  Koller, T., Goedhart, M., and Wessels, D. (2020).
+%  "Valuation: Measuring and Managing the Value of Companies,
+%  7th Edition", Wiley, Hoboken.
+%
 %
 % Copyright 2008-2026.
 % Written by FSDA team
@@ -1151,3 +1158,4 @@ end
 
 end
 
+%FScategory:UTI-FIN
