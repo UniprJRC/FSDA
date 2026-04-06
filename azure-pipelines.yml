@@ -62,6 +62,10 @@ jobs:
           Bioinformatics_Toolbox
           Optimization_Toolbox
           Financial_Toolbox
+    - script: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install yfinance
+      displayName: 'Install Python packages (yfinance)'
     - task: RunMATLABCommand@0 
       inputs:
         command: |
