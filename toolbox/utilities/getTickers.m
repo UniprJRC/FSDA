@@ -153,10 +153,9 @@ function T = getTickers(varargin)
 %}
 
 %{
-    Example of combined use of getTickers and getFundamentals.
+    % Example of combined use of getTickers and getFundamentals.
     T = getTickers('market','SP500','nStocks',10,'RankByCap',true);
     disp(T)
-
     % Retrieve fundamentals and verify ranking
     F = getFundamentals(T.ticker(2:end),'Fields','basic');
     disp(F(:,{'TickerSymbol','marketCap'}))
