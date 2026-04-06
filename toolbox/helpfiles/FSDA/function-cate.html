@@ -103,6 +103,7 @@
                         <li><a class='intrnllnk' href='#GUI'>Guis</a>
                         </li>
                         <li><a class='intrnllnk' href='#UTI'>Utilities</a><ul>
+                            <li><a class='intrnllnk' href='#UTI-FIN'>Data acquisition (financial markets)</a></li>
                             <li><a class='intrnllnk' href='#UTISTAT'>Statistical utilities</a></li>
                             <li><a class='intrnllnk' href='#UTIGEN'>General utilities</a></li>
                             <li><a class='intrnllnk' href='#UTICOMB'>Combinatorial routines</a></li>
@@ -216,7 +217,7 @@ Functions - - By Category</h1>
 <div class="doc_functionsgroup_container">
     <div class="doc_function_block">
         <table border="0" cellpadding="0" cellspacing="0">
-            <tr><td class="term"><a href="mdEM.html">mdEM</a></td><td class="description">EM algorithm for data with missing values (no trimming)</td></tr><tr><td class="term"><a href="mdImputeCondMean.html">mdImputeCondMean</a></td><td class="description">Replace NaNs in Y by E[y_mis | y_obs, mu, Sigma] under MVN(mu,Sigma)</td></tr><tr><td class="term"><a href="mdPartialMD.html">mdPartialMD</a></td><td class="description">Computes squared Mahalanobis distances using only observed entries</td></tr><tr><td class="term"><a href="mdPartialMD2full.html">mdPartialMD2full</a></td><td class="description">Rescale partial squared distances to full-dimension</td></tr><tr><td class="term"><a href="mdpattern.html">mdpattern</a></td><td class="description">Finds and plots missing data patterns</td></tr><tr><td class="term"><a href="mdTEM.html">mdTEM</a></td><td class="description">EM algorithm with trimming (TEM) for data with missing values</td></tr>
+            <tr><td class="term"><a href="mdEM.html">mdEM</a></td><td class="description">EM algorithm for data with missing values (no trimming)</td></tr><tr><td class="term"><a href="mdEMmarco.html">mdEMmarco</a></td><td class="description">MdEM  EM algorithm for data with missing values (no trimming)</td></tr><tr><td class="term"><a href="mdImputeCondMean.html">mdImputeCondMean</a></td><td class="description">Replace NaNs in Y by E[y_mis | y_obs, mu, Sigma] under MVN(mu,Sigma)</td></tr><tr><td class="term"><a href="mdPartialMD.html">mdPartialMD</a></td><td class="description">Computes squared Mahalanobis distances using only observed entries</td></tr><tr><td class="term"><a href="mdPartialMD2full.html">mdPartialMD2full</a></td><td class="description">Rescale partial squared distances to full-dimension</td></tr><tr><td class="term"><a href="mdpattern.html">mdpattern</a></td><td class="description">Finds and plots missing data patterns</td></tr><tr><td class="term"><a href="mdTEM.html">mdTEM</a></td><td class="description">EM algorithm with trimming (TEM) for data with missing values</td></tr>
         </table>
     </div>
 </div>
@@ -329,6 +330,14 @@ Functions - - By Category</h1>
 <p></p>
 <!--BEGFUTI-->
 <h2 id="UTI">Utilities</h2>
+<h3 id="UTI-FIN">Data acquisition (financial markets)</h3>
+<div class="doc_functionsgroup_container">
+    <div class="doc_function_block">
+        <table border="0" cellpadding="0" cellspacing="0">
+            <tr><td class="term"><a href="getFundamentals.html">getFundamentals</a></td><td class="description">Retrieves detailed company metrics for supplied tickers</td></tr><tr><td class="term"><a href="getTickers.html">getTickers</a></td><td class="description">Retrieves representative or full ticker lists for a market/index</td></tr><tr><td class="term"><a href="getYahoo.html">getYahoo</a></td><td class="description">Downloads financial time series from Yahoo Finance and optionally plots them using a customizable three-panel layout</td></tr>
+        </table>
+    </div>
+</div>
 <h3 id="UTISTAT">Statistical utilities</h3>
 <div class="doc_functionsgroup_container">
     <div class="doc_function_block">

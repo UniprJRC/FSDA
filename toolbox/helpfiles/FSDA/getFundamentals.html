@@ -6,42 +6,109 @@
    series, and finally to the extraction of their fundamental financial
    information.</p> <p>
    For background on financial data and market analysis, see:
-   Yahoo Finance API documentation <a href="https://finance.yahoo.com">https://finance.yahoo.com</a>/ 
-   and Damodaran  (2012).</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="getFundamentals.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_T"><code>T</code></a>=getFundamentals(<a class="intrnllnk" href="#inputarg_ticker"><code>ticker</code></a>)</code></span>One ticker.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="getFundamentals.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_T"><code>T</code></a>=getFundamentals(<a class="intrnllnk" href="#inputarg_ticker"><code>ticker</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Multiple tickers Example 1.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>One ticker.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals('ENEL.MI');</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Multiple tickers Example 1.</li></span></a></span></h3><div class="collapse"><p>
+   Yahoo Finance API documentation <a href="https://finance.yahoo.com">https://finance.yahoo.com</a>/</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="getFundamentals.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_T"><code>T</code></a>=getFundamentals(<a class="intrnllnk" href="#inputarg_ticker"><code>ticker</code></a>)</code></span>One ticker.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="getFundamentals.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_T"><code>T</code></a>=getFundamentals(<a class="intrnllnk" href="#inputarg_ticker"><code>ticker</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Multiple tickers Example 1.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>One ticker.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals('ENEL.MI');</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Multiple tickers Example 1.</li></span></a></span></h3><div class="collapse"><p>
      The input is a cell array of character vectors.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals({'ENEL.MI','AAPL','MSFT'});</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Multiple tickers Example 2.</li></span></a></span></h3><div class="collapse"><p>
      The input is a string array.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals(["ENEL.MI","RACE.MI","AAPL"]);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Basic information only.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals('AAPL','Fields','basic');</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Valuation metrics.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals(["AAPL","MSFT","NVDA"],'Fields','valuation');</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Performance metrics.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals('ENEL.MI','Fields','performance');</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Custom fields.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals('AAPL','Fields',{'marketCap','trailingPE'});</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Rank by market capitalization
     T = getFundamentals(["AAPL","MSFT","NVDA"], .</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals(["AAPL","MSFT","NVDA"], ...
 'Fields','basic','RankBy','marketCap');
-disp(T)</pre></div></div><pre class="codeoutput">                                   CompanyName           TickerSymbol    marketCap         sector                  industry           
-                            _________________________    ____________    __________    ______________    _____________________________
+disp(T)</pre></div></div><pre class="codeoutput">    ticker            Name       
+    _______    __________________
 
-    NVIDIACorporation       {'NVIDIA Corporation'   }      {'NVDA'}      4.3115e+12    {'Technology'}    {'Semiconductors'           }
-    AppleInc_               {'Apple Inc.'           }      {'AAPL'}      3.7615e+12    {'Technology'}    {'Consumer Electronics'     }
-    MicrosoftCorporation    {'Microsoft Corporation'}      {'MSFT'}      2.7757e+12    {'Technology'}    {'Software - Infrastructure'}
+    "^IXIC"    "Nasdaq Composite"
+    "AAPL"     "Apple"           
+    "MSFT"     "Microsoft"       
+    "NVDA"     "NVIDIA"          
+    "AMZN"     "Amazon"          
+    "GOOGL"    "Alphabet Class A"
+
+Requested pair range=1y, interval=1m is not supported.
+Using interval=1d instead.
+
+Processing ticker 1 of 5: AAPL
+
+Processing ticker 2 of 5: MSFT
+
+Processing ticker 3 of 5: NVDA
+
+Processing ticker 4 of 5: AMZN
+
+Processing ticker 5 of 5: GOOGL
+  5&times;1 struct array with fields:
+
+    Ticker
+    LastPeriod
+    intervalRequested
+    intervalActual
+    TimeZone
+    TT
+    Indicators
+    Success
+    Message
+    class
+
+                                   CompanyName           TickerSymbol    marketCap               sector                           industry             
+                            _________________________    ____________    __________    __________________________    __________________________________
+
+    AppleInc_               {'Apple Inc.'           }     {'AAPL' }      3.7615e+12    {'Technology'            }    {'Consumer Electronics'          }
+    MicrosoftCorporation    {'Microsoft Corporation'}     {'MSFT' }      2.7757e+12    {'Technology'            }    {'Software - Infrastructure'     }
+    NVIDIACorporation       {'NVIDIA Corporation'   }     {'NVDA' }      4.3115e+12    {'Technology'            }    {'Semiconductors'                }
+    Amazon_com_Inc_         {'Amazon.com, Inc.'     }     {'AMZN' }      2.2519e+12    {'Consumer Cyclical'     }    {'Internet Retail'               }
+    AlphabetInc_            {'Alphabet Inc.'        }     {'GOOGL'}      3.5779e+12    {'Communication Services'}    {'Internet Content &amp; Information'}
 
 </pre>
-            </p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Rank by forward PE
+            <a href='http://rosa.unipr.it/fsda/getFundamentals.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\getTickers_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\getTickers_02.png" alt=""> <img vspace="5" hspace="5" src="images\getTickers_03.png" alt=""> <img vspace="5" hspace="5" src="images\getTickers_04.png" alt=""> <img vspace="5" hspace="5" src="images\getTickers_05.png" alt=""> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Rank by forward PE
     T = getFundamentals(["AAPL","MSFT","NVDA"], .</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals(["AAPL","MSFT","NVDA"], ...
 'Fields','valuation','RankBy','forwardPE');</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Rank performance metrics.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getFundamentals(["AAPL","MSFT","NVDA"], ...
 'Fields','performance','RankBy','returnOnEquity');</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of combined use of getTickers with getFundamentals.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">T = getTickers('market','DAX','nStocks',8,'RankByCap',true);
 % Retrieve selected fields only
 F = getFundamentals(T.ticker(2:end), ...
 'Fields',{'marketCap','trailingPE','returnOnEquity'});
-disp(F)</pre></div></div><pre class="codeoutput">Retrieving market capitalizations for 30 constituents of DAX ...
-                                                                                                         CompanyName                                    TickerSymbol    marketCap     trailingPE    returnOnEquity
-                                                                          __________________________________________________________________________    ____________    __________    __________    ______________
+disp(F)</pre></div></div><pre class="codeoutput">    ticker            Name       
+    _______    __________________
 
-    SAPSE                                                                 {'SAP SE'                                                                }    {'SAP.DE' }     1.7385e+11       24.41         0.16122    
-    SiemensAktiengesellschaft                                             {'Siemens Aktiengesellschaft'                                            }    {'SIE.DE' }     1.6273e+11      21.229          0.1279    
-    DeutscheTelekomAG                                                     {'Deutsche Telekom AG'                                                   }    {'DTE.DE' }     1.4887e+11      15.619          0.1564    
-    AllianzSE                                                             {'Allianz SE'                                                            }    {'ALV.DE' }     1.3989e+11      13.296         0.17527    
-    AirbusSE                                                              {'Airbus SE'                                                             }    {'AIR.DE' }     1.2996e+11      25.012         0.21622    
-    SiemensEnergyAG                                                       {'Siemens Energy AG'                                                     }    {'ENR.DE' }     1.2805e+11      69.306         0.20254    
-    RheinmetallAG                                                         {'Rheinmetall AG'                                                        }    {'RHM.DE' }     7.2673e+10      70.426         0.23336    
-    M_nchenerR_ckversicherungs_GesellschaftAktiengesellschaftInM_nchen    {'M&uuml;nchener R&uuml;ckversicherungs-Gesellschaft Aktiengesellschaft in M&uuml;nchen'}    {'MUV2.DE'}     6.9739e+10      11.561         0.18459    
+    "^IXIC"    "Nasdaq Composite"
+    "AAPL"     "Apple"           
+    "MSFT"     "Microsoft"       
+    "NVDA"     "NVIDIA"          
+    "AMZN"     "Amazon"          
+    "GOOGL"    "Alphabet Class A"
+
+Requested pair range=1y, interval=1m is not supported.
+Using interval=1d instead.
+
+Processing ticker 1 of 5: AAPL
+
+Processing ticker 2 of 5: MSFT
+
+Processing ticker 3 of 5: NVDA
+
+Processing ticker 4 of 5: AMZN
+
+Processing ticker 5 of 5: GOOGL
+  5&times;1 struct array with fields:
+
+    Ticker
+    LastPeriod
+    intervalRequested
+    intervalActual
+    TimeZone
+    TT
+    Indicators
+    Success
+    Message
+    class
+
+                                   CompanyName           TickerSymbol    marketCap               sector                           industry             
+                            _________________________    ____________    __________    __________________________    __________________________________
+
+    AppleInc_               {'Apple Inc.'           }     {'AAPL' }      3.7615e+12    {'Technology'            }    {'Consumer Electronics'          }
+    MicrosoftCorporation    {'Microsoft Corporation'}     {'MSFT' }      2.7757e+12    {'Technology'            }    {'Software - Infrastructure'     }
+    NVIDIACorporation       {'NVIDIA Corporation'   }     {'NVDA' }      4.3115e+12    {'Technology'            }    {'Semiconductors'                }
+    Amazon_com_Inc_         {'Amazon.com, Inc.'     }     {'AMZN' }      2.2519e+12    {'Consumer Cyclical'     }    {'Internet Retail'               }
+    AlphabetInc_            {'Alphabet Inc.'        }     {'GOOGL'}      3.5779e+12    {'Communication Services'}    {'Internet Content &amp; Information'}
 
 </pre>
-            </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_ticker" class="clearfix"> </div> <h3 id="input_argument_ticker" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>ticker</code> &#8212; Ticker symbol(s). </span>  </a><span class="example_desc">Character, string, string array or cell array of char.</span></span></h3> <div class="collapse"> <p><p>It can be:
+            <a href='http://rosa.unipr.it/fsda/getFundamentals.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\getTickers_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\getTickers_02.png" alt=""> <img vspace="5" hspace="5" src="images\getTickers_03.png" alt=""> <img vspace="5" hspace="5" src="images\getTickers_04.png" alt=""> <img vspace="5" hspace="5" src="images\getTickers_05.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_ticker" class="clearfix"> </div> <h3 id="input_argument_ticker" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>ticker</code> &#8212; Ticker symbol(s). </span>  </a><span class="example_desc">Character, string, string array or cell array of char.</span></span></h3> <div class="collapse"> <p><p>It can be:
                - a character vector, for example 'ENEL.MI';</p> <p>
                - a string scalar, for example "ENEL.MI";</p> <p>
                - a string array, for example ["ENEL.MI" "AAPL" "MSFT"];</p><p>
@@ -78,5 +145,8 @@ disp(F)</pre></div></div><pre class="codeoutput">Retrieving market capitalizati
                and is repeated as the first table variable. The second
                variable of the output table is TickerSymbol. The remaining
                columns contain all available information returned by Yahoo
-               Finance through Python yfinance module.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Damodaran, A. (2012). "Investment Valuation: Tools and Techniques for
-  Determining the Value of Any Asset", 3rd Edition, Wiley.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="getYahoo.html" itemprop="url"><span itemprop="name"><code>getYahoo</code></span></a></span> | <span itemprop="seealso"><a href="getTickers.html" itemprop="url"><span itemprop="name"><code>getTickers</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'finance/rsindex.html'))" itemprop="url"><span itemprop="name"><code>rsindex</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'finance/candle.html'))" itemprop="url"><span itemprop="name"><code>candle</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'finance/movavg.html'))" itemprop="url"><span itemprop="name"><code>movavg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+               Finance through Python yfinance module.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Damodaran, A. (2012), "Investment Valuation: Tools and Techniques for
+  Determining the Value of Any Asset", 3rd Edition, Wiley.</p></div><div><p>Cochrane, J. H. (2023), "Asset Pricing, Revised Edition",
+  Princeton University Press, Princeton.</p></div><div><p>Koller, T., Goedhart, M., and Wessels, D. (2020),
+  "Valuation: Measuring and Managing the Value of Companies,
+  7th Edition", Wiley, Hoboken.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="getYahoo.html" itemprop="url"><span itemprop="name"><code>getYahoo</code></span></a></span> | <span itemprop="seealso"><a href="getTickers.html" itemprop="url"><span itemprop="name"><code>getTickers</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'finance/rsindex.html'))" itemprop="url"><span itemprop="name"><code>rsindex</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'finance/candle.html'))" itemprop="url"><span itemprop="name"><code>candle</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'finance/movavg.html'))" itemprop="url"><span itemprop="name"><code>movavg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

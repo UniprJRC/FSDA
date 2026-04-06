@@ -83,13 +83,13 @@ function T = getTickers(varargin)
 %
 % References:
 %
-%  Damodaran, A. (2012). "Investment Valuation: Tools and Techniques for
+%  Damodaran, A. (2012), "Investment Valuation: Tools and Techniques for
 %  Determining the Value of Any Asset", 3rd Edition, Wiley.
 %
-%  Cochrane, J. H. (2023). "Asset Pricing, Revised Edition",
+%  Cochrane, J. H. (2023), "Asset Pricing, Revised Edition",
 %  Princeton University Press, Princeton.
 %
-%  Koller, T., Goedhart, M., and Wessels, D. (2020).
+%  Koller, T., Goedhart, M., and Wessels, D. (2020),
 %  "Valuation: Measuring and Managing the Value of Companies,
 %  7th Edition", Wiley, Hoboken.
 %
