@@ -9,7 +9,7 @@ function T = getTickers(varargin)
 %   series, and finally to the extraction of their fundamental financial
 %   information.
 %   For background on financial data and market analysis, see:
-%   Yahoo Finance API documentation https://finance.yahoo.com/ 
+%   Yahoo Finance API documentation https://finance.yahoo.com/
 %
 % Required input arguments:
 %
@@ -284,7 +284,7 @@ if RankByCap == true
     end
 
     % Rank constituents
-    U.MarketCap = localGetMarketCaps(U.ticker, msg);
+    U.MarketCap = localGetMarketCaps(U.ticker);
 
     [~,ord] = sort(U.MarketCap, 'descend', 'MissingPlacement','last');
     U = U(ord,:);
@@ -1119,39 +1119,34 @@ U = table(ticker, Name);
 
 end
 % -------------------------------------------------------------------------
-function mc = localGetMarketCaps(symbols, msg)
+function mc = localGetMarketCaps(symbols)
 
 n = numel(symbols);
 mc = nan(n,1);
 
-try
-    F = getFundamentals(symbols,'Fields',{'TickerSymbol','marketCap'});
-    if ismember('TickerSymbol', F.Properties.VariableNames) && ...
-            ismember('marketCap', F.Properties.VariableNames)
 
-        fsym = string(F.TickerSymbol);
-        fmc  = F.marketCap;
+F = getFundamentals(symbols,'Fields',{'TickerSymbol','marketCap'});
+if ismember('TickerSymbol', F.Properties.VariableNames) && ...
+        ismember('marketCap', F.Properties.VariableNames)
 
-        for i = 1:n
-            idx = find(fsym == string(symbols(i)),1,'first');
-            if ~isempty(idx)
-                if isnumeric(fmc)
-                    mc(i) = fmc(idx);
-                elseif iscell(fmc)
-                    if isempty(fmc{idx})
-                        mc(i) = NaN;
-                    elseif isnumeric(fmc{idx}) || islogical(fmc{idx})
-                        mc(i) = double(fmc{idx});
-                    end
+    fsym = string(F.TickerSymbol);
+    fmc  = F.marketCap;
+
+    for i = 1:n
+        idx = find(fsym == string(symbols(i)),1,'first');
+        if ~isempty(idx)
+            if isnumeric(fmc)
+                mc(i) = fmc(idx);
+            elseif iscell(fmc)
+                if isempty(fmc{idx})
+                    mc(i) = NaN;
+                elseif isnumeric(fmc{idx}) || islogical(fmc{idx})
+                    mc(i) = double(fmc{idx});
                 end
             end
         end
-        return
     end
-catch
-    if msg
-        fprintf('getFundamentals unavailable or failed. Falling back to individual retrieval.\n');
-    end
+    return
 end
 
 for i = 1:n
