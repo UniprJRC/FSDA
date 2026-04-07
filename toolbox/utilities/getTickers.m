@@ -494,7 +494,9 @@ end
 function sym = localNormalizeTicker(sym,url)
 sym = string(sym);
 sym = strip(sym);
-sym = replace(sym, ".", "-");
+% if ~contains(url,'FTSE_MIB')
+%     sym = replace(sym, ".", "-");
+% end
 
 if contains(url,'FTSE_100_Index')
     if ~endsWith(sym,'.L')
@@ -502,8 +504,13 @@ if contains(url,'FTSE_100_Index')
     end
 
 elseif contains(url,'DAX')
+
     if ~endsWith(sym,'.DE')
         sym = sym + ".DE";
+    end
+    % It seems that in the wikipedia page there is AIR.PA
+    if sym == "AIR.PA.DE"
+        sym="AIR.DE";
     end
 
 elseif contains(url,'CAC_40')
