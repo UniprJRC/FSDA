@@ -19,11 +19,11 @@ function setupPythonEnv(varargin)
 %                pip action such as 'install', 'uninstall', 'list' or
 %                'show', and contains a single token only, it is
 %                interpreted as a package name and automatically expanded
-%                to 'install <package>'.
-%                Example - 'PipCommand','install yfinance'
-%                Example - 'PipCommand','yfinance'
+%                to 'install <package>'. In other words you can use both
+%                'PipCommand','install yfinance' or 'PipCommand','yfinance'
+%                Example - 'PipCommand','uninstall yfinance -y'
 %                Data Types - char | string
-%
+ %
 %   Verbose    : Logical scalar which controls the display of diagnostic
 %                messages.
 %                Default is true.
@@ -252,6 +252,7 @@ elseif ismac
             disp('Xcode Status: Installed (activating system dependencies bypass).');
         end
 
+        
         [valid_path, python_exists] = find_compatible_python(paths,m_rel,true);
 
         if ~python_exists
@@ -290,7 +291,10 @@ if strcmp(os_type,'windows')
     fallback = "";
 else
     [~, cmdout] = system('/bin/zsh -lc "which -a python3 python3.13 2>/dev/null"');
+    pythonEnv = pyenv;
+    pythonUserPath=['\n' char(pythonEnv.Executable)];
     fallback = sprintf(['\n/opt/homebrew/bin/python3' ...
+        pythonUserPath ...
         '\n/opt/homebrew/bin/python3.13' ...
         '\n/usr/local/bin/python3' ...
         '\n/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13']);
