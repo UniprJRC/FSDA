@@ -904,24 +904,24 @@ switch lower(topPanelMode)
     windowLen = 20;
     nSigma = 2;
 
-    % Assicurati di usare le stesse coordinate x viste dal resto della funzione
+    % use all x coordinates, as all the function axes
     if removeGaps
         xPlot = (1:height(TT))';
     else
         xPlot = TT.t;
     end
 
-    priceAll = TT.Close;      % mantiene NaN dove presenti
+    priceAll = TT.Close;      % NaN saving
     validIdx = ~isnan(priceAll);
 
     if nnz(validIdx) < 2
-        warning('FSDA:getYahoo:BollingerNoData','Troppi pochi dati validi per Bollinger per %s.', tickerNow);
+        warning('FSDA:getYahoo:BollingerNoData','Not enough data for Bollinger per %s.', tickerNow);
         plot(ax1, xPlot, priceAll, '-', 'Color', [0.2 0.2 0.2]);
     else
     end
 
-    % Calcola SMA e std in modo allineato alla serie completa:
-    % movmean/movstd con finestra causal (windowLen) e 'omitnan'
+    %All SMA and std history:
+    % movmean/movstd window causal (windowLen) and 'omitnan'
     if numel(priceAll) < windowLen
         smaAll = movmean(priceAll, [numel(priceAll)-1 0], 'omitnan');
         stdAll = movstd(priceAll, [numel(priceAll)-1 0], 'omitnan');
@@ -932,23 +932,23 @@ switch lower(topPanelMode)
     upperAll = smaAll + nSigma .* stdAll;
     lowerAll = smaAll - nSigma .* stdAll;
 
-    % Traccia prezzo con colori up/down: determina up/down su dati validi
+    % color trackeer up/down: find all up/down based on all valid data
     dPrice = [NaN; diff(priceAll)];
     isUp = dPrice >= 0;
 
-    % Per plotting a segmenti continui, disegniamo dove price non NaN
+    % NaN price normalized for plotting
     plot(ax1, xPlot(validIdx & isUp(validIdx)), priceAll(validIdx & isUp(validIdx)), '-', ...
          'Color', upColor, 'LineWidth', 1.2);
     plot(ax1, xPlot(validIdx & ~isUp(validIdx)), priceAll(validIdx & ~isUp(validIdx)), '-', ...
          'Color', downColor, 'LineWidth', 1.2);
 
-    % SMA e bande (mostriamo anche punti NaN come gap)
+    % SMA and bands (showing Nan as gap)
     plot(ax1, xPlot, smaAll, '-','Color',[0 0.4470 0.7410],'LineWidth',1);
     hUp = plot(ax1, xPlot, upperAll, '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
     hLo = plot(ax1, xPlot, lowerAll, '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
 
-    % Riempimento tra bande (funziona sia con datetime sia con indici,
-    % rimuovendo punti NaN per patch)
+    % Band fullfilment,
+    % (NaN skipped)
     okPatch = ~isnan(upperAll) & ~isnan(lowerAll) & ~isnan(xPlot);
     if nnz(okPatch) >= 2
         xPatch = [xPlot(okPatch); flipud(xPlot(okPatch))];
@@ -957,14 +957,14 @@ switch lower(topPanelMode)
               'FaceAlpha',0.08, 'EdgeColor','none', 'Parent', ax1);
     end
 
-    % Evidenzia ultimo punto valido
+    % Highlight last evalued point
     lastIdx = find(validIdx, 1, 'last');
     if ~isempty(lastIdx)
         plot(ax1, xPlot(lastIdx), priceAll(lastIdx), 'o', ...
              'MarkerFaceColor',[0 0.4470 0.7410], 'MarkerEdgeColor','k');
     end
 
-    % Limiti: usa tutti i dati validi (prezzo e bande)
+    % Limits: use all valid data
     yrCandidates = [priceAll(validIdx); upperAll(okPatch); lowerAll(okPatch)];
     if ~isempty(yrCandidates)
         yr = [min(yrCandidates) max(yrCandidates)];
