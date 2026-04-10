@@ -875,6 +875,10 @@ retPct(idxRet) = 100 * dClose(okRet) ./ prevClose(okRet);
 % Figure and manual layout
 figure('Color','w');
 
+if ~isMATLABReleaseOlderThan("R2025a")
+    theme(gcf, "light")
+end
+
 leftMargin   = 0.07;
 rightMargin  = 0.03;
 bottomMargin = 0.08;
