@@ -96,6 +96,7 @@ function [out]=getYahoo(ticker, varargin)
 %               'candle' = candlestick chart
 %               'line'   = close price only
 %               'ma'     = close price and moving averages
+%               'bollinger' = close price with Bollinger Bands (SMA and ±σ bands)
 %               Default is 'candle'.
 %               Example - 'topPanelMode','ma'
 %               Data Types - char | string
@@ -228,6 +229,16 @@ function [out]=getYahoo(ticker, varargin)
 %               If true (default), progress messages and warnings are shown.
 %               Example - 'msg',false
 %               Data Types - logical
+%
+% WindowSize : window length for Bollinger Bands. Positive scalar integer.
+%               Default is 20.
+%               Example - 'WindowSize',15
+%               Data Types - double
+%
+% NumStd   : number of standard deviations for Bollinger Bands. Positive scalar.
+%               Default is 2.
+%               Example - 'NumStd',2.5
+%               Data Types - double
 %
 % Output:
 %
@@ -875,10 +886,6 @@ retPct(idxRet) = 100 * dClose(okRet) ./ prevClose(okRet);
 % Figure and manual layout
 figure('Color','w');
 
-if ~isMATLABReleaseOlderThan("R2025a")
-    theme(gcf, "light")
-end
-
 leftMargin   = 0.07;
 rightMargin  = 0.03;
 bottomMargin = 0.08;
@@ -903,83 +910,110 @@ ylabel(ax1,'Price');
 
 %% Top panel
 switch lower(topPanelMode)
-   case 'bollinger'
-    % Parametri Bollinger
-    windowLen = 20;
-    nSigma = 2;
+    case {'bb','bollinger'}
+    % Bollinger Bands plot in the top panel (independent from 'out')
+    % Requirements: TT.Close, ax1, x must be available in localPlotYahoo workspace
 
-    % use all x coordinates, as all the function axes
-    if removeGaps
-        xPlot = (1:height(TT))';
-    else
-        xPlot = TT.t;
-    end
+    % Parameters (change to read from options if desired)
+    bbWindow = 20;
+    bbNSig   = 2;
 
-    priceAll = TT.Close;      % NaN saving
-    validIdx = ~isnan(priceAll);
+    closePrices = TT.Close;
 
-    if nnz(validIdx) < 2
-        warning('FSDA:getYahoo:BollingerNoData','Not enough data for Bollinger per %s.', tickerNow);
-        plot(ax1, xPlot, priceAll, '-', 'Color', [0.2 0.2 0.2]);
-    else
-    end
-
-    %All SMA and std history:
-    % movmean/movstd window causal (windowLen) and 'omitnan'
-    if numel(priceAll) < windowLen
-        smaAll = movmean(priceAll, [numel(priceAll)-1 0], 'omitnan');
-        stdAll = movstd(priceAll, [numel(priceAll)-1 0], 'omitnan');
-    else
-        smaAll = movmean(priceAll, [windowLen-1 0], 'omitnan');
-        stdAll = movstd(priceAll, [windowLen-1 0], 'omitnan');
-    end
-    upperAll = smaAll + nSigma .* stdAll;
-    lowerAll = smaAll - nSigma .* stdAll;
-
-    % color trackeer up/down: find all up/down based on all valid data
-    dPrice = [NaN; diff(priceAll)];
-    isUp = dPrice >= 0;
-
-    % NaN price normalized for plotting
-    plot(ax1, xPlot(validIdx & isUp(validIdx)), priceAll(validIdx & isUp(validIdx)), '-', ...
-         'Color', upColor, 'LineWidth', 1.2);
-    plot(ax1, xPlot(validIdx & ~isUp(validIdx)), priceAll(validIdx & ~isUp(validIdx)), '-', ...
-         'Color', downColor, 'LineWidth', 1.2);
-
-    % SMA and bands (showing Nan as gap)
-    plot(ax1, xPlot, smaAll, '-','Color',[0 0.4470 0.7410],'LineWidth',1);
-    hUp = plot(ax1, xPlot, upperAll, '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
-    hLo = plot(ax1, xPlot, lowerAll, '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
-
-    % Band fullfilment,
-    % (NaN skipped)
-    okPatch = ~isnan(upperAll) & ~isnan(lowerAll) & ~isnan(xPlot);
-    if nnz(okPatch) >= 2
-        xPatch = [xPlot(okPatch); flipud(xPlot(okPatch))];
-        yPatch = [upperAll(okPatch); flipud(lowerAll(okPatch))];
-        patch('XData', xPatch, 'YData', yPatch, 'FaceColor',[0.6 0.6 0.6], ...
-              'FaceAlpha',0.08, 'EdgeColor','none', 'Parent', ax1);
-    end
-
-    % Highlight last evalued point
-    lastIdx = find(validIdx, 1, 'last');
-    if ~isempty(lastIdx)
-        plot(ax1, xPlot(lastIdx), priceAll(lastIdx), 'o', ...
-             'MarkerFaceColor',[0 0.4470 0.7410], 'MarkerEdgeColor','k');
-    end
-
-    % Limits: use all valid data
-    yrCandidates = [priceAll(validIdx); upperAll(okPatch); lowerAll(okPatch)];
-    if ~isempty(yrCandidates)
-        yr = [min(yrCandidates) max(yrCandidates)];
-        pad = 0.06 * (yr(2)-yr(1));
-        if pad == 0
-            pad = max(abs(yr(2)),1)*0.01;
+    % Compute Bollinger: use bollinger() if available, otherwise movmean/movstd
+    if exist('bollinger','file') == 2
+        try
+            [bbMid, bbUp, bbLow] = bollinger(closePrices, bbWindow, bbNSig);
+        catch
+            bbMid = movmean(closePrices, bbWindow, 'omitnan');
+            bbSigma = movstd(closePrices, bbWindow, 'omitnan');
+            bbUp  = bbMid + bbNSig .* bbSigma;
+            bbLow = bbMid - bbNSig .* bbSigma;
         end
-        ylim(ax1, [yr(1)-pad, yr(2)+pad]);
+    else
+        bbMid = movmean(closePrices, bbWindow, 'omitnan');
+        bbSigma = movstd(closePrices, bbWindow, 'omitnan');
+        bbUp  = bbMid + bbNSig .* bbSigma;
+        bbLow = bbMid - bbNSig .* bbSigma;
     end
 
-    legend(ax1, {'Price up','Price down','SMA','Upper','Lower'}, 'Location','best');
+    % Size safety
+    bbMid = bbMid(:); bbUp = bbUp(:); bbLow = bbLow(:);
+    xvec  = x(:);
+    yvec  = closePrices(:);
+
+    % Remove NaNs consistently across all vectors
+    valid = ~isnan(xvec) & ~isnan(yvec);
+    if nnz(valid) < 2
+        % nothing to plot: exit the case
+        return;
+    end
+    xvec = xvec(valid);
+    yvec = yvec(valid);
+    % align bands if there are initial NaN elements
+    if numel(bbMid) ~= numel(closePrices)
+        bbMid = interp1(find(~isnan(closePrices)), bbMid(~isnan(closePrices)), 1:numel(closePrices), 'linear', NaN)';
+    end
+    bbMid = bbMid(valid);
+    bbUp  = bbUp(valid);
+    bbLow = bbLow(valid);
+
+    % Set axis and title
+    hold(ax1,'on'); grid(ax1,'on');
+
+    % Up/Down colored segments: successive differences
+    d = [0; diff(yvec)];
+    upIdx = d >= 0;
+    dnIdx = d < 0;
+
+    % Sequential up/down color plotting (no datetime conversion)
+    if any(upIdx)
+        plot(ax1, xvec(upIdx), yvec(upIdx), '-', 'Color', [0 0.6 0], 'LineWidth', 1.4);
+    end
+    if any(dnIdx)
+        plot(ax1, xvec(dnIdx), yvec(dnIdx), '-', 'Color', [0.85 0.15 0.15], 'LineWidth', 1.4);
+    end
+
+    % SMA and bands
+    plot(ax1, xvec, bbMid, '-','Color',[0 0.4470 0.7410],'LineWidth',1);
+    plot(ax1, xvec, bbUp,  '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
+    plot(ax1, xvec, bbLow, '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
+
+    % Fill band using datetime directly (if supported)
+    try
+        xpatch = [xvec; flipud(xvec)];
+        ypatch = [bbUp; flipud(bbLow)];
+        hPatch = patch('XData', xpatch, 'YData', ypatch, ...
+                       'FaceColor',[0.6 0.6 0.6], 'FaceAlpha', 0.08, ...
+                       'EdgeColor','none', 'Parent', ax1);
+        uistack(hPatch, 'bottom');
+    catch
+        % if MATLAB version does not support patch with datetime, skip fill
+    end
+
+    % Marker on the last point
+    plot(ax1, xvec(end), yvec(end), 'o', 'MarkerFaceColor',[0 0.4470 0.7410], 'MarkerEdgeColor','k');
+
+    % Set limits with a small margin
+    try
+        xr = [xvec(1) xvec(end)];
+        yrLow = min(bbLow(~isnan(bbLow))); yrHigh = max(bbUp(~isnan(bbUp)));
+        if isempty(yrLow) || isempty(yrHigh) || isnan(yrLow) || isnan(yrHigh)
+            yrLow = min(yvec); yrHigh = max(yvec);
+        end
+        pad = 0.06 * (yrHigh - yrLow);
+        ylim(ax1, [yrLow - pad, yrHigh + pad]);
+        xlim(ax1, xr);
+    catch
+        % fallback: autoscale
+    end
+
+    % Minimal legend (update if you want to remove duplicate entries)
+    legend(ax1, {'Price up','Price down','SMA','Upper','Lower'}, 'Location', 'best');
+
+    hold(ax1,'off');
+
+    % End case
 
     case 'candle'
         if removeGaps
