@@ -58,21 +58,43 @@ function out = mdTEM(Y, varargin)
 %                 Example - 'tol_sigma',false
 %                 Data Types - logical
 %
-%  typeAdj : method to rescale. Positive integer.
-%             Method which must be used to rescale the variables.
-%             typeAdj=1 use of asymptotic Chi2 distribution.
-%             typeAdj=2 use of exact Beta distribution.
-%             typeAdj=3 use of expectation correction
-%             typeAdj=4 use of standardization correction.
-%                 Example - 'typeAdj',1
-%                 Data Types - single | double
+%   method : method used to rescale the distances. String scalar or char vector.
+%            Possible values are.
 %
-%   imputation :  Also give the matrix of imputed values. Boolean.
-%                 if true structure out also contains the matrix of imputed values.
-%                 The default value of imputation is false.
-%                 Example - 'imputation',true
+%            'pri'      = principled EM rescaling (default), 
+%                         d2_partial + (p - pobs).
+%
+%            'expScale' = expectation scaling, 
+%                         d2_partial * (p / pobs).
+%
+%            'zMap'     = standardization mapping,
+%                         p + sqrt(2*p) * ((d2_partial - pobs) ./ sqrt(2*pobs)).
+%
+%            'detMap'   = determinant-based rescaling,
+%                         d2_partial * (p / pobs) * (g_full / g_obs).
+%                         This method requires input option 'Y' and input
+%                         option 'Sigma'.
+%
+%            'chiMap'   = chi-square quantile mapping. Use the cdf and
+%                         inverse of the cdf of Chi2 distribution.
+%
+%            'betaMap'  = Beta quantile mapping. Use the cdf and
+%                         inverse of the cdf of Beta distribution.
+%            'impMD'    = MD on EM-imputed data.
+%            Example - 'method','chiMap'
+%            Data Types - string scalar | char vector
+%
+%   condmeanimp :  Also give the matrix of conditional mean imputed values. Boolean.
+%                 if true structure out also contains the matrix of imputed values called Yimp.
+%                 The default value of condmeanimp is false.
+%                 Example - 'condmeanimp',true
 %                 Data Types - logical
 %
+%   stochimp :     Also give the matrix of stochastic imputed values. Boolean.
+%                 if true structure out also contains the matrix of imputed values called stochYimp.
+%                 The default value of stochimp is false.
+%                 Example - 'stochimp',true
+%                 Data Types - logical
 %  Output:
 %
 %
@@ -81,7 +103,9 @@ function out = mdTEM(Y, varargin)
 %              out.cov = final estimate of cov matrix
 %              out.iter = number of iterations to convergence.
 %              out.Yimp = empty value of matrix Y with imputed values
-%                   (depending on input option imputation)
+%                   (depending on input option condmeanimp)
+%              out.stochYimp = empty value of matrix Y with imputed values
+%                   (only if input option stochimp is true)
 %
 %  
 % See also: mdEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
@@ -107,6 +131,62 @@ function out = mdTEM(Y, varargin)
 
 % Examples:
 
+%{
+    % Call to mdTEM with all the default options.
+    % True model (choose something correlated)
+    p=5; n=200;
+    A = randn(p);
+    SigmaTrue = A'*A;
+    D = diag(1 ./ sqrt(diag(SigmaTrue)));
+    SigmaTrue = D * SigmaTrue * D;      % "correlation-like"
+    muTrue = linspace(-1,1,p)';
+    
+    %  generate complete data
+    Yfull = mvnrnd(muTrue', SigmaTrue, n);             % n x p
+    missRate = 0.25;     % MCAR missing probability per entry
+    missMask = rand(n,p) < missRate;
+    Y=Yfull;
+    Y(missMask) = NaN;
+    out=mdTEM(Y);
+    % Show true means and inputed means
+    scatter(out.loc,muTrue)
+    refline(1)
+    xlabel('Imputed means')
+    ylabel('True means')
+%}
+
+%{
+    %% Example of use of option condmeanimp.
+    % number of variables
+    p = 15;                
+    % number of observations
+    n = 1000;            
+    % target pairwise correlation (0<rho<1)
+    rho = 0.9;            
+    % Covariance matrix (unit variances)
+    Sigma = (1-rho)*eye(p) + rho*ones(p);
+    R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
+    % Generate samples ~ N(0,Sigma)
+    Yfull = randn(n,p) * R;   % Strong positive correlation between the vars
+    missRate = 0.25;     % MCAR missing probability per entry
+    missMask = rand(n,p) < missRate;
+    Y=Yfull;
+    Y(missMask) = NaN;
+    % md with missing imputation
+    out=mdTEM(Y,'condmeanimp',true);
+    % Mahalanobis distances using original matrix
+    d2Ori=mahalFS(Yfull,mean(Yfull),cov(Yfull));
+    % Calculate the Mahalanobis distance for the imputed data
+    d2Imp = mahalFS(out.Yimp, mean(out.Yimp), cov(out.Yimp));
+    % Compare original with distances for the imputed data
+    % Calculate the differences between original and imputed Mahalanobis distances
+    scatter(d2Ori,d2Imp)
+    % Add axis labels
+    xlabel('Original Mahalanobis Distances');
+    ylabel('Imputed Mahalanobis Distances');
+    grid on
+%}
+
 %% Beginning of code
 alpha=0.5;
 mus=[];
@@ -114,12 +194,13 @@ sigs=[];
 maxiter=100;
 tol=1e-5;
 tol_sigma=true;
-imputation=false;
-typeAdj=2;
+condmeanimp=false;
+stochimp=false;
+method='pri';
 
 if nargin>1
  options=struct('alpha',alpha,'mus',mus,'sigs',sigs,'maxiter',maxiter,'tol',tol, ...
-     'tol_sigma',tol_sigma,'imputation',false,'typeAdj',typeAdj);
+     'tol_sigma',tol_sigma,'condmeanimp',condmeanimp,'stochimp',stochimp,'method',method);
 
  [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -142,7 +223,9 @@ if nargin>1
     maxiter=options.maxiter;
     tol=options.tol;
     tol_sigma=options.tol_sigma;
-    imputation=options.imputation;
+    condmeanimp=options.condmeanimp;
+    stochimp=options.stochimp;
+    method=string(options.method);
 end
 
 [n, p] = size(Y);
@@ -168,9 +251,16 @@ while (dif > tol) && (iter < maxiter)
     mus_old = mus;
     sigs_old = sigs;
 
+if method=="impMD"
+    Yimp=mdImputeCondMean(Y, mus, sigs);
+    % In this case compute Mahalanobis distances on imputed data
+        d2_adj=mahalFS(Yimp,mus,sigs);
+else
     % Trimming step: compute adjusted partial Mahalanobis distances
     [d2, poss] = mdPartialMD(Y, mus, sigs);
-    d2_adj = mdPartialMD2full(d2, p, poss,'typeAdj',typeAdj);
+
+    d2_adj = mdPartialMD2full(d2, p, poss,'method',method);
+end
 
     % rank and select the smallest n*(1-alpha)
     % We treat NaN distances as large (so they're trimmed)
@@ -207,19 +297,29 @@ while (dif > tol) && (iter < maxiter)
     end
 end
 
-%% EM single imputation of missing values (conditional means)
-if imputation ==true
+%% EM imputation of missing values (conditional means or stochastic imputation)
+if condmeanimp ==true
     Yimp = mdImputeCondMean(Y, mus, sigs);
 else
     Yimp=[];
 end
 
+if stochimp == true
+    stochYimp = mdImputeStochastic(Y, mus, sigs);
+else
+    stochYimp=[];
+end
 
 out.loc = mus;
 out.cov = sigs;
 out.iter = iter;
 out.Yimp=Yimp;
+out.stochYimp=stochYimp;
 
 end
 
 %FScategory:MULT-MissingData
+
+
+
+
