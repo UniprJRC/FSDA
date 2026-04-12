@@ -71,13 +71,12 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
 %
 %   The available methods are:
 %
-%   1) 'impMD'    : MD on EM-imputed data
-%   2) 'pri'      : principled EM rescaling
-%   3) 'expScale' : expectation scaling
-%   4) 'zMap'     : standardization mapping
-%   5) 'detMap'   : determinant-based rescaling
-%   6) 'chiMap'   : chi-square mapping
-%   7) 'betaMap'  : Beta mapping
+%    'pri'      : principled EM rescaling
+%    'expScale' : expectation scaling
+%    'zMap'     : standardization mapping
+%    'detMap'   : determinant-based rescaling
+%    'chiMap'   : chi-square mapping
+%    'betaMap'  : Beta mapping
 %
 %
 % References:
@@ -93,9 +92,6 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('mdPartialMD2full')">Link to the help page for this function</a>
-% 
-%$LastChangedDate::                      $: Date of the last commit
-%
 %
 % See also: mdPartialMD, mdEM, mdImputeCondMean
 %
@@ -105,7 +101,7 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
 % Examples:
 %
 %{
-    % Example 1: default principal mapping.
+    % Example 1: default principled EM rescaling.
     p = 5;
     n = 100;
     rho = 0.9;
@@ -172,7 +168,7 @@ function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
     SigHat = outEM.cov;
     [d2partial,pobs] = mdPartialMD(Y,mu,SigHat);
     d2_adj = mdPartialMD2full(d2partial,p,pobs,'method','detMap', ...
-        'Y',Y,'Sigma',Sigma);
+        'Y',Y,'Sigma',SigHat);
 %}
 
 %% Beginning of code
