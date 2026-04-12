@@ -1,232 +1,355 @@
 function d2_adj = mdPartialMD2full(d2, p, pobs, varargin)
-% mdPartialMD2full  rescale partial squared distances to full-dimension.
+% mdPartialMD2full  Rescale partial squared Mahalanobis distances to the full-dimensional scale.
 %
 %<a href="matlab: docsearchFS('mdPartialMD2full')">Link to the help function</a>
 %
 % Required input arguments:
 %
-%   d2    : squared partial distances. Vector. 
-%           Vector of length n, squared distances computed on observed dims
-%           (from MD_partial)
-%   p     : full dimension. Scalar. p is the number of variables in the
-%           original data matrix.
+%   d2    : squared partial distances. Vector.
+%           Vector of length n containing the squared Mahalanobis distances
+%           computed using only the observed variables for each row.
+%           Data Types - single | double
+%
+%   p     : full dimension. Positive integer scalar.
+%           p is the number of variables in the original data matrix.
+%           Data Types - single | double
+%
 %   pobs  : number of observed variables. Vector.
-%           vector of length n containing the number of observed variables
-%           (per row)
+%           Vector of length n containing the number of observed variables
+%           for each row.
+%           Data Types - single | double
 %
-%  Optional input arguments:
+% Optional input arguments:
 %
-%  typeAdj : method to rescale. Positive integer.
-%             Method which must be used to rescale the variables.
-%             typeAdj=1 use of asymptotic Chi2 distribution.
-%             typeAdj=2 use of exact Beta distribution.
-%             typeAdj=3 use of expectation correction.
-%             typeAdj=4 use of standardization correction.
-%                 Example - 'typeAdj',1
-%                 Data Types - positive integer
+%   method : method used to rescale the distances. String scalar or char vector.
+%            Possible values are.
 %
-%  Output:
+%            'pri'      : principled EM rescaling (default), 
+%                         d2_partial + (p - pobs).
 %
-%   d2_adj : column vector of length n, where each element is the adjusted
-%            squared distance:
-%            For example if typeAdj=1,
-%            d2_adj(i) = chi2inv( chi2cdf(d2(i), poss(i)), p );
-%            for i=1, 2, ..., n.
-%           Notet that if poss(i) is 0 or d2(i) is NaN, result is NaN.
+%            'expScale' : expectation scaling, 
+%                         d2_partial * (p / pobs).
+%
+%            'zMap'     : standardization mapping,
+%                         p + sqrt(2*p) * ((d2_partial - pobs) ./ sqrt(2*pobs)).
+%
+%            'detMap'   : determinant-based rescaling,
+%                         d2_partial * (p / pobs) * (g_full / g_obs)
+%                         This method requires input option 'Y' and input
+%                         option 'Sigma'.
+%
+%            'chiMap'   : chi-square quantile mapping. Use the cdf and
+%                         inverse of the cdf of Chi2 distribution.
+%
+%            'betaMap'  : Beta quantile mapping. Use the cdf and
+%                         inverse of the cdf of Beta distribution.
+%            Example - 'method','chiMap'
+%            Data Types - string scalar | char vector
+%
+%
+%   Y      : original data matrix with possible missing values. Matrix.
+%            n x p data matrix. This input is required only if
+%            method='detMap'.
+%            Example - 'Y',Y
+%            Data Types - single | double
+%
+%   Sigma  : covariance matrix in the full space. Matrix.
+%            p x p covariance matrix. This input is required only if
+%            method='detMap'.
+%            Example - 'Sigma',Sigma
+%            Data Types - single | double
+%
+% Output:
+%
+%   d2_adj : adjusted squared distances. Vector.
+%            Column vector of length n containing the adjusted squared
+%            Mahalanobis distances on the full p-dimensional scale.
+%            If pobs(i)=0 or d2(i) is NaN, the corresponding output is NaN.
+%
+%
+% More About:
+%
+%   The available methods are:
+%
+%   1) 'impMD'    : MD on EM-imputed data
+%   2) 'pri'      : principled EM rescaling
+%   3) 'expScale' : expectation scaling
+%   4) 'zMap'     : standardization mapping
+%   5) 'detMap'   : determinant-based rescaling
+%   6) 'chiMap'   : chi-square mapping
+%   7) 'betaMap'  : Beta mapping
+%
+%
+% References:
+%
+%   Little, R. J. A., & Rubin, D. B. (2020). Statistical Analysis with
+%   Missing Data (3rd ed.). Hoboken, NJ: John Wiley & Sons.
+%
+%   Wilks, S. S. (1962). Mathematical Statistics. John Wiley & Sons,
+%   New York.
 %
 %
 % Copyright 2008-2026.
 % Written by FSDA team
 %
-%
-% See also: mdPartialMD.m, mdEM.m, mdImputeCondMean
-%
-%
-% References:
-%
-% Little, R. J. A., & Rubin, D. B. (2019). Statistical Analysis with
-% Missing Data (3rd ed.). Hoboken, NJ: John Wiley & Sons.
-% van Buuren, S. (2018). Flexible Imputation of Missing Data (2nd ed.).
-% Boca Raton, FL: Chapman & Hall/CRC (Taylor & Francis Group).
-% Templ, M. (2023). Visualization and Imputation of Missing Values: With
-% Applications in R. Cham, Switzerland: Springer Nature.
+%<a href="matlab: docsearchFS('mdPartialMD2full')">Link to the help page for this function</a>
+% 
+%$LastChangedDate::                      $: Date of the last commit
 %
 %
+% See also: mdPartialMD, mdEM, mdImputeCondMean
 %
-% Copyright 2008-2025.
-% Written by FSDA team
-%
-%
-%<a href="matlab: docsearchFS('mdPartialMD2full')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
-
-
+%
 % Examples:
-
+%
 %{
-    % Using beta rescaling.
-    % Prepare input data with missing values.
-    % number of variables
-    p = 5;                
-    % number of observations
-    n = 100;             
-    rho = 0.9;            % target pairwise correlation (0<rho<1)
+    % Example 1: default principal mapping.
+    p = 5;
+    n = 100;
+    rho = 0.9;
     Sigma = (1-rho)*eye(p) + rho*ones(p);
-    R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
-    missRate = 0.01;     % MCAR missing probability per entry
-    % Generate samples ~ N(0,Sigma)
-    Yfull = randn(n,p) * R;   % Strong positive correlation between the vars
+    R = chol(Sigma);
+    missRate = 0.01;
+    Yfull = randn(n,p) * R;
     missMask = rand(n,p) < missRate;
-    mu=mean(Yfull)';
-    S=cov(Yfull);
-    Y=Yfull;
+    Y = Yfull;
     Y(missMask) = NaN;
-    [d2partial,pobs]=mdPartialMD(Y,mu,Sigma);
-    d2_adj=mdPartialMD2full(d2partial,p,pobs);
+    mu = mean(Yfull)';
+    [d2partial,pobs] = mdPartialMD(Y,mu,Sigma);
+    d2_adj = mdPartialMD2full(d2partial,p,pobs);
 %}
-
+%
 %{
-    % Use of input option typeAdj.
-    % Prepare input data with missing values.
-    % number of variables
-    p = 5;                
-    % number of observations
-    n = 100;             
-    rho = 0.9;            % target pairwise correlation (0<rho<1)
+    % Example 2: chi-square mapping.
+    p = 5;
+    n = 100;
+    rho = 0.9;
     Sigma = (1-rho)*eye(p) + rho*ones(p);
-    R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
-    missRate = 0.01;     % MCAR missing probability per entry
-    % Generate samples ~ N(0,Sigma)
-    Yfull = randn(n,p) * R;   % Strong positive correlation between the vars
+    R = chol(Sigma);
+    missRate = 0.01;
+    Yfull = randn(n,p) * R;
     missMask = rand(n,p) < missRate;
-    mu=mean(Yfull)';
-    S=cov(Yfull);
-    Y=Yfull;
+    Y = Yfull;
     Y(missMask) = NaN;
-    [d2partial,pobs]=mdPartialMD(Y,mu,Sigma);
-    % Chi2 rescaling
-    d2_adj=mdPartialMD2full(d2partial,p,pobs,'typeAdj',1);
+    mu = mean(Yfull)';
+    [d2partial,pobs] = mdPartialMD(Y,mu,Sigma);
+    d2_adj = mdPartialMD2full(d2partial,p,pobs,'method','chiMap');
+%}
+%
+%{
+    % Example 3: principled EM rescaling.
+    p = 5;
+    n = 100;
+    rho = 0.9;
+    Sigma = (1-rho)*eye(p) + rho*ones(p);
+    R = chol(Sigma);
+    missRate = 0.01;
+    Yfull = randn(n,p) * R;
+    missMask = rand(n,p) < missRate;
+    Y = Yfull;
+    Y(missMask) = NaN;
+    mu = mean(Yfull)';
+    [d2partial,pobs] = mdPartialMD(Y,mu,Sigma);
+    d2_adj = mdPartialMD2full(d2partial,p,pobs,'method','pri');
+%}
+%
+%{
+    % Example 4: determinant-based rescaling.
+    p = 5;
+    n = 100;
+    rho = 0.9;
+    Sigma = (1-rho)*eye(p) + rho*ones(p);
+    R = chol(Sigma);
+    missRate = 0.01;
+    Yfull = randn(n,p) * R;
+    missMask = rand(n,p) < missRate;
+    Y = Yfull;
+    Y(missMask) = NaN;
+    mu = mean(Yfull)';
+    outEM = mdEM(Y,'condmeanimp',true);
+    SigHat = outEM.cov;
+    [d2partial,pobs] = mdPartialMD(Y,mu,SigHat);
+    d2_adj = mdPartialMD2full(d2partial,p,pobs,'method','detMap', ...
+        'Y',Y,'Sigma',Sigma);
 %}
 
 %% Beginning of code
 
 d2 = d2(:);
 pobs = pobs(:);
-typeAdj=2;
+
+if numel(d2) ~= numel(pobs)
+    error('FSDA:mdPartialMD2full:WrongInputOpt', ...
+        'd2 and pobs must have the same length');
+end
+method='pri';
+
+options = struct('method',method,'Y',[],'Sigma',[]);
 
 if nargin>3
-    options=struct('typeAdj',typeAdj);
-
     [varargin{:}] = convertStringsToChars(varargin{:});
-    UserOptions=varargin(1:2:length(varargin));
+    UserOptions = varargin(1:2:length(varargin));
+
     if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:mdPartialMD2full:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:mdPartialMD2full:WrongInputOpt', ...
+                ['Number of supplied options is invalid. Probably values ', ...
+                 'for some parameters are missing.']);
         end
-        % Check if user options are valid options
         aux.chkoptions(options,UserOptions)
     end
 
-    % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
-        options.(varargin{i})=varargin{i+1};
+        options.(varargin{i}) = varargin{i+1};
     end
-    typeAdj=options.typeAdj;
 end
 
-if numel(d2) ~= numel(pobs)
-    error('FSDA:partialMW2full:WrongInputOpt','d2 and pobs must have same length');
+method = options.method;
+if isstring(method)
+    method = char(method);
+end
+
+if ~ischar(method)
+    error('FSDA:mdPartialMD2full:WrongInputOpt', ...
+        'Option ''method'' must be a string scalar or a char vector');
+end
+
+validMethods = {'pri','expScale','zMap','detMap','chiMap','betaMap'};
+if ~any(strcmp(method,validMethods))
+    error('FSDA:mdPartialMD2full:WrongInputOpt', ...
+        ['Option ''method'' must be one of: ''pri'', ', ...
+         '''expScale'', ''zMap'', ''detMap'', ''chiMap'', ''betaMap''.']);
 end
 
 n = numel(d2);
 d2_adj = nan(n,1);
 
-if typeAdj==1 % rescale using Chi2
+switch method
 
-    for i = 1:n
-        p1 = pobs(i);
-        if isnan(d2(i)) || p1 <= 0
-            d2_adj(i) = NaN;
-            continue
+    case 'pri'
+        idx = pobs>0 & ~isnan(d2);
+        d2_adj(idx) = d2(idx) + (p - pobs(idx));
+
+    case 'expScale'
+        idx = pobs>0 & ~isnan(d2);
+        d2_adj(idx) = d2(idx) .* (p ./ pobs(idx));
+
+    case 'zMap'
+        idx = pobs>0 & ~isnan(d2);
+        z = (d2(idx) - pobs(idx)) ./ sqrt(2*pobs(idx));
+        d2_adj(idx) = p + sqrt(2*p) .* z;
+
+    case 'detMap'
+        Y = options.Y;
+        Sigma = options.Sigma;
+
+        if isempty(Y) || isempty(Sigma)
+            error('FSDA:mdPartialMD2full:WrongInputOpt', ...
+                'Method ''detMap'' requires input options ''Y'' and ''Sigma''.');
         end
 
-        c = chi2cdf(d2(i), p1);
-        c = min(max(c, eps), 1 - eps); % avoid 0 or 1
-        d2_adj(i) = chi2inv(c, p);
-
-    end
-elseif typeAdj==2 % rescale using Beta
-    c1 = (n-1)^2 / n;
-    epsv = eps;
-
-    % parameters full
-    a2 = p/2;
-    b2 = (n-p-1)/2;
-
-
-    for i=1:n
-
-        p1 = pobs(i);
-
-        if isnan(d2(i)) || p1<=0 || n<=p1+1
-            d2_adj(i)=NaN;
-            continue
+        if size(Y,1) ~= n
+            error('FSDA:mdPartialMD2full:WrongInputOpt', ...
+                'Input Y must have the same number of rows as length(d2).');
         end
 
-        % parameters subset
-        a1 = p1/2;
-        b1 = (n-p1-1)/2;
+        if size(Y,2) ~= p
+            error('FSDA:mdPartialMD2full:WrongInputOpt', ...
+                'Input Y must have p columns.');
+        end
 
-        % scaled variable
-        u = d2(i)/c1;
-        u = min(max(u,0),1-epsv);
+        if ~isequal(size(Sigma),[p p])
+            error('FSDA:mdPartialMD2full:WrongInputOpt', ...
+                'Input Sigma must be a p-by-p matrix.');
+        end
 
-        % probability under subset exact distribution
-        alpha = betacdf(u,a1,b1);
-        alpha = min(max(alpha,epsv),1-epsv);
+        d2_adj = localDetMapFromPartial(Y,d2,pobs,Sigma,p);
 
-        % invert under full exact distribution
-        v = betainv(alpha,a2,b2);
+    case 'chiMap'
+        epsv = eps;
+        for i = 1:n
+            p1 = pobs(i);
 
-        % rescale back
-        d2_adj(i) = c1*v;
-    end
+            if isnan(d2(i)) || p1<=0
+                d2_adj(i) = NaN;
+                continue
+            end
 
-elseif typeAdj==3 % rescale using Expectation
-    idx = pobs>0 & ~isnan(d2);
-    d2_adj(idx) = d2(idx) .* (p ./ pobs(idx));
+            c = chi2cdf(d2(i),p1);
+            c = min(max(c,epsv),1-epsv);
+            d2_adj(i) = chi2inv(c,p);
+        end
 
-elseif typeAdj ==4 % rescale using Standardization
-    idx = pobs>0 & ~isnan(d2);
-    z = (d2(idx) - pobs(idx)) ./ sqrt(2*pobs(idx));
-    d2_adj(idx) = p + sqrt(2*p).*z;
+    case 'betaMap'
+        c1 = (n-1)^2 / n;
+        epsv = eps;
 
-else
-    error('FSDA:partialMW2full:WrongInputOpt','typeresc must 1, 2, 3 or 4')
+        a2 = p/2;
+        b2 = (n-p-1)/2;
+
+        if b2 <= 0
+            error('FSDA:mdPartialMD2full:WrongInputOpt', ...
+                'For method ''betaMap'' it must be n > p + 1.');
+        end
+
+        for i=1:n
+            p1 = pobs(i);
+
+            if isnan(d2(i)) || p1<=0 || n<=p1+1
+                d2_adj(i) = NaN;
+                continue
+            end
+
+            a1 = p1/2;
+            b1 = (n-p1-1)/2;
+
+            u = d2(i)/c1;
+            u = min(max(u,0),1-epsv);
+
+            alpha = betacdf(u,a1,b1);
+            alpha = min(max(alpha,epsv),1-epsv);
+
+            v = betainv(alpha,a2,b2);
+            d2_adj(i) = c1*v;
+        end
+
+
+
 end
 
 end
 
-% Below is an attempt to write a precision chi2cdf using vpa
-% digits(70);
-% chi2cdf_hp = @(xval,kval) vpa(1 - igamma( sym(kval)/2, sym(xval)/2 ) / gamma( sym(kval)/2 ));
-% % chi2inv_hp = @(pval,kval) local_chi2inv_vpa(pval, kval);
+%% Local functions
 
-% compute cdf at df = p1, then inverse at df = p
-% guard numerical edge cases: ensure CDF is strictly in (0,1)
-% c = chi2cdf_hp(d2(i), p1);
+function d2_det = localDetMapFromPartial(Y, d2_part, poss, Sigma, p)
+nloc = size(Y,1);
+d2_det = nan(nloc,1);
 
+logdet_full = localLogdetSPD(Sigma);
+g_full = exp(logdet_full / p);
 
-% if c>0.9999999999999
-%     c=0.9999999999999;
-% end
-% c = min(max(c, eps), 1 - eps); % avoid 0 or 1
-% try
-% d2_adj(i) = chi2inv_hp(c, p);
-% catch
-%     dd=1;
-% end
+idx = poss>0 & ~isnan(d2_part);
+ii = find(idx);
+
+for j = 1:numel(ii)
+    i = ii(j);
+    obs = ~isnan(Y(i,:));
+    pii = poss(i);
+
+    Sobs = Sigma(obs,obs);
+    logdet_obs = localLogdetSPD(Sobs);
+    g_obs = exp(logdet_obs / pii);
+
+    d2_det(i) = d2_part(i) * (p / pii) * (g_full / g_obs);
+end
+
+end
+
+function val = localLogdetSPD(S)
+R = chol(S);
+val = 2*sum(log(diag(R)));
+end
 
 %FScategory:MULT-MissingData
