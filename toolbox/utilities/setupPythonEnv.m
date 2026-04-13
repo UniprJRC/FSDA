@@ -23,7 +23,7 @@ function setupPythonEnv(varargin)
 %                'PipCommand','install yfinance' or 'PipCommand','yfinance'
 %                Example - 'PipCommand','uninstall yfinance -y'
 %                Data Types - char | string
- %
+%
 %   Verbose    : Logical scalar which controls the display of diagnostic
 %                messages.
 %                Default is true.
@@ -79,6 +79,11 @@ function setupPythonEnv(varargin)
 PipCommand = '';
 Verbose    = true;
 
+% vitual environment for MATLAB Online version of Python
+venvDir = "/home/matlab/venvs/yfenv";
+venvPy  = venvDir + "/bin/python";
+
+
 if nargin > 0
 
     options = struct('PipCommand',PipCommand,'Verbose',Verbose);
@@ -125,11 +130,11 @@ if ~isempty(PipCommand)
     pipCmdPadded = [PipCommand ' '];
 
     isExplicitCmd = startsWith(pipCmdPadded,'install ')   || ...
-                    startsWith(pipCmdPadded,'uninstall ') || ...
-                    startsWith(pipCmdPadded,'list ')      || ...
-                    startsWith(pipCmdPadded,'show ')      || ...
-                    strcmp(PipCommand,'list')             || ...
-                    startsWith(PipCommand,'--version');
+        startsWith(pipCmdPadded,'uninstall ') || ...
+        startsWith(pipCmdPadded,'list ')      || ...
+        startsWith(pipCmdPadded,'show ')      || ...
+        strcmp(PipCommand,'list')             || ...
+        startsWith(PipCommand,'--version');
 
     if ~isExplicitCmd && ~contains(PipCommand,' ')
         full_command = ['install ' PipCommand];
@@ -137,19 +142,77 @@ if ~isempty(PipCommand)
         full_command = PipCommand;
     end
 
-    sys_cmd = ['"' char(python_exe) '" -m pip ' full_command];
+    % Forces user-space installation bypassing Linux PEP 668 OS block
+    if isunix && ~ismac
+        is_modifying_cmd = startsWith(full_command, 'install') || startsWith(full_command, 'uninstall');
+        if is_modifying_cmd && ~contains(full_command, '--break-system-packages')
+            full_command = [full_command ' --break-system-packages'];
+            if Verbose
+                disp('Linux PEP 668 detected: --break-system-packages flag automatically appended.');
+            end
+        end
+    end
 
+    sys_cmd = ['"' char(python_exe) '" -m pip ' full_command];
     if Verbose
         disp(['Internal pip execution: ' sys_cmd]);
     end
 
     [status, cmdout] = system(sys_cmd);
-
     if status == 0
         if Verbose && ~isempty(strtrim(cmdout))
             disp(cmdout);
         end
     else
+        [pipstatus, cmdout] = system(venvPy +' -m pip list');
+        if isMATLABOnline && pipstatus ~= 0
+            % linkCmd = [ ...
+            %     '<a href="matlab:eval(''', ...
+            %     'websave(''''get-pip.py'''',''''https://bootstrap.pypa.io/get-pip.py'''');', ...
+            %     'system(''''python get-pip.py --user'''')', ...
+            %     ''')">', ...
+            %     'Click here to run pip bootstrap', ...
+            %     '</a>'];
+            % 
+            % error('FSDA:setupPythonEnv:MissingPip', ...
+            %     ['pip is missing.' newline ...
+            %     'Run the following command' newline ...
+            %     'websave("get-pip.py","https://bootstrap.pypa.io/get-pip.py");' newline ...
+            %     '!python get-pip.py --user' newline ...
+            %     'or click the link below:' newline ...
+            %     linkCmd]);
+
+            % reset MATLAB Online Python
+            pe = pyenv;
+            if pe.Status == "Loaded" && pe.ExecutionMode == "OutOfProcess"
+                terminate(pe);
+            elseif pe.Status == "Loaded" && pe.ExecutionMode == "InProcess"
+                error("Python is loaded InProcess. End/restart the MATLAB Online session, then rerun.");
+            end
+
+            pyenv("ExecutionMode","OutOfProcess")
+            system("rm -rf " + venvDir)
+
+            
+            % Create the venv, if it throws an error is still functioning 
+            system("python -m venv " + venvDir);
+            % Download get-pip.py
+            websave("/tmp/get-pip.py","https://bootstrap.pypa.io/get-pip.py");
+
+            % Install pip INTO THE VENV
+            system(venvPy + " /tmp/get-pip.py");
+            % Install yfinance into the venv
+            system(venvPy + " -m pip install yfinance");
+            % terminate Python if Status is Loaded
+            pe = pyenv;
+            if pe.Status == "Loaded"
+                terminate(pyenv)
+            end
+            % point MATLAB to the virtual Python environment CRITICAL
+            pyenv(Version=venvPy, ExecutionMode="OutOfProcess");
+            
+            return;
+        end
         error('FSDA:setupPythonEnv:PipExecutionError', ...
             'Error during pip execution:\n%s', cmdout);
     end
@@ -161,7 +224,7 @@ end
 % Subfunctions
 % -------------------------------------------------------------------------
 
-function [success, valid_path] = run_system_checks(Verbose)
+function [success, valid_path, matlabonline] = run_system_checks(Verbose)
 
 success = false;
 valid_path = "";
@@ -170,14 +233,19 @@ valid_path = "";
 m_rel = version('-release');
 pe = pyenv;
 
-% Anonymous function to identify Python interpreters associated with Xcode.
-is_xcode = @(p) contains(p,'Xcode.app') || strcmp(p,'/usr/bin/python3');
+% Anonymous function to identify OS-managed Python interpreters.
+is_system_stub = @(p) contains(p,'Xcode.app') || strcmp(p,'/usr/bin/python3');
 
-% If pyenv is already loaded, reuse it unless it points to the Xcode
-% Python interpreter on macOS.
+% If pyenv is already loaded, reuse it unless it points to a blocked system stub.
 if pe.Executable ~= "" && pe.Status == "Loaded"
-    if ismac && is_xcode(char(pe.Executable))
-        error(['MATLAB has already loaded the Xcode Python interpreter. ' ...
+    if isunix && isMATLABOnline==true
+        matlabonline = true;
+        success = true;
+        valid_path = char(pe.Executable);
+        return;
+
+    elseif isunix && is_system_stub(char(pe.Executable))
+        error(['MATLAB has already loaded a system-managed Python interpreter. ' ...
             'Restart MATLAB to apply the bypass.']);
     else
         success = true;
@@ -252,7 +320,7 @@ elseif ismac
             disp('Xcode Status: Installed (activating system dependencies bypass).');
         end
 
-        
+
         [valid_path, python_exists] = find_compatible_python(paths,m_rel,true);
 
         if ~python_exists
@@ -270,6 +338,41 @@ elseif ismac
         end
     end
 
+elseif isunix && ~ismac
+    if Verbose
+        disp('Operating System: Linux');
+    end
+    paths = get_system_paths('linux');
+
+    if Verbose
+        disp('Linux Status: Activating system dependencies bypass (PEP 668).');
+    end
+
+    % First attempt: try to bypass the blocked system interpreter
+    [valid_path, python_exists] = find_compatible_python(paths,m_rel,true);
+
+    % If it fails, attempt fallback on the system interpreter
+    if ~python_exists || valid_path == ""
+        if Verbose
+            disp('-> Fallback: No independent installation found. Testing system Python.');
+        end
+        [valid_path, python_exists] = find_compatible_python(paths,m_rel,false);
+    end
+
+    if ~python_exists
+        if Verbose
+            disp('-> Python Detection: No installation found.');
+            suggest_installation(m_rel);
+        end
+    elseif valid_path == ""
+        if Verbose
+            disp('-> Python Detection: Versions found but not compatible with MATLAB.');
+            suggest_installation(m_rel);
+        end
+    else
+        success = true;
+    end
+
 else
     error('FSDA:setupPythonEnv:UnsupportedOS', ...
         'Operating system not supported.');
@@ -285,19 +388,31 @@ end
 end
 
 function paths = get_system_paths(os_type)
+pythonEnv = pyenv;
+pythonUserPath = ['\n' char(pythonEnv.Executable)];
 
 if strcmp(os_type,'windows')
     [~, cmdout] = system('where python python3 python3.13 2>nul');
-    fallback = "";
-else
+    fallback = pythonUserPath;
+
+elseif strcmp(os_type,'macos')
     [~, cmdout] = system('/bin/zsh -lc "which -a python3 python3.13 2>/dev/null"');
-    pythonEnv = pyenv;
-    pythonUserPath=['\n' char(pythonEnv.Executable)];
     fallback = sprintf(['\n/opt/homebrew/bin/python3' ...
         pythonUserPath ...
         '\n/opt/homebrew/bin/python3.13' ...
         '\n/usr/local/bin/python3' ...
         '\n/Library/Frameworks/Python.framework/Versions/3.13/bin/python3.13']);
+
+elseif strcmp(os_type,'linux')
+    [~, cmdout] = system('which -a python3 python3.13 2>/dev/null');
+    fallback = sprintf(['\n/usr/bin/python3' ...
+        pythonUserPath ...
+        '\n/usr/local/bin/python3' ...
+        '\n/opt/python/bin/python3' ...
+        '\n/usr/bin/python3.13']);
+else
+    cmdout = "";
+    fallback = "";
 end
 
 raw_string = string(cmdout) + string(fallback);
@@ -305,7 +420,7 @@ paths = unique(split(raw_string,newline),'stable');
 
 end
 
-function [valid_path, any_python_exists] = find_compatible_python(paths,m_rel,bypass_xcode)
+function [valid_path, any_python_exists] = find_compatible_python(paths,m_rel,bypass_system)
 
 valid_path = "";
 any_python_exists = false;
@@ -320,7 +435,7 @@ for i = 1:length(paths)
 
     curr_char = char(curr_str);
 
-    if bypass_xcode && ...
+    if bypass_system && ...
             (contains(curr_char,'Xcode.app') || strcmp(curr_char,'/usr/bin/python3'))
         continue
     end
@@ -391,4 +506,17 @@ end
 
 disp('---------------------------------------------------------');
 
+end
+
+function tf = isMATLABOnline()
+%ISMATLABONLINE True if code appears to be running in MATLAB Online
+
+% R2022b+:
+if exist('isenv','builtin') || exist('isenv','file')
+    tf = isenv("MW_DDUX_APP_NAME") && ...
+        strcmp(getenv("MW_DDUX_APP_NAME"), "MATLAB_ONLINE");
+else
+    % Fallback for older releases
+    tf = strcmp(getenv("MW_DDUX_APP_NAME"), "MATLAB_ONLINE");
+end
 end
