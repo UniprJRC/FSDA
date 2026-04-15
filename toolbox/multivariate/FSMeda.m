@@ -266,8 +266,16 @@ if nargin<2
     error('FSDA:FSMeda:missingInputs','Initial subset is missing')
 end
 
-if any(ismissing(Y),"all")
+M=ismissing(Y);
+if any(M,"all")
     hasMiss=true;
+    if v<=8
+        [Patterns, ~, idxPatterns] = unique(M, 'rows', 'stable');
+    else
+        Patterns=[];
+        idxPatterns=[];
+        idxPatternsb=[];
+    end
 else
     hasMiss=false;
 end
@@ -451,8 +459,16 @@ else
         end
 
         if hasMiss == true
+            if ~isempty(idxPatterns)
+            if mm<=percn
+                idxPatternsb=idxPatterns(bsb);
+            else
+                idxPatternsb=idxPatterns(bsbT);
+            end
+            end
+            
             % run EM with missingness to estimate mu and Sigma
-            tem = mdEM(Yb);
+            tem = mdEM(Yb,'Patterns',Patterns,'idxPatterns',idxPatternsb);
 
             ym  = tem.loc;
             covYb = tem.cov;

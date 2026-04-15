@@ -10,6 +10,15 @@ function [out]=getYahoo(ticker, varargin)
 %   to the retrieval and dynamic interactive plot of their price time
 %   series, and finally to the extraction of their fundamental financial
 %   information.
+%
+%   This function allows the user to choose the visualization shown in the
+%   top panel and the technical indicator shown in the bottom panel.
+%   If options topPanelMode and bottomPanelMode are supplied as a character
+%   vector or string scalar, the selected visualization/statistic uses its
+%   default internal settings. If instead one of these options is supplied
+%   as a scalar struct, then it is possible to customize the suboptions
+%   associated with the selected visualization/statistic.
+%
 %   For background on financial data and market analysis, see:
 %   Yahoo Finance API documentation https://finance.yahoo.com/
 %
@@ -18,8 +27,10 @@ function [out]=getYahoo(ticker, varargin)
 % ticker :      Ticker symbol(s). Character, string or cell array of char.
 %               It can be:
 %               - a character scalar, for example 'G.MI'
-%               - a string scalar or string array, for example "G.MI" or ["G.MI" "ENEL.MI"]
-%               - a cell array of character vectors, for example {'G.MI','ENEL.MI'}
+%               - a string scalar or string array, for example "G.MI" or
+%                 ["G.MI" "ENEL.MI"]
+%               - a cell array of character vectors, for example
+%                 {'G.MI','ENEL.MI'}
 %               The function downloads OHLCV data from Yahoo Finance for
 %               each supplied ticker and returns the results inside a
 %               structure array.
@@ -28,28 +39,33 @@ function [out]=getYahoo(ticker, varargin)
 %
 % Optional input arguments:
 %
-%  LastPeriod : Period to analyze. Character or string scalar.
+% showPanelHelp : Display textual explanation in Command Window. Boolean.
+%               Default is false.
+%               Example - 'showPanelHelp',true
+%               Data Types - logical
+%
+% autoFixInterval : Replace invalid range/interval combinations automatically.
+%               Boolean. Default is true.
+%               Example - 'autoFixInterval',false
+%               Data Types - logical
+%
+% LastPeriod   : Period to analyze. Character or string scalar.
 %               Possible values are:
 %               '1d' '5d' '1mo' '3mo' '6mo' '1y' '2y' '5y' '10y' 'ytd' 'max'
 %               Default is '1y'.
 %               Example - 'LastPeriod','6mo'
 %               Data Types - char | string
 %
-%   interval  : Sampling interval requested to Yahoo Finance.
+% interval     : Sampling interval requested to Yahoo Finance.
 %               Character or string scalar.
 %               Possible values are:
-%               '1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'
+%               '1m','2m','5m','15m','30m','60m','90m','1h','1d','5d',
+%               '1wk','1mo','3mo'
 %               Default is '1m'. If the pair LastPeriod/interval is not
 %               admissible, the interval is replaced automatically if
 %               option autoFixInterval=true.
 %               Example - 'interval','1d'
 %               Data Types - char | string
-%
-% widthFactor : Candle width scaling factor. Scalar.
-%               It is used only when topPanelMode='candle'.
-%               Default is 1.5.
-%               Example - 'widthFactor',1.2
-%               Data Types - double
 %
 % layoutHeights : Relative heights of the three panels. Numeric vector.
 %               Vector with three positive elements controlling the
@@ -71,7 +87,7 @@ function [out]=getYahoo(ticker, varargin)
 %               Example - 'layoutHeights',[2 1 1]
 %               Data Types - double
 %
-% removeGaps  : Remove night or weekend gaps in x-axis. Boolean.
+% removeGaps   : Remove night or weekend gaps in x-axis. Boolean.
 %               If true, x-axis is based on the progressive index of the
 %               time series.
 %               If false, x-axis is based on actual datetime.
@@ -85,160 +101,132 @@ function [out]=getYahoo(ticker, varargin)
 %               Example - 'breakAtSession',false
 %               Data Types - logical
 %
-%    nTicks   : Number of ticks shown on x-axis when removeGaps=true.
+% nTicks       : Number of ticks shown on x-axis when removeGaps=true.
 %               Positive integer scalar.
 %               Default is 8.
 %               Example - 'nTicks',10
 %               Data Types - double
 %
-% topPanelMode : Type of plot in the first panel. String or char.
-%               Possible values are:
-%               'candle' = candlestick chart
-%               'line'   = close price only
-%               'ma'     = close price and moving averages
-%               Default is 'candle'.
+% topPanelMode : Type of plot shown in the top panel. Character,
+%               string scalar or scalar struct.
+%
+%               If topPanelMode is a character vector or string scalar,
+%               possible values are:
+%               'candle' = candlestick chart (default option);
+%               'line'   = close price only;
+%               'ma'     = close price and moving averages.
+%               In this case, all suboptions associated with the selected
+%               top panel mode remain at their default values.
+%
+%               The suboptions inside 'candle' are:
+%               widthFactor = Candle width scaling factor (default 1.5).
+%               upColor     = Color for up candles and bars (default [0 0.7 0]).
+%               downColor   = Color for down candles and bars (default [0.85 0 0]).
+%
+%               The suboptions inside 'ma' are:
+%               maFastLen =Fast moving average length (default 10).
+%               maMidLen  =Medium moving average length (default 30). 
+%               maSlowLen =Show moving average length (default 60).
+%               showMACrossovers=show moving average crossover markers 
+%               (default is true).
+%
+%               The default values for 'line' are:
+%               no additional suboptions.
+%
+%               If topPanelMode is a scalar struct, field Name specifies
+%               the selected visualization and the remaining fields control
+%               only the suboptions associated with that visualization.
+%
+%               For example, the call
+%               out=getYahoo('G.MI','topPanelMode',topPanelMode);
+%               is admissible where topPanelMode is a struct with the
+%               following fields
+%
+%               topPanelMode.Name='ma';
+%               topPanelMode.maFastLen=15;
+%               topPanelMode.maMidLen=25;
+%               topPanelMode.maSlowLen=50;
+%               topPanelMode.showMACrossovers=true;
 %               Example - 'topPanelMode','ma'
-%               Data Types - char | string
+%               Data Types - char | string | struct
 %
-% maFastLen   : Fast moving average length. Positive scalar integer.
-%               Used only when topPanelMode='ma'.
-%               Default is 10.
-%               Example - 'maFastLen',5
-%               Data Types - double
+% bottomPanelMode : Type of indicator shown in the bottom panel. Character,
+%               string scalar or scalar struct.
 %
-% maMidLen    : Medium moving average length. Positive scalar integer.
-%               Used only when topPanelMode='ma'.
-%               Default is 30.
-%               Example - 'maMidLen',20
-%               Data Types - double
+%               If bottomPanelMode is a character vector or string scalar,
+%               possible values are:
+%               'rsi'       = Relative Strength Index;
+%               'stoch'     = Stochastic oscillator (default option);
+%               'macd'      = MACD;
+%               'williamsr' = Williams %R;
+%               'roc'       = Rate of Change.
+%               In this case, all suboptions associated with the selected
+%               bottom panel mode remain at their default values.
 %
-% maSlowLen   : Slow moving average length. Positive scalar integer.
-%               Used only when topPanelMode='ma'.
-%               Default is 60. Note that maSlowLen > maMidLen > maFastLen.
-%               Example - 'maSlowLen',100
-%               Data Types - double
+%               The suboptions inside 'stoch' are:
+%               topStoch   = Upper stochastic threshold (default 70).
+%               lowStoch   = Lower stochastic threshold (default 30).
+%               stochLen   = Stochastic lookback length (default 14).
+%               stochSmooth= Smoothing length for %D (default 3).
 %
-% showMACrossovers : Show moving average crossover markers. Boolean.
-%               Used only when topPanelMode='ma'.
-%               Default is true.
-%               Example - 'showMACrossovers',false
-%               Data Types - logical
+%               The suboptions inside 'rsi' are:
+%               topRSI = Upper RSI threshold (default 80).
+%               lowRSI = Lower RSI threshold (default 20).
+%               rsiLen = RSI window length (default 14).
 %
-% upColor     : Color for up candles (top panel) and bars (mid panel). RGB row vector.
-%               Default is [0 0.7 0].
-%               Example - 'upColor',[0 0.5 0]
-%               Data Types - double
+%               The suboptions inside 'williamsr' are:
+%               topWilliams = Upper Williams %R threshold (default -30).
+%               lowWilliams = Lower Williams %R threshold (default -70).
+%               wrLen       = Williams %R lookback length (default 14).
 %
-% downColor   :  Color for down candles (top panel) and bars (mid panel). RGB row vector.
-%               Default is [0.85 0 0].
-%               Example - 'downColor',[0.7 0 0]
-%               Data Types - double
+%               The suboptions inside 'macd' are:
+%               macdFastLen = Fast EMA length (default 12).
+%               macdSlowLen = Slow EMA length (default 26).
+%               macdSigLen  = Signal EMA length (default 9).
 %
-% bottomPanelMode : Type of indicator shown in the third panel. String or char.
-%               Possible values are:
-%               'rsi'       = Relative Strength Index
-%               'stoch'     = Stochastic oscillator
-%               'macd'      = MACD
-%               'williamsr' = Williams %R
-%               'roc'       = Rate of Change
-%               Default is 'stoch'.
+%               The suboptions inside 'roc' are:
+%               rocLen = Rate of Change lag (default 12).
+%
+%               If bottomPanelMode is a scalar struct, field Name specifies
+%               the selected indicator and the remaining fields control
+%               only the suboptions associated with that indicator.
+%
+%               For example, the call
+%               out=getYahoo('G.MI','bottomPanelMode',bottomPanelMode);
+%               is admissible where bottomPanelMode is a struct with the
+%               following fields
+%
+%               bottomPanelMode.Name='rsi';
+%               bottomPanelMode.rsiLen=10;
+%               bottomPanelMode.topRSI=70;
+%               bottomPanelMode.lowRSI=30;
+%
 %               Example - 'bottomPanelMode','macd'
-%               Data Types - char | string
+%               Data Types - char | string | struct
 %
-% topRSI      : Upper RSI threshold. Scalar in in the interval [50 100].
-%               Default is 80.
-%               Example - 'topRSI',70
-%               Data Types - double
-%
-% lowRSI      : Lower RSI threshold. Scalar in in the interval [0 50].
-%               Default is 20.
-%               Example - 'lowRSI',30
-%               Data Types - double
-%
-% topStoch    : Upper stochastic threshold. Scalar in in the interval [50 100].
-%               Default is 70.
-%               Example - 'topStoch',80
-%               Data Types - double
-%
-% lowStoch    : Lower stochastic threshold. Scalar in in the interval [0 50].
-%               Default is 30.
-%               Example - 'lowStoch',20
-%               Data Types - double
-%
-% topWilliams : Upper Williams %R threshold. Scalar in in the interval [-50 0].
-%               Default is -30.
-%               Example - 'topWilliams',-20
-%               Data Types - double
-%
-% lowWilliams : Lower Williams %R threshold. Scalar in in the interval [-100 -50].
-%               Default is -70.
-%               Example - 'lowWilliams',-80
-%               Data Types - double
-%
-% rsiLen      : RSI window length. Scalar. Default is 14.
-%               Example - 'rsiLen',10
-%               Data Types - double
-%
-% stochLen    : Stochastic lookback length. Scalar. Default is 14.
-%               Example - 'stochLen',10
-%               Data Types - double
-%
-% stochSmooth : Stochastic smoothing length for %%D. Scalar. Default is 3.
-%               Example - 'stochSmooth',5
-%               Data Types - double
-%
-% macdFastLen : MACD fast EMA length. Positive scalar integer. Default is 12.
-%               Example - 'macdFastLen',8
-%               Data Types - double
-%
-% macdSlowLen : MACD slow EMA length. Positive scalar integer. Default is 26.
-%               Example - 'macdSlowLen',17
-%               Data Types - double
-%
-% macdSigLen  : MACD signal EMA length. Positive scalar integer. Default is 9.
-%               Example - 'macdSigLen',5
-%               Data Types - double
-%
-% rocLen      : ROC lag length. Positive scalar integer. Default is 12.
-%               Example - 'rocLen',6
-%               Data Types - double
-%
-% wrLen       : Williams %%R lookback length. Scalar. Default is 14.
-%               Example - 'wrLen',10
-%               Data Types - double
-%
-% showPanelHelp : Display textual explanation in Command Window. Boolean.
-%               Default is false.
-%               Example - 'showPanelHelp',true
-%               Data Types - logical
-%
-% autoFixInterval : Replace invalid range/interval combinations automatically.
-%               Boolean. Default is true.
-%               Example - 'autoFixInterval',false
-%               Data Types - logical
-%
-% plots       : Produce plots. Boolean.
+% plots        : Produce plots. Boolean.
 %               If true (default) the three-panel figure is created for each
 %               ticker. If false only the data are downloaded and stored in
 %               the output structure.
 %               Example - 'plots',false
 %               Data Types - logical
 %
-% msg         : Display progress messages. Boolean.
+% msg          : Display progress messages. Boolean.
 %               If true (default), progress messages and warnings are shown.
 %               Example - 'msg',false
 %               Data Types - logical
 %
 % Output:
 %
-% out         : structure array containing the following fields
+% out          : structure array containing the following fields
 %
 % out.Ticker            = ticker symbol.
 % out.LastPeriod        = requested period.
 % out.intervalRequested = requested interval after validation.
 % out.intervalActual    = actual data granularity returned by Yahoo.
 % out.TimeZone          = exchange timezone.
-% out.TT                = timetable with variables Open, High, Low, Close, Volume.
+% out.TT                = timetable with variables Open, High, Low, Close,
+%                         Volume.
 % out.Indicators        = structure containing RSI, StochK, StochD, MACD,
 %                         MACDSignal, MACDHist, WilliamsR, ROC, maFast,
 %                         maMid and maSlow.
@@ -264,6 +252,7 @@ function [out]=getYahoo(ticker, varargin)
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('getYahoo')">Link to the help page for this function</a>
+%
 %
 %$LastChangedDate::                      $: Date of the last commit
 %
@@ -350,56 +339,6 @@ function [out]=getYahoo(ticker, varargin)
 %}
 
 %{
-    % Line chart in the top panel.
-    out = getYahoo('ENEL.MI','topPanelMode','line','bottomPanelMode','rsi');
-%}
-
-%{
-    %% Line Chart with moving averages in the top panel and crossovers.
-    out = getYahoo('ENEL.MI','topPanelMode','ma','maFastLen',5,'maMidLen',20,'maSlowLen',50);
-%}
-
-%{
-    % Line Chart with moving averages in the top panel but no crossovers.
-    out = getYahoo('ENEL.MI','topPanelMode','ma','showMACrossovers',false);
-%}
-
-%{
-    % Custom colors for the candles and the bars associted with the quantities.
-    out = getYahoo('G.MI','upColor',[0 0.4 0.8],'downColor',[0.8 0.4 0]);
-%}
-
-%{
-    %  Wider candles in the top panel.
-    out = getYahoo('G.MI','widthFactor',2);
-%}
-
-%{
-    % RSI custom in the bottom panel.
-    out = getYahoo('G.MI','bottomPanelMode','rsi','rsiLen',10,'topRSI',70,'lowRSI',30);
-%}
-
-%{
-    % Stochastic custom in the bottom panel.
-    out = getYahoo('G.MI','bottomPanelMode','stoch','stochLen',10,'stochSmooth',5);
-%}
-
-%{
-    % MACD custom in the bottom panel.
-    out = getYahoo('ENEL.MI','bottomPanelMode','macd','macdFastLen',8,'macdSlowLen',17);
-%}
-
-%{
-    % Williams R custom in the bottom panel.
-    out = getYahoo('G.MI','bottomPanelMode','williamsr','wrLen',100);
-%}
-
-%{
-    % ROC custom in the bottom panel.
-    out = getYahoo('G.MI','bottomPanelMode','roc','rocLen',6);
-%}
-
-%{
     % Long horizon of 10 years interval 1mo.
     out = getYahoo('ENEL.MI','LastPeriod','10y','interval','1mo');
 %}
@@ -430,6 +369,92 @@ function [out]=getYahoo(ticker, varargin)
 %}
 
 %{
+    % Line chart in the top panel.
+    out = getYahoo('ENEL.MI','topPanelMode','line','bottomPanelMode','rsi');
+%}
+
+%{
+    %% Line Chart with personalized moving averages in the top panel and crossovers.
+    s = struct;
+    s.Name = 'ma';
+    s.maFastLen = 5;
+    s.maMidLen  = 20;
+    s.maSlowLen = 50;
+    s.showMACrossovers = true;
+    out = getYahoo('ENEL.MI','topPanelMode',s);
+%}
+
+%{
+    % Line Chart with moving averages in the top panel but no crossovers.
+    s = struct;
+    s.Name = 'ma';
+    s.showMACrossovers = false;
+    out = getYahoo('ENEL.MI','topPanelMode',s);
+%}
+
+%{
+    % Custom colors for the candles and the bars associated with the quantities.
+    s = struct;
+    s.Name = 'candle';
+    s.upColor   = [0 0.4 0.8];
+    s.downColor = [0.8 0.4 0];
+    out = getYahoo('G.MI','topPanelMode',s);
+%}
+
+%{
+    % Wider candles in the top panel.
+    s = struct;
+    s.Name = 'candle';
+    s.widthFactor = 2;
+    out = getYahoo('G.MI','topPanelMode',s);
+%}
+
+%{
+    % RSI custom in the bottom panel.
+    s = struct;
+    s.Name = 'rsi';
+    s.rsiLen = 10;
+    s.topRSI = 70;
+    s.lowRSI = 30;
+    out = getYahoo('G.MI','bottomPanelMode',s);
+%}
+
+%{
+    % Stochastic custom in the bottom panel.
+    s = struct;
+    s.Name = 'stoch';
+    s.stochLen    = 10;
+    s.stochSmooth = 5;
+    out = getYahoo('G.MI','bottomPanelMode',s);
+%}
+
+%{
+    % MACD custom in the bottom panel.
+    s = struct;
+    s.Name = 'macd';
+    s.macdFastLen = 8;
+    s.macdSlowLen = 17;
+    out = getYahoo('ENEL.MI','bottomPanelMode',s);
+%}
+
+%{
+    % Williams %R custom in the bottom panel.
+    s = struct;
+    s.Name = 'williamsr';
+    s.wrLen = 100;
+    out = getYahoo('G.MI','bottomPanelMode',s);
+%}
+
+%{
+    % ROC custom in the bottom panel.
+    s = struct;
+    s.Name = 'roc';
+    s.rocLen = 6;
+    out = getYahoo('G.MI','bottomPanelMode',s);
+%}
+
+
+%{
     % Compare indicators in the bottom panel.
     getYahoo('G.MI','bottomPanelMode','rsi');
     getYahoo('G.MI','bottomPanelMode','macd');
@@ -441,9 +466,20 @@ function [out]=getYahoo(ticker, varargin)
 %}
 
 %{
-    % Full options stress test.
-    out = getYahoo('G.MI','LastPeriod','3mo','interval','1d','topPanelMode','ma',...
-        'maFastLen',7,'maMidLen',21,'maSlowLen',50,'bottomPanelMode','rsi');
+    % Full options stress test with personalized top and bottom panels.
+    stop = struct;
+    stop.Name = 'ma';
+    stop.maFastLen = 7;
+    stop.maMidLen  = 21;
+    stop.maSlowLen = 50;
+    stop.showMACrossovers = true;
+    sbottom = struct;
+    sbottom.Name = 'rsi';
+    sbottom.rsiLen = 14;
+    sbottom.topRSI = 80;
+    sbottom.lowRSI = 20;
+    out = getYahoo('G.MI','LastPeriod','3mo','interval','1d', ...
+        'topPanelMode',stop,'bottomPanelMode',sbottom);
 %}
 
 %{
@@ -469,6 +505,7 @@ function [out]=getYahoo(ticker, varargin)
     disp(F)
 %}
 
+
 %% Beginning of code
 
 if nargin<1
@@ -476,47 +513,32 @@ if nargin<1
 end
 
 if coder.target('MATLAB')
+
+    % Default options.
+    % Suboptions are controlled only through a struct passed to
+    % topPanelMode or bottomPanelMode.
     options=struct( ...
+        'showPanelHelp',false, ...
+        'autoFixInterval',true, ...
         'LastPeriod','1y', ...
         'interval','1m', ...
-        'widthFactor',1.5, ...
+        'layoutHeights',[1 1 1], ...
         'removeGaps',true, ...
         'breakAtSession',true, ...
         'nTicks',8, ...
         'topPanelMode','candle', ...
-        'maFastLen',10, ...
-        'maMidLen',30, ...
-        'maSlowLen',60, ...
-        'showMACrossovers',true, ...
-        'upColor',[0 0.7 0], ...
-        'downColor',[0.85 0 0], ...
         'bottomPanelMode','stoch', ...
-        'topRSI',80, ...
-        'lowRSI',20, ...
-        'topStoch',70, ...
-        'lowStoch',30, ...
-        'topWilliams',-30, ...
-        'lowWilliams',-70, ...
-        'rsiLen',14, ...
-        'stochLen',14, ...
-        'stochSmooth',3, ...
-        'macdFastLen',12, ...
-        'macdSlowLen',26, ...
-        'macdSigLen',9, ...
-        'rocLen',12, ...
-        'wrLen',14, ...
-        'showPanelHelp',false, ...
-        'autoFixInterval',true, ...
         'plots',true, ...
-        'layoutHeights',[1 1 1], ...
         'msg',true);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
+
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:getYahoo:WrongInputOpt', ...
-                'Number of supplied options is invalid. Probably values for some parameters are missing.');
+                ['Number of supplied options is invalid. ' ...
+                'Probably values for some parameters are missing.']);
         end
         aux.chkoptions(options,UserOptions);
     end
@@ -528,39 +550,197 @@ if nargin>1
     end
 end
 
-LastPeriod       = char(string(options.LastPeriod));
-interval         = char(string(options.interval));
-widthFactor      = options.widthFactor;
-removeGaps       = options.removeGaps;
-breakAtSession   = options.breakAtSession;
-nTicks           = options.nTicks;
-topPanelMode     = char(string(options.topPanelMode));
-maFastLen        = options.maFastLen;
-maMidLen         = options.maMidLen;
-maSlowLen        = options.maSlowLen;
-showMACrossovers = options.showMACrossovers;
-upColor          = options.upColor;
-downColor        = options.downColor;
-bottomPanelMode  = char(string(options.bottomPanelMode));
-topRSI           = options.topRSI;
-lowRSI           = options.lowRSI;
-topStoch         = options.topStoch;
-lowStoch         = options.lowStoch;
-topWilliams      = options.topWilliams;
-lowWilliams      = options.lowWilliams;
-rsiLen           = options.rsiLen;
-stochLen         = options.stochLen;
-stochSmooth      = options.stochSmooth;
-macdFastLen      = options.macdFastLen;
-macdSlowLen      = options.macdSlowLen;
-macdSigLen       = options.macdSigLen;
-rocLen           = options.rocLen;
-wrLen            = options.wrLen;
-showPanelHelp    = options.showPanelHelp;
-autoFixInterval  = options.autoFixInterval;
-doplot           = options.plots;
-msg              = options.msg;
-layoutHeights    = options.layoutHeights;
+% Default values for suboptions.
+% These defaults are always used when topPanelMode or bottomPanelMode are
+% supplied as a char vector or string scalar.
+widthFactor      = 1.5;
+maFastLen        = 10;
+maMidLen         = 30;
+maSlowLen        = 60;
+showMACrossovers = true;
+
+upColor          = [0 0.7 0];
+downColor        = [0.85 0 0];
+
+topRSI           = 80;
+lowRSI           = 20;
+rsiLen           = 14;
+
+topStoch         = 70;
+lowStoch         = 30;
+stochLen         = 14;
+stochSmooth      = 3;
+
+topWilliams      = -30;
+lowWilliams      = -70;
+wrLen            = 14;
+
+macdFastLen      = 12;
+macdSlowLen      = 26;
+macdSigLen       = 9;
+
+rocLen           = 12;
+
+% Parse topPanelMode.
+% If topPanelMode is a char vector or string scalar, all suboptions remain
+% at their default values.
+% If topPanelMode is a struct, field Name selects the visualization and
+% only the suboptions associated with that visualization can be specified.
+topPanelMode = options.topPanelMode;
+
+if isstruct(topPanelMode)
+    if ~isscalar(topPanelMode)
+        error('FSDA:getYahoo:WngInp', ...
+            'Option topPanelMode, when supplied as a struct, must be scalar.');
+    end
+    if ~isfield(topPanelMode,'Name')
+        error('FSDA:getYahoo:WngInp', ...
+            ['If topPanelMode is a struct, it must contain field ' ...
+            '''Name''.']);
+    end
+
+    topName = char(string(topPanelMode.Name));
+
+    switch lower(topName)
+        case 'ma'
+            allowedTopFields = {'Name','maFastLen','maMidLen', ...
+                'maSlowLen','showMACrossovers'};
+
+        case 'candle'
+            allowedTopFields = {'Name','widthFactor','upColor','downColor'};
+
+        case 'line'
+            allowedTopFields = {'Name'};
+
+        otherwise
+            error('FSDA:getYahoo:WngInp', ...
+                'Unknown value for topPanelMode.Name: %s', topName);
+    end
+
+    fnTop = fieldnames(topPanelMode);
+    if ~all(ismember(fnTop,allowedTopFields))
+        wrongTop = fnTop(~ismember(fnTop,allowedTopFields));
+        error('FSDA:getYahoo:WngInp', ...
+            ['Invalid field(s) inside topPanelMode: ' ...
+            strjoin(wrongTop',', ')]);
+    end
+
+    topPanelMode = lower(topName);
+else
+    topPanelMode = char(string(topPanelMode));
+end
+% Since topPanelMode may be a struct, use the original variable again.
+if isstruct(options.topPanelMode)
+    STop = options.topPanelMode;
+    switch lower(topPanelMode)
+        case 'ma'
+            if isfield(STop,'maFastLen'),        maFastLen = STop.maFastLen; end
+            if isfield(STop,'maMidLen'),         maMidLen = STop.maMidLen; end
+            if isfield(STop,'maSlowLen'),        maSlowLen = STop.maSlowLen; end
+            if isfield(STop,'showMACrossovers'), showMACrossovers = STop.showMACrossovers; end
+
+        case 'candle'
+            if isfield(STop,'widthFactor'), widthFactor = STop.widthFactor; end
+            if isfield(STop,'upColor'),     upColor = STop.upColor; end
+            if isfield(STop,'downColor'),   downColor = STop.downColor; end
+    end
+end
+
+% Parse bottomPanelMode.
+% If bottomPanelMode is a char vector or string scalar, all suboptions
+% remain at their default values.
+% If bottomPanelMode is a struct, field Name selects the statistic and
+% only the suboptions associated with that statistic can be specified.
+bottomPanelMode = options.bottomPanelMode;
+
+if isstruct(bottomPanelMode)
+    if ~isscalar(bottomPanelMode)
+        error('FSDA:getYahoo:WngInp', ...
+            'Option bottomPanelMode, when supplied as a struct, must be scalar.');
+    end
+    if ~isfield(bottomPanelMode,'Name')
+        error('FSDA:getYahoo:WngInp', ...
+            ['If bottomPanelMode is a struct, it must contain field ' ...
+            '''Name''.']);
+    end
+
+    bottomName = char(string(bottomPanelMode.Name));
+
+    switch lower(bottomName)
+        case 'rsi'
+            allowedBottomFields = {'Name','topRSI','lowRSI','rsiLen'};
+
+        case 'stoch'
+            allowedBottomFields = {'Name','topStoch','lowStoch', ...
+                'stochLen','stochSmooth'};
+
+        case 'williamsr'
+            allowedBottomFields = {'Name','topWilliams','lowWilliams','wrLen'};
+
+        case 'macd'
+            allowedBottomFields = {'Name','macdFastLen','macdSlowLen','macdSigLen'};
+
+        case 'roc'
+            allowedBottomFields = {'Name','rocLen'};
+
+        otherwise
+            error('FSDA:getYahoo:WngInp', ...
+                'Unknown value for bottomPanelMode.Name: %s', bottomName);
+    end
+
+    fnBottom = fieldnames(bottomPanelMode);
+    if ~all(ismember(fnBottom,allowedBottomFields))
+        wrongBottom = fnBottom(~ismember(fnBottom,allowedBottomFields));
+        error('FSDA:getYahoo:WngInp', ...
+            ['Invalid field(s) inside bottomPanelMode: ' ...
+            strjoin(wrongBottom',', ')]);
+    end
+
+    bottomPanelMode = lower(bottomName);
+else
+    bottomPanelMode = char(string(bottomPanelMode));
+end
+
+if isstruct(options.bottomPanelMode)
+    SBottom = options.bottomPanelMode;
+    switch lower(bottomPanelMode)
+        case 'rsi'
+            if isfield(SBottom,'topRSI'), topRSI = SBottom.topRSI; end
+            if isfield(SBottom,'lowRSI'), lowRSI = SBottom.lowRSI; end
+            if isfield(SBottom,'rsiLen'), rsiLen = SBottom.rsiLen; end
+
+        case 'stoch'
+            if isfield(SBottom,'topStoch'),    topStoch = SBottom.topStoch; end
+            if isfield(SBottom,'lowStoch'),    lowStoch = SBottom.lowStoch; end
+            if isfield(SBottom,'stochLen'),    stochLen = SBottom.stochLen; end
+            if isfield(SBottom,'stochSmooth'), stochSmooth = SBottom.stochSmooth; end
+
+        case 'williamsr'
+            if isfield(SBottom,'topWilliams'), topWilliams = SBottom.topWilliams; end
+            if isfield(SBottom,'lowWilliams'), lowWilliams = SBottom.lowWilliams; end
+            if isfield(SBottom,'wrLen'),       wrLen = SBottom.wrLen; end
+
+        case 'macd'
+            if isfield(SBottom,'macdFastLen'), macdFastLen = SBottom.macdFastLen; end
+            if isfield(SBottom,'macdSlowLen'), macdSlowLen = SBottom.macdSlowLen; end
+            if isfield(SBottom,'macdSigLen'),  macdSigLen = SBottom.macdSigLen; end
+
+        case 'roc'
+            if isfield(SBottom,'rocLen'), rocLen = SBottom.rocLen; end
+    end
+end
+
+LastPeriod      = char(string(options.LastPeriod));
+interval        = char(string(options.interval));
+removeGaps      = options.removeGaps;
+breakAtSession  = options.breakAtSession;
+nTicks          = options.nTicks;
+showPanelHelp   = options.showPanelHelp;
+autoFixInterval = options.autoFixInterval;
+doplot          = options.plots;
+msg             = options.msg;
+layoutHeights   = options.layoutHeights;
+
 
 if isempty(interval)
     switch LastPeriod

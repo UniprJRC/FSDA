@@ -71,7 +71,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %}
 
 %{
-    %% FSMenvmmd with otpional arguments.
+    %% FSMenvmmd with optional arguments.
     % Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000
     % observations and 5 explanatory variables. The envelopes are produced for
     % scaled Mahalanobis distances (no consistency factor is applied)

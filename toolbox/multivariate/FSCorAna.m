@@ -556,7 +556,7 @@ out=struct;
 if isempty(mmdEnv)
     % Plot mmd with envelopes
     % quant=[0.01;0.5;conflev];
-    quant=[0.05;0.5;0.95;0.01;conflev];
+    quant=[0.05;0.5;0.95;1-conflev;conflev];
     % Compute theoretical envelops for minimum Mahalanobis distance based on all
     % the observations for the above quantiles.
     if msg==true
@@ -620,7 +620,8 @@ md=mahalCorAna(ProfileRows,loc);
 if plots==1
     figure;
 
-    plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
+    lwdreal=1.5;
+    plot(mmd(:,1),mmd(:,2),'tag','data_mmd','LineWidth',lwdreal);
 
     % include specified tag in the current plot
     set(gcf,'tag','pl_mmd');
@@ -628,16 +629,19 @@ if plots==1
 
     lwdenv=2;
     % Superimpose 50% envelope
-    line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
+    line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','-.','Color','k','tag','env');
 
-    show5and95=false;
+    show5and95=true;
     if show5and95==true
         % Superimpose 5% and 95% envelope
-        line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+        line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','-.','Color',[0.2 0.8 0.4],'tag','env');
+        line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','-.','Color',[0.2 0.8 0.4],'tag','env');
         ylabel('')
+        if conflev==0.9
+         yline(max(gmin(:,end)))
+        end
 
-         if addRowNames == true
+          if addRowNames == true
                sel=~ismissing(Un(:,end));
              if isempty(label)
                 text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
@@ -668,7 +672,7 @@ if plots==1
     xlabel('Subset size m');
     ylabel('Monitoring of minimum (weighted) Mahalanobis distance');
 
-
+    drawnow
     figure;
 
     % Plot of total inertia

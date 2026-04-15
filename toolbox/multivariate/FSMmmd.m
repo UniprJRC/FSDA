@@ -206,9 +206,15 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 nnargin=nargin;
 vvarargin=varargin;
 [Y,n,v] = aux.chkinputM(Y,nnargin,vvarargin);
-
-if any(ismissing(Y),"all")
+M=ismissing(Y);
+if any(M,"all")
     hasMiss=true;
+    if v<=8
+     [Patterns, ~, idxPatterns] = unique(M, 'rows', 'stable');
+    else
+        Patterns=[];
+        idxPatterns=[];
+    end
 else
     hasMiss=false;
 end
@@ -253,9 +259,13 @@ if bsb==0
     while and(Ra,nwhile<100)
         % Extract a random sample of size v+1
         bsb=randsample(n,v+1);
-        % Check if the var-cov matrix of the random sample is full (i.e =v)
-        Ra=(rank(cov(Y(bsb,:)))<v);
-        nwhile=nwhile+1;
+        if hasMiss ==true
+            Ra=false;
+        else
+            % Check if the var-cov matrix of the random sample is full (i.e =v)
+            Ra=(rank(cov(Y(bsb,:)))<v);
+            nwhile=nwhile+1;
+        end
     end
     if nwhile==100
         if coder.target('MATLAB')
@@ -265,6 +275,7 @@ if bsb==0
         end
     end
 else
+    bsb=bsb(:);
 end
 
 % percn = scalar which controls up to which point of the search it is
@@ -427,7 +438,7 @@ lunit=length(unit);
 
 % If the subset Y(bsb,:) is not full rank or a column is constant, then we
 % return as output an empty structure.
-if (rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0
+if hasMiss==false && ((rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0)
     if coder.target('MATLAB')
         warning('FSDA:FSMmmd:NoFullRank','The supplied initial subset does not produce a full rank matrix');
     else
@@ -444,7 +455,7 @@ else
     ij=1;
 
     for mm = ini0:n
-
+        % disp(mm)
         % Extract units forming subset
         if mm<=percn
             Yb=Y(bsb,:);
@@ -468,8 +479,12 @@ else
         if hasMiss==true
 
             % run trimmed EM with missingness to estimate mu and Sigma
-            tem = mdEM(Yb);
-
+            if mm<=percn
+                idxPatternsb=idxPatterns(bsb);
+            else
+                idxPatternsb=idxPatterns(bsbT);
+            end
+            tem = mdEM(Yb,'Patterns',Patterns,'idxPatterns',idxPatternsb);
             ym  = tem.loc;
             covYb = tem.cov;
 
@@ -755,7 +770,6 @@ else
                 % subset and were also in the previous subset
                 % bsb = units forming new subset.
                 if mm<=percn
-
                     bsbr=[bsbrini;bsbradd(1:zz-1)];
                     bsb=[bsbr;unit];
                 else

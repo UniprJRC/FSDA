@@ -6,68 +6,110 @@
         "name": "market",
         "kind": "namevalue",
         "type": [
-          ["char", "choices={'Nasdaq','SP500','NYSE','FTSEMIB','London','DAX40','CAC40','Nikkei225'}"],
-          ["string", "choices={'Nasdaq','SP500','NYSE','FTSEMIB','London','DAX40','CAC40','Nikkei225'}"]
+          [
+            "char",
+            "choices={'Nasdaq','SP500','NYSE','FTSEMIB','London','DAX40','CAC40','Nikkei225'}"
+          ],
+          [
+            "string",
+            "choices={'Nasdaq','SP500','NYSE','FTSEMIB','London','DAX40','CAC40','Nikkei225'}"
+          ]
         ],
         "purpose": "Market or index name"
       },
       {
         "name": "nStocks",
         "kind": "namevalue",
-        "type": ["numeric", "scalar", ">=1"],
+        "type": [
+          "numeric",
+          "scalar",
+          ">=1"
+        ],
         "purpose": "Number of representative stocks to return"
       },
       {
         "name": "Source",
         "kind": "namevalue",
         "type": [
-          ["char", "choices={'static','dynamic'}"],
-          ["string", "choices={'static','dynamic'}"]
+          [
+            "char",
+            "choices={'static','dynamic'}"
+          ],
+          [
+            "string",
+            "choices={'static','dynamic'}"
+          ]
         ],
         "purpose": "Source used to build the market universe"
       },
       {
         "name": "RankByCap",
         "kind": "namevalue",
-        "type": ["logical", "scalar"],
+        "type": [
+          "logical",
+          "scalar"
+        ],
         "purpose": "Rank constituents by market capitalization"
       },
       {
         "name": "IncludeIndex",
         "kind": "namevalue",
-        "type": ["logical", "scalar"],
+        "type": [
+          "logical",
+          "scalar"
+        ],
         "purpose": "Include the market index in the first row"
       },
       {
         "name": "msg",
         "kind": "namevalue",
-        "type": ["logical", "scalar"],
+        "type": [
+          "logical",
+          "scalar"
+        ],
         "purpose": "Display progress messages"
       }
     ],
     "outputs": [
       {
         "name": "T",
-        "type": ["table"],
+        "type": [
+          "table"
+        ],
         "purpose": "Output table of tickers and names"
       }
     ]
   },
-
   "getYahoo": {
     "inputs": [
       {
         "name": "ticker",
         "kind": "required",
-        "type": [["char"], ["string"], ["cellstr"]],
+        "type": [
+          [
+            "char"
+          ],
+          [
+            "string"
+          ],
+          [
+            "cellstr"
+          ]
+        ],
         "purpose": "Ticker symbol or collection of ticker symbols"
       },
       {
         "name": "LastPeriod",
         "kind": "namevalue",
         "type": [
-          ["char", "choices={'1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max'}"],
-          ["string", "choices={'1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max'}"]
+          [
+            "char",
+            "choices={'1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max'}"
+          ],
+          [
+            "string",
+            "choices={'1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max'}"
+          ]
         ],
         "purpose": "Time span to download"
       },
@@ -75,234 +117,194 @@
         "name": "interval",
         "kind": "namevalue",
         "type": [
-          ["char", "choices={'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'}"],
-          ["string", "choices={'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'}"]
+          [
+            "char",
+            "choices={'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'}"
+          ],
+          [
+            "string",
+            "choices={'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'}"
+          ]
         ],
         "purpose": "Sampling interval requested to Yahoo Finance"
       },
       {
-        "name": "widthFactor",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", ">0"],
-        "purpose": "Candle width scaling factor"
-      },
-      {
         "name": "layoutHeights",
         "kind": "namevalue",
-        "type": ["numeric", "vector", "numel=3"],
+        "type": [
+          "numeric",
+          "vector",
+          "numel=3"
+        ],
         "purpose": "Relative heights of the three panels"
       },
       {
         "name": "removeGaps",
         "kind": "namevalue",
-        "type": ["logical", "scalar"],
+        "type": [
+          "logical",
+          "scalar"
+        ],
         "purpose": "Remove night or weekend gaps in x-axis"
       },
       {
         "name": "breakAtSession",
         "kind": "namevalue",
-        "type": ["logical", "scalar"],
+        "type": [
+          "logical",
+          "scalar"
+        ],
         "purpose": "Add separators between sessions"
       },
       {
         "name": "nTicks",
         "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
+        "type": [
+          "numeric",
+          "scalar",
+          "integer",
+          ">=1"
+        ],
         "purpose": "Number of ticks shown on x-axis when removeGaps=true"
       },
       {
         "name": "topPanelMode",
         "kind": "namevalue",
         "type": [
-          ["char", "choices={'candle','line','ma'}"],
-          ["string", "choices={'candle','line','ma'}"]
+          [
+            "char",
+            "choices={'candle','line','ma'}"
+          ],
+          [
+            "string",
+            "choices={'candle','line','ma'}"
+          ],
+          [
+            "struct",
+            "scalar",
+            "field Name required",
+            "Name choices={'candle','line','ma'}",
+            "admissible fields depend on Name: candle->{Name,widthFactor,upColor,downColor}; line->{Name}; ma->{Name,maFastLen,maMidLen,maSlowLen,showMACrossovers}"
+          ]
         ],
-        "purpose": "Type of plot in the first panel"
-      },
-      {
-        "name": "maFastLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "Fast moving average length"
-      },
-      {
-        "name": "maMidLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "Medium moving average length"
-      },
-      {
-        "name": "maSlowLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "Slow moving average length"
-      },
-      {
-        "name": "showMACrossovers",
-        "kind": "namevalue",
-        "type": ["logical", "scalar"],
-        "purpose": "Show moving average crossover markers"
-      },
-      {
-        "name": "upColor",
-        "kind": "namevalue",
-        "type": ["numeric", "vector", "numel=3"],
-        "purpose": "Color for up candles and bars"
-      },
-      {
-        "name": "downColor",
-        "kind": "namevalue",
-        "type": ["numeric", "vector", "numel=3"],
-        "purpose": "Color for down candles and bars"
+        "purpose": "Type of plot in the top panel; \n when supplied as a struct, \n it also controls the suboptions associated with the selected visualization"
       },
       {
         "name": "bottomPanelMode",
         "kind": "namevalue",
         "type": [
-          ["char", "choices={'rsi','stoch','macd','williamsr','roc'}"],
-          ["string", "choices={'rsi','stoch','macd','williamsr','roc'}"]
+          [
+            "char",
+            "choices={'rsi','stoch','macd','williamsr','roc'}"
+          ],
+          [
+            "string",
+            "choices={'rsi','stoch','macd','williamsr','roc'}"
+          ],
+          [
+            "struct",
+            "scalar",
+            "field Name required",
+            "Name choices={'rsi','stoch','macd','williamsr','roc'}",
+            "admissible fields depend on Name: rsi->{Name,topRSI,lowRSI,rsiLen}; stoch->{Name,topStoch,lowStoch,stochLen,stochSmooth}; macd->{Name,macdFastLen,macdSlowLen,macdSigLen}; williamsr->{Name,topWilliams,lowWilliams,wrLen}; roc->{Name,rocLen}"
+          ]
         ],
-        "purpose": "Indicator shown in the third panel"
-      },
-      {
-        "name": "topRSI",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar"],
-        "purpose": "Upper RSI threshold"
-      },
-      {
-        "name": "lowRSI",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar"],
-        "purpose": "Lower RSI threshold"
-      },
-      {
-        "name": "topStoch",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar"],
-        "purpose": "Upper stochastic threshold"
-      },
-      {
-        "name": "lowStoch",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar"],
-        "purpose": "Lower stochastic threshold"
-      },
-      {
-        "name": "topWilliams",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar"],
-        "purpose": "Upper Williams %R threshold"
-      },
-      {
-        "name": "lowWilliams",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar"],
-        "purpose": "Lower Williams %R threshold"
-      },
-      {
-        "name": "rsiLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "RSI window length"
-      },
-      {
-        "name": "stochLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "Stochastic lookback length"
-      },
-      {
-        "name": "stochSmooth",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "Stochastic smoothing length"
-      },
-      {
-        "name": "macdFastLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "MACD fast EMA length"
-      },
-      {
-        "name": "macdSlowLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "MACD slow EMA length"
-      },
-      {
-        "name": "macdSigLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "MACD signal EMA length"
-      },
-      {
-        "name": "rocLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "Rate of change lag length"
-      },
-      {
-        "name": "wrLen",
-        "kind": "namevalue",
-        "type": ["numeric", "scalar", "integer", ">=1"],
-        "purpose": "Williams %R lookback length"
+        "purpose": "Indicator shown in the bottom panel; when supplied as a struct, it also controls the suboptions associated with the selected indicator"
       },
       {
         "name": "showPanelHelp",
         "kind": "namevalue",
-        "type": ["logical", "scalar"],
+        "type": [
+          "logical",
+          "scalar"
+        ],
         "purpose": "Display textual explanation in Command Window"
       },
       {
         "name": "autoFixInterval",
         "kind": "namevalue",
-        "type": ["logical", "scalar"],
+        "type": [
+          "logical",
+          "scalar"
+        ],
         "purpose": "Automatically replace invalid range or interval combinations"
       },
       {
         "name": "plots",
         "kind": "namevalue",
-        "type": ["logical", "scalar"],
+        "type": [
+          "logical",
+          "scalar"
+        ],
         "purpose": "Create plots for each ticker"
       },
       {
         "name": "msg",
         "kind": "namevalue",
-        "type": ["logical", "scalar"],
+        "type": [
+          "logical",
+          "scalar"
+        ],
         "purpose": "Display progress messages"
       }
     ],
     "outputs": [
       {
         "name": "out",
-        "type": ["struct"],
+        "type": [
+          "struct"
+        ],
         "purpose": "Structure array with downloaded time series and indicators"
       }
     ]
   },
-
   "getFundamentals": {
     "inputs": [
       {
         "name": "ticker",
         "kind": "required",
-        "type": [["char"], ["string"], ["cellstr"]],
+        "type": [
+          [
+            "char"
+          ],
+          [
+            "string"
+          ],
+          [
+            "cellstr"
+          ]
+        ],
         "purpose": "Ticker symbol or collection of ticker symbols"
       },
       {
         "name": "RankBy",
         "kind": "namevalue",
-        "type": [["char"], ["string"]],
+        "type": [
+          [
+            "char"
+          ],
+          [
+            "string"
+          ]
+        ],
         "purpose": "Numeric variable used to rank rows in descending order"
       },
       {
         "name": "ExplainFields",
         "kind": "namevalue",
         "type": [
-          ["logical", "scalar"],
-          ["char", "choices={'all','basic','valuation','performance'}"],
-          ["string", "choices={'all','basic','valuation','performance'}"]
+          [
+            "logical",
+            "scalar"
+          ],
+          [
+            "char",
+            "choices={'all','basic','valuation','performance'}"
+          ],
+          [
+            "string",
+            "choices={'all','basic','valuation','performance'}"
+          ]
         ],
         "purpose": "Display explanation of available fields or presets"
       },
@@ -310,9 +312,17 @@
         "name": "Fields",
         "kind": "namevalue",
         "type": [
-          ["char", "choices={'all','basic','valuation','performance'}"],
-          ["string", "choices={'all','basic','valuation','performance'}"],
-          ["cellstr"]
+          [
+            "char",
+            "choices={'all','basic','valuation','performance'}"
+          ],
+          [
+            "string",
+            "choices={'all','basic','valuation','performance'}"
+          ],
+          [
+            "cellstr"
+          ]
         ],
         "purpose": "Field preset or custom list of output variables"
       }
@@ -320,7 +330,9 @@
     "outputs": [
       {
         "name": "T",
-        "type": ["table"],
+        "type": [
+          "table"
+        ],
         "purpose": "Table of fundamental company information"
       }
     ]

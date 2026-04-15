@@ -204,8 +204,16 @@ nnargin=nargin;
 vvarargin=varargin;
 [Y,n,v] = aux.chkinputM(Y,nnargin,vvarargin);
 
-if any(ismissing(Y),"all")
+M=ismissing(Y);
+if any(M,"all")
     hasMiss=true;
+    if v<=8
+        [Patterns, ~, idxPatterns] = unique(M, 'rows', 'stable');
+    else
+        Patterns=[];
+        idxPatterns=[];
+        idxPatternsb=[];
+    end
 else
     hasMiss=false;
 end
@@ -410,7 +418,7 @@ lunit=length(unit);
 
 % If the subset Y(bsb,:) is not full rank or a column is constant, then we
 % return as output an empty structure.
-if (rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0
+if hasMiss==false && ((rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0)
     if coder.target('MATLAB')
         warning('FSDA:FSMbsb:NoFullRank','The supplied initial subset does not produce a full rank matrix');
     else
@@ -446,9 +454,16 @@ else
             end
         end
         if hasMiss==true
+            if ~isempty(idxPatterns)
+                if mm<=percn
+                    idxPatternsb=idxPatterns(bsb);
+                else
+                    idxPatternsb=idxPatterns(bsbT);
+                end
+            end
 
-            % run trimmed EM with missingness to estimate mu and Sigma
-            tem = mdEM(Yb);
+            % run EM with missingness to estimate mu and Sigma
+            tem = mdEM(Yb,'Patterns',Patterns,'idxPatterns',idxPatternsb);
 
             ym  = tem.loc;
             covYb = tem.cov;

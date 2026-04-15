@@ -9,7 +9,7 @@ function out = mdTEM(Y, varargin)
 %  - Rank them and set weights w_i = 1 for the lowest n*(1-alpha) rows, else 0
 %  - Run E-step and M-step using these weights
 %  - Repeat until convergence or maxiter
-%  
+%
 %
 % Required input arguments:
 %
@@ -32,7 +32,7 @@ function out = mdTEM(Y, varargin)
 %
 %       mus     : initial mean. p x 1 vector or empty double.
 %                 Initial  mean vector. If empty (default), column nanmeans
-%                 are used. 
+%                 are used.
 %                 Example - 'mus',[]
 %                 Data Types - single | double
 %
@@ -61,10 +61,10 @@ function out = mdTEM(Y, varargin)
 %   method : method used to rescale the distances. String scalar or char vector.
 %            Possible values are.
 %
-%            'pri'      = principled EM rescaling (default), 
+%            'pri'      = principled EM rescaling (default),
 %                         d2_partial + (p - pobs).
 %
-%            'expScale' = expectation scaling, 
+%            'expScale' = expectation scaling,
 %                         d2_partial * (p / pobs).
 %
 %            'zMap'     = standardization mapping,
@@ -72,8 +72,6 @@ function out = mdTEM(Y, varargin)
 %
 %            'detMap'   = determinant-based rescaling,
 %                         d2_partial * (p / pobs) * (g_full / g_obs).
-%                         This method requires input option 'Y' and input
-%                         option 'Sigma'.
 %
 %            'chiMap'   = chi-square quantile mapping. Use the cdf and
 %                         inverse of the cdf of Chi2 distribution.
@@ -106,8 +104,10 @@ function out = mdTEM(Y, varargin)
 %                   (depending on input option condmeanimp)
 %              out.stochYimp = empty value of matrix Y with imputed values
 %                   (only if input option stochimp is true)
+%              out.obj  = value of the objective function (trimmed sum of
+%                   smallest MD)
 %
-%  
+%
 % See also: mdEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
 %
 % References:
@@ -117,8 +117,8 @@ function out = mdTEM(Y, varargin)
 % van Buuren, S. (2018). Flexible Imputation of Missing Data (2nd ed.).
 % Boca Raton, FL: Chapman & Hall/CRC (Taylor & Francis Group).
 % Templ, M. (2023). Visualization and Imputation of Missing Values: With
-% Applications in R. Cham, Switzerland: Springer Nature. 
-% 
+% Applications in R. Cham, Switzerland: Springer Nature.
+%
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -126,7 +126,7 @@ function out = mdTEM(Y, varargin)
 %
 %
 %<a href="matlab: docsearchFS('mdTEM')">Link to the help page for this function</a>
-% 
+%
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
@@ -196,13 +196,14 @@ tol=1e-5;
 tol_sigma=true;
 condmeanimp=false;
 stochimp=false;
+storeobj=true;
 method='pri';
 
 if nargin>1
- options=struct('alpha',alpha,'mus',mus,'sigs',sigs,'maxiter',maxiter,'tol',tol, ...
-     'tol_sigma',tol_sigma,'condmeanimp',condmeanimp,'stochimp',stochimp,'method',method);
+    options=struct('storeobj',storeobj,'alpha',alpha,'mus',mus,'sigs',sigs,'maxiter',maxiter,'tol',tol, ...
+        'tol_sigma',tol_sigma,'condmeanimp',condmeanimp,'stochimp',stochimp,'method',method);
 
- [varargin{:}] = convertStringsToChars(varargin{:});
+    [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -226,8 +227,12 @@ if nargin>1
     condmeanimp=options.condmeanimp;
     stochimp=options.stochimp;
     method=string(options.method);
+    storeobj=options.storeobj;
 end
 
+if storeobj==true
+    obj=zeros(maxiter,1);
+end
 [n, p] = size(Y);
 
 % initialize mus and sigs if not provided
@@ -246,32 +251,39 @@ end
 dif = Inf;
 iter = 0;
 
+% number to keep:
+keep_count = max(0, floor(n * (1 - alpha)));
+
 while (dif > tol) && (iter < maxiter)
     iter = iter + 1;
     mus_old = mus;
     sigs_old = sigs;
 
-if method=="impMD"
-    Yimp=mdImputeCondMean(Y, mus, sigs);
-    % In this case compute Mahalanobis distances on imputed data
-        d2_adj=mahalFS(Yimp,mus,sigs);
-else
-    % Trimming step: compute adjusted partial Mahalanobis distances
-    [d2, poss] = mdPartialMD(Y, mus, sigs);
 
-    d2_adj = mdPartialMD2full(d2, p, poss,'method',method);
-end
+    if method=="impMD"
+        Yimp=mdImputeCondMean(Y, mus, sigs);
+        % In this case compute Mahalanobis distances on imputed data
+        d2_adj=mahalFS(Yimp,mus',sigs);
+
+    elseif method=="detMap"
+        [d2, poss] = mdPartialMD(Y, mus, sigs);
+        d2_adj = mdPartialMD2full(d2, p, poss,'method',method,'Y',Y,'Sigma',sigs);
+
+    else
+        % Trimming step: compute adjusted partial Mahalanobis distances
+        [d2, poss] = mdPartialMD(Y, mus, sigs);
+        d2_adj = mdPartialMD2full(d2, p, poss,'method',method);
+    end
 
     % rank and select the smallest n*(1-alpha)
     % We treat NaN distances as large (so they're trimmed)
     nan_mask = isnan(d2_adj);
-   
-    % number to keep:
-    keep_count = max(0, floor(n * (1 - alpha)));
+
     % find indices of smallest distances
     % create sorted index from available (non-NaN) adj distances
     [~, idx_sorted] = sort(d2_adj, 'ascend', 'MissingPlacement', 'last');
     keep_idx = idx_sorted(1:min(keep_count, sum(~nan_mask)));
+
 
     w = zeros(n,1);
     w(keep_idx) = 1;
@@ -286,6 +298,10 @@ end
     a=chi2inv(mm/n,p);
     corr=(n./mm).*(chi2cdf(a,p+2));
     sigs=sigs/corr;
+
+    if storeobj==true
+        obj(iter)=sum(d2_adj(keep_idx))/corr;
+    end
 
     % convergence check
     mu_diff = max(abs(mus(:) - mus_old(:)));
@@ -310,11 +326,16 @@ else
     stochYimp=[];
 end
 
+if storeobj==true
+    obj=obj(1:iter);
+end
+
 out.loc = mus;
 out.cov = sigs;
 out.iter = iter;
 out.Yimp=Yimp;
 out.stochYimp=stochYimp;
+out.obj=obj;
 
 end
 
