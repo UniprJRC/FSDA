@@ -93,6 +93,15 @@ function out = mdTEM(Y, varargin)
 %                 The default value of stochimp is false.
 %                 Example - 'stochimp',true
 %                 Data Types - logical
+%
+%   storeobj :    Compute value of the objective function in each iteration.
+%                 Also give the matrix of stochastic imputed values. Boolean.
+%                 if true structure out also contains the matrix of imputed values called stochYimp.
+%                 The default value of stochimp is false.
+%                 Example - 'stochimp',true
+%                 Data Types - logical
+%
+%
 %  Output:
 %
 %
@@ -104,8 +113,9 @@ function out = mdTEM(Y, varargin)
 %                   (depending on input option condmeanimp)
 %              out.stochYimp = empty value of matrix Y with imputed values
 %                   (only if input option stochimp is true)
-%              out.obj  = value of the objective function (trimmed sum of
-%                   smallest MD)
+%              out.obj  = empty value or value of the objective function (trimmed sum of
+%                   smallest MD) in each iteration  
+%                   (only if input option storeobj is true)
 %
 %
 % See also: mdEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
