@@ -11,11 +11,14 @@ function out=FSMmmdrs(Y,varargin)
 % Required input arguments:
 %
 % Y :           Input data. Matrix.
-%               n x v data matrix; n observations and v variables. Rows of
-%               Y represent observations, and columns represent variables.
-%               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
+%               n x v matrix, where n is the number of observations and
+%               v is the number of variables. Each row corresponds to an
+%               observation and each column to a variable.
+%               Missing values (NaNs) are allowed.
+%               For observations containing missing entries, Mahalanobis
+%               distances are computed using the observed components only
+%               (partial Mahalanobis distances) and subsequently rescaled
+%               to make them comparable across different missingness patterns.
 %               computations.
 %                Data Types - single|double
 %
@@ -32,7 +35,7 @@ function out=FSMmmdrs(Y,varargin)
 %               is necessary to save the units forming subset for each
 %               random start. If bsbsteps is 0 for each random start we
 %               store the units forming subset in all steps. The default is
-%               store the units forming subset in all steps if n<=500 else
+%               to store the units forming subset in all steps if n<=500 else
 %               to store the units forming subset at step init and steps
 %               which are multiple of 100. For example, if n=753 and
 %               init=6, units forming subset are stored for m=init, 100,
@@ -348,8 +351,7 @@ function out=FSMmmdrs(Y,varargin)
 
 nnargin   = nargin;
 vvarargin = varargin;
-Y = aux.chkinputM(Y,nnargin,vvarargin);
-[n,v]=size(Y);
+[Y,n,v] = aux.chkinputM(Y,nnargin,vvarargin);
 
 % User options
 
@@ -443,7 +445,7 @@ parfor (j = 1:nsimul , numpool)
     [mmd,~,BB] = FSMmmd(Y,0,'init',init,...
         'nocheck',1,'msg',0,'bsbsteps',bsbsteps);
     
-    % Store minimum Mahalnobis distance
+    % Store minimum Mahalanobis distance
     if ~isnan(mmd)
         % Store units forming subset at each step
         BBrs(:,:,j) = BB;
