@@ -124,7 +124,7 @@ function out=publishFS(file,varargin)
 %                 included in the 8th column.
 %                 5th column = example (if present)
 %                 6th column = Data type
-%                 7th column = string contaning '1' if the argument is
+%                 7th column = string containing '1' if the argument is
 %                 required and '0' if it is optional
 %                 8th column = this column is empty unless 3rd column
 %                 contains the word structure. If this is the case the 8th
@@ -135,7 +135,7 @@ function out=publishFS(file,varargin)
 %                 and optional input argument specified as name/values pairs.
 %                 1st column = name.
 %                 2nd column = short description.
-%                 3rd column = type indication (Scalar, matrix, strucutre, ...).
+%                 3rd column = type indication (Scalar, matrix, structure, ...).
 %                 4th column = string containing long description.
 %                 5th column = example (if present).
 %                 6th column = Data type (ex. Single |Double).
@@ -312,7 +312,7 @@ function out=publishFS(file,varargin)
 %
 %          An example is given below:
 %                 'function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin);
-%                 tclust computes trimmed clustering with restricitons on
+%                 tclust computes trimmed clustering with restrictions on
 %                 the eigenvalues.
 %
 %                 <a href="matlab: docsearchFS('tclust')">Link to the help function</a>;
@@ -346,7 +346,7 @@ function out=publishFS(file,varargin)
 %         words 'Example -' and 'Data Types -' followed by a string without spaces
 %         which specifies a possible use of the option and the type of data. For
 %         example, suppose that the first two optional arguments are called
-%         respecively 'intercept' and 'h', then the
+%         respectively 'intercept' and 'h', then the
 %         accepted format is as follows:
 %
 %
@@ -379,7 +379,7 @@ function out=publishFS(file,varargin)
 %         The lines after string 'Output:'
 %         must contain the list of the output arguments using the same rules
 %         described above for the optional arguments. In this case, however, the
-%         identification of the ouptut arguments is easier because they are
+%         identification of the output arguments is easier because they are
 %         extracted directly from the first line of the file (e.g. if the first
 %         line is as follows
 %         function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
@@ -411,7 +411,7 @@ function out=publishFS(file,varargin)
 %              (n-init) x 11 Matrix which contains the unit(s) included in the
 %              subset at each step of the search.
 %
-%         If in the HTML file the user clicks on them the expdanded description
+%         If in the HTML file the user clicks on them the expanded description
 %         (that is what starts after the second full stop will appear).
 %
 %         Alternatively, if the first 50 characters of each output argument do not
@@ -447,7 +447,7 @@ function out=publishFS(file,varargin)
 %                       included in the subset at each step of the search.
 %                       REMARK: in every step ....
 %
-%         If in the HTML file the user clicks on them the expdanded description
+%         If in the HTML file the user clicks on them the expanded description
 %         (that is what starts after the second full stop will appear).
 %
 %         IMPORTANT NOTICE: Similarly to what happened for each input argument, if
@@ -3946,12 +3946,14 @@ newlinewithFullStop=setdiff(newlinewithFullStop,exceptions);
 
 
 % Find all lines which terminate with symbol : or with symbol ;
-newlinewithColon=regexp(descrlong,'(?<=^\sin)\:\s*\r');
+newlinewithColon=regexp(descrlong,'(?<=^\sin):\s*\r');
+newlinewithColon1=regexp(descrlong,':\s*\r');
+
 % [authnamewithfullstop]=regexp(descrlong,'[A-Z]\.\s*\r\s*\(.{4,5}\)')+1;
 
 
 newlinewithSemiColon=regexp(descrlong,'\;\s*\r');
-newl=sort([newlinewithColon newlinewithSemiColon newlinewithFullStop]);
+newl=sort([newlinewithColon newlinewithColon1 newlinewithSemiColon newlinewithFullStop]);
 
 
 
