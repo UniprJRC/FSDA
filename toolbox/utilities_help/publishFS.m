@@ -3504,7 +3504,7 @@ if evalCode==true
             tr = Transformer();
             writer = matlab.io.xml.dom.DOMWriter;
             % writer.Configuration.FormatPrettyPrint = true;   % indent + newlines
-            writeToFile(writer, dom, "out_pretty.xml");
+            writeToFile(writer, dom, AbsoluteFilename);
             filexsl=[path2privateFS filesep 'mxdom2simplehtml.xsl'];
             fstringHTML=char(transformToString(tr, AbsoluteFilename, filexsl));
         end

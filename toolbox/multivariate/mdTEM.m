@@ -5,10 +5,11 @@ function out = mdTEM(Y, varargin)
 %<a href="matlab: docsearchFS('mdTEM')">Link to the help function</a>
 %
 % The algorithm:
-%  - At each iteration compute adjusted partial Mahalanobis distances
-%  - Rank them and set weights w_i = 1 for the lowest n*(1-alpha) rows, else 0
-%  - Run E-step and M-step using these weights
-%  - Repeat until convergence or maxiter
+%  - At each iteration compute adjusted partial Mahalanobis distances;
+%  - Rank them and set weights w_i = 1 for the lowest n*(1-alpha) rows,
+%       else 0;
+%  - Run E-step and M-step using these weights;
+%  - Repeat until convergence or maxiter.
 %
 %
 % Required input arguments:
