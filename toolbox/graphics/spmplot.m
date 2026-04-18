@@ -1666,7 +1666,7 @@ for i=1:p
             YLabel     = get(get(ax,'YLabel'),'String');
             ax         = AX(end,i);
 
-            [countfreq, ~] = histFS(Y(:,i),10,groupv,'',ax,clr(unigroup));
+            [countfreq, ~] = histFS(rmmissing(Y(:,i)),10,groupv,'',ax,clr(unigroup));
 
             % Prevent from changing the limits when the figure is resized:
             % 1.Freeze the current limits
@@ -1839,7 +1839,7 @@ end
 
 if colorBackground==true || lowerORupper==true
     if RnotComputed==true
-        R=corr(Y);
+        R=corr(Y,'rows','pairwise');
     end
     if sum(sum(isnan(R)))
         R(isnan(R)) = 0;
@@ -1903,9 +1903,12 @@ if  lowerORupper ==true
     %cmap  = flipud(cmap);
 
     if lunigroup>1
-        Rgroup=zeros(p,p,lunigroup);
+        Rgroup=NaN(p,p,lunigroup);
         for jj=1:lunigroup
-            Rgroup(:,:,jj)=corr(Y(groupv==jj,:));
+            Yjj=Y(groupv==jj,:);
+            if ~isempty(Yjj)
+                Rgroup(:,:,jj)=corr(Yjj,'Rows','pairwise');
+            end
         end
         Rgroupresc=8+abs(Rgroup)*15;
     end
@@ -2012,9 +2015,11 @@ if  lowerORupper ==true
                                 'Units','normalized','HorizontalAlignment','center','Interpreter','Latex')
 
                             for jjj=1:lunigroup
+                                if ~isnan(Rgroup(i,j,jjj))
                                 text(AX(i,j),0.6,jjj/(lunigroup+1),[num2str(Rgroup(i,j,jjj),2)], ...
                                     'Units','normalized','FontSize',Rgroupresc(i,j,jjj),'Color',clr(jjj),...
                                     'DisplayName',guni{jjj},'Interpreter','Latex')
+                                end
                             end
                         end
 
