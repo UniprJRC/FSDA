@@ -203,7 +203,7 @@ if isMATLABOnline
     if pe.Status == "Loaded" && pe.ExecutionMode == "OutOfProcess"
         terminate(pe);
     elseif pe.Status == "Loaded" && pe.ExecutionMode == "InProcess"
-        error("Python is loaded InProcess. End/restart the MATLAB Online session, then rerun.");
+        error('FSDA:getFundamentals',"Python is loaded InProcess. End/restart the MATLAB Online session, then rerun.");
     elseif pe.Status == "NotLoaded" && pe.ExecutionMode == "InProcess"
         % force OutOfProcess
         pyenv ("ExecutionMode", "OutOfProcess")
@@ -236,7 +236,10 @@ if isMATLABOnline
     end
 
     if pe.ExecutionMode == "OutOfProcess"
-        disp("ExecutionMode  = InProcess is much faster, type pyenv('ExecutionMode, 'InProcess') in the Command Window to set it")
+        disp("ExecutionMode  = python is currently running OutofProcess and can be slow")
+        disp("To change execution mode type: terminate(pyenv) in the Command Window")
+        disp("quit and restart MATLAB")
+        disp("type: pyenv('ExecutionMode', 'InProcess') in the Command Window")
     end
 end
 
