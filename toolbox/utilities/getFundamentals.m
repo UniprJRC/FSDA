@@ -199,21 +199,29 @@ if isMATLABOnline
     % save ExecutionMode status
     % ExecutionModeStatus=pe.ExecutionMode;
 
-    % Ensure Python ExecutionMode is set to OutOfProcess
-    if pe.Status == "Loaded" && pe.ExecutionMode == "OutOfProcess"
-        terminate(pe);
-    elseif pe.Status == "Loaded" && pe.ExecutionMode == "InProcess"
-        error('FSDA:getFundamentals',"Python is loaded InProcess. End/restart the MATLAB Online session, then rerun.");
-    elseif pe.Status == "NotLoaded" && pe.ExecutionMode == "InProcess"
-        % force OutOfProcess
-        pyenv ("ExecutionMode", "OutOfProcess")
-    end
+    % similar to !/home/matlab/venvs/yfenv/bin/python -m pip list
+    % check if yfinance module is available
+    [status,out] = system(sprintf('"%s" -c "import importlib.util; print(importlib.util.find_spec(''yfinance'') is not None)"', pyenv().Executable));
+    tf = strcmp(strtrim(out), 'True');
+    if tf == true && status == 0
+        % do nothing!
+    else
 
+        % Ensure Python ExecutionMode is set to OutOfProcess
+        if pe.Status == "Loaded" && pe.ExecutionMode == "OutOfProcess"
+            terminate(pe);
+        elseif pe.Status == "Loaded" && pe.ExecutionMode == "InProcess"
+            error('FSDA:getFundamentals',"Python is loaded InProcess. End/restart the MATLAB Online session, then rerun.");
+        elseif pe.Status == "NotLoaded" && pe.ExecutionMode == "InProcess"
+            % force OutOfProcess
+            pyenv ("ExecutionMode", "OutOfProcess")
+        end
+    end
     % Import yfinance
     try
         py.importlib.import_module('yfinance');
     catch
-        system("rm -rf " + venvDir)
+        system("rm -rf " + venvDir);
 
         % Create the venv, if it throws an error is still functioning
         system("python -m venv " + venvDir);
@@ -227,7 +235,7 @@ if isMATLABOnline
         % terminate Python if Status is Loaded
         pe = pyenv;
         if pe.Status == "Loaded"
-            terminate(pyenv)
+            terminate(pyenv);
         end
         % point MATLAB to the virtual Python environment CRITICAL
         pyenv(Version=venvPy, ExecutionMode="OutOfProcess");
@@ -238,26 +246,11 @@ if isMATLABOnline
     if pe.ExecutionMode == "OutOfProcess"
         disp("ExecutionMode  = python is currently running OutofProcess and can be slow")
         disp("To change execution mode type: terminate(pyenv) in the Command Window")
-        disp("quit and restart MATLAB")
+        % disp("quit and restart MATLAB")
         disp("type: pyenv('ExecutionMode', 'InProcess') in the Command Window")
     end
 end
 
-% Import yfinance
-try
-    py.importlib.import_module('yfinance');
-catch
-    linkCmd = ['<a href="matlab:setupPythonEnv(''', ...
-        'PipCommand'',''install yfinance'')">', ...
-        'setupPythonEnv(''PipCommand'',''install yfinance'')', ...
-        '</a>'];
-
-    error('FSDA:getFundamentals:MissingPackage', ...
-        ['Python package "yfinance" is not installed. Run from the terminal: python -m pip install yfinance or' ...
-        newline 'call FSDA routine setupPythonEnv' ...
-        newline 'with the following syntax: ' ...
-        newline linkCmd]);
-end
 
 n = numel(ticker);
 Fields='all';
