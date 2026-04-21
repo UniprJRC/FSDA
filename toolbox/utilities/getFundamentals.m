@@ -1,5 +1,5 @@
 function T = getFundamentals(ticker, varargin)
-%getFundamentals retrieves detailed company metrics for supplied tickers. 
+%getFundamentals retrieves detailed company metrics for supplied tickers.
 %
 %<a href="matlab: docsearchFS('getFundamentals')">Link to the help function</a>
 %
@@ -9,8 +9,8 @@ function T = getFundamentals(ticker, varargin)
 %   series, and finally to the extraction of their fundamental financial
 %   information.
 %   For background on financial data and market analysis, see:
-%   Yahoo Finance API documentation https://finance.yahoo.com/ 
-%   
+%   Yahoo Finance API documentation https://finance.yahoo.com/
+%
 %
 % Required input arguments:
 %
@@ -165,6 +165,11 @@ function T = getFundamentals(ticker, varargin)
 
 %% Beginning of code
 
+% vitual environment for MATLAB Online version of Python
+venvDir = "/home/matlab/venvs/yfenv";
+venvPy  = venvDir + "/bin/python";
+
+
 if nargin < 1 || isempty(ticker)
     error('FSDA:getFundamentals:MissingInput', ...
         'At least one ticker symbol must be supplied.');
@@ -182,25 +187,73 @@ else
         'ticker must be a char, string, string array, or cell array of char.');
 end
 
+
 % Ensure Python is available
 pe = pyenv;
 assert(~isempty(pe.Version), ...
     'Python is not configured in MATLAB. Run pyenv to configure.');
 
+% if MATLAB Online
+
+if isMATLABOnline
+    % save ExecutionMode status
+    % ExecutionModeStatus=pe.ExecutionMode;
+
+    % Ensure Python ExecutionMode is set to OutOfProcess
+    if pe.Status == "Loaded" && pe.ExecutionMode == "OutOfProcess"
+        terminate(pe);
+    elseif pe.Status == "Loaded" && pe.ExecutionMode == "InProcess"
+        error("Python is loaded InProcess. End/restart the MATLAB Online session, then rerun.");
+    elseif pe.Status == "NotLoaded" && pe.ExecutionMode == "InProcess"
+        % force OutOfProcess
+        pyenv ("ExecutionMode", "OutOfProcess")
+    end
+
+    % Import yfinance
+    try
+        py.importlib.import_module('yfinance');
+    catch
+        system("rm -rf " + venvDir)
+
+        % Create the venv, if it throws an error is still functioning
+        system("python -m venv " + venvDir);
+        % Download get-pip.py
+        websave("/tmp/get-pip.py","https://bootstrap.pypa.io/get-pip.py");
+
+        % Install pip INTO THE VENV
+        system(venvPy + " /tmp/get-pip.py");
+        % Install yfinance into the venv
+        system(venvPy + " -m pip install yfinance");
+        % terminate Python if Status is Loaded
+        pe = pyenv;
+        if pe.Status == "Loaded"
+            terminate(pyenv)
+        end
+        % point MATLAB to the virtual Python environment CRITICAL
+        pyenv(Version=venvPy, ExecutionMode="OutOfProcess");
+        % restore the status of ExecutionMode
+        % pyenv ("ExecutionMode", ExecutionModeStatus);
+    end
+
+    if pe.ExecutionMode == "OutOfProcess"
+        disp("ExecutionMode  = InProcess is much faster, type pyenv('ExecutionMode, 'InProcess') in the Command Window to set it")
+    end
+end
+
 % Import yfinance
 try
     py.importlib.import_module('yfinance');
 catch
-linkCmd = ['<a href="matlab:setupPythonEnv(''', ...
-           'PipCommand'',''install yfinance'')">', ...
-           'setupPythonEnv(''PipCommand'',''install yfinance'')', ...
-           '</a>'];
+    linkCmd = ['<a href="matlab:setupPythonEnv(''', ...
+        'PipCommand'',''install yfinance'')">', ...
+        'setupPythonEnv(''PipCommand'',''install yfinance'')', ...
+        '</a>'];
 
-error('FSDA:getFundamentals:MissingPackage', ...
-    ['Python package "yfinance" is not installed. Run from the terminal: python -m pip install yfinance or' ...
-     newline 'call FSDA routine setupPythonEnv' ...
-     newline 'with the following syntax: ' ...
-     newline linkCmd]);
+    error('FSDA:getFundamentals:MissingPackage', ...
+        ['Python package "yfinance" is not installed. Run from the terminal: python -m pip install yfinance or' ...
+        newline 'call FSDA routine setupPythonEnv' ...
+        newline 'with the following syntax: ' ...
+        newline linkCmd]);
 end
 
 n = numel(ticker);
@@ -309,7 +362,7 @@ for j = 1:numel(fn)
             if isempty(col{i})
                 % Put NaN for missing numeric values
                 % In this way Column stays double, and does not become a cell
-                tmp(i) = NaN;   
+                tmp(i) = NaN;
             else
                 tmp(i) = double(col{i});
             end
@@ -363,8 +416,8 @@ if ~isempty(RankBy)
     end
 
     if all(isnan(rankNum))
-    error('FSDA:getFundamentals:WrongInputOpt', ...
-        'Field "%s" cannot be used for ranking because no numeric values could be extracted.', RankBy);
+        error('FSDA:getFundamentals:WrongInputOpt', ...
+            'Field "%s" cannot be used for ranking because no numeric values could be extracted.', RankBy);
     end
 
     % Missing values go to the bottom
@@ -522,7 +575,7 @@ basicFields = {
     'marketCap          : Market capitalization'
     'sector             : Economic sector'
     'industry           : Industry classification'
-};
+    };
 
 valuationFields = {
     'marketCap          : Market capitalization'
@@ -530,13 +583,13 @@ valuationFields = {
     'trailingPE         : Price/Earnings (past)'
     'forwardPE          : Price/Earnings (forecast)'
     'priceToBook        : Price / Book value'
-};
+    };
 
 performanceFields = {
     'returnOnEquity     : ROE'
     'profitMargins      : Net profit margin'
     'revenueGrowth      : Revenue growth'
-};
+    };
 
 otherFields = {
     'currentPrice       : Latest price'
@@ -546,7 +599,7 @@ otherFields = {
     'grossMargins       : Gross margin'
     'operatingMargins   : Operating margin'
     'freeCashflow       : Free cash flow'
-};
+    };
 
 if islogical(mode)
     if mode
@@ -581,6 +634,19 @@ end
 
 fprintf('============================================\n\n');
 
+end
+
+function tf = isMATLABOnline()
+%ISMATLABONLINE True if code appears to be running in MATLAB Online
+
+% R2022b+:
+if exist('isenv','builtin') || exist('isenv','file')
+    tf = isenv("MW_DDUX_APP_NAME") && ...
+        strcmp(getenv("MW_DDUX_APP_NAME"), "MATLAB_ONLINE");
+else
+    % Fallback for older releases
+    tf = strcmp(getenv("MW_DDUX_APP_NAME"), "MATLAB_ONLINE");
+end
 end
 
 %FScategory:UTI-FIN
