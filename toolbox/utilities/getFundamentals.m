@@ -244,10 +244,11 @@ if isMATLABOnline
     end
 
     if pe.ExecutionMode == "OutOfProcess"
-        disp("ExecutionMode  = python is currently running OutofProcess and can be slow")
-        disp("To change execution mode type: terminate(pyenv) in the Command Window")
-        % disp("quit and restart MATLAB")
-        disp("type: pyenv('ExecutionMode', 'InProcess') in the Command Window")
+        disp("The Python ExecutionMode is currently set to 'OutOfProcess', which may result in reduced performance.")
+        disp(['To change the execution mode, first execute the following command in the Command Window:' newline ...
+            '    terminate(pyenv)'])
+        disp(['Then execute:' newline ...
+            '    pyenv(''ExecutionMode'', ''InProcess'')'])
     end
 end
 
