@@ -228,6 +228,20 @@ if nargin > 0
     IncludeIndex = options.IncludeIndex;
     msg = options.msg;
 
+    checkLogical = @(x) (islogical(x) && isscalar(x)) || (isnumeric(x) && isscalar(x) && ismember(x, [0 1]));
+
+    if ~checkLogical(RankByCap)
+        error('FSDA:getTickers:InvalidInput', 'Optional first argument RankByCap must be a scalar logical or 0/1.');
+    end
+    if ~checkLogical(IncludeIndex)
+        error('FSDA:getTickers:InvalidInput', 'Optional first argument IncludeIndex must be a scalar logical or 0/1.');
+    end
+
+    if ~checkLogical(msg)
+        error('FSDA:getTickers:InvalidInput', 'Optional first argument msg must be a scalar logical or 0/1.');
+    end
+
+
 end
 
 if isempty(Source)
