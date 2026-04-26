@@ -78,8 +78,8 @@ function out = mdMCARtest(Y, varargin)
 %                            the data through EM/TEM.
 %          out.ciBoot      = 2 x 4 matrix containing the bootstrap
 %                            confidence intervals for the four statistics.
-%          out.muHat       = Estimated location from EM/TEM fit on all data.
-%          out.SigHat      = Estimated scatter from EM/TEM fit on all data.
+%          out.loc          = Estimated location from EM/TEM fit on all data.
+%          out.cov          = Estimated scatter from EM/TEM fit on all data.
 %
 %
 %  More About:
@@ -141,7 +141,7 @@ function out = mdMCARtest(Y, varargin)
 %}
 
 %{
-    %% Example 4: Simulated data under MCAR.
+    %% Example 3: Simulated data under MCAR.
     % Generate Gaussian data with MCAR missingness and apply the test.
     rng(1)
     n = 300;
@@ -167,7 +167,7 @@ function out = mdMCARtest(Y, varargin)
 
 
 %{
-    % Example 5: Comparison of several trimming levels.
+    % Example 4: Comparison of several trimming levels.
     rng(1)
     n = 300;
     p = 5;
@@ -192,7 +192,7 @@ function out = mdMCARtest(Y, varargin)
 %}
 
 %{
-    % Example 6: Different rescaling method.
+    % Example 5: Different rescaling method.
     % Use method betaMap instead of the default pri.
     load cows2026
     X = cows2026{:,:};
@@ -203,7 +203,7 @@ function out = mdMCARtest(Y, varargin)
 %% Beginning of code
 
 if ~ismatrix(Y) || ~isnumeric(Y)
-    error('FSDA:mdMCARdistTest:WrongInputOpt', ...
+    error('FSDA:mdMCARtest:WrongInputOpt', ...
         'Input argument Y must be a numeric matrix.');
 end
 
@@ -219,7 +219,7 @@ options.plots   = false;
 % Check supplied options
 if ~isempty(varargin)
     if mod(length(varargin),2) ~= 0
-        error('FSDA:mdMCARdistTest:WrongInputOpt', ...
+        error('FSDA:mdMCARtest:WrongInputOpt', ...
             'Optional arguments must be supplied in name/value pairs.');
     end
 
@@ -241,22 +241,22 @@ tol     = options.tol;
 plots   = options.plots;
 
 if ~isscalar(alpha) || ~isnumeric(alpha) || alpha < 0 || alpha >= 1
-    error('FSDA:mdMCARdistTest:WrongInputOpt', ...
+    error('FSDA:mdMCARtest:WrongInputOpt', ...
         'Option alpha must be a scalar in the interval [0,1).');
 end
 
 if ~isscalar(nsimul) || nsimul <= 0 || nsimul ~= floor(nsimul)
-    error('FSDA:mdMCARdistTest:WrongInputOpt', ...
+    error('FSDA:mdMCARtest:WrongInputOpt', ...
         'Option nsimul must be a positive integer.');
 end
 
 if ~isscalar(conflev) || conflev <= 0 || conflev >= 1
-    error('FSDA:mdMCARdistTest:WrongInputOpt', ...
+    error('FSDA:mdMCARtest:WrongInputOpt', ...
         'Option conflev must be a scalar in the interval (0,1).');
 end
 
 if ~isscalar(tol) || tol <= 0
-    error('FSDA:mdMCARdistTest:WrongInputOpt', ...
+    error('FSDA:mdMCARtest:WrongInputOpt', ...
         'Option tol must be a positive scalar.');
 end
 
@@ -266,7 +266,7 @@ completeIdx = all(~maskMiss,2);
 nComplete = sum(completeIdx);
 
 if nComplete < p + 2
-    error('FSDA:mdMCARdistTest:TooFewCompleteRows', ...
+    error('FSDA:mdMCARtest:TooFewCompleteRows', ...
         ['Too few complete rows to compute the reference complete-case ' ...
          'covariance matrix.']);
 end
@@ -318,7 +318,7 @@ end
 Tboot = Tboot(all(~isnan(Tboot),2),:);
 
 if isempty(Tboot)
-    error('FSDA:mdMCARdistTest:NoValidBootstrap', ...
+    error('FSDA:mdMCARtest:NoValidBootstrap', ...
         'All bootstrap replicates failed.');
 end
 
@@ -341,8 +341,8 @@ out.completeIdx = completeIdx;
 out.d2_cc       = d2_cc;
 out.d2_all      = d2_all_cc;
 out.ciBoot      = ciBoot;
-out.muHat       = muHat;
-out.SigHat      = SigHat;
+out.loc       = muHat;
+out.cov      = SigHat;
 
 % Optional plots
 if plots
