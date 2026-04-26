@@ -21,7 +21,7 @@ function Yimp = mdImputeCondMean(Y, mu, Sigma)
 %    Yimp :   matrix with imputed values. Matrix of size nxv. Matrix Yinp
 %            does not contain missing values.
 %
-% See also: mdEM
+% See also: mdTEM, mdImputeStochastic.m, mdPartialMD.m, mdPartialMD2full
 %
 %
 % References:
