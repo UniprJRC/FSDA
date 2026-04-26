@@ -200,6 +200,35 @@ function out = mdEM(Y, varargin)
     grid on
 %}
 
+%{
+    %% Example of use of options Patterns and idxPatterns.
+    % number of variables
+    p = 3;
+    % number of observations
+    n = 50000;
+    % target pairwise correlation (0<rho<1)
+    rho = 0.9;
+    % Covariance matrix (unit variances)
+    Sigma = (1-rho)*eye(p) + rho*ones(p);
+    R = chol(Sigma);      % upper-triangular such that Sigma = R'*R
+    % Generate samples ~ N(0,Sigma)
+    Yfull = randn(n,p) * R;   % Strong positive correlation between the vars
+    missRate = 0.25;     % MCAR missing probability per entry
+    missMask = rand(n,p) < missRate;
+    Y=Yfull;
+    Y(missMask) = NaN;
+    M=ismissing(Y);
+    [Patterns, ~, idxPatterns] = unique(M, 'rows', 'stable');
+    disp('Computational time using missing patterns')
+    tic
+    outWITHPAT=mdEM(Y,'Patterns',Patterns,'idxPatterns',idxPatterns);
+    toc
+    disp('Computational time neglecting missing patterns')
+    tic
+    outNOPAT=mdEM(Y);
+    toc
+%}
+
 %% Beginning of code
 mus=[];
 sigs=[];
@@ -240,6 +269,8 @@ if nargin>1
     tol_sigma=options.tol_sigma;
     condmeanimp=options.condmeanimp;
     stochimp=options.stochimp;
+    Patterns=options.Patterns;
+    idxPatterns=options.idxPatterns;
 end
 
 
