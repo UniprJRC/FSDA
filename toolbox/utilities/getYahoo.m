@@ -580,6 +580,10 @@ macdSlowLen      = 26;
 macdSigLen       = 9;
 
 rocLen           = 12;
+% Default Bollinger
+bollWindow = 20;
+bollNumStd = 2;
+
 
 % Parse topPanelMode.
 % If topPanelMode is a char vector or string scalar, all suboptions remain
@@ -612,6 +616,10 @@ if isstruct(topPanelMode)
         case 'line'
             allowedTopFields = {'Name'};
 
+        case 'boll'
+        allowedTopFields = {'Name','bollWindow','bollNumStd'};
+
+
         otherwise
             error('FSDA:getYahoo:WngInp', ...
                 'Unknown value for topPanelMode.Name: %s', topName);
@@ -643,6 +651,10 @@ if isstruct(options.topPanelMode)
             if isfield(STop,'widthFactor'), widthFactor = STop.widthFactor; end
             if isfield(STop,'upColor'),     upColor = STop.upColor; end
             if isfield(STop,'downColor'),   downColor = STop.downColor; end
+        case 'boll'
+    if isfield(STop,'bollWindow'), bollWindow = STop.bollWindow; end
+    if isfield(STop,'bollNumStd'), bollNumStd = STop.bollNumStd; end
+
     end
 end
 
@@ -959,6 +971,17 @@ for ii=1:nout
     maFast = movmean(TT.Close, maFastLen, 'omitnan');
     maMid  = movmean(TT.Close, maMidLen,  'omitnan');
     maSlow = movmean(TT.Close, maSlowLen, 'omitnan');
+    % Bollinger
+try
+    [bollMid, bollUpper, bollLower] = bollinger(TT.Close, bollWindow, bollNumStd);
+catch
+    % fallback method
+    bollMid = movmean(TT.Close, bollWindow, 'omitnan');
+    sd = movstd(TT.Close, bollWindow, 'omitnan');
+    bollUpper = bollMid + bollNumStd .* sd;
+    bollLower = bollMid - bollNumStd .* sd;
+end
+
 
     out(ii).TT = TT;
     out(ii).Indicators = struct( ...
@@ -972,7 +995,11 @@ for ii=1:nout
         'ROC',rocVals, ...
         'maFast',maFast, ...
         'maMid',maMid, ...
-        'maSlow',maSlow);
+        'maSlow',maSlow, ...
+        'bollMid',bollMid, ...
+        'bollUpper',bollUpper, ...
+        'bollLower',bollLower);
+
     out(ii).Success = true;
     out(ii).Message = "OK";
 
@@ -984,7 +1011,8 @@ for ii=1:nout
             bottomPanelMode, topRSI, lowRSI, topStoch, lowStoch, ...
             topWilliams, lowWilliams, ...
             rsiVals, stochK, stochD, macdLine, macdSignal, macdHist, ...
-            williamsR, rocVals, maFast, maMid, maSlow,layoutHeights)
+            williamsR, rocVals, maFast, maMid, maSlow, ...
+            bollMid, bollUpper, bollLower, bollWindow,bollNumStd, layoutHeights)
     end
 end
 
@@ -1003,7 +1031,8 @@ function localPlotYahoo(TT, tickerNow, LastPeriod, intervalThis, ...
     bottomPanelMode, topRSI, lowRSI, topStoch, lowStoch, ...
     topWilliams, lowWilliams, ...
     rsiVals, stochK, stochD, macdLine, macdSignal, macdHist, ...
-    williamsR, rocVals, maFast, maMid, maSlow, layoutHeights)
+    williamsR, rocVals, maFast, maMid, maSlow, ...
+     bollMid, bollUpper, bollLower,bollWindow,bollNumStd, layoutHeights)
 
 layoutHeights = layoutHeights(:)';
 if numel(layoutHeights) ~= 3 || any(~isfinite(layoutHeights)) || any(layoutHeights <= 0)
@@ -1151,6 +1180,21 @@ switch lower(topPanelMode)
                 'LineStyle','none', ...
                 'HandleVisibility','off');
         end
+     case 'boll'
+            if all(isnan(bollMid))
+    warning('getYahoo:NoBollinger','Bollinger bands contain only NaN; skipping boll plot.');
+else
+    plot(ax1,x,bollMid,'b-','LineWidth',1.2);
+    plot(ax1,x,bollUpper,'r--','LineWidth',1.0);
+    plot(ax1,x,bollLower,'r--','LineWidth',1.0);
+end
+
+    plot(ax1,x,TT.Close,'Color',[0.2 0.2 0.2],'LineWidth',1.0);
+    plot(ax1,x,bollMid,'b-','LineWidth',1.2);
+    plot(ax1,x,bollUpper,'r--','LineWidth',1.0);
+    plot(ax1,x,bollLower,'r--','LineWidth',1.0);
+    legend(ax1, {'Close', sprintf('MID(%d)',bollWindow), sprintf('UB(%d,%.1fσ)',bollWindow,bollNumStd), sprintf('LB(%d,%.1fσ)',bollWindow,bollNumStd)}, 'Location','best');
+
 
     otherwise
         error('FSDA:getYahoo:WngInp','Unknown topPanelMode.');
