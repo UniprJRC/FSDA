@@ -105,26 +105,16 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
 %        n-by-p matrix equal to X, except for the additional NaN values
 %        generated in the columns specified by missCols.
 %
-%    out : Structure which contains the following fields:
+%    out : Structure which contains the following compact diagnostic fields:
 %
 %        out.alpha = 1-by-numel(missCols) vector containing the intercepts
 %            used in the logistic missingness models.
 %        out.beta = numel(obsCols)-by-numel(missCols) matrix containing the
 %            logistic slope coefficients used for each missing column.
-%        out.probs = n-by-numel(missCols) matrix containing the missingness
-%            probabilities used to generate the Bernoulli missingness
-%            indicators. The probabilities are computed as
-%            cdf(out.pdLogistic,alpha_j + X(:,obsCols)*beta_j).
-%        out.pdLogistic = standard logistic distribution object created by
-%            makedist('Logistic','mu',0,'sigma',1).
-%        out.newMissMask = n-by-p logical matrix. True entries identify the
-%            newly generated missing cells.
-%        out.missMask = n-by-p logical matrix. True entries identify all NaN
-%            values in Xmar.
 %        out.naPropTarget = 1-by-numel(missCols) vector containing the target
 %            missingness proportions.
 %        out.naPropGeneratedMissCols = scalar containing the proportion of
-%            generated missing indicators in missCols.
+%            generated Bernoulli missing indicators in missCols.
 %        out.naPropNewMissCols = scalar containing the proportion of newly
 %            generated NaN values in missCols, excluding cells that were
 %            already NaN in X.
@@ -132,14 +122,16 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
 %            of NaN values in missCols.
 %        out.naPropObtainedAll = scalar containing the final proportion of
 %            NaN values in the whole matrix Xmar.
-%        out.patterns = matrix containing the observed missingness patterns.
-%            0 means observed and 1 means missing.
-%        out.counts = frequency of each missingness pattern.
-%        out.patternTable = table summarizing patterns, counts and
-%            proportions.
+%        out.patternTable = table summarizing missingness patterns, counts
+%            and proportions. In the pattern strings, 0 means observed and 1
+%            means missing.
 %        out.obsCols = columns used to drive the MAR mechanism.
 %        out.missCols = columns in which missing values were generated.
 %        out.class = 'mdMARsimulate'.
+%
+%        Large diagnostic objects such as the full probability matrix, the
+%        missingness masks and the LogisticDistribution object are not stored
+%        in out, in order to keep the output structure compact.
 %
 %  See also: makedist, cdf, binornd, fzero, rng, isnan
 %
@@ -160,37 +152,37 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
 %$LastChangedDate::                      $: Date of the last commit
 %
 %  Examples:
-%
+
 %{
-   %% MAR missingness driven by the first variable.
-   rng(1708)
-   n = 1000;
-   p = 4;
-   X = randn(n,p);
-   [Xmar,out] = mdMARsimulate(X,'naProp',0.3,'beta',1.5, ...
-       'obsCols',1,'missCols',2:p,'plots',1);
-   disp(out.patternTable)
+  %% MAR missingness driven by the first variable.
+  rng(1708)
+  n = 1000;
+  p = 4;
+  X = randn(n,p);
+  [Xmar,out] = mdMARsimulate(X,'naProp',0.3,'beta',1.5, ...
+      'obsCols',1,'missCols',2:p,'plots',1);
+  disp(out.patternTable)
 %}
-%
+
 %{
-   %% Different logistic slopes for different missing columns.
-   rng(1708)
-   X = randn(1000,4);
-   [Xmar,out] = mdMARsimulate(X,'naProp',0.3,'obsCols',1, ...
-       'missCols',2:4,'beta',[0.5 1.5 3],'msg',true);
-   disp(out.alpha)
+  %% Different logistic slopes for different missing columns.
+  rng(1708)
+  X = randn(1000,4);
+  [Xmar,out] = mdMARsimulate(X,'naProp',0.3,'obsCols',1, ...
+      'missCols',2:4,'beta',[0.5 1.5 3],'msg',true);
+  disp(out.alpha)
 %}
-%
+
 %{
-   %% MAR mechanism driven by two observed variables.
-   rng(1708)
-   X = randn(1000,5);
-   B = [1.2 0.5 1.0; -0.7 1.5 0.2];
-   [Xmar,out] = mdMARsimulate(X,'naProp',[0.2 0.3 0.4], ...
-       'obsCols',[1 2],'missCols',3:5,'beta',B);
-   disp(out.patternTable)
+  %% MAR mechanism driven by two observed variables.
+  rng(1708)
+  X = randn(1000,5);
+  B = [1.2 0.5 1.0; -0.7 1.5 0.2];
+  [Xmar,out] = mdMARsimulate(X,'naProp',[0.2 0.3 0.4], ...
+      'obsCols',[1 2],'missCols',3:5,'beta',B);
+  disp(out.patternTable)
 %}
-%
+
 %  Beginning of code.
 
 %% Input parameters checking
@@ -208,7 +200,6 @@ if p < 2
     error('FSDA:mdMARsimulate:WrongInput','X must contain at least two columns.');
 end
 
-
 %% User options
 options = struct;
 options.naProp = 0.3;
@@ -223,7 +214,6 @@ options.msg = true;
 if ~isempty(varargin)
 
     [varargin{:}] = convertStringsToChars(varargin{:});
-   
 
     UserOptions = varargin(1:2:length(varargin));
 
@@ -232,7 +222,7 @@ if ~isempty(varargin)
             'Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
 
-    % Check if user options are valid options. 
+    % Check if user options are valid options.
     aux.chkoptions(options,UserOptions)
 
     for i = 1:2:length(varargin)
@@ -385,8 +375,7 @@ oldMissSmall = isnan(Xpart);
 Xpart(newMissSmall) = NaN;
 Xmar(:,missCols) = Xpart;
 
-newMissMask = false(n,p);
-newMissMask(:,missCols) = newMissSmall & ~oldMissSmall;
+newMissEffectiveSmall = newMissSmall & ~oldMissSmall;
 missMask = isnan(Xmar);
 
 %% Missingness patterns
@@ -403,24 +392,16 @@ end
 patternTable = table(patternStrings,countsSorted,countsSorted/n, ...
     'VariableNames',{'Pattern_0obs_1mis','Count','Proportion'});
 
-%% Store output structure
-% TODO: reduce the output structure size
+%% Store compact output structure
 out = struct;
 out.alpha = alpha;
 out.beta = beta;
-out.probs = probs;
-out.pdLogistic = pdLogistic;
-out.newMissMask = newMissMask;
-out.missMask = missMask;
 out.naPropTarget = naProp;
 out.naPropGeneratedMissCols = mean(newMissSmall(:));
-tmpNewMissCols = newMissMask(:,missCols);
-out.naPropNewMissCols = mean(tmpNewMissCols(:));
-tmpMissCols = isnan(Xmar(:,missCols));
-out.naPropObtainedMissCols = mean(tmpMissCols(:));
+out.naPropNewMissCols = mean(newMissEffectiveSmall(:));
+tmpObtainedMissCols = isnan(Xmar(:,missCols));
+out.naPropObtainedMissCols = mean(tmpObtainedMissCols(:));
 out.naPropObtainedAll = mean(isnan(Xmar(:)));
-out.patterns = patternsSorted;
-out.counts = countsSorted;
 out.patternTable = patternTable;
 out.obsCols = obsCols;
 out.missCols = missCols;
