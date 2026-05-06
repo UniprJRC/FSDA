@@ -133,7 +133,7 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
 %        missingness masks and the LogisticDistribution object are not stored
 %        in out, in order to keep the output structure compact.
 %
-%  See also: makedist, cdf, binornd, fzero, rng, isnan
+%  See also: mdpattern, mdPartialMD, mdEM, mdTEM, mdLittleTest
 %
 %  References:
 %
@@ -161,6 +161,7 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
   X = randn(n,p);
   [Xmar,out] = mdMARsimulate(X,'naProp',0.3,'beta',1.5, ...
       'obsCols',1,'missCols',2:p,'plots',1);
+  mdpattern(Xmar)
   disp(out.patternTable)
 %}
 
@@ -228,16 +229,16 @@ if ~isempty(varargin)
     for i = 1:2:length(varargin)
         options.(varargin{i}) = varargin{i+1};
     end
-end
 
-naProp = options.naProp;
-obsCols = options.obsCols(:)';
-missCols = options.missCols(:)';
-beta = options.beta;
-alphaInterval = options.alphaInterval;
-seed = options.seed;
-plots = options.plots;
-msg = options.msg;
+    naProp = options.naProp;
+    obsCols = options.obsCols(:)';
+    missCols = options.missCols(:)';
+    beta = options.beta;
+    alphaInterval = options.alphaInterval;
+    seed = options.seed;
+    plots = options.plots;
+    msg = options.msg;
+end
 
 %% Further checks
 if isempty(obsCols) || any(obsCols < 1) || any(obsCols > p) || any(obsCols ~= floor(obsCols))
