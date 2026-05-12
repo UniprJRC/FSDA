@@ -1,0 +1,169 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>mdMARsimulate</title><meta content="refpage" name="chunktype"><meta content="function:mdMARsimulate" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mdMARsimulate generates missing values under a MAR logistic mechanism.." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">mdMARsimulate</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">MAR missingness driven by the first variable.</a></li><li><a class="intrnllnk" href="#Example_2">Different logistic slopes for different missing columns.</a></li><li><a class="intrnllnk" href="#Example_3">MAR mechanism driven by two observed variables.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_obsCols">obsCols</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_missCols">missCols</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_missRate">missRate</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_beta">beta</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_alphaInterval">alphaInterval</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_Ymar">Ymar</a></li><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mdMARsimulate</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mdMARsimulate generates missing values under a MAR logistic mechanism.</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">Ymar=mdMARsimulate(Y)</code><span class="syntax_example"><a class="intrnllnk" href="mdMARsimulate.html#Example_1">example</a></span></li><li><code class="synopsis">Ymar=mdMARsimulate(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="mdMARsimulate.html#Example_2">example</a></span></li><li><code class="synopsis">[Ymar,out]=mdMARsimulate(___)</code><span class="syntax_example"><a class="intrnllnk" href="mdMARsimulate.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>This function introduces missing values in a data matrix using a Missing At
+  Random (MAR) mechanism. The probability that an entry is missing is modeled
+  through a logistic regression whose covariates are observed columns of X.</p> <p>
+
+  The logistic link is evaluated using the Statistics and Machine Learning
+  Toolbox probability distribution object created by
+
+      pdLogistic = makedist('Logistic','mu',0,'sigma',1);</p><p>
+
+  Therefore, if $\eta_{ij} = \alpha_j + x_i' \beta_j$, the missingness probability
+  is computed as
+
+      $Pr(M_{ij}=1 | x_i)$ = cdf(pdLogistic,eta_ij),
+
+  which is equal to
+
+  </p>\[
+      1/(1+exp(-\eta_{ij})).
+   \]
+
+  If obsCols=1 and missCols=2:p, the mechanism is
+
+   \[ 
+      Pr(M_{ij}=1 | X_{i1}) = cdf(pdLogistic, \alpha_j + \beta_j*X_{i1}), \qquad
+      j = 2, ..., p,
+    \]
+
+  where $M_{ij}=1$ denotes a missing entry. The intercept alpha_j is chosen so
+  that the expected missingness proportion in the corresponding missing
+  column is equal to missRate.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdMARsimulate.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Ymar"><code>Ymar</code></a>=mdMARsimulate(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>MAR missingness driven by the first variable.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdMARsimulate.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Ymar"><code>Ymar</code></a>=mdMARsimulate(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Different logistic slopes for different missing columns.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdMARsimulate.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_Ymar"><code>Ymar</code></a>,<a class="intrnllnk" href="#outputarg_out"><code>out</code></a>]=mdMARsimulate(___)</code></span>MAR mechanism driven by two observed variables.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> MAR missingness driven by the first variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1708)
+n = 1000;
+p = 4;
+Y= randn(n,p);
+[Ymar,out] = mdMARsimulate(Y,'missRate',0.3,'beta',1.5, ...
+'obsCols',1,'missCols',2:p,'plots',1);
+mdpattern(Ymar)
+disp(out.patternTable)</pre></div></div><pre class="codeoutput">Detailed explanation of the "Missing data pattern figure"
+Top axis contains the names of the variables.
+Big circle means missing value; smaller filled dot represents non missing value.
+Left axis shows the number of observations for each pattern
+For example number 436 shows that the associated pattern is repeated 436 times.
+The sum of the numbers on the left axis is n, the total number of rows.
+Right axis counts the variables with missing values and
+it is equal to the number of big circles in the corresponding row.
+The number of missing values for each variable is shown on the bottom axis.
+
+ans =
+
+  9&times;6 table
+
+                   NrowsWithPattern    Y1    Y2     Y3     Y4     NvarWithMis
+                   ________________    __    ___    ___    ___    ___________
+
+    Pattern1              436          1       1      1      1          0    
+    Pattern2              113          1       1      1      0          1    
+    Pattern3               98          1       1      0      1          1    
+    Pattern4               60          1       1      0      0          2    
+    Pattern5               83          1       0      1      1          1    
+    Pattern6               54          1       0      1      0          2    
+    Pattern7               66          1       0      0      1          2    
+    Pattern8               90          1       0      0      0          3    
+    totPatOrMis          1000          0     293    314    317        924    
+
+    Pattern_0obs_1mis    Count    Proportion
+    _________________    _____    __________
+
+        {'0000'}          436       0.436   
+        {'0001'}          113       0.113   
+        {'0010'}           98       0.098   
+        {'0111'}           90        0.09   
+        {'0100'}           83       0.083   
+        {'0110'}           66       0.066   
+        {'0011'}           60        0.06   
+        {'0101'}           54       0.054   
+
+</pre>
+            <a href='http://rosa.unipr.it/fsda/mdMARsimulate.html#Example_1'><img vspace="5" hspace="5" src="images\mdMARsimulate_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\mdMARsimulate_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Different logistic slopes for different missing columns.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1708)
+Y= randn(1000,4);
+[Ymar,out] = mdMARsimulate(Y,'missRate',0.3,'obsCols',1, ...
+'missCols',2:4,'beta',[0.5 1.5 3],'msg',true);
+disp(out.alpha)</pre></div></div><pre class="codeoutput">Target NA proportion in missCols:     0.3         0.3         0.3
+Generated NA proportion in missCols:  0.3110
+New NA proportion in missCols:        0.3110
+Obtained NA proportion in missCols:   0.3110
+Obtained NA proportion in all Ymar:   0.2333
+   -0.8956   -1.2026   -1.8793
+
+</pre>
+            </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> MAR mechanism driven by two observed variables.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1708)
+Y= randn(1000,5);
+B = [1.2 0.5 1.0; -0.7 1.5 0.2];
+[Ymar,out] = mdMARsimulate(Y,'missRate',[0.2 0.3 0.4], ...
+'obsCols',[1 2],'missCols',3:5,'beta',B);
+disp(out.patternTable)</pre></div></div><pre class="codeoutput">    Pattern_0obs_1mis    Count    Proportion
+    _________________    _____    __________
+
+        {'00000'}         376       0.376   
+        {'00001'}         158       0.158   
+        {'00010'}         142       0.142   
+        {'00011'}         109       0.109   
+        {'00101'}          80        0.08   
+        {'00100'}          76       0.076   
+        {'00111'}          34       0.034   
+        {'00110'}          25       0.025   
+
+</pre>
+            </p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data matrix. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p>n-by-p numeric matrix. Rows are
+        observations and columns are variables. Missing values already
+        present in Y are preserved. The columns used to drive the MAR
+        mechanism, specified by option obsCols, must contain finite values.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'obsCols',[1 3]
+</code>,<code> 'missCols',2:5
+</code>,<code> 'missRate',0.2
+</code>,<code> 'beta',1.5
+</code>,<code> 'alphaInterval',[-20 20]
+</code>,<code> 'plots',true
+</code>,<code> 'msg',true
+</code></code></span></div><div class="expandableContent"><div id="inputarg_obsCols" class="clearfix"></div><h3 id="input_argument_namevalue_obsCols" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>obsCols</code> &#8212;Observed columns driving the MAR mechanism.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector containing the indices of the fully observed variables used
+        in the logistic missingness model. The default value is 1.</p> <p>
+        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'obsCols',[1 3]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_missCols" class="clearfix"></div><h3 id="input_argument_namevalue_missCols" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>missCols</code> &#8212;Columns in which missing values are generated.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector containing the column indices in which additional missing
+        values are introduced. The default value is 2:p.</p> <p>
+        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'missCols',2:5
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_missRate" class="clearfix"></div><h3 id="input_argument_namevalue_missRate" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>missRate</code> &#8212;Desired missingness proportion in missCols.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>Scalar in the interval [0,1], or a row/column vector with one value
+        for each column specified in missCols. If missRate is scalar, the same
+        target missingness proportion is used for all columns in missCols.</p> <p>
+        The default value is 0.3.</p><p>
+        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'missRate',0.2
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_beta" class="clearfix"></div><h3 id="input_argument_namevalue_beta" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>beta</code> &#8212;Logistic regression coefficients.</span></a><span class="example_desc">scalar, vector | matrix.</span></span></h3><div class="collapse">	<p><p>If beta is scalar, the same coefficient is used for all variables in
+        obsCols and missCols. If beta is a vector with length equal to
+        numel(obsCols), the same linear predictor is used for all columns in
+        missCols. If beta is a vector with length equal to numel(missCols)
+        and numel(obsCols)=1, a different coefficient is used for each
+        missing column. If beta is a matrix of size
+        numel(obsCols)-by-numel(missCols), each missing column has its own
+        logistic slope vector. The default value is 1.5.</p> <p>
+        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'beta',1.5
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_alphaInterval" class="clearfix"></div><h3 id="input_argument_namevalue_alphaInterval" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>alphaInterval</code> &#8212;Initial interval for alpha search.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Two-element vector used as the starting bracketing interval for
+        fzero. If the root is not bracketed, the interval is expanded
+        automatically. The default value is [-10 10].</p> <p>
+        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alphaInterval',[-20 20]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot missingness patterns.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If plots is equal to 1 (true), a bar plot of the missingness patterns is
+        produced. If plots is equal to 0 (false), no plot is produced. The default
+        value is 0 (false).</p> <p>
+        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If msg is true, a compact summary of the target and obtained
+        missingness proportions is printed on the screen. The default value
+        is false.</p> <p>
+        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_Ymar" class="clearfix"></div><h3 id="output_argument_Ymar" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ymar</code> &#8212;Data matrix with MAR missing values.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
+        n-by-p matrix equal to Y except for the additional NaN values
+        generated in the columns specified by missCols.</p></div></div><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>Structure which contains the following compact diagnostic fields:</p> <p>
+
+</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>alpha</code></td><td><p>1-by-numel(missCols) vector containing the intercepts
+            used in the logistic missingness models.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>numel(obsCols)-by-numel(missCols) matrix containing the
+            logistic slope coefficients used for each missing column.</p></td></tr><tr valign="top"><td><code>missRateTarget</code></td><td><p>1-by-numel(missCols) vector containing the target
+            missingness proportions.</p></td></tr><tr valign="top"><td><code>missRateGeneratedMissCols</code></td><td><p>scalar containing the proportion of
+            generated Bernoulli missing indicators in missCols.</p></td></tr><tr valign="top"><td><code>missRateNewMissCols</code></td><td><p>scalar containing the proportion of newly
+            generated NaN values in missCols, excluding cells that were
+            already NaN in Y.</p></td></tr><tr valign="top"><td><code>missRateObtainedMissCols</code></td><td><p>scalar containing the final proportion
+            of NaN values in missCols.</p></td></tr><tr valign="top"><td><code>missRateObtainedAll</code></td><td><p>scalar containing the final proportion of
+            NaN values in the whole matrix Ymar.</p></td></tr><tr valign="top"><td><code>patternTable</code></td><td><p>table summarizing missingness patterns, counts
+            and proportions. In the pattern strings, 0 means observed and 1
+            means missing.</p></td></tr><tr valign="top"><td><code>obsCols</code></td><td><p>columns used to drive the MAR mechanism.</p></td></tr><tr valign="top"><td><code>missCols</code></td><td><p>columns in which missing values were generated.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p><p>'mdMARsimulate'.</p> <p>
+
+        Large diagnostic objects such as the full probability matrix, the
+        missingness masks and the LogisticDistribution object are not stored
+        in out, in order to keep the output structure compact.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Little, R.J.A. and Rubin, D.B. (2019), "Statistical Analysis with Missing
+  Data", 3rd edition, Wiley.</p></div><div><p>Rubin, D.B. (1976), Inference and missing data, "Biometrika", Vol. 63,
+  pp. 581-592.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="mdpattern.html" itemprop="url"><span itemprop="name"><code>mdpattern</code></span></a></span> | <span itemprop="seealso"><a href="mdPartialMD.html" itemprop="url"><span itemprop="name"><code>mdPartialMD</code></span></a></span> | <span itemprop="seealso"><a href="mdEM.html" itemprop="url"><span itemprop="name"><code>mdEM</code></span></a></span> | <span itemprop="seealso"><a href="mdTEM.html" itemprop="url"><span itemprop="name"><code>mdTEM</code></span></a></span> | <span itemprop="seealso"><a href="mdLittleTest.html" itemprop="url"><span itemprop="name"><code>mdLittleTest</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

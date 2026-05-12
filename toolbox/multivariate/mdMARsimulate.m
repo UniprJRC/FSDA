@@ -1,4 +1,4 @@
-function [Xmar,out] = mdMARsimulate(X,varargin)
+function [Ymar,out] = mdMARsimulate(Y,varargin)
 %mdMARsimulate generates missing values under a MAR logistic mechanism.
 %
 %<a href="matlab: docsearchFS('mdMARsimulate')">Link to the help function</a>
@@ -12,40 +12,37 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
 %
 %      pdLogistic = makedist('Logistic','mu',0,'sigma',1);
 %
-%  Therefore, if eta_ij = alpha_j + x_i'beta_j, the missingness probability
+%  Therefore, if $\eta_{ij} = \alpha_j + x_i' \beta_j$, the missingness probability
 %  is computed as
 %
-%      Pr(M_ij=1 | x_i) = cdf(pdLogistic,eta_ij),
+%      $Pr(M_{ij}=1 | x_i)$ = cdf(pdLogistic,eta_ij),
 %
 %  which is equal to
 %
-%      1/(1+exp(-eta_ij)).
+%  \[
+%      1/(1+exp(-\eta_{ij})).
+%   \]
 %
 %  If obsCols=1 and missCols=2:p, the mechanism is
 %
-%      Pr(M_ij=1 | X_i1) = cdf(pdLogistic,alpha_j + beta_j*X_i1),
+%   \[ 
+%      Pr(M_{ij}=1 | X_{i1}) = cdf(pdLogistic, \alpha_j + \beta_j*X_{i1}), \qquad
 %      j = 2, ..., p,
+%    \]
 %
-%  where M_ij=1 denotes a missing entry. The intercept alpha_j is chosen so
+%  where $M_{ij}=1$ denotes a missing entry. The intercept alpha_j is chosen so
 %  that the expected missingness proportion in the corresponding missing
-%  column is equal to naProp.
+%  column is equal to missRate.
 %
 %  Required input arguments:
 %
-%    X : Input data matrix. Matrix. n-by-p numeric matrix. Rows are
+%    Y: Input data matrix. Matrix. n-by-p numeric matrix. Rows are
 %        observations and columns are variables. Missing values already
-%        present in X are preserved. The columns used to drive the MAR
+%        present in Y are preserved. The columns used to drive the MAR
 %        mechanism, specified by option obsCols, must contain finite values.
 %
 %  Optional input arguments:
 %
-%    naProp : Desired missingness proportion. Scalar or vector.
-%        Scalar in the interval [0,1], or a row/column vector with one value
-%        for each column specified in missCols. If naProp is scalar, the same
-%        target missingness proportion is used for all columns in missCols.
-%        The default value is 0.3.
-%        Example - 'naProp',0.2
-%        Data Types - double
 %
 %    obsCols : Observed columns driving the MAR mechanism. Vector.
 %        Vector containing the indices of the fully observed variables used
@@ -57,6 +54,14 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
 %        Vector containing the column indices in which additional missing
 %        values are introduced. The default value is 2:p.
 %        Example - 'missCols',2:5
+%        Data Types - double
+%
+%    missRate: Desired missingness proportion in missCols. Scalar or vector.
+%        Scalar in the interval [0,1], or a row/column vector with one value
+%        for each column specified in missCols. If missRate is scalar, the same
+%        target missingness proportion is used for all columns in missCols.
+%        The default value is 0.3.
+%        Example - 'missRate',0.2
 %        Data Types - double
 %
 %    beta : Logistic regression coefficients. Scalar, vector or matrix.
@@ -78,31 +83,24 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
 %        Example - 'alphaInterval',[-20 20]
 %        Data Types - double
 %
-%    seed : Random seed. Empty value or scalar.
-%        If seed is not empty, rng(seed) is called before generating the
-%        missingness indicators. If seed is empty, the current random stream
-%        is used. The default value is empty.
-%        Example - 'seed',1708
-%        Data Types - double
-%
-%    plots : Plot missingness patterns. Scalar.
-%        If plots is equal to 1, a bar plot of the missingness patterns is
-%        produced. If plots is equal to 0, no plot is produced. The default
-%        value is 0.
-%        Example - 'plots',1
+%    plots : Plot missingness patterns. Boolean.
+%        If plots is equal to 1 (true), a bar plot of the missingness patterns is
+%        produced. If plots is equal to 0 (false), no plot is produced. The default
+%        value is 0 (false).
+%        Example - 'plots',true
 %        Data Types - double
 %
 %    msg : Level of output to display. Boolean.
 %        If msg is true, a compact summary of the target and obtained
 %        missingness proportions is printed on the screen. The default value
-%        is true.
-%        Example - 'msg',false
+%        is false.
+%        Example - 'msg',true
 %        Data Types - logical
 %
 %  Output:
 %
-%    Xmar : Data matrix with MAR missing values. Matrix.
-%        n-by-p matrix equal to X, except for the additional NaN values
+%    Ymar : Data matrix with MAR missing values. Matrix.
+%        n-by-p matrix equal to Y except for the additional NaN values
 %        generated in the columns specified by missCols.
 %
 %    out : Structure which contains the following compact diagnostic fields:
@@ -111,17 +109,17 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
 %            used in the logistic missingness models.
 %        out.beta = numel(obsCols)-by-numel(missCols) matrix containing the
 %            logistic slope coefficients used for each missing column.
-%        out.naPropTarget = 1-by-numel(missCols) vector containing the target
+%        out.missRateTarget = 1-by-numel(missCols) vector containing the target
 %            missingness proportions.
-%        out.naPropGeneratedMissCols = scalar containing the proportion of
+%        out.missRateGeneratedMissCols = scalar containing the proportion of
 %            generated Bernoulli missing indicators in missCols.
-%        out.naPropNewMissCols = scalar containing the proportion of newly
+%        out.missRateNewMissCols = scalar containing the proportion of newly
 %            generated NaN values in missCols, excluding cells that were
-%            already NaN in X.
-%        out.naPropObtainedMissCols = scalar containing the final proportion
+%            already NaN in Y.
+%        out.missRateObtainedMissCols = scalar containing the final proportion
 %            of NaN values in missCols.
-%        out.naPropObtainedAll = scalar containing the final proportion of
-%            NaN values in the whole matrix Xmar.
+%        out.missRateObtainedAll = scalar containing the final proportion of
+%            NaN values in the whole matrix Ymar.
 %        out.patternTable = table summarizing missingness patterns, counts
 %            and proportions. In the pattern strings, 0 means observed and 1
 %            means missing.
@@ -158,18 +156,18 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
   rng(1708)
   n = 1000;
   p = 4;
-  X = randn(n,p);
-  [Xmar,out] = mdMARsimulate(X,'naProp',0.3,'beta',1.5, ...
+  Y= randn(n,p);
+  [Ymar,out] = mdMARsimulate(Y,'missRate',0.3,'beta',1.5, ...
       'obsCols',1,'missCols',2:p,'plots',1);
-  mdpattern(Xmar)
+  mdpattern(Ymar)
   disp(out.patternTable)
 %}
 
 %{
   %% Different logistic slopes for different missing columns.
   rng(1708)
-  X = randn(1000,4);
-  [Xmar,out] = mdMARsimulate(X,'naProp',0.3,'obsCols',1, ...
+  Y= randn(1000,4);
+  [Ymar,out] = mdMARsimulate(Y,'missRate',0.3,'obsCols',1, ...
       'missCols',2:4,'beta',[0.5 1.5 3],'msg',true);
   disp(out.alpha)
 %}
@@ -177,40 +175,39 @@ function [Xmar,out] = mdMARsimulate(X,varargin)
 %{
   %% MAR mechanism driven by two observed variables.
   rng(1708)
-  X = randn(1000,5);
+  Y= randn(1000,5);
   B = [1.2 0.5 1.0; -0.7 1.5 0.2];
-  [Xmar,out] = mdMARsimulate(X,'naProp',[0.2 0.3 0.4], ...
+  [Ymar,out] = mdMARsimulate(Y,'missRate',[0.2 0.3 0.4], ...
       'obsCols',[1 2],'missCols',3:5,'beta',B);
   disp(out.patternTable)
 %}
 
-%  Beginning of code.
+%%  Beginning of code.
 
-%% Input parameters checking
+% Input parameters checking
 if nargin < 1
-    error('FSDA:mdMARsimulate:MissingInput','Input matrix X is required.');
+    error('FSDA:mdMARsimulate:MissingInput','Input matrix Yis required.');
 end
 
-if ~isnumeric(X) || ~ismatrix(X)
-    error('FSDA:mdMARsimulate:WrongInput','X must be a numeric matrix.');
+if ~isnumeric(Y) || ~ismatrix(Y)
+    error('FSDA:mdMARsimulate:WrongInput','Y must be a numeric matrix.');
 end
 
-[n,p] = size(X);
+[n,p] = size(Y);
 
 if p < 2
-    error('FSDA:mdMARsimulate:WrongInput','X must contain at least two columns.');
+    error('FSDA:mdMARsimulate:WrongInput','Y must contain at least two columns.');
 end
 
 %% User options
 options = struct;
-options.naProp = 0.3;
+options.missRate = 0.3;
 options.obsCols = 1;
 options.missCols = 2:p;
 options.beta = 1.5;
 options.alphaInterval = [-10 10];
-options.seed = [];
 options.plots = 0;
-options.msg = true;
+options.msg = false;
 
 if ~isempty(varargin)
 
@@ -229,16 +226,16 @@ if ~isempty(varargin)
     for i = 1:2:length(varargin)
         options.(varargin{i}) = varargin{i+1};
     end
+end
 
-    naProp = options.naProp;
+    missRate = options.missRate;
     obsCols = options.obsCols(:)';
     missCols = options.missCols(:)';
     beta = options.beta;
     alphaInterval = options.alphaInterval;
-    seed = options.seed;
     plots = options.plots;
     msg = options.msg;
-end
+
 
 %% Further checks
 if isempty(obsCols) || any(obsCols < 1) || any(obsCols > p) || any(obsCols ~= floor(obsCols))
@@ -253,31 +250,33 @@ if any(ismember(missCols,obsCols))
     error('FSDA:mdMARsimulate:WrongInputOpt','obsCols and missCols must be disjoint.');
 end
 
-finiteObs = isfinite(X(:,obsCols));
+finiteObs = isfinite(Y(:,obsCols));
 if any(~finiteObs(:))
     error('FSDA:mdMARsimulate:WrongInput','Columns specified in obsCols must contain finite observed values.');
 end
 
-if ~isnumeric(naProp) || isempty(naProp) || any(naProp(:) < 0) || any(naProp(:) > 1)
-    error('FSDA:mdMARsimulate:WrongInputOpt','naProp must contain values in the interval [0,1].');
+if ~isnumeric(missRate) || isempty(missRate) || any(missRate(:) < 0) || any(missRate(:) > 1)
+    error('FSDA:mdMARsimulate:WrongInputOpt','missRate must contain values in the interval [0,1].');
 end
 
 nmiss = numel(missCols);
 nobs = numel(obsCols);
 
-if isscalar(naProp)
-    naProp = repmat(naProp,1,nmiss);
+if isscalar(missRate)
+    missRate = repmat(missRate,1,nmiss);
 else
-    naProp = naProp(:)';
-    if numel(naProp) ~= nmiss
+    missRate = missRate(:)';
+    if numel(missRate) ~= nmiss
         error('FSDA:mdMARsimulate:WrongInputOpt', ...
-            'If naProp is not scalar, it must have one value for each column in missCols.');
+            'If missRate is not scalar, it must have one value for each column in missCols.');
     end
 end
 
-if ~isnumeric(beta) || isempty(beta)
-    error('FSDA:mdMARsimulate:WrongInputOpt','beta must be a numeric scalar, vector or matrix.');
+if ~isnumeric(beta) || isempty(beta) || any(~isfinite(beta(:)))
+    error('FSDA:mdMARsimulate:WrongInputOpt','beta must be a finite numeric scalar, vector.');
 end
+
+
 
 if isscalar(beta)
     beta = repmat(beta,nobs,nmiss);
@@ -299,8 +298,8 @@ if ~isnumeric(alphaInterval) || numel(alphaInterval) ~= 2 || alphaInterval(1) >=
         'alphaInterval must be a two-element increasing numeric vector.');
 end
 
-if ~(isscalar(plots) && isnumeric(plots) && any(plots == [0 1]))
-    error('FSDA:mdMARsimulate:WrongInputOpt','plots must be a numeric scalar equal to 0 or 1.');
+if ~(isscalar(plots) && (islogical(plots) || isnumeric(plots)) && any(double(plots) == [0 1]))
+    error('FSDA:mdMARsimulate:WrongInputOpt','plots must be a logical or numeric scalar equal to 0 or 1.');
 end
 
 if ~(isscalar(msg) && (islogical(msg) || isnumeric(msg)))
@@ -308,13 +307,6 @@ if ~(isscalar(msg) && (islogical(msg) || isnumeric(msg)))
 end
 msg = logical(msg);
 
-%% Initialize random generator if requested
-if ~isempty(seed)
-    if ~(isnumeric(seed) && isscalar(seed) && isfinite(seed))
-        error('FSDA:mdMARsimulate:WrongInputOpt','seed must be empty or a finite numeric scalar.');
-    end
-    rng(seed)
-end
 
 %% Create the standard logistic distribution object
 % The CDF of this object is the inverse-logit link:
@@ -322,13 +314,13 @@ end
 pdLogistic = makedist('Logistic','mu',0,'sigma',1);
 
 %% Compute alpha and missingness probabilities
-Xobs = X(:,obsCols);
+Yobs = Y(:,obsCols);
 alpha = zeros(1,nmiss);
 probs = zeros(n,nmiss);
 
 for j = 1:nmiss
-    etaNoIntercept = Xobs * beta(:,j);
-    targetj = naProp(j);
+    etaNoIntercept = Yobs * beta(:,j);
+    targetj = missRate(j);
 
     if targetj == 0
         alpha(j) = -Inf;
@@ -363,21 +355,21 @@ for j = 1:nmiss
     end
 end
 
-%% Generate missingness indicators and apply them to X
-Xmar = X;
+%% Generate missingness indicators and apply them to Y
+Ymar = Y;
 
 % Each generated indicator is Bernoulli with probability probs(i,j).
 % This is equivalent to rand(n,nmiss) < probs, but uses binornd from the
 % Statistics and Machine Learning Toolbox and is closer to R's rbinom.
 newMissSmall = logical(binornd(1,probs));
 
-Xpart = Xmar(:,missCols);
+Xpart = Ymar(:,missCols);
 oldMissSmall = isnan(Xpart);
 Xpart(newMissSmall) = NaN;
-Xmar(:,missCols) = Xpart;
+Ymar(:,missCols) = Xpart;
 
 newMissEffectiveSmall = newMissSmall & ~oldMissSmall;
-missMask = isnan(Xmar);
+missMask = isnan(Ymar);
 
 %% Missingness patterns
 [patterns,~,groupID] = unique(missMask,'rows');
@@ -397,12 +389,12 @@ patternTable = table(patternStrings,countsSorted,countsSorted/n, ...
 out = struct;
 out.alpha = alpha;
 out.beta = beta;
-out.naPropTarget = naProp;
-out.naPropGeneratedMissCols = mean(newMissSmall(:));
-out.naPropNewMissCols = mean(newMissEffectiveSmall(:));
-tmpObtainedMissCols = isnan(Xmar(:,missCols));
-out.naPropObtainedMissCols = mean(tmpObtainedMissCols(:));
-out.naPropObtainedAll = mean(isnan(Xmar(:)));
+out.missRateTarget = missRate;
+out.missRateGeneratedMissCols = mean(newMissSmall(:));
+out.missRateNewMissCols = mean(newMissEffectiveSmall(:));
+tmpObtainedMissCols = isnan(Ymar(:,missCols));
+out.missRateObtainedMissCols = mean(tmpObtainedMissCols(:));
+out.missRateObtainedAll = mean(isnan(Ymar(:)));
 out.patternTable = patternTable;
 out.obsCols = obsCols;
 out.missCols = missCols;
@@ -410,11 +402,11 @@ out.class = 'mdMARsimulate';
 
 %% Display summary if requested
 if msg
-    fprintf('Target NA proportion in missCols:     %s\n',num2str(naProp));
-    fprintf('Generated NA proportion in missCols:  %.4f\n',out.naPropGeneratedMissCols);
-    fprintf('New NA proportion in missCols:        %.4f\n',out.naPropNewMissCols);
-    fprintf('Obtained NA proportion in missCols:   %.4f\n',out.naPropObtainedMissCols);
-    fprintf('Obtained NA proportion in all Xmar:   %.4f\n',out.naPropObtainedAll);
+    fprintf('Target NA proportion in missCols:     %s\n',num2str(missRate));
+    fprintf('Generated NA proportion in missCols:  %.4f\n',out.missRateGeneratedMissCols);
+    fprintf('New NA proportion in missCols:        %.4f\n',out.missRateNewMissCols);
+    fprintf('Obtained NA proportion in missCols:   %.4f\n',out.missRateObtainedMissCols);
+    fprintf('Obtained NA proportion in all Ymar:   %.4f\n',out.missRateObtainedAll);
 end
 
 %% Plot missingness patterns if requested
