@@ -55,12 +55,25 @@ function out = mdLittleTest(Y, varargin)
 %      out.df          = Degrees of freedom of the chi-square reference
 %                        distribution.
 %      out.pvalue      = p-value of the test.
-%      out.mu          = Global MLE of the mean vector.
-%      out.Sigma       = Global MLE of the covariance matrix.
+%      out.mu          = Global MLE of the mean vector (from EM).
+%      out.Sigma       = Global MLE of the covariance matrix (from EM).
 %      out.patterns    = R x p logical matrix. Each row is a distinct
 %                        missingness pattern; true means observed entry.
-%      out.npatterns   = Number of distinct missingness patterns.
+%                        R is the number of distinct missingness patterns.
 %      out.patternInfo = Table with one row for each informative pattern.
+%                        The RowNames of this table is the associated
+%                        pattern. For example in presence of 5 variable is
+%                        the RowName is 11000 means that we observe just
+%                        the first two variables.
+%                        The first column contains the number of units of
+%                        each pattern.
+%                        The second column contains the number of of
+%                        observed variables.
+%                        The third column contains the contribution of
+%                        each pattern to the test.
+%                        The fourth column the condition number of inversion
+%                        of the cov matrix of the pattern.
+%                       
 %
 %  More About:
 %
@@ -261,8 +274,10 @@ condVec   = patternID;
 
 for r = 1:nPatterns
     idxr = (idxPatterns == r);
-    nr = sum(idxr);
+    % nr = number of units with pattern r 
+    nr = sum(idxr); 
     obsr = Patterns(r,:);
+    % number of observed variables in pattern r
     pr = sum(obsr);
 
     patternID(r,1) = r;
@@ -312,9 +327,12 @@ else
 end
 
 
+rowNames = string(double(Patterns));              % convert to string matrix
+rowNames = join(rowNames,"",2);          % join columns with space
+
 patternInfo = table( nrVec, prVec, termVec, condVec, ...
     'VariableNames', {'nPattern','pObserved','Contribution','CondSigma'}, ...
-    'RowNames',string(patternID));
+    'RowNames',rowNames);
 
 plots=true;
 if plots==true
