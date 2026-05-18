@@ -1,0 +1,150 @@
+/* Layout della documentazione */
+.documentation-section {
+    padding: 40px 0;
+    background-color: #f5f5f5;
+    min-height: 500px;
+}
+
+.documentation-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 20px;
+}
+
+.sidebar h3 {
+    color: #666;
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 10px;
+}
+
+.sidebar-menu a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu a:hover {
+    background-color: #f0f0f0;
+    color: #0066cc;
+}
+
+.sidebar-menu a.active {
+    background-color: #e8f0fe;
+    color: #0066cc;
+    font-weight: 500;
+    border-left: 3px solid #0066cc;
+}
+
+/* Contenuto principale */
+.main-content {
+    flex: 1;
+    background-color: white;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#content-container {
+    line-height: 1.8;
+}
+
+#content-container h1,
+#content-container h2 {
+    color: #d2691e;
+    margin-bottom: 20px;
+}
+
+#content-container h1 {
+    font-size: 28px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+#content-container h2 {
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+#content-container h3 {
+    color: #333;
+    font-size: 18px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+#content-container p {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+#content-container ul {
+    margin-bottom: 15px;
+    padding-left: 30px;
+}
+
+#content-container li {
+    margin-bottom: 8px;
+}
+
+#content-container a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+#content-container a:hover {
+    text-decoration: underline;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.error {
+    background-color: #fee;
+    color: #c33;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .documentation-layout {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        position: relative;
+        margin-bottom: 20px;
+    }
+}

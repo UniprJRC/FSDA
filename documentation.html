@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSDA - Flexible Statistics Data Analysis Toolbox</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body style="overflow: hidden;">
+    <!-- Intestazione con logo e titolo -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="img/logo.png" alt="FSDA Logo" class="logo">
+                </div>
+
+                <div class="title-container">
+                    <h1 class="title">Flexible Statistics Data Analysis Toolbox™</h1>
+                    <p class="subtitle">Grouping, clustering, complex correlations. <br>It has never been easier to work
+                        with robust statistics.</p>
+                </div>
+
+                <div class="logo-container">
+                    <img src="img/unipr_ec.png" alt="FSDA Logo" class="logo">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu di navigazione con gradiente diverso -->
+    <nav style="position: relative;
+    z-index: 10 !important;">
+        <div class="container">
+            <div class="nav-container">
+                <ul class="nav-menu">
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./example.html" >Example</a></li>
+                    <li><a href="./software.html">Software</a></li>
+                    <li><a href="./documentation.html" class="active">Documentation</a></li>
+                    <li><a href="./papers.html">Papers</a></li>
+                    <!--<li><a href="#">Education</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="#">Resources</a></li>-->
+                    <li><a href="./event.html">News & Events</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div style="position: relative;
+    z-index: 10 !important;
+    min-height: 38px;
+    background: white;"></div>
+    <!-- Container principale con sidebar e contenuto -->
+    <object data="https://rosa.unipr.it/FSDA/function-alpha.html" height="600" type="text/html" width="100%" class="documentation-rosa"></object>
+    <footer class="footer">
+        <div class="container">
+            <p></p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+
+
+        // Funzione per caricare diversi contenuti
+        function loadContent() {
+            const contentDiv = document.getElementById('software-content');
+
+            // Mostra indicatore di caricamento
+            contentDiv.innerHTML = '<p>Caricamento...</p>';
+
+            const elementsToHide = [];
+
+             loadContentAndHideElements(
+                        'https://rosa.unipr.it/FSDA/function-alpha.html',
+                        elementsToHide
+             );
+        }
+
+        // Funzione per caricare contenuto HTML via fetch e manipolare il DOM
+        function loadContentAndHideElements(url, elementsToHide = [],spaceOnTop = false) {
+            const contentDiv = document.getElementById('software-content');
+            contentDiv.innerHTML = '<p>Caricamento contenuto...</p>';
+
+            // Usa un proxy CORS se necessario
+            const proxyUrl = 'https://everyorigin.jwvbremen.nl/get?url=';
+            const fetchUrl = proxyUrl + encodeURIComponent(url);
+
+            console.log(fetchUrl);
+
+            fetch(fetchUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(htmlContent => {
+                    // Crea un parser DOM per manipolare l'HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+
+                    // Estrai il contenuto principale (puoi personalizzare questo)
+                    let mainContent = '';
+
+                    // Prova a trovare il contenuto principale in ordine di preferenza
+                    const contentSelectors = ['main', '.main-content', '.content', '#content', 'body'];
+                    let foundContent = false;
+
+                    for (const selector of contentSelectors) {
+                        const element = doc.querySelector(selector);
+                        if (element && !foundContent) {
+                            mainContent = element.innerHTML;
+                            foundContent = true;
+                            break;
+                        }
+                    }
+
+                    // Se non trova contenuto specifico, usa tutto il body
+                    if (!foundContent) {
+                        mainContent = doc.body.innerHTML;
+                    }
+                    contentDiv.innerHTML = "";
+                    if(spaceOnTop) contentDiv.innerHTML = "<div style='min-height:30px;'></div>";
+
+                    // Inserisci il contenuto pulito
+                    contentDiv.innerHTML += `
+                
+                    ${mainContent}
+                            `;
+
+                    // Fix per link relativi (opzionale)
+                    fixRelativeLinks(contentDiv, url);
+
+                })
+                .catch(error => {
+                    console.error('Errore nel caricamento del contenuto:', error);
+                    contentDiv.innerHTML = `
+                <div class="error-content">
+                    <h2>Errore nel caricamento</h2>
+                    <p>Non è stato possibile caricare il contenuto da: <strong>${url}</strong></p>
+                    <p>Errore: ${error.message}</p>
+                    <p><a href="${url}" target="_blank">Apri il link in una nuova finestra</a></p>
+                </div>
+            `;
+                });
+        }
+
+        // Funzione per correggere i link relativi
+        function fixRelativeLinks(container, originalUrl) {
+            try {
+                const baseUrl = new URL(originalUrl).origin;
+                const basePath = new URL(originalUrl).pathname.split('/').slice(0, -1).join('/') + '/';
+
+                // Fix link
+                container.querySelectorAll('a[href]').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && !href.startsWith('http') && !href.startsWith('//') && !href.startsWith('#')) {
+                        if (href.startsWith('/')) {
+                            link.setAttribute('href', baseUrl + href);
+                        } else {
+                            link.setAttribute('href', baseUrl + basePath + href);
+                        }
+                        link.setAttribute('target', '_blank'); // Apri in nuova finestra
+                    }
+                });
+
+                // Fix immagini
+                container.querySelectorAll('img[src]').forEach(img => {
+                    const src = img.getAttribute('src');
+                    if (src && !src.startsWith('http') && !src.startsWith('//')) {
+                        if (src.startsWith('/')) {
+                            img.setAttribute('src', baseUrl + src);
+                        } else {
+                            img.setAttribute('src', baseUrl + basePath + src);
+                        }
+                    }
+                });
+
+                // Fix CSS (se presente)
+                container.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && !href.startsWith('http') && !href.startsWith('//')) {
+                        if (href.startsWith('/')) {
+                            link.setAttribute('href', baseUrl + href);
+                        } else {
+                            link.setAttribute('href', baseUrl + basePath + href);
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.warn('Errore nella correzione dei link relativi:', e);
+            }
+        }
+
+        // Carica il contenuto di default all'avvio della pagina
+        document.addEventListener('DOMContentLoaded', function () {
+            loadContent(); // Carica la sezione software di default
+        });
+
+        // Gestione click sul menu principale "Software"
+        document.addEventListener('DOMContentLoaded', function () {
+            const softwareNavLink = document.querySelector('.nav-software');
+            if (softwareNavLink) {
+                softwareNavLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Carica il contenuto software di default
+                    loadContent();
+                });
+            }
+        });
+    </script>
+    <!-- Il resto del contenuto della pagina andrà qui -->
+</body>
+
+</html>

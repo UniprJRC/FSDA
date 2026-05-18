@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSDA - Flexible Statistics Data Analysis Toolbox</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Crea CSS inline solo necessario o linka il CSS esistente del tuo index.html */
+        /* Esempio minimal, cerca di replicare stili principali */
+        #software-content {
+            line-height: 1.6;
+            color: #333;
+            padding: 0 9rem;
+        }
+
+        #software-content h1 {
+            font-size: 1.8rem;
+            color: #333366;
+        }
+
+        #software-content code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Intestazione con logo e titolo -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="img/logo.png" alt="FSDA Logo" class="logo">
+                </div>
+
+                <div class="title-container">
+                    <h1 class="title">Flexible Statistics Data Analysis Toolbox™</h1>
+                    <p class="subtitle">Grouping, clustering, complex correlations. <br>It has never been easier to work
+                        with robust statistics.</p>
+                </div>
+
+                <div class="logo-container">
+                    <img src="img/unipr_ec.png" alt="FSDA Logo" class="logo">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu di navigazione con gradiente diverso -->
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <ul class="nav-menu">
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./example.html">Example</a></li>
+                    <li><a href="./software.html" class="active">Software</a></li>
+                    <li><a href="./documentation.html">Documentation</a></li>
+                    <li><a href="./papers.html">Papers</a></li>
+                    <!--<li><a href="#">Education</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="#">Resources</a></li>-->
+                    <li><a href="./event.html">News & Events</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Container principale con sidebar e contenuto -->
+    <div class="main-container">
+        <!-- Sidebar sinistra -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="active" data-page="documentation">
+                    <a href="#" onclick="loadContent('documentation')">FSDA Toolbox</a>
+                </li>
+                <li data-page="getting-started">
+                    <a href="#" onclick="loadContent('getting-started')">Getting Started</a>
+                </li>
+                <li data-page="release-note">
+                    <a href="#" onclick="loadContent('release-note')">release-note</a>
+                </li>
+                <li data-page="tutorials">
+                    <a href="#" onclick="loadContent('tutorials')">Tutorials</a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Area contenuto principale -->
+        <main class="content-area">
+            <div id="software-content">
+                Caricamento...
+            </div>
+        </main>
+
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p></p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+
+        const prefix = 'https://raw.githubusercontent.com/UniprJRC/FSDA/master/';
+
+        function addPrefixToSrcAttributes(htmlString, prefix) {
+            // Crea un elemento temporaneo per analizzare il contenuto HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlString, 'text/html');
+
+            // Seleziona tutti gli elementi che hanno l'attributo src
+            const elements = doc.querySelectorAll('[src]');
+
+            // Itera su tutti gli elementi trovati
+            elements.forEach(element => {
+                // Ottieni il valore attuale dell'attributo src
+                let src = element.getAttribute('src');
+
+                // Verifica se l'URL è già assoluto
+                if (!src.match(/^(?:https?:\/\/|\/|\/\/)/)) {
+                    // Aggiungi il prefisso solo se l'URL è relativo
+                    src = prefix + src;
+                }
+
+                // Imposta il nuovo valore dell'attributo src
+                element.setAttribute('src', src);
+            });
+
+            // Converti il documento modificato nuovamente in una stringa HTML
+            return doc.documentElement.outerHTML;
+        }
+
+        // Funzione per caricare diversi contenuti
+        function loadContent(page) {
+            const contentDiv = document.getElementById('software-content');
+
+            // Rimuovi classe active da tutti gli elementi
+            document.querySelectorAll('.sidebar li').forEach(li => {
+                li.classList.remove('active');
+            });
+
+            // Aggiungi classe active all'elemento cliccato
+            document.querySelector(`[data-page="${page}"]`).classList.add('active');
+
+            // Mostra indicatore di caricamento
+            contentDiv.innerHTML = '<p>Caricamento...</p>';
+
+            const elementsToHide = [
+                'header',                     // rimuove tutti i tag header
+                '.header',                    // rimuove elementi con classe header
+                '#header',                    // rimuove header per id
+                'nav',                        // rimuove tutti i navigation
+                '.nav',                       // rimuove nav per classe
+                '.navigation',                // rimuove navigation per classe
+                '#navigation',                // rimuove navigation per id
+                'footer',                     // rimuove tutti i footer
+                '.footer',                    // rimuove footer per classe
+                '#footer',                    // rimuove footer per id
+                '.sidebar',                   // rimuove sidebar per classe
+                '#sidebar',                   // rimuove sidebar per id
+                '.breadcrumb',                // rimuove breadcrumb
+                '#breadcrumb',                // rimuove breadcrumb per id
+                '.ads',                       // rimuove pubblicità
+                '.advertisement',             // rimuove ads
+                '.banner',                    // rimuove banner
+                '#search',                    // rimuove ricerca
+                '.search',                    // rimuove ricerca per classe
+                '.social-sharing',            // rimuove condivisione social
+                '.comments',                  // rimuove commenti
+                '#comments',                  // rimuove commenti per id
+                '.related-posts',             // rimuove post correlati
+                '.widget',                    // rimuove widget
+                '.menu',                      // rimuove menu
+                '#menu'                       // rimuove menu per id
+            ];
+
+            switch (page) {
+                case 'documentation':
+                    loadGitHubREADME("## Running Examples on MATLAB Online", `## FSDA
+
+This`, true);
+                    break;
+                case 'getting-started':
+                    loadContentAndHideElements(
+                        'https://rosa.unipr.it/FSDA/getting-started.html',
+                        elementsToHide
+                    );
+                    break;
+                case 'tutorials':
+                    loadContentAndHideElements(
+                        'https://rosa.unipr.it/FSDA/tutorials.html',
+                        elementsToHide
+                    );
+                    break;
+                case 'release-note':
+                    loadContentAndHideElements(
+                        'https://rosa.unipr.it/FSDA/release_notes.html',
+                        elementsToHide
+                    );
+                    break;
+                default:
+                    contentDiv.innerHTML = '<h1>Contenuto non trovato</h1>';
+            }
+        }
+
+        // Funzione per caricare README.md dal repository GitHub
+        function loadGitHubREADME(startHeading = null, endHeading = null, opposite = false) {
+            fetch('https://raw.githubusercontent.com/UniprJRC/FSDA/master/README.md')
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.text();
+                })
+                .then(text => {
+                    // Converti il Markdown in HTML
+                    console.log(text);
+                    let newText = text;
+                    if (startHeading && endHeading) {
+                        const startIndex = text.indexOf(startHeading);
+                        const endIndex = text.indexOf(endHeading);
+                        if (opposite) {
+                            let begin = text.substring(0, startIndex);
+                            let end = text.substring(endIndex);
+                            newText = begin + end;
+                        }
+                        else {
+                            let newText = text.substring(startIndex, endIndex);
+                        }
+                    }
+                    newText = newText.replaceAll(":eyes:", "");
+                    let htmlContent = marked.parse(newText);
+                    htmlContent = addPrefixToSrcAttributes(htmlContent, prefix);
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+
+                    let processedHtml = doc.body.innerHTML;
+
+
+                    // Inserisci il risultato finale nel div
+                    document.getElementById('software-content').innerHTML = "<div style='min-height:30px;'></div>" + processedHtml;
+                })
+                .catch(err => {
+                    console.error("Errore nel caricamento del README: ", err);
+                    document.getElementById('software-content').innerHTML =
+                        '<p>Errore nel caricamento della documentazione GitHub.</p>';
+                });
+        }
+
+
+
+        // Funzione per caricare contenuto HTML via fetch e manipolare il DOM
+        function loadContentAndHideElements(url, elementsToHide = []) {
+            const contentDiv = document.getElementById('software-content');
+            contentDiv.innerHTML = '<p>Caricamento contenuto...</p>';
+
+            // Usa un proxy CORS se necessario
+            const proxyUrl = 'https://api.allorigins.win/raw?url=';
+            const fetchUrl = proxyUrl + encodeURIComponent(url);
+
+            console.log(fetchUrl);
+
+            fetch(fetchUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(htmlContent => {
+                    // Crea un parser DOM per manipolare l'HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+
+                    // Rimuovi gli elementi indesiderati
+                    elementsToHide.forEach(selector => {
+                        try {
+                            const elements = doc.querySelectorAll(selector);
+                            elements.forEach(element => {
+                                element.remove();
+                                console.log(`Rimosso elemento: ${selector}`);
+                            });
+                        } catch (e) {
+                            console.warn(`Selector non valido: ${selector}`, e);
+                        }
+                    });
+
+                    // Estrai il contenuto principale (puoi personalizzare questo)
+                    let mainContent = '';
+
+                    // Prova a trovare il contenuto principale in ordine di preferenza
+                    const contentSelectors = ['main', '.main-content', '.content', '#content', 'body'];
+                    let foundContent = false;
+
+                    for (const selector of contentSelectors) {
+                        const element = doc.querySelector(selector);
+                        if (element && !foundContent) {
+                            mainContent = element.innerHTML;
+                            foundContent = true;
+                            break;
+                        }
+                    }
+
+                    // Se non trova contenuto specifico, usa tutto il body
+                    if (!foundContent) {
+                        mainContent = doc.body.innerHTML;
+                    }
+
+                    // Inserisci il contenuto pulito
+                    contentDiv.innerHTML = `
+                <div class="fetched-content">
+                    <style>
+                        .fetched-content {
+                            line-height: 1.6;
+                            color: #333;
+                        }
+                        .fetched-content img {
+                            max-width: 100%;
+                            height: auto;
+                        }
+                        .fetched-content a {
+                            color: #007bff;
+                            text-decoration: none;
+                        }
+                        .fetched-content a:hover {
+                            text-decoration: underline;
+                        }
+                    </style>
+                    ${mainContent}
+                </div>
+            `;
+
+                    // Fix per link relativi (opzionale)
+                    fixRelativeLinks(contentDiv, url);
+
+                })
+                .catch(error => {
+                    console.error('Errore nel caricamento del contenuto:', error);
+                    contentDiv.innerHTML = `
+                <div class="error-content">
+                    <h2>Errore nel caricamento</h2>
+                    <p>Non è stato possibile caricare il contenuto da: <strong>${url}</strong></p>
+                    <p>Errore: ${error.message}</p>
+                    <p><a href="${url}" target="_blank">Apri il link in una nuova finestra</a></p>
+                </div>
+            `;
+                });
+        }
+
+        // Funzione per correggere i link relativi
+        function fixRelativeLinks(container, originalUrl) {
+            try {
+                const baseUrl = new URL(originalUrl).origin;
+                const basePath = new URL(originalUrl).pathname.split('/').slice(0, -1).join('/') + '/';
+
+                // Fix link
+                container.querySelectorAll('a[href]').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && !href.startsWith('http') && !href.startsWith('//') && !href.startsWith('#')) {
+                        if (href.startsWith('/')) {
+                            link.setAttribute('href', baseUrl + href);
+                        } else {
+                            link.setAttribute('href', baseUrl + basePath + href);
+                        }
+                        link.setAttribute('target', '_blank'); // Apri in nuova finestra
+                    }
+                });
+
+                // Fix immagini
+                container.querySelectorAll('img[src]').forEach(img => {
+                    const src = img.getAttribute('src');
+                    if (src && !src.startsWith('http') && !src.startsWith('//')) {
+                        if (src.startsWith('/')) {
+                            img.setAttribute('src', baseUrl + src);
+                        } else {
+                            img.setAttribute('src', baseUrl + basePath + src);
+                        }
+                    }
+                });
+
+                // Fix CSS (se presente)
+                container.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && !href.startsWith('http') && !href.startsWith('//')) {
+                        if (href.startsWith('/')) {
+                            link.setAttribute('href', baseUrl + href);
+                        } else {
+                            link.setAttribute('href', baseUrl + basePath + href);
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.warn('Errore nella correzione dei link relativi:', e);
+            }
+        }
+
+        // Carica il contenuto di default all'avvio della pagina
+        document.addEventListener('DOMContentLoaded', function () {
+            loadContent('documentation'); // Carica la sezione software di default
+        });
+
+        // Gestione click sul menu principale "Software"
+        document.addEventListener('DOMContentLoaded', function () {
+            const softwareNavLink = document.querySelector('.nav-software');
+            if (softwareNavLink) {
+                softwareNavLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Rimuovi active da tutti i link nav
+                    document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+                    // Aggiungi active al link software
+                    this.classList.add('active');
+                    // Carica il contenuto software di default
+                    loadContent('documentation');
+                });
+            }
+        });
+    </script>
+    <!-- Il resto del contenuto della pagina andrà qui -->
+</body>
+
+</html>

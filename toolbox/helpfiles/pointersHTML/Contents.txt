@@ -1,1 +1,0 @@
-This folder contains files that are used for the FSDA documentation pages. The folder can be seen as a syllabus of the documented functions.

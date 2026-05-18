@@ -1,0 +1,541 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Headings styling */
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1em;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    min-width: 100px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Stile per l'intestazione con gradiente */
+header {
+    background: linear-gradient(to right, #c3c72c, #1e5799, #02172f);
+    color: white;
+    padding: 20px 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    max-width: 120px;
+    height: auto;
+}
+
+/* Linea verticale di separazione */
+.vertical-line {
+    height: 50px;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 0 20px;
+}
+
+.title-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 3rem;
+    width: 100%;
+}
+
+.title {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* Stile per il menu di navigazione con gradiente diverso */
+nav {
+    background: linear-gradient(to right, #588980,#0f4679, #02172f);
+    padding: 10px 0;
+    padding-bottom: 14px;
+}
+
+.nav-container {
+    display: flex;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.nav-menu li {
+    margin: 0 15px;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
+}
+
+.nav-menu li a.active,
+.nav-menu li a.current-page {
+    position: relative;
+    color: white;
+}
+
+.nav-menu li a.active::after,
+.nav-menu li a.current-page::after {
+    content: '';
+    position: absolute;
+    bottom: -13px; /* Adatta questo valore per posizionare correttamente la linea */
+    left: 0;
+    width: 100%;
+    height: 8px; /* Spessore della linea gialla */
+    background-color: #ffcc00;
+}
+
+/* Opzionale: rimuovi l'underline al hover per la voce attiva */
+.nav-menu li a.active:hover,
+.nav-menu li a.current-page:hover {
+    text-decoration: none;
+}
+
+/* CSS per il layout con sidebar - MODIFICATO */
+.main-container {
+    display: flex;
+    background-color: #fff; /* Sfondo bianco uniforme */
+    min-height: calc(100vh - 200px);
+    padding: 0 40px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sidebar {
+    width: 250px;
+    min-width: 250px;
+    background-color: #fff; /* Sfondo bianco come il contenuto */
+    padding: 40px 0;
+    /* Rimossi: border-right e box-shadow */
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    /* Rimosso: border-bottom */
+}
+
+.sidebar li a {
+    display: block;
+    padding: 15px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: normal;
+}
+
+.sidebar li a:hover {
+    /* Rimossi gli stili hover con background */
+    text-decoration: none;
+}
+
+.sidebar li.active a {
+    background-color: transparent; /* Nessun background colorato */
+    color: #003d7a; /* Testo blu */
+    font-weight: bold; /* Solo grassetto */
+    border-left: 3px solid #003d7a;
+}
+
+.content-area {
+    padding: 20px 40px;
+    background-color: #fff; /* Sfondo bianco uniforme */
+}
+
+#software-content {
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff; /* Sfondo bianco uniforme */
+    padding: 0px !important;
+    /* Rimossi: border-radius e box-shadow */
+}
+
+#software-content h1 {
+    font-size: 1.8rem;
+    color: #333366;
+    margin-top: 30px;
+}
+
+#software-content code {
+    background-color: #f0f0f0;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+}
+
+/* Sezione Showreel */
+.showreel {
+    background: linear-gradient(to right, #f7f6e7, #cfd9e4);
+    border-bottom: 1px solid #e5e5e5;
+    padding: 40px 0;
+}
+
+.showreel-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 30px;
+}
+
+.video-container {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Questa classe mantiene il rapporto d'aspetto del video a 16:9 */
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* Rapporto d'aspetto 16:9 */
+    height: 0;
+    overflow: hidden;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.text-container {
+    flex: 1.5;
+    min-width: 300px;
+}
+
+.text-container h3 {
+    color: #1e5799;
+    font-size: 1.3rem;
+    margin: 15px;
+}
+
+.text-container p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.showreel-pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.pagination-arrow {
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.pagination-dots {
+    display: flex;
+    gap: 5px;
+}
+
+.pagination-dot {
+    width: 25px;
+    height: 25px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.pagination-dot.active {
+    background-color: #1e5799;
+    color: white;
+    border-color: #1e5799;
+}
+
+/* Stili per la sezione Website sections */
+.website-sections {
+    padding: 40px 0;
+    background-color: #FFFFFF;
+}
+
+.event-title {
+    color: #333366;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    margin-left: -100px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+.section-title {
+    color: #333366;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.section-boxes {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.section-box {
+    display: flex;
+    width: 100%;
+    margin-bottom: 25px;
+    align-items: flex-start;
+}
+
+.icon-container {
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+    flex-shrink: 0;
+    border: 1px solid #ddd;
+}
+
+.section-content {
+    flex-grow: 1;
+}
+
+.section-content h3 {
+    color: #333366;
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.section-content.disattivo {
+    color: #b3b3b3;
+}
+
+.section-content.disattivo h3{
+    color: #b3b3b3;
+}
+
+.section-content p {
+    margin-bottom: 15px;
+}
+
+.section-links a {
+    color: #1e88e5;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.section-links a:hover {
+    text-decoration: underline;
+}
+
+/* Sezione Relevant Links */
+.relevant-links {
+    padding: 40px 0 0 0;
+    background-color: #FFFFFF;
+}
+
+.relevant-links .section-title {
+    font-size: 24px;
+    color: #003d7a;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.yellow-divider {
+    height: 3px;
+    background-color: #ffcc00;
+    margin-bottom: 30px;
+}
+
+.links-list {
+    padding: 0 0 30px 0;
+}
+
+.link-item {
+    margin-bottom: 20px;
+}
+
+.link-item h4 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+
+.link-item h4 a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.link-item h4 a:hover {
+    text-decoration: underline;
+}
+
+.link-item p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.blue-divider {
+    height: 4px;
+    background-color: #003d7a;
+}
+
+/* Footer */
+.footer {
+    background-color: #02172f;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.documentation-rosa {
+    margin-top: -80px;
+    margin-inline: auto;
+    display: flex;
+    max-width: 1200px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .vertical-line {
+        height: 1px;
+        width: 80%;
+        margin: 15px auto;
+    }
+    
+    .title {
+        font-size: 1.8rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .nav-menu li {
+        margin: 5px 0;
+    }
+    
+    .section-box {
+        padding: 0 15px;
+    }
+    
+    .showreel-container {
+        flex-direction: column;
+    }
+
+    .video-container, .text-container {
+        width: 100%;
+    }
+    
+    /* Responsive design per la sidebar */
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        order: 2;
+    }
+    
+    .content-area {
+        order: 1;
+        padding: 20px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    .title {
+        font-size: 2rem;
+    }
+}

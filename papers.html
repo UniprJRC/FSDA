@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSDA - Flexible Statistics Data Analysis Toolbox</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Crea CSS inline solo necessario o linka il CSS esistente del tuo index.html */
+        /* Esempio minimal, cerca di replicare stili principali */
+        #software-content {
+            line-height: 1.6;
+            color: #333;
+            padding: 0 9rem;
+        }
+
+        #software-content h1 {
+            font-size: 1.8rem;
+            color: #333366;
+        }
+
+        #software-content code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Intestazione con logo e titolo -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="img/logo.png" alt="FSDA Logo" class="logo">
+                </div>
+
+                <div class="title-container">
+                    <h1 class="title">Flexible Statistics Data Analysis Toolbox™</h1>
+                    <p class="subtitle">Grouping, clustering, complex correlations. <br>It has never been easier to work
+                        with robust statistics.</p>
+                </div>
+
+                <div class="logo-container">
+                    <img src="img/unipr_ec.png" alt="FSDA Logo" class="logo">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu di navigazione con gradiente diverso -->
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <ul class="nav-menu">
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./example.html">Example</a></li>
+                    <li><a href="./software.html">Software</a></li>
+                    <li><a href="./documentation.html">Documentation</a></li>
+                    <li><a href="./papers.html" class="active">Papers</a></li>
+                    <!--<li><a href="#">Education</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="#">Resources</a></li>-->
+                    <li><a href="./event.html">News & Events</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Container principale con sidebar e contenuto -->
+    <div class="main-container">
+        <!-- Area contenuto principale -->
+        <main class="content-area">
+            <div id="software-content">
+                Caricamento...
+            </div>
+        </main>
+
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p></p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+
+        const prefix = 'https://raw.githubusercontent.com/UniprJRC/FSDA/master/';
+
+        function addPrefixToSrcAttributes(htmlString, prefix) {
+            // Crea un elemento temporaneo per analizzare il contenuto HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlString, 'text/html');
+
+            // Seleziona tutti gli elementi che hanno l'attributo src
+            const elements = doc.querySelectorAll('[src]');
+
+            // Itera su tutti gli elementi trovati
+            elements.forEach(element => {
+                // Ottieni il valore attuale dell'attributo src
+                let src = element.getAttribute('src');
+
+                // Verifica se l'URL è già assoluto
+                if (!src.match(/^(?:https?:\/\/|\/|\/\/)/)) {
+                    // Aggiungi il prefisso solo se l'URL è relativo
+                    src = prefix + src;
+                }
+
+                // Imposta il nuovo valore dell'attributo src
+                element.setAttribute('src', src);
+            });
+
+            // Converti il documento modificato nuovamente in una stringa HTML
+            return doc.documentElement.outerHTML;
+        }
+
+        // Funzione per caricare diversi contenuti
+        function loadContent() {
+            const contentDiv = document.getElementById('software-content');
+
+            loadGitHubREADME();
+        }
+
+        // Funzione per caricare README.md dal repository GitHub
+        function loadGitHubREADME(startHeading = null, endHeading = null, opposite = false) {
+            fetch('https://raw.githubusercontent.com/UniprJRC/FSDApapers/refs/heads/main/readme.md')
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.text();
+                })
+                .then(text => {
+                    // Converti il Markdown in HTML
+                    // console.log(text);
+                    let newText = text;
+                    if (startHeading && endHeading) 
+                    {
+                        const startIndex = text.indexOf(startHeading);
+                        const endIndex = text.indexOf(endHeading);
+                        if(opposite)
+                        {
+                            let begin = text.substring(0,startIndex);
+                            let end = text.substring(endIndex);
+                            newText  = begin + end;    
+                        }
+                        else
+                        {
+                            console.log("between");
+                            newText = text.substring(startIndex,endIndex);
+                            console.log(newText);
+                        }
+                    }
+                    let htmlContent = marked.parse(newText);                    
+                    htmlContent = addPrefixToSrcAttributes(htmlContent, prefix);
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+
+                    let processedHtml = doc.body.innerHTML;
+
+                    
+                    // Inserisci il risultato finale nel div
+                    document.getElementById('software-content').innerHTML = "<div style='min-height:30px;'></div>" + processedHtml;
+                })
+                .catch(err => {
+                    console.error("Errore nel caricamento del README: ", err);
+                    document.getElementById('software-content').innerHTML =
+                        '<p>Errore nel caricamento della documentazione GitHub.</p>';
+                });
+        }
+
+        // Carica il contenuto di default all'avvio della pagina
+        document.addEventListener('DOMContentLoaded', function () {
+            loadContent(); // Carica la sezione software di default
+        });
+    </script>
+    <!-- Il resto del contenuto della pagina andrà qui -->
+</body>
+
+</html>
