@@ -27,10 +27,36 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %               Data Types - cell array of characters or String.
 %
 %
-%       plots : Plot on the screen. Boolean
-%               If plots = true (default), a plot which displays missing
-%               data patterns is displayed on the screen.
-%               Top axis contains the name of the variables
+%       plots : Plot on the screen. Boolean or struct.
+%               If plots is true (default), a plot which displays missing
+%               data patterns is shown. If plots is false, no plot is shown.
+%               If plots is a struct, the following fields can be used to
+%               personalize the plot:
+%                 plots.maxPatternsForBubbles = maximum number of missing
+%                   patterns for which the balloon plot is used. Default is 80.
+%                 plots.maxYLabels = maximum number of labels on the left
+%                   and right y-axes. Default is 50.
+%                 plots.maxXLabels = maximum number of labels on the bottom
+%                   and top x-axes. Default is 25.
+%                 plots.heatmap = if true, the heatmap is used regardless
+%                   of the number of missing patterns. If false, the heatmap
+%                   is used only when the number of patterns is greater than
+%                   maxPatternsForBubbles. Default is false.
+%                 plots.fsAxisLabel = font size of axis labels. Default is 14.
+%                 plots.fsTop = font size of top x-axis tick labels.
+%                   Empty value means automatic.
+%                 plots.fsBottom = font size of bottom x-axis tick labels.
+%                   Empty value means automatic.
+%                 plots.fsLeft = font size of left y-axis tick labels.
+%                   Empty value means automatic.
+%                 plots.fsRight = font size of right y-axis tick labels.
+%                   Empty value means automatic.
+%                 plots.squareCellsMaxRatio = maximum ratio nPatterns/p
+%                   for which heatmap cells are forced to be square.
+%                   Default is 3.
+%               Example - 'plots',struct('maxPatternsForBubbles',100,'fsLeft',6)
+%               Data Types - Boolean, scalar numeric or struct
+%               Remark: top axis contains the name of the variables
 %               Big circle means missing value; smaller filled dot
 %               represents non missing value Left axis shows the number of
 %               observations for each pattern. For example number 40 shows
@@ -40,8 +66,6 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %               Right axis counts the variables with missing values and it
 %               is equal to the number of big circles in the
 %               corresponding row.
-%                 Example - 'plots',false
-%                 Data Types - Boolean
 %
 %  dispresults :  Display results on the screen. Boolean.
 %                 If dispresults is true it is possible to see on the
@@ -49,8 +73,6 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %                 The default value of dispresults is false.
 %                 Example - 'dispresults',true
 %                 Data Types - Boolean
-%
-%
 %
 % Output:
 %
@@ -73,14 +95,14 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %                and rescaled MAD (median absolute deviation).
 %                Fifth column (Count_miss) contains the number of missing
 %                values for each variable.
-%                Sixth column (Percmiss) conatins the percentage of missing data
+%                Sixth column (Percmiss) contains the percentage of missing data
 %                for each variable.
 %                Seventh and eight column contain the number of outliers
 %                respectively in the left and right tail of the
 %                distribution. The criterion to decide whether a unit is
 %                outlier is based on the boxplot concept, that is the
 %                outliers are the units which are above x0.75+1.5*IQR or
-%                below x0.25-1.5*IQR, where IQR is the interquartile range.
+%                below x0.25-1.5*IQR, where IQR is the inter quartile range.
 %
 %
 % See also balloonplot, bubblechart
@@ -209,11 +231,116 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
     mdpattern(X);
 %}
 
+%{
+    % Personalized plots option: reduce tick labels and font size.
+    close all
+    n = 1000;
+    p = 12;
+    X = randn(n,p);
+
+    rng(10)
+    for j = 2:p
+        rowsWithMis = randsample(n,round(0.25*n));
+        X(rowsWithMis,j) = NaN;
+    end
+
+    plots = struct;
+    plots.maxYLabels = 20;
+    plots.maxXLabels = 8;
+    plots.fsTop = 8;
+    plots.fsBottom = 8;
+    plots.fsLeft = 6;
+    plots.fsRight = 6;
+
+    mdpattern(X,'plots',plots);
+%}
+
+
+%{
+    %% Personalized plots option: force heatmap.
+    % Load the nhanes data
+    % The nhanes data is a dataset with 25 observations on the following 4 variables.
+    % age, Age group (1=20-39, 2=40-59, 3=60+).
+    % bmi, Body mass index (kg/m**2).
+    % hyp, Hypertensive (1=no,2=yes).
+    % chl, Total serum cholesterol (mg/dL).
+    % namvar array of strings containing the names of the columns of X.
+     namvar=["age"  "bmi" "hyp" "chl"];
+     X=[1   NaN  NaN  NaN
+     2 22.7   1 187
+     1   NaN   1 187
+     3   NaN  NaN  NaN
+     1 20.4   1 113
+     3   NaN  NaN 184
+     1 22.5   1 118
+     1 30.1   1 187
+     2 22.0   1 238
+     2   NaN  NaN  NaN
+     1   NaN  NaN  NaN
+     2   NaN  NaN  NaN
+     3 21.7   1 206
+     2 28.7   2 204
+     1 29.6   1  NaN
+     1   NaN  NaN  NaN
+     3 27.2   2 284
+     2 26.3   2 199
+     1 35.3   1 218
+     3 25.5   2  NaN
+     1   NaN  NaN  NaN
+     1 33.2   1 229
+     1 27.5   1 131
+     3 24.9   1  NaN
+     2 27.4   1 186];
+     Xtable=array2table(X,VariableNames=namvar);
+    plots = struct;
+    plots.heatmap = true;
+    mdpattern(Xtable,'plots',plots);
+%}
+
+%{
+    % Personalized plots option: force heatmap without square cells.
+    close all
+    n = 1000;
+    p = 8;
+    X = randn(n,p);
+
+    rng(20)
+    for j = 1:p
+        rowsWithMis = randsample(n,round(0.30*n));
+        X(rowsWithMis,j) = NaN;
+    end
+
+    plots = struct;
+    plots.heatmap = true;
+    plots.squareCellsMaxRatio = 1;
+
+    mdpattern(X,'plots',plots);
+%}
+
 %% Beginning of code
 
 [n,p]=size(Y);
 
-plots=true;
+plots = true;
+
+plotsdef = struct;
+plotsdef.maxPatternsForBubbles = 80;
+plotsdef.maxYLabels = 50;
+plotsdef.maxXLabels = 25;
+
+% If false, use automatic behavior: balloon plot for small patterns and
+% heatmap for large patterns. If true, force the heatmap.
+plotsdef.heatmap = false;
+
+% Font sizes. Empty means automatic.
+plotsdef.fsAxisLabel = 14;
+plotsdef.fsTop = [];
+plotsdef.fsBottom = [];
+plotsdef.fsLeft = [];
+plotsdef.fsRight = [];
+plotsdef.squareCellsMaxRatio = 3;
+plotOptions=plotsdef;
+
 dispresults=false;
 Lc='';
 if nargin>1
@@ -241,8 +368,87 @@ if nargin>1
             end
         end
         Lc  = options.Lc;
-        plots=options.plots;
         dispresults=options.dispresults;
+
+
+        plots = options.plots;
+
+        if isstruct(plots)
+
+            plotsStruct = plots;
+            plots = true;
+
+            % Check supplied plot fields
+            plotFields = fieldnames(plotsStruct);
+            validPlotFields = fieldnames(plotsdef);
+
+            for i = 1:numel(plotFields)
+                if ~any(strcmp(plotFields{i},validPlotFields))
+                    error('FSDA:mdpattern:WrongInputOpt', ...
+                        'Field %s is not a valid field of option plots.',plotFields{i});
+                end
+            end
+
+            % Merge user plot options with defaults
+            plotOptions = plotsdef;
+            for i = 1:numel(plotFields)
+                plotOptions.(plotFields{i}) = plotsStruct.(plotFields{i});
+            end
+
+            % checks for struct fields:
+            if plotOptions.maxYLabels < 1 || plotOptions.maxXLabels < 1
+                error('FSDA:mdpattern:WrongInputOpt', ...
+                    'Fields maxYLabels and maxXLabels must be positive integers.');
+            end
+
+            if plotOptions.maxPatternsForBubbles < 1
+                error('FSDA:mdpattern:WrongInputOpt', ...
+                    'Field maxPatternsForBubbles must be a positive integer.');
+            end
+
+        elseif islogical(plots) || isnumeric(plots)
+
+            if ~isscalar(plots) || ~(plots == 0 || plots == 1)
+                error('FSDA:mdpattern:WrongInputOpt', ...
+                    'Option plots must be true, false, 0, 1, or a structure.');
+            end
+
+            plots = logical(plots);
+            plotOptions = plotsdef;
+
+        else
+
+            error('FSDA:mdpattern:WrongInputOpt', ...
+                'Option plots must be logical, numeric 0/1, or a structure.');
+
+        end
+
+
+        if ~isscalar(plotOptions.heatmap) || ...
+                ~(islogical(plotOptions.heatmap) || isnumeric(plotOptions.heatmap)) || ...
+                ~(plotOptions.heatmap == 0 || plotOptions.heatmap == 1)
+            error('FSDA:mdpattern:WrongInputOpt', ...
+                'Field heatmap must be true, false, 0, or 1.');
+        end
+        plotOptions.heatmap = logical(plotOptions.heatmap);
+
+
+        fontFields = {'fsAxisLabel','fsTop','fsBottom','fsLeft','fsRight'};
+        for ii = 1:numel(fontFields)
+            f = fontFields{ii};
+            if ~isempty(plotOptions.(f)) && ...
+                    (~isscalar(plotOptions.(f)) || plotOptions.(f) <= 0)
+                error('FSDA:mdpattern:WrongInputOpt', ...
+                    'Field %s must be empty or a positive scalar.',f);
+            end
+        end
+
+        if ~isscalar(plotOptions.squareCellsMaxRatio) || ...
+                plotOptions.squareCellsMaxRatio <= 0
+            error('FSDA:mdpattern:WrongInputOpt', ...
+                'Field squareCellsMaxRatio must be a positive scalar.');
+        end
+
     end
 end
 
@@ -341,58 +547,195 @@ if dispresults==true
     disp('Columns outInf and outSup contain the number of units which are')
     disp('above x0.75+1.5*IQR or below x0.25-1.5*IQR, where IQR is the interquartile range')
 end
-if plots==true
-    fs=14;
-    Ysel=Yfin(1:end-1,2:end-1);
-    balloonplot(~Ysel);
-    map = [ 0 0 0.3 ; % Personalized color map of blues
-        0 0 0.4 ;
-        0 0 0.5 ;
-        0 0 0.6 ;
-        0 0 0.8 ;
-        0 0 1.0];
-    colormap(map);
-    colorbar('off');
-    bubblesize([2 30]);
-    set(gcf,'Name','Missing data pattern figure');
-    h=gca;
-    h.YTickLabel=flip(string(Yfin(1:end-1,1)));
-    h.XTickLabel=string(Yfin(end,2:end-1));
-    h.FontSize=fs;
-    xlabel("Number of missing values for each variable");
-    ylabel("Number of rows with a particular pattern");
-    ax1=gca;
 
-    ax2 = axes('Position', get(ax1, 'Position'),'Color', 'none','XTick',[],'YTick',[]);
-    set(ax2, 'XAxisLocation', 'top','YAxisLocation','Right');
-    % set the same Limits and Ticks on ax2 as on ax1;
-    if verLessThan('matlab','9.11')
-        set(ax2, 'XLim', get(ax1, 'XLim'),'YLim', get(ax1, 'YLim'));
+
+if plots == true
+
+    Ysel = Yfin(1:end-1,2:end-1);
+    nPatterns = size(Ysel,1);
+    p = size(Ysel,2);
+
+
+    fsAxisLabel = plotOptions.fsAxisLabel;
+
+    if isempty(plotOptions.fsTop)
+        fsTop = max(7,min(14,round(180/p)));
     else
-        set(ax2, 'XLim', get(ax1, 'XLim'),'YLim', get(ax1, 'YLim'),'TickDir','none');
+        fsTop = plotOptions.fsTop;
     end
-    set(ax2, 'XTick', get(ax1, 'XTick'), 'YTick', get(ax1, 'YTick'),'FontSize',fs);
-    OppositeYTickLabels = string(flip(Yfin(1:end-1,end)));
 
-    % Set the x-tick and y-tick  labels for the second axes
-    set(ax2 , 'TickLength' ,[0 0] , 'XMinorTick', 'off', ...
-        'XTickLabel', YsorcolsVarNames,...
-        'YTickLabel',OppositeYTickLabels);
+    if isempty(plotOptions.fsBottom)
+        fsBottom = max(7,min(14,round(180/p)));
+    else
+        fsBottom = plotOptions.fsBottom;
+    end
 
-    % yyaxis right
-    ylabel(ax2,'Number of variables with missing values')
+    if isempty(plotOptions.fsLeft)
+        fsLeft = max(5,min(14,round(700/nPatterns)));
+    else
+        fsLeft = plotOptions.fsLeft;
+    end
 
-    linkaxes; % this is to link the limits of the top and bottom axses
+    if isempty(plotOptions.fsRight)
+        fsRight = max(5,min(14,round(700/nPatterns)));
+    else
+        fsRight = plotOptions.fsRight;
+    end
 
-    % Plot explanation
+    maxYLabels = plotOptions.maxYLabels;
+    maxXLabels = plotOptions.maxXLabels;
+    maxPatternsForBubbles = plotOptions.maxPatternsForBubbles;
+
+
+
+    ystep = max(1,ceil(nPatterns/maxYLabels));
+    yt = 1:ystep:nPatterns;
+
+    xstep = max(1,ceil(p/maxXLabels));
+    xt = 1:xstep:p;
+
+    isHeatmap = plotOptions.heatmap == true || nPatterns > maxPatternsForBubbles;
+    useSquareCells = isHeatmap && nPatterns/p <= plotOptions.squareCellsMaxRatio;
+
+    if isHeatmap
+
+        if useSquareCells
+            fig = gcf;
+            fig.Position(3) = max(700,80*p);
+            fig.Position(4) = max(500,80*nPatterns);
+        end
+
+
+        % Heatmap: 1 = missing, 0 = observed
+        Z = double(Ysel);
+
+        imagesc(Z);
+
+        % 0 = observed, 1 = missing
+        colormap(gca,[0 0.4470 0.7410
+            0.8500 0.3250 0.0980]);
+
+        clim([0 1]);
+        ax1 = gca;
+        set(ax1,'YDir','normal');
+
+        if useSquareCells
+            axis image
+            ax1.DataAspectRatio = [1 1 1];
+        else
+            axis normal
+        end
+
+
+        % Exact limits around the cells
+        xlim([0.5 p+0.5]);
+        ylim([0.5 nPatterns+0.5]);
+
+        % Cell grid
+        if nPatterns <= 100
+            hold on
+            for i = 0.5:1:nPatterns+0.5
+                line([0.5 p+0.5],[i i],'Color',[0 0 0],'LineWidth',0.25);
+            end
+            for j = 0.5:1:p+0.5
+                line([j j],[0.5 nPatterns+0.5],'Color',[0 0 0],'LineWidth',0.25);
+            end
+            hold off
+        end
+    else
+
+        balloonplot(~Ysel);
+
+        map = [0 0 0.3
+            0 0 0.4
+            0 0 0.5
+            0 0 0.6
+            0 0 0.8
+            0 0 1.0];
+
+        colormap(map);
+        colorbar('off');
+
+        if nPatterns > 8
+            maxBubble = max(4,30 - 0.7*nPatterns);
+            bubblesize([1 maxBubble]);
+        else
+            bubblesize([2 30]);
+        end
+
+    end
+
+    set(gcf,'Name','Missing data pattern figure');
+
+    ax1 = gca;
+    ax1.XTick = xt;
+    ax1.XTickLabel = string(Yfin(end,xt+1));
+    ax1.YTick = yt;
+    ax1.YTickLabel = string(Yfin(nPatterns-yt+1,1));
+
+    ax1.XAxis.FontSize = fsBottom;
+    ax1.YAxis.FontSize = fsLeft;
+
+    xlabel(ax1,"Number of missing values for each variable", ...
+        'FontSize',fsAxisLabel);
+
+    ylabel(ax1,"Number of rows with a particular pattern", ...
+        'FontSize',fsAxisLabel);
+
+    ax2 = axes('Position',get(ax1,'Position'), ...
+        'Color','none', ...
+        'XAxisLocation','top', ...
+        'YAxisLocation','right', ...
+        'XLim',get(ax1,'XLim'), ...
+        'YLim',get(ax1,'YLim'), ...
+        'XTick',xt, ...
+        'YTick',yt, ...
+        'TickLength',[0 0], ...
+        'XMinorTick','off');
+
+    % Important for heatmap with square cells
+
+    if useSquareCells
+        set(ax2,'DataAspectRatio',get(ax1,'DataAspectRatio'));
+        set(ax2,'PlotBoxAspectRatio',get(ax1,'PlotBoxAspectRatio'));
+        axis(ax2,'image');
+        ax2.XLim = ax1.XLim;
+        ax2.YLim = ax1.YLim;
+    end
+
+    ax2.XTick = xt;
+    ax2.YTick = yt;
+    ax2.XTickLabel = YsorcolsVarNames(xt);
+    ax2.YTickLabel = string(Yfin(nPatterns-yt+1,end));
+
+    ax2.XAxis.FontSize = fsTop;
+    ax2.YAxis.FontSize = fsRight;
+
+    if nPatterns > 2*plotOptions.maxYLabels
+        ax2.YTickLabel = [];
+    end
+
+    if p > 10
+        ax2.XTickLabelRotation = 45;
+    end
+
+    ylabel(ax2,'Number of variables with missing values', ...
+        'FontSize',fsAxisLabel);
+
+    if ~isHeatmap
+        linkaxes([ax1 ax2]);
+    end
+
     disp('Detailed explanation of the "Missing data pattern figure"')
     disp('Top axis contains the names of the variables.')
-    disp('Big circle means missing value; smaller filled dot represents non missing value.')
-    disp('Left axis shows the number of observations for each pattern')
-    disp(['For example number ' Mispat11 ' shows that the associated pattern is repeated ' Mispat11 ' times.'])
+    if isHeatmap
+        disp('In the heatmap, red cells mean missing values and blue cells mean non-missing values.')
+    else
+        disp('Big circle means missing value; smaller filled dot represents non-missing value.')
+    end
+    disp('Left axis shows the number of observations for each pattern.')
     disp('The sum of the numbers on the left axis is n, the total number of rows.')
-    disp('Right axis counts the variables with missing values and')
-    disp('it is equal to the number of big circles in the corresponding row.')
+    disp('Right axis counts the variables with missing values.')
     disp('The number of missing values for each variable is shown on the bottom axis.')
 
 end
