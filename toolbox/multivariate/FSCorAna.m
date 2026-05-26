@@ -47,11 +47,13 @@ function out = FSCorAna(N,varargin)
 %                 Data Types - double
 %
 %   conflev :  simultaneous confidence interval to declare units as
-%              outliers. Scalar inside (0, 1).
+%              outliers. Scalar inside (0, 1) or vector with two elements.
 %              The default value of conflev is 0.99, that is a 99 per
-%              cent simultaneous confidence level.
-%              Confidence level are based on simulated contingency
-%              tables. This input argument is ignored if optional input
+%              cent simultaneous confidence level and 1 per cent and 50 per
+%              cent confidence envelopes are shown. Confidence level are
+%              based on simulated contingency
+%              tables. if conflev is a vector than the envelopes inside conflev are shown on the screen.
+%              Note that This input argument is ignored if optional input
 %              argument mmdEnv is not missing
 %              Example - 'conflev',0.99
 %              Data Types - numeric
@@ -108,19 +110,34 @@ function out = FSCorAna(N,varargin)
 %                   Example - 'label',{'UK' ...  'IT'}
 %                   Data Types - cell or characters or vector of strings
 %
-% plots :    It specify whether it is necessary to produce the plots of the
-%               monitoring of minMD.
-%                 Scalar. If plots=1, a plot of the monitoring of minMD among
-%               the units not belonging to the subset is produced on the
-%               screen with 1 per cent, 50 per cent and 99 per cent confidence bands
-%               else (default), all plots are suppressed.
+% plots :      Plot options. Scalar logical or structure.
+%               If plots=1, both the monitoring plot of minimum (weighted)
+%               Mahalanobis distance and the monitoring plot of inertia are
+%               produced. If plots=0 (default), all plots are suppressed.
+%               If plots is a structure, the following fields can be used:
+%                   plots.minMD      = true/false, to show or suppress the
+%                                      monitoring plot of minimum MD.
+%                   plots.inertia    = true/false, to show or suppress the
+%                                      monitoring plot of inertia.
+%                   plots.addRowNames= true/false, to add row names or row
+%                                      numbers to the monitoring plot of
+%                                      minimum MD.
+%                   plots.addBonfLine = true/false, to add or suppress the
+%                                      horizontal Bonferroni reference line
+%                                      in the monitoring plot of minimum MD.
+%               If plots is a structure and a field is omitted, the default
+%               value of that field is used.
 %               Example - 'plots',0
-%               Data Types - double
+%               Example - 'plots',struct('minMD',true,'inertia',false,...
+%                         'addRowNames',false,'addBonfLine',true)
+%               Data Types - double | logical | struct
 %
 % addRowNames  : add or not names of the rows to the plot of min MD.
 %               Boolean. If this option is equal to true (default) the
 %               first time a row is included in the subset is shown in the
 %               plot with the corresponding row label or row number.
+%               This option is retained for backward compatibility. If
+%               plots is a structure, use plots.addRowNames instead.
 %               Example - 'addRowNames',false
 %               Data Types - logical
 %
@@ -336,10 +353,12 @@ funzchi2=@(x,Ntheovec) sum(((x-Ntheovec).^2)./Ntheovec);
 
 resc=true;
 addRowNames=true;
+addBonfLine=false;
+
 if nargin > 1
 
     options=struct('init',init1,'plots',plots,'msg',msg,'bsb',[],'conflev',conflev, ...
-        'StoreSim',StoreSim,'mmdEnv',mmdEnv,'label',label,'resc',resc,'addRowNames',addRowNames);
+        'StoreSim',StoreSim,'mmdEnv',mmdEnv,'label',label,'resc',resc);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -367,11 +386,56 @@ if nargin > 1
     mmdEnv=options.mmdEnv;
     label=options.label;
     resc=options.resc;
-    addRowNames=options.addRowNames;
 end
 
-if conflev<=0 || conflev>=1
-    error('FSDA:FSCorAna:WrongConfInt','Confidence level must be a number in the interval (0 1)');
+% Parse plotting options. The scalar form is retained for backward
+% compatibility. The structure form enables independent control of the two
+% monitoring plots and stores addRowNames inside plots.
+
+if isstruct(plots)
+
+    % Validate supplied field names inside structure plots.
+    validPlotsFields = {'minMD','mmd','inertia','ine', ...
+        'addRowNames','addBonfLine'};
+    suppliedFields = fieldnames(plots);
+    invalidFields = setdiff(suppliedFields, validPlotsFields);
+
+    if ~isempty(invalidFields)
+        error('FSDA:FSCorAna:WrongPlotsOption', ...
+            ['Invalid field(s) in option plots: ' ...
+            strjoin(invalidFields', ', ')]);
+    end
+
+    if isfield(plots,'minMD')
+        plotMinMD=plots.minMD;
+    elseif isfield(plots,'mmd')
+        plotMinMD=plots.mmd;
+    else
+        plotMinMD=true;
+    end
+
+    if isfield(plots,'inertia')
+        plotInertia=plots.inertia;
+    elseif isfield(plots,'ine')
+        plotInertia=plots.ine;
+    else
+        plotInertia=true;
+    end
+
+    if isfield(plots,'addRowNames')
+        addRowNames=plots.addRowNames;
+    end
+
+    if isfield(plots,'addBonfLine')
+        addBonfLine=plots.addBonfLine;
+    end
+else
+    plotMinMD=plots==1;
+    plotInertia=plots==1;
+end
+
+if min(conflev)<=0 || max(conflev)>=1
+    error('FSDA:FSCorAna:WrongConfInt','Confidence level must contain numbers in the interval (0 1)');
 end
 
 if isempty(bsb)
@@ -556,7 +620,11 @@ out=struct;
 if isempty(mmdEnv)
     % Plot mmd with envelopes
     % quant=[0.01;0.5;conflev];
-    quant=[0.05;0.5;0.95;1-conflev;conflev];
+    if isscalar(conflev)
+        quant=[0.05;0.5;0.95; 0.01;conflev];
+    else
+        quant=[0.05;0.5;0.95; conflev(:)];
+    end
     % Compute theoretical envelops for minimum Mahalanobis distance based on all
     % the observations for the above quantiles.
     if msg==true
@@ -567,6 +635,9 @@ if isempty(mmdEnv)
         out.mmdEnv=gmin;
         out.ineEnv=gine;
     end
+
+
+
 
 else
     % Use precalculated empirical confidence envelope of min Mahalanobis
@@ -602,10 +673,6 @@ else
     out.outliers=unique(Un(sign:end,2));
 end
 
-% The above was
-% fac=sqrt(r)*n;
-% mmd(:,2)=(mmd(:,2)./fac).^2;
-
 
 good=setdiff(1:I,out.outliers);
 Ngood=N(good,:);
@@ -617,82 +684,63 @@ md=mahalCorAna(ProfileRows,loc);
 
 
 % Plot minimum Mahalanobis distance with 1%, 50% and conflev envelopes
-if plots==1
+% and monitoring of inertia.
+if plotMinMD == true
     figure;
 
     lwdreal=1.5;
     plot(mmd(:,1),mmd(:,2),'tag','data_mmd','LineWidth',lwdreal);
 
-    % include specified tag in the current plot
+    % Include specified tag in the current plot.
     set(gcf,'tag','pl_mmd');
     set(gcf,'Name', 'Monitoring of Minimum (weighted) Mahalanobis distance', 'NumberTitle', 'off');
 
     lwdenv=2;
-    % Superimpose 50% envelope
+    % Superimpose 50% envelope.
     line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','-.','Color','k','tag','env');
 
-    show5and95=true;
-    if show5and95==true
-        % Superimpose 5% and 95% envelope
-        line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','-.','Color',[0.2 0.8 0.4],'tag','env');
-        line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','-.','Color',[0.2 0.8 0.4],'tag','env');
-        ylabel('')
-        if conflev==0.9
-         yline(max(gmin(:,end)))
+    % Superimpose 1% and conflev% envelopes.
+    line(gmin(:,1),gmin(:,5),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    line(gmin(:,1),gmin(:,end),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+
+    sel=~ismissing(Un(:,end));
+    if addRowNames == true
+        if isempty(label)
+            text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
+        else
+            text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
         end
-
-          if addRowNames == true
-               sel=~ismissing(Un(:,end));
-             if isempty(label)
-                text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
-            else
-                text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
-            end
-
-        end
-    else
-
-        % Superimpose 1% and conflev% envelope
-        line(gmin(:,1),gmin(:,5),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        line(gmin(:,1),gmin(:,end),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        yline(max(gmin(:,end)))
-        sel=~ismissing(Un(:,end));
-
-        if addRowNames == true
-            if isempty(label)
-                text(mmd(sel,1),mmd(sel,end)*1.05,num2str(Un(sel,end)));
-            else
-                text(mmd(sel,1),mmd(sel,end)*1.05,label(Un(sel,end)));
-            end
-
-        end
-
     end
 
     xlabel('Subset size m');
     ylabel('Monitoring of minimum (weighted) Mahalanobis distance');
 
+    if addBonfLine == true
+        yline(max(gmin(:,end)))
+    end
+
     drawnow
+end
+
+if plotInertia == true
     figure;
 
-    % Plot of total inertia
+    % Plot of total inertia.
     plot(ine(:,1),ine(:,2:end),'tag','data_in');
 
-    % include specified tag in the current plot
+    % Include specified tag in the current plot.
     set(gcf,'tag','pl_in');
     set(gcf,'Name', 'Monitoring of inertia', 'NumberTitle', 'off');
 
     lwdenv=2;
-    % Superimpose 50% envelope
+    % Superimpose 50% envelope.
     line(gine(:,1),gine(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
-    % Superimpose alpha1% and alpha2% envelope
+    % Superimpose alpha1% and alpha2% envelopes.
     line(gine(:,1),gine(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
     line(gine(:,1),gine(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
 
     xlabel('Subset size m');
     ylabel('Monitoring of inertia');
-
-
 end
 
 % Store also 1 per cent, 50 per cent  and conflev end per cent envelopes
