@@ -1185,10 +1185,10 @@ switch lower(topPanelMode)
         end
 
     case 'boll'
-        % Tutto il codice Bollinger confinato qui
+        
         [bollMid, bollUpper, bollLower] = bollinger(TT.Close, 'WindowSize', bollWindow, 'NumStd', bollNumStd);
 
-        % Prepara i vettori
+        
         xvec  = x(:);
         yvec  = TT.Close(:);
         bbMid = bollMid(:);
@@ -1216,7 +1216,7 @@ switch lower(topPanelMode)
         plot(ax1, xvec, bbUp,  '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
         plot(ax1, xvec, bbLow, '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
 
-        % Fill band (Ombra) - mantenendo il controllo essenziale dei NaN
+        % Fill band (with NaN check)
         validBands = ~isnan(bbUp) & ~isnan(bbLow);
         xFill = xvec(validBands);
         yUpFill = bbUp(validBands);
@@ -1240,7 +1240,7 @@ switch lower(topPanelMode)
         error('FSDA:getYahoo:WngInp','Unknown topPanelMode.');
 end
 
-% Gestione Limiti Asse Y Top Panel nativa
+% ylim implemetation
 if strcmp(lower(topPanelMode), 'boll')
     ylim(ax1, 'padded');
 else
