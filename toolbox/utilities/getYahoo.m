@@ -1185,95 +1185,66 @@ switch lower(topPanelMode)
         end
 
     case 'boll'
-        
-        
+        % Tutto il codice Bollinger confinato qui
         [bollMid, bollUpper, bollLower] = bollinger(TT.Close, 'WindowSize', bollWindow, 'NumStd', bollNumStd);
 
-        % start 
-        closePrices = TT.Close;
+        % Prepara i vettori
         xvec  = x(:);
-        yvec  = closePrices(:);
+        yvec  = TT.Close(:);
+        bbMid = bollMid(:);
+        bbUp  = bollUpper(:);
+        bbLow = bollLower(:);
 
-        valid = ~isnan(xvec) & ~isnan(yvec);
-        if nnz(valid) >= 2
-            xvec = xvec(valid);
-            yvec = yvec(valid);
-            
-            % Align method
-            if numel(bollMid) ~= numel(closePrices)
-                bollMid = interp1(find(~isnan(closePrices)), bollMid(~isnan(closePrices)), 1:numel(closePrices), 'linear', NaN)';
-                bollUpper = interp1(find(~isnan(closePrices)), bollUpper(~isnan(closePrices)), 1:numel(closePrices), 'linear', NaN)';
-                bollLower = interp1(find(~isnan(closePrices)), bollLower(~isnan(closePrices)), 1:numel(closePrices), 'linear', NaN)';
-            end
-            
-            bbMid = bollMid(valid);
-            bbUp  = bollUpper(valid);
-            bbLow = bollLower(valid);
+        % Set axis
+        hold(ax1,'on'); grid(ax1,'on');
 
-            % Set axis
-            hold(ax1,'on'); grid(ax1,'on');
+        % Up/Down colored segments: successive differences
+        d = [0; diff(yvec)];
+        upIdx = d >= 0;
+        dnIdx = d < 0;
 
-            % Up/Down colored segments: successive differences
-            d = [0; diff(yvec)];
-            upIdx = d >= 0;
-            dnIdx = d < 0;
-
-            % Sequential up/down color plotting
-            if any(upIdx)
-                plot(ax1, xvec(upIdx), yvec(upIdx), '-', 'Color', [0 0.6 0], 'LineWidth', 1.4);
-            end
-            if any(dnIdx)
-                plot(ax1, xvec(dnIdx), yvec(dnIdx), '-', 'Color', [0.85 0.15 0.15], 'LineWidth', 1.4);
-            end
-
-            % SMA and bands
-            plot(ax1, xvec, bbMid, '-','Color',[0 0.4470 0.7410],'LineWidth',1);
-            plot(ax1, xvec, bbUp,  '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
-            plot(ax1, xvec, bbLow, '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
-
-            % Fill band
-            % for shadows
-            validBands = ~isnan(bbUp) & ~isnan(bbLow);
-            xFill = xvec(validBands);
-            yUpFill = bbUp(validBands);
-            yLowFill = bbLow(validBands);
-
-            % 2.shape area
-            xpatch = [xFill; flipud(xFill)];
-            ypatch = [yUpFill; flipud(yLowFill)];
-
-            % 3. area shadowing with polygon logic
-            hPatch = patch('XData', xpatch, 'YData', ypatch, ...
-                           'FaceColor', [0.6 0.6 0.6], ... 
-                           'FaceAlpha', 0.15, ... 
-                           'EdgeColor', 'none', ...
-                           'Parent', ax1);
-            
-            uistack(hPatch, 'bottom'); %shadow patch
-           
-            % Marker on the last point
-            plot(ax1, xvec(end), yvec(end), 'o', 'MarkerFaceColor',[0 0.4470 0.7410], 'MarkerEdgeColor','k');
-
-            % Set limits custom
-            xr = [xvec(1) xvec(end)];
-            yrLow = min(bbLow(~isnan(bbLow))); yrHigh = max(bbUp(~isnan(bbUp)));
-            if isempty(yrLow) || isempty(yrHigh) || isnan(yrLow) || isnan(yrHigh)
-                yrLow = min(yvec); yrHigh = max(yvec);
-            end
-            pad = 0.06 * (yrHigh - yrLow);
-            ylim(ax1, [yrLow - pad, yrHigh + pad]);
-            xlim(ax1, xr);
-
-            % Legend
-            legend(ax1, {'Range','Price up','Price Down','SMA','Area'}, 'Location', 'best');
+        % Sequential up/down color plotting
+        if any(upIdx)
+            plot(ax1, xvec(upIdx), yvec(upIdx), '-', 'Color', [0 0.6 0], 'LineWidth', 1.4);
         end
+        if any(dnIdx)
+            plot(ax1, xvec(dnIdx), yvec(dnIdx), '-', 'Color', [0.85 0.15 0.15], 'LineWidth', 1.4);
+        end
+
+        % SMA and bands
+        plot(ax1, xvec, bbMid, '-','Color',[0 0.4470 0.7410],'LineWidth',1);
+        plot(ax1, xvec, bbUp,  '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
+        plot(ax1, xvec, bbLow, '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
+
+        % Fill band (Ombra) - mantenendo il controllo essenziale dei NaN
+        validBands = ~isnan(bbUp) & ~isnan(bbLow);
+        xFill = xvec(validBands);
+        yUpFill = bbUp(validBands);
+        yLowFill = bbLow(validBands);
+
+        xpatch = [xFill; flipud(xFill)];
+        ypatch = [yUpFill; flipud(yLowFill)];
+
+        hPatch = patch('XData', xpatch, 'YData', ypatch, ...
+                       'FaceColor',[0.6 0.6 0.6], 'FaceAlpha', 0.15, ...
+                       'EdgeColor','none', 'Parent', ax1);
+        uistack(hPatch, 'bottom');
+
+        % Marker on the last point
+        plot(ax1, xvec(end), yvec(end), 'o', 'MarkerFaceColor',[0 0.4470 0.7410], 'MarkerEdgeColor','k');
+
+        % Legend
+        legend(ax1, {'Price up','Price down','SMA','Upper','Lower'}, 'Location', 'best');
 
     otherwise
         error('FSDA:getYahoo:WngInp','Unknown topPanelMode.');
 end
 
-if ~strcmp(lower(topPanelMode), 'boll')
-    ylim(ax1,'tight');
+% Gestione Limiti Asse Y Top Panel nativa
+if strcmp(lower(topPanelMode), 'boll')
+    ylim(ax1, 'padded');
+else
+    ylim(ax1, 'tight');
 end
 
 %% Middle panel: volume
@@ -1469,10 +1440,7 @@ else
     ax2.XTickLabel = [];
 end
 
-% Gestione limiti asse X per top panel
-if ~strcmp(lower(topPanelMode), 'boll')
-    xlim(ax1,'tight');
-end
+xlim(ax1, 'tight');
 
 %% Last labels
 switch lower(bottomPanelMode)
