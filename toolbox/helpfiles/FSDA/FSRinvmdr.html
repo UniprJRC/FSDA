@@ -37,7 +37,8 @@ Summary of the exceedances
            1          99         999        9999       99999
            1           3           3           3           2
 
-</pre><a href='http://rosa.unipr.it/fsda/FSRinvmdr.html#Example_2'><img vspace="5" hspace="5" src="images\FSRinvmdr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRinvmdr_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRinvmdr_03.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Resuperimposing envelopes.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/FSRinvmdr.html#Example_2'><img vspace="5" hspace="5" src="images\FSRinvmdr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRinvmdr_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRinvmdr_03.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Resuperimposing envelopes.</li></span></a></span></h3><div class="collapse"><p>
      Comparison of resuperimposing envelopes using mdr coordinates and normal
      coordinates again on wool data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
 y=wool(:,4);
@@ -111,7 +112,7 @@ outFS=FSReda(y,X,outLXS.bs);
 outFS1=FSRinvmdr(outFS,p);
 % Minimum deletion residuals in normal coordinates (Figure 4.30 of the
 % forthcoming book ARCPT 2024)
-mdrplot(outFS1,'ncoord',true,'quant',[0.1 0.5 0.99 0.999 0.9999]);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_mdrInput" class="clearfix"> </div> <h3 id="input_argument_mdrInput" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>mdrInput</code> &#8212; Object containing values of minimum deletion residuals. </span>  </a><span class="example_desc">Matrix or struct.</span></span></h3> <div class="collapse"> <p><p>If mdrInput is a matrix, it has 2 or 3 columns and contains: 
+mdrplot(outFS1,'ncoord',true,'quant',[0.1 0.5 0.99 0.999 0.9999]);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_mdrInput" class="clearfix"> </div> <h3 id="input_argument_mdrInput" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>mdrInput</code> &#8212; Object containing values of minimum deletion residuals. </span>  </a><span class="example_desc">Matrix or struct.</span></span></h3> <div class="collapse"> <p><p>If mdrInput is a matrix, it has 2 or 3 columns and contains:</p> <p> 
           1st col = fwd search index;</p> <p> 
           2nd col = minimum deletion residual (possibly stored with sign).</p> <p> 
           If mdrInput is a struct, it must contain
@@ -131,9 +132,9 @@ mdrplot(outFS1,'ncoord',true,'quant',[0.1 0.5 0.99 0.999 0.9999]);</pre></div><
                confidence level of mdr in each step is shown on the
                screen.</p> <p>
                Remark. Three horizontal lines associated respectively with
-               values 0.01 0.5 and 0.99 are added to the plot.</p><p>
+               values 0.01 0.5 and 0.99 are added to the plot.</p> <p>
                If plots is a structure, the user can specify the following
-               options:
+               options:</p><p>
                    conflev = vector containing horizontal lines associated
                        with confidence levels
                    conflevlab = scalar if it is equal 1 labels associated with
@@ -152,7 +153,7 @@ mdrplot(outFS1,'ncoord',true,'quant',[0.1 0.5 0.99 0.999 0.9999]);</pre></div><
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_mdrOutput" class="clearfix"></div><h3 id="output_argument_mdrOutput" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mdrOutput</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>Object containing values of mdr in normal coordinates.</p> <p>
                Matrix or structure depending on the input mdrInput.</p> <p>
                If input mdrInput is a matrix, mdrOutput is a matrix with
-               the same rows of input and 3 columns:
+               the same rows of input and 3 columns:</p> <p>
                1st col = fwd search index.</p> <p>
                2nd col = confidence level of each value of mdr.</p> <p>
                3rd col = mdr in normal coordinates (50 conf

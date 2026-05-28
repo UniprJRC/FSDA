@@ -20,7 +20,8 @@ Best solutions using MIXMIX
     {[3]}    {[ 4]}    {7&times;1 double}    {[       1]}    {'true'    }
     {[4]}    {[32]}    {8&times;1 double}    {0&times;0 double}    {'spurious'}
 
-</pre><a href='http://rosa.unipr.it/fsda/tclustICsol.html#Example_1'><img vspace="5" hspace="5" src="images\tclustICsol_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustICsol_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustICsol.html#Example_1'><img vspace="5" hspace="5" src="images\tclustICsol_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustICsol_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.</li></span></a></span></h3><div class="collapse"><p>
      Data generation<div class="programlisting"><div class="codeinput"><pre class="matlab-code">restrfact=5;
 rng('default') % Reinitialize the random number generator to its startup configuration
 rng(20000);
@@ -57,7 +58,8 @@ Best 3 solutions using CLACLA
     {[3]}    {[ 8]}    {7&times;1 double}    {[       1]}    {'true'    }
     {[4]}    {[64]}    {2&times;1 double}    {0&times;1 double}    {'spurious'}
 
-</pre><a href='http://rosa.unipr.it/fsda/tclustICsol.html#Example_2'><img vspace="5" hspace="5" src="images\tclustICsol_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustICsol_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_06.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_07.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_09.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example with input option kk.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustICsol.html#Example_2'><img vspace="5" hspace="5" src="images\tclustICsol_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustICsol_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_06.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_07.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_09.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example with input option kk.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1,'whichIC','CLACLA','kk',[2 3 4 6])
 [outCLACLCA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between the use of Rand index and FM index.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1,'whichIC','CLACLA');
@@ -70,26 +72,26 @@ disp(outCLACLCA.CLACLAbsari)</pre></div></div></p></div></div></div></div>
                 the following fields.</p> <p>
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p><p>matrix of size length(kk)-by-length(cc) or of
                 size length(kk)-by-length(alpha)
-                   containinig the values of the penalized
+                   containing the values of the penalized
                    classification likelihood (CLA).</p> <p>
                    This field is linked with out.IDXCLA.</p></p></td></tr><tr valign="top"><td><code>IDXCLA</code></td><td><p><p>cell of size length(kk)-by-length(cc) or of
                    size length(kk)-by-length(alpha).</p> <p>
                    Each element of the cell is a vector of length n
-                   containinig the assignment of each unit using the
+                   containing the assignment of each unit using the
                    classification model.</p> <p>
                 Remark: fields CLACLA and IDXCLA are linked together.</p><p>
                    CLACLA and IDXCLA are compulsory just if optional input
                    argument 'whichIC' is 'CLACLA' or 'ALL'.</p></p></td></tr><tr valign="top"><td><code>MIXMIX</code></td><td><p>matrix of size length(kk)-by-length(cc) or of
                    size length(kk)-by-length(alpha)
-                   containinig the value of the penalized
+                   containing the value of the penalized
                    mixture likelihood (BIC). This field is linked with
                    out.IDXMIX.</p></td></tr><tr valign="top"><td><code>MIXCLA</code></td><td><p>matrix of size length(kk)-times length(cc) or of
                    size length(kk)-by-length(alpha)
-                   containinig the value of the ICL. This field is linked
+                   containing the value of the ICL. This field is linked
                    with out.IDXMIX.</p></td></tr><tr valign="top"><td><code>IDXMIX</code></td><td><p><p>cell of size length(kk)-times length(cc) or of
                    size length(kk)-by-length(alpha).</p> <p>
                    Each element of the cell is a vector of length n
-                   containinig the assignment of each unit using the
+                   containing the assignment of each unit using the
                    mixture model.</p> <p>
                 Remark 1: fields MIXMIX and IDXMIX are linked together.</p> <p>
                    MIXMIX and IDXMIX are compulsory just if optional input
@@ -104,7 +106,7 @@ disp(outCLACLCA.CLACLAbsari)</pre></div></div></p></div></div></div></div>
                     been computed. This input option is present only if IC
                     comes from tclustIC.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>original n-times-1 regression response on which the IC
                    (Information criterion). This input option is present
-                   only if IC comes from tclustregIC.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>original n-times-p matrix of explanatory varaibles
+                   only if IC comes from tclustregIC.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>original n-times-p matrix of explanatory variables
                    on which the IC (Information criterion). This input
                    option is present only if IC comes from tclustregIC.</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'NumberOfBestSolutions',5
 </code>,<code> 'ThreshRandIndex',0.8
@@ -123,7 +125,7 @@ disp(outCLACLCA.CLACLAbsari)</pre></div></div></p></div></div></div></div>
                        value of ThreshRandIndex is 0.7
                        </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ThreshRandIndex',0.8
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;character which specifies the information criterion to use
-               to extract best solutions.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Possible values for whichIC are:
+               to extract best solutions.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Possible values for whichIC are:</p> <p>
                'CLACLA' = in this case best solutions are referred to
                    the classification likelihood.</p> <p>
                'MIXMIX' = in this case in this case best solutions are
@@ -141,7 +143,7 @@ disp(outCLACLCA.CLACLAbsari)</pre></div></div></p></div></div></div></div>
                whether to plot on the screen the best solutions which have
                been found.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_SpuriousSolutions" class="clearfix"></div><h3 id="input_argument_namevalue_SpuriousSolutions" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>SpuriousSolutions</code> &#8212;Include or nor spurious solutions in the plot.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>As default spurios solutions are shown in the plot.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_SpuriousSolutions" class="clearfix"></div><h3 id="input_argument_namevalue_SpuriousSolutions" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>SpuriousSolutions</code> &#8212;Include or nor spurious solutions in the plot.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>As default spurious solutions are shown in the plot.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SpuriousSolutions',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Message on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls
                whether to display or not messages about code execution.</p> <p>
@@ -187,7 +189,7 @@ disp(outCLACLCA.CLACLAbsari)</pre></div></div></p></div></div></div></div>
                  This output is also present in table format (see below)
                Remark: field ARIMIX is present only if 'whichIC'
                is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'</p></p></td></tr><tr valign="top"><td><code>ARIMIXtable</code></td><td><p><p>Table with the same meaning of matrix ARIMIX above.</p> <p>
-                 A Matlab table has also been been given to faciliate the
+                 A Matlab table has also been been given to facilitate the
                  interpretation of the rows and columns. The Rownames of
                  this table correspond to the values of k which are used
                  and the colNames of this table contain in a dynamic way
@@ -216,8 +218,8 @@ disp(outCLACLCA.CLACLAbsari)</pre></div></div></p></div></div></div></div>
                  the the ARI indexes  between cc(3) and cc(2) given k.</p><p>
                  This output is also present in table format (see below)
                Remark: field ARICLA is present only if 'whichIC'
-               is 'ALL' or 'whichIC' is 'CLACLA'</p></p></td></tr><tr valign="top"><td><code>ARICLAtable</code></td><td><p><p>Table with the same meaning of matrixo CLACLAari above.</p> <p>
-                 A Matlab table has also been been given to faciliate the
+               is 'ALL' or 'whichIC' is 'CLACLA'</p></p></td></tr><tr valign="top"><td><code>ARICLAtable</code></td><td><p><p>Table with the same meaning of matrix CLACLAari above.</p> <p>
+                 A Matlab table has also been been given to facilitate the
                  interpretation of the rows and columns. The Rownames of
                  this table correspond to the values of k which are used
                  and the colNames of this table contain in a dynamic way
@@ -241,7 +243,7 @@ disp(outCLACLCA.CLACLAbsari)</pre></div></div></p></div></div></div></div>
                    is equal to input optional argument kk if kk had been
                    specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>cc</code></td><td><p>vector containing the values of c (values of the
                    restriction factor) which have been considered. This
-                   vector is equal to input argument Ic.cc.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>vector containing the values of $\alpha$ (values of the
+                   vector is equal to input argument IC.cc.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>vector containing the values of $\alpha$ (values of the
                    trimming level) which have been considered. This
                    vector is equal to input argument IC.alpha.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
  Finding the Number of Groups in Model-Based Clustering via Constrained

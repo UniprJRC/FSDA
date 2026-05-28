@@ -16,10 +16,10 @@
  without replacement. Each red ball has the weight $\omega_{1}$, and
  each white ball has the weight $\omega_{2}$; the probability ratio of red over
  white balls is then given by $odds = \omega_{1} / \omega_{2}$. Note that
- the odds are fixed once and for all during the drawings.</p><p>
+ the odds are fixed once and for all during the drawings.</p> <p>
  
  If the balls are taken one by one, the probability (say $p_1$) that the
- first ball picked is red is equal to the weight fraction of red balls:
+ first ball picked is red is equal to the weight fraction of red balls:</p><p>
  </p>\[
  p_1= \frac{K w_1}{K w_1 + (M-K) w_2} 
  \]<p> 
@@ -82,11 +82,12 @@ disp(odds);</pre></div></div><pre class="codeoutput">We have an urn with 3 grou
 In total the urn contains 70 balls.
 What are the weights (odds) of getting the 3 balls?
 given the above values of mu
-    2.0000
-    2.5850
-    1.0000
+          2.00
+          2.58
+          1.00
 
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Find the odds given mu, m and n.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Find the odds given mu, m and n.</li></span></a></span></h3><div class="collapse"><p>
      Vector of mu values<div class="programlisting"><div class="codeinput"><pre class="matlab-code">mu=[8 46 29 17]; 
 % Number of balls in the urn for each color
 m=[30,60,50,20];
@@ -125,11 +126,12 @@ In total the urn contains 70 balls.
 What are the weight of getting the 3 balls (odds)?
 given the above values of mu
 Warning: 0 values in  odds 
-    1.2398
-         0
-    1.0000
+          1.24
+             0
+          1.00
 
-</pre></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example where one odd is much bigger.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">m=[200,300,200,10];
+</pre>
+            </p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example where one odd is much bigger.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">m=[200,300,200,10];
 % The vector of mean values is 
 mu=[6, 1, 5, 9];
 % The extracted sample n
@@ -147,15 +149,16 @@ oddsW=mWNChygeodds(mu,m,n);
 rn="odds"+(1:length(mu));
 cn=["Fisher" "Wallenius"];
 oddsT=array2table([oddsF, oddsW],"RowNames",rn,"VariableNames",cn);
-disp(oddsT);</pre></div></div><pre class="codeoutput">             Fisher     Wallenius
-             _______    _________
+disp(oddsT);</pre></div></div><pre class="codeoutput">             Fisher    Wallenius
+             ______    _________
 
-    odds1          1           1 
-    odds2    0.10814     0.10962 
-    odds3    0.82906      0.8312 
-    odds4        291      75.596 
+    odds1      1.00       1.00  
+    odds2      0.11       0.11  
+    odds3      0.83       0.83  
+    odds4    291.00      75.60  
 
-</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_mu" class="clearfix"> </div> <h3 id="input_argument_mu" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>mu</code> &#8212; Measured mean for each color. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Length of vector mu is equal
+</pre>
+            </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_mu" class="clearfix"> </div> <h3 id="input_argument_mu" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>mu</code> &#8212; Measured mean for each color. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Length of vector mu is equal
                   to the number of colors.</p> <p> 
                   The sum of the elements of mu must be equal to n.</p><p>
                   </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_m" class="clearfix"> </div> <h3 id="input_argument_m" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>m</code> &#8212; Initial number of balls of each color in the urn. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>The length of vector M is the number of colors

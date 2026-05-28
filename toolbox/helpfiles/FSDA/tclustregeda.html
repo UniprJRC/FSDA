@@ -41,7 +41,8 @@ plots=struct;
 plots.name={'gscatter'};
 out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
 100%[===================================================]
-</pre><a href='http://rosa.unipr.it/fsda/tclustregeda.html#Example_2'><img vspace="5" hspace="5" src="images\tclustregeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustregeda: example with multiple explanatory variables, with yXplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X  = load('X.txt');
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustregeda.html#Example_2'><img vspace="5" hspace="5" src="images\tclustregeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustregeda_02.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustregeda: example with multiple explanatory variables, with yXplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X  = load('X.txt');
 y = X(:,end);
 rng(100)
 X = [randn(length(y),4) X(:,1:end-1)];
@@ -67,11 +68,11 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
              matrices of the explanatory variables. </span>  </a><span class="example_desc">Scalar or vector with two
              elements.</span></span></h3> <div class="collapse"> <p><p>If restrfact is a scalar it controls the
              differences among group scatters of the residuals. The value
-             1 is the strongest restriction. If restrfactor is a vector
+             1 is the strongest restriction. If restrfact is a vector
              with two elements the first element controls the differences
              among group scatters of the residuals and the second the
              differences among covariance matrices of the explanatory
-             variables. Note that restrfactor(2) is used just if
+             variables. Note that restrfact(2) is used just if
              input option $alphaX=1$, that is if constrained weighted
              model for X is assumed.</p> <p>
             </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alphaLik" class="clearfix"> </div> <h3 id="input_argument_alphaLik" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alphaLik</code> &#8212; trimming level to monitor. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Vector which specifies the
@@ -126,7 +127,7 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;mixture modelling or crisp assignment.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option mixt specifies whether mixture modelling or crisp
                assignment approach to model based clustering must be used.</p> <p>
                In the case of mixture modelling parameter mixt also
-               controls which is the criterior to find the untrimmed units
+               controls which is the criterion to find the untrimmed units
                in each step of the maximization
                If mixt &gt;=1 mixture modelling is assumed else crisp
                assignment.</p><p>
@@ -209,7 +210,7 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                  once.</p> <p>
                  The third plot shows ("PostProb") is a 4 panel parallel
                  coordinate plots which shows the monitoring of posterior
-                 probabilities. Four versions of parallel coordinateds
+                 probabilities. Four versions of parallel coordinates
                  plots are proposed. The first two use function
                  parallelcoords and refer respectively to all the units
                  (left panel) or the units which were trimmed or changed
@@ -218,7 +219,7 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                  parallelplot.</p> <p>
                  The fourth plot ("PostProb") is 4 panel parallel
                  coordinate plots which shows the monitoring of posterior
-                 probabilities. Four versions of parallel coordinateds
+                 probabilities. Four versions of parallel coordinates
                  plots are proposed. The first two use function
                  parallelcoords and refer respectively to all the units
                  (left panel) or the units which were trimmed or changed
@@ -248,8 +249,8 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                    component that is linear combination of the variables
                    in X.</p> <p>
 
-               Case 2: plots option used as struct.</p><p>
-                 If plots is a structure it may contain the following fields:
+               Case 2: plots option used as struct.</p> <p>
+                 If plots is a structure it may contain the following fields:</p><p>
          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>name</code></td><td><p><p>cell array of strings which enables to
                    specify which plot to display.</p> <p>
                    plots.name={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...</p> <p>
@@ -264,7 +265,7 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                    for each group ('Beta') and the size of the groups (Siz).</p><p>
                    Note that the trajectories of beta coefficients are
                    standardized in order to have all of them on a
-                   comparable scale.</p></p></td></tr><tr valign="top"><td><code>alphasel</code></td><td><p><p>numeric vector which speciies for which
+                   comparable scale.</p></p></td></tr><tr valign="top"><td><code>alphasel</code></td><td><p><p>numeric vector which specifies for which
                    values of alpha it is possible to see the
                    classification (in plot gscatter) or the
                    superimposition of regression lines (in plot
@@ -330,7 +331,7 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
 
     <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>IDX</code></td><td><p><p>n-by-length(alphaLik) matrix containing assignment of each unit to
                        each of the k groups. Cluster names are integer
-                       numbers from 1 to k:
+                       numbers from 1 to k:</p> <p>
                        -1 indicates first level trimmed observations;</p> <p>
                        -2 indicates second level trimmed observations.</p><p>
                        observations. First column refers of out.IDX refers
@@ -351,12 +352,12 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                        we apply Tallis correction factor.</p></p></td></tr><tr valign="top"><td><code>Nopt</code></td><td><p>matrix of size k-by-length(alphaLik) containing in column
                        j, with j=1, 2, ...,  length(alphaLik), the
                        sizes of the of the k groups.</p></td></tr><tr valign="top"><td><code>Vopt</code></td><td><p>column vector of length(alphaLik) containing the
-                      value of the target likelihod for each value of alphaLik.</p></td></tr><tr valign="top"><td><code>Amon</code></td><td><p><p>Amon stands for alphaLik monitoring. Matrix of size
+                      value of the target likelihood for each value of alphaLik.</p></td></tr><tr valign="top"><td><code>Amon</code></td><td><p><p>Amon stands for alphaLik monitoring. Matrix of size
                       (length(alphaLik)-1)-by-7 which contains for two
                        consecutive values of alpha the monitoring of six
                        quantities (change in classification, change in
-                       betas, sigmas, correted sigmas and if cwm also
-                       centroid and coariance in the X space.</p> <p>
+                       betas, sigmas, corrected sigmas and if cwm also
+                       centroid and covariance in the X space.</p> <p>
                        1st col = value of alphaLik.</p> <p>
                        2nd col = ARI index.</p> <p>
                        3rd col = relative squared Euclidean distance between
@@ -392,8 +393,8 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                        ...</p><p>
                        last col = allocation of the n1 units in step alphaLik(end)</p></p></td></tr><tr valign="top"><td><code>Postprob</code></td><td><p>Posterior probabilities. 3D array of size
                        n-by-k-length(alphaLik) containing the monitoring
-                       of posterior probabilities.</p></td></tr><tr valign="top"><td><code>units</code></td><td><p><p>structure containing the following fields:
-                       units.UnitsTrmOrChgCla=units trimmed at least onece
+                       of posterior probabilities.</p></td></tr><tr valign="top"><td><code>units</code></td><td><p><p>structure containing the following fields:</p> <p>
+                       units.UnitsTrmOrChgCla=units trimmed at least once
                            or changed classification at least once.</p> <p>
                        units.UnitsChgCla=units which changed
                            classification at least once (i.e. from group 1

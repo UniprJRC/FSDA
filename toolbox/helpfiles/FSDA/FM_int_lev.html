@@ -51,12 +51,12 @@ L_int= FM_int_lev(x,t,T,'N',10000,'M',70);</pre></div></div></p></div></div>
  
 For any positive integer $n$, let $\mathcal{S}_{n}:=\{ 0=t_{0}\leq \cdots
  \leq t_{n}=T  \}$ be the observation times. Moreover, let $\delta_l(x):=
- x(t_{l+1})-x(t_l)$ be the increments of $x$.</p><p> 
+ x(t_{l+1})-x(t_l)$ be the increments of $x$.</p> <p> 
  The Fourier estimator of the integrated leverage on $[0,T]$ is
  given by 
  $$T c_0(B_{{n},N})={T^2\over {2M+1}} \sum_{|k|\leq M} c_{k}(d\sigma_{n,N})c_{-k}(dx_{n}),$$
  
- where:
+ where:</p><p>
  $$c_k(d\sigma_{n,N})= i k \frac{2\pi}{T} c_k(\sigma_{n,N}), \quad   c_k(\sigma_{{n},N})={T\over {2N+1}} \sum_{|s|\leq N} c_{s}(dx_{n})c_{k-s}(dx_{n}),$$
  $$c_k(dx_{n})= {1\over {T}} \sum_{l=0}^{n-1} e^{-{\rm i}\frac{2\pi}{T}kt_l}\delta_{l}(x).$$
  

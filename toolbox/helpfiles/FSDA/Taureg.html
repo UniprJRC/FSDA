@@ -21,8 +21,9 @@ ycont(1:5)=ycont(1:5)+6;
 RANDN to use legacy random number generators.  This syntax is not recommended.
 See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old
 syntax. 
-Total estimated time to complete tau estimate:  1.60 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/Taureg.html#Example_2'><img vspace="5" hspace="5" src="images\Taureg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Taureg with optimal rho function.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+Total estimated time to complete tau estimate:  1.97 seconds 
+</pre>
+            <a href='http://rosa.unipr.it/fsda/Taureg.html#Example_2'><img vspace="5" hspace="5" src="images\Taureg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Taureg with optimal rho function.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 p=3;
 randn('state', 123456);
 X=randn(n,p);
@@ -69,9 +70,10 @@ title('Tukey''s bisquare rho function')
 [out]=Taureg(ycont,X,'plots',0,'rhofunc','mdpd');
 h2=subplot(3,1,2);
 resindexplot(out,'h',h2)
-title('Power divergence rho function')</pre></div></div><pre class="codeoutput">Total estimated time to complete tau estimate:  1.12 seconds 
-Total estimated time to complete tau estimate:  0.39 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/Taureg.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\Taureg_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that contains
+title('Power divergence rho function')</pre></div></div><pre class="codeoutput">Total estimated time to complete tau estimate:  0.43 seconds 
+Total estimated time to complete tau estimate:  0.34 seconds 
+</pre>
+            <a href='http://rosa.unipr.it/fsda/Taureg.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\Taureg_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that contains
        the response variable. y can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors') of
        dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and columns
        represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
@@ -104,13 +106,13 @@ Total estimated time to complete tau estimate:  0.39 seconds
                Note that given bdp nominal
                efficiency is automatically determined.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',0.4
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar defining nominal efficiency (i.e. a number between
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar defining nominal efficiency (i.e. a number between
                  0.5 and 0.99). The default value is 0.95
-                 Asymptotic nominal efficiency is:
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',0.99
+                 Asymptotic nominal efficiency is:</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofunc" class="clearfix"></div><h3 id="input_argument_namevalue_rhofunc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofunc</code> &#8212;rho function.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String that specifies the rho
                function, which must be used to weight the residuals.</p> <p>
-               Possible values are:
+               Possible values are:</p> <p>
                'bisquare'
                'optimal'
                'hyperbolic'
@@ -198,9 +200,9 @@ Total estimated time to complete tau estimate:  0.39 seconds
                 structure out.</p> <p>
                Default is 0, i.e. no saving is done.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'yxsave',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields:
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>A structure containing the following fields:</p> <p>
 
-    <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta</code></td><td><p>vector containing the tau estimator of regression
+    </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta</code></td><td><p>vector containing the tau estimator of regression
                        coefficients.</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scalar containing the estimate of the tau scale
                        (sigma). This is the value of the objective function
                         tau_scale = s_scale * average (\rho_2 (scaled residuals)).</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>p x 1 vector containing the units forming best subset

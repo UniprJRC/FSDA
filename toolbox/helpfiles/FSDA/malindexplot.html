@@ -45,11 +45,11 @@ databrush.RemoveLabels='on'; % Remove labels after selection
 databrush.RemoveTool    = 'off'; % Do not remove yellow tool after selection
 databrush.RemoveFlagged = 'off'; % Do not remove filled red color for selected points after selection
 databrush.labeladd = '1'; % Write number of seleceted units in the scatter plot matrix
-malindexplot(RAW,v,'databrush',databrush)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_md" class="clearfix"> </div> <h3 id="input_argument_md" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>md</code> &#8212; Mahalanobis distances. </span>  </a><span class="example_desc">Vector or structure.</span></span></h3> <div class="collapse"> <p>Vector of Mahalanobis
+malindexplot(RAW,v,'databrush',databrush)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_md" class="clearfix"> </div> <h3 id="input_argument_md" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>md</code> &#8212; Mahalanobis distances. </span>  </a><span class="example_desc">Vector or structure.</span></span></h3> <div class="collapse"> <p><p>Vector of Mahalanobis
         distances (in squared units) or a structure containing fields md
         and Y. In this second case md is a structure with the following
-        fields:
-<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>md</code></td><td><p>contains the Mahalanobis distances in squared units (this field is compulsory);</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>contains the original data matrix whose Mahalanobis
+        fields:</p> <p>
+</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>md</code></td><td><p>contains the Mahalanobis distances in squared units (this field is compulsory);</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>contains the original data matrix whose Mahalanobis
         distances have been computed (this field is compulsory is option
            databrush is used).</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>this field is not compulsory. In the case of
            md.class='mcdCorAna' simulated envelopes based on the null
@@ -183,7 +183,7 @@ malindexplot(RAW,v,'databrush',databrush)</pre></div></div></p></div></div>
                    If databrush is a structure,
                    it is possible to use all optional arguments of
                    function <a href="selectdataFS.html">selectdataFS</a> and the following optional
-                   arguments:
+                   arguments:</p> <p>
                    databrush.persist = persistent brushing.</p> <p>
                      Persist is an empty value or a scalar
                      containing the strings 'on' or 'off'.</p> <p>

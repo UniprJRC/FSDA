@@ -6,7 +6,7 @@
  analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
  Yeo-Johnson transformation to allow two values of the transformations
  parameter: λN for negative observations and λP for non-negative ones.</p> <p>
- ScoreYJall computes:
+ ScoreYJall computes:</p> <p>
  1) the global t test associated with the constructed variable for
  λ=λP=λN.</p> <p>
  2) the t test associated with the constructed variable computed assuming
@@ -46,7 +46,8 @@ disp(Scotable)
       0.5     -1.6988    -1.4896    -1.7737    1.5805
         1     -8.4803    -7.4925    -9.3782    43.761
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example in which positive and negative observation require different lambda.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2000)
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example in which positive and negative observation require different lambda.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2000)
 n=100;
 y=randn(n,1);
 % Transform in a different way positive and negative values.
@@ -84,7 +85,8 @@ disp(abs(Scotable{4,3}-Scotable{4,4})),
 Difference between the test for positive and the test for negative
     3.2608
 
-</pre></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that
+</pre>
+            </p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that
                contains the response variable.</p> <p> 
                It can be either a row or a column vector.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
                variables (also called 'regressors')
@@ -125,7 +127,7 @@ Difference between the test for positive and the test for negative
                means the solver is not used, and the likelihood is evaluated at the
                grid of points with steps 0.01.</p> <p>
                If usefmin is a structure, it may contain the following
-               fields:
+               fields:</p><p>
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MaxIter</code></td><td><p>Maximum number of iterations (default is 1000).</p></td></tr><tr valign="top"><td><code>TolX</code></td><td><p>Termination tolerance for the parameters
                    (default is 1e-7).</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the solver. Possible values are
                    'fminsearch' (default) and 'fminunc'. fminunc needs the
@@ -139,9 +141,9 @@ Difference between the test for positive and the test for negative
                  unchanged. In other words, the additional column of ones
                  for the intercept is not added. As default nocheck=false.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Containing the following fields:
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
 
-<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>score tests. Matrix.</p> <p>
+</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>score tests. Matrix.</p> <p>
                             Matrix of size length(la)-by-5 that
                             contains the value of the score test for each
                             value of lambda specified in optional input

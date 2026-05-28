@@ -9,18 +9,18 @@
    HP ratio: $\lambda=\sigma^2_\epsilon/\sigma^2_u$,
              the greater $\lambda$, the smoother is the trend.</p> <p>
 
-   $D$ is the Second-difference matrix of size (T-2 x T): 
+   $D$ is the Second-difference matrix of size (T-2 x T):</p> <p> 
        each row has [1 -2 1].</p> <p>
    $S$ is the selection matrix of size nbsb x T. Note that $SS'=I_{nbsb}$.</p> <p>  
 
    Conditioning on observed subset y_bsb = S y,
    using W = S'S (diag 0/1).</p> <p>
 
- Posterior mean:
+ Posterior mean:</p> <p>
    mhat = $\hat m= E(m|y_{bsb})=argmin_m ||S(y-m)||^2 + \lambda ||D m||^2$
-         = $(W + \lambda D'D) \ (W y)$.</p><p>
+         = $(W + \lambda D'D) \ (W y)$.</p> <p>
 
-   Posterior cov:
+   Posterior cov:</p><p>
   $Cov(m|y_{bsb}) = \sigma^2_\epsilon  (W + \lambda D'D)^{-1}$</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="hpfilterFS.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=hpfilterFS(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>Call to hpfilterFS with all default arguments.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="hpfilterFS.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=hpfilterFS(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Call to hpfilterFS with optional argument bsb.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Call to hpfilterFS with all default arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Mdl = arima('Constant',0,'D',1,'MA',{0.5},'Variance',100);
 n = 60;
 y = simulate(Mdl,n);      
@@ -76,7 +76,7 @@ assert(maxdiff&lt;1e-10,"output of hpfilterFS different from hpfilter")</pre></d
            series (see optional input parameter s).</p> <p>
            If lambda is empty (default) the value of lambda
            which is used depends on the Ravn–Uhlig scaling rule (adjust by
-           the 4th power of the observation frequency ratio):
+           the 4th power of the observation frequency ratio):</p><p>
            </p>\[
                \lambda(s)=1600(s/4​)^4
            \]<p>
@@ -97,9 +97,9 @@ assert(maxdiff&lt;1e-10,"output of hpfilterFS different from hpfilter")</pre></d
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 's',52;
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double or empty.</code></p></div></div><div class="expandableContent"><div id="inputarg_sigma2_eps" class="clearfix"></div><h3 id="input_argument_namevalue_sigma2_eps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>sigma2_eps</code> &#8212;method to use to estimate residual variance.</span></a><span class="example_desc">string of             scalar numeric value.</span></span></h3><div class="collapse">	<p><p>If sigma2_eps is a string possible
              values are: "MLaug" "MAPjef" "MAPig" "dfREML".</p> <p>
-             Given:
+             Given:</p> <p>
              $RSS=||y_{bsb} - S \hat m||^2$.</p> <p>
-             and Qhat:
+             and Qhat:</p> <p>
              $\hat Q =RSS + \lambda ||D \hat m||^2$;</p> <p>
              $K = n_{bsb} + (n-2)$;</p> <p>
              $MLaug= ML (augmented) = \hat Q /K$.</p> <p>
@@ -112,7 +112,7 @@ assert(maxdiff&lt;1e-10,"output of hpfilterFS different from hpfilter")</pre></d
                $dfREML=RSS / (nbsb - df(lambda))$.</p> <p>
                $df(lambda)=trace(H)
                = trace(S A^{-1} S') = trace(A^{-1} S' S) = trace(A^{-1} W)$.</p> <p>
-               The estimate of the $trace(A^{-1} W)$ is via Hutchinson:
+               The estimate of the $trace(A^{-1} W)$ is via Hutchinson:</p> <p>
                $tr(M) ≈ (1/niter) \sum_{i=1}^{niter} z'_i M z_i$.</p> <p>
                $z_i$ are Rademacher random. $niter$ is fixed to 50.</p> <p>
                variables, equal to +1 or −1 with equal probability.</p> <p>
@@ -156,8 +156,8 @@ assert(maxdiff&lt;1e-10,"output of hpfilterFS different from hpfilter")</pre></d
                      belonging to bsb (input option predint is "nobsb"),
                      or for all the units (input option predint is "all")</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Hutchinson, M. F. (1989), A stochastic estimator of the trace of the influence
  matrix for laplacian smoothing splines, "Communications in Statistics
- Simulation and Computation", Vol. 18, pp. 1059–1076.</p></div><div><p>Hodrick, R. J., & Prescott, E. C. (1997), Postwar U.S. Business Cycles:
+ Simulation and Computation", Vol. 18, pp. 1059–1076.</p></div><div><p><p>Hodrick, R. J., & Prescott, E. C. (1997), Postwar U.S. Business Cycles:</p> <p>
  An Empirical Investigation, "Journal of Money, Credit and Banking",
- Vol. 29, pp. 1–16.</p></div><div><p>Ravn, M. O., & Uhlig, H. (2002), On Adjusting the Hodrick–Prescott Filter
+ Vol. 29, pp. 1–16.</p></p></div><div><p>Ravn, M. O., & Uhlig, H. (2002), On Adjusting the Hodrick–Prescott Filter
  for the Frequency of Observations, "Review of Economics and Statistics",
  Vol. 84, pp. 371–376.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'econ/hpfilter.html'))" itemprop="url"><span itemprop="name"><code>hpfilter</code></span></a></span> | <span itemprop="seealso"><a href="LTSts.html" itemprop="url"><span itemprop="name"><code>LTSts</code></span></a></span> | <span itemprop="seealso"><a href="supsmu.html" itemprop="url"><span itemprop="name"><code>supsmu</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

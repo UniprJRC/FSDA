@@ -21,7 +21,8 @@ disp(out)</pre></div></div><pre class="codeoutput">       beta1: [3&times;1 dou
      sigma21: 1.0898
          res: [100&times;2 double]
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressB with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressB with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Run regressB and compute new estimate of beta using just the first 20
      observations and use a value of c equal to 1.2.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
 rng(100) % set seed for replicability
@@ -89,7 +90,8 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
       postodds: [5&times;1 double]
      modelprob: [5&times;1 double]
 
-</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+</pre>
+            </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n1, where n1 is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -122,7 +124,7 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                intercept is included in the model).</p> <p>
 
                The prior distribution of $\tau_0$ is a gamma distribution with
-               parameters $a_0$ and $b_0$, that is:
+               parameters $a_0$ and $b_0$, that is:</p><p>
 
                 </p>\[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
                        \qquad   E(\tau_0)= a_0/b_0               \]</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_tau0" class="clearfix"> </div> <h3 id="input_argument_tau0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>tau0</code> &#8212; Prior estimate of tau. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Prior estimate of $\tau=1/ \sigma^2 =a_0/b_0$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_n0" class="clearfix"> </div> <h3 id="input_argument_n0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n0</code> &#8212; Number of previous experiments. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Sometimes it helps
@@ -171,7 +173,7 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                to represent the amount of prior knowledge.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'c',1.2
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_stats" class="clearfix"></div><h3 id="input_argument_namevalue_stats" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>stats</code> &#8212;additional statistics.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If stats =1 the following additional statistics are
-               computed:
+               computed:</p> <p>
                1) Bayesian p-values.</p> <p>
                2) highest posterior density intervals (HPDI) for each value
                of input option conflev.</p> <p>
@@ -319,8 +321,8 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
      \begin{equation}\label{b1}
                         b_1 = 0.5 \left( \frac{n_0-p}{\tau_0} + (y-X \beta_1)'y +(\beta_0-\beta_1)'R\beta_0 \right)
      \end{equation}
-     and, analogously, the posterior distribution of $\sigma^2$ is $IG(a_1, b_1)$.</p><p>
-     The posterior estimates of $\tau$ and $\sigma^2$ are respectively:
+     and, analogously, the posterior distribution of $\sigma^2$ is $IG(a_1, b_1)$.</p> <p>
+     The posterior estimates of $\tau$ and $\sigma^2$ are respectively:</p><p>
      </p>\[
      \hat \tau_1 = a_1/b_1, \qquad    \hat \sigma^2_1 = b_1 /(a_1-1)
      \]

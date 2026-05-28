@@ -24,7 +24,7 @@
    apply an inverse Box-Cox transformation providing a vector of
    coefficients 'lambda'. The value 1 implies that no transformation is
    needed for the corresponding coordinate. It is also possible to add
-   outliers to an existing dataset by simply suppling as first argument
+   outliers to an existing dataset by simply supplying as first argument
    the matrix of existing data.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdataset.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_X"><code>X</code></a>=simdataset(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_Pi"><code>Pi</code></a>,<a class="intrnllnk" href="#inputarg_Mu"><code>Mu</code></a>,<a class="intrnllnk" href="#inputarg_S"><code> S</code></a>)</code></span>Example of mixture generation.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdataset.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_X"><code>X</code></a>=simdataset(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_Pi"><code>Pi</code></a>,<a class="intrnllnk" href="#inputarg_Mu"><code>Mu</code></a>,<a class="intrnllnk" href="#inputarg_S"><code>S</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Generate 4 groups in 2 dimensions.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdataset.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#outputarg_id"><code>id</code></a>]=simdataset(___)</code></span>Generate 4 groups in 2 dimensions and add outliers from uniform distribution.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of mixture generation.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">out = MixSim(4,2,'BarOmega',0.01);
 n=60;
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
@@ -92,7 +92,8 @@ or increase input option 'alpha'
 The value of alpha now is 0.001
 Outliers have been generated according to T5
 Warning: Output matrix X will have just 330 rows and not 3300 
-</pre><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\simdataset_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+</pre>
+            <a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\simdataset_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars='';
 noiseunits=struct;
@@ -232,11 +233,11 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                   order to generate these units the maximum number
                   of attempts is equal to 10000.</p> <p>
                 - If noiseunits is a structure it may contain the following
-                  fields:
+                  fields:</p> <p>
                   number = scalar, or vector of length f. The sum of the
                        elements of vector 'number' is equal to the total
                        number of outliers which are simulated.</p> <p>
-                  alpha = scalar or vector of legth f containing the
+                  alpha = scalar or vector of length f containing the
                        level(s) of simulated outliers. The default value
                        of alpha is 0.001.</p> <p>
                   maxiter = maximum number of trials to simulate outliers.</p> <p>
@@ -250,13 +251,13 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                          each variables are simulated in the range
                          interval(1) and interval(2).</p> <p>
                          If interval is a 2-by-v matrix outliers are
-                         simulated in:
+                         simulated in:</p> <p>
                          interval(1,1) interval (2,1) for variable 1
                          ...</p> <p>
                          interval(1,v) interval (2,v) for variable v
                   typeout = list of length f containing the type of
                        outliers which must be simulated. Possible values
-                       for typeout are:
+                       for typeout are:</p> <p>
                        * unif (or uniform), if the outliers must be
                          generated using the uniform distribution;</p> <p>
                        * norm (or normal), if the outliers must be
@@ -274,7 +275,7 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                          from a single coordinate (which will be the
                          min or max in that particular dimension or the
                          min or max specified in interval).</p> <p>
-                For example, the code:
+                For example, the code:</p> <p>
                    noiseunits=struct;</p><p>
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>[100 100];</p></td></tr><tr valign="top"><td><code>typeout</code></td><td><p>{'uniform' 'componentwise'};</p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>[-2 2];</p> <p>
                 adds 200 outliers, the first 100 generated using
@@ -288,19 +289,19 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                 - If noisevars is a scalar equal to r, then r new noise
                   variables are added to the matrix of simulated data
                   using the uniform distribution in the range [min(X)
-                  max(X)].</p><p>
+                  max(X)].</p> <p>
                 - If noisevars is a structure it may contain the following
-                  fields:
+                  fields:</p><p>
           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>a scalar or a vector of length f. The sum of
                        elements of vector 'number' is equal to the total
-                       number of noise variables to be addded.</p></td></tr><tr valign="top"><td><code>distribution</code></td><td><p><p>string or cell array of strings of length
+                       number of noise variables to be added.</p></td></tr><tr valign="top"><td><code>distribution</code></td><td><p><p>string or cell array of strings of length
                        f which specifies the distribution to be used to
                        simulate the noise variables.</p> <p>
                        If field distribution is not present then the
                        uniform distribution is used to simulate the noise
                        variables.</p> <p>
                        String 'distribution' can be one of the following
-                       values:
+                       values:</p> <p>
                        * uniform = uniform distribution
                        * normal  = normal distribution
                        * t or T followed by a number which controls the
@@ -308,7 +309,7 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                          generate the data according to a Student T with 6
                          degrees of freedom.</p><p>
                        * chisquare followed by a number which controls the
-                         degreess of freedom. For example, chisquare8
+                         degrees of freedom. For example, chisquare8
                          specifies to generate the data according to a Chi
                          square distribution with 8 degrees of freedom.</p></p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>string or vector of length 2 or matrix of size
                          2-by-f (where f is the number of noise variables)
@@ -321,10 +322,10 @@ title('4 groups with outliers from uniform')</pre></div></div><a href='http://r
                          If interval is empty (default), the noise variables
                          are simulated uniformly between the smallest and
                          the largest coordinates of mean vectors.</p> <p>
-                         If interval is 'minmax' the noise varaibles are
+                         If interval is 'minmax' the noise variables are
                          simulated uniformly between the smallest and the
                          largest coordinates of the simulated data matrix.</p> <p>
-                For example, the code:
+                For example, the code:</p> <p>
                    noisevars=struct;</p> <p>
                    noisevars.number=[3 2];</p> <p>
                    noisevars.distribution={'Chisquare5' 'T3'};</p> <p>

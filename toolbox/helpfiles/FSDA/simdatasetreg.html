@@ -6,7 +6,7 @@
    realization from a multinomial distribution with probabilities given by
    mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25,
    0.25, 0.25) function Nk1=mnrnd( n-k, Pi) is used to generate k integer
-   numbers (whose sum is n-k) from the multinominal distribution with
+   numbers (whose sum is n-k) from the multinomial distribution with
    parameters n-k and Pi. The size of the groups is given by Nk1+1. The
    first Nk1(1)+1  observations are generated using vector of regression
    coefficients Beta(:,1) and variance S(1), ..., and the X simulated as
@@ -57,7 +57,8 @@ ans =
 
   Use GET to show all properties
 
-</pre><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#Example_2'><img vspace="5" hspace="5" src="images\simdatasetreg_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 4 groups in 4 dimensions and add outliers from uniform distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all
+</pre>
+            <a href='http://rosa.unipr.it/fsda/simdatasetreg.html#Example_2'><img vspace="5" hspace="5" src="images\simdatasetreg_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 4 groups in 4 dimensions and add outliers from uniform distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all
 close all
 rng('default')
 rng(10000)
@@ -84,7 +85,8 @@ ans =
 
   Use GET to show all properties
 
-</pre><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#Example_3'><img vspace="5" hspace="5" src="images\simdatasetreg_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+</pre>
+            <a href='http://rosa.unipr.it/fsda/simdatasetreg.html#Example_3'><img vspace="5" hspace="5" src="images\simdatasetreg_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 k=4;
 p=2;  % p includes the intercept
 out=MixSimreg(k,p,'BarOmega',0.01);
@@ -103,7 +105,8 @@ or increase input option 'alpha'
 The value of alpha now is 0.001
 Outliers have been generated according to Chisquare5
 Warning: Output matrix X will have just 3148 rows and not 3300 
-</pre><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#Example_4'><img vspace="5" hspace="5" src="images\simdatasetreg_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+</pre>
+            <a href='http://rosa.unipr.it/fsda/simdatasetreg.html#Example_4'><img vspace="5" hspace="5" src="images\simdatasetreg_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 k=4;
 p=2;  % p includes the intercept
 out=MixSimreg(k,p,'BarOmega',0.01);
@@ -151,7 +154,8 @@ ans =
 
   Use GET to show all properties
 
-</pre><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\simdatasetreg_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+</pre>
+            <a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\simdatasetreg_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 k=4;
 p=2;  % p includes the intercept
 out=MixSimreg(k,p,'BarOmega',0.01);
@@ -177,7 +181,8 @@ ans =
 
   Use GET to show all properties
 
-</pre><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\simdatasetreg_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chisquare and T distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+</pre>
+            <a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\simdatasetreg_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chisquare and T distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 k=4;
 p=2;  % p includes the intercept
 out=MixSimreg(k,p,'BarOmega',0.01);
@@ -315,8 +320,8 @@ set(gcf,'Name','X Beta distributed');
 title('User-defined distribution for X');</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_11'><img vspace="5" hspace="5" src="images\simdatasetreg_14.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size  of the dataset. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Pi" class="clearfix"> </div> <h3 id="input_argument_Pi" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Pi</code> &#8212; vector of length k defining mixing proportions. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>$\sum_{j=1}^k \pi=1$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Beta" class="clearfix"> </div> <h3 id="input_argument_Beta" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Beta</code> &#8212; p-by-k matrix containing (in the columns) regression
                coefficients for the k groups. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_S" class="clearfix"> </div> <h3 id="input_argument_S" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>S</code> &#8212; vector of length k containing the variances of the k
                regression hyperplanes. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Xdistrib" class="clearfix"> </div> <h3 id="input_argument_Xdistrib" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Xdistrib</code> &#8212; information about how to generate
-               each explanatory variable inside each group. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure which contains the following fields:
-           <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p>scalar equal to 1 if intercept is
+               each explanatory variable inside each group. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>Structure which contains the following fields:</p> <p>
+           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p>scalar equal to 1 if intercept is
                        present. The default value of Xdistrib.intercept is 1.</p></td></tr><tr valign="top"><td><code>type</code></td><td><p>type of distribution. Possible values for
                        are 'normal', 'halfnormal', 'uniform', 'User'.</p></td></tr><tr valign="top"><td><code>mu</code></td><td><p>matrix of size (p-1)-by-k if
                        (Xdistrib.intercept=1) or p-by-k if
@@ -328,13 +333,13 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                        (Xdistrib.intercept=0) containing the parameters
                        sigma for each explanatory variable and each group.</p> <p>
                        The default value of Xdistrib.sigma is ones(p-1,k).</p><p> 
-                       Notethat  Xdistrib.sigma is used just if
+                       Note that  Xdistrib.sigma is used just if
                        Xdistrib.type is 'normal' or 'halfnormal'.</p></p></td></tr><tr valign="top"><td><code>a</code></td><td><p><p>matrix of size (p-1)-by-k if
                        (Xdistrib.intercept=1) or p-by-k if
                        (Xdistrib.intercept=0) containing the parameters a
                        for each explanatory variable and each group. The
                        default value of Xdistrib.a is zeros(p-1, k).</p> <p>
-                       Notethat  Xdistrib.a is used just if Xdistrib.type
+                       Note that  Xdistrib.a is used just if Xdistrib.type
                        is 'uniform', that is if we have U(a, b).</p></p></td></tr><tr valign="top"><td><code>b</code></td><td><p><p>matrix of size (p-1)-by-k if
                        (Xdistrib.intercept=1) or p-by-k if
                        (Xdistrib.intercept=0) containing the parameters b
@@ -345,7 +350,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                        intercept is present) or p (if intercept is not
                        present) columns containing the values of the
                        explanatory variables for the k groups.</p> <p>
-                       Notethat  Xdistrib.X is used just if Xdistrib.type
+                       Note that  Xdistrib.X is used just if Xdistrib.type
                        is 'User'.</p></p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'noiseunits', 10
 </code>,<code> 'noisevars', 5
 </code>,<code> 'lambda',2;
@@ -362,11 +367,11 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                   order to generate these units the maximum number
                   of attempts is equal to 10000.</p> <p>
                 - If noiseunits is a structure it may contain the following
-                  fields:
+                  fields:</p> <p>
                   number = scalar, or vector of length f. The sum of the
                        elements of vector 'number' is equal to the total
                        number of outliers which are simulated.</p> <p>
-                  alpha = scalar or vector of legth f containing the
+                  alpha = scalar or vector of length f containing the
                        level(s) of simulated outliers. The default value
                        of alpha is 0.001.</p> <p>
                   maxiter = maximum number of trials to simulate outliers.</p> <p>
@@ -384,7 +389,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                          value of y which lies inside interval(1,2) and
                          interval(2,2).</p> <p>
                          * If interval is a 2-by-(p+1) matrix outliers are
-                         simulated in:
+                         simulated in:</p> <p>
                          interval(1,1) interval (2,1) for expl variable 1
                          ...</p> <p>
                          interval(1,p) interval (2,p) for expl variable p
@@ -394,7 +399,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                          min(y) max (y).</p> <p>
                   typeout = list of length f containing the type of
                        outliers which must be simulated. Possible values
-                       for typeout are:
+                       for typeout are:</p> <p>
                        * unif (or uniform), if the outliers must be
                          generated using the uniform distribution;</p> <p>
                        * norm (or normal), if the outliers must be
@@ -415,7 +420,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                          from the single coordinate of y (which will be the
                          min or max of y or to the
                          min or max specified in interval).</p> <p>
-                For example, the code:
+                For example, the code:</p> <p>
                    noiseunits=struct;</p><p>
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>[100 100];</p></td></tr><tr valign="top"><td><code>typeout</code></td><td><p>{'uniform' 'componentwise'};</p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>[-2 2];</p> <p>
                 adds 200 outliers, the first 100 generated using
@@ -427,21 +432,21 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                   (default) no noise variable is added to the matrix of
                   simulated data.</p> <p>
                 - If noisevars is a scalar equal to r, then r new noise
-                  explnatory variables are added to the matrix of
+                  explanatory variables are added to the matrix of
                   simulated data using the uniform distribution in the
-                  range [min(X) max(X)].</p><p>
+                  range [min(X) max(X)].</p> <p>
                 - If noisevars is a structure it may contain the following
-                  fields:
+                  fields:</p><p>
           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>a scalar or a vector of length f. The sum of
                        elements of vector 'number' is equal to the total
-                       number of noise variables to be addded.</p></td></tr><tr valign="top"><td><code>distribution</code></td><td><p><p>string or cell array of strings of length
+                       number of noise variables to be added.</p></td></tr><tr valign="top"><td><code>distribution</code></td><td><p><p>string or cell array of strings of length
                        f which specifies the distribution to be used to
                        simulate the noise variables.</p> <p>
                        If field distribution is not present then the
                        uniform distribution is used to simulate the noise
                        variables.</p> <p>
                        String 'distribution' can be one of the following
-                       values:
+                       values:</p> <p>
                        * uniform = uniform distribution
                        * normal  = normal distribution
                        * t or T followed by a number which controls the
@@ -449,7 +454,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                          generate the data according to a Student T with 6
                          degrees of freedom.</p><p>
                        * chisquare followed by a number which controls the
-                         degreess of freedom. For example, chisquare8
+                         degrees of freedom. For example, chisquare8
                          specifies to generate the data according to a Chi
                          square distribution with 8 degrees of freedom.</p></p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>string or vector of length 2 or matrix of size
                          2-by-f (where f is the number of noise variables)
@@ -463,11 +468,11 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                          variables are simulated uniformly between the
                          smallest and the largest coordinates of the
                          simulated data matrix X.</p> <p>
-                For example, the code:
+                For example, the code:</p> <p>
                    noisevars=struct;</p> <p>
                    noisevars.number=[3 2];</p> <p>
                    noisevars.distribution={'Chisquare5' 'T3'};</p><p>
-                adds 5 noise explaantory variables, the first 3 generated using
+                adds 5 noise explanatory variables, the first 3 generated using
                 the Chi2 with 5 degrees of freedom and the last two
                 using the Student t with 3 degrees of freedom. Noise
                 variables are generated in the interval min(X) max(X).</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'noisevars', 5
@@ -479,7 +484,7 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_y" class="clearfix"></div><h3 id="output_argument_y" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>y</code> &#8212;Response variable.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p>
                 Vector of dimension (n+nout)-by-1  containing the values
                 of the responses for the k groups.</p></div></div><div class="expandableContent"><div id="outputarg_X" class="clearfix"></div><h3 id="output_argument_X" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>X</code> &#8212;Explanatory variables.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p> Matrix of size 
-                (n + nout)-by-(p + nnoise) containinng the values of the
+                (n + nout)-by-(p + nnoise) containing the values of the
                 explanatory variables for the k groups. Noise coordinates
                 are provided in the last nnoise columns.</p></div></div><div class="expandableContent"><div id="outputarg_id" class="clearfix"></div><h3 id="output_argument_id" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>id</code> &#8212;classification vector.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p> Classification vector of
                 length n + nout; 0 represents an outlier.</p> <p>

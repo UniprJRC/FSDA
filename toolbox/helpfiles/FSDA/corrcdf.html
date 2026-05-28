@@ -10,7 +10,8 @@ disp(['Pr(r&lt;' xs '|rho=' rhos, ', n=' ns ')'])
 disp(prob);</pre></div></div><pre class="codeoutput">Pr(r&lt;0|rho=0.1, n=12)
     0.3727
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> x is not scalar.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=-1:0.01:1;
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> x is not scalar.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=-1:0.01:1;
 rho=0;
 n=12;
 rhos=num2str(rho);
@@ -57,7 +58,8 @@ disp(nameRowsT)</pre></div></div><pre class="codeoutput">                      
     Pr(r&lt;0.3|rho=0.7, n=12)=     0.035409
     Pr(r&lt;0.3|rho=0.8, n=12)=    0.0065293
 
-</pre></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> An example where n is not scalar.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=0.3;
+</pre>
+            </p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> An example where n is not scalar.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=0.3;
 rho=0';
 n=(5:5:50)';
 xs=string(x);
@@ -80,7 +82,8 @@ disp(nameRowsT)</pre></div></div><pre class="codeoutput">                      
     Pr(r&lt;0.3|rho=0, n=45)=     0.9774
     Pr(r&lt;0.3|rho=0, n=50)=    0.98288
 
-</pre></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example where n, r and rho have the same dimension.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=(0.2:0.1:0.6)';
+</pre>
+            </p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example where n, r and rho have the same dimension.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=(0.2:0.1:0.6)';
 rho=(0.1:0.1:0.5)';
 n= (10:10:50)';
 xs=string(x);

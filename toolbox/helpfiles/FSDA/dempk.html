@@ -33,13 +33,14 @@ g = 3;
 DEMP = dempk(X, k*5, g, 'plots', 'contourf');
 % merging algorithm based on the threshold value omega star
 g = 0.01;
-DEMP2 = dempk(X, k*5, g, 'plots', 'contour');</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 15.36 seconds 
+DEMP2 = dempk(X, k*5, g, 'plots', 'contour');</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 24.83 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36.6667%
-Total estimated time to complete trimmed k means:  0.83 seconds 
+Total estimated time to complete trimmed k means:  1.16 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38.6667%
-</pre><a href='http://rosa.unipr.it/fsda/dempk.html#Example_1'><img vspace="5" hspace="5" src="images\dempk_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\dempk_02.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_03.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_04.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk with hierarchical merging on data obtained by
+</pre>
+            <a href='http://rosa.unipr.it/fsda/dempk.html#Example_1'><img vspace="5" hspace="5" src="images\dempk_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\dempk_02.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk with hierarchical merging on data obtained by
      simdataset, specifying additional arguments in the call to tkmeans.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 % Specify k cluster in v dimensions with n obs
 g = 3;
@@ -78,10 +79,11 @@ tkmeansOpt.plots = tkmplots;
 tkmeansOpt.nomes = 0;
 % saving tkmeans output
 tkmeansOut = 1;
-DEMP = dempk(X, k, g, 'tkmeansOpt', tkmeansOpt, 'plots', 'ellipse');</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.41 seconds 
+DEMP = dempk(X, k, g, 'tkmeansOpt', tkmeansOpt, 'plots', 'ellipse');</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.49 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 21.6667%
-</pre><a href='http://rosa.unipr.it/fsda/dempk.html#Example_2'><img vspace="5" hspace="5" src="images\dempk_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\dempk_06.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_07.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk with hierarchical merging on data obtained by
+</pre>
+            <a href='http://rosa.unipr.it/fsda/dempk.html#Example_2'><img vspace="5" hspace="5" src="images\dempk_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\dempk_05.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_06.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk with hierarchical merging on data obtained by
      simdataset, specifying additional arguments in the call to clusterdata.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 % Specify k cluster in v dimensions with n obs
 g = 3;
@@ -113,10 +115,11 @@ k = g * 6;
 % additional input for clusterdata (i.e. hierOpt)
 linkagearg = 'weights';
 DEMP = dempk(X, k, g, 'linkagearg', linkagearg, 'plots', 'ellipse');</pre></div></div><pre class="codeoutput">RUNNING TKMEANS WITH 18 COMPONENTS; THEN MERGING WITH dempk
-Total estimated time to complete trimmed k means:  0.43 seconds 
+Total estimated time to complete trimmed k means:  0.41 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 37.3333%
-</pre><a href='http://rosa.unipr.it/fsda/dempk.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\dempk_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\dempk_09.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk, both setting a threshold and performing a
+</pre>
+            <a href='http://rosa.unipr.it/fsda/dempk.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\dempk_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\dempk_08.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk, both setting a threshold and performing a
      hierarchical merging, for data obtained by simdataset with 10 percent
      uniform noise.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 % Specify k cluster in v dimensions with n obs
@@ -150,13 +153,14 @@ k = g * 6;
 DEMP = dempk(X, k, g, 'alpha', alpha, 'plots', 'contourf');
 % dempk with a threshold value and trimming equal to the level of noise
 g = 0.025;
-DEMP = dempk(X, k, g, 'alpha', alpha, 'plots', 'contourf');</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  5.34 seconds 
+DEMP = dempk(X, k, g, 'alpha', alpha, 'plots', 'contourf');</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  8.37 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38%
-Total estimated time to complete trimmed k means:  5.74 seconds 
+Total estimated time to complete trimmed k means:  8.23 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
-</pre><a href='http://rosa.unipr.it/fsda/dempk.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\dempk_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\dempk_11.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_12.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using the M5 dataset and various setting for dempk, using
+</pre>
+            <a href='http://rosa.unipr.it/fsda/dempk.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\dempk_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\dempk_10.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_11.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using the M5 dataset and various setting for dempk, using
      hierarchical clustering, in order to identify the real clusters using
      different strategies.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 Y = load('M5data.txt');
@@ -184,16 +188,17 @@ DEMP = dempk(Y, k, G, 'alpha', alpha0, 'tkmeansOut', 1, 'plots', 1);
 alpha = noise/n;
 DEMP2 = dempk(Y, k, G, 'alpha', alpha, 'tkmeansOut', 1, 'plots', 1);
 % setting alpha greater than the noise level (almost always appropriate)
-out = dempk(Y, k, G, 'alpha', alpha+0.04, 'tkmeansOut', 1, 'plots', 1);</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.44 seconds 
+out = dempk(Y, k, G, 'alpha', alpha+0.04, 'tkmeansOut', 1, 'plots', 1);</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.24 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
-Total estimated time to complete trimmed k means:  3.50 seconds 
+Total estimated time to complete trimmed k means:  2.51 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 39%
-Total estimated time to complete trimmed k means:  2.30 seconds 
+Total estimated time to complete trimmed k means:  2.46 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38.6667%
-</pre><a href='http://rosa.unipr.it/fsda/dempk.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\dempk_13.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\dempk_14.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_15.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_16.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v
+</pre>
+            <a href='http://rosa.unipr.it/fsda/dempk.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\dempk_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\dempk_13.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_14.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_15.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v
                variables. Rows of Y represent observations, and columns represent
                variables. Missing values (NaN's) and infinite values
                (Inf's) are allowed, since observations (rows) with missing
@@ -213,32 +218,32 @@ Warning: Number of subsets without convergence equal to 38.6667%
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alpha', 0.05
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | char | struct.</span></span></h3><div class="collapse">	<p><p>- If plots=0 (default) no plot is produced.</p> <p>
                - If plots=1, the components merged are shown using the
-               spmplot function. In particular:
+               spmplot function. In particular:</p> <p>
                    * for v=1, an histogram of the univariate data.</p> <p>
                    * for v=2, a bivariate scatterplot.</p> <p>
                    * for v&gt;2, a scatterplot matrix.</p> <p>
                When v&gt;=2 plots offers the following additional features
-               (for v=1 the behaviour is forced to be as for plots=1):
+               (for v=1 the behaviour is forced to be as for plots=1):</p> <p>
                - plots='contourf' adds in the background of the bivariate
                  scatterplots a filled contour plot. The colormap of the
-                 filled contour is based on grey levels as default.</p> <p>
+                 filled contour is based on gray levels as default.</p> <p>
                  This argument may also be inserted in a field named 'type'
                  of a structure. In the latter case it is possible to
                  specify the additional field 'cmap', which changes the
                  default colors of the color map used. The field 'cmap'
                  may be a three-column matrix of values in the range [0,1]
                  where each row is an RGB triplet that defines one color.</p> <p>
-                 Check the colormap function for additional informations.</p> <p>
+                 Check the colormap function for additional information.</p> <p>
                - plots='contour' adds in the background of the bivariate
                  scatterplots a contour plot. The colormap of the contour
-                 is based on grey levels as default. This argument may
+                 is based on gray levels as default. This argument may
                  also be inserted in a field named 'type' of a structure.</p> <p>
                  In the latter case it is possible to specify the additional
                  field 'cmap', which changes the default colors of the
                  color map used. The field 'cmap' may be a three-column
                  matrix of values in the range [0,1] where each row is an
                  RGB triplet that defines one color.</p> <p>
-                 Check the colormap function for additional informations.</p> <p>
+                 Check the colormap function for additional information.</p> <p>
                - plots='ellipse' superimposes confidence ellipses to
                  each group in the bivariate scatterplots. The size of the
                  ellipse is chi2inv(0.95,2), i.e. the confidence level used
@@ -250,8 +255,8 @@ Warning: Number of subsets without convergence equal to 38.6667%
                - plots='boxplotb' superimposes on the bivariate scatterplots
                  the bivariate boxplots for each group, using the boxplotb
                  function. This argument may also be inserted in a field
-                 named 'type' of a structure.</p><p>
-                If plots is a struct it may contain the following fields:
+                 named 'type' of a structure.</p> <p>
+                If plots is a struct it may contain the following fields:</p><p>
          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>type</code></td><td><p><p>a char specifying the type of superimposition
                     Choices are 'contourf', 'contour', 'ellipse' or 'boxplotb'.</p> <p>
                REMARK - The labels&lt;=0 are automatically excluded from the

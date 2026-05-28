@@ -104,7 +104,8 @@ outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'confle
     b_lshift      -225.91     4.5415     -49.743     2.9417e-88
 
 Level shift position t=21
-</pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\forecastTS_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_11.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (2).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+</pre>
+            <a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\forecastTS_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_11.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (2).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 % In this example we estimate a model without the seasonal component
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
 y = [112  115  145  171  196  204  242  284  315  340  360  417   % Jan
@@ -141,7 +142,8 @@ outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'confle
     b_lshift    -214.71      9.7761    -21.963    2.3563e-47
 
 Level shift position t=21
-</pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\forecastTS_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_13.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with simulated data.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\forecastTS_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_13.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with simulated data.</li></span></a></span></h3><div class="collapse"><p>
      Simulate data with linear trend, time varying seasonal component, and
      level shift<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 model=struct;
@@ -261,7 +263,8 @@ ans =
         confband: [120&times;2 double]
     datesnumeric: [120&times;1 double]
 
-</pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\forecastTS_14.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_15.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_16.png" alt=""> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Check accuracy of forecasts.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\forecastTS_14.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_15.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_16.png" alt=""> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Check accuracy of forecasts.</li></span></a></span></h3><div class="collapse"><p>
      AR(2) model with fixed seasonal<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
 model=struct;
 model.trend=1;
@@ -325,9 +328,9 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
   </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>B</code></td><td><p><p>Matrix containing estimated beta coefficients,
                        (including the intercept when options.intercept=true)
                        standard errors, t-stat and p-values
-                       The content of matrix B is as follows:
+                       The content of matrix B is as follows:</p> <p>
                        1st col = beta coefficients
-                        The order of the beta coefficients is as follows:
+                        The order of the beta coefficients is as follows:</p> <p>
                         1) trend elements (if present). If the trend is
                         of order two there are r+1 coefficients if the
                         intercept is present otherwise there are just r
@@ -357,7 +360,7 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                        If the model is linear out.invXX  is equal to
                        $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$
                        where $A$ is the matrix of partial derivatives. More
-                       precisely:
+                       precisely:</p><p>
                        </p>\[
                        a_{i,j}=\frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
                        \]
@@ -367,9 +370,9 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                            & = & \eta_i +\epsilon_i \\
                            & = & \eta(x_i,\hat \beta)+ e_i  \\
                            & = & \hat \eta_i + e_i
-                       \end{eqnarray}</p></td></tr><tr valign="top"><td><code>yhat</code></td><td><p>vector of n fitted values after final (NLS=non
-                       linear least squares) step:
-                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>Final scale estimate of the residuals
+                       \end{eqnarray}</p></td></tr><tr valign="top"><td><code>yhat</code></td><td><p><p>vector of n fitted values after final (NLS=non
+                       linear least squares) step:</p> <p>
+                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$</p></p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>Final scale estimate of the residuals
                      \[
                      \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)
                      \]<p>
@@ -387,10 +390,10 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
 </code>,<code> 'StartDate',[2016,3]
 </code>,<code> 'FileNameOutput',['C:' filesep 'myoutput' fielsep 'savesimdata.txt']
 </code>,<code> 'dispresults',true
-</code></code></span></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>A structure which specifies the model
+</code></code></span></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies the model
                used to simulate the time series. The structure contains
-               the following fields:
-       <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
+               the following fields:</p> <p>
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 1 implies linear trend with intercept,
                        trend = 2 implies quadratic trend, etc.</p><p>
                        If this field is empty the simulated time series
@@ -403,10 +406,10 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                         frequencies, i.e. harmonics, in the seasonal
                         component. Possible values for seasonal are
                         $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
-                        For example:
-                        if seasonal = 1 (default) we have:
+                        For example:</p> <p>
+                        if seasonal = 1 (default) we have:</p> <p>
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;</p> <p>
-                        if seasonal = 2 we have:
+                        if seasonal = 2 we have:</p> <p>
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
                         Note that when $s$ is even the sine term disappears
@@ -417,13 +420,13 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                         grows over time.</p> <p>
                         For example, seasonal = 101 implies a seasonal
                         component which just uses one frequency
-                        which grows linearly over time as follows:
+                        which grows linearly over time as follows:</p> <p>
                         $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
                         \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
                         For example, seasonal = 201 implies a seasonal
                         component which just uses one frequency
                         which grows in a quadratic way over time as
-                        follows:
+                        follows:</p> <p>
                         $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p><p>
                        If this field is an empty double (default) the
@@ -437,7 +440,7 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                        field is an empty double (default) there is no
                        effect of explanatory variables.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>vector with non negative integer numbers
                        specifying the autoregressive
-                       components. For example:
+                       components. For example:</p> <p>
                         model.ARp=[1 2] means a AR(2) process;</p> <p>
                         model.ARp=2 means just the lag 2 component;</p> <p>
                         model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p><p>
@@ -496,9 +499,9 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                screen in a fully formatted way. The default value of
                dispresults is false.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outFORE" class="clearfix"></div><h3 id="output_argument_outFORE" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outFORE</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outFORE" class="clearfix"></div><h3 id="output_argument_outFORE" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outFORE</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
 
-        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>signal</code></td><td><p><p>vector of length (length(y)+nfore) containing
+        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>signal</code></td><td><p><p>vector of length (length(y)+nfore) containing
                    predictive values in sample and out of sample.</p> <p>
                    Predictive values = TR+SE+XAR+Xexpl+LS.</p><p>
                    Note that  outFORE.signal =outFORE.trend+outFORE.seasonal
@@ -530,7 +533,7 @@ plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></
                        \frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
                        \]<p>
                        $j=1, 2, \ldots, p$, $i=1, 2, \ldots, T$.</p> <p>
-                       The size of this matrix is:
+                       The size of this matrix is:</p><p>
                        T-by-p
                        The field is present only if option
                        yxsave is set to 1.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust

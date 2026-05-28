@@ -33,9 +33,10 @@ disp(out.Btable)</pre></div></div><pre class="codeoutput">                bhat 
 
     b1        -0.010677     0.0010009    -10.667
     b2          0.14143    0.00085986     164.47
-    lambda     0.063929      0.081648    0.78298
+    lambda     0.063925      0.081649    0.78293
 
-</pre><a href='http://rosa.unipr.it/fsda/tBothSides.html#Example_1'><img vspace="5" hspace="5" src="images\tBothSides_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Call of tBothSides with parameter lambda fixed.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[0.476	0.924	1.905	3.696	7.619	14.874	30.474	59.134];
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tBothSides.html#Example_1'><img vspace="5" hspace="5" src="images\tBothSides_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Call of tBothSides with parameter lambda fixed.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[0.476	0.924	1.905	3.696	7.619	14.874	30.474	59.134];
 yy=[0.05706	0.11781	0.25071	0.49596	1.03928	2.14635	4.24397	8.53848...
 0.057	0.11615	0.25398	0.4807	1.03659	2.09495		    8.41333...
 0.06363	0.12587	0.24552	0.49442	1.12641	2.24941	4.7011	9.01437...
@@ -243,8 +244,8 @@ out=tBothSides(y, X,'modelfun',modelfun,'prolik',true,'beta0',bini);</pre></div>
                If prolik is a Boolean and is equal to true, the plot of
                the profile loglikelihood is produced together with a 95
                per cent confidence interval. The default value of prolik
-               is false, that is no plot is produced.</p><p>
-               If prolik is a structure it may contain the following fields:
+               is false, that is no plot is produced.</p> <p>
+               If prolik is a structure it may contain the following fields:</p><p>
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>conflev</code></td><td><p><p>scalar between 0 and 1 determining
                                  confidence level for 
                                  lambda based on the asymptotic chi1^2 of
@@ -266,7 +267,7 @@ out=tBothSides(y, X,'modelfun',modelfun,'prolik',true,'beta0',bini);</pre></div>
                         the last element)</p></td></tr><tr valign="top"><td><code>covB</code></td><td><p>Matrix containing variance covariance matrix of
                         estimated coefficients</p></td></tr><tr valign="top"><td><code>Btable</code></td><td><p><p>table containing estimated beta coefficients,
                         standard errors, t-stat and p-values
-                        The content of matrix B is as follows:
+                        The content of matrix B is as follows:</p> <p>
                         1st col = beta coefficients and lambda (in the last
                         element if input option la is empty).</p> <p>
                         2nd col = standard errors;</p> <p>

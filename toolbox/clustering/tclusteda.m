@@ -420,6 +420,8 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %{
     %% Monitoring using geyser data (all default options).
     close all
+    delete(gcp("nocreate"));
+    parpool('Processes')
     Y=load('geyser2.txt');
     % alpha and restriction factor are not specified therefore for alpha
     % vector [0.10 0.05 0] is used while for the restriction factor, value c=12
@@ -442,7 +444,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
-    %% Monitoring using geyser data with option plots supplied as structure.
+    % Monitoring using geyser data with option plots supplied as structure.
     Y=load('geyser2.txt');
     close all
     % alphavec= vector which contains the trimming levels to consider
@@ -463,6 +465,8 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
     %% Monitoring geyser data with option UnitsSameGroup.
     Y=load('geyser2.txt');
     close all
+    delete(gcp("nocreate"));
+    parpool('Processes')
     % alphavec= vector which contains the trimming levels to consider
     alphavec=0.30:-0.10:0;
     % c = restriction factor to use
@@ -478,7 +482,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
-    %% tclusteda with M5 data.
+    % tclusteda with M5 data.
     close all
     Y=load('M5data.txt');
 
@@ -520,6 +524,8 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 
 %{
     %% tclusteda using simulated data.
+    delete(gcp("nocreate"));
+    parpool('Processes')
     % 5 groups and 5 variables
     rng(100,'twister')
     n1=100;

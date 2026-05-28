@@ -2,7 +2,7 @@
  generic percentile $100pth (0&lt;p&lt;1)$. It finds the p-th weighted order
  statistic in the elements of a data vector $D$ considering the associated
  weights $W$. More precisely, the algorithm finds the element $D_{k^{*}}$
- that make the following difference as small as possible:
+ that make the following difference as small as possible:</p> <p>
  $\sum_{i=1}^{k^{*}_{p} - 1} w_{i} - \sum_{i=k^{*}_{p}+1}^{n} w_{i}$.</p> <p>
  The linear algorithm used for the computation extends quickselectFS.</p><p>
  REMARK: we also provide the mex counterpart, quickselectFSwmex; see the
@@ -117,8 +117,9 @@ end
 kDw = quickselectFSw(D,W,p);
 disp(['quickselectFS  -&gt; ' num2str(kD)]);
 disp(['quickselectFSw -&gt; ' num2str(kDw)]);</pre></div></div><pre class="codeoutput">quickselectFS  -&gt; 200.5
-quickselectFSw -&gt; 201
-</pre></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Verify the definition of weighted order statistic.</li></span></a></span></h3><div class="collapse"><p>
+quickselectFSw -&gt; 200
+</pre>
+            </p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Verify the definition of weighted order statistic.</li></span></a></span></h3><div class="collapse"><p>
      Check the weighted median, that is p=0.5.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The weighted median is the value $x$ which minimizes the weighted
 % mean absolute deviation $\sum w_{i} | x_{i} - x |$.
 N  = 10000;
@@ -154,7 +155,8 @@ this is the index of wm in D = 959
 this is the index of ww in W = 959
 check if there are elements with smaller/equal objective function
 optimal obj is unique
-</pre></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Use the mex function quickselectFSwmex.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Use the mex function quickselectFSwmex.</li></span></a></span></h3><div class="collapse"><p>
      REMARK 1: it is necessary to pass the number of data elements.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% REMARK 2: it is necessary to pass a modified copy of the data and 
 % weight arrays as indicated in the example, as the function change the
 % order of the elements in the original arrays (variables are passed by

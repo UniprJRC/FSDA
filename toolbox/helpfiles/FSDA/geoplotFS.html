@@ -24,7 +24,8 @@ ShapeFile=X.Properties.UserData{1};
 % Color based on PCs
 geoplotFS(X,out.score,ShapeFile)</pre></div></div><pre class="codeoutput">The first PC already explains more than 0.95^v variability
 In what follows we still extract the first 2 PCs
-</pre><a href='http://rosa.unipr.it/fsda/geoplotFS.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\geoplotFS_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option bsb.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly2024.mat
+</pre>
+            <a href='http://rosa.unipr.it/fsda/geoplotFS.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\geoplotFS_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option bsb.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly2024.mat
 X=citiesItaly2024;
 out=pcaFS(X,'biplot',0,'dispresults',0,'plots',0);
 ShapeFile=X.Properties.UserData{1};
@@ -33,7 +34,8 @@ ShapeFile=X.Properties.UserData{1};
 bsb=[33:40 99];
 geoplotFS(X,out.score,ShapeFile,'bsb',bsb)</pre></div></div><pre class="codeoutput">The first PC already explains more than 0.95^v variability
 In what follows we still extract the first 2 PCs
-</pre><a href='http://rosa.unipr.it/fsda/geoplotFS.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\geoplotFS_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">2D array or table.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
+</pre>
+            <a href='http://rosa.unipr.it/fsda/geoplotFS.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\geoplotFS_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">2D array or table.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
                Y represent observations, and columns represent variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
@@ -44,7 +46,7 @@ In what follows we still extract the first 2 PCs
                initial variable to use in the geoplot.</span></span></h3> <div class="collapse"> <p>Alternatively,
                score can contain a nxp array for example with the p
                principal components
-                   Example - 'ShapeFile','shapefileName'
+                   Example - 'score',outPCA.score
                     </p> <p class="datatypelist"><strong> Data Types: </strong><code>char or string numeric scalar or nxp array.</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_ShapeFile" class="clearfix"> </div> <h3 id="input_argument_ShapeFile" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>ShapeFile</code> &#8212; name of ShapeFile or geotable containing shapes. </span>  </a><span class="example_desc">Character or string or geotable.</span></span></h3> <div class="collapse"> <p><p>Name of the ShapeFile containing the containing the
                geometric details of the rows. The ShapeFile, which is
                loaded using function readgeotable, must have n rows and

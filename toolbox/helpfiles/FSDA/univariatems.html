@@ -153,7 +153,8 @@ Number of observations: 30, Error degrees of freedom: 21
 Root Mean Squared Error: 0.712
 R-squared: 0.895,  Adjusted R-Squared: 0.855
 F-statistic vs. constant model: 22.4, p-value = 1.23e-08
-</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option theoreticalSigns.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+</pre>
+            </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option theoreticalSigns.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 n=30;
 thresh=struct;
 thresh.pval=0.10;
@@ -236,9 +237,9 @@ X=XX(:,["read", "math" "prog"]);
                which in univariate robust regression had a p-value smaller
                than 0.10 are retained.</p> <p>
                If thresh is a struct it is possible to specify whether the
-               threshold is based on (robust) p-values or (robust) R2.</p><p>
+               threshold is based on (robust) p-values or (robust) R2.</p> <p>
                If thresh is a struct it may contain one of the the
-               following fields:
+               following fields:</p><p>
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pval</code></td><td><p>all variables that, in univariate regression,
                    have a p-value smaller or equal to thresh.pval are
                    selected.</p></td></tr><tr valign="top"><td><code>pvalrob</code></td><td><p>all variables that, in univariate

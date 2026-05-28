@@ -43,7 +43,8 @@ grid on</pre></div></div><pre class="codeoutput">Ordinary Least Squares Estimat
   -14.9968    7.4693   -2.0078    0.0487
 
 Multiplicative Heteroskedasticity Model
-</pre><a href='http://rosa.unipr.it/fsda/regressHhar.html#Example_1'><img vspace="5" hspace="5" src="images\regressHhar_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressHhar with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/regressHhar.html#Example_1'><img vspace="5" hspace="5" src="images\regressHhar_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressHhar with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      The data in Appendix Table F6.1 were used in a study of efficiency in
      production of airline services in Greene (2007a).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% See p. 557 of Green (7th edition).
 % Results in structure "out.Beta" coincide with those of
@@ -102,7 +103,8 @@ Coeff.
     2.4857
    -0.2449
 
-</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
+</pre>
+            </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
                It can be either a row or column vector.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables in the regression equation. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory variables (also called 'regressors')
                of dimension (n x p-1). Rows of X represent observations, and
                columns represent variables.</p> <p>
@@ -110,7 +112,7 @@ Coeff.
                you explicitly remove it using option intercept, so do not
                include a column of 1s in X.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Z" class="clearfix"> </div> <h3 id="input_argument_Z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Z</code> &#8212; Predictor variables in the skedastic equation. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x r matrix or vector of length r.</p> <p>
                If Z is a n x r matrix it contains the r variables which
-               form the scedastic function as follows: 
+               form the scedastic function as follows:</p><p> 
                </p>\[
                \sigma^2_i = exp(\gamma_0 + \gamma_1 Z_{i1} + ...+
                \gamma_{r} Z_{ir}). 
@@ -186,11 +188,11 @@ Coeff.
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'test',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>T consists of a structure 'out' containing the following fields
 
-   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>p-by-3 matrix containing: 
+   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>p-by-3 matrix containing:</p> <p> 
                        1st col = Estimates of regression coefficients;</p> <p> 
                        2nd col = Standard errors of the estimates of regr
                        coeff;</p><p> 
-                       3rd col = t-tests of the estimates of regr coeff.</p></p></td></tr><tr valign="top"><td><code>Gamma</code></td><td><p><p>(r+1)-by-3 matrix containing: 
+                       3rd col = t-tests of the estimates of regr coeff.</p></p></td></tr><tr valign="top"><td><code>Gamma</code></td><td><p><p>(r+1)-by-3 matrix containing:</p> <p> 
                        1st col = Estimates of scedastic coefficients;</p> <p> 
                        2nd col = Standard errors of the estimates of
                        scedastic coeff;</p> <p> 
@@ -210,7 +212,7 @@ Coeff.
    This routine implements Harvey's (1976) model of
    multiplicative heteroscedasticity which is a very flexible, general
    model that includes most of the useful formulations as special cases.</p> <p>
-   The general formulation is: 
+   The general formulation is:</p> <p> 
    
        $\sigma^2_i =\sigma^2 \exp(z_i \alpha)$
    
@@ -229,7 +231,7 @@ Coeff.
    Once the full parameter vector is estimated \( \exp( \gamma_0)\) provides the
    estimator for \( \sigma^2 \).</p> <p> 
 
-  The model is:  
+  The model is:</p><p>  
                </p>\[
                  y=X \times\beta+ \epsilon,  \qquad 
                  \epsilon \sim N(0, \;  \Sigma)

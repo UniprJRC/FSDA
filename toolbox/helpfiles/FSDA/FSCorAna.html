@@ -20,216 +20,92 @@ nrowt=(n/I)*ones(I,1);
 ncolt=(n/J)*ones(1,J);
 out1=rcontFS(I,J,nrowt,ncolt);
 N=out1.m144;
-out=FSCorAna(N,'plots',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use pregenerated contingency tables to find envelopes for mmd.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load clothes.mat    % Now FSCorAna uses the pregenerated tables coming from mcdCorAna.    % Example of findEmpiricalEnvelope a struct    findEmp=struct;    % Generate nsimul contingency tables    findEmp.nsimul=1000;    % Under the null hypothesis of independence    findEmp.underH0=true;    % Store the nsimul robust distance sorted (for each row)    findEmp.StoreSim=true;    RAW=mcdCorAna(clothes,'plots',0,'findEmpiricalEnvelope',findEmp);    out=FSCorAna(RAW);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.06 seconds 
+out=FSCorAna(N,'plots',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use pregenerated contingency tables to find envelopes for mmd.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load clothes.mat    % Now FSCorAna uses the pregenerated tables coming from mcdCorAna.    % Example of findEmpiricalEnvelope a struct    findEmp=struct;    % Generate nsimul contingency tables    findEmp.nsimul=1000;    % Under the null hypothesis of independence    findEmp.underH0=true;    % Store the nsimul robust distance sorted (for each row)    findEmp.StoreSim=true;    RAW=mcdCorAna(clothes,'plots',0,'findEmpiricalEnvelope',findEmp);    out=FSCorAna(RAW);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.16 seconds 
 Finding empirical bands
 Creating empirical confidence band for minimum (weighted) Mahalanobis distance
-Warning: interchange greater than 1 when m=1256
+Warning: interchange greater than 1 when m=1195
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1258
+Warning: interchange greater than 1 when m=1197
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1260
+Warning: interchange greater than 1 when m=1199
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1262
+Warning: interchange greater than 1 when m=1201
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1264
+Warning: interchange greater than 1 when m=1203
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1266
+Warning: interchange greater than 1 when m=1205
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1268
+Warning: interchange greater than 1 when m=1207
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1270
+Warning: interchange greater than 1 when m=1209
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1272
+Warning: interchange greater than 1 when m=1211
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1274
+Warning: interchange greater than 1 when m=1213
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1276
+Warning: interchange greater than 1 when m=1215
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1278
+Warning: interchange greater than 1 when m=1217
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1280
+Warning: interchange greater than 1 when m=1219
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1282
+Warning: interchange greater than 1 when m=1221
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1284
+Warning: interchange greater than 1 when m=1223
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1286
+Warning: interchange greater than 1 when m=1225
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1288
+Warning: interchange greater than 1 when m=1227
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1290
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1292
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1294
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1296
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1298
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1300
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1302
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1304
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1306
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1308
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1310
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1312
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1314
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1316
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1318
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1320
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1322
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1324
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1326
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1328
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1330
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1940
-Number of units which entered=3
-Warning: interchange greater than 1 when m=2042
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1677
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1717
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1093
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1095
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1097
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1099
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1101
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1103
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1105
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1107
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1109
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1111
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1113
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1115
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1117
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1119
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1121
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1123
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1125
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1127
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1129
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1131
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1133
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1135
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1137
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1139
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1141
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1143
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1145
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1147
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1149
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1151
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1153
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1155
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1157
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1159
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1778
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1265
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1764
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1281
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1283
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1285
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1287
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1289
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1291
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1293
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1295
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1297
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1299
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1301
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1303
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1202
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1864
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1866
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1868
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1870
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1875
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1880
+Warning: interchange greater than 1 when m=1229
 Number of units which entered=3
 Warning: interchange greater than 1 when m=1231
 Number of units which entered=3
-Warning: interchange greater than 1 when m=1377
+Warning: interchange greater than 1 when m=1233
 Number of units which entered=3
-Warning: interchange greater than 1 when m=2311
+Warning: interchange greater than 1 when m=1235
 Number of units which entered=3
-Warning: interchange greater than 1 when m=2313
+Warning: interchange greater than 1 when m=1237
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1239
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1241
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1243
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1245
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1247
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1249
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1251
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1253
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1255
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1257
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1259
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1425
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1910
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1094
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1096
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1098
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1100
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1102
+Number of units which entered=3
+Warning: interchange greater than 1 when m=1260
 Number of units which entered=4
-Warning: interchange greater than 1 when m=1433
-Number of units which entered=3
-Warning: interchange greater than 1 when m=1132
+Warning: interchange greater than 1 when m=1226
 Number of units which entered=3
 </pre>
             <a href='http://rosa.unipr.it/fsda/FSCorAna.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSCorAna_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSCorAna_02.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; contingency table or structure. </span>  </a><span class="example_desc">Array or table of size I-by-J or structure.</span></span></h3> <div class="collapse"> <p>If N is a

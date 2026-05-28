@@ -19,7 +19,8 @@ Bands k=2
 Bands k=3
 Bands k=4
 Bands k=5
-</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#Example_1'><img vspace="5" hspace="5" src="images\ctlcurves_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\ctlcurves_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of options alpha, kk and bands.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/ctlcurves.html#Example_1'><img vspace="5" hspace="5" src="images\ctlcurves_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\ctlcurves_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of options alpha, kk and bands.</li></span></a></span></h3><div class="collapse"><p>
      Personalized levels of trimming.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">alpha=0:0.05:0.15;
 % bands is passed as a false boolean. No bands are shown.
 bands=false;
@@ -48,7 +49,8 @@ k=4
 Bands k=2
 Bands k=3
 Bands k=4
-</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\ctlcurves_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> An example with many groups.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\ctlcurves_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> An example with many groups.</li></span></a></span></h3><div class="collapse"><p>
      Simulate data with 5 groups in 3 dimensions<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 k=5; v=3;
 n=200;
@@ -63,7 +65,8 @@ k=6
 Bands k=4
 Bands k=5
 Bands k=6
-</pre><a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\ctlcurves_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations
+</pre>
+            <a href='http://rosa.unipr.it/fsda/ctlcurves.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\ctlcurves_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations
                on v variables, Rows of Y represent observations, and
                columns represent variables. Observations (rows) with
                missing (NaN) or or infinite (Inf) values will
@@ -100,7 +103,7 @@ Bands k=6
                given. If bands is a scalar boolean equal to false, bands
                and likelihood ratio tests are not computed.</p> <p>
              If bands is a struct bands are computed and the structure may
-             contain the following fields:
+             contain the following fields:</p><p>
    </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>conflev</code></td><td><p>scalar in the interval (0 1) which contains
                    the confidence level of the bands (default is 0.5).</p></td></tr><tr valign="top"><td><code>nsamp</code></td><td><p>Number of subsamples to extract in the
                    bootstrap replicates. If this field is not present and
@@ -109,8 +112,8 @@ Bands k=6
                    for real data (input option nsamp).</p></td></tr><tr valign="top"><td><code>nsimul</code></td><td><p><p>number of replicates to use to create the
                    confidence bands and likelihood ratio tests.</p> <p>
                    The default value of bands.nsimul is
-                   60 in order to provide the output in a reasonal time.</p><p>
-                   Note that for stable results we recommentd a value of
+                   60 in order to provide the output in a reasonable time.</p><p>
+                   Note that for stable results we recommend a value of
                    bands.nsimul equal to 100.</p></p></td></tr><tr valign="top"><td><code>valSolution</code></td><td><p>boolean which specifies if it is
                    necessary to perform an outlier detection procedure on
                    the components which have been found using optimalK and
@@ -146,7 +149,7 @@ Bands k=6
                    (default) no prior information is used in any of the
                    extracted subsets.</p></p></td></tr><tr valign="top"><td><code>crit</code></td><td><p>scalar which defines the empirical p-value which
                    is used to define a solution as significant and to
-                   reject the null hypotesis of smaller groups in the
+                   reject the null hypothesis of smaller groups in the
                    likelihood ratio test. The default value of crit is
                    0.02, that is when we test $k$ against $k+1$ given a certain
                    value of $\alpha$, if the empirical p-value is greater
@@ -165,7 +168,7 @@ Bands k=6
                decomposition or the $j$-th scatter matrix $\Sigma_j$ is
                </p>\[
                \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-               \]
+               \]<p>
                where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
                diagonal matrix with $|\Gamma_j|=1$ and with elements
                $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
@@ -173,8 +176,8 @@ Bands k=6
                $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
                known as "shape" matrices, because they determine the shape of the
                fitted cluster components. The following $k$
-               constraints are then imposed on the shape matrices:
-               \[
+               constraints are then imposed on the shape matrices:</p> <p>
+               </p>\[
                \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
                    c_{shape}, \text{ for } j=1,...,k,
                \]<p>
@@ -199,33 +202,33 @@ Bands k=6
                controls which is the criterion to find the untrimmed units
                in each step of the maximization.</p> <p>
                If mixt &gt;=1 mixture modelling is assumed else crisp
-               assignment. The default value is mixt=0 (i.e. crisp assignment).</p><p>
-               In mixture modelling the likelihood is given by:
+               assignment. The default value is mixt=0 (i.e. crisp assignment).</p> <p>
+               In mixture modelling the likelihood is given by:</p><p>
                 </p>\[
                 \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
-                \]
-               while in crisp assignment the likelihood is given by:
-               \[
+                \]<p>
+               while in crisp assignment the likelihood is given by:</p> <p>
+               </p>\[
                \prod_{j=1}^k   \prod _{i\in R_j} \phi (y_i; \; \theta_j),
                \]<p>
                where $R_j$ contains the indexes of the observations which
                are assigned to group $j$.</p> <p>
                Remark - if mixt&gt;=1 previous parameter equalweights is
-               automatically set to 1.</p><p>
+               automatically set to 1.</p> <p>
                Parameter mixt also controls the criterion to select the
                units to trim,
                if mixt = 2 the h units are those which give the largest
                contribution to the likelihood that is the h largest
-               values of:
+               values of:</p><p>
                </p>\[
                    \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j)   \qquad
                     i=1, 2, ..., n,
-               \]
+               \]<p>
                else if mixt=1 the criterion to select the h units is
                exactly the same as the one which is used in crisp
                assignment. That is: the n units are allocated to a
-               cluster according to criterion:
-               \[
+               cluster according to criterion:</p> <p>
+               </p>\[
                 \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i; \; \hat \theta_j)
                \]<p>
                and then these n numbers are ordered and the units
@@ -302,7 +305,7 @@ Bands k=6
                option has an effect just if previous option numpool is &gt;</p> <p>
                1.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cleanpool',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;number of pools for parellel computing.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If numpool &gt; 1, the routine automatically checks if
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;number of pools for parallel computing.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If numpool &gt; 1, the routine automatically checks if
                the Parallel Computing Toolbox is installed and distributes
                the random starts over numpool parallel processes. If
                numpool &lt;= 1, the random starts are run sequentially. By
@@ -323,7 +326,7 @@ Bands k=6
                default value for numpool the number of physical cores
                rather than the number of logical ones. The user can
                increase the number of parallel pool workers allocated to
-               the multiple start monitoring by:
+               the multiple start monitoring by:</p> <p>
                - setting the NumWorkers option in the local cluster profile
                  settings to the number of logical cores (Remark 2). To do
                  so go on the menu "Home|Parallel|Manage Cluster Profile"
@@ -341,13 +344,13 @@ Bands k=6
                CTLcurves is shown on the screen. If input option bands is
                not empty confidence bands are also shown.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;save input matrix.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Boolan that is set to true to request that the input matrix Y
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;save input matrix.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Boolean that is set to true to request that the input matrix Y
                is saved into the output structure out. Default is 1, that
                is  matrix Y is saved inside output structure out.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
 
-        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Mu</code></td><td><p>cell of size length(kk)-by-length(alpha)
+        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Mu</code></td><td><p>cell of size length(kk)-by-length(alpha)
                        containing the estimate of the centroids for each
                        value of k and each value of alpha. More precisely,
                        suppose kk=1:4 and alpha=[0 0.05 0.1], out.Mu{2,3}
@@ -369,7 +372,7 @@ Bands k=6
                        containing the final assignment for each value of k
                        and each value of alpha. More precisely, suppose
                        kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
-                       vector of length(n) containing the containinig the
+                       vector of length(n) containing the containing the
                        assignment of each unit obtained when alpha=0.1.</p> <p>
                        Elements equal to zero denote unassigned units.</p></p></td></tr><tr valign="top"><td><code>CTL</code></td><td><p><p>matrix of size length(kk)-by-length(alpha)
                        containing the values of the trimmed likelihood
@@ -397,11 +400,11 @@ Bands k=6
                           colum index associated with the best value of
                           kk.</p></td></tr><tr valign="top"><td><code>CTLoptimalAlpha</code></td><td><p>scalar, optimal value of trimming.</p></td></tr><tr valign="top"><td><code>CTLoptimalK</code></td><td><p>scalar, optimal number of clusters, stored
                         as a positive integer value.</p></td></tr><tr valign="top"><td><code>CTLoptimalIDX</code></td><td><p>n-by-1 vector containing assignment of each unit to
-                       each of the k groups in correspodence of
+                       each of the k groups in correspondence of
                        OptimalAlpha and OptimalK. Cluster names are
                        integer numbers from 1 to k. 0 indicates trimmed
                        observations. The fields which follow which start
-                       with LRT refer to the likilhood ratio test</p></td></tr><tr valign="top"><td><code>LRTpval</code></td><td><p><p>table with size length(kk)-1-times-length(alpha)
+                       with LRT refer to the likelihood ratio test</p></td></tr><tr valign="top"><td><code>LRTpval</code></td><td><p><p>table with size length(kk)-1-times-length(alpha)
                            which stores the relative frequency in which
                            the Likelihood ratio test is greater than the
                            corresponding bootstrap test.</p> <p>

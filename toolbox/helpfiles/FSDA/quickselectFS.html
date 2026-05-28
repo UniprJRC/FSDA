@@ -10,7 +10,8 @@ k=10;
 sorY=sort(Y);
 disp([out,sorY(k)])</pre></div></div><pre class="codeoutput">   -1.5299   -1.5299
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> quickselectFS with kiniindex supplied.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> quickselectFS with kiniindex supplied.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 Y=randn(n,1);
 k=10;
 % kiniindex is supplied 
@@ -19,7 +20,8 @@ k=10;
 sorY=sort(Y);
 disp([out,sorY(k)])</pre></div></div><pre class="codeoutput">   -1.6085   -1.6085
 
-</pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> quickselectFS with two output arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=10;
+</pre>
+            </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> quickselectFS with two output arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=10;
 Y=randn(n,1);
 k=3;
 % kiniindex is supplied 
@@ -36,14 +38,16 @@ disp([Y, Ysor])</pre></div></div><pre class="codeoutput">   -0.9290   -2.0480
    -2.0480    1.9573
     0.4323    2.0429
 
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> quickselectFS: worst case scenario: see circshift.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=10;
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> quickselectFS: worst case scenario: see circshift.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=10;
 Y=1:n;
 Y = circshift(Y,-1);
 k=n;
 out=quickselectFS(Y,k);
 disp(out);</pre></div></div><pre class="codeoutput">    10
 
-</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Use the mex function quickselectFSmex.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Use the mex function quickselectFSmex.</li></span></a></span></h3><div class="collapse"><p>
      REMARK 1: it is necessary to pass the number of data elements.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% REMARK 2: if you are looking for the order statistic k, then you
 % should pass to the function k-1, as in C the array index starts from
 % zero. 

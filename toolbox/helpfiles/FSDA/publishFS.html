@@ -89,7 +89,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
              of online documentation help.</p> <p>
              In this case 'outputDir' and 'imagesDir' should be populated to
              avoid overwriting local help files with WEB help files.</p> <p>
-             Consider the following example with these namepairs:
+             Consider the following example with these namepairs:</p> <p>
              'outputDir'='C:\rosa','imagesDir','C:\rosa\images'
              It is worth noting that the folder 'C:\rosa', 'C:\rosa\tmp'
              and 'C:\rosa\images' should be created manually by the user.</p> <p>
@@ -121,7 +121,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
                  included in the 8th column.</p><p>
                  5th column = example (if present)
                  6th column = Data type
-                 7th column = string contaning '1' if the argument is
+                 7th column = string containing '1' if the argument is
                  required and '0' if it is optional
                  8th column = this column is empty unless 3rd column
                  contains the word structure. If this is the case the 8th
@@ -131,7 +131,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
                  and optional input argument specified as name/values pairs.</p> <p>
                  1st column = name.</p> <p>
                  2nd column = short description.</p> <p>
-                 3rd column = type indication (Scalar, matrix, strucutre, ...).</p> <p>
+                 3rd column = type indication (Scalar, matrix, structure, ...).</p> <p>
                  4th column = string containing long description.</p> <p>
                  5th column = example (if present).</p> <p>
                  6th column = Data type (ex. Single |Double).</p><p>
@@ -223,7 +223,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          this string must contain the description of the compulsory input
          arguments. Each argument must have the name (a series of spaces from 0
          to 10) symbol ':' and then the description. The format of the description
-         is as follows:
+         is as follows:</p> <p>
          The first sentence after symbol ':' is the title of the input argument
          and in the HTML file it will appear in bold face in the same line of the
          input argument (this is the short description of the required input
@@ -243,7 +243,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          arguments which are respectively called y and X, then the
          accepted format is as follows.</p> <p>
 
-                       Required input arguments:
+                       Required input arguments:</p> <p>
 
                         y:         Response variable. Vector. Response variable,
                                    specified as a vector of length n, where n is
@@ -291,9 +291,9 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
           contains a series of sentences, they will be automatically included in
           the HTML output just below the description.</p> <p>
 
-          An example is given below:
+          An example is given below:</p> <p>
                  'function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin);</p> <p>
-                 tclust computes trimmed clustering with restricitons on
+                 tclust computes trimmed clustering with restrictions on
                  the eigenvalues.</p> <p>
 
                  &lt;a href="matlab: docsearchFS('tclust')"&gt;Link to the help function&lt;/a&gt;;</p> <p>
@@ -327,11 +327,11 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          words 'Example -' and 'Data Types -' followed by a string without spaces
          which specifies a possible use of the option and the type of data. For
          example, suppose that the first two optional arguments are called
-         respecively 'intercept' and 'h', then the
-         accepted format is as follows:
+         respectively 'intercept' and 'h', then the
+         accepted format is as follows:</p> <p>
 
 
-                       Optional input arguments:
+                       Optional input arguments:</p> <p>
 
                        intercept :  Indicator for constant term. Scalar.</p> <p>
                                    If 1, a model with constant term will be fitted
@@ -360,13 +360,13 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          The lines after string 'Output:'
          must contain the list of the output arguments using the same rules
          described above for the optional arguments. In this case, however, the
-         identification of the ouptut arguments is easier because they are
+         identification of the output arguments is easier because they are
          extracted directly from the first line of the file (e.g. if the first
          line is as follows
          function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
          output arguments are immediately known to the parser).</p> <p>
          In the case of output argument publishFS checks if the first 50
-         characters contain the words "which contains" or "containing" e.g.:
+         characters contain the words "which contains" or "containing" e.g.:</p> <p>
 
                       mdr:         n -init x 2
                                    matrix containing the
@@ -383,7 +383,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          before the strings "which contains" or "containing" will appear in the
          second row.</p> <p>
 
-         For example, the above lines will be processed as follows:
+         For example, the above lines will be processed as follows:</p> <p>
 
               mdr   -  Monitoring of minimum deletion residual;</p> <p>
               n -init x 2 matrix.</p> <p>
@@ -392,7 +392,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
               (n-init) x 11 Matrix which contains the unit(s) included in the
               subset at each step of the search.</p> <p>
 
-         If in the HTML file the user clicks on them the expdanded description
+         If in the HTML file the user clicks on them the expanded description
          (that is what starts after the second full stop will appear).</p> <p>
 
          Alternatively, if the first 50 characters of each output argument do not
@@ -405,7 +405,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          of the output argument. For example, suppose that the output of a
          procedure contains the objects mdr and Un, the accepted format
          is as follows.</p> <p>
-               Output:
+               Output:</p> <p>
 
                       mdr:         Minimum deletion residual. Matrix.  n -init x 2
                                    matrix which contains the
@@ -416,7 +416,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
                                    subset at each step of the search.</p> <p>
                                    REMARK: in every step ....</p> <p>
 
-         The above lines will be processed as follows:
+         The above lines will be processed as follows:</p> <p>
 
               mdr   -  Minimum deletion residual. Matrix.</p> <p>
                        n -init x 2 matrix which contains the
@@ -428,7 +428,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
                        included in the subset at each step of the search.</p> <p>
                        REMARK: in every step ....</p> <p>
 
-         If in the HTML file the user clicks on them the expdanded description
+         If in the HTML file the user clicks on them the expanded description
          (that is what starts after the second full stop will appear).</p> <p>
 
          IMPORTANT NOTICE: Similarly to what happened for each input argument, if
@@ -439,11 +439,11 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          series of spaces" "name_of_output_structure.a_word" "a series of spaces
          followed by symbol '='". For example suppose that the output of a
          procedure is an object called out which is a structure with two fields
-         out.rew and out.beta, an accepted format is as follows:
+         out.rew and out.beta, an accepted format is as follows:</p> <p>
 
-                                    Output:
+                                    Output:</p> <p>
 
-                                  out :     A structure containing the following fields:
+                                  out :     A structure containing the following fields:</p> <p>
                                             out.rew  = Scalar if out.rew=1 all
                                                        subsequent output refers to
                                                        reweighted else no
@@ -475,10 +475,10 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          publishFS will try to put what comes before the string "which
          contains" or "containing" inside the subtitle (second row) of the each
          ouptut argument in the HTML file. For example, the example above in the
-         HTML file will be processed as follows:
+         HTML file will be processed as follows:</p> <p>
                         mdr -Monitoring of minimum deletion residual at each step of the forward search.</p> <p>
                         n -init -by- 2 matrix.</p> <p>
-         If, in the HTML file, the user clicks on the first line:
+         If, in the HTML file, the user clicks on the first line:</p> <p>
                        "mdr -Monitoring...";</p> <p>
          the expanded description will automatically appear.</p> <p>
 
@@ -492,7 +492,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          PublishFS decides that a new reference starts if a new line contains
          symbol "(" + "a sequence of 4 or 5 characters identifying the year
          because the reference can be for example 2003 or 2003a" + symbol ")"
-         For example, an acceptable format for the two references below is:
+         For example, an acceptable format for the two references below is:</p> <p>
 
 
                          Chaloner and Brant (1988). A Bayesian Approach to Outlier
@@ -566,16 +566,16 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          modification has been added in order to make sure that there are
          no additional block signs within matlab code.</p> <p>
 
-       <hr>[<b>9</b>] If a procedure contains varargout, then the string:
+       <hr>[<b>9</b>] If a procedure contains varargout, then the string:</p> <p>
                        "Optional Output:"
          must be present. For example suppose there is a function called mcd which
-         has the following sintax:
+         has the following sintax:</p> <p>
 
                          function [RAW,REW,varargout] = mcd(Y,varargin).</p> <p>
 
-         Then at the end of the output argument the format must be as follows:
+         Then at the end of the output argument the format must be as follows:</p> <p>
 
-                               Optional Output:
+                               Optional Output:</p> <p>
 
                                          C     : matrix of the indices of the
                                                  subsamples extracted for
@@ -590,7 +590,7 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
 
 --------------------------------------------------------------------------
 
-         GENERAL REMARKS:
+         GENERAL REMARKS:</p> <p>
 
          -----------------------------------------------------------------------:.</p> <p>
          REMARK1: if symbol "%" is wanted and it is not a simple comment delimiter, it
@@ -637,11 +637,11 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
          found in routine ncx2mixtcdf.m" is converted as follows.</p> <p>
          "More details can be found in routine
          &lt;a href="ncx2mixtcdf.html"&gt;ncx2mixtcdf&lt;/a&gt;".</p> <p>
-         Similarly, a sentence such as:
+         Similarly, a sentence such as:</p> <p>
          The full paper can be downloaded from "http://rosa.unipr.it".</p> <p>
-         is converted as follows:
+         is converted as follows:</p> <p>
          "The full paper can be downloaded from
          &lt;a href="http://rosa.unipr.it"&gt; <a href="http://rosa.unipr.it">http://rosa.unipr.it</a> &lt;/a&gt;".</p> <p>
          -----------------------------------------------------------------------:.</p><p>
 
-</p><hr></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'coder/nvidia/ref/mqttpublish.html'))" itemprop="url"><span itemprop="name"><code>publish</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+</p><hr></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'matlab/ref/publish.html'))" itemprop="url"><span itemprop="name"><code>publish</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

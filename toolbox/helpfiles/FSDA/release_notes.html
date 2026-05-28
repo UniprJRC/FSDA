@@ -112,12 +112,55 @@ document.write(divsbefore);</script>
 		</thead>
 		<tr>
 			<td style="vertical-align: top; height: 669px; width: 61px;">
-			V&gt;8.7.10.0<br>(2026a)</td>
-			<td style="vertical-align: top; height: 669px; width: 114%;">MULTIVARIATE 
+			V&gt;8.7.10.25<br>(2026a)</td>
+			<td style="vertical-align: top; height: 669px; width: 114%;"><br>ROBUST MULTIVARIATE MISSING DATA <br>A full 
+			set of routines for the robust treatment of missing data has been 
+			added,<br><br>
+			
+			  <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+<td class="term"><a href="http://rosa.unipr.it/FSDA/mdEM.html">mdEM</a></td>
+<td class="description">EM algorithm for data with missing values (no trimming)</td>
+</tr>
+<tr>
+<td class="term"><a href="http://rosa.unipr.it/FSDA/mdImputeCondMean.html">mdImputeCondMean</a></td>
+<td class="description">Replace NaNs in Y by E[y_mis | y_obs, mu, Sigma] under MVN(mu,Sigma)</td>
+</tr>
+<tr>
+<td class="term"><a href="http://rosa.unipr.it/FSDA/mdMARsimulate.html">mdMARsimulate</a></td>
+<td class="description">Generates missing values under a MAR logistic mechanism</td>
+</tr>
+<tr>
+<td class="term"><a href="http://rosa.unipr.it/FSDA/mdMCARtest.html">mdMCARtest</a></td>
+<td class="description">Bootstrap test for change in Mahalanobis distances under MCAR</td>
+</tr>
+<tr>
+<td class="term"><a href="http://rosa.unipr.it/FSDA/mdPartialMD.html">mdPartialMD</a></td>
+<td class="description">Computes squared Mahalanobis distances using only observed entries</td>
+</tr>
+<tr>
+<td class="term"><a href="http://rosa.unipr.it/FSDA/mdPartialMD2full.html">mdPartialMD2full</a></td>
+<td class="description">Rescale partial squared Mahalanobis distances to the full-dimensional scale</td>
+</tr>
+<tr>
+<td class="term"><a href="http://rosa.unipr.it/FSDA/mdpattern.html">mdpattern</a></td>
+<td class="description">Finds and plots missing data patterns</td>
+</tr>
+<tr>
+<td class="term"><a href="http://rosa.unipr.it/FSDA/mdTEM.html">mdTEM</a></td>
+<td class="description">EM algorithm with trimming (TEM) for data with missing values</td>
+</tr>
+
+        </table>
+
+			
+			
+			<br><br>MULTIVARIATE 
 			DATA<br>In the biplot of PCA new knob control has been added to 
 			control the percentage of text labels which have to be displayed 
-			inside the biplot<br><br>GRAPHICS<br>New function dumbbellplot 
-			(testing phase, written by Giacomo Boschi)<br><br>
+			inside the biplot<br><br>GRAPHICS<br>New function 
+			<a href="http://rosa.unipr.it/FSDA/dumbellplot.html">dumbbellplot</a> 
+			(written by Giacomo Boschi)<br><br>
 			Improved option plots in 
 			<a href="http://rosa.unipr.it/FSDA/CorAnaplot.html">CorAnaplot</a>. Now it is possible to specify the type of colormap 
 			when the color of the labels in the correspondence 
@@ -127,15 +170,35 @@ document.write(divsbefore);</script>
 			See the documentation of CorAnaplot for additional details and the examples.
 			
 			<br><br>DISTRIBUTIONS<br>New functions  mWNChygeodds and mFNChygeodds 
-			to compute the odds given the means<br><br>UTILITIES<br>In function 
+			to compute the odds given the means<br><br>INTERACTIVE ANALYSIS OF 
+			FINANCIAL TIME SERIES<br>Three new 
+			function <a href="http://rosa.unipr.it/FSDA/getYahoo.html">getYahoo</a>,
+			<a href="http://rosa.unipr.it/FSDA/getTickers.html">getTickers</a> 
+			and <a href="http://rosa.unipr.it/FSDA/getFundamentals.html">
+			getFundamentals</a>.
+			<br>getTickers, getYahoo and getFundamentals form a complete financial-data pipeline in FSDA.
+
+			<br>getTickers selects the set of market symbols to analyse, for example representative tickers from a stock index or exchange.
+
+			<br>getYahoo downloads the corresponding historical price data from Yahoo Finance and enables dynamic interactive visualization of the time series.
+
+			<br>getFundamentals extracts fundamental financial information for the selected companies, allowing the price behaviour to be complemented with balance-sheet and market indicators.
+			
+			
+			<br><br>TIME SERIES<br>New function
+			<a href="http://rosa.unipr.it/FSDA/hpfilterFS.html">hpfilterHS</a> 
+			which enables to extract the trend using the Hodrick Prescott filter 
+			and is robust to contatmination.<br><br>UTILITIES<br>In function 
 			tuna hypertextual link has been added to automatically distinstall a 
-			toolbox version.<br><br>AUTOCOMPLETION<br>Function autocompletion 
-			has been added to functions biplotFS, spmplot, improved 
+			toolbox version.<br><br>DATASETS<br>Added new contingency tables 
+			ChristmasSales and ExportShifts<br><br>AUTOCOMPLETION<br>Function autocompletion 
+			has been added to functions biplotFS, spmplot, getYahoo, 
+			getFundamentals and getTickers, improved 
 			autocompletion in pcaFS (autocompletions have been written by
 			<a href="https://github.com/BoschiGiacomo">Giacomo Boschi</a> and
 			<a href="https://github.com/NourTerryS">NourTerryS</a>), <br></td>
 			<td class="auto-style1" style="vertical-align: top; height: 669px; width: 14%;">
-			March 2026<br><br>Now the label of the points in the 
+			June&nbsp; 2026<br><br>Now the label of the points in the 
 			correspondence analysis plot correctly appear in front and not 
 			behind the colorbar.<br><br>Functions
 			<a href="http://rosa.unipr.it/FSDA/yXplot.html">yXplot</a> and

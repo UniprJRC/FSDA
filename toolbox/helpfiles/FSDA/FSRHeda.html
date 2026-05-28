@@ -28,7 +28,8 @@ m=800
 m=900
 m=1000
 m=1100
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRHeda with optional argument.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRHeda with optional argument.</li></span></a></span></h3><div class="collapse"><p>
      Example of use of function FSRHeda using a random start and traditional
      t-stat monitoring.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('tradeH.txt');
 y=XX(:,2);
@@ -140,27 +141,44 @@ xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Warning: Usin
 RANDN to use legacy random number generators.  This syntax is not recommended.
 See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old
 syntax. 
-Total estimated time to complete LMS:  0.05 seconds 
-Warning: Rank deficient, rank = 1, tol =  5.854560e+02. 
+Total estimated time to complete LMS:  0.06 seconds 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  3.302784e-21. 
-Warning: Rank deficient, rank = 1, tol =  2.259212e+03. 
+RCOND =  1.360368e-16. 
+Warning: Rank deficient, rank = 2, tol =  1.060133e+03. 
+Warning: Rank deficient, rank = 2, tol =  1.190911e+03. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  4.765111e-20. 
-Warning: Rank deficient, rank = 2, tol =  1.237249e+03. 
+RCOND =  4.134785e-19. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  1.913104e-20. 
-Warning: Rank deficient, rank = 1, tol =  1.344331e+03. 
+RCOND =  7.758098e-17. 
+Warning: Rank deficient, rank = 1, tol =  1.502067e+03. 
+Warning: Rank deficient, rank = 1, tol =  4.352563e+03. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  4.246314e-20. 
-Warning: Rank deficient, rank = 2, tol =  2.495266e+03. 
-Warning: Rank deficient, rank = 2, tol =  6.170946e+03. 
+RCOND =  2.129088e-16. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  1.720547e-16. 
+RCOND =  3.403554e-19. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  4.146527e-20. 
+RCOND =  3.225074e-19. 
+Warning: Rank deficient, rank = 1, tol =  3.394034e+02. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  2.932279e-19. 
+Warning: Rank deficient, rank = 1, tol =  1.788837e+02. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  7.370803e-19. 
+Warning: Rank deficient, rank = 2, tol =  7.275988e+02. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.112567e-20. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.396482e-16. 
+Warning: Rank deficient, rank = 1, tol =  1.319239e+03. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.913507e-19. 
+Warning: Rank deficient, rank = 2, tol =  1.188519e+03. 
+Warning: Rank deficient, rank = 2, tol =  1.789386e+03. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  9.313406e-19. 
 Warning: Imaginary parts of complex X and/or Y arguments ignored. 
-</pre><a href='http://rosa.unipr.it/fsda/FSRHeda.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRHeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRHeda_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRHeda_03.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
+</pre>
+            <a href='http://rosa.unipr.it/fsda/FSRHeda.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRHeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRHeda_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRHeda_03.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
      beta and sigma2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% House price data
 load hprice.txt;
 n=size(hprice,1);
@@ -222,9 +240,9 @@ xlabel('Subset size m','FontSize',FontSize);
 % Add multiple title
 suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...
 num2str(xlimL) ',' num2str(xlimU) ...
-']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.18 seconds 
+']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.38 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 38.6%
+Warning: Number of subsets without full rank equal to 37.5%
 Warning: Matrix is singular, close to singular or badly scaled. Results may be
 inaccurate. RCOND = NaN. 
 Warning: Matrix is singular, close to singular or badly scaled. Results may be
@@ -242,7 +260,7 @@ Warning: Maximum number of iteration has been reached without convergence
 Warning: Maximum number of iteration has been reached without convergence 
 Warning: Maximum number of iteration has been reached without convergence 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  2.229039e-24. 
+RCOND =  3.532323e-24. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
 RCOND =  2.531461e-22. 
 Warning: Rank problem in step 16: Beta coefficients are used from the most
@@ -1026,11 +1044,12 @@ recent correctly computed step
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
 RCOND =  3.601941e-24. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  2.837818e-20. 
+RCOND =  2.837569e-20. 
 Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  1.069719e-18. 
+RCOND =  1.069716e-18. 
 m=500
-</pre><a href='http://rosa.unipr.it/fsda/FSRHeda.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRHeda_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables. </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
+</pre>
+            <a href='http://rosa.unipr.it/fsda/FSRHeda.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRHeda_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables. </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
                values will automatically be excluded from the
                computations.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
@@ -1049,13 +1068,13 @@ m=500
                \[
                \omega_i = 1 +  exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+
                \gamma_{r} X(i,Z(r)))
-               \]
+               \]<p>
                Therefore, if, for example, the explanatory variables
                responsible for heteroscedasticity are columns 3 and 5
-               of matrix X, it is possible to use both the syntax:
+               of matrix X, it is possible to use both the syntax:</p> <p>
                     FSRHeda(y,X,X(:,[3 5]))
-               or the syntax:
-                    FSRHeda(y,X,[3 5])</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial
+               or the syntax:</p><p>
+                    FSRHeda(y,X,[3 5])</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial
                subset. </span>  </a><span class="example_desc">Vector or scalar.</span></span></h3> <div class="collapse"> <p>If bsb=0 (default) then the procedure starts with p
                units randomly chosen, else if bsb is not 0 the search will
                start with m0=length(bsb).</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',false
@@ -1073,7 +1092,7 @@ m=500
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search
                        and start monitoring required diagnostics. If init is not
-                       specified it will be set equal to :
+                       specified it will be set equal to :</p> <p>
                        p+1, if the sample size is smaller than 40;</p> <p>
                        min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
                        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
@@ -1122,40 +1141,40 @@ m=500
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string</code></p></div></div><div class="expandableContent"><div id="inputarg_constr" class="clearfix"></div><h3 id="input_argument_namevalue_constr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>constr</code> &#8212;units which are forced to join the search in the last r steps.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>r x 1 vector. The default is constr=''.  No constraint is imposed
                         </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'constr',[1 6 3]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>RES</code></td><td><p><p>n x (n-init+1) = matrix containing the monitoring of
-               scaled residuals:
+               scaled residuals:</p> <p>
                1st row = residual for first unit;</p> <p>
                ...;</p><p>
                nth row = residual for nth unit.</p></p></td></tr><tr valign="top"><td><code>LEV</code></td><td><p><p>(n+1) x (n-init+1) = matrix containing the monitoring of
-               leverage:
+               leverage:</p> <p>
                1st row = leverage for first unit;</p> <p>
                ...;</p><p>
                nth row = leverage for nth unit.</p></p></td></tr><tr valign="top"><td><code>BB</code></td><td><p><p>n x (n-init+1) matrix containing the information about the units belonging
-               to the subset at each step of the forward search:
+               to the subset at each step of the forward search:</p> <p>
                1st col = indexes of the units forming subset in the
                initial step;</p> <p>
                ...;</p><p>
                last column = units forming subset in the final step (all
                units).</p></p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>n-init x 3 matrix which contains the monitoring of minimum
                deletion residual or (m+1)ordered residual at each step of
-               the forward search:
+               the forward search:</p> <p>
                1st col = fwd search index (from init to n-1);</p> <p>
                2nd col = minimum deletion residual;</p> <p>
                3rd col = (m+1)-ordered residual.</p><p>
                Remark: these quantities are stored with sign, that is the
                min deletion residual is stored with negative sign if
                it corresponds to a negative residual.</p></p></td></tr><tr valign="top"><td><code>msr</code></td><td><p><p>n-init+1 x 3 = matrix which contains the monitoring of
-               maximum studentized residual or m-th ordered residual:
+               maximum studentized residual or m-th ordered residual:</p> <p>
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = maximum studentized residual;</p><p>
                3rd col = (m)-ordered studentized residual.</p></p></td></tr><tr valign="top"><td><code>nor</code></td><td><p><p>(n-init+1) x 4 matrix containing the monitoring of
-               normality test in each step of the forward search:
+               normality test in each step of the forward search:</p> <p>
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = Asymmetry test;</p> <p>
                3rd col = Kurtosis test;</p><p>
                4th col = Normality test.</p></p></td></tr><tr valign="top"><td><code>Bgls</code></td><td><p>(n-init+1) x (p+1) matrix containing the monitoring of
                estimated beta coefficients in each step of the forward
                search.</p></td></tr><tr valign="top"><td><code>S2</code></td><td><p><p>(n-init+1) x 4 matrix containing the monitoring of S2 or R2
-               in each step of the forward search:
+               in each step of the forward search:</p> <p>
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = monitoring of unbiased S2;</p> <p>
                3rd col = monitoring of R2;</p><p>
@@ -1163,7 +1182,7 @@ m=500
                estimate of $\sigma^2$ at step m is divided by the
                consistency factor (to make the estimate asymptotically
                unbiased).</p></p></td></tr><tr valign="top"><td><code>coo</code></td><td><p><p>(n-init+1) x 3 matrix containing the monitoring of Cook or
-               modified Cook distance in each step of the forward search:
+               modified Cook distance in each step of the forward search:</p> <p>
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = monitoring of Cook distance;</p><p>
                3rd col = monitoring of modified Cook distance.</p></p></td></tr><tr valign="top"><td><code>Tgls</code></td><td><p>(n-init+1) x (p+1) matrix containing the monitoring of
@@ -1177,7 +1196,7 @@ m=500
                units included in the final step of the search.</p></p></td></tr><tr valign="top"><td><code>betaINT</code></td><td><p><p>Confidence intervals for the elements of $\beta$.</p> <p>
                  betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D
                  array.</p> <p>
-                 Each third dimension refers to an element of beta:
+                 Each third dimension refers to an element of beta:</p> <p>
                  betaINT(:,:,1) is associated with first element of beta;</p> <p>
                  ...;</p> <p>
                  betaINT(:,:,p) is associated with last element of beta.</p> <p>
@@ -1201,7 +1220,7 @@ m=500
                 ...;</p> <p>
                 penultimate col = lower confidence limit based on
                 conflev(end);</p><p>
-                last col = upper confidence limit based on conflev(end).</p></p></td></tr><tr valign="top"><td><code>Hetero</code></td><td><p><p>estimate of coefficients of scedastic equation:
+                last col = upper confidence limit based on conflev(end).</p></p></td></tr><tr valign="top"><td><code>Hetero</code></td><td><p><p>estimate of coefficients of scedastic equation:</p> <p>
                     1st col = fwd search index;</p> <p>
                     2nd col = estimate of first coeff of scedastic
                     equation;</p> <p>
@@ -1211,8 +1230,8 @@ m=500
                    weights.</p> <p>
                n x (n-init+1) matrix which contains information about the
                weights assigned to each unit to make the regression equation
-               skedastic.</p><p>
-            More precisely, if:
+               skedastic.</p> <p>
+            More precisely, if:</p><p>
             $var (\epsilon)= \sigma^2 \Omega$, where
             $\Omega=diag(\omega_1, \ldots, \omega_n)$ the weights which are stored are
             $(\omega_1^{-0.5}, \ldots, \omega_n^{-0.5})$;</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>A vector with n elements that contains the response

@@ -6,7 +6,7 @@
  analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
  Yeo-Johnson transformation to allow two values of the transformations
  parameter: λN for negative observations and λP for non-negative ones.</p> <p>
- ScoreYJpn computes:
+ ScoreYJpn computes:</p> <p>
  1) the t test associated with the constructed variable computed assuming
  a different transformation for positive observations keeping the value of
  the transformation parameter for negative observations fixed. In short, we
@@ -40,7 +40,8 @@ disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
     0.5000    1.3042    0.2740   -1.0664
     1.0000   -4.8797   -6.2978   -7.9574
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example in which positive and negative observation require different lambda.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example in which positive and negative observation require different lambda.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
 n=100;
 y=randn(n,1);
 % Transform in a different way positive and negative values.
@@ -67,7 +68,8 @@ disp([la outSC.Score(:,1) outSC1.Score outSC.Score(:,2)])
     0.5000   -0.7744    0.8272    2.7597
     1.0000   -9.8327   -9.4050   -6.8708
 
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Extended score with all default options for the wool data.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Extended score with all default options for the wool data.</li></span></a></span></h3><div class="collapse"><p>
      Load the wool data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('wool.txt');
 y=XX(:,end);
 X=XX(:,1:end-1);
@@ -111,9 +113,9 @@ disp([la' outpn.Score(:,1) out.Score outpn.Score(:,2)])</pre></div></div></p>
                  unchanged. In other words, the additional column of ones
                  for the intercept is not added. As default nocheck=false.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Containing the following fields:
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
 
-<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>score test. Matrix.</p> <p>
+</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>score test. Matrix.</p> <p>
                             Matrix of size length(lambda)-by-3 that
                             contains the value of the score test for each
                             value of lambda specified in optional input

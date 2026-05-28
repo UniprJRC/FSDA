@@ -67,7 +67,8 @@ plot(tau_out,C_spot);
 xlabel('tau'); 
 title('Spot co-volatility estimates Vs Actual values')
 legend('Actual values','Estimated values')</pre></div></div><pre class="codeoutput">WARNING: estimation will be performed on the equally-spaced grid with mesh size equal to T/(2*M), provided as an output variable.
-</pre><a href='http://rosa.unipr.it/fsda/FM_spot_cov.html#Example_3'><img vspace="5" hspace="5" src="images\FM_spot_cov_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x1" class="clearfix"> </div> <h3 id="input_argument_x1" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x1</code> &#8212; Observation values of process 1. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>Row or column vector containing
+</pre>
+            <a href='http://rosa.unipr.it/fsda/FM_spot_cov.html#Example_3'><img vspace="5" hspace="5" src="images\FM_spot_cov_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x1" class="clearfix"> </div> <h3 id="input_argument_x1" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x1</code> &#8212; Observation values of process 1. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>Row or column vector containing
               the observed values.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_x2" class="clearfix"> </div> <h3 id="input_argument_x2" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x2</code> &#8212; Observation values of process 2. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>Row or column vector containing
               the observed values.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_t1" class="clearfix"> </div> <h3 id="input_argument_t1" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>t1</code> &#8212; Observation times of process 1. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>Row or column vector with the same
               length of x1 containing the observation times.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_t2" class="clearfix"> </div> <h3 id="input_argument_t2" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>t2</code> &#8212; Observation times of process 2. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>Row or column vector with the same
@@ -99,12 +100,12 @@ legend('Actual values','Estimated values')</pre></div></div><pre class="codeout
  
  Let $i=1,2$. For any positive integer $n_i$, let $\mathcal{S}^i_{n_i}:=\{ 0=t^i_{0}\leq \cdots
  \leq t^i_{n_i}=T  \}$ be the observation times for the $i$-th asset. Moreover, let $\delta_l(x^i):=
- x^i(t^i_{l+1})-x^i(t^i_l)$ be the increments of $x^i$.</p><p> 
+ x^i(t^i_{l+1})-x^i(t^i_l)$ be the increments of $x^i$.</p> <p> 
  The Fourier estimator of the spot covariance at time $t \in [0,T]$ is
  given by 
  $$\widehat c_{n_1,n_2,N,M}(\tau)= \sum_{|k|\leq M} \left(1-{|k|\over
  M}\right)c_k(c_{n_1,n_2,N}) \, e^{{\rm i}\frac{2\pi}{T}k\tau},$$
- where:
+ where:</p><p>
  $$c_k(c_{n_1,n_2,N})={T\over {2N+1}} \sum_{|s|\leq N} c_{s}(dx^1_{n_1})c_{k-s}(dx^2_{n_2}),$$
 
  $$c_k(dx^i_{n_i})= {1\over {T}} \sum_{l=0}^{n_i-1} e^{-{\rm i}\frac{2\pi}{T}kt^i_l}\delta_{l}(x_i).$$

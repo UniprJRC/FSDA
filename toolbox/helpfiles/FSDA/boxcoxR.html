@@ -3,7 +3,7 @@
  the supplied range. Supported families are Box Cox, Yeo and Johnson and
  extended Yeo and Johnson (Atkinson et al. 2020).</p> <p>
 
-               The profile log-likelihood is computed as:
+               The profile log-likelihood is computed as:</p><p>
                </p>\[
                -(n/2) \log( (y(\lambda)-X\beta(\lambda))'(y(\lambda)-X\beta(\lambda))/n) +\log J
                \]
@@ -19,12 +19,14 @@ y=wool(:,4);
 X=wool(:,1:3);
 out=boxcoxR(y,X);
 disp(['Estimate of lambda using Box Cox is =',num2str(out.lahat)])</pre></div></div><pre class="codeoutput">Estimate of lambda using Box Cox is =-0.059
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> boxcoxR using YJ transformation.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> boxcoxR using YJ transformation.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
 out=boxcoxR(y,X,'family','YJ');
 disp(['Estimate of lambda using YJ family is =',num2str(out.lahat)])</pre></div></div><pre class="codeoutput">Estimate of lambda using YJ family is =-0.062
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option confint.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option confint.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
 % A 99.9 per cent confidence interval for lambda is used.
@@ -69,7 +71,8 @@ disp('MLE of laPos and laNeg')
 disp(out.lahat)</pre></div></div><pre class="codeoutput">MLE of laPos and laNeg
     0.2364    0.8265
 
-</pre><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\boxcoxR_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Another example of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\boxcoxR_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Another example of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p>
      In this example we specify as solver to use fminunc<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
 % Generate regression data
 outsim=simulateLM(100,'R2',0.6);
@@ -93,7 +96,8 @@ disp(out.lahat)
 assert(max(abs(out.lahat-[0.3166   -0.8825]))&lt;1e-4,'Wrong values of laP and laN')</pre></div></div><pre class="codeoutput">MLE of laPos and laNeg
     0.3166   -0.8825
 
-</pre></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using simulated contaminated data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(10000)
+</pre>
+            </p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using simulated contaminated data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(10000)
 % Generate X and y data
 n=200;
 X=randn(n,3);
@@ -206,7 +210,7 @@ outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href
                of usefmin is false, that is the likelihood is evaluated at
                the points laseqPos and laseqNeg without the solver.</p> <p>
                If usefmin is a structure it may contain the following
-               fields:
+               fields:</p><p>
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MaxIter</code></td><td><p>Maximum number of iterations (default is 1000).</p></td></tr><tr valign="top"><td><code>TolX</code></td><td><p>Termination tolerance for the parameters
                    (default is 1e-7).</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the solver. Possible values are
                    'fminsearch' (default) and 'fminunc'. fminunc needs the
@@ -231,7 +235,7 @@ outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href
                length(laseq)-by-2. In this case the first column contains
                the values of laseq and the second column the values of the
                profile log likelihood. If family is 'YJpn', the dimension of
-               out.LogLik is:
+               out.LogLik is:</p> <p>
                * length(laseqPos)-by-length(laseqNeg) if option usefmin is
                  false (default) and therefore the maximization routine is
                  not called.</p> <p>

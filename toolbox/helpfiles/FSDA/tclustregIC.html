@@ -21,7 +21,8 @@ k=3
 k=4
 k=5
 The labels of c in the top part of the plot denote the values of c for which IC is minimum
-</pre><a href='http://rosa.unipr.it/fsda/tclustregIC.html#Example_1'><img vspace="5" hspace="5" src="images\tclustregIC_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustregIC_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustregIC_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclustregIC_04.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclustregIC of 'X data' with the handle 'h' option.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustregIC.html#Example_1'><img vspace="5" hspace="5" src="images\tclustregIC_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustregIC_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustregIC_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclustregIC_04.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclustregIC of 'X data' with the handle 'h' option.</li></span></a></span></h3><div class="collapse"><p>
      The IC plot is copied into a subplot.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X  = load('X.txt');
 y1 = X(:,end);
 X1 = X(:,1:end-1);
@@ -48,7 +49,8 @@ k=3
 k=4
 k=5
 The labels of c in the top part of the plot denote the values of c for which IC is minimum
-</pre><a href='http://rosa.unipr.it/fsda/tclustregIC.html#Example_2'><img vspace="5" hspace="5" src="images\tclustregIC_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustregIC using CWM model.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustregIC.html#Example_2'><img vspace="5" hspace="5" src="images\tclustregIC_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustregIC using CWM model.</li></span></a></span></h3><div class="collapse"><p>
      Generate mixture of regression using MixSimReg, with an average
      overlapping at centroids = 0.01. Use all default options.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(372,'twister');
 p=3;
@@ -77,7 +79,8 @@ k=2
 k=3
 k=4
 k=5
-</pre><a href='http://rosa.unipr.it/fsda/tclustregIC.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\tclustregIC_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustregIC with values of the restriction factor and number of groups supplied by the user.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustregIC.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\tclustregIC_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustregIC with values of the restriction factor and number of groups supplied by the user.</li></span></a></span></h3><div class="collapse"><p>
      Generate mixture of regression using MixSimReg, with an average
      overlapping at centroids =0.001.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(372,'twister');
 p=3;
@@ -99,7 +102,7 @@ Q=MixSimreg(k,p,'BarOmega',0.001);
 n=200;
 [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
 yXplot(y,X,id);
-% CWM with no contrainst on cov(X)
+% CWM with no constraint on cov(X)
 out = tclustregIC(y,X(:,2:end),'alphaX',1,'ccSigmaX',10^10);
 tclustICplot(out,'whichIC','MIXMIX')</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustregIC of fishery2003 with or without intercept.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
 rng(123)
@@ -118,7 +121,7 @@ cvec  = [1,2,4,8];
 outIC = tclustregIC(y,X,'whichIC','CLACLA','kk',kvec,'cc',cvec,'alphaLik',alpha,'intercept',intercept,'plots',0);
 % Extracts a set of best relevant solutions ...
 [outICsol] = tclustICsol(outIC,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',5,'ThreshRandIndex',0.7);
-% ... and visualise them with the carbike plot, which highlights the most
+% ... and visualize them with the carbike plot, which highlights the most
 % relevant one in intuitive way.
 [hcb,areas] = carbikeplot(outICsol,'SpuriousSolutions',false);
 % Use the information extracted by tclustICsol to identify the best
@@ -130,7 +133,7 @@ if numel(truesoli) &gt; 0
 if amax&gt;0
 % take the true solution with larger area
 kopt = outICsol.CLACLAbs{truesoli(iamax),1};  % optimal number of groups
-copt = outICsol.CLACLAbs{truesoli(iamax),2};  % optimal nrestriction factor
+copt = outICsol.CLACLAbs{truesoli(iamax),2};  % optimal restriction factor
 else
 % if areas are all zero, take the true solution with larger k
 kopt = outICsol.CLACLAbs{truesoli(1),1};
@@ -148,7 +151,7 @@ outEDA        = tclustregeda(y,X,kopt,copt,alphaLikvec,0,'intercept',intercept,'
 [ARImax]   = max(outEDA.Amon(:,2));
 iARImax    = find(outEDA.Amon(:,2) == ARImax);
 alphaopt   = outEDA.Amon(iARImax(end),1);
-% final clustering % with the parameters sugggested by the monitoring
+% final clustering % with the parameters suggested by the monitoring
 outTCLUST    = tclustreg(y,X,kopt,copt,alphaopt,0,'intercept',intercept,'plots',1);
 idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
              y can be either a row or a column vector.</p><p>
@@ -241,7 +244,7 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>int16 | int32 | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;type of information criterion.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character which specifies which information criteria must
                be computed for each k (number of groups) and each value of
                the restriction factor (c).</p> <p>
-               Possible values for whichIC are:
+               Possible values for whichIC are:</p> <p>
                'MIXMIX'  = a mixture model is fitted and to
                    compute the information criterion the mixture
                    likelihood is used. This option corresponds to the use of
@@ -292,7 +295,7 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
                 random numbers which are used to initialize the
                 proportions of the groups. This option is effective just
                 if nsamp is a matrix which contains pre-extracted
-                subsamples and k is a scalat. The purpose of this option
+                subsamples and k is a scalar. The purpose of this option
                 is to enable the user to replicate the results.</p> <p>
                 The default value of RandNumbForNini is empty,
                 that is random numbers from uniform are used.</p><p>
@@ -325,7 +328,7 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
                option 'whichIC'.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;the axis handle of a figure where to send the IC plot.</span></a><span class="example_desc">this can be used to host the IC plot in a subplot of a               complex figure formed by different panels.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'h',h1 where h1=subplot(2,1,1)
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Axes object (supplied as a scalar)</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;number of pools for parellel computing.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If numpool &gt; 1, the routine automatically checks if
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Axes object (supplied as a scalar)</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;number of pools for parallel computing.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If numpool &gt; 1, the routine automatically checks if
                the Parallel Computing Toolbox is installed and distributes
                the random starts over numpool parallel processes. If
                numpool &lt;= 1, the random starts are run sequentially. By
@@ -350,7 +353,7 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
                default value for numpool the number of physical cores
                rather than the number of logical ones. The user can
                increase the number of parallel pool workers allocated to
-               the multiple start monitoring by:
+               the multiple start monitoring by:</p> <p>
                - setting the NumWorkers option in the local cluster profile
                  settings to the number of logical cores (Remark 2). To do
                  so go on the menu "Home|Parallel|Manage Cluster Profile"
@@ -409,35 +412,35 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
                same regression coefficients (apart from the intercepts).</p> <p>
                The default value of commonslope is false;</p><p> 
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'commonslope',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
 
-        <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p>matrix of size 5-times-8 if kk and ccsigmay are not
-                   specififed else it is a matrix of size length(kk)-times
-                   length(cc) containinig the value of the penalized
+        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p>matrix of size 5-times-8 if kk and ccsigmay are not
+                   specified else it is a matrix of size length(kk)-times
+                   length(cc) containing the value of the penalized
                    classification likelihood. This output is present only
                    if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.</p></td></tr><tr valign="top"><td><code>CLACLAtable</code></td><td><p>same output of CLACLA but in MATLAB
                    table format (this field is present only if your MATLAB
                    version is not&lt;2013b).</p></td></tr><tr valign="top"><td><code>IDXCLA</code></td><td><p>cell of size 5-times-8 if kk and cc are not
-                   specififed else it is a cell of size length(kk)-times
+                   specified else it is a cell of size length(kk)-times
                    length(cc). Each element of the cell is a vector of
-                   length n containinig the assignment of each unit using
+                   length n containing the assignment of each unit using
                    the classification model. This output is present only
                    if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.</p></td></tr><tr valign="top"><td><code>MIXMIX</code></td><td><p>matrix of size 5-times-8 if kk and cc are not
-                   specififed else it is a matrix of size length(kk)-times
-                   length(cc) containinig the value of the penalized
+                   specified else it is a matrix of size length(kk)-times
+                   length(cc) containing the value of the penalized
                    mixture likelihood. This output is present only if
                    'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.</p></td></tr><tr valign="top"><td><code>MIXMIXtable</code></td><td><p>same output of MIXMIX but in MATLAB
                    table format (this field is present only if your MATLAB
                    version is not&lt;2013b).</p></td></tr><tr valign="top"><td><code>MIXCLA</code></td><td><p>matrix of size 5-times-8 if kk and cc are not
-                   specififed else it is a matrix of size length(kk)-times
-                   length(cc) containinig the value of the ICL. This
+                   specified else it is a matrix of size length(kk)-times
+                   length(cc) containing the value of the ICL. This
                    output is present only if 'whichIC' is 'MIXCLA' or
                    'whichIC' is 'ALL'.</p></td></tr><tr valign="top"><td><code>MIXCLAtable</code></td><td><p>same output of MIXCLA but in MATLAB
                    table format (this field is present only if your MATLAB
                    version is not&lt;2013b).</p></td></tr><tr valign="top"><td><code>IDXMIX</code></td><td><p>cell of size 5-times-8 if kk and cc are not
-                   specififed else it is a cell of size length(kk)-times
+                   specified else it is a cell of size length(kk)-times
                    length(cc). Each element of the cell is a vector of
-                   length n containinig the assignment of each unit using
+                   length n containing the assignment of each unit using
                    the mixture model. This output is present only if
                    'whichIC' is 'MIXMIX', 'MIXCLA' or 'ALL'.</p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
                    components) which have been considered. This  vector
@@ -448,13 +451,13 @@ idxTCLUST    = outTCLUST.idx;</pre></div></div></p></div></div></div></div
                    input optional argument ccsigmay if ccsigmay had been specified
                    else it is equal to [1, 2, 4, 8, 16, 32, 64, 128].</p></td></tr><tr valign="top"><td><code>ccSigmaX</code></td><td><p>vector containing the values of c (values of the
                    restriction factor) which have been considered for the
-                   covariance matrices of the esplnatory variables. This
+                   covariance matrices of the explanatory variables. This
                    vector is equal to input optional argument ccsigmaX if
                    ccsigmaX had been specified and input option alphaX=1
-                   otherwise it is equal to 12 if alphaX=1 and xxsigmaX
+                   otherwise it is equal to 12 if alphaX=1 and ccsigmaX
                    has not been specified. Finally if input option alphaX
                    is not equal 1 out.ccsigmaX is an empty value</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>scalar containing the trimming level which has
-                   been used in the likelidood (it stores the values of input alphaLik).</p></td></tr><tr valign="top"><td><code>alphaX</code></td><td><p>scalar containing information about
+                   been used in the likelihood (it stores the values of input alphaLik).</p></td></tr><tr valign="top"><td><code>alphaX</code></td><td><p>scalar containing information about
                    second-level trimming or constrained weighted model for X.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>Original data matrix of explanatory variables.</p> <p>
                 The field is present if option Ysave is set to 1.</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>Original vector containing the response
                     The field is present if option Ysave is set to 1.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2019). Assessing Robust

@@ -18,7 +18,8 @@ p value of the Chi2 approximation of Box test
    3.3520e-20
 
 *****************************************************************
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Box test for Iris with option Fapprox.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Box test for Iris with option Fapprox.</li></span></a></span></h3><div class="collapse"><p>
      load iris data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris
 % Compute Box test of equality of covariance matrices.
 out=boxtest(meas,species,'dispresults',true,'Fapprox',true)</pre></div></div><pre class="codeoutput">*****************************************************************
@@ -50,7 +51,8 @@ out =
        LRFapprox_pval: 3.5781e-20
                   Spl: [4&times;4 double]
 
-</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v
+</pre>
+            </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v
                variables. Rows of Y represent observations, and columns represent
                variables. Missing values (NaN's) and infinite values
                (Inf's) are allowed, since observations (rows) with missing
@@ -94,18 +96,18 @@ out =
                        given just if input option Fapprox is true.</p></td></tr><tr valign="top"><td><code>LRFapprox_pval</code></td><td><p>scalar which contains the p-value of
                        $F$ approximation of Box test of homogeneity of
                        covariances. This field is given just if input
-                       option Fapprox is true.</p></td></tr><tr valign="top"><td><code>Spl</code></td><td><p>pooled variance covariance matrix.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p>
+                       option Fapprox is true.</p></td></tr><tr valign="top"><td><code>Spl</code></td><td><p>pooled variance covariance matrix.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
  We assume independent samples of size $n_1$, $n_2$, $\ldots$,
  $n_g$ from a $v$-multivariate normal distribution. The hypothesis of
- equality of covariances is:
+ equality of covariances is:</p> <p>
  
- \[
+ </p>\[
  H_0= \Sigma_1 = \Sigma_2 = \ldots = \Sigma_g
- \]
+ \]<p>
 
- To make the test we calculate:
+ To make the test we calculate:</p> <p>
  
- \[
+ </p>\[
  M=\frac{ |S_1|^{n_1-1} |S_2|^{n_2-1} \ldots |S_g|^{n_g-1} }{|S_{pl}|^{\sum_{i=1}^g n_i-1} }
  \]<p>
 

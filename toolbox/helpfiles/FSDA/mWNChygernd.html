@@ -10,10 +10,10 @@
  without replacement. Each red ball has the weight $\omega_{1}$, and
  each white ball has the weight $\omega_{2}$; the probability ratio of red over
  white balls is then given by $odds = \omega_{1} / \omega_{2}$. Note that
- the odds are fixed once and for all during the drawings.</p><p>
+ the odds are fixed once and for all during the drawings.</p> <p>
  
  If the balls are taken one by one, the probability (say $p_1$) that the
- first ball picked is red is equal to the weight fraction of red balls:
+ first ball picked is red is equal to the weight fraction of red balls:</p><p>
  </p>\[
  p_1= \frac{K w_1}{K w_1 + (M-K) w_2} 
  \]<p> 
@@ -70,9 +70,10 @@ w=[1, 2.5, 1.8];
 n=10; 
 % Generate a random variate from this distribution
 r = mWNChygernd(m,w, n);
-disp(r);</pre></div></div><pre class="codeoutput">          1.00          6.00          3.00
+disp(r);</pre></div></div><pre class="codeoutput">             0          6.00          4.00
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 5 random variates from a multivariate non central Wallenius distribution.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 5 random variates from a multivariate non central Wallenius distribution.</li></span></a></span></h3><div class="collapse"><p>
      m = number of balls of each type in the urn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">m=[20,30,20, 10];
 % w = vector containing the weight of each color 
 w=[1, 2.5, 1.8, 100];
@@ -82,13 +83,14 @@ n=10;
 ntrials=5;
 R = mWNChygernd(m,w, n, ntrials);
 % R is matrix of size ntrials-by-length(m)
-disp(R);</pre></div></div><pre class="codeoutput">          1.00             0          1.00          8.00
-             0          3.00          1.00          6.00
-             0          1.00          3.00          6.00
+disp(R);</pre></div></div><pre class="codeoutput">             0          1.00          1.00          8.00
+             0             0          1.00          9.00
+          1.00             0             0          9.00
+             0             0          1.00          9.00
              0          1.00             0          9.00
-          1.00          1.00          1.00          7.00
 
-</pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Check agreement between theoretical and empirical relative frequencies.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Check agreement between theoretical and empirical relative frequencies.</li></span></a></span></h3><div class="collapse"><p>
      define the weights for each color<div class="programlisting"><div class="codeinput"><pre class="matlab-code">weights=[5,2,1]'; 
 % Define urn composition
 m=[12 25 18];   

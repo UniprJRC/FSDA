@@ -8,7 +8,7 @@
  strength, with larger absolute values indicating stronger
  relationships. Values close to an absolute value of 1, indicate a strong
  relationship between the two variables. Values close to 0 indicate little
- or no relationship. More in detail:
+ or no relationship. More in detail:</p> <p>
  $\gamma$ is a symmetric measure of association.</p> <p>
  Kendall's $\tau_a$ is a symmetric measure of association that does not
  take ties into account. Ties happen when both members of the data pair
@@ -59,7 +59,8 @@ The standard error are computed under H_1
     tauc     0.27375      0.053786       0.16833     0.37917 
     dyx      0.31466      0.059899       0.19726     0.43205 
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare the calculation of tau-b with that which comes from
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare the calculation of tau-b with that which comes from
      the Matlab function corr.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Starting from a contingency table, create the original data matrix to
 % be able to call corr.
 N=[20    23    20;
@@ -91,7 +92,8 @@ disp(['p-value of H0:taub=0 from FSDA routine corrOrdinal=' num2str(out.taub(4))
 tau-b from FSDA routine corrOrdinal=0.0083449
 p-value of H0:taub=0 from MATLAB routine corr=0.89952
 p-value of H0:taub=0 from FSDA routine corrOrdinal=0.89914
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with option conflev.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[26 26 23 18  9;
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with option conflev.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[26 26 23 18  9;
 6  7  9 14 23];
 out=corrOrdinal(N,'conflev',0.999);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with option NoStandardErrors.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[26 26 23 18  9;
 6  7  9 14 23];
@@ -140,7 +142,8 @@ The standard error are computed under H_1
     tauc     0.45128      0.040343       0.37221     0.53036 
     dyx       0.4525      0.040106       0.37389     0.53111 
 
-</pre><a href='http://rosa.unipr.it/fsda/corrOrdinal.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\corrOrdinal_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\corrOrdinal_02.png" alt=""> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 of use of option plots.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/corrOrdinal.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\corrOrdinal_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\corrOrdinal_02.png" alt=""> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 of use of option plots.</li></span></a></span></h3><div class="collapse"><p>
      Opinion on the movie watched and age interval.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cinema.mat
 out=corrOrdinal(cinema,'plots',true);
 % It is clear the negative relationship between 
@@ -167,7 +170,8 @@ The standard error are computed under H_1
     tauc       0          0.02197         0           0    
     dyx        0         0.019609         0           0    
 
-</pre><a href='http://rosa.unipr.it/fsda/corrOrdinal.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\corrOrdinal_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\corrOrdinal_04.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table that contains the input contingency
+</pre>
+            <a href='http://rosa.unipr.it/fsda/corrOrdinal.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\corrOrdinal_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\corrOrdinal_04.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table that contains the input contingency
                  table (say of size I-by-J) or the original data matrix.</p> <p>
                  In this last case N=crosstab(N(:,1),N(:,2)): as default,
                  procedure assumes that the input is a contingency table.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'NoStandardErrors',true
@@ -277,21 +281,21 @@ The standard error are computed under H_1
 
  \[
  b_{ij} = \sum_{k&gt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&lt;i} \sum_{l&gt;j} n_{kl}
- \]
+ \]<p>
 
 
- Twice the number of concordances, $C$ is given by:
- \[
+ Twice the number of concordances, $C$ is given by:</p> <p>
+ </p>\[
  2 \times C = \sum_{i=1}^I \sum_{j=1}^J n_{ij} a_{ij}
- \]
- Twice the number of discordances, $D$ is given by:
- \[
+ \]<p>
+ Twice the number of discordances, $D$ is given by:</p> <p>
+ </p>\[
  2 \times D = \sum_{i=1}^I \sum_{j=1}^J n_{ij} b_{ij}
- \]
+ \]<p>
 
- Goodman-Kruskal's $\gamma$ statistic is equal to the ratio:
+ Goodman-Kruskal's $\gamma$ statistic is equal to the ratio:</p> <p>
 
- \[
+ </p>\[
  \gamma= \frac{C-D}{C+D}
  \]<p>
 
@@ -306,7 +310,7 @@ The standard error are computed under H_1
  $\tau_b$ is equal to concordant minus discordant
  pairs divided by a term representing the geometric mean between the
  number of pairs not tied on x and the number not tied on y.</p> <p>
- More precisely:
+ More precisely:</p><p>
  </p>\[
   \tau_b= \frac{C-D}{\sqrt{ (0.5 n(n-1)-T_x)(0.5 n(n-1)-T_y)}}
  \]<p>
@@ -329,7 +333,7 @@ The standard error are computed under H_1
   d_{y|x} = \frac{C-D}{0.5 n(n-1)-T_x}
  \]<p>
 
- Null hypothesis:
+ Null hypothesis:</p> <p>
  corresponding index = 0. Alternative hypothesis (one-sided) index &lt; 0 or
  index &gt; 0.</p> <p>
 
@@ -340,9 +344,9 @@ The standard error are computed under H_1
  Note that the expression of the standard errors which is used to compute
  the confidence intervals is different from the expression which is used
  to test the null hypothesis of no association (no relationship or independence)
- between the two variables.</p><p>
+ between the two variables.</p> <p>
 
-As concerns the Goodman-Kruskal's $\gamma$ index we have that:
+As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
  </p>\[
   var(\gamma) =   \frac{4}{(C + D)^4}  \sum_{i=1}^I \sum_{j=1}^J
   n_{ij} (D a_{ij} - C b_{ij} )^2
@@ -350,16 +354,16 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:
  where
  \[
  d_{ij}=a_{ij}- b_{ij}
- \]
+ \]<p>
 
- The variance of $\gamma$ assuming the independence hypothesis is:
- \[
+ The variance of $\gamma$ assuming the independence hypothesis is:</p> <p>
+ </p>\[
  var_0(\gamma) =\frac{1}{(C + D)^2} \left( \sum_{i=1}^I \sum_{j=1}^J
   n_{ij} d_{ij}^2  -4(C-D)^2/n  \right)
- \]
+ \]<p>
 
- As concerns $\tau_a$ we have that:
- \[
+ As concerns $\tau_a$ we have that:</p> <p>
+ </p>\[
  var(\tau_a)= \frac{2}{n(n-1)} \left\{ \frac{2(n-2)}{n(n-1)^2}  \sum_{i=1}^I \sum_{j=1}^J (d_{ij} - \overline d)^2 + 1 - \tau_a^2 \right\}
  \qquad \mbox{with $i,j$ such that $N(i,j)&gt;0$}
  \]
@@ -367,16 +371,16 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:
 
  \[
  \overline d = \sum_{i=1}^I \sum_{j=1}^J d_{ij} /n  \qquad \mbox{with $i,j$ such that $N(i,j)&gt;0$}
- \]
+ \]<p>
 
- The variance of $\tau_a$ assuming the independence hypothesis is:
- \[
+ The variance of $\tau_a$ assuming the independence hypothesis is:</p> <p>
+ </p>\[
  var_0(\tau_a) =\frac{2 (2n+5)}{9n(n-1) }
- \]
+ \]<p>
 
 
- As concerns $\tau_b$ we have that:
- \[
+ As concerns $\tau_b$ we have that:</p> <p>
+ </p>\[
  var(\tau_b)= \frac{n}{w^4} \left\{ n \sum_{i=1}^I \sum_{j=1}^J n_{ij} \tau_{ij}^2 - \left( \sum_{i=1}^I \sum_{j=1}^J  n_{ij}\tau_{ij}\right)^2  \right\}
  \]
  where
@@ -384,39 +388,39 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:
  \[
   \tau_{ij} = 2n d_{ij} +2(C-D) n_{.j} w /n^3+2(C-D) (n_{i.}/n) \sqrt{
   w_c/w_r} \qquad \mbox{and} \qquad w= \sqrt{w_rw_c}
- \]
+ \]<p>
 
- The variance of $\tau_b$ assuming the independence hypothesis is:
- \[
+ The variance of $\tau_b$ assuming the independence hypothesis is:</p> <p>
+ </p>\[
  var_0(\tau_b) =\frac{4}{w_r w_c}  \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
- \]
+ \]<p>
 
 
- As concerns Stuart's $\tau_c$ we have that:
- \[
+ As concerns Stuart's $\tau_c$ we have that:</p> <p>
+ </p>\[
  var(\tau_c)= \frac{4m^2}{(m-1)^2 n^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
- \]
+ \]<p>
 
 
 
- The variance of $\tau_c$ assuming the independence hypothesis is:
- \[
+ The variance of $\tau_c$ assuming the independence hypothesis is:</p> <p>
+ </p>\[
  var_0(\tau_c) =var(\tau_c)
- \]
+ \]<p>
 
 
- As concerns $d_{y|x}$ we have that:
- \[
+ As concerns $d_{y|x}$ we have that:</p> <p>
+ </p>\[
  var( d_{y|x})= \frac{4}{w_r^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij}
  (w_r d_{ij} -2(C-D) (n-n_{i.}) \right\}^2
  \]
  where
  \[
  w_r= n^2- \sum_{i=1}^I n_{i.}^2
- \]
+ \]<p>
 
- The variance of $d_{y|x}$ assuming the independence hypothesis is:
- \[
+ The variance of $d_{y|x}$ assuming the independence hypothesis is:</p> <p>
+ </p>\[
  var_0(d_{y|x}) = \frac{4}{w_r^2} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
  \]<p>
 

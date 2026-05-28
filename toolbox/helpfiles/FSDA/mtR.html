@@ -42,7 +42,8 @@ ans =
 
     'R:       0.8966972  2.655087e-01 0.3721239  5.728534e-01 0.9082078  '
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example where the distributiion is specified (0 for uniform).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">m = 'MATLAB: ';
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example where the distributiion is specified (0 for uniform).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">m = 'MATLAB: ';
 r = 'R:      ';
 rn = mtR(5,0);
 expectedRes=[0.8966972 0.2655087 0.3721239 0.5728534 0.9082078]';
@@ -58,7 +59,8 @@ ans =
 
     'R:       0.8966972  2.655087e-01 0.3721239  5.728534e-01 0.9082078  '
 
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with the default stream.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with the default stream.</li></span></a></span></h3><div class="collapse"><p>
      The default stream is associated to a seed equal to 0.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">m = 'MATLAB: ';
 r = 'R:      ';
 rn = mtR(5,[],0);
@@ -308,7 +310,7 @@ assert(isequal(round(rn3,7), round(expectedRes,7)), 'Error: MATLAB did not outpu
                    normal.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Rstate" class="clearfix"> </div> <h3 id="input_argument_Rstate" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Rstate</code> &#8212; The R state. </span>  </a><span class="example_desc">Positive scalar, negative scalar, empty scalar,
                or a 626-element int32 vector.</span></span></h3> <div class="collapse"> <p><p>Stream or seed used to
                initialize the random number generation in MATLAB.</p> <p>
-               If Rstate is a negative scalar, then nothing is done:
+               If Rstate is a negative scalar, then nothing is done:</p> <p>
                   the state and seed are the current MATLAB ones.</p> <p>
                   This option is useful to continue a simulation,
                   possibly intialized in previous steps from a R state.</p> <p>
@@ -341,7 +343,7 @@ assert(isequal(round(rn3,7), round(expectedRes,7)), 'Error: MATLAB did not outpu
    represent the type of normal generator, starting at 0.</p> <p>
 
    The approach followed in this FSDA function to grant compatibility
-   of random numbers generated in MATLAB and R relies on two key steps:
+   of random numbers generated in MATLAB and R relies on two key steps:</p> <p>
    - The state of the random number stream created in MATLAB is replaced
      with the stream received from R as imput argument. This step requires
      recasting the stream from the signed integers used by R and the
@@ -353,7 +355,7 @@ assert(isequal(round(rn3,7), round(expectedRes,7)), 'Error: MATLAB did not outpu
      MATLAB default, which is the ziggurat algorithm.</p> <p>
 
    The approach is applied in two possible ways, depending on user's
-   input (Rstate argument):
+   input (Rstate argument):</p> <p>
    - In the first option, the R seed is given as input and the
      corresponding R, and then MATLAB, states are generated;</p> <p>
    - In the second option, a valid R state is given as input and the
@@ -366,13 +368,13 @@ assert(isequal(round(rn3,7), round(expectedRes,7)), 'Error: MATLAB did not outpu
      specification.</p> <p>
 
    Our solution grants retrocompatibility up to R2012a. Note the key
-   changes in the syntax of MATLAB's RNG start-up:
-   - prior to R2008b the setting was:
+   changes in the syntax of MATLAB's RNG start-up:</p> <p>
+   - prior to R2008b the setting was:</p> <p>
      rand('seed',0).</p> <p>
-   - from R2008b:
+   - from R2008b:</p> <p>
      stream = RandStream('mt19937ar','Seed',5489);</p> <p>
      RandStream.setGlobalStream(stream).</p> <p>
-   - from R2011a the current setting was adopted:
+   - from R2011a the current setting was adopted:</p> <p>
      rng default.</p><p>
 
 

@@ -403,13 +403,18 @@ outfore4 = forecastTS(out4,'model',model,'nfore',nfore,'conflev',0.999,'titl','L
 outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P17049075, imports of sugar from UA to LT');
 % Comparing with FS (needs conflev option)
 outLTS4 = LTSts(Y4,'model',model,'plots',1,'conflev',0.99,'msg',0);
-title(findobj(gcf,'Tag','LTSts:ts'),'P12119085, LTS with conflev=0.99');
+drawnow;
+ax = findall(0, 'Type', 'axes', 'Tag', 'LTSts:ts');
+title(ax,'P12119085, LTS with conflev=0.99');
 outFRS4 = FSRts(Y4,'model',model,'plots',1);
-title(findobj(gcf,'Tag','FSRts:ts'),'P12119085, FS with default conflev');
+ax=findobj(gcf,'Tag','FSRts:ts');
+title(ax,'P12119085, FS with default conflev');
 outLTS5 = LTSts(Y5,'model',model,'plots',1,'conflev',0.99,'msg',0);
-title(findobj(gcf,'Tag','LTSts:ts'),'P17049075, LTS with conflev=0.99');
+ax=findobj(gcf,'Tag','LTSts:ts');    
+title(ax,'P17049075, LTS with conflev=0.99');
 outFRS5 = FSRts(Y5,'model',model,'plots',1);
-title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div><pre class="codeoutput">                 Coeff      SE       t       pval
+ax=findobj(gcf,'Tag','FSRts:ts');
+title(ax,'P17049075, FS with default conflev');</pre></div></div><pre class="codeoutput">                 Coeff      SE       t       pval
                 _______    ____    ______    ____
 
     b_trend1     115.27    4.51     25.59    0.00
@@ -464,20 +469,6 @@ Summary of the exceedances
           1.00         99.00        999.00       9999.00      99999.00
           1.00          2.00             0             0             0
 
-
-ans = 
-
-  Legend ( Units) with properties:
-
-         String: {' Units'}
-       Location: 'northeast'
-    Orientation: 'vertical'
-       FontSize: 7.65
-       Position: [0.87 0.89 0.03 0.02]
-          Units: 'normalized'
-
-  Use GET to show all properties
-
 Level shift for t=14
 Level shift for t=15
 Level shift for t=16
@@ -507,21 +498,8 @@ Summary of the exceedances
           1.00         99.00        999.00       9999.00      99999.00
              0          5.00          1.00             0             0
 
-
-ans = 
-
-  Legend ( Units) with properties:
-
-         String: {' Units'}
-       Location: 'northeast'
-    Orientation: 'vertical'
-       FontSize: 7.65
-       Position: [0.87 0.89 0.03 0.02]
-          Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\LTSts_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_16.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_17.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_18.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_19.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_20.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector or timetable.</span></span></h3> <div class="collapse"> <p><p>A row or a column vector
+</pre>
+            <a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\LTSts_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_16.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_17.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_18.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_19.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_20.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector or timetable.</span></span></h3> <div class="collapse"> <p><p>A row or a column vector
                with T elements, which contains the time series. Note that
                y may contain missing values. If y is a timetable then
                times of the timetable are shown in the plot of y and
@@ -578,7 +556,7 @@ ans =
                necessary to consider a local sum of squares varying the
                position of the level shift around the first tentative
                position keeping all the other parameters fixed. This
-               structure contains the following fields:
+               structure contains the following fields:</p><p>
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>wlength</code></td><td><p><p>scalar greater than 0 which
                    identifies the length of the window. The default value
                    is 15, that is the tentative level shift position;</p> <p>
@@ -590,9 +568,9 @@ ans =
                    choice), else raw residuals are used.</p></td></tr><tr valign="top"><td><code>huberc</code></td><td><p>tuning constant for Huber estimator just
                    in case lshiftlocref.typeres=1. The default value is 2.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lshiftlocref',lshiftlocref.typeres=2
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_lts" class="clearfix"></div><h3 id="input_argument_namevalue_lts" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lts</code> &#8212;structure which controls a set of options of the
-               maximization procedure.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>Structure with the
-               following fields:
-           <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bestr</code></td><td><p><p>scalar defining number of "best betas" to
+               maximization procedure.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure with the
+               following fields:</p> <p>
+           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>bestr</code></td><td><p><p>scalar defining number of "best betas" to
                                remember from the subsamples. These will be
                                later iterated until convergence.</p> <p>
                                The default is 20 (10 of them are the best
@@ -607,10 +585,10 @@ ans =
                                subsets. The default value is 1e-8.</p> <p>
                               Remark: if lts is an empty value all default values of
               structure lts will be used.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lts',lts
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>A structure which specifies the model
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies the model
                which will be used. The model structure contains the following
-               fields:
-       <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
+               fields:</p> <p>
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
                          data s=12 (default), for quarterly data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
                        trend = 0 implies no trend;</p> <p>
                        trend = 1 implies linear trend with intercept (default);</p> <p>
@@ -624,9 +602,9 @@ ans =
                         $0,1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
                         If seasonal =0 we assume there is no seasonal
                         component.</p> <p>
-                        If seasonal =1 (default) we have:
+                        If seasonal =1 (default) we have:</p> <p>
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;</p> <p>
-                        if seasonal =2 we have:
+                        if seasonal =2 we have:</p> <p>
                         $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
                         Note that when $s$ is even, the sine term disappears
@@ -637,13 +615,13 @@ ans =
                         grows over time.</p> <p>
                         For example, seasonal = 101 implies a seasonal
                         component which just uses one frequency
-                        which grows linearly over time as follows:
+                        which grows linearly over time as follows:</p> <p>
                         $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
                         \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
                         For example, seasonal =201 implies a seasonal
                         component which just uses one frequency
                         which grows in a quadratic way over time as
-                        follows:
+                        follows:</p> <p>
                         $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
                         2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
                         seasonal =0 implies a non seasonal model.</p> <p>
@@ -667,7 +645,7 @@ ans =
                          $t=13$, $t=20$ and $t=36$. The most significant
                          among these positions is included in the final
                          model. In other words, the following extra
-                         parameters are added to the final model:
+                         parameters are added to the final model:</p> <p>
                          $\beta_{LS1}* I(t \geq \beta_{LS2})$ where
                          $\beta_{LS1}$ is a real number (associated with
                          the magnitude of the level shift) and
@@ -690,7 +668,7 @@ ans =
                        symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
                        with symbol $\delta_2$.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>vector with non negative integer numbers
                        specifying the autoregressive
-                       components. For example:
+                       components. For example:</p> <p>
                         model.ARp=[1 2] means a AR(2) process;</p> <p>
                         model.ARp=2 means just the lag 2 component;</p> <p>
                         model.ARp=[1 2 5 8] means AR(2) + lag 5 + lag 8;</p><p>
@@ -705,7 +683,7 @@ ans =
                                 Remark: the default model is for monthly data with a linear
                trend (2 parameters) + seasonal component with just one
                harmonic (2 parameters), no additional explanatory
-               variables and no level shift that is:
+               variables and no level shift that is:</p> <p>
                                model=struct;</p> <p>
                                model.s=12;</p> <p>
                                model.trend=1;</p> <p>
@@ -729,7 +707,7 @@ ans =
                position. The indexes from 1 to lts.bestr/2 are associated
                with subsets just extracted. The indexes from lts.bestr/2+1
                to lts.bestr are associated with best solutions from
-               previous tentative level shift. More precisely:
+               previous tentative level shift. More precisely:</p> <p>
                index lts.bestr/2+1 is associated with best solution from
                previous tentative level shift;</p> <p>
                index lts.bestr/2+2 is associated with second best solution
@@ -793,12 +771,12 @@ ans =
                  variables -2 = 2 (linear trend) + 8 (4 seasonal harmonics)
                  +1 (level shift).</p> <p>
                - If SmallSampleCor =2 Gervini and Yohai procedure is called
-                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
+                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:</p> <p>
                  weights=GYfilt(stdres,'iterating',false,'alpha',0.99);</p> <p>
                - If SmallSampleCor =3 Gervini and Yohai procedure is called
-                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
+                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:</p> <p>
                  weights=GYfilt(stdres,'iterating',true,'alpha',0.99);</p> <p>
-               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
+               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:</p> <p>
                  weights = abs(stdres)&lt;=sqrt(chi2inv(0.99,1));</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SmallSampleCor',3
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_yxsave" class="clearfix"></div><h3 id="input_argument_namevalue_yxsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>yxsave</code> &#8212;store X and y.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request
@@ -839,9 +817,9 @@ ans =
      <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>B</code></td><td><p><p>Matrix containing estimated beta coefficients,
                        (including the intercept when options.intercept=true)
                        standard errors, t-stat and p-values.</p> <p>
-                       The content of matrix B is as follows:
+                       The content of matrix B is as follows:</p> <p>
                        1st col = beta coefficients.</p> <p>
-                        The order of the beta coefficients is as follows:
+                        The order of the beta coefficients is as follows:</p> <p>
                         1) trend elements (if present). If the trend is
                         of order two, there are r+1 coefficients if the
                         intercept is present, otherwise there are just r
@@ -894,7 +872,7 @@ ans =
                        The indexes from lts.bestr/2+1 to lts.bestr are
                        associated with best solutions from previous
                        tentative level shift.</p> <p>
-                       More precisely:
+                       More precisely:</p> <p>
                        index lts.bestr/2+1 is associated with best solution
                        from previous tentative level shift;</p> <p>
                        index lts.bestr/2+2 is associated with best solution
@@ -902,7 +880,7 @@ ans =
                        This output is present just if input option
                        model.lshift is not equal to 0.</p></p></td></tr><tr valign="top"><td><code>Likloc</code></td><td><p><p>matrix of size (2*lshiftlocref.wlength+1)-by-3
                        containing local sum of squares of residuals in
-                       order to decide best position of level shift:
+                       order to decide best position of level shift:</p> <p>
                        1st col = position of level shift;</p> <p>
                        2nd col = local sum of squares of Huberized residuals;</p> <p>
                        3rd col = local sum of squares of raw residuals.</p><p>
@@ -938,7 +916,7 @@ ans =
                        If the model is linear, out.invXX is equal to
                        $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$
                        where $A$ is the matrix of partial derivatives. More
-                       precisely:
+                       precisely:</p><p>
                        </p>\[
                        a_{i,j}=\frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
                        \]
@@ -964,7 +942,7 @@ ans =
                        \frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
                        \]<p>
                        $j=1, 2, \ldots, p$, $i \in S_m$.</p> <p>
-                       The size of this matrix is:
+                       The size of this matrix is:</p><p>
                        n-length(out.outliers)-by-p
                        The field is present only if option
                        yxsave is set to 1.</p></p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'LTSts'.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices of the subsamples

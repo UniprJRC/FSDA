@@ -6,18 +6,19 @@
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %   aceplot            - Produces the aceplot to visualize the results of ace                                                                               - VIS-Reg       - 2025 May 30
 %   add2spm            - Adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix                                      - VIS-Mult      - 2025 May 30
-%   add2yX             - Adds objects (personalized clickable multilegends and text labels) to the yXplot                                                   - VIS-Reg       - 2025 May 30
+%   add2yX             - Adds objects (personalized clickable multilegends and text labels) to the yXplot                                                   - VIS-Reg       - 2026 Feb 17
 %   avasmsplot         - Produces the augmented star plot and enables interactivity                                                                         - VIS-Reg       - 2025 May 30
-%   balloonplot        - Creates a balloon plot of a contingency table                                                                                      - VIS-Mult      - 2025 Nov 01
+%   balloonplot        - Creates a balloon plot of a contingency table                                                                                      - VIS-Mult      - 2026 May 27
 %   barVariableWidth   - Produces a bar plot with different widths and colors for each bar                                                                  - VIS-Reg       - 2025 May 30
 %   boxplotb           - Computes a bivariate boxplot                                                                                                       - VIS-Mult      - 2025 May 30
 %   carbikeplot        - Produces the carbike plot to find best relevant clustering solutions                                                               - VIS-Clu       - 2025 May 30
 %   carbikeplotGPCM    - Produces the carbike plot to find best relevant clustering solutions                                                               - VIS-Clu       - 2025 May 30
 %   cdsplot            - Produces the candlestick plot for robust model selection in linear regression                                                      - VIS-Reg       - 2025 May 30
-%   CorAnaplot         - Draws the Correspondence Analysis (CA) graphs with confidence ellipses                                                             - VIS-Mult      - 2025 May 30
+%   CorAnaplot         - Draws customized Correspondence Analysis (CA) graphs                                                                               - VIS-Mult      - 2026 Feb 14
 %   covplot            - Plots the trajectories of the elements of the covariance (correlation) matrix monitored                                            - VIS-Mult      - 2025 May 30
 %   ctlcurvesplot      - Plots the output of routine ctlcurves                                                                                              - VIS-Clu       - 2025 May 30
-%   distribspec        - Plots a probability density function between specification limits                                                                  - UTISTAT       - 2025 Aug 06
+%   distribspec        - Plots a probability density function between specification limits                                                                  - UTISTAT       - 2026 Jan 28
+%   dumbbellplot       - Creates a dumbbell chart comparing two sets of values                                                                              - VIS-Mult      - 2026 Mar 10
 %   fanplot            - OLD FUNCTION (this function is replaced by fanplotFS and it is not updated anylonger)                                              - VIS-Reg       - 2025 May 30
 %   fanplotFS          - Plots the fan plot for transformation in linear regression or deletion t stat                                                      - VIS-Reg       - 2025 May 30
 %   funnelchart        - Displays a funnel chart                                                                                                            - VIS-Mult      - 2025 May 30
@@ -30,13 +31,14 @@
 %   mmdplot            - Plots the trajectory of minimum Mahalanobis distance (mmd)                                                                         - VIS-Mult      - 2025 May 30
 %   mmdrsplot          - Plots the trajectories of minimum Mahalanobis distances from different starting points                                             - VIS-Mult      - 2025 May 30
 %   moonplot           - Draws the Correspondence Analysis (CA) moonplot                                                                                    - VIS-Mult      - 2025 May 30
+%   pcaProjection      - Shows projections of 3D points in PCA                                                                                              - VIS-Mult      - 2026 Jan 27
 %   polarhistogramFS   - Creates a polarhistogram                                                                                                           - VIS-Reg       - 2025 Nov 13
-%   resfwdplot         - Plots the trajectories of the monitored scaled (squared) residuals                                                                 - VIS-Reg       - 2025 May 30
+%   resfwdplot         - Plots the trajectories of the monitored scaled (squared) residuals                                                                 - VIS-Reg       - 2026 Jan 08
 %   resindexplot       - Plots the residuals from a regression analysis versus index number or any other variable                                           - VIS-Reg       - 2025 May 30
 %   scatterboxplot     - Creates scatter diagram with marginal boxplots                                                                                     - VIS-Mult      - 2025 Oct 26
-%   spmplot            - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal and possibly robust bivariate contours - VIS-Mult      - 2025 Dec 02
+%   spmplot            - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal and possibly robust bivariate contours - VIS-Mult      - 2026 Apr 17
 %   tclustICplot       - Plots information criterion as a function of c and k                                                                               - VIS-Clu       - 2025 May 30
 %   tclustICplotGPCM   - Plots information criterion as a function of  $c_{det}$, $c_{shw}$,  $c_{shb}$ and $k$                                             - VIS-Clu       - 2025 May 30
 %   waterfallchart     - Creates a waterfall chart                                                                                                          - VIS-Mult      - 2025 May 30
 %   wedgeplot          - Generates the double wedge plot of a time series                                                                                   - VIS-Reg       - 2025 May 30
-%   yXplot             - Produces an interactive scatterplot of y against each variable of X in the input dataset                                           - VIS-Reg       - 2025 May 30
+%   yXplot             - Produces an interactive scatterplot of y against each variable of X in the input dataset                                           - VIS-Reg       - 2026 Jan 13

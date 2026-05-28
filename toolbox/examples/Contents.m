@@ -14,7 +14,7 @@
 %   GUImad                     - Shows the necessary calculations to obtain MAD, S_M or S_Me in a GUI                                          - GUI- 2025 Jun 26
 %   GUIpowermean               - Shows the necessary calculations to obtain the power (generalized) mean in a GUI                              - GUI- 2025 May 30
 %   GUIquantile                - Shows the necessary calculations to obtain $x_z$ quantile                                                     - GUI- 2025 May 30
-%   GUIregress                 - Shows the necessary calculations to obtain simple linear regression statistics in a GUI                       - GUI- 2025 Jun 29
+%   GUIregress                 - Shows the necessary calculations to obtain simple linear regression statistics in a GUI                       - GUI- 2026 Jan 27
 %   GUIskewness                - Shows the necessary calculations to obtain the variance in a GUI                                              - GUI- 2025 Jun 26
 %   GUIstd                     - Shows the necessary calculations to obtain the standard deviation in a GUI                                    - GUI- 2025 Jun 26
 %   GUItrimmean                - Shows the necessary calculations to obtain the trimmed mean in a GUI                                          - GUI- 2025 May 30

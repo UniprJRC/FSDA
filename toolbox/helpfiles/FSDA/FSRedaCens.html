@@ -41,7 +41,7 @@ y=affairs{:,"affairs"};
 outLXS=LXS(y,X);
 [~,sor]=sort(abs(outLXS.residuals))
 out=FSRedaCens(y,X,sor(1:100));
-resfwdplot(out)</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
+resfwdplot(out)</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.07 seconds 
 Attention: there was an exact fit. Robust estimate of s^2 is &lt;1e-7
 
 sor =
@@ -649,13 +649,13 @@ sor =
    594
 
 m=100
-Warning: there are no uncensored observations 
 m=200
 m=300
 m=400
 m=500
 m=600
-</pre><a href='http://rosa.unipr.it/fsda/FSRedaCens.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSRedaCens_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Outliers and a Lower Threshold example.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng default
+</pre>
+            <a href='http://rosa.unipr.it/fsda/FSRedaCens.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSRedaCens_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Outliers and a Lower Threshold example.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng default
 rng(2)
 n=300;
 lambda=-0.5;
@@ -683,49 +683,11 @@ outLXS=LXS(yf,X);
 out=FSRedaCens(yf,X,outLXS.bs,'left',leftf,'right',rightf,'init',100);
 fground.funit=1:30;
 resfwdplot(out,'fground',fground);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  3.440395e-22. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  3.652843e-22. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  7.526618e-24. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  2.265409e-22. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  6.603410e-21. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  1.798020e-22. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  2.561114e-19. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  2.899712e-20. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  4.130698e-22. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  1.422141e-19. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  1.533060e-22. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  6.618250e-26. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  1.107271e-20. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  1.865440e-27. 
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  6.236248e-28. 
 m=100
 m=200
 m=300
-Warning: steps that you have chosen outside the range of x
-are re-assigned to min(x) or to max(x)
-</pre><pre class="codeoutput error">Unable to perform assignment because the left and right sides have a different number of elements.
-
-Error in resfwdplot (line 1396)
-                indsteps(i)=find(x==steps(i));
-                ^^^^^^^^^^^
-Error in FSRedaCenstmp (line 38)
-resfwdplot(out,'fground',fground);
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+</pre>
+            <a href='http://rosa.unipr.it/fsda/FSRedaCens.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSRedaCens_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -759,7 +721,7 @@ resfwdplot(out,'fground',fground);
              </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.90 0.93]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search
              and start monitoring required diagnostics. If init is not
-             specified it will be set equal to :
+             specified it will be set equal to :</p> <p>
              p+1, if the sample size is smaller than 40;</p> <p>
              min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
              </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
@@ -792,40 +754,40 @@ resfwdplot(out,'fground',fground);
             normal distribution.</p> <p>
              </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tstat','trad'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>RES</code></td><td><p><p>n x (n-init+1) = matrix containing the monitoring of
-               scaled residuals:
+               scaled residuals:</p> <p>
                1st row = residual for first unit;</p> <p>
                ...;</p><p>
                nth row = residual for nth unit.</p></p></td></tr><tr valign="top"><td><code>LEV</code></td><td><p><p>(n+1) x (n-init+1) = matrix containing the monitoring of
-               leverage:
-               1st row = leverage for first unit:
-               ...;</p> <p>
+               leverage:</p> <p>
+               1st row = leverage for first unit:</p> <p>
+               ...;</p><p>
                nth row = leverage for nth unit.</p></p></td></tr><tr valign="top"><td><code>BB</code></td><td><p><p>n x (n-init+1) matrix containing the information about the units belonging
-               to the subset at each step of the forward search:
+               to the subset at each step of the forward search:</p> <p>
                1st col = indexes of the units forming subset in the
                initial step;</p> <p>
                ...;</p><p>
                last column = units forming subset in the final step (all
                units).</p></p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>n-init x 3 matrix which contains the monitoring of minimum
                deletion residual or (m+1)ordered residual at each step of
-               the forward search:
+               the forward search:</p> <p>
                1st col = fwd search index (from init to n-1);</p> <p>
                2nd col = minimum deletion residual;</p> <p>
                3rd col = (m+1)-ordered residual.</p><p>
                Remark: these quantities are stored with sign, that is the
                min deletion residual is stored with negative sign if
                it corresponds to a negative residual.</p></p></td></tr><tr valign="top"><td><code>msr</code></td><td><p><p>n-init+1 x 3 = matrix which contains the monitoring of
-               maximum studentized residual or m-th ordered residual:
+               maximum studentized residual or m-th ordered residual:</p> <p>
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = maximum studentized residual;</p><p>
                3rd col = (m)-ordered studentized residual.</p></p></td></tr><tr valign="top"><td><code>nor</code></td><td><p><p>(n-init+1) x 4 matrix containing the monitoring of
-               normality test in each step of the forward search:
+               normality test in each step of the forward search:</p> <p>
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = Asymmetry test;</p> <p>
                3rd col = Kurtosis test;</p><p>
                4th col = Normality test.</p></p></td></tr><tr valign="top"><td><code>Bols</code></td><td><p>(n-init+1) x (p+1) matrix containing the monitoring of
                estimated beta coefficients in each step of the forward
                search.</p></td></tr><tr valign="top"><td><code>S2</code></td><td><p><p>(n-init+1) x 5 matrix containing the monitoring of S2 or
-                   R2, F test, in each step of the forward search:
+                   R2, F test, in each step of the forward search:</p> <p>
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = monitoring of S2;</p> <p>
                3rd col = monitoring of R2;</p> <p>
@@ -836,7 +798,7 @@ resfwdplot(out,'fground',fground);
                unbiased).</p><p>
                5th col = monitoring of F test. Note that an asymptotic
                unbiased estimate of sigma2 is used.</p></p></td></tr><tr valign="top"><td><code>coo</code></td><td><p><p>(n-init+1) x 3 matrix containing the monitoring of Cook or
-               modified Cook distance in each step of the forward search:
+               modified Cook distance in each step of the forward search:</p> <p>
                1st col = fwd search index (from init to n);</p> <p>
                2nd col = monitoring of Cook distance;</p><p>
                3rd col = monitoring of modified Cook distance.</p></p></td></tr><tr valign="top"><td><code>Tols</code></td><td><p><p>(n-init+1) x (p+1) matrix containing the monitoring of
@@ -850,7 +812,7 @@ resfwdplot(out,'fground',fground);
                the unit included in step init+1. Un(end,2) contains the
                units included in the final step of the search.</p></p></td></tr><tr valign="top"><td><code>betaINT</code></td><td><p><p>Confidence intervals for the elements of $\beta$.</p> <p>
                  betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D array.</p> <p>
-                 Each third dimension refers to an element of beta:
+                 Each third dimension refers to an element of beta:</p> <p>
                  betaINT(:,:,1) is associated with first element of beta;</p> <p>
                  ...;</p> <p>
                  betaINT(:,:,p) is associated with last element of beta.</p> <p>

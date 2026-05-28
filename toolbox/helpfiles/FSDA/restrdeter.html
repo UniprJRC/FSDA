@@ -5,7 +5,7 @@
     Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4
     First column of matrix eigenvalues contains the eigenvalues of the first group
     Second column of matrix eigenvalues contains the eigenvalues of the second group
-    Thrid column of matrix eigenvalues contains the eigenvalues of the third group
+    Third column of matrix eigenvalues contains the eigenvalues of the third group
     Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(10,'twister')
 eigenvalues=abs(10*randn(3,4));
 % niini is the column vector containing the sizes of the 4 groups
@@ -41,7 +41,8 @@ Ratio between largest and smallest determinant
 Ratio between largest and smallest restricted determinants
     1.1000
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Determinant restriction when an eigenvalue is 0.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Determinant restriction when an eigenvalue is 0.</li></span></a></span></h3><div class="collapse"><p>
      Suppose 5 variables and six groups<div class="programlisting"><div class="codeinput"><pre class="matlab-code">av=abs(randn(5,6));
 % The third eigenvalue of the second groups is set to 0
 av(3,2)=0;
@@ -74,7 +75,8 @@ Values of restricted determinants
 Maximum value of ratio among determinants
     1.6000
 
-</pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>An example using option arguments tol and repmat.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>An example using option arguments tol and repmat.</li></span></a></span></h3><div class="collapse"><p>
      Suppose 3 variables and six groups<div class="programlisting"><div class="codeinput"><pre class="matlab-code">av=abs(randn(3,6));
 % Maximum ratio among determinants must be equal to 1.6.
 restr=1.6;
@@ -101,10 +103,10 @@ disp(max(prod(a))/min(prod(a)))</pre></div></div></p></div></div></div></d
              of the covariance matrices of the k groups.</p> <p>
              v is the number of variables of the dataset which has to be
              clustered.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_niini" class="clearfix"> </div> <h3 id="input_argument_niini" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>niini</code> &#8212; Cluster size. </span>  </a><span class="example_desc">Column vector.</span></span></h3> <div class="collapse"> <p>k x 1 vector containing the size
-             of the k clusters</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restr" class="clearfix"> </div> <h3 id="input_argument_restr" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restr</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar (default) or vector of length 2.</span></span></h3> <div class="collapse"> <p>If restr is a scalar it defines the maximum ratio of the
+             of the k clusters</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restr" class="clearfix"> </div> <h3 id="input_argument_restr" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restr</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar (default) or vector of length 2.</span></span></h3> <div class="collapse"> <p><p>If restr is a scalar it defines the maximum ratio of the
             determinants which is allowed. In other words, we impose the
-            constraint on the covariance matrices:
-            \[
+            constraint on the covariance matrices:</p> <p>
+            </p>\[
                \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
                |\Sigma_j|} \leq restr
             \]
@@ -115,7 +117,7 @@ disp(max(prod(a))/min(prod(a)))</pre></div></div></p></div></div></div></d
            $j$-th scatter matrix $\Sigma_j$ is
            \[
            \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-           \]
+           \]<p>
            where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
            diagonal matrix with $|\Gamma_j|=1$ and with elements
            $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
@@ -123,8 +125,8 @@ disp(max(prod(a))/min(prod(a)))</pre></div></div></p></div></div></div></d
            $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
            known as "shape" matrices, because they determine the shape of the
            fitted cluster components. The following $k$
-           constraints are then imposed on the shape matrices:
-           \[
+           constraints are then imposed on the shape matrices:</p> <p>
+           </p>\[
            \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
                c_{shape}, \text{ for } j=1,...,k,
            \]<p>
@@ -164,4 +166,4 @@ disp(max(prod(a))/min(prod(a)))</pre></div></div></p></div></div></div></d
                        product of the columns of matrix out) is not
                        greater than restr</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Fritz H., Garcia-Escudero, L.A. and Mayo-Iscar, A. (2013), A fast
  algorithm for robust constrained clustering,
-"Computational Satistics and Data Analysis", Vol. 61, pp. 124-136.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="restreigen.html" itemprop="url"><span itemprop="name"><code>restreigen</code></span></a></span> | <span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+"Computational Statistics and Data Analysis", Vol. 61, pp. 124-136.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="restreigen.html" itemprop="url"><span itemprop="name"><code>restreigen</code></span></a></span> | <span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

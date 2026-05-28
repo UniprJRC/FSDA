@@ -17,8 +17,8 @@ function out=corrNominal(N, varargin)
 %  Required input arguments:
 %
 %       N    :    Contingency table (default) or n-by-2 input dataset.
-%                 Matrix or Table.
-%                 Matrix or table that contains the input contingency
+%                 Matrix or table or timetable.
+%                 Matrix or (time)table that contains the input contingency
 %                 table (say of size I-by-J) or the original data matrix.
 %                 In this last case, N=crosstab(N(:,1),N(:,2)), as default
 %                 procedure assumes that the input is a contingency table.
@@ -578,7 +578,11 @@ end
 
 % Extract labels for rows and columns.
 if istable(N) || istimetable(N)
+    if istable(N)
     Lr=N.Properties.RowNames;
+    else
+        Lr=N.Properties.RowTimes;
+    end
     Lc=N.Properties.VariableNames;
     Ntable=N;
     N=table2array(N);

@@ -108,7 +108,8 @@ Coeff.   SE
     9.9088    0.5012   19.7707
    -0.8809    0.0555  -15.8750
 
-</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+</pre>
+            </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -142,15 +143,15 @@ Coeff.   SE
 </code>,<code> 'maxiter',8 
 </code>,<code> 'tol',0.0001 
 </code>,<code> 'msgiter',0 
-</code></code></span></div><div class="expandableContent"><div id="inputarg_typeH" class="clearfix"></div><h3 id="input_argument_namevalue_typeH" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>typeH</code> &#8212;Parametric function to be used in the skedastic equation.</span></a><span class="example_desc">character | string.</span></span></h3><div class="collapse">	<p>If typeH is 'arc' (default) than the skedastic function is
-               modelled as follows:
-               \[
+</code></code></span></div><div class="expandableContent"><div id="inputarg_typeH" class="clearfix"></div><h3 id="input_argument_namevalue_typeH" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>typeH</code> &#8212;Parametric function to be used in the skedastic equation.</span></a><span class="example_desc">character | string.</span></span></h3><div class="collapse">	<p><p>If typeH is 'arc' (default) than the skedastic function is
+               modelled as follows:</p> <p>
+               </p>\[
                \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
                            \cdots + \gamma_{r} Z(i,r)))
-               \]
+               \]<p>
                on the other hand, if typeH is 'har' then traditional
-               formulation due to Harvey is used as follows:
-               \[
+               formulation due to Harvey is used as follows:</p> <p>
+               </p>\[
                \sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots +
                            \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1
                            Z(i,1) + \cdots + \gamma_{r} Z(i,r))
@@ -196,11 +197,11 @@ Coeff.   SE
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msgiter',0 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
 
-   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>p-by-3 matrix containing: 
+   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>p-by-3 matrix containing:</p> <p> 
                        1st col = Estimates of regression coefficients;</p> <p> 
                        2nd col = Standard errors of the estimates of regr
                        coeff;</p><p> 
-                       3rd col = t-tests of the estimates of regr coeff.</p></p></td></tr><tr valign="top"><td><code>Gamma</code></td><td><p><p>(r+1)-by-3 matrix containing: 
+                       3rd col = t-tests of the estimates of regr coeff.</p></p></td></tr><tr valign="top"><td><code>Gamma</code></td><td><p><p>(r+1)-by-3 matrix containing:</p> <p> 
                        1st col = Estimates of scedastic coefficients;</p> <p> 
                        2nd col = Standard errors of the estimates of
                        scedastic coeff;</p><p> 

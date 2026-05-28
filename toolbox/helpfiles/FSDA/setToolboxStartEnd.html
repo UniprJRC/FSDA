@@ -26,11 +26,12 @@ fclose(fileID);</pre></div></div><pre class="codeoutput">Show release start and
     {'&lt;param.release.end&gt;latest&lt;/param.release.end&gt;'}
 
 Show release start and release end after calling setToolboxStartEnd
-    {'&lt;param.release.start&gt;R2020b&lt;/param.release.start&gt;'}
+    {'&lt;param.release.start&gt;R2021a&lt;/param.release.start&gt;'}
 
-    {'&lt;param.release.end&gt;R2025b&lt;/param.release.end&gt;'}
+    {'&lt;param.release.end&gt;R2026a&lt;/param.release.end&gt;'}
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of setToolboxStartEnd with name/pairs.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">FullPath=which('addFSDA2path');
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of setToolboxStartEnd with name/pairs.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">FullPath=which('addFSDA2path');
 FSDAroot=fileparts(FullPath);
 fsep=filesep;
 fname='ToolboxPackagingConfiguration.prj';
@@ -63,7 +64,8 @@ Show release start and release end after calling setToolboxStartEnd
 
     {'&lt;param.release.end&gt;R2020a&lt;/param.release.end&gt;'}
 
-</pre></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_toolboxFile" class="clearfix"> </div> <h3 id="input_argument_toolboxFile" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>toolboxFile</code> &#8212; Toolbox packaging configuration file. </span>  </a><span class="example_desc">Character or String.</span></span></h3> <div class="collapse"> <p><p>Absolute or relative path of the MATLAB file which
+</pre>
+            </p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_toolboxFile" class="clearfix"> </div> <h3 id="input_argument_toolboxFile" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>toolboxFile</code> &#8212; Toolbox packaging configuration file. </span>  </a><span class="example_desc">Character or String.</span></span></h3> <div class="collapse"> <p><p>Absolute or relative path of the MATLAB file which
                   contains the Toolbox Packaging Project. Note that this
                   file must have a .prj extension.</p> <p>
                   Example - ['tmp' filesep 'ToolboxPackagingConfiguration.prj']

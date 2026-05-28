@@ -37,8 +37,8 @@ out =
 
   struct with fields:
 
-     ListOut: [55 93 95 103 104 129 130 162 210 330 331 338 &#8230; ] (1&times;18 double)
-    outliers: [55 93 95 103 104 129 130 162 210 330 331 338 &#8230; ] (1&times;18 double)
+     ListOut: [55 93 95 103 104 129 130 162 210 330 331 338 &hellip; ] (1&times;18 double)
+    outliers: [55 93 95 103 104 129 130 162 210 330 331 338 &hellip; ] (1&times;18 double)
          mdr: [273&times;2 double]
           Un: [273&times;11 double]
         nout: [2&times;5 double]
@@ -46,7 +46,8 @@ out =
        scale: 1.4951e+04
        class: 'FSRB'
 
-</pre><a href='http://rosa.unipr.it/fsda/FSRB.html#Example_2'><img vspace="5" hspace="5" src="images\FSRB_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRB_02.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis with intercept).</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/FSRB.html#Example_2'><img vspace="5" hspace="5" src="images\FSRB_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\FSRB_02.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis with intercept).</li></span></a></span></h3><div class="collapse"><p>
      nsamp is the number of subsamples to use in the frequentist analysis of first
      year, in order to find initial subset using LMS.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 nsamp=3000;
@@ -378,7 +379,8 @@ Summary of the exceedances
            1          99         999        9999       99999
          838          77          76          73          73
 
-</pre><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRB_15.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+</pre>
+            <a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRB_15.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n1, where n1 is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -455,7 +457,7 @@ Summary of the exceedances
                  Else no plot is produced.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;tags to the plots which are created.</span></a><span class="example_desc">character | cell array of characters.</span></span></h3><div class="collapse">	<p><p>This option enables to add a tag to the plots which are
-                 created. The default tag names are:
+                 created. The default tag names are:</p> <p>
                  fsr_mdrplot for the plot of mdr based on all the
                  observations;</p> <p>
                  fsr_yXplot for the plot of y against each column of X
@@ -475,7 +477,7 @@ Summary of the exceedances
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag',{'plmdr' 'plyXplot'};
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char or cell</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>scalar which specifies the initial subset size to start
                    monitoring exceedances of minimum deletion residual, if
-                   init is not specified it set equal to:
+                   init is not specified it set equal to:</p> <p>
                    p+1, if the sample size is smaller than 40;</p> <p>
                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
@@ -540,7 +542,7 @@ Summary of the exceedances
 </code>               max to 10 on the x axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option to be used if the distribution of the data is
                  strongly non normal and, thus, the general signal
                  detection rule based on consecutive exceedances cannot be
-                 used. In this case bonflev can be:
+                 used. In this case bonflev can be:</p> <p>
                  - a scalar smaller than 1 which specifies the confidence
                    level for a signal and a stopping rule based on the
                    comparison of the minimum MD with a
@@ -560,7 +562,7 @@ Summary of the exceedances
                  else no message is displayed on the screen
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;tags to the plots which are created.</span></a><span class="example_desc">character | cell array of characters.</span></span></h3><div class="collapse">	<p><p>This option enables to add a tag to the plots which are
-                 created. The default tag names are:
+                 created. The default tag names are:</p> <p>
                  fsrb_mdrplot for the plot of mdr based on all the
                  observations;</p> <p>
                  fsrb_yXplot for the plot of y against each column of X
@@ -586,8 +588,8 @@ Summary of the exceedances
                (regression coefficients),
                $\beta = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$ in step
                $n-k$</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scalar. This is the reciprocal of the square root of the
-               posterior estimate of $\tau$ in step $n-k$</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>(n-init) x 2 matrix:
-               1st col = fwd search index;</p> <p>
+               posterior estimate of $\tau$ in step $n-k$</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>(n-init) x 2 matrix:</p> <p>
+               1st col = fwd search index;</p><p>
                2nd col = value of Bayesian minimum deletion residual in
                each step of the fwd search.</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 Matrix which contains the unit(s) included
                in the subset at each step of the fwd search.</p> <p>

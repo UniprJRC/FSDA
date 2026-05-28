@@ -58,8 +58,9 @@ resindexplot(outMM.residuals,'title',titl,'laby',laby,'numlab','','conflev',conf
 % In this example, MM estimator seems to detect half of the outlier with a Bonferroni significance level.
 % By simply changing the seed to 543 (state=543), using a Bonferroni size
 %of 1%, no unit is declared as outlier and just half of them using the 99%
-%band.</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.89 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\MMreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between direct call to MMreg and call to Sreg and MMregcore.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=30;
+%band.</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.19 seconds 
+</pre>
+            <a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\MMreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between direct call to MMreg and call to Sreg and MMregcore.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=30;
 p=3;
 randn('state', 123456);
 X=randn(n,p);
@@ -103,10 +104,11 @@ title('Power divergence link')
 [outAS]=MMreg(ycont,X,'Srhofunc','AS','rhofunc','AS','plots',0);
 h3=subplot(3,1,3);
 resindexplot(outAS,'h',h3)
-title('Andrew''s sine link')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.20 seconds 
-Total estimated time to complete S estimate:  0.23 seconds 
-Total estimated time to complete S estimate:  0.82 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\MMreg_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of Power Divergence estimator.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+title('Andrew''s sine link')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.40 seconds 
+Total estimated time to complete S estimate:  0.25 seconds 
+Total estimated time to complete S estimate:  0.64 seconds 
+</pre>
+            <a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\MMreg_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of Power Divergence estimator.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 p=3;
 rng('default')
 rng(100);
@@ -117,8 +119,9 @@ y=randn(n,1);
 ycont=y;
 ycont(1:5)=ycont(1:5)+6;
 % mdpd is used both in the S and in MM step.
-[out]=MMreg(ycont,X,'Srhofunc','mdpd','rhofunc','mdpd','plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.19 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\MMreg_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that contains
+[out]=MMreg(ycont,X,'Srhofunc','mdpd','rhofunc','mdpd','plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.20 seconds 
+</pre>
+            <a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\MMreg_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that contains
        the response variable. y can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors') of
        dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and columns
        represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
@@ -143,7 +146,7 @@ ycont(1:5)=ycont(1:5)+6;
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar defining nominal efficiency (i.e. a number between
                  0.5 and 0.99). The default value is 0.95.</p> <p>
-                 Asymptotic nominal efficiency is:
+                 Asymptotic nominal efficiency is:</p><p>
                  $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',0.99
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_effshape" class="clearfix"></div><h3 id="input_argument_namevalue_effshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>effshape</code> &#8212;location or scale efficiency.</span></a><span class="example_desc">dummy scalar.</span></span></h3><div class="collapse">	<p><p>If effshape=1 efficiency refers to shape
@@ -171,7 +174,7 @@ ycont(1:5)=ycont(1:5)+6;
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',10
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofunc" class="clearfix"></div><h3 id="input_argument_namevalue_rhofunc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofunc</code> &#8212;rho function.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which specifies the rho
                function which must be used to weight the residuals.</p> <p>
-               Possible values are:
+               Possible values are:</p> <p>
                'bisquare';</p> <p>
                'optimal';</p> <p>
                'hyperbolic';</p> <p>
@@ -219,7 +222,7 @@ ycont(1:5)=ycont(1:5)+6;
                option conflev. If conflev is not specified, a nominal 0.975
                confidence interval will be used.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta</code></td><td><p>p x 1 vector containing MM estimate of
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>A structure containing the following fields:</p> <p></p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta</code></td><td><p>p x 1 vector containing MM estimate of
                            regression coefficients.</p></td></tr><tr valign="top"><td><code>auxscale</code></td><td><p>scalar, S estimate of the scale (or supplied
                            external estimate of scale, if option InitialEst
                            is not empty).</p></td></tr><tr valign="top"><td><code>residuals</code></td><td><p>n x 1 vector containing standardized MM

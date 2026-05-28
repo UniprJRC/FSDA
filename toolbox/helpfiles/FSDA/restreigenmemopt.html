@@ -5,7 +5,7 @@
     Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4
     First column of matrix eigenvalues contains the eigenvalues of the first group
     Second column of matrix eigenvalues contains the eigenvalues of the second group
-    Thrid column of matrix eigenvalues contains the eigenvalues of the third group
+    Third column of matrix eigenvalues contains the eigenvalues of the third group
     Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(10,'twister')
 eigenvalues=abs(10*randn(3,4));
 % niini is the vector containing the sizes of the 4 groups
@@ -24,7 +24,7 @@ niini=[30;40;20;10];
 restreigen(eigenvalues,niini,1.1)
 eigenvalues(:,3)=1;
 restreigen(eigenvalues,niini,1.1)</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Compare speed.</li></span></a></span></h3><div class="collapse"><p>
-     We compare the speed of restreigneasy with that of restreigen. We use
+     We compare the speed of restreigeneasy with that of restreigen. We use
      userepmat=2 if the current MATLAB version if &gt;=R2017a or userepmat =1
      if MATLAB version is &gt;=R2013a but &lt;R2017a else we use userepmat =0<div class="programlisting"><div class="codeinput"><pre class="matlab-code">v=10;
 k=8;

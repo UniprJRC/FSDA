@@ -15,26 +15,26 @@ y=affairs(:,"affairs");
 out=regressCens(y,X,"dispresults",true);</pre></div></div><pre class="codeoutput">
 ans =
 
-    'fidelity data, known as Fair&#8217;s Affairs. Cross-section data from a survey
+    'fidelity data, known as Fair&rsquo;s Affairs. Cross-section data from a survey
      conducted by Psychology Today in 1969. The variables are
      gender: Factor indicating gender.age: Numeric variable coding age in years17.5
-     = under 20, 22 = 20&#8211;24, 27 = 25&#8211;29, 32 = 30&#8211;34, 37 = 35&#8211;39, 42 = 40&#8211;44, 47 =
-     45&#8211;49, 52 = 50&#8211;54, 57 = 55 or over.
+     = under 20, 22 = 20&ndash;24, 27 = 25&ndash;29, 32 = 30&ndash;34, 37 = 35&ndash;39, 42 = 40&ndash;44, 47 =
+     45&ndash;49, 52 = 50&ndash;54, 57 = 55 or over.
      yearsmarried: Numeric variable coding number of years married: 0.125 = 3 months
-     or less, 0.417 = 4&#8211;6 months, 0.75 = 6 months&#8211;1 year, 1.5 = 1&#8211;2 years, 4 = 3&#8211;5
-     years, 7 = 6&#8211;8 years, 10 = 9&#8211;11 years, 15 = 12 or more years.
+     or less, 0.417 = 4&ndash;6 months, 0.75 = 6 months&ndash;1 year, 1.5 = 1&ndash;2 years, 4 = 3&ndash;5
+     years, 7 = 6&ndash;8 years, 10 = 9&ndash;11 years, 15 = 12 or more years.
      children factor: Are there children in the marriage?
      religiousness: Numeric variable coding religiousness: 1 = anti, 2 = not at all,
      3 = slightly, 4 = somewhat, 5 = very.
      education: Numeric variable coding level of education: 9 = grade school, 12 =
      high school graduate, 14 = some college, 16 = college graduate, 17 = some
-     graduate work, 18 = master&#8217;s degree, 20 = Ph.D., M.D., or other advanced
+     graduate work, 18 = master&rsquo;s degree, 20 = Ph.D., M.D., or other advanced
      degree.
      occupation: Numeric variable coding occupation according to Hollingshead
      classification (reverse numbering).
      affairs (y): Numeric variable. How often engaged in extramarital sexual
      intercourse during the past year? 0 = none, 1 = once, 2 = twice, 3 = 3 times, 7
-     = 4&#8211;10 times, 12 = monthly, 12 = weekly, 12 = daily.
+     = 4&ndash;10 times, 12 = monthly, 12 = weekly, 12 = daily.
      In the example of Kleiber and Zeileis (2008, p. 142), the number of a person's
      extramarital sexual inter-courses ('affairs') in the past year is regressed on
      the person's age, number of years married, religiousness, occupation, and won
@@ -53,18 +53,19 @@ Coefficients
                      betaout     sebetaout     tout         pval   
                      ________    _________    _______    __________
 
-    (Intercept)        8.1756      2.7425      2.9811     0.0029896
+    (Intercept)        8.1756      2.7425      2.9811     0.0029898
     age              -0.17936    0.079165     -2.2656      0.023833
-    yearsmarried      0.55417     0.13463      4.1162    4.3966e-05
-    religiousness     -1.6863     0.40385     -4.1756    3.4171e-05
-    occupation        0.32604     0.25444      1.2814       0.20054
-    rating            -2.2851     0.40801     -5.6006    3.2686e-08
-    sigma              8.2472     0.55408      14.885     8.126e-43
+    yearsmarried      0.55417     0.13463      4.1162    4.3968e-05
+    religiousness     -1.6863     0.40385     -4.1756    3.4172e-05
+    occupation        0.32604     0.25444      1.2814       0.20055
+    rating            -2.2851     0.40801     -5.6006    3.2688e-08
+    sigma              8.2472     0.55408      14.885    8.1262e-43
 
 Number of observations: 601, Error degrees of freedom:594
 Log-likelihood: -705.5762
 R-squared: 0.36215
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of right censoring.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of right censoring.</li></span></a></span></h3><div class="collapse"><p>
      When left=-Inf and right=0 indicates that there is no left-censoring but
      there is a right censoring at 0. The same model as above but with the
      negative number of affairs as the dependent variable can be estimated  by<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load affairs.mat
@@ -83,18 +84,19 @@ Coefficients
                      betaout     sebetaout     tout         pval   
                      ________    _________    _______    __________
 
-    (Intercept)       -8.1756      2.7425     -2.9811     0.0029896
+    (Intercept)       -8.1756      2.7425     -2.9811     0.0029898
     age               0.17936    0.079165      2.2656      0.023833
-    yearsmarried     -0.55417     0.13463     -4.1162    4.3966e-05
-    religiousness      1.6863     0.40385      4.1756    3.4171e-05
-    occupation       -0.32604     0.25444     -1.2814       0.20054
-    rating             2.2851     0.40801      5.6006    3.2686e-08
-    sigma              8.2472     0.55408      14.885     8.126e-43
+    yearsmarried     -0.55417     0.13463     -4.1162    4.3968e-05
+    religiousness      1.6863     0.40385      4.1756    3.4172e-05
+    occupation       -0.32604     0.25444     -1.2814       0.20055
+    rating             2.2851     0.40801      5.6006    3.2688e-08
+    sigma              8.2472     0.55408      14.885    8.1262e-43
 
 Number of observations: 601, Error degrees of freedom:594
 Log-likelihood: -705.5762
 R-squared: 0.36215
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of right censoring with X a table with categorical variables.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of right censoring with X a table with categorical variables.</li></span></a></span></h3><div class="collapse"><p>
      When left=-Inf and right=0 indicates that there is no left-censoring but
      there is a right censoring at 0. The same model as above but with the
      negative number of affairs as the dependent variable can be estimated  by<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load affairs.mat
@@ -113,18 +115,19 @@ Coefficients
                      betaout     sebetaout     tout         pval   
                      ________    _________    _______    __________
 
-    (Intercept)       -8.1756      2.7425     -2.9811     0.0029896
+    (Intercept)       -8.1756      2.7425     -2.9811     0.0029898
     age               0.17936    0.079165      2.2656      0.023833
-    yearsmarried     -0.55417     0.13463     -4.1162    4.3966e-05
-    religiousness      1.6863     0.40385      4.1756    3.4171e-05
-    occupation       -0.32604     0.25444     -1.2814       0.20054
-    rating             2.2851     0.40801      5.6006    3.2686e-08
-    sigma              8.2472     0.55408      14.885     8.126e-43
+    yearsmarried     -0.55417     0.13463     -4.1162    4.3968e-05
+    religiousness      1.6863     0.40385      4.1756    3.4172e-05
+    occupation       -0.32604     0.25444     -1.2814       0.20055
+    rating             2.2851     0.40801      5.6006    3.2688e-08
+    sigma              8.2472     0.55408      14.885    8.1262e-43
 
 Number of observations: 601, Error degrees of freedom:594
 Log-likelihood: -705.5762
 R-squared: 0.36215
-</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Another example with right censoring.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Another example with right censoring.</li></span></a></span></h3><div class="collapse"><p>
      This example is taken from https://stats.oarc.ucla.edu/r/dae/tobit-models/
      Consider the situation in which we have a measure of academic aptitude
      (scaled 200-800) which we want to model using reading and math test
@@ -161,23 +164,23 @@ figure
 scatter(fitted,residuals)
 xlabel('Fitted values (yhat)')
 ylabel('Residuals')</pre></div></div><pre class="codeoutput">
-&lt;strong&gt;XX&lt;/strong&gt;: 200&times;4 table
+XX: 200&times;4 table
 
 Variables:
 
-    &lt;strong&gt;read&lt;/strong&gt;: double
-    &lt;strong&gt;math&lt;/strong&gt;: double
-    &lt;strong&gt;prog&lt;/strong&gt;: categorical (3 categories)
-    &lt;strong&gt;apt&lt;/strong&gt;: double
+    read: double
+    math: double
+    prog: categorical (3 categories)
+    apt: double
 
 Statistics for applicable variables:
 
-            &lt;strong&gt;NumMissing&lt;/strong&gt;      &lt;strong&gt;Min&lt;/strong&gt;      &lt;strong&gt;Median&lt;/strong&gt;       &lt;strong&gt;Max&lt;/strong&gt;          &lt;strong&gt;Mean&lt;/strong&gt;            &lt;strong&gt;Std&lt;/strong&gt;    
+            NumMissing      Min      Median       Max          Mean            Std    
 
-    &lt;strong&gt;read&lt;/strong&gt;        0            28         50         76         52.2300        10.2529  
-    &lt;strong&gt;math&lt;/strong&gt;        0            33         52         75         52.6450         9.3684  
-    &lt;strong&gt;prog&lt;/strong&gt;        0                                                                     
-    &lt;strong&gt;apt &lt;/strong&gt;        0           352        633        800        640.0350        99.2190  
+    read        0            28         50         76         52.2300        10.2529  
+    math        0            33         52         75         52.6450         9.3684  
+    prog        0                                                                     
+    apt         0           352        633        800        640.0350        99.2190  
 
 Observations:
     Total    LeftCensored    Uncensored    RightCensored
@@ -191,15 +194,16 @@ Coefficients
 
     (Intercept)         209.57      32.774      6.3943    1.1763e-09
     read                2.6979     0.61879        4.36    2.1086e-05
-    math                5.9145      0.7099      8.3314    1.4324e-14
-    prog_general       -12.715      12.406     -1.0249       0.30669
-    prog_vocational    -46.144      13.724     -3.3623    0.00093117
-    sigma               65.677      3.4827      18.858    9.5608e-46
+    math                5.9145      0.7099      8.3314    1.4326e-14
+    prog_general       -12.715      12.407     -1.0248       0.30672
+    prog_vocational    -46.144      13.724     -3.3622    0.00093135
+    sigma               65.677      3.4827      18.858    9.5606e-46
 
 Number of observations: 200, Error degrees of freedom:194
 Log-likelihood: -1041.0629
 R-squared: 0.78247
-</pre><a href='http://rosa.unipr.it/fsda/regressCens.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\regressCens_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\regressCens_02.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+</pre>
+            <a href='http://rosa.unipr.it/fsda/regressCens.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\regressCens_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\regressCens_02.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -259,7 +263,7 @@ R-squared: 0.78247
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'optmin.Display','off'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
 
-   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>p-by-3 matrix containing:
+   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>p-by-3 matrix containing:</p> <p>
                        1st col = Estimates of regression coefficients;</p> <p>
                        2nd col = Standard errors of the estimates of
                            regression coefficients;</p><p>
@@ -286,7 +290,7 @@ R-squared: 0.78247
  the underlying latent variable that would not have such restriction if it
  was actually observed.</p> <p>
 
- In the standard Tobit model (Tobin 1958), we have a dependent variable $y$ that is left-censored at zero:
+ In the standard Tobit model (Tobin 1958), we have a dependent variable $y$ that is left-censored at zero:</p> <p>
  \begin{eqnarray}
  y_i^* & = & x_i^{\prime} \beta+\varepsilon_i \\
  y_i   =  &  0            & \text { if } y_i^* \leq 0 \\
@@ -302,7 +306,7 @@ R-squared: 0.78247
  The censored regression model is a generalisation of the standard Tobit model.</p> <p>
  The dependent variable can be either left-censored, right-censored, or
  both left-censored and right-censored, where the lower and/or upper limit
- of the dependent variable can be any number:
+ of the dependent variable can be any number:</p> <p>
  \begin{eqnarray}
   y_i^*=x_i^{\prime} \beta+\varepsilon_i     \\
   y_i & = &     a       \qquad  \text { if } y_i^* \leq a    \\

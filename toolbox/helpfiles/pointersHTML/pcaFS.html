@@ -2,7 +2,7 @@
    1) accepts an input X also as table;
    2) produces in table format the percentage of the variance explained
       single and cumulative of the various components and the associated
-      scree plot, in order to decide about the number of components to
+      Pareto plot, in order to decide about the number of components to
       retain.
    3) returns the loadings in table format and shows them graphically.
    4) provides guidelines about the automatic choice of the number of
@@ -15,11 +15,11 @@
       \[
         OD_i=|| z_i- V_{(2)} V_{(2)}' z_i ||
       \]
-      where z_i is the i-th row of the original centered data matrix $Z$ of
-      dimension $n \times v$ and $V_{(2)}=(v_1 v_2)$ is the matrix of size
-      $p \times 2$ containing the first two eigenvectors of $Z'Z/(n-1)$. The
-      observations with large $OD_i$ are not well represented in the space of
-      the principal components.
+      where $z_i$ is the i-th row of the original centered (standardized)
+      data matrix $Z$ of dimension $n \times p$ and $V_{(2)}=(v_1 v_2)$ is
+      the matrix of size $p \times 2$ containing the first two
+      eigenvectors of $Z'Z/(n-1)$. The observations with large $OD_i$ are
+      not well represented in the space of the principal components.
    7)  returns the score distance $SD_i$ of each observation. For example,
       if the subspace is defined by the first two principal components,
       $SD_i$ is computed as:
@@ -37,4 +37,6 @@
       possible to have in the app two tabs which enable the user to select
       the breakdown point of the analysis or the subset size to use in the
       svd. The units which are declared as outliers or the units outside
-      the subset are shown in the biplot with filled circles.</P></html>
+      the subset are shown in the biplot with filled circles.
+   9) enables to deal with geographical information (latitude and
+      longitude) or Shape polygons of the units.</P></html>

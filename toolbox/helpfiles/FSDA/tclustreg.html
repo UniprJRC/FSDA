@@ -11,12 +11,13 @@ out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'mixt',2);
 % Comparison with robust linear grouping
 out = rlga(X,k,alpha2);
 cascade;</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclustreg:  1.37 seconds 
+Total estimated time to complete tclustreg:  2.04 seconds 
 MixLik with untrimmed units selected using h largest lik contributions
-Total estimated time to complete tclustreg:  0.87 seconds 
+Total estimated time to complete tclustreg:  0.74 seconds 
 RLGA Algorithm k =2 biter =7 niter =10
 Finished.
-</pre><a href='http://rosa.unipr.it/fsda/tclustreg.html#Example_1'><img vspace="5" hspace="5" src="images\tclustreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustreg_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustreg of fishery data 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustreg.html#Example_1'><img vspace="5" hspace="5" src="images\tclustreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images\tclustreg_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustreg of fishery data 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
 load fishery;
 X = fishery{:,:};
 % some jittering might be useful if there are many duplicated units
@@ -186,7 +187,8 @@ title('Fixed second level trimming')
 disp('CWM model and adaptive second level trimming')
 disp('can recover the real structure of the data')</pre></div></div><pre class="codeoutput">CWM model and adaptive second level trimming
 can recover the real structure of the data
-</pre><a href='http://rosa.unipr.it/fsda/tclustreg.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\tclustreg_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclustreg_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_06.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_07.png" alt=""> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustreg of fishery with commonslope.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustreg.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\tclustreg_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclustreg_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_06.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_07.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_08.png" alt=""> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustreg of fishery with commonslope.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
 load fishery;
 X = fishery{:,:};
 % some jittering might be useful if there are many duplicated units
@@ -229,11 +231,11 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
              matrices of the explanatory variables. </span>  </a><span class="example_desc">Scalar or vector with two
              elements.</span></span></h3> <div class="collapse"> <p><p>If restrfact is a scalar it controls the
              differences among group scatters of the residuals. The value
-             1 is the strongest restriction. If restrfactor is a vector
+             1 is the strongest restriction. If restrfact is a vector
              with two elements the first element controls the differences
              among group scatters of the residuals and the second the
              differences among covariance matrices of the explanatory
-             variables. Note that restrfactor(2) is used just if
+             variables. Note that restrfact(2) is used just if
              input option $alphaX=1$, that is if constrained weighted
              model for X is assumed.</p> <p>
             </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alphaLik" class="clearfix"> </div> <h3 id="input_argument_alphaLik" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alphaLik</code> &#8212; Trimming level. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>alphaLik is a value between 0 and 0.5 or an  integer specifying
@@ -262,7 +264,7 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
                variables across groups, so overcoming an intrinsic limitation
                of mixtures of regression, because they are implicitly
                assumed equally distributed. Note that if alphaX=1 it is
-               also possible to apply using restrfactor(2) the constraints
+               also possible to apply using restrfact(2) the constraints
                on the cov matrices of the explanatory variables.</p> <p>
                For further details about CWM see Garcia-Escudero et al.</p> <p>
                (2017) or Torti et al. (2018).</p><p>
@@ -292,7 +294,7 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;mixture modelling or crisp assignment.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option mixt specifies whether mixture modelling or crisp
                assignment approach to model based clustering must be used.</p> <p>
                In the case of mixture modelling parameter mixt also
-               controls which is the criterior to find the untrimmed units
+               controls which is the criterion to find the untrimmed units
                in each step of the maximization
                If mixt &gt;=1 mixture modelling is assumed else crisp
                assignment.</p><p>
@@ -365,7 +367,7 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_wtrim" class="clearfix"></div><h3 id="input_argument_namevalue_wtrim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>wtrim</code> &#8212;Application of observation weights.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If
            wtrim is a scalar, a flag taking values
           in [0, 1, 2, 3, 4], to control the application of weights on the
-          observations for betaestimation.</p> <p>
+          observations for beta estimation.</p> <p>
           -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
              algorithm reduces to the standard tclustreg algorithm.</p> <p>
           -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
@@ -393,11 +395,11 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
             of Cerioli and Perrotta (2014).</p> <p>
          -  If \texttt{wtrim} = 5 (TO BE IMPLEMENTED)
           -  If \texttt{wtrim} = 6 (TO BE IMPLEMENTED)
-          If wtrim is a structure, it is composed by:
+          If wtrim is a structure, it is composed by:</p> <p>
          -  wtrim.wtype_beta: the weight for the beta estimation. It can be
            0, 1, 2, 3, as in the case of wtrim scalar
          -  wtrim.wtype_obj: the weight for the objective function. It can
-         be:
+         be:</p> <p>
              - '0': no weights in the objective function
              - 'Z': Bernoulli random variable with probability of success
             $\mbox{pdfe}_{ig}$
@@ -411,7 +413,7 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
           value is  a vector of ones.</p> <p>
             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'we',[0.2 0.2 0.2 0.2 0.2]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cup" class="clearfix"></div><h3 id="input_argument_namevalue_cup" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cup</code> &#8212;pdf upper limit.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The upper limit for the pdf used
-                to compute the retantion probability. If cup = 1
+                to compute the retention probability. If cup = 1
                 (default), no upper limit is set.</p> <p>
                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> cup, 0.8
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar</code></p></div></div><div class="expandableContent"><div id="inputarg_pstar" class="clearfix"></div><h3 id="input_argument_namevalue_pstar" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>pstar</code> &#8212;thinning probability.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Probability with each a unit
@@ -488,7 +490,7 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
                        first level trimmed units and -2 indicates second
                        level trimmed units).</p></p></td></tr><tr valign="top"><td><code>postprobopt</code></td><td><p>$n \times k$ matrix containing the final posterior
                            probabilities. out.postprobopt(i,j) contains
-                           posterior probabilitiy of unit i from component
+                           posterior probability of unit i from component
                            (cluster) j. For the trimmed units posterior
                            probabilities are 0. This output is always
                            produced (independently of the value of mixt).</p></td></tr><tr valign="top"><td><code>MIXMIX</code></td><td><p><p>BIC which uses parameters estimated using the
@@ -524,7 +526,7 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
   density estimator.</p> <p>
 <hr>[<b>2</b>] 
   The weighted version of tclustreg requires weighted sampling. This is
-  now implemented in randsampleFS. A computaionally more efficient
+  now implemented in randsampleFS. A computationally more efficient
   algorithm, based on a binary tree approach introduced by
       Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
       Sampling Without Replacement", SIAM Journal of Computing,
@@ -553,11 +555,11 @@ cascade;</pre></div></div></p></div></div></div></div></div><div class="r
  identified with a "TRIMMING" or "THINNING" tag.</p> <p>
 
  REMARK: the number of parameters to penalize the likelihood are given
- below:
+ below:</p> <p>
  $k(p+1)$ = number of regression coefficients including the intercept.</p> <p>
  $k-1$ = number of proportions -1 (because their sum is 1).</p> <p>
  $(k-1)(1-1/restrfact(1))+1$ = constraints on the $\sigma^2_j$.</p> <p>
- To the above parameters, if $alphaX=1$ we must add:
+ To the above parameters, if $alphaX=1$ we must add:</p> <p>
  $k(p-1)p/2$ = rotation parameters for $\Sigma_X=cov(X)$.</p> <p>
  $(kp-1)(1-1/restrfactor(2))+1$ = eigenvalue parameters for
  $\Sigma_X=cov(X)$.</p><p>

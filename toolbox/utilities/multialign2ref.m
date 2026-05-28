@@ -3,7 +3,7 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
 %
 %<a href="matlab: docsearchFS('multialign2ref')">Link to the help function</a>
 %
-% This function performs multialignment of set of Amino or nucleotide
+% This function performs multi-alignment of set of Amino or nucleotide
 % sequences not aligned (Seqs2align) to a set of reference sequences
 % already aligned (refSeqs). In order to achieve this target function
 % multialign of the BioInformatics toolbox is called several times with all
@@ -171,7 +171,10 @@ function [Seqsaligned, WrngAlignment]= multialign2ref(refSeqs, Seqs2align, varar
     
     % Remove initial covid sequence from Seqs2align
     Seqs2align=[Seqs2align(2:101)];
-    
+  
+    % delete(gcp("nocreate"));
+    % parpool('Processes')
+
     %Call of multialign2ref with all default arguments
     [Seqsaligned,WrngAlignment]=multialign2ref(refSequences,Seqs2align);
 %}

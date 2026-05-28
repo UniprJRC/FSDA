@@ -70,7 +70,7 @@ ExclDir={'privateFS'  'datasets'};
 list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
 % Crete personalized contents file for main folder of FSDA
 % and required subfolders.
-force=false;
+force=true;
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 disp('List of files which have been excluded (with path)')
 disp(FilesExcluded(:,[1 9]))
@@ -111,7 +111,9 @@ web(outputOFHtmlHelpFile,'-browser');
 % Make sure that the format is short
 format short
 
-[FilesWithProblems,OUT,FilesIncluded]=publishFSallFiles(FilesIncluded);
+    % Run publishing (figures created with default visibility will be hidden)
+    [FilesWithProblems,OUT,FilesIncluded] = publishFSallFiles(FilesIncluded);
+
 
 % If it is necessary to call publishFSallFiles without execution of the
 % examples and without creating HTML files
@@ -153,7 +155,7 @@ cd(fileparts(which('docsearchFS.m')))
 % Create HTML file containing all the items which make up the bibliography
 [fileBiblio,Cits]=publishBibliography(FilesIncluded,OUT);
 
-% open outfile file in web browser
+% open output file file in web browser
 FileName='addFSDA2path';
 FullPath=which(FileName);
 FSDAroot=fileparts(FullPath);

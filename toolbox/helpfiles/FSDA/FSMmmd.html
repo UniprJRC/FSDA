@@ -21,8 +21,9 @@ plot(mmd(:,1),mmd(:,2))</pre></div></div><pre class="codeoutput">Warning: Using
 RANDN to use legacy random number generators.  This syntax is not recommended.
 See &lt;a href="matlab:helpview([docroot '\techdoc\math\math.map'],'update_random_number_generator')"&gt;Replace Discouraged Syntaxes of rand and randn&lt;/a&gt; to use RNG to replace the old
 syntax. 
-</pre><a href='http://rosa.unipr.it/fsda/FSMmmd.html#Example_1'><img vspace="5" hspace="5" src="images\FSMmmd_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSMmmd with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
-     Plotting the bandwith of the minimum Mahalanobis distance<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+</pre>
+            <a href='http://rosa.unipr.it/fsda/FSMmmd.html#Example_1'><img vspace="5" hspace="5" src="images\FSMmmd_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSMmmd with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+     Plotting the envelope of the minimum Mahalanobis distance<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 m0=4;
 randn('state',123456);
@@ -52,7 +53,7 @@ bs=fre(1:m0,1);
 % The output is exactly the same as that of FSMmmdeasy
 % [mmd1,Un]=FSMmmdeasy(Ycont,bs,'plots',1);</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Checking the units belonging to subset in each step of the search.</li></span></a></span></h3><div class="collapse"><p>
      Personalized initial subset (large n). Each row of BB matrix
-     is associated to a unit while each colum is associated to a step of the fwd search.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=20000;
+     is associated to a unit while each column is associated to a step of the fwd search.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=20000;
 v=3;
 m0=10;
 randn('state',123456);
@@ -63,13 +64,15 @@ Ycont(1:5000,:)=Ycont(1:5000,:)+3;
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 bs=fre(1:m0,1);
-[mmd,Un,BB]=FSMmmd(Ycont,bs,'plots',1);</pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
-               Y represent observations, and columns represent variables.</p> <p>
-               Missing values (NaN's) and infinite values (Inf's) are
-               allowed, since observations (rows) with missing or infinite
-               values will automatically be excluded from the
-               computations.</p><p>
-                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; Units forming subset. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>List of units forming the initial subset.</p> <p>
+[mmd,Un,BB]=FSMmmd(Ycont,bs,'plots',1);</pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data matrix. </span>  </a><span class="example_desc">n x v matrix, where n is the number of observations and
+               v is the number of variables.</span></span></h3> <div class="collapse"> <p><p>Each row corresponds to an
+               observation and each column to a variable.</p> <p>
+               Missing values (NaNs) are allowed.</p> <p>
+               For observations containing missing entries, Mahalanobis
+               distances are computed using the observed components only
+               (partial Mahalanobis distances) and subsequently rescaled
+               to make them comparable across different missingness patterns.</p><p>
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; Units forming subset. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>List of units forming the initial subset.</p> <p>
                If bsb=0 (default) then the procedure starts with p units randomly
                chosen else if bsb is not 0 the search will start with
                m0=length(bsb)
@@ -97,7 +100,7 @@ bs=fre(1:m0,1);
                about great interchange on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If msg==1 (default) messages are displyed on the screen
                else no message is displayed on the screen.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;It controls wether to perform checks on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;It controls whether to perform checks on
                matrix Y.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is
                performed on matrix Y. As default nocheck=false.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',false

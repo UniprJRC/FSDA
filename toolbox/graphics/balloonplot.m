@@ -12,8 +12,8 @@ function [h,Ntable] = balloonplot(N,varargin)
 %  Required input arguments:
 %
 %       N    :    Contingency table (default) or n-by-2 input dataset.
-%                 2D Array or Table.
-%                 2D array or table which contains the input contingency
+%                 2D Array or table or timetable.
+%                 2D array or (time)table which contains the input contingency
 %                 table (say of size I-by-J) or the original data matrix X.
 %                 In this last case N=crosstab(X(:,1),X(:,2)). As default
 %                 procedure assumes that the input is a contingency table.
@@ -319,9 +319,13 @@ if ~isempty(UserOptions)
 end
 
 % Extract labels for rows and columns
-if istable(N)
+if istable(N) || istimetable(N)
     Lc=N.Properties.VariableNames;
-    Lr=N.Properties.RowNames;
+    if istable(N)
+        Lr=N.Properties.RowNames;
+    else
+        Lr=N.Properties.RowTimes;
+    end
     Ntable=N;
     N=table2array(N);
 else
@@ -429,7 +433,7 @@ else
     sel=1:step:J;
     set(axes1,'XTick',jall(sel),'XTickLabel',Lc(sel),'TickLabelInterpreter','none');
 end
-set(axes1,'YTick',1:I,'YTickLabel',flip(Lr),'TickLabelInterpreter','none');
+set(axes1,'YTick',1:I,'YTickLabel',string(flip(Lr)),'TickLabelInterpreter','none');
 bubblesize([3 20])
 if isempty(contrib2Index)
     colorbar(axes1)

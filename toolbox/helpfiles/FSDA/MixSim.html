@@ -21,28 +21,29 @@ out =
 
 ans(:,:,1) =
 
-         -1.00         23.04         26.03         29.02
-         20.03         -1.00         27.03         30.02
-         21.03         24.03         -1.00         31.02
-         22.04         25.03         28.03         -1.00
+         -1.00         11.08         14.08         17.08
+          8.08         -1.00         15.08         18.08
+          9.08         12.08         -1.00         19.08
+         10.08         13.08         16.08         -1.00
 
 
 ans(:,:,2) =
 
-         -1.00         35.02         38.02         41.02
-         32.02         -1.00         39.02         42.02
-         33.02         36.02         -1.00         43.02
-         34.02         37.02         40.02         -1.00
+         -1.00         23.08         26.08         29.08
+         20.08         -1.00         27.08         30.08
+         21.08         24.08         -1.00         31.08
+         22.08         25.08         28.08         -1.00
 
 
 ans(:,:,3) =
 
-             0         47.02         50.01         53.01
-         44.02             0         51.01         54.01
-         45.02         48.02             0         55.01
-         46.02         49.01         52.01             0
+             0         35.08         38.08         41.08
+         32.08             0         39.08         42.08
+         33.08         36.08             0         43.08
+         34.08         37.08         40.08             0
 
-</pre><a href='http://rosa.unipr.it/fsda/MixSim.html#Example_1'><img vspace="5" hspace="5" src="images\MixSim_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/MixSim.html#Example_1'><img vspace="5" hspace="5" src="images\MixSim_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</li></span></a></span></h3><div class="collapse"><p>
      Use average overlap of 0.05 and
      maximum overlap equal to 0.15.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">k=4;
 v=5;
@@ -144,7 +145,7 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                BarOmega MaxOmega and StdOmega.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'StdOmega',0.05
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_sph" class="clearfix"></div><h3 id="input_argument_namevalue_sph" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>sph</code> &#8212;Spherical covariances.</span></a><span class="example_desc">scalar logical | structure.</span></span></h3><div class="collapse">	<p><p>Scalar boolean or structure which specifies covariance
-               matrix. When sph is logical value, if:
+               matrix. When sph is logical value, if:</p> <p>
                sph=false (default) ==&gt; non-spherical clusters;</p> <p>
                sph=true            ==&gt; spherical clusters= const*I.</p> <p>
                The following options "hom", "ecc" and "restrfactor" have
@@ -152,11 +153,11 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                value of sph is false that is non spherical clusters are
                generated.</p> <p>
                If sph is a structure it may contain the following fields.</p><p>
-       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p>a 3 letter character in the set:
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p><p>a 3 letter character in the set:</p> <p>
                 'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
                 'EVI','VEI','EEI','VII','EII' which
                 specifies the type of Gaussian Parsimonious Clustering
-                Model which needs to be generated.</p></td></tr><tr valign="top"><td><code>exactrestriction</code></td><td><p><p>boolean. If sph.exactrestriction is
+                Model which needs to be generated.</p></p></td></tr><tr valign="top"><td><code>exactrestriction</code></td><td><p><p>boolean. If sph.exactrestriction is
                 true the covariance matrices have to be generated with the
                 exact values of the restrictions specified in sph.cdet,
                 sph.shw and sph.shb. For example if sph.pars='VVE' and
@@ -173,13 +174,13 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                 constraint &lt;= sph.cdet and shape matrices which satisfy
                 the inequality constraints &lt;= sph.shw and &lt;= sph.shb.</p></p></td></tr><tr valign="top"><td><code>cdet</code></td><td><p>scalar which specifies the restriction factor
                 for determinants across groups. If this field is empty or
-                if this field is missing no contraint is imposed among
+                if this field is missing no constraint is imposed among
                 determinants.</p></td></tr><tr valign="top"><td><code>shw</code></td><td><p>scalar which specifies the restriction factor for
                 shape matrices within each group. If this field is empty
-                or if this field is missing, no contraint is imposed among
+                or if this field is missing, no constraint is imposed among
                 the elements of each shape matrix of a particular group.</p></td></tr><tr valign="top"><td><code>shb</code></td><td><p>scalar which specifies the restriction factor for
                 shape matrices between each group. If this field is empty
-                or if this field is missing, no contraint is imposed
+                or if this field is missing, no constraint is imposed
                 across the elements of each shape matrix between the
                 groups.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'sph',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_hom" class="clearfix"></div><h3 id="input_argument_namevalue_hom" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hom</code> &#8212;Equal Sigmas.</span></a><span class="example_desc">scalar logical.</span></span></h3><div class="collapse">	<p><p>Scalar boolean which specifies heterogeneous or homogeneous
@@ -225,7 +226,7 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                The default value of int is [0 1].</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'int',[0 2]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_resN" class="clearfix"></div><h3 id="input_argument_namevalue_resN" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>resN</code> &#8212;number of simulations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Maximum number of mixture resimulations to find a
-               similation setting with prespecified level of overlapping.</p> <p>
+               simulation setting with prespecified level of overlapping.</p> <p>
                The default value of resN is 100
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'resN',20
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tol" class="clearfix"></div><h3 id="input_argument_namevalue_tol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tol</code> &#8212;Tolerances.</span></a><span class="example_desc">vector of length 2.</span></span></h3><div class="collapse">	<p><p>tol(1) (which will be called tolmap) specifies
@@ -272,7 +273,7 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                        (i ~= j)=1, 2, ..., k. In other words MaxOmega=
                       OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))</p></td></tr><tr valign="top"><td><code>StdOmega</code></td><td><p><p>scalar. Value of standard deviation (std) of overlap.</p> <p>
                       StdOmega is the standard deviation of k*(k-1)/2
-                      probabilities of overlapping</p></p></td></tr><tr valign="top"><td><code>rcMax</code></td><td><p>vector of length 2. It containes the row and column
+                      probabilities of overlapping</p></p></td></tr><tr valign="top"><td><code>rcMax</code></td><td><p>vector of length 2. It contains the row and column
                       numbers associated with  the pair of components
                       producing maximum overlap 'MaxOmega'</p></td></tr><tr valign="top"><td><code>fail</code></td><td><p>scalar, flag value. 0 represents successful mixture
                       generation, 1 represents failure.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
@@ -284,10 +285,10 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
   probabilities of occurrence $\pi_i$ and $\pi_j$, the misclassification
   probability with respect to cluster $i$ (that is conditionally on $x$
   belonging to cluster $i$,  which is called  $w_{j|i}$) is defined as
-  $Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) &lt; \pi_j \phi(x;\mu_j,\Sigma_j)]$.</p><p>
+  $Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) &lt; \pi_j \phi(x;\mu_j,\Sigma_j)]$.</p> <p>
   The matrix containing the misclassification probabilities $w_{j|i}$ is
   called OmegaMap
-  The probability of overlapping between groups $i$ and $j$ is given by:
+  The probability of overlapping between groups $i$ and $j$ is given by:</p><p>
   </p>\[
             w_{j|i} + w_{i|j}    \qquad      i,j=1,2, ..., k
   \]<p>

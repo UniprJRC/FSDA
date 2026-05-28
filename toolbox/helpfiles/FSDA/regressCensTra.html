@@ -24,19 +24,20 @@ Coefficients
                      betaout     sebetaout     tout         pval   
                      ________    _________    _______    __________
 
-    (Intercept)        8.0994      2.0551      3.9411    9.0766e-05
-    age              -0.17896    0.096378     -1.8568       0.06383
-    yearsmarried      0.55581     0.19968      2.7835     0.0055481
-    religiousness      -1.687      0.2857     -5.9047    5.9462e-09
-    occupation        0.32197     0.25833      1.2464       0.21313
-    rating            -2.2832     0.42998     -5.3102    1.5499e-07
-    sigma              8.2092      0.7192      11.414    2.0181e-27
-    lambda             1.2595     0.20391      6.1769    1.2131e-09
+    (Intercept)        8.0994      3.1671      2.5573      0.010795
+    age              -0.17896    0.063685       -2.81      0.005117
+    yearsmarried      0.55581     0.12355      4.4987    8.2281e-06
+    religiousness      -1.687     0.38688     -4.3604    1.5304e-05
+    occupation        0.32197     0.25123      1.2816       0.20049
+    rating            -2.2832     0.54888     -4.1598    3.6551e-05
+    sigma              8.2092     0.56566      14.513    4.5608e-41
+    lambda             1.2595     0.11953      10.537    6.4291e-24
 
 Number of observations: 601, Error degrees of freedom:594
 Log-likelihood: -703.2104
 R-squared: 0.36215
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of right censoring.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of right censoring.</li></span></a></span></h3><div class="collapse"><p>
      When left=-Inf and right=0 indicates that there is no left-censoring but
      there is a right censoring at 0. The same model as above but with the
      negative number of affairs as the dependent variable can be estimated  by<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load affairs.mat
@@ -152,9 +153,9 @@ disp(out.signLR)</pre></div></div></p></div></div></div></div></div><div 
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'optmin.Display','off'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
 
-   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>(p+2)-by-3 matrix containing:
+   <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Beta</code></td><td><p><p>(p+2)-by-3 matrix containing:</p> <p>
                        1st col = Estimates of regression coefficients,
-                       sigma and lambda;</p> <p>
+                       sigma and lambda;</p><p>
                        2nd col = Standard errors of the estimates
                        3rd col = t-tests of the estimates</p></p></td></tr><tr valign="top"><td><code>beta0</code></td><td><p>vector containing the estimates of the regression
                        coefficients under z(lambda_0)</p></td></tr><tr valign="top"><td><code>jacla0</code></td><td><p>value of the Jacobian which has been used in order
@@ -183,7 +184,7 @@ disp(out.signLR)</pre></div></div></p></div></div></div></div></div><div 
  the underlying latent variable that would not have such restriction if it
  was actually observed.</p> <p>
 
- In the standard Tobit model (Tobin 1958), we have a dependent variable $y$ that is left-censored at zero:
+ In the standard Tobit model (Tobin 1958), we have a dependent variable $y$ that is left-censored at zero:</p> <p>
  \begin{eqnarray}
  y_i^* & = & x_i^{\prime} \beta+\varepsilon_i \\
  y_i   =  &  0            & \text { if } y_i^* \leq 0 \\
@@ -199,7 +200,7 @@ disp(out.signLR)</pre></div></div></p></div></div></div></div></div><div 
  The censored regression model is a generalisation of the standard Tobit model.</p> <p>
  The dependent variable can be either left-censored, right-censored, or
  both left-censored and right-censored, where the lower and/or upper limit
- of the dependent variable can be any number:
+ of the dependent variable can be any number:</p> <p>
  \begin{eqnarray}
   y_i^*=x_i^{\prime} \beta+\varepsilon_i     \\
   y_i & = &     a       \qquad  \text { if } y_i^* \leq a    \\

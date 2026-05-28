@@ -29,7 +29,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                   mean     
     bankrup       30.467     29.62     12.11     11.49     1.0067     -0.010969
     billsoverd    44.614      40.6    22.783    19.496    0.98031        0.1586
 
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> grpstatsFS with second input the grouping variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> grpstatsFS with second input the grouping variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % The first 46 rows are referred to provinces located in northern Italy and
 % the remaining in centre-south Italy.
 zone=[repelem("N",46) repelem("CS",57)]';
@@ -49,7 +50,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                  meanN     
     bankrup       27.855    27.745     10.451    10.215     0.73877      -0.10754     32.575      31.64     13.009    12.691      1.0051       0.010132  
     billsoverd    31.775      30.2     14.368    10.156      1.2639      0.056604     54.975      52.34     23.127    19.422     0.68542       0.069632  
 
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS with personalized statistics.</li></span></a></span></h3><div class="collapse"><p>
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS with personalized statistics.</li></span></a></span></h3><div class="collapse"><p>
      The second element is empty, that is there is no grouping variable.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % Just compute mean and median
 stats=["mean" "median"];
@@ -65,7 +67,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                   mean     
     bankrup       30.467     29.62
     billsoverd    44.614      40.6
 
-</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS with function handles.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS with function handles.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % multiple types of summary statistics specified as a cell
 stats={"mean","std",@skewness};
 TBL=grpstatsFS(citiesItaly,[],stats);
@@ -80,7 +83,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                   mean     
     bankrup       30.467     12.11     1.0067 
     billsoverd    44.614    22.783    0.98031 
 
-</pre></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS to create conf int for the mean.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS to create conf int for the mean.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % Note that in this case meanci has in output two columns
 stats={"meanci" 'mean'};
 % Confidence interval for the sample means
@@ -96,7 +100,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                  meanCIinf 
     bankrup        28.101       32.834      30.467
     billsoverd     40.161       49.066      44.614
 
-</pre></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS to create conf int for the mean with groups.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of call to grpstatsFS to create conf int for the mean with groups.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % Note that in this case meanci has in output two columns
 stats={"meanci" 'mean'};
 % The first 46 rows are referred to provinces located in northern Italy and
@@ -117,7 +122,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                  meanCIinfN
     bankrup         24.752        30.959      27.855      29.124         36.027       32.575
     billsoverd      27.508        36.042      31.775      48.839         61.111       54.975
 
-</pre></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option Alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option Alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % Note that in this case meanci has in output two columns
 stats={"meanci" 'mean'};
 % The first 46 rows are referred to provinces located in northern Italy and
@@ -138,7 +144,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                  meanCIinfN
     bankrup         23.711            32      27.855      27.981          37.17       32.575
     billsoverd      26.077        37.473      31.775      46.807         63.143       54.975
 
-</pre></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option DataVars.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option DataVars.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % Note that in this case meanci has in output two columns
 stats={"meanci" 'mean'};
 % The first 46 rows are referred to provinces located in northern Italy and
@@ -154,7 +161,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                meanCIinfN  
     addedval       21202         22940       22071       13891          15886        14888
     unemploy      3.9714        4.9712      4.4713      12.675         16.872       14.774
 
-</pre></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option DataVars with VarNames.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option DataVars with VarNames.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % Note that in this case meanci has in output two columns
 stats={"median" 'mean'};
 TBL=grpstatsFS(citiesItaly,[],stats, ...
@@ -167,7 +175,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                Robust locat
     depos           7661.1               7769.1       
     export           21.53                23.11       
 
-</pre></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option DataVars with VarNames and grouping variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option DataVars with VarNames and grouping variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % Note that in this case meanci has in output two columns
 stats={"meanci" 'mean'};
 % The first 46 rows are referred to provinces located in northern Italy and
@@ -185,7 +194,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                Mean: lower 
     addedval                  21202                               22940                     22071                     13891                                15886                      14888    
     unemploy                 3.9714                              4.9712                    4.4713                    12.675                               16.872                     14.774    
 
-</pre></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option OutputFormat.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option OutputFormat.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 % Two measures of location and dispersion
 stats={'mean' 'median' 'std' @(x)1.4826*mad(x,1)};
 % The first 46 rows are referred to provinces located in northern Italy and
@@ -210,7 +220,8 @@ disp(TBL)</pre></div></div><pre class="codeoutput">                          me
     bankrup          27.86       32.58       27.75       31.64      10.45      13.01      10.22      12.69
     billsoverd       31.77       54.97       30.20       52.34      14.37      23.13      10.16      19.42
 
-</pre></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use of options plots as a scalar.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
+</pre>
+            </p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use of options plots as a scalar.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load citiesItaly.mat
 zone=[repelem("N",46) repelem("CS",57)]';
 citiesItaly.zone=zone;
 % Show the confidence interval of the mean for ech variable
@@ -227,7 +238,8 @@ grpstatsFS(CIT,[],["meanci" "mean" "median"],'plots',1);
 disp("Note that the confidence intervals for variables 2 and 6 are much lower")
 disp("than the others due to the presence of outlying observations")</pre></div></div><pre class="codeoutput">Note that the confidence intervals for variables 2 and 6 are much lower
 than the others due to the presence of outlying observations
-</pre><a href='http://rosa.unipr.it/fsda/grpstatsFS.html#ExtraExample_11'><img vspace="5" hspace="5" src="images\grpstatsFS_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\grpstatsFS_03.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_TBL" class="clearfix"> </div> <h3 id="input_argument_TBL" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>TBL</code> &#8212; Input data. </span>  </a><span class="example_desc">Table.</span></span></h3> <div class="collapse"> <p><p>Table containing n observations on p variables.</p> <p>
+</pre>
+            <a href='http://rosa.unipr.it/fsda/grpstatsFS.html#ExtraExample_11'><img vspace="5" hspace="5" src="images\grpstatsFS_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\grpstatsFS_03.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_TBL" class="clearfix"> </div> <h3 id="input_argument_TBL" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>TBL</code> &#8212; Input data. </span>  </a><span class="example_desc">Table.</span></span></h3> <div class="collapse"> <p><p>Table containing n observations on p variables.</p> <p>
                Rows of TBL represent observations, and columns
                represent variables. If it necessary to compute the
                statistics for subgroups, TBL must include at least one
