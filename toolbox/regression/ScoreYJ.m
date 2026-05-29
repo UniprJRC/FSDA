@@ -72,8 +72,17 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %
 %  The output consists of a structure 'outSC' containing the following fields:
 %
-%        outSC.Score    =    score test. Scalar. t test for additional
-%                            constructed variable.
+%        outSC.Score    =    score test. Vector. Vector of length
+%                            length(lambda) which contains the value of the
+%                            score test for each value of lambda specified
+%                            in optional input parameter la. If la is not
+%                            specified, the vector will be of length 5 and
+%                            contains the values of the score test for the
+%                            5 most common values of lambda.
+%        outSC.ScoreT   =    value of the Tukey's one degree of freedome
+%                            test for non-additivity. Scalar. This output
+%                            is produced only if optional input tukey1df is
+%                            true.
 %        outSC.Lik      =    value of the likelihood. Scalar. This output
 %                           is produced only if input value Lik=1.
 %
