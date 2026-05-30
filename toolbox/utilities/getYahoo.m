@@ -114,7 +114,8 @@ function [out]=getYahoo(ticker, varargin)
 %               possible values are:
 %               'candle' = candlestick chart (default option);
 %               'line'   = close price only;
-%               'ma'     = close price and moving averages.
+%               'ma'     = close price and moving averages;
+%               'boll'   = close price and Bollinger bands.
 %               In this case, all suboptions associated with the selected
 %               top panel mode remain at their default values.
 %
@@ -129,6 +130,10 @@ function [out]=getYahoo(ticker, varargin)
 %               maSlowLen =Show moving average length (default 60).
 %               showMACrossovers=show moving average crossover markers 
 %               (default is true).
+%
+%               The suboptions inside 'boll' are:
+%               bollWindow = Window for the moving average (default 20).
+%               bollNumStd = Number of standard deviations (default 2).
 %
 %               The default values for 'line' are:
 %               no additional suboptions.
@@ -234,7 +239,7 @@ function [out]=getYahoo(ticker, varargin)
 % out.Message           = message describing the result.
 % out.class             = 'getYahoo'.
 %
-% See also: getTickers, getFundamentals, rsindex, candle, movavg
+% See also: getTickers, getFundamentals, rsindex, candle, movavg, bollinger
 %
 % References:
 %
@@ -410,6 +415,15 @@ function [out]=getYahoo(ticker, varargin)
 %}
 
 %{
+    % Define the Bollinger settings structure in the top panel.
+    s = struct;
+    s.Name = 'boll';
+    s.bollWindow = 20;   % Moving average window (default 20)
+    s.bollNumStd = 2;    % Number of standard deviations (default 2)
+    out = getYahoo('G.MI', 'topPanelMode', s);
+%}
+
+%{
     % RSI custom in the bottom panel.
     s = struct;
     s.Name = 'rsi';
@@ -581,6 +595,11 @@ macdSigLen       = 9;
 
 rocLen           = 12;
 
+% Default Bollinger
+bollWindow = 20;
+bollNumStd = 2;
+
+
 % Parse topPanelMode.
 % If topPanelMode is a char vector or string scalar, all suboptions remain
 % at their default values.
@@ -611,6 +630,9 @@ if isstruct(topPanelMode)
 
         case 'line'
             allowedTopFields = {'Name'};
+
+        case 'boll'
+            allowedTopFields = {'Name','bollWindow','bollNumStd'};
 
         otherwise
             error('FSDA:getYahoo:WngInp', ...
@@ -643,6 +665,11 @@ if isstruct(options.topPanelMode)
             if isfield(STop,'widthFactor'), widthFactor = STop.widthFactor; end
             if isfield(STop,'upColor'),     upColor = STop.upColor; end
             if isfield(STop,'downColor'),   downColor = STop.downColor; end
+            
+        case 'boll'
+            if isfield(STop,'bollWindow'), bollWindow = STop.bollWindow; end
+            if isfield(STop,'bollNumStd'), bollNumStd = STop.bollNumStd; end
+
     end
 end
 
@@ -973,6 +1000,7 @@ for ii=1:nout
         'maFast',maFast, ...
         'maMid',maMid, ...
         'maSlow',maSlow);
+
     out(ii).Success = true;
     out(ii).Message = "OK";
 
@@ -984,7 +1012,8 @@ for ii=1:nout
             bottomPanelMode, topRSI, lowRSI, topStoch, lowStoch, ...
             topWilliams, lowWilliams, ...
             rsiVals, stochK, stochD, macdLine, macdSignal, macdHist, ...
-            williamsR, rocVals, maFast, maMid, maSlow,layoutHeights)
+            williamsR, rocVals, maFast, maMid, maSlow, ...
+            bollWindow, bollNumStd, layoutHeights)
     end
 end
 
@@ -992,10 +1021,12 @@ if showPanelHelp
     showPanelExplanationCommand(topPanelMode, bottomPanelMode, ...
         maFastLen, maMidLen, maSlowLen, ...
         rsiLen, stochLen, stochSmooth, macdFastLen, macdSlowLen, macdSigLen, rocLen, wrLen, ...
-        topRSI, lowRSI, topStoch, lowStoch, topWilliams, lowWilliams);
+        topRSI, lowRSI, topStoch, lowStoch, topWilliams, lowWilliams, ...
+        bollWindow, bollNumStd);
 end
 
 end
+
 function localPlotYahoo(TT, tickerNow, LastPeriod, intervalThis, ...
     widthFactor, removeGaps, breakAtSession, nTicks, ...
     topPanelMode, maFastLen, maMidLen, maSlowLen, showMACrossovers, ...
@@ -1003,7 +1034,8 @@ function localPlotYahoo(TT, tickerNow, LastPeriod, intervalThis, ...
     bottomPanelMode, topRSI, lowRSI, topStoch, lowStoch, ...
     topWilliams, lowWilliams, ...
     rsiVals, stochK, stochD, macdLine, macdSignal, macdHist, ...
-    williamsR, rocVals, maFast, maMid, maSlow, layoutHeights)
+    williamsR, rocVals, maFast, maMid, maSlow, ...
+    bollWindow, bollNumStd, layoutHeights)
 
 layoutHeights = layoutHeights(:)';
 if numel(layoutHeights) ~= 3 || any(~isfinite(layoutHeights)) || any(layoutHeights <= 0)
@@ -1152,11 +1184,68 @@ switch lower(topPanelMode)
                 'HandleVisibility','off');
         end
 
+    case 'boll'
+        
+        [bollMid, bollUpper, bollLower] = bollinger(TT.Close, 'WindowSize', bollWindow, 'NumStd', bollNumStd);
+
+        
+        xvec  = x(:);
+        yvec  = TT.Close(:);
+        bbMid = bollMid(:);
+        bbUp  = bollUpper(:);
+        bbLow = bollLower(:);
+
+        % Set axis
+        hold(ax1,'on'); grid(ax1,'on');
+
+        % Up/Down colored segments: successive differences
+        d = [0; diff(yvec)];
+        upIdx = d >= 0;
+        dnIdx = d < 0;
+
+        % Sequential up/down color plotting
+        if any(upIdx)
+            plot(ax1, xvec(upIdx), yvec(upIdx), '-', 'Color', [0 0.6 0], 'LineWidth', 1.4);
+        end
+        if any(dnIdx)
+            plot(ax1, xvec(dnIdx), yvec(dnIdx), '-', 'Color', [0.85 0.15 0.15], 'LineWidth', 1.4);
+        end
+
+        % SMA and bands
+        plot(ax1, xvec, bbMid, '-','Color',[0 0.4470 0.7410],'LineWidth',1);
+        plot(ax1, xvec, bbUp,  '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
+        plot(ax1, xvec, bbLow, '--','Color',[0.3 0.3 0.3],'LineWidth',0.9);
+
+        % Fill band (with NaN check)
+        validBands = ~isnan(bbUp) & ~isnan(bbLow);
+        xFill = xvec(validBands);
+        yUpFill = bbUp(validBands);
+        yLowFill = bbLow(validBands);
+
+        xpatch = [xFill; flipud(xFill)];
+        ypatch = [yUpFill; flipud(yLowFill)];
+
+        hPatch = patch('XData', xpatch, 'YData', ypatch, ...
+                       'FaceColor',[0.6 0.6 0.6], 'FaceAlpha', 0.15, ...
+                       'EdgeColor','none', 'Parent', ax1);
+        uistack(hPatch, 'bottom');
+
+        % Marker on the last point
+        plot(ax1, xvec(end), yvec(end), 'o', 'MarkerFaceColor',[0 0.4470 0.7410], 'MarkerEdgeColor','k');
+
+        % Legend
+        legend(ax1, {'Range','Price up','Price Down','SMA','Bands'}, 'Location', 'best');
+
     otherwise
         error('FSDA:getYahoo:WngInp','Unknown topPanelMode.');
 end
 
-ylim(ax1,'tight');
+% ylim implemetation
+if strcmp(lower(topPanelMode), 'boll')
+    ylim(ax1, 'padded');
+else
+    ylim(ax1, 'tight');
+end
 
 %% Middle panel: volume
 ax2 = axes('Position',[leftMargin y2 availW h2]);
@@ -1351,7 +1440,7 @@ else
     ax2.XTickLabel = [];
 end
 
-xlim(ax1,'tight');
+xlim(ax1, 'tight');
 
 %% Last labels
 switch lower(bottomPanelMode)
@@ -1552,7 +1641,8 @@ end
 function showPanelExplanationCommand(topPanelMode, bottomPanelMode, ...
     maFastLen, maMidLen, maSlowLen, ...
     rsiLen, stochLen, stochSmooth, macdFastLen, macdSlowLen, macdSigLen, rocLen, wrLen, ...
-    topRSI, lowRSI, topStoch, lowStoch, topWilliams, lowWilliams)
+    topRSI, lowRSI, topStoch, lowStoch, topWilliams, lowWilliams, ...
+    bollWindow, bollNumStd)
 
 fprintf('\n');
 fprintf('============================================================\n');
@@ -1574,6 +1664,10 @@ switch lower(topPanelMode)
         fprintf('  - Fast MA  = %d\n', maFastLen);
         fprintf('  - Medium MA= %d\n', maMidLen);
         fprintf('  - Slow MA  = %d\n', maSlowLen);
+    case 'boll'
+        fprintf('Mode: Close + Bollinger Bands\n');
+        fprintf('  - Window length  = %d\n', bollWindow);
+        fprintf('  - Number of Std  = %.1f\n', bollNumStd);
 end
 
 fprintf('\nBOTTOM PANEL\n');
