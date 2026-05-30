@@ -1234,7 +1234,7 @@ switch lower(topPanelMode)
         plot(ax1, xvec(end), yvec(end), 'o', 'MarkerFaceColor',[0 0.4470 0.7410], 'MarkerEdgeColor','k');
 
         % Legend
-        legend(ax1, {'Price up','Price down','SMA','Upper','Lower'}, 'Location', 'best');
+        legend(ax1, {'Range','Price up','Price Down','SMA','Bands'}, 'Location', 'best');
 
     otherwise
         error('FSDA:getYahoo:WngInp','Unknown topPanelMode.');
