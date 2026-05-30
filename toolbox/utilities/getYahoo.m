@@ -415,11 +415,11 @@ function [out]=getYahoo(ticker, varargin)
 %}
 
 %{
-    % Define the Bollinger settings structure in the top panel.
+    %% Define the Bollinger settings structure in the top panel.
     s = struct;
     s.Name = 'boll';
-    s.bollWindow = 20;   % Moving average window (default 20)
-    s.bollNumStd = 2;    % Number of standard deviations (default 2)
+    s.bollWindow = 25;   % Moving average window (default 20)
+    s.bollNumStd = 2.3;    % Number of standard deviations (default 2)
     out = getYahoo('G.MI', 'topPanelMode', s);
 %}
 
