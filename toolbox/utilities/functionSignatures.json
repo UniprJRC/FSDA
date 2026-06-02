@@ -281,10 +281,12 @@
         "kind": "namevalue",
         "type": [
           [
-            "char"
+            "char" ,
+            "choices={'marketCap','trailingPE','forwardPE','priceToBook','beta','enterpriseValue','profitMargins','returnOnEquity','returnOnAssets','totalRevenue'}"
           ],
           [
-            "string"
+            "string" ,
+            "choices={'marketCap','trailingPE','forwardPE','priceToBook','beta','enterpriseValue','profitMargins','returnOnEquity','returnOnAssets','totalRevenue'}"
           ]
         ],
         "purpose": "Numeric variable used to rank rows in descending order"
