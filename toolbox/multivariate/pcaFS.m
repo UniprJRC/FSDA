@@ -3,6 +3,12 @@ function out=pcaFS(Y,varargin)
 %
 %<a href="matlab: docsearchFS('pcaFS')">Link to the help function</a>
 %
+%   If pcaFS is called without input arguments, app pcaFSdataAPP is
+%   launched. The app lets the user choose a spreadsheet, CSV or text file
+%   and then calls pcaFS from its Run button. pcaFS then launches
+%   biplotAPP according to the value of option biplot.
+%
+%
 %   The main differences with respect to MATLAB function pca are:
 %   1) accepts an input X also as table;
 %   2) produces in table format the percentage of the variance explained
@@ -350,6 +356,14 @@ function out=pcaFS(Y,varargin)
 
 
 %% Beginning of code
+if nargin == 0
+    if nargout > 0
+        out = pcaFSdataAPP;
+    else
+        pcaFSdataAPP;
+    end
+    return
+end
 [n,v]=size(Y);
 plots=1;
 standardize=true;
