@@ -40,6 +40,13 @@ function [MMDenv, INEenv, nsimul] = FSCorAnaenv(N,varargin)
 %                 Example - 'nsimul',100
 %                 Data Types - double
 %
+%  msg  :       It controls whether to display or not messages
+%               about great interchange on the screen. Scalar.
+%               If msg==1 messages are displayed on the screen
+%               else no message is displayed on the screen.
+%                 Example - 'msg',0
+%                 Data Types - double
+%
 % Output:
 %
 %  MMDenv :     n-m0+1 x length(prob)+1 columns containing the envelopes
@@ -165,9 +172,12 @@ m0=floor(n*0.6);
 % Default quantiles to use
 prob=[0.01 0.5 0.99];
 
+% Default value for msg
+msg=0;
+
 
 if nargin>1
-    options=struct('init',m0,'prob',prob,'nsimul',nsimul);
+    options=struct('init',m0,'prob',prob,'nsimul',nsimul,'msg',msg);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -184,6 +194,7 @@ if nargin>1
     m0=options.init;
     prob=options.prob;
     nsimul=options.nsimul;
+    msg=options.msg;
 
     % Check that the initial subset size is not greater than n-1
     if m0>n-1
@@ -210,7 +221,7 @@ ineStore=zeros(n-m0+1,nsimul);
 if preGeneratedNsim ==true
     parfor j=1:nsimul
         Nsim=reshape(NsimStore(:,j),nrow,[]);
-        outSIMj=FSCorAnaeda(Nsim,'init',m0);
+        outSIMj=FSCorAnaeda(Nsim,'init',m0,'msg',msg);
         mmdStore(:,j)=outSIMj.mmd(:,2);
         ineStore(:,j)=outSIMj.ine(:,2);
     end
@@ -228,7 +239,7 @@ else
         Nsim=out1.m144;
 
         RAW=mcdCorAna(Nsim,'plots',0,'msg',0,'nsamp',300);
-        outSIMj=FSCorAnaeda(RAW,'init',m0);
+        outSIMj=FSCorAnaeda(RAW,'init',m0,'msg',msg);
 
         mmdStore(:,j)=outSIMj.mmd(:,2);
         ineStore(:,j)=outSIMj.ine(:,2);
