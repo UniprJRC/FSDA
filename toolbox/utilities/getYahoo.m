@@ -794,6 +794,22 @@ else
         'ticker must be a char, a cell array of char, or a string array.');
 end
 
+% Convert LastPeriod='max' into the longest range compatible with the
+% requested interval, to avoid Yahoo silent downsampling.
+if strcmpi(LastPeriod,'max')
+    switch interval
+        case {'1m'}
+            LastPeriod = '5d';
+        case {'2m' '5m' '15m' '30m' '90m'}
+            LastPeriod = '1mo';
+        case {'60m' '1h' }
+            LastPeriod = '3mo';
+        otherwise
+            LastPeriod = '10y';
+    end
+    disp(['Maximum allowed period for '  num2str(interval)  ' interval is: '    num2str(LastPeriod)])
+end
+
 % Validate range/interval pair
 [intervalValidated, isValidPair] = validateYahooRangeInterval(LastPeriod, interval, autoFixInterval);
 
@@ -801,6 +817,8 @@ if ~isValidPair && msg
     fprintf('Requested pair range=%s, interval=%s is not supported.\n', LastPeriod, interval);
     fprintf('Using interval=%s instead.\n', intervalValidated);
 end
+
+
 
 hf = ["User-Agent", "Mozilla/5.0"; ...
     "Accept", "application/json,text/plain,*/*"];
@@ -834,6 +852,8 @@ for ii=1:nout
     end
 
     url = "https://query1.finance.yahoo.com/v8/finance/chart/" + tickerNow;
+
+   
 
     try
         raw = webread(url, 'interval', intervalValidated, 'range', LastPeriod, opts);
