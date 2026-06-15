@@ -3464,102 +3464,74 @@ if evalCode==true
         fprintf(filetmp,'%s',ExToExec);
         fclose(filetmp);
 
-        options=struct;
-        options = supplyDefaultOptions(options);
-        options.codeToEvaluate=[name 'tmp'];
-        options.createThumbnail=0;
-        prefix=name;
+        % --- START OF NEW NATIVE BLOCK (No Java) ---
+        laste = '';
+        totex = numexToExec + numextraexToExec;
+        texttoadd = cell(totex, 1);
 
-        if verLessThanFS([26,1])
-            [dom,cellBoundaries] = m2mxdom(ExToExec);
-            [dom,laste] = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
-            
-            drawnow;
+        % Split the large string of examples into single blocks 
+        % using the '%% Ex' tag as a separator.
+        esempiRaw = strsplit(ExToExec, '%% Ex');
 
-            ext='html';
-            AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
-            [xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
+        % Remove any empty blocks created by the split
+        esempiRaw = esempiRaw(~cellfun('isempty', strtrim(esempiRaw)));
 
-            drawnow;
+        for k = 1:length(esempiRaw)
+            blocco = esempiRaw{k};
 
-            % load html output in a string and extract the parts which are required
-            if ismac || isunix
-                fileHTML = fopen(xResultURI(6:end), 'r+');
-            elseif ispc
-                fileHTML = fopen(xResultURI(7:end), 'r+');
+            % The block starts with the label (e.g., "1" or "Extra1"). 
+            % Find the first newline to isolate the actual code.
+            primoACapo = regexp(blocco, '\n', 'once');
+            if ~isempty(primoACapo)
+                codiceDaEseguire = blocco(primoACapo+1:end);
             else
-                fileHTML = fopen(xResultURI(6:end), 'r+');
-                disp('Cannot recognize platform: I use unix as default')
+                codiceDaEseguire = blocco;
             end
 
-            % Insert the file into fstring
-            fstringHTML=fscanf(fileHTML,'%c');
+            txtOutput = '';
+            imgHTML = '';
 
-        else
-            [dom,cellBoundaries] = m2mxdomNEW(ExToExec);
-            [dom,laste] = evalmxdomNEW(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
-            drawnow;
-            AbsoluteFilename = fullfile(outputDir,'out_pretty.xml');
-            import matlab.io.xml.transform.*
-            tr = Transformer();
-            writer = matlab.io.xml.dom.DOMWriter;
-            % writer.Configuration.FormatPrettyPrint = true;   % indent + newlines
-            writeToFile(writer, dom, AbsoluteFilename);
-            filexsl=[path2privateFS filesep 'mxdom2simplehtml.xsl'];
-            fstringHTML=char(transformToString(tr, AbsoluteFilename, filexsl));
-        end
+            try
+                % Close any figures opened by previous examples
+                close all;
 
-          % Now remove the temporary .m file with the examples which had been created
-            delete(fullPathToScript)
+                % 1. TEXT CAPTURE: Execute the code natively and capture the output
+                txtOutput = evalc(codiceDaEseguire);
 
+                % 2. IMAGE CAPTURE: Check if the example generated any plots (figures)
+                figHandles = findobj('Type', 'figure');
+                if ~isempty(figHandles)
+                    for f = 1:length(figHandles)
+                        % Create a unique name for the saved image
+                        imgName = sprintf('%s_ex%d_fig%d.png', name, k, f);
+                        imgPath = fullfile(imagesDir, imgName);
+                        saveas(figHandles(f), imgPath);
 
-        totex=numexToExec+numextraexToExec;
-        texttoadd=cell(totex,1);
-
-        fHTML=regexp(fstringHTML,'<h2>Ex');
-        if isempty(fHTML)
-            fHTML=regexp(fstringHTML,'<pre class="codeoutput">','once');
-        end
-        % If fHTML is still empty it means that the ouptut only generates images
-        if isempty(fHTML)
-            fHTML=regexp(fstringHTML,'<img vspace','once');
-        end
-
-        % if fHTML is still empty search codeinput
-        if isempty(fHTML)
-            fHTML=regexp(fstringHTML,'<pre class="codeinput">','once');
-            %  if fHTML is still empty produce an error
-            if isempty(fHTML)
-                errmsg='Parser could not run an example';
-                error('FSDA:publishFS:WrngOutFolder',errmsg)
-            end
-        end
-
-        for j=1:totex
-            if j<totex && totex>1 && length(fHTML)>1
-                try
-                    fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
-                catch
-                    fcand=fstringHTML(fHTML(j):end);
+                        % Create the HTML tag to embed the image
+                        imgHTML = [imgHTML '<img vspace="5" hspace="5" src="images/' imgName '" alt=""> '];
+                    end
+                    close(figHandles); % Cleanup
                 end
-            else
-                fendHTML=regexp(fstringHTML,'<p class="footer">','once');
-                fcand=fstringHTML(fHTML(end):fendHTML-1);
+            catch exception
+                % If the example throws an error, display it in the HTML instead of crashing the script
+                txtOutput = ['Error during execution: ' exception.message];
+                laste = exception;
             end
 
-            % in fcand search the two following strings
-            fcode=regexp(fcand,'<pre class="codeoutput">','once');
-            if isempty(fcode)
-                fcode=Inf;
+            % 3. HTML ASSEMBLY: Combine the formatted text and the images
+            htmlBlocco = '';
+            if ~isempty(strtrim(txtOutput))
+                htmlBlocco = ['<pre class="codeoutput">' strtrim(txtOutput) '</pre>'];
             end
-            fimg=regexp(fcand,'<img','once');
-            if isempty(fimg)
-                fimg=Inf;
-            end
-            if min(fcode,fimg)<Inf
-                texttoadd{j}=fcand(min(fcode,fimg):end);
-            end
+            htmlBlocco = [htmlBlocco imgHTML];
+
+            % Save the result ready to be injected into the final file
+            texttoadd{k} = htmlBlocco;
         end
+
+        % Remove the previously created temporary file
+        delete(fullPathToScript);
+        % --- END OF NEW NATIVE BLOCK ---
 
         % Now insert the strings which have been stored in cell texttoadd in the
         % appropriate position of outstring
