@@ -11,7 +11,7 @@ function out = mdLittleTest(Y, varargin)
 %
 %  Required input arguments:
 %
-%    Y :           Input data. Matrix. n x p data matrix; n observations and
+%    Y :           Input data. Array or table. n x p data matrix; n observations and
 %                  p variables possibly containing missing values (NaN's).
 %                  Rows of Y represent observations, and columns represent
 %                  variables.
@@ -184,12 +184,17 @@ if nargin < 1
         'At least one input argument is required.');
 end
 
+p = size(Y,2);
+
+if istable(Y)
+    Y=Y{:,:};
+end
+
 if ~ismatrix(Y) || ~isnumeric(Y)
     error('FSDA:mdLittleTest:WrongInput', ...
         'Input argument Y must be a numeric matrix.');
 end
 
-[p] = size(Y,2);
 
 % Default options
 maxiter   = 200;
