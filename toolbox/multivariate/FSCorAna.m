@@ -655,15 +655,14 @@ end
 if resc==true
     warmup=500;
     warmup=min([find(mmd(:,1)>round(n/2),1),warmup]);
-    % warmup=200;
-    % warmup=round(n*0.6-n/4);
     if sum(mmd(1:warmup,2)<gmin(1:warmup,2))>warmup/2   || sum(mmd(1:warmup,2)>gmin(1:warmup,4))>warmup/2
-        %     % coeff=mean(gmin(1:warmup,3)-mmd(1:warmup,2));
         coeff=mean(gmin(1:warmup,3))-mean(mmd(1:warmup,2));
         gmin(:,2:end)=gmin(:,2:end)-coeff;
     end
 
 end
+
+
 thresh=max(gmin(:,end));
 % Outlier detection based on Bonferroni threshold
 sign=find(mmd(:,2)>thresh,1);
@@ -699,9 +698,17 @@ if plotMinMD == true
     % Superimpose 50% envelope.
     line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','-.','Color','k','tag','env');
 
-    % Superimpose 1% and conflev% envelopes.
-    line(gmin(:,1),gmin(:,5),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-    line(gmin(:,1),gmin(:,end),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    if isscalar(conflev)
+        gminSEL=gmin(:,end);
+        % Superimpose 5% and conflev% envelopes.
+        line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+        line(gmin(:,1),gminSEL,'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    else
+        % Superimpose conflev% envelopes.
+        gminSEL=gmin(:,5:end);
+        line(gmin(:,1),gminSEL,'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    end
+
 
     sel=~ismissing(Un(:,end));
     if addRowNames == true
@@ -716,7 +723,8 @@ if plotMinMD == true
     ylabel('Monitoring of minimum (weighted) Mahalanobis distance');
 
     if addBonfLine == true
-        yline(max(gmin(:,end)))
+        conflevboo=conflev>0.5;
+        yline(max(gminSEL(:,conflevboo)))
     end
 
     drawnow

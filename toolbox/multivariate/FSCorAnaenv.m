@@ -204,13 +204,13 @@ end
 
 % Check that the number of simulations is large enough to obtain the
 % requested quantiles
-sel=round(nsimul*unique(prob));
+sel=round(nsimul*prob);
 sel(sel==0)=1;
-if ~isequal(unique(sel,"stable"),sel)
-    warning('FSDA:FSCorAnaenv:TooLowNsimul',['Some lines are equal it is necessary to' ...
-        ' increase the number of simulations. At present the order stats which are selected are']);
-    disp(num2str(sel(:)'))
-end
+% if ~isequal(unique(sel,"stable"),sel)
+%     warning('FSDA:FSCorAnaenv:TooLowNsimul',['Some lines are equal it is necessary to' ...
+%         ' increase the number of simulations. At present the order stats which are selected are']);
+%     disp(num2str(sel(:)'))
+% end
 
 %% Envelopes generation
 
