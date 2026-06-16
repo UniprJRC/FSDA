@@ -204,7 +204,7 @@ end
 
 % Check that the number of simulations is large enough to obtain the
 % requested quantiles
-sel=round(nsimul*prob);
+sel=round(nsimul*unique(prob));
 sel(sel==0)=1;
 if ~isequal(unique(sel,"stable"),sel)
     warning('FSDA:FSCorAnaenv:TooLowNsimul',['Some lines are equal it is necessary to' ...
