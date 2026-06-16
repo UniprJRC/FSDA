@@ -31,12 +31,13 @@ Give a ⭐️ if you like this project!
 # [Flexible Robust Statistics Data Analysis](https://github.com/UniprJRC/FSDA/)
 
 
-## FSDA release  2026a is out. (May 2026)
+## FSDA release  2026a is out. (June 2026)
 
 
 | New Features and Changes |
 | --- |
-| [release_notes (HTML file)](http://rosa.unipr.it/FSDA/release_notes.html)
+| [Release notes (HTML file)](http://rosa.unipr.it/FSDA/release_notes.html)
+| <a href="https://youtu.be/Zbljv0AiYXs">   Release notes (YouTube video) <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo" width="100"></a>|
 <br>
 
 
