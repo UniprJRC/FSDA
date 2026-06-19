@@ -243,7 +243,7 @@ if strcmp(selection, 'OK')
     try
         fprintf('Uninstalling: %s...\n', name);
         matlab.addons.uninstall(id);
-        uialert(fig, 'Add-on uninstalled. Now manually install the new version.', 'Success');
+        uialert(fig, 'Add-on uninstalled. Now manually install the new version.', 'Success', 'CloseFcn', @(src, event) close(fig));
     catch ME
         uialert(fig, ME.message, 'Uninstall Failed');
     end
