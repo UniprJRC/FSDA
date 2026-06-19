@@ -161,4 +161,4 @@ After any pull request from a branch or any modification of a file in the code s
 
 ## Join the Project Team
 
-If you arrive at the point of writing new functions and documentation pages compliant with the FSDA philosophy, it means that you have enough energies to take part in the FSDA project. In this case, please check our websites (http://fsda.jrc.ec.europa.eu and http://rosa.unipr.it) for open projects and feel free to contact us at FSDA@unipr.it 
+If you arrive at the point of writing new functions and documentation pages compliant with the FSDA philosophy, it means that you have enough energies to take part in the FSDA project. In this case, please check our websites (https://www.fsdatoolbox.eu and http://rosa.unipr.it) for open projects and feel free to contact us at FSDA@unipr.it 
