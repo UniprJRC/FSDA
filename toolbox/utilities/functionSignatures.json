@@ -173,17 +173,17 @@
         "type": [
           [
             "char",
-            "choices={'candle','line','ma'}"
+            "choices={'candle','line','ma','boll'}"
           ],
           [
             "string",
-            "choices={'candle','line','ma'}"
+            "choices={'candle','line','ma','boll'}"
           ],
           [
             "struct",
             "scalar",
             "field Name required",
-            "Name choices={'candle','line','ma'}",
+            "Name choices={'candle','line','ma','boll'}",
             "admissible fields depend on Name: candle->{Name,widthFactor,upColor,downColor}; line->{Name}; ma->{Name,maFastLen,maMidLen,maSlowLen,showMACrossovers}"
           ]
         ],
