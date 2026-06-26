@@ -184,7 +184,7 @@
             "scalar",
             "field Name required",
             "Name choices={'candle','line','ma','boll'}",
-            "admissible fields depend on Name: candle->{Name,widthFactor,upColor,downColor}; line->{Name}; ma->{Name,maFastLen,maMidLen,maSlowLen,showMACrossovers}"
+            "admissible fields depend on Name: candle->{Name,widthFactor,upColor,downColor}; line->{Name}; ma->{Name,maFastLen,maMidLen,maSlowLen,showMACrossovers}; boll->{Name,bollWindow,bollNumStd}"
           ]
         ],
         "purpose": "Type of plot in the top panel; \n when supplied as a struct, \n it also controls the suboptions associated with the selected visualization"
