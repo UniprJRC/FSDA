@@ -138,9 +138,10 @@ function [out]=getYahoo(ticker, varargin)
 %               The default values for 'line' are:
 %               no additional suboptions.
 %
-%               If topPanelMode is a scalar struct, field Name specifies
-%               the selected visualization and the remaining fields control
-%               only the suboptions associated with that visualization.
+%               If topPanelMode is a scalar struct, field Name (defined as
+%               a string or a char) specifies the selected visualization
+%               and the remaining fields control only the suboptions
+%               associated with that visualization.
 %
 %               For example, the call
 %               out=getYahoo('G.MI','topPanelMode',topPanelMode);
@@ -152,7 +153,7 @@ function [out]=getYahoo(ticker, varargin)
 %               topPanelMode.maMidLen=25;
 %               topPanelMode.maSlowLen=50;
 %               topPanelMode.showMACrossovers=true;
-%               Example - 'topPanelMode','ma'
+%               Example - 'topPanelMode','ma' or 'topPanelMode',topPanelMode
 %               Data Types - char | string | struct
 %
 % bottomPanelMode : Type of indicator shown in the bottom panel. Character,
