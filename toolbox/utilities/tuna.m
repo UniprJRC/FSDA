@@ -45,6 +45,17 @@ function tuna(varargin)
 %                       Example - 'PIVlab'
 %                       Data Types - char or string scalar or empty.
 %
+%           gui:   show a modal dialog. Boolean. If gui is true (default) and
+%                      the installed version is not the latest, a modal dialog
+%                      notifies the user and the installed/latest versions are
+%                      echoed to the Command Window. If gui is false no dialog is
+%                      shown: nothing is displayed when the toolbox is up to date,
+%                      an update notice is written to the Command Window when it is
+%                      not, and a failure to reach GitHub is non-fatal. Use
+%                      gui=false for unattended checks (e.g. at session startup).
+%                       Example - 'gui', false
+%                       Data Types - logical
+%
 %  Output:
 %
 % See also: matlab.addons.installedAddons, uialert
@@ -83,19 +94,42 @@ function tuna(varargin)
     tuna("FSDA","uniprJRC","FSDA")
 %}
 
+%{
+    % tuna in quiet mode (no modal dialog), suitable for session startup.
+    % Nothing is shown if FSDA is up to date; a Command Window notice appears
+    % otherwise, and a failure to reach GitHub is non-fatal.
+    tuna('FSDA','uniprJRC','FSDA','gui',false)
+%}
+
 %% Beginning of code
 
-if nargin==0
+% Extract the optional 'gui' name/value pair (default true) before parsing the
+% positional arguments, so every existing positional call syntax is unchanged.
+% gui=false is the quiet/startup mode: no modal dialog, nothing displayed when
+% the toolbox is up to date, a Command Window notice when it is not, and a
+% GitHub connection failure is non-fatal.
+gui = true;
+idx = find(cellfun(@(x) (ischar(x) || isstring(x)) && strcmpi(x, 'gui'), varargin), 1);
+if ~isempty(idx)
+    if idx == numel(varargin)
+        error('FSDA:tuna','The ''gui'' option requires a logical value.');
+    end
+    gui = logical(varargin{idx+1});
+    varargin([idx idx+1]) = [];
+end
+
+npos = numel(varargin);
+if npos==0
     toolboxName='FSDA';
     gitHubOwner='uniprJRC';
     gitHubRepo='FSDA';
-elseif nargin==1
+elseif npos==1
     error('FSDA:tuna','At least two input arguments must be given.');
-elseif nargin==2
+elseif npos==2
     toolboxName=varargin{1};
     gitHubOwner=varargin{2};
     gitHubRepo=toolboxName;
-elseif   nargin==3
+elseif npos==3
     toolboxName=varargin{1};
     gitHubOwner=varargin{2};
     gitHubRepo=varargin{3};
@@ -117,17 +151,29 @@ end
 
 installedVersion = addons.Version(row);
 id=addons.Identifier(row);
-fprintf('Installed version of "%s": %s\n', toolboxName, installedVersion{1});
+if gui
+    fprintf('Installed version of "%s": %s\n', toolboxName, installedVersion{1});
+end
 
 % Query GitHub API for latest release
 apiURL = sprintf('https://api.github.com/repos/%s/%s/releases/latest', ...
     gitHubOwner, gitHubRepo);
 try
-    options = weboptions('ContentType', 'json', 'Timeout', 15);
+    if gui
+        options = weboptions('ContentType', 'json', 'Timeout', 15);
+    else
+        options = weboptions('ContentType', 'json', 'Timeout', 5);
+    end
     data = webread(apiURL, options);
 catch ME
-    disp(['web site <a href="' apiURL '">"' apiURL '"</a> not reachable']);
-    error('FSDA:tuna:GitHubUnreachable','Could not query GitHub API: %s', ME.message);
+    if gui
+        disp(['web site <a href="' apiURL '">"' apiURL '"</a> not reachable']);
+        error('FSDA:tuna:GitHubUnreachable','Could not query GitHub API: %s', ME.message);
+    else
+        % Quiet mode: a connection failure must not break the session.
+        warning('FSDA:tuna:GitHubUnreachable','Could not query GitHub API: %s', ME.message);
+        return;
+    end
 end
 
 if isfield(data, 'tag_name')
@@ -136,7 +182,9 @@ else
     error('FSDA:tuna:GitHubNoTag','No tag_name found in GitHub API response.');
 end
 
-fprintf('Latest available version: %s\n', latestVersion);
+if gui
+    fprintf('Latest available version: %s\n', latestVersion);
+end
 
 % Compare versions
 if isUpdateAvailable(installedVersion{1}, latestVersion)
@@ -158,14 +206,21 @@ if isUpdateAvailable(installedVersion{1}, latestVersion)
         toolboxName, installedVersion{1}, latestVersion, ...
         toolboxName);
 
-    % Display popup
-    try
-    customAlert(msg, 'Toolbox Update Available',toolboxName,installedVersion{1},id)
-    catch
-    fprintf(2, '%s\n', msg); % Fallback to Command Window
+    if gui
+        % Display popup
+        try
+            customAlert(msg, 'Toolbox Update Available',toolboxName,installedVersion{1},id)
+        catch
+            fprintf(2, '%s\n', msg); % Fallback to Command Window
+        end
+    else
+        % Quiet mode: notify in the Command Window, no modal dialog.
+        fprintf(2, '%s\n', msg);
     end
 else
-    fprintf('Toolbox %s is up-to-date.\n',toolboxName);
+    if gui
+        fprintf('Toolbox %s is up-to-date.\n',toolboxName);
+    end
 end
 end
 
