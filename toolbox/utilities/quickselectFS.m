@@ -119,24 +119,44 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
     % order of the elements in the original array (array is passed by
     % reference).
 
-    n=1000;
-    Y=randn(n,1);
-    k=100;
-
-    [k_star,Ysor] = quickselectFS(Y,k);
-
-    % The next line is necessary to break the link between Y and the
-    % copy which will be passed by reference to quickselectFSmex.
-    Y_copy = Y; Y_copy(end+1)=999; Y_copy(end)=[]; 
-
-    outmex = aux.quickselectFSmex(Y_copy,n,k-1);
-
+    T1 = 0; T2 = 0;
+    
+    for ii=1:10000
+    
+        n=1000;
+        Y=randn(n,1);
+        k=100;
+    
+       [k_star,Ysor] = quickselectFS(Y,k);
+    
+        a=tic;
+    
+        % The next line is necessary to break the link between Y and the
+        % copy which will be passed by reference to quickselectFSmex.
+        Y_copy = Y; Y_copy(end+1)=999; Y_copy(end)=[];
+    
+        k_star_mex   = aux.quickselectFSmex(Y_copy,n,k-1);
+        T1 = T1+toc(a);
+    
+        b = tic;
+        k_star_mex_2 = aux.quickselectFSmex(Y+0,n,k-1);
+        T2 = T2+toc(b);
+    
+    end
+    
     disp('  ');
-    disp(['this is k_star      = ' num2str(k_star)]);
-    disp(['this is k_star_mex  = ' num2str(k_star)]);
-
-    % if zero, the sorted arrays are equal. 
+    disp(['this is k_star        = ' num2str(k_star)]);
+    disp(['this is k_star_mex    = ' num2str(k_star_mex)]);
+    disp(['this is k_star_mex_2  = ' num2str(k_star_mex_2)]);
+    
+    % if zero, the sorted arrays are equal.
     sum(Y_copy - Y)
+    
+    if T2<T1
+        disp(['Y+0 is more efficient than Y_copy. Time reduction:  ' num2str(((T1-T2)/T1)*100) '%'] );
+    else
+        disp(['Y_copy is more efficient than Y+0.  Time reduction: ' num2str(((T2-T1)/T2)*100) '%']');
+    end
 
 %}
 
