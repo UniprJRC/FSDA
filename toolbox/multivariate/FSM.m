@@ -1131,14 +1131,24 @@ if (signal==1)
         % First resuperimposed envelope is based on mdag-1 observations
         % Notice that mmd(i,1) = m dagger
         for tr=(mdag-1):(n)
+            % Optimization: skip computing unused envelope rows.
+            % Stopping conditions only check from row (i-1) onwards.
+            if isempty(resuper)
+                init_resup = max(init, mmd(1,1) + (i-1) - 1 - 1);
+            else
+                init_resup = init;
+            end
+
             % Compute theoretical envelopes based on tr observations
-            gmin1=FSMenvmmd(tr,v,'prob',[0.99; 0.999; 0.01; 0.5],'init',init);
-            for ii=(i-1):size(gmin1,1)
+            gmin1=FSMenvmmd(tr,v,'prob',[0.99; 0.999; 0.01; 0.5],'init',init_resup);
+
+            resup_offset = init_resup - init;
+
+            for ii=(i-1):(size(gmin1,1)+resup_offset)
 
                 % CHECK IF STOPPING RULE IS FULFILLED
-                % ii>=size(gmin1,1)-2 = final, penultimate or antepenultimate value
-                % of the resuperimposed envelope based on tr observations
-                if mmd(ii,2)>gmin1(ii,c99) && ii>=size(gmin1,1)-2
+                ii_g = ii - resup_offset;  % index into gmin1
+                if mmd(ii,2)>gmin1(ii_g,c99) && ii>=(size(gmin1,1)+resup_offset)-2
                     % Condition S1
                     mes=['$d_{min}('   int2str(mmd(ii,1)) ',' int2str(tr) ')>99$\% envelope'];
                     if msg
@@ -1147,7 +1157,7 @@ if (signal==1)
                     end
                     sto=1;
                     break;
-                elseif ii<size(gmin1,1)-2 &&  mmd(ii,2)>gmin1(ii,c999)
+                elseif ii<(size(gmin1,1)+resup_offset)-2 &&  mmd(ii,2)>gmin1(ii_g,c999)
                     % Condition S2
                     mes=['$d_{min}('   int2str(mmd(ii,1)) ',' int2str(tr) ')>99.9$\% envelope'];
                     if msg
