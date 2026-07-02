@@ -34,10 +34,12 @@ jobs:
           command: "run ./toolbox/runAllMyTestsFS.m"
       - run:
           name: Ensure test result directory exists
-          command: mkdir -p "$HOME/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report"
+          command: mkdir -p "$HOME/project/toolbox/tests-<< parameters.q >>/test-<< parameters.q >>-report"
           when: always
       - store_test_results:
-          path: ~/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report/
+          path: ~/project/toolbox/tests-<< parameters.q >>/test-<< parameters.q >>-report/
+      - store_artifacts:
+          path: ~/project/toolbox/tests-<< parameters.q >>/coverage-<< parameters.q >>-report.xml
 
 # Orchestrate or schedule a set of jobs
 workflows:
