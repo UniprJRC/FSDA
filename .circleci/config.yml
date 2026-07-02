@@ -28,6 +28,10 @@ jobs:
          #     Parallel_Computing_Toolbox 
         - matlab/run-command:                   # previously `matlab -batch ...`   
            command:  "run ./toolbox/runAllMyTestsFS.m"    # run the testing script: the environment variable can be retrieved using 'var=getenv('CATEGORY_TO_TEST');'
+        - run:
+           name: Ensure test result directory exists
+           command: mkdir -p "$HOME/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report"
+           when: always
         #- matlab/run-build:
         #    tasks: test
         - store_test_results:
