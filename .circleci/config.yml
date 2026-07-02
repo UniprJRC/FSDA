@@ -30,6 +30,9 @@ jobs:
             Statistics_and_Machine_Learning_Toolbox
             Bioinformatics_Toolbox
             Parallel_Computing_Toolbox
+            Mapping_Toolbox
+            Financial_Toolbox
+            Text_Analytics_Toolbox
       - matlab/run-command:  # previously `matlab -batch ...`
           command: "run ./toolbox/runAllMyTestsFS.m"
       - run:
