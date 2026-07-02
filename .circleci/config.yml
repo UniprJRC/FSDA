@@ -29,6 +29,7 @@ jobs:
           command: |
              python --version
              python -m pip --version
+             pip install yfinance
              python -m pip list
              python - \<<'PY'
              try:
