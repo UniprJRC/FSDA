@@ -472,107 +472,93 @@ end
 % -------------------------------------------------------------------
 
 function outIRWLS=IRWLSmult(Y,initialloc, initialshape, refsteps, reftol, c, kc,initialscale)
-%IRWLSmult (iterative reweighted least squares) does refsteps refining steps from initialloc
-% for refsteps times or till convergence.
-%
-%  Required input arguments:
-%
-%    Y: Data matrix containining n observations on v variables.
-%       Rows of Y represent observations, and columns represent variables.
-% initialloc   : v x 1 vector containing initial estimate of location
-% initialshape: v x v initial estimate of shape matrix
-%   refsteps  : scalar, number of refining (IRLS) steps
-%   reftol    : relative convergence tolerance for the fully iterated
-%               best candidates. Deafult value is 1e-7
-%    c        : scalar, tuning constant of the equation for Tukey biweight
-%   kc        : scalar, tuning constant linked to Tukey's biweight
-%
-%  Optional input arguments:
-%
-% initialscale: scalar, initial estimate of the scale. If not defined,
-%               scaled MAD of Mahalanobis distances from initialloc and
-%               initialshape is used.
-%
-%
-%  Output:
-%
-%  The output consists of a structure 'outIRWLS' containing:
-%      outIRWLS.loc    : v x 1 vector. Estimate of location after refsteps
-%                        refining steps.
-%      outIRWLS.shape  : v x v matrix. Estimate of the shape matrix after
-%                        refsteps refining steps.
-%      outIRWLS.scale  : scalar. Estimate of scale after refsteps refining
-%                        step.
-%      outIRWLS.weights: n x 1 vector. Weights assigned to each observation
-%
-% In the IRWLS procedure the value of loc and the value of the scale and
-% of the shape matrix are updated in each step
+%IRWLSmult Optimized IRWLS with inlined Tukey biweight and Cholesky mahalFS.
 
 v = size(Y,2);
 loc = initialloc;
-% Mahalanobis distances from initialloc and Initialshape
-mahaldist = sqrt(mahalFS(Y, initialloc, initialshape));
+c2 = c*c;
+cc2d6 = c2/6;
 
+% Cholesky-based Mahalanobis distances
+Ytilde = Y - initialloc;
+[R, pflag] = chol(initialshape);
+if pflag == 0
+    Z = Ytilde / R;
+    mahaldist = sqrt(sum(Z .* Z, 2));
+else
+    mahaldist = sqrt(sum((Ytilde / initialshape) .* Ytilde, 2));
+end
 
-% The scaled MAD of Mahalanobis distances is the default for the initial scale
 if (nargin < 8)
     initialscale = median(abs(mahaldist))/.6745;
 end
 
 scale = initialscale;
-
 iter = 0;
 locdiff = 9999;
 
+persistent useTBmex
+if isempty(useTBmex)
+    useTBmex = (exist('TBrhowei','file') == 3);
+end
+
 while ( (locdiff > reftol) && (iter < refsteps) )
     iter = iter + 1;
-    
-    % Solve for the scale
-    scale = scale* sqrt( mean(TBrho(mahaldist/scale,c))/kc);
-    % mahaldist = vector of Mahalanobis distances from robust centroid and
-    % robust shape matrix, which is changed in each step
-    
-    % compute w = n x 1 vector containing the weights (using TB)
-    weights = TBwei(mahaldist/scale,c);
-    
-    % newloc = new estimate of location using the weights previously found
-    % newloc = \sum_{i=1}^n y_i w(d_i) / \sum_{i=1}^n w(d_i)
-    newloc = sum(bsxfun(@times,Y,weights),1)/sum(weights);
-    
-    % exit from the loop if the new loc has singular values. In such a
-    % case, any intermediate estimate is not reliable and we can just
-    % keep the initial loc and initial scale.
+
+    if useTBmex
+        [scale, weights] = TBrhowei(mahaldist, scale, c, kc);
+    else
+        % Inline TBrho: rho(u,c) = (u^2/2)*(1 - (u/c)^2 + (u/c)^4/3) for |u|<=c, else c^2/6
+        u = mahaldist / scale;
+        inside = (u <= c);
+        u2 = u .* u;
+        uc2 = u2 / c2;
+        rhovals = ones(size(u)) * cc2d6;
+        rhovals(inside) = (u2(inside)/2) .* (1 - uc2(inside) + uc2(inside).^2/3);
+        scale = scale * sqrt(mean(rhovals) / kc);
+
+        % Inline TBwei: w(u,c) = (1-(u/c)^2)^2 for |u|<=c, else 0
+        u = mahaldist / scale;
+        inside = (u <= c);
+        weights = zeros(size(u));
+        t = 1 - (u(inside)/c).^2;
+        weights(inside) = t .* t;
+    end
+
+    % Weighted location (implicit expansion)
+    sumw = sum(weights);
+    newloc = (weights.' * Y) / sumw;
+
     if (any(isnan(newloc)))
         newloc = initialloc;
         newshape = initialshape;
         scale = initialscale;
-        weights=NaN;
+        weights = NaN;
         break
     end
-    
-    % Res = n x v matrix which contains deviations from the robust estimate
-    % of location
-    Res = bsxfun(@minus,Y, newloc);
-    
-    % Multiplication of newshape by a constant (e.g. v) is unnecessary
-    % because final value of newshape remains the same as det(newshape)=1.
-    % For the same reason newshape remains the same if we use weights or
-    % weights*(c^2/6)
-    newshape= (Res')*bsxfun(@times,Res,weights);
-    newshape = det(newshape)^(-1/v)*newshape;
-    
-    % Compute MD
-    mahaldist = sqrt(mahalFS(Y,newloc,newshape));
-    
-    % locdiff is linked to the tolerance
+
+    % Weighted covariance (implicit expansion)
+    Res = Y - newloc;
+    newshape = (Res .* weights)' * Res;
+    newshape = det(newshape)^(-1/v) * newshape;
+
+    % Cholesky-based Mahalanobis distances
+    Ytilde2 = Y - newloc;
+    [R, pflag] = chol(newshape);
+    if pflag == 0
+        Z = Ytilde2 / R;
+        mahaldist = sqrt(sum(Z .* Z, 2));
+    else
+        mahaldist = sqrt(sum((Ytilde2 / newshape) .* Ytilde2, 2));
+    end
+
     locdiff = norm(newloc-loc,1)/norm(loc,1);
     loc = newloc;
-    
 end
 
 outIRWLS.loc = newloc;
 outIRWLS.shape = newshape;
 outIRWLS.scale = scale;
-outIRWLS.weights=weights;
+outIRWLS.weights = weights;
 end
 %FScategory:MULT-Multivariate

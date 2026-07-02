@@ -1238,8 +1238,16 @@ end
         
         loc = initialloc;
         % Mahalanobis distances from initialloc and Initialshape
-        mahaldist = sqrt(mahalFS(Y, initialloc, initialcov));
-        
+        % Cholesky-based: compute squared distances, take sqrt once
+        Ytilde = Y - initialloc;
+        [R, p] = chol(initialcov);
+        if p == 0
+            Z = Ytilde / R;
+            mahaldist = sqrt(sum(Z .* Z, 2));
+        else
+            mahaldist = sqrt(mahalFS(Y, initialloc, initialcov));
+        end
+
         iter = 0;
         locdiff = 9999;
         if isfinite(restrfactor)
@@ -1250,18 +1258,16 @@ end
 
         while ( (locdiff > reftol) && (iter < refsteps) )
             iter = iter + 1;
-            
-            %{
-            [~,sortdist]=sort(mahaldist);
-            %obs_in_set = sort(sortdist(1:h)) ;  % sort removed: it is not necessary
-            obs_in_set  = sortdist(1:h) ;
-            %}
-            
+
             hm = quickselectFS(mahaldist,h);
             obs_in_set = mahaldist<=hm;
 
-            newloc      = mean(Y(obs_in_set,:));
-            newcov      = cov(Y(obs_in_set,:));
+            % Fused mean/cov: single pass instead of mean() + cov()
+            Yh = Y(obs_in_set,:);
+            nh = size(Yh, 1);
+            newloc = sum(Yh, 1) / nh;
+            Yhc = Yh - newloc;
+            newcov = (Yhc' * Yhc) / (nh - 1);
 
             % Apply restriction factor to the covariance matrix of subset
     if userestrfactor==true
@@ -1269,16 +1275,23 @@ end
         eigenew=restreigen(diag(eige),h,restrfactor);
         newcov=V*diag(eigenew)*V';
     end
-            
+
             obj         = det(newcov);
-            
-            % Compute MD
-            mahaldist = sqrt(mahalFS(Y,newloc,newcov));
-            
+
+            % Compute MD via Cholesky
+            Ytilde = Y - newloc;
+            [R, p] = chol(newcov);
+            if p == 0
+                Z = Ytilde / R;
+                mahaldist = sqrt(sum(Z .* Z, 2));
+            else
+                mahaldist = sqrt(mahalFS(Y, newloc, newcov));
+            end
+
             % locdiff is linked to the tolerance
             locdiff = norm(newloc-loc,1)/norm(loc,1);
             loc = newloc;
-            
+
         end
         weights=zeros(size(Y,1),1);
         weights(obs_in_set)=1;
