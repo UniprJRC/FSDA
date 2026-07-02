@@ -1,425 +1,51 @@
-
-
-I want to test a pull request without merging it to the main branch, what are my best options?
-
-Thought for 11s
-Most likely because macOS does not currently see two or more normal Spaces for MATLAB on that display.
-Apple's rule is: you can assign an app to a Space only "when you're using two or more spaces." The assignment is done from the Dock: Control-click the app icon → Options → Assign To. 
-
-Try this:
-
-Press Control + ↑ to open Mission Control.
-At the top, check that you really have at least:
-Desktop 1    Desktop 2
-not only one Desktop plus a full-screen app.
-Create a real second desktop with the + button.
-Go to Desktop 2.
-Open or activate MATLAB there.
-Right-click MATLAB in the Dock → Options → Assign To → This Desktop.
-Important: a full-screen app is also shown in Mission Control, but it is not the same as a normal Desktop Space. If your "second desktop" is actually MATLAB, Safari, or another app in full-screen mode, the assignment option may be unavailable or confusing.
-Also check this setting:
-
-System Settings → Desktop & Dock → Mission Control
-
-Make sure Spaces are enabled normally, and consider turning off:
-
-When switching to an application, switch to a Space with open windows for the application
-Apple notes that this setting is exactly what causes macOS to jump automatically to a Space where the app already has windows. 
-For MATLAB specifically, even if you fix the macOS setting, the more reliable solution is still to prevent figure windows from becoming active:
-
-set(groot,'defaultFigureVisible','off')
-or for individual figures:
-f = figure('Visible','off');
-plot(x,y)
-exportgraphics(f,'myfigure.png')
-close(f)
-In your case I would first create a real Desktop 2, not a full-screen Space, then retry the Dock assignment.
-
-do you support slash commands? 
-
-Thought for a few seconds
-Yes, partially.
-In the ChatGPT macOS app, OpenAI added slash commands: typing / can show commands for things like search, reasoning, and image generation. OpenAI also documents /canvas and /Study and learn as slash-triggered features in ChatGPT.   
-
-But I do not have arbitrary built-in slash commands like:
-
-/summarize
-/fix
-/matlab
-/translate
-unless the ChatGPT interface you are using provides them. You can still type something like:
-/translate this into English: ...
-and I will interpret it as a normal instruction, not as a formal command system.
-
-can I create my own slash commands, how is the structure you need to create one?
-
-I'll check the current ChatGPT product docs first, because slash-command behavior is interface-dependent and has changed across web/macOS/mobile.
-Thought for 10s
-You cannot, as far as the current official ChatGPT docs show, register your own real slash commands in the ChatGPT UI like:
-/mycommand
-The documented slash commands are built-in interface shortcuts, for example in the macOS app for search, reasoning, and image generation, and /canvas for opening Canvas. 
-But you can create pseudo-slash commands that I will understand if you define them in a chat, in a Project instruction, in Custom Instructions, or possibly as a reusable Skill. OpenAI's Skills feature is the closest official mechanism for reusable custom workflows, although it is not the same thing as adding a new UI slash command. 
-
-A good structure is this:
-
-When I type /command_name, interpret it as the following instruction:
-
-Purpose:
-...
-
-Inputs:
-- ...
-
-Behavior:
-1. ...
-2. ...
-3. ...
-
-Output format:
-...
-
-Example:
-User: /command_name ...
-Assistant: ...
-For example:
-When I type /fixsyntax, correct the English syntax of the text that follows.
-
-Rules:
-- Preserve my meaning.
-- Do not make the text too formal unless I ask.
-- Give only the corrected version unless there is an important ambiguity.
-
-Example:
-User: /fixsyntax I was invited to attend to the conference on July 2027.
-Assistant: I was invited to attend the conference in July 2027.
-Then you could write:
-/fixsyntax
-I was invited to attend to WSC 2027 conference in Lusaka, Zambia on July 2027.
-Another useful one for you could be:
-When I type /matlabdebug, analyze the MATLAB code that follows.
-
-Rules:
-- First identify syntax errors.
-- Then identify possible runtime errors.
-- Then suggest a corrected version.
-- Prefer code compatible with recent MATLAB releases.
-- Explain changes briefly.
-Or:
-When I type /latexpolish, improve the LaTeX text that follows.
-
-Rules:
-- Preserve all LaTeX commands and labels.
-- Improve English style.
-- Do not change mathematical meaning.
-- Return the corrected LaTeX block only.
-So the practical answer is: not true custom slash commands in the ChatGPT interface, but yes, you can define your own command-like shortcuts in natural language and I can follow them.
-
-how to delete the last commit preserving files in git 
-
-Thought for a couple of seconds
-Use git reset on the previous commit.
-Best option: delete last commit but keep changes staged
-git reset --soft HEAD~1
-This removes the last commit, but keeps all its file changes in the staging area. You can then recommit:
-git commit -m "New commit message"
-Delete last commit but keep changes unstaged
-git reset --mixed HEAD~1
-or simply:
-git reset HEAD~1
-This removes the last commit and keeps the modified files in your working directory, but unstaged.
-Summary
-Goal	Command
-Remove last commit, keep files staged	git reset --soft HEAD~1
-Remove last commit, keep files unstaged	git reset --mixed HEAD~1
-Remove last commit and delete file changes	git reset --hard HEAD~1
-Be careful with:
-git reset --hard HEAD~1
-because it deletes the changes from the last commit.
-If the commit was already pushed to GitHub, after reset you would need:
-
-git push --force-with-lease
-but use that only if you are sure, because it rewrites remote history.
-
-Qualcomm® Kryo™ 670 is an ARM architecture? Can you compare it with the Raspberry Pi 5?
-
-Worked for 52s
-Yes, but only in a limited way.
-As of MATLAB R2026a, MathWorks supports MATLAB on Windows on Arm devices with Qualcomm Snapdragon X series chips, but MATLAB runs through Microsoft Prism emulation, not natively on Arm. MathWorks explicitly says: "MATLAB does not currently run natively on Windows ARM devices" MathWorks MATLAB Answers. The Windows requirements also list Qualcomm Snapdragon X series as the ARM minimum, with the note that MATLAB runs in Prism emulation MathWorks Windows requirements.
-
-Snapdragon case	MATLAB support
-Snapdragon X Elite / X Plus laptop with Windows 11 ARM	Yes, R2026a, via Prism emulation
-Native MATLAB for Windows ARM	No, not currently
-Snapdragon Android phone/tablet	No full local MATLAB; MATLAB Mobile connects to a cloud MATLAB session
-Snapdragon Linux ARM board/laptop	No full MATLAB desktop support; Linux MATLAB still requires Intel/AMD x86-64 MathWorks Linux requirements
-Apple Silicon ARM Mac	Yes, native MATLAB on A/M-series Macs MathWorks Mac requirements
-So, if you mean a Snapdragon X Windows laptop, the answer is yes, but emulated. If you mean a Snapdragon 778G / Android device, the answer is no, not as a normal local MATLAB installation. MATLAB Mobile on Android is mainly a front end to a MATLAB session running in the MathWorks Cloud MATLAB Mobile.
-
-Worked for 24s
-No, not if your GT7 copy is the disc version. On PS5, the disc is the license check. Sony's support page says that after installing a disc-based game, you must keep the disc inserted every time you play the game PlayStation Support.
-For Gran Turismo 7, your options are:
-
-Option	Can you play without disc?
-Keep using your GT7 disc copy	No
-Buy the digital GT7 version from PlayStation Store	Yes
-Get GT7 through a digital entitlement/subscription, if available	Yes, while entitlement remains active
-Copy/install the disc to SSD	No, install does not replace the disc license
-Convert disc license to digital for free	Generally no
-So the practical answer is: you must either insert the disc, or buy/obtain the digital version. Your save data should normally remain usable because it is tied to your PSN/user profile, but make sure the digital version is the same region/edition if possible.
-Small note: PS5 game discs are Blu-ray discs, not DVD, but your meaning is clear.
-
-do you know how to open a led undercabinet panel which light is now broken? my model is called "GAP fly fondo luminoso" There should be a way to avoid to dismantle all the cabinet.
-
-Worked for 45s
-Yes, usually you should not need to dismantle the whole cabinet. But first: switch off power at the breaker, not only the wall switch. These panels often have a 12/24 V LED strip, but the driver may be connected to 230 V.
-For a "fondo luminoso" undercabinet panel, the access is usually one of these:
-
-Removable opal diffuser
-Look for a milky/opal plastic or glass cover. Try to slide it sideways, or gently pry from one short end with a plastic card/spudger. Many diffusers are clipped into an aluminium frame.
-Front or side aluminium profile cap
-At one end there may be a tiny plastic/metal end cap. If you remove the cap, the diffuser may slide out, exposing the LED strip.
-Small hidden screws
-Check the left/right ends and the rear edge near the wall. Sometimes there are tiny Phillips/Torx screws hidden under caps or silicone dots.
-Spring clips
-Some panels are held like recessed spotlights: pull down gently at one corner. If it drops a few millimetres, spring clips are holding it. Support it carefully because wires may be short.
-Driver failure, not LED failure
-If the whole light is dead, very often the problem is the LED driver/transformer, not the LED panel. The driver may be hidden above the wall cabinet, inside the cabinet, or behind a removable cover. Replacing the driver is often easier than opening the luminous bottom.
-What I would do:
-Turn off power.
-Inspect the two short sides of the luminous panel for caps or screws.
-Try gently to see whether the translucent diffuser slides.
-Look inside the cabinet immediately above the light for a removable bottom/false panel or cable exit.
-If there is an external driver, test/replace that first.
-Avoid forcing the glass/plastic diffuser from the middle: if it is clipped, it can crack. Start from an end.
-If you can send me one or two photos, especially of the front edge, side end, and inside of the cabinet above the light, I can probably tell you which opening system it uses.
-
-can you explain me the Zambretti algorithm?
-
-The rooms on the roadside are a bit noisy, but the building, staff, and breakfast were great.
-
-fix:
-For me the suite is perfect: I can work with my colleagues and receive them in a living room instead of a bedroom or the hotel hallway, this is very important aspect when doing teamwork. 
-
-For me, the suite is perfect: I can work with my colleagues and receive them in a living room instead of a bedroom or the hotel hallway. This is a very important aspect when doing teamwork.
-
-
-config.yml
-File
-On CicrcleCI this config.yml files gives me this error:
-Unable to save test results from /home/circleci/project/tests-regression/toolbox/test-regression-report
-Error error accessing path "/home/circleci/project/tests-regression/toolbox/test-regression-report": stat /home/circleci/project/tests-regression/toolbox/test-regression-report: no such file or directory
-Found no test results, skipping
-
-how can I fix it?
-
-Worked for 22s
-The error means CircleCI reaches this step:
-- store_test_results:
-    path: ~/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report/
-but that folder was not created by your MATLAB test script, at least for q = "regression".
-For example, CircleCI expected:
-
-/home/circleci/project/tests-regression/toolbox/test-regression-report
-but it does not exist.
-A simple robust fix is to create the directory before store_test_results, and make that step run even if MATLAB tests fail:
-
-        - matlab/run-command:
-            command: "run ./toolbox/runAllMyTestsFS.m"
-
-        - run:
-            name: Ensure test result directory exists
-            command: mkdir -p "$HOME/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report"
-            when: always
-
-        - store_test_results:
-            path: ~/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report/
-However, this only removes the "no such file or directory" error. To make CircleCI actually show test results, your MATLAB script must write JUnit XML files inside that folder.
-In MATLAB, the key idea is something like:
-
-reportFolder = fullfile(pwd, ...
-    ['tests-' getenv('CATEGORY_TO_TEST')], ...
-    'toolbox', ...
-    ['test-' getenv('CATEGORY_TO_TEST') '-report']);
-
-mkdir(reportFolder)
-
-import matlab.unittest.TestRunner
-import matlab.unittest.plugins.XMLPlugin
-
-runner = TestRunner.withTextOutput;
-runner.addPlugin(XMLPlugin.producingJUnitFormat( ...
-    fullfile(reportFolder,'junit.xml')));
-
-results = runner.run(suite);
-So the best fix is:
-Make runAllMyTestsFS.m create the same folder used by CircleCI.
-Make it write a JUnit XML file there.
-Add mkdir -p ... when: always in config.yml as a safety net.
-If your MATLAB script creates a different folder name, then instead change the CircleCI path: to match the real folder.
-
-the CircleCI.yml files code:
-
-# Declare a dependency on the MATLAB-orb
-  matlab: mathworks/matlab@0 # latest orb version
-gives this error:
-WARNING: The specified version of the MATLAB orb is no longer supported. Update your configuration to use the most recent version of the orb.
-
-what is the last orb supported?
-
-Worked for 1m 28s
-Use:
-orbs:
-  matlab: mathworks/matlab@1
-So replace your current line:
-matlab: mathworks/matlab@0
-with:
-matlab: mathworks/matlab@1
-MathWorks' current CircleCI examples use mathworks/matlab@1, while your @0 version is now old and unsupported MathWorks MATLAB CircleCI orb.
-So your block should become:
-
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the MATLAB orb
-  matlab: mathworks/matlab@1
-Important: after changing the orb version, push a new commit. CircleCI notes that rerunning an old workflow may not fetch a newer orb version; a new pipeline should be triggered CircleCI orb versioning.
-If you want to check the exact resolved version locally, you can run:
-
-circleci orb info mathworks/matlab
-But for your config.yml, mathworks/matlab@1 is the right supported form.
-
-I wrote the following config.yml file for CirceCI:
-
-# Use the latest 2.1 version of CircleCI pipeline process engine.  See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
-# Use a package of configuration called an orb.  
-orbs:
-  # Declare a dependency on the MATLAB-orb
-  matlab: mathworks/matlab@1 # latest orb version
-jobs:
-# Name the job "testing"
-  testing:
-  # define q: parameter; used inside the jobs: to segment the tests to overcome the 50 minutes limit.
-     parameters:
-      q:
-         default: "regression"
-         type: string      
-     environment:
-       CATEGORY_TO_TEST: << parameters.q >>  # setup a parametric environment variable to be used by MATLAB testing script "runAllMyTestsFS.m"
-     machine:
-         image: default
-     steps:
-        - checkout
-        - matlab/install
-           release: R2026a
-           products: |
-             MATLAB
-             Optimization_Toolbox
-             Statistics_and_Machine_Learning_Toolbox
-             Bioinformatics_Toolbox
-             Parallel_Computing_Toolbox 
-        - matlab/run-command:                   # previously matlab -batch ...   
-           command:  "run ./toolbox/runAllMyTestsFS.m"    # run the testing script: the environment variable can be retrieved using 'var=getenv('CATEGORY_TO_TEST');'
-        - run:
-           name: Ensure test result directory exists
-           command: mkdir -p "$HOME/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report"
-           when: always
-        #- matlab/run-build:
-        #    tasks: test
-        - store_test_results:
-            path: ~/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report/
-
-# Orchestrate or schedule a set of jobs
-workflows:
-  # Name of the workflow 
-  fsdatoolbox:
-    # Run the "testing" job defined earlier in its own container
-    jobs:
-      - testing:
-      # Define a matrix of parameter values to be passed iteratively to the "testing" job
-          matrix:
-             parameters:
-                  q: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "Probability-Distribution", "regression-clustering", "mixsim", "utilities", "tclustMULT", "tclustMULTgpcm", "FMvol"]
-
-
-but CircleCI gives this error:
-
-Unable to parse YAML
-mapping values are not allowed here
- in 'string', line 22, column 19:
-               release: R2026a
-                      ^
-
-Can you fix the yml script for me? 
-
-Yes. The YAML error is caused by this part:
-- matlab/install
-   release: R2026a
-When an orb command has parameters, it must end with ::
-- matlab/install:
-    release: R2026a
-Here is the corrected config.yml:
 # Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
 # Use a package of configuration called an orb.
 orbs:
   # Declare a dependency on the MATLAB orb
-  matlab: mathworks/matlab@1
+  matlab: mathworks/matlab@1  # latest orb version
 
 jobs:
   # Name the job "testing"
   testing:
-    # Define q parameter; used to segment the tests.
+    # Parameter used to segment the tests to overcome the 50-minute limit.
     parameters:
       q:
         default: "regression"
         type: string
-
     environment:
+      # Parametric environment variable used by the MATLAB testing script
+      # "runAllMyTestsFS.m" via: var = getenv('CATEGORY_TO_TEST');
       CATEGORY_TO_TEST: << parameters.q >>
-
     machine:
       image: default
-
     steps:
       - checkout
-
       - matlab/install:
           release: R2026a
-          products: >
+          products: >-
             Optimization_Toolbox
             Statistics_and_Machine_Learning_Toolbox
             Bioinformatics_Toolbox
             Parallel_Computing_Toolbox
-
-      - matlab/run-command:
+      - matlab/run-command:  # previously `matlab -batch ...`
           command: "run ./toolbox/runAllMyTestsFS.m"
-
       - run:
           name: Ensure test result directory exists
           command: mkdir -p "$HOME/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report"
           when: always
-
       - store_test_results:
           path: ~/project/tests-<< parameters.q >>/toolbox/test-<< parameters.q >>-report/
 
+# Orchestrate or schedule a set of jobs
 workflows:
+  # Name of the workflow
   fsdatoolbox:
     jobs:
+      # Run the "testing" job in its own container for each parameter value
       - testing:
           matrix:
             parameters:
-              q:
-                - "regression"
-                - "regressionTS"
-                - "regressionLTSts"
-                - "regressionEXT"
-                - "graphics"
-                - "multivariate"
-                - "multivariate-clustering"
-                - "Probability-Distribution"
-                - "regression-clustering"
-                - "mixsim"
-                - "utilities"
-                - "tclustMULT"
-                - "tclustMULTgpcm"
-                - "FMvol"
+              q: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "Probability-Distribution", "regression-clustering", "mixsim", "utilities", "tclustMULT", "tclustMULTgpcm", "FMvol"]
