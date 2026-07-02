@@ -20,7 +20,7 @@ jobs:
       # "runAllMyTestsFS.m" via: var = getenv('CATEGORY_TO_TEST');
       CATEGORY_TO_TEST: << parameters.q >>
     machine:
-      image: ubuntu-latest
+      image: default
     steps:
       - checkout
       - matlab/install:
