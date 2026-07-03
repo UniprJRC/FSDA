@@ -62,7 +62,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Example - 'nocheck',1
 %               Data Types - double
 %
-%      nsamp  : Number of subsamples. Scalar or matrix. 
+%      nsamp  : Number of subsamples. Scalar or matrix.
 %               If nsamp is a scalar, it contains the number of subsamples of size
 %               v+1 which have to be extracted (if not given, default is
 %               nsamp=1000). If nsamp=0 all subsets will be extracted. If
@@ -96,7 +96,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Data Types - double
 %
 %
-%  restrfactor: Restriction factor. Scalar. 
+%  restrfactor: Restriction factor. Scalar.
 %               Positive scalar greater or equal than 1 which constrains
 %               the allowed differences of the eigenvalues of the scatter
 %               matrix in each concentration step. The default value of
@@ -110,11 +110,11 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               factor to inflate the scale estimate.  If it is equal to
 %               true the small sample correction factor is used. The
 %               default value of smallsamplecor is true, that is the
-%               correction is used. 
-%               Example - 'smallsamplecor',true 
+%               correction is used.
+%               Example - 'smallsamplecor',true
 %               Data Types - logical
 %
-%     modelT  : controls how the consistency factor is applied to account 
+%     modelT  : controls how the consistency factor is applied to account
 %               for the effect of trimming. Scalar. It is empty for the
 %               classic case when uncontaminated data are assumed to come
 %               from a normal distribution (default). If on the other hand
@@ -175,7 +175,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %         RAW.h    = scalar. The number of observations that have
 %                    determined the MCD estimator
 %         RAW.loc  = 1 x v  vector containing raw MCD location of the data
-%         RAW.cov  = robust MCD estimate of covariance matrix. 
+%         RAW.cov  = robust MCD estimate of covariance matrix.
 %                    It is the raw MCD covariance matrix (multiplied by a
 %                    finite sample correction factor and an asymptotic
 %                    consistency factor).
@@ -306,7 +306,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % heavy-tailed multivariate data, submitted.
 %
 %
-% About the consistency factor. The consistency factor, which is applied 
+% About the consistency factor. The consistency factor, which is applied
 % to the scatter matrix to account for the effect of trimming observations,
 % can be computed based on the nominal trimming percentage, which is
 % $1-bdp$, or based on the empirical one, which is $h/n$. The two values
@@ -589,7 +589,7 @@ conflev = options.conflev;
 
 thresh = msdcutoff(conflev,v,nuT);
 % if isempty(nuT)
-%     thresh=chi2inv(conflev,v);      
+%     thresh=chi2inv(conflev,v);
 % else
 %     thresh = (1 - betainv(conflev,v/2,nuT/2))^(-1);
 %     thresh = (thresh - 1) * (nuT -2);
@@ -637,11 +637,11 @@ clcov=cov(Y);
 
 % The univariate non-classical case is now handled.
 if v==1 && h~=n
-    
+
     REW.method=sprintf('\nUnivariate location and scale estimation.');
-    
+
     [RAW.loc,RAW.cov]=mcduni(Y,h,1-bdp,smallsamplecor,nuT);
-    
+
     % Assign weight=1 to the h units which show the smallest h squared
     % residuals
     residuals2=(Y-RAW.loc).^2;
@@ -655,39 +655,39 @@ if v==1 && h~=n
     [hos , sor]= quickselectFS(residuals2,h);
     weights = residuals2<=hos;
     RAW.weights=weights;
-    
+
     RAW.obj=1/(h-1)*sum(sor(1:h))*prod(madY)^2;
     md=residuals2/RAW.cov;
-    
+
     weights=md<thresh;
     RAW.md=md;
     RAW.outliers=seq(md > thresh);
-    
+
     % Reweighted part
     REW.loc=mean(Y(weights==1,:));
     REW.cov=cov(Y(weights==1,:));
-    
+
     cfactor = consistencyfactor([sum(weights),n],v,nuT); %remove nuT?
     if smallsamplecor == true
         cfactor = cfactor*corfactorREW(v,n,1-bdp);
     end
-    
+
     REW.cov=cfactor*REW.cov;
-    
+
     md=(Y-REW.loc).^2/REW.cov;
-    
+
     REW.weights= md <= thresh;
     REW.outliers=seq(md > thresh);
     REW.md=md';
-    
+
     % Transform back to the original scale
     [RAW.cov,RAW.loc]=trafo(RAW.cov,RAW.loc,med,madY);
     [REW.cov,REW.loc]=trafo(REW.cov,REW.loc,med,madY);
-    
+
     if msg
         disp(REW.method);
     end
-    
+
     return
 end
 
@@ -698,14 +698,14 @@ if det(clcov) < tolMCD
     sigma = eigs_sigma(clcov);
     [z, ~]=eigs(clcov,1,sigma,struct('disp',0));
     weights=ones(n,1);
-    
+
     correl=clcov./(sqrt(diag(clcov))*sqrt(diag(clcov))');
-    
+
     [clcov,clmean]=trafo(clcov,clmean,med,madY);
     [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,RAW.weights,...
         REW.weights] = displRAW(1,n,weights,n,v,clmean,clcov,...
         'Minimum Covariance Determinant Estimator',z./madY');
-    
+
     [REW.cor,RAW.cor]=deal(correl);
     return
 end
@@ -717,28 +717,28 @@ if h==n
         disp(['The MCD estimates are equal to the classical estimates h=n=',num2str(h)]);
     end
     %  REW.method=char(REW.method,msgn);
-    
+
     RAW.loc=clmean;
     RAW.cov=clcov;
     RAW.obj=det(clcov);
     md=mahalFS(Y,clmean,clcov);
-    
+
     RAW.md=md;
     RAW.cor=RAW.cov./(sqrt(diag(RAW.cov))*sqrt(diag(RAW.cov))');
     RAW.outliers=[];
 
     weights=md<thresh;
     RAW.weights=weights;
-    
+
     REW.loc=mean(Y(weights==1,:));
     REW.cov=cov(Y(weights==1,:));
-    
-    
+
+
     if det(REW.cov) < tolMCD
         [center,covar,z,correl,~,count]=exactfit(Y,NaN,med,madY,RAW.cor,REW.loc,REW.cov,n);
-        
+
         REW.plane=z;
-        
+
         REW.method=displREW(count,n,v,center,covar,REW.method,z,RAW.cor,correl);
         [RAW.cov,RAW.center]=trafo(RAW.cov,RAW.loc,med,madY);
         [REW.cov,REW.center]=trafo(REW.cov,REW.loc,med,madY);
@@ -746,7 +746,7 @@ if h==n
     else
         md=mahalFS(Y,REW.loc,REW.cov);
         weights=md<thresh;
-        
+
         [RAW.cov,RAW.center]=trafo(RAW.cov,RAW.loc,med,madY);
         [REW.cov,REW.center]=trafo(REW.cov,REW.loc,med,madY);
         REW.md=md;
@@ -754,7 +754,7 @@ if h==n
     RAW.obj=RAW.obj*prod(madY)^2;
     REW.weights=weights;
     % disp(REW.method)
-    
+
     return
 end
 
@@ -768,7 +768,7 @@ else
         % check that the number of columns of C is v+1
         error('FSDA:mcd:WrongC','Matrix nsamp must have %.0f columns', v+1)
     end
-    
+
     nselected=size(C,1);
 end
 
@@ -785,19 +785,19 @@ time=zeros(tsampling,1);
 ij=1;
 for i = 1:nselected
     if i <= tsampling, tic; end
-    
+
     % extract a subset of size v+1 .
     index = C(i,:);
-    
+
     Yj = Y(index,:);
-    
+
     locj = mean(Yj);        % centroid of subset
     Sj = cov(Yj);           % covariance of subset
-    
+
     % Check if the subset is in general position (rank<v)
     if det(Sj)< tolMCD
         singsub = singsub + 1;
-        
+
         % The trial subsample is singular.
         % We distinguish two cases :
         %
@@ -812,10 +812,10 @@ for i = 1:nselected
         % If sigma is omitted, the eigenvalues largest in magnitude are
         % found. If sigma is zero, the eigenvalues smallest in magnitude
         % are found.
-        
+
         sigma = eigs_sigma(Sj);
         [eigvct, ~]=eigs(Sj,1,sigma,struct('disp',0));
-        
+
         % REMARK: Eigenvalues may be sensitive to perturbations. Normal
         % roundoff errors in the floating-point arithmetic computation have
         % the same effect of perturbing the original matrix. Thus, it would
@@ -829,29 +829,29 @@ for i = 1:nselected
         %             message = sprintf(' A perturbation in the covariance of subset could result \n in perturbations in the hyperplane coefficients \n that are %8.2f times as large.' , perturb);
         %             disp(message);
         %         end
-        
+
         %dist=abs(sum((data-repmat(meanvct,n,1))'.*repmat(eigvct,1,n)));
         Ytilde  = bsxfun(@minus,Y, locj);
         dist    = abs(sum(bsxfun(@times,Ytilde, eigvct'),2));
-        
+
         obsinplane = find(dist < generictol);
         % count : number of observations that lie on the hyperplane.
         count=length(obsinplane);
-        
+
         if count >= h
-            
+
             [center,covar,eigvct,correl]=exactfit(Y,obsinplane,med,madY,eigvct);
             REW.plane=eigvct;
             weights(obsinplane)=1;
             [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,...
                 RAW.weights,REW.weights]=displRAW(2,count,weights,n,v,center,covar,...
                 'fastMCD',eigvct,correl);
-            
-            
+
+
             [REW.cor,RAW.cor]=deal(correl);
-            
+
             return
-            
+
         else
             % Find the indexes which do not belong to index
             setd=setdiff(seq,index);
@@ -860,7 +860,7 @@ for i = 1:nselected
             setd=shuffling(int16(setd));
             % Remark: the instruction above is much more efficient than
             % setd=setd(randperm(length(setd)));
-            
+
             jj=1;
             % Define a vector indexext which contains the original
             % indexes and then the random permutation of the reminaning
@@ -875,10 +875,10 @@ for i = 1:nselected
                 Sj=cov(Y(index,:));
             end
             locj=mean(Y(index,:));
-            
+
         end
     end
-    
+
     % Function IRWLSmult performs refsteps concentration steps of IRLS on elemental
     % start. Input:
     % - Y = datamatrix of dimension n x v
@@ -887,12 +887,12 @@ for i = 1:nselected
     % - refsteps = number of refining iterations
     % - reftol = tolerance for convergence of refining iterations
     outIRWLS = IRWLSmcd(Y, locj, Sj, h, refsteps, reftol, restrfactor);
-    
+
     % If the value of the objective function is smaller than tolMCD
     % we have a perfect fit situation, that is there are h observations
     % that lie on the hyperplane.
     if outIRWLS.obj < tolMCD
-        
+
         [center,covar,z,correl,obsinplane,count]=exactfit(Y,NaN,med,madY,NaN,...
             med,Sj,n);
         REW.plane=z;
@@ -900,23 +900,23 @@ for i = 1:nselected
         [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,...
             RAW.weights,REW.weights]=displRAW(2,count,weights,n,v,center,covar,...
             'fastmcd',z);
-        
+
         [REW.cor,RAW.cor]=deal(correl);
-        
+
         return
-        
+
     end
-    
+
     % The output of IRWLSmult is a structure containing centroid, cov
     % matrix and estimate value of the objective function (which has
     % been minimized, that is |cov|
     locrw = outIRWLS.loc;
     covrw = outIRWLS.cov;
     objrw = outIRWLS.obj;
-    
+
     % Compute Mahalanobis distances using locrw and covrw
     % mdrw = sqrt(mahalFS(Y,locrw,covrw));
-    
+
     % to find s, save first the best bestr scales and shape matrices
     % (deriving from non singular subsets) and, from iteration bestr+1
     % (associated to another non singular subset), replace the worst scale
@@ -925,8 +925,8 @@ for i = 1:nselected
         % from the second step check whether new loc and new shape belong
         % to the top best loc; if so keep loc and shape with
         % corresponding scale.
-        
-        
+
+
         if  objrw < max(bestobjs)
             % Find position of the maximum value of bestscale
             [~,ind] = max(bestobjs);
@@ -937,7 +937,7 @@ for i = 1:nselected
             % of the objective function
             bestsubset(ind,1:length(index))=index;
         else
-            
+
         end
     else
         bestobjs(ij) = objrw;
@@ -946,11 +946,11 @@ for i = 1:nselected
         bestsubset(ij,1:length(index)) = index;
         ij=ij+1;
     end
-    
-    
+
+
     % Write total estimation time to compute final estimate
     if i <= tsampling
-        
+
         % sampling time until step tsampling
         time(i)=toc;
     elseif i==tsampling+1
@@ -959,8 +959,8 @@ for i = 1:nselected
             fprintf('Total estimated time to complete MCD: %5.2f seconds \n', nselected*median(time));
         end
     end
-    
-    
+
+
 end
 if singsub==nselected
     error('FSDA:mcd:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
@@ -980,7 +980,7 @@ end
 superbestobj = Inf;
 for i=1:bestr
     tmp = IRWLSmcd(Y,bestlocs(i,:), bestcovs(:,:,i),h,refstepsbestr,reftolbestr,restrfactor);
-    
+
     if tmp.obj < superbestobj
         superbestobj    = tmp.obj;
         superbestloc    = tmp.loc;
@@ -1000,8 +1000,8 @@ RAW.bs=superbestsubset;
 
 % cfactor: if we multiply the raw MCD covariance matrix by cfactor, we
 % obtain consistency when the data come from the desired distribution
-% (multivariate normal or t, depending on the value of nuT). Note that 
-% here the consistency factor is computed using the nominal trimming 
+% (multivariate normal or t, depending on the value of nuT). Note that
+% here the consistency factor is computed using the nominal trimming
 % level (the bdp).
 cfactor = consistencyfactor(bdp,v,nuT);
 
@@ -1054,14 +1054,14 @@ if betathresh==1
     xcor=(dfhr-v+1)/(v*dfhr);
     thresh=finv(conflevrew,v,dfhr-v+1)/xcor;    % DDD to be studied
     weights=md<thresh;
-else                                            
+else
     % if isempty(nuT)
     %     % Compare md with the chi2 distribution
-    %     weights=md<chi2inv(conflevrew,v);           
+    %     weights=md<chi2inv(conflevrew,v);
     % else
     %     threshtmp = (1 - betainv(conflevrew,v/2,nuT/2))^(-1);
     %     threshtmp = (threshtmp - 1) * (nuT -2);
-    %     weights=md<threshtmp;   
+    %     weights=md<threshtmp;
     % end
     weights = md<msdcutoff(conflevrew,v,nuT);
 
@@ -1093,12 +1093,12 @@ else
     else
         cfactor=1;
     end
-    
+
     if smallsamplecor==true
         % Apply small sample correction factor
         cfactor = cfactor*corfactorREW(v,n,1-bdp);
     end
-    
+
 end
 
 REW.cov=cfactor*REW.cov;
@@ -1109,44 +1109,44 @@ REW.cov=cfactor*REW.cov;
 REW.cor=REW.cov./(sqrt(diag(REW.cov))*sqrt(diag(REW.cov))');
 
 if det(trcov) < tolMCD
-    
+
     [center,covar,z,~,~,count]=exactfit(Y,NaN,med,madY,z,REW.loc,REW.cov,n);
     REW.plane=z;
-    
+
     correl=covar./(sqrt(diag(covar))*sqrt(diag(covar))');
-    
+
     displREW(count,n,v,center,covar,'Minimum Covariance Determinant Estimato',z,correl);
-    
+
     REW.weights=weights;
     REW.md=RAW.md;
 else
     % Remark: given that Y has been standardized it is necessary to use
     % location and covariance estimates based on standardized data
     md=mahalFS(Y,REW.loc,REW.cov);
-    
+
     if betathresh==1
         m=sum(weights);
         betain=((m-1)^2/m)*betainv(conflev,0.5*v,0.5*(m-v-1));
         % unitsin =units which have weight equal to 1
-        
+
         md1=[md seq'];
-        
+
         unitsin=seq(weights==1);
         mdsel=md1(unitsin,:);
         outbeta=mdsel(mdsel(:,1)>betain,2);
-        
+
         fout=((m+1)/m)*(m-1)*v/(m-v)*finv(conflev,v,m-v);
         unitsout=seq(weights==0);
-        
+
         mdsel=md1(unitsout,:);
         outf=mdsel(mdsel(:,1)>fout,2);
-        
+
         outliers=[outbeta;outf];
         REW.outliers=outliers';
     else
         REW.outliers=seq(md > thresh);
     end
-    
+
     REW.weights = weights;
     % Store reweighted Mahalanobis distances (in squared units)
     REW.md=md;
@@ -1162,10 +1162,10 @@ plo=options.plots;
 
 % Plot Mahalanobis distances with outliers highlighted
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
-    
+
     laby='Raw MCD Mahalanobis distances';
     malindexplot(RAW.md,v,'conflev',conflev,'laby',laby,'numlab',RAW.outliers,'tag','rawmcd','modelT',nuT);
-    
+
     figure('Tag','pl_spm_outliers');
     group=ones(n,1);
     if ~isempty(RAW.outliers)
@@ -1173,10 +1173,10 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
     end
     spmplot(Y,group,plo);
     set(gcf,'Name',' Raw MCD: scatter plot matrix with outliers highlighted');
-    
+
     laby='Reweighted MCD Mahalanobis distances';
     malindexplot(REW.md,v,'conflev',conflev,'laby',laby,'numlab',REW.outliers,'tag','rewmcd','modelT',nuT);
-    
+
     figure('Tag','pl_spm_outliers');
     group=ones(n,1);
     if ~isempty(REW.outliers)
@@ -1184,7 +1184,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
     end
     spmplot(Y,group,plo);
     set(gcf,'Name',' Reweighted MCD: scatter plot matrix with outliers highlighted');
-    
+
 end
 
 % If requested, save data matrix Y into the output structure. This is used
@@ -1235,32 +1235,34 @@ end
         %
         % In the IRWLS procedure the value of loc and the value of the scale and
         % of the shape matrix are updated in each step
-        
+
         loc = initialloc;
         % Mahalanobis distances from initialloc and Initialshape
-        % Cholesky-based: compute squared distances, take sqrt once
-        Ytilde = Y - initialloc;
-        [R, p] = chol(initialcov);
-        if p == 0
-            Z = Ytilde / R;
-            mahaldist = sqrt(sum(Z .* Z, 2));
-        else
-            mahaldist = sqrt(mahalFS(Y, initialloc, initialcov));
-        end
+        mahaldist = sqrt(mahalFS(Y, initialloc, initialcov));
 
         iter = 0;
         locdiff = 9999;
         if isfinite(restrfactor)
             userestrfactor=true;
         else
-           userestrfactor=false;
+            userestrfactor=false;
         end
 
         while ( (locdiff > reftol) && (iter < refsteps) )
             iter = iter + 1;
 
+            %{
+            [~,sortdist]=sort(mahaldist);
+            %obs_in_set = sort(sortdist(1:h)) ;  % sort removed: it is not necessary
+            obs_in_set  = sortdist(1:h) ;
+            %}
+
             hm = quickselectFS(mahaldist,h);
             obs_in_set = mahaldist<=hm;
+
+            % ORIGINAL CODE BEFORE MATHWORKS OPTIMIZATION
+            % newloc      = mean(Y(obs_in_set,:));
+            % newcov      = cov(Y(obs_in_set,:));
 
             % Fused mean/cov: single pass instead of mean() + cov()
             Yh = Y(obs_in_set,:);
@@ -1269,24 +1271,18 @@ end
             Yhc = Yh - newloc;
             newcov = (Yhc' * Yhc) / (nh - 1);
 
+
             % Apply restriction factor to the covariance matrix of subset
-    if userestrfactor==true
-        [V,eige]=eig(newcov);
-        eigenew=restreigen(diag(eige),h,restrfactor);
-        newcov=V*diag(eigenew)*V';
-    end
+            if userestrfactor==true
+                [V,eige]=eig(newcov);
+                eigenew=restreigen(diag(eige),h,restrfactor);
+                newcov=V*diag(eigenew)*V';
+            end
 
             obj         = det(newcov);
 
-            % Compute MD via Cholesky
-            Ytilde = Y - newloc;
-            [R, p] = chol(newcov);
-            if p == 0
-                Z = Ytilde / R;
-                mahaldist = sqrt(sum(Z .* Z, 2));
-            else
-                mahaldist = sqrt(mahalFS(Y, newloc, newcov));
-            end
+            % Compute MD
+            mahaldist = sqrt(mahalFS(Y,newloc,newcov));
 
             % locdiff is linked to the tolerance
             locdiff = norm(newloc-loc,1)/norm(loc,1);
@@ -1295,7 +1291,7 @@ end
         end
         weights=zeros(size(Y,1),1);
         weights(obs_in_set)=1;
-        
+
         outIRWLS = struct('loc',newloc,'cov',newcov,'obj',obj,'weights',weights);
         % assignments below take twice the time of line above
         %outIRWLS.loc = newloc;
@@ -1311,18 +1307,18 @@ end
         % exactfit=1 ==> The covariance matrix of the data is singular
         % exactfit=2 ==> The covariance matrix has become singular during the iterations of the MCD algorithm
         % exactfit=3 ==> The %g-th order statistic of the absolute deviation of variable %g is zero.
-        
+
         % Determines some fields of the output argument REW for the exact fit situation.  It also
         % displays and writes the messages concerning the exact fit situation.  If the raw MCD
         % covariance matrix is not singular but the reweighted is, then the function displrw is
         % called instead of this function.
-        
+
         [raw_center,center]=deal(center);
         [raw_cov,~]=deal(covar);
         raw_objective=0;
         mcd_wt=weights;
         raw_wt=weights;
-        
+
         switch exactfit
             case 1
                 msg='The covariance matrix of the data is singular.';
@@ -1331,7 +1327,7 @@ end
             case 3
                 msg=sprintf('The %g-th order statistic of the absolute deviation of variable %g is zero. ',varargin{1},varargin{2});
         end
-        
+
         msg=sprintf([msg '\nThere are %g observations in the entire dataset of %g observations that lie on the \n'],count,n);
         switch p
             case 2
@@ -1346,22 +1342,22 @@ end
                 msg=sprintf([msg sprintf('%g  ',z)]);
                 msg=sprintf([msg '\n\nand where the mean (m_1,...,m_p) of these observations is the MCD location']);
         end
-        
+
         % method=strvcat(method,[msg '.']);
         method=char(method,[msg '.']);
-        
+
         disp(method)
-        
+
     end
 
 %% displREW function
     function method=displREW(count,n,p,center,covar,method,z,correl)
         % Displays and writes messages in the case the reweighted robust covariance
         % matrix is singular.
-        
+
         msg=sprintf('The reweighted MCD scatter matrix is singular. \n');
         msg=sprintf([msg 'There are %g observations in the entire dataset of %g observations that lie on the\n'],count,n);
-        
+
         switch p
             case 2
                 msg=sprintf([msg 'line with equation %g(x_i1-m_1)%+g(x_i2-m_2)=0 \n\n'],z);
@@ -1375,56 +1371,56 @@ end
                 msg=sprintf([msg sprintf('%g  ',z)]);
                 msg=sprintf([msg '\n\nand where the mean (m_1,...,m_p) of these observations is : \n\n']);
         end
-        
+
         msg=sprintf([msg sprintf('%g  ',center)]);
         msg=sprintf([msg '\n\nTheir covariance matrix equals : \n\n']);
         msg=sprintf([msg sprintf([repmat('% 13.5g ',1,p) '\n'],covar)]);
-        
+
         msg=sprintf([msg '\n\nand their correlation matrix equals : \n\n']);
         msg=sprintf([msg sprintf([repmat('% 13.5g ',1,p) '\n'],correl)]);
-        
+
         method=char(method,[msg '.']);
         disp(method)
-        
+
     end
 
 %% mcduni function
     function [initmean,initcov] = mcduni(y,h,alpha,smallsamplecorfactor,nuT)
-        
+
         ncas=length(y);
         len=ncas-h+1;
-        
+
         % The exact MCD algorithm for the univariate case.
         y=sort(y);
-        
+
         % Initialize ay and aq
         ay=zeros(len,1);
         sq=ay;
-        
+
         ay(1)=sum(y(1:h));
-        
+
         for samp=2:len
             ay(samp)=ay(samp-1)-y(samp-1)+y(samp+h-1);
         end
-        
+
         ay2=ay.^2/h;
-        
+
         sq(1)=sum(y(1:h).^2)-ay2(1);
-        
+
         for samp=2:len
             sq(samp)=sq(samp-1)-y(samp-1)^2+y(samp+h-1)^2-ay2(samp)+ay2(samp-1);
         end
-        
+
         sqmin=min(sq);
         ijk=find(sq==sqmin);
         ndup=length(ijk);
         slutn(1:ndup)=ay(ijk);
         initmean=slutn(floor((ndup+1)/2))/h;
-        
+
         if smallsamplecorfactor==true
             c1factor = corfactorRAW(1,ncas,alpha);
         end
-        
+
         % Note that here the consistency factor is computed using the
         % nominal trimming level (the bdp).
         c1factor = c1factor * consistencyfactor(alpha,1,nuT);
@@ -1436,12 +1432,12 @@ end
     function rawconsfac = consistencyfactor(hna,v,nu)
         % The consistency factor is used to take the effect of trimming
         % into account. It is based on the fraction of observations
-        % whose covariance determinant will be minimized. 
+        % whose covariance determinant will be minimized.
 
         % If a fraction 1-h/n of units are trimmed by the mcd and alpha
         % is the breakdoun point, we should have 1-alpha ~= h/n.
 
-        % The argument hna can be either the breakdown value alpha or the 
+        % The argument hna can be either the breakdown value alpha or the
         % pair [h,n] (being h=retained units and n=sample size).
 
         if isscalar(hna)
@@ -1454,7 +1450,7 @@ end
         if nargin<3 || isempty(nu) || nu == 0
             % This is the standard case, applied when uncontaminated data
             % are assumed to come from a multivariate Normal model.
-            
+
             %alpha      = h/n;
             a          = chi2inv(retained,v);
             rawconsfac = retained/(chi2cdf(a,v+2));
@@ -1465,7 +1461,7 @@ end
             % heavy-tailed multivariate data, submitted.
 
             %alpha       = (n-h)/n;
-            %alpha       = (1-alpha); 
+            %alpha       = (1-alpha);
             integrand   = @(u) 1 ./ (1 - betainv(u,v/2,nu/2));
             theintegral = integral(integrand,0,retained);
             rawconsfac  = ((nu-2) / (retained*v) * theintegral - (nu - 2)/v)^(-1);
@@ -1474,7 +1470,7 @@ end
 
 %% corfactorRAW function
     function rawcorfac = corfactorRAW(p,n,alpha)
-        
+
         if p > 2
             coeffqpkwad875=[-0.455179464070565,1.11192541278794,2;-0.294241208320834,1.09649329149811,3]';
             coeffqpkwad500=[-1.42764571687802,1.26263336932151,2;-1.06141115981725,1.28907991440387,3]';
@@ -1522,7 +1518,7 @@ end
 
 %% corfactorREW function
     function rewcorfac=corfactorREW(p,n,alpha)
-        
+
         if p > 2
             coeffrewqpkwad875=[-0.544482443573914,1.25994483222292,2;-0.343791072183285,1.25159004257133,3]';
             coeffrewqpkwad500=[-1.02842572724793,1.67659883081926,2;-0.26800273450853,1.35968562893582,3]';
@@ -1570,26 +1566,26 @@ end
 
 %% trafo function
     function [covmat,meanvct]=trafo(covmat,meanvct,med,mad)
-        
+
         % Transforms a mean vector and a covariance matrix to the original units.
         % Transform location
         meanvct=meanvct.*mad+med;
-        
+
         %Transform covariance
         % ALTERNATIVE STATEMENT
         % covmat=covmat.*repmat(mad,size(covmat,1),1).*repmat(mad',1,size(covmat,1));
         covmat=bsxfun(@times, covmat, mad);
         covmat=bsxfun(@times, covmat, mad');
-        
+
     end
 
 %% exactfit function
     function [initmean,initcov,z,correl,varargout]=exactfit(Y,plane,med,mad,z,varargin)
-        
+
         % This function is called in the case of an exact fit. It computes the
         % correlation matrix and transforms the coefficients of the hyperplane, the
         % mean, the covariance and the correlation matrix to the original units.
-        
+
         if isnan(plane)
             [meanvct,covmat,n] = deal(varargin{:});
             sigma = eigs_sigma(covmat);
@@ -1599,7 +1595,7 @@ end
             varargout{1} = plane;
             varargout{2} = length(plane);
         end
-        
+
         z=z./mad';
         [initcov,initmean]=trafo(cov(Y(plane,:)),mean(Y(plane,:)),med,mad);
         correl=initcov./(sqrt(diag(initcov))*sqrt(diag(initcov))');
@@ -1608,13 +1604,13 @@ end
 %% rockecs function
     function [fachr,dfhr,dfas]=rockecs(n,v,h)
         ratio  = h/n;
-        
+
         qalpha = chi2inv(h/n,v);
         prob   = chi2cdf(qalpha,v+2);
-        
+
         fachr  = prob/ratio;
         calpha = 1/fachr;
-        
+
         alpha  = 1-ratio;
         c2     = -prob/2;
         prob   = chi2cdf(qalpha,v+4);
@@ -1625,7 +1621,7 @@ end
         v1     = ratio*b1*b1*(alpha*(calpha*qalpha/v-1)^2-1)...
             -2*c3*calpha*calpha*(3*((b1-v*b2)^2)+(v+2)*b2*(2*b1-v*b2));
         v2     = n*calpha*calpha*(b1*(b1-v*b2)*ratio)^2;
-        
+
         % Asymptotic degrees of freedom
         dfas   = 2/(calpha*calpha*v1/v2);
         xb1    = 0.725;
