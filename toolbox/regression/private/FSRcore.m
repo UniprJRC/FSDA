@@ -893,20 +893,33 @@ if signal==1 || signal==2
         % First resuperimposed envelope is based on mdag-1 observations
         % Notice that mdr(i,1) = m dagger
         for tr=(mdag-1):(n)
-            % Compute theoretical envelopes based on tr observations
-            if weak == false
-                gmin1=FSRenvmdr(tr,p,'prob',[0.99; 0.999; 0.01; 0.5],'init',init);
+            % Optimization: skip computing unused envelope rows.
+            % The stopping conditions only check from row (i-1) onwards,
+            % so we can start the envelope computation later.
+            if plo ~= 2
+                init_resup = max(init, mdr(1,1) + (i-1) - 1 - 1);
             else
-                % use a stronger decision rule to flag outliers (useful in presence of VIOMs)
-                gmin1=FSRenvmdr(tr,p,'prob',[0.999999;0.9999999; 0.01; 0.5],'init',init);
+                init_resup = init;
             end
 
-            for ii=(i-1):size(gmin1,1)
+            % Compute theoretical envelopes based on tr observations
+            if weak == false
+                gmin1=FSRenvmdr(tr,p,'prob',[0.99; 0.999; 0.01; 0.5],'init',init_resup);
+            else
+                % use a stronger decision rule to flag outliers (useful in presence of VIOMs)
+                gmin1=FSRenvmdr(tr,p,'prob',[0.999999;0.9999999; 0.01; 0.5],'init',init_resup);
+            end
+
+            % Adjust index offset for the reduced envelope
+            resup_offset = init_resup - init;
+
+            for ii=(i-1):(size(gmin1,1)+resup_offset)
 
                 % CHECK IF STOPPING RULE IS FULFILLED
-                % ii>=size(gmin1,1)-2 = final, penultimate or antepenultimate value
+                % ii>=size(gmin1,1)+resup_offset-2 = final, penultimate or antepenultimate value
                 % of the resuperimposed envelope based on tr observations
-                if mdr(ii,2)>gmin1(ii,c99) && ii>=size(gmin1,1)-2
+                ii_g = ii - resup_offset;  % index into gmin1
+                if mdr(ii,2)>gmin1(ii_g,c99) && ii>=(size(gmin1,1)+resup_offset)-2
                     % Condition S1
                     mes=['$r_{min}('   int2str(mdr(ii,1)) ',' int2str(tr) ')>99$\% envelope'];
                     if msg
@@ -915,7 +928,7 @@ if signal==1 || signal==2
                     end
                     sto=1;
                     break
-                elseif ii<size(gmin1,1)-2 &&  mdr(ii,2)>gmin1(ii,c999)
+                elseif ii<(size(gmin1,1)+resup_offset)-2 &&  mdr(ii,2)>gmin1(ii_g,c999)
                     % Condition S2
                     mes=['$r_{min}('   int2str(mdr(ii,1)) ',' int2str(tr) ')>99.9$\% envelope'];
                     if msg
@@ -1105,7 +1118,13 @@ if signal==1 || signal==2
 
         for tr=(mdag-1):-1:max(mdag-80,init+1)
             % Compute theoretical envelopes based on tr observations
-            gmin1=FSRenvmdr(tr,p,'prob',[0.99; 0.01; 0.5; 0.001],'init',init);
+            % Optimization: only the last row is checked, so start late
+            if plo ~= 2
+                init_resup2 = max(init, tr - 2);
+            else
+                init_resup2 = init;
+            end
+            gmin1=FSRenvmdr(tr,p,'prob',[0.99; 0.01; 0.5; 0.001],'init',init_resup2);
 
             ii=size(gmin1,1);
 

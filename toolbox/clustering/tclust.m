@@ -1447,29 +1447,17 @@ for i=1:nselected
                         autovalues = Lambda_vk;
                     end
 
-                    % Covariance matrices are reconstructed keeping into account the
-                    % constraints on the eigenvalues
-                    for j=1:k
-                        sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-
-                        % Alternative code: in principle more efficient but slower
-                        % because diag is a built in function
-                        % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-                    end
+                    % Covariance matrices reconstructed via pagemtimes (batch BLAS)
+                    UL = U .* reshape(autovalues, 1, v, k);
+                    sigmaini = pagemtimes(UL, 'none', U, 'transpose');
                 elseif restrnum==2
                     Lambda_vk(Lambda_vk<0)=0;
                     % Restrictions on the determinants
                     autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
 
-                    % Covariance matrices are reconstructed keeping into account the
-                    % constraints on the determinants
-                    for j=1:k
-                        sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-
-                        % Alternative code: in principle more efficient but slower
-                        % because diag is a built in function
-                        % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-                    end
+                    % Covariance matrices reconstructed via pagemtimes (batch BLAS)
+                    UL = U .* reshape(autovalues, 1, v, k);
+                    sigmaini = pagemtimes(UL, 'none', U, 'transpose');
                 else
                 end
             else
