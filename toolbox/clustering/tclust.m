@@ -551,7 +551,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
 %   A General Trimming Approach to Robust Cluster Analysis. Annals
-%   of Statistics, Vol. 36, 1324-1345. 
+%   of Statistics, Vol. 36, 1324-1345.
 %
 %
 % Copyright 2008-2025.
@@ -1450,6 +1450,10 @@ for i=1:nselected
                     % Covariance matrices reconstructed via pagemtimes (batch BLAS)
                     UL = U .* reshape(autovalues, 1, v, k);
                     sigmaini = pagemtimes(UL, 'none', U, 'transpose');
+                    % CODE BEFORE MATHWORKS OPTIMIZATION
+                    % for j=1:k
+                    %     sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                    % end
                 elseif restrnum==2
                     Lambda_vk(Lambda_vk<0)=0;
                     % Restrictions on the determinants
@@ -1458,6 +1462,10 @@ for i=1:nselected
                     % Covariance matrices reconstructed via pagemtimes (batch BLAS)
                     UL = U .* reshape(autovalues, 1, v, k);
                     sigmaini = pagemtimes(UL, 'none', U, 'transpose');
+                    % CODE BEFORE MATHWORKS OPTIMIZATION
+                    % for j=1:k
+                    %     sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                    % end
                 else
                 end
             else
@@ -1672,8 +1680,8 @@ for i=1:nselected
                     % comment the DfM line below and uncomment the bsxfun
                     % instruction above. In contexts where this is called
                     % many times, this solution is much more performant.
-                    
-% IF_FSDAR                    
+
+                    % IF_FSDAR
                     if callmex==true
                         DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
                     else
@@ -1683,9 +1691,9 @@ for i=1:nselected
                             Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
                         end
                     end
-% ELSE_FSDAR
-%                   Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
-% END_FSDAR
+                    % ELSE_FSDAR
+                    %                   Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
+                    % END_FSDAR
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
 
                     if restrGPCM == false
