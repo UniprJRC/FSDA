@@ -75,7 +75,7 @@ else
     d = sum((Ytilde / SIGMA) .* Ytilde, 2);
 end
 
-% ORIGINAL CODE BEFORE MATHWORKS OPTIMIZATION
+% CODE BEFORE MATHWORKS OPTIMIZATION
 % d=sum((Ytilde/SIGMA).*Ytilde,2);
 
 

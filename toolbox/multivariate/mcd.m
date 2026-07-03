@@ -1260,7 +1260,7 @@ end
             hm = quickselectFS(mahaldist,h);
             obs_in_set = mahaldist<=hm;
 
-            % ORIGINAL CODE BEFORE MATHWORKS OPTIMIZATION
+            % CODE BEFORE MATHWORKS OPTIMIZATION
             % newloc      = mean(Y(obs_in_set,:));
             % newcov      = cov(Y(obs_in_set,:));
 

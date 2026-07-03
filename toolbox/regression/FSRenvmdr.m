@@ -198,7 +198,7 @@ lm=length(m);
 mm = repmat(m,1,lp);
 
 
-% ORIGINAL CODE BEFORE MATHWORKS OPTIMIZATION
+% CODE BEFORE MATHWORKS OPTIMIZATION
 % quant=finv(repmat(probf,lm,1),2*(n-mm),2*(mm+1));
 
 
@@ -212,7 +212,7 @@ quant = (d2 ./ d1) .* x ./ (1 - x);
 q=(mm+1)./(mm+1+(n-mm).*(quant));
 
 
-% ORIGINAL CODE BEFORE MATHWORKS OPTIMIZATION
+% CODE BEFORE MATHWORKS OPTIMIZATION
 % MinSca= abs(tinv(0.5*(1+q), mm-p));
 
 % MinSca = matrix of the scaled MDR envelopes in each step of the search.
@@ -224,7 +224,7 @@ xb = betaincinv(1-q, nu/2, 0.5);
 MinSca = sqrt(nu .* (1./xb - 1));
 
 
-% ORIGINAL CODE BEFORE MATHWORKS OPTIMIZATION
+% CODE BEFORE MATHWORKS OPTIMIZATION
 % a=norminv(0.5*(1+mm/n));
 % corr=1-2*(n./mm).*a.*normpdf(a);
 
