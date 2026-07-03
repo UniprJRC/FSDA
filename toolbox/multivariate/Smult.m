@@ -315,6 +315,8 @@ end
 tsampling = ceil(min(nselected/100 , 1000));
 time=zeros(tsampling,1);
 
+nkc=n*kc;
+
 % ij is a scalar used to ensure that the best first bestr non singular
 % subsets are stored
 ij=1;
@@ -366,7 +368,7 @@ for i = 1:nselected
             % from the second step check whether new loc and new shape belong
             % to the top best loc; if so keep loc and shape with
             % corresponding scale.
-            if  mean(TBrho(mdrw/sworst,c)) < kc % if >kc skip the sample
+            if  sum(TBrho(mdrw/sworst,c)) < nkc % if >nkc skip the sample
                 % Find position of the maximum value of bestscale
                 [~,ind] = max(bestscales);
                 bestscales(ind) = minscale(mdrw,c,kc,scalerw,minsctol);
