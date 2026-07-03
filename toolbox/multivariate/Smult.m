@@ -7,7 +7,7 @@ function [out , varargout] = Smult(Y,varargin)
 %
 %  Required input arguments:
 %
-% Y :           Input data. Matrix.
+% Y :           Input data. Matrix. 
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -32,71 +32,71 @@ function [out , varargout] = Smult(Y,varargin)
 %                 They will be (n choose p).
 %                 If the number of all possible subset is <1000 the
 %                 default is to extract all subsets otherwise just 1000.
-%                 Example - 'nsamp',1000
+%                 Example - 'nsamp',1000 
 %                 Data Types - single | double
 %
 %    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'refsteps',0
+%                 Example - 'refsteps',0 
 %                 Data Types - single | double
 %
 %     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
-%                 Example - 'reftol',1e-8
+%                 Example - 'reftol',1e-8 
 %                 Data Types - single | double
 %
 %refstepsbestr: number of refining iterations for each best subset. Scalar.
 %               Scalar defining number of refining iterations for each
 %               best subset (default = 50).
-%                 Example - 'refstepsbestr',10
+%                 Example - 'refstepsbestr',10 
 %                 Data Types - single | double
 %
-% reftolbestr : Tolerance for the refining steps. Scalar.
+% reftolbestr : Tolerance for the refining steps. Scalar. 
 %               Tolerance for the refining steps
 %               for each of the best subsets
 %               The default value is 1e-8;
-%                 Example - 'reftolbestr',1e-10
+%                 Example - 'reftolbestr',1e-10 
 %                 Data Types - single | double
 %
 %     minsctol: tolerance for the iterative
-%               procedure for finding the minimum value of the scale. Scalar.
+%               procedure for finding the minimum value of the scale. Scalar. 
 %               Value of tolerance for the iterative
 %               procedure for finding the minimum value of the scale
 %               for each subset and each of the best subsets
 %               (It is used by subroutine minscale.m)
 %               The default value is 1e-7;
-%                 Example - 'minsctol',1e-7
+%                 Example - 'minsctol',1e-7 
 %                 Data Types - single | double
 %
 %      bestr  : number of "best betas" to remember. Scalar. Scalar defining
 %               number of "best betas" to remember from the subsamples.
 %               These will be later iterated until convergence (default=5)
-%                 Example - 'bestr',10
+%                 Example - 'bestr',10 
 %                 Data Types - single | double
 %
 %     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar.
+%               used to declare units as outliers. Scalar. 
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %
-%      nocheck : Check input arguments. Scalar.
+%      nocheck : Check input arguments. Scalar. 
 %               If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
-%               Example - 'nocheck',1
+%               Example - 'nocheck',1 
 %               Data Types - double
 %
 %       plots : Plot on the screen. Scalar or structure.
-%               If plots is a structure or scalar equal to 1, generates:
+%               If plots is a structure or scalar equal to 1, generates: 
 %               (1) a plot of Mahalanobis distances against index number. The
 %               confidence level used to draw the confidence bands for
 %               the MD is given by the input option conflev. If conflev is
 %               not specified a nominal 0.975 confidence interval will be
 %               used.
-%               (2) a scatter plot matrix with the outliers highlighted.
+%               (2) a scatter plot matrix with the outliers highlighted. 
 %               If plots is a structure it may contain the following fields
 %                   plots.labeladd = if this option is '1', the outliers in the
 %                       spm are labelled with their unit row index. The
@@ -105,22 +105,22 @@ function [out , varargout] = Smult(Y,varargin)
 %                   plots.nameY = cell array of strings containing the labels of
 %                       the variables. As default value, the labels which are
 %                       added are Y1, ...Yv.
-%                 Example - 'plots',0
+%                 Example - 'plots',0 
 %                 Data Types - single | double
 %
-%        msg  : Level of output to display. Scalar.
+%        msg  : Level of output to display. Scalar. 
 %               If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final estimator
 %               else no message is displayed on the screen
-%                 Example - 'msg',0
+%                 Example - 'msg',0 
 %                 Data Types - single | double
 %
-%       ysave : save input matrix Y. Scalar.
+%       ysave : save input matrix Y. Scalar. 
 %               Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure out. This feature is
 %               meant at simplifying the use of function malindexplot.
-%               Default is 0, i.e. no saving is done.
-%               Example - 'ysave',1
+%               Default is 0, i.e. no saving is done. 
+%               Example - 'ysave',1 
 %               Data Types - double
 %
 %  Output:
@@ -151,7 +151,7 @@ function [out , varargout] = Smult(Y,varargin)
 %
 %  Optional Output:
 %
-%            C        : matrix containing the indices of the subsamples
+%            C        : matrix containing the indices of the subsamples 
 %                       extracted for computing the estimate (the so called
 %                       elemental sets).
 %
@@ -163,11 +163,11 @@ function [out , varargout] = Smult(Y,varargin)
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
 %
-% Acknowledgements:
+% Acknowledgements: 
 %
 % This function follows the lines of MATLAB/R code developed during the
 % years by many authors.
-% For more details see the R library robustbase
+% For more details see the R library robustbase 
 % http://robustbase.r-forge.r-project.org/
 % The core of these routines, e.g. the resampling approach, however, has
 % been completely redesigned, with considerable increase of the
@@ -319,21 +319,21 @@ time=zeros(tsampling,1);
 % subsets are stored
 ij=1;
 for i = 1:nselected
-
+    
     if i <= tsampling, tic; end
-
+    
     % find a subset of size v+1 in general position (with rank v).
     index = C(i,:);
-
+    
     Yj = Y(index,:);
     ranky = rank(Yj);
-
+    
     if ranky==v
-
+        
         locj = mean(Yj);        % centroid of subset
         Sj = cov(Yj);           % covariance of subset
         Gj = det(Sj)^(-1/v)*Sj; % shape of subset
-
+        
         % Function IRWLSmult performs refsteps steps of IRLS on elemental
         % start. Input:
         % - Y = datamatrix of dimension n x v
@@ -348,16 +348,16 @@ for i = 1:nselected
         % Remark: in IRWLSmult the centroid and shape matrix are re-calculated
         % at each step; on the other hand in minscale they are kept fixed.
         outIRWLS = IRWLSmult(Y, locj, Gj, refsteps, reftol, c, kc);
-
+        
         % The output of IRWLSmult is a structure containing centroid, shape
         % matrix and estimate of the scale
         locrw = outIRWLS.loc;
         shaperw = outIRWLS.shape;
         scalerw = outIRWLS.scale;
-
+        
         % Compute Mahalanobis distances using locrw and shaperw
         mdrw = sqrt(mahalFS(Y,locrw,shaperw));
-
+        
         % to find s, save first the best bestr scales and shape matrices
         % (deriving from non singular subsets) and, from iteration bestr+1
         % (associated to another non singular subset), replace the worst scale
@@ -387,10 +387,10 @@ for i = 1:nselected
     else
         singsub = singsub + 1;
     end
-
+    
     % Write total estimate time to compute final estimate
     if i <= tsampling
-
+        
         % sampling time until step tsampling
         time(i)=toc;
     elseif i==tsampling+1
@@ -399,7 +399,7 @@ for i = 1:nselected
             fprintf('Total estimated time to complete S estimator: %5.2f seconds \n', nselected*median(time));
         end
     end
-
+    
 end
 if singsub==nsamp
     error('FSDA:Smult:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
@@ -447,10 +447,10 @@ plo=options.plots;
 
 % Plot Mahalanobis distances with outliers highlighted
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
-
+    
     laby='S Mahalanobis distances';
     malindexplot(out.md,v,'conflev',conflev,'laby',laby,'numlab',out.outliers);
-
+    
     figure('Tag','pl_spm_outliers');
     group=ones(n,1);
     if ~isempty(out.outliers)
@@ -508,13 +508,11 @@ function outIRWLS=IRWLSmult(Y,initialloc, initialshape, refsteps, reftol, c, kc,
 % In the IRWLS procedure the value of loc and the value of the scale and
 % of the shape matrix are updated in each step
 
-v = size(Y,2);
+[n,v]= size(Y);
 loc = initialloc;
-c2 = c*c;
-cc2d6 = c2/6;
-
 % Mahalanobis distances from initialloc and Initialshape
 mahaldist = sqrt(mahalFS(Y, initialloc, initialshape));
+
 
 % The scaled MAD of Mahalanobis distances is the default for the initial scale
 if (nargin < 8)
@@ -522,80 +520,57 @@ if (nargin < 8)
 end
 
 scale = initialscale;
+
 iter = 0;
 locdiff = 9999;
 
-persistent useTBmex
-if isempty(useTBmex)
-    useTBmex = (exist('TBrhowei','file') == 3);
-end
-
 while ( (locdiff > reftol) && (iter < refsteps) )
     iter = iter + 1;
-
-    %CODE BEFORE MATHWORKS OPTIMIZATION
-    % scale = scale* sqrt( mean(TBrho(mahaldist/scale,c))/kc);
-    % weights = TBwei(mahaldist/scale,c);
-
-
-    % Solve for the scale and find the new weights
-    if useTBmex
-        [scale, weights] = TBrhowei(mahaldist, scale, c, kc);
-    else
-        % Inline TBrho: rho(u,c) = (u^2/2)*(1 - (u/c)^2 + (u/c)^4/3) for |u|<=c, else c^2/6
-        u = mahaldist / scale;
-        inside = (u <= c);
-        u2 = u .* u;
-        uc2 = u2 / c2;
-        rhovals = ones(size(u)) * cc2d6;
-        rhovals(inside) = (u2(inside)/2) .* (1 - uc2(inside) + uc2(inside).^2/3);
-        scale = scale * sqrt(mean(rhovals) / kc);
-
-        % Inline TBwei: w(u,c) = (1-(u/c)^2)^2 for |u|<=c, else 0
-        u = mahaldist / scale;
-        inside = (u <= c);
-        weights = zeros(size(u));
-        t = 1 - (u(inside)/c).^2;
-        weights(inside) = t .* t;
-    end
-
-    % Weighted location (implicit expansion)
-    sumw = sum(weights);
+    
+    % Solve for the scale
+    scale = scale* sqrt( sum(TBrho(mahaldist/scale,c) )/(n*kc));
+    % mahaldist = vector of Mahalanobis distances from robust centroid and
+    % robust shape matrix, which is changed in each step
+    
+    % compute w = n x 1 vector containing the weights (using TB)
+    weights = TBwei(mahaldist/scale,c);
+    
     % newloc = new estimate of location using the weights previously found
     % newloc = \sum_{i=1}^n y_i w(d_i) / \sum_{i=1}^n w(d_i)
-    newloc = (weights.' * Y) / sumw;
+    % newloc = sum(bsxfun(@times,Y,weights),1)/sum(weights);
+    sumw=sum(weights);
+    newloc = (weights.' * Y) / sumw; 
 
     % exit from the loop if the new loc has singular values. In such a
     % case, any intermediate estimate is not reliable and we can just
     % keep the initial loc and initial scale.
-
     if (any(isnan(newloc)))
         newloc = initialloc;
         newshape = initialshape;
         scale = initialscale;
-        weights = NaN;
+        weights=NaN;
         break
     end
-
+    
     % Res = n x v matrix which contains deviations from the robust estimate
     % of location
-
-    % Weighted covariance (implicit expansion)
     Res = Y - newloc;
+    
     % Multiplication of newshape by a constant (e.g. v) is unnecessary
     % because final value of newshape remains the same as det(newshape)=1.
     % For the same reason newshape remains the same if we use weights or
     % weights*(c^2/6)
-
-    newshape = (Res .* weights)' * Res;
-    newshape = det(newshape)^(-1/v) * newshape;
-
+    % newshape= (Res')*bsxfun(@times,Res,weights);
+    newshape = (Res .* weights)' * Res;   
+    newshape = det(newshape)^(-1/v)*newshape;
+    
     % Compute MD
     mahaldist = sqrt(mahalFS(Y,newloc,newshape));
-
+    
     % locdiff is linked to the tolerance
     locdiff = norm(newloc-loc,1)/norm(loc,1);
     loc = newloc;
+    
 end
 
 outIRWLS.loc = newloc;
