@@ -1065,15 +1065,27 @@ function [out, varargout] = LTSts(y,varargin)
     
     outFRS4 = FSRts(Y4,'model',model,'plots',1);
     ax=findobj(gcf,'Tag','FSRts:ts');
-    title(ax,'P12119085, FS with default conflev');
+    if ~isempty(ax) && isgraphics(ax(1),'axes')
+        title(ax,'P12119085, FS with default conflev');
+    else
+        warning('FSRts:ts axes not found. Title not assigned.');
+    end
     
     outLTS5 = LTSts(Y5,'model',model,'plots',1,'conflev',0.99,'msg',0);
     ax=findobj(gcf,'Tag','LTSts:ts');    
-    title(ax,'P17049075, LTS with conflev=0.99');
+    if ~isempty(ax) && isgraphics(ax(1),'axes')
+        title(ax,'P17049075, LTS with conflev=0.99');
+    else
+        warning('FSRts:ts axes not found. Title not assigned.');
+    end
     
     outFRS5 = FSRts(Y5,'model',model,'plots',1);
     ax=findobj(gcf,'Tag','FSRts:ts');
-    title(ax,'P17049075, FS with default conflev');
+    if ~isempty(ax) && isgraphics(ax(1),'axes')
+        title(ax,'P17049075, FS with default conflev');
+    else
+        warning('FSRts:ts axes not found. Title not assigned.');
+    end
 %}
 
 %% Beginning of code
