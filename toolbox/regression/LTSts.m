@@ -1023,7 +1023,6 @@ function [out, varargout] = LTSts(y,varargin)
 %}
 
 %{
-
     %% Examples 4 and 5 used in the paper RPRH: trade data.
     close all; clear all;
     % the datasets
@@ -1058,7 +1057,11 @@ function [out, varargout] = LTSts(y,varargin)
     outLTS4 = LTSts(Y4,'model',model,'plots',1,'conflev',0.99,'msg',0);
     drawnow;
     ax = findall(0, 'Type', 'axes', 'Tag', 'LTSts:ts');
-    title(ax,'P12119085, LTS with conflev=0.99');
+    if ~isempty(ax) && isgraphics(ax(1),'axes')
+        title(ax,'P12119085, LTS with conflev=0.99');
+    else
+        warning('FSRts:ts axes not found. Title not assigned.');
+    end
     
     outFRS4 = FSRts(Y4,'model',model,'plots',1);
     ax=findobj(gcf,'Tag','FSRts:ts');
