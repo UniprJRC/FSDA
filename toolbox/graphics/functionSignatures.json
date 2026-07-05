@@ -952,6 +952,7 @@
             {"name":"order", "kind":"namevalue", "type":"choices={'original','alphabet','AOE','FPC'}", "purpose":"order of variables in the scatterplot matrix"},
             {"name":"overlay", "kind":"namevalue", "type":[["scalar"], ["char"], ["struct"]], "purpose":"superimposition on off-diagonal panels"},
             {"name":"colorBackground", "kind":"namevalue", "type":"logical", "purpose":"background color based on correlation"},
+            {"name":"ColorblindSafe", "kind":"namevalue", "type":"logical", "purpose":"use a colorblind-safe diverging palette for colorBackground"},
             {"name":"typespm", "kind":"namevalue", "type":[["choices={'full','lower','upper'}"], ["struct"]], "purpose":"type of scatter plot matrix"},
             {"name":"undock", "kind":"namevalue", "type":[["numeric"], ["logical"]], "purpose":"panels to undock and visualize separately"},
             {"name":"datatooltip", "kind":"namevalue", "type":[["numeric"], ["struct"]], "purpose":"interactive clicking"},
