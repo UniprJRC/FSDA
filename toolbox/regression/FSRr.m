@@ -264,7 +264,12 @@ function [out , varargout] = FSRr(y, X, varargin)
         copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));
         copyobj(h3,ax3); title(ax3,get(get(a3,'title'),'string'));
         copyobj(h4,ax4); title(ax4,get(get(a4,'title'),'string'));
-        close(f1); close(f2); close(f3); close(f4);
+        figs = unique([f1 f2 f3 f4]);
+        for i = 1:numel(figs)
+            if isgraphics(figs(i), 'figure')
+                close(figs(i));
+            end
+        end
 %}
 
 %{
