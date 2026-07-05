@@ -283,7 +283,7 @@ function [out] = overlapmap(D, varargin)
     out = tkmeans(X, k*4, 0.05, 'plots', 'contourf', 'Ysave', true);
     overlapmap(out, 'plots', 'contourf');
 
-    out = tclust(X, 10, 0.05, 100, 'plots', 'contour', 'Ysave', true);
+    out = tclust(X, 10, 0.05, 100, 'plots', 'contourf', 'Ysave', true);
     overlapmap(out, 'plots', 'contourf');
 %}
 
