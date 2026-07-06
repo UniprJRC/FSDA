@@ -80,13 +80,13 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Data Types - logical
 %
 %  ColorblindSafe : use a colorblind-safe diverging palette. Boolean.
-%           If ColorblindSafe is true (default), the background color
-%           enabled by colorBackground (and the color scale used by typespm
+%           If ColorblindSafe is true, the background color enabled by
+%           colorBackground (and the color scale used by typespm
 %           'circle'/'square'/'cnumber') is built from a colorblind-safe
-%           HCL-based diverging palette. If false, the legacy RGB-linear
-%           "R-style" colormap is used instead, for backward compatibility
-%           and reproducing previously published figures.
-%                   Example - 'ColorblindSafe',false
+%           HCL-based diverging palette. If false (default), the legacy
+%           RGB-linear "R-style" colormap is used instead, for backward
+%           compatibility and reproducing previously published figures.
+%                   Example - 'ColorblindSafe',true
 %                   Data Types - logical
 %
 % dispopt: what to put on the diagonal. Character. String which controls
@@ -1196,7 +1196,7 @@ if nargin>1
         units='';
         typespm='full';
         colorBackground=false;
-        ColorblindSafe=true;
+        ColorblindSafe=false;
         orderSPM="original";
         if length(varargin)>3
             disp('spmplot has been called in the old format without name pairs')
@@ -1232,7 +1232,7 @@ if nargin>1
             'selunit',selthdef,'datatooltip',0,...
             'nameY',nameY,'nameYrot',nameYrot,'nameYlength',nameYlength,...
             'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
-            'undock', '','colorBackground',false, 'ColorblindSafe',true,...
+            'undock', '','colorBackground',false, 'ColorblindSafe',false,...
             'typespm','full','order',[]);
 
         [varargin{:}] = convertStringsToChars(varargin{:});
@@ -1350,7 +1350,7 @@ else
     undock          = '';
     units           = '';
     colorBackground = false;
-    ColorblindSafe  = true;
+    ColorblindSafe  = false;
     typespm         = 'full';
     orderSPM        = "original";
 end
