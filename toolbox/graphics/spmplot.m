@@ -79,14 +79,16 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'colorBackground',true
 %                   Data Types - logical
 %
-%  ColorblindSafe : use a colorblind-safe diverging palette. Boolean.
-%           If ColorblindSafe is true, the background color enabled by
+%  colorBlindSafe : use a colorblind-safe diverging palette. Boolean.
+%           If colorBlindSafe is true, the background color enabled by
 %           colorBackground (and the color scale used by typespm
 %           'circle'/'square'/'cnumber') is built from a colorblind-safe
-%           HCL-based diverging palette. If false (default), the legacy
-%           RGB-linear "R-style" colormap is used instead, for backward
-%           compatibility and reproducing previously published figures.
-%                   Example - 'ColorblindSafe',true
+%           HCL-based diverging palette (HCL stands for Hue, Chroma,
+%           Luminance, see Zelleis and Murrel, 2023). If false (default),
+%           the legacy RGB-linear "R-style" colormap is used instead, for
+%           backward compatibility and reproducing previously published
+%           figures.
+%                   Example - 'colorBlindSafe',true
 %                   Data Types - logical
 %
 % dispopt: what to put on the diagonal. Character. String which controls
@@ -465,6 +467,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 % Friendly M. (2002), Corrgrams: Exploratory Displays for Correlation
 % Matrices. The American Statistician, v. 56, pp. 316–324,
 % https://doi.org/10.1198/000313002533
+%
+% Zeileis, A., and Murrell, P. (2023), Coloring in R's blind spot. The R
+% Journal, v. 15, pp. 240–256, https://doi.org/10.32614/RJ-2023-071
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -1196,7 +1201,7 @@ if nargin>1
         units='';
         typespm='full';
         colorBackground=false;
-        ColorblindSafe=false;
+        colorBlindSafe=false;
         orderSPM="original";
         if length(varargin)>3
             disp('spmplot has been called in the old format without name pairs')
@@ -1232,7 +1237,7 @@ if nargin>1
             'selunit',selthdef,'datatooltip',0,...
             'nameY',nameY,'nameYrot',nameYrot,'nameYlength',nameYlength,...
             'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
-            'undock', '','colorBackground',false, 'ColorblindSafe',false,...
+            'undock', '','colorBackground',false, 'colorBlindSafe',false,...
             'typespm','full','order',[]);
 
         [varargin{:}] = convertStringsToChars(varargin{:});
@@ -1267,7 +1272,7 @@ if nargin>1
         undock=options.undock;
         units=options.selunit;
         colorBackground=options.colorBackground;
-        ColorblindSafe=options.ColorblindSafe;
+        colorBlindSafe=options.colorBlindSafe;
         typespm=options.typespm;
         plo=options.plo;
         orderSPM=string(options.order);
@@ -1350,7 +1355,7 @@ else
     undock          = '';
     units           = '';
     colorBackground = false;
-    ColorblindSafe  = false;
+    colorBlindSafe  = false;
     typespm         = 'full';
     orderSPM        = "original";
 end
@@ -1393,7 +1398,7 @@ else
     RnotComputed=true;
 end
 
-if ColorblindSafe
+if colorBlindSafe
     colormapdef = diverging_hcl_matlab(256);
 else
     RColormap   = load('RColormap');
