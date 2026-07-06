@@ -79,6 +79,16 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'colorBackground',true
 %                   Data Types - logical
 %
+%  ColorblindSafe : use a colorblind-safe diverging palette. Boolean.
+%           If ColorblindSafe is true (default), the background color
+%           enabled by colorBackground (and the color scale used by typespm
+%           'circle'/'square'/'cnumber') is built from a colorblind-safe
+%           HCL-based diverging palette. If false, the legacy RGB-linear
+%           "R-style" colormap is used instead, for backward compatibility
+%           and reproducing previously published figures.
+%                   Example - 'ColorblindSafe',false
+%                   Data Types - logical
+%
 % dispopt: what to put on the diagonal. Character. String which controls
 %          how to fill the diagonals in a plot of Y vs Y (main diagonal of
 %          the scatter plot matrix). Set dispopt to 'hist' (default) to
@@ -1090,9 +1100,15 @@ nameYrot      = 90;
 % This is the background color of the MATLAB figures
 MATLAB_def_gray = [0.94 0.94 0.94];
 
-% We adopt the R colormap as default
-RColormap   = load('RColormap');
-colormapdef = RColormap.RColormap;
+% DDD REMOVE
+% Default colormap can be one of the following:
+
+% 1. The R colormap 
+%RColormap   = load('RColormap');
+%colormapdef = RColormap.RColormap;
+
+% 2. The Blue-Red style diverging HCL palette, following Zeileis et al. (2020).
+%colormapdef = diverging_hcl_matlab(256);
 
 %% Required input given as structure or not
 
@@ -1180,6 +1196,7 @@ if nargin>1
         units='';
         typespm='full';
         colorBackground=false;
+        ColorblindSafe=true;
         orderSPM="original";
         if length(varargin)>3
             disp('spmplot has been called in the old format without name pairs')
@@ -1215,7 +1232,8 @@ if nargin>1
             'selunit',selthdef,'datatooltip',0,...
             'nameY',nameY,'nameYrot',nameYrot,'nameYlength',nameYlength,...
             'dispopt','hist','databrush','','tag','pl_spm', 'overlay', '', ...
-            'undock', '','colorBackground',false,'typespm','full','order',[]);
+            'undock', '','colorBackground',false, 'ColorblindSafe',true,...
+            'typespm','full','order',[]);
 
         [varargin{:}] = convertStringsToChars(varargin{:});
         UserOptions=varargin(1:2:length(varargin));
@@ -1249,6 +1267,7 @@ if nargin>1
         undock=options.undock;
         units=options.selunit;
         colorBackground=options.colorBackground;
+        ColorblindSafe=options.ColorblindSafe;
         typespm=options.typespm;
         plo=options.plo;
         orderSPM=string(options.order);
@@ -1331,6 +1350,7 @@ else
     undock          = '';
     units           = '';
     colorBackground = false;
+    ColorblindSafe  = true;
     typespm         = 'full';
     orderSPM        = "original";
 end
@@ -1373,6 +1393,12 @@ else
     RnotComputed=true;
 end
 
+if ColorblindSafe
+    colormapdef = diverging_hcl_matlab(256);
+else
+    RColormap   = load('RColormap');
+    colormapdef = RColormap.RColormap;
+end
 
 ngroups=length(unique(group));
 seq= (1:n)';
@@ -1899,7 +1925,7 @@ if  lowerORupper ==true
     % colormap
     scmap = 256;
     index = linspace(-1, 1, scmap);
-    cmap  = colormap(colormapdef);
+    cmap  = colormap(colormapdef); 
     %cmap  = flipud(cmap);
 
     if lunigroup>1
