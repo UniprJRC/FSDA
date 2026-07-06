@@ -85,8 +85,23 @@ function h = scatterboxplot(x,y,varargin)
 %% Beginning of code
 
 %% Start calling function scatterhist
+
+% scatterhist accepts an explicit 'Color' name-value pair. 
+% I set it to a colorblind-safe qualitative palette (Okabe–Ito) sized to
+% the number of groups before calling scatterhist, so both the scatter and
+% the boxplot color inherit it consistently.
+
+okabeIto = [0.00 0.45 0.70;   % blue
+            0.90 0.60 0.00;   % orange
+            0.00 0.62 0.45;   % bluish green
+            0.80 0.40 0.70;   % reddish purple
+            0.94 0.89 0.26;   % yellow
+            0.84 0.37 0.00;   % vermillion
+            0.35 0.35 0.35];  % gray (fallback for extra groups)
+
 if nargin<3
-    h=scatterhist(x,y);
+    %h=scatterhist(x,y);
+    h=scatterhist(x,y,'Color',okabeIto(1,:));
     group=[];
     PlotGroup={'off'};
 else
@@ -97,9 +112,19 @@ else
     checkGroup = strcmp(UserOptions,'Group');
     if sum(checkGroup)
         group = varargin(2*find(checkGroup));
+        if iscell(group), group=group{:}; end
+        ngroups = numel(unique(group));
     else
         group=[];
+        ngroups = 1;
     end
+
+    checkColor = strcmp(UserOptions,'Color');
+    if ~sum(checkColor)
+        varargin = [varargin, {'Color', okabeIto(1:ngroups,:)}];
+    end
+
+    h=scatterhist(x,y,varargin{:,:});
 
     checkPlotGroup = strcmp(UserOptions,'PlotGroup');
     if sum(checkPlotGroup)
@@ -111,8 +136,6 @@ else
         PlotGroup={'off'};
         end
     end
-
-
 end
 if iscell(group)
     group=group{:};
