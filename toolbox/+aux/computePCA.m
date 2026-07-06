@@ -1,7 +1,11 @@
 function  [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT,score,scoreT,orthDist,scoreDist] = ...
-    computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile,smartEVchart)
+    computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile,smartEVchart,colorBlindSafe)
 % Compute all PCA quantities (this function is not intended to be called
 % directly)
+
+negColor = 'g';
+posColor = 'g';
+
 [n,v]=size(Y);
 if isempty(bsb)
     bsb=true(n,1);
@@ -144,29 +148,39 @@ if (islogical(plots) || isnumeric(plots)) && isscalar(plots)
     end
 elseif iscellstr(plots) || ischar(plots) %#ok<ISCLSTR>
     % Note that warning is suppressed because of routine convertStringsToChars
-    % Check whether input is a cell array of characters or a character array 
+    % Check whether input is a cell array of characters or a character array
     showPlots=string(plots);
 else
     error('FSDA:pcaFS:WrongInputOpt',['input argument plots can be either 0/1 false/true' newline 'or a cell array of characters or a string array or a character array'])
 end
 
-    %% Explained variance through Pareto plot
-    % Delete figure if it already exists
-    if ismember("Explained",showPlots)
-        delete(findobj(0, 'type', 'figure','tag','pl_eigen'));
-        figure('Name','Explained variance','Tag','pl_eigen')
-        [h,axesPareto]=pareto(explained(:,1),namerows);
-        % h(1) refers to the bars h(2) to the line
+%% Explained variance through Pareto plot
+% Delete figure if it already exists
+if ismember("Explained",showPlots)
+    delete(findobj(0, 'type', 'figure','tag','pl_eigen'));
+    figure('Name','Explained variance','Tag','pl_eigen')
+    [h,axesPareto]=pareto(explained(:,1),namerows);
+    % h(1) refers to the bars h(2) to the line
+    if colorBlindSafe
+        h(1).FaceColor=aux.sequential_hcl_matlab(1);
+    else
         h(1).FaceColor='g';
-        linelabels = string(round(100*h(2).YData/sumla,2));
-        text(axesPareto(2),h(2).XData,h(2).YData,linelabels,...
-            'Interpreter','none');
-        xlabel('Principal components')
-        ylabel('Explained variance')
     end
+    linelabels = string(round(100*h(2).YData/sumla,2));
+    text(axesPareto(2),h(2).XData,h(2).YData,linelabels,...
+        'Interpreter','none');
+    xlabel('Principal components')
+    ylabel('Explained variance')
+end
 
-    %% Plot loadings
-    if ismember("Loadings",showPlots)
+%% Plot loadings
+if ismember("Loadings",showPlots)
+    if colorBlindSafe
+        [negColor,posColor] = aux.plotLoadingsDiverging(loadings, varnames, NumComponents, 'Loadings', 'pl_loadings');
+    else
+        negColor = 'g';
+        posColor = 'g';
+   
         xlabels=categorical(varnames,varnames);
         delete(findobj(0, 'type', 'figure','tag','pl_loadings'));
         figure('Name','Loadings','Tag','pl_loadings')
@@ -187,151 +201,156 @@ end
             title(['Correlations  with PC' num2str(i)])
         end
     end
+end
 
-    %% Plot coefficients with line
-    if smartEVchart ==true
-        for j=1:NumComponents
-            figure('Name',['Eigenvector' num2str(j)],'Tag',['pl_eigenvect' num2str(j)])
+%% Plot coefficients with line
+if smartEVchart ==true
+    for j=1:NumComponents
+        figure('Name',['Eigenvector' num2str(j)],'Tag',['pl_eigenvect' num2str(j)])
 
-            si=repelem("+",v,1);
-            pos=V(:,j)>0;
-            si(~pos)="";
+        si=repelem("+",v,1);
+        pos=V(:,j)>0;
+        si(~pos)="";
 
+        st=si+string(V(:,j))+"*"+varnames';
+        % Order the elements
+        [~,indsor]=sort(abs(V(:,j)),'descend');
 
-            st=si+string(V(:,j))+"*"+varnames';
-            % Order the elements
-            [~,indsor]=sort(abs(V(:,j)),'descend');
+        st1=st(indsor);
+        st2="PC" + string(j) + "="+ strjoin(st1');
+        cst2=char(st2);
+        spaces=strfind(st2,' ');
 
-            st1=st(indsor);
-            st2="PC" + string(j) + "="+ strjoin(st1');
-            cst2=char(st2);
-            spaces=strfind(st2,' ');
+        pos=find(cumsum(spaces'>90:90:(180+max(spaces)))==1);
+        pos=pos- (0:length(spaces):(length(spaces)*(length(pos)-1)))';
+        cst2(spaces(pos))=newline;
+        st2=string(cst2);
 
-            pos=find(cumsum(spaces'>90:90:(180+max(spaces)))==1);
-            pos=pos- (0:length(spaces):(length(spaces)*(length(pos)-1)))';
-            cst2(spaces(pos))=newline;
-            st2=string(cst2);
+        xlabels=categorical(varnames,varnames);
+        [~,sor]=sort(V(:,j));
 
+        subplot(2,1,1)
 
-            xlabels=categorical(varnames,varnames);
-            [~,sor]=sort(V(:,j));
+        b=bar(varnames(sor), V(sor,j),'g');
+        b.FaceColor = 'flat';       % allow per-bar colors
 
-            subplot(2,1,1)
+        xtips=b(1).XData;
+        ytips=b(1).YData;
+        % The alternative instructions below only work from MATLAB
+        % 2019b
+        %   xtips = b.XEndPoints;
+        %   ytips = b.YEndPoints;
+        barlabels = string(round(V(sor,j),2));
+        ax=gca;
+        ax.XTickLabel={};
+        % ax.XTick = 1:v;
 
-            b=bar(varnames(sor), V(sor,j),'g');
-            b.FaceColor = 'flat';       % allow per-bar colors
-
-            xtips=b(1).XData;
-            ytips=b(1).YData;
-            % The alternative instructions below only work from MATLAB
-            % 2019b
-            %   xtips = b.XEndPoints;
-            %   ytips = b.YEndPoints;
-            barlabels = string(round(V(sor,j),2));
-            ax=gca;
-            ax.XTickLabel={};
-            % ax.XTick = 1:v;
-
-            for i=1:v
-                if  b.YEndPoints(i)<0
+        for i=1:v
+            if  b.YEndPoints(i)<0
+                if colorBlindSafe
+                    b.CData(i,:)=negColor;
+                else
                     b.CData(i,:)=[1.0000, 0, 0];
-                    text(xtips(i),ytips(i),barlabels(i),'HorizontalAlignment','center',...
-                        'VerticalAlignment','top')
-                    text(i, ax.YLim(1) - 0.05*diff(ax.YLim), string(b.XData(i)), ...
-                        'HorizontalAlignment','center', 'VerticalAlignment','top', ...
-                        'Color', [1 0 0], 'Parent', ax);
+                end
+                text(xtips(i),ytips(i),barlabels(i),'HorizontalAlignment','center',...
+                    'VerticalAlignment','top')
+                text(i, ax.YLim(1) - 0.05*diff(ax.YLim), string(b.XData(i)), ...
+                    'HorizontalAlignment','center', 'VerticalAlignment','top', ...
+                    'Color', negColor, 'Parent', ax);
+            else
+                if colorBlindSafe
+                    b.CData(i,:)=posColor;
                 else
                     b.CData(i,:)=[0 0 1];
-                    text(xtips(i),ytips(i),barlabels(i),'HorizontalAlignment','center',...
-                        'VerticalAlignment','bottom')
-                    text(i, ax.YLim(1) - 0.05*diff(ax.YLim), string(b.XData(i)), ...
-                        'HorizontalAlignment','center', 'VerticalAlignment','top', ...
-                        'Color', [0 0 1], 'Parent', ax);
                 end
+                text(xtips(i),ytips(i),barlabels(i),'HorizontalAlignment','center',...
+                    'VerticalAlignment','bottom')
+                text(i, ax.YLim(1) - 0.05*diff(ax.YLim), string(b.XData(i)), ...
+                    'HorizontalAlignment','center', 'VerticalAlignment','top', ...
+                    'Color', posColor, 'Parent', ax);
             end
+        end
 
-            title(st2)
-            h2=subplot(2,1,2);
-            zer=zeros(v,1);
-            cgt0=V(:,j)>0;
-            stem(h2,V(:,j),zer(:))
-            hold('on')
+        title(st2)
+        h2=subplot(2,1,2);
+        zer=zeros(v,1);
+        cgt0=V(:,j)>0;
+        stem(h2,V(:,j),zer(:))
+        hold('on')
+        if colorBlindSafe
+            stem(h2,V(cgt0,j),zer(cgt0),'filled','Color',posColor)
+            stem(h2,V(~cgt0,j),zer(~cgt0),'filled','Color',negColor)
+        else
             stem(h2,V(cgt0,j),zer(cgt0),'filled','Color','b')
             stem(h2,V(~cgt0,j),zer(~cgt0),'filled','Color','r')
-
-            lab=rescaleFS(abs(V(:,j)),7,20);
-            for i=1:v
-                if V(sor(i),j)>0
-                    col='b';
-                else
-                    col='r';
-                end
-                if mod(i,2)==1
-                    horali='left';
-                    xlabi=string(xlabels(sor(i)));
-                else
-                    horali='right';
-                    xlabi=string(xlabels(sor(i)))  + "   ";
-                end
-
-                text(V(sor(i),j),zer(i)+0.05,xlabi,'Rotation',90, ...
-                    'FontSize',lab(sor(i)),'HorizontalAlignment',horali,'Color',col);
-            end
-            xline(0)
-            ax=gca;
-            ax.YTickLabel={};
-            % ylim([-1 1])
         end
+        lab=rescaleFS(abs(V(:,j)),7,20);
+        for i=1:v
+            if V(sor(i),j)>0
+                col=posColor;
+            else
+                col=negColor;
+            end
+            if mod(i,2)==1
+                horali='left';
+                xlabi=string(xlabels(sor(i)));
+            else
+                horali='right';
+                xlabi=string(xlabels(sor(i)))  + "   ";
+            end
+
+            text(V(sor(i),j),zer(i)+0.05,xlabi,'Rotation',90, ...
+                'FontSize',lab(sor(i)),'HorizontalAlignment',horali,'Color',col);
+        end
+        xline(0)
+        ax=gca;
+        ax.YTickLabel={};
+        % ylim([-1 1])
     end
+end
 
-    %% Plot of Orthogonal distance (Y) versus Score distance (X)
-    if ismember("OutlierMap",showPlots)
+%% Plot of Orthogonal distance (Y) versus Score distance (X)
+if ismember("OutlierMap",showPlots)
 
-        delete(findobj(0, 'type', 'figure','tag','pl_OutlierMap'));
-        figure('Name','OutlierMap','tag','pl_OutlierMap')
-        group1=repelem("Normal units",n,1);
-        group1(bsb==0)="Outliers";
-        scatterboxplot(scoreDist,orthDist,'group',group1);
-        xlabel('Score distance')
-        ylabel('Orth. dist. from PCA subspace')
-        text(1.01,0,['Good' newline 'leverage' newline 'points'],'Units','normalized')
-        text(-0.05,0,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','right')
-        text(0.05,-0.05,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','left')
-        text(-0.05,1.05,'Orthogonal outliers','Units','normalized','HorizontalAlignment','left')
-        text(0.95,1.05,'Bad leverage points','Units','normalized','HorizontalAlignment','right')
-        text(1.01,0.95,['Bad' newline 'leverage' newline 'points'],'Units','normalized','HorizontalAlignment','left')
-        text(scoreDist(selu),orthDist(selu),rownames(selu),'HorizontalAlignment','left','VerticalAlignment','bottom');
-        % Good leverage points: points which lie close to the PCA space but far
-        % from the regular observations.
-        % Orthogonal outliers points: points which have a large orthogonal distance
-        % to the PCA space but cannot be seen when we look only at their
-        % projection on the PCA subspace.
-        % Bad leverage points: points which have a large orthogonal distance
-        % and whose projection on the PCA subspace is remote from the typical
-        % projections.
-    end
+    delete(findobj(0, 'type', 'figure','tag','pl_OutlierMap'));
+    figure('Name','OutlierMap','tag','pl_OutlierMap')
+    group1=repelem("Normal units",n,1);
+    group1(bsb==0)="Outliers";
+    scatterboxplot(scoreDist,orthDist,'group',group1);
+    xlabel('Score distance')
+    ylabel('Orth. dist. from PCA subspace')
+    text(1.01,0,['Good' newline 'leverage' newline 'points'],'Units','normalized')
+    text(-0.05,0,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','right')
+    text(0.05,-0.05,['Normal' newline 'units'],'Units','normalized','HorizontalAlignment','left')
+    text(-0.05,1.05,'Orthogonal outliers','Units','normalized','HorizontalAlignment','left')
+    text(0.95,1.05,'Bad leverage points','Units','normalized','HorizontalAlignment','right')
+    text(1.01,0.95,['Bad' newline 'leverage' newline 'points'],'Units','normalized','HorizontalAlignment','left')
+    text(scoreDist(selu),orthDist(selu),rownames(selu),'HorizontalAlignment','left','VerticalAlignment','bottom');
+    % Good leverage points: points which lie close to the PCA space but far
+    % from the regular observations.
+    % Orthogonal outliers points: points which have a large orthogonal distance
+    % to the PCA space but cannot be seen when we look only at their
+    % projection on the PCA subspace.
+    % Bad leverage points: points which have a large orthogonal distance
+    % and whose projection on the PCA subspace is remote from the typical
+    % projections.
+end
 
-    %% Show the plot of latitude and longitude
-    if ~isempty(Latitude) &&  ~isempty(Longitude)
-        delete(findobj(0, 'type', 'figure','tag','pl_latlong'));
-        figure('Name','geobubble','tag','pl_latlong')
+%% Show the plot of latitude and longitude
 
-        % Divide the second PC into 4 classes
-        cate=discretize(score(:,2),linspace(min(score(:,2)),max(score(:,2)),4),'categorical');
+if ~isempty(Latitude) &&  ~isempty(Longitude)
+    delete(findobj(0, 'type', 'figure','tag','pl_latlong'));
+    figure('Name','geobubble','tag','pl_latlong')
+    aux.plotGeobubbleDiverging(Latitude, Longitude, score(:,1), score(:,2), ...
+        "Geobubble of all units", "First PC (size)", "Second PC (color)", ...
+        'MapLayout','maximized');
+elseif ~isempty(Latitude) ||  ~isempty(Longitude)
+    error('FSDA:pcaFS:WrongInputOpt','Both Latitude and Longitude must be given.');
+end
 
-        % Add title and legend titles
-        gb=geobubble(Latitude,Longitude,score(:,1),cate,'Basemap','topographic','MapLayout','maximized');
-        gb.Title = "Geobubble of all units";
-        gb.SizeLegendTitle = "First PC (size)";
-        gb.ColorLegendTitle = "Second PC (color)";
-    elseif ~isempty(Latitude) ||  ~isempty(Longitude)
-        error('FSDA:pcaFS:WrongInputOpt','Both Latitude and Longitude must be given.');
-    else
-    end
-
-    % Show the geoplot using the Shape file
-    if ~isempty(ShapeFile)
-        geoplotAPP(Ztable,score,ShapeFile,bsb)
-    end
+% Show the geoplot using the Shape file
+if ~isempty(ShapeFile)
+    geoplotAPP(Ztable,score,ShapeFile,bsb)
+end
 
 end

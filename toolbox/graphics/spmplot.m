@@ -1398,6 +1398,7 @@ else
     RnotComputed=true;
 end
 
+% check if user has chosen the diverging_hcl_matlab option
 if colorBlindSafe
     colormapdef = diverging_hcl_matlab(256);
 else

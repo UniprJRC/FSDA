@@ -142,6 +142,18 @@ function out=pcaFS(Y,varargin)
 %           Example - 'plots', 0
 %           Data Types - double | logical | char | cell | string
 %
+%  colorBlindSafe : use a colorblind-safe diverging palette. Boolean.
+%           If colorBlindSafe is true, the background color enabled by
+%           colorBackground (and the color scale used by typespm
+%           'circle'/'square'/'cnumber') is built from a colorblind-safe
+%           HCL-based diverging palette (HCL stands for Hue, Chroma,
+%           Luminance, see Zelleis and Murrel, 2023). If false (default),
+%           the legacy RGB-linear "R-style" colormap is used instead, for
+%           backward compatibility and reproducing previously published
+%           figures.
+%                   Example - 'colorBlindSafe',true
+%                   Data Types - logical
+%
 %       robust   : robust principal components. boolean or struct. If
 %               robust is a scalar boolean equal to true (default), FS is
 %               applied and using a Bonferronized confidence level units
@@ -375,13 +387,15 @@ Latitude=[];
 Longitude=[];
 ShapeFile='';
 smartEVchart=false;
+colorBlindSafe=false;
 
 if nargin>1
     options=struct('plots',plots, ...
         'standardize',standardize,'biplot', biplot,...
         'dispresults',dispresults,'NumComponents',NumComponents,...
         'robust',robust,'Latitude',Latitude,'Longitude',Longitude, ...
-        'ShapeFile',ShapeFile,'smartEVchart',smartEVchart);
+        'ShapeFile',ShapeFile,'smartEVchart',smartEVchart,...
+        'colorBlindSafe',false);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -421,6 +435,7 @@ if nargin>1
     Latitude=options.Latitude;
     ShapeFile=options.ShapeFile;
     smartEVchart=options.smartEVchart;
+    colorBlindSafe=options.colorBlindSafe;
 end
 
 if istable(Y)
@@ -714,7 +729,7 @@ end
 % without pcaFS
 [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT, ...
     score,scoreT,orthDist,scoreDist]=aux.computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults, ...
-    plots,Latitude,Longitude,ShapeFile,smartEVchart);
+    plots,Latitude,Longitude,ShapeFile,smartEVchart,colorBlindSafe);
 
 out=struct;
 out.Rtable=Rtable;
