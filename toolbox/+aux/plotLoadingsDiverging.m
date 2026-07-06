@@ -15,7 +15,7 @@ figure('Name',figName,'Tag',figTag)
 
 xlabels = categorical(varnames,varnames);
 
-cmapDiv  = diverging_hcl_matlab(256);
+cmapDiv  = aux.diverging_hcl_matlab(256);
 negColor = cmapDiv(1,:);
 posColor = cmapDiv(end,:);
 
