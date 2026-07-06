@@ -3,9 +3,6 @@ function  [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwith
 % Compute all PCA quantities (this function is not intended to be called
 % directly)
 
-negColor = 'g';
-posColor = 'g';
-
 [n,v]=size(Y);
 if isempty(bsb)
     bsb=true(n,1);
@@ -178,12 +175,13 @@ if ismember("Loadings",showPlots)
     if colorBlindSafe
         [negColor,posColor] = aux.plotLoadingsDiverging(loadings, varnames, NumComponents, 'Loadings', 'pl_loadings');
     else
-        negColor = 'g';
-        posColor = 'g';
-   
-        xlabels=categorical(varnames,varnames);
+        negColor = 'r';
+        posColor = 'b';
+        
         delete(findobj(0, 'type', 'figure','tag','pl_loadings'));
         figure('Name','Loadings','Tag','pl_loadings')
+    
+        xlabels = categorical(varnames,varnames);
 
         for i=1:NumComponents
             subplot(NumComponents,1,i)
@@ -201,6 +199,7 @@ if ismember("Loadings",showPlots)
             title(['Correlations  with PC' num2str(i)])
         end
     end
+
 end
 
 %% Plot coefficients with line
@@ -231,7 +230,7 @@ if smartEVchart ==true
 
         subplot(2,1,1)
 
-        b=bar(varnames(sor), V(sor,j),'g');
+        b=bar(varnames(sor), V(sor,j),'g'); %DDD
         b.FaceColor = 'flat';       % allow per-bar colors
 
         xtips=b(1).XData;
@@ -250,24 +249,24 @@ if smartEVchart ==true
                 if colorBlindSafe
                     b.CData(i,:)=negColor;
                 else
-                    b.CData(i,:)=[1.0000, 0, 0];
+                    b.CData(i,:)=[1.0000, 0, 0]; % 'r'
                 end
                 text(xtips(i),ytips(i),barlabels(i),'HorizontalAlignment','center',...
                     'VerticalAlignment','top')
                 text(i, ax.YLim(1) - 0.05*diff(ax.YLim), string(b.XData(i)), ...
                     'HorizontalAlignment','center', 'VerticalAlignment','top', ...
-                    'Color', negColor, 'Parent', ax);
+                    'Color', 'k', 'Parent', ax);
             else
                 if colorBlindSafe
                     b.CData(i,:)=posColor;
                 else
-                    b.CData(i,:)=[0 0 1];
+                    b.CData(i,:)=[0 0 1]; % 'b'
                 end
                 text(xtips(i),ytips(i),barlabels(i),'HorizontalAlignment','center',...
                     'VerticalAlignment','bottom')
                 text(i, ax.YLim(1) - 0.05*diff(ax.YLim), string(b.XData(i)), ...
                     'HorizontalAlignment','center', 'VerticalAlignment','top', ...
-                    'Color', posColor, 'Parent', ax);
+                    'Color', 'b', 'Parent', ax);
             end
         end
 

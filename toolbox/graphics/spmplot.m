@@ -1105,16 +1105,6 @@ nameYrot      = 90;
 % This is the background color of the MATLAB figures
 MATLAB_def_gray = [0.94 0.94 0.94];
 
-% DDD REMOVE
-% Default colormap can be one of the following:
-
-% 1. The R colormap 
-%RColormap   = load('RColormap');
-%colormapdef = RColormap.RColormap;
-
-% 2. The Blue-Red style diverging HCL palette, following Zeileis et al. (2020).
-%colormapdef = diverging_hcl_matlab(256);
-
 %% Required input given as structure or not
 
 if ~isstruct(Y)
@@ -1398,9 +1388,11 @@ else
     RnotComputed=true;
 end
 
-% check if user has chosen the diverging_hcl_matlab option
+% Choose between:
+% The default R colormap 
+% The Blue-Red style diverging HCL palette, following Zeileis et al. (2020).
 if colorBlindSafe
-    colormapdef = diverging_hcl_matlab(256);
+    colormapdef = aux.diverging_hcl_matlab(256);
 else
     RColormap   = load('RColormap');
     colormapdef = RColormap.RColormap;
