@@ -135,5 +135,79 @@ view(h(3),[270,90]);  % Rotate the Y plot
 axis(h(1),'auto');    % Sync axes
 hold off;
 
+addOutlierLegendEntry(h);        % appends the red-cross entry to it
+
+
 end
+
+function hProxy = addOutlierLegendEntry(h, entryName, dataName)
+%addOutlierLegendEntry  Adds a "univariate outliers" entry to the legend
+% of a figure created by scatterboxplot / scatterhist.
+%
+%   h         : 3-element vector of axes handles returned by scatterboxplot
+%               h(1) scatter axes, h(2)-h(3) marginal (boxplot) axes.
+%   entryName : (optional) label for the outlier entry.
+%   dataName  : (optional) label for the data points when a single group
+%               is present (default 'Data').
+
+if nargin < 2 || isempty(entryName), entryName = 'Univariate outliers'; end
+if nargin < 3 || isempty(dataName),  dataName  = 'Data';                end
+
+axS  = h(1);
+hFig = ancestor(axS,'figure');
+
+% --- 1) Marker style copied from the real boxplot outlier objects --------
+hOutl = findobj(h(2:3),'Tag','Outliers');
+if isempty(hOutl)
+    mk = '+';  mec = 'r';
+else
+    mk  = hOutl(1).Marker;
+    mec = hOutl(1).MarkerEdgeColor;
+    if strcmp(mec,'auto'), mec = hOutl(1).Color; end
+end
+
+% --- 2) Existing legend (grouped case): enable AutoUpdate BEFORE proxy ---
+lgd = findobj(hFig,'Type','Legend');
+if ~isempty(lgd)
+    set(lgd,'AutoUpdate','on');
+end
+
+% Grab the data series NOW, before the proxy pollutes findobj -------------
+hPts = [findobj(axS,'Type','Line'); findobj(axS,'Type','Scatter')];
+
+% --- 3) Invisible NaN proxy in the scatter axes --------------------------
+washold = ishold(axS);
+hold(axS,'on');
+hProxy = plot(axS, NaN, NaN, 'LineStyle','none', ...
+    'Marker', mk, 'MarkerEdgeColor', mec, ...
+    'DisplayName', entryName, 'Tag','OutlierLegendProxy');
+if ~washold, hold(axS,'off'); end
+
+% --- 4) Single-group case: build the legend and place it in the corner ---
+if isempty(lgd)
+    % include the data points as first entry
+    if ~isempty(hPts)
+        set(hPts(1),'DisplayName',dataName);
+        lgd = legend(axS, [hPts(1); hProxy]);
+    else
+        lgd = legend(axS, hProxy);
+    end
+
+    % Empty corner of the scatterhist layout:
+    %   x-range = that of the LEFT marginal axes (smallest x position)
+    %   y-range = that of the BOTTOM marginal axes (smallest y position)
+    set(h,   'Units','normalized');
+    set(lgd, 'Units','normalized');
+    posM = cell2mat(get(h(2:3),'Position'));      % 2x4 matrix
+    [~,iL] = min(posM(:,1));                      % left panel
+    [~,iB] = min(posM(:,2));                      % bottom panel
+    corner = [posM(iL,1), posM(iB,2), posM(iL,3), posM(iB,4)];
+
+    drawnow;                                      % legend size is now final
+    lp = lgd.Position;
+    lgd.Position = [corner(1) + (corner(3)-lp(3))/2, ...
+        corner(2) + (corner(4)-lp(4))/2, lp(3), lp(4)];
+end
+end
+
 %FScategory:VIS-Mult
