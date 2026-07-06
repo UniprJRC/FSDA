@@ -91,6 +91,7 @@ function h = scatterboxplot(x,y,varargin)
 % the number of groups before calling scatterhist, so both the scatter and
 % the boxplot color inherit it consistently.
 
+% Okabe–Ito is a colorblind-safe qualitative palette used by Zeileis et al. (2020)
 okabeIto = [0.00 0.45 0.70;   % blue
             0.90 0.60 0.00;   % orange
             0.00 0.62 0.45;   % bluish green

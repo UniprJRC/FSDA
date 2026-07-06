@@ -38,9 +38,37 @@ function cmap = diverging_hcl_matlab(n, varargin)
 %       cmap = diverging_hcl_matlab(256);
 %       colormap(cmap); colorbar; caxis([-1 1]);
 
+% p = inputParser;
+% addParameter(p,'H1',260);
+% addParameter(p,'H2',12);
+% addParameter(p,'C1',80);
+% addParameter(p,'L1',30);
+% addParameter(p,'L2',95);
+% addParameter(p,'Power',1.5);
+% parse(p,varargin{:});
+% o = p.Results;
+% 
+% half = ceil(n/2);
+% t = linspace(1,0,half)';              % 1 at extreme, 0 at center
+% L = o.L2 - (o.L2-o.L1).*t.^o.Power;
+% C = o.C1.*t.^o.Power;
+% 
+% negHalf = local_hcl2rgb(o.H1*ones(half,1), C, L);   % extreme -> center
+% posHalf = local_hcl2rgb(o.H2*ones(half,1), C, L);   % extreme -> center
+% 
+% cmap = [negHalf; flipud(posHalf(2:end,:))];         % extreme -> center -> extreme
+% cmap = max(0, min(1, cmap));
+% 
+% if size(cmap,1) ~= n
+%     idx  = round(linspace(1, size(cmap,1), n));
+%     cmap = cmap(idx,:);
+% end
+% end
+
+
 p = inputParser;
-addParameter(p,'H1',260);
-addParameter(p,'H2',12);
+addParameter(p,'H1',260);   % negative extreme hue (blue)
+addParameter(p,'H2',12);    % positive extreme hue (red)
 addParameter(p,'C1',80);
 addParameter(p,'L1',30);
 addParameter(p,'L2',95);
@@ -48,22 +76,20 @@ addParameter(p,'Power',1.5);
 parse(p,varargin{:});
 o = p.Results;
 
-half = ceil(n/2);
-t = linspace(1,0,half)';              % 1 at extreme, 0 at center
-L = o.L2 - (o.L2-o.L1).*t.^o.Power;
-C = o.C1.*t.^o.Power;
+t = linspace(-1, 1, n)';        % -1 = negative extreme, 0 = center, 1 = positive extreme
+absT = abs(t);
 
-negHalf = local_hcl2rgb(o.H1*ones(half,1), C, L);   % extreme -> center
-posHalf = local_hcl2rgb(o.H2*ones(half,1), C, L);   % extreme -> center
+L = o.L2 - (o.L2 - o.L1) .* absT.^o.Power;
+C = o.C1 .* absT.^o.Power;
 
-cmap = [negHalf; flipud(posHalf(2:end,:))];         % extreme -> center -> extreme
+H = zeros(n,1);
+H(t < 0) = o.H1;
+H(t >= 0) = o.H2;
+
+cmap = local_hcl2rgb(H, C, L);
 cmap = max(0, min(1, cmap));
+end
 
-if size(cmap,1) ~= n
-    idx  = round(linspace(1, size(cmap,1), n));
-    cmap = cmap(idx,:);
-end
-end
 
 function rgb = local_hcl2rgb(H, C, L)
 

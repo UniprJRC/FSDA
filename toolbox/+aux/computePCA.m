@@ -2,7 +2,6 @@ function  [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwith
     computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile,smartEVchart,colorBlindSafe)
 % Compute all PCA quantities (this function is not intended to be called
 % directly)
-
 [n,v]=size(Y);
 if isempty(bsb)
     bsb=true(n,1);
@@ -145,43 +144,44 @@ if (islogical(plots) || isnumeric(plots)) && isscalar(plots)
     end
 elseif iscellstr(plots) || ischar(plots) %#ok<ISCLSTR>
     % Note that warning is suppressed because of routine convertStringsToChars
-    % Check whether input is a cell array of characters or a character array
+    % Check whether input is a cell array of characters or a character array 
     showPlots=string(plots);
 else
     error('FSDA:pcaFS:WrongInputOpt',['input argument plots can be either 0/1 false/true' newline 'or a cell array of characters or a string array or a character array'])
 end
 
-%% Explained variance through Pareto plot
-% Delete figure if it already exists
-if ismember("Explained",showPlots)
-    delete(findobj(0, 'type', 'figure','tag','pl_eigen'));
-    figure('Name','Explained variance','Tag','pl_eigen')
-    [h,axesPareto]=pareto(explained(:,1),namerows);
-    % h(1) refers to the bars h(2) to the line
-    if colorBlindSafe
-        h(1).FaceColor=aux.sequential_hcl_matlab(1);
-    else
-        h(1).FaceColor='g';
+    %% Explained variance through Pareto plot
+    % Delete figure if it already exists
+    if ismember("Explained",showPlots)
+        delete(findobj(0, 'type', 'figure','tag','pl_eigen'));
+        figure('Name','Explained variance','Tag','pl_eigen')
+        [h,axesPareto]=pareto(explained(:,1),namerows);
+        % h(1) refers to the bars h(2) to the line
+        if colorBlindSafe
+            h(1).FaceColor=aux.sequential_hcl_matlab(1);
+        else
+            h(1).FaceColor='g';
+        end
+        linelabels = string(round(100*h(2).YData/sumla,2));
+        text(axesPareto(2),h(2).XData,h(2).YData,linelabels,...
+            'Interpreter','none');
+        xlabel('Principal components')
+        ylabel('Explained variance')
     end
-    linelabels = string(round(100*h(2).YData/sumla,2));
-    text(axesPareto(2),h(2).XData,h(2).YData,linelabels,...
-        'Interpreter','none');
-    xlabel('Principal components')
-    ylabel('Explained variance')
-end
 
 %% Plot loadings
 if ismember("Loadings",showPlots)
+
+    xlabels = categorical(varnames,varnames);
+
     if colorBlindSafe
         [negColor,posColor] = aux.plotLoadingsDiverging(loadings, varnames, NumComponents, 'Loadings', 'pl_loadings');
     else
         negColor = 'r';
         posColor = 'b';
-        
+
         delete(findobj(0, 'type', 'figure','tag','pl_loadings'));
         figure('Name','Loadings','Tag','pl_loadings')
-    
-        xlabels = categorical(varnames,varnames);
 
         for i=1:NumComponents
             subplot(NumComponents,1,i)
@@ -266,7 +266,7 @@ if smartEVchart ==true
                     'VerticalAlignment','bottom')
                 text(i, ax.YLim(1) - 0.05*diff(ax.YLim), string(b.XData(i)), ...
                     'HorizontalAlignment','center', 'VerticalAlignment','top', ...
-                    'Color', 'b', 'Parent', ax);
+                    'Color', 'b', 'Parent', ax); % DDD 'b' or 'k'?
             end
         end
 
@@ -340,9 +340,23 @@ end
 if ~isempty(Latitude) &&  ~isempty(Longitude)
     delete(findobj(0, 'type', 'figure','tag','pl_latlong'));
     figure('Name','geobubble','tag','pl_latlong')
-    aux.plotGeobubbleDiverging(Latitude, Longitude, score(:,1), score(:,2), ...
-        "Geobubble of all units", "First PC (size)", "Second PC (color)", ...
-        'MapLayout','maximized');
+
+    if colorBlindSafe
+        aux.plotGeobubbleDiverging(Latitude, Longitude, score(:,1), score(:,2), ...
+            "Geobubble of all units", "First PC (size)", "Second PC (color)", ...
+            'MapLayout','maximized');
+    else
+
+        % Divide the second PC into 4 classes
+        cate=discretize(score(:,2),linspace(min(score(:,2)),max(score(:,2)),4),'categorical');
+
+        % Add title and legend titles
+        gb=geobubble(Latitude,Longitude,score(:,1),cate,'Basemap','topographic','MapLayout','maximized');
+        gb.Title = "Geobubble of all units";
+        gb.SizeLegendTitle = "First PC (size)";
+        gb.ColorLegendTitle = "Second PC (color)";
+    end
+
 elseif ~isempty(Latitude) ||  ~isempty(Longitude)
     error('FSDA:pcaFS:WrongInputOpt','Both Latitude and Longitude must be given.');
 end

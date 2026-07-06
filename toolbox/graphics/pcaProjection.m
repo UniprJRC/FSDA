@@ -177,6 +177,15 @@ AddConstantPlane=true;
 LineWidthAxes=3;
 TextDensityPercentage =60;
 
+% Okabe–Ito is a colorblind-safe qualitative palette used by Zeileis et al. (2020)
+okabeIto = [0.00 0.45 0.70;   % blue
+            0.90 0.60 0.00;   % orange
+            0.00 0.62 0.45;   % bluish green
+            0.80 0.40 0.70;   % reddish purple
+            0.94 0.89 0.26;   % yellow
+            0.84 0.37 0.00;   % vermillion
+            0.35 0.35 0.35];  % gray (fallback for extra groups)
+
 if nargin>1
     options=struct('standardize',standardize,...
         'conflev',conflev,'AddAxes',AddAxes,'LineWidthAxes',LineWidthAxes,...
@@ -295,7 +304,7 @@ end
 
 for j=1:3
     if AddAxes(j) == true
-        addLinePCj(V,Xtilde,j,LineWidthAxes,TextAnToolbox);
+        addLinePCj(V,Xtilde,j,LineWidthAxes,TextAnToolbox,okabeIto(j,:));
     end
 end
 
@@ -316,7 +325,8 @@ plot3([Xhat(:,1) Xtilde(:,1)]', [Xhat(:,2) Xtilde(:,2)]', [Xhat(:,3) Xtilde(:,3)
 
 for j=1:3
     if AddAxes(j) == true
-        addLinePCj(V,Xtilde,1,LineWidthAxes,TextAnToolbox)
+        % DDD bug? is it V,Xtilde,1 or V,Xtilde,j ?
+        addLinePCj(V,Xtilde,1,LineWidthAxes,TextAnToolbox,okabeIto(j,:))
     end
 end
 
@@ -343,7 +353,7 @@ scatter3(Xtilde(:,1),Xtilde(:,2),Xtilde(:,3))
 hold('on')
 for j=1:3
     if AddAxes(j) == true
-        addLinePCj(V,Xtilde,j,LineWidthAxes,TextAnToolbox);
+        addLinePCj(V,Xtilde,j,LineWidthAxes,TextAnToolbox,okabeIto(j,:));
     end
 end
 
@@ -445,7 +455,7 @@ end
 
 for j=1:3
     if isMatlab && AddAxes(j) == true
-        addLinePCj(V,XX1,j,LineWidthAxes,TextAnToolbox);
+        addLinePCj(V,XX1,j,LineWidthAxes,TextAnToolbox,okabeIto(j,:));
     end
 end
 
@@ -456,30 +466,26 @@ zlabel(varnames(3))
 
 end
 
-function addLinePCj(V,Xtilde,j,lwd,TextAnToolbox)
+
+function addLinePCj(V,Xtilde,j,lwd,TextAnToolbox,axColor)
 vj=V(:,j);
 Xhatj = Xtilde*(vj*vj');
-% Take two points to draw this line
 [~,indminXj] = min(Xhatj(:,2));
 [~,indmaxXj] = max(Xhatj(:,2));
 
-% Add the line associated with jth PC
 line([Xhatj(indminXj,1); Xhatj(indmaxXj,1)], [Xhatj(indminXj,2); Xhatj(indmaxXj,2)], ...
-    [Xhatj(indminXj,3); Xhatj(indmaxXj,3)],'LineWidth',lwd);
+    [Xhatj(indminXj,3); Xhatj(indmaxXj,3)],'LineWidth',lwd,'Color',axColor);
 
 if TextAnToolbox ==true
-
     signindmaxXj=sign([Xhatj(indmaxXj,1); Xhatj(indmaxXj,2);  Xhatj(indmaxXj,3) ]);
-
     if isequal(sign(vj),signindmaxXj)
         textscatter3(Xhatj(indmaxXj,1), Xhatj(indmaxXj,2), ...
-            Xhatj(indmaxXj,3),"PC"+j);
+            Xhatj(indmaxXj,3),"PC"+j,'ColorData',axColor);
     else
         textscatter3(Xhatj(indminXj,1), Xhatj(indminXj,2), ...
-            Xhatj(indminXj,3),"PC"+j);
+            Xhatj(indminXj,3),"PC"+j,'ColorData',axColor);
     end
 end
-
 end
 
 function add3Daxes(j,color,lwd)
