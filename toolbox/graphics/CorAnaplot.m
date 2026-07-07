@@ -1487,7 +1487,7 @@ else
             'FontSize',FontSize,'Color', map(rowmap(i),:),'FontWeight','bold')
     end
 
-    % Add a personalized the colorbar
+    % Add a personalized colorbar
     mindist1=min(dist1);
     maxdist1=max(dist1);
     seqdist=mindist1:((maxdist1-mindist1)/5):maxdist1;
