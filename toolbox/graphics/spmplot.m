@@ -79,15 +79,16 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'colorBackground',true
 %                   Data Types - logical
 %
-%  colorBlindSafe : use a colorblind-safe diverging palette. Boolean.
-%           If colorBlindSafe is true, the background color enabled by
-%           colorBackground (and the color scale used by typespm
-%           'circle'/'square'/'cnumber') is built from a colorblind-safe
-%           HCL-based diverging palette (HCL stands for Hue, Chroma,
-%           Luminance, see Zelleis and Murrel, 2023). If false (default),
-%           the legacy RGB-linear "R-style" colormap is used instead, for
-%           backward compatibility and reproducing previously published
-%           figures.
+%  colorBlindSafe : use a colorblind-safe diverging palette for 
+%           colorBackground and for typespm correlation encodings (circle,
+%           square, number, cnumber). Boolean. If colorBlindSafe is true,
+%           the background color enabled by colorBackground (and the color
+%           scale used by typespm 'circle'/'square'/'cnumber') is built
+%           from a colorblind-safe HCL-based diverging palette (HCL stands
+%           for Hue, Chroma, Luminance, see Zelleis and Murrel, 2023). If
+%           false (default), the legacy RGB-linear "R-style" colormap is
+%           used instead, for backward compatibility and reproducing
+%           previously published figures.
 %                   Example - 'colorBlindSafe',true
 %                   Data Types - logical
 %
