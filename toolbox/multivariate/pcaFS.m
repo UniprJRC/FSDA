@@ -142,15 +142,19 @@ function out=pcaFS(Y,varargin)
 %           Example - 'plots', 0
 %           Data Types - double | logical | char | cell | string
 %
-%  colorBlindSafe : use a colorblind-safe diverging palette. Boolean.
-%           If colorBlindSafe is true, the background color enabled by
+%  colorBlindSafe : Use colorblind-safe sequential, diverging and
+%           qualitative palettes across all plots. Boolean. If
+%           colorBlindSafe is true, the background color enabled by
 %           colorBackground (and the color scale used by typespm
 %           'circle'/'square'/'cnumber') is built from a colorblind-safe
-%           HCL-based diverging palette (HCL stands for Hue, Chroma,
-%           Luminance, see Zelleis and Murrel, 2023). If false (default),
-%           the legacy RGB-linear "R-style" colormap is used instead, for
-%           backward compatibility and reproducing previously published
-%           figures.
+%           HCL-based diverging/sequential/qualitative palette depending on
+%           the context (HCL stands for Hue, Chroma, Luminance, see Zelleis
+%           and Murrel, 2023). This is reflecting the full scope of what
+%           the flag actually controls across the orthogonal-distance
+%           scatter, loadings/correlation bars, and outlier map/geobubble
+%           figures. If false (default), the legacy RGB-linear "R-style"
+%           colormap is used instead, for backward compatibility and
+%           reproducing previously published figures.
 %                   Example - 'colorBlindSafe',true
 %                   Data Types - logical
 %
