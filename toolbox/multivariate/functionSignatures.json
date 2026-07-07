@@ -216,6 +216,7 @@
         [
             {"name":"Y", "kind":"required", "type":[["double"], ["single"], ["table"]], "purpose":"Input data"},
             {"name":"biplot", "kind":"namevalue", "type":["numeric", "scalar", "choices={0,1}"], "purpose":"Launch app biplotFS"},
+            {"name":"colorBlindSafe", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Use colorblind-safe sequential, diverging and qualitative palettes across all plots"},
             {"name":"dispresults", "kind":"namevalue", "type":["logical", "scalar"], "purpose":"Show the results in the command window"},
             {"name":"Latitude", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Latitude coordinates in degrees of the rows"},
             {"name":"Longitude", "kind":"namevalue", "type":["numeric", "vector"], "purpose":"Longitude coordinates in degrees of the rows"},
