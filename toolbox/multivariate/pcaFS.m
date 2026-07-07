@@ -753,7 +753,9 @@ out.class='pcaFS';
 
 
 if biplot==1
-    biplotAPP(Ztable,'standardize',standardize,'bsb',bsb,'Latitude',Latitude,'Longitude',Longitude,'ShapeFile',ShapeFile)
+    biplotAPP(Ztable,'standardize',standardize, ...
+        'bsb',bsb,'Latitude',Latitude,'Longitude',Longitude, ...
+        'ShapeFile',ShapeFile,'colorBlindSafe',colorBlindSafe)
 end
 
 end
