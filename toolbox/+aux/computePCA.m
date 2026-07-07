@@ -1,8 +1,15 @@
 function  [Ztable,Rtable,explained,explainedT,V,VT,loadings,loadingsT,communwithcum,communwithcumT,score,scoreT,orthDist,scoreDist] = ...
-    computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile,smartEVchart,colorBlindSafe)
+    computePCA(Y,bsb,rownames,varnames,standardize,NumComponents,dispresults,plots,Latitude,Longitude,ShapeFile,smartEVchart,colorBlindSafe,combinedConflev)
 % Compute all PCA quantities (this function is not intended to be called
 % directly)
 [n,v]=size(Y);
+if nargin < 14 || isempty(combinedConflev)
+    % Confidence level used for the combined OD-SD contour in the outlier map.
+    combinedConflev = 1-0.01/n;
+end
+if ~(isscalar(combinedConflev) && isnumeric(combinedConflev) && combinedConflev > 0 && combinedConflev < 1)
+    error('FSDA:pcaFS:WrongInputOpt','combinedConflev must be a scalar in the interval (0,1).')
+end
 if isempty(bsb)
     bsb=true(n,1);
 end
@@ -102,14 +109,39 @@ orthDist=sqrt(sum(Res.^2,2));
 larow=diag(La)';
 scoreDist=sqrt(sum(score.^2./larow,2));
 
-% Find the 5 units with the largest value of the combination between
-% orthogonal and score distance
-DD=[orthDist,scoreDist];
+% Combined score-distance/orthogonal-distance statistic. The columns are
+% ordered as they appear in the outlier map: x = score distance,
+% y = orthogonal distance. The origin is used as the centre because small
+% values of both distances identify regular observations. The covariance
+% matrix is estimated on the bsb units used to fit the PCA subspace.
+DD=[scoreDist,orthDist];
 mDD=zeros(1,2);
-distM=mahalFS(DD,mDD,cov(DD));
-[~,indsor]=sort(distM,1,"descend");
-selu=indsor(1:5);
+SDD=cov(DD(bsb,:));
 
+% Guard against singular/ill-conditioned covariance matrices. This can occur,
+% for example, if NumComponents is equal to the number of variables and the
+% orthogonal distances are all zero.
+if any(~isfinite(SDD(:))) || rank(SDD) < 2
+    SDD=cov(DD(bsb,:));
+end
+if any(~isfinite(SDD(:))) || rank(SDD) < 2
+    SDD=diag(max(var(DD(bsb,:),0,1),eps));
+end
+if rcond(SDD) < 1e-12
+    SDD=SDD + max(eps,1e-10*trace(SDD))*eye(2);
+end
+
+% Squared Mahalanobis distance in the OD-SD plane. Under the usual bivariate
+% normal approximation, the confidence contour is the chi-square threshold
+% with 2 degrees of freedom. For df=2, chi2inv(p,2) = -2*log(1-p).
+combinedDist2=sum(((DD-mDD)/SDD).*(DD-mDD),2);
+combinedThr2=-2*log(1-combinedConflev);
+combinedOutl=combinedDist2>combinedThr2;
+
+% Find the 5 units with the largest combined OD-SD value.
+% [~,indsor]=sort(combinedDist2,1,"descend");
+% selu=indsor(1:min(5,n));
+selu=find(combinedOutl);
 
 if dispresults == true
     format bank
@@ -130,8 +162,17 @@ if dispresults == true
     disp(communwithcumT)
     format short
 
-    disp('Units with the 5 largest values of (combined) score and orthogonal distance')
-    disp(selu')
+    % disp('Units with the 5 largest values of (combined) score and orthogonal distance')
+    % disp(selu')
+
+    disp(['Combined OD-SD confidence level: ' num2str(100*combinedConflev) '%'])
+    disp(['Squared combined OD-SD threshold: ' num2str(combinedThr2)])
+    if any(combinedOutl)
+        disp('Units outside the combined OD-SD confidence contour')
+        disp(find(combinedOutl)')
+    else
+        disp('No units outside the combined OD-SD confidence contour')
+    end
 end
 
 allPlots=["Explained" "Loadings" "OutlierMap"];
@@ -316,6 +357,31 @@ if ismember("OutlierMap",showPlots)
     group1=repelem("Normal units",n,1);
     group1(bsb==0)="Outliers";
     scatterboxplot(scoreDist,orthDist,'group',group1);
+        ax=gca;
+        hold(ax,'on')
+
+        % Add the combined OD-SD confidence contour. Units outside this
+        % contour have combinedDist2 > combinedThr2.
+        xCut=sqrt(combinedThr2*SDD(1,1));
+        yCut=sqrt(combinedThr2*SDD(2,2));
+        xMax=1.05*max([scoreDist(:); xCut; eps]);
+        yMax=1.05*max([orthDist(:); yCut; eps]);
+        xlim(ax,[0 xMax])
+        ylim(ax,[0 yMax])
+        xgrid=linspace(0,xMax,250);
+        ygrid=linspace(0,yMax,250);
+        [Xg,Yg]=meshgrid(xgrid,ygrid);
+        DDgrid=[Xg(:) Yg(:)];
+        G=sum(((DDgrid-mDD)/SDD).*(DDgrid-mDD),2);
+        G=reshape(G,size(Xg));
+        contour(ax,Xg,Yg,G,[combinedThr2 combinedThr2],'b--','LineWidth',2,'DisplayName','Contour for outlier map');
+        
+        if any(combinedOutl)
+            scatter(ax,scoreDist(combinedOutl),orthDist(combinedOutl),55,'o',...
+                'LineWidth',1.5,'MarkerEdgeColor','r','DisplayName',    'Units outside the contour');
+        end
+        sgtitle(['Outlier map with combined OD-SD ' num2str(100*combinedConflev) '% contour'])
+
     xlabel('Score distance')
     ylabel('Orth. dist. from PCA subspace')
     text(1.01,0,['Good' newline 'leverage' newline 'points'],'Units','normalized')

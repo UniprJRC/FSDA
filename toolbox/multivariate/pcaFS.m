@@ -185,8 +185,8 @@ function out=pcaFS(Y,varargin)
 %           robust.eff = nominal efficiency to use for the MM estimator
 %                       (note that  this field is used just if robust.class
 %                       is 'MM')
-%                 Example - 'bsb',[2 10:90 93]
-%                 Data Types - double or logical
+%                 Example - robust=struct; robust.bsb=[2 10:90 93];
+%                 Data Types - boolean or struct
 %
 %  ShapeFile  : name of ShapeFile or geospatial table containing shapes.
 %               Character or string or geotable.
