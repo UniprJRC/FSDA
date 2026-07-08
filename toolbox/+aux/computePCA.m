@@ -138,9 +138,6 @@ combinedDist2=sum(((DD-mDD)/SDD).*(DD-mDD),2);
 combinedThr2=-2*log(1-combinedConflev);
 combinedOutl=combinedDist2>combinedThr2;
 
-% Find the 5 units with the largest combined OD-SD value.
-% [~,indsor]=sort(combinedDist2,1,"descend");
-% selu=indsor(1:min(5,n));
 selu=find(combinedOutl);
 
 if dispresults == true
@@ -169,7 +166,10 @@ if dispresults == true
     disp(['Squared combined OD-SD threshold: ' num2str(combinedThr2)])
     if any(combinedOutl)
         disp('Units outside the combined OD-SD confidence contour')
-        disp(find(combinedOutl)')
+        Zcombined=Ztable;
+        Zcombined.("Combined OD-SD")=combinedDist2;
+        Zout=Zcombined(combinedOutl,"Combined OD-SD");
+        disp(sortrows(Zout,"Combined OD-SD","descend"))
     else
         disp('No units outside the combined OD-SD confidence contour')
     end
