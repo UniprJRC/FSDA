@@ -15,15 +15,13 @@ function gb = plotGeobubbleDiverging(lat, lon, sizeVar, colorVar, titleStr, size
 %   varargin      : extra name-value pairs forwarded to geobubble
 %                   (e.g. 'MapLayout','maximized')
 
-edges = linspace(min(colorVar), max(colorVar), 4);
+edges = linspace(min(colorVar), max(colorVar), 6);
 cate = discretize(colorVar, edges, 'categorical');
 cate = reordercats(cate, string(categories(cate)));
 
 nCats = numel(categories(cate));
 
-gb = geobubble(lat, lon, sizeVar, cate, ...
-    'Basemap','topographic', ...
-    varargin{:});
+gb = geobubble(lat, lon, sizeVar, cate, 'Basemap','topographic', varargin{:});
 gb.BubbleColorList   = aux.diverging_hcl_matlab(nCats);   % always matches actual category count
 gb.Title             = titleStr;
 gb.SizeLegendTitle   = sizeLegend;
