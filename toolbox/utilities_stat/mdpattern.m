@@ -54,6 +54,10 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %                 plots.squareCellsMaxRatio = maximum ratio nPatterns/p
 %                   for which heatmap cells are forced to be square.
 %                   Default is 3.
+%                 plots.minn = minimum pattern size. Positive integer. 
+%                   Missingness patterns whose frequency is less than
+%                   or equal to minn are omitted from the plot. This option is
+%                   used only when plots is a structure. The default value is 1.
 %               Example - 'plots',struct('maxPatternsForBubbles',100,'fsLeft',6)
 %               Data Types - Boolean, scalar numeric or struct
 %               Remark: top axis contains the name of the variables
@@ -257,6 +261,19 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 
 
 %{
+    %% Personalized plots option: show only sufficiently frequent patterns.
+    % Missingness patterns occurring 6 times or fewer are omitted from the plot.
+    close all
+    rng(30)
+    X = randn(500,8);
+    X(rand(size(X)) < 0.20) = NaN;
+
+    plots = struct;
+    plots.minn = 7;
+    mdpattern(X,'plots',plots);
+%}
+
+%{
     %% Personalized plots option: force heatmap.
     % Load the nhanes data
     % The nhanes data is a dataset with 25 observations on the following 4 variables.
@@ -292,6 +309,7 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
      3 24.9   1  NaN
      2 27.4   1 186];
      Xtable=array2table(X,VariableNames=namvar);
+    close all
     plots = struct;
     plots.heatmap = true;
     mdpattern(Xtable,'plots',plots);
@@ -339,7 +357,11 @@ plotsdef.fsBottom = [];
 plotsdef.fsLeft = [];
 plotsdef.fsRight = [];
 plotsdef.squareCellsMaxRatio = 3;
+% Minimum frequency of a pattern to be displayed when plots is a structure.
+% Patterns with frequency < minn are omitted from the plot.
+plotsdef.minn = 1;
 plotOptions=plotsdef;
+plotsIsStruct = false;
 
 dispresults=false;
 Lc='';
@@ -377,6 +399,7 @@ if nargin>1
 
             plotsStruct = plots;
             plots = true;
+            plotsIsStruct = true;
 
             % Check supplied plot fields
             plotFields = fieldnames(plotsStruct);
@@ -447,6 +470,12 @@ if nargin>1
                 plotOptions.squareCellsMaxRatio <= 0
             error('FSDA:mdpattern:WrongInputOpt', ...
                 'Field squareCellsMaxRatio must be a positive scalar.');
+        end
+
+        if ~isscalar(plotOptions.minn) || ~isnumeric(plotOptions.minn) || ...
+                plotOptions.minn < 1 || plotOptions.minn ~= floor(plotOptions.minn)
+            error('FSDA:mdpattern:WrongInputOpt', ...
+                'Field minn must be an integer greater or equal than 1.');
         end
 
     end
@@ -551,7 +580,23 @@ end
 
 if plots == true
 
-    Ysel = Yfin(1:end-1,2:end-1);
+    % Select the patterns to be displayed. Option plots.minn is active only
+    % when plots is supplied as a structure. Patterns with frequency less
+    % than or equal to minn are omitted from the graph, while the output
+    % tables Mispat and tMisAndOut continue to refer to the complete data.
+    YfinPlot = Yfin;
+    if plotsIsStruct
+        keepPattern = Yfin(1:end-1,1) >= plotOptions.minn;
+        if ~any(keepPattern)
+            error('FSDA:mdpattern:NoPatternsForPlot', ...
+                ['No missingness pattern has frequency greater than plots.minn=%d. ' ...
+                'Decrease plots.minn to display at least one pattern.'], ...
+                plotOptions.minn);
+        end
+        YfinPlot = [Yfin(keepPattern,:); Yfin(end,:)];
+    end
+
+    Ysel = YfinPlot(1:end-1,2:end-1);
     nPatterns = size(Ysel,1);
     p = size(Ysel,2);
 
@@ -669,9 +714,9 @@ if plots == true
 
     ax1 = gca;
     ax1.XTick = xt;
-    ax1.XTickLabel = string(Yfin(end,xt+1));
+    ax1.XTickLabel = string(YfinPlot(end,xt+1));
     ax1.YTick = yt;
-    ax1.YTickLabel = string(Yfin(nPatterns-yt+1,1));
+    ax1.YTickLabel = string(YfinPlot(nPatterns-yt+1,1));
 
     ax1.XAxis.FontSize = fsBottom;
     ax1.YAxis.FontSize = fsLeft;
@@ -706,7 +751,7 @@ if plots == true
     ax2.XTick = xt;
     ax2.YTick = yt;
     ax2.XTickLabel = YsorcolsVarNames(xt);
-    ax2.YTickLabel = string(Yfin(nPatterns-yt+1,end));
+    ax2.YTickLabel = string(YfinPlot(nPatterns-yt+1,end));
 
     ax2.XAxis.FontSize = fsTop;
     ax2.YAxis.FontSize = fsRight;
@@ -733,8 +778,18 @@ if plots == true
     else
         disp('Big circle means missing value; smaller filled dot represents non-missing value.')
     end
-    disp('Left axis shows the number of observations for each pattern.')
-    disp('The sum of the numbers on the left axis is n, the total number of rows.')
+    disp('Left axis shows the number of observations for each displayed pattern.')
+    if plotsIsStruct
+        nDisplayed = sum(YfinPlot(1:end-1,1));
+        nOmittedPatterns = sum(~keepPattern);
+        nOmittedRows = n - nDisplayed;
+        fprintf(['Only patterns with frequency greater than plots.minn=%d are shown. ' ...
+            '%d patterns corresponding to %d rows have been omitted.\n'], ...
+            plotOptions.minn,nOmittedPatterns,nOmittedRows);
+        fprintf('The displayed pattern frequencies sum to %d rows.\n',nDisplayed);
+    else
+        disp('The sum of the numbers on the left axis is n, the total number of rows.')
+    end
     disp('Right axis counts the variables with missing values.')
     disp('The number of missing values for each variable is shown on the bottom axis.')
 
