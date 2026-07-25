@@ -144,10 +144,10 @@ function out = mdMAARtest(Y, varargin)
 %          out.rejectPairs   = q x q logical matrix of rejected comparisons.
 %
 %          Additional fields for method 'dtmm':
-%          out.df1, out.df2  = D3 reference-distribution degrees of freedom.
+%          out.df1, out.df2  = D_L reference-distribution degrees of freedom.
 %          out.relativeIncrease = relative increase in variance due to
 %                              nonresponse in the pooled likelihood-ratio test.
-%          out.deviance      = detailed deviances used in the D3 calculation.
+%          out.deviance      = detailed deviances used in the D_L calculation.
 %          out.imputationInfo = information about the completed data sets.
 %
 %          Additional fields for method 'cop':
@@ -162,9 +162,9 @@ function out = mdMAARtest(Y, varargin)
 %
 % This function implements the three diagnostics from Bojinov, Pillai and
 % Rubin:
-% 
+%
 % ccm: comparison of conditional means using nested Gaussian linear models
-%       and Bonferroni correction, following diagMAAR.ccm. 
+%       and Bonferroni correction, following diagMAAR.ccm.
 % dtmm: direct testing of the missingness mechanism through logistic
 %       models and multiple imputation. The likelihood-ratio statistics are
 %       combined using the Meng– Rubin $D_3$ procedure. ​
@@ -187,14 +187,16 @@ function out = mdMAARtest(Y, varargin)
 %  and
 %
 %    \[
-%     Y_j ~ Y_Jf + R_k + Y_Jf:R_k.
+%     Y_j ~ Y_{Jf} + R_k + Y_{Jf}:R_k.
 %    \]
 %
 %  The direct procedure compares logistic models for each $R_k$. The reduced
 %  model contains only the fully observed variables, whereas the full model
 %  also contains the imputed partially observed variables. The likelihood
-%  ratio statistics are combined across imputations using the D3 procedure
+%  ratio statistics are combined across imputations using the D_L procedure
 %  of Meng and Rubin (1992), as used by the original diagMAAR implementation.
+%   That is, pool a likelihood-ratio comparison by averaging model
+%   coefficients and reevaluating the likelihoods at the pooled coefficients.
 %
 %  The Gaussian-copula procedure uses the extended rank-likelihood sampler of
 %  Hoff (2007). For every retained posterior correlation matrix, the function
@@ -221,6 +223,9 @@ function out = mdMAARtest(Y, varargin)
 %
 %  Meng, X.-L. and Rubin, D. B. (1992), "Performing likelihood ratio tests
 %  with multiply-imputed data sets", Biometrika, Vol. 79, pp. 103-111.
+%
+% Bojinov, I. (2018). diagMAAR: Diagnostic tests for missing always at
+% random [Repository GitHub], https://github.com/bojinov/diagMAAR/
 %
 %  Copyright 2008-2026.
 %  Written by FSDA team
@@ -446,6 +451,11 @@ plots = logical(plots);
 savesamples = logical(savesamples);
 
 
+% Identify the variables involved in the MAAR diagnostics.
+% missingMask(i,j) is true when observation i is missing on variable j.
+% locmis contains the column indices of the partially observed variables.
+% locfull contains the column indices of the fully observed variables.
+% q is the number of partially observed variables.
 missingMask = isnan(Y);
 locmis = find(any(missingMask,1));
 locfull = find(~any(missingMask,1));
@@ -464,6 +474,9 @@ for j = 1:p
     end
 end
 
+% Construct the missingness-indicator matrix for the partially observed
+% variables. R(i,k)=1 if variable locmis(k) is missing for observation i
+% and R(i,k)=0 otherwise.
 R = double(missingMask(:,locmis));
 
 % Common output fields.
@@ -486,17 +499,47 @@ out.interpretation = '';
 
 switch method
     case 'ccm'
-        res = ccmTest(Y,R,locmis,locfull,alpha,ridge);
+        % Inputs passed to ccmTest:
+        % Y       = original n-by-p data matrix containing NaNs;
+        % R       = n-by-q missingness-indicator matrix;
+        % locmis  = indices of the q partially observed variables;
+        %           For example locmis=[2 3 5] means that the variables
+        %           which contain missing are 2nd 3rd and 5th
+        % locfull = indices of the fully observed variables;
+        %           For example locfull=[1 4 means that the variables
+        %           which contain missing are 1st and 4th
+        % alpha   = nominal significance level;
+        % ridge   = numerical regularization for nearly singular systems.
+        res = ccmTest(Y,R,locmis,locfull,alpha,ridge); % comparison of conditional means test
         out = copyFields(out,res);
 
     case 'dtmm'
-        [imputations,impInfo] = prepareImputations(Y,imputed,nimputations, ...
+        % Create or validate the completed data sets used by the direct test.
+        % imputed is either empty, a cell array, or an n-by-p-by-M array;
+        % nimputations is used only when imputations must be generated.
+        [Imputations,impInfo] = prepareImputations(Y,imputed,nimputations, ...
             maxiter,tol);
-        res = dtmmTest(imputations,R,locmis,locfull,alpha,ridge,maxiter,tol);
+
+        % Inputs passed to dtmmTest:
+        % Imputations = cell of length nimputations containing M completed n-by-p data matrices;
+        % R           = n-by-q missingness-indicator matrix;
+        % locmis      = indices of partially observed variables;
+        % locfull     = indices of fully observed variables;
+        % alpha       = nominal significance level;
+        % ridge       = numerical regularization;
+        % maxiter,tol = controls for the logistic-regression iterations.
+        res = dtmmTest(Imputations,R,locmis,locfull,alpha,ridge,maxiter,tol);
         out = copyFields(out,res);
         out.imputationInfo = impInfo;
 
     case 'cop'
+        % Inputs passed to copulaTest:
+        % Y,R,locmis,locfull identify the data and missingness structure;
+        % alpha is the nominal significance level;
+        % nsamp, nburn and thin control the MCMC simulation;
+        % pluginthreshold selects margins treated through fixed normal scores;
+        % ridge stabilizes matrix operations; savesamples controls storage;
+        % msg controls progress messages.
         res = copulaTest(Y,R,locmis,locfull,alpha,nsamp,nburn,thin, ...
             pluginthreshold,ridge,savesamples,msg);
         out = copyFields(out,res);
@@ -515,6 +558,14 @@ end
 
 % -------------------------------------------------------------------------
 function out = copyFields(out,res)
+%copyFields copies all fields of a method-specific result into out.
+%
+% Inputs:
+%   out : structure containing the fields common to all MAAR methods.
+%   res : structure returned by ccmTest, dtmmTest or copulaTest.
+%
+% Output:
+%   out : input structure augmented or overwritten with the fields of res.
 fields = fieldnames(res);
 for i = 1:numel(fields)
     out.(fields{i}) = res.(fields{i});
@@ -523,30 +574,66 @@ end
 
 % -------------------------------------------------------------------------
 function res = ccmTest(Y,R,locmis,locfull,alpha,ridge)
-% Comparison of conditional means, translated from diagMAAR.ccm.
+%ccmTest performs the comparison-of-conditional-means diagnostic.
+%
+% Inputs:
+%   Y       : n-by-p data matrix containing NaNs in missing positions.
+%   R       : n-by-q missingness-indicator matrix for the variables in
+%             locmis. R(i,k)=1 means that Y(i,locmis(k)) is missing.
+%   locmis  : 1-by-q vector containing the column indices of variables with
+%             at least one missing value.
+%   locfull : vector containing the column indices of variables observed for
+%             every unit. It can be empty.
+%   alpha   : nominal significance level used before Bonferroni correction.
+%   ridge   : nonnegative regularization used only when a least-squares
+%             system is nearly singular.
+%
+% Output:
+%   res     : structure containing pairwise p-values, F statistics, degrees
+%             of freedom, adjusted alpha and rejection indicators.
+%
+% For each pair (k,j), with k and j = 1,2, ..., q, with k different from j,
+% the response Y_j is regressed on the fully observed variables. The larger
+% model also includes R_k and the interactions between R_k and all fully
+% observed variables.
 q = numel(locmis);
 pvalue = ones(q,q);
 stat = zeros(q,q);
 df1 = zeros(q,q);
 df2 = zeros(q,q);
 
+% Matrix of covariates that are observed for every unit. If locfull is
+% empty, the reduced model contains only the intercept.
 Xfull = Y(:,locfull);
+% jj select the partially observed response variable among
+% the variables which contain missing values. jj will be put in column jj
+% of pvalue matrix
 for jj = 1:q
     response = Y(:,locmis(jj));
+    % kk loops on the variables which contain missing values which are
+    % different from jj
     for kk = 1:q
         if kk == jj
             continue
         end
-        rgroup = R(:,kk);
+        % Missingness indicator defining the two comparison groups.
+        rkk = R(:,kk);
+        % Only units for which the current response is observed can enter
+        % this conditional-mean comparison.
         use = ~isnan(response);
-        if ~isempty(Xfull)
-            use = use & all(~isnan(Xfull),2);
-        end
         y = response(use);
-        xf = Xfull(use,:);
-        rg = rgroup(use);
-        Xsmall = [ones(numel(y),1) xf];
-        Xlarge = [Xsmall rg xf.*rg];
+        % Note that matrix Xfull does not contain missing values
+        Xfulluse = Xfull(use,:);
+        rkkuse = rkk(use);
+        % Reduced model: intercept plus fully observed covariates.
+        Xsmall = [ones(numel(y),1) Xfulluse];
+        % Full model: reduced terms, group effect and group-by-covariate
+        % interactions. Expands rkkuse across the columns of Xfulluse.
+        Xlarge = [Xsmall rkkuse Xfulluse.*rkkuse];
+
+        % The question is: after conditioning on all the fully observed
+        % variables, knowing whether another partially observed variable is
+        % missing provides extra additional information about Y_j?​
         test = nestedLinearF(y,Xsmall,Xlarge,ridge);
         pvalue(kk,jj) = test.pvalue;
         stat(kk,jj) = test.stat;
@@ -555,6 +642,8 @@ for jj = 1:q
     end
 end
 
+% There are q(q-1) off-diagonal comparisons. Use a Bonferroni component
+% level; max(...,1) avoids division by zero when q=1.
 nTests = max(q*(q-1),1);
 alphaAdjusted = alpha/nTests;
 rejectPairs = pvalue < alphaAdjusted;
@@ -580,7 +669,21 @@ end
 
 % -------------------------------------------------------------------------
 function test = nestedLinearF(y,Xsmall,Xlarge,ridge)
-% F test for two nested Gaussian linear models.
+%nestedLinearF compares two nested Gaussian linear models.
+%
+% Inputs:
+%   y       : response vector.
+%   Xsmall  : design matrix of the reduced model.
+%   Xlarge  : design matrix of the full model; its column space must contain
+%             that of Xsmall.
+%   ridge   : nonnegative numerical regularization passed to
+%             stableLeastSquares.
+%
+% Output:
+%   test    : structure with fields stat, df1, df2 and pvalue.
+%
+% The statistic compares the reduction in residual sum of squares with the
+% residual mean square of the full model.
 ns = size(Xsmall,1);
 rs = rank(Xsmall);
 rl = rank(Xlarge);
@@ -613,7 +716,20 @@ end
 
 % -------------------------------------------------------------------------
 function b = stableLeastSquares(X,y,ridge)
-% Solve least squares and regularize only in nearly singular cases.
+%stableLeastSquares solves a linear least-squares problem robustly.
+%
+% Inputs:
+%   X     : design matrix.
+%   y     : response vector.
+%   ridge : nonnegative regularization used when X is rank deficient or
+%           numerically ill conditioned.
+%
+% Output:
+%   b     : vector of estimated regression coefficients.
+%
+% The ordinary backslash solution is used whenever the triangular factor
+% from QR decomposition is well conditioned. Otherwise a ridge-stabilized
+% normal-equation solution is used.
 [~,R] = qr(X,0);
 if isempty(R) || size(R,1) ~= size(R,2) || rcond(R) < 1e-12
     scale = max(1,trace(X'*X)/size(X,2));
@@ -625,8 +741,25 @@ end
 end
 
 % -------------------------------------------------------------------------
-function [imputations,info] = prepareImputations(Y,imputed,M,maxiter,tol)
-% Normalize supplied imputations or create FSDA stochastic imputations.
+function [imputations,info] = prepareImputations(Y,imputed,nStockImp,maxiter,tol)
+%prepareImputations validates or generates completed data sets.
+%
+% Inputs:
+%   Y          : original n-by-p incomplete data matrix.
+%   imputed    : empty, a cell array of completed matrices, one completed
+%                matrix, or an n-by-p-by-M numeric array.
+%   nStockImp  : number of stochastic imputations to generate when imputed is
+%                empty.
+%   maxiter : maximum number of iterations used by mdEM.
+%   tol     : convergence tolerance used by mdEM.
+%
+% Outputs:
+%   imputations : nStockImp-by-1 cell array of completed n-by-p matrices.
+%   info        : structure recording the imputation source, number of
+%                 imputations and, when available, EM estimates.
+%
+% When imputed is empty, mdEM estimates location and covariance and
+% mdImputeStochastic generates independent completed data sets.
 [n,p] = size(Y);
 if isempty(imputed)
     if exist('mdEM','file') ~= 2 || exist('mdImputeStochastic','file') ~= 2
@@ -635,12 +768,12 @@ if isempty(imputed)
             'path when option imputed is empty.']);
     end
     emOut = mdEM(Y,'maxiter',maxiter,'tol',tol);
-    imputations = cell(M,1);
-    for m = 1:M
+    imputations = cell(nStockImp,1);
+    for m = 1:nStockImp
         imputations{m} = mdImputeStochastic(Y,emOut.loc,emOut.cov);
     end
     info = struct('source','mdEM/mdImputeStochastic', ...
-        'nimputations',M,'loc',emOut.loc,'cov',emOut.cov);
+        'nimputations',nStockImp,'loc',emOut.loc,'cov',emOut.cov);
 else
     if iscell(imputed)
         imputations = imputed(:);
@@ -690,7 +823,29 @@ end
 
 % -------------------------------------------------------------------------
 function res = dtmmTest(imputations,R,locmis,locfull,alpha,ridge,maxiter,tol)
-% Direct missingness-mechanism test with Meng-Rubin D3 pooling.
+%dtmmTest directly tests each postulated missingness mechanism.
+%
+% Inputs:
+%   imputations : cell array containing M completed n-by-p data matrices.
+%   R           : n-by-q missingness-indicator matrix. Column k is the
+%                 binary response for the model of the kth mechanism.
+%   locmis      : indices of the q partially observed variables.
+%   locfull     : indices of the fully observed variables. It can be empty.
+%   alpha       : nominal significance level before Bonferroni correction.
+%   ridge       : nonnegative regularization for nearly singular information
+%                 matrices.
+%   maxiter     : maximum number of IRLS iterations for each logistic fit.
+%   tol         : convergence tolerance for the logistic coefficients.
+%
+% Output:
+%   res         : structure containing the pooled D_L statistics, p-values,
+%                 degrees of freedom, relative increases in variance and
+%                 rejection indicators. Note that sometimes D_L is called
+%                 D3.
+%
+% For missingness indicator R_k, the reduced logistic model contains the
+% fully observed variables and the full model additionally contains all
+% imputed partially observed variables.
 M = numel(imputations);
 q = numel(locmis);
 pvalue = NaN(q,1);
@@ -702,30 +857,57 @@ deviance = repmat(struct('fullMLE',[],'smallMLE',[], ...
     'fullPooled',[],'smallPooled',[]),q,1);
 
 for kk = 1:q
+    % Binary response for the missingness mechanism of variable locmis(kk).
     response = R(:,kk);
-    bFull = [];
-    bSmall = [];
     devFullMLE = zeros(M,1);
     devSmallMLE = zeros(M,1);
+    bSmall = zeros(length(locfull)+1,M);
+    bFull = zeros(length(locfull)+length(locmis)+1,M);
 
     for m = 1:M
         Ym = imputations{m};
+        % Reduced model uses only variables observed on all units.
         Xsmall = [ones(size(Ym,1),1) Ym(:,locfull)];
+        % Full model adds all partially observed variables after imputation.
         Xfull = [Xsmall Ym(:,locmis)];
-        fitSmall = logisticFit(Xsmall,response,maxiter,tol,ridge);
+        fitSmall = logisticFit(Xsmall,response,maxiter,tol,ridge); % glmfit(Xsmall(:,2:end),response,"binomial","Link","logit")
         fitFull = logisticFit(Xfull,response,maxiter,tol,ridge);
-        if m == 1
-            bSmall = zeros(numel(fitSmall.beta),M);
-            bFull = zeros(numel(fitFull.beta),M);
-        end
+        % if m == 1
+        %     bSmall = zeros(numel(fitSmall.beta),M);
+        %     bFull = zeros(numel(fitFull.beta),M);
+        % end
         bSmall(:,m) = fitSmall.beta;
         bFull(:,m) = fitFull.beta;
         devSmallMLE(m) = fitSmall.deviance;
         devFullMLE(m) = fitFull.deviance;
     end
 
+    % The Meng-Rubin D_L likelihood-ratio procedure requires a common
+    % parameter vector for each model. The common vector is the arithmetic
+    % mean of the M imputation-specific estimates:
+    %
+    %   qbarSmall = (1/M) * sum_m betaSmall_m;
+    %   qbarFull  = (1/M) * sum_m betaFull_m.
+    %
+    % In the next loop, the likelihood of every completed dataset is
+    % evaluated at these pooled coefficients, without re-estimation. The
+    % difference between the likelihood-ratio statistic evaluated at the
+    % imputation-specific MLEs and the statistic evaluated at the pooled
+    % coefficients measures disagreement between imputations and is used to
+    % estimate the relative increase in variance due to missing values.
+    %
+    % The reduced and full coefficients must be pooled separately because
+    % the two models have different dimensions and the coefficients of the
+    % common predictors need not be identical after additional predictors
+    % are included in the full logistic model.
     qbarSmall = mean(bSmall,2);
     qbarFull = mean(bFull,2);
+
+    % Reevaluate each completed-data model at the pooled coefficients.
+    % Unlike the first loop, no model fitting is performed here.
+    % devSmallPooled(m) and devFullPooled(m) are the deviances of completed
+    % dataset m when all imputations are forced to use the same respective
+    % pooled parameter vectors.
     devSmallPooled = zeros(M,1);
     devFullPooled = zeros(M,1);
     for m = 1:M
@@ -736,27 +918,62 @@ for kk = 1:q
         devFullPooled(m) = logisticDeviance(Xfull,response,qbarFull);
     end
 
+
+    % devM is the average likelihood-ratio statistic computed using the
+    % separate maximum-likelihood estimates from each imputation:
+    %
+    %   devM = mean_m{Dsmall_m(betaSmall_m)-Dfull_m(betaFull_m)}.
+    %
+    % devL is the average likelihood-ratio statistic obtained by evaluating
+    % each completed dataset at the common pooled coefficient vectors:
+    %
+    %   devL = mean_m{Dsmall_m(qbarSmall)-Dfull_m(qbarFull)}.
+    %
+    % The difference devM-devL quantifies the loss of fit caused by forcing
+    % all imputations to share common coefficients. After scaling, this
+    % difference estimates the relative increase in variance due to
+    % nonresponse used in the Meng-Rubin D_L statistic.
     devM = mean(devSmallMLE-devFullMLE);
     devL = mean(devSmallPooled-devFullPooled);
     k = size(bFull,1)-size(bSmall,1);
-    r = ((M+1)/(k*(M-1)))*(devM-devL);
+
+    % Estimate the average odds of the fraction of missing information.
+    % This is r_L in equation (3.8) of Meng and Rubin (1992):
+    %
+    %   r_L = (M+1)/(k*(M-1)) * (dbar_M - dbar_L),
+    %
+    % where devM is the average likelihood-ratio statistic evaluated at the
+    % imputation-specific MLEs and devL is the average likelihood-ratio
+    % statistic evaluated at the pooled coefficient estimates.
+    rL = ((M+1)/(k*(M-1)))*(devM-devL);
+
+
     % A slightly negative value can occur because of numerical error.
-    r = max(r,0);
-    Dm = max(devL,0)/(k*(1+r));
+    rL = max(rL,0);
+    D_L = max(devL,0)/(k*(1+rL));
     v = k*(M-1);
-    if r <= sqrt(eps)
+    % w = degrees of freedom of the denominator of the F distribution
+    % Equation (2.7) of Meng and Rubin (1992)
+    if rL <= sqrt(eps)
         w = Inf;
     elseif v > 4
-        w = 4+(v-4)*(1+(1-2/v)/r)^2;
+        w = 4+(v-4)*(1+(1-2/v)/rL)^2;
     else
-        w = v*(1+1/k)*(1+1/r)^2/2;
+        w = v*(1+1/k)*(1+1/rL)^2/2;
     end
 
-    pvalue(kk) = fSurvival(Dm,k,w);
-    stat(kk) = Dm;
+    % A small p-value for component kk indicates that, after conditioning on
+    % the fully observed variables, at least one partially observed variable
+    % provides additional information about whether variable locmis(kk) is
+    % missing. This is evidence against the restrictions implied by MAAR or
+    % against one of the accompanying assumptions. The test is omnibus and
+    % does not by itself identify which partially observed variable is
+    % responsible.
+    pvalue(kk) = fSurvival(D_L,k,w);
+    stat(kk) = D_L;
     df1(kk) = k;
     df2(kk) = w;
-    relativeIncrease(kk) = r;
+    relativeIncrease(kk) = rL;
     deviance(kk).fullMLE = devFullMLE;
     deviance(kk).smallMLE = devSmallMLE;
     deviance(kk).fullPooled = devFullPooled;
@@ -779,7 +996,22 @@ end
 
 % -------------------------------------------------------------------------
 function fit = logisticFit(X,y,maxiter,tol,ridge)
-% Logistic maximum likelihood by safeguarded iteratively reweighted squares.
+%logisticFit computes a binary logistic maximum-likelihood fit.
+%
+% Inputs:
+%   X       : design matrix, including an intercept when required.
+%   y       : binary response vector containing zeros and ones.
+%   maxiter : maximum number of safeguarded Newton/IRLS iterations.
+%   tol     : relative convergence tolerance for the coefficients.
+%   ridge   : nonnegative regularization used if the information matrix is
+%             nearly singular.
+%
+% Output:
+%   fit     : structure containing beta, loglik, deviance, iter and
+%             converged.
+%
+% Step halving ensures that the log likelihood does not decrease after a
+% Newton update.
 y = double(y(:));
 X = double(X);
 k = size(X,2);
@@ -829,22 +1061,31 @@ end
 
 % -------------------------------------------------------------------------
 function dev = logisticDeviance(X,y,beta)
+%logisticDeviance returns minus twice the Bernoulli log likelihood.
+% X is the design matrix, y is the binary response and beta is a fixed
+% coefficient vector at which the deviance must be evaluated.
 dev = -2*logisticLogLik(X,double(y(:)),beta);
 end
 
 % -------------------------------------------------------------------------
 function ll = logisticLogLik(X,y,beta)
+%logisticLogLik evaluates the Bernoulli logistic log likelihood.
+% X is the design matrix, y is a zero-one response and beta is the vector
+% of logistic-regression coefficients.
 eta = X*beta;
 ll = sum(y.*(-softplus(-eta))+(1-y).*(-softplus(eta)));
 end
 
 % -------------------------------------------------------------------------
 function y = softplus(x)
+% softplus evaluates log(1+exp(x)) without numerical overflow.
+% see https://en.wikipedia.org/wiki/Softplus
 y = max(x,0)+log1p(exp(-abs(x)));
 end
 
 % -------------------------------------------------------------------------
 function p = logisticCDF(x)
+%logisticCDF evaluates 1/(1+exp(-x)) using a stable two-branch formula.
 p = zeros(size(x));
 pos = x >= 0;
 p(pos) = 1./(1+exp(-x(pos)));
@@ -855,155 +1096,576 @@ end
 % -------------------------------------------------------------------------
 function res = copulaTest(Y,R,locmis,locfull,alpha,nsamp,nburn,thin, ...
     pluginthreshold,ridge,savesamples,msg)
-% Gaussian-copula diagnostic based on the extended rank likelihood.
+%copulaTest performs the semiparametric Gaussian-copula diagnostic.
+%
+% Inputs:
+%
+%   Y               : n-by-p incomplete data matrix. Missing entries are
+%                     represented by NaN.
+%
+%   R               : n-by-q missingness-indicator matrix associated with
+%                     the variables listed in locmis. In this implementation
+%
+%                         R(i,k)=1
+%
+%                     means that Y(i,locmis(k)) is missing. Notice that this
+%                     is the reverse of the convention used by Bojinov,
+%                     Pillai and Rubin, where R(i,k)=1 means observed. The
+%                     reversal may change the sign of an association but
+%                     does not affect whether it is equal to zero.
+%
+%   locmis          : vector containing the column indices of the q
+%                     variables of Y having at least one missing value.
+%
+%   locfull         : vector containing the column indices of the variables
+%                     observed for all n units. It can be empty.
+%
+%   alpha           : nominal significance level used to construct the
+%                     simultaneous posterior credible intervals.
+%
+%   nsamp           : total number of MCMC iterations, including burn-in.
+%
+%   nburn           : number of initial MCMC iterations discarded as
+%                     burn-in.
+%
+%   thin            : thinning interval. After burn-in, one posterior draw
+%                     is retained every thin iterations.
+%
+%   pluginthreshold : margins having more than pluginthreshold distinct
+%                     observed values use fixed rank-based normal scores for
+%                     their observed entries. This approximation is useful
+%                     for nearly continuous margins because it avoids
+%                     repeatedly sampling a large number of latent values.
+%
+%   ridge           : nonnegative numerical regularization used when a
+%                     covariance matrix is singular or nearly singular.
+%
+%   savesamples     : if true, the retained posterior draws of the
+%                     outcome-indicator conditional covariance matrix are
+%                     returned in res.samples.
+%
+%   msg             : if true, progress messages are displayed during the
+%                     MCMC iterations.
+%
+% Output:
+%
+%   res             : structure containing the following fields:
+%
+%                     pvalue
+%                         q-by-q matrix of two-sided posterior tail
+%                         probabilities. These are posterior sign
+%                         probabilities, not classical frequentist
+%                         p-values.
+%
+%                     stat
+%                         q-by-q matrix containing posterior medians of the
+%                         conditional covariances.
+%
+%                     CI
+%                         q-by-q-by-2 array containing the lower and upper
+%                         Bonferroni-adjusted credible limits.
+%
+%                     posteriorMean
+%                         q-by-q matrix of posterior means.
+%
+%                     posteriorMedian
+%                         q-by-q matrix of posterior medians.
+%
+%                     alphaAdjusted
+%                         Bonferroni-adjusted component level.
+%
+%                     rejectPairs
+%                         q-by-q logical matrix. Element (j,k) is true when
+%                         the credible interval for the latent conditional
+%                         covariance between Y_j and R_k excludes zero.
+%
+%                     whichReject
+%                         q-by-1 logical vector. Element k is true when at
+%                         least one partially observed outcome is associated
+%                         with missingness indicator R_k.
+%
+%                     reject
+%                         true if at least one off-diagonal component is
+%                         rejected.
+%
+%                     nSaved
+%                         number of retained posterior draws.
+%
+%                     pluginMarginal
+%                         logical vector identifying margins whose observed
+%                         latent values were kept fixed at normal scores.
+%
+%                     samples
+%                         retained posterior draws when savesamples is true.
+%
+% More About:
+%
+% The method models the joint distribution of the partially observed
+% outcomes, their missingness indicators and the fully observed outcomes
+% using a semiparametric Gaussian copula.
+%
+% The observed margins themselves are not assigned parametric
+% distributions. Instead, each observed variable W_j is associated with a
+% latent Gaussian variable Z_j, and the ordering of the observed values
+% imposes ordering restrictions on the corresponding latent values. This is
+% the extended rank-likelihood construction of Hoff (2007).
+%
+% The working matrix is ordered as
+%
+%        W = [Ymiss, R, Yfull],
+%
+% where:
+%
+%        Ymiss = Y(:,locmis),
+%        R     = missingness indicators associated with Ymiss,
+%        Yfull = Y(:,locfull).
+%
+% Therefore, the column blocks of W are:
+%
+%        columns 1:q       = partially observed outcomes;
+%        columns q+1:2*q   = their missingness indicators;
+%        remaining columns = fully observed outcomes.
+%
+% Under MAAR and the accompanying assumptions, for j different from k,
+%
+%        Y_j is conditionally independent of R_k given Yfull.
+%
+% The copula diagnostic investigates this implication on a latent Gaussian
+% scale. At every retained MCMC iteration, the routine computes the
+% conditional covariance matrix of
+%
+%        [Ymiss, R]
+%
+% given Yfull. The q-by-q block containing the conditional covariances
+% between Ymiss and R is stored.
+%
+% A zero conditional covariance is equivalent to zero conditional
+% correlation provided the conditional variances are positive. Consequently,
+% testing conditional covariances rather than conditional correlations does
+% not change the null hypothesis.
+%
+% The diagonal association between Y_j and its own missingness indicator
+% R_j is not directly estimable from the observed data because Y_j is
+% unavailable precisely for the units for which it is missing. The
+% diagnostic therefore uses only the q*(q-1) off-diagonal associations.
+%
+% The original R implementation calls sbgcop::sbgcop.mcmc. The sampler below
+% is a self-contained MATLAB implementation inspired by the same extended
+% rank-likelihood approach.
+
+% Number of variables having at least one missing value.
 q = numel(locmis);
+
+% Construct the working matrix used by the Gaussian-copula sampler.
+%
+% The ordering of the three blocks is important because the code below
+% extracts the outcome-indicator block by its position in the latent
+% covariance matrix.
 W = [Y(:,locmis) R Y(:,locfull)];
+
+% n is the number of units and d is the total number of margins in the
+% copula model:
+%
+%        d = 2*q + number of fully observed variables.
 [n,d] = size(W);
+
+% Number of posterior draws expected after removing burn-in and applying
+% thinning. The array used to store the draws is preallocated using this
+% value.
 nSaved = floor((nsamp-nburn)/thin);
+
+% Very few retained draws generally produce unstable posterior quantiles.
 if nSaved < 20
     warning('FSDA:mdMAARtest:FewCopulaDraws', ...
         'Only %d posterior draws will be retained.',nSaved);
 end
 
-% Starting latent values and ordinal levels.
+% Z is the n-by-d matrix of latent Gaussian variables.
+%
+% levelIndex(i,j) records the ordered level occupied by observed value
+% W(i,j). Observations tied in W receive the same level.
+%
+% nLevels(j) is the number of distinct observed levels of margin j.
+%
+% plugin(j) is true when the observed latent values of margin j are kept
+% fixed at their initial normal scores.
 Z = zeros(n,d);
 levelIndex = zeros(n,d);
 nLevels = zeros(1,d);
 plugin = false(1,d);
+
+% Initialize the latent Gaussian values one margin at a time.
 for j = 1:d
+
+    % Identify the observed entries of the current margin. Outcome margins
+    % can contain NaNs, whereas the missingness-indicator margins are fully
+    % observed binary variables.
     observed = ~isnan(W(:,j));
+
+    % Extract the observed values of margin j.
     x = W(observed,j);
+
+    % Convert the observed values into ordered integer levels.
+    %
+    % For example, values [10 20 20 40] receive levels [1 2 2 3].
     [~,~,lev] = unique(x,'sorted');
     levelIndex(observed,j) = lev;
     nLevels(j) = max(lev);
+
+    % For a margin with many distinct values, regard it as approximately
+    % continuous and keep its observed normal scores fixed during the
+    % sampler. Missing latent values are still updated.
     plugin(j) = numel(unique(x)) > pluginthreshold;
+
+    % Compute ranks assigning tied observations their maximum rank.
     rmax = rankMaximum(x);
+
+    % Transform ranks to probabilities strictly inside the interval (0,1).
+    % Division by n_j+1 prevents probabilities equal to exactly zero or one.
     u = rmax/(numel(x)+1);
+
+    % Initialize observed latent values using standard normal quantiles.
     Z(observed,j) = normalInv(u);
+
+    % Assign random starting values to latent entries corresponding to
+    % missing outcome values. These are only initial values and are updated
+    % during the MCMC iterations.
     Z(~observed,j) = randn(sum(~observed),1);
 end
 
+% Initialize the latent covariance matrix from the current latent scores.
+% The second argument of cov equal to 1 uses normalization by n rather than
+% n-1.
 S = cov(Z,1);
+
+% Ensure that the starting covariance matrix is symmetric positive
+% definite before it is used in conditional Gaussian calculations.
 S = stabilizeSPD(S,ridge);
+
+% interestSamples(j,k,s) will contain retained draw s of
+%
+%   Cov(Z_Yj,Z_Rk | Z_Yfull),
+%
+% where j indexes partially observed outcomes and k indexes missingness
+% indicators.
 interestSamples = zeros(q,q,nSaved);
+
+% Counter containing the number of posterior draws actually retained.
 saveIndex = 0;
+
+% Hyperparameters used for the inverse-Wishart covariance update.
+%
+% S0 is the prior scale matrix and n0 controls the prior degrees of freedom.
+% These choices are implementation-specific and are not prescribed in
+% detail in Section 3.4 of Bojinov, Pillai and Rubin.
 S0 = eye(d);
 n0 = d+2;
 
+% Begin the Gibbs sampler.
 for iteration = 1:nsamp
+
+    % Update the latent margins in random order. Random ordering avoids
+    % favouring the original column order systematically at every sweep.
     order = randperm(d);
+
     for jj = 1:d
+
+        % j is the index of the margin updated at this step.
         j = order(jj);
+
+        % Indices of all latent margins except margin j.
         other = [1:j-1 j+1:d];
+
         if isempty(other)
+            % This branch is relevant only in the univariate case. The
+            % conditional distribution is then the marginal Gaussian
+            % distribution of Z_j.
             conditionalMean = zeros(n,1);
             conditionalSD = sqrt(max(S(j,j),eps));
         else
+            % Extract and stabilize the covariance matrix of the remaining
+            % latent margins.
             Soo = stabilizeSPD(S(other,other),ridge);
+
+            % Regression coefficients in the conditional Gaussian
+            % distribution:
+            %
+            %   S(j,-j) * inv(S(-j,-j)).
             regression = S(j,other)/Soo;
+
+            % Conditional mean of Z_j for every observation:
+            %
+            %   E(Z_j | Z_-j)
+            %       = Z_-j * inv(S_-j,-j) * S_-j,j.
             conditionalMean = Z(:,other)*regression';
+
+            % Conditional variance:
+            %
+            %   Var(Z_j | Z_-j)
+            %       = S(j,j)-S(j,-j)*inv(S(-j,-j))*S(-j,j).
             conditionalVariance = S(j,j)-regression*S(other,j);
+
+            % Numerical rounding may produce a very small negative value.
+            % Restrict the conditional variance to be at least eps.
             conditionalSD = sqrt(max(conditionalVariance,eps));
         end
 
+        % Observed-data indicator for the current margin.
         observed = ~isnan(W(:,j));
+
         if ~plugin(j)
+            % For non-plugin margins, resample the observed latent values
+            % from their conditional normal distributions subject to the
+            % rank restrictions implied by the observed data.
+
             for lev = 1:nLevels(j)
+
+                % Rows whose observed value belongs to ordered level lev.
                 idx = observed & levelIndex(:,j)==lev;
+
                 if ~any(idx)
                     continue
                 end
+
+                % The lower truncation point is the largest latent value in
+                % the immediately preceding observed level. The first level
+                % has no finite lower bound.
                 if lev == 1
                     lower = -Inf;
                 else
-                    lower = max(Z(observed & levelIndex(:,j)==lev-1,j));
+                    lower = max(Z(observed & ...
+                        levelIndex(:,j)==lev-1,j));
                 end
+
+                % The upper truncation point is the smallest latent value in
+                % the immediately following observed level. The last level
+                % has no finite upper bound.
                 if lev == nLevels(j)
                     upper = Inf;
                 else
-                    upper = min(Z(observed & levelIndex(:,j)==lev+1,j));
+                    upper = min(Z(observed & ...
+                        levelIndex(:,j)==lev+1,j));
                 end
+
+                % Sample latent values from their conditional Gaussian
+                % distributions while preserving the ordering of the
+                % observed margin.
                 Z(idx,j) = truncatedNormal(conditionalMean(idx), ...
                     conditionalSD,lower,upper);
             end
         end
+
+        % Latent values corresponding to missing observed outcomes have no
+        % rank restrictions. Sample them directly from their conditional
+        % Gaussian distribution.
+        %
+        % Missingness-indicator columns R contain no NaNs, so this update is
+        % relevant only to incomplete outcome margins.
         idxMissing = ~observed;
+
         if any(idxMissing)
             Z(idxMissing,j) = conditionalMean(idxMissing)+ ...
                 conditionalSD*randn(sum(idxMissing),1);
         end
     end
 
+    % Update the latent covariance matrix.
+    %
+    % Conditional on Z, the covariance matrix has an inverse-Wishart full
+    % conditional distribution. The code samples the precision matrix from
+    % the corresponding Wishart distribution and then inverts it.
+
+    % Posterior scale contribution from the prior and latent cross-products.
     Psi = n0*S0+Z'*Z;
+
+    % Scale matrix of the Wishart distribution for the precision matrix.
     invPsi = stableInverse(Psi,ridge);
+
+    % Draw the latent precision matrix.
     precisionDraw = wishartRandom(invPsi,n0+n,ridge);
+
+    % Convert the precision draw into the new covariance draw.
     S = stableInverse(precisionDraw,ridge);
 
+    % Retain the current covariance draw only after burn-in and at the
+    % requested thinning interval.
     if iteration > nburn && mod(iteration-nburn,thin)==0
+
         saveIndex = saveIndex+1;
+
+        % Convert the latent covariance matrix S into the corresponding
+        % correlation matrix C:
+        %
+        %   C(a,b)=S(a,b)/sqrt(S(a,a)*S(b,b)).
         sdS = sqrt(max(diag(S),eps));
         C = S./(sdS*sdS');
+
+        % Remove minor numerical asymmetry.
         C = (C+C')/2;
+
+        % The first 2*q variables are:
+        %
+        %   1:q       partially observed outcomes;
+        %   q+1:2*q   their missingness indicators.
+        %
+        % The remaining variables, when present, are fully observed
+        % outcomes on which the diagnostic conditions.
         nv = 2*q;
+
         if nv < d
+            % C22 is the latent correlation block associated with the fully
+            % observed variables.
             C22 = stabilizeSPD(C(nv+1:end,nv+1:end),ridge);
+
+            % Compute the covariance of [Ymiss,R] conditional on Yfull using
+            % the Schur complement:
+            %
+            %   Vcond = C11-C12*inv(C22)*C21.
             Vcond = C(1:nv,1:nv)- ...
                 C(1:nv,nv+1:end)/C22*C(nv+1:end,1:nv);
         else
+            % If no fully observed variables are present, no conditioning
+            % is possible. In this case the unconditional covariance of
+            % [Ymiss,R] is used.
             Vcond = C(1:nv,1:nv);
         end
-        interestSamples(:,:,saveIndex) = Vcond(1:q,q+1:2*q);
+
+        % Extract the q-by-q outcome-indicator block:
+        %
+        %   rows    1:q       correspond to Ymiss;
+        %   columns q+1:2*q   correspond to R.
+        %
+        % Element (j,k) is the current posterior draw of the latent
+        % conditional covariance between outcome Y_j and indicator R_k.
+        interestSamples(:,:,saveIndex) = ...
+            Vcond(1:q,q+1:2*q);
     end
 
-    if msg && nsamp >= 10 && mod(iteration,max(1,floor(nsamp/10)))==0
+    % Display progress approximately every 10 percent of the MCMC run.
+    if msg && nsamp >= 10 && ...
+            mod(iteration,max(1,floor(nsamp/10)))==0
         fprintf('mdMAARtest copula sampler: %d%% completed.\n', ...
             round(100*iteration/nsamp));
     end
 end
 
+% Remove any unused preallocated pages. The resulting array has dimensions
+%
+%             q-by-q-by-nSaved.
+%
+% Rows identify partially observed outcomes, columns identify missingness
+% indicators and pages identify retained posterior draws.
 interestSamples = interestSamples(:,:,1:saveIndex);
 nSaved = saveIndex;
+
+% Only off-diagonal outcome-indicator associations are used. There are
+%
+%             q*(q-1)
+%
+% such comparisons when q>1.
 nTests = max(q^2-q,1);
+
+% Apply a Bonferroni correction to obtain simultaneous component credible
+% intervals.
 alphaAdjusted = alpha/nTests;
+
+% Equal-tail posterior probabilities for the lower and upper limits.
 lowerProb = alphaAdjusted/2;
 upperProb = 1-lowerProb;
 
+% Preallocate matrices containing posterior summaries.
 lower = zeros(q,q);
 medianValue = zeros(q,q);
 upper = zeros(q,q);
 posteriorMean = zeros(q,q);
+
+% The quantity stored in pvalue is a two-sided posterior tail probability:
+%
+%   2*min{Pr(delta<=0 | data),Pr(delta>=0 | data)}.
+%
+% It should not be interpreted as a classical frequentist p-value.
 pvalue = ones(q,q);
+
+% Compute posterior summaries separately for every outcome-indicator pair.
 for j = 1:q
     for k = 1:q
+
+        % Posterior draws for the conditional covariance between outcome j
+        % and missingness indicator k.
         draws = squeeze(interestSamples(j,k,:));
+
+        % Bonferroni-adjusted equal-tail credible interval and posterior
+        % median.
         qq = quantile(draws,[lowerProb 0.5 upperProb]);
+
         lower(j,k) = qq(1);
         medianValue(j,k) = qq(2);
         upper(j,k) = qq(3);
+
+        % Posterior mean of the conditional covariance.
         posteriorMean(j,k) = mean(draws);
-        pvalue(j,k) = min(1,2*min(mean(draws<=0),mean(draws>=0)));
+
+        % Two-sided posterior sign probability. Small values indicate that
+        % nearly all posterior mass lies on one side of zero.
+        pvalue(j,k) = min(1, ...
+            2*min(mean(draws<=0),mean(draws>=0)));
     end
 end
 
+% Flag a pair when its simultaneous posterior credible interval lies
+% entirely above or entirely below zero.
 rejectPairs = (lower>0 | upper<0);
+
 if q > 1
+    % Diagonal comparisons concern Y_j and its own missingness indicator
+    % R_j. These associations are not treated as estimable component
+    % diagnostics and are therefore excluded from the final decision.
     rejectPairs(1:q+1:end) = false;
+
+    % Assign a neutral value to the diagonal posterior tail probabilities.
     pvalue(1:q+1:end) = 1;
 end
+
+% Column k of rejectPairs corresponds to missingness indicator R_k.
+% Therefore, whichReject(k) is true when R_k is conditionally associated
+% with at least one other partially observed outcome.
 whichReject = any(rejectPairs,1)';
 
+% Store the posterior summaries and diagnostic decisions.
 res = struct;
+
+% Two-sided posterior tail probabilities.
 res.pvalue = pvalue;
+
+% For compatibility with the common output structure, stat contains the
+% posterior median conditional covariances.
 res.stat = medianValue;
+
+% Lower and upper credible limits. CI(:,:,1) contains lower limits and
+% CI(:,:,2) contains upper limits.
 res.CI = cat(3,lower,upper);
+
+% Posterior location summaries.
 res.posteriorMean = posteriorMean;
 res.posteriorMedian = medianValue;
+
+% Component significance level after Bonferroni correction.
 res.alphaAdjusted = alphaAdjusted;
+
+% Pairwise and indicator-level rejection summaries.
 res.rejectPairs = rejectPairs;
 res.whichReject = whichReject;
 res.reject = any(whichReject);
+
+% Number of posterior draws retained after burn-in and thinning.
 res.nSaved = nSaved;
+
+% Logical vector identifying margins treated using fixed observed normal
+% scores.
 res.pluginMarginal = plugin;
+
+% Store the complete posterior sample only when explicitly requested,
+% because this q-by-q-by-nSaved array can be large.
 if savesamples
     res.samples = interestSamples;
 else
@@ -1013,7 +1675,13 @@ end
 
 % -------------------------------------------------------------------------
 function ranks = rankMaximum(x)
-% Ranks with ties assigned their maximum rank.
+%rankMaximum computes ranks with ties assigned their maximum rank.
+%
+% Input:
+%   x     : numeric vector.
+% Output:
+%   ranks : vector having the same size as x. All observations in a tied
+%           group receive the largest rank occupied by that group.
 x = x(:);
 [sorted,order] = sort(x);
 ranksSorted = zeros(size(x));
@@ -1032,7 +1700,21 @@ end
 
 % -------------------------------------------------------------------------
 function x = truncatedNormal(mu,sigma,lower,upper)
-% Draw N(mu,sigma^2) variates restricted to [lower,upper].
+%truncatedNormal draws Gaussian variables subject to common truncation.
+%
+% Inputs:
+%   mu    : vector of conditional means.
+%   sigma : positive scalar conditional standard deviation.
+%   lower : scalar lower truncation limit, possibly -Inf.
+%   upper : scalar upper truncation limit, possibly Inf.
+%
+% Output:
+%   x     : vector with size(mu), drawn from N(mu,sigma^2) and restricted
+%           to [lower,upper].
+%
+% Inverse-transform sampling is used first. Extremely narrow or numerically
+% degenerate intervals are handled by rejection sampling and a final safe
+% fallback.
 a = (lower-mu)/sigma;
 b = (upper-mu)/sigma;
 pLower = normalCDF(a);
@@ -1069,18 +1751,30 @@ end
 
 % -------------------------------------------------------------------------
 function p = normalCDF(x)
+%normalCDF evaluates the standard normal cumulative distribution function.
 p = 0.5*erfc(-x/sqrt(2));
 end
 
 % -------------------------------------------------------------------------
 function x = normalInv(p)
+%normalInv evaluates the standard normal quantile function. Probabilities
+% are bounded away from zero and one to avoid infinite numerical values.
 p = min(max(p,realmin),1-eps);
 x = -sqrt(2)*erfcinv(2*p);
 end
 
 % -------------------------------------------------------------------------
 function W = wishartRandom(V,nu,ridge)
-% Bartlett decomposition for W ~ Wishart(V,nu).
+%wishartRandom generates a random Wishart matrix by Bartlett decomposition.
+%
+% Inputs:
+%   V     : positive-definite scale matrix.
+%   nu    : Wishart degrees of freedom, not smaller than size(V,1).
+%   ridge : regularization used to stabilize V before Cholesky factorization.
+%
+% Output:
+%   W     : random matrix distributed as Wishart(V,nu), up to numerical
+%           precision.
 p = size(V,1);
 if nu < p
     error('FSDA:mdMAARtest:WishartDF', ...
@@ -1101,6 +1795,13 @@ end
 
 % -------------------------------------------------------------------------
 function A = stabilizeSPD(A,ridge)
+%stabilizeSPD symmetrizes and, when necessary, regularizes a matrix.
+%
+% Inputs:
+%   A     : square matrix expected to be symmetric positive definite.
+%   ridge : nonnegative eigenvalue floor relative to the scale of A.
+% Output:
+%   A     : symmetric positive-definite version of the input matrix.
 A = (A+A')/2;
 if isempty(A)
     return
@@ -1118,6 +1819,8 @@ end
 
 % -------------------------------------------------------------------------
 function Ainv = stableInverse(A,ridge)
+%stableInverse computes a symmetric inverse after SPD stabilization.
+% A is the matrix to invert and ridge is passed to stabilizeSPD.
 A = stabilizeSPD(A,ridge);
 Ainv = A\eye(size(A));
 Ainv = (Ainv+Ainv')/2;
@@ -1125,7 +1828,17 @@ end
 
 % -------------------------------------------------------------------------
 function p = fSurvival(x,df1,df2)
-% Upper-tail F probability, including the df2=Inf limiting case.
+%fSurvival computes the upper-tail probability of an F distribution.
+%
+% Inputs:
+%   x   : nonnegative F statistic.
+%   df1 : numerator degrees of freedom.
+%   df2 : denominator degrees of freedom, possibly Inf.
+% Output:
+%   p   : upper-tail probability.
+%
+% When df2 is infinite, df1*x has a chi-square distribution with df1
+% degrees of freedom.
 if isnan(x) || x < 0
     p = NaN;
 elseif isinf(x)
@@ -1140,6 +1853,9 @@ end
 
 % -------------------------------------------------------------------------
 function interpretation = interpretMAAR(out)
+%interpretMAAR converts the numerical result into a concise verbal summary.
+% out is the complete output structure and interpretation is a character
+% vector suitable for display or inclusion in reports.
 if out.reject
     implicated = out.missingVariables(out.whichReject);
     if isempty(implicated)
@@ -1158,6 +1874,7 @@ end
 
 % -------------------------------------------------------------------------
 function printMAAR(out)
+%printMAAR prints the main fields of the output structure in compact form.
 fprintf('\nMAAR diagnostic: %s\n',upper(out.method));
 fprintf('Observations: %d; variables: %d; partially observed variables: %d\n', ...
     out.n,out.p,out.nvarmiss);
@@ -1175,22 +1892,77 @@ end
 
 % -------------------------------------------------------------------------
 function plotMAAR(out)
+%plotMAAR produces the method-specific graphical summary.
+%
+% Input:
+%   out : output structure returned by mdMAARtest. The selected method
+%         determines whether a p-value heatmap, a bar chart or a posterior
+%         conditional-covariance heatmap is drawn.
 q = out.nvarmiss;
 labels = out.variableNames(out.missingVariables);
 figure('Name',['mdMAARtest: ' upper(out.method)],'Color','w');
 
 switch out.method
+
     case 'ccm'
-        values = -log10(max(out.pvalue,realmin));
-        values(1:q+1:end) = 0;
-        imagesc(values)
-        colorbar
-        axis tight
-        xlabel('Partially observed response variable')
-        ylabel('Missingness indicator')
-        title('-log_{10} p-values: comparison of conditional means')
-        xticks(1:q); yticks(1:q)
-        xticklabels(labels); yticklabels(labels)
+
+        % Bonferroni-adjusted significance threshold.
+        alphaBonf = out.alphaAdjusted;
+
+        % Maximum p-value represented in the colour scale.
+        maxPshown = 0.5;
+        % Matrix of raw p-values from the pairwise conditional-mean
+        % comparisons.
+        values = out.pvalue;
+        values(values > maxPshown) = maxPshown;
+
+        % Comparisons on the diagonal are not performed.
+        values(1:q+1:end) = NaN;
+
+        % Create the heatmap.
+        h = heatmap(labels,labels,values);
+
+        h.XLabel = 'Partially observed response variable';
+        h.YLabel = 'Missingness indicator';
+        h.Title = sprintf(['CCM pairwise p-values; red cells are significant ' ...
+            'after Bonferroni correction (p < %.3g)'],alphaBonf);
+        h.ColorLimits = [0 maxPshown];
+        h.CellLabelFormat = '%.3g';
+
+        % Appearance of cells for which the test is not performed.
+        h.MissingDataLabel = 'Not tested';
+        h.MissingDataColor = [1 1 1];
+
+        % Number of colours used in the heatmap.
+        nColors = 1024;
+
+        % Number of colour levels corresponding to significant p-values.
+        nSignificantColors = ceil(alphaBonf/maxPshown*nColors);
+        nSignificantColors = max(1,min(nColors-1,nSignificantColors));
+
+        % Exact red used for all Bonferroni-significant cells.
+        redSignificant = [0.88 0.08 0.08];
+        significantMap = repmat(redSignificant,nSignificantColors,1);
+
+        % Continuous scale for nonsignificant cells:
+        % reddish-orange -> yellow -> light green -> dark green.
+        anchorPositions = [0 0.30 0.65 1];
+
+        anchorColors = [
+            0.95 0.35 0.15   % reddish-orange: just above the threshold
+            1.00 0.75 0.20   % orange-yellow
+            0.65 0.85 0.35   % light green
+            0.10 0.55 0.25   % green: large p-values
+            ];
+
+        nNonSignificantColors = nColors-nSignificantColors;
+        queryPositions = linspace(0,1,nNonSignificantColors);
+
+        nonSignificantMap = interp1(anchorPositions,anchorColors, ...
+            queryPositions,'linear');
+
+        % Low p-values are red; high p-values are green.
+        h.Colormap = [significantMap; nonSignificantMap];
 
     case 'dtmm'
         bar(-log10(max(out.pvalue,realmin)))
@@ -1203,18 +1975,99 @@ switch out.method
         title('Direct missingness-mechanism diagnostic')
 
     case 'cop'
-        imagesc(out.posteriorMedian)
-        colorbar
-        axis tight
-        xlabel('Missingness indicator')
-        ylabel('Partially observed outcome')
-        title('Posterior median conditional covariance')
-        xticks(1:q); yticks(1:q)
-        xticklabels(labels); yticklabels(labels)
-        hold on
-        [rr,cc] = find(out.rejectPairs);
-        plot(cc,rr,'kx','MarkerSize',12,'LineWidth',2)
-        hold off
+
+        % The copula output matrices are stored with:
+        %
+        %   row j    = partially observed outcome Y_j;
+        %   column k = missingness indicator R_k.
+        %
+        % Thus, out.pvalue(j,k) summarizes the posterior evidence about
+        % the latent conditional association between Y_j and R_k after
+        % conditioning on the fully observed variables.
+        %
+        % For consistency with the CCM heatmap, we transpose the matrix before
+        % plotting. Consequently, in the displayed heatmap:
+        %
+        %   row k    = missingness indicator R_k;
+        %   column j = partially observed outcome Y_j.
+        %
+        % A red cell in displayed row k and column j indicates posterior
+        % evidence of a nonzero latent conditional association between Y_j
+        % and R_k, after conditioning on the fully observed variables.
+
+        % Bonferroni-adjusted component threshold used for the simultaneous
+        % posterior credible intervals.
+        alphaBonf = out.alphaAdjusted;
+
+        % Maximum posterior tail probability represented in the colour
+        % scale. Larger values receive the same green colour.
+        maxPshown = 0.5;
+
+        % out.pvalue has outcomes along the rows and missingness indicators
+        % along the columns. Transpose it so that the graphical orientation
+        % agrees with the CCM heatmap.
+        values = out.pvalue';
+
+        % Truncate large values only for graphical purposes.
+        values(values > maxPshown) = maxPshown;
+
+        % Diagonal associations between an outcome and its own missingness
+        % indicator are not used by the diagnostic.
+        values(1:q+1:end) = NaN;
+
+        % In the displayed heatmap, columns correspond to partially observed
+        % outcomes and rows correspond to missingness indicators.
+        h = heatmap(labels,labels,values);
+
+        h.XLabel = 'Partially observed outcome';
+        h.YLabel = 'Missingness indicator';
+
+        h.Title = sprintf([ ...
+            'Copula posterior tail probabilities; red cells indicate ' ...
+            'Bonferroni-adjusted rejection (value < %.3g)'],alphaBonf);
+
+        h.ColorLimits = [0 maxPshown];
+        h.CellLabelFormat = '%.3g';
+
+        % Appearance of diagonal cells, for which no component diagnostic
+        % is reported.
+        h.MissingDataLabel = 'Not tested';
+        h.MissingDataColor = [1 1 1];
+
+        % Number of colours used in the heatmap.
+        nColors = 1024;
+
+        % Number of colour levels associated with values below the
+        % Bonferroni-adjusted threshold.
+        nSignificantColors = ceil(alphaBonf/maxPshown*nColors);
+        nSignificantColors = ...
+            max(1,min(nColors-1,nSignificantColors));
+
+        % Exact red used for significant components.
+        redSignificant = [0.88 0.08 0.08];
+        significantMap = repmat(redSignificant, ...
+            nSignificantColors,1);
+
+        % Continuous scale for nonsignificant components:
+        % reddish-orange -> yellow -> light green -> dark green.
+        anchorPositions = [0 0.30 0.65 1];
+
+        anchorColors = [
+            0.95 0.35 0.15   % reddish-orange: just above threshold
+            1.00 0.75 0.20   % orange-yellow
+            0.65 0.85 0.35   % light green
+            0.10 0.55 0.25   % dark green: large tail probability
+            ];
+
+        nNonSignificantColors = nColors-nSignificantColors;
+        queryPositions = linspace(0,1,nNonSignificantColors);
+
+        nonSignificantMap = interp1(anchorPositions,anchorColors, ...
+            queryPositions,'linear');
+
+        % Small posterior tail probabilities are red; large values are
+        % green.
+        h.Colormap = [significantMap; nonSignificantMap];
 end
 end
 
