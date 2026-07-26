@@ -103,8 +103,39 @@ function out = mdMAARtest(Y, varargin)
 %                Example - 'msg',false
 %                Data Types - logical | single | double
 %
-%        plots : Produce a diagnostic plot. Boolean. The default value is
-%                false.
+%        plots : Produce a method-specific diagnostic plot. Boolean.
+%                The default value is false.
+%
+%                If plots is true, the graphical summary depends on the
+%                selected diagnostic method:
+%
+%                'ccm'
+%                    Produces a q-by-q heatmap of the pairwise F-test
+%                    p-values. Rows correspond to missingness indicators
+%                    $R_i$ and columns to partially observed variables
+%                    $Y_j$. Diagonal cells are not tested. Small p-values
+%                    are shown using reddish colours, and cells significant
+%                    after the Bonferroni correction are displayed in red.
+%
+%                'dtmm'
+%                    Produces a bar chart of -log10(p-values), with one bar
+%                    for each missingness indicator. A horizontal line shows
+%                    the Bonferroni-adjusted rejection threshold.
+%
+%                'cop'
+%                    Produces a q-by-q heatmap of the two-sided posterior
+%                    tail probabilities for the latent conditional
+%                    covariances between missingness indicators $R_i$ and
+%                    partially observed variables $Y_j$, conditional on the
+%                    fully observed variables. Rows correspond to $R_i$ and
+%                    columns to $Y_j$. Diagonal cells are not tested. Small
+%                    posterior tail probabilities are shown using reddish
+%                    colours, and rejected components are displayed in red.
+%
+%                The plot is created in a new MATLAB figure. Setting plots
+%                to false suppresses all graphical output but does not
+%                affect the numerical results returned in out.
+%
 %                Example - 'plots',true
 %                Data Types - logical | single | double
 %
@@ -116,17 +147,52 @@ function out = mdMAARtest(Y, varargin)
 %  Output:
 %
 %    out : Structure containing the following fields:
-%
 %          out.method        = selected diagnostic method.
 %          out.reject        = true if at least one component test rejects.
 %          out.whichReject   = logical vector associated with the variables
 %                              containing missing values. Element k is true
 %                              when the missingness indicator of that variable
 %                              is implicated by the diagnostic.
-%          out.pvalue        = component p-values. For 'ccm' and 'cop' this
-%                              is a q x q matrix, where q is the number of
-%                              partially observed variables. For 'dtmm' it is
-%                              a q x 1 vector.
+%          out.pvalue        = component significance measures.
+%
+%                              For methods 'ccm' and 'cop', out.pvalue is a
+%                              q-by-q matrix, where q is the number of
+%                              partially observed variables. Rows correspond
+%                              to missingness indicators $R_i$ and columns to
+%                              partially observed variables $Y_j$.
+%
+%                              For method 'ccm', out.pvalue(i,j) is the
+%                              p-value of the nested-model F test comparing
+%                              the conditional mean of $Y_j$ across the groups
+%                              defined by $R_i$, after conditioning on the
+%                              fully observed variables. A small value
+%                              indicates that knowing whether variable i is
+%                              missing provides additional information about
+%                              the conditional mean of $Y_j$. Diagonal elements
+%                              are not tested.
+%
+%                              For method 'cop', out.pvalue(i,j) is the
+%                              two-sided posterior tail probability for the
+%                              latent conditional covariance between
+%                              missingness indicator $R_i$ and partially
+%                              observed variable $Y_j$, given the fully
+%                              observed variables. A small value indicates
+%                              that most posterior mass lies on one side of
+%                              zero. these quantities are posterior tail
+%                              probabilities, not classical frequentist
+%                              p-values. Diagonal elements are not tested.
+%
+%                              For method 'dtmm', out.pvalue is a q-by-1
+%                              vector. Element out.pvalue(i) is the pooled
+%                              Meng-Rubin $D_L$ p-value for the missingness
+%                              mechanism of variable i. It compares a reduced
+%                              logistic model for $R_i$ containing only fully
+%                              observed variables with a full model that also
+%                              contains all imputed partially observed
+%                              variables. A small value indicates that at
+%                              least one partially observed variable provides
+%                              additional information about whether variable
+%                              i is missing.
 %          out.stat          = method-specific test statistics.
 %          out.alpha         = nominal significance level.
 %          out.alphaAdjusted = Bonferroni-adjusted component level.
@@ -164,11 +230,14 @@ function out = mdMAARtest(Y, varargin)
 % Rubin:
 %
 % ccm: comparison of conditional means using nested Gaussian linear models
-%       and Bonferroni correction, following diagMAAR.ccm.
+%       and Bonferroni correction.
+%
 % dtmm: direct testing of the missingness mechanism through logistic
 %       models and multiple imputation. The likelihood-ratio statistics are
-%       combined using the Meng– Rubin $D_3$ procedure. ​
-% cop: Gaussian-copula diagnostic based on posterior conditional
+%       combined using the Meng-Rubin $D_L$ procedure, often referred to as
+%       the $D_3$ procedure in the multiple-imputation literature.
+% ​
+% cop: gaussian-copula diagnostic based on posterior conditional
 %      covariances between partially observed variables and missingness
 %       indicators.
 %
@@ -181,22 +250,22 @@ function out = mdMAARtest(Y, varargin)
 %  comparing, for every $j$ different from $k$, the nested linear models
 %
 %    \[
-%     Y_j ~ Y_{Jf}
+%     Y_j \sim Y_{Jf}
 %    \]
 %
 %  and
 %
 %    \[
-%     Y_j ~ Y_{Jf} + R_k + Y_{Jf}:R_k.
+%     Y_j \sim Y_{Jf} + R_k + Y_{Jf}:R_k.
 %    \]
 %
 %  The direct procedure compares logistic models for each $R_k$. The reduced
 %  model contains only the fully observed variables, whereas the full model
 %  also contains the imputed partially observed variables. The likelihood
-%  ratio statistics are combined across imputations using the D_L procedure
-%  of Meng and Rubin (1992), as used by the original diagMAAR implementation.
-%   That is, pool a likelihood-ratio comparison by averaging model
-%   coefficients and reevaluating the likelihoods at the pooled coefficients.
+%  ratio statistics are combined across imputations using the $D_L$ procedure
+%  of Meng and Rubin (1992).
+%  That is, pool a likelihood-ratio comparison by averaging model
+%  coefficients and reevaluating the likelihoods at the pooled coefficients.
 %
 %  The Gaussian-copula procedure uses the extended rank-likelihood sampler of
 %  Hoff (2007). For every retained posterior correlation matrix, the function
@@ -207,9 +276,7 @@ function out = mdMAARtest(Y, varargin)
 %
 %  The original R implementation uses mice for method 'dtmm'. When option
 %  imputed is empty, this MATLAB implementation instead uses the joint-normal
-%  EM and stochastic-imputation functions already available in FSDA. To use
-%  exactly the same completed data sets as another implementation, supply
-%  them explicitly through option imputed.
+%  EM and stochastic-imputation functions already available in FSDA.
 %
 %  See also: mdEM, mdImputeStochastic, mdMCARtest, mdLittleTest, mdJJtest
 %
@@ -1141,8 +1208,10 @@ function res = copulaTest(Y,R,locmis,locfull,alpha,nsamp,nburn,thin, ...
 %                     covariance matrix is singular or nearly singular.
 %
 %   savesamples     : if true, the retained posterior draws of the
-%                     outcome-indicator conditional covariance matrix are
-%                     returned in res.samples.
+%                     indicator-outcome conditional covariance matrix are
+%                     returned in res.samples. Rows correspond to
+%                     missingness indicators and columns to partially
+%                     observed outcomes.
 %
 %   msg             : if true, progress messages are displayed during the
 %                     MCMC iterations.
@@ -1153,31 +1222,37 @@ function res = copulaTest(Y,R,locmis,locfull,alpha,nsamp,nburn,thin, ...
 %
 %                     pvalue
 %                         q-by-q matrix of two-sided posterior tail
-%                         probabilities. These are posterior sign
+%                         probabilities. Row k corresponds to missingness
+%                         indicator R_k and column j to partially observed
+%                         outcome Y_j. These are posterior sign
 %                         probabilities, not classical frequentist
 %                         p-values.
 %
 %                     stat
 %                         q-by-q matrix containing posterior medians of the
-%                         conditional covariances.
+%                         conditional covariances. Rows correspond to R_k
+%                         and columns to Y_j.
 %
 %                     CI
 %                         q-by-q-by-2 array containing the lower and upper
-%                         Bonferroni-adjusted credible limits.
+%                         Bonferroni-adjusted credible limits, with rows
+%                         corresponding to R_k and columns to Y_j.
 %
 %                     posteriorMean
-%                         q-by-q matrix of posterior means.
+%                         q-by-q matrix of posterior means, with rows
+%                         corresponding to R_k and columns to Y_j.
 %
 %                     posteriorMedian
-%                         q-by-q matrix of posterior medians.
+%                         q-by-q matrix of posterior medians, with rows
+%                         corresponding to R_k and columns to Y_j.
 %
 %                     alphaAdjusted
 %                         Bonferroni-adjusted component level.
 %
 %                     rejectPairs
-%                         q-by-q logical matrix. Element (j,k) is true when
+%                         q-by-q logical matrix. Element (k,j) is true when
 %                         the credible interval for the latent conditional
-%                         covariance between Y_j and R_k excludes zero.
+%                         covariance between R_k and Y_j excludes zero.
 %
 %                     whichReject
 %                         q-by-1 logical vector. Element k is true when at
@@ -1197,6 +1272,7 @@ function res = copulaTest(Y,R,locmis,locfull,alpha,nsamp,nburn,thin, ...
 %
 %                     samples
 %                         retained posterior draws when savesamples is true.
+%                         Rows correspond to R_k and columns to Y_j.
 %
 % More About:
 %
@@ -1237,7 +1313,8 @@ function res = copulaTest(Y,R,locmis,locfull,alpha,nsamp,nburn,thin, ...
 %        [Ymiss, R]
 %
 % given Yfull. The q-by-q block containing the conditional covariances
-% between Ymiss and R is stored.
+% between R and Ymiss is stored. Rows correspond to missingness indicators
+% and columns to partially observed outcomes, as in the CCM output.
 %
 % A zero conditional covariance is equivalent to zero conditional
 % correlation provided the conditional variances are positive. Consequently,
@@ -1342,12 +1419,12 @@ S = cov(Z,1);
 % definite before it is used in conditional Gaussian calculations.
 S = stabilizeSPD(S,ridge);
 
-% interestSamples(j,k,s) will contain retained draw s of
+% interestSamples(k,j,s) will contain retained draw s=1, 2, ..., nsamp, of
 %
-%   Cov(Z_Yj,Z_Rk | Z_Yfull),
+%   Cov(Z_Rk,Z_Yj | Z_Yfull),
 %
-% where j indexes partially observed outcomes and k indexes missingness
-% indicators.
+% where k indexes missingness indicators and j indexes partially observed
+% outcomes. This is the same orientation used by the CCM output matrices.
 interestSamples = zeros(q,q,nSaved);
 
 % Counter containing the number of posterior draws actually retained.
@@ -1517,12 +1594,19 @@ for iteration = 1:nsamp
             % observed variables.
             C22 = stabilizeSPD(C(nv+1:end,nv+1:end),ridge);
 
-            % Compute the covariance of [Ymiss,R] conditional on Yfull using
-            % the Schur complement:
+            % Compute the covariance of [Ymiss,R] conditional on Yfull 
             %
             %   Vcond = C11-C12*inv(C22)*C21.
             Vcond = C(1:nv,1:nv)- ...
                 C(1:nv,nv+1:end)/C22*C(nv+1:end,1:nv);
+            % It removes from the
+            % covariance among [Ymiss,R] the component explained through
+            % their joint dependence on the fully observed variables.
+            %
+            % Equivalently, Vcond is the covariance matrix of the residuals
+            % obtained after linearly regressing each latent variable in
+            % [Z_Ymiss,Z_R] on Z_Yfull.
+
         else
             % If no fully observed variables are present, no conditioning
             % is possible. In this case the unconditional covariance of
@@ -1530,15 +1614,15 @@ for iteration = 1:nsamp
             Vcond = C(1:nv,1:nv);
         end
 
-        % Extract the q-by-q outcome-indicator block:
+        % Extract the q-by-q indicator-outcome block:
         %
-        %   rows    1:q       correspond to Ymiss;
-        %   columns q+1:2*q   correspond to R.
+        %   rows    q+1:2*q   correspond to R;
+        %   columns 1:q       correspond to Ymiss.
         %
-        % Element (j,k) is the current posterior draw of the latent
-        % conditional covariance between outcome Y_j and indicator R_k.
+        % Element (k,j) is the current posterior draw of the latent
+        % conditional covariance between indicator R_k and outcome Y_j.
         interestSamples(:,:,saveIndex) = ...
-            Vcond(1:q,q+1:2*q);
+            Vcond(q+1:2*q,1:q);
     end
 
     % Display progress approximately every 10 percent of the MCMC run.
@@ -1553,8 +1637,8 @@ end
 %
 %             q-by-q-by-nSaved.
 %
-% Rows identify partially observed outcomes, columns identify missingness
-% indicators and pages identify retained posterior draws.
+% Rows identify missingness indicators, columns identify partially
+% observed outcomes and pages identify retained posterior draws.
 interestSamples = interestSamples(:,:,1:saveIndex);
 nSaved = saveIndex;
 
@@ -1586,28 +1670,30 @@ posteriorMean = zeros(q,q);
 % It should not be interpreted as a classical frequentist p-value.
 pvalue = ones(q,q);
 
-% Compute posterior summaries separately for every outcome-indicator pair.
-for j = 1:q
-    for k = 1:q
+% Compute posterior summaries separately for every indicator-outcome pair.
+% As in CCM, rows correspond to missingness indicators R_k and columns to
+% partially observed outcomes Y_j.
+for k = 1:q
+    for j = 1:q
 
-        % Posterior draws for the conditional covariance between outcome j
-        % and missingness indicator k.
-        draws = squeeze(interestSamples(j,k,:));
+        % Posterior draws for the conditional covariance between missingness
+        % indicator k and outcome j.
+        draws = squeeze(interestSamples(k,j,:));
 
         % Bonferroni-adjusted equal-tail credible interval and posterior
         % median.
         qq = quantile(draws,[lowerProb 0.5 upperProb]);
 
-        lower(j,k) = qq(1);
-        medianValue(j,k) = qq(2);
-        upper(j,k) = qq(3);
+        lower(k,j) = qq(1);
+        medianValue(k,j) = qq(2);
+        upper(k,j) = qq(3);
 
         % Posterior mean of the conditional covariance.
-        posteriorMean(j,k) = mean(draws);
+        posteriorMean(k,j) = mean(draws);
 
         % Two-sided posterior sign probability. Small values indicate that
         % nearly all posterior mass lies on one side of zero.
-        pvalue(j,k) = min(1, ...
+        pvalue(k,j) = min(1, ...
             2*min(mean(draws<=0),mean(draws>=0)));
     end
 end
@@ -1626,10 +1712,10 @@ if q > 1
     pvalue(1:q+1:end) = 1;
 end
 
-% Column k of rejectPairs corresponds to missingness indicator R_k.
+% Row k of rejectPairs corresponds to missingness indicator R_k.
 % Therefore, whichReject(k) is true when R_k is conditionally associated
 % with at least one other partially observed outcome.
-whichReject = any(rejectPairs,1)';
+whichReject = any(rejectPairs,2);
 
 % Store the posterior summaries and diagnostic decisions.
 res = struct;
@@ -1638,14 +1724,17 @@ res = struct;
 res.pvalue = pvalue;
 
 % For compatibility with the common output structure, stat contains the
-% posterior median conditional covariances.
+% posterior median conditional covariances. Rows correspond to missingness
+% indicators R_k and columns to partially observed outcomes Y_j.
 res.stat = medianValue;
 
 % Lower and upper credible limits. CI(:,:,1) contains lower limits and
-% CI(:,:,2) contains upper limits.
+% CI(:,:,2) contains upper limits, with rows corresponding to R_k and
+% columns to Y_j.
 res.CI = cat(3,lower,upper);
 
-% Posterior location summaries.
+% Posterior location summaries with rows corresponding to R_k and columns
+% to Y_j.
 res.posteriorMean = posteriorMean;
 res.posteriorMedian = medianValue;
 
@@ -1976,20 +2065,14 @@ switch out.method
 
     case 'cop'
 
-        % The copula output matrices are stored with:
-        %
-        %   row j    = partially observed outcome Y_j;
-        %   column k = missingness indicator R_k.
-        %
-        % Thus, out.pvalue(j,k) summarizes the posterior evidence about
-        % the latent conditional association between Y_j and R_k after
-        % conditioning on the fully observed variables.
-        %
-        % For consistency with the CCM heatmap, we transpose the matrix before
-        % plotting. Consequently, in the displayed heatmap:
+        % The copula output matrices use the same orientation as CCM:
         %
         %   row k    = missingness indicator R_k;
         %   column j = partially observed outcome Y_j.
+        %
+        % Thus, out.pvalue(k,j) summarizes the posterior evidence about
+        % the latent conditional association between R_k and Y_j after
+        % conditioning on the fully observed variables.
         %
         % A red cell in displayed row k and column j indicates posterior
         % evidence of a nonzero latent conditional association between Y_j
@@ -2003,10 +2086,10 @@ switch out.method
         % scale. Larger values receive the same green colour.
         maxPshown = 0.5;
 
-        % out.pvalue has outcomes along the rows and missingness indicators
-        % along the columns. Transpose it so that the graphical orientation
-        % agrees with the CCM heatmap.
-        values = out.pvalue';
+        % out.pvalue already has missingness indicators along the rows and
+        % partially observed outcomes along the columns, as in the CCM
+        % heatmap.
+        values = out.pvalue;
 
         % Truncate large values only for graphical purposes.
         values(values > maxPshown) = maxPshown;
@@ -2019,12 +2102,13 @@ switch out.method
         % outcomes and rows correspond to missingness indicators.
         h = heatmap(labels,labels,values);
 
-        h.XLabel = 'Partially observed outcome';
-        h.YLabel = 'Missingness indicator';
+        h.XLabel = 'Partially observed variable Y_j';
+        h.YLabel = 'Missingness indicator R_k';
 
         h.Title = sprintf([ ...
-            'Copula posterior tail probabilities; red cells indicate ' ...
-            'Bonferroni-adjusted rejection (value < %.3g)'],alphaBonf);
+            'Copula posterior tail probabilities for latent conditional ' ...
+            'associations; red indicates Bonferroni-adjusted rejection ' ...
+            '(value < %.3g)'],alphaBonf);
 
         h.ColorLimits = [0 maxPshown];
         h.CellLabelFormat = '%.3g';
