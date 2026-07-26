@@ -178,7 +178,7 @@ function out = mdMAARtest(Y, varargin)
 %                              observed variable $Y_j$, given the fully
 %                              observed variables. A small value indicates
 %                              that most posterior mass lies on one side of
-%                              zero. these quantities are posterior tail
+%                              zero. These quantities are posterior tail
 %                              probabilities, not classical frequentist
 %                              p-values. Diagonal elements are not tested.
 %
@@ -411,7 +411,6 @@ nsamp = 2000;
 nburn = 500;
 thin = 1;
 pluginthreshold = 100;
-seed = [];
 ridge = 1e-8;
 msg = true;
 plots = false;
@@ -421,7 +420,7 @@ if ~isempty(varargin)
     options = struct('method',method,'alpha',alpha,'imputed',imputed, ...
         'nimputations',nimputations,'maxiter',maxiter,'tol',tol, ...
         'nsamp',nsamp,'nburn',nburn,'thin',thin, ...
-        'pluginthreshold',pluginthreshold,'seed',seed,'ridge',ridge, ...
+        'pluginthreshold',pluginthreshold,'ridge',ridge, ...
         'msg',msg,'plots',plots,'savesamples',savesamples);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
@@ -447,7 +446,6 @@ if ~isempty(varargin)
     nburn = options.nburn;
     thin = options.thin;
     pluginthreshold = options.pluginthreshold;
-    seed = options.seed;
     ridge = options.ridge;
     msg = options.msg;
     plots = options.plots;
@@ -493,10 +491,7 @@ if ~isscalar(pluginthreshold) || pluginthreshold < 2 || ...
     error('FSDA:mdMAARtest:WrongPluginThreshold', ...
         'Option pluginthreshold must be an integer greater than 1.');
 end
-if ~isempty(seed) && (~isscalar(seed) || ~isnumeric(seed) || ~isfinite(seed))
-    error('FSDA:mdMAARtest:WrongSeed', ...
-        'Option seed must be empty or a finite numeric scalar.');
-end
+
 if ~isscalar(ridge) || ~isnumeric(ridge) || ridge < 0
     error('FSDA:mdMAARtest:WrongRidge', ...
         'Option ridge must be a nonnegative scalar.');
@@ -1419,7 +1414,7 @@ S = cov(Z,1);
 % definite before it is used in conditional Gaussian calculations.
 S = stabilizeSPD(S,ridge);
 
-% interestSamples(k,j,s) will contain retained draw s=1, 2, ..., nsamp, of
+% interestSamples(k,j,s) will contain retained draw s=1, 2, ..., nSaved, of
 %
 %   Cov(Z_Rk,Z_Yj | Z_Yfull),
 %
