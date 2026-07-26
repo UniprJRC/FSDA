@@ -30,6 +30,8 @@ function out = mdMAARtest(Y, varargin)
 %
 %  Optional input arguments:
 %
+%  Options common to all methods:
+%
 %       method : Diagnostic method. Character or string.
 %                Possible values are:
 %                'ccm'  = comparison of conditional means;
@@ -44,53 +46,6 @@ function out = mdMAARtest(Y, varargin)
 %                component tests. The default value is 0.05.
 %                Example - 'alpha',0.01
 %                Data Types - single | double
-%
-%      imputed : Completed data sets used by method 'dtmm'. Cell array or
-%                n x p x M numeric array. Each completed data set must have
-%                the same dimensions as Y and must contain no missing values.
-%                If empty, mdEM and mdImputeStochastic are used to generate
-%                the imputations. The default value is [].
-%                Example - 'imputed',{Yimp1,Yimp2,Yimp3}
-%                Data Types - cell | single | double
-%
-% nimputations : Number of stochastic imputations for method 'dtmm' when
-%                option imputed is empty. Positive integer greater than 1.
-%                The default value is 10.
-%                Example - 'nimputations',20
-%                Data Types - single | double
-%
-%      maxiter : Maximum number of iterations passed to mdEM when imputations
-%                must be generated. The default value is 100.
-%                Example - 'maxiter',200
-%                Data Types - single | double
-%
-%          tol : Convergence tolerance passed to mdEM. The default value is
-%                1e-5.
-%                Example - 'tol',1e-8
-%                Data Types - single | double
-%
-%        nsamp : Number of MCMC iterations for method 'cop'. The default
-%                value is 2000.
-%                Example - 'nsamp',5000
-%                Data Types - single | double
-%
-%        nburn : Number of initial MCMC iterations discarded for method
-%                'cop'. The default value is 500.
-%                Example - 'nburn',1000
-%                Data Types - single | double
-%
-%         thin : MCMC thinning interval for method 'cop'. The default value
-%                is 1.
-%                Example - 'thin',5
-%                Data Types - single | double
-%
-% pluginthreshold : Threshold used by the Gaussian-copula sampler. Margins
-%                having more than pluginthreshold distinct observed values
-%                use fixed normal scores, as in sbgcop. The default value is
-%                100.
-%                Example - 'pluginthreshold',50
-%                Data Types - single | double
-%
 %
 %        ridge : Nonnegative numerical regularization used only when a
 %                covariance or information matrix is nearly singular. The
@@ -139,9 +94,64 @@ function out = mdMAARtest(Y, varargin)
 %                Example - 'plots',true
 %                Data Types - logical | single | double
 %
+%  Options used only by method 'dtmm':
+%
+%      imputed : Completed data sets used by method 'dtmm'. Cell array or
+%                n x p x M numeric array. Each completed data set must have
+%                the same dimensions as Y and must contain no missing values.
+%                If empty, mdEM and mdImputeStochastic are used to generate
+%                the imputations. The default value is [].
+%                Example - 'imputed',{Yimp1,Yimp2,Yimp3}
+%                Data Types - cell | single | double
+%
+% nimputations : Number of stochastic imputations for method 'dtmm' when
+%                option imputed is empty. Positive integer greater than 1.
+%                The default value is 10.
+%                Example - 'nimputations',20
+%                Data Types - single | double
+%
+%      maxiter : Maximum number of iterations passed to mdEM when imputations
+%                must be generated and to the logistic-regression fitting
+%                algorithm . The default value is 100. This option is used
+%                just by method 'dtmm'.
+%                Example - 'maxiter',200
+%                Data Types - single | double
+%
+%          tol : Convergence tolerance passed to mdEM when imputations must
+%                be generated and to the logistic-regression fitting
+%                algorithm. The default value is 1e-5.  This option is used
+%                just by method 'dtmm'.
+%                 Example - 'tol',1e-8
+%                Data Types - single | double
+%
+%  Options used only by method 'cop':
+%
+%        niterMCMC : Number of MCMC iterations for method 'cop'. The default
+%                value is 2000.
+%                Example - 'niterMCMC',5000
+%                Data Types - single | double
+%
+%        nburnMCMC : Number of initial MCMC iterations discarded for method
+%                'cop'. The default value is 500.
+%                Example - 'nburnMCMC',1000
+%                Data Types - single | double
+%
+%         thinMCMC : MCMC thinning interval for method 'cop'. The default value
+%                is 1.
+%                Example - 'thinMCMC',5
+%                Data Types - single | double
+%
+% pluginthreshold : Threshold used by the Gaussian-copula sampler. Margins
+%                having more than pluginthreshold distinct observed values
+%                use fixed normal scores, as in sbgcop. The default value is
+%                100 (this option is used just by method 'cop').
+%                Example - 'pluginthreshold',50
+%                Data Types - single | double
+%
 %  savesamples : Save the posterior conditional-covariance draws produced by
-%                method 'cop'. Boolean. The default value is false.
-%                Example - 'savesamples',true
+%                method 'cop'. Boolean. The default value is false (this
+%                option is used just by method 'cop'). 
+%                Example - 'savesamples',true 
 %                Data Types - logical | single | double
 %
 %  Output:
@@ -361,7 +371,7 @@ function out = mdMAARtest(Y, varargin)
    for j=1:3
        Y(rand(n,1)<pr,j)=NaN;
    end
-   out = mdMAARtest(Y,'method','cop','nsamp',600,'nburn',200, ...
+   out = mdMAARtest(Y,'method','cop','niterMCMC',600,'nburnMCMC',200, ...
        'plots',true);
    disp(out.posteriorMedian)
 %}
@@ -407,19 +417,24 @@ imputed = [];
 nimputations = 10;
 maxiter = 100;
 tol = 1e-5;
-nsamp = 2000;
-nburn = 500;
-thin = 1;
+niterMCMC = 2000;
+nburnMCMC = 500;
+thinMCMC = 1;
 pluginthreshold = 100;
 ridge = 1e-8;
 msg = true;
 plots = false;
 savesamples = false;
 
+% Names of the options explicitly supplied by the user. This list is also
+% used below to identify options which are irrelevant to the selected
+% diagnostic method.
+UserOptions = {};
+
 if ~isempty(varargin)
     options = struct('method',method,'alpha',alpha,'imputed',imputed, ...
         'nimputations',nimputations,'maxiter',maxiter,'tol',tol, ...
-        'nsamp',nsamp,'nburn',nburn,'thin',thin, ...
+        'niterMCMC',niterMCMC,'nburnMCMC',nburnMCMC,'thinMCMC',thinMCMC, ...
         'pluginthreshold',pluginthreshold,'ridge',ridge, ...
         'msg',msg,'plots',plots,'savesamples',savesamples);
 
@@ -442,9 +457,9 @@ if ~isempty(varargin)
     nimputations = options.nimputations;
     maxiter = options.maxiter;
     tol = options.tol;
-    nsamp = options.nsamp;
-    nburn = options.nburn;
-    thin = options.thin;
+    niterMCMC = options.niterMCMC;
+    nburnMCMC = options.nburnMCMC;
+    thinMCMC = options.thinMCMC;
     pluginthreshold = options.pluginthreshold;
     ridge = options.ridge;
     msg = options.msg;
@@ -456,6 +471,36 @@ method = lower(char(method));
 if ~ismember(method,{'ccm','dtmm','cop'})
     error('FSDA:mdMAARtest:WrongMethod', ...
         'Option method must be ''ccm'', ''dtmm'' or ''cop''.');
+end
+
+% Warn when the user supplies options which are not used by the selected
+% diagnostic method. The warning is informative; the values are still
+% checked by the general input-validation code below.
+commonOptions = {'method','alpha','ridge','msg','plots'};
+dtmmOptions = {'imputed','nimputations','maxiter','tol'};
+copOptions = {'niterMCMC','nburnMCMC','thinMCMC','pluginthreshold','savesamples'};
+
+switch method
+    case 'ccm'
+        validMethodOptions = commonOptions;
+    case 'dtmm'
+        validMethodOptions = [commonOptions dtmmOptions];
+    case 'cop'
+        validMethodOptions = [commonOptions copOptions];
+end
+
+if ~isempty(UserOptions)
+    UserOptionsLower = cellfun(@lower,UserOptions, ...
+        'UniformOutput',false);
+    unusedMask = ~ismember(UserOptionsLower,validMethodOptions);
+    unusedOptions = UserOptions(unusedMask);
+
+    if ~isempty(unusedOptions)
+        warning('FSDA:mdMAARtest:UnusedOptions', ...
+            ['The following option(s) are not used by method ''%s'': ' ...
+            '%s.'], ...
+            method,strjoin(unusedOptions,', '));
+    end
 end
 if ~isscalar(alpha) || ~isnumeric(alpha) || alpha <= 0 || alpha >= 1
     error('FSDA:mdMAARtest:WrongAlpha', ...
@@ -474,17 +519,17 @@ if ~isscalar(tol) || tol <= 0
     error('FSDA:mdMAARtest:WrongTol', ...
         'Option tol must be a positive scalar.');
 end
-if ~isscalar(nsamp) || nsamp <= 1 || nsamp ~= floor(nsamp)
-    error('FSDA:mdMAARtest:WrongNsamp', ...
-        'Option nsamp must be an integer greater than 1.');
+if ~isscalar(niterMCMC) || niterMCMC <= 1 || niterMCMC ~= floor(niterMCMC)
+    error('FSDA:mdMAARtest:WrongniterMCMC', ...
+        'Option niterMCMC must be an integer greater than 1.');
 end
-if ~isscalar(nburn) || nburn < 0 || nburn ~= floor(nburn) || nburn >= nsamp
-    error('FSDA:mdMAARtest:WrongNburn', ...
-        'Option nburn must be a nonnegative integer smaller than nsamp.');
+if ~isscalar(nburnMCMC) || nburnMCMC < 0 || nburnMCMC ~= floor(nburnMCMC) || nburnMCMC >= niterMCMC
+    error('FSDA:mdMAARtest:WrongnburnMCMC', ...
+        'Option nburnMCMC must be a nonnegative integer smaller than niterMCMC.');
 end
-if ~isscalar(thin) || thin < 1 || thin ~= floor(thin)
+if ~isscalar(thinMCMC) || thinMCMC < 1 || thinMCMC ~= floor(thinMCMC)
     error('FSDA:mdMAARtest:WrongThin', ...
-        'Option thin must be a positive integer.');
+        'Option thinMCMC must be a positive integer.');
 end
 if ~isscalar(pluginthreshold) || pluginthreshold < 2 || ...
         pluginthreshold ~= floor(pluginthreshold)
@@ -598,11 +643,11 @@ switch method
         % Inputs passed to copulaTest:
         % Y,R,locmis,locfull identify the data and missingness structure;
         % alpha is the nominal significance level;
-        % nsamp, nburn and thin control the MCMC simulation;
+        % niterMCMC, nburnMCMC and thinMCMC control the MCMC simulation;
         % pluginthreshold selects margins treated through fixed normal scores;
         % ridge stabilizes matrix operations; savesamples controls storage;
         % msg controls progress messages.
-        res = copulaTest(Y,R,locmis,locfull,alpha,nsamp,nburn,thin, ...
+        res = copulaTest(Y,R,locmis,locfull,alpha,niterMCMC,nburnMCMC,thinMCMC, ...
             pluginthreshold,ridge,savesamples,msg);
         out = copyFields(out,res);
 end
@@ -1156,7 +1201,7 @@ p(~pos) = ex./(1+ex);
 end
 
 % -------------------------------------------------------------------------
-function res = copulaTest(Y,R,locmis,locfull,alpha,nsamp,nburn,thin, ...
+function res = copulaTest(Y,R,locmis,locfull,alpha,niterMCMC,nburnMCMC,thinMCMC, ...
     pluginthreshold,ridge,savesamples,msg)
 %copulaTest performs the semiparametric Gaussian-copula diagnostic.
 %
@@ -1185,12 +1230,12 @@ function res = copulaTest(Y,R,locmis,locfull,alpha,nsamp,nburn,thin, ...
 %   alpha           : nominal significance level used to construct the
 %                     simultaneous posterior credible intervals.
 %
-%   nsamp           : total number of MCMC iterations, including burn-in.
+%   niterMCMC           : total number of MCMC iterations, including burn-in.
 %
-%   nburn           : number of initial MCMC iterations discarded as
+%   nburnMCMC           : number of initial MCMC iterations discarded as
 %                     burn-in.
 %
-%   thin            : thinning interval. After burn-in, one posterior draw
+%   thinMCMC            : thinning interval. After burn-in, one posterior draw
 %                     is retained every thin iterations.
 %
 %   pluginthreshold : margins having more than pluginthreshold distinct
@@ -1344,7 +1389,7 @@ W = [Y(:,locmis) R Y(:,locfull)];
 % Number of posterior draws expected after removing burn-in and applying
 % thinning. The array used to store the draws is preallocated using this
 % value.
-nSaved = floor((nsamp-nburn)/thin);
+nSaved = floor((niterMCMC-nburnMCMC)/thinMCMC);
 
 % Very few retained draws generally produce unstable posterior quantiles.
 if nSaved < 20
@@ -1434,7 +1479,7 @@ S0 = eye(d);
 n0 = d+2;
 
 % Begin the Gibbs sampler.
-for iteration = 1:nsamp
+for iteration = 1:niterMCMC
 
     % Update the latent margins in random order. Random ordering avoids
     % favouring the original column order systematically at every sweep.
@@ -1561,7 +1606,7 @@ for iteration = 1:nsamp
 
     % Retain the current covariance draw only after burn-in and at the
     % requested thinning interval.
-    if iteration > nburn && mod(iteration-nburn,thin)==0
+    if iteration > nburnMCMC && mod(iteration-nburnMCMC,thinMCMC)==0
 
         saveIndex = saveIndex+1;
 
@@ -1621,10 +1666,10 @@ for iteration = 1:nsamp
     end
 
     % Display progress approximately every 10 percent of the MCMC run.
-    if msg && nsamp >= 10 && ...
-            mod(iteration,max(1,floor(nsamp/10)))==0
+    if msg && niterMCMC >= 10 && ...
+            mod(iteration,max(1,floor(niterMCMC/10)))==0
         fprintf('mdMAARtest copula sampler: %d%% completed.\n', ...
-            round(100*iteration/nsamp));
+            round(100*iteration/niterMCMC));
     end
 end
 
