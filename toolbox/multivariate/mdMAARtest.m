@@ -444,9 +444,30 @@ if ~isempty(varargin)
         error('FSDA:mdMAARtest:WrongInputOpt', ...
             'Number of supplied options is invalid. Values may be missing.');
     end
+
     if ~isempty(UserOptions)
+        % Match option names without regard to letter case and replace each
+        % recognized name by the canonical field name used in options.
+        %
+        % This step is necessary for mixed-case names such as niterMCMC,
+        % nburnMCMC and thinMCMC. For example, 'nitermcmc', 'NITERMCMC' and
+        % 'niterMCMC' are all converted to the canonical name 'niterMCMC'
+        % before validation and assignment.
+        canonicalOptionNames = fieldnames(options);
+        for iOpt = 1:numel(UserOptions)
+            match = find(strcmpi(UserOptions{iOpt}, ...
+                canonicalOptionNames),1);
+            if ~isempty(match)
+                UserOptions{iOpt} = canonicalOptionNames{match};
+                varargin{2*iOpt-1} = canonicalOptionNames{match};
+            end
+        end
+
+        % Unknown option names, which have not been canonicalized above,
+        % are detected here.
         aux.chkoptions(options,UserOptions)
     end
+
     for i = 1:2:length(varargin)
         options.(varargin{i}) = varargin{i+1};
     end
@@ -490,9 +511,10 @@ switch method
 end
 
 if ~isempty(UserOptions)
-    UserOptionsLower = cellfun(@lower,UserOptions, ...
-        'UniformOutput',false);
-    unusedMask = ~ismember(UserOptionsLower,validMethodOptions);
+    % Compare option names without regard to case. This is important for
+    % canonical mixed-case names such as niterMCMC, nburnMCMC and thinMCMC.
+    unusedMask = ~cellfun(@(name) ...
+        any(strcmpi(name,validMethodOptions)),UserOptions);
     unusedOptions = UserOptions(unusedMask);
 
     if ~isempty(unusedOptions)
