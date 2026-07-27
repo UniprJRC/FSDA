@@ -3947,7 +3947,23 @@ newlinewithFullStop=setdiff(newlinewithFullStop,exceptions);
 
 % Find all lines which terminate with symbol : or with symbol ;
 newlinewithColon=regexp(descrlong,'(?<=^\sin):\s*\r');
-newlinewithColon1=regexp(descrlong,':\s*\r');
+% newlinewithColon1=regexp(descrlong,':\s*\r');
+% newlinewithColon1=regexp(descrlong, ':[ \t]*(?:\r\n|\n|\r)', 'start');
+
+% Find all lines which terminate with symbol ":", "." or ";"
+newlinewithColon1=regexp(descrlong, ...
+    '[.;:][ \t]*(?:\r\n|\n|\r)(?:[ \t]*(?:\r\n|\n|\r))*', ...
+    'start');
+
+% [.;:]                   % full stop or semicolon or colon
+% note that inside a character class [...], the dot . loses its special
+% regex meaning therefore it is not necessary to write \.
+% [ \t]*                 % optional trailing spaces/tabs
+% (?:\r\n|\n|\r)         % newline ending the current line
+% (?:                     % start repeated empty-line pattern
+% [ \t]*             % optional spaces/tabs on empty line
+% (?:\r\n|\n|\r)     % newline ending the empty line
+% )*                      % zero or more empty lines
 
 % [authnamewithfullstop]=regexp(descrlong,'[A-Z]\.\s*\r\s*\(.{4,5}\)')+1;
 
