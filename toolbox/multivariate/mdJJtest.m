@@ -745,7 +745,6 @@ function out = mdJJtest(Y, varargin)
     rng(50)
     Y = randn(300,4);
     Y(rand(size(Y))<0.15) = NaN;
-    
     Ytable = array2table(Y,'VariableNames',{'Income','Age','Score','Balance'});
     out = mdJJtest(Ytable,'plots',true,'msg',false);
 %}
