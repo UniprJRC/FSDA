@@ -56,7 +56,7 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %                   Default is 3.
 %                 plots.minn = minimum pattern size. Positive integer. 
 %                   Missingness patterns whose frequency is less than
-%                   or equal to minn are omitted from the plot. This option is
+%                   minn are omitted from the plot. This option is
 %                   used only when plots is a structure. The default value is 1.
 %               Example - 'plots',struct('maxPatternsForBubbles',100,'fsLeft',6)
 %               Data Types - Boolean, scalar numeric or struct
