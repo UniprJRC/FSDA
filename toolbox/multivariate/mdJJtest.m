@@ -369,8 +369,8 @@ function out = mdJJtest(Y, varargin)
 %
 %  be the corresponding pattern-specific mean.
 %
-%  Hawkins' transformation begins with the pooled within-pattern covariance
-%  matrix
+%  Hawkins' transformation (Hawkins, 1981) begins with the pooled
+%  within-pattern covariance matrix
 %
 %  \[
 %      \widehat{\Sigma}_{P}
@@ -428,10 +428,14 @@ function out = mdJJtest(Y, varargin)
 %  should follow a uniform distribution on $(0,1)$ within every missingness
 %  pattern.
 %
+%
 %  Uniformity is assessed separately in each pattern using a fourth-order
-%  Neyman smooth test. Let $\phi_1,\ldots,\phi_4$ denote the first four
-%  orthonormal shifted Legendre polynomials. For pattern $r$, the statistic
-%  is
+%  Neyman smooth test (Neyman, 1937; Rayner and Best, 1989). Let
+%  $\phi_1,\ldots,\phi_4$ denote the first four orthonormal shifted
+%  Legendre polynomials. The fourth order means that the first four
+%  components of the orthonormal polynomial expansion are retained. These
+%  components detect smooth departures from uniformity in four different
+%  directions. For pattern $r$, the statistic is
 %
 %  \[
 %      N_r
@@ -444,8 +448,9 @@ function out = mdJJtest(Y, varargin)
 %      \right\}^{2}.
 %  \]
 %
-%  For a pattern containing at least  $\mathtt{usechisq}$ observations, $N_r$ is
-%  compared with a chi-square distribution having four degrees of freedom:
+%  For a pattern containing at least  $\mathtt{usechisq}$ observations,
+%  $N_r$ is compared with a chi-square distribution having four degrees of
+%  freedom:
 %
 %  \[
 %      N_r \mathrel{\dot{\sim}} \chi^2_4.
@@ -455,8 +460,10 @@ function out = mdJJtest(Y, varargin)
 %  generating nsimul samples of size $n_r$ from the uniform distribution
 %  and recomputing the Neyman statistic for each sample.
 %
-%  Let $p_r$ be the Neyman-test $p$-value obtained for pattern $r$. The
-%  pattern-specific results are combined using Fisher's statistic
+%  Let $p_r$ be the Neyman smooth-test $p$-value obtained for pattern $r$.
+%  The pattern-specific results are combined using Fisher's method
+%  (Fisher, 1932), giving the statistic
+%
 %
 %  \[
 %      H
@@ -482,9 +489,11 @@ function out = mdJJtest(Y, varargin)
 %  also applies the k-sample Anderson-Darling test. When
 %  method='nonparametric', the Anderson-Darling test is always computed.
 %
-%  The k-sample Anderson-Darling test compares the distributions of the
-%  transformed values $F_{ri}$ across the $g$ retained missingness patterns.
-%  Its null hypothesis is
+%  The k-sample Anderson-Darling test of Scholz and Stephens (1987)
+%  compares the distributions of the transformed values $F_{ri}$ across
+%  the $g$ retained missingness patterns. It extends the weighted
+%  empirical-distribution criterion introduced by Anderson and Darling
+%  (1952) to the k-sample problem. Its null hypothesis is
 %
 %  \[
 %      H_0:\mathcal{F}_1=\cdots=\mathcal{F}_g,
@@ -551,9 +560,10 @@ function out = mdJJtest(Y, varargin)
 %  the pattern-specific distributions and therefore correspond to small
 %  Anderson-Darling $p$-values.
 %
-%  The Anderson-Darling $p$-value is not computed from a chi-square or an $F$
-%  reference distribution. The implementation uses an approximation based
-%  on the five upper-tail probabilities
+%  Following the approximation of Scholz and Stephens (1987), the
+%  Anderson-Darling $p$-value is not computed from a chi-square or an $F$
+%  reference distribution. The implementation uses critical values
+%  corresponding to the five upper-tail probabilities
 %
 %  \[
 %      p_l
@@ -670,6 +680,18 @@ function out = mdJJtest(Y, varargin)
 %
 %  References:
 %
+%  Anderson, T. W. and Darling, D. A. (1952), "Asymptotic Theory of
+%  Certain Goodness-of-Fit Criteria Based on Stochastic Processes",
+%  The Annals of Mathematical Statistics, Vol. 23, No. 2, pp. 193-212.
+%  DOI: 10.1214/aoms/1177729437.
+%
+%  Fisher, R. A. (1932), "Statistical Methods for Research Workers",
+%  4th ed., Oliver and Boyd, Edinburgh.
+%
+%  Hawkins, D. M. (1981), "A New Test for Multivariate Normality and
+%  Homoscedasticity", Technometrics, Vol. 23, No. 1, pp. 105-110.
+%  DOI: 10.1080/00401706.1981.10486244.
+%
 %  Jamshidian, M. and Jalal, S. (2010), "Tests of Homoscedasticity,
 %  Normality, and Missing Completely at Random for Incomplete Multivariate
 %  Data", Psychometrika, Vol. 75, pp. 649-674.
@@ -678,6 +700,17 @@ function out = mdJJtest(Y, varargin)
 %  for Testing Homoscedasticity, Multivariate Normality, and Missing
 %  Completely at Random (MCAR)", Journal of Statistical Software, Vol. 56,
 %  No. 6, pp. 1-31. DOI: 10.18637/jss.v056.i06.
+%
+%  Neyman, J. (1937), "'Smooth' Test for Goodness of Fit",
+%  Skandinavisk Aktuarietidskrift, Vol. 20, pp. 149-199.
+%
+%  Rayner, J. C. W. and Best, D. J. (1989), "Smooth Tests of Goodness
+%  of Fit", Oxford University Press, New York.
+%
+%  Scholz, F. W. and Stephens, M. A. (1987), "K-Sample
+%  Anderson-Darling Tests", Journal of the American Statistical
+%  Association, Vol. 82, No. 399, pp. 918-924.
+%  DOI: 10.1080/01621459.1987.10478517.
 %
 %  Van Buuren, S. and Groothuis-Oudshoorn, K. (2011), "mice: Multivariate
 %  Imputation by Chained Equations in R", Journal of Statistical Software,
