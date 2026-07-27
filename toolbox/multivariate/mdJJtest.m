@@ -1088,7 +1088,6 @@ out.npatterns = g;
 out.idxPatterns = idxPatterns;
 out.removedRows = removedRows;
 out.removedPatterns = removedPatterns;
-out.removedPatternCounts = removedPatternCounts;
 out.hawkinsStat = hawkinsStat;
 out.hawkinsDF = hawkinsDF;
 out.hawkinsP = hawkinsP;
