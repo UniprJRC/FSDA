@@ -58,6 +58,11 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %                   Missingness patterns whose frequency is less than
 %                   minn are omitted from the plot. This option is
 %                   used only when plots is a structure. The default value is 1.
+%                 plots.showExplanation = if true, explanatory text about
+%                   the missing-pattern figure is displayed in the Command
+%                   Window. If false, this text is suppressed. This option
+%                   is used only when plots is a structure. The default
+%                   value is true.
 %               Example - 'plots',struct('maxPatternsForBubbles',100,'fsLeft',6)
 %               Data Types - Boolean, scalar numeric or struct
 %               Remark: top axis contains the name of the variables
@@ -335,6 +340,27 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
     mdpattern(X,'plots',plots);
 %}
 
+
+%{
+    %% Personalized plots option: show or hide the explanatory text.
+    % Capture the Command Window output and verify that the explanatory
+    % text is suppressed or displayed according to showExplanation.
+    close all
+    rng(40)
+    X = randn(200,6);
+    X(rand(size(X)) < 0.15) = NaN;
+
+    plots = struct;
+    plots.showExplanation = false;
+    txt = evalc('mdpattern(X,''plots'',plots);');
+    assert(~contains(txt,'Detailed explanation'))
+
+    close(gcf)
+    plots.showExplanation = true;
+    txt = evalc('mdpattern(X,''plots'',plots);');
+    assert(contains(txt,'Detailed explanation'))
+%}
+
 %% Beginning of code
 
 [n,p]=size(Y);
@@ -360,6 +386,9 @@ plotsdef.squareCellsMaxRatio = 3;
 % Minimum frequency of a pattern to be displayed when plots is a structure.
 % Patterns with frequency < minn are omitted from the plot.
 plotsdef.minn = 1;
+% Display explanatory text about the missing-pattern figure in the Command
+% Window. The default preserves the historical mdpattern behaviour.
+plotsdef.showExplanation = true;
 plotOptions=plotsdef;
 plotsIsStruct = false;
 
@@ -477,6 +506,16 @@ if nargin>1
             error('FSDA:mdpattern:WrongInputOpt', ...
                 'Field minn must be an integer greater or equal than 1.');
         end
+
+        if ~isscalar(plotOptions.showExplanation) || ...
+                ~(islogical(plotOptions.showExplanation) || ...
+                isnumeric(plotOptions.showExplanation)) || ...
+                ~(plotOptions.showExplanation == 0 || ...
+                plotOptions.showExplanation == 1)
+            error('FSDA:mdpattern:WrongInputOpt', ...
+                'Field showExplanation must be true, false, 0, or 1.');
+        end
+        plotOptions.showExplanation = logical(plotOptions.showExplanation);
 
     end
 end
@@ -771,27 +810,36 @@ if plots == true
         linkaxes([ax1 ax2]);
     end
 
-    disp('Detailed explanation of the "Missing data pattern figure"')
-    disp('Top axis contains the names of the variables.')
-    if isHeatmap
-        disp('In the heatmap, red cells mean missing values and blue cells mean non-missing values.')
-    else
-        disp('Big circle means missing value; smaller filled dot represents non-missing value.')
+    if plotOptions.showExplanation
+        disp('Detailed explanation of the "Missing data pattern figure"')
+        disp('Top axis contains the names of the variables.')
+        if isHeatmap
+            disp(['In the heatmap, red cells mean missing values and blue ' ...
+                'cells mean non-missing values.'])
+        else
+            disp(['Big circle means missing value; smaller filled dot ' ...
+                'represents non-missing value.'])
+        end
+        disp(['Left axis shows the number of observations for each ' ...
+            'displayed pattern.'])
+        if plotsIsStruct
+            nDisplayed = sum(YfinPlot(1:end-1,1));
+            nOmittedPatterns = sum(~keepPattern);
+            nOmittedRows = n - nDisplayed;
+            fprintf(['Only patterns with frequency greater than ' ...
+                'plots.minn=%d are shown. %d patterns corresponding to ' ...
+                '%d rows have been omitted.\n'], ...
+                plotOptions.minn,nOmittedPatterns,nOmittedRows);
+            fprintf(['The displayed pattern frequencies sum to %d ' ...
+                'rows.\n'],nDisplayed);
+        else
+            disp(['The sum of the numbers on the left axis is n, the ' ...
+                'total number of rows.'])
+        end
+        disp('Right axis counts the variables with missing values.')
+        disp(['The number of missing values for each variable is shown ' ...
+            'on the bottom axis.'])
     end
-    disp('Left axis shows the number of observations for each displayed pattern.')
-    if plotsIsStruct
-        nDisplayed = sum(YfinPlot(1:end-1,1));
-        nOmittedPatterns = sum(~keepPattern);
-        nOmittedRows = n - nDisplayed;
-        fprintf(['Only patterns with frequency greater than plots.minn=%d are shown. ' ...
-            '%d patterns corresponding to %d rows have been omitted.\n'], ...
-            plotOptions.minn,nOmittedPatterns,nOmittedRows);
-        fprintf('The displayed pattern frequencies sum to %d rows.\n',nDisplayed);
-    else
-        disp('The sum of the numbers on the left axis is n, the total number of rows.')
-    end
-    disp('Right axis counts the variables with missing values.')
-    disp('The number of missing values for each variable is shown on the bottom axis.')
 
 end
 
