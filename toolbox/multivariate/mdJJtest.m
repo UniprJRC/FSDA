@@ -144,15 +144,31 @@ function out = mdJJtest(Y, varargin)
 %                     from the final decision, which is based on the median
 %                     Anderson-Darling p-value when that branch is computed.
 %
-%                  2) A figure showing the retained missingness-pattern
-%                     matrix. Rows correspond to retained missingness
-%                     patterns and columns to variables. Red cells denote
-%                     missing entries and blue cells denote observed
-%                     entries. Each row label reports the pattern number
-%                     and its frequency.
+%                  2) A graphical representation of the missingness
+%                     patterns retained for the MCAR test. Rows correspond
+%                     to retained missingness patterns and columns to
+%                     variables.
 %
-%                     Patterns containing fewer than minn observations are
-%                     not displayed.
+%                     The graphical representation is selected
+%                     automatically by mdpattern. For a moderate number of
+%                     patterns, a balloon plot is used: large circles denote
+%                     missing entries and small filled dots denote observed
+%                     entries. When the number of patterns is large, a
+%                     heatmap is used, in which red cells denote missing
+%                     entries and blue cells denote observed entries.
+%
+%                     The left axis reports the frequency of each displayed
+%                     pattern, while the right axis reports the number of
+%                     missing variables in that pattern. Variable names are
+%                     shown on the top axis and the number of missing
+%                     entries for each variable is shown on the bottom
+%                     axis.
+%
+%                     Observations belonging to patterns containing fewer
+%                     than minn observations are excluded before the graph
+%                     is constructed. Consequently, the displayed
+%                     frequencies and missing-value totals refer only to
+%                     observations retained for the MCAR test.
 %
 %                  Setting plots to false suppresses all graphical output
 %                  but does not affect the numerical results returned in
@@ -292,7 +308,7 @@ function out = mdJJtest(Y, varargin)
 %                              supplied;
 %          out.details       = cell array with detailed results for each
 %                              completed data set;
-%          out.interpretation = concise interpretation of the test.
+%          out.interpretation = concise interpretation of the test;
 %          out.minn          = minimum retained pattern size. Missingness
 %                              patterns containing fewer than
 %                              $\mathtt{out.minn}$ observations are removed
@@ -578,10 +594,10 @@ function out = mdJJtest(Y, varargin)
 %      \frac{1}{1+\exp(c)}.
 %  \]
 %
-%  Therefore, $\mathtt{out.ADpvalue(m)}$ is the approximate Anderson-Darling p-value
-%  obtained from the completed data set $m$. A small value indicates that the
-%  distributions of the Hawkins-transformed quantities differ across the
-%  retained missingness patterns.
+%  Therefore, $\mathtt{out.ADpvalue}(m)$ is the approximate
+%  Anderson-Darling p-value obtained from completed data set $m$. A small
+%  value indicates that the distributions of the Hawkins-transformed
+%  quantities differ across the retained missingness patterns.
 %
 %  Because the calculation uses spline interpolation, and may use spline
 %  extrapolation when $T_{g,n}$ lies outside the tabulated range, very small
@@ -724,6 +740,16 @@ function out = mdJJtest(Y, varargin)
    out = mdJJtest(Y,'imputed',Yimp,'method','hawkins');
 %}
 
+%{
+    % Example where input is a table.
+    rng(50)
+    Y = randn(300,4);
+    Y(rand(size(Y))<0.15) = NaN;
+    
+    Ytable = array2table(Y,'VariableNames',{'Income','Age','Score','Balance'});
+    out = mdJJtest(Ytable,'plots',true,'msg',false);
+%}
+
 %% Beginning of code
 
 % The computational workflow is:
@@ -746,9 +772,11 @@ if nargin < 1
         'At least one input argument is required.');
 end
 
-% Convert a table to its numeric contents. The test uses only the values,
-% and therefore row names and variable names are not needed internally.
+% Preserve table variable names for graphical output. The numerical
+% calculations use only the table contents.
+varNames = [];
 if istable(Y)
+    varNames = Y.Properties.VariableNames;
     Y = Y{:,:};
 end
 
@@ -899,14 +927,20 @@ if ~isscalar(ridge) || ~isnumeric(ridge) || ridge < 0
         'Option ''ridge'' must be a nonnegative scalar.');
 end
 
-if ~(islogical(msg) || (isnumeric(msg) && isscalar(msg)))
+if ~isscalar(msg) || ...
+        ~(islogical(msg) || isnumeric(msg)) || ...
+        ~(msg == 0 || msg == 1)
     error('FSDA:mdJJtest:WrongMsg', ...
-        'Option ''msg'' must be a logical or numeric scalar.');
+        'Option ''msg'' must be true, false, 0, or 1.');
 end
-if ~(islogical(plots) || (isnumeric(plots) && isscalar(plots)))
+
+if ~isscalar(plots) || ...
+        ~(islogical(plots) || isnumeric(plots)) || ...
+        ~(plots == 0 || plots == 1)
     error('FSDA:mdJJtest:WrongPlots', ...
-        'Option ''plots'' must be a logical or numeric scalar.');
+        'Option ''plots'' must be true, false, 0, or 1.');
 end
+
 msg = logical(msg);
 plots = logical(plots);
 
@@ -948,7 +982,7 @@ end
 removePattern = countsOriginal < minn;
 removedRows = removePattern(idxPatternsOriginal);
 removedPatterns = patternsOriginal(removePattern,:);
-removedPatternCounts = countsOriginal(removePattern);
+% removedPatternCounts = countsOriginal(removePattern);
 
 if all(removedRows)
     error('FSDA:mdJJtest:NoRows', ...
@@ -1103,9 +1137,8 @@ if msg
 end
 
 if plots
-    plotResults(out)
+    plotResults(out,Y,varNames)
 end
-
 end
 
 % -------------------------------------------------------------------------
@@ -1553,13 +1586,16 @@ fprintf(['Caution: the procedure does not distinguish MCAR from MNAR; ' ...
     'a nonsignificant result does not rule out MNAR.\n\n'])
 end
 
+
 % -------------------------------------------------------------------------
-function plotResults(out)
+function plotResults(out,Y,varNames)
 %plotResults Display p-value bar charts and retained patterns.
 %
-% The first figure summarizes the variation of p-values across imputations.
-% The second figure displays the retained missingness patterns, with one row
-% per pattern and one column per variable.
+% The first figure summarizes the variation of p-values across completed
+% data sets. The second figure displays the retained missingness patterns.
+% The representation is selected automatically by mdpattern: a balloon
+% plot is used for a moderate number of patterns, while a heatmap is used
+% when the number of patterns is large.
 
 ntests = (~isempty(out.hawkinsP))+(~isempty(out.ADpvalue));
 
@@ -1598,28 +1634,29 @@ if ntests>0
     end
 end
 
-figure('Name','Retained missingness patterns','Color','w')
 
-% out.patterns uses true for missing. The logical negation is plotted so that
-% caxis value 0 denotes missing and value 1 denotes observed, matching the
-% colourbar labels below.
-imagesc(~out.patterns)
-colormap([0.85 0.25 0.20; 0.20 0.50 0.80])
-caxis([0 1])
-cb = colorbar;
-cb.Ticks = [0 1];
-cb.TickLabels = {'Missing','Observed'};
-xlabel('Variable')
-ylabel('Missingness pattern')
-xticks(1:out.p)
-varnames=cellstr("Y"+(1:out.p));
-xticklabels(varnames)
-yticks(1:size(out.patterns,1))
-labels = arrayfun(@(j) sprintf('%d (n=%d)',j, ...
-    out.patternInfo.Frequency(j)),1:size(out.patterns,1), ...
-    'UniformOutput',false);
-yticklabels(labels)
-title('Patterns retained for the MCAR test')
+% Display the missingness patterns retained for the MCAR test. Rows
+% belonging to sparse patterns have already been identified in
+% out.removedRows and are excluded before calling mdpattern. Consequently,
+% the pattern frequencies and the per-variable missing-value totals shown
+% in the figure refer to the observations actually used by the test.
+Yretained = Y(~out.removedRows,:);
+
+figure('Color','w')
+
+% Let mdpattern choose automatically between the balloon plot and the
+% heatmap. Suppress the explanatory text normally displayed in the
+% Command Window.
+plo = struct;
+plo.showExplanation = false;
+
+if isempty(varNames)
+    mdpattern(Yretained,'plots',plo);
+else
+    mdpattern(Yretained,'Lc',varNames,'plots',plo);
+end
+set(gcf,'Name','Retained missingness patterns')
+
 end
 
 % -------------------------------------------------------------------------
