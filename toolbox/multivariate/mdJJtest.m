@@ -3,10 +3,15 @@ function out = mdJJtest(Y, varargin)
 %
 %<a href="matlab: docsearchFS('mdJJtest')">Link to the help function</a>
 %
-%  mdJJtest implements the procedure of Jamshidian and Jalal (2010) for
-%  testing the Missing Completely At Random (MCAR) assumption. The testing
-%  backend follows the implementation of function mcar in the R package
-%  mice. The test is intended for continuous variables.
+%  mdJJtest implements the diagnostic framework proposed by Jamshidian and
+%  Jalal (2010). The Hawkins, Neyman and k-sample Anderson-Darling
+%  calculations follow the modern reimplementation in function mcar of the
+%  R package mice, which is itself based on TestMCARNormality from the
+%  MissMech package. The present function is not a line-by-line reproduction
+%  of MissMech: it uses FSDA joint-normal stochastic imputation, supports
+%  multiple user-supplied completed data sets, reports median results across
+%  imputations and includes additional numerical regularization.
+%
 %
 %  Required input arguments:
 %
@@ -33,9 +38,11 @@ function out = mdJJtest(Y, varargin)
 %                  Example - 'nimputations',10
 %                  Data Types - double | single
 %
-%       minn :     Minimum pattern size. Positive integer greater than 1.
-%                  Missingness patterns whose frequency is less than 
-%                  minn are removed. The default value is 6.
+%       minn :     Minimum retained pattern size. Integer greater than or
+%                  equal to 2. Missingness patterns containing fewer than
+%                  minn observations are removed. Therefore, every retained
+%                  pattern contains at least minn observations.
+%                  The default value is 6.
 %                  Example - 'minn',10
 %                  Data Types - double | single
 %
@@ -96,10 +103,61 @@ function out = mdJJtest(Y, varargin)
 %                  Example - 'msg',false
 %                  Data Types - logical | double
 %
-%      plots :     Plotting flag. Boolean.
-%                  If true, the function displays the p-value histograms
-%                  and the retained missingness-pattern matrix.
-%                  The default value is false.
+%      plots :     Produce graphical summaries of the diagnostic results.
+%                  Boolean. The default value is false.
+%
+%                  If plots is true, the function creates:
+%
+%                  1) A figure containing bar charts of the available
+%                     imputation-specific p-values.
+%
+%                     If Hawkins' test is computed, the first bar chart
+%                     displays the elements of
+%                     $\mathtt{out.hawkinsP}$. Bar $m$ is the Hawkins
+%                     p-value obtained from completed data set $m$. A
+%                     horizontal reference line is drawn at alpha. The
+%                     title reports the median Hawkins p-value, which is
+%                     the value used as the main Hawkins result, together
+%                     with the percentage of imputation-specific p-values
+%                     smaller than alpha.
+%
+%                     If the Anderson-Darling test is computed, a second
+%                     bar chart displays the elements of
+%                     $\mathtt{out.ADpvalue}$. Bar $m$ is the
+%                     Anderson-Darling p-value obtained from completed data
+%                     set $m$. A horizontal reference line is drawn at
+%                     alpha. The title reports the median Anderson-Darling
+%                     p-value, which is used as the main result when the
+%                     Anderson-Darling branch is selected, together with
+%                     the percentage of imputation-specific p-values
+%                     smaller than alpha.
+%
+%                     When both tests are available, the two bar charts are
+%                     shown in separate panels of the same figure. The
+%                     horizontal axis identifies the completed data sets,
+%                     while the vertical axis shows the corresponding
+%                     p-values.
+%
+%                     Under method='auto', the Anderson-Darling test is
+%                     activated when at least one Hawkins p-value is smaller
+%                     than alpha. This activation criterion is distinct
+%                     from the final decision, which is based on the median
+%                     Anderson-Darling p-value when that branch is computed.
+%
+%                  2) A figure showing the retained missingness-pattern
+%                     matrix. Rows correspond to retained missingness
+%                     patterns and columns to variables. Red cells denote
+%                     missing entries and blue cells denote observed
+%                     entries. Each row label reports the pattern number
+%                     and its frequency.
+%
+%                     Patterns containing fewer than minn observations are
+%                     not displayed.
+%
+%                  Setting plots to false suppresses all graphical output
+%                  but does not affect the numerical results returned in
+%                  out.
+%
 %                  Example - 'plots',true
 %                  Data Types - logical | double
 %
@@ -107,10 +165,99 @@ function out = mdJJtest(Y, varargin)
 %
 %    out :         Structure containing the following fields:
 %
-%          out.stat          = main test statistic. With multiple
-%                              imputations, this is the median statistic;
-%          out.pvalue        = main p-value. With multiple imputations, this
-%                              is the median p-value;
+%          out.stat          = main test statistic selected by the chosen
+%                              method.
+%
+%                              If method='hawkins', or if method='auto' and
+%                              the Anderson-Darling branch is not activated,
+%                              out.stat is the median of the
+%                              imputation-specific combined Hawkins
+%                              statistics stored in
+%                              $\mathtt{out.hawkinsStat}$:
+%
+%                              \[
+%                                  \mathtt{out.stat}
+%                                  =
+%                                  \mathrm{median}
+%                                  \left\{
+%                                  H^{(1)},\ldots,H^{(M)}
+%                                  \right\}.
+%                              \]
+%
+%                              Here, $H^{(m)}$ is Fisher's combined Hawkins
+%                              statistic for completed data set $m$.
+%
+%                              If method='nonparametric', or if method='auto'
+%                              and the Anderson-Darling branch is activated,
+%                              out.stat is the median of the
+%                              imputation-specific Anderson-Darling
+%                              statistics stored in $\mathtt{out.ADstat}$:
+%
+%                              \[
+%                                  \mathtt{out.stat}
+%                                  =
+%                                  \mathrm{median}
+%                                  \left\{
+%                                  A^{2(1)}_{g,n},\ldots,
+%                                  A^{2(M)}_{g,n}
+%                                  \right\}.
+%                              \]
+%
+%                              Thus, out.stat is a descriptive median across
+%                              completed data sets; it is not obtained using
+%                              Rubin's rules or another formal
+%                              multiple-imputation pooling procedure.
+%
+%          out.pvalue        = main p-value associated with out.stat.
+%
+%                              If the Hawkins branch supplies the main
+%                              result, out.pvalue is the median of the
+%                              imputation-specific Hawkins p-values stored
+%                              in $\mathtt{out.hawkinsP}$:
+%
+%                              \[
+%                                  \mathtt{out.pvalue}
+%                                  =
+%                                  \mathrm{median}
+%                                  \left\{
+%                                  p_{\mathrm{H}}^{(1)},\ldots,
+%                                  p_{\mathrm{H}}^{(M)}
+%                                  \right\}.
+%                              \]
+%
+%                              If the Anderson-Darling branch supplies the
+%                              main result, out.pvalue is the median of the
+%                              imputation-specific Anderson-Darling p-values
+%                              stored in $\mathtt{out.ADpvalue}$:
+%
+%                              \[
+%                                  \mathtt{out.pvalue}
+%                                  =
+%                                  \mathrm{median}
+%                                  \left\{
+%                                  p_{\mathrm{AD}}^{(1)},\ldots,
+%                                  p_{\mathrm{AD}}^{(M)}
+%                                  \right\}.
+%                              \]
+%
+%                              Under method='auto', the Anderson-Darling
+%                              branch is activated when at least one element
+%                              of $\mathtt{out.hawkinsP}$ is smaller than
+%                              alpha. Once this branch is activated,
+%                              out.stat and out.pvalue are based on the
+%                              Anderson-Darling results, not on the Hawkins
+%                              medians.
+%
+%                              The comparison of out.pvalue with alpha gives
+%                              the reported decision. The complete vectors
+%                              $\mathtt{out.hawkinsP}$ and
+%                              $\mathtt{out.ADpvalue}$ should also be
+%                              inspected because they show the variability
+%                              of the results across completed data sets.
+%
+%                              The reported median p-value is a descriptive
+%                              summary and is not a formally pooled
+%                              multiple-imputation p-value.
 %          out.df            = degrees of freedom of the main test. This is
 %                              empty for the Anderson-Darling test;
 %          out.method        = method used;
@@ -146,29 +293,362 @@ function out = mdJJtest(Y, varargin)
 %          out.details       = cell array with detailed results for each
 %                              completed data set;
 %          out.interpretation = concise interpretation of the test.
+%          out.minn          = minimum retained pattern size. Missingness
+%                              patterns containing fewer than
+%                              $\mathtt{out.minn}$ observations are removed
+%                              before the test is computed;
+%
+%          out.nsimul        = number of Monte Carlo replications used to
+%                              approximate the null distribution of the
+%                              fourth-order Neyman smooth statistic for
+%                              patterns containing fewer than
+%                              $\mathtt{out.usechisq}$ observations;
+%
+%          out.usechisq      = pattern-size threshold for the Neyman
+%                              uniformity test. For a pattern containing at
+%                              least $\mathtt{out.usechisq}$ observations,
+%                              the asymptotic chi-square distribution with
+%                              four degrees of freedom is used. For smaller
+%                              patterns, Monte Carlo calibration based on
+%                              $\mathtt{out.nsimul}$ replications is used;
+%
+%          out.nimputations  = number $M$ of completed data sets analysed.
+%                              This is equal to the number of stochastic
+%                              imputations generated internally when
+%                              imputed is empty, or to the number of
+%                              completed data sets supplied through
+%                              imputed;
+%
+%          out.n             = number of observations in the original input
+%                              data set, before removing observations
+%                              belonging to sparse missingness patterns;
+%
+%          out.nused         = number of observations retained and used in
+%                              the test after removing observations
+%                              belonging to missingness patterns containing
+%                              fewer than $\mathtt{out.minn}$
+%                              observations;
+%
+%          out.p             = number of variables in the input data set;
+%
 %
 %  More About:
 %
-%  The procedure first completes the data and then divides each completed
-%  data set into groups according to the missingness patterns in the
-%  original data. Hawkins' transformation produces, within each pattern,
-%  values which should be uniformly distributed when multivariate
-%  normality and covariance homogeneity hold. Uniformity is assessed by a
-%  fourth-order Neyman smooth test. Pattern-specific p-values are combined
-%  by Fisher's method.
+%  The Jamshidian-Jalal procedure assesses the MCAR assumption by comparing
+%  observations belonging to different missingness patterns. Because the
+%  test requires complete vectors, it is applied separately to each
+%  completed data set. The missingness-pattern groups are always defined
+%  using the original incomplete data.
 %
-%  If method='auto' and Hawkins' test is significant, the k-sample
-%  Anderson-Darling rank test is applied to distinguish a departure caused
-%  by nonnormality from evidence against MCAR. The procedure only addresses
-%  the MCAR-versus-MAR framework. It cannot distinguish MCAR from MNAR, and
-%  a nonsignificant result does not rule out MNAR.
+%  Let a retained completed data set contain $n$ observations, $p$
+%  variables and $g$ missingness patterns. For pattern $r$, let $n_r$ be its
+%  frequency, let $Y_{ri}$ denote completed observation $i$ in that pattern,
+%  and let
 %
-%  When imputed is empty, this function estimates location and covariance
-%  by mdEM and generates stochastic completions using
+%  \[
+%      \overline{Y}_r
+%      =
+%      \frac{1}{n_r}\sum_{i=1}^{n_r}Y_{ri}
+%  \]
+%
+%  be the corresponding pattern-specific mean.
+%
+%  Hawkins' transformation begins with the pooled within-pattern covariance
+%  matrix
+%
+%  \[
+%      \widehat{\Sigma}_{P}
+%      =
+%      \frac{1}{n-g}
+%      \sum_{r=1}^{g}
+%      \sum_{i=1}^{n_r}
+%      (Y_{ri}-\overline{Y}_r)
+%      (Y_{ri}-\overline{Y}_r)^{\mathsf T}.
+%  \]
+%
+%  Thus, variation between the pattern-specific means is removed before the
+%  common covariance matrix is estimated. Under MCAR and multivariate
+%  normality, the covariance matrices of the pattern groups should be
+%  homogeneous.
+%
+%  For observation $i$ in pattern $r$, the squared Mahalanobis distance from
+%  the pattern mean is
+%
+%  \[
+%      d_{ri}
+%      =
+%      (Y_{ri}-\overline{Y}_r)^{\mathsf T}
+%      \widehat{\Sigma}_{P}^{-1}
+%      (Y_{ri}-\overline{Y}_r).
+%  \]
+%
+%  Define
+%
+%  \[
+%      h_{ri}=n_r d_{ri}.
+%  \]
+%
+%  Hawkins' transformation is then
+%
+%  \[
+%      F_{ri}
+%      =
+%      \frac{(n-g-p)h_{ri}}
+%      {p\left\{(n_r-1)(n-g)-h_{ri}\right\}}.
+%  \]
+%
+%  Under multivariate normality and equality of the covariance matrices
+%  across missingness patterns, $F_{ri}$ has an $F$ distribution with $p$
+%  and $n-g-p$ degrees of freedom. Consequently, the upper-tail probability
+%
+%  \[
+%      A_{ri}
+%      =
+%      \Pr\left\{
+%      F_{p,n-g-p}\geq F_{ri}
+%      \right\}
+%  \]
+%
+%  should follow a uniform distribution on $(0,1)$ within every missingness
+%  pattern.
+%
+%  Uniformity is assessed separately in each pattern using a fourth-order
+%  Neyman smooth test. Let $\phi_1,\ldots,\phi_4$ denote the first four
+%  orthonormal shifted Legendre polynomials. For pattern $r$, the statistic
+%  is
+%
+%  \[
+%      N_r
+%      =
+%      \frac{1}{n_r}
+%      \sum_{\ell=1}^{4}
+%      \left\{
+%      \sum_{i=1}^{n_r}
+%      \phi_{\ell}(A_{ri})
+%      \right\}^{2}.
+%  \]
+%
+%  For a pattern containing at least  $\mathtt{usechisq}$ observations, $N_r$ is
+%  compared with a chi-square distribution having four degrees of freedom:
+%
+%  \[
+%      N_r \mathrel{\dot{\sim}} \chi^2_4.
+%  \]
+%
+%  For smaller patterns, the reference distribution is approximated by
+%  generating nsimul samples of size $n_r$ from the uniform distribution
+%  and recomputing the Neyman statistic for each sample.
+%
+%  Let $p_r$ be the Neyman-test $p$-value obtained for pattern $r$. The
+%  pattern-specific results are combined using Fisher's statistic
+%
+%  \[
+%      H
+%      =
+%      -2\sum_{r=1}^{g}\log(p_r).
+%  \]
+%
+%  Under the joint null hypothesis,
+%
+%  \[
+%      H \mathrel{\dot{\sim}} \chi^2_{2g}.
+%  \]
+%
+%  A small combined Hawkins $p$-value indicates that at least one pattern
+%  departs from the expected uniform behaviour. Such a rejection can be
+%  caused either by covariance heterogeneity, which provides evidence
+%  against MCAR under the assumptions of the procedure, or by departure
+%  from multivariate normality.
+%
+%  When method='hawkins', only this combined Hawkins test is reported. When
+%  method='auto', Hawkins' test is computed first. If at least one
+%  imputation-specific Hawkins p-value is smaller than alpha, the function
+%  also applies the k-sample Anderson-Darling test. When
+%  method='nonparametric', the Anderson-Darling test is always computed.
+%
+%  The k-sample Anderson-Darling test compares the distributions of the
+%  transformed values $F_{ri}$ across the $g$ retained missingness patterns.
+%  Its null hypothesis is
+%
+%  \[
+%      H_0:\mathcal{F}_1=\cdots=\mathcal{F}_g,
+%  \]
+%
+%  where $\mathcal{F}_r$ denotes the distribution of $F_{ri}$ in pattern
+%  $r$. Under MCAR, these pattern-specific distributions should be equal.
+%
+%  Let
+%
+%  \[
+%      z_1<\cdots<z_L
+%  \]
+%
+%  denote the distinct ordered values in the pooled sample of transformed
+%  observations, excluding the largest pooled value. For each $z_l$, let
+%  $h_l$ be its multiplicity in the pooled sample, let $H_l$ be the number
+%  of pooled observations not greater than $z_l$, and let $M_{rl}$ be the
+%  number of observations from pattern $r$ not greater than $z_l$.
+%
+%  The contribution of pattern $r$ to the Anderson-Darling statistic is
+%
+%  \[
+%      A_r
+%      =
+%      \frac{1}{n_r}
+%      \sum_{l=1}^{L}
+%      h_l
+%      \frac{
+%      \left(nM_{rl}-n_rH_l\right)^2
+%      }{
+%      H_l(n-H_l)
+%      }.
+%  \]
+%
+%  The complete k-sample statistic is
+%
+%  \[
+%      A^2_{g,n}
+%      =
+%      \frac{1}{n}
+%      \sum_{r=1}^{g}A_r.
+%  \]
+%
+%  The denominator $H_l(n-H_l)$ gives relatively high weight to
+%  distributional differences occurring in the tails. The multiplicities
+%  $h_l$ provide an adjustment for tied transformed values.
+%
+%  Under the null hypothesis, the expected value of $A^2_{g,n}$ is
+%  approximately $g-1$. The function computes its finite-sample variance,
+%  denoted by $\sigma^2_{g,n}$, and forms the standardized statistic
+%
+%  \[
+%      T_{g,n}
+%      =
+%      \frac{
+%      A^2_{g,n}-(g-1)
+%      }{
+%      \sqrt{\sigma^2_{g,n}}
+%      }.
+%  \]
+%
+%  Large positive values of $T_{g,n}$ indicate stronger differences among
+%  the pattern-specific distributions and therefore correspond to small
+%  Anderson-Darling $p$-values.
+%
+%  The Anderson-Darling $p$-value is not computed from a chi-square or an $F$
+%  reference distribution. The implementation uses an approximation based
+%  on the five upper-tail probabilities
+%
+%  \[
+%      p_l
+%      \in
+%      \{0.25,0.10,0.05,0.025,0.01\}.
+%  \]
+%
+%  For each probability $p_l$, the corresponding critical value is
+%  approximated as a function of the number of retained patterns:
+%
+%  \[
+%      q_l(g)
+%      =
+%      b_{0l}
+%      +
+%      \frac{b_{1l}}{\sqrt{g-1}}
+%      +
+%      \frac{b_{2l}}{g-1}.
+%  \]
+%
+%  The tabulated probabilities are transformed to log-odds:
+%
+%  \[
+%      c_l
+%      =
+%      \log\left(
+%      \frac{1-p_l}{p_l}
+%      \right).
+%  \]
+%
+%  A cubic spline interpolates the value $c$ corresponding to the observed
+%  standardized statistic $T_{g,n}$. The approximate upper-tail probability
+%  is then
+%
+%  \[
+%      p_{\mathrm{AD}}
+%      =
+%      \frac{1}{1+\exp(c)}.
+%  \]
+%
+%  Therefore, $\mathtt{out.ADpvalue(m)}$ is the approximate Anderson-Darling p-value
+%  obtained from the completed data set $m$. A small value indicates that the
+%  distributions of the Hawkins-transformed quantities differ across the
+%  retained missingness patterns.
+%
+%  Because the calculation uses spline interpolation, and may use spline
+%  extrapolation when $T_{g,n}$ lies outside the tabulated range, very small
+%  or very large Anderson-Darling p-values should be interpreted as
+%  approximate tail probabilities.
+%
+%  The k-sample Anderson-Darling test is distribution free and is used to
+%  help distinguish a Hawkins rejection caused mainly by nonnormality from a
+%  rejection caused by differences among the missingness-pattern
+%  distributions. In the automatic procedure, a significant
+%  Anderson-Darling result provides evidence against MCAR within the
+%  MCAR-versus-MAR framework. A nonsignificant Anderson-Darling result
+%  following a significant Hawkins test suggests that nonnormality is the
+%  more plausible explanation.
+%
+%  When $M$ completed data sets are analysed, the entire procedure is
+%  repeated separately for each imputation. The imputation-specific
+%  statistics and p-values are retained in  $\mathtt{out.hawkinsStat}$,
+%   $\mathtt{out.hawkinsP}$,  $\mathtt{out.ADstat}$ and
+%   $\mathtt{out.ADpvalue}$.
+%
+%  The main reported statistic and $p$-value are the medians of the
+%  imputation-specific quantities associated with the selected branch:
+%
+%  \[
+%      T_{\mathrm{reported}}
+%      =
+%      \mathop{\mathrm{median}}_{m=1,\ldots, M}
+%      T^{(m)},
+%      \qquad
+%      p_{\mathrm{reported}}
+%      =
+%      \mathop{\mathrm{median}}_{m=1,\ldots, M}
+%      p^{(m)}.
+%  \]
+%
+%  In particular, when the Anderson-Darling branch supplies the main
+%  result,
+%
+%  \[
+%      \mathtt{out.pvalue}
+%      =
+%      \mathop{\mathrm{median}}
+%      \left\{
+%      p_{\mathrm{AD}}^{(1)},\ldots,
+%      p_{\mathrm{AD}}^{(M)}
+%      \right\}.
+%  \]
+%
+%  This median is a descriptive summary across imputations. It is not a
+%  Rubin-rules or Meng-Rubin pooled p-value. The complete vectors of
+%  imputation-specific p-values should therefore also be examined.
+%
+%  Option nsimul affects only the Monte Carlo calibration of the
+%  pattern-specific Neyman tests in the Hawkins branch. It does not affect
+%  the Anderson-Darling p-values.
+%
+%  When imputed is empty, mdJJtest estimates location and covariance using
+%  mdEM and generates stochastic completed data sets using
 %  mdImputeStochastic. This is a joint multivariate-normal imputation and is
 %  not identical to the default chained normal-regression imputation used
-%  by mice::mcar. To compare MATLAB and R using exactly the same completed
-%  data sets, supply them through option imputed.
+%  by mice::mcar. To compare the MATLAB and R implementations using exactly
+%  the same completed data sets, supply them through option imputed.
+%
+%  The procedure addresses the MCAR-versus-MAR framework. It cannot
+%  distinguish MCAR from MNAR. Consequently, a nonsignificant result does
+%  not establish MCAR and does not rule out an MNAR mechanism.
 %
 %  See also: mdEM, mdImputeStochastic, mdLittleTest, mdMCARtest
 %
@@ -178,9 +658,15 @@ function out = mdJJtest(Y, varargin)
 %  Normality, and Missing Completely at Random for Incomplete Multivariate
 %  Data", Psychometrika, Vol. 75, pp. 649-674.
 %
+%  Jamshidian, M., Jalal, S. and Jansen, C. (2014), "MissMech: An R Package
+%  for Testing Homoscedasticity, Multivariate Normality, and Missing
+%  Completely at Random (MCAR)", Journal of Statistical Software, Vol. 56,
+%  No. 6, pp. 1-31. DOI: 10.18637/jss.v056.i06.
+%
 %  Van Buuren, S. and Groothuis-Oudshoorn, K. (2011), "mice: Multivariate
 %  Imputation by Chained Equations in R", Journal of Statistical Software,
-%  Vol. 45, pp. 1-67.
+%  Vol. 45, No. 3, pp. 1-67. DOI: 10.18637/jss.v045.i03.
+%
 %
 % Copyright 2008-2026.
 % Written by FSDA team
@@ -240,13 +726,28 @@ function out = mdJJtest(Y, varargin)
 
 %% Beginning of code
 
+% The computational workflow is:
+%
+%   1. validate the incomplete data and the optional arguments;
+%   2. identify the missingness patterns in the original data;
+%   3. generate or validate one or more completed data sets;
+%   4. remove patterns that are too sparse for reliable inference;
+%   5. compute Hawkins' test on every completed data set;
+%   6. when requested, compute the k-sample Anderson-Darling test;
+%   7. summarize the imputation-specific results and construct the output.
+%
+% The missingness patterns are always determined from the original
+% incomplete matrix Y. Imputed values are used only to evaluate the test
+% statistics within those fixed pattern groups.
+
 % Input parameters checking
 if nargin < 1
     error('FSDA:mdJJtest:TooFewInputs', ...
         'At least one input argument is required.');
 end
 
-% Store variable names before transforming a table into a numeric matrix.
+% Convert a table to its numeric contents. The test uses only the values,
+% and therefore row names and variable names are not needed internally.
 if istable(Y)
     Y = Y{:,:};
 end
@@ -256,6 +757,8 @@ if ~ismatrix(Y) || ~isnumeric(Y)
         'Input argument Y must be a numeric matrix or a numeric table.');
 end
 
+% Work in double precision because covariance calculations, matrix
+% factorizations and distribution functions are performed below.
 Y = double(Y);
 [nOriginal,p] = size(Y);
 
@@ -272,7 +775,7 @@ end
 if any(all(isnan(Y),2))
     warning('FSDA:mdJJtest:AllMissingRow', ...
         ['Some rows contain only missing values. The test may be unreliable ' ...
-         'for these observations.']);
+        'for these observations.']);
 end
 
 if any(columnRangeIgnoringNaN(Y)==0)
@@ -280,7 +783,8 @@ if any(columnRangeIgnoringNaN(Y)==0)
         'At least one variable is constant on its observed values.');
 end
 
-% Default options
+% Default options. Options controlling imputation are used only when the
+% completed data sets are not supplied explicitly.
 imputed = [];
 nimputations = 5;
 minn = 6;
@@ -294,7 +798,9 @@ ridge = 1e-10;
 msg = true;
 plots = false;
 
-% Optional arguments
+% Parse optional name-value arguments. The structure options contains the
+% canonical option names and their defaults. aux.chkoptions rejects unknown
+% names before the user values are copied into the structure.
 if ~isempty(varargin)
     options = struct('imputed',imputed,'nimputations',nimputations, ...
         'minn',minn,'method',method,'nsimul',nsimul, ...
@@ -309,7 +815,7 @@ if ~isempty(varargin)
         if length(varargin) ~= 2*length(UserOptions)
             error('FSDA:mdJJtest:WrongInputOpt', ...
                 ['Number of supplied options is invalid. Probably values ' ...
-                 'for some parameters are missing.']);
+                'for some parameters are missing.']);
         end
         aux.chkoptions(options,UserOptions)
     end
@@ -332,7 +838,8 @@ if ~isempty(varargin)
     plots = options.plots;
 end
 
-% Basic checks on options
+% Basic checks on options. These checks are kept separate from parsing so
+% that every option receives a method-specific and informative error.
 if ~isempty(imputed) && ~(iscell(imputed) || isnumeric(imputed))
     error('FSDA:mdJJtest:WrongImputed', ...
         'Option ''imputed'' must be empty, a cell array or a numeric array.');
@@ -344,9 +851,11 @@ if ~isscalar(nimputations) || nimputations < 1 || ...
         'Option ''nimputations'' must be a positive integer.');
 end
 
-if ~isscalar(minn) || minn <= 1 || minn ~= floor(minn)
+if ~isnumeric(minn) || ~isscalar(minn) || ~isreal(minn) || ...
+        ~isfinite(minn) || minn < 2 || minn ~= floor(minn)
     error('FSDA:mdJJtest:WrongMinn', ...
-        'Option ''minn'' must be an integer greater than 1.');
+        ['Option ''minn'' must be a finite integer greater than or ' ...
+        'equal to 2.']);
 end
 
 if ~(ischar(method) || (isstring(method) && isscalar(method)))
@@ -357,7 +866,7 @@ method = lower(char(method));
 if ~ismember(method,{'auto','hawkins','nonparametric'})
     error('FSDA:mdJJtest:WrongMethod', ...
         ['Option ''method'' must be ''auto'', ''hawkins'' or ' ...
-         '''nonparametric''.']);
+        '''nonparametric''.']);
 end
 
 if ~isscalar(nsimul) || nsimul < 100 || nsimul ~= floor(nsimul)
@@ -402,19 +911,28 @@ msg = logical(msg);
 plots = logical(plots);
 
 
-% Identify the original missingness patterns.
+% Identify the original missingness patterns. A true entry means that the
+% corresponding variable is missing. Rows with identical logical patterns
+% are assigned the same integer label in idxPatternsOriginal.
 missingMaskOriginal = isnan(Y);
 [patternsOriginal,idxPatternsOriginal,countsOriginal] = ...
     patternGroups(missingMaskOriginal);
 
-% Construct or validate completed data sets.
+% Construct or validate completed data sets. The same original pattern
+% labels will be used for every completed data set, so the test compares
+% groups defined by the observed missingness structure rather than by the
+% imputed values.
 loc = [];
 covmat = [];
 if isempty(imputed)
+    % Estimate the joint-normal location and covariance using all
+    % observations and the already computed pattern information.
     outEM = mdEM(Y,'maxiter',maxiter,'tol',tol, ...
         'Patterns',patternsOriginal,'idxPatterns',idxPatternsOriginal);
     loc = outEM.loc;
     covmat = outEM.cov;
+    % Generate independent stochastic completions conditional on the EM
+    % estimates. Each completion is analysed separately below.
     imputations = cell(nimputations,1);
     for j = 1:nimputations
         imputations{j} = mdImputeStochastic(Y,loc,covmat);
@@ -423,9 +941,11 @@ else
     imputations = normalizeImputedInput(imputed,Y);
 end
 
-% Remove sparse patterns. The current mice source removes groups with
-% frequency less than or equal to minn.
-removePattern = countsOriginal <= minn;
+% Remove sparse patterns. A pattern is retained only if its frequency is
+% greater than or equal to minn. The removal is based on the pattern
+% frequencies in the original incomplete data and is applied identically to
+% every completed data set.
+removePattern = countsOriginal < minn;
 removedRows = removePattern(idxPatternsOriginal);
 removedPatterns = patternsOriginal(removePattern,:);
 removedPatternCounts = countsOriginal(removePattern);
@@ -433,13 +953,18 @@ removedPatternCounts = countsOriginal(removePattern);
 if all(removedRows)
     error('FSDA:mdJJtest:NoRows', ...
         ['All observations belong to missingness patterns with frequency ' ...
-         'less than or equal to minn. Lower minn with caution.']);
+        'less than minn. Lower minn with caution.']);
 end
 
+% Restrict both the incomplete data and all completed data sets to the same
+% retained observations.
 Yused = Y(~removedRows,:);
 imputations = cellfun(@(Z) Z(~removedRows,:),imputations, ...
     'UniformOutput',false);
 
+% Recompute the pattern encoding after sparse rows have been removed.
+% patterns(r,:) describes retained group r and idxPatterns(i) gives the
+% group membership of retained observation i.
 [patterns,idxPatterns,patternCounts] = patternGroups(isnan(Yused));
 g = size(patterns,1);
 nused = size(Yused,1);
@@ -459,7 +984,9 @@ if nused-g-p <= 0
         'Hawkins'' transformation requires nused-g-p to be positive.');
 end
 
-% Compute Hawkins' quantities for every completed data set.
+% Compute Hawkins' transformed quantities for every completed data set.
+% details{j} stores the pattern-specific transformed values for imputation j
+% and is also reused if the nonparametric branch is required.
 M = numel(imputations);
 details = cell(M,1);
 for j = 1:M
@@ -470,6 +997,9 @@ hawkinsStat = [];
 hawkinsP = [];
 hawkinsDF = 2*g;
 
+% Hawkins' test is required for methods 'auto' and 'hawkins'. For every
+% imputation, one uniformity p-value is computed for each retained pattern
+% and the pattern-specific p-values are combined using Fisher's method.
 if strcmp(method,'auto') || strcmp(method,'hawkins')
     hawkinsStat = zeros(M,1);
     hawkinsP = zeros(M,1);
@@ -483,13 +1013,18 @@ if strcmp(method,'auto') || strcmp(method,'hawkins')
             end
         end
 
+        % Fisher's combination statistic is asymptotically chi-square with
+        % 2*g degrees of freedom when the pattern-specific p-values are
+        % independent under the null.
         hawkinsStat(j) = -2*sum(log(groupP));
         hawkinsP(j) = chi2cdf(hawkinsStat(j),hawkinsDF,"upper");
         details{j}.NeymanP = groupP;
     end
 end
 
-% Compute the k-sample Anderson-Darling test when required.
+% Compute the k-sample Anderson-Darling test when required. In automatic
+% mode this branch is entered when at least one imputation-specific Hawkins
+% p-value is below alpha, following the logic used in mice::mcar.
 ADstat = [];
 ADpvalue = [];
 runAD = strcmp(method,'nonparametric') || ...
@@ -506,7 +1041,9 @@ if runAD
     end
 end
 
-% Select the main statistic and p-value.
+% Select the statistic reported in out.stat and out.pvalue. Multiple
+% imputations are summarized by their medians, while the full vectors remain
+% available in out.hawkinsP, out.ADpvalue and the corresponding statistics.
 if strcmp(method,'hawkins') || (strcmp(method,'auto') && isempty(ADpvalue))
     stat = median(hawkinsStat);
     pvalue = median(hawkinsP);
@@ -517,7 +1054,9 @@ else
     df = [];
 end
 
-% Create the pattern-information table.
+% Create the pattern-information table. Each row name is the binary
+% missingness pattern written in variable order, where 1 denotes missing and
+% 0 denotes observed.
 patternNames = cell(g,1);
 for r = 1:g
     patternNames{r} = sprintf('%d',patterns(r,:));
@@ -526,7 +1065,9 @@ patternInfo = table(patternCounts,sum(patterns,2), ...
     'VariableNames',{'Frequency','NMissing'}, ...
     'RowNames',patternNames);
 
-% Store results.
+% Store results. Both the aggregate decision quantities and the
+% imputation-specific diagnostics are returned so that the user can inspect
+% sensitivity to the stochastic completions.
 out = struct;
 out.stat = stat;
 out.pvalue = pvalue;
@@ -571,6 +1112,10 @@ end
 % -------------------------------------------------------------------------
 function imputations = normalizeImputedInput(imputed,Y)
 %normalizeImputedInput Convert supplied completed data sets to a cell array.
+%
+% The function accepts one completed matrix, an n-by-p-by-M numeric array,
+% or a cell array of completed matrices/tables. It also verifies that the
+% observed entries of Y have not been altered, apart from numerical roundoff.
 
 [n,p] = size(Y);
 
@@ -589,9 +1134,12 @@ elseif isnumeric(imputed) && ndims(imputed)<=3
 else
     error('FSDA:mdJJtest:WrongImputed', ...
         ['Option ''imputed'' must be a cell array or an n x p x M ' ...
-         'numeric array.']);
+        'numeric array.']);
 end
 
+% The comparison with the original data is restricted to entries that were
+% observed before imputation. Missing entries may of course differ across
+% completed data sets.
 observed = ~isnan(Y);
 observedValues = Y(observed);
 if isempty(observedValues)
@@ -600,6 +1148,7 @@ else
     toleranceObserved = 100*eps(max(1,max(abs(observedValues))));
 end
 
+% Validate every completed data set separately.
 for j = 1:numel(imputations)
     if istable(imputations{j})
         imputations{j} = imputations{j}{:,:};
@@ -628,6 +1177,10 @@ end
 % -------------------------------------------------------------------------
 function [patterns,idxPatterns,counts] = patternGroups(missingMask)
 %patternGroups Group rows having the same missingness pattern.
+%
+% patterns contains the distinct rows in order of first appearance;
+% idxPatterns maps each observation to a row of patterns; counts contains the
+% corresponding group frequencies.
 
 [patterns,~,idxPatterns] = unique(missingMask,'rows','stable');
 counts = accumarray(idxPatterns,1,[size(patterns,1) 1]);
@@ -636,11 +1189,21 @@ end
 % -------------------------------------------------------------------------
 function out = hawkinsCore(Y,idxPatterns,ridge)
 %hawkinsCore Compute Hawkins' transformed quantities.
+%
+% Y is one completed data set. Observations are partitioned according to
+% idxPatterns, which was obtained from the original incomplete data. The
+% function first estimates a covariance matrix pooled across pattern groups
+% and then transforms each within-group squared Mahalanobis distance to an F
+% quantity and, finally, to a value that should be Uniform(0,1) under the
+% Hawkins null model.
 
 [n,p] = size(Y);
 groups = unique(idxPatterns,'stable');
 g = length(groups);
 
+% pooledSS accumulates the within-pattern sums of squares and cross-products.
+% Group means are removed separately so that between-pattern mean differences
+% do not contribute to the pooled covariance estimate.
 pooledSS = zeros(p,p);
 centeredGroups = cell(g,1);
 groupSizes = zeros(g,1);
@@ -653,6 +1216,8 @@ for r = 1:g
     pooledSS = pooledSS+Yr'*Yr;
 end
 
+% There are g separately estimated group means, giving n-g residual degrees
+% of freedom for the pooled covariance matrix.
 pooledCov = pooledSS/(n-g);
 pooledCov = stabilizeSPD(pooledCov,ridge,'pooled covariance');
 invPooledCov = pooledCov\eye(p);
@@ -664,6 +1229,8 @@ df2 = n-g-p;
 
 for r = 1:g
     Yr = centeredGroups{r};
+
+    % Row-wise squared Mahalanobis distances based on the pooled covariance.
     mahal = sum((Yr*invPooledCov).*Yr,2);
     h = groupSizes(r)*mahal;
     den = p*((groupSizes(r)-1)*(n-g)-h);
@@ -671,10 +1238,14 @@ for r = 1:g
     if any(den<=0)
         error('FSDA:mdJJtest:HawkinsDenominator', ...
             ['A nonpositive denominator occurred in Hawkins'' ' ...
-             'transformation. Check pattern sizes, collinearity or the ' ...
-             'supplied imputations.']);
+            'transformation. Check pattern sizes, collinearity or the ' ...
+            'supplied imputations.']);
     end
 
+    % Hawkins' finite-sample transformation. Under multivariate normality
+    % and equality of covariance matrices across patterns, Fij follows the
+    % stated F reference law and its upper-tail probability A should be
+    % approximately Uniform(0,1).
     Fij{r} = ((n-g-p)*h)./den;
     A{r} = fSurvival(Fij{r},p,df2);
 end
@@ -689,13 +1260,24 @@ end
 % -------------------------------------------------------------------------
 function pvalue = neymanPValue(u,nsimul,usechisq)
 %neymanPValue Fourth-order Neyman smooth test for uniformity.
+%
+% The test projects the empirical distribution of u onto the first four
+% orthonormal shifted Legendre polynomials. Under exact uniformity the four
+% normalized projection coefficients are asymptotically standard normal, so
+% their squared sum has a chi-square distribution with four degrees of
+% freedom. Small samples are calibrated by Monte Carlo simulation instead.
 
 u = u(:);
 n = length(u);
+% Phi(i,k) is the kth orthonormal polynomial evaluated at u(i). The column
+% sums measure departures from uniformity in four increasingly complex
+% directions.
 Phi = shiftedLegendre(u,4);
 stat = sum(sum(Phi,1).^2)/n;
 
 if n<usechisq
+    % For small pattern sizes, simulate the null distribution using nsimul
+    % independent samples of size n from Uniform(0,1).
     U = rand(n,nsimul);
     z = 2*U-1;
     P1 = z;
@@ -707,6 +1289,7 @@ if n<usechisq
     simulated = sum(sumPol.^2,1)/n;
     pvalue = mean(simulated>stat);
 else
+    % For sufficiently large patterns, use the asymptotic chi-square law.
     pvalue = chi2cdf(stat,4,"upper");
 end
 end
@@ -714,6 +1297,10 @@ end
 % -------------------------------------------------------------------------
 function Phi = shiftedLegendre(u,order)
 %shiftedLegendre Orthonormal shifted Legendre polynomials.
+%
+% Standard Legendre polynomials are evaluated at z=2*u-1, which maps the
+% interval [0,1] to [-1,1]. Multiplication by sqrt(2*degree+1) makes the
+% resulting shifted polynomials orthonormal under the Uniform(0,1) measure.
 
 u = u(:);
 z = 2*u-1;
@@ -722,6 +1309,8 @@ Pprev = ones(size(z));
 Pcurr = z;
 Phi(:,1) = sqrt(3)*Pcurr;
 
+% Three-term Legendre recurrence, avoiding repeated calls to symbolic or
+% polynomial-construction routines.
 for degree = 2:order
     Pnext = ((2*degree-1)*z.*Pcurr-(degree-1)*Pprev)/degree;
     Phi(:,degree) = sqrt(2*degree+1)*Pnext;
@@ -732,7 +1321,13 @@ end
 
 % -------------------------------------------------------------------------
 function out = andersonDarlingCore(Fij)
-%andersonDarlingCore k-sample Anderson-Darling test 
+%andersonDarlingCore k-sample Anderson-Darling test.
+%
+% Fij is a cell array containing one sample for each retained missingness
+% pattern. The test compares the complete empirical distributions across
+% patterns and is therefore robust to common nonnormal shapes that may make
+% Hawkins' normal-theory test significant. The implementation follows the
+% Scholz-Stephens k-sample Anderson-Darling approximation used by mice.
 
 allF = vertcat(Fij{:});
 groupSizes = cellfun(@numel,Fij);
@@ -749,6 +1344,8 @@ if n<4
         'At least four observations are required for the Anderson-Darling test.');
 end
 
+% The largest pooled observation is excluded because the Anderson-Darling
+% denominator contains H_j*(n-H_j), which is zero at the final order statistic.
 xsort = sort(allF);
 xsort(end) = [];
 isNew = [true; diff(xsort)~=0];
@@ -758,6 +1355,8 @@ last = [first(2:end)-1; length(xsort)];
 hj = last-first+1;
 hn = cumsum(hj);
 
+% Accumulate the contribution of each group over the distinct pooled order
+% statistics. Ties are handled through hj, the multiplicity of each value.
 ADgroupRaw = zeros(k,1);
 for r = 1:k
     fr = Fij{r}(:);
@@ -771,6 +1370,8 @@ for r = 1:k
     ADgroupRaw(r) = sum(hj.*(num./den))/groupSizes(r);
 end
 
+% Overall k-sample Anderson-Darling statistic and normalized group
+% contributions.
 ADstat = sum(ADgroupRaw)/n;
 ADgroup = ADgroupRaw/n;
 J = sum(1./groupSizes);
@@ -779,6 +1380,8 @@ H = harmonic(end);
 idx = 1:(n-2);
 G = sum((H-harmonic(idx))./(n-idx));
 
+% Finite-sample variance approximation for the standardized statistic.
+% H and G are harmonic-sum quantities appearing in the k-sample theory.
 a = (4*G-6)*(k-1)+(10-6*G)*J;
 b = (2*G-4)*k^2+8*H*k+(2*G-14*H-4)*J-8*H+4*G-6;
 c = (6*H+2*G-2)*k^2+(4*H-4*G+6)*k+(2*H-6)*J+4*H;
@@ -792,6 +1395,8 @@ else
     standardized = (ADstat-(k-1))/sqrt(variance);
 end
 
+% Approximate the upper-tail probability by interpolating tabulated
+% standardized quantiles on the logit scale.
 b0 = [0.675 1.281 1.645 1.960 2.326];
 b1 = [-0.245 0.250 0.678 1.149 1.822];
 b2 = [-0.105 -0.305 -0.362 -0.391 -0.396];
@@ -824,6 +1429,11 @@ end
 % -------------------------------------------------------------------------
 function A = stabilizeSPD(A,ridge,label)
 %stabilizeSPD Symmetrize and regularize a covariance matrix if necessary.
+%
+% A small diagonal ridge is always added when ridge is positive. If Cholesky
+% factorization still fails, the eigenvalues are floored at a scale-dependent
+% positive value, producing the nearest matrix used here on the same
+% eigenvector basis.
 
 A = (A+A')/2;
 if isempty(A)
@@ -851,6 +1461,9 @@ end
 % -------------------------------------------------------------------------
 function pvalue = fSurvival(x,df1,df2)
 %fSurvival Upper-tail probability of the F distribution.
+%
+% The beta-function representation avoids requiring a direct call to fcdf
+% and is numerically stable for the nonnegative statistics used here.
 
 x = max(x,0);
 z = df2./(df2+df1*x);
@@ -862,6 +1475,10 @@ end
 % -------------------------------------------------------------------------
 function txt = interpretResult(method,hawkinsP,ADpvalue,alpha)
 %interpretResult Produce a concise interpretation of the selected test.
+%
+% The wording distinguishes three situations: no evidence against the joint
+% Hawkins null, evidence against MCAR from the nonparametric branch, and a
+% Hawkins rejection that is plausibly attributable to nonnormality.
 
 if strcmp(method,'hawkins')
     if median(hawkinsP)<alpha
@@ -881,15 +1498,19 @@ elseif strcmp(method,'nonparametric')
     end
 else
     if isempty(ADpvalue)
-        txt = ['Hawkins'' test is not significant: there is no evidence ' ...
-            'against multivariate normality or MCAR.'];
+        txt = ['No Hawkins p-value is smaller than alpha: there is no ' ...
+            'evidence against multivariate normality or MCAR.'];
+
     elseif median(ADpvalue)<alpha
-        txt = ['The Hawkins and Anderson-Darling results indicate a ' ...
-            'departure from MCAR within the MCAR-versus-MAR framework.'];
+        txt = ['At least one Hawkins p-value is smaller than alpha and ' ...
+            'the median Anderson-Darling p-value is significant. This ' ...
+            'provides evidence against MCAR within the MCAR-versus-MAR ' ...
+            'framework.'];
+
     else
-        txt = ['Hawkins'' test is significant but the nonparametric ' ...
-            'Anderson-Darling test is not. This suggests nonnormality, ' ...
-            'with no evidence against MCAR.'];
+        txt = ['At least one Hawkins p-value is smaller than alpha, but ' ...
+            'the median Anderson-Darling p-value is not significant. ' ...
+            'This suggests nonnormality, with no evidence against MCAR.'];
     end
 end
 end
@@ -935,7 +1556,11 @@ end
 
 % -------------------------------------------------------------------------
 function plotResults(out)
-%plotResults Display p-value histograms and retained patterns.
+%plotResults Display p-value bar charts and retained patterns.
+%
+% The first figure summarizes the variation of p-values across imputations.
+% The second figure displays the retained missingness patterns, with one row
+% per pattern and one column per variable.
 
 ntests = (~isempty(out.hawkinsP))+(~isempty(out.ADpvalue));
 
@@ -945,26 +1570,40 @@ if ntests>0
 
     if ~isempty(out.hawkinsP)
         nexttile
-        histogram(out.hawkinsP,'BinLimits',[0 1])
-        xline(out.alpha,'--')
-        xlabel('Hawkins p-values')
-        ylabel('Frequency')
-        title(sprintf('%.1f%% below alpha', ...
-            100*mean(out.hawkinsP<out.alpha)))
+
+        medianP = median(out.hawkinsP);
+
+        bar(out.hawkinsP)
+        yline(out.alpha,'--')
+        xlabel('Completed data set')
+        ylabel('Hawkins p-value')
+
+        title(sprintf(['Median p-value = %.4g; ' ...
+            '%.1f%% below alpha'], ...
+            medianP,100*mean(out.hawkinsP<out.alpha)))
     end
 
     if ~isempty(out.ADpvalue)
         nexttile
-        histogram(out.ADpvalue,'BinLimits',[0 1])
-        xline(out.alpha,'--')
-        xlabel('Anderson-Darling p-values')
-        ylabel('Frequency')
-        title(sprintf('%.1f%% below alpha', ...
-            100*mean(out.ADpvalue<out.alpha)))
+
+        medianP = median(out.ADpvalue);
+
+        bar(out.ADpvalue)
+        yline(out.alpha,'--')
+        xlabel('Completed data set')
+        ylabel('Anderson-Darling p-value')
+
+        title(sprintf(['Median p-value = %.4g; ' ...
+            '%.1f%% below alpha'], ...
+            medianP,100*mean(out.ADpvalue<out.alpha)))
     end
 end
 
 figure('Name','Retained missingness patterns','Color','w')
+
+% out.patterns uses true for missing. The logical negation is plotted so that
+% caxis value 0 denotes missing and value 1 denotes observed, matching the
+% colourbar labels below.
 imagesc(~out.patterns)
 colormap([0.85 0.25 0.20; 0.20 0.50 0.80])
 caxis([0 1])
