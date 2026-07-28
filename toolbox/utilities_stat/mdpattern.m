@@ -63,6 +63,13 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
 %                   Window. If false, this text is suppressed. This option
 %                   is used only when plots is a structure. The default
 %                   value is true.
+%                 plots.rowLabels = optional labels for the missingness-
+%                   pattern rows. Cell array of character vectors or string
+%                   array with one label for each pattern, in the same order
+%                   as the first k rows of Mispat. Empty value uses pattern
+%                   frequencies on the left y-axis. When plots.minn omits
+%                   patterns, the corresponding labels are omitted
+%                   automatically. The default value is [].
 %               Example - 'plots',struct('maxPatternsForBubbles',100,'fsLeft',6)
 %               Data Types - Boolean, scalar numeric or struct
 %               Remark: top axis contains the name of the variables
@@ -361,6 +368,25 @@ function [Mispat,tMisAndOut] = mdpattern(Y, varargin)
     assert(contains(txt,'Detailed explanation'))
 %}
 
+%{
+    % Personalized plots option: supply row labels.
+    % The labels must follow the order of the pattern rows in Mispat.
+    close all
+    rng(50)
+    X = randn(300,5);
+    X(rand(size(X)) < 0.12) = NaN;
+
+    [Mispat,~] = mdpattern(X,'plots',false);
+    nPatterns = height(Mispat)-1;
+
+    plots = struct;
+    plots.rowLabels = compose('P%d (n=%d)', ...
+        (1:nPatterns)',Mispat{1:nPatterns,1});
+    plots.showExplanation = false;
+
+    mdpattern(X,'plots',plots);
+%}
+
 %% Beginning of code
 
 [n,p]=size(Y);
@@ -389,6 +415,9 @@ plotsdef.minn = 1;
 % Display explanatory text about the missing-pattern figure in the Command
 % Window. The default preserves the historical mdpattern behaviour.
 plotsdef.showExplanation = true;
+% Optional custom labels for the pattern rows. Empty means that frequencies
+% are shown on the left y-axis.
+plotsdef.rowLabels = [];
 plotOptions=plotsdef;
 plotsIsStruct = false;
 
@@ -520,6 +549,27 @@ if nargin>1
     end
 end
 
+% Normalize optional row labels. Their length is checked after the missingness
+% patterns have been constructed.
+rowLabels = strings(0,1);
+if ~isempty(plotOptions.rowLabels)
+    if isstring(plotOptions.rowLabels)
+        rowLabels = plotOptions.rowLabels(:);
+    elseif iscell(plotOptions.rowLabels) && ...
+            all(cellfun(@ischar,plotOptions.rowLabels(:)))
+        rowLabels = string(plotOptions.rowLabels(:));
+    else
+        error('FSDA:mdpattern:WrongInputOpt', ...
+            ['Field rowLabels must be empty, a string array, or a cell ' ...
+            'array of character vectors.']);
+    end
+
+    if any(ismissing(rowLabels))
+        error('FSDA:mdpattern:WrongInputOpt', ...
+            'Field rowLabels cannot contain missing strings.');
+    end
+end
+
 if ~(istable(Y) || istimetable(Y))
     if isempty(Lc)
         % Lc=cellstr(num2str((1:p)'));
@@ -561,6 +611,13 @@ tab=tabulateFS(ib);
 Yuniz=flipud([tab(:,2) Yuni sum(~Yuni,2)]);
 
 Yfin=[Yuniz;[n numbermisEachcolOrd sum(numbermisEachcolOrd)]];
+
+nPatternsAll = size(Yfin,1)-1;
+if ~isempty(rowLabels) && numel(rowLabels) ~= nPatternsAll
+    error('FSDA:mdpattern:WrongInputOpt', ...
+        ['Field rowLabels must contain one label for each missingness ' ...
+        'pattern, that is %d labels for the current data.'],nPatternsAll);
+end
 
 
 totpa=size(Yfin,1);
@@ -624,6 +681,7 @@ if plots == true
     % than or equal to minn are omitted from the graph, while the output
     % tables Mispat and tMisAndOut continue to refer to the complete data.
     YfinPlot = Yfin;
+    rowLabelsPlot = rowLabels;
     if plotsIsStruct
         keepPattern = Yfin(1:end-1,1) >= plotOptions.minn;
         if ~any(keepPattern)
@@ -633,6 +691,9 @@ if plots == true
                 plotOptions.minn);
         end
         YfinPlot = [Yfin(keepPattern,:); Yfin(end,:)];
+        if ~isempty(rowLabelsPlot)
+            rowLabelsPlot = rowLabelsPlot(keepPattern);
+        end
     end
 
     Ysel = YfinPlot(1:end-1,2:end-1);
@@ -755,7 +816,11 @@ if plots == true
     ax1.XTick = xt;
     ax1.XTickLabel = string(YfinPlot(end,xt+1));
     ax1.YTick = yt;
-    ax1.YTickLabel = string(YfinPlot(nPatterns-yt+1,1));
+    if isempty(rowLabelsPlot)
+        ax1.YTickLabel = string(YfinPlot(nPatterns-yt+1,1));
+    else
+        ax1.YTickLabel = rowLabelsPlot(nPatterns-yt+1);
+    end
 
     ax1.XAxis.FontSize = fsBottom;
     ax1.YAxis.FontSize = fsLeft;
@@ -763,8 +828,13 @@ if plots == true
     xlabel(ax1,"Number of missing values for each variable", ...
         'FontSize',fsAxisLabel);
 
-    ylabel(ax1,"Number of rows with a particular pattern", ...
-        'FontSize',fsAxisLabel);
+    if isempty(rowLabelsPlot)
+        ylabel(ax1,"Number of rows with a particular pattern", ...
+            'FontSize',fsAxisLabel);
+    else
+        ylabel(ax1,"Missingness pattern", ...
+            'FontSize',fsAxisLabel);
+    end
 
     ax2 = axes('Position',get(ax1,'Position'), ...
         'Color','none', ...
@@ -820,8 +890,12 @@ if plots == true
             disp(['Big circle means missing value; smaller filled dot ' ...
                 'represents non-missing value.'])
         end
-        disp(['Left axis shows the number of observations for each ' ...
-            'displayed pattern.'])
+        if isempty(rowLabelsPlot)
+            disp(['Left axis shows the number of observations for each ' ...
+                'displayed pattern.'])
+        else
+            disp('Left axis shows the supplied missingness-pattern labels.')
+        end
         if plotsIsStruct
             nDisplayed = sum(YfinPlot(1:end-1,1));
             nOmittedPatterns = sum(~keepPattern);
