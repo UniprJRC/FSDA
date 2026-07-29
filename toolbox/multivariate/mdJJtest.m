@@ -170,6 +170,26 @@ function out = mdJJtest(Y, varargin)
 %                     frequencies and missing-value totals refer only to
 %                     observations retained for the MCAR test.
 %
+%                  3) A Pareto plot of the mean contribution of each
+%                     retained missingness pattern to every available test
+%                     statistic. Contributions are first computed
+%                     separately for the M completed data sets and then
+%                     averaged pattern by pattern.
+%
+%                     Bars are sorted from the largest to the smallest mean
+%                     contribution. The line on the right axis reports the
+%                     cumulative percentage of the total mean statistic,
+%                     and a dashed horizontal line marks 80 percent. Labels
+%                     such as P3 (n=12) identify the original pattern number
+%                     and its frequency. These identifiers are the same as
+%                     those used in the missingness-pattern figure.
+%
+%                     Hawkins and Anderson-Darling contributions are shown
+%                     in separate panels when both tests are available.
+%                     The plot is diagnostic: it reveals whether the global
+%                     statistic is driven mainly by a few patterns or is
+%                     distributed across many patterns.
+%
 %                  Setting plots to false suppresses all graphical output
 %                  but does not affect the numerical results returned in
 %                  out.
@@ -287,6 +307,18 @@ function out = mdJJtest(Y, varargin)
 %                              when computed;
 %          out.ADpvalue      = M x 1 vector of Anderson-Darling p-values,
 %                              when computed;
+%          out.meanHawkinsContribution = g x 1 vector containing the mean
+%                              contribution of each retained missingness
+%                              pattern to the Hawkins statistic across the M
+%                              completed data sets. Element r is the mean of
+%                              $-2\log(p_r^{(m)})$ over m. The field is empty
+%                              when Hawkins' test is not computed;
+%          out.meanADContribution = g x 1 vector containing the mean
+%                              contribution of each retained missingness
+%                              pattern to the Anderson-Darling statistic
+%                              across the M completed data sets. The field is
+%                              empty when the Anderson-Darling test is not
+%                              computed;
 %          out.patterns      = g x p logical matrix containing the retained
 %                              missingness patterns. A true entry denotes a
 %                              missing variable;
@@ -307,7 +339,15 @@ function out = mdJJtest(Y, varargin)
 %                              stochastic imputations. Empty if imputed is
 %                              supplied;
 %          out.details       = cell array with detailed results for each
-%                              completed data set;
+%                              completed data set. When Hawkins' test is
+%                              computed,
+%                              $\mathtt{out.details\{m\}.HawkinsContributions}$
+%                              contains the g pattern contributions for
+%                              completed data set m. When the
+%                              Anderson-Darling test is computed, the
+%                              corresponding values are stored in
+%                              $\mathtt{out.details\{m\}.AndersonDarling.}$
+%                              $\mathtt{GroupContributions}$;
 %          out.interpretation = concise interpretation of the test;
 %          out.minn          = minimum retained pattern size. Missingness
 %                              patterns containing fewer than
@@ -661,6 +701,97 @@ function out = mdJJtest(Y, varargin)
 %  Rubin-rules or Meng-Rubin pooled p-value. The complete vectors of
 %  imputation-specific p-values should therefore also be examined.
 %
+%  The global Hawkins and Anderson-Darling statistics can also be
+%  decomposed into nonnegative pattern-specific contributions. For
+%  Hawkins' test, let $p_r^{(m)}$ be the Neyman smooth-test p-value for
+%  retained pattern r in completed data set m. Its contribution is
+%
+%  \[
+%      C_{\mathrm{H},r}^{(m)}
+%      =
+%      -2\log\left(p_r^{(m)}\right),
+%  \]
+%
+%  and therefore
+%
+%  \[
+%      H^{(m)}
+%      =
+%      \sum_{r=1}^{g}C_{\mathrm{H},r}^{(m)}.
+%  \]
+%
+%  The mean Hawkins contribution returned for pattern r is
+%
+%  \[
+%      \overline{C}_{\mathrm{H},r}
+%      =
+%      \frac{1}{M}
+%      \sum_{m=1}^{M}
+%      \left[-2\log\left(p_r^{(m)}\right)\right].
+%  \]
+%
+%  For the Anderson-Darling test, let
+%  $C_{\mathrm{AD},r}^{(m)}$ denote the normalized group contribution
+%  returned for pattern r in completed data set m. These contributions
+%  satisfy
+%
+%  \[
+%      A_{g,n}^{2(m)}
+%      =
+%      \sum_{r=1}^{g}C_{\mathrm{AD},r}^{(m)},
+%  \]
+%
+%  and their mean is
+%
+%  \[
+%      \overline{C}_{\mathrm{AD},r}
+%      =
+%      \frac{1}{M}
+%      \sum_{m=1}^{M}C_{\mathrm{AD},r}^{(m)}.
+%  \]
+%
+%  Consequently, the sums of the returned mean contributions satisfy
+%
+%  \[
+%      \sum_{r=1}^{g}\overline{C}_{\mathrm{H},r}
+%      =
+%      \frac{1}{M}\sum_{m=1}^{M}H^{(m)},
+%      \qquad
+%      \sum_{r=1}^{g}\overline{C}_{\mathrm{AD},r}
+%      =
+%      \frac{1}{M}\sum_{m=1}^{M}A_{g,n}^{2(m)}.
+%  \]
+%
+%  Thus, the mean contributions decompose the mean imputation-specific
+%  statistic. They do not generally decompose $\mathtt{out.stat}$, because
+%  the latter is the median of the imputation-specific statistics.
+%
+%  To construct the Pareto plot, let
+%
+%  \[
+%      \overline{C}_{(1)}
+%      \geq
+%      \overline{C}_{(2)}
+%      \geq
+%      \cdots
+%      \geq
+%      \overline{C}_{(g)}
+%  \]
+%
+%  denote the mean contributions sorted from largest to smallest. The
+%  cumulative percentage after the first r sorted patterns is
+%
+%  \[
+%      100
+%      \frac{\sum_{j=1}^{r}\overline{C}_{(j)}}
+%      {\sum_{j=1}^{g}\overline{C}_{(j)}}.
+%  \]
+%
+%  Large bars identify patterns that contribute most strongly, on average
+%  across completed data sets, to the corresponding global statistic. A
+%  large contribution is a diagnostic indication and should not be
+%  interpreted as a separate formal rejection for that pattern.
+%
 %  Option nsimul affects only the Monte Carlo calibration of the
 %  pattern-specific Neyman tests in the Hawkins branch. It does not affect
 %  the Anderson-Darling p-values.
@@ -774,12 +905,59 @@ function out = mdJJtest(Y, varargin)
 %}
 
 %{
-    % Example where input is a table.
+    % Example 5: e input is a table.
     rng(50)
     Y = randn(300,4);
     Y(rand(size(Y))<0.15) = NaN;
     Ytable = array2table(Y,'VariableNames',{'Income','Age','Score','Balance'});
     out = mdJJtest(Ytable,'plots',true,'msg',false);
+%}
+
+%{
+   %% Example 6: Hawkins rejection driven by one missingness pattern.
+   % The first three missingness-pattern groups are generated from the same
+   % multivariate standard normal distribution. The fourth and smallest
+   % pattern has an inflated covariance matrix and is therefore expected to
+   % dominate the Hawkins statistic and its Pareto plot.
+   %
+   % The rejection is not caused by the mere existence of the fourth
+   % missingness pattern, but by the covariance heterogeneity associated
+   % with that pattern. After removing it, the Hawkins test should no longer
+   % be significant.
+   rng(60)
+   p = 5;
+   groupSizes = [190; 190; 190; 30];
+   group = repelem((1:4)',groupSizes);
+
+   % Generate the complete data before introducing missing values.
+   Ycomplete = randn(sum(groupSizes),p);
+   Ycomplete(group==4,:) = 3*Ycomplete(group==4,:);
+
+   % Introduce four distinct missingness patterns. Pattern P1 is the
+   % complete-case pattern; P4 is the pattern with inflated covariance.
+   Y = Ycomplete;
+   Y(group==2,1) = NaN;
+   Y(group==3,2) = NaN;
+   Y(group==4,[3 4]) = NaN;
+
+   % Supply the original complete data as the completed data set so that
+   % the example focuses only on differences among missingness patterns.
+   out = mdJJtest(Y,'imputed',Ycomplete,'method','hawkins', ...
+       'plots',true,'msg',false);
+
+   contributionTable = table((1:out.npatterns)', ...
+       out.patternCounts,out.meanHawkinsContribution, ...
+       'VariableNames',{'Pattern','Frequency','MeanContribution'});
+   disp(contributionTable)
+   fprintf('Hawkins p-value with all patterns: %.4g\n',out.pvalue)
+
+   % Remove P4 and repeat the test. The remaining pattern groups have the
+   % same distribution, so the rejection should disappear.
+   keep = group~=4;
+   outWithoutP4 = mdJJtest(Y(keep,:), ...
+       'imputed',Ycomplete(keep,:),'method','hawkins', ...
+       'plots',false,'msg',false);
+   fprintf('Hawkins p-value without P4: %.4g\n',outWithoutP4.pvalue)
 %}
 
 %% Beginning of code
@@ -1088,24 +1266,51 @@ if strcmp(method,'auto') || strcmp(method,'hawkins')
     end
 end
 
+meanHawkinsContribution = [];
+
+if ~isempty(hawkinsP)
+    meanHawkinsContribution = zeros(g,1);
+
+    for j = 1:M
+        hawkinsContribution = -2*log(details{j}.NeymanP(:));
+        details{j}.HawkinsContributions = hawkinsContribution;
+        meanHawkinsContribution = meanHawkinsContribution + ...
+            hawkinsContribution;
+    end
+
+    meanHawkinsContribution = meanHawkinsContribution/M;
+end
+
 % Compute the k-sample Anderson-Darling test when required. In automatic
 % mode this branch is entered when at least one imputation-specific Hawkins
 % p-value is below alpha, following the logic used in mice::mcar.
 ADstat = [];
 ADpvalue = [];
+meanADContribution = [];
+
 runAD = strcmp(method,'nonparametric') || ...
     (strcmp(method,'auto') && any(hawkinsP<alpha));
 
 if runAD
     ADstat = zeros(M,1);
     ADpvalue = zeros(M,1);
+    meanADContribution = zeros(g,1);
+
     for j = 1:M
         ADout = andersonDarlingCore(details{j}.Fij);
+
         ADstat(j) = ADout.Statistic;
         ADpvalue(j) = ADout.PValue;
+
         details{j}.AndersonDarling = ADout;
+        meanADContribution = meanADContribution + ...
+            ADout.GroupContributions(:);
     end
+
+    meanADContribution = meanADContribution/M;
 end
+
+
 
 % Select the statistic reported in out.stat and out.pvalue. Multiple
 % imputations are summarized by their medians, while the full vectors remain
@@ -1163,6 +1368,10 @@ out.loc = loc;
 out.cov = covmat;
 out.details = details;
 out.interpretation = interpretResult(method,hawkinsP,ADpvalue,alpha);
+
+
+out.meanHawkinsContribution = meanHawkinsContribution;
+out.meanADContribution = meanADContribution;
 
 if msg
     printSummary(out)
@@ -1620,76 +1829,114 @@ end
 
 
 % -------------------------------------------------------------------------
+% -------------------------------------------------------------------------
 function plotResults(out,Y,varNames)
-%plotResults Display p-value bar charts and retained patterns.
+%plotResults Display p-values, retained patterns and contributions.
 %
 % The first figure summarizes the variation of p-values across completed
 % data sets. The second figure displays the retained missingness patterns.
-% The representation is selected automatically by mdpattern: a balloon
-% plot is used for a moderate number of patterns, while a heatmap is used
-% when the number of patterns is large.
+% The third figure contains Pareto plots of the mean pattern contributions
+% to the available test statistics.
 
-ntests = (~isempty(out.hawkinsP))+(~isempty(out.ADpvalue));
+ntests = (~isempty(out.hawkinsP)) + (~isempty(out.ADpvalue));
 
+%% P-values across completed data sets
 if ntests>0
     figure('Name','mdJJtest p-values','Color','w')
-    tiledlayout(ntests,1,'TileSpacing','compact','Padding','compact')
+    tl = tiledlayout(ntests,1, ...
+        'TileSpacing','compact','Padding','compact');
 
     if ~isempty(out.hawkinsP)
-        nexttile
+        ax = nexttile(tl);
 
         medianP = median(out.hawkinsP);
 
-        bar(out.hawkinsP)
-        yline(out.alpha,'--')
-        xlabel('Completed data set')
-        ylabel('Hawkins p-value')
+        bar(ax,out.hawkinsP)
+        yline(ax,out.alpha,'--')
+        xlabel(ax,'Completed data set')
+        ylabel(ax,'Hawkins p-value')
 
-        title(sprintf(['Median p-value = %.4g; ' ...
+        title(ax,sprintf(['Median p-value = %.4g; ' ...
             '%.1f%% below alpha'], ...
             medianP,100*mean(out.hawkinsP<out.alpha)))
     end
 
     if ~isempty(out.ADpvalue)
-        nexttile
+        ax = nexttile(tl);
 
         medianP = median(out.ADpvalue);
 
-        bar(out.ADpvalue)
-        yline(out.alpha,'--')
-        xlabel('Completed data set')
-        ylabel('Anderson-Darling p-value')
+        bar(ax,out.ADpvalue)
+        yline(ax,out.alpha,'--')
+        xlabel(ax,'Completed data set')
+        ylabel(ax,'Anderson-Darling p-value')
 
-        title(sprintf(['Median p-value = %.4g; ' ...
+        title(ax,sprintf(['Median p-value = %.4g; ' ...
             '%.1f%% below alpha'], ...
             medianP,100*mean(out.ADpvalue<out.alpha)))
     end
 end
 
-
-% Display the missingness patterns retained for the MCAR test. Rows
-% belonging to sparse patterns have already been identified in
-% out.removedRows and are excluded before calling mdpattern. Consequently,
-% the pattern frequencies and the per-variable missing-value totals shown
-% in the figure refer to the observations actually used by the test.
+%% Missingness patterns retained for the MCAR test
 Yretained = Y(~out.removedRows,:);
-
-figure('Color','w')
-
 % Let mdpattern choose automatically between the balloon plot and the
 % heatmap. Suppress the explanatory text normally displayed in the
 % Command Window.
 plo = struct;
 plo.showExplanation = false;
 
+% Construct labels in the same pattern order used internally by mdpattern.
+% The permanent identifiers P1, P2, ... refer to the rows of out.patterns
+% and are therefore the same identifiers used in the Pareto plots.
+missingMask = isnan(Yretained);
+[~,ordercols] = sort(sum(missingMask,1),'ascend');
+patternsMd = ~flipud(unique(~missingMask(:,ordercols),'rows'));
+patternsMdOriginalOrder = false(size(patternsMd));
+patternsMdOriginalOrder(:,ordercols) = patternsMd;
+
+[matched,patternNumber] = ismember(patternsMdOriginalOrder, ...
+    out.patterns,'rows');
+if ~all(matched)
+    error('FSDA:mdJJtest:PatternLabelMismatch', ...
+        'Unable to match the mdpattern rows to the retained patterns.');
+end
+
+plo.rowLabels = compose('P%d (n=%d)',patternNumber, ...
+    out.patternCounts(patternNumber));
+
 if isempty(varNames)
     mdpattern(Yretained,'plots',plo);
 else
     mdpattern(Yretained,'Lc',varNames,'plots',plo);
 end
+
 set(gcf,'Name','Retained missingness patterns')
 
+%% Mean pattern contributions
+ncontributions = ...
+    (~isempty(out.meanHawkinsContribution)) + ...
+    (~isempty(out.meanADContribution));
+
+if ncontributions>0
+    figure('Name','Pattern contributions','Color','w')
+    tl = tiledlayout(ncontributions,1, ...
+        'TileSpacing','compact','Padding','compact');
+
+    if ~isempty(out.meanHawkinsContribution)
+        ax = nexttile(tl);
+        contributionPareto(ax,out.meanHawkinsContribution, ...
+            out.patternCounts,'Hawkins');
+    end
+
+    if ~isempty(out.meanADContribution)
+        ax = nexttile(tl);
+        contributionPareto(ax,out.meanADContribution, ...
+            out.patternCounts,'Anderson-Darling');
+    end
 end
+
+end
+
 
 % -------------------------------------------------------------------------
 function ranges = columnRangeIgnoringNaN(Y)
@@ -1702,4 +1949,58 @@ for j = 1:size(Y,2)
 end
 end
 
+
+% -------------------------------------------------------------------------
+function contributionPareto(ax,meanContribution,patternCounts,testName)
+%contributionPareto Pareto plot of mean contributions by pattern.
+%
+% Bars show mean additive contributions in decreasing order. The line on
+% the right axis reports the cumulative percentage of the total mean
+% contribution.
+
+meanContribution = meanContribution(:);
+patternCounts = patternCounts(:);
+g = numel(meanContribution);
+
+% Sort patterns from largest to smallest contribution.
+[sortedContribution,ord] = sort(meanContribution,'descend');
+
+% Cumulative percentage of the mean statistic.
+totalContribution = sum(sortedContribution);
+
+if totalContribution>0
+    cumulativePercentage = ...
+        100*cumsum(sortedContribution)/totalContribution;
+else
+    cumulativePercentage = zeros(g,1);
+end
+
+% Labels preserve the original pattern numbers.
+patternLabels = compose('P%d (n=%d)', ...
+    ord(:),patternCounts(ord));
+
+yyaxis(ax,'left')
+bar(ax,1:g,sortedContribution)
+ylabel(ax,'Mean contribution')
+
+yyaxis(ax,'right')
+plot(ax,1:g,cumulativePercentage,'-o', ...
+    'LineWidth',1.25,'MarkerSize',4)
+yline(ax,80,'--','80%')
+ylabel(ax,'Cumulative contribution (%)')
+ylim(ax,[0 105])
+yticks(ax,0:20:100)
+
+xlim(ax,[0.5 g+0.5])
+xticks(ax,1:g)
+xticklabels(ax,patternLabels)
+xtickangle(ax,45)
+xlabel(ax,'Missingness pattern')
+
+title(ax,sprintf(['Mean contribution to the %s statistic ' ...
+    'across completed data sets'],testName))
+
+grid(ax,'on')
+
+end
 %FScategory:MULT-MissingData
