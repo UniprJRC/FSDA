@@ -150,8 +150,8 @@ function out = mdMAARtest(Y, varargin)
 %
 %  savesamples : Save the posterior conditional-covariance draws produced by
 %                method 'cop'. Boolean. The default value is false (this
-%                option is used just by method 'cop'). 
-%                Example - 'savesamples',true 
+%                option is used just by method 'cop').
+%                Example - 'savesamples',true
 %                Data Types - logical | single | double
 %
 %  Output:
@@ -969,120 +969,183 @@ function res = dtmmTest(imputations,R,locmis,locfull,alpha,ridge,maxiter,tol)
 % Output:
 %   res         : structure containing the pooled D_L statistics, p-values,
 %                 degrees of freedom, relative increases in variance and
-%                 rejection indicators. Note that sometimes D_L is called
-%                 D3.
+%                 rejection indicators. The D_L procedure is also commonly
+%                 called the D3 procedure.
 %
-% For missingness indicator R_k, the reduced logistic model contains the
-% fully observed variables and the full model additionally contains all
-% imputed partially observed variables.
+% For missingness indicator R_k, the reduced logistic model contains only
+% the fully observed variables. The full logistic model additionally
+% contains all the partially observed variables after imputation.
+%
+% For each missingness mechanism, the response and the fully observed
+% variables do not change across imputations. The reduced model is
+% therefore identical in all M completed data sets and is fitted only once
+% for each value of kk.
+
 M = numel(imputations);
+
+if M < 2
+    error('FSDA:dtmmTest:TooFewImputations', ...
+        'At least two completed data sets are required for the D_L test.');
+end
+
 q = numel(locmis);
+if q < 1
+    error('FSDA:dtmmTest:NoPartiallyObservedVariables', ...
+        'At least one partially observed variable is required.');
+end
+
 pvalue = NaN(q,1);
 stat = NaN(q,1);
 df1 = q*ones(q,1);
 df2 = NaN(q,1);
 relativeIncrease = NaN(q,1);
+
+% For each missingness mechanism, fullMLE and fullPooled are M-by-1
+% vectors. smallMLE and smallPooled are scalars because the reduced model
+% is identical across completed data sets.
 deviance = repmat(struct('fullMLE',[],'smallMLE',[], ...
     'fullPooled',[],'smallPooled',[]),q,1);
 
+% The reduced model contains only the intercept and the fully observed
+% variables. Its response and design matrix are therefore identical
+% across completed data sets.
+Y1 = imputations{1};
+Xsmall = [ones(size(Y1,1),1) Y1(:,locfull)];
+
+% Number of restrictions tested. The full model adds one coefficient
+% for each partially observed variable.
+% k = size(bFull,1)-size(bSmall,1);
+k=q;
+
 for kk = 1:q
+
     % Binary response for the missingness mechanism of variable locmis(kk).
     response = R(:,kk);
-    devFullMLE = zeros(M,1);
-    devSmallMLE = zeros(M,1);
-    bSmall = zeros(length(locfull)+1,M);
+
+
+    % Fit the common reduced model once for the current missingness mechanism.
+    fitSmall = logisticFit(Xsmall,response,maxiter,tol,ridge);
+    % bSmall = fitSmall.beta; (not used)
+    devSmallMLE = fitSmall.deviance;
+
+    % The full model includes the imputed partially observed variables and
+    % must therefore be fitted separately to every completed data set.
     bFull = zeros(length(locfull)+length(locmis)+1,M);
+    devFullMLE = zeros(M,1);
 
     for m = 1:M
         Ym = imputations{m};
-        % Reduced model uses only variables observed on all units.
-        Xsmall = [ones(size(Ym,1),1) Ym(:,locfull)];
-        % Full model adds all partially observed variables after imputation.
         Xfull = [Xsmall Ym(:,locmis)];
-        fitSmall = logisticFit(Xsmall,response,maxiter,tol,ridge); % glmfit(Xsmall(:,2:end),response,"binomial","Link","logit")
+
         fitFull = logisticFit(Xfull,response,maxiter,tol,ridge);
-        % if m == 1
-        %     bSmall = zeros(numel(fitSmall.beta),M);
-        %     bFull = zeros(numel(fitFull.beta),M);
-        % end
-        bSmall(:,m) = fitSmall.beta;
+
         bFull(:,m) = fitFull.beta;
-        devSmallMLE(m) = fitSmall.deviance;
         devFullMLE(m) = fitFull.deviance;
     end
 
-    % The Meng-Rubin D_L likelihood-ratio procedure requires a common
-    % parameter vector for each model. The common vector is the arithmetic
-    % mean of the M imputation-specific estimates:
+    % The Meng-Rubin D_L procedure requires a common coefficient vector for
+    % the full model. It is obtained as the arithmetic mean of the M
+    % imputation-specific full-model estimates:
     %
-    %   qbarSmall = (1/M) * sum_m betaSmall_m;
-    %   qbarFull  = (1/M) * sum_m betaFull_m.
+    %   qbarFull = (1/M) * sum_m betaFull_m.
     %
-    % In the next loop, the likelihood of every completed dataset is
-    % evaluated at these pooled coefficients, without re-estimation. The
-    % difference between the likelihood-ratio statistic evaluated at the
-    % imputation-specific MLEs and the statistic evaluated at the pooled
-    % coefficients measures disagreement between imputations and is used to
-    % estimate the relative increase in variance due to missing values.
-    %
-    % The reduced and full coefficients must be pooled separately because
-    % the two models have different dimensions and the coefficients of the
-    % common predictors need not be identical after additional predictors
-    % are included in the full logistic model.
-    qbarSmall = mean(bSmall,2);
+    % No analogous averaging is required for the reduced model because its
+    % response and design matrix are identical across completed data sets.
+    % Thus, (bSmall) the reduced-model coefficient estimate is already common to all
+    % completed data sets.
     qbarFull = mean(bFull,2);
 
-    % Reevaluate each completed-data model at the pooled coefficients.
-    % Unlike the first loop, no model fitting is performed here.
-    % devSmallPooled(m) and devFullPooled(m) are the deviances of completed
-    % dataset m when all imputations are forced to use the same respective
-    % pooled parameter vectors.
-    devSmallPooled = zeros(M,1);
+    % The reduced model is identical across imputations. Therefore, its pooled
+    % deviance is identical to the reduced-model fitted deviance.
+    devSmallPooled = devSmallMLE;
+
+    % Reevaluate the full model in each completed data set at qbarFull,
+    % without re-estimating its coefficients.
+    %
+    % devFullMLE(m) is the full-model deviance evaluated at the coefficient
+    % estimate specific to completed data set m.
+    %
+    % devFullPooled(m) is the full-model deviance for completed data set m
+    % evaluated at the common coefficient vector qbarFull.
     devFullPooled = zeros(M,1);
+
     for m = 1:M
         Ym = imputations{m};
-        Xsmall = [ones(size(Ym,1),1) Ym(:,locfull)];
         Xfull = [Xsmall Ym(:,locmis)];
-        devSmallPooled(m) = logisticDeviance(Xsmall,response,qbarSmall);
-        devFullPooled(m) = logisticDeviance(Xfull,response,qbarFull);
+
+        devFullPooled(m) = ...
+            logisticDeviance(Xfull,response,qbarFull);
     end
 
-
-    % devM is the average likelihood-ratio statistic computed using the
-    % separate maximum-likelihood estimates from each imputation:
+    % devL is the likelihood-ratio statistic obtained after forcing all
+    % completed data sets to use the common full-model coefficient vector:
     %
-    %   devM = mean_m{Dsmall_m(betaSmall_m)-Dfull_m(betaFull_m)}.
+    %   devL = Dsmall(betaSmallHat)
+    %          - mean_m{Dfull_m(qbarFull)},
     %
-    % devL is the average likelihood-ratio statistic obtained by evaluating
-    % each completed dataset at the common pooled coefficient vectors:
-    %
-    %   devL = mean_m{Dsmall_m(qbarSmall)-Dfull_m(qbarFull)}.
-    %
-    % The difference devM-devL quantifies the loss of fit caused by forcing
-    % all imputations to share common coefficients. After scaling, this
-    % difference estimates the relative increase in variance due to
-    % nonresponse used in the Meng-Rubin D_L statistic.
-    devM = mean(devSmallMLE-devFullMLE);
-    devL = mean(devSmallPooled-devFullPooled);
-    k = size(bFull,1)-size(bSmall,1);
-
-    % Estimate the average odds of the fraction of missing information.
-    % This is r_L in equation (3.8) of Meng and Rubin (1992):
-    %
-    %   r_L = (M+1)/(k*(M-1)) * (dbar_M - dbar_L),
-    %
-    % where devM is the average likelihood-ratio statistic evaluated at the
-    % imputation-specific MLEs and devL is the average likelihood-ratio
-    % statistic evaluated at the pooled coefficient estimates.
-    rL = ((M+1)/(k*(M-1)))*(devM-devL);
+    % where Dsmall and Dfull denote minus twice the corresponding Bernoulli
+    % log likelihoods.
+    devL = devSmallPooled - mean(devFullPooled);
 
 
-    % A slightly negative value can occur because of numerical error.
+    % In the Meng-Rubin formulation, the corresponding average
+    % likelihood-ratio statistic based on the imputation-specific
+    % full-model estimates is
+    %
+    %   devM = Dsmall(betaSmallHat)
+    %          - mean_m{Dfull_m(betaFullHat_m)}.
+    %
+    % The common reduced-model deviance cancels from devM-devL:
+    %
+    %   devM-devL
+    %     = mean_m{
+    %         Dfull_m(qbarFull)-Dfull_m(betaFullHat_m)
+    %       }.
+    %
+    % Compute this difference directly to avoid subtracting two potentially
+    % similar likelihood-ratio statistics.
+    
+    % devMminusDevL measures the loss of fit caused by replacing the
+    % imputation-specific full-model estimates with the common pooled estimate.
+    % For each completed data set, devFullPooled(m)-devFullMLE(m) is the increase
+    % in deviance obtained by evaluating the model at qbarFull rather than at
+    % its own MLE. Averaging these increases quantifies the disagreement among
+    % the imputations and provides a likelihood-based measure of the additional
+    % uncertainty due to missing data.
+    devMminusDevL = mean(devFullPooled-devFullMLE);
+
+    % Estimate the average relative increase in variance due to missing data.
+    % Equivalently, r_L estimates the average odds of missing information:
+    %
+    %   r_L = lambda/(1-lambda),
+    %
+    % where lambda denotes the fraction of missing information. This is r_L
+    % in equation (3.8) of Meng and Rubin (1992):
+    %
+    %   r_L = (M+1)/(k*(M-1)) * (devM-devL).    %
+    rL = ((M+1)/(k*(M-1))) * devMminusDevL;
+
+    % When fitFull.beta minimizes the same unpenalized Bernoulli deviance
+    % evaluated by logisticDeviance, devFullPooled(m) cannot be smaller
+    % than devFullMLE(m). Small negative values of devMminusDevL may still
+    % occur because of numerical rounding. A substantial negative value
+    % can indicate that the fitting and deviance calculations do not use
+    % exactly the same objective.
     rL = max(rL,0);
+
+    % Pooled D_L statistic. The likelihood-ratio statistic devL is divided
+    % by its number of restrictions and adjusted for the estimated increase
+    % in variance caused by missing information.
     D_L = max(devL,0)/(k*(1+rL));
+
+    % Degrees of freedom entering the finite-M reference distribution.
     v = k*(M-1);
-    % w = degrees of freedom of the denominator of the F distribution
-    % Equation (2.7) of Meng and Rubin (1992)
+
+    % Denominator degrees of freedom of the F reference distribution,
+    % following equation (2.7) of Meng and Rubin (1992). When rL is
+    % essentially zero, the denominator degrees of freedom are infinite and
+    % the reference distribution reduces to the corresponding chi-square
+    % approximation divided by k.
     if rL <= sqrt(eps)
         w = Inf;
     elseif v > 4
@@ -1103,14 +1166,20 @@ for kk = 1:q
     df1(kk) = k;
     df2(kk) = w;
     relativeIncrease(kk) = rL;
+
+    % Store the quantities entering the D_L calculation. The reduced-model
+    % deviances are scalars, while the full-model deviances contain one
+    % value for each completed data set.
     deviance(kk).fullMLE = devFullMLE;
     deviance(kk).smallMLE = devSmallMLE;
     deviance(kk).fullPooled = devFullPooled;
     deviance(kk).smallPooled = devSmallPooled;
 end
 
+% Apply a Bonferroni correction across the q missingness mechanisms.
 alphaAdjusted = alpha/q;
 whichReject = pvalue < alphaAdjusted;
+
 res = struct;
 res.pvalue = pvalue;
 res.stat = stat;
@@ -1122,6 +1191,163 @@ res.alphaAdjusted = alphaAdjusted;
 res.whichReject = whichReject;
 res.reject = any(whichReject);
 end
+
+% The old (not efficient version) which computes the coefficient for each reduced model
+% is left below
+% function res = dtmmTest(imputations,R,locmis,locfull,alpha,ridge,maxiter,tol)
+% %dtmmTest directly tests each postulated missingness mechanism.
+% %
+% % For missingness indicator R_k, the reduced logistic model contains the
+% % fully observed variables and the full model additionally contains all
+% % imputed partially observed variables.
+% M = numel(imputations);
+% q = numel(locmis);
+% pvalue = NaN(q,1);
+% stat = NaN(q,1);
+% df1 = q*ones(q,1);
+% df2 = NaN(q,1);
+% relativeIncrease = NaN(q,1);
+% deviance = repmat(struct('fullMLE',[],'smallMLE',[], ...
+%     'fullPooled',[],'smallPooled',[]),q,1);
+% 
+% for kk = 1:q
+%     % Binary response for the missingness mechanism of variable locmis(kk).
+%     response = R(:,kk);
+%     devFullMLE = zeros(M,1);
+%     devSmallMLE = zeros(M,1);
+%     bSmall = zeros(length(locfull)+1,M);
+%     bFull = zeros(length(locfull)+length(locmis)+1,M);
+% 
+%     for m = 1:M
+%         Ym = imputations{m};
+%         % Reduced model uses only variables observed on all units.
+%         Xsmall = [ones(size(Ym,1),1) Ym(:,locfull)];
+%         % Full model adds all partially observed variables after imputation.
+%         Xfull = [Xsmall Ym(:,locmis)];
+%         fitSmall = logisticFit(Xsmall,response,maxiter,tol,ridge); % glmfit(Xsmall(:,2:end),response,"binomial","Link","logit")
+%         fitFull = logisticFit(Xfull,response,maxiter,tol,ridge);
+%         % if m == 1
+%         %     bSmall = zeros(numel(fitSmall.beta),M);
+%         %     bFull = zeros(numel(fitFull.beta),M);
+%         % end
+%         bSmall(:,m) = fitSmall.beta;
+%         bFull(:,m) = fitFull.beta;
+%         devSmallMLE(m) = fitSmall.deviance;
+%         devFullMLE(m) = fitFull.deviance;
+%     end
+% 
+%     % The Meng-Rubin D_L likelihood-ratio procedure requires a common
+%     % parameter vector for each model. The common vector is the arithmetic
+%     % mean of the M imputation-specific estimates:
+%     %
+%     %   qbarSmall = (1/M) * sum_m betaSmall_m;
+%     %   qbarFull  = (1/M) * sum_m betaFull_m.
+%     %
+%     % In the next loop, the likelihood of every completed dataset is
+%     % evaluated at these pooled coefficients, without re-estimation. The
+%     % difference between the likelihood-ratio statistic evaluated at the
+%     % imputation-specific MLEs and the statistic evaluated at the pooled
+%     % coefficients measures disagreement between imputations and is used to
+%     % estimate the relative increase in variance due to missing values.
+%     %
+%     % The reduced and full coefficients must be pooled separately because
+%     % the two models have different dimensions and the coefficients of the
+%     % common predictors need not be identical after additional predictors
+%     % are included in the full logistic model.
+%     qbarSmall = mean(bSmall,2);
+%     qbarFull = mean(bFull,2);
+% 
+%     % Reevaluate each completed-data model at the pooled coefficients.
+%     % Unlike the first loop, no model fitting is performed here.
+%     % devSmallPooled(m) and devFullPooled(m) are the deviances of completed
+%     % dataset m when all imputations are forced to use the same respective
+%     % pooled parameter vectors.
+%     devSmallPooled = zeros(M,1);
+%     devFullPooled = zeros(M,1);
+%     for m = 1:M
+%         Ym = imputations{m};
+%         Xsmall = [ones(size(Ym,1),1) Ym(:,locfull)];
+%         Xfull = [Xsmall Ym(:,locmis)];
+%         devSmallPooled(m) = logisticDeviance(Xsmall,response,qbarSmall);
+%         devFullPooled(m) = logisticDeviance(Xfull,response,qbarFull);
+%     end
+% 
+% 
+%     % devM is the average likelihood-ratio statistic computed using the
+%     % separate maximum-likelihood estimates from each imputation:
+%     %
+%     %   devM = mean_m{Dsmall_m(betaSmall_m)-Dfull_m(betaFull_m)}.
+%     %
+%     % devL is the average likelihood-ratio statistic obtained by evaluating
+%     % each completed dataset at the common pooled coefficient vectors:
+%     %
+%     %   devL = mean_m{Dsmall_m(qbarSmall)-Dfull_m(qbarFull)}.
+%     %
+%     % The difference devM-devL quantifies the loss of fit caused by forcing
+%     % all imputations to share common coefficients. After scaling, this
+%     % difference estimates the relative increase in variance due to
+%     % nonresponse used in the Meng-Rubin D_L statistic.
+%     devM = mean(devSmallMLE-devFullMLE);
+%     devL = mean(devSmallPooled-devFullPooled);
+%     k = size(bFull,1)-size(bSmall,1);
+% 
+%     % Estimate the average odds of the fraction of missing information.
+%     % This is r_L in equation (3.8) of Meng and Rubin (1992):
+%     %
+%     %   r_L = (M+1)/(k*(M-1)) * (dbar_M - dbar_L),
+%     %
+%     % where devM is the average likelihood-ratio statistic evaluated at the
+%     % imputation-specific MLEs and devL is the average likelihood-ratio
+%     % statistic evaluated at the pooled coefficient estimates.
+%     rL = ((M+1)/(k*(M-1)))*(devM-devL);
+% 
+% 
+%     % A slightly negative value can occur because of numerical error.
+%     rL = max(rL,0);
+%     D_L = max(devL,0)/(k*(1+rL));
+%     v = k*(M-1);
+%     % w = degrees of freedom of the denominator of the F distribution
+%     % Equation (2.7) of Meng and Rubin (1992)
+%     if rL <= sqrt(eps)
+%         w = Inf;
+%     elseif v > 4
+%         w = 4+(v-4)*(1+(1-2/v)/rL)^2;
+%     else
+%         w = v*(1+1/k)*(1+1/rL)^2/2;
+%     end
+% 
+%     % A small p-value for component kk indicates that, after conditioning on
+%     % the fully observed variables, at least one partially observed variable
+%     % provides additional information about whether variable locmis(kk) is
+%     % missing. This is evidence against the restrictions implied by MAAR or
+%     % against one of the accompanying assumptions. The test is omnibus and
+%     % does not by itself identify which partially observed variable is
+%     % responsible.
+%     pvalue(kk) = fSurvival(D_L,k,w);
+%     stat(kk) = D_L;
+%     df1(kk) = k;
+%     df2(kk) = w;
+%     relativeIncrease(kk) = rL;
+%     deviance(kk).fullMLE = devFullMLE;
+%     deviance(kk).smallMLE = devSmallMLE;
+%     deviance(kk).fullPooled = devFullPooled;
+%     deviance(kk).smallPooled = devSmallPooled;
+% end
+% 
+% alphaAdjusted = alpha/q;
+% whichReject = pvalue < alphaAdjusted;
+% res = struct;
+% res.pvalue = pvalue;
+% res.stat = stat;
+% res.df1 = df1;
+% res.df2 = df2;
+% res.relativeIncrease = relativeIncrease;
+% res.deviance = deviance;
+% res.alphaAdjusted = alphaAdjusted;
+% res.whichReject = whichReject;
+% res.reject = any(whichReject);
+% end
+
 
 % -------------------------------------------------------------------------
 function fit = logisticFit(X,y,maxiter,tol,ridge)
@@ -1656,7 +1882,7 @@ for iteration = 1:niterMCMC
             % observed variables.
             C22 = stabilizeSPD(C(nv+1:end,nv+1:end),ridge);
 
-            % Compute the covariance of [Ymiss,R] conditional on Yfull 
+            % Compute the covariance of [Ymiss,R] conditional on Yfull
             %
             %   Vcond = C11-C12*inv(C22)*C21.
             Vcond = C(1:nv,1:nv)- ...
