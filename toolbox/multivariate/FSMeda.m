@@ -38,7 +38,7 @@ function out = FSMeda(Y,bsb,varargin)
 %
 %  msg  :       It controls whether to display or not messages
 %               about great interchange on the screen. Scalar.
-%               If msg==1 (default) messages are displyed on the screen
+%               If msg==1 (default) messages are displayed on the screen
 %               else no message is displayed on the screen.
 %                 Example - 'msg',0
 %                 Data Types - double
