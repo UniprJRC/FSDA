@@ -1,0 +1,211 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>mdBBtest</title><meta content="refpage" name="chunktype"><meta content="function:mdBBtest" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mdBBtest Bordino-Berrett correlation-compatibility test for MCAR." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">mdBBtest</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example 1: compatible pattern-specific correlation matrices.</a></li><li><a class="intrnllnk" href="#Example_2">Example 2: incompatible pattern-specific correlations.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example 3: input supplied as a table.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_nsimul">nsimul</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_maxiter">maxiter</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tol">tol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_maxresample">maxresample</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mdBBtest</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mdBBtest Bordino-Berrett correlation-compatibility test for MCAR</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=mdBBtest(Y)</code><span class="syntax_example"><a class="intrnllnk" href="mdBBtest.html#Example_1">example</a></span></li><li><code class="synopsis">out=mdBBtest(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="mdBBtest.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>mdBBtest implements Algorithm 1 of Bordino and Berrett (2025), as
+  implemented in function corrCompTest of the R package MCARtest. The test
+  compares the correlation matrices estimated within the retained
+  missingness patterns and measures whether they are compatible with a
+  single positive semidefinite correlation matrix.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdBBtest.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mdBBtest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Example 1: compatible pattern-specific correlation matrices.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdBBtest.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mdBBtest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example 2: incompatible pattern-specific correlations.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 1: compatible pattern-specific correlation matrices.</li></span></a></span></h3><div class="collapse"><p>.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+m = 2000;
+Q = [1 0.5 0.2; 0.5 1 0.4; 0.2 0.4 1];
+Y = NaN(3*m,3);
+Y(1:m,[1 2]) = randn(m,2)*chol(Q([1 2],[1 2]));
+Y(m+(1:m),[2 3]) = randn(m,2)*chol(Q([2 3],[2 3]));
+Y(2*m+(1:m),[1 3]) = randn(m,2)*chol(Q([1 3],[1 3]));
+out = mdBBtest(Y,'nsimul',99);
+disp(out.stat)
+disp(out.pvalue)</pre></div></div><pre class="codeoutput">
+Bordino-Berrett correlation-compatibility MCAR test
+Observed R       = 3.78074e-11
+Retained patterns= 3
+Bootstrap samples= 99
+p-value          = 0.4
+The correlation-compatibility test does not reject MCAR at the 5 percent level.
+   3.7807e-11
+
+    0.4000
+
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2: incompatible pattern-specific correlations.</li></span></a></span></h3><div class="collapse"><p>.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2)
+m = 250;
+Y = NaN(3*m,3);
+Q12 = [1 0.9; 0.9 1];
+Q23 = [1 0.9; 0.9 1];
+Q13 = [1 -0.9; -0.9 1];
+Y(1:m,[1 2]) = randn(m,2)*chol(Q12);
+Y(m+(1:m),[2 3]) = randn(m,2)*chol(Q23);
+Y(2*m+(1:m),[1 3]) = randn(m,2)*chol(Q13);
+out = mdBBtest(Y,'nsimul',99,'plots',true);
+disp(out.pvalue)</pre></div></div><pre class="codeoutput">
+Bordino-Berrett correlation-compatibility MCAR test
+Observed R       = 0.809755
+Retained patterns= 3
+Bootstrap        = skipped because R &gt;= 3/4
+The observed incompatibility index is at least 3/4; following Bordino and Berrett, MCAR is rejected without bootstrap calibration.
+     0
+
+</pre>
+            <a href='http://rosa.unipr.it/fsda/mdBBtest.html#Example_2'><img vspace="5" hspace="5" src="images\mdBBtest_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3: input supplied as a table.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(3)   Y = randn(400,5);   Y(rand(size(Y))&lt;0.15) = NaN;   Ytable = array2table(Y, ...       'VariableNames',{'Income','Age','Score','Balance','Tenure'});   out = mdBBtest(Ytable,'nsimul',49,'msg',false);   disp(out.patternInfo)</pre></div></div><pre class="codeoutput">Warning: Rows belonging to 10 pattern(s) were removed because the pattern was
+completely missing or its frequency was not greater than |S|+1. 
+Warning: 38 of 49 bootstrap SDP problem(s) did not satisfy the requested
+tolerance, so the corresponding statistics are solver-dependent and the p-value
+should not be relied upon. Increase maxiter, or loosen tol, and inspect
+out.solverConvergedBoot. 
+             OriginalPattern    Frequency    pObserved    MinEigenvalue
+             _______________    _________    _________    _____________
+
+    11111           1              182           5           0.79715   
+    01111           2               36           4           0.43605   
+    11010           3                8           3           0.44136   
+    11101           6               32           4           0.60352   
+    10111           8               32           4           0.54174   
+    11011          10               27           4           0.61468   
+    11110          12               26           4           0.81215   
+    10011          14                7           3           0.19389   
+    11001          17                6           3           0.22673   
+    00111          19                6           3           0.46931   
+    10110          20                6           3            0.3667   
+    01110          21                6           3           0.17673   
+
+</pre>
+            </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix, table or timetable.</span></span></h3> <div class="collapse"> <p><p>n x p data matrix
+                  possibly containing missing values (NaN's). Rows of Y
+                  represent observations and columns represent variables.</p> <p>
+                  </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double | table | timetable</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'nsimul',999
+</code>,<code> 'maxiter',10000
+</code>,<code> 'tol',1e-6
+</code>,<code> 'maxresample',5000
+</code>,<code> 'msg',false
+</code>,<code> 'plots',true
+</code></code></span></div><div class="expandableContent"><div id="inputarg_nsimul" class="clearfix"></div><h3 id="input_argument_namevalue_nsimul" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsimul</code> &#8212;Number of bootstrap samples.</span></a><span class="example_desc">positive integer.</span></span></h3><div class="collapse">	<p><p>The default value is 499.</p> <p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsimul',999
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_maxiter" class="clearfix"></div><h3 id="input_argument_namevalue_maxiter" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>maxiter</code> &#8212;Maximum number of iterations used by the internal ADMM
+                  solver for each semidefinite program.</span></a><span class="example_desc">positive integer.</span></span></h3><div class="collapse">	<p><p>The default value is 5000.</p> <p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'maxiter',10000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_tol" class="clearfix"></div><h3 id="input_argument_namevalue_tol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tol</code> &#8212;Absolute and relative convergence tolerance of the
+                  internal ADMM solver.</span></a><span class="example_desc">positive scalar.</span></span></h3><div class="collapse">	<p><p>The default value
+                  is 1e-7.</p> <p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tol',1e-6
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_maxresample" class="clearfix"></div><h3 id="input_argument_namevalue_maxresample" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>maxresample</code> &#8212;Maximum number of attempts used to obtain a nonsingular
+                  empirical bootstrap sample within a pattern.</span></a><span class="example_desc">positive                  integer.</span></span></h3><div class="collapse">	<p><p>The default value is 1000.</p> <p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'maxresample',5000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Display a concise summary.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>The default value is
+                  true.</p> <p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Produce graphical summaries.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If true, the
+                  function displays the bootstrap distribution of the
+                  incompatibility index and the retained missingness
+                  patterns. The default value is false.</p> <p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical | single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>Structure containing the following fields:</p> <p>
+
+  </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>stat</code></td><td><p>observed incompatibility index;</p></td></tr><tr valign="top"><td><code>pvalue</code></td><td><p>bootstrap p-value;</p></td></tr><tr valign="top"><td><code>reject</code></td><td><p>true if out.pvalue is smaller than 0.05;</p></td></tr><tr valign="top"><td><code>Rboot</code></td><td><p>nsimul x 1 vector of bootstrap statistics;</p></td></tr><tr valign="top"><td><code>nsimul</code></td><td><p>number of requested bootstrap samples;</p></td></tr><tr valign="top"><td><code>patterns</code></td><td><p><p>g x p logical matrix of retained observed-data
+                              patterns; true denotes an OBSERVED variable.</p> <p>
+                              Note that mdTEM, FSMmmd and mdPatternCorr use
+                              the opposite convention, in which a true
+                              entry denotes a MISSING variable; field
+                              out.patternsMissing below is supplied in that
+                              convention to avoid the confusion;</p></p></td></tr><tr valign="top"><td><code>patternsMissing</code></td><td><p>the same collection in the missingness
+                              convention used elsewhere in FSDA, that is
+                              ~out.patterns;</p></td></tr><tr valign="top"><td><code>patternCounts</code></td><td><p>g x 1 frequencies of the retained patterns;</p></td></tr><tr valign="top"><td><code>patternSize</code></td><td><p>g x 1 numbers of observed variables;</p></td></tr><tr valign="top"><td><code>patternInfo</code></td><td><p>table summarizing the retained patterns;</p></td></tr><tr valign="top"><td><code>correlationMatrices</code></td><td><p>cell array containing the empirical
+                              pattern-specific correlation matrices;</p></td></tr><tr valign="top"><td><code>Sigma</code></td><td><p>optimal common-scale positive semidefinite
+                              matrix from the observed-data SDP;</p></td></tr><tr valign="top"><td><code>compatibleCorrelation</code></td><td><p>fitted compatible p x p correlation
+                              matrix used to construct the bootstrap null;</p></td></tr><tr valign="top"><td><code>commonScale</code></td><td><p>optimal common diagonal of the unregularized
+                              semidefinite program, equal to 1-out.stat;</p></td></tr><tr valign="top"><td><code>c</code></td><td><p>smallest eigenvalue among the empirical
+                              pattern-specific correlation matrices;</p></td></tr><tr valign="top"><td><code>regularizationAlpha</code></td><td><p>bootstrap regularization parameter 2/c;</p></td></tr><tr valign="top"><td><code>removedRows</code></td><td><p>n x 1 logical vector identifying observations
+                              removed because their pattern is too small or
+                              completely missing;</p></td></tr><tr valign="top"><td><code>removedPatterns</code></td><td><p>logical matrix of removed patterns;</p></td></tr><tr valign="top"><td><code>solverInfoObserved</code></td><td><p>diagnostics from the observed-data SDP;</p></td></tr><tr valign="top"><td><code>solverConvergedBoot</code></td><td><p>nsimul x 1 logical vector;</p></td></tr><tr valign="top"><td><code>solverIterationsBoot</code></td><td><p>nsimul x 1 vector;</p></td></tr><tr valign="top"><td><code>variableNames</code></td><td><p>variable names;</p></td></tr><tr valign="top"><td><code>n</code></td><td><p>number of input observations;</p></td></tr><tr valign="top"><td><code>p</code></td><td><p>number of variables;</p></td></tr><tr valign="top"><td><code>npatterns</code></td><td><p>number of retained patterns;</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the internal solver;</p></td></tr><tr valign="top"><td><code>earlyRejected</code></td><td><p>true when the bootstrap was skipped because
+                              the observed index is at least 3/4;</p></td></tr><tr valign="top"><td><code>allConverged</code></td><td><p><p>true when the observed solve and every
+                              bootstrap solve met the requested tolerance.</p> <p>
+                              When false the p-value should not be relied
+                              upon: the bootstrap statistics are then
+                              solver-dependent;</p></p></td></tr><tr valign="top"><td><code>coreClip</code></td><td><p>magnitude of the most negative eigenvalue
+                              removed when the fitted compatible
+                              correlation matrix was repaired. A value far
+                              above the solver tolerance indicates that the
+                              observed semidefinite program was not solved
+                              accurately;</p></td></tr><tr valign="top"><td><code>interpretation</code></td><td><p>concise interpretation of the result.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>  Code-to-paper correspondence:</p> <p>
+
+  * Section 2 starts on Annals p. 2208; Algorithm 1 is on p. 2209,
+    with the bootstrap construction explained on pp. 2209-2210.</p> <p>
+  * Equation (3) on Annals p. 2213 defines the incompatibility index.</p> <p>
+  * Proposition 5, Equation (4), on Annals p. 2214 gives the dual SDP
+    used to compute the observed incompatibility index.</p> <p>
+  * Equation (5), also on Annals p. 2214, gives the compatible/
+    incompatible decomposition used to construct the bootstrap null.</p> <p>
+  * Equations (6) and (7) on Annals p. 2215 define the compact feasible
+    set and the regularized index used at the bootstrap stage.</p> <p>
+  * The computational paragraph below Algorithm 1 on Annals p. 2209
+    states that Proposition 5 together with Equations (6)-(7) yields SDP
+    formulations. The explicit standard-form SDP derivation is deferred
+    to Supplementary Material A and is not numbered in the published
+    Annals article. The ADMM solver below is a MATLAB implementation
+    choice and is not part of the statistical procedure in the paper.</p><p>
+
+  Let $S_1$, ...,$S_g$ denote the retained sets of observed variables and let
+  $\Sigma_S$ be the sample correlation matrix calculated using observations
+  having pattern $S$. The incompatibility index is
+
+  </p>\[
+      R(\widehat\Sigma_{\mathbb S}) = 1-\lambda_{max},
+  \]
+
+  where $\lambda_{max}$ is the solution of the semidefinite program
+
+  \[
+  \begin{array}{ll}
+  \mathrm{maximize}   & \lambda \\
+  \mathrm{subject\ to}& Q\succeq0,\quad
+                         \mathrm{diag}(Q)=\lambda\mathbf 1,\\
+                       & \widehat\Sigma_S-Q_S\succeq0,
+                         \quad S\in\mathbb S.
+  \end{array}
+  \]
+
+  The fitted compatible correlation matrix used under the bootstrap null
+  is $Q/\lambda$. Following corrCompTest, patterns satisfying
+
+  \[
+      n_S \leq |S|+1
+  \]
+
+  are discarded. Let $c$ be the smallest eigenvalue of the retained sample
+  correlation matrices. Each bootstrap statistic is the regularized index
+  $R_z$ obtained from
+
+  \[
+  \begin{array}{ll}
+  \mathrm{maximize}   & \lambda-(2/c)z \\
+  \mathrm{subject\ to}& Q\succeq0,\quad
+                         \mathrm{diag}(Q)=\lambda\mathbf 1,\quad z\geq0,\\
+                       & \widehat\Sigma_S^*-Q_S+zI_S\succeq0.
+  \end{array}
+  \]
+
+  Before resampling, observations in each pattern are standardized and
+  linearly transformed so that their empirical correlation matrix equals
+  the corresponding submatrix of the fitted compatible correlation
+  matrix. The bootstrap p-value is
+
+  \[
+      \frac{1+\sum_{b=1}^B I\{R_z^{*(b)}\geq R_{obs}\}}{B+1}.
+  \]<p>
+
+  As in corrCompTest, if the observed incompatibility index is at least
+  3/4, the function returns pvalue=0 without carrying out the bootstrap.</p> <p>
+
+  The R implementation uses CSDP through package Rcsdp. mdBBtest solves the
+  same primal semidefinite programs with an internal alternating direction
+  method of multipliers (ADMM), using projections onto positive
+  semidefinite cones. Solver diagnostics should be inspected when one or
+  more problems do not satisfy the requested tolerance.</p> <p>
+
+  The procedure is based only on pattern-specific correlations. It does not
+  use mdEM and it does not test compatibility of pattern means or variances.</p> <p>
+
+  References:</p> <p>
+
+  Bordino, A. and Berrett, T. B. (2025), "Tests of Missing Completely At
+  Random based on sample covariance matrices", Annals of Statistics,
+  Vol. 53, pp. 2204-2229.</p><p>
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Bordino, A. and Berrett, T. B. (2025), "Tests of Missing Completely At
+  Random based on sample covariance matrices", Annals of Statistics,
+  Vol. 53, pp. 2204-2229.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="mdLittleTest.html" itemprop="url"><span itemprop="name"><code>mdLittleTest</code></span></a></span> | <span itemprop="seealso"><a href="mdJJtest.html" itemprop="url"><span itemprop="name"><code>mdJJtest</code></span></a></span> | <span itemprop="seealso"><a href="mdMAARtest.html" itemprop="url"><span itemprop="name"><code>mdMAARtest</code></span></a></span> | <span itemprop="seealso"><a href="mdMCARtest.html" itemprop="url"><span itemprop="name"><code>mdMCARtest</code></span></a></span> | <span itemprop="seealso"><a href="mdpattern.html" itemprop="url"><span itemprop="name"><code>mdpattern</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
