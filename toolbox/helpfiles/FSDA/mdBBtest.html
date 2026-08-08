@@ -18,9 +18,9 @@ Retained patterns= 3
 Bootstrap samples= 99
 p-value          = 0.4
 The correlation-compatibility test does not reject MCAR at the 5 percent level.
-   3.7807e-11
+     3.780742385828262e-11
 
-    0.4000
+   0.400000000000000
 
 </pre>
             </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2: incompatible pattern-specific correlations.</li></span></a></span></h3><div class="collapse"><p>.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2)
@@ -48,21 +48,21 @@ Warning: 38 of 49 bootstrap SDP problem(s) did not satisfy the requested
 tolerance, so the corresponding statistics are solver-dependent and the p-value
 should not be relied upon. Increase maxiter, or loosen tol, and inspect
 out.solverConvergedBoot. 
-             OriginalPattern    Frequency    pObserved    MinEigenvalue
-             _______________    _________    _________    _____________
+             OriginalPattern    Frequency    pObserved      MinEigenvalue  
+             _______________    _________    _________    _________________
 
-    11111           1              182           5           0.79715   
-    01111           2               36           4           0.43605   
-    11010           3                8           3           0.44136   
-    11101           6               32           4           0.60352   
-    10111           8               32           4           0.54174   
-    11011          10               27           4           0.61468   
-    11110          12               26           4           0.81215   
-    10011          14                7           3           0.19389   
-    11001          17                6           3           0.22673   
-    00111          19                6           3           0.46931   
-    10110          20                6           3            0.3667   
-    01110          21                6           3           0.17673   
+    11111           1              182           5        0.797153004324735
+    01111           2               36           4        0.436045092183381
+    11010           3                8           3        0.441358427764134
+    11101           6               32           4        0.603515171594964
+    10111           8               32           4        0.541737846024937
+    11011          10               27           4        0.614680937010792
+    11110          12               26           4         0.81214662883048
+    10011          14                7           3        0.193889456279292
+    11001          17                6           3        0.226731612116648
+    00111          19                6           3        0.469308341994411
+    10110          20                6           3        0.366703116278685
+    01110          21                6           3        0.176725482958566
 
 </pre>
             </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix, table or timetable.</span></span></h3> <div class="collapse"> <p><p>n x p data matrix
@@ -83,8 +83,9 @@ out.solverConvergedBoot.
                   internal ADMM solver.</span></a><span class="example_desc">positive scalar.</span></span></h3><div class="collapse">	<p><p>The default value
                   is 1e-7.</p> <p>
                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tol',1e-6
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_maxresample" class="clearfix"></div><h3 id="input_argument_namevalue_maxresample" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>maxresample</code> &#8212;Maximum number of attempts used to obtain a nonsingular
-                  empirical bootstrap sample within a pattern.</span></a><span class="example_desc">positive                  integer.</span></span></h3><div class="collapse">	<p><p>The default value is 1000.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_maxresample" class="clearfix"></div><h3 id="input_argument_namevalue_maxresample" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>maxresample</code> &#8212;Maximum number of attempts used to obtain a bootstrap
+                  sample having more distinct rows than observed variables
+                  within a pattern.</span></a><span class="example_desc">positive integer.</span></span></h3><div class="collapse">	<p><p>The default value is 1000.</p> <p>
                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'maxresample',5000
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Display a concise summary.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>The default value is
                   true.</p> <p>
@@ -96,7 +97,11 @@ out.solverConvergedBoot.
                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical | single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>Structure containing the following fields:</p> <p>
 
-  </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>stat</code></td><td><p>observed incompatibility index;</p></td></tr><tr valign="top"><td><code>pvalue</code></td><td><p>bootstrap p-value;</p></td></tr><tr valign="top"><td><code>reject</code></td><td><p>true if out.pvalue is smaller than 0.05;</p></td></tr><tr valign="top"><td><code>Rboot</code></td><td><p>nsimul x 1 vector of bootstrap statistics;</p></td></tr><tr valign="top"><td><code>nsimul</code></td><td><p>number of requested bootstrap samples;</p></td></tr><tr valign="top"><td><code>patterns</code></td><td><p><p>g x p logical matrix of retained observed-data
+  </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>stat</code></td><td><p>observed incompatibility index;</p></td></tr><tr valign="top"><td><code>pvalue</code></td><td><p>test p-value; equal to zero when the
+                              bootstrap is skipped because
+                              out.earlyRejected is true;</p></td></tr><tr valign="top"><td><code>reject</code></td><td><p>true if out.pvalue is smaller than 0.05;</p></td></tr><tr valign="top"><td><code>Rboot</code></td><td><p><p>nsimul x 1 vector of bootstrap statistics;</p> <p>
+                              empty when the bootstrap is skipped because
+                              out.earlyRejected is true;</p></p></td></tr><tr valign="top"><td><code>nsimul</code></td><td><p>number of requested bootstrap samples;</p></td></tr><tr valign="top"><td><code>patterns</code></td><td><p><p>g x p logical matrix of retained observed-data
                               patterns; true denotes an OBSERVED variable.</p> <p>
                               Note that mdTEM, FSMmmd and mdPatternCorr use
                               the opposite convention, in which a true
@@ -106,12 +111,16 @@ out.solverConvergedBoot.
                               convention used elsewhere in FSDA, that is
                               ~out.patterns;</p></td></tr><tr valign="top"><td><code>patternCounts</code></td><td><p>g x 1 frequencies of the retained patterns;</p></td></tr><tr valign="top"><td><code>patternSize</code></td><td><p>g x 1 numbers of observed variables;</p></td></tr><tr valign="top"><td><code>patternInfo</code></td><td><p>table summarizing the retained patterns;</p></td></tr><tr valign="top"><td><code>correlationMatrices</code></td><td><p>cell array containing the empirical
                               pattern-specific correlation matrices;</p></td></tr><tr valign="top"><td><code>Sigma</code></td><td><p>optimal common-scale positive semidefinite
-                              matrix from the observed-data SDP;</p></td></tr><tr valign="top"><td><code>compatibleCorrelation</code></td><td><p>fitted compatible p x p correlation
-                              matrix used to construct the bootstrap null;</p></td></tr><tr valign="top"><td><code>commonScale</code></td><td><p>optimal common diagonal of the unregularized
-                              semidefinite program, equal to 1-out.stat;</p></td></tr><tr valign="top"><td><code>c</code></td><td><p>smallest eigenvalue among the empirical
+                              matrix from the observed-data SDP;</p></td></tr><tr valign="top"><td><code>compatibleCorrelation</code></td><td><p><p>fitted compatible p x p correlation
+                              matrix used to construct the bootstrap null;</p> <p>
+                              empty when out.earlyRejected is true;</p></p></td></tr><tr valign="top"><td><code>commonScale</code></td><td><p>optimal common diagonal of the unregularized
+                              semidefinite program. In exact arithmetic it
+                              is equal to 1-out.stat;</p></td></tr><tr valign="top"><td><code>c</code></td><td><p>smallest eigenvalue among the empirical
                               pattern-specific correlation matrices;</p></td></tr><tr valign="top"><td><code>regularizationAlpha</code></td><td><p>bootstrap regularization parameter 2/c;</p></td></tr><tr valign="top"><td><code>removedRows</code></td><td><p>n x 1 logical vector identifying observations
                               removed because their pattern is too small or
-                              completely missing;</p></td></tr><tr valign="top"><td><code>removedPatterns</code></td><td><p>logical matrix of removed patterns;</p></td></tr><tr valign="top"><td><code>solverInfoObserved</code></td><td><p>diagnostics from the observed-data SDP;</p></td></tr><tr valign="top"><td><code>solverConvergedBoot</code></td><td><p>nsimul x 1 logical vector;</p></td></tr><tr valign="top"><td><code>solverIterationsBoot</code></td><td><p>nsimul x 1 vector;</p></td></tr><tr valign="top"><td><code>variableNames</code></td><td><p>variable names;</p></td></tr><tr valign="top"><td><code>n</code></td><td><p>number of input observations;</p></td></tr><tr valign="top"><td><code>p</code></td><td><p>number of variables;</p></td></tr><tr valign="top"><td><code>npatterns</code></td><td><p>number of retained patterns;</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the internal solver;</p></td></tr><tr valign="top"><td><code>earlyRejected</code></td><td><p>true when the bootstrap was skipped because
+                              completely missing;</p></td></tr><tr valign="top"><td><code>removedPatterns</code></td><td><p>logical matrix of removed patterns;</p></td></tr><tr valign="top"><td><code>solverInfoObserved</code></td><td><p>diagnostics from the observed-data SDP;</p></td></tr><tr valign="top"><td><code>solverConvergedBoot</code></td><td><p>nsimul x 1 logical vector; empty when
+                              out.earlyRejected is true;</p></td></tr><tr valign="top"><td><code>solverIterationsBoot</code></td><td><p>nsimul x 1 vector; empty when
+                              out.earlyRejected is true;</p></td></tr><tr valign="top"><td><code>variableNames</code></td><td><p>variable names;</p></td></tr><tr valign="top"><td><code>n</code></td><td><p>number of input observations;</p></td></tr><tr valign="top"><td><code>p</code></td><td><p>number of variables;</p></td></tr><tr valign="top"><td><code>npatterns</code></td><td><p>number of retained patterns;</p></td></tr><tr valign="top"><td><code>solver</code></td><td><p>name of the internal solver;</p></td></tr><tr valign="top"><td><code>earlyRejected</code></td><td><p>true when the bootstrap was skipped because
                               the observed index is at least 3/4;</p></td></tr><tr valign="top"><td><code>allConverged</code></td><td><p><p>true when the observed solve and every
                               bootstrap solve met the requested tolerance.</p> <p>
                               When false the p-value should not be relied
@@ -121,84 +130,406 @@ out.solverConvergedBoot.
                               correlation matrix was repaired. A value far
                               above the solver tolerance indicates that the
                               observed semidefinite program was not solved
-                              accurately;</p></td></tr><tr valign="top"><td><code>interpretation</code></td><td><p>concise interpretation of the result.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>  Code-to-paper correspondence:</p> <p>
+                              accurately;</p></td></tr><tr valign="top"><td><code>interpretation</code></td><td><p>concise interpretation of the result.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+  The objective of the test of Bordino and Berrett (2025), referred to as
+  BB2025 below, is to assess whether the correlation matrices associated with
+  the different missingness patterns are compatible with a single
+  $p$-by-$p$ correlation matrix, where $p$ is the number of variables in
+  the input data (corresponding to $d$ in BB2025). Compatibility of these
+  matrices is a necessary condition for MCAR. Therefore, rejection of
+  correlation compatibility provides evidence against MCAR.</p> <p>
 
-  * Section 2 starts on Annals p. 2208; Algorithm 1 is on p. 2209,
-    with the bootstrap construction explained on pp. 2209-2210.</p> <p>
-  * Equation (3) on Annals p. 2213 defines the incompatibility index.</p> <p>
-  * Proposition 5, Equation (4), on Annals p. 2214 gives the dual SDP
-    used to compute the observed incompatibility index.</p> <p>
-  * Equation (5), also on Annals p. 2214, gives the compatible/
-    incompatible decomposition used to construct the bootstrap null.</p> <p>
-  * Equations (6) and (7) on Annals p. 2215 define the compact feasible
-    set and the regularized index used at the bootstrap stage.</p> <p>
-  * The computational paragraph below Algorithm 1 on Annals p. 2209
-    states that Proposition 5 together with Equations (6)-(7) yields SDP
-    formulations. The explicit standard-form SDP derivation is deferred
-    to Supplementary Material A and is not numbered in the published
-    Annals article. The ADMM solver below is a MATLAB implementation
-    choice and is not part of the statistical procedure in the paper.</p><p>
-
-  Let $S_1$, ...,$S_g$ denote the retained sets of observed variables and let
-  $\Sigma_S$ be the sample correlation matrix calculated using observations
-  having pattern $S$. The incompatibility index is
+  Let $S_1,\ldots,S_g$ denote the retained sets of observed variables and
+  let $n_S$ be the number of observations having pattern $S$. Following
+  Algorithm 1 of BB2025, patterns satisfying
 
   </p>\[
-      R(\widehat\Sigma_{\mathbb S}) = 1-\lambda_{max},
+      n_S \leq |S|+1
   \]
 
-  where $\lambda_{max}$ is the solution of the semidefinite program
+  are discarded. For every retained pattern $S$, let
+  $\widehat\Sigma_S$ denote the sample correlation matrix calculated using
+  the observations belonging to that pattern, and write
+
+  \[
+      \widehat\Sigma_{\mathbb S}
+        =(\widehat\Sigma_S:S\in\mathbb S)
+  \]<p>
+
+  for the collection of pattern-specific sample correlation matrices.</p> <p>
+
+  The observed test statistic is the incompatibility index
+
+  </p>\[
+      R_{\mathrm{obs}}
+        =R(\widehat\Sigma_{\mathbb S}).
+  \]
+
+
+
+  Proposition 5, Equation (4), shows that the incompatibility index can be
+  computed through the dual semidefinite representation
+
+  \[
+      R(\widehat\Sigma_{\mathbb S})
+      =
+      1-\frac{1}{p}
+      \sup\left\{
+      \mathrm{tr}(M):
+      AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S},
+      \;
+      m_{11}=\cdots=m_{pp},
+      \;
+      M\succeq0
+      \right\},
+  \]<p>
+
+  where $p$ is the number of variables in the input data and corresponds
+  to $d$ in the notation of Bordino and Berrett.</p> <p>
+
+  The operator $A$ maps the global $p$-by-$p$ positive semidefinite (PSD) matrix
+  $M=(m_{ij})_{i,j=1}^p$ into the
+  collection of its pattern-specific principal submatrices:</p><p>
+
+  </p>\[
+      AM=(M(S,S):S\in\mathbb S).
+  \]
+
+  Hence $AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S}$ means,
+  for every $S\in\mathbb S$,
+
+  \[
+      (AM)_S=M(S,S)\preceq\widehat\Sigma_S,
+  \]
+
+  or equivalently
+
+  \[
+      \widehat\Sigma_S-M(S,S)\succeq0.
+  \]<p>
+
+
+
+  The symbol $\preceq$ denotes the Loewner partial ordering for symmetric
+  matrices: $C\preceq D$ means that $D-C$ is positive semidefinite.</p> <p>
+  Accordingly, $\preceq_{\mathbb S}$ means that this ordering holds
+  pattern by pattern for every $S\in\mathbb S$.</p> <p>
+
+  In other words, the SDP searches for a common PSD matrix $M$ that fits
+  underneath all pattern-specific correlation matrices while maximizing
+  its common diagonal value $\lambda$ (equivalently,
+  $\mathrm{tr}(M)/p$).</p><p>
+
+  Since Equation (4) also imposes that all the diagonal elements of $M$
+  are equal
+
+  </p>\[
+      m_{11}=\cdots=m_{pp},
+  \]
+
+  the common diagonal value can be denoted by $\lambda$. Hence
+
+  \[
+      \mathrm{diag}(M)=\lambda\mathbf 1_p
+  \]
+
+  and therefore
+
+  \[
+      \mathrm{tr}(M)=p\lambda.
+  \]
+
+  Consequently,
+
+  \[
+      \frac{1}{p}\mathrm{tr}(M)=\lambda,
+  \]
+
+  so that Equation (4) is equivalently obtained by solving
 
   \[
   \begin{array}{ll}
   \mathrm{maximize}   & \lambda \\
-  \mathrm{subject\ to}& Q\succeq0,\quad
-                         \mathrm{diag}(Q)=\lambda\mathbf 1,\\
-                       & \widehat\Sigma_S-Q_S\succeq0,
+  \mathrm{subject\ to}& M\succeq0,\\
+                       & \mathrm{diag}(M)=\lambda\mathbf 1_p,\\
+                       & \widehat\Sigma_S-M(S,S)\succeq0,
                          \quad S\in\mathbb S.
   \end{array}
   \]
 
-  The fitted compatible correlation matrix used under the bootstrap null
-  is $Q/\lambda$. Following corrCompTest, patterns satisfying
+  If $\lambda^*$ denotes the largest feasible common diagonal value, it
+  measures the maximum weight that can be assigned to a common compatible
+  correlation structure across all the retained patterns. Then
 
   \[
-      n_S \leq |S|+1
+      R_{\mathrm{obs}}
+      =R(\widehat\Sigma_{\mathbb S})
+      =1-\frac{1}{p}(p\lambda^*)
+      =1-\lambda^*.
+  \]<p>
+
+
+  Hence a value $\lambda^*=1$ gives $R_{\mathrm{obs}}=0$ and corresponds to
+  compatibility, whereas smaller values of $\lambda^*$ indicate increasing
+  incompatibility.</p> <p>
+
+
+  By Slater's condition, the supremum in Equation (4) is attained. Let
+  $M^*$ denote an optimizer and let
+  $\lambda^*=1-R(\widehat\Sigma_{\mathbb S})$ be its common diagonal
+  value. Hence
+
+  </p>\[
+      \mathrm{diag}(M^*)=\lambda^*\mathbf 1_p.
   \]
 
-  are discarded. Let $c$ be the smallest eigenvalue of the retained sample
-  correlation matrices. Each bootstrap statistic is the regularized index
-  $R_z$ obtained from
+
+  For $\lambda^*&gt;0$, the normalized matrix
+
+  \[
+      \widehat Q=\frac{M^*}{\lambda^*}
+  \]<p>
+
+  is a $p$-by-$p$ correlation matrix.</p> <p>
+
+
+  Therefore,
+
+  </p>\[
+      \widehat Q_{\mathbb S}
+      =A\widehat Q
+      =(\widehat Q_S:S\in\mathbb S)
+  \]<p>
+
+  is a compatible collection of pattern-specific correlation matrices.</p> <p>
+
+  Moreover, $AM^*\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S}$ implies
+
+  </p>\[
+      \widehat\Sigma_S-\lambda^*\widehat Q_S\succeq0,
+      \qquad S\in\mathbb S.
+  \]
+
+  Since both $\widehat\Sigma_S$ and $\widehat Q_S$ have unit diagonal,
+  the residual has diagonal $(1-\lambda^*)\mathbf 1_{|S|}$. Thus, for
+  $0&lt;\lambda^*&lt;1$, define
+
+  \[
+      \widehat\Sigma'_S=
+      \frac{\widehat\Sigma_S-\lambda^*\widehat Q_S}
+           {1-\lambda^*}.
+  \]
+
+  Then $\widehat\Sigma'_S$ is a correlation matrix and
+
+  \[
+      \widehat\Sigma_S
+      =\lambda^*\widehat Q_S
+       +(1-\lambda^*)\widehat\Sigma'_S.
+  \]
+
+  Collecting these relations over all $S\in\mathbb S$ gives
+
+  \[
+      \widehat\Sigma_{\mathbb S}
+      =\lambda^*A\widehat Q
+       +(1-\lambda^*)\widehat\Sigma'_{\mathbb S},
+  \]<p>
+
+  which is the sample analogue of Equation (5).</p> <p>
+
+  The boundary case $\lambda^*=1$ corresponds to
+  $R_{\mathrm{obs}}=0$, so that the collection is already compatible and
+  the residual component is not needed.</p> <p>
+
+  If $\lambda^*=0$, the compatible component has zero weight, so no
+  normalization of $M^*$ is required; the decomposition can simply take
+  $\widehat\Sigma'_{\mathbb S}=\widehat\Sigma_{\mathbb S}$. Moreover,
+  $R_{\mathrm{obs}}=1$, so Algorithm 1 rejects before the bootstrap is
+  constructed.</p><p>
+
+  When the bootstrap is required, the compatible component $\widehat
+  Q_{\mathbb S}$ is used to construct its null distribution. Before
+  resampling, the observations within every pattern $S$ are standardized
+  and linearly transformed so that their sample correlation matrix becomes
+  $\widehat Q_S$. In the notation of Algorithm 1, the transformed
+  observations are
+
+  </p>\[
+      \widetilde X_{S,i}
+        =\widehat Q_S^{1/2}
+         \widehat\Sigma_S^{-1/2}
+         \mathrm{diag}^{-1/2}(\widehat\sigma_S^2)
+         (X_{S,i}-\widehat\mu_S).
+  \]<p>
+
+  In summary, for each pattern the standardized observations are first
+  whitened using $\widehat\Sigma_S^{-1/2}$, so that their sample
+  covariance matrix becomes the identity matrix. They are then multiplied
+  by $\widehat Q_S^{1/2}$, so that the transformed observations have
+  sample correlation matrix $\widehat Q_S$.</p> <p>
+
+  Nonparametric bootstrap samples are then drawn independently within each
+  transformed pattern $S$.</p><p>
+
+  Let
+
+  </p>\[
+      \widehat c
+        =\min_{S\in\mathbb S}
+           \lambda_{\min}(\widehat\Sigma_S).
+  \]<p>
+
+  The bootstrap calibration does not use the unregularized incompatibility
+  index $R$ directly. Instead, Algorithm 1 uses the regularized index
+  $R_{\widehat c/2}$ defined in Equation (7).</p> <p>
+
+  To see where this regularization enters, recall that Equation (6)
+  restricts the feasible set of the primal problem by imposing, for a
+  generic regularization level $z&gt;0$,
+
+  </p>\[
+      \sum_{S\in\mathbb S}
+      \left\|X_S+X_S^0\right\|_*
+      \leq \frac{p}{z}.
+  \]<p>
+
+  Since $X_S+X_S^0\succeq0$, its nuclear norm is equal to its trace.</p> <p>
+  Thus, the regularization amounts to adding a single upper bound on the
+  total trace of the positive semidefinite primal variables. Equation (7)
+  defines $R_z$ by optimizing the same incompatibility objective subject
+  to this additional bound.</p><p>
+
+  Taking the semidefinite-programming dual of this regularized problem
+  introduces one nonnegative scalar multiplier $\eta$ associated with
+  the additional trace constraint. The resulting equivalent dual
+  representation is
+
+  </p>\[
+      R_z(\widehat\Sigma_{\mathbb S}^{*})
+      =
+      1-
+      \sup\left\{
+      \lambda-\frac{\eta}{z}
+      \right\},
+  \]
+
+  subject to
 
   \[
   \begin{array}{ll}
-  \mathrm{maximize}   & \lambda-(2/c)z \\
-  \mathrm{subject\ to}& Q\succeq0,\quad
-                         \mathrm{diag}(Q)=\lambda\mathbf 1,\quad z\geq0,\\
-                       & \widehat\Sigma_S^*-Q_S+zI_S\succeq0.
+      & M\succeq0,\qquad
+        \mathrm{diag}(M)=\lambda\mathbf 1_p,\qquad
+        \eta\geq0,\\
+      & \widehat\Sigma_S^{*}-M(S,S)+\eta I_{|S|}
+        \succeq0,\qquad S\in\mathbb S.
   \end{array}
-  \]
-
-  Before resampling, observations in each pattern are standardized and
-  linearly transformed so that their empirical correlation matrix equals
-  the corresponding submatrix of the fitted compatible correlation
-  matrix. The bootstrap p-value is
-
-  \[
-      \frac{1+\sum_{b=1}^B I\{R_z^{*(b)}\geq R_{obs}\}}{B+1}.
   \]<p>
 
-  As in corrCompTest, if the observed incompatibility index is at least
-  3/4, the function returns pvalue=0 without carrying out the bootstrap.</p> <p>
+  Hence $\eta$ is not an additional statistical parameter: it is the
+  dual variable generated by the regularization constraint in Equation
+  (6). When $\eta=0$, the constraints reduce to those of the
+  unregularized dual in Equation (4). A positive value of $\eta$ relaxes
+  each pattern-specific semidefinite constraint by adding $\eta I_{|S|}$,
+  but this relaxation is penalized in the objective through $\eta/z$.</p> <p>
 
-  The R implementation uses CSDP through package Rcsdp. mdBBtest solves the
-  same primal semidefinite programs with an internal alternating direction
-  method of multipliers (ADMM), using projections onto positive
-  semidefinite cones. Solver diagnostics should be inspected when one or
-  more problems do not satisfy the requested tolerance.</p> <p>
+  Algorithm 1 takes $z=\widehat c/2$. Therefore
 
-  The procedure is based only on pattern-specific correlations. It does not
-  use mdEM and it does not test compatibility of pattern means or variances.</p> <p>
+  </p>\[
+      \frac{\eta}{z}
+      =
+      \frac{2}{\widehat c}\eta,
+  \]
+
+  and the bootstrap statistic used in this function becomes
+
+  \[
+      R_{\widehat c/2}(\widehat\Sigma_{\mathbb S}^{*})
+      =
+      1-
+      \sup\left\{
+      \lambda-\frac{2}{\widehat c}\eta
+      \right\},
+  \]<p>
+
+  subject to the constraints above.</p> <p>
+
+
+-------------------------------------
+  Let
+
+  </p>\[
+      \widehat c
+        =\min_{S\in\mathbb S}
+           \lambda_{\min}(\widehat\Sigma_S).
+  \]
+
+  Algorithm 1 uses the regularized incompatibility index
+  $R_{\widehat c/2}$ for each bootstrap sample. In the equivalent dual
+  formulation used in this function, the bootstrap statistic is obtained
+  as
+
+  \[
+      R_{\widehat c/2}(\widehat\Sigma_{\mathbb S}^{*})
+        =
+        1-
+        \sup\left\{
+        \lambda-\frac{2}{\widehat c}\eta
+        \right\},
+  \]
+
+  subject to
+
+  \[
+  \begin{array}{ll}
+      & M\succeq0,\qquad
+        \mathrm{diag}(M)=\lambda\mathbf 1_p,\qquad
+        \eta\geq0,\\
+      & \widehat\Sigma_S^{*}-M(S,S)+\eta I_{|S|}
+        \succeq0,\qquad S\in\mathbb S.
+  \end{array}
+  \]<p>
+
+  Notice that $\widehat c/2$ is the regularization level appearing in
+  $R_{\widehat c/2}$, whereas $\eta$ is an auxiliary scalar variable in
+  the equivalent dual semidefinite program.</p> <p>
+
+  If $B=\mathrm{nsimul}$ bootstrap samples are generated, the Monte Carlo
+  $p$-value is
+
+  </p>\[
+      p_R=
+      \frac{
+      1+\sum_{b=1}^B
+      \mathbf 1\left\{
+      R_{\widehat c/2}
+        (\widehat\Sigma_{\mathbb S,b}^{*})
+      \geq R_{\mathrm{obs}}
+      \right\}}
+      {B+1}.
+  \]
+
+  Following Algorithm 1, if
+
+  \[
+      R_{\mathrm{obs}}\geq 3/4,
+  \]<p>
+
+  the null hypothesis is rejected directly and the function returns
+  pvalue=0 without carrying out the bootstrap.</p> <p>
+
+  The R implementation corrCompTest uses CSDP through package Rcsdp.</p> <p>
+  mdBBtest solves equivalent semidefinite optimization problems using an
+  internal alternating direction method of multipliers (ADMM). ADMM is a
+  numerical implementation choice and is not part of the statistical
+  procedure proposed by Bordino and Berrett. The solver convergence
+  diagnostics should therefore be inspected whenever the requested
+  tolerance is not attained.</p> <p>
+
+  The test implemented here concerns only compatibility of the
+  pattern-specific correlation matrices. It does not test consistency of
+  the pattern means or variances.</p> <p>
+
 
   References:</p> <p>
 

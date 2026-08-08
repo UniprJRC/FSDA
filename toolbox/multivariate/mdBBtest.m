@@ -35,9 +35,10 @@ function out = mdBBtest(Y, varargin)
 %                  Example - 'tol',1e-6
 %                  Data Types - single | double
 %
-% maxresample :    Maximum number of attempts used to obtain a nonsingular
-%                  empirical bootstrap sample within a pattern. Positive
-%                  integer. The default value is 1000.
+% maxresample :    Maximum number of attempts used to obtain a bootstrap
+%                  sample having more distinct rows than observed variables
+%                  within a pattern. Positive integer.
+%                  The default value is 1000.
 %                  Example - 'maxresample',5000
 %                  Data Types - single | double
 %
@@ -58,9 +59,13 @@ function out = mdBBtest(Y, varargin)
 %    out :         Structure containing the following fields:
 %
 %          out.stat          = observed incompatibility index;
-%          out.pvalue        = bootstrap p-value;
+%          out.pvalue        = test p-value; equal to zero when the
+%                              bootstrap is skipped because
+%                              out.earlyRejected is true;
 %          out.reject        = true if out.pvalue is smaller than 0.05;
 %          out.Rboot         = nsimul x 1 vector of bootstrap statistics;
+%                              empty when the bootstrap is skipped because
+%                              out.earlyRejected is true;
 %          out.nsimul        = number of requested bootstrap samples;
 %          out.patterns      = g x p logical matrix of retained observed-data
 %                              patterns; true denotes an OBSERVED variable.
@@ -81,8 +86,10 @@ function out = mdBBtest(Y, varargin)
 %                              matrix from the observed-data SDP;
 %          out.compatibleCorrelation = fitted compatible p x p correlation
 %                              matrix used to construct the bootstrap null;
+%                              empty when out.earlyRejected is true;
 %          out.commonScale   = optimal common diagonal of the unregularized
-%                              semidefinite program, equal to 1-out.stat;
+%                              semidefinite program. In exact arithmetic it
+%                              is equal to 1-out.stat;
 %          out.c             = smallest eigenvalue among the empirical
 %                              pattern-specific correlation matrices;
 %          out.regularizationAlpha = bootstrap regularization parameter 2/c;
@@ -91,8 +98,10 @@ function out = mdBBtest(Y, varargin)
 %                              completely missing;
 %          out.removedPatterns = logical matrix of removed patterns;
 %          out.solverInfoObserved = diagnostics from the observed-data SDP;
-%          out.solverConvergedBoot = nsimul x 1 logical vector;
-%          out.solverIterationsBoot = nsimul x 1 vector;
+%          out.solverConvergedBoot = nsimul x 1 logical vector; empty when
+%                              out.earlyRejected is true;
+%          out.solverIterationsBoot = nsimul x 1 vector; empty when
+%                              out.earlyRejected is true;
 %          out.variableNames = variable names;
 %          out.n             = number of input observations;
 %          out.p             = number of variables;
@@ -115,84 +124,406 @@ function out = mdBBtest(Y, varargin)
 %
 %  More About:
 %
-%  Code-to-paper correspondence:
 %
-%  * Section 2 starts on Annals p. 2208; Algorithm 1 is on p. 2209,
-%    with the bootstrap construction explained on pp. 2209-2210.
-%  * Equation (3) on Annals p. 2213 defines the incompatibility index.
-%  * Proposition 5, Equation (4), on Annals p. 2214 gives the dual SDP
-%    used to compute the observed incompatibility index.
-%  * Equation (5), also on Annals p. 2214, gives the compatible/
-%    incompatible decomposition used to construct the bootstrap null.
-%  * Equations (6) and (7) on Annals p. 2215 define the compact feasible
-%    set and the regularized index used at the bootstrap stage.
-%  * The computational paragraph below Algorithm 1 on Annals p. 2209
-%    states that Proposition 5 together with Equations (6)-(7) yields SDP
-%    formulations. The explicit standard-form SDP derivation is deferred
-%    to Supplementary Material A and is not numbered in the published
-%    Annals article. The ADMM solver below is a MATLAB implementation
-%    choice and is not part of the statistical procedure in the paper.
+%  The objective of the test of Bordino and Berrett (2025), referred to as
+%  BB2025 below, is to assess whether the correlation matrices associated with
+%  the different missingness patterns are compatible with a single
+%  $p$-by-$p$ correlation matrix, where $p$ is the number of variables in
+%  the input data (corresponding to $d$ in BB2025). Compatibility of these
+%  matrices is a necessary condition for MCAR. Therefore, rejection of
+%  correlation compatibility provides evidence against MCAR.
 %
-%  Let $S_1$, ...,$S_g$ denote the retained sets of observed variables and let
-%  $\Sigma_S$ be the sample correlation matrix calculated using observations
-%  having pattern $S$. The incompatibility index is
-%
-%  \[
-%      R(\widehat\Sigma_{\mathbb S}) = 1-\lambda_{max},
-%  \]
-%
-%  where $\lambda_{max}$ is the solution of the semidefinite program
-%
-%  \[
-%  \begin{array}{ll}
-%  \mathrm{maximize}   & \lambda \\
-%  \mathrm{subject\ to}& Q\succeq0,\quad
-%                         \mathrm{diag}(Q)=\lambda\mathbf 1,\\
-%                       & \widehat\Sigma_S-Q_S\succeq0,
-%                         \quad S\in\mathbb S.
-%  \end{array}
-%  \]
-%
-%  The fitted compatible correlation matrix used under the bootstrap null
-%  is $Q/\lambda$. Following corrCompTest, patterns satisfying
+%  Let $S_1,\ldots,S_g$ denote the retained sets of observed variables and
+%  let $n_S$ be the number of observations having pattern $S$. Following
+%  Algorithm 1 of BB2025, patterns satisfying
 %
 %  \[
 %      n_S \leq |S|+1
 %  \]
 %
-%  are discarded. Let $c$ be the smallest eigenvalue of the retained sample
-%  correlation matrices. Each bootstrap statistic is the regularized index
-%  $R_z$ obtained from
+%  are discarded. For every retained pattern $S$, let
+%  $\widehat\Sigma_S$ denote the sample correlation matrix calculated using
+%  the observations belonging to that pattern, and write
+%
+%  \[
+%      \widehat\Sigma_{\mathbb S}
+%        =(\widehat\Sigma_S:S\in\mathbb S)
+%  \]
+%
+%  for the collection of pattern-specific sample correlation matrices.
+%
+%  The observed test statistic is the incompatibility index
+%
+%  \[
+%      R_{\mathrm{obs}}
+%        =R(\widehat\Sigma_{\mathbb S}).
+%  \]
+%
+%
+%
+%  Proposition 5, Equation (4), shows that the incompatibility index can be
+%  computed through the dual semidefinite representation
+%
+%  \[
+%      R(\widehat\Sigma_{\mathbb S})
+%      =
+%      1-\frac{1}{p}
+%      \sup\left\{
+%      \mathrm{tr}(M):
+%      AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S},
+%      \;
+%      m_{11}=\cdots=m_{pp},
+%      \;
+%      M\succeq0
+%      \right\},
+%  \]
+%
+%  where $p$ is the number of variables in the input data and corresponds
+%  to $d$ in the notation of Bordino and Berrett.
+%
+%  The operator $A$ maps the global $p$-by-$p$ positive semidefinite (PSD) matrix
+%  $M=(m_{ij})_{i,j=1}^p$ into the
+%  collection of its pattern-specific principal submatrices:
+%
+%  \[
+%      AM=(M(S,S):S\in\mathbb S).
+%  \]
+%
+%  Hence $AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S}$ means,
+%  for every $S\in\mathbb S$,
+%
+%  \[
+%      (AM)_S=M(S,S)\preceq\widehat\Sigma_S,
+%  \]
+%
+%  or equivalently
+%
+%  \[
+%      \widehat\Sigma_S-M(S,S)\succeq0.
+%  \]
+%
+%
+%
+%  The symbol $\preceq$ denotes the Loewner partial ordering for symmetric
+%  matrices: $C\preceq D$ means that $D-C$ is positive semidefinite.
+%  Accordingly, $\preceq_{\mathbb S}$ means that this ordering holds
+%  pattern by pattern for every $S\in\mathbb S$.
+%
+%  In other words, the SDP searches for a common PSD matrix $M$ that fits
+%  underneath all pattern-specific correlation matrices while maximizing
+%  its common diagonal value $\lambda$ (equivalently,
+%  $\mathrm{tr}(M)/p$).
+%
+%  Since Equation (4) also imposes that all the diagonal elements of $M$
+%  are equal
+%
+%  \[
+%      m_{11}=\cdots=m_{pp},
+%  \]
+%
+%  the common diagonal value can be denoted by $\lambda$. Hence
+%
+%  \[
+%      \mathrm{diag}(M)=\lambda\mathbf 1_p
+%  \]
+%
+%  and therefore
+%
+%  \[
+%      \mathrm{tr}(M)=p\lambda.
+%  \]
+%
+%  Consequently,
+%
+%  \[
+%      \frac{1}{p}\mathrm{tr}(M)=\lambda,
+%  \]
+%
+%  so that Equation (4) is equivalently obtained by solving
 %
 %  \[
 %  \begin{array}{ll}
-%  \mathrm{maximize}   & \lambda-(2/c)z \\
-%  \mathrm{subject\ to}& Q\succeq0,\quad
-%                         \mathrm{diag}(Q)=\lambda\mathbf 1,\quad z\geq0,\\
-%                       & \widehat\Sigma_S^*-Q_S+zI_S\succeq0.
+%  \mathrm{maximize}   & \lambda \\
+%  \mathrm{subject\ to}& M\succeq0,\\
+%                       & \mathrm{diag}(M)=\lambda\mathbf 1_p,\\
+%                       & \widehat\Sigma_S-M(S,S)\succeq0,
+%                         \quad S\in\mathbb S.
 %  \end{array}
 %  \]
 %
-%  Before resampling, observations in each pattern are standardized and
-%  linearly transformed so that their empirical correlation matrix equals
-%  the corresponding submatrix of the fitted compatible correlation
-%  matrix. The bootstrap p-value is
+%  If $\lambda^*$ denotes the largest feasible common diagonal value, it
+%  measures the maximum weight that can be assigned to a common compatible
+%  correlation structure across all the retained patterns. Then
 %
 %  \[
-%      \frac{1+\sum_{b=1}^B I\{R_z^{*(b)}\geq R_{obs}\}}{B+1}.
+%      R_{\mathrm{obs}}
+%      =R(\widehat\Sigma_{\mathbb S})
+%      =1-\frac{1}{p}(p\lambda^*)
+%      =1-\lambda^*.
 %  \]
 %
-%  As in corrCompTest, if the observed incompatibility index is at least
-%  3/4, the function returns pvalue=0 without carrying out the bootstrap.
 %
-%  The R implementation uses CSDP through package Rcsdp. mdBBtest solves the
-%  same primal semidefinite programs with an internal alternating direction
-%  method of multipliers (ADMM), using projections onto positive
-%  semidefinite cones. Solver diagnostics should be inspected when one or
-%  more problems do not satisfy the requested tolerance.
+%  Hence a value $\lambda^*=1$ gives $R_{\mathrm{obs}}=0$ and corresponds to
+%  compatibility, whereas smaller values of $\lambda^*$ indicate increasing
+%  incompatibility.
 %
-%  The procedure is based only on pattern-specific correlations. It does not
-%  use mdEM and it does not test compatibility of pattern means or variances.
+%
+%  By Slater's condition, the supremum in Equation (4) is attained. Let
+%  $M^*$ denote an optimizer and let
+%  $\lambda^*=1-R(\widehat\Sigma_{\mathbb S})$ be its common diagonal
+%  value. Hence
+%
+%  \[
+%      \mathrm{diag}(M^*)=\lambda^*\mathbf 1_p.
+%  \]
+%
+%
+%  For $\lambda^*>0$, the normalized matrix
+%
+%  \[
+%      \widehat Q=\frac{M^*}{\lambda^*}
+%  \]
+%
+%  is a $p$-by-$p$ correlation matrix.
+%
+%
+%  Therefore,
+%
+%  \[
+%      \widehat Q_{\mathbb S}
+%      =A\widehat Q
+%      =(\widehat Q_S:S\in\mathbb S)
+%  \]
+%
+%  is a compatible collection of pattern-specific correlation matrices.
+%
+%  Moreover, $AM^*\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S}$ implies
+%
+%  \[
+%      \widehat\Sigma_S-\lambda^*\widehat Q_S\succeq0,
+%      \qquad S\in\mathbb S.
+%  \]
+%
+%  Since both $\widehat\Sigma_S$ and $\widehat Q_S$ have unit diagonal,
+%  the residual has diagonal $(1-\lambda^*)\mathbf 1_{|S|}$. Thus, for
+%  $0<\lambda^*<1$, define
+%
+%  \[
+%      \widehat\Sigma'_S=
+%      \frac{\widehat\Sigma_S-\lambda^*\widehat Q_S}
+%           {1-\lambda^*}.
+%  \]
+%
+%  Then $\widehat\Sigma'_S$ is a correlation matrix and
+%
+%  \[
+%      \widehat\Sigma_S
+%      =\lambda^*\widehat Q_S
+%       +(1-\lambda^*)\widehat\Sigma'_S.
+%  \]
+%
+%  Collecting these relations over all $S\in\mathbb S$ gives
+%
+%  \[
+%      \widehat\Sigma_{\mathbb S}
+%      =\lambda^*A\widehat Q
+%       +(1-\lambda^*)\widehat\Sigma'_{\mathbb S},
+%  \]
+%
+%  which is the sample analogue of Equation (5).
+%
+%  The boundary case $\lambda^*=1$ corresponds to
+%  $R_{\mathrm{obs}}=0$, so that the collection is already compatible and
+%  the residual component is not needed.
+%
+%  If $\lambda^*=0$, the compatible component has zero weight, so no
+%  normalization of $M^*$ is required; the decomposition can simply take
+%  $\widehat\Sigma'_{\mathbb S}=\widehat\Sigma_{\mathbb S}$. Moreover,
+%  $R_{\mathrm{obs}}=1$, so Algorithm 1 rejects before the bootstrap is
+%  constructed.
+%
+%  When the bootstrap is required, the compatible component $\widehat
+%  Q_{\mathbb S}$ is used to construct its null distribution. Before
+%  resampling, the observations within every pattern $S$ are standardized
+%  and linearly transformed so that their sample correlation matrix becomes
+%  $\widehat Q_S$. In the notation of Algorithm 1, the transformed
+%  observations are
+%
+%  \[
+%      \widetilde X_{S,i}
+%        =\widehat Q_S^{1/2}
+%         \widehat\Sigma_S^{-1/2}
+%         \mathrm{diag}^{-1/2}(\widehat\sigma_S^2)
+%         (X_{S,i}-\widehat\mu_S).
+%  \]
+%
+%  In summary, for each pattern the standardized observations are first
+%  whitened using $\widehat\Sigma_S^{-1/2}$, so that their sample
+%  covariance matrix becomes the identity matrix. They are then multiplied
+%  by $\widehat Q_S^{1/2}$, so that the transformed observations have
+%  sample correlation matrix $\widehat Q_S$.
+%
+%  Nonparametric bootstrap samples are then drawn independently within each
+%  transformed pattern $S$.
+%
+%  Let
+%
+%  \[
+%      \widehat c
+%        =\min_{S\in\mathbb S}
+%           \lambda_{\min}(\widehat\Sigma_S).
+%  \]
+%
+%  The bootstrap calibration does not use the unregularized incompatibility
+%  index $R$ directly. Instead, Algorithm 1 uses the regularized index
+%  $R_{\widehat c/2}$ defined in Equation (7).
+%
+%  To see where this regularization enters, recall that Equation (6)
+%  restricts the feasible set of the primal problem by imposing, for a
+%  generic regularization level $z>0$,
+%
+%  \[
+%      \sum_{S\in\mathbb S}
+%      \left\|X_S+X_S^0\right\|_*
+%      \leq \frac{p}{z}.
+%  \]
+%
+%  Since $X_S+X_S^0\succeq0$, its nuclear norm is equal to its trace.
+%  Thus, the regularization amounts to adding a single upper bound on the
+%  total trace of the positive semidefinite primal variables. Equation (7)
+%  defines $R_z$ by optimizing the same incompatibility objective subject
+%  to this additional bound.
+%
+%  Taking the semidefinite-programming dual of this regularized problem
+%  introduces one nonnegative scalar multiplier $\eta$ associated with
+%  the additional trace constraint. The resulting equivalent dual
+%  representation is
+%
+%  \[
+%      R_z(\widehat\Sigma_{\mathbb S}^{*})
+%      =
+%      1-
+%      \sup\left\{
+%      \lambda-\frac{\eta}{z}
+%      \right\},
+%  \]
+%
+%  subject to
+%
+%  \[
+%  \begin{array}{ll}
+%      & M\succeq0,\qquad
+%        \mathrm{diag}(M)=\lambda\mathbf 1_p,\qquad
+%        \eta\geq0,\\
+%      & \widehat\Sigma_S^{*}-M(S,S)+\eta I_{|S|}
+%        \succeq0,\qquad S\in\mathbb S.
+%  \end{array}
+%  \]
+%
+%  Hence $\eta$ is not an additional statistical parameter: it is the
+%  dual variable generated by the regularization constraint in Equation
+%  (6). When $\eta=0$, the constraints reduce to those of the
+%  unregularized dual in Equation (4). A positive value of $\eta$ relaxes
+%  each pattern-specific semidefinite constraint by adding $\eta I_{|S|}$,
+%  but this relaxation is penalized in the objective through $\eta/z$.
+%
+%  Algorithm 1 takes $z=\widehat c/2$. Therefore
+%
+%  \[
+%      \frac{\eta}{z}
+%      =
+%      \frac{2}{\widehat c}\eta,
+%  \]
+%
+%  and the bootstrap statistic used in this function becomes
+%
+%  \[
+%      R_{\widehat c/2}(\widehat\Sigma_{\mathbb S}^{*})
+%      =
+%      1-
+%      \sup\left\{
+%      \lambda-\frac{2}{\widehat c}\eta
+%      \right\},
+%  \]
+%
+%  subject to the constraints above.
+%
+%
+%-------------------------------------
+%  Let
+%
+%  \[
+%      \widehat c
+%        =\min_{S\in\mathbb S}
+%           \lambda_{\min}(\widehat\Sigma_S).
+%  \]
+%
+%  Algorithm 1 uses the regularized incompatibility index
+%  $R_{\widehat c/2}$ for each bootstrap sample. In the equivalent dual
+%  formulation used in this function, the bootstrap statistic is obtained
+%  as
+%
+%  \[
+%      R_{\widehat c/2}(\widehat\Sigma_{\mathbb S}^{*})
+%        =
+%        1-
+%        \sup\left\{
+%        \lambda-\frac{2}{\widehat c}\eta
+%        \right\},
+%  \]
+%
+%  subject to
+%
+%  \[
+%  \begin{array}{ll}
+%      & M\succeq0,\qquad
+%        \mathrm{diag}(M)=\lambda\mathbf 1_p,\qquad
+%        \eta\geq0,\\
+%      & \widehat\Sigma_S^{*}-M(S,S)+\eta I_{|S|}
+%        \succeq0,\qquad S\in\mathbb S.
+%  \end{array}
+%  \]
+%
+%  Notice that $\widehat c/2$ is the regularization level appearing in
+%  $R_{\widehat c/2}$, whereas $\eta$ is an auxiliary scalar variable in
+%  the equivalent dual semidefinite program.
+%
+%  If $B=\mathrm{nsimul}$ bootstrap samples are generated, the Monte Carlo
+%  $p$-value is
+%
+%  \[
+%      p_R=
+%      \frac{
+%      1+\sum_{b=1}^B
+%      \mathbf 1\left\{
+%      R_{\widehat c/2}
+%        (\widehat\Sigma_{\mathbb S,b}^{*})
+%      \geq R_{\mathrm{obs}}
+%      \right\}}
+%      {B+1}.
+%  \]
+%
+%  Following Algorithm 1, if
+%
+%  \[
+%      R_{\mathrm{obs}}\geq 3/4,
+%  \]
+%
+%  the null hypothesis is rejected directly and the function returns
+%  pvalue=0 without carrying out the bootstrap.
+%
+%  The R implementation corrCompTest uses CSDP through package Rcsdp.
+%  mdBBtest solves equivalent semidefinite optimization problems using an
+%  internal alternating direction method of multipliers (ADMM). ADMM is a
+%  numerical implementation choice and is not part of the statistical
+%  procedure proposed by Bordino and Berrett. The solver convergence
+%  diagnostics should therefore be inspected whenever the requested
+%  tolerance is not attained.
+%
+%  The test implemented here concerns only compatibility of the
+%  pattern-specific correlation matrices. It does not test consistency of
+%  the pattern means or variances.
+%
 %
 %  References:
 %
@@ -323,7 +654,7 @@ if ~isempty(varargin)
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:mdBBtest:WrongInputOpt', ...
             ['Number of supplied options is invalid. Probably values for ' ...
-             'some parameters are missing.']);
+            'some parameters are missing.']);
     end
     if ~isempty(UserOptions)
         aux.chkoptions(options,UserOptions)
@@ -387,10 +718,11 @@ allCounts = accumarray(idxAll,1,[nAllPatterns 1]);
 % |S|, the number of variables observed in each pattern.
 allSizes = sum(allPatterns,2);
 
-% PAPER: Algorithm 1, Step 1 (Annals p. 2209), discards every pattern satisfying
-% n_S <= |S|+1. This ensures enough observations to obtain a nonsingular
-% sample correlation matrix. The all-missing pattern has |S|=0 and carries
-% no covariance information, so it is discarded as well.
+% PAPER: Algorithm 1, Step 1 (Annals p. 2209), discards every pattern
+% satisfying n_S <= |S|+1. This ensures that there are enough observations
+% for a nonsingular sample correlation matrix to be possible. The
+% all-missing pattern has |S|=0 and carries no covariance information, so
+% it is discarded as well.
 retainPattern = allSizes>0 & allCounts>allSizes+1;
 removedPattern = ~retainPattern;
 removedRows = removedPattern(idxAll);
@@ -398,8 +730,8 @@ removedRows = removedPattern(idxAll);
 if any(removedPattern)
     warning('FSDA:mdBBtest:SmallPatternsRemoved', ...
         ['Rows belonging to %d pattern(s) were removed because the pattern ' ...
-         'was completely missing or its frequency was not greater than ' ...
-         '|S|+1.'],sum(removedPattern));
+        'was completely missing or its frequency was not greater than ' ...
+        '|S|+1.'],sum(removedPattern));
 end
 
 Patterns = allPatterns(retainPattern,:);
@@ -417,7 +749,7 @@ if any(~any(Patterns,1))
     badVariable = find(~any(Patterns,1),1);
     error('FSDA:mdBBtest:VariableAbsentAfterRemoval', ...
         ['Variable %d is not observed in any retained pattern. The ' ...
-         'correlation-compatibility problem is not defined.'],badVariable);
+        'correlation-compatibility problem is not defined.'],badVariable);
 end
 
 % PAPER: Section 2 (Annals pp. 2208-2209) introduces the pattern samples X_S
@@ -447,7 +779,7 @@ for r = 1:g
     if minEigenvalue(r) <= max(100*eps,tol^2)
         error('FSDA:mdBBtest:SingularPatternCorrelation', ...
             ['The sample correlation matrix of retained pattern %d is not ' ...
-             'positive definite.'],originalPatternIndex(r));
+            'positive definite.'],originalPatternIndex(r));
     end
 end
 
@@ -465,30 +797,30 @@ end
 % localComputeR solves the dual SDP in Proposition 5, Equation (4),
 % Annals p. 2214:
 %
-%   R = 1 - (1/d) * sup{ trace(Sigma) : Sigma is feasible },
+%   R = 1 - (1/d) * sup{ trace(M) : M is feasible },
 %
-% where Sigma is the d-by-d positive semidefinite matrix satisfying
-% A*Sigma <=_S hat{Sigma}_S and Sigma(1,1)=...=Sigma(d,d).
-% Since the diagonal is common, lambda=tr(Sigma)/d and R=1-lambda.
-% Note that d (notation of the paper) corresponds to p 
-[Robs,SigmaOpt,solverInfoObserved,xObserved] = ...
+% where M is the d-by-d positive semidefinite matrix satisfying
+% A*M <=_S hat{Sigma}_S and M(1,1)=...=M(d,d).
+% Since the diagonal is common, lambda=tr(M)/d and R=1-lambda.
+% Note that d (notation of the paper) corresponds to p
+[Robs,Mstar,solverInfoObserved,xObserved] = ...
     localComputeR(patternsCell,SigmaS,p,[],maxiter,tol,[]);
 
-% xObserved(1) represents the common diagonal lambda,
+% xObserved(1) represents the common diagonal $\lambda$.
 
 if ~solverInfoObserved.converged
     warning('FSDA:mdBBtest:ObservedSolverNotConverged', ...
         ['The observed-data SDP did not satisfy the requested tolerance. ' ...
-         'Inspect out.solverInfoObserved.']);
+        'Inspect out.solverInfoObserved.']);
 end
 
-% commonScale = lambda^* = 1-R(hat{Sigma}_{mathbb S}) in Equation (5),
-% Annals p. 2214. out.stat is clamped to [0,1] whereas the raw optimal
-% diagonal is not, so the two are separated here: commonScale honours the
-% documented identity commonScale = 1-out.stat, while lambdaRaw is the
-% unclamped value actually used to rescale the optimizer.
-lambdaRaw = solverInfoObserved.lambda;
-commonScale = 1-Robs;
+% lambdaStar is the optimal common diagonal returned by the SDP.
+% In exact arithmetic lambdaStar = 1-Robs. A small discrepancy may occur
+% numerically because Robs is clipped to [0,1], whereas lambdaStar is
+% obtained directly from the ADMM solution.
+lambdaStar = solverInfoObserved.lambda;
+
+
 coreClip = 0;
 Rboot = [];
 solverConvergedBoot = [];
@@ -501,28 +833,28 @@ earlyRejected = Robs>=3/4;
 if earlyRejected
     pvalue = 0;
 else
-    if lambdaRaw <= max(tol,100*eps)
+    if lambdaStar <= max(tol,100*eps)
         error('FSDA:mdBBtest:ZeroCompatibleScale', ...
             ['The fitted common scale is numerically zero. The bootstrap ' ...
-             'null distribution cannot be constructed.']);
+            'null distribution cannot be constructed.']);
     end
 
     % PAPER: Proposition 5 and Equation (5), Annals p. 2214, give
     %   hat{Sigma}_S=(1-R) hat{Q}_S + R hat{Sigma}'_S,
-    % where hat{Q}_{mathbb S}=A hat{Q} is compatible. SigmaOpt is the
-    % unnormalised dual optimizer with diagonal lambda*=1-R, hence
-    % hat{Q}=SigmaOpt/lambda*. localCov2Corr only removes numerical drift.
+    % where hat{Q}_{mathbb S}=A hat{Q} is compatible. Mstar is the
+    % unnormalised optimizer of Equation (4), with common diagonal lambdaStar.
+    % Hence hat{Q}=Mstar/lambdaStar. localCov2Corr only removes numerical drift.
     % Divide by the unclamped optimal diagonal, which is the correct scaling,
     % and repair any numerical drift away from a correlation matrix.
-    compatibleCorrelation = SigmaOpt/lambdaRaw;
+    compatibleCorrelation = Mstar/lambdaStar;
     compatibleCorrelation = (compatibleCorrelation+compatibleCorrelation')/2;
     [compatibleCorrelation,coreClip] = localCov2Corr(compatibleCorrelation);
     if coreClip > 100*tol
         warning('FSDA:mdBBtest:CompatibleCoreRepaired', ...
             ['The fitted compatible correlation matrix had a negative ' ...
-             'eigenvalue of magnitude %g, well above the solver tolerance. ' ...
-             'The observed semidefinite program was probably not solved ' ...
-             'accurately; inspect out.solverInfoObserved.'],coreClip);
+            'eigenvalue of magnitude %g, well above the solver tolerance. ' ...
+            'The observed semidefinite program was probably not solved ' ...
+            'accurately; inspect out.solverInfoObserved.'],coreClip);
     end
 
     % PAPER: Algorithm 1, Step 7 (Annals p. 2209), constructs
@@ -539,10 +871,10 @@ else
             compatibleCorrelation(S,S),false,tol);
         % rootSample\rootTarget = hat{Sigma}_S^(-1/2)hat{Q}_S^(1/2).
         transform = rootSample\rootTarget;
-        % Note that 
-        % cov(standardizedPattern{r}*inv(rootSample)) is the identity
-        % matrix
-        % standardizedPattern{r}*inv(rootSample)*rootTarget
+        % Note that
+        % cov(standardizedPattern{r}*inv(rootSample)) is the identity matrix.
+        % Subsequent multiplication by rootTarget gives the target
+        % correlation matrix hat{Q}_S.
         rotatedPattern{r} = standardizedPattern{r}*transform;
     end
 
@@ -553,15 +885,12 @@ else
     solverIterationsBoot = zeros(nsimul,1);
 
     % Numerical implementation detail (not part of Algorithm 1): the observed
-    % SDP solution is a good starting point for every regularized solve.
-    %
-    % Chaining the replicates, that is starting replicate b from the
-    % solution of replicate b-1, is faster but makes the bootstrap
-    % statistics depend on the order in which the replicates are drawn
-    % whenever a solve stops before the requested tolerance. The p-value
-    % treats the replicates as exchangeable, so by default each one starts
-    % from the same observed-data point and the replicates are independent
-    % given the data. Option warmstart restores the chained behaviour.
+    % SDP solution is used as the starting point for every regularized
+    % bootstrap solve. Starting replicate b from the solution of replicate
+    % b-1 can make the computed bootstrap statistics depend on their order
+    % whenever an ADMM solve terminates before reaching the requested
+    % tolerance. Therefore every bootstrap replicate is initialized from the
+    % same observed-data solution.
     xObservedStart = [xObserved; 0];
 
     for b = 1:nsimul
@@ -575,9 +904,10 @@ else
             pr = size(Xr,2);
             accepted = false;
 
-            % corrCompTest implementation safeguard: repeat a bootstrap draw
-            % if it has too few distinct rows to yield a full-rank correlation.
-            % This safeguard is computational and is not a separate paper step.
+            % corrCompTest implementation safeguard: repeat a bootstrap
+            % draw if it has too few distinct rows, as a safeguard against
+            % rank deficiency. This safeguard is computational and is not a
+            % separate paper step.
             for attempt = 1:maxresample
                 idx = randi(nr,nr,1);
                 Xstar = Xr(idx,:);
@@ -590,7 +920,7 @@ else
             if ~accepted
                 error('FSDA:mdBBtest:BootstrapResamplingFailed', ...
                     ['Unable to obtain a sufficiently rich bootstrap ' ...
-                     'sample for retained pattern %d after %d attempts.'], ...
+                    'sample for retained pattern %d after %d attempts.'], ...
                     originalPatternIndex(r),maxresample);
             end
 
@@ -601,10 +931,9 @@ else
         % PAPER: Algorithm 1, Step 11: compute R_{hat{c}/2} for the
         % bootstrap collection. localComputeR invokes the regularized dual
         % corresponding to Equation (7), with alpha=2/hat{c}.
-            xStartB = xObservedStart;
         [Rboot(b),~,infoBoot] = localComputeR( ...
             patternsCell,SigmaSboot,p,regularizationAlpha, ...
-            maxiter,tol,xStartB);
+            maxiter,tol,xObservedStart);
         solverConvergedBoot(b) = infoBoot.converged;
         solverIterationsBoot(b) = infoBoot.iterations;
     end
@@ -615,10 +944,10 @@ else
     if any(~solverConvergedBoot)
         warning('FSDA:mdBBtest:BootstrapSolverNotConverged', ...
             ['%d of %d bootstrap SDP problem(s) did not satisfy the ' ...
-             'requested tolerance, so the corresponding statistics are ' ...
-             'solver-dependent and the p-value should not be relied upon. ' ...
-             'Increase maxiter, or loosen tol, and inspect ' ...
-             'out.solverConvergedBoot.'],sum(~solverConvergedBoot),nsimul);
+            'requested tolerance, so the corresponding statistics are ' ...
+            'solver-dependent and the p-value should not be relied upon. ' ...
+            'Increase maxiter, or loosen tol, and inspect ' ...
+            'out.solverConvergedBoot.'],sum(~solverConvergedBoot),nsimul);
     end
 end
 
@@ -651,9 +980,9 @@ out.patternCounts = patternCounts;
 out.patternSize = patternSize;
 out.patternInfo = patternInfo;
 out.correlationMatrices = SigmaS;
-out.Sigma = SigmaOpt;
+out.Sigma = Mstar;
 out.compatibleCorrelation = compatibleCorrelation;
-out.commonScale = commonScale;
+out.commonScale = lambdaStar;
 out.c = cmin;
 out.regularizationAlpha = regularizationAlpha;
 out.removedRows = removedRows;
@@ -700,7 +1029,7 @@ end
 end
 
 % -------------------------------------------------------------------------
-function [Rvalue,Sigma,info,x] = localComputeR( ...
+function [Rvalue,Mopt,info,x] = localComputeR( ...
     patterns,SigmaS,d,regularizationAlpha,maxiter,tol,xStart)
 %localComputeR Solve the dual incompatibility SDP using ADMM.
 %
@@ -726,7 +1055,7 @@ function [Rvalue,Sigma,info,x] = localComputeR( ...
 % Build the affine conic representation A*x+b in K, where K is the
 % product of the PSD cones for the common matrix, all pattern slacks, and
 % (for the regularized problem) the nonnegative scalar slack.
-[A,b,cobj,blocks,offIndex,zIndex] = ...
+[A,b,cobj,blocks,offIndex,scaledEtaIndex] = ...
     localBuildConicMap(patterns,SigmaS,d,regularizationAlpha);
 q = size(A,2);
 m = size(A,1);
@@ -802,21 +1131,21 @@ end
 
 % Recover the common PSD matrix from the SDP optimizer. In the
 % unregularized case its diagonal is lambda*=1-R; in the regularized case
-% z is the auxiliary slack eta in the equivalent dual of Equation (7).
-[Sigma,z] = localUnpackSolution( ...
-    x,d,offIndex,zIndex,regularizationAlpha);
+% eta is the auxiliary slack in the equivalent dual of Equation (7).
+[Mopt,eta] = localUnpackSolution( ...
+    x,d,offIndex,scaledEtaIndex,regularizationAlpha);
 % cobj'*x is -lambda for Equation (4), or -lambda+alpha*eta for
 % the regularized problem. Therefore 1+cobj'*x is R or R_{hat{c}/2}.
 rawR = 1+cobj'*x;
 Rvalue = min(1,max(0,rawR));
 
-% Numerical feasibility diagnostics for Sigma >= 0 and
-% hat{Sigma}_S-Sigma_S+eta I_S >= 0, the dual constraints in Eq. (4)/(7).
-minEigenSigma = min(eig((Sigma+Sigma')/2));
+% Numerical feasibility diagnostics for M >= 0 and
+% hat{Sigma}_S-M(S,S)+eta I_S >= 0, the dual constraints in Eq. (4)/(7).
+minEigenM = min(eig((Mopt+Mopt')/2));
 minEigenSlack = Inf;
 for k = 1:numel(patterns)
     S = patterns{k};
-    slack = SigmaS{k}-Sigma(S,S)+z*eye(numel(S));
+    slack = SigmaS{k}-Mopt(S,S)+eta*eye(numel(S));
     minEigenSlack = min(minEigenSlack,min(eig((slack+slack')/2)));
 end
 
@@ -830,14 +1159,14 @@ info.dualTolerance = epsDual;
 info.rho = rho;
 info.rawR = rawR;
 info.lambda = x(1);
-info.z = z;
-info.minEigenSigma = minEigenSigma;
+info.eta = eta;
+info.minEigenSigma = minEigenM;
 info.minEigenSlack = minEigenSlack;
 
 end
 
 % -------------------------------------------------------------------------
-function [A,b,cobj,blocks,offIndex,zIndex] = ...
+function [A,b,cobj,blocks,offIndex,scaledEtaIndex] = ...
     localBuildConicMap(patterns,SigmaS,d,regularizationAlpha)
 %localBuildConicMap Write the SDP behind Equations (4) and (7) as affine PSD cone maps.
 %
@@ -849,8 +1178,8 @@ function [A,b,cobj,blocks,offIndex,zIndex] = ...
 % product-cone representation without assembling one large block-diagonal
 % matrix.
 
-% x(1) is the common diagonal lambda=tr(Sigma)/d. The remaining indices
-% parameterize the distinct off-diagonal entries of the symmetric Sigma.
+% x(1) is the common diagonal lambda=tr(M)/d. The remaining indices
+% parameterize the distinct off-diagonal entries of the symmetric M.
 regularized = ~isempty(regularizationAlpha);
 offIndex = zeros(d);
 nextIndex = 2;
@@ -863,15 +1192,15 @@ for j = 2:d
 end
 
 if regularized
-    zIndex = nextIndex;
+    scaledEtaIndex = nextIndex;
     q = nextIndex;
 else
-    zIndex = [];
+    scaledEtaIndex = [];
     q = nextIndex-1;
 end
 
-% Cone blocks correspond to Sigma >= 0 and one PSD slack matrix for each
-% inequality hat{Sigma}_S-(A Sigma)_S >= 0 in Equation (4).
+% Cone blocks correspond to M >= 0 and one PSD slack matrix for each
+% inequality hat{Sigma}_S-M(S,S) >= 0 in Equation (4).
 patternSizes = cellfun(@numel,patterns);
 blocks = [d patternSizes(:)'];
 if regularized
@@ -886,10 +1215,10 @@ A = spalloc(m,q,estimatedNonzeros);
 b = zeros(m,1);
 offset = 0;
 
-% PAPER: Sigma >= 0 and the equal-diagonal constraint are explicit in
+% PAPER: M >= 0 and the equal-diagonal constraint are explicit in
 % Proposition 5, Equation (4), Annals p. 2214. Equal diagonal entries are
-% imposed here by using the
-% single variable x(1)=lambda at every diagonal position.
+% imposed here by using the single variable x(1)=lambda at every diagonal
+% position.
 for col = 1:d
     for row = 1:d
         pos = offset+row+(col-1)*d;
@@ -902,9 +1231,9 @@ for col = 1:d
 end
 offset = offset+d^2;
 
-% PAPER: Unregularized constraints are hat{Sigma}_S-(A Sigma)_S >= 0
+% PAPER: Unregularized constraints are hat{Sigma}_S-M(S,S) >= 0
 % in Equation (4). For the regularized dual corresponding to Equation (7),
-% the constraint becomes hat{Sigma}_S-(A Sigma)_S+eta I_S >= 0.
+% the constraint becomes hat{Sigma}_S-M(S,S)+eta I_S >= 0.
 for k = 1:numel(patterns)
     S = patterns{k};
     sk = numel(S);
@@ -921,9 +1250,10 @@ for k = 1:numel(patterns)
                 A(pos,offIndex(globalRow,globalCol)) = -1;
             end
             if regularized && row==col
-                % x(zIndex)=alpha*eta, hence x(zIndex)/alpha=eta is
-                % added to each diagonal of the pattern slack matrix.
-                A(pos,zIndex) = 1/regularizationAlpha;
+                % x(scaledEtaIndex)=alpha*eta, hence
+                % x(scaledEtaIndex)/alpha=eta is added to each diagonal of the pattern
+                % slack matrix.
+                A(pos,scaledEtaIndex) = 1/regularizationAlpha;
             end
         end
     end
@@ -935,7 +1265,7 @@ end
 % regularization level in Algorithm 1, Step 11 and Equation (7). The
 % rescaling improves numerical balance; the scalar cone imposes eta>=0.
 if regularized
-    A(offset+1,zIndex) = 1;
+    A(offset+1,scaledEtaIndex) = 1;
 end
 
 % PAPER: Equation (4) maximizes lambda. The regularized dual maximizes
@@ -944,7 +1274,7 @@ end
 cobj = zeros(q,1);
 cobj(1) = -1;
 if regularized
-    cobj(zIndex) = 1;
+    cobj(scaledEtaIndex) = 1;
 end
 
 end
@@ -978,26 +1308,26 @@ end
 end
 
 % -------------------------------------------------------------------------
-function [Sigma,z] = localUnpackSolution( ...
-    x,d,offIndex,zIndex,regularizationAlpha)
+function [M,eta] = localUnpackSolution( ...
+    x,d,offIndex,scaledEtaIndex,regularizationAlpha)
 %localUnpackSolution Recover the common matrix in Proposition 5, Eq. (4).
 %
 % The common diagonal is x(1)=lambda. Dividing this matrix by lambda in the
 % main routine produces the compatible correlation matrix hat{Q} appearing
-% in Equation (5). In the regularized problem z is the auxiliary eta slack.
+% in Equation (5). In the regularized problem eta is the auxiliary slack.
 
-Sigma = x(1)*eye(d);
+M = x(1)*eye(d);
 for j = 2:d
     for i = 1:j-1
-        Sigma(i,j) = x(offIndex(i,j));
-        Sigma(j,i) = Sigma(i,j);
+        M(i,j) = x(offIndex(i,j));
+        M(j,i) = M(i,j);
     end
 end
-Sigma = (Sigma+Sigma')/2;
-if isempty(zIndex)
-    z = 0;
+M = (M+M')/2;
+if isempty(scaledEtaIndex)
+    eta = 0;
 else
-    z = x(zIndex)/regularizationAlpha;
+    eta = x(scaledEtaIndex)/regularizationAlpha;
 end
 
 end
@@ -1018,7 +1348,7 @@ scale = std(X,0,1);
 if any(~isfinite(scale)) || any(scale<=0)
     error('FSDA:mdBBtest:ZeroPatternVariance', ...
         ['At least one variable has zero or nonfinite variance within a ' ...
-         'retained missingness pattern.']);
+        'retained missingness pattern.']);
 end
 % Row-vector form of diag(hat{sigma}_S^2)^(-1/2)(X_S-hat{mu}_S).
 Z = (X-mu)./scale;
@@ -1033,20 +1363,9 @@ end
 function [R,clipMagnitude] = localCov2Corr(S)
 %localCov2Corr Repair and normalize the compatible matrix in Equation (5).
 %
-% In exact arithmetic SigmaOpt/lambda is a correlation matrix. The ADMM
-% optimizer is recovered from the affine variable x rather than from its
-% projection onto the cone, so it satisfies Sigma>=0 only up to the primal
-% residual and can carry a small negative eigenvalue. Every use of the
-% fitted compatible matrix downstream requires a genuine correlation matrix:
-% Algorithm 1, Step 7 takes hat{Q}_S^(1/2), and a matrix that is not
-% positive semidefinite has no real square root.
-%
-% The spectrum is therefore clipped at zero and the result is rescaled to a
-% unit diagonal. The order matters: rescaling preserves positive
-% semidefiniteness, whereas overwriting the diagonal after clipping would
-% destroy it. The operation is a no-op to machine precision when the solve
-% is accurate, and clipMagnitude reports how much repair was needed so that
-% an inaccurate solve is visible rather than silent.
+% In exact arithmetic the normalized optimizer supplied to this routine is
+% already a positive semidefinite correlation matrix. The repair below only
+% corrects numerical drift from the approximate ADMM solution.
 
 S = real((S+S')/2);
 [V,D] = eig(S);
@@ -1086,7 +1405,7 @@ end
 if requirePositiveDefinite && min(eigenvalues)<=tol^2*scale
     error('FSDA:mdBBtest:NonPDMatrix', ...
         ['A pattern-specific correlation matrix required by the bootstrap ' ...
-         'transformation is not positive definite.']);
+        'transformation is not positive definite.']);
 end
 root = V*diag(sqrt(max(eigenvalues,0)))*V';
 root = real((root+root')/2);
