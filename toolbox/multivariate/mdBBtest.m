@@ -212,16 +212,20 @@ function out = mdBBtest(Y, varargin)
 % 
 % 
 % 
-% The symbol $\preceq$ denotes the Loewner partial ordering for symmetric
-% matrices: $C\preceq D$ means that $D-C$ is positive semidefinite.
-% Accordingly, $\preceq_{\mathbb S}$ means that this ordering holds
-% pattern by pattern for every $S\in\mathbb S$.
+% The symbol $\preceq$ in this case denotes the Loewner partial ordering
+% for symmetric matrices: $C\preceq D$ means that $D-C$ is positive
+% semidefinite. Accordingly, $\preceq_{\mathbb S}$ means that this ordering
+% holds pattern by pattern for every $S\in\mathbb S$. This constraint
+% places an upper bound on the common compatible component
+% that we are maximizing.
 % 
-% In other words, the SDP searches for a common PSD matrix $M$ that fits
-% underneath all pattern-specific correlation matrices while maximizing
-% its common diagonal value $\lambda$ (equivalently,
-% $\mathrm{tr}(M)/p$).
+%
 % 
+% In other words, the SDP (semidefinite programming problems) searches for
+% a common PSD matrix $M$ that fits underneath all pattern-specific
+% correlation matrices while maximizing its common diagonal value $\lambda$
+% (equivalently, $\mathrm{tr}(M)/p$).
+%
 % Since Equation (4) also imposes that all the diagonal elements of $M$
 % are equal
 % 
@@ -331,6 +335,9 @@ function out = mdBBtest(Y, varargin)
 %      +(1-\lambda^*)\widehat\Sigma'_S.
 % \]
 % 
+% $\widehat Q_S$ is the compatible correlation matrix while 
+% $\widehat\Sigma'_S$ is the residual correlation matrix.
+%
 % Collecting these relations over all $S\in\mathbb S$ gives
 % 
 % \[
