@@ -7,7 +7,7 @@ function out = mdBBtest(Y, varargin)
 %  implemented in function corrCompTest of the R package MCARtest. The test
 %  compares the correlation matrices estimated within the retained
 %  missingness patterns and measures whether they are compatible with a
-%  single positive semidefinite correlation matrix.
+%  single correlation matrix.
 %
 %  Required input arguments:
 %
@@ -82,8 +82,12 @@ function out = mdBBtest(Y, varargin)
 %          out.patternInfo   = table summarizing the retained patterns;
 %          out.correlationMatrices = cell array containing the empirical
 %                              pattern-specific correlation matrices;
-%          out.Sigma         = optimal common-scale positive semidefinite
-%                              matrix from the observed-data SDP;
+%          out.Sigma         = optimal unnormalized positive semidefinite
+%                              matrix from the observed-data SDP. Its common
+%                              diagonal is out.commonScale and, when this
+%                              value is positive, normalization by
+%                              out.commonScale gives the fitted compatible
+%                              correlation matrix;
 %          out.compatibleCorrelation = fitted compatible p x p correlation
 %                              matrix used to construct the bootstrap null;
 %                              empty when out.earlyRejected is true;
@@ -92,7 +96,10 @@ function out = mdBBtest(Y, varargin)
 %                              is equal to 1-out.stat;
 %          out.c             = smallest eigenvalue among the empirical
 %                              pattern-specific correlation matrices;
-%          out.regularizationAlpha = bootstrap regularization parameter 2/c;
+%          out.regularizationAlpha = reciprocal of the bootstrap
+%                              regularization level, equal to 2/out.c.
+%                              The regularization level in BB2025 is
+%                              z=out.c/2;
 %          out.removedRows   = n x 1 logical vector identifying observations
 %                              removed because their pattern is too small or
 %                              completely missing;
@@ -125,404 +132,352 @@ function out = mdBBtest(Y, varargin)
 %  More About:
 %
 %
-%  The objective of the test of Bordino and Berrett (2025), referred to as
-%  BB2025 below, is to assess whether the correlation matrices associated with
-%  the different missingness patterns are compatible with a single
-%  $p$-by-$p$ correlation matrix, where $p$ is the number of variables in
-%  the input data (corresponding to $d$ in BB2025). Compatibility of these
-%  matrices is a necessary condition for MCAR. Therefore, rejection of
-%  correlation compatibility provides evidence against MCAR.
-%
-%  Let $S_1,\ldots,S_g$ denote the retained sets of observed variables and
-%  let $n_S$ be the number of observations having pattern $S$. Following
-%  Algorithm 1 of BB2025, patterns satisfying
-%
-%  \[
-%      n_S \leq |S|+1
-%  \]
-%
-%  are discarded. For every retained pattern $S$, let
-%  $\widehat\Sigma_S$ denote the sample correlation matrix calculated using
-%  the observations belonging to that pattern, and write
-%
-%  \[
-%      \widehat\Sigma_{\mathbb S}
-%        =(\widehat\Sigma_S:S\in\mathbb S)
-%  \]
-%
-%  for the collection of pattern-specific sample correlation matrices.
-%
-%  The observed test statistic is the incompatibility index
-%
-%  \[
-%      R_{\mathrm{obs}}
-%        =R(\widehat\Sigma_{\mathbb S}).
-%  \]
-%
-%
-%
-%  Proposition 5, Equation (4), shows that the incompatibility index can be
-%  computed through the dual semidefinite representation
-%
-%  \[
-%      R(\widehat\Sigma_{\mathbb S})
-%      =
-%      1-\frac{1}{p}
-%      \sup\left\{
-%      \mathrm{tr}(M):
-%      AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S},
-%      \;
-%      m_{11}=\cdots=m_{pp},
-%      \;
-%      M\succeq0
-%      \right\},
-%  \]
-%
-%  where $p$ is the number of variables in the input data and corresponds
-%  to $d$ in the notation of Bordino and Berrett.
-%
-%  The operator $A$ maps the global $p$-by-$p$ positive semidefinite (PSD) matrix
-%  $M=(m_{ij})_{i,j=1}^p$ into the
-%  collection of its pattern-specific principal submatrices:
-%
-%  \[
-%      AM=(M(S,S):S\in\mathbb S).
-%  \]
-%
-%  Hence $AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S}$ means,
-%  for every $S\in\mathbb S$,
-%
-%  \[
-%      (AM)_S=M(S,S)\preceq\widehat\Sigma_S,
-%  \]
-%
-%  or equivalently
-%
-%  \[
-%      \widehat\Sigma_S-M(S,S)\succeq0.
-%  \]
-%
-%
-%
-%  The symbol $\preceq$ denotes the Loewner partial ordering for symmetric
-%  matrices: $C\preceq D$ means that $D-C$ is positive semidefinite.
-%  Accordingly, $\preceq_{\mathbb S}$ means that this ordering holds
-%  pattern by pattern for every $S\in\mathbb S$.
-%
-%  In other words, the SDP searches for a common PSD matrix $M$ that fits
-%  underneath all pattern-specific correlation matrices while maximizing
-%  its common diagonal value $\lambda$ (equivalently,
-%  $\mathrm{tr}(M)/p$).
-%
-%  Since Equation (4) also imposes that all the diagonal elements of $M$
-%  are equal
-%
-%  \[
-%      m_{11}=\cdots=m_{pp},
-%  \]
-%
-%  the common diagonal value can be denoted by $\lambda$. Hence
-%
-%  \[
-%      \mathrm{diag}(M)=\lambda\mathbf 1_p
-%  \]
-%
-%  and therefore
-%
-%  \[
-%      \mathrm{tr}(M)=p\lambda.
-%  \]
-%
-%  Consequently,
-%
-%  \[
-%      \frac{1}{p}\mathrm{tr}(M)=\lambda,
-%  \]
-%
-%  so that Equation (4) is equivalently obtained by solving
-%
-%  \[
-%  \begin{array}{ll}
-%  \mathrm{maximize}   & \lambda \\
-%  \mathrm{subject\ to}& M\succeq0,\\
-%                       & \mathrm{diag}(M)=\lambda\mathbf 1_p,\\
-%                       & \widehat\Sigma_S-M(S,S)\succeq0,
-%                         \quad S\in\mathbb S.
-%  \end{array}
-%  \]
-%
-%  If $\lambda^*$ denotes the largest feasible common diagonal value, it
-%  measures the maximum weight that can be assigned to a common compatible
-%  correlation structure across all the retained patterns. Then
-%
-%  \[
-%      R_{\mathrm{obs}}
-%      =R(\widehat\Sigma_{\mathbb S})
-%      =1-\frac{1}{p}(p\lambda^*)
-%      =1-\lambda^*.
-%  \]
-%
-%
-%  Hence a value $\lambda^*=1$ gives $R_{\mathrm{obs}}=0$ and corresponds to
-%  compatibility, whereas smaller values of $\lambda^*$ indicate increasing
-%  incompatibility.
-%
-%
-%  By Slater's condition, the supremum in Equation (4) is attained. Let
-%  $M^*$ denote an optimizer and let
-%  $\lambda^*=1-R(\widehat\Sigma_{\mathbb S})$ be its common diagonal
-%  value. Hence
-%
-%  \[
-%      \mathrm{diag}(M^*)=\lambda^*\mathbf 1_p.
-%  \]
-%
-%
-%  For $\lambda^*>0$, the normalized matrix
-%
-%  \[
-%      \widehat Q=\frac{M^*}{\lambda^*}
-%  \]
-%
-%  is a $p$-by-$p$ correlation matrix.
-%
-%
-%  Therefore,
-%
-%  \[
-%      \widehat Q_{\mathbb S}
-%      =A\widehat Q
-%      =(\widehat Q_S:S\in\mathbb S)
-%  \]
-%
-%  is a compatible collection of pattern-specific correlation matrices.
-%
-%  Moreover, $AM^*\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S}$ implies
-%
-%  \[
-%      \widehat\Sigma_S-\lambda^*\widehat Q_S\succeq0,
-%      \qquad S\in\mathbb S.
-%  \]
-%
-%  Since both $\widehat\Sigma_S$ and $\widehat Q_S$ have unit diagonal,
-%  the residual has diagonal $(1-\lambda^*)\mathbf 1_{|S|}$. Thus, for
-%  $0<\lambda^*<1$, define
-%
-%  \[
-%      \widehat\Sigma'_S=
-%      \frac{\widehat\Sigma_S-\lambda^*\widehat Q_S}
-%           {1-\lambda^*}.
-%  \]
-%
-%  Then $\widehat\Sigma'_S$ is a correlation matrix and
-%
-%  \[
-%      \widehat\Sigma_S
-%      =\lambda^*\widehat Q_S
-%       +(1-\lambda^*)\widehat\Sigma'_S.
-%  \]
-%
-%  Collecting these relations over all $S\in\mathbb S$ gives
-%
-%  \[
-%      \widehat\Sigma_{\mathbb S}
-%      =\lambda^*A\widehat Q
-%       +(1-\lambda^*)\widehat\Sigma'_{\mathbb S},
-%  \]
-%
-%  which is the sample analogue of Equation (5).
-%
-%  The boundary case $\lambda^*=1$ corresponds to
-%  $R_{\mathrm{obs}}=0$, so that the collection is already compatible and
-%  the residual component is not needed.
-%
-%  If $\lambda^*=0$, the compatible component has zero weight, so no
-%  normalization of $M^*$ is required; the decomposition can simply take
-%  $\widehat\Sigma'_{\mathbb S}=\widehat\Sigma_{\mathbb S}$. Moreover,
-%  $R_{\mathrm{obs}}=1$, so Algorithm 1 rejects before the bootstrap is
-%  constructed.
-%
-%  When the bootstrap is required, the compatible component $\widehat
-%  Q_{\mathbb S}$ is used to construct its null distribution. Before
-%  resampling, the observations within every pattern $S$ are standardized
-%  and linearly transformed so that their sample correlation matrix becomes
-%  $\widehat Q_S$. In the notation of Algorithm 1, the transformed
-%  observations are
-%
-%  \[
-%      \widetilde X_{S,i}
-%        =\widehat Q_S^{1/2}
-%         \widehat\Sigma_S^{-1/2}
-%         \mathrm{diag}^{-1/2}(\widehat\sigma_S^2)
-%         (X_{S,i}-\widehat\mu_S).
-%  \]
-%
-%  In summary, for each pattern the standardized observations are first
-%  whitened using $\widehat\Sigma_S^{-1/2}$, so that their sample
-%  covariance matrix becomes the identity matrix. They are then multiplied
-%  by $\widehat Q_S^{1/2}$, so that the transformed observations have
-%  sample correlation matrix $\widehat Q_S$.
-%
-%  Nonparametric bootstrap samples are then drawn independently within each
-%  transformed pattern $S$.
-%
-%  Let
-%
-%  \[
-%      \widehat c
-%        =\min_{S\in\mathbb S}
-%           \lambda_{\min}(\widehat\Sigma_S).
-%  \]
-%
-%  The bootstrap calibration does not use the unregularized incompatibility
-%  index $R$ directly. Instead, Algorithm 1 uses the regularized index
-%  $R_{\widehat c/2}$ defined in Equation (7).
-%
-%  To see where this regularization enters, recall that Equation (6)
-%  restricts the feasible set of the primal problem by imposing, for a
-%  generic regularization level $z>0$,
-%
-%  \[
-%      \sum_{S\in\mathbb S}
-%      \left\|X_S+X_S^0\right\|_*
-%      \leq \frac{p}{z}.
-%  \]
-%
-%  Since $X_S+X_S^0\succeq0$, its nuclear norm is equal to its trace.
-%  Thus, the regularization amounts to adding a single upper bound on the
-%  total trace of the positive semidefinite primal variables. Equation (7)
-%  defines $R_z$ by optimizing the same incompatibility objective subject
-%  to this additional bound.
-%
-%  Taking the semidefinite-programming dual of this regularized problem
-%  introduces one nonnegative scalar multiplier $\eta$ associated with
-%  the additional trace constraint. The resulting equivalent dual
-%  representation is
-%
-%  \[
-%      R_z(\widehat\Sigma_{\mathbb S}^{*})
-%      =
-%      1-
-%      \sup\left\{
-%      \lambda-\frac{\eta}{z}
-%      \right\},
-%  \]
-%
-%  subject to
-%
-%  \[
-%  \begin{array}{ll}
-%      & M\succeq0,\qquad
-%        \mathrm{diag}(M)=\lambda\mathbf 1_p,\qquad
-%        \eta\geq0,\\
-%      & \widehat\Sigma_S^{*}-M(S,S)+\eta I_{|S|}
-%        \succeq0,\qquad S\in\mathbb S.
-%  \end{array}
-%  \]
-%
-%  Hence $\eta$ is not an additional statistical parameter: it is the
-%  dual variable generated by the regularization constraint in Equation
-%  (6). When $\eta=0$, the constraints reduce to those of the
-%  unregularized dual in Equation (4). A positive value of $\eta$ relaxes
-%  each pattern-specific semidefinite constraint by adding $\eta I_{|S|}$,
-%  but this relaxation is penalized in the objective through $\eta/z$.
-%
-%  Algorithm 1 takes $z=\widehat c/2$. Therefore
-%
-%  \[
-%      \frac{\eta}{z}
-%      =
-%      \frac{2}{\widehat c}\eta,
-%  \]
-%
-%  and the bootstrap statistic used in this function becomes
-%
-%  \[
-%      R_{\widehat c/2}(\widehat\Sigma_{\mathbb S}^{*})
-%      =
-%      1-
-%      \sup\left\{
-%      \lambda-\frac{2}{\widehat c}\eta
-%      \right\},
-%  \]
-%
-%  subject to the constraints above.
-%
-%
-%-------------------------------------
-%  Let
-%
-%  \[
-%      \widehat c
-%        =\min_{S\in\mathbb S}
-%           \lambda_{\min}(\widehat\Sigma_S).
-%  \]
-%
-%  Algorithm 1 uses the regularized incompatibility index
-%  $R_{\widehat c/2}$ for each bootstrap sample. In the equivalent dual
-%  formulation used in this function, the bootstrap statistic is obtained
-%  as
-%
-%  \[
-%      R_{\widehat c/2}(\widehat\Sigma_{\mathbb S}^{*})
-%        =
-%        1-
-%        \sup\left\{
-%        \lambda-\frac{2}{\widehat c}\eta
-%        \right\},
-%  \]
-%
-%  subject to
-%
-%  \[
-%  \begin{array}{ll}
-%      & M\succeq0,\qquad
-%        \mathrm{diag}(M)=\lambda\mathbf 1_p,\qquad
-%        \eta\geq0,\\
-%      & \widehat\Sigma_S^{*}-M(S,S)+\eta I_{|S|}
-%        \succeq0,\qquad S\in\mathbb S.
-%  \end{array}
-%  \]
-%
-%  Notice that $\widehat c/2$ is the regularization level appearing in
-%  $R_{\widehat c/2}$, whereas $\eta$ is an auxiliary scalar variable in
-%  the equivalent dual semidefinite program.
-%
-%  If $B=\mathrm{nsimul}$ bootstrap samples are generated, the Monte Carlo
-%  $p$-value is
-%
-%  \[
-%      p_R=
-%      \frac{
-%      1+\sum_{b=1}^B
-%      \mathbf 1\left\{
-%      R_{\widehat c/2}
-%        (\widehat\Sigma_{\mathbb S,b}^{*})
-%      \geq R_{\mathrm{obs}}
-%      \right\}}
-%      {B+1}.
-%  \]
-%
-%  Following Algorithm 1, if
-%
-%  \[
-%      R_{\mathrm{obs}}\geq 3/4,
-%  \]
-%
-%  the null hypothesis is rejected directly and the function returns
-%  pvalue=0 without carrying out the bootstrap.
-%
-%  The R implementation corrCompTest uses CSDP through package Rcsdp.
-%  mdBBtest solves equivalent semidefinite optimization problems using an
-%  internal alternating direction method of multipliers (ADMM). ADMM is a
-%  numerical implementation choice and is not part of the statistical
-%  procedure proposed by Bordino and Berrett. The solver convergence
-%  diagnostics should therefore be inspected whenever the requested
-%  tolerance is not attained.
-%
-%  The test implemented here concerns only compatibility of the
-%  pattern-specific correlation matrices. It does not test consistency of
-%  the pattern means or variances.
+% The objective of the test of Bordino and Berrett (2025), referred to as
+% BB2025 below, is to assess whether the correlation matrices associated with
+% the different missingness patterns are compatible with a single
+% $p$-by-$p$ correlation matrix, where $p$ is the number of variables in
+% the input data (corresponding to $d$ in BB2025). Compatibility of these
+% matrices is a necessary condition for MCAR. Therefore, rejection of
+% correlation compatibility provides evidence against MCAR.
+% 
+% Let $S_1,\ldots,S_g$ denote the retained sets of observed variables and
+% let $n_S$ be the number of observations having pattern $S$. Following
+% Algorithm 1 of BB2025, patterns satisfying
+% 
+% \[
+%     n_S \leq |S|+1
+% \]
+% 
+% are discarded. For every retained pattern $S$, let
+% $\widehat\Sigma_S$ denote the sample correlation matrix calculated using
+% the observations belonging to that pattern, and write
+% 
+% \[
+%     \widehat\Sigma_{\mathbb S}
+%       =(\widehat\Sigma_S:S\in\mathbb S)
+% \]
+% 
+% for the collection of pattern-specific sample correlation matrices.
+% 
+% The observed test statistic is the incompatibility index
+% 
+% \[
+%     R_{\mathrm{obs}}
+%       =R(\widehat\Sigma_{\mathbb S}).
+% \]
+% 
+% 
+% 
+% 
+% Proposition 5, Equation (4) of BB2025, shows that the incompatibility index can be
+% computed through the dual semidefinite representation
+% 
+% \[
+%     R(\widehat\Sigma_{\mathbb S})
+%     =
+%     1-\frac{1}{p}
+%     \sup\left\{
+%     \mathrm{tr}(M):
+%     AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S},
+%     \;
+%     m_{11}=\cdots=m_{pp},
+%     \;
+%     M\succeq0
+%     \right\},
+% \]
+% 
+% where $p$ is the number of variables in the input data and corresponds
+% to $d$ in the notation of Bordino and Berrett.
+% 
+% The operator $A$ maps the global $p$-by-$p$ positive semidefinite (PSD) matrix
+% $M=(m_{ij})_{i,j=1}^p$ into the
+% collection of its pattern-specific principal submatrices:
+% 
+% \[
+%     AM=(M(S,S):S\in\mathbb S).
+% \]
+% 
+% Hence $AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S}$ means,
+% for every $S\in\mathbb S$,
+% 
+% \[
+%     (AM)_S=M(S,S)\preceq\widehat\Sigma_S,
+% \]
+% 
+% or equivalently
+% 
+% \[
+%     \widehat\Sigma_S-M(S,S)\succeq0.
+% \]
+% 
+% 
+% 
+% The symbol $\preceq$ denotes the Loewner partial ordering for symmetric
+% matrices: $C\preceq D$ means that $D-C$ is positive semidefinite.
+% Accordingly, $\preceq_{\mathbb S}$ means that this ordering holds
+% pattern by pattern for every $S\in\mathbb S$.
+% 
+% In other words, the SDP searches for a common PSD matrix $M$ that fits
+% underneath all pattern-specific correlation matrices while maximizing
+% its common diagonal value $\lambda$ (equivalently,
+% $\mathrm{tr}(M)/p$).
+% 
+% Since Equation (4) also imposes that all the diagonal elements of $M$
+% are equal
+% 
+% \[
+%     m_{11}=\cdots=m_{pp},
+% \]
+% 
+% the common diagonal value can be denoted by $\lambda$. Hence
+% 
+% \[
+%     \mathrm{diag}(M)=\lambda\mathbf 1_p
+% \]
+% 
+% and therefore
+% 
+% \[
+%     \mathrm{tr}(M)=p\lambda.
+% \]
+% 
+% Consequently,
+% 
+% \[
+%     \frac{1}{p}\mathrm{tr}(M)=\lambda,
+% \]
+% 
+% so that Equation (4) is equivalently obtained by solving
+% 
+% \[
+% \begin{array}{ll}
+% \mathrm{maximize}   & \lambda \\
+% \mathrm{subject\ to}& M\succeq0,\\
+%                      & \mathrm{diag}(M)=\lambda\mathbf 1_p,\\
+%                      & \widehat\Sigma_S-M(S,S)\succeq0,
+%                        \quad S\in\mathbb S.
+% \end{array}
+% \]
+% 
+% If $\lambda^*$ denotes the largest feasible common diagonal value, it
+% measures the maximum weight that can be assigned to a common compatible
+% correlation structure across all the retained patterns. Then
+% 
+% \[
+%     R_{\mathrm{obs}}
+%     =R(\widehat\Sigma_{\mathbb S})
+%     =1-\frac{1}{p}(p\lambda^*)
+%     =1-\lambda^*.
+% \]
+% 
+% 
+% Hence a value $\lambda^*=1$ gives $R_{\mathrm{obs}}=0$ and corresponds to
+% full compatibility, whereas smaller values of $\lambda^*$ indicate increasing
+% incompatibility.
+% 
+% 
+% 
+% The proof of Proposition 5 establishes strong duality and attainment
+% through Slater's condition. Let $M^*$ denote an optimizer and let
+% $\lambda^*=1-R(\widehat\Sigma_{\mathbb S})$ be its common diagonal
+% value. Hence
+% 
+% \[
+%     \mathrm{diag}(M^*)=\lambda^*\mathbf 1_p.
+% \]
+% 
+% 
+% For $\lambda^*>0$, the normalized matrix
+% 
+% \[
+%     \widehat Q=\frac{M^*}{\lambda^*}
+% \]
+% 
+% is a $p$-by-$p$ correlation matrix.
+% 
+% 
+% Therefore,
+% 
+% \[
+%     \widehat Q_{\mathbb S}
+%     =A\widehat Q
+%     =(\widehat Q_S:S\in\mathbb S)
+% \]
+% 
+% is a compatible collection of pattern-specific correlation matrices.
+% 
+% Moreover, $AM^*\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S}$ implies
+% 
+% \[
+%     \widehat\Sigma_S-\lambda^*\widehat Q_S\succeq0,
+%     \qquad S\in\mathbb S.
+% \]
+% 
+% Since both $\widehat\Sigma_S$ and $\widehat Q_S$ have unit diagonal,
+% the residual has diagonal $(1-\lambda^*)\mathbf 1_{|S|}$. Thus, for
+% $0<\lambda^*<1$, define
+% 
+% \[
+%     \widehat\Sigma'_S=
+%     \frac{\widehat\Sigma_S-\lambda^*\widehat Q_S}
+%          {1-\lambda^*}.
+% \]
+% 
+% Then $\widehat\Sigma'_S$ is a correlation matrix and
+% 
+% \[
+%     \widehat\Sigma_S
+%     =\lambda^*\widehat Q_S
+%      +(1-\lambda^*)\widehat\Sigma'_S.
+% \]
+% 
+% Collecting these relations over all $S\in\mathbb S$ gives
+% 
+% \[
+%     \widehat\Sigma_{\mathbb S}
+%     =\lambda^*A\widehat Q
+%      +(1-\lambda^*)\widehat\Sigma'_{\mathbb S},
+% \]
+% 
+% which is the sample analogue of Equation (5) of BB2025.
+% 
+% The boundary case $\lambda^*=1$ corresponds to
+% $R_{\mathrm{obs}}=0$, so that the collection is already compatible and
+% the residual component is not needed.
+% 
+% If $\lambda^*=0$, the compatible component has zero weight, so no
+% normalization of $M^*$ is required; the decomposition can simply take
+% $\widehat\Sigma'_{\mathbb S}=\widehat\Sigma_{\mathbb S}$. Moreover,
+% $R_{\mathrm{obs}}=1$, so Algorithm 1 rejects before the bootstrap is
+% constructed.
+% 
+% 
+% When the bootstrap is required, the compatible component
+% $\widehat Q_{\mathbb S}$ is used to construct its null distribution. Before
+% resampling, the observations within every pattern $S$ are standardized
+% and linearly transformed so that their sample correlation matrix becomes
+% $\widehat Q_S$. In the notation of Algorithm 1, the transformed
+% observations are
+% 
+% \[
+%     \widetilde X_{S,i}
+%       =\widehat Q_S^{1/2}
+%        \widehat\Sigma_S^{-1/2}
+%        \mathrm{diag}^{-1/2}(\widehat\sigma_S^2)
+%        (X_{S,i}-\widehat\mu_S).
+% \]
+% 
+% In summary, for each pattern the standardized observations are first
+% whitened using $\widehat\Sigma_S^{-1/2}$, so that their sample
+% covariance matrix becomes the identity matrix. They are then multiplied
+% by $\widehat Q_S^{1/2}$, so that the transformed observations have
+% sample correlation matrix $\widehat Q_S$.
+% 
+% Nonparametric bootstrap samples are then drawn independently within each
+% transformed pattern $S$.
+% 
+% The bootstrap replicates are not evaluated using the unregularized
+% incompatibility index $R$. Instead, each bootstrap sample is evaluated
+% using the regularized incompatibility index obtained by restricting the
+% optimization to a compact feasible set.
+% 
+% 
+% Bordino and Berrett define, for $0<z\leq 1$, the regularized
+% incompatibility index as
+%
+% \[
+% R_z(\Sigma_{\mathbb{S}})
+% =
+% \sup
+% \left\{
+% -\frac{1}{p}
+% \left\langle
+% X_{\mathbb{S}},\Sigma_{\mathbb{S}}
+% \right\rangle_{\mathbb{S}}
+% :
+% X_{\mathbb{S}}\in\mathcal{F}_z
+% \right\},
+% \tag{7}
+% \]
+% where the feasible set $\mathcal F_z$ is the compact feasible set defined
+% in Equation (6) of BB2025. For the observed pattern-specific correlation
+% matrices, Step 2 of Algorithm 1 defines
+%
+% \[
+% \widehat c
+% =
+% \min_{S\in\mathbb S}
+% \lambda_{\min}(\widehat\Sigma_S).
+% \]
+% The value $\widehat c$ is computed once from the observed data and is
+% kept fixed throughout all bootstrap replications. The bootstrap statistic
+% is obtained from Equation (7) by setting
+% \[
+% z=\frac{\widehat c}{2}.
+% \]
+% 
+% 
+% For bootstrap replication $b$, let
+% $\widetilde X_S^{(b)}$ denote the resampled observations for pattern $S$
+% and define
+% \[
+% \widehat\Sigma_{S,b}
+% =
+% \operatorname{SampleCorr}
+% \left(\widetilde X_S^{(b)}\right).
+% \]
+% Writing
+% \[
+% \widehat\Sigma_{\mathbb S,b}
+% =
+% (\widehat\Sigma_{S,b}:S\in\mathbb S),
+% \]
+% the bootstrap statistic for replication $b$ is
+% \[
+% R_{\widehat c/2}
+% \left(\widehat\Sigma_{\mathbb S,b}\right).
+% \]
+% 
+% 
+% 
+% If $B=\mathrm{nsimul}$ bootstrap samples are generated, the Monte Carlo
+% $p$-value is
+% 
+% \[
+%     p_R=
+%     \frac{
+%     1+\sum_{b=1}^B
+%     \mathbf 1\left\{
+%     R_{\widehat c/2}
+%       (\widehat\Sigma_{\mathbb S,b})
+%     \geq R_{\mathrm{obs}}
+%     \right\}}
+%     {B+1}.
+% \]
+% 
+% Following Algorithm 1, if
+% 
+% \[
+%     R_{\mathrm{obs}}\geq 3/4,
+% \]
+% 
+% the null hypothesis is rejected directly and the function sets the
+% p-value to zero without carrying out the bootstrap.
+% 
+% The R implementation corrCompTest uses CSDP through package Rcsdp.
+% mdBBtest solves equivalent semidefinite optimization problems using an
+% internal alternating direction method of multipliers (ADMM). ADMM is a
+% numerical implementation choice and is not part of the statistical
+% procedure proposed by Bordino and Berrett. The solver convergence
+% diagnostics should therefore be inspected whenever the requested
+% tolerance is not attained.
+% 
+% The test implemented here concerns only compatibility of the
+% pattern-specific correlation matrices. It does not test consistency of
+% the pattern means or variances. Since correlation compatibility is only
+% a necessary condition for MCAR, failure to reject compatibility does not
+% establish that the data are MCAR.
+% 
 %
 %
 %  References:
