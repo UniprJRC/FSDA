@@ -251,31 +251,142 @@ function out = mdMAARtest(Y, varargin)
 %      covariances between partially observed variables and missingness
 %       indicators.
 %
-%  Let $Jm$ denote the set of variables that contain missing values and $Jf$ the
-%  set of fully observed variables. Under the assumptions considered by
-%  Bojinov, Pillai and Rubin, a missingness indicator $R_k$ should not depend on
-%  another partially observed variable $Y_j$ after conditioning on $Y_Jf$.
+%  Let $J_m$ denote the set of variables that contain missing values and
+%  $J_f$ the set of fully observed variables, and let
+%
+%  \[
+%      q=|J_m|
+%  \]
+%
+%  denote the number of partially observed variables. Under the assumptions
+%  considered by Bojinov, Pillai and Rubin, a missingness indicator $R_k$
+%  should not depend on another partially observed variable $Y_j$ after
+%  conditioning on $Y_{J_f}$.
 %
 %  The comparison-of-conditional-means procedure tests this implication by
 %  comparing, for every $j$ different from $k$, the nested linear models
 %
 %    \[
-%     Y_j \sim Y_{Jf}
+%     Y_j \sim Y_{J_f}
 %    \]
 %
 %  and
 %
 %    \[
-%     Y_j \sim Y_{Jf} + R_k + Y_{Jf}:R_k.
+%     Y_j \sim Y_{J_f} + R_k + Y_{J_f}:R_k.
 %    \]
 %
-%  The direct procedure compares logistic models for each $R_k$. The reduced
-%  model contains only the fully observed variables, whereas the full model
-%  also contains the imputed partially observed variables. The likelihood
-%  ratio statistics are combined across imputations using the $D_L$ procedure
-%  of Meng and Rubin (1992).
-%  That is, pool a likelihood-ratio comparison by averaging model
-%  coefficients and reevaluating the likelihoods at the pooled coefficients.
+%  The direct procedure (dtmm) tests the postulated missingness mechanism
+%  separately for each missingness indicator $R_k$. For a given $R_k$, the
+%  reduced logistic model contains only an intercept and the fully observed
+%  variables $Y_{J_f}$:
+%
+%  \[
+%      \mathrm{logit}\{
+%      \Pr(R_k=1\mid Y_{J_f})
+%      \}
+%      =
+%      \alpha_k+Y_{J_f}^{\mathsf T}\beta_k.
+%  \]
+%
+%  The full model additionally contains all the partially observed
+%  variables after imputation. Thus, in completed data set $m$,
+%
+%  \[
+%      \mathrm{logit}\{
+%      \Pr(R_k=1\mid Y_{J_f},Y_{J_m}^{(m)})
+%      \}
+%      =
+%      \alpha_k^{(m)}
+%      +Y_{J_f}^{\mathsf T}\beta_k^{(m)}
+%      +(Y_{J_m}^{(m)})^{\mathsf T}\gamma_k^{(m)}.
+%  \]
+%
+%  The response $R_k$ and the fully observed variables do not change across
+%  imputations. Consequently, the reduced model is identical in all
+%  completed data sets and is fitted only once. The full model, on the
+%  other hand, depends on the imputed values and is fitted separately in
+%  each of the $M$ completed data sets.
+%
+%  Let $\widehat\theta_k^{(m)}$ denote the vector of full-model coefficient
+%  estimates obtained from completed data set $m$. The Meng-Rubin $D_L$
+%  procedure first forms the common pooled coefficient vector
+%
+%  \[
+%      \overline\theta_k
+%      =
+%      \frac{1}{M}
+%      \sum_{m=1}^M
+%      \widehat\theta_k^{(m)}.
+%  \]
+%
+%  Each completed data set is then reevaluated at this same pooled
+%  coefficient vector, without refitting the model. If
+%  $D_{F,m}(\widehat\theta_k^{(m)})$ is the full-model deviance evaluated
+%  at its own maximum-likelihood estimate and
+%  $D_{F,m}(\overline\theta_k)$ is the deviance evaluated at the pooled
+%  coefficients, their average difference
+%
+%  \[
+%      \frac{1}{M}
+%      \sum_{m=1}^M
+%      \left\{
+%      D_{F,m}(\overline\theta_k)
+%      -
+%      D_{F,m}(\widehat\theta_k^{(m)})
+%      \right\}
+%  \]
+%
+%  measures the loss of fit caused by forcing all imputations to use a
+%  common full-model parameter vector. It therefore measures the
+%  disagreement among the imputation-specific estimates and is used to
+%  estimate the additional uncertainty due to missing information.
+%
+%  If $q=|J_m|$ is the number of coefficients added by the full model, the
+%  estimated relative increase in variance is
+%
+%  \[
+%      r_L
+%      =
+%      \frac{M+1}{q(M-1)}
+%      \frac{1}{M}
+%      \sum_{m=1}^M
+%      \left\{
+%      D_{F,m}(\overline\theta_k)
+%      -
+%      D_{F,m}(\widehat\theta_k^{(m)})
+%      \right\}.
+%  \]
+%
+%  Let $D_R$ denote the deviance of the reduced model and define
+%
+%  \[
+%      d_L
+%      =
+%      D_R
+%      -
+%      \frac{1}{M}
+%      \sum_{m=1}^M
+%      D_{F,m}(\overline\theta_k).
+%  \]
+%
+%  The pooled Meng-Rubin statistic used by this function is then
+%
+%  \[
+%      D_L
+%      =
+%      \frac{d_L}{q(1+r_L)}.
+%  \]
+%
+%  Thus $d_L$ measures the improvement of the full model over the reduced
+%  model after imposing common pooled coefficients, whereas $r_L$ reduces
+%  the apparent evidence when the imputation-specific full-model estimates
+%  disagree substantially. The resulting statistic is compared with the
+%  finite-$M$ $F$ reference distribution of Meng and Rubin (1992).
+%  A small $p$-value indicates that, after conditioning on the fully
+%  observed variables, at least one partially observed variable provides
+%  additional information about the missingness indicator $R_k$.
+%
 %
 %  The Gaussian-copula procedure uses the extended rank-likelihood sampler of
 %  Hoff (2007). For every retained posterior correlation matrix, the function
@@ -1005,6 +1116,12 @@ relativeIncrease = NaN(q,1);
 % is identical across completed data sets.
 deviance = repmat(struct('fullMLE',[],'smallMLE',[], ...
     'fullPooled',[],'smallPooled',[]),q,1);
+
+% devfullMLEt=array2table(zeros(M,q),"RowNames",string(1:M));
+% devfullPooled=zeros(M,q);
+% devsmallMLE=zeros(1,q);
+% devsmallPooled=zeros(1,q);
+
 
 % The reduced model contains only the intercept and the fully observed
 % variables. Its response and design matrix are therefore identical
