@@ -21,8 +21,8 @@ function out = mdLittleTest(Y, varargin)
 %
 %    emOut :       Structure containing EM estimates.
 %                  If supplied, it must contain fields:
-%                  emOut.mu   : p x 1 estimated mean vector
-%                  emOut.Sigma: p x p estimated covariance matrix
+%                  emOut.loc   : p x 1 estimated mean vector
+%                  emOut.cov: p x p estimated covariance matrix
 %                  If empty, function mdEM is called internally.
 %                  Default is [].
 %                  Example - 'emOut',outEM
@@ -34,17 +34,22 @@ function out = mdLittleTest(Y, varargin)
 %                  Example - 'maxiter',100
 %                  Data Types - single | double
 %
+%    plots :       Produce a graphical summary of the missingness patterns.
+%                  Boolean. If true, the patterns having the largest
+%                  percentage contributions to Little's statistic are
+%                  displayed in decreasing order. The percentage for
+%                  pattern $r$ is $100T_r/T$, where $T_r$ is its individual
+%                  contribution and $T$ is Little's overall statistic.
+%                  At most the ten most important informative patterns are
+%                  shown. The default is false.
+%                  Example - 'plots',true
+%                  Data Types - logical | single | double
+%
 %    tol :         Convergence tolerance for mdEM.
 %                  Used only if option 'emOut' is empty.
 %                  Default is 1e-7.
 %                  Example - 'tol',1e-6
 %                  Data Types - single | double
-%
-%    msg :         Display messages from mdEM.
-%                  Used only if option 'emOut' is empty.
-%                  Default is false.
-%                  Example - 'msg',true
-%                  Data Types - logical
 %
 %
 %  Output:
@@ -55,25 +60,24 @@ function out = mdLittleTest(Y, varargin)
 %      out.df          = Degrees of freedom of the chi-square reference
 %                        distribution.
 %      out.pvalue      = p-value of the test.
-%      out.mu          = Global MLE of the mean vector (from EM).
-%      out.Sigma       = Global MLE of the covariance matrix (from EM).
+%      out.loc          = Global MLE of the mean vector (from EM).
+%      out.cov          = Global MLE of the covariance matrix (from EM).
+%      out.npatterns   = Number of distinct missingness patterns.
 %      out.patterns    = R x p logical matrix. Each row is a distinct
 %                        missingness pattern; true means observed entry.
 %                        R is the number of distinct missingness patterns.
-%      out.patternInfo = Table with one row for each informative pattern.
-%                        The RowNames of this table is the associated
-%                        pattern. For example in presence of 5 variable is
-%                        the RowName is 11000 means that we observe just
-%                        the first two variables.
-%                        The first column contains the number of units of
-%                        each pattern.
-%                        The second column contains the number of of
-%                        observed variables.
-%                        The third column contains the contribution of
-%                        each pattern to the test.
-%                        The fourth column the condition number of inversion
-%                        of the cov matrix of the pattern.
-%                       
+%      out.patternInfo = Table with one row for each distinct missingness
+%                        pattern. Row names encode the observed variables:
+%                        for example, with five variables, row name 11000
+%                        indicates that only variables 1 and 2 are observed.
+%                        The columns are:
+%                        nPattern    = number of observations in the pattern;
+%                        pObserved   = number of observed variables;
+%                        Contribution= contribution to Little's statistic;
+%                        CondSigma   = condition number of the covariance
+%                                      submatrix used for that pattern.
+%
+%
 %
 %  More About:
 %
@@ -87,16 +91,41 @@ function out = mdLittleTest(Y, varargin)
 %  to the variables observed in pattern r. Little's statistic is
 %
 %  \[
-%    T = sum_r n_r * (\bar{y}_r - \hat{\mu}_r)' * \hat{\Sigma}_r^(-1) ...
-%                * (\bar{y}_r - \hat{\mu}_r).
+%      T
+%      =
+%      \sum_{r=1}^{R}
+%      n_r
+%      (\bar{y}_r-\widehat{\mu}_r)^{\mathsf T}
+%      \widehat{\Sigma}_r^{-1}
+%      (\bar{y}_r-\widehat{\mu}_r).
 %  \]
+%
 %  Under the null hypothesis of MCAR, T is asymptotically distributed as a
 %  chi-square random variable with degrees of freedom
 %
-%    df = sum_r p_r - p
+%  \[
+%      \mathrm{df}
+%      =
+%      \sum_{r=1}^{R}p_r-p.
+%  \]
 %
-%  where p is the total number of variables.
+%  where $p$ is the total number of variables.
 %
+%  If option plots is true, patterns are ranked according to their individual
+%  contributions to Little's statistic. Thus, a pattern is regarded as more
+%  important when
+%
+%  \[
+%      T_r
+%      =
+%      n_r
+%      (\bar{y}_r-\widehat{\mu}_r)^{\mathsf T}
+%      \widehat{\Sigma}_r^{-1}
+%      (\bar{y}_r-\widehat{\mu}_r)
+%  \]
+%
+%  is large. The plot therefore identifies the missingness patterns that
+%  contribute most strongly to the overall evidence against MCAR.
 %  Rows with all variables missing do not contribute to the test statistic.
 %
 %  References:
@@ -175,6 +204,19 @@ function out = mdLittleTest(Y, varargin)
     disp(out.stat)
 %}
 
+%{
+    %% Example 5: Graphical identification of influential patterns.
+    rng(6);
+    Y = randn(300,5);
+
+    Y(1:50,1) = NaN;
+    Y(51:100,2) = NaN;
+    Y(101:140,[1 3]) = NaN;
+    Y(141:180,[2 4]) = NaN;
+    Y(181:210,[3 5]) = NaN;
+
+    out = mdLittleTest(Y,'plots',true);
+%}
 
 %% Beginning of code
 
@@ -199,20 +241,23 @@ end
 % Default options
 maxiter   = 200;
 tol       = 1e-7;
-msg       = false;
 emOut=[];
+plots=false;
 
 % Optional arguments
 if ~isempty(varargin)
 
-    options=struct('maxiter',maxiter,'tol',tol,'msg',msg,'emOut',emOut);
+options = struct('maxiter',maxiter,'tol',tol, ...
+    'emOut',emOut,'plots',plots);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:FSMmmd:mdLittleTest','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:mdLittleTest:WrongInputOpt', ...
+                ['Number of supplied options is invalid. ' ...
+                'Values may be missing.']);
         end
         % Check if user options are valid options
         aux.chkoptions(options,UserOptions)
@@ -225,9 +270,8 @@ if ~isempty(varargin)
     maxiter=options.maxiter;
 
     tol=options.tol;
-    msg=options.msg;
     emOut=options.emOut;
-
+    plots = options.plots;
 
 
     % Basic checks on options
@@ -241,10 +285,11 @@ if ~isempty(varargin)
             'Option ''tol'' must be a positive scalar.');
     end
 
-    if ~islogical(msg) && ~(isnumeric(msg) && isscalar(msg))
-        error('FSDA:mdLittleTest:WrongMsg', ...
-            'Option ''msg'' must be a logical scalar.');
+    if ~(isscalar(plots) && (islogical(plots) || isnumeric(plots)))
+        error('FSDA:mdLittleTest:WrongPlots', ...
+            'Option ''plots'' must be a logical or numeric scalar.');
     end
+    plots = logical(plots);
 
 end
 
@@ -279,15 +324,15 @@ condVec   = patternID;
 
 for r = 1:nPatterns
     idxr = (idxPatterns == r);
-    % nr = number of units with pattern r 
-    nr = sum(idxr); 
+    % nr = number of units with pattern r
+    nr = sum(idxr);
     obsr = Patterns(r,:);
     % number of observed variables in pattern r
     pr = sum(obsr);
 
     patternID(r,1) = r;
     nrVec(r,1)     = nr;
-    
+
     % Completely missing rows carry no information
     if pr == 0
         continue
@@ -328,7 +373,7 @@ if df <= 0
         ['The computed degrees of freedom are not positive. ' ...
         'The p-value is returned as NaN.']);
 else
-    pvalue = 1 - chi2cdf(stat, df);
+    pvalue = chi2cdf(stat,df,'upper');
 end
 
 
@@ -339,18 +384,93 @@ patternInfo = table( nrVec, prVec, termVec, condVec, ...
     'VariableNames', {'nPattern','pObserved','Contribution','CondSigma'}, ...
     'RowNames',rowNames);
 
-plots=true;
-if plots==true
-    scatter(patternInfo,"pObserved","Contribution")
+% Produce a graphical summary of the patterns that contribute most to
+% Little's statistic.
+if plots
 
+% Produce a graphical summary of the patterns that contribute most to
+% Little's statistic.
+if plots
+
+    % Completely missing patterns have no contribution to Little's
+    % statistic and are therefore excluded from the graphical ranking.
+    informative = patternInfo.pObserved > 0;
+
+    contribution = patternInfo.Contribution(informative);
+    nPattern = patternInfo.nPattern(informative);
+    pObserved = patternInfo.pObserved(informative);
+    patternNames = string(patternInfo.Properties.RowNames(informative));
+
+    if ~isempty(contribution)
+
+        % Express each contribution as a percentage of Little's statistic.
+        if stat > 0
+            percentageContribution = 100*contribution/stat;
+        else
+            percentageContribution = zeros(size(contribution));
+        end
+
+        % Rank patterns according to their contribution to Little's
+        % statistic. Display at most the ten largest contributions.
+        [percentageSorted,ord] = sort(percentageContribution,'descend');
+
+        nToPlot = min(10,numel(ord));
+        ord = ord(1:nToPlot);
+
+        percentagePlot = percentageSorted(1:nToPlot);
+        patternPlot = patternNames(ord);
+        nPatternPlot = nPattern(ord);
+        pObservedPlot = pObserved(ord);
+
+        figure('Name','mdLittleTest: pattern contributions','Color','w');
+
+        barh(percentagePlot)
+
+        ax = gca;
+        ax.YTick = 1:nToPlot;
+        ax.YTickLabel = patternPlot;
+        ax.YDir = 'reverse';
+
+        xlabel('Percentage contribution to Little''s statistic')
+        ylabel('Missingness pattern')
+
+        title({ ...
+            'Most important missingness patterns', ...
+            sprintf('Little''s statistic = %.4g; p-value = %.4g', ...
+            stat,pvalue)})
+
+        grid on
+        box on
+
+        % Add the percentage contribution, number of observations and
+        % number of observed variables to each displayed pattern.
+        xMaxPlot = max(percentagePlot);
+        if xMaxPlot <= 0
+            xMaxPlot = 1;
+        end
+
+        dx = 0.015*xMaxPlot;
+
+        patternDescription = compose( ...
+            '%.1f%%   n = %d, p_{obs} = %d', ...
+            percentagePlot,nPatternPlot,pObservedPlot);
+
+        text(percentagePlot+dx,1:nToPlot,patternDescription, ...
+            'VerticalAlignment','middle', ...
+            'HorizontalAlignment','left')
+
+        xlim([0 max(percentagePlot)+0.35*xMaxPlot])
+    end
 end
+end
+
 % Store output
 out = struct;
 out.stat        = stat;
 out.df          = df;
 out.pvalue      = pvalue;
-out.mu          = muhat;
-out.Sigma       = Sigmahat;
+out.loc          = muhat;
+out.cov       = Sigmahat;
 out.patterns    = Patterns;
 out.npatterns   = nPatterns;
 out.patternInfo = patternInfo;
