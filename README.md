@@ -51,7 +51,7 @@ Give a ⭐️ if you like this project!
 
 In order to run the new features run the file below and enjoy!!!
 
-| FileName | View :eyes:| Run ▶️ | Jupiter notebook |
+| FileName | View :eyes:| Run ▶️ | Jupyter notebook |
 | -------- | ---- | --- | ---- |
 |`New_features_FSDA2025b`: examples with the new features  | [![File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://viewer.mathworks.com/addons/72999/8.7.10.21/files/doc/New_features_FSDA2025b.mlx) |  [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=UniprJRC/FSDAexamples&file=New_features_FSDA2025b.mlx) | [New_features_FSDA2025b.ipynb](https://github.com/UniprJRC/FSDA/blob/master/toolbox/doc/New_features_FSDA2025b.ipynb) |
 
