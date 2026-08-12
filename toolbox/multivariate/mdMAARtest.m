@@ -73,10 +73,49 @@ function out = mdMAARtest(Y, varargin)
 %                    after the Bonferroni correction are displayed in red.
 %
 %                'dtmm'
-%                    Produces a bar chart of -log10(p-values), with one bar
-%                    for each missingness indicator. A horizontal line shows
-%                    the Bonferroni-adjusted rejection threshold.
+%                    Produces a bubble scatter plot that separates the two
+%                    components entering the Meng-Rubin $D_L$ statistic,
 %
+%                    \[
+%                        D_L=\frac{d_L}{q(1+r_L)}.
+%                    \]
+%
+%                    The horizontal coordinate $d_L/q$ measures the
+%                    likelihood-ratio improvement in fit per tested
+%                    restriction obtained by augmenting the reduced
+%                    missingness model with the partially observed variables.
+%                    More precisely, $d_L$ is the reduction in deviance
+%                    obtained by moving from the reduced model to the full
+%                    model when the latter is evaluated using the common
+%                    coefficient vector pooled across imputations.
+%
+%                    The vertical coordinate is
+%
+%                    \[
+%                        \lambda_L=\frac{r_L}{1+r_L},
+%                    \]
+%
+%                    a bounded representation of the missing-information
+%                    component. There is one bubble for each missingness
+%                    indicator, labelled with the corresponding variable
+%                    name. Bubble size and colour increase as the associated
+%                    $p$-value decreases; a black ring identifies components
+%                    rejected at the Bonferroni-adjusted significance level.
+%
+%                    The vertical reference line is the Bonferroni-adjusted
+%                    threshold for $d_L/q$ under $r_L=0$. The horizontal
+%                    reference line $\lambda_L=0.5$, equivalently $r_L=1$,
+%                    is an interpretative benchmark for the
+%                    missing-information component. These reference lines
+%                    are graphical guides; the formal decision is based on
+%                    the finite-$M$ Meng-Rubin $p$-value.
+%
+%                    For graphical readability, numerator values exceeding
+%                    six times the reference threshold are displayed at that
+%                    upper bound and marked by a right-pointing symbol. Their
+%                    exact values remain available in out.DLtable.
+%
+%                 
 %                'cop'
 %                    Produces a q-by-q heatmap of the two-sided posterior
 %                    tail probabilities for the latent conditional
@@ -223,6 +262,9 @@ function out = mdMAARtest(Y, varargin)
 %          out.df1, out.df2  = D_L reference-distribution degrees of freedom.
 %          out.relativeIncrease = relative increase in variance due to
 %                              nonresponse in the pooled likelihood-ratio test.
+%          out.DLtable       = table with one row for each partially observed
+%                              variable and columns dL, rL, DL and pvalue.
+%                              Row names are the corresponding variable names.
 %          out.deviance      = detailed deviances used in the D_L calculation.
 %          out.imputationInfo = information about the completed data sets.
 %
@@ -342,7 +384,7 @@ function out = mdMAARtest(Y, varargin)
 %  disagreement among the imputation-specific estimates and is used to
 %  estimate the additional uncertainty due to missing information.
 %
-%  If $q=|J_m|$ is the number of coefficients added by the full model, the
+%  Since the full model adds the $q$ partially observed variables, the
 %  estimated relative increase in variance is
 %
 %  \[
@@ -358,19 +400,24 @@ function out = mdMAARtest(Y, varargin)
 %      \right\}.
 %  \]
 %
-%  Let $D_R$ denote the deviance of the reduced model and define
+%  Let $D_R$ denote the deviance of the reduced model. The numerator used
+%  by this function is
 %
 %  \[
 %      d_L
 %      =
+%      \max\left\{0,
 %      D_R
 %      -
 %      \frac{1}{M}
 %      \sum_{m=1}^M
-%      D_{F,m}(\overline\theta_k).
+%      D_{F,m}(\overline\theta_k)
+%      \right\}.
 %  \]
 %
-%  The pooled Meng-Rubin statistic used by this function is then
+%  The maximum with zero is only a numerical safeguard against tiny negative
+%  values caused by finite-precision calculations. The pooled Meng-Rubin
+%  statistic used by this function is then
 %
 %  \[
 %      D_L
@@ -378,10 +425,27 @@ function out = mdMAARtest(Y, varargin)
 %      \frac{d_L}{q(1+r_L)}.
 %  \]
 %
+%
 %  Thus $d_L$ measures the improvement of the full model over the reduced
-%  model after imposing common pooled coefficients, whereas $r_L$ reduces
-%  the apparent evidence when the imputation-specific full-model estimates
-%  disagree substantially. The resulting statistic is compared with the
+%  model after imposing common pooled coefficients, whereas $r_L$ quantifies
+%  the additional uncertainty arising when the imputation-specific
+%  full-model estimates disagree substantially.
+%
+%  The relative increase $r_L$ can also be expressed through the
+%  corresponding fraction of missing information,
+%
+%  \[
+%      \lambda_L=\frac{r_L}{1+r_L}.
+%  \]
+%
+%  This transformation maps $r_L\in[0,\infty)$ into
+%  $\lambda_L\in[0,1)$. Values close to zero correspond to little
+%  missing-information uncertainty, whereas values approaching one
+%  correspond to a large missing-information component. The DTMM
+%  diagnostic plot therefore uses $\lambda_L$ on the vertical axis, while
+%  the original $r_L$ is reported in out.DLtable.
+% 
+%  The resulting statistic is compared with the
 %  finite-$M$ $F$ reference distribution of Meng and Rubin (1992).
 %  A small $p$-value indicates that, after conditioning on the fully
 %  observed variables, at least one partially observed variable provides
@@ -468,7 +532,7 @@ function out = mdMAARtest(Y, varargin)
        Y(rand(n,1)<pr,j)=NaN;
    end
    out = mdMAARtest(Y,'method','dtmm','nimputations',10);
-   disp(out.pvalue)
+   disp(out.DLtable)
 %}
 
 %{
@@ -485,6 +549,163 @@ function out = mdMAARtest(Y, varargin)
    out = mdMAARtest(Y,'method','cop','niterMCMC',600,'nburnMCMC',200, ...
        'plots',true);
    disp(out.posteriorMedian)
+%}
+
+%{
+    %% Complex DTMM example: variables in all four diagnostic quadrants.
+    rng(24680)
+    
+    n = 2500;
+    q = 8;
+    M = 4;
+    
+    % Two fully observed variables.
+    X1 = randn(n,1);
+    X2 = randn(n,1);
+    
+    % Eight variables that will contain missing values.
+    Z = randn(n,q);
+    
+    % Complete data before introducing missing values.
+    Ycomplete = [Z X1 X2];
+    
+    % Eight different missingness mechanisms.
+    %
+    % Variables 1-2:
+    %   Missingness depends only on fully observed variables.
+    %   Expected: low numerator, low missing information.
+    %
+    % Variables 3-4:
+    %   Missingness additionally depends on another partially observed
+    %   variable, but imputations will be very stable.
+    %   Expected: high numerator, low missing information.
+    %
+    % Variables 5-6:
+    %   No systematic dependence on partially observed variables, but
+    %   imputations will deliberately disagree across completed data sets.
+    %   Expected: low numerator, high missing information.
+    %
+    % Variables 7-8:
+    %   Missingness depends on another partially observed variable and
+    %   imputations will deliberately disagree.
+    %   Expected: high numerator, high missing information.
+    %
+    % The simulation is designed to populate the four regions of the DTMM
+    % diagnostic plot.
+    %
+    % LL1 and LL2 have a small likelihood-ratio numerator and stable
+    % imputations. They are therefore expected in the lower-left region.
+    %
+    % HL1 and HL2 have a systematic dependence of missingness on partially
+    % observed variables, producing a large numerator, while their imputations
+    % are stable. They are therefore expected in the lower-right region.
+    %
+    % LH1 and LH2 have little systematic evidence in the numerator but their
+    % imputation-specific fits disagree strongly. They are therefore expected
+    % in the upper-left region.
+    %
+    % HH1 and HH2 combine a systematic missingness signal with substantial
+    % disagreement among imputations. They are therefore expected in the
+    % upper-right region.
+    %
+    % Importantly, the position of a point relative to the vertical reference
+    % line is not by itself the final test decision. The final D_L statistic
+    % also accounts for the missing-information component r_L.
+    %
+    % The comparison between HL and HH variables illustrates the role of r_L.
+    % Both groups can have large values of d_L/q, but the HH variables have
+    % much larger missing-information fractions. Consequently, their final
+    % D_L statistics can be appreciably smaller and their p-values larger.
+    %
+    % Conversely, the LH variables show that a large missing-information
+    % fraction alone does not produce rejection when the numerator contains
+    % little evidence against the reduced missingness model.
+    eta = zeros(n,q);
+    
+    % Low numerator / low missing information.
+    eta(:,1) = -1.5 + 1.1*X1;
+    eta(:,2) = -1.5 - 1.1*X2;
+    
+    % High numerator / low missing information.
+    eta(:,3) = -1.0 + 0.35*Z(:,1) + 0.2*X1;
+    eta(:,4) = -1.0 + 0.35*Z(:,2) - 0.2*X2;
+    
+    % Low numerator / high missing information.
+    % These mechanisms are MCAR relative to all variables.
+    eta(:,5) = 0;
+    eta(:,6) = 0;
+    
+    % High numerator / high missing information.
+    eta(:,7) = -0.5 + 0.35*Z(:,3) + 0.2*X1;
+    eta(:,8) = -0.5 + 0.35*Z(:,4) - 0.2*X2;
+    
+    prob = 1./(1+exp(-eta));
+    R = rand(n,q) < prob;
+    
+    % Introduce missing values.
+    Y = Ycomplete;
+    for j = 1:q
+        Y(R(:,j),j) = NaN;
+    end
+    
+    % Add informative variable names.
+    varNames = {'LL1','LL2', ...
+        'HL1','HL2', ...
+        'LH1','LH2', ...
+        'HH1','HH2', ...
+        'X1','X2'};
+    
+    Y = array2table(Y,'VariableNames',varNames);
+    
+    % Construct four completed data sets.
+    
+    Imputations = cell(M,1);
+    
+    % Alternating signs are used to generate conflicting imputations for
+    % variables 5-8.
+    signImp = [-1 1 -1 1];
+    
+    % Small perturbation for stable imputations.
+    stableNoise = 0.03;
+    
+    % Parameters controlling disagreement among unstable imputations.
+    shift = 0.15;
+    unstableNoise = 0.35;
+    
+    for m = 1:M
+    
+        % Start from the known complete simulated data.
+        Ym = Ycomplete;
+    
+        % Variables 1-4: very stable imputations.
+        for j = 1:4
+            idx = R(:,j);
+    
+            Ym(idx,j) = Z(idx,j) + ...
+                stableNoise*randn(sum(idx),1);
+        end
+    
+        % Variables 5-8: deliberately conflicting imputations.
+        %
+        % The sign of the shift reverses across imputations. Consequently,
+        % the imputation-specific logistic coefficients can disagree strongly,
+        % increasing r_L.
+        for j = 5:8
+            idx = R(:,j);
+    
+            Ym(idx,j) = Z(idx,j) + ...
+                signImp(m)*shift + ...
+                unstableNoise*randn(sum(idx),1);
+        end
+    
+        Imputations{m} = Ym;
+    end
+    
+    %Run DTMM and produce the diagnostic plot.
+    out = mdMAARtest(Y,'method','dtmm', ...
+        'imputed',Imputations, ...
+        'plots',true, ...
+        'msg',true);
 %}
 
 %% Beginning of code
@@ -746,7 +967,7 @@ switch method
         %           For example locmis=[2 3 5] means that the variables
         %           which contain missing are 2nd 3rd and 5th
         % locfull = indices of the fully observed variables;
-        %           For example locfull=[1 4 means that the variables
+        %           For example locfull=[1 4] means that the variables
         %           which contain missing are 1st and 4th
         % alpha   = nominal significance level;
         % ridge   = numerical regularization for nearly singular systems.
@@ -770,6 +991,17 @@ switch method
         % maxiter,tol = controls for the logistic-regression iterations.
         res = dtmmTest(Imputations,R,locmis,locfull,alpha,ridge,maxiter,tol);
         out = copyFields(out,res);
+
+        % Create a compact diagnostic table for the Meng-Rubin D_L test.
+        % Rows correspond to the variables containing missing values.
+        rowNames = cellstr(out.variableNames(out.missingVariables));
+        out.DLtable = table(out.dL,out.relativeIncrease,out.stat,out.pvalue, ...
+            'VariableNames',{'dL','rL','DL','pvalue'}, ...
+            'RowNames',rowNames);
+
+        % dL is returned by dtmmTest only to construct DLtable; the table is
+        % the public summary output, while out.deviance retains full details.
+        out = rmfield(out,'dL');
         out.imputationInfo = impInfo;
 
     case 'cop'
@@ -1110,6 +1342,7 @@ stat = NaN(q,1);
 df1 = q*ones(q,1);
 df2 = NaN(q,1);
 relativeIncrease = NaN(q,1);
+dL = NaN(q,1);
 
 % For each missingness mechanism, fullMLE and fullPooled are M-by-1
 % vectors. smallMLE and smallPooled are scalars because the reduced model
@@ -1221,7 +1454,7 @@ for kk = 1:q
     %
     % Compute this difference directly to avoid subtracting two potentially
     % similar likelihood-ratio statistics.
-    
+
     % devMminusDevL measures the loss of fit caused by replacing the
     % imputation-specific full-model estimates with the common pooled estimate.
     % For each completed data set, devFullPooled(m)-devFullMLE(m) is the increase
@@ -1250,10 +1483,14 @@ for kk = 1:q
     % exactly the same objective.
     rL = max(rL,0);
 
-    % Pooled D_L statistic. The likelihood-ratio statistic devL is divided
-    % by its number of restrictions and adjusted for the estimated increase
-    % in variance caused by missing information.
-    D_L = max(devL,0)/(k*(1+rL));
+    % Numerator of the pooled D_L statistic. The maximum with zero protects
+    % against tiny negative values caused by finite-precision calculations.
+    dL(kk) = max(devL,0);
+
+    % Pooled D_L statistic. The numerator dL is divided by its number of
+    % restrictions and adjusted for the estimated increase in variance
+    % caused by missing information.
+    D_L = dL(kk)/(k*(1+rL));
 
     % Degrees of freedom entering the finite-M reference distribution.
     v = k*(M-1);
@@ -1303,6 +1540,7 @@ res.stat = stat;
 res.df1 = df1;
 res.df2 = df2;
 res.relativeIncrease = relativeIncrease;
+res.dL = dL;
 res.deviance = deviance;
 res.alphaAdjusted = alphaAdjusted;
 res.whichReject = whichReject;
@@ -1326,7 +1564,7 @@ end
 % relativeIncrease = NaN(q,1);
 % deviance = repmat(struct('fullMLE',[],'smallMLE',[], ...
 %     'fullPooled',[],'smallPooled',[]),q,1);
-% 
+%
 % for kk = 1:q
 %     % Binary response for the missingness mechanism of variable locmis(kk).
 %     response = R(:,kk);
@@ -1334,7 +1572,7 @@ end
 %     devSmallMLE = zeros(M,1);
 %     bSmall = zeros(length(locfull)+1,M);
 %     bFull = zeros(length(locfull)+length(locmis)+1,M);
-% 
+%
 %     for m = 1:M
 %         Ym = imputations{m};
 %         % Reduced model uses only variables observed on all units.
@@ -1352,7 +1590,7 @@ end
 %         devSmallMLE(m) = fitSmall.deviance;
 %         devFullMLE(m) = fitFull.deviance;
 %     end
-% 
+%
 %     % The Meng-Rubin D_L likelihood-ratio procedure requires a common
 %     % parameter vector for each model. The common vector is the arithmetic
 %     % mean of the M imputation-specific estimates:
@@ -1373,7 +1611,7 @@ end
 %     % are included in the full logistic model.
 %     qbarSmall = mean(bSmall,2);
 %     qbarFull = mean(bFull,2);
-% 
+%
 %     % Reevaluate each completed-data model at the pooled coefficients.
 %     % Unlike the first loop, no model fitting is performed here.
 %     % devSmallPooled(m) and devFullPooled(m) are the deviances of completed
@@ -1388,8 +1626,8 @@ end
 %         devSmallPooled(m) = logisticDeviance(Xsmall,response,qbarSmall);
 %         devFullPooled(m) = logisticDeviance(Xfull,response,qbarFull);
 %     end
-% 
-% 
+%
+%
 %     % devM is the average likelihood-ratio statistic computed using the
 %     % separate maximum-likelihood estimates from each imputation:
 %     %
@@ -1407,7 +1645,7 @@ end
 %     devM = mean(devSmallMLE-devFullMLE);
 %     devL = mean(devSmallPooled-devFullPooled);
 %     k = size(bFull,1)-size(bSmall,1);
-% 
+%
 %     % Estimate the average odds of the fraction of missing information.
 %     % This is r_L in equation (3.8) of Meng and Rubin (1992):
 %     %
@@ -1417,8 +1655,8 @@ end
 %     % imputation-specific MLEs and devL is the average likelihood-ratio
 %     % statistic evaluated at the pooled coefficient estimates.
 %     rL = ((M+1)/(k*(M-1)))*(devM-devL);
-% 
-% 
+%
+%
 %     % A slightly negative value can occur because of numerical error.
 %     rL = max(rL,0);
 %     D_L = max(devL,0)/(k*(1+rL));
@@ -1432,7 +1670,7 @@ end
 %     else
 %         w = v*(1+1/k)*(1+1/rL)^2/2;
 %     end
-% 
+%
 %     % A small p-value for component kk indicates that, after conditioning on
 %     % the fully observed variables, at least one partially observed variable
 %     % provides additional information about whether variable locmis(kk) is
@@ -1450,7 +1688,7 @@ end
 %     deviance(kk).fullPooled = devFullPooled;
 %     deviance(kk).smallPooled = devSmallPooled;
 % end
-% 
+%
 % alphaAdjusted = alpha/q;
 % whichReject = pvalue < alphaAdjusted;
 % res = struct;
@@ -2390,8 +2628,8 @@ function plotMAAR(out)
 %
 % Input:
 %   out : output structure returned by mdMAARtest. The selected method
-%         determines whether a p-value heatmap, a bar chart or a posterior
-%         conditional-covariance heatmap is drawn.
+%         determines whether a p-value heatmap, a bubble scatter plot or a
+%         posterior conditional-covariance heatmap is drawn.
 q = out.nvarmiss;
 labels = out.variableNames(out.missingVariables);
 figure('Name',['mdMAARtest: ' upper(out.method)],'Color','w');
@@ -2459,14 +2697,190 @@ switch out.method
         h.Colormap = [significantMap; nonSignificantMap];
 
     case 'dtmm'
-        bar(-log10(max(out.pvalue,realmin)))
+        % Display the two components entering the Meng-Rubin D_L statistic on
+        % standardized, interpretable scales. The horizontal coordinate is
+        % the likelihood-ratio numerator per restriction, d_L/q. The vertical
+        % coordinate is lambda_L=r_L/(1+r_L), the fraction of missing
+        % information corresponding to the relative increase r_L.
+
+        % Horizontal coordinate: likelihood-ratio numerator per restriction.
+        % xRaw contains the actual values; xPlot is used only for display.
+        xRaw = out.DLtable.dL/q;
+        rL = out.DLtable.rL;
+        y = rL./(1+rL);
+
+        % Keep a common zero origin and ensure that the theoretical reference
+        % threshold is visible. Under r_L=0, d_L is asymptotically chi-square with
+        % q degrees of freedom. Therefore the Bonferroni-adjusted reference
+        % threshold for d_L/q is chi2_{q,1-alphaAdjusted}/q.
+        xCritical = 2*gammaincinv(1-out.alphaAdjusted,q/2)/q;
+
+        % Extremely large numerator values can compress the informative part
+        % of the plot. Values exceeding six times the reference threshold are
+        % therefore displayed at the graphical upper bound. Their exact values
+        % remain available in out.DLtable.
+        xCap = 6*xCritical;
+        isCapped = xRaw > xCap;
+        xPlot = min(xRaw,xCap);
+
+        % Leave some space to the right of the most extreme displayed point.
+        if any(isCapped)
+            xMax = 1.10*xCap;
+        else
+            xMax = 1.12*max([xRaw(:); xCritical]);
+        end
+
+        % Encode the p-value through both bubble size and colour. The
+        % transformation -log10(p) makes smaller p-values more prominent.
+        % Truncate the graphical strength at 8 so that extremely small
+        % p-values do not dominate the display.
+        pStrength = -log10(max(out.DLtable.pvalue,realmin));
+        pStrengthPlot = min(pStrength,8);
+        bubbleSize = 50+45*pStrengthPlot;
+
+
+        % Main bubble scatter.
+        scatter(xPlot,y,bubbleSize,pStrengthPlot,'filled', ...
+            'MarkerEdgeColor',[0.35 0.35 0.35])
+
         hold on
-        yline(-log10(out.alphaAdjusted),'--','Adjusted threshold');
+
+        % Give Bonferroni-significant components a black outer ring.
+        significant = out.DLtable.pvalue < out.alphaAdjusted;
+        if any(significant)
+            scatter(xPlot(significant),y(significant), ...
+                bubbleSize(significant)+25,'o', ...
+                'MarkerEdgeColor','k','LineWidth',1.5)
+        end
+
+        % Colour map: blue for large p-values, through yellow/orange, to red
+        % for very small p-values.
+        nColors = 256;
+        anchorPositions = [0 0.55 1];
+        anchorColors = [
+            0.20 0.55 0.95
+            1.00 0.80 0.15
+            0.85 0.05 0.05
+            ];
+        cmap = interp1(anchorPositions,anchorColors, ...
+            linspace(0,1,nColors),'linear');
+        colormap(gca,cmap)
+
+        fs=16;
+
+        xlim([0 xMax])
+        ylim([0 1])
+        xline(xCritical,'--','Bonferroni-adjusted threshold (r_L = 0)', ...
+            'LabelVerticalAlignment','bottom', ...
+            'LabelHorizontalAlignment','left','FontSize',fs);
+        yline(0.5,'--','\lambda_L = 0.5  (r_L = 1)', ...
+            'LabelVerticalAlignment','bottom', ...
+            'LabelHorizontalAlignment','left','FontSize',fs);
+
+        % Add labels to the four interpretative regions outside the main plotting
+        % area. The reference lines are graphical guides only; the formal decision
+        % is based on the finite-M Meng-Rubin p-value.
+        ax = gca;
+
+        text(ax,-0.02,-0.03, ...
+            {'Low numerator','Low missing information'}, ...
+            'Units','normalized', ...
+            'HorizontalAlignment','left', ...
+            'VerticalAlignment','top', ...
+            'Clipping','off');
+
+        text(ax,0.98,-0.03, ...
+            {'High numerator','Low missing information'}, ...
+            'Units','normalized', ...
+            'HorizontalAlignment','right', ...
+            'VerticalAlignment','top', ...
+            'Clipping','off');
+
+        text(ax,-0.02,1.01, ...
+            {'Low numerator','High missing information'}, ...
+            'Units','normalized', ...
+            'HorizontalAlignment','left', ...
+            'VerticalAlignment','bottom', ...
+            'Clipping','off');
+
+        text(ax,0.98,1.01, ...
+            {'High numerator','High missing information'}, ...
+            'Units','normalized', ...
+            'HorizontalAlignment','right', ...
+            'VerticalAlignment','bottom', ...
+            'Clipping','off');
+
+        % Label every bubble with the variable whose missingness indicator is
+        % being tested. Use a small offset to avoid drawing text on the marker.
+        dx = 0.012*xMax;
+        dy = 0.015;
+
+
+        text(xPlot+dx,y+dy,labels, ...
+            'VerticalAlignment','bottom', ...
+            'HorizontalAlignment','left');
+
+        % Mark points whose horizontal coordinate has been truncated.
+        if any(isCapped)
+            plot(xPlot(isCapped),y(isCapped),'>', ...
+                'MarkerSize',8, ...
+                'MarkerEdgeColor','k', ...
+                'LineWidth',1.2, ...
+                'MarkerFaceColor','none');
+        end
+
+        % Add a p-value colourbar. The colour variable is -log10(p), but the
+        % displayed tick labels are p-values for immediate interpretation.
+
+        % Use a fixed colour scale so that colours have the same meaning
+        % across different data sets. The upper limit corresponds to p=1e-8.
+        cMax = 8;
+        clim([0 cMax])
+
+        cb = colorbar;
+
+        % Standard p-values used as reference labels on the colourbar.
+        standardP = [1 0.1 0.05 0.01 0.001 1e-4 1e-6 1e-8];
+
+        % Add the Bonferroni-adjusted significance level. To avoid
+        % overlapping labels, remove standard ticks that are too close to
+        % the Bonferroni threshold on the -log10(p) scale.
+        alphaBonf = out.alphaAdjusted;
+        alphaStrength = -log10(alphaBonf);
+
+        standardStrength = -log10(standardP);
+
+        % Minimum separation between colourbar tick labels on the
+        % -log10(p) scale.
+        minTickDistance = 0.35;
+
+        keep = abs(standardStrength-alphaStrength) >= minTickDistance;
+
+        candidateP = [standardP(keep) alphaBonf];
+        candidateP = sort(candidateP,'descend');
+
+        candidateStrength = -log10(candidateP);
+
+        cb.Ticks = candidateStrength;
+        cb.Label.String = 'p-value';
+
+        tickLabels = compose('%.3g',candidateP);
+
+        % Values at or below 1e-8 receive the same maximum colour.
+        idxMin = candidateP == 1e-8;
+        tickLabels(idxMin) = {'<=1e-8'};
+
+        cb.TickLabels = tickLabels;
+
+        grid on
+        box on
+        xlabel('Likelihood-ratio improvement per restriction, d_L/q','FontSize',fs)
+        ylabel('Fraction of missing information, \lambda_L = r_L/(1+r_L)','FontSize',fs)
+        title({'Direct missingness-mechanism diagnostic', ...
+            sprintf(['Bubble size and colour increase as p decreases; ' ...
+            'black ring: p < \\alpha_{\\rm Bonf} = %.4g'], ...
+            out.alphaAdjusted)})
         hold off
-        xticks(1:q); xticklabels(labels)
-        ylabel('-log_{10} p-value')
-        xlabel('Missingness indicator')
-        title('Direct missingness-mechanism diagnostic')
 
     case 'cop'
 
