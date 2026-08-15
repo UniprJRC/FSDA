@@ -488,14 +488,13 @@ function out = mdBBtest(Y, varargin)
 % establish that the data are MCAR.
 % 
 %
+%  See also: mdLittleTest, mdJJtest, mdMAARtest, mdMCARtest, mdpattern
 %
 %  References:
 %
 %  Bordino, A. and Berrett, T. B. (2025), "Tests of Missing Completely At
 %  Random based on sample covariance matrices", Annals of Statistics,
 %  Vol. 53, pp. 2204-2229.
-%
-%  See also: mdLittleTest, mdJJtest, mdMAARtest, mdMCARtest, mdpattern
 %
 % Copyright 2008-2026.
 % Written by FSDA team
