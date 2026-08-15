@@ -60,76 +60,7 @@ function out = mdMAARtest(Y, varargin)
 %
 %        plots : Produce a method-specific diagnostic plot. Boolean.
 %                The default value is false.
-%
-%                If plots is true, the graphical summary depends on the
-%                selected diagnostic method:
-%
-%                'ccm'
-%                    Produces a q-by-q heatmap of the pairwise F-test
-%                    p-values. Rows correspond to missingness indicators
-%                    $R_i$ and columns to partially observed variables
-%                    $Y_j$. Diagonal cells are not tested. Small p-values
-%                    are shown using reddish colours, and cells significant
-%                    after the Bonferroni correction are displayed in red.
-%
-%                'dtmm'
-%                    Produces a bubble scatter plot that separates the two
-%                    components entering the Meng-Rubin $D_L$ statistic,
-%
-%                    \[
-%                        D_L=\frac{d_L}{q(1+r_L)}.
-%                    \]
-%
-%                    The horizontal coordinate $d_L/q$ measures the
-%                    likelihood-ratio improvement in fit per tested
-%                    restriction obtained by augmenting the reduced
-%                    missingness model with the partially observed variables.
-%                    More precisely, $d_L$ is the reduction in deviance
-%                    obtained by moving from the reduced model to the full
-%                    model when the latter is evaluated using the common
-%                    coefficient vector pooled across imputations.
-%
-%                    The vertical coordinate is
-%
-%                    \[
-%                        \lambda_L=\frac{r_L}{1+r_L},
-%                    \]
-%
-%                    a bounded representation of the missing-information
-%                    component. There is one bubble for each missingness
-%                    indicator, labelled with the corresponding variable
-%                    name. Bubble size and colour increase as the associated
-%                    $p$-value decreases; a black ring identifies components
-%                    rejected at the Bonferroni-adjusted significance level.
-%
-%                    The vertical reference line is the Bonferroni-adjusted
-%                    threshold for $d_L/q$ under $r_L=0$. The horizontal
-%                    reference line $\lambda_L=0.5$, equivalently $r_L=1$,
-%                    is an interpretative benchmark for the
-%                    missing-information component. These reference lines
-%                    are graphical guides; the formal decision is based on
-%                    the finite-$M$ Meng-Rubin $p$-value.
-%
-%                    For graphical readability, numerator values exceeding
-%                    six times the reference threshold are displayed at that
-%                    upper bound and marked by a right-pointing symbol. Their
-%                    exact values remain available in out.DLtable.
-%
-%                 
-%                'cop'
-%                    Produces a q-by-q heatmap of the two-sided posterior
-%                    tail probabilities for the latent conditional
-%                    covariances between missingness indicators $R_i$ and
-%                    partially observed variables $Y_j$, conditional on the
-%                    fully observed variables. Rows correspond to $R_i$ and
-%                    columns to $Y_j$. Diagonal cells are not tested. Small
-%                    posterior tail probabilities are shown using reddish
-%                    colours, and rejected components are displayed in red.
-%
-%                The plot is created in a new MATLAB figure. Setting plots
-%                to false suppresses all graphical output but does not
-%                affect the numerical results returned in out.
-%
+%                See More About for details. The default is false.
 %                Example - 'plots',true
 %                Data Types - logical | single | double
 %
@@ -281,17 +212,21 @@ function out = mdMAARtest(Y, varargin)
 % This function implements the three diagnostics from Bojinov, Pillai and
 % Rubin:
 %
-% ccm: comparison of conditional means using nested Gaussian linear models
+% $\mathbf{ccm}$: comparison of conditional means using nested Gaussian linear models
 %       and Bonferroni correction.
 %
-% dtmm: direct testing of the missingness mechanism through logistic
+% $\mathbf{dtmm}$: direct testing of the missingness mechanism through logistic
 %       models and multiple imputation. The likelihood-ratio statistics are
 %       combined using the Meng-Rubin $D_L$ procedure, often referred to as
 %       the $D_3$ procedure in the multiple-imputation literature.
 % ​
-% cop: gaussian-copula diagnostic based on posterior conditional
+% $\mathbf{cop}$: gaussian-copula diagnostic based on posterior conditional
 %      covariances between partially observed variables and missingness
 %       indicators.
+%
+% ---------------------------------------------------.
+%
+% $\mathbf{ccm}$ method.
 %
 %  Let $J_m$ denote the set of variables that contain missing values and
 %  $J_f$ the set of fully observed variables, and let
@@ -317,6 +252,9 @@ function out = mdMAARtest(Y, varargin)
 %    \[
 %     Y_j \sim Y_{J_f} + R_k + Y_{J_f}:R_k.
 %    \]
+%
+% $\mathbf{dtmm}$ method.
+%
 %
 %  The direct procedure (dtmm) tests the postulated missingness mechanism
 %  separately for each missingness indicator $R_k$. For a given $R_k$, the
@@ -452,6 +390,8 @@ function out = mdMAARtest(Y, varargin)
 %  additional information about the missingness indicator $R_k$.
 %
 %
+% $\mathbf{cop}$ method.
+%
 %  The Gaussian-copula procedure uses the extended rank-likelihood sampler of
 %  Hoff (2007). For every retained posterior correlation matrix, the function
 %  computes the covariance between the partially observed outcomes and their
@@ -462,6 +402,71 @@ function out = mdMAARtest(Y, varargin)
 %  The original R implementation uses mice for method 'dtmm'. When option
 %  imputed is empty, this MATLAB implementation instead uses the joint-normal
 %  EM and stochastic-imputation functions already available in FSDA.
+%
+%   $\large{\text{PLOTS IN OUTPUT}}$.
+%
+%   If plots is true, the graphical summary depends on the
+%   selected diagnostic method:
+%
+%   $\mathbf{ccm}$
+%       Produces a $q$-by-$q$ heatmap of the pairwise F-test
+%       p-values. Rows correspond to missingness indicators
+%       $R_i$ and columns to partially observed variables
+%       $Y_j$. Diagonal cells are not tested. Small p-values
+%       are shown using reddish colours, and cells significant
+%       after the Bonferroni correction are displayed in red.
+%
+%   $\mathbf{dtmm}$
+%       Produces a bubble scatter plot that separates the two
+%       components entering the Meng-Rubin $D_L$ statistic,
+%       \[
+%           D_L=\frac{d_L}{q(1+r_L)}.
+%       \]
+%       The horizontal coordinate $d_L/q$ measures the
+%       likelihood-ratio improvement in fit per tested
+%       restriction obtained by augmenting the reduced
+%       missingness model with the partially observed variables.
+%       More precisely, $d_L$ is the reduction in deviance
+%       obtained by moving from the reduced model to the full
+%       model when the latter is evaluated using the common
+%       coefficient vector pooled across imputations.
+%       The vertical coordinate is
+%       \[
+%           \lambda_L=\frac{r_L}{1+r_L},
+%       \]
+%       a bounded representation of the missing-information
+%       component. There is one bubble for each missingness
+%       indicator, labelled with the corresponding variable
+%       name. Bubble size and colour increase as the associated
+%       $p$-value decreases; a black ring identifies components
+%       rejected at the Bonferroni-adjusted significance level.
+%       The vertical reference line is the Bonferroni-adjusted
+%       threshold for $d_L/q$ under $r_L=0$. The horizontal
+%       reference line $\lambda_L=0.5$, equivalently $r_L=1$,
+%       is an interpretative benchmark for the
+%       missing-information component. These reference lines
+%       are graphical guides; the formal decision is based on
+%       the finite-$M$ Meng-Rubin $p$-value.
+%       For graphical readability, numerator values exceeding
+%       six times the reference threshold are displayed at that
+%       upper bound and marked by a right-pointing symbol. Their
+%       exact values remain available in out.DLtable.
+%    
+%   $\mathbf{cop}$
+%       Produces a $q$-by-$q$ heatmap of the two-sided posterior
+%       tail probabilities for the latent conditional
+%       covariances between missingness indicators $R_i$ and
+%       partially observed variables $Y_j$, conditional on the
+%       fully observed variables. Rows correspond to $R_i$ and
+%       columns to $Y_j$. Diagonal cells are not tested. Small
+%       posterior tail probabilities are shown using reddish
+%       colours, and rejected components are displayed in red.
+%
+%   The plot is created in a new MATLAB figure. Setting plots
+%   to false suppresses all graphical output but does not
+%   affect the numerical results returned in out.
+%
+%
 %
 %  See also: mdEM, mdImputeStochastic, mdMCARtest, mdLittleTest, mdJJtest
 %
@@ -476,8 +481,8 @@ function out = mdMAARtest(Y, varargin)
 %  Meng, X.-L. and Rubin, D. B. (1992), "Performing likelihood ratio tests
 %  with multiply-imputed data sets", Biometrika, Vol. 79, pp. 103-111.
 %
-% Bojinov, I. (2018). diagMAAR: Diagnostic tests for missing always at
-% random [Repository GitHub], https://github.com/bojinov/diagMAAR/
+%  Bojinov, I. (2018). diagMAAR: Diagnostic tests for missing always at
+%  random [Repository GitHub], https://github.com/bojinov/diagMAAR/
 %
 %  Copyright 2008-2026.
 %  Written by FSDA team
