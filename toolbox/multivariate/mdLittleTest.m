@@ -81,14 +81,14 @@ function out = mdLittleTest(Y, varargin)
 %
 %  More About:
 %
-%  Let r=1,...,R index the distinct missingness patterns. For pattern r,
-%  let n_r be the number of units following that pattern, let p_r be the
-%  number of observed variables in that pattern, and let \bar{y}_r be the
+%  Let $r=1,...,R$ index the distinct missingness patterns. For pattern $r$,
+%  let $n_r$ be the number of units following that pattern, let $p_r$ be the
+%  number of observed variables in that pattern, and let $\bar{y}_r$ be the
 %  sample mean vector computed using the observed variables only. Let
-%  \hat{\mu} and \hat{\Sigma} be the global maximum likelihood estimates
+%  $\hat{\mu}$ and $\hat{\Sigma}$ be the global maximum likelihood estimates
 %  under multivariate normality, typically obtained by EM. Denote by
-%  \hat{\mu}_r and \hat{\Sigma}_r the subvector and submatrix corresponding
-%  to the variables observed in pattern r. Little's statistic is
+%  $\hat{\mu}_r$ and $\hat{\Sigma}_r$ the subvector and submatrix corresponding
+%  to the variables observed in pattern $r$. Little's statistic is
 %
 %  \[
 %      T
@@ -128,13 +128,15 @@ function out = mdLittleTest(Y, varargin)
 %  contribute most strongly to the overall evidence against MCAR.
 %  Rows with all variables missing do not contribute to the test statistic.
 %
+%
+%  See also: mdEM, mdPartialMD, mdMAARtest, mdJJtest
+%
 %  References:
 %
 %  Little, R. J. A. (1988), "A Test of Missing Completely at Random for
 %  Multivariate Data with Missing Values", Journal of the American
 %  Statistical Association, 83, pp. 1198-1202.
 %
-%  See also: mdEM, mdPartialMD
 %
 % Copyright 2008-2026.
 % Written by FSDA team
