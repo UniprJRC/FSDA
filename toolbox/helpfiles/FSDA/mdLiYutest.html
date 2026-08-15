@@ -1,0 +1,277 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>mdLiYutest</title><meta content="refpage" name="chunktype"><meta content="function:mdLiYutest" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mdLiYutest Li-Yu nonparametric test for Missing Completely At Random (MCAR)." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({jax: ["input/TeX", "output/HTML-CSS"],extensions: ["tex2jax.js", "TeX/AMSeqnum.js"],tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},TeX: {extensions: ["AMSsymbols.js"],equationNumbers: { autoNumber: "AMS" }}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">mdLiYutest</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example 1: Li-Yu MCAR test with default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example 2: A non-MCAR alternative driven by an observed variable.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example 3: Preserve variable names supplied through a table.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example 4: Robust standardization based on complete cases.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nboot">nboot</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_standardize">standardize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mdLiYutest</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mdLiYutest Li-Yu nonparametric test for Missing Completely At Random (MCAR)</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=mdLiYutest(Y)</code><span class="syntax_example"><a class="intrnllnk" href="mdLiYutest.html#Example_1">example</a></span></li><li><code class="synopsis">out=mdLiYutest(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="mdLiYutest.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>mdLiYutest implements the nonparametric MCAR test proposed by Li and
+  Yu (2014). The procedure compares the distributions of the variables
+  jointly observed by pairs of missingness-pattern groups using the
+  energy-distance dissimilarity of Rizzo and Szekely (2010). The null
+  distribution of the resulting Q statistic is approximated by bootstrap
+  resampling from the complete cases while preserving the observed
+  missingness patterns and their frequencies.</p> <p>
+
+  A rejection implies that the observed-data distributions differ across
+  at least two comparable missingness-pattern groups and therefore that
+  MCAR cannot hold. Failure to reject does not prove MCAR, because
+  distributional differences may occur only in variables that are missing
+  within a pattern and are therefore not directly testable from the
+  observed data.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdLiYutest.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mdLiYutest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Example 1: Li-Yu MCAR test with default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdLiYutest.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mdLiYutest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example 2: A non-MCAR alternative driven by an observed variable.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 1: Li-Yu MCAR test with default options.</li></span></a></span></h3><div class="collapse"><p>.
+     Generate Gaussian data and impose missingness independently of the
+     data. The generated mechanism is MCAR.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+n = 250;
+p = 4;
+Y = randn(n,p);
+miss = rand(n,p) &lt; 0.10;
+miss(1:80,:) = false;
+Y(miss) = NaN;
+out = mdLiYutest(Y);
+disp(out.stat)
+disp(out.pvalue)</pre></div></div><pre class="codeoutput">
+Li-Yu nonparametric MCAR test
+Observations: 250; variables: 4; missingness patterns: 9
+Complete cases: 195 (78.0%)
+Standardization: none
+Q statistic: 0.668873
+Bootstrap critical value (alpha = 0.05): 0.961732
+Empirical bootstrap p-value: 0.618
+Reject MCAR restrictions: false
+The Li-Yu test does not reject the observed-data homogeneity restrictions implied by MCAR. This does not prove MCAR because differences confined to unobserved components cannot be tested.
+
+    0.6689
+
+    0.6180
+
+</pre>
+            </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2: A non-MCAR alternative driven by an observed variable.</li></span></a></span></h3><div class="collapse"><p>.
+     Variable 1 is always observed. Missingness in variable 2 is made much
+     more likely for small values of variable 1, creating different
+     observed-data distributions across missingness-pattern groups.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2)
+n = 400;
+Y = randn(n,4);
+probMiss = 1./(1+exp(1.5+2*Y(:,1)));
+miss2 = rand(n,1) &lt; probMiss;
+Y(miss2,2) = NaN;
+out = mdLiYutest(Y,'nboot',500,'plots',true);
+disp(out.reject)
+disp(out.pairInfo)</pre></div></div><pre class="codeoutput">
+Li-Yu nonparametric MCAR test
+Observations: 400; variables: 4; missingness patterns: 2
+Complete cases: 266 (66.5%)
+Standardization: none
+Q statistic: 19.0229
+Bootstrap critical value (alpha = 0.05): 1.63291
+Empirical bootstrap p-value: 0
+Reject MCAR restrictions: true
+The Li-Yu test rejects the observed-data homogeneity restrictions implied by MCAR. Therefore the missingness mechanism is not MCAR.
+
+   1
+
+    Pattern1    Pattern2    n1     n2     pCommon    CommonVariables    Distance    BContribution
+    ________    ________    ___    ___    _______    _______________    ________    _____________
+
+       1           2        266    134       3        "Y1, Y3, Y4"      0.54086        24.098    
+
+</pre>
+            <a href='http://rosa.unipr.it/fsda/mdLiYutest.html#Example_2'><img vspace="5" hspace="5" src="images\mdLiYutest_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3: Preserve variable names supplied through a table.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(3)    Y = array2table(randn(300,5), ...        'VariableNames',{'Income','Age','Score1','Score2','Score3'});    M = false(height(Y),width(Y));    M(1:90,:) = false;    M(91:end,3:5) = rand(height(Y)-90,3) &lt; 0.12;    Yarray = table2array(Y);    Yarray(M) = NaN;    Y = array2table(Yarray,'VariableNames',Y.Properties.VariableNames);    out = mdLiYutest(Y,'nboot',250,'msg',false);    disp(out.patternInfo)</pre></div></div><pre class="codeoutput">             nPattern    pObserved    pMissing    WContribution
+             ________    _________    ________    _____________
+
+    11111      240           5           0           351.61    
+    11101       14           4           1           17.141    
+    11110       19           4           1           24.443    
+    11011       18           4           1           20.039    
+    11001        4           3           2           2.1944    
+    11010        4           3           2           3.0921    
+    11100        1           3           2                0    
+
+</pre>
+            </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 4: Robust standardization based on complete cases.</li></span></a></span></h3><div class="collapse"><p>     Use a common normalized MAD for each variable, estimated using only     complete observations. This is useful when variables have very     different measurement scales.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(4)    n = 300;    Y = [randn(n,1), 100*randn(n,1), 0.01*randn(n,1)];    miss = rand(n,3) &lt; 0.10;    miss(1:100,:) = false;    Y(miss) = NaN;    out = mdLiYutest(Y,'standardize',true,'msg',false);    disp(out.scale)    disp(out.pvalue)</pre></div></div><pre class="codeoutput">    0.8694  109.9692    0.0092
+
+    0.6520
+
+</pre>
+            </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix, table or timetable.</span></span></h3> <div class="collapse"> <p><p>n x p data matrix
+                  possibly containing missing values (NaN's). Rows of Y
+                  represent observations and columns represent variables.</p> <p>
+                  At least one complete case is required because the
+                  bootstrap distribution is generated from the empirical
+                  distribution of the complete cases.</p><p>
+                  </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double | table | timetable</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'alpha',0.01
+</code>,<code> 'nboot',1000
+</code>,<code> 'standardize',true
+</code>,<code> 'msg',false
+</code>,<code> 'plots',true
+</code></code></span></div><div class="expandableContent"><div id="inputarg_alpha" class="clearfix"></div><h3 id="input_argument_namevalue_alpha" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>alpha</code> &#8212;Significance level.</span></a><span class="example_desc">scalar in the interval (0,1).</span></span></h3><div class="collapse">	<p><p>The default value is 0.05.</p> <p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alpha',0.01
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nboot" class="clearfix"></div><h3 id="input_argument_namevalue_nboot" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nboot</code> &#8212;Number of bootstrap replications.</span></a><span class="example_desc">positive integer.</span></span></h3><div class="collapse">	<p><p>In each replication n complete observations are sampled
+                  with replacement from the complete-case group and the
+                  original missingness-pattern frequencies are imposed on
+                  the resampled complete data. Li and Yu (2014) used 500
+                  bootstrap replications in their main simulation studies.</p> <p>
+                  The default value is 500.</p><p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nboot',1000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_standardize" class="clearfix"></div><h3 id="input_argument_namevalue_standardize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>standardize</code> &#8212;Standardize variables before computing distances.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If true, each variable is centered by the median and
+                  divided by the normalized median absolute deviation
+                  (MAD) computed using the complete cases only. The same
+                  location and scale are applied to all missingness-pattern
+                  groups and to the bootstrap resamples. The normalized MAD
+                  is 1.482602218505602 times the raw MAD. The default value
+                  is false, which reproduces the Li-Yu statistic on the
+                  original measurement scales.</p> <p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'standardize',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Display a summary of the test.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If true, the Q statistic, bootstrap critical value,
+                  bootstrap p-value and conclusion are displayed. The
+                  default value is true.</p> <p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Produce a graphical summary.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If true, a histogram of the bootstrap null distribution
+                  of Q is shown together with vertical lines for the
+                  observed Q statistic and the bootstrap critical value.</p> <p>
+                  The default value is false.</p><p>
+                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical | single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>Structure containing the following fields:</p> <p>
+
+  </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>stat</code></td><td><p>observed Li-Yu Q test statistic.</p></td></tr><tr valign="top"><td><code>pvalue</code></td><td><p>empirical upper-tail bootstrap probability,
+                              computed as the proportion of bootstrap Q
+                              statistics not smaller than out.stat.</p></td></tr><tr valign="top"><td><code>reject</code></td><td><p>true if out.stat is larger than the empirical
+                              upper alpha critical value.</p></td></tr><tr valign="top"><td><code>criticalValue</code></td><td><p>empirical upper alpha critical value obtained
+                              from the bootstrap distribution.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>nominal significance level.</p></td></tr><tr valign="top"><td><code>nboot</code></td><td><p>number of bootstrap replications.</p></td></tr><tr valign="top"><td><code>standardize</code></td><td><p>logical flag indicating whether robust
+                              standardization was applied.</p></td></tr><tr valign="top"><td><code>center</code></td><td><p>1 x p vector containing the complete-case
+                              medians used for standardization. It is empty
+                              when standardize is false.</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>1 x p vector containing the complete-case
+                              normalized MADs used for standardization. It
+                              is empty when standardize is false.</p></td></tr><tr valign="top"><td><code>bootstrapStat</code></td><td><p>nboot x 1 vector containing the bootstrap Q
+                              statistics.</p></td></tr><tr valign="top"><td><code>B</code></td><td><p>between-pattern dissimilarity measure entering
+                              the numerator of Q.</p></td></tr><tr valign="top"><td><code>W</code></td><td><p>within-pattern dissimilarity measure entering
+                              the denominator of Q.</p></td></tr><tr valign="top"><td><code>n</code></td><td><p>number of observations.</p></td></tr><tr valign="top"><td><code>p</code></td><td><p>number of variables.</p></td></tr><tr valign="top"><td><code>npatterns</code></td><td><p>number of distinct missingness patterns.</p></td></tr><tr valign="top"><td><code>patterns</code></td><td><p>npatterns x p logical matrix containing the
+                              distinct observed-data patterns. A true entry
+                              means that the corresponding variable is
+                              observed. The complete-case pattern is placed
+                              in the first row.</p></td></tr><tr valign="top"><td><code>patternCounts</code></td><td><p>npatterns x 1 vector containing the frequency
+                              of each missingness pattern.</p></td></tr><tr valign="top"><td><code>patternMembership</code></td><td><p>n x 1 vector identifying the reordered
+                              missingness pattern of each observation.</p></td></tr><tr valign="top"><td><code>patternInfo</code></td><td><p>table with one row for each missingness
+                              pattern and columns nPattern, pObserved,
+                              pMissing and WContribution.</p></td></tr><tr valign="top"><td><code>pairInfo</code></td><td><p>table with one row for each pair of patterns
+                              sharing at least one observed variable. The
+                              table contains the two pattern indices, their
+                              sample sizes, the number and names of common
+                              observed variables, the energy dissimilarity
+                              and the contribution to B.</p></td></tr><tr valign="top"><td><code>completePattern</code></td><td><p>index of the complete-case pattern in the
+                              returned ordering. It is always equal to 1.</p></td></tr><tr valign="top"><td><code>nComplete</code></td><td><p>number of complete cases.</p></td></tr><tr valign="top"><td><code>completeFraction</code></td><td><p>fraction of complete cases in the data.</p></td></tr><tr valign="top"><td><code>variableNames</code></td><td><p>variable names used in the output tables.</p></td></tr><tr valign="top"><td><code>interpretation</code></td><td><p>concise interpretation of the result.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p>  Let the incomplete data be partitioned into s distinct missingness-pattern
+  groups. Group i contains $n_i$ observations, and $o_i$ denotes the set of
+  variables observed in that group. For two groups $i$ and $j$, define
+
+  \[
+      o_{ij}=o_i\cap o_j.
+  \]
+
+  Only pairs for which $o_{ij}$ is nonempty can be compared directly from
+  the observed data. If $X$ and $Z$ are two random samples with $n_1$ and
+  $n_2$ observations, respectively, define
+
+  \[
+      g(X,Z)
+      =
+      \frac{1}{n_1n_2}
+      \sum_{a=1}^{n_1}\sum_{b=1}^{n_2}
+      \lVert x_a-z_b\rVert,
+  \]
+
+  and the sample energy dissimilarity
+
+  \[
+      d(X,Z)=2g(X,Z)-g(X,X)-g(Z,Z).
+  \]
+
+  For every comparable pair of missingness-pattern groups, mdLiYutest
+  computes this dissimilarity using only the variables in $o_{ij}$. The
+  overall between-pattern measure is
+
+  \[
+      B
+      =
+      \sum_{1\leq i&lt;j\leq s,\;o_{ij}\neq\varnothing}
+      \frac{n_i n_j}{2n}
+      d(Y_{i,o_{ij}},Y_{j,o_{ij}}).
+  \]
+
+  The within-pattern measure is
+
+  \[
+      W
+      =
+      \frac{1}{2}
+      \sum_{i=1}^{s}
+      n_i g(Y_{i,o_i},Y_{i,o_i}).
+  \]
+
+  The Li-Yu test statistic is
+
+  \[
+      Q
+      =
+      \frac{B/(s-1)}{W/(n-s)}.
+  \]<p>
+
+  Large values of $Q$ indicate that between-pattern distributional
+  differences are large relative to within-pattern dispersion. Li and Yu
+  (2014) show that the test is consistent against alternatives that induce
+  distributional differences in the observed variables and have finite
+  second moments.</p> <p>
+
+  Since the energy dissimilarity is based on Euclidean distances, the
+  statistic depends on the measurement scales of the variables. Li and Yu
+  (2014) do not prescribe a standardization step. Therefore, the default
+  standardize=false computes the statistic on the original scales. If
+  standardize=true, mdLiYutest uses the complete cases to compute, for each
+  variable j, the median $m_j$ and normalized MAD $s_j$,
+
+  </p>\[
+      s_j
+      =
+      1.482602218505602
+      \operatorname{median}_{i\in\mathcal C}
+      |Y_{ij}-m_j|,
+  \]
+
+  where $\mathcal C$ is the set of complete cases. All observations are
+  then transformed using the same robust location and scale,
+
+  \[
+      Y_{ij}^{*}=\frac{Y_{ij}-m_j}{s_j}.
+  \]<p>
+
+  The transformation is common to all missingness-pattern groups; scales
+  are never estimated separately within a pattern because differences in
+  dispersion across patterns are part of the alternatives that the test is
+  intended to detect. The bootstrap resamples are generated from the same
+  standardized complete-case empirical distribution.</p> <p>
+
+  The null distribution of $Q$ is calibrated by the bootstrap procedure in
+  Section 3 of Li and Yu (2014). Let $Y_1$ denote the complete-case group.</p> <p>
+  In each bootstrap replication, $n$ rows are sampled with replacement from
+  $Y_1$. The first $n_1$ sampled rows are assigned the complete-case pattern,
+  the next $n_2$ rows are assigned the second pattern, and so on. Variables
+  missing in each original pattern are then deleted from the corresponding
+  bootstrap rows. Consequently, every bootstrap sample has exactly the
+  same missingness-pattern frequencies as the observed data.</p> <p>
+
+  The empirical upper alpha quantile of the bootstrap $Q$ statistics is used
+  as the critical value. The paper bases the formal decision on whether the
+  observed $Q$ exceeds this critical value. out.pvalue is supplied as a
+  convenient empirical upper-tail summary of the same bootstrap
+  distribution.</p> <p>
+
+  The bootstrap calibration requires a reasonable number of complete
+  cases. Li and Yu (2014) found in their simulations that very small
+  complete-case samples can make the test conservative. For $p=4$, about 50
+  complete cases performed well in the settings they studied, but this is
+  not a universal threshold and larger dimensions can require more complete
+  cases.</p> <p>
+
+  The test evaluates the null hypothesis that all distributions observable
+  in pairwise common variable subsets are equal across missingness-pattern
+  groups. MCAR implies this null hypothesis, so rejection rules out MCAR.</p> <p>
+  Nonrejection does not by itself establish MCAR because differences may be
+  confined to unobserved components. Under an additional MAR assumption,
+  Li and Yu discuss nonrejection as compatible with MCAR.</p><p>
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Li, J. and Yu, Y. (2014), "A Nonparametric Test of Missing Completely at
+  Random for Incomplete Multivariate Data", Psychometrika,
+  doi: 10.1007/s11336-014-9410-4.</p></div><div><p>Rizzo, M. L. and Szekely, G. J. (2010), "DISCO analysis: A nonparametric
+  extension of analysis of variance", The Annals of Applied Statistics,
+  Vol. 4, pp. 1034-1055.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="mdLittleTest.html" itemprop="url"><span itemprop="name"><code>mdLittleTest</code></span></a></span> | <span itemprop="seealso"><a href="mdJJtest.html" itemprop="url"><span itemprop="name"><code>mdJJtest</code></span></a></span> | <span itemprop="seealso"><a href="mdMAARtest.html" itemprop="url"><span itemprop="name"><code>mdMAARtest</code></span></a></span> | <span itemprop="seealso"><a href="mdpattern.html" itemprop="url"><span itemprop="name"><code>mdpattern</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
