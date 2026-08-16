@@ -1,7 +1,7 @@
-function out = mdMCARtest(Y, varargin)
-%mdMCARtest Bootstrap test for change in Mahalanobis distances under MCAR
+function out = mdMDPtest(Y, varargin)
+%mdMDPtest Bootstrap test for change in Mahalanobis distances under MCAR
 %
-%<a href="matlab: docsearchFS('mdMCARtest')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdMDPtest')">Link to the help function</a>
 %
 %  This function implements a parametric bootstrap test based on the change
 %  in Mahalanobis distances for the units without missing values when
@@ -25,11 +25,25 @@ function out = mdMCARtest(Y, varargin)
 %
 %  Optional input arguments:
 %
-%    alpha : Trimming level. Scalar. The default value is 0.
-%            If alpha=0, the function mdEM is used.
-%            If alpha>0, the function mdTEM is used.
-%            Example - 'alpha',0.25
-%            Data Types - double
+%    alpha : Trimming/robustness level. Scalar in the interval [0,0.5].
+%            The default value is 0.
+%
+%            If alpha=0, classical complete-case estimates are used and
+%            mdEM is used for the incomplete-data fit.
+%
+%            If alpha>0 and robust='FS', the Forward Search on the
+%            complete cases starts monitoring at
+%
+%                h = floor(nComplete*(1-alpha)).
+%
+%            The final complete-case location and scatter are not based
+%            necessarily on exactly h observations. FSM applies its
+%            signal-detection and stopping rules and the final estimates
+%            are computed from the observations not declared as outliers.
+%
+%            If alpha>0 and robust='MCD', alpha is used as the MCD
+%            breakdown-point option.
+%
 %
 %   method : Rescaling method used inside mdTEM and mdPartialMD2full.
 %            The default value is 'pri'.
@@ -45,6 +59,11 @@ function out = mdMCARtest(Y, varargin)
 %            Scalar in the interval (0,1). The default value is 0.95.
 %            Example - 'conflev',0.99
 %            Data Types - double
+%       
+%  robust  : Robust estimator to use in case alpha is strictly positive.
+%            Possible values are "FS" or "MCD". Default value is "FS"
+%            Example - 'robust',"MCD"
+%            Data Types - string
 %
 %      tol : Convergence tolerance passed to mdTEM. Scalar.
 %            The default value is 1e-10.
@@ -113,7 +132,7 @@ function out = mdMCARtest(Y, varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('mdMCARtest')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mdMDPtest')">Link to the help page for this function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -124,7 +143,7 @@ function out = mdMCARtest(Y, varargin)
     % Load data with missing values and run the test with default settings.
     load cows2026
     X = cows2026{:,:};
-    out = mdMCARtest(X);
+    out = mdMDPtest(X);
     % Display observed statistics and p-values
     disp(out.Tobs)
     disp(out.pvalue)
@@ -135,7 +154,7 @@ function out = mdMCARtest(Y, varargin)
     % Run the bootstrap test using TEM with trimming level alpha=0.25.
     load cows2026
     X = cows2026{:,:};
-    out = mdMCARtest(X,'alpha',0.25,'nsimul',199);
+    out = mdMDPtest(X,'alpha',0.25,'nsimul',199);
     % Display p-values
     disp(out.pvalue)
 %}
@@ -157,7 +176,7 @@ function out = mdMCARtest(Y, varargin)
     Y = Yfull;
     Y(missMask) = NaN;
     % Show also the output plot
-    out = mdMCARtest(Y,'nsimul',199,'plots',true);
+    out = mdMDPtest(Y,'nsimul',199,'plots',true);
     
     disp('Observed statistics:')
     disp(out.Tobs)
@@ -182,7 +201,7 @@ function out = mdMCARtest(Y, varargin)
     Alpha = [0 0.10 0.25 0.50]';
     pval = zeros(length(Alpha),4);
     for i=1:length(Alpha)
-        out = mdMCARtest(Y,'alpha',Alpha(i),'nsimul',199);
+        out = mdMDPtest(Y,'alpha',Alpha(i),'nsimul',199);
         pval(i,:) = out.pvalue;
     end
     pvalTable = array2table(pval, ...
@@ -196,14 +215,14 @@ function out = mdMCARtest(Y, varargin)
     % Use method betaMap instead of the default pri.
     load cows2026
     X = cows2026{:,:};
-    out = mdMCARtest(X,'alpha',0.25,'method','betaMap','nsimul',199);
+    out = mdMDPtest(X,'alpha',0.25,'method','betaMap','nsimul',199);
     disp(out.pvalue)
 %}
 
 %% Beginning of code
 
 if ~ismatrix(Y) || ~isnumeric(Y)
-    error('FSDA:mdMCARtest:WrongInputOpt', ...
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Input argument Y must be a numeric matrix.');
 end
 
@@ -215,11 +234,12 @@ options.nsimul  = 499;
 options.conflev = 0.95;
 options.tol     = 1e-10;
 options.plots   = false;
+options.robust  ="FS";
 
 % Check supplied options
 if ~isempty(varargin)
     if mod(length(varargin),2) ~= 0
-        error('FSDA:mdMCARtest:WrongInputOpt', ...
+        error('FSDA:mdMDPtest:WrongInputOpt', ...
             'Optional arguments must be supplied in name/value pairs.');
     end
 
@@ -239,26 +259,28 @@ nsimul  = options.nsimul;
 conflev = options.conflev;
 tol     = options.tol;
 plots   = options.plots;
+robust  = options.robust;
 
-if ~isscalar(alpha) || ~isnumeric(alpha) || alpha < 0 || alpha >= 1
-    error('FSDA:mdMCARtest:WrongInputOpt', ...
-        'Option alpha must be a scalar in the interval [0,1).');
+if ~isscalar(alpha) || ~isnumeric(alpha) || alpha < 0 || alpha > 0.5
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'Option alpha must be a scalar in the interval [0,0.5].');
 end
 
 if ~isscalar(nsimul) || nsimul <= 0 || nsimul ~= floor(nsimul)
-    error('FSDA:mdMCARtest:WrongInputOpt', ...
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Option nsimul must be a positive integer.');
 end
 
 if ~isscalar(conflev) || conflev <= 0 || conflev >= 1
-    error('FSDA:mdMCARtest:WrongInputOpt', ...
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Option conflev must be a scalar in the interval (0,1).');
 end
 
 if ~isscalar(tol) || tol <= 0
-    error('FSDA:mdMCARtest:WrongInputOpt', ...
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Option tol must be a positive scalar.');
 end
+
 
 [n,p] = size(Y);
 maskMiss = isnan(Y);
@@ -266,15 +288,35 @@ completeIdx = all(~maskMiss,2);
 nComplete = sum(completeIdx);
 
 if nComplete < p + 2
-    error('FSDA:mdMCARtest:TooFewCompleteRows', ...
+    error('FSDA:mdMDPtest:TooFewCompleteRows', ...
         ['Too few complete rows to compute the reference complete-case ' ...
          'covariance matrix.']);
 end
 
-% Distances based on complete rows only
+if alpha > 0 && strcmpi(robust,'FS')
+    h = floor(nComplete*(1-alpha));
+
+    if nComplete-h < 4
+        error('FSDA:mdMDPtest:TooLargeFSInit', ...
+            ['The value of alpha produces an FSM initial monitoring step ' ...
+            'too close to nComplete. Increase alpha so that at least four ' ...
+            'Forward Search monitoring steps are available.']);
+    end
+end
+
+if ~(strcmpi(robust,'FS') || strcmpi(robust,'MCD'))
+    error('FSDA:mdMDPtest:WrongRobust', ...
+        'Option robust must be ''FS'' or ''MCD''.');
+end
+
+
+% Extraction of complete cases
 Ycc = Y(completeIdx,:);
-muCC = mean(Ycc,1);
-SigCC = cov(Ycc);
+
+% Robust mu and Sigma based on complete cases
+[muCC,SigCC,outRob] = local_complete_case_fit(Ycc,alpha,robust);
+
+% Distances based on complete rows only
 d2_cc = mahalFS(Ycc, muCC, SigCC);
 
 % Distances based on EM/TEM fit using all rows
@@ -287,7 +329,7 @@ Tobs = local_statistic(d2_cc, d2_all_cc);
 % Bootstrap under MCAR
 Tboot = NaN(nsimul,4);
 
-% Use complete-case fit to generate bootstrap samples
+% Use robust complete-case fit to generate bootstrap samples
 SigGen = local_make_spd(SigCC);
 R = chol(SigGen,'upper');
 
@@ -302,8 +344,10 @@ for j = 1:nsimul
 
     % Complete-case reference distances in bootstrap world
     YccStar = YfullStar(completeIdx,:);
-    muCCStar = mean(YccStar,1);
-    SigCCStar = cov(YccStar);
+
+    [muCCStar,SigCCStar] = local_complete_case_fit(YccStar,alpha,robust);
+
+ 
     d2_cc_star = mahalFS(YccStar, muCCStar, SigCCStar);
 
     % EM/TEM distances for the same complete rows
@@ -318,7 +362,7 @@ end
 Tboot = Tboot(all(~isnan(Tboot),2),:);
 
 if isempty(Tboot)
-    error('FSDA:mdMCARtest:NoValidBootstrap', ...
+    error('FSDA:mdMDPtest:NoValidBootstrap', ...
         'All bootstrap replicates failed.');
 end
 
@@ -338,11 +382,27 @@ out.alpha       = alpha;
 out.method      = method;
 out.nComplete   = nComplete;
 out.completeIdx = completeIdx;
+
+out.locCC = muCC;
+out.covCC = SigCC;
+out.robust = robust;
+
+
+if alpha > 0
+    out.outliersCC = outRob.outliers;
+    out.nOutliersCC = numel(outRob.outliers);
+else
+    out.outliersCC = [];
+    out.nOutliersCC = 0;
+end
+
 out.d2_cc       = d2_cc;
 out.d2_all      = d2_all_cc;
+
 out.ciBoot      = ciBoot;
 out.loc       = muHat;
 out.cov      = SigHat;
+
 
 % Optional plots
 if plots
@@ -378,6 +438,36 @@ end
 end
 
 % -------------------------------------------------------------------------
+
+function [muCC,SigCC,outRob] = ...
+    local_complete_case_fit(Ycc,alpha,robust)
+
+ncc = size(Ycc,1);
+
+if alpha == 0
+    muCC = mean(Ycc,1);
+    SigCC = cov(Ycc);
+    outRob = [];
+
+elseif strcmpi(robust,'FS')
+
+    h = floor(ncc*(1-alpha));
+
+    outRob = FSM(Ycc,'init',h,'plots',0,'msg',false);
+    muCC = outRob.loc;
+    SigCC = outRob.cov;
+
+elseif strcmpi(robust,'MCD')
+
+    outRob = mcd(Ycc,'bdp',alpha);
+    muCC = outRob.loc;
+    SigCC = outRob.cov;
+else
+end
+end
+
+
+
 function [d2_all_cc, muHat, SigHat] = local_fit_and_get_complete_distances( ...
     Y, completeIdx, alpha, method, tol)
 % Compute distances for complete rows after fitting EM/TEM on all data.
