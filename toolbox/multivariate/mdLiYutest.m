@@ -249,7 +249,7 @@ function out = mdLiYutest(Y, varargin)
 %  confined to unobserved components. Under an additional MAR assumption,
 %  Li and Yu discuss nonrejection as compatible with MCAR.
 %
-%  See also: mdLittleTest, mdJJtest, mdMAARtest, mdpattern
+%  See also: mdLittletest, mdJJtest, mdMAARtest, mdpattern
 %
 %  References:
 %

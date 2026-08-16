@@ -131,7 +131,7 @@ function [Ymar,out] = mdMARsimulate(Y,varargin)
 %        missingness masks and the LogisticDistribution object are not stored
 %        in out, in order to keep the output structure compact.
 %
-%  See also: mdpattern, mdPartialMD, mdEM, mdTEM, mdLittleTest
+%  See also: mdpattern, mdPartialMD, mdEM, mdTEM, mdLittletest
 %
 %  References:
 %

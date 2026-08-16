@@ -468,7 +468,7 @@ function out = mdMAARtest(Y, varargin)
 %
 %
 %
-%  See also: mdEM, mdImputeStochastic, mdMCARtest, mdLittleTest, mdJJtest
+%  See also: mdEM, mdImputeStochastic, mdMCARtest, mdLittletest, mdJJtest
 %
 %  References:
 %

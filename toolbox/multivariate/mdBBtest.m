@@ -488,7 +488,7 @@ function out = mdBBtest(Y, varargin)
 % establish that the data are MCAR.
 % 
 %
-%  See also: mdLittleTest, mdJJtest, mdMAARtest, mdMCARtest, mdpattern
+%  See also: mdLittletest, mdJJtest, mdMAARtest, mdMCARtest, mdpattern
 %
 %  References:
 %

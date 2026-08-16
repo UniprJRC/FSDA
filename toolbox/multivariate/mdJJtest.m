@@ -807,7 +807,7 @@ function out = mdJJtest(Y, varargin)
 %  distinguish MCAR from MNAR. Consequently, a nonsignificant result does
 %  not establish MCAR and does not rule out an MNAR mechanism.
 %
-%  See also: mdEM, mdImputeStochastic, mdLittleTest, mdMCARtest
+%  See also: mdEM, mdImputeStochastic, mdLittletest, mdMCARtest
 %
 %  References:
 %

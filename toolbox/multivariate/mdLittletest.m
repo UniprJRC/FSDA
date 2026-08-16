@@ -1,7 +1,7 @@
-function out = mdLittleTest(Y, varargin)
-%mdLittleTest Little's test for Missing Completely At Random (MCAR).
+function out = mdLittletest(Y, varargin)
+%mdLittletest Little's test for Missing Completely At Random (MCAR).
 %
-%<a href="matlab: docsearchFS('mdLittleTest')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdLittletest')">Link to the help function</a>
 %
 %  Little's test assesses the null hypothesis that the missing-data
 %  mechanism is Missing Completely At Random (MCAR). The test is based on
@@ -141,7 +141,7 @@ function out = mdLittleTest(Y, varargin)
 % Copyright 2008-2026.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('mdLittleTest')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('mdLittletest')">Link to the help page for this function</a>
 %
 
 %{
@@ -153,21 +153,21 @@ function out = mdLittleTest(Y, varargin)
     Y = randn(100,3);
     Y(rand(100,3)<0.15) = NaN;
 
-    out = mdLittleTest(Y);
+    out = mdLittletest(Y);
     disp(out)
 %}
 
 %{
     %% Example 2: Supply EM estimates externally.
     % First compute the EM estimates using mdEM, then pass them to
-    % mdLittleTest.
+    % mdLittletest.
 
     rng(2);
     Y = randn(150,4);
     Y(rand(150,4)<0.20) = NaN;
 
     outEM = mdEM(Y);
-    out = mdLittleTest(Y,'emOut',outEM);
+    out = mdLittletest(Y,'emOut',outEM);
 
     disp(out.stat)
     disp(out.pvalue)
@@ -185,7 +185,7 @@ function out = mdLittleTest(Y, varargin)
     Y(31:60,2) = NaN;
     Y(61:90,[3 4]) = NaN;
 
-    out = mdLittleTest(Y);
+    out = mdLittletest(Y);
 
     disp(out.patterns)
     disp(out.patternInfo)
@@ -200,7 +200,7 @@ function out = mdLittleTest(Y, varargin)
     Y(rand(80,3)<0.15) = NaN;
     Y(1:5,:) = NaN;
 
-    out = mdLittleTest(Y);
+    out = mdLittletest(Y);
 
     disp(out.npatterns)
     disp(out.stat)
@@ -217,14 +217,14 @@ function out = mdLittleTest(Y, varargin)
     Y(141:180,[2 4]) = NaN;
     Y(181:210,[3 5]) = NaN;
 
-    out = mdLittleTest(Y,'plots',true);
+    out = mdLittletest(Y,'plots',true);
 %}
 
 %% Beginning of code
 
 % Input parameters checking
 if nargin < 1
-    error('FSDA:mdLittleTest:TooFewInputs', ...
+    error('FSDA:mdLittletest:TooFewInputs', ...
         'At least one input argument is required.');
 end
 
@@ -235,7 +235,7 @@ if istable(Y)
 end
 
 if ~ismatrix(Y) || ~isnumeric(Y)
-    error('FSDA:mdLittleTest:WrongInput', ...
+    error('FSDA:mdLittletest:WrongInput', ...
         'Input argument Y must be a numeric matrix.');
 end
 
@@ -257,7 +257,7 @@ options = struct('maxiter',maxiter,'tol',tol, ...
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:mdLittleTest:WrongInputOpt', ...
+            error('FSDA:mdLittletest:WrongInputOpt', ...
                 ['Number of supplied options is invalid. ' ...
                 'Values may be missing.']);
         end
@@ -278,17 +278,17 @@ options = struct('maxiter',maxiter,'tol',tol, ...
 
     % Basic checks on options
     if ~isscalar(maxiter) || maxiter <= 0
-        error('FSDA:mdLittleTest:WrongMaxiter', ...
+        error('FSDA:mdLittletest:WrongMaxiter', ...
             'Option ''maxiter'' must be a positive scalar.');
     end
 
     if ~isscalar(tol) || tol <= 0
-        error('FSDA:mdLittleTest:WrongTol', ...
+        error('FSDA:mdLittletest:WrongTol', ...
             'Option ''tol'' must be a positive scalar.');
     end
 
     if ~(isscalar(plots) && (islogical(plots) || isnumeric(plots)))
-        error('FSDA:mdLittleTest:WrongPlots', ...
+        error('FSDA:mdLittletest:WrongPlots', ...
             'Option ''plots'' must be a logical or numeric scalar.');
     end
     plots = logical(plots);
@@ -353,7 +353,7 @@ for r = 1:nPatterns
     % Check positive definiteness
     [~,pdflag] = chol(Sigmar);
     if pdflag ~= 0
-        error('FSDA:mdLittleTest:NonPDSubmatrix', ...
+        error('FSDA:mdLittletest:NonPDSubmatrix', ...
             ['The covariance submatrix for pattern %d is not positive ' ...
             'definite.'], r);
     end
@@ -371,7 +371,7 @@ df = sumpr - p;
 
 if df <= 0
     pvalue = NaN;
-    warning('FSDA:mdLittleTest:NonPositiveDf', ...
+    warning('FSDA:mdLittletest:NonPositiveDf', ...
         ['The computed degrees of freedom are not positive. ' ...
         'The p-value is returned as NaN.']);
 else
@@ -424,7 +424,7 @@ if plots
         nPatternPlot = nPattern(ord);
         pObservedPlot = pObserved(ord);
 
-        figure('Name','mdLittleTest: pattern contributions','Color','w');
+        figure('Name','mdLittletest: pattern contributions','Color','w');
 
         barh(percentagePlot)
 

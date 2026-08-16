@@ -86,12 +86,11 @@ function out = mdMDPtest(Y, varargin)
 %                             field is used only if robust.class='MM'. The
 %                             default value is 0.95.
 %              robust.bonflev = Forward Search signal/stopping rule. This
-%                             field is used only if robust.class='FS'. Use
-%                             0.99 (default) for the direct 99 percent
-%                             Bonferroni bound, or [] for the standard FSM
+%                             field is used only if robust.class='FS'.
+%                             Use [] (default) for the standard FSM
 %                             signal-detection, validation and envelope-
-%                             resuperimposition rules. If this field is not
-%                             present resuperimposition rule is used.
+%                             resuperimposition rules, or 0.99 for the
+%                             direct 99 percent Bonferroni-bound rule.
 %            The robustness level is controlled by alpha. In the FS case,
 %            floor(nComplete*(1-alpha)) is used as the FSM initial
 %            monitoring step; in the MCD case alpha is passed as bdp; in
@@ -100,7 +99,7 @@ function out = mdMDPtest(Y, varargin)
 %            Bonferronized simultaneous level 0.99. In the FS case the user
 %            can choose between the direct Bonferroni rule and the standard
 %            envelope-resuperimposition rule through robust.bonflev.
-%            Example - 'robust','MCD' | r=struct; r.class='FS'; r.bonflev=[]; ìrobust',r
+%            Example - 'robust','MCD' | r=struct; r.class='FS'; r.bonflev=[]; 'robust',r
 %            Data Types - char | string | struct
 %
 %      tol : Convergence tolerance passed to mdTEM. Scalar.
@@ -135,10 +134,12 @@ function out = mdMDPtest(Y, varargin)
 %                            cases: 'FS', 'MCD' or 'MM'.
 %          out.robustEff   = MM nominal efficiency. This field is relevant
 %                            only when out.robustClass='MM'.
-%          out.robustBonflev = Value controlling the FS signal/stopping
-%                            rule. It is 0.99 for the direct Bonferroni rule
-%                            and [] for the standard FSM envelope-
-%                            resuperimposition rule.
+%          out.robustBonflev = Value actually used for the FS
+%                            signal/stopping rule. It is 0.99 for the
+%                            direct Bonferroni rule and [] for the standard
+%                            FSM envelope-resuperimposition rule. If fewer
+%                            than four monitoring steps are available, []
+%                            is automatically changed to 0.99.
 %          out.FSrule      = Forward Search signal/stopping rule actually
 %                            used: 'bonferroni' or 'resuperimposition'. It
 %                            is empty if out.robustClass is not 'FS'.
@@ -382,14 +383,33 @@ if nComplete < p + 2
          'covariance matrix.']);
 end
 
-if alpha > 0 && strcmpi(robustClass,'FS') && isempty(robustBonflev)
+if alpha > 0 && strcmpi(robustClass,'FS')
+
     h = floor(nComplete*(1-alpha));
 
-    if nComplete-h < 4
-        error('FSDA:mdMDPtest:TooLargeFSInit', ...
+    if h < p+1
+        error('FSDA:mdMDPtest:TooSmallFSInit', ...
             ['The value of alpha produces an FSM initial monitoring step ' ...
-            'too close to nComplete. Increase alpha so that at least four ' ...
-            'Forward Search monitoring steps are available.']);
+             'smaller than p+1. Decrease alpha or increase the number ' ...
+             'of complete observations.']);
+    end
+
+    nMon = nComplete-h;
+
+    if nMon < 3
+        error('FSDA:mdMDPtest:TooLargeFSInit', ...
+            ['The value of alpha leaves fewer than three Forward Search ' ...
+             'monitoring steps. Increase alpha.']);
+
+    elseif nMon < 4 && isempty(robustBonflev)
+
+        robustBonflev = 0.99;
+
+        warning('FSDA:mdMDPtest:FSBonferroniFallback', ...
+            ['Fewer than four Forward Search monitoring steps are ' ...
+             'available. The direct 99 percent Bonferroni stopping ' ...
+             'rule is used instead of the standard FSM ' ...
+             'envelope-resuperimposition rule.']);
     end
 end
 
@@ -614,7 +634,7 @@ function [robustClass,robustEff,robustBonflev] = local_parse_robust(robust)
 %local_parse_robust parses the robust option.
 
 robustEff = 0.95;
-robustBonflev = ''; % default is envelope resuperimposition
+robustBonflev = []; % default is envelope resuperimposition
 
 if isstruct(robust)
     if ~isscalar(robust)
