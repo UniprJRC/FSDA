@@ -1,11 +1,12 @@
 function out = mdMDPtest(Y, varargin)
-%mdMDPtest Bootstrap test for change in Mahalanobis distances under MCAR
+%mdMDPtest Mahalanobis Distance Perturbation test for MCAR
 %
 %<a href="matlab: docsearchFS('mdMDPtest')">Link to the help function</a>
 %
-%  This function implements a parametric bootstrap test based on the change
-%  in Mahalanobis distances for the units without missing values when
-%  location and scatter are estimated:
+%  mdMDPtest implements the Mahalanobis Distance Perturbation (MDP) test
+%  for assessing the Missing Completely At Random (MCAR) assumption. The
+%  test is based on the change in Mahalanobis distances for the units
+%  without missing values when location and scatter are estimated:
 %
 %    1) using only the complete rows;
 %    2) using all rows through EM/TEM in the presence of missing values.
@@ -36,13 +37,27 @@ function out = mdMDPtest(Y, varargin)
 %
 %                h = floor(nComplete*(1-alpha)).
 %
+%            where nComplete is the number of rows with complete
+%            observations.
+%
 %            The final complete-case location and scatter are not based
 %            necessarily on exactly h observations. FSM applies its
 %            signal-detection and stopping rules and the final estimates
 %            are computed from the observations not declared as outliers.
 %
 %            If alpha>0 and robust='MCD', alpha is used as the MCD
-%            breakdown-point option.
+%            breakdown-point option. If robust='MM', alpha is used as the
+%            breakdown point of the preliminary S estimator.
+%
+%            For all robust estimators, outliers are declared using a
+%            Bonferronized simultaneous confidence level of 0.99. For FSM
+%            two signal/stopping rules are available. With bonflev=0.99,
+%            the direct 99 percent Bonferroni bound is used. With
+%            bonflev=[], the standard FSM signal-detection, validation and
+%            envelope-resuperimposition rules are used. For MCD and MM,
+%            the individual confidence level is 1-0.01/nComplete.
+%            Example - 'alpha', 0.1
+%            Data Types - double inside [0 0.5]
 %
 %
 %   method : Rescaling method used inside mdTEM and mdPartialMD2full.
@@ -60,10 +75,33 @@ function out = mdMDPtest(Y, varargin)
 %            Example - 'conflev',0.99
 %            Data Types - double
 %       
-%  robust  : Robust estimator to use in case alpha is strictly positive.
-%            Possible values are "FS" or "MCD". Default value is "FS"
-%            Example - 'robust',"MCD"
-%            Data Types - string
+%  robust  : Robust estimator for the complete cases. Character, string
+%            or structure. This option is used only when alpha is strictly
+%            positive. If robust is a character vector or string scalar,
+%            possible values are 'FS', 'MCD' or 'MM'. The default is 'FS'.
+%            If robust is a structure, the following fields can be supplied:
+%              robust.class = robust estimator. Possible values are 'FS',
+%                             'MCD' or 'MM'. This field is required.
+%              robust.eff   = nominal efficiency of the MM estimator. This
+%                             field is used only if robust.class='MM'. The
+%                             default value is 0.95.
+%              robust.bonflev = Forward Search signal/stopping rule. This
+%                             field is used only if robust.class='FS'. Use
+%                             0.99 (default) for the direct 99 percent
+%                             Bonferroni bound, or [] for the standard FSM
+%                             signal-detection, validation and envelope-
+%                             resuperimposition rules. If this field is not
+%                             present resuperimposition rule is used.
+%            The robustness level is controlled by alpha. In the FS case,
+%            floor(nComplete*(1-alpha)) is used as the FSM initial
+%            monitoring step; in the MCD case alpha is passed as bdp; in
+%            the MM case alpha is passed as Sbdp. For all three estimators,
+%            the confidence level used to declare outliers is fixed at the
+%            Bonferronized simultaneous level 0.99. In the FS case the user
+%            can choose between the direct Bonferroni rule and the standard
+%            envelope-resuperimposition rule through robust.bonflev.
+%            Example - 'robust','MCD' | r=struct; r.class='FS'; r.bonflev=[]; ìrobust',r
+%            Data Types - char | string | struct
 %
 %      tol : Convergence tolerance passed to mdTEM. Scalar.
 %            The default value is 1e-10.
@@ -90,6 +128,25 @@ function out = mdMDPtest(Y, varargin)
 %          out.method      = Value of input option method.
 %          out.nComplete   = Number of complete rows.
 %          out.completeIdx = Logical index of complete rows.
+%          out.locCC       = Complete-case estimate of location.
+%          out.covCC       = Complete-case estimate of scatter.
+%          out.robust      = Value of input option robust.
+%          out.robustClass = Robust estimator actually used for complete
+%                            cases: 'FS', 'MCD' or 'MM'.
+%          out.robustEff   = MM nominal efficiency. This field is relevant
+%                            only when out.robustClass='MM'.
+%          out.robustBonflev = Value controlling the FS signal/stopping
+%                            rule. It is 0.99 for the direct Bonferroni rule
+%                            and [] for the standard FSM envelope-
+%                            resuperimposition rule.
+%          out.FSrule      = Forward Search signal/stopping rule actually
+%                            used: 'bonferroni' or 'resuperimposition'. It
+%                            is empty if out.robustClass is not 'FS'.
+%          out.outlierConflev = Simultaneous Bonferronized confidence level
+%                            used to declare complete-case outliers (0.99).
+%          out.outliersCC  = Complete-case units declared as outliers by
+%                            the selected robust estimator.
+%          out.nOutliersCC = Number of units in out.outliersCC.
 %          out.d2_cc       = Mahalanobis distances computed from complete
 %                            rows only.
 %          out.d2_all      = Mahalanobis distances for the same complete
@@ -219,6 +276,34 @@ function out = mdMDPtest(Y, varargin)
     disp(out.pvalue)
 %}
 
+%{
+    %% Example 6: MM estimator for the complete cases.
+    % Use an MM estimator with 95 percent nominal efficiency. The
+    % preliminary S estimator has breakdown point alpha=0.25. Outliers are
+    % declared using the fixed Bonferronized simultaneous level 0.99.
+    load cows2026
+    X = cows2026{:,:};
+    r = struct;
+    r.class = 'MM';
+    r.eff = 0.95;
+    out = mdMDPtest(X,'alpha',0.25,'robust',r,'nsimul',199);
+    disp(out.pvalue)
+%}
+
+%{
+    %% Example 7: Standard FSM envelope-resuperimposition rule.
+    % Use the standard FSM signal-detection and validation procedure rather
+    % than the direct Bonferroni-bound stopping rule.
+    load cows2026
+    X = cows2026{:,:};
+    r = struct;
+    r.class = 'FS';
+    r.bonflev = [];
+    out = mdMDPtest(X,'alpha',0.25,'robust',r,'nsimul',199);
+    disp(out.FSrule)
+    disp(out.pvalue)
+%}
+
 %% Beginning of code
 
 if ~ismatrix(Y) || ~isnumeric(Y)
@@ -281,6 +366,10 @@ if ~isscalar(tol) || tol <= 0
         'Option tol must be a positive scalar.');
 end
 
+% Parse the complete-case robust estimator. A simple character/string
+% specification is retained for convenience; a structure permits
+% estimator-specific tuning such as the MM efficiency.
+[robustClass,robustEff,robustBonflev] = local_parse_robust(robust);
 
 [n,p] = size(Y);
 maskMiss = isnan(Y);
@@ -293,7 +382,7 @@ if nComplete < p + 2
          'covariance matrix.']);
 end
 
-if alpha > 0 && strcmpi(robust,'FS')
+if alpha > 0 && strcmpi(robustClass,'FS') && isempty(robustBonflev)
     h = floor(nComplete*(1-alpha));
 
     if nComplete-h < 4
@@ -304,17 +393,13 @@ if alpha > 0 && strcmpi(robust,'FS')
     end
 end
 
-if ~(strcmpi(robust,'FS') || strcmpi(robust,'MCD'))
-    error('FSDA:mdMDPtest:WrongRobust', ...
-        'Option robust must be ''FS'' or ''MCD''.');
-end
-
 
 % Extraction of complete cases
 Ycc = Y(completeIdx,:);
 
 % Robust mu and Sigma based on complete cases
-[muCC,SigCC,outRob] = local_complete_case_fit(Ycc,alpha,robust);
+[muCC,SigCC,outRob] = local_complete_case_fit(Ycc,alpha, ...
+    robustClass,robustEff,robustBonflev);
 
 % Distances based on complete rows only
 d2_cc = mahalFS(Ycc, muCC, SigCC);
@@ -345,7 +430,8 @@ for j = 1:nsimul
     % Complete-case reference distances in bootstrap world
     YccStar = YfullStar(completeIdx,:);
 
-    [muCCStar,SigCCStar] = local_complete_case_fit(YccStar,alpha,robust);
+    [muCCStar,SigCCStar] = local_complete_case_fit(YccStar,alpha, ...
+        robustClass,robustEff,robustBonflev);
 
  
     d2_cc_star = mahalFS(YccStar, muCCStar, SigCCStar);
@@ -386,7 +472,20 @@ out.completeIdx = completeIdx;
 out.locCC = muCC;
 out.covCC = SigCC;
 out.robust = robust;
+out.robustClass = robustClass;
+out.robustEff = robustEff;
+out.robustBonflev = robustBonflev;
+out.outlierConflev = 0.99;
 
+if alpha > 0 && strcmpi(robustClass,'FS')
+    if isempty(robustBonflev)
+        out.FSrule = 'resuperimposition';
+    else
+        out.FSrule = 'bonferroni';
+    end
+else
+    out.FSrule = '';
+end
 
 if alpha > 0
     out.outliersCC = outRob.outliers;
@@ -440,32 +539,158 @@ end
 % -------------------------------------------------------------------------
 
 function [muCC,SigCC,outRob] = ...
-    local_complete_case_fit(Ycc,alpha,robust)
+    local_complete_case_fit(Ycc,alpha,robustClass,robustEff,robustBonflev)
+%local_complete_case_fit estimates location and scatter from complete cases.
+%
+% For all robust estimators, outliers are declared at simultaneous
+% Bonferronized confidence level 0.99. For FSM, robustBonflev=0.99 uses
+% the direct Bonferroni bound, whereas robustBonflev=[] uses the standard
+% signal-detection, validation and envelope-resuperimposition rules. MCD
+% and MM use the corresponding individual level 1-0.01/ncc.
 
 ncc = size(Ycc,1);
+conflevOut = 1-0.01/ncc;
 
 if alpha == 0
+
     muCC = mean(Ycc,1);
     SigCC = cov(Ycc);
     outRob = [];
 
-elseif strcmpi(robust,'FS')
+elseif strcmpi(robustClass,'FS')
 
     h = floor(ncc*(1-alpha));
 
-    outRob = FSM(Ycc,'init',h,'plots',0,'msg',false);
+    if isempty(robustBonflev)
+        % Standard FSM signal detection and envelope resuperimposition.
+        outRob = FSM(Ycc, ...
+            'init',h, ...
+            'plots',0, ...
+            'msg',false);
+    else
+        % Direct Bonferroni-bound stopping rule.
+        outRob = FSM(Ycc, ...
+            'init',h, ...
+            'bonflev',robustBonflev, ...
+            'plots',0, ...
+            'msg',false);
+    end
+
     muCC = outRob.loc;
     SigCC = outRob.cov;
 
-elseif strcmpi(robust,'MCD')
+elseif strcmpi(robustClass,'MCD')
 
-    outRob = mcd(Ycc,'bdp',alpha);
+    outRob = mcd(Ycc, ...
+        'bdp',alpha, ...
+        'conflev',conflevOut, ...
+        'plots',0, ...
+        'msg',0);
+
     muCC = outRob.loc;
     SigCC = outRob.cov;
+
+elseif strcmpi(robustClass,'MM')
+
+    outRob = MMmult(Ycc, ...
+        'Sbdp',alpha, ...
+        'eff',robustEff, ...
+        'conflev',conflevOut, ...
+        'plots',0, ...
+        'Smsg',0);
+
+    muCC = outRob.loc;
+    SigCC = outRob.cov;
+
 else
-end
+    error('FSDA:mdMDPtest:WrongRobust', ...
+        'Robust estimator must be ''FS'', ''MCD'' or ''MM''.');
 end
 
+end
+
+% -------------------------------------------------------------------------
+function [robustClass,robustEff,robustBonflev] = local_parse_robust(robust)
+%local_parse_robust parses the robust option.
+
+robustEff = 0.95;
+robustBonflev = ''; % default is envelope resuperimposition
+
+if isstruct(robust)
+    if ~isscalar(robust)
+        error('FSDA:mdMDPtest:WrongRobust', ...
+            'Option robust must be a scalar structure.');
+    end
+
+    allowedFields = {'class','eff','bonflev'};
+    suppliedFields = fieldnames(robust);
+    wrongFields = setdiff(suppliedFields,allowedFields);
+    if ~isempty(wrongFields)
+        error('FSDA:mdMDPtest:WrongRobustField', ...
+            'Unknown field in option robust: %s.',wrongFields{1});
+    end
+
+    if ~isfield(robust,'class') || isempty(robust.class)
+        error('FSDA:mdMDPtest:MissingRobustClass', ...
+            ['When robust is a structure, field robust.class must be ' ...
+            'specified as ''FS'', ''MCD'' or ''MM''.']);
+    end
+    robustClass = robust.class;
+
+    if isfield(robust,'eff') && ~isempty(robust.eff)
+        robustEff = robust.eff;
+    end
+
+    if isfield(robust,'bonflev')
+        robustBonflev = robust.bonflev;
+    end
+else
+    robustClass = robust;
+end
+
+if isstring(robustClass)
+    if ~isscalar(robustClass)
+        error('FSDA:mdMDPtest:WrongRobust', ...
+            'Option robust.class must be a character vector or string scalar.');
+    end
+    robustClass = char(robustClass);
+end
+
+if ~ischar(robustClass) || size(robustClass,1) ~= 1
+    error('FSDA:mdMDPtest:WrongRobust', ...
+        'Option robust must specify ''FS'', ''MCD'' or ''MM''.');
+end
+
+robustClass = upper(strtrim(robustClass));
+if ~any(strcmp(robustClass,{'FS','MCD','MM'}))
+    error('FSDA:mdMDPtest:WrongRobust', ...
+        'Option robust must specify ''FS'', ''MCD'' or ''MM''.');
+end
+
+if ~isscalar(robustEff) || ~isnumeric(robustEff) || ...
+        ~isfinite(robustEff) || robustEff < 0.5 || robustEff > 0.99
+    error('FSDA:mdMDPtest:WrongRobustEff', ...
+        'Field robust.eff must be a scalar in the interval [0.5,0.99].');
+end
+
+if strcmp(robustClass,'FS')
+    if ~(isempty(robustBonflev) || ...
+            (isnumeric(robustBonflev) && isscalar(robustBonflev) && ...
+             isfinite(robustBonflev) && robustBonflev == 0.99))
+        error('FSDA:mdMDPtest:WrongRobustBonflev', ...
+            ['Field robust.bonflev must be either 0.99 or empty. ' ...
+             'Use 0.99 for the direct Bonferroni rule and [] for the ' ...
+             'standard FSM envelope-resuperimposition rule.']);
+    end
+else
+    if isstruct(robust) && isfield(robust,'bonflev')
+        error('FSDA:mdMDPtest:WrongRobustBonflev', ...
+            'Field robust.bonflev can be supplied only when robust.class=''FS''.');
+    end
+    robustBonflev = [];
+end
+
+end
 
 
 function [d2_all_cc, muHat, SigHat] = local_fit_and_get_complete_distances( ...
@@ -535,7 +760,7 @@ for k = 1:8
     lam = 10*lam;
 end
 
-error('FSDA:mdMCARdistTest:NonSPD', ...
+error('FSDA:mdMDPtest:NonSPD', ...
     'Unable to regularize covariance matrix to positive definiteness.');
 end
 
