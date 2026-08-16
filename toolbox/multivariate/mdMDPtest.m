@@ -75,6 +75,15 @@ function out = mdMDPtest(Y, varargin)
 %            Example - 'conflev',0.99
 %            Data Types - double
 %       
+%    eps0 : Positive numerical stabilizer used in the log-distance ratio.
+%           The statistic is
+%
+%             log((d2_all + eps0) ./ (d2_cc + eps0)).
+%
+%           The default value is 1e-12.
+%           Example - 'eps0',1e-10
+%           Data Types - double
+%
 %  robust  : Robust estimator for the complete cases. Character, string
 %            or structure. This option is used only when alpha is strictly
 %            positive. If robust is a character vector or string scalar,
@@ -157,6 +166,8 @@ function out = mdMDPtest(Y, varargin)
 %                            confidence intervals for the four statistics.
 %          out.loc          = Estimated location from EM/TEM fit on all data.
 %          out.cov          = Estimated scatter from EM/TEM fit on all data.
+%          out.eps0        = Numerical stabilizer used in the log-distance
+%                            ratio.
 %
 %
 %  More About:
@@ -167,10 +178,10 @@ function out = mdMDPtest(Y, varargin)
 %  from all the data using EM/TEM. The function monitors the following four
 %  statistics:
 %
-%    1) median( log(d2_all ./ d2_cc) );
-%    2) mean  ( log(d2_all ./ d2_cc) );
+%    1) median( log((d2_all + eps0) ./ (d2_cc + eps0)) );
+%    2) mean  ( log((d2_all + eps0) ./ (d2_cc + eps0)) );
 %    3) median( d2_all - d2_cc );
-%    4) mean  ( d2_all - d2_cc ).
+%    4) mean  ( d2_all - d2_cc );
 %
 %  Small p-values indicate that the change in distances is larger than what
 %  is expected under the MCAR bootstrap model.
@@ -321,6 +332,7 @@ options.conflev = 0.95;
 options.tol     = 1e-10;
 options.plots   = false;
 options.robust  ="FS";
+options.eps0    = 1e-12;
 
 % Check supplied options
 if ~isempty(varargin)
@@ -346,6 +358,7 @@ conflev = options.conflev;
 tol     = options.tol;
 plots   = options.plots;
 robust  = options.robust;
+eps0 = options.eps0;
 
 if ~isscalar(alpha) || ~isnumeric(alpha) || alpha < 0 || alpha > 0.5
     error('FSDA:mdMDPtest:WrongInputOpt', ...
@@ -365,6 +378,11 @@ end
 if ~isscalar(tol) || tol <= 0
     error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Option tol must be a positive scalar.');
+end
+
+if ~isscalar(eps0) || ~isnumeric(eps0) || ~isfinite(eps0) || eps0 <= 0
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'Option eps0 must be a finite positive scalar.');
 end
 
 % Parse the complete-case robust estimator. A simple character/string
@@ -429,7 +447,7 @@ d2_cc = mahalFS(Ycc, muCC, SigCC);
     Y, completeIdx, alpha, method, tol);
 
 % Observed statistics
-Tobs = local_statistic(d2_cc, d2_all_cc);
+Tobs = local_statistic(d2_cc, d2_all_cc,eps0);
 
 % Bootstrap under MCAR
 Tboot = NaN(nsimul,4);
@@ -461,7 +479,7 @@ for j = 1:nsimul
         Ystar, completeIdx, alpha, method, tol);
 
     % Store the four statistics
-    Tboot(j,:) = local_statistic(d2_cc_star, d2_all_cc_star);
+    Tboot(j,:) = local_statistic(d2_cc_star, d2_all_cc_star, eps0);
 end
 
 % Remove bootstrap samples containing NaNs
@@ -521,7 +539,7 @@ out.d2_all      = d2_all_cc;
 out.ciBoot      = ciBoot;
 out.loc       = muHat;
 out.cov      = SigHat;
-
+out.eps0 = eps0;
 
 % Optional plots
 if plots
@@ -722,7 +740,7 @@ p = size(Y,2);
 if alpha == 0
     outFit = mdEM(Y);
 else
-    outFit = mdTEM(Y,'method',method,'alpha',alpha,'tol',tol);
+    outFit = mdTEM(Y,'method',method,'alpha',alpha,'tol',tol,'consistencyfactor','pattern');
 end
 
 muHat = outFit.loc;
@@ -735,20 +753,17 @@ d2_all_cc = d2_full(completeIdx);
 end
 
 % -------------------------------------------------------------------------
-function T = local_statistic(d2_cc, d2_all)
-% Compute the four test statistics.
+function T = local_statistic(d2_cc, d2_all, eps0)
+%local_statistic Compute the four MDP test statistics.
 
-eps0 = 1e-12;
-d2_cc  = max(d2_cc,eps0);
-d2_all = max(d2_all,eps0);
-
-rat = log(d2_all ./ d2_cc);
+rat = log((d2_all + eps0) ./ (d2_cc + eps0));
 dif = d2_all - d2_cc;
 
 T1 = median(rat);
 T2 = mean(rat);
 T3 = median(dif);
 T4 = mean(dif);
+
 T = [T1 T2 T3 T4];
 end
 
