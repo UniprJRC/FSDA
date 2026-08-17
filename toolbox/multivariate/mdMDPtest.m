@@ -168,6 +168,19 @@ function out = mdMDPtest(Y, varargin)
 %          out.cov          = Estimated scatter from EM/TEM fit on all data.
 %          out.eps0        = Numerical stabilizer used in the log-distance
 %                            ratio.
+%          out.asympt      = Structure containing the analytical Gaussian
+%                            benchmark for the two mean statistics. For
+%                            alpha=0, out.asympt.available is true when the
+%                            analytical variance is numerically available.
+%                            The structure contains qhat, VA, and the fields
+%                            TDmean and TLmean. Each statistic contains the
+%                            asymptotic variance of sqrt(n)T (sigma2), the
+%                            standard error of T (se), the studentized value
+%                            (z), and the two-sided asymptotic p-value. The
+%                            TLmean structure also contains kappa. For
+%                            alpha>0, out.asympt.available is false because
+%                            the robust TEM analytical variance is not yet
+%                            implemented in this routine.
 %
 %
 %  More About:
@@ -185,6 +198,10 @@ function out = mdMDPtest(Y, varargin)
 %
 %  Small p-values indicate that the change in distances is larger than what
 %  is expected under the MCAR bootstrap model.
+%
+%  For alpha=0 the function also reports an analytical Gaussian benchmark
+%  for the mean difference and mean log-ratio. The bootstrap p-values in
+%  out.pvalue remain the primary finite-sample calibration.
 % See also: mdEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
 %
 % References:
@@ -449,6 +466,15 @@ d2_cc = mahalFS(Ycc, muCC, SigCC);
 % Observed statistics
 Tobs = local_statistic(d2_cc, d2_all_cc,eps0);
 
+% Analytical Gaussian benchmark for the two mean statistics. The
+% bootstrap remains the primary finite-sample calibration.
+if alpha == 0
+    asympt = local_classical_asymptotic(maskMiss, SigHat, nComplete, ...
+        Tobs, eps0);
+else
+    asympt = local_unavailable_asymptotic(nComplete/n);
+end
+
 % Bootstrap under MCAR
 Tboot = NaN(nsimul,4);
 
@@ -540,6 +566,7 @@ out.ciBoot      = ciBoot;
 out.loc       = muHat;
 out.cov      = SigHat;
 out.eps0 = eps0;
+out.asympt = asympt;
 
 % Optional plots
 if plots
@@ -765,6 +792,170 @@ T3 = median(dif);
 T4 = mean(dif);
 
 T = [T1 T2 T3 T4];
+end
+
+% -------------------------------------------------------------------------
+function asympt = local_classical_asymptotic(maskMiss, SigmaHat, ...
+    nComplete, Tobs, eps0)
+%local_classical_asymptotic Analytical benchmark for alpha=0.
+%
+% Under Gaussian MCAR,
+%   sqrt(n)*TDmean -> N(0,sigmaD2),
+% where
+%   sigmaD2 = 2*p/qhat - aSigma'*(IA\aSigma).
+% The mean stabilized log-ratio has asymptotic variance
+%   sigmaL2 = kappa^2*sigmaD2,
+% with
+%   kappa = E{Q/(Q+eps0)}/p, Q~chi2_p.
+
+[n,p] = size(maskMiss);
+qhat = nComplete/n;
+s = p*(p+1)/2;
+
+asympt = local_unavailable_asymptotic(qhat);
+asympt.reason = '';
+asympt.VA = NaN;
+
+% Duplication matrix and derivative of log|Sigma|.
+Dp = local_duplication_matrix(p);
+SigmaHat = (SigmaHat + SigmaHat')/2;
+K = SigmaHat\eye(p);
+K = (K + K')/2;
+aSigma = Dp' * K(:);
+
+% Observed-data covariance information, averaged over the empirical
+% missingness-pattern distribution.
+IA = zeros(s,s);
+[patt,~,ic] = unique(maskMiss,'rows');
+idxFull = reshape(1:p*p,p,p);
+
+for g = 1:size(patt,1)
+    obs = ~patt(g,:);
+    pg = sum(obs);
+    if pg == 0
+        continue
+    end
+
+    ng = sum(ic == g);
+    pig = ng/n;
+
+    SigmaG = SigmaHat(obs,obs);
+    SigmaG = (SigmaG + SigmaG')/2;
+    BG = SigmaG\eye(pg);
+    BG = (BG + BG')/2;
+
+    % Dg maps vech(Sigma) to vec(Sigma_g).
+    idxG = idxFull(obs,obs);
+    Dg = Dp(idxG(:),:);
+    Ir = 0.5 * Dg' * kron(BG,BG) * Dg;
+    IA = IA + pig*Ir;
+end
+
+IA = (IA + IA')/2;
+
+if rcond(IA) <= 1e-12
+    asympt.reason = ['Observed-data covariance information is numerically ' ...
+        'singular; analytical benchmark not computed.'];
+    return
+end
+
+v = IA\aSigma;
+VA = aSigma' * v;
+sigmaD2 = 2*p/qhat - VA;
+
+% The theoretical variance is nonnegative. Remove only tiny negative values
+% caused by floating-point roundoff.
+tolVar = 1e-10 * max(1,2*p/qhat);
+if sigmaD2 < 0 && sigmaD2 >= -tolVar
+    sigmaD2 = 0;
+elseif sigmaD2 < -tolVar
+    asympt.reason = ['Estimated analytical variance is negative beyond ' ...
+        'numerical tolerance; analytical benchmark not computed.'];
+    asympt.VA = VA;
+    return
+end
+
+% Stabilized log-ratio coefficient. The local integrand handles the
+% endpoints explicitly, avoiding the indeterminate product 0*Inf for p<2.
+kappa = integral(@(q) local_kappa_integrand(q,p,eps0), 0, Inf, ...
+    'RelTol',1e-10,'AbsTol',1e-12) / p;
+
+asympt.available = true;
+asympt.reason = '';
+asympt.qhat = qhat;
+asympt.VA = VA;
+asympt.degenerate = sigmaD2 <= tolVar;
+
+asympt.TDmean.sigma2 = sigmaD2;
+asympt.TDmean.se = sqrt(sigmaD2/n);
+
+asympt.TLmean.kappa = kappa;
+asympt.TLmean.sigma2 = kappa^2*sigmaD2;
+asympt.TLmean.se = sqrt(asympt.TLmean.sigma2/n);
+
+if asympt.degenerate
+    asympt.TDmean.z = NaN;
+    asympt.TDmean.pvalue = NaN;
+    asympt.TLmean.z = NaN;
+    asympt.TLmean.pvalue = NaN;
+else
+    % Tobs(4) is mean difference; Tobs(2) is mean log-ratio.
+    asympt.TDmean.z = Tobs(4)/asympt.TDmean.se;
+    asympt.TDmean.pvalue = erfc(abs(asympt.TDmean.z)/sqrt(2));
+
+    asympt.TLmean.z = Tobs(2)/asympt.TLmean.se;
+    asympt.TLmean.pvalue = erfc(abs(asympt.TLmean.z)/sqrt(2));
+end
+end
+
+% -------------------------------------------------------------------------
+function y = local_kappa_integrand(q,p,eps0)
+%local_kappa_integrand Integrand for E{Q/(Q+eps0)}, Q~chi2_p.
+
+ratio = q./(q+eps0);
+ratio(q == 0) = 0;
+ratio(isinf(q)) = 1;
+y = ratio.*chi2pdf(q,p);
+y(~isfinite(y)) = 0;
+end
+
+% -------------------------------------------------------------------------
+function asympt = local_unavailable_asymptotic(qhat)
+%local_unavailable_asymptotic Initialize analytical benchmark output.
+
+asympt = struct;
+asympt.available = false;
+asympt.reason = ['Analytical benchmark currently implemented only for ' ...
+    'the classical alpha=0 case.'];
+asympt.qhat = qhat;
+asympt.VA = NaN;
+asympt.degenerate = false;
+asympt.TDmean = struct('sigma2',NaN,'se',NaN,'z',NaN,'pvalue',NaN);
+asympt.TLmean = struct('kappa',NaN,'sigma2',NaN,'se',NaN, ...
+    'z',NaN,'pvalue',NaN);
+end
+
+% -------------------------------------------------------------------------
+function D = local_duplication_matrix(p)
+%local_duplication_matrix Duplication matrix for column-wise vech.
+%
+% D satisfies vec(H)=D*vech(H) for every symmetric p-by-p matrix H, where
+% vech stacks the lower triangular part column by column.
+
+s = p*(p+1)/2;
+D = zeros(p*p,s);
+k = 0;
+for j = 1:p
+    for i = j:p
+        k = k + 1;
+        E = zeros(p,p);
+        E(i,j) = 1;
+        if i ~= j
+            E(j,i) = 1;
+        end
+        D(:,k) = E(:);
+    end
+end
 end
 
 % -------------------------------------------------------------------------
