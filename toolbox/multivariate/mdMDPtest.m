@@ -170,17 +170,25 @@ function out = mdMDPtest(Y, varargin)
 %                            ratio.
 %          out.asympt      = Structure containing the analytical Gaussian
 %                            benchmark for the two mean statistics. For
-%                            alpha=0, out.asympt.available is true when the
-%                            analytical variance is numerically available.
-%                            The structure contains qhat, VA, and the fields
-%                            TDmean and TLmean. Each statistic contains the
+%                            alpha=0, the classical closed-form covariance
+%                            information formula is used. For alpha>0 and
+%                            method='pri', the pattern-wise TEM influence
+%                            function and effective Jacobian are evaluated
+%                            analytically. The scalar influence of the robust
+%                            complete-case scatter estimator is evaluated by
+%                            a delete-one jackknife and combined with the TEM
+%                            contribution in the end-to-end sandwich variance.
+%                            The fields TDmean and TLmean contain the
 %                            asymptotic variance of sqrt(n)T (sigma2), the
 %                            standard error of T (se), the studentized value
 %                            (z), and the two-sided asymptotic p-value. The
 %                            TLmean structure also contains kappa. For
-%                            alpha>0, out.asympt.available is false because
-%                            the robust TEM analytical variance is not yet
-%                            implemented in this routine.
+%                            alpha>0, out.asympt.TEM contains diagnostics for
+%                            the analytical TEM contribution and
+%                            out.asympt.completeCase documents the numerical
+%                            influence evaluation. The adaptive FS branch is
+%                            flagged as experimental because its stopping rule
+%                            is outside the fixed-fraction FS asymptotic theorem.
 %
 %
 %  More About:
@@ -199,9 +207,13 @@ function out = mdMDPtest(Y, varargin)
 %  Small p-values indicate that the change in distances is larger than what
 %  is expected under the MCAR bootstrap model.
 %
-%  For alpha=0 the function also reports an analytical Gaussian benchmark
-%  for the mean difference and mean log-ratio. The bootstrap p-values in
-%  out.pvalue remain the primary finite-sample calibration.
+%  The function also reports an analytical Gaussian benchmark for the mean
+%  difference and mean log-ratio. For alpha=0 the benchmark is closed form.
+%  For alpha>0 and method='pri', the TEM part is analytical and the robust
+%  complete-case influence is evaluated by delete-one jackknife. The
+%  bootstrap p-values in out.pvalue remain the primary finite-sample
+%  calibration.
+%
 % See also: mdEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
 %
 % References:
@@ -459,20 +471,26 @@ Ycc = Y(completeIdx,:);
 % Distances based on complete rows only
 d2_cc = mahalFS(Ycc, muCC, SigCC);
 
-% Distances based on EM/TEM fit using all rows
-[d2_all_cc, muHat, SigHat] = local_fit_and_get_complete_distances( ...
+% Distances based on EM/TEM fit using all rows. The fitted object is kept
+% because the alpha>0 analytical benchmark needs the final TEM weights and
+% pattern-wise trimming information.
+[d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distances( ...
     Y, completeIdx, alpha, method, tol);
 
 % Observed statistics
 Tobs = local_statistic(d2_cc, d2_all_cc,eps0);
 
 % Analytical Gaussian benchmark for the two mean statistics. The
-% bootstrap remains the primary finite-sample calibration.
+% bootstrap remains the primary finite-sample calibration. For alpha>0
+% the TEM part is evaluated from the analytical influence function and the
+% robust complete-case influence is evaluated by a delete-one jackknife.
 if alpha == 0
     asympt = local_classical_asymptotic(maskMiss, SigHat, nComplete, ...
         Tobs, eps0);
 else
-    asympt = local_unavailable_asymptotic(nComplete/n);
+    asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
+        alpha, method, robustClass, robustEff, robustBonflev, ...
+        Tobs, eps0);
 end
 
 % Bootstrap under MCAR
@@ -758,7 +776,7 @@ end
 end
 
 
-function [d2_all_cc, muHat, SigHat] = local_fit_and_get_complete_distances( ...
+function [d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distances( ...
     Y, completeIdx, alpha, method, tol)
 % Compute distances for complete rows after fitting EM/TEM on all data.
 
@@ -795,6 +813,365 @@ T = [T1 T2 T3 T4];
 end
 
 % -------------------------------------------------------------------------
+function asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
+    alpha, method, robustClass, robustEff, robustBonflev, Tobs, eps0)
+%local_tem_asymptotic Analytical alpha>0 TEM sandwich benchmark.
+%
+% The implementation follows the scalar influence-function representation
+%
+%   J_eff' * b = aSigma,
+%   -aSigma' * psi_TEM(W) = b' * xi(W),
+%
+% where xi(W)=vech{w_R(U_R-Sigma)}. The complete-case contribution to the
+% MDP statistic is C*zeta_C/q. The robust complete-case scalar influence
+% zeta_C is evaluated by a delete-one jackknife. Consequently the TEM part
+% of the calculation is analytical, while the estimator-specific robust
+% complete-case influence is evaluated numerically.
+%
+% The current Jacobian implementation is restricted to method='pri'. This
+% is the parameter-free additive distance adjustment used in the theoretical
+% derivation. In particular, detMap would require additional derivatives
+% because its adjustment depends on Sigma.
+
+[n,p] = size(Y);
+qhat = sum(completeIdx)/n;
+s = p*(p+1)/2;
+
+asympt = local_unavailable_asymptotic(qhat);
+asympt.reason = '';
+asympt.VA = NaN;
+asympt.mode = 'TEM influence-function sandwich';
+asympt.theoryStatus = 'available';
+asympt.TEM = struct('available',false,'sigma2',NaN,'threshold',NaN, ...
+    'Jrcond',NaN,'nActivePatterns',0,'nPatterns',0);
+asympt.completeCase = struct('influenceMethod','delete-one jackknife', ...
+    'sigma2',NaN,'crossTEMCC',NaN,'nComplete',sum(completeIdx));
+
+if ~strcmpi(method,'pri')
+    asympt.reason = ['For alpha>0 the analytical TEM Jacobian is currently ' ...
+        'implemented only for method=''pri''.'];
+    return
+end
+
+if isempty(outFit) || ~isfield(outFit,'weights') || ...
+        ~isfield(outFit,'loc') || ~isfield(outFit,'cov')
+    asympt.reason = 'The fitted TEM object does not contain the required fields.';
+    return
+end
+
+muHat = outFit.loc(:);
+SigmaHat = (outFit.cov + outFit.cov')/2;
+if any(~isfinite(SigmaHat(:))) || rcond(SigmaHat) <= 1e-12
+    asympt.reason = 'The fitted TEM scatter matrix is numerically singular.';
+    return
+end
+
+% Duplication matrix and derivative of log|Sigma|.
+Dp = local_duplication_matrix(p);
+K = SigmaHat\eye(p);
+K = (K+K')/2;
+aSigma = Dp' * K(:);
+
+% Reconstruct the common adjusted-distance threshold used by TEM. For the
+% pri adjustment, c = a_g + p-p_g. The kinfo values are from the last TEM
+% concentration step and are therefore preferable to recomputing the
+% threshold from rounded final distances. A final-distance fallback is kept
+% for safety.
+cthr = NaN;
+if isfield(outFit,'kinfo') && istable(outFit.kinfo) && ~isempty(outFit.kinfo) && ...
+        all(ismember({'pobs','athr'},outFit.kinfo.Properties.VariableNames))
+    okc = isfinite(outFit.kinfo.athr) & outFit.kinfo.athr > 0;
+    if any(okc)
+        cvals = outFit.kinfo.athr(okc) + p - outFit.kinfo.pobs(okc);
+        cthr = median(cvals(isfinite(cvals)));
+    end
+end
+
+[d2part,poss] = mdPartialMD(Y,muHat,SigmaHat);
+d2adj = mdPartialMD2full(d2part,p,poss,'method','pri');
+w = outFit.weights(:) > 0;
+
+if ~isfinite(cthr)
+    if ~any(w & isfinite(d2adj))
+        asympt.reason = 'Unable to reconstruct the final TEM trimming threshold.';
+        return
+    end
+    cthr = max(d2adj(w & isfinite(d2adj)));
+end
+
+% Missingness patterns and empirical pattern probabilities.
+[patt,~,ic] = unique(maskMiss,'rows');
+G = size(patt,1);
+asympt.TEM.nPatterns = G;
+
+J = zeros(s,s);
+active = false(G,1);
+kgVec = NaN(G,1);
+Lcell = cell(G,1);
+Vcell = cell(G,1);
+obsCell = cell(G,1);
+
+% Build the effective scatter Jacobian pattern by pattern. For pri,
+% a_g(c)=c-(p-p_g) and therefore dot(a_g)=1.
+for g = 1:G
+    obs = find(~patt(g,:));
+    mis = find(patt(g,:));
+    pg = numel(obs);
+    pig = sum(ic==g)/n;
+    obsCell{g} = obs;
+
+    if pg == 0
+        continue
+    end
+
+    ag = cthr - (p-pg);
+    if ~isfinite(ag) || ag <= 0
+        continue
+    end
+
+    gammag = chi2cdf(ag,pg);
+    fg = chi2pdf(ag,pg);
+    kg = chi2cdf(ag,pg+2)/gammag;
+
+    if ~isfinite(kg) || kg <= 0 || ~isfinite(fg)
+        continue
+    end
+
+    SigmaG = SigmaHat(obs,obs);
+    SigmaG = (SigmaG+SigmaG')/2;
+    if rcond(SigmaG) <= 1e-12
+        asympt.reason = ['A pattern-specific covariance block is numerically ' ...
+            'singular; TEM analytical benchmark not computed.'];
+        return
+    end
+    BG = SigmaG\eye(pg);
+    BG = (BG+BG')/2;
+
+    Lg = zeros(p,pg);
+    Lg(obs,:) = eye(pg);
+    Vg = zeros(p,p);
+
+    if ~isempty(mis)
+        Ag = SigmaHat(mis,obs)/SigmaG;
+        Cg = SigmaHat(mis,mis)-Ag*SigmaHat(obs,mis);
+        Cg = (Cg+Cg')/2;
+        Lg(mis,:) = Ag;
+        Vg(mis,mis) = Cg;
+    end
+
+    ug = -gammag + 2*ag^2*fg/(pg*(pg+2)*kg);
+    vg = fg*(ag^2/(pg*(pg+2)*kg)-ag/pg);
+    LSigmaL = Lg*SigmaG*Lg';
+
+    for h = 1:s
+        H = reshape(Dp(:,h),p,p);
+        Hg = H(obs,obs);
+        tg = trace(BG*Hg);
+        JH = ug*(Lg*Hg*Lg') + vg*tg*LSigmaL;
+        J(:,h) = J(:,h) + pig*local_vech(JH);
+    end
+
+    active(g) = true;
+    kgVec(g) = kg;
+    Lcell{g} = Lg;
+    Vcell{g} = Vg;
+end
+
+asympt.TEM.threshold = cthr;
+asympt.TEM.nActivePatterns = sum(active);
+
+if ~any(active)
+    asympt.reason = 'No active missingness pattern is available at the TEM threshold.';
+    return
+end
+
+Jrcond = rcond(J);
+asympt.TEM.Jrcond = Jrcond;
+if ~isfinite(Jrcond) || Jrcond <= 1e-12
+    asympt.reason = ['The effective TEM scatter Jacobian is numerically ' ...
+        'singular; analytical benchmark not computed.'];
+    return
+end
+
+% b gives the scalar projection needed by TD,mean without constructing the
+% full TEM covariance matrix.
+b = J'\aSigma;
+
+% Empirical values of xi_i=vech{w_i(U_i-Sigma)}. The theoretical exact
+% pattern factor is used here, rather than the finite-sample shrinkage of
+% unstable factors that mdTEM may apply internally.
+Xi = zeros(n,s);
+for i = 1:n
+    if ~w(i)
+        continue
+    end
+    g = ic(i);
+    if ~active(g)
+        continue
+    end
+
+    obs = obsCell{g};
+    zi = Y(i,obs)' - muHat(obs);
+    xhat = Lcell{g}*zi;
+    Ui = (xhat*xhat')/kgVec(g) + Vcell{g};
+    Xi(i,:) = local_vech(Ui-SigmaHat)';
+end
+
+% b'xi is the TEM contribution to the influence function of TD,mean,
+% because TD,mean has the opposite sign of aSigma'psi_TEM.
+temContribution = Xi*b;
+temContribution = temContribution-mean(temContribution);
+sigmaTEM2 = mean(temContribution.^2);
+asympt.TEM.available = true;
+asympt.TEM.sigma2 = sigmaTEM2;
+
+% Evaluate the scalar influence of the robust complete-case scatter by a
+% delete-one jackknife. The same random-number state is reset before every
+% robust refit so that stochastic subsampling in MCD/MM does not inject
+% avoidable algorithmic noise into the jackknife differences.
+Ycc = Y(completeIdx,:);
+[zetaC,ccReason] = local_cc_scalar_jackknife(Ycc,alpha,robustClass, ...
+    robustEff,robustBonflev,aSigma);
+
+if ~isempty(ccReason)
+    asympt.reason = ccReason;
+    return
+end
+
+ccContribution = zeros(n,1);
+ccContribution(completeIdx) = zetaC/qhat;
+ccContribution = ccContribution-mean(ccContribution);
+
+% End-to-end influence of TD,mean:
+%   zeta_D = b'xi + C*zeta_C/q.
+zetaD = temContribution + ccContribution;
+zetaD = zetaD-mean(zetaD);
+
+sigmaCC2 = mean(ccContribution.^2);
+crossTEMCC = mean(temContribution.*ccContribution);
+sigmaD2 = mean(zetaD.^2);
+
+asympt.completeCase.sigma2 = sigmaCC2;
+asympt.completeCase.crossTEMCC = crossTEMCC;
+asympt.completeCase.nComplete = size(Ycc,1);
+
+if strcmpi(robustClass,'FS')
+    asympt.theoryStatus = ['experimental for adaptive FS: the TEM influence ' ...
+        'calculation is analytical, but the current FS signal/stopping rule ' ...
+        'is outside the fixed-fraction FS asymptotic theorem.'];
+else
+    asympt.theoryStatus = ['TEM influence calculation is analytical; the ' ...
+        'robust complete-case scalar influence is evaluated by delete-one ' ...
+        'jackknife.'];
+end
+
+if ~isfinite(sigmaD2) || sigmaD2 < 0
+    asympt.reason = 'The end-to-end TEM sandwich variance is not finite.';
+    return
+end
+
+% Stabilized log-ratio coefficient.
+kappa = integral(@(q) local_kappa_integrand(q,p,eps0),0,Inf, ...
+    'RelTol',1e-10,'AbsTol',1e-12)/p;
+
+tolVar = 1e-10*max(1,sigmaTEM2+sigmaCC2);
+asympt.available = true;
+asympt.reason = '';
+asympt.qhat = qhat;
+asympt.degenerate = sigmaD2 <= tolVar;
+
+asympt.TDmean.sigma2 = sigmaD2;
+asympt.TDmean.se = sqrt(sigmaD2/n);
+asympt.TDmean.components = struct('TEM',sigmaTEM2, ...
+    'completeCase',sigmaCC2,'twiceCross',2*crossTEMCC);
+
+asympt.TLmean.kappa = kappa;
+asympt.TLmean.sigma2 = kappa^2*sigmaD2;
+asympt.TLmean.se = sqrt(asympt.TLmean.sigma2/n);
+
+if asympt.degenerate
+    asympt.TDmean.z = NaN;
+    asympt.TDmean.pvalue = NaN;
+    asympt.TLmean.z = NaN;
+    asympt.TLmean.pvalue = NaN;
+else
+    asympt.TDmean.z = Tobs(4)/asympt.TDmean.se;
+    asympt.TDmean.pvalue = erfc(abs(asympt.TDmean.z)/sqrt(2));
+    asympt.TLmean.z = Tobs(2)/asympt.TLmean.se;
+    asympt.TLmean.pvalue = erfc(abs(asympt.TLmean.z)/sqrt(2));
+end
+end
+
+% -------------------------------------------------------------------------
+function [zetaC,reason] = local_cc_scalar_jackknife(Ycc,alpha,robustClass, ...
+    robustEff,robustBonflev,aSigma)
+%local_cc_scalar_jackknife Delete-one estimate of the robust scatter IF.
+%
+% If theta_hat is asymptotically linear on ncc complete observations, then
+% (ncc-1)*(theta_hat-theta_hat_{(-i)}) estimates the centered influence.
+% After centering, the common full-sample estimate cancels, so it is enough
+% to center the scalar leave-one-out estimates themselves.
+
+ncc = size(Ycc,1);
+zetaC = [];
+reason = '';
+
+if ncc < 5
+    reason = 'Too few complete observations for the robust delete-one influence.';
+    return
+end
+
+looScalar = NaN(ncc,1);
+rngState = rng;
+cleanupObj = onCleanup(@() rng(rngState)); %#ok<NASGU>
+
+for i = 1:ncc
+    keep = true(ncc,1);
+    keep(i) = false;
+    try
+        % Reset the state to pair stochastic robust fits across deletions.
+        rng(rngState)
+        [~,SigMinus] = local_complete_case_fit(Ycc(keep,:),alpha, ...
+            robustClass,robustEff,robustBonflev);
+        if any(~isfinite(SigMinus(:)))
+            reason = sprintf(['Nonfinite robust scatter in delete-one fit ' ...
+                'for complete observation %d.'],i);
+            zetaC = [];
+            return
+        end
+        looScalar(i) = aSigma' * local_vech((SigMinus+SigMinus')/2);
+    catch ME
+        reason = sprintf(['Robust delete-one fit failed for complete ' ...
+            'observation %d: %s'],i,ME.message);
+        zetaC = [];
+        return
+    end
+end
+
+if any(~isfinite(looScalar))
+    reason = 'The robust delete-one influence contains nonfinite values.';
+    return
+end
+
+zetaC = -(ncc-1)*(looScalar-mean(looScalar));
+end
+
+% -------------------------------------------------------------------------
+function v = local_vech(S)
+%local_vech Lower-triangular half-vectorization, column by column.
+
+p = size(S,1);
+v = zeros(p*(p+1)/2,1);
+k = 0;
+for j = 1:p
+    for i = j:p
+        k = k+1;
+        v(k) = S(i,j);
+    end
+end
+end
+
+% -------------------------------------------------------------------------
 function asympt = local_classical_asymptotic(maskMiss, SigmaHat, ...
     nComplete, Tobs, eps0)
 %local_classical_asymptotic Analytical benchmark for alpha=0.
@@ -821,6 +1198,9 @@ Dp = local_duplication_matrix(p);
 SigmaHat = (SigmaHat + SigmaHat')/2;
 K = SigmaHat\eye(p);
 K = (K + K')/2;
+
+% a_\Sigma=D_p^{\mathsf T}\operatorname{vec}(\Sigma^{-1}),
+% Equation (25)
 aSigma = Dp' * K(:);
 
 % Observed-data covariance information, averaged over the empirical
@@ -925,8 +1305,7 @@ function asympt = local_unavailable_asymptotic(qhat)
 
 asympt = struct;
 asympt.available = false;
-asympt.reason = ['Analytical benchmark currently implemented only for ' ...
-    'the classical alpha=0 case.'];
+asympt.reason = 'Analytical benchmark is not available for this configuration.';
 asympt.qhat = qhat;
 asympt.VA = NaN;
 asympt.degenerate = false;
