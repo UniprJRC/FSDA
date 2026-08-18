@@ -98,10 +98,11 @@ function out = mdMDPtest(Y, varargin)
 %           cases whose complete-case squared Mahalanobis distance is not
 %           larger than chi2inv(filterlev,p) (MDP-F).
 %
-%           The median statistics are not affected by this option. The
-%           aggregation rule acts only on the final two means and does not
-%           alter the EM/TEM fit. The selected mean aggregation rule is
-%           reconstructed independently in every bootstrap sample.
+%           The median statistics are not affected by this option. With
+%           coupledtrim=false (default), the aggregation rule acts only on
+%           the final two means and does not alter the EM/TEM fit. The
+%           selected mean aggregation rule is reconstructed independently
+%           in every bootstrap sample.
 %           Example - 'aggregation','inlier'
 %           Data Types - char | string
 %
@@ -111,6 +112,20 @@ function out = mdMDPtest(Y, varargin)
 %           This option is ignored for the other aggregation rules.
 %           Example - 'filterlev',0.975
 %           Data Types - double
+%
+% coupledtrim : Couple complete-case outlier decisions to TEM. Logical.
+%           The default is false. This option is available only when
+%           alpha>0 and aggregation='inlier'. When true, complete cases
+%           declared as outliers by the selected robust complete-case
+%           estimator are forced to have zero weight in every TEM
+%           concentration step. TEM still applies its own trimming rule to
+%           the full data; the coupled weight is the product of the TEM
+%           trimming indicator and the fixed complete-case eligibility
+%           indicator. This mode is intended for sensitivity analysis and
+%           is not covered by the analytical reference law returned for
+%           the uncoupled procedure.
+%           Example - 'coupledtrim',true
+%           Data Types - logical
 %
 %  robust  : Robust estimator for the complete cases. Character, string
 %            or structure. This option is used only when alpha is strictly
@@ -167,6 +182,19 @@ function out = mdMDPtest(Y, varargin)
 %          out.filterlev   = Value of input option filterlev.
 %          out.filterCutoff = Fixed chi-square cutoff used by MDP-F. It is
 %                            NaN unless aggregation='fixed'.
+%          out.coupledtrim = Logical flag indicating whether estimator-
+%                            declared complete-case outliers are forced to
+%                            zero weight inside TEM.
+%          out.coupledRows = Original row numbers forced to zero TEM weight.
+%          out.nCoupledCC = Number of observed complete cases forced to zero
+%                            TEM weight.
+%          out.nCoupledBoot = Number of complete cases forced to zero TEM
+%                            weight in each retained bootstrap sample.
+%          out.TEMweights = Final TEM weights used for the observed data.
+%          out.TEMinternalWeights = Final unconstrained TEM concentration
+%                            indicators before multiplication by the fixed
+%                            complete-case eligibility mask. For uncoupled
+%                            fits this equals out.TEMweights.
 %          out.meanWeightsCC = Logical vector of length out.nComplete. True
 %                            entries identify complete cases entering the
 %                            two mean statistics.
@@ -261,7 +289,9 @@ function out = mdMDPtest(Y, varargin)
 %  The selected means use all complete cases for aggregation='ordinary',
 %  the estimator-defined complete-case inliers for aggregation='inlier',
 %  and the fixed robust-distance gate for aggregation='fixed'. The same
-%  rule is re-estimated in every bootstrap sample.
+%  rule is re-estimated in every bootstrap sample. With coupledtrim=true,
+%  estimator-declared complete-case outliers are additionally forced to zero
+%  weight in every TEM concentration step.
 %
 %  Small p-values indicate that the change in distances is larger than what
 %  is expected under the MCAR bootstrap model.
@@ -270,8 +300,11 @@ function out = mdMDPtest(Y, varargin)
 %  MDP-I uses the same first-order variance as MDP-U under O_p(1) clean
 %  exclusions. MDP-F multiplies the base mean-difference variance by kc^2
 %  and the base stabilized-log-ratio variance by the appropriate truncated
-%  radial coefficient lambda^2. The bootstrap p-values in out.pvalue remain
-%  the primary finite-sample calibration.
+%  radial coefficient lambda^2. When coupledtrim=true, the analytical
+%  benchmark is deliberately disabled because the external eligibility mask
+%  changes the TEM estimating equations; bootstrap calibration is used. The
+%  bootstrap p-values in out.pvalue remain the primary finite-sample
+%  calibration.
 %
 % See also: mdEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
 %
@@ -430,6 +463,20 @@ function out = mdMDPtest(Y, varargin)
     disp([out.asympt.TDmean.sigma2 out.asympt.TLmean.sigma2])
 %}
 
+%{
+    %% Example 10: Coupled complete-case outlier trimming in TEM.
+    % This sensitivity mode uses the MDP-I aggregation rule and additionally
+    % forces estimator-declared complete-case outliers to zero TEM weight.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
+        'aggregation','inlier','coupledtrim',true,'nsimul',199);
+    disp(out.nCoupledCC)
+    disp(out.coupledRows)
+    disp(out.pvalue)
+    disp(out.asympt.reason)
+%}
+
 %% Beginning of code
 
 if ~ismatrix(Y) || ~isnumeric(Y)
@@ -449,6 +496,7 @@ options.robust  ="FS";
 options.eps0    = 1e-12;
 options.aggregation = 'ordinary';
 options.filterlev = 0.99;
+options.coupledtrim = false;
 
 % Check supplied options
 if ~isempty(varargin)
@@ -477,6 +525,7 @@ robust  = options.robust;
 eps0 = options.eps0;
 aggregation = local_parse_aggregation(options.aggregation);
 filterlev = options.filterlev;
+coupledtrim = options.coupledtrim;
 
 if ~isscalar(alpha) || ~isnumeric(alpha) || alpha < 0 || alpha > 0.5
     error('FSDA:mdMDPtest:WrongInputOpt', ...
@@ -507,6 +556,22 @@ if ~isscalar(filterlev) || ~isnumeric(filterlev) || ...
         ~isfinite(filterlev) || filterlev <= 0 || filterlev >= 1
     error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Option filterlev must be a finite scalar in the interval (0,1).');
+end
+
+if ~(islogical(coupledtrim) && isscalar(coupledtrim))
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'Option coupledtrim must be a logical scalar.');
+end
+
+if coupledtrim && alpha == 0
+    error('FSDA:mdMDPtest:CoupledNeedsRobust', ...
+        'Option coupledtrim=true requires alpha>0.');
+end
+
+if coupledtrim && ~strcmp(aggregation,'inlier')
+    error('FSDA:mdMDPtest:CoupledNeedsInlier', ...
+        ['Option coupledtrim=true is currently defined only for ' ...
+         'aggregation=''inlier''.']);
 end
 
 if strcmp(aggregation,'inlier') && alpha == 0
@@ -572,11 +637,21 @@ Ycc = Y(completeIdx,:);
 % Distances based on complete rows only
 d2_cc = mahalFS(Ycc, muCC, SigCC);
 
+% Construct the complete-case eligibility mask used by the optional
+% coupled TEM sensitivity mode. With coupledtrim=false no row is forced out.
+forcedZeroTEM = false(n,1);
+if coupledtrim
+    ccOutlierMask = local_cc_outlier_mask(outRob,nComplete);
+    completeRows = find(completeIdx);
+    forcedZeroTEM(completeRows(ccOutlierMask)) = true;
+end
+
 % Distances based on EM/TEM fit using all rows. The fitted object is kept
 % because the alpha>0 analytical benchmark needs the final TEM weights and
-% pattern-wise trimming information.
+% pattern-wise trimming information. In coupled mode the fixed eligibility
+% mask is multiplied by TEM's own concentration weights at every iteration.
 [d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distances( ...
-    Y, completeIdx, alpha, method, tol);
+    Y, completeIdx, alpha, method, tol, forcedZeroTEM);
 
 % Construct the observed-data aggregation rule for the two mean statistics.
 % The median statistics always use all complete cases.
@@ -594,21 +669,34 @@ Tobs = local_statistic(d2_cc,d2_all_cc,eps0,meanWeightsCC);
 % Analytical Gaussian benchmark for the selected mean statistics. First
 % compute the base estimator-discrepancy variance and then apply the scalar
 % first-order coefficient implied by the selected aggregation rule.
-if alpha == 0
-    asympt = local_classical_asymptotic(maskMiss, SigHat, nComplete, ...
-        Tobs, eps0);
+if coupledtrim
+    asympt = local_unavailable_asymptotic(nComplete/n);
+    asympt.reason = ['Analytical calibration is not supplied when ' ...
+        'coupledtrim=true because the external complete-case eligibility ' ...
+        'constraint changes the TEM estimating equations. Use the ' ...
+        'mask-preserving bootstrap for this sensitivity mode.'];
+    asympt.mode = 'coupled TEM sensitivity';
+    asympt.theoryStatus = ['Bootstrap calibration only for coupled TEM. ' ...
+        'The uncoupled analytical reference law is not applied.'];
+    asympt.aggregation = aggregation;
 else
-    asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
-        alpha, method, robustClass, robustEff, robustBonflev, ...
-        Tobs, eps0);
-end
+    if alpha == 0
+        asympt = local_classical_asymptotic(maskMiss, SigHat, nComplete, ...
+            Tobs, eps0);
+    else
+        asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
+            alpha, method, robustClass, robustEff, robustBonflev, ...
+            Tobs, eps0);
+    end
 
-asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
-    p,eps0,n,Tobs);
+    asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
+        p,eps0,n,Tobs);
+end
 
 % Bootstrap under MCAR
 Tboot = NaN(nsimul,4);
 nMeanBoot = NaN(nsimul,1);
+nCoupledBoot = NaN(nsimul,1);
 
 % Use robust complete-case fit to generate bootstrap samples
 SigGen = local_make_spd(SigCC);
@@ -631,9 +719,19 @@ for j = 1:nsimul
 
     d2_cc_star = mahalFS(YccStar, muCCStar, SigCCStar);
 
-    % EM/TEM distances for the same complete rows
+    % Reconstruct the coupled complete-case eligibility mask independently
+    % in every bootstrap sample.
+    forcedZeroStar = false(n,1);
+    if coupledtrim
+        ccOutlierMaskStar = local_cc_outlier_mask(outRobStar,nComplete);
+        completeRows = find(completeIdx);
+        forcedZeroStar(completeRows(ccOutlierMaskStar)) = true;
+    end
+    nCoupledBoot(j) = sum(forcedZeroStar);
+
+    % EM/TEM distances for the same complete rows.
     d2_all_cc_star = local_fit_and_get_complete_distances( ...
-        Ystar, completeIdx, alpha, method, tol);
+        Ystar, completeIdx, alpha, method, tol, forcedZeroStar);
 
     % Reconstruct the selected aggregation rule inside this bootstrap sample.
     [meanWeightsStar,aggInfoStar] = local_aggregation_weights( ...
@@ -650,6 +748,7 @@ end
 validBoot = all(~isnan(Tboot),2);
 Tboot = Tboot(validBoot,:);
 nMeanBoot = nMeanBoot(validBoot);
+nCoupledBoot = nCoupledBoot(validBoot);
 
 if isempty(Tboot)
     error('FSDA:mdMDPtest:NoValidBootstrap', ...
@@ -673,6 +772,23 @@ out.method      = method;
 out.aggregation = aggregation;
 out.filterlev = filterlev;
 out.filterCutoff = aggInfo.cutoff;
+out.coupledtrim = coupledtrim;
+out.coupledRows = find(forcedZeroTEM);
+out.nCoupledCC = sum(forcedZeroTEM);
+out.nCoupledBoot = nCoupledBoot;
+if isfield(outFit,'weights')
+    out.TEMweights = outFit.weights(:);
+    if isfield(outFit,'internalWeights')
+        out.TEMinternalWeights = outFit.internalWeights(:);
+    else
+        out.TEMinternalWeights = outFit.weights(:);
+    end
+else
+    % Untrimmed EM uses every row; expose this as unit TEM weights so that
+    % the output fields have a consistent length for alpha=0 as well.
+    out.TEMweights = true(n,1);
+    out.TEMinternalWeights = true(n,1);
+end
 out.meanWeightsCC = meanWeightsCC;
 completeRows = find(completeIdx);
 out.meanRows = completeRows(meanWeightsCC);
@@ -701,7 +817,7 @@ end
 
 if alpha > 0
     out.outliersCC = outRob.outliers;
-    out.nOutliersCC = numel(outRob.outliers);
+    out.nOutliersCC = sum(local_cc_outlier_mask(outRob,nComplete));
 else
     out.outliersCC = [];
     out.nOutliersCC = 0;
@@ -907,15 +1023,39 @@ end
 
 
 function [d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distances( ...
-    Y, completeIdx, alpha, method, tol)
-% Compute distances for complete rows after fitting EM/TEM on all data.
+    Y, completeIdx, alpha, method, tol, forcedZero)
+%local_fit_and_get_complete_distances fits EM/TEM and returns complete-row distances.
+%
+% forcedZero is a logical n-vector. When alpha>0 and at least one entry is
+% true, TEM's own concentration indicator is multiplied by ~forcedZero at
+% every iteration. This implements the coupled sensitivity rule without
+% changing the default mdTEM fit.
 
 p = size(Y,2);
+n = size(Y,1);
+if nargin < 6 || isempty(forcedZero)
+    forcedZero = false(n,1);
+else
+    forcedZero = logical(forcedZero(:));
+    if numel(forcedZero) ~= n
+        error('FSDA:mdMDPtest:WrongCoupledMask', ...
+            'The coupled TEM mask must have one entry for every row of Y.');
+    end
+end
 
 if alpha == 0
+    if any(forcedZero)
+        error('FSDA:mdMDPtest:CoupledNeedsRobust', ...
+            'Coupled TEM is available only when alpha>0.');
+    end
     outFit = mdEM(Y);
+elseif any(forcedZero)
+    outFit = local_coupled_tem(Y,forcedZero,alpha,method,tol);
 else
-    outFit = mdTEM(Y,'method',method,'alpha',alpha,'tol',tol,'consistencyfactor','pattern');
+    outFit = mdTEM(Y,'method',method,'alpha',alpha,'tol',tol, ...
+        'consistencyfactor','pattern');
+    outFit.internalWeights = outFit.weights;
+    outFit.forcedZero = forcedZero;
 end
 
 muHat = outFit.loc;
@@ -980,15 +1120,7 @@ switch aggregation
                  'fit returning the field outliers.']);
         end
 
-        outliers = outRob.outliers;
-        if islogical(outliers) && numel(outliers) == ncc
-            A(outliers(:)) = false;
-        elseif ~isempty(outliers)
-            outliers = outliers(:);
-            outliers = outliers(isfinite(outliers) & outliers == floor(outliers) & ...
-                outliers >= 1 & outliers <= ncc);
-            A(unique(outliers)) = false;
-        end
+        A = ~local_cc_outlier_mask(outRob,ncc);
 
     case 'fixed'
         % MDP-F: retain only complete cases inside the fixed robust-distance
@@ -1001,6 +1133,28 @@ info = struct;
 info.nSelected = sum(A);
 info.fractionSelected = info.nSelected/ncc;
 info.cutoff = cutoff;
+end
+
+% -------------------------------------------------------------------------
+function outlierMask = local_cc_outlier_mask(outRob,ncc)
+%local_cc_outlier_mask converts robust complete-case outliers to a logical mask.
+
+outlierMask = false(ncc,1);
+if isempty(outRob) || ~isstruct(outRob) || ~isfield(outRob,'outliers')
+    return
+end
+
+outliers = outRob.outliers;
+if islogical(outliers) && numel(outliers) == ncc
+    outlierMask = outliers(:);
+elseif ~isempty(outliers)
+    outliers = outliers(:);
+    if isnumeric(outliers)
+        outliers = outliers(isfinite(outliers) & outliers == floor(outliers) & ...
+            outliers >= 1 & outliers <= ncc);
+        outlierMask(unique(outliers)) = true;
+    end
+end
 end
 
 % -------------------------------------------------------------------------
@@ -1784,6 +1938,306 @@ end
 
 error('FSDA:mdMDPtest:NonSPD', ...
     'Unable to regularize covariance matrix to positive definiteness.');
+end
+
+
+% -------------------------------------------------------------------------
+function out = local_coupled_tem(Y,forcedZero,alpha,method,tol)
+%local_coupled_tem Pattern-corrected TEM with fixed forced-zero rows.
+%
+% This local sensitivity implementation mirrors the pattern-corrected mdTEM
+% concentration step. At each iteration it first constructs TEM's ordinary
+% indicator wT from the h=floor(n*(1-alpha)) smallest adjusted distances and
+% then applies the fixed eligibility constraint
+%
+%   w = wT .* (~forcedZero).
+%
+% Consequently a complete case rejected by the robust complete-case fit can
+% never contribute to the TEM E/M step. The internal threshold is still the
+% h-th ordinary TEM adjusted-distance threshold. Because the extra exclusion
+% is not generated solely by that radial threshold, the usual pattern-wise
+% Tallis correction is only a working correction in this sensitivity mode;
+% no analytical reference law is attached to the resulting MDP statistic.
+
+[n,p] = size(Y);
+forcedZero = logical(forcedZero(:));
+if numel(forcedZero) ~= n
+    error('FSDA:mdMDPtest:WrongCoupledMask', ...
+        'The coupled TEM mask must have one entry for every row of Y.');
+end
+
+maxiter = 100;
+tol_sigma = true;
+method = string(method);
+
+% Same initialization used by mdTEM.
+mus = mean(Y,1,"omitmissing")';
+X0 = Y;
+for j = 1:p
+    miss = isnan(X0(:,j));
+    X0(miss,j) = mus(j);
+end
+sigs = cov(X0,1);
+
+keep_count = max(0,floor(n*(1-alpha)));
+nanY = isnan(Y);
+w = zeros(n,1);
+wT = zeros(n,1);
+kinfo = [];
+kfactor = 1;
+dif = Inf;
+iter = 0;
+
+while dif > tol && iter < maxiter
+    iter = iter + 1;
+    mus_old = mus;
+    sigs_old = sigs;
+
+    if method == "impMD"
+        Yimp = mdImputeCondMean(Y,mus,sigs);
+        d2_adj = mahalFS(Yimp,mus',sigs);
+        poss = sum(~nanY,2);
+    elseif method == "detMap"
+        [d2,poss] = mdPartialMD(Y,mus,sigs);
+        d2_adj = mdPartialMD2full(d2,p,poss,'method',method, ...
+            'Y',Y,'Sigma',sigs);
+    else
+        [d2,poss] = mdPartialMD(Y,mus,sigs);
+        d2_adj = mdPartialMD2full(d2,p,poss,'method',method);
+    end
+
+    nanMask = isnan(d2_adj);
+    [~,idxSorted] = sort(d2_adj,'ascend','MissingPlacement','last');
+    keepIdx = idxSorted(1:min(keep_count,sum(~nanMask)));
+    if isempty(keepIdx)
+        error('FSDA:mdMDPtest:NoTEMRows', ...
+            'No finite row is available for the coupled TEM concentration step.');
+    end
+
+    % Ordinary TEM concentration indicator and coupled product weight.
+    wT = zeros(n,1);
+    wT(keepIdx) = 1;
+    w = wT;
+    w(forcedZero) = 0;
+    if ~any(w)
+        error('FSDA:mdMDPtest:NoTEMRows', ...
+            'The coupled TEM constraint removes all retained rows.');
+    end
+
+    % Keep the ordinary TEM threshold. The additional fixed exclusion is
+    % represented only through w, exactly as in the product definition.
+    cthr = max(d2_adj(keepIdx));
+
+    kinfo = local_coupled_pattern_factors(nanY,w,poss,cthr,p,n,sigs,method);
+    [mus,sigs,kfactor] = local_coupled_corrected_step(Y,nanY,w,mus, ...
+        sigs,kinfo);
+
+    muDiff = max(abs(mus(:)-mus_old(:)));
+    sigmaDiff = max(abs(sigs(:)-sigs_old(:)));
+    if tol_sigma == true
+        dif = max(muDiff,sigmaDiff);
+    else
+        dif = muDiff;
+    end
+end
+
+out = struct;
+out.loc = mus;
+out.cov = sigs;
+out.iter = iter;
+out.weights = w;
+out.internalWeights = wT;
+out.forcedZero = forcedZero;
+out.kfactor = kfactor;
+out.kinfo = kinfo;
+end
+
+% -------------------------------------------------------------------------
+function kinfo = local_coupled_pattern_factors(nanY,w,poss,cthr,p,n,Sigma,method)
+%local_coupled_pattern_factors Pattern-wise Tallis factors for coupled TEM.
+
+keep = w > 0;
+patt = unique(nanY(keep,:),'rows');
+G = size(patt,1);
+pobs = zeros(G,1);
+nkept = zeros(G,1);
+athr = zeros(G,1);
+gammag = zeros(G,1);
+kg = nan(G,1);
+
+for g = 1:G
+    pg = patt(g,:);
+    rows = keep & all(nanY == pg,2);
+    obs = ~pg;
+    pobs(g) = sum(obs);
+    nkept(g) = sum(rows);
+
+    if pobs(g) == 0
+        athr(g) = 0;
+        gammag(g) = 0;
+        kg(g) = NaN;
+        continue
+    end
+
+    athr(g) = local_coupled_inv_adjust(cthr,pobs(g),p,n,Sigma,obs,method);
+    if athr(g) <= 0 || ~isfinite(athr(g))
+        gammag(g) = 0;
+        kg(g) = NaN;
+    else
+        gammag(g) = chi2cdf(athr(g),pobs(g));
+        if gammag(g) <= 0
+            kg(g) = NaN;
+        else
+            kg(g) = chi2cdf(athr(g),pobs(g)+2)/gammag(g);
+        end
+    end
+end
+
+kinfo = table(pobs,nkept,athr,gammag,kg);
+kbar = local_coupled_weighted_factor(kinfo);
+bad = ~isfinite(kinfo.kg) | kinfo.kg <= 0 | kinfo.kg > 1 | ...
+    kinfo.nkept < max(2,kinfo.pobs);
+kinfo.kg(bad) = kbar;
+end
+
+% -------------------------------------------------------------------------
+function kbar = local_coupled_weighted_factor(kinfo)
+%local_coupled_weighted_factor Information-weighted pattern factor.
+
+ok = isfinite(kinfo.kg) & kinfo.kg > 0 & kinfo.kg <= 1 & kinfo.nkept > 0;
+if ~any(ok)
+    kbar = 1;
+    return
+end
+wgt = kinfo.nkept(ok).*kinfo.pobs(ok);
+kbar = sum(wgt.*kinfo.kg(ok))/sum(wgt);
+if ~isfinite(kbar) || kbar <= 0
+    kbar = 1;
+end
+end
+
+% -------------------------------------------------------------------------
+function a = local_coupled_inv_adjust(c,pg,p,n,Sigma,obs,method)
+%local_coupled_inv_adjust Inverse adjusted-distance map for one pattern.
+
+method = string(method);
+switch method
+    case "pri"
+        a = c-(p-pg);
+    case "expScale"
+        a = c*pg/p;
+    case "zMap"
+        a = pg+sqrt(pg/p)*(c-p);
+    case "detMap"
+        gfull = exp(local_coupled_logdet_spd(Sigma)/p);
+        gobs = exp(local_coupled_logdet_spd(Sigma(obs,obs))/pg);
+        a = c*(pg/p)*(gobs/gfull);
+    case "chiMap"
+        u = chi2cdf(c,p);
+        u = min(max(u,eps),1-eps);
+        a = chi2inv(u,pg);
+    case "betaMap"
+        cn = (n-1)^2/n;
+        if n <= p+1 || n <= pg+1
+            a = c;
+            return
+        end
+        u = min(max(c/cn,0),1-eps);
+        al = betacdf(u,p/2,(n-p-1)/2);
+        al = min(max(al,eps),1-eps);
+        a = cn*betainv(al,pg/2,(n-pg-1)/2);
+    case "impMD"
+        a = c;
+    otherwise
+        a = c;
+end
+end
+
+% -------------------------------------------------------------------------
+function [musNew,sigsNew,kbar] = local_coupled_corrected_step(Y,nanY,w, ...
+    mus,sigs,kinfo)
+%local_coupled_corrected_step Pattern-wise corrected E/M update.
+
+p = size(Y,2);
+mus = mus(:);
+keep = w > 0;
+S = zeros(p,p);
+m1 = zeros(p,1);
+h = 0;
+patt = unique(nanY(keep,:),'rows');
+
+for g = 1:size(patt,1)
+    pg = patt(g,:);
+    rows = keep & all(nanY == pg,2);
+    hg = sum(rows);
+    if hg == 0
+        continue
+    end
+
+    o = find(~pg);
+    m = find(pg);
+    if isempty(o)
+        continue
+    end
+
+    idx = find(kinfo.pobs == numel(o) & kinfo.nkept == hg,1);
+    if isempty(idx)
+        kg = 1;
+    else
+        kg = kinfo.kg(idx);
+    end
+    if ~isfinite(kg) || kg <= 0
+        kg = 1;
+    end
+
+    Z = Y(rows,o)-mus(o)';
+    Szz = (Z'*Z)/kg;
+    sZ = sum(Z,1)';
+
+    S(o,o) = S(o,o)+Szz;
+    m1(o) = m1(o)+sZ;
+
+    if ~isempty(m)
+        Soo = sigs(o,o);
+        Ag = sigs(m,o)/Soo;
+        Cg = sigs(m,m)-Ag*sigs(o,m);
+        Cg = (Cg+Cg')/2;
+
+        SzzAg = Szz*Ag';
+        S(o,m) = S(o,m)+SzzAg;
+        S(m,o) = S(m,o)+SzzAg';
+        S(m,m) = S(m,m)+Ag*SzzAg+hg*Cg;
+        m1(m) = m1(m)+Ag*sZ;
+    end
+    h = h+hg;
+end
+
+if h == 0
+    musNew = mus;
+    sigsNew = sigs;
+    kbar = 1;
+    return
+end
+
+m1 = m1/h;
+S = S/h;
+musNew = mus+m1;
+sigsNew = S-(m1*m1');
+sigsNew = (sigsNew+sigsNew')/2;
+kbar = local_coupled_weighted_factor(kinfo);
+end
+
+% -------------------------------------------------------------------------
+function val = local_coupled_logdet_spd(S)
+%local_coupled_logdet_spd Stable log determinant for a positive scatter matrix.
+
+S = (S+S')/2;
+[R,flag] = chol(S);
+if flag == 0
+    val = 2*sum(log(diag(R)));
+else
+    val = log(max(det(S),realmin));
+end
 end
 
 %FScategory:MULT-MissingData
