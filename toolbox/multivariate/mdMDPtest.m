@@ -84,6 +84,34 @@ function out = mdMDPtest(Y, varargin)
 %           Example - 'eps0',1e-10
 %           Data Types - double
 %
+% aggregation : Mean aggregation rule. Character or string. Possible values are
+%           'ordinary', 'inlier' or 'fixed'. The default is 'ordinary'.
+%
+%           'ordinary' computes the two mean statistics using all complete
+%           cases (MDP-U).
+%
+%           'inlier' computes the two mean statistics using only complete
+%           cases not declared as outliers by the selected robust
+%           complete-case estimator (MDP-I). This option requires alpha>0.
+%
+%           'fixed' computes the two mean statistics using only complete
+%           cases whose complete-case squared Mahalanobis distance is not
+%           larger than chi2inv(filterlev,p) (MDP-F).
+%
+%           The median statistics are not affected by this option. The
+%           aggregation rule acts only on the final two means and does not
+%           alter the EM/TEM fit. The selected mean aggregation rule is
+%           reconstructed independently in every bootstrap sample.
+%           Example - 'aggregation','inlier'
+%           Data Types - char | string
+%
+% filterlev : Probability level defining the fixed robust-distance gate for
+%           aggregation='fixed'. Scalar in the interval (0,1). The cutoff
+%           is c=chi2inv(filterlev,p). The default value is 0.99.
+%           This option is ignored for the other aggregation rules.
+%           Example - 'filterlev',0.975
+%           Data Types - double
+%
 %  robust  : Robust estimator for the complete cases. Character, string
 %            or structure. This option is used only when alpha is strictly
 %            positive. If robust is a character vector or string scalar,
@@ -134,6 +162,20 @@ function out = mdMDPtest(Y, varargin)
 %                            values of the four statistics.
 %          out.alpha       = Value of input option alpha.
 %          out.method      = Value of input option method.
+%          out.aggregation = Mean aggregation rule actually used:
+%                            'ordinary', 'inlier' or 'fixed'.
+%          out.filterlev   = Value of input option filterlev.
+%          out.filterCutoff = Fixed chi-square cutoff used by MDP-F. It is
+%                            NaN unless aggregation='fixed'.
+%          out.meanWeightsCC = Logical vector of length out.nComplete. True
+%                            entries identify complete cases entering the
+%                            two mean statistics.
+%          out.meanRows    = Original row numbers entering the two mean
+%                            statistics.
+%          out.nMeanCC     = Number of complete cases entering the two mean
+%                            statistics.
+%          out.nMeanBoot   = Number of complete cases entering the two mean
+%                            statistics in each retained bootstrap sample.
 %          out.nComplete   = Number of complete rows.
 %          out.completeIdx = Logical index of complete rows.
 %          out.locCC       = Complete-case estimate of location.
@@ -169,7 +211,20 @@ function out = mdMDPtest(Y, varargin)
 %          out.eps0        = Numerical stabilizer used in the log-distance
 %                            ratio.
 %          out.asympt      = Structure containing the analytical Gaussian
-%                            benchmark for the two mean statistics. For
+%                            benchmark for the two selected mean statistics.
+%                            For MDP-U the ordinary first-order coefficients
+%                            are used. MDP-I inherits the same coefficients
+%                            under the condition that the complete-case rule
+%                            excludes only O_p(1) clean observations. For
+%                            MDP-F the base estimator-discrepancy variance is
+%                            multiplied by kc^2 for the mean distance
+%                            difference and by lambda^2 for the stabilized
+%                            mean log-ratio, where
+%                              kc=F_{p+2}(c)/F_p(c)
+%                            and lambda is the corresponding truncated radial
+%                            coefficient. Fields aggregation, filterCutoff,
+%                            gammaFilter, kc, lambda, baseSigmaD2 and
+%                            baseKappa document the applied scaling. For
 %                            alpha=0, the classical closed-form covariance
 %                            information formula is used. For alpha>0 and
 %                            method='pri', the pattern-wise TEM influence
@@ -181,8 +236,7 @@ function out = mdMDPtest(Y, varargin)
 %                            The fields TDmean and TLmean contain the
 %                            asymptotic variance of sqrt(n)T (sigma2), the
 %                            standard error of T (se), the studentized value
-%                            (z), and the two-sided asymptotic p-value. The
-%                            TLmean structure also contains kappa. For
+%                            (z), and the two-sided asymptotic p-value. For
 %                            alpha>0, out.asympt.TEM contains diagnostics for
 %                            the analytical TEM contribution and
 %                            out.asympt.completeCase documents the numerical
@@ -200,19 +254,24 @@ function out = mdMDPtest(Y, varargin)
 %  statistics:
 %
 %    1) median( log((d2_all + eps0) ./ (d2_cc + eps0)) );
-%    2) mean  ( log((d2_all + eps0) ./ (d2_cc + eps0)) );
+%    2) selected mean of log((d2_all + eps0) ./ (d2_cc + eps0));
 %    3) median( d2_all - d2_cc );
-%    4) mean  ( d2_all - d2_cc );
+%    4) selected mean of d2_all - d2_cc.
+%
+%  The selected means use all complete cases for aggregation='ordinary',
+%  the estimator-defined complete-case inliers for aggregation='inlier',
+%  and the fixed robust-distance gate for aggregation='fixed'. The same
+%  rule is re-estimated in every bootstrap sample.
 %
 %  Small p-values indicate that the change in distances is larger than what
 %  is expected under the MCAR bootstrap model.
 %
-%  The function also reports an analytical Gaussian benchmark for the mean
-%  difference and mean log-ratio. For alpha=0 the benchmark is closed form.
-%  For alpha>0 and method='pri', the TEM part is analytical and the robust
-%  complete-case influence is evaluated by delete-one jackknife. The
-%  bootstrap p-values in out.pvalue remain the primary finite-sample
-%  calibration.
+%  The analytical Gaussian benchmark follows the selected mean aggregation.
+%  MDP-I uses the same first-order variance as MDP-U under O_p(1) clean
+%  exclusions. MDP-F multiplies the base mean-difference variance by kc^2
+%  and the base stabilized-log-ratio variance by the appropriate truncated
+%  radial coefficient lambda^2. The bootstrap p-values in out.pvalue remain
+%  the primary finite-sample calibration.
 %
 % See also: mdEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
 %
@@ -345,6 +404,32 @@ function out = mdMDPtest(Y, varargin)
     disp(out.pvalue)
 %}
 
+%{
+    %% Example 8: Estimator-defined inlier mean (MDP-I).
+    % The medians use all complete cases. The two means use only complete
+    % cases not declared as outliers by the MCD complete-case fit.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
+        'aggregation','inlier','nsimul',199);
+    disp(out.nMeanCC)
+    disp(out.pvalue)
+%}
+
+%{
+    %% Example 9: Fixed robust-distance filtered mean (MDP-F).
+    % Use the chi-square 0.99 cutoff on the complete-case robust distances.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
+        'aggregation','fixed','filterlev',0.99,'nsimul',199);
+    disp(out.filterCutoff)
+    disp(out.nMeanCC)
+    disp(out.pvalue)
+    disp([out.asympt.kc out.asympt.lambda])
+    disp([out.asympt.TDmean.sigma2 out.asympt.TLmean.sigma2])
+%}
+
 %% Beginning of code
 
 if ~ismatrix(Y) || ~isnumeric(Y)
@@ -362,6 +447,8 @@ options.tol     = 1e-10;
 options.plots   = false;
 options.robust  ="FS";
 options.eps0    = 1e-12;
+options.aggregation = 'ordinary';
+options.filterlev = 0.99;
 
 % Check supplied options
 if ~isempty(varargin)
@@ -388,6 +475,8 @@ tol     = options.tol;
 plots   = options.plots;
 robust  = options.robust;
 eps0 = options.eps0;
+aggregation = local_parse_aggregation(options.aggregation);
+filterlev = options.filterlev;
 
 if ~isscalar(alpha) || ~isnumeric(alpha) || alpha < 0 || alpha > 0.5
     error('FSDA:mdMDPtest:WrongInputOpt', ...
@@ -412,6 +501,18 @@ end
 if ~isscalar(eps0) || ~isnumeric(eps0) || ~isfinite(eps0) || eps0 <= 0
     error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Option eps0 must be a finite positive scalar.');
+end
+
+if ~isscalar(filterlev) || ~isnumeric(filterlev) || ...
+        ~isfinite(filterlev) || filterlev <= 0 || filterlev >= 1
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'Option filterlev must be a finite scalar in the interval (0,1).');
+end
+
+if strcmp(aggregation,'inlier') && alpha == 0
+    error('FSDA:mdMDPtest:InlierNeedsRobust', ...
+        ['Aggregation ''inlier'' requires alpha>0 because the complete-case ' ...
+         'outlier set must be supplied by a robust complete-case fit.']);
 end
 
 % Parse the complete-case robust estimator. A simple character/string
@@ -477,13 +578,22 @@ d2_cc = mahalFS(Ycc, muCC, SigCC);
 [d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distances( ...
     Y, completeIdx, alpha, method, tol);
 
-% Observed statistics
-Tobs = local_statistic(d2_cc, d2_all_cc,eps0);
+% Construct the observed-data aggregation rule for the two mean statistics.
+% The median statistics always use all complete cases.
+[meanWeightsCC,aggInfo] = local_aggregation_weights(d2_cc,outRob,alpha, ...
+    aggregation,filterlev,p);
 
-% Analytical Gaussian benchmark for the two mean statistics. The
-% bootstrap remains the primary finite-sample calibration. For alpha>0
-% the TEM part is evaluated from the analytical influence function and the
-% robust complete-case influence is evaluated by a delete-one jackknife.
+if aggInfo.nSelected == 0
+    error('FSDA:mdMDPtest:NoAggregationRows', ...
+        'The selected mean aggregation rule retains no complete cases.');
+end
+
+% Observed statistics
+Tobs = local_statistic(d2_cc,d2_all_cc,eps0,meanWeightsCC);
+
+% Analytical Gaussian benchmark for the selected mean statistics. First
+% compute the base estimator-discrepancy variance and then apply the scalar
+% first-order coefficient implied by the selected aggregation rule.
 if alpha == 0
     asympt = local_classical_asymptotic(maskMiss, SigHat, nComplete, ...
         Tobs, eps0);
@@ -493,8 +603,12 @@ else
         Tobs, eps0);
 end
 
+asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
+    p,eps0,n,Tobs);
+
 % Bootstrap under MCAR
 Tboot = NaN(nsimul,4);
+nMeanBoot = NaN(nsimul,1);
 
 % Use robust complete-case fit to generate bootstrap samples
 SigGen = local_make_spd(SigCC);
@@ -512,22 +626,30 @@ for j = 1:nsimul
     % Complete-case reference distances in bootstrap world
     YccStar = YfullStar(completeIdx,:);
 
-    [muCCStar,SigCCStar] = local_complete_case_fit(YccStar,alpha, ...
+    [muCCStar,SigCCStar,outRobStar] = local_complete_case_fit(YccStar,alpha, ...
         robustClass,robustEff,robustBonflev);
 
- 
     d2_cc_star = mahalFS(YccStar, muCCStar, SigCCStar);
 
     % EM/TEM distances for the same complete rows
     d2_all_cc_star = local_fit_and_get_complete_distances( ...
         Ystar, completeIdx, alpha, method, tol);
 
-    % Store the four statistics
-    Tboot(j,:) = local_statistic(d2_cc_star, d2_all_cc_star, eps0);
+    % Reconstruct the selected aggregation rule inside this bootstrap sample.
+    [meanWeightsStar,aggInfoStar] = local_aggregation_weights( ...
+        d2_cc_star,outRobStar,alpha,aggregation,filterlev,p);
+    nMeanBoot(j) = aggInfoStar.nSelected;
+
+    % Store the four statistics. If the selected mean rule retains no rows,
+    % the two mean statistics are NaN and this bootstrap sample is discarded.
+    Tboot(j,:) = local_statistic(d2_cc_star,d2_all_cc_star,eps0, ...
+        meanWeightsStar);
 end
 
 % Remove bootstrap samples containing NaNs
-Tboot = Tboot(all(~isnan(Tboot),2),:);
+validBoot = all(~isnan(Tboot),2);
+Tboot = Tboot(validBoot,:);
+nMeanBoot = nMeanBoot(validBoot);
 
 if isempty(Tboot)
     error('FSDA:mdMDPtest:NoValidBootstrap', ...
@@ -548,6 +670,14 @@ out.Tobs        = Tobs;
 out.Tboot       = Tboot;
 out.alpha       = alpha;
 out.method      = method;
+out.aggregation = aggregation;
+out.filterlev = filterlev;
+out.filterCutoff = aggInfo.cutoff;
+out.meanWeightsCC = meanWeightsCC;
+completeRows = find(completeIdx);
+out.meanRows = completeRows(meanWeightsCC);
+out.nMeanCC = aggInfo.nSelected;
+out.nMeanBoot = nMeanBoot;
 out.nComplete   = nComplete;
 out.completeIdx = completeIdx;
 
@@ -602,7 +732,7 @@ if plots
     refline(1,0)
     xlabel('Complete-case distance')
     ylabel('Distance from all-data EM/TEM')
-    title(['\alpha=' num2str(alpha)])
+    title(['\alpha=' num2str(alpha) ', aggregation=' aggregation])
     box on
 
     % Right part: bootstrap distributions of the four statistics
@@ -798,18 +928,297 @@ d2_all_cc = d2_full(completeIdx);
 end
 
 % -------------------------------------------------------------------------
-function T = local_statistic(d2_cc, d2_all, eps0)
-%local_statistic Compute the four MDP test statistics.
+function aggregation = local_parse_aggregation(aggregation)
+%local_parse_aggregation parses the mean aggregation option.
+
+if isstring(aggregation)
+    if ~isscalar(aggregation)
+        error('FSDA:mdMDPtest:WrongAggregation', ...
+            'Option aggregation must be a character vector or string scalar.');
+    end
+    aggregation = char(aggregation);
+end
+
+
+if ~ischar(aggregation) || size(aggregation,1) ~= 1
+    error('FSDA:mdMDPtest:WrongAggregation', ...
+        'Option aggregation must be ''ordinary'', ''inlier'' or ''fixed''.');
+end
+
+
+aggregation = lower(strtrim(aggregation));
+if ~any(strcmp(aggregation,{'ordinary','inlier','fixed'}))
+    error('FSDA:mdMDPtest:WrongAggregation', ...
+        'Option aggregation must be ''ordinary'', ''inlier'' or ''fixed''.');
+end
+end
+
+% -------------------------------------------------------------------------
+function [A,info] = local_aggregation_weights(d2_cc,outRob,alpha, ...
+    aggregation,filterlev,p)
+%local_aggregation_weights builds the complete-case mean aggregation rule.
+%
+% A is a logical vector indexed within the complete-case sample. The median
+% statistics do not use A. For MDP-I, outlier labels are reconstructed from
+% the complete-case robust fit. For MDP-F, the cutoff is fixed at the
+% chi-square filterlev quantile and is applied to the complete-case distances.
+
+ncc = numel(d2_cc);
+A = true(ncc,1);
+cutoff = NaN;
+
+switch aggregation
+    case 'ordinary'
+        % MDP-U: all complete cases enter the two mean statistics.
+
+    case 'inlier'
+        % MDP-I: remove complete cases declared as outliers by the selected
+        % robust complete-case estimator.
+        if alpha == 0 || isempty(outRob) || ~isfield(outRob,'outliers')
+            error('FSDA:mdMDPtest:MissingOutlierSet', ...
+                ['Aggregation ''inlier'' requires a robust complete-case ' ...
+                 'fit returning the field outliers.']);
+        end
+
+        outliers = outRob.outliers;
+        if islogical(outliers) && numel(outliers) == ncc
+            A(outliers(:)) = false;
+        elseif ~isempty(outliers)
+            outliers = outliers(:);
+            outliers = outliers(isfinite(outliers) & outliers == floor(outliers) & ...
+                outliers >= 1 & outliers <= ncc);
+            A(unique(outliers)) = false;
+        end
+
+    case 'fixed'
+        % MDP-F: retain only complete cases inside the fixed robust-distance
+        % region. The same fixed cutoff is used in every bootstrap sample.
+        cutoff = chi2inv(filterlev,p);
+        A = isfinite(d2_cc(:)) & d2_cc(:) <= cutoff;
+end
+
+info = struct;
+info.nSelected = sum(A);
+info.fractionSelected = info.nSelected/ncc;
+info.cutoff = cutoff;
+end
+
+% -------------------------------------------------------------------------
+function T = local_statistic(d2_cc, d2_all, eps0, meanWeights)
+%local_statistic computes the four MDP test statistics.
+%
+% The median statistics use all complete cases. The two mean statistics use
+% the logical selection vector meanWeights.
+
+d2_cc = d2_cc(:);
+d2_all = d2_all(:);
+meanWeights = logical(meanWeights(:));
+
+if numel(d2_cc) ~= numel(d2_all) || numel(meanWeights) ~= numel(d2_cc)
+    error('FSDA:mdMDPtest:WrongAggregationWeights', ...
+        'Distance vectors and aggregation weights must have the same length.');
+end
 
 rat = log((d2_all + eps0) ./ (d2_cc + eps0));
 dif = d2_all - d2_cc;
 
 T1 = median(rat);
-T2 = mean(rat);
 T3 = median(dif);
-T4 = mean(dif);
+
+if any(meanWeights)
+    T2 = mean(rat(meanWeights));
+    T4 = mean(dif(meanWeights));
+else
+    T2 = NaN;
+    T4 = NaN;
+end
 
 T = [T1 T2 T3 T4];
+end
+
+% -------------------------------------------------------------------------
+function asympt = local_apply_aggregation_asymptotic(asympt,aggregation, ...
+    aggInfo,p,eps0,n,Tobs)
+%local_apply_aggregation_asymptotic applies MDP-U/I/F first-order scaling.
+%
+% The estimator-discrepancy calculation in local_classical_asymptotic or
+% local_tem_asymptotic supplies the base variance sigma_D^2 associated with
+%   -tr{Sigma^{-1}(SigmaHat_A-SigmaHat_C)}.
+% The selected mean aggregation changes only its scalar first-order
+% coefficient:
+%   MDP-U: TD coefficient 1,       TL coefficient kappa;
+%   MDP-I: TD coefficient 1,       TL coefficient kappa;
+%   MDP-F: TD coefficient k_c,     TL coefficient lambda.
+%
+% For MDP-I the equality with MDP-U is conditional on the clean
+% complete-case rule excluding only O_p(1) observations and on the maximal
+% omitted contrasts being o_p(sqrt(n)). For MDP-F, c is fixed as n grows.
+
+asympt.aggregation = aggregation;
+asympt.filterCutoff = NaN;
+asympt.kc = NaN;
+asympt.lambda = NaN;
+asympt.gammaFilter = NaN;
+
+% If the base estimator-discrepancy benchmark is unavailable, retain its
+% reason and only document the requested aggregation.
+if ~isfield(asympt,'available') || ~asympt.available
+    if strcmp(aggregation,'fixed')
+        asympt.filterCutoff = aggInfo.cutoff;
+    end
+    return
+end
+
+baseSigmaD2 = asympt.TDmean.sigma2;
+baseDegenerate = asympt.degenerate;
+if ~isfinite(baseSigmaD2) || baseSigmaD2 < 0
+    asympt.available = false;
+    asympt.reason = 'The base analytical variance is not finite.';
+    return
+end
+
+% Store the unscaled estimator-discrepancy variance for diagnostics.
+asympt.baseSigmaD2 = baseSigmaD2;
+if isfield(asympt,'TLmean') && isfield(asympt.TLmean,'kappa')
+    baseKappa = asympt.TLmean.kappa;
+else
+    baseKappa = NaN;
+end
+asympt.baseKappa = baseKappa;
+
+switch aggregation
+    case 'ordinary'
+        coefD = 1;
+        coefL = baseKappa;
+        asympt.kc = 1;
+        asympt.lambda = baseKappa;
+        asympt.gammaFilter = 1;
+
+    case 'inlier'
+        coefD = 1;
+        coefL = baseKappa;
+        asympt.kc = 1;
+        asympt.lambda = baseKappa;
+        asympt.gammaFilter = 1;
+        note = ['Aggregation=''inlier'' uses the MDP-U first-order law ' ...
+            'under the condition that the number of falsely excluded clean ' ...
+            'complete cases is O_p(1) and the maximal omitted contrasts are ' ...
+            'o_p(sqrt(n)).'];
+        if isfield(asympt,'theoryStatus') && ~isempty(asympt.theoryStatus)
+            asympt.theoryStatus = [asympt.theoryStatus ' ' note];
+        else
+            asympt.theoryStatus = note;
+        end
+
+    case 'fixed'
+        c = aggInfo.cutoff;
+        gamma = chi2cdf(c,p);
+        if ~isfinite(c) || c <= 0 || ~isfinite(gamma) || gamma <= 0
+            asympt.available = false;
+            asympt.reason = ['Unable to evaluate the fixed-gate analytical ' ...
+                'coefficients.'];
+            return
+        end
+
+        kc = chi2cdf(c,p+2)/gamma;
+        lambda = integral(@(q) local_kappa_integrand(q,p,eps0),0,c, ...
+            'RelTol',1e-10,'AbsTol',1e-12)/(p*gamma);
+
+        if ~isfinite(kc) || kc <= 0 || ~isfinite(lambda) || lambda <= 0
+            asympt.available = false;
+            asympt.reason = ['The fixed-gate analytical coefficients are ' ...
+                'not finite and positive.'];
+            return
+        end
+
+        coefD = kc;
+        coefL = lambda;
+        asympt.filterCutoff = c;
+        asympt.kc = kc;
+        asympt.lambda = lambda;
+        asympt.gammaFilter = gamma;
+
+        note = ['Aggregation=''fixed'' applies the fixed-gate first-order ' ...
+            'Tallis scaling to the base estimator-discrepancy variance.'];
+        if isfield(asympt,'theoryStatus') && ~isempty(asympt.theoryStatus)
+            asympt.theoryStatus = [asympt.theoryStatus ' ' note];
+        else
+            asympt.theoryStatus = note;
+        end
+
+    otherwise
+        error('FSDA:mdMDPtest:WrongAggregation', ...
+            'Unknown aggregation rule in analytical scaling.');
+end
+
+if ~isfinite(coefL) || coefL <= 0
+    asympt.available = false;
+    asympt.reason = 'The analytical log-ratio coefficient is not finite.';
+    return
+end
+
+% Apply the selected scalar coefficient to the common estimator-discrepancy
+% influence law.
+asympt.TDmean.coefficient = coefD;
+asympt.TDmean.sigma2 = coefD^2*baseSigmaD2;
+asympt.TDmean.se = sqrt(asympt.TDmean.sigma2/n);
+
+asympt.TLmean.coefficient = coefL;
+asympt.TLmean.sigma2 = coefL^2*baseSigmaD2;
+asympt.TLmean.se = sqrt(asympt.TLmean.sigma2/n);
+
+% kappa remains the unfiltered stabilized-log coefficient. For the fixed
+% gate, lambda is reported separately and is the coefficient actually used.
+if ~isfield(asympt.TLmean,'kappa')
+    asympt.TLmean.kappa = baseKappa;
+end
+asympt.TLmean.lambda = coefL;
+
+% TEM variance components, when available, inherit the same TD multiplier.
+if isfield(asympt.TDmean,'components') && isstruct(asympt.TDmean.components)
+    fn = fieldnames(asympt.TDmean.components);
+    for j = 1:numel(fn)
+        val = asympt.TDmean.components.(fn{j});
+        if isnumeric(val) && isscalar(val) && isfinite(val)
+            asympt.TDmean.components.(fn{j}) = coefD^2*val;
+        end
+    end
+end
+
+% Preserve the base TEM and complete-case diagnostics for backward
+% compatibility, and add their contribution on the selected TD scale.
+if isfield(asympt,'TEM') && isstruct(asympt.TEM) && ...
+        isfield(asympt.TEM,'sigma2') && isfinite(asympt.TEM.sigma2)
+    asympt.TEM.sigma2Selected = coefD^2*asympt.TEM.sigma2;
+end
+if isfield(asympt,'completeCase') && isstruct(asympt.completeCase)
+    if isfield(asympt.completeCase,'sigma2') && ...
+            isfinite(asympt.completeCase.sigma2)
+        asympt.completeCase.sigma2Selected = ...
+            coefD^2*asympt.completeCase.sigma2;
+    end
+    if isfield(asympt.completeCase,'crossTEMCC') && ...
+            isfinite(asympt.completeCase.crossTEMCC)
+        asympt.completeCase.crossTEMCCSelected = ...
+            coefD^2*asympt.completeCase.crossTEMCC;
+    end
+end
+
+% Degeneracy is unchanged by a strictly positive scalar multiplier. Keep
+% the numerical decision made by the base analytical routine.
+asympt.degenerate = baseDegenerate;
+
+if asympt.degenerate
+    asympt.TDmean.z = NaN;
+    asympt.TDmean.pvalue = NaN;
+    asympt.TLmean.z = NaN;
+    asympt.TLmean.pvalue = NaN;
+else
+    asympt.TDmean.z = Tobs(4)/asympt.TDmean.se;
+    asympt.TDmean.pvalue = erfc(abs(asympt.TDmean.z)/sqrt(2));
+    asympt.TLmean.z = Tobs(2)/asympt.TLmean.se;
+    asympt.TLmean.pvalue = erfc(abs(asympt.TLmean.z)/sqrt(2));
+end
 end
 
 % -------------------------------------------------------------------------
@@ -1309,9 +1718,17 @@ asympt.reason = 'Analytical benchmark is not available for this configuration.';
 asympt.qhat = qhat;
 asympt.VA = NaN;
 asympt.degenerate = false;
-asympt.TDmean = struct('sigma2',NaN,'se',NaN,'z',NaN,'pvalue',NaN);
-asympt.TLmean = struct('kappa',NaN,'sigma2',NaN,'se',NaN, ...
+asympt.aggregation = '';
+asympt.filterCutoff = NaN;
+asympt.kc = NaN;
+asympt.lambda = NaN;
+asympt.gammaFilter = NaN;
+asympt.baseSigmaD2 = NaN;
+asympt.baseKappa = NaN;
+asympt.TDmean = struct('coefficient',NaN,'sigma2',NaN,'se',NaN, ...
     'z',NaN,'pvalue',NaN);
+asympt.TLmean = struct('kappa',NaN,'lambda',NaN,'coefficient',NaN, ...
+    'sigma2',NaN,'se',NaN,'z',NaN,'pvalue',NaN);
 end
 
 % -------------------------------------------------------------------------
