@@ -25,14 +25,14 @@ function out = mdBBtest(Y, varargin)
 %
 % maxiter :        Maximum number of iterations used by the internal ADMM
 %                  solver for each semidefinite program. Positive integer.
-%                  The default value is 5000.
-%                  Example - 'maxiter',10000
+%                  The default value is 50000.
+%                  Example - 'maxiter',50000
 %                  Data Types - single | double
 %
 %     tol :        Absolute and relative convergence tolerance of the
 %                  internal ADMM solver. Positive scalar. The default value
-%                  is 1e-7.
-%                  Example - 'tol',1e-6
+%                  is 5e-6.
+%                  Example - 'tol',5e-6
 %                  Data Types - single | double
 %
 % maxresample :    Maximum number of attempts used to obtain a bootstrap
@@ -104,11 +104,23 @@ function out = mdBBtest(Y, varargin)
 %                              removed because their pattern is too small or
 %                              completely missing;
 %          out.removedPatterns = logical matrix of removed patterns;
-%          out.solverInfoObserved = diagnostics from the observed-data SDP;
-%          out.solverConvergedBoot = nsimul x 1 logical vector; empty when
-%                              out.earlyRejected is true;
-%          out.solverIterationsBoot = nsimul x 1 vector; empty when
-%                              out.earlyRejected is true;
+%          out.solverInfoObserved = structure containing ADMM diagnostics
+%                              for the observed-data SDP, including the
+%                              convergence flag, number of iterations,
+%                              primal and dual residuals, corresponding
+%                              stopping tolerances, residual ratios and
+%                              final penalty parameter;
+%          out.solverInfoBoot = structure containing the corresponding
+%                              bootstrap ADMM diagnostics. Its fields are
+%                              converged, iterations, primalResidual,
+%                              dualResidual, primalTolerance, dualTolerance,
+%                              primalResidualRatio, dualResidualRatio,
+%                              residualRatio and rho. Each field is an
+%                              nsimul x 1 vector and is empty when
+%                              out.earlyRejected is true. residualRatio is
+%                              the maximum of the primal and dual residual
+%                              ratios; values <=1 satisfy both ADMM stopping
+%                              conditions;
 %          out.variableNames = variable names;
 %          out.n             = number of input observations;
 %          out.p             = number of variables;
@@ -131,7 +143,6 @@ function out = mdBBtest(Y, varargin)
 %
 %  More About:
 %
-%
 % The objective of the test of Bordino and Berrett (2025), referred to as
 % BB2025 below, is to assess whether the correlation matrices associated with
 % the different missingness patterns are compatible with a single
@@ -139,39 +150,36 @@ function out = mdBBtest(Y, varargin)
 % the input data (corresponding to $d$ in BB2025). Compatibility of these
 % matrices is a necessary condition for MCAR. Therefore, rejection of
 % correlation compatibility provides evidence against MCAR.
-% 
+%
 % Let $S_1,\ldots,S_g$ denote the retained sets of observed variables and
 % let $n_S$ be the number of observations having pattern $S$. Following
 % Algorithm 1 of BB2025, patterns satisfying
-% 
+%
 % \[
 %     n_S \leq |S|+1
 % \]
-% 
+%
 % are discarded. For every retained pattern $S$, let
 % $\widehat\Sigma_S$ denote the sample correlation matrix calculated using
 % the observations belonging to that pattern, and write
-% 
+%
 % \[
 %     \widehat\Sigma_{\mathbb S}
 %       =(\widehat\Sigma_S:S\in\mathbb S)
 % \]
-% 
+%
 % for the collection of pattern-specific sample correlation matrices.
-% 
+%
 % The observed test statistic is the incompatibility index
-% 
+%
 % \[
 %     R_{\mathrm{obs}}
 %       =R(\widehat\Sigma_{\mathbb S}).
 % \]
-% 
-% 
-% 
-% 
-% Proposition 5, Equation (4) of BB2025, shows that the incompatibility index can be
-% computed through the dual semidefinite representation
-% 
+%
+% Proposition 5, Equation (4) of BB2025, shows that the incompatibility
+% index can be computed through the dual semidefinite representation
+%
 % \[
 %     R(\widehat\Sigma_{\mathbb S})
 %     =
@@ -179,23 +187,20 @@ function out = mdBBtest(Y, varargin)
 %     \sup\left\{
 %     \mathrm{tr}(M):
 %     AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S},
-%     \;
-%     m_{11}=\cdots=m_{pp},
-%     \;
-%     M\succeq0
-%     \right\},
+%     \;m_{11}=\cdots=m_{pp},\;M\succeq0
+%     \right\}.
 % \]
-% 
+%
 % where $p$ is the number of variables in the input data and corresponds
 % to $d$ in the notation of Bordino and Berrett.
-% 
-% The operator $A$ maps the global $p$-by-$p$ positive semidefinite (PSD) matrix
-% $M=(m_{ij})_{i,j=1}^p$ into the
-% collection of its pattern-specific principal submatrices:
-% 
+%
+% The operator $A$ maps the global $p$-by-$p$ positive semidefinite matrix
+% $M$ into the collection of its pattern-specific principal submatrices:
+%
 % \[
 %     AM=(M(S,S):S\in\mathbb S).
 % \]
+%
 % 
 % Hence $AM\preceq_{\mathbb S}\widehat\Sigma_{\mathbb S}$ means,
 % for every $S\in\mathbb S$,
@@ -480,15 +485,14 @@ function out = mdBBtest(Y, varargin)
 % procedure proposed by Bordino and Berrett. The solver convergence
 % diagnostics should therefore be inspected whenever the requested
 % tolerance is not attained.
-% 
+%
 % The test implemented here concerns only compatibility of the
 % pattern-specific correlation matrices. It does not test consistency of
 % the pattern means or variances. Since correlation compatibility is only
 % a necessary condition for MCAR, failure to reject compatibility does not
 % establish that the data are MCAR.
-% 
 %
-%  See also: mdLittletest, mdJJtest, mdMAARtest, mdMCARtest, mdpattern
+%  See also: mdLittletest, mdJJtest, mdMAARtest, mdMDPtest, mdpattern
 %
 %  References:
 %
@@ -561,8 +565,6 @@ function out = mdBBtest(Y, varargin)
 % Comments beginning with "PAPER:" identify the precise theoretical
 % object implemented by the following MATLAB statements.
 
-% Software-interface validation. These checks are not statistical steps of
-% Algorithm 1, but they enforce the data conditions needed by the test.
 if nargin < 1
     error('FSDA:mdBBtest:TooFewInputs', ...
         'At least one input argument is required.');
@@ -600,10 +602,11 @@ if any(~isfinite(Y(~isnan(Y))))
         'Observed entries of Y must be finite.');
 end
 
-% Default options.
+% Default options. Numerical values are based on the solver validation
+% carried out for the FSDA ADMM implementation.
 nsimul = 499;
-maxiter = 5000;
-tol = 1e-7;
+maxiter = 50000;
+tol = 5e-6;
 maxresample = 1000;
 msg = true;
 plots = false;
@@ -783,14 +786,22 @@ end
 % obtained directly from the ADMM solution.
 lambdaStar = solverInfoObserved.lambda;
 
-
 coreClip = 0;
 Rboot = [];
 solverConvergedBoot = [];
 solverIterationsBoot = [];
+solverPrimalResidualBoot = [];
+solverDualResidualBoot = [];
+solverPrimalToleranceBoot = [];
+solverDualToleranceBoot = [];
+solverPrimalResidualRatioBoot = [];
+solverDualResidualRatioBoot = [];
+solverResidualRatioBoot = [];
+solverRhoBoot = [];
 compatibleCorrelation = [];
 % PAPER: Algorithm 1, Steps 4-6 (Annals p. 2209), set p_R=0 and skip the
 % bootstrap whenever R(hat{Sigma}_{mathbb S}) >= 3/4.
+
 earlyRejected = Robs>=3/4;
 
 if earlyRejected
@@ -846,14 +857,22 @@ else
     Rboot = NaN(nsimul,1);
     solverConvergedBoot = false(nsimul,1);
     solverIterationsBoot = zeros(nsimul,1);
+    solverPrimalResidualBoot = NaN(nsimul,1);
+    solverDualResidualBoot = NaN(nsimul,1);
+    solverPrimalToleranceBoot = NaN(nsimul,1);
+    solverDualToleranceBoot = NaN(nsimul,1);
+    solverPrimalResidualRatioBoot = NaN(nsimul,1);
+    solverDualResidualRatioBoot = NaN(nsimul,1);
+    solverResidualRatioBoot = NaN(nsimul,1);
+    solverRhoBoot = NaN(nsimul,1);
 
     % Numerical implementation detail (not part of Algorithm 1): the observed
     % SDP solution is used as the starting point for every regularized
     % bootstrap solve. Starting replicate b from the solution of replicate
     % b-1 can make the computed bootstrap statistics depend on their order
     % whenever an ADMM solve terminates before reaching the requested
-    % tolerance. Therefore every bootstrap replicate is initialized from the
-    % same observed-data solution.
+    % tolerance. Therefore every bootstrap replicate starts from the same
+    % observed-data solution.
     xObservedStart = [xObserved; 0];
 
     for b = 1:nsimul
@@ -897,8 +916,17 @@ else
         [Rboot(b),~,infoBoot] = localComputeR( ...
             patternsCell,SigmaSboot,p,regularizationAlpha, ...
             maxiter,tol,xObservedStart);
+
         solverConvergedBoot(b) = infoBoot.converged;
         solverIterationsBoot(b) = infoBoot.iterations;
+        solverPrimalResidualBoot(b) = infoBoot.primalResidual;
+        solverDualResidualBoot(b) = infoBoot.dualResidual;
+        solverPrimalToleranceBoot(b) = infoBoot.primalTolerance;
+        solverDualToleranceBoot(b) = infoBoot.dualTolerance;
+        solverPrimalResidualRatioBoot(b) = infoBoot.primalResidualRatio;
+        solverDualResidualRatioBoot(b) = infoBoot.dualResidualRatio;
+        solverResidualRatioBoot(b) = infoBoot.residualRatio;
+        solverRhoBoot(b) = infoBoot.rho;
     end
 
     % PAPER: Algorithm 1, Step 13 (Annals p. 2209), including the standard +1
@@ -910,12 +938,24 @@ else
             'requested tolerance, so the corresponding statistics are ' ...
             'solver-dependent and the p-value should not be relied upon. ' ...
             'Increase maxiter, or loosen tol, and inspect ' ...
-            'out.solverConvergedBoot.'],sum(~solverConvergedBoot),nsimul);
+            'out.solverInfoBoot.'],sum(~solverConvergedBoot),nsimul);
     end
 end
 
-% The paper returns p_R. The 5% decision stored here is an FSDA reporting
-% convention and does not alter the p-value defined in Algorithm 1.
+% Group the ADMM diagnostics from all bootstrap replications in one
+% structure.
+solverInfoBoot = struct;
+solverInfoBoot.converged = solverConvergedBoot;
+solverInfoBoot.iterations = solverIterationsBoot;
+solverInfoBoot.primalResidual = solverPrimalResidualBoot;
+solverInfoBoot.dualResidual = solverDualResidualBoot;
+solverInfoBoot.primalTolerance = solverPrimalToleranceBoot;
+solverInfoBoot.dualTolerance = solverDualToleranceBoot;
+solverInfoBoot.primalResidualRatio = solverPrimalResidualRatioBoot;
+solverInfoBoot.dualResidualRatio = solverDualResidualRatioBoot;
+solverInfoBoot.residualRatio = solverResidualRatioBoot;
+solverInfoBoot.rho = solverRhoBoot;
+
 reject = pvalue<0.05;
 if earlyRejected
     interpretation = "The observed incompatibility index is at least 3/4; " + ...
@@ -956,8 +996,7 @@ out.allConverged = solverInfoObserved.converged && all(solverConvergedBoot);
 out.npatterns = g;
 out.solver = 'ADMM';
 out.solverInfoObserved = solverInfoObserved;
-out.solverConvergedBoot = solverConvergedBoot;
-out.solverIterationsBoot = solverIterationsBoot;
+out.solverInfoBoot = solverInfoBoot;
 out.earlyRejected = earlyRejected;
 out.variableNames = variableNames;
 out.n = n;
@@ -1112,6 +1151,10 @@ for k = 1:numel(patterns)
     minEigenSlack = min(minEigenSlack,min(eig((slack+slack')/2)));
 end
 
+primalResidualRatio = primalResidual/max(epsPrimal,realmin);
+dualResidualRatio = dualResidual/max(epsDual,realmin);
+residualRatio = max(primalResidualRatio,dualResidualRatio);
+
 info = struct;
 info.converged = converged;
 info.iterations = iter;
@@ -1119,6 +1162,9 @@ info.primalResidual = primalResidual;
 info.dualResidual = dualResidual;
 info.primalTolerance = epsPrimal;
 info.dualTolerance = epsDual;
+info.primalResidualRatio = primalResidualRatio;
+info.dualResidualRatio = dualResidualRatio;
+info.residualRatio = residualRatio;
 info.rho = rho;
 info.rawR = rawR;
 info.lambda = x(1);
@@ -1213,9 +1259,6 @@ for k = 1:numel(patterns)
                 A(pos,offIndex(globalRow,globalCol)) = -1;
             end
             if regularized && row==col
-                % x(scaledEtaIndex)=alpha*eta, hence
-                % x(scaledEtaIndex)/alpha=eta is added to each diagonal of the pattern
-                % slack matrix.
                 A(pos,scaledEtaIndex) = 1/regularizationAlpha;
             end
         end
@@ -1244,7 +1287,7 @@ end
 
 % -------------------------------------------------------------------------
 function projected = localProjectProductCone(value,blocks)
-%localProjectProductCone Project onto the PSD cones in Equations (4)/(7).
+%localProjectProductCone Project onto the product PSD cone.
 %
 % This eigenvalue-thresholding operation is the Euclidean projection onto a
 % PSD cone. It is an ADMM implementation detail, not a separate statistical
@@ -1273,7 +1316,7 @@ end
 % -------------------------------------------------------------------------
 function [M,eta] = localUnpackSolution( ...
     x,d,offIndex,scaledEtaIndex,regularizationAlpha)
-%localUnpackSolution Recover the common matrix in Proposition 5, Eq. (4).
+%localUnpackSolution Recover the common matrix and regularization slack.
 %
 % The common diagonal is x(1)=lambda. Dividing this matrix by lambda in the
 % main routine produces the compatible correlation matrix hat{Q} appearing
