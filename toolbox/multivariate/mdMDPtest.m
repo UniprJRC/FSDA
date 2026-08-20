@@ -65,6 +65,42 @@ function out = mdMDPtest(Y, varargin)
 %            Example - 'method','betaMap'
 %            Data Types - char | string
 %
+% consistencyfactor : TEM truncation-bias correction used when alpha>0.
+%            Character vector or string scalar. Possible values are
+%            'pattern', 'adaptive', 'global', 'weighted' or 'none'. The
+%            default is 'pattern', which preserves the previous mdMDPtest
+%            behavior and uses Gaussian pattern-wise Tallis factors.
+%
+%            With 'adaptive', mdTEM estimates the pattern-wise radial
+%            consistency factors from the complete cases, using the
+%            complete-case location and scatter fitted by the selected
+%            robust estimator. Thus the all-data TEM scatter is calibrated
+%            to the same elliptical scatter target as the complete-case
+%            estimator without specifying the radial distribution. The
+%            reference sample and reference fit are reconstructed inside
+%            every bootstrap replicate.
+%
+%            The options 'global', 'weighted' and 'none' have the same
+%            meaning as in mdTEM. This option is ignored when alpha=0.
+%            The current coupledtrim sensitivity implementation supports
+%            only consistencyfactor='pattern'.
+%            Example - 'consistencyfactor','adaptive'
+%            Data Types - char | string
+%
+% adaptivepool : Pool adaptive projected reference radii across patterns
+%            having the same observed dimension. Logical scalar. The
+%            default is false. This option is used only when alpha>0 and
+%            consistencyfactor='adaptive'.
+%            Example - 'adaptivepool',true
+%            Data Types - logical
+%
+% adaptiveminref : Minimum number of complete-case reference radii inside
+%            a pattern cutoff required by the adaptive correction. Positive
+%            integer. The default is 20. This option is used only when
+%            alpha>0 and consistencyfactor='adaptive'.
+%            Example - 'adaptiveminref',10
+%            Data Types - double
+%
 %   nsimul : Number of bootstrap simulations. Scalar integer.
 %            The default value is 499.
 %            Example - 'nsimul',999
@@ -177,6 +213,15 @@ function out = mdMDPtest(Y, varargin)
 %                            values of the four statistics.
 %          out.alpha       = Value of input option alpha.
 %          out.method      = Value of input option method.
+%          out.consistencyfactor = TEM consistency-factor option actually
+%                            requested. It is relevant only when alpha>0.
+%          out.adaptivepool = Logical adaptive pooling option.
+%          out.adaptiveminref = Minimum adaptive reference count.
+%          out.TEMkfactor  = Scalar summary of the final TEM consistency
+%                            correction. NaN for alpha=0.
+%          out.TEMkinfo    = Final pattern-wise TEM consistency-factor
+%                            diagnostics. Empty for alpha=0 or whenever the
+%                            selected mdTEM correction does not return them.
 %          out.aggregation = Mean aggregation rule actually used:
 %                            'ordinary', 'inlier' or 'fixed'.
 %          out.filterlev   = Value of input option filterlev.
@@ -254,10 +299,15 @@ function out = mdMDPtest(Y, varargin)
 %                            gammaFilter, kc, lambda, baseSigmaD2 and
 %                            baseKappa document the applied scaling. For
 %                            alpha=0, the classical closed-form covariance
-%                            information formula is used. For alpha>0 and
-%                            method='pri', the pattern-wise TEM influence
-%                            function and effective Jacobian are evaluated
-%                            analytically. The scalar influence of the robust
+%                            information formula is used. For alpha>0,
+%                            method='pri' and consistencyfactor='pattern',
+%                            the Gaussian pattern-wise TEM influence function
+%                            and effective Jacobian are evaluated analytically.
+%                            Analytical calibration for consistencyfactor=
+%                            'adaptive' is deliberately not returned in this
+%                            implementation; its empirical-factor influence
+%                            contribution will be added separately. The scalar
+%                            influence of the robust
 %                            complete-case scatter estimator is evaluated by
 %                            a delete-one jackknife and combined with the TEM
 %                            contribution in the end-to-end sandwich variance.
@@ -292,6 +342,15 @@ function out = mdMDPtest(Y, varargin)
 %  rule is re-estimated in every bootstrap sample. With coupledtrim=true,
 %  estimator-declared complete-case outliers are additionally forced to zero
 %  weight in every TEM concentration step.
+%
+%  When consistencyfactor='adaptive', the complete-case observations are
+%  also the reference sample for the empirical radial correction. The
+%  reference location and scatter are the same complete-case estimates used
+%  to compute d2_cc. Consequently the adaptive TEM correction targets the
+%  complete-case scatter functional under an elliptical MCAR model. The
+%  mask-preserving parametric bootstrap remains Gaussian-model based; it
+%  reruns both the robust complete-case fit and adaptive radial correction in
+%  every bootstrap sample.
 %
 %  Small p-values indicate that the change in distances is larger than what
 %  is expected under the MCAR bootstrap model.
@@ -477,6 +536,20 @@ function out = mdMDPtest(Y, varargin)
     disp(out.asympt.reason)
 %}
 
+%{
+    %% Example 11: Distribution-adaptive TEM correction.
+    % Use the MCD complete-case fit as the reference geometry for empirical
+    % pattern-wise radial consistency factors. The same pipeline is rerun
+    % independently inside every bootstrap sample.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
+        'consistencyfactor','adaptive','nsimul',199);
+    disp(out.TEMkinfo)
+    disp(out.pvalue)
+    disp(out.asympt.reason)
+%}
+
 %% Beginning of code
 
 if ~ismatrix(Y) || ~isnumeric(Y)
@@ -497,6 +570,9 @@ options.eps0    = 1e-12;
 options.aggregation = 'ordinary';
 options.filterlev = 0.99;
 options.coupledtrim = false;
+options.consistencyfactor = 'pattern';
+options.adaptivepool = false;
+options.adaptiveminref = 20;
 
 % Check supplied options
 if ~isempty(varargin)
@@ -526,6 +602,9 @@ eps0 = options.eps0;
 aggregation = local_parse_aggregation(options.aggregation);
 filterlev = options.filterlev;
 coupledtrim = options.coupledtrim;
+consistencyfactor = local_parse_consistencyfactor(options.consistencyfactor);
+adaptivepool = options.adaptivepool;
+adaptiveminref = options.adaptiveminref;
 
 if ~isscalar(alpha) || ~isnumeric(alpha) || alpha < 0 || alpha > 0.5
     error('FSDA:mdMDPtest:WrongInputOpt', ...
@@ -561,6 +640,24 @@ end
 if ~(islogical(coupledtrim) && isscalar(coupledtrim))
     error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Option coupledtrim must be a logical scalar.');
+end
+
+if ~(islogical(adaptivepool) && isscalar(adaptivepool))
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'Option adaptivepool must be a logical scalar.');
+end
+
+if ~isscalar(adaptiveminref) || ~isnumeric(adaptiveminref) || ...
+        ~isfinite(adaptiveminref) || adaptiveminref < 1 || ...
+        adaptiveminref ~= floor(adaptiveminref)
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'Option adaptiveminref must be a positive integer.');
+end
+
+if coupledtrim && ~strcmp(consistencyfactor,'pattern')
+    error('FSDA:mdMDPtest:CoupledConsistencyFactor', ...
+        ['The current coupledtrim sensitivity implementation supports only ' ...
+         'consistencyfactor=''pattern''.']);
 end
 
 if coupledtrim && alpha == 0
@@ -651,7 +748,8 @@ end
 % pattern-wise trimming information. In coupled mode the fixed eligibility
 % mask is multiplied by TEM's own concentration weights at every iteration.
 [d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distances( ...
-    Y, completeIdx, alpha, method, tol, forcedZeroTEM);
+    Y, completeIdx, alpha, method, tol, forcedZeroTEM, ...
+    consistencyfactor, Ycc, muCC, SigCC, adaptivepool, adaptiveminref);
 
 % Construct the observed-data aggregation rule for the two mean statistics.
 % The median statistics always use all complete cases.
@@ -683,10 +781,27 @@ else
     if alpha == 0
         asympt = local_classical_asymptotic(maskMiss, SigHat, nComplete, ...
             Tobs, eps0);
-    else
+    elseif strcmp(consistencyfactor,'pattern')
         asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
             alpha, method, robustClass, robustEff, robustBonflev, ...
             Tobs, eps0);
+    else
+        asympt = local_unavailable_asymptotic(nComplete/n);
+        if strcmp(consistencyfactor,'adaptive')
+            asympt.reason = ['The adaptive TEM fit is available, but its ' ...
+                'analytical sandwich calibration is not yet implemented in ' ...
+                'mdMDPtest. The current adaptive result is calibrated by ' ...
+                'the mask-preserving bootstrap.'];
+            asympt.mode = 'adaptive TEM bootstrap calibration';
+            asympt.theoryStatus = ['Adaptive radial consistency factors are ' ...
+                'used in the TEM fit. Their first-order influence contribution ' ...
+                'is deliberately not replaced by the Gaussian pattern formula.'];
+        else
+            asympt.reason = ['For alpha>0 the analytical TEM benchmark is ' ...
+                'currently implemented only for consistencyfactor=''pattern''.'];
+            asympt.mode = 'TEM bootstrap calibration';
+            asympt.theoryStatus = 'Bootstrap calibration for the selected TEM correction.';
+        end
     end
 
     asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
@@ -731,7 +846,9 @@ for j = 1:nsimul
 
     % EM/TEM distances for the same complete rows.
     d2_all_cc_star = local_fit_and_get_complete_distances( ...
-        Ystar, completeIdx, alpha, method, tol, forcedZeroStar);
+        Ystar, completeIdx, alpha, method, tol, forcedZeroStar, ...
+        consistencyfactor, YccStar, muCCStar, SigCCStar, ...
+        adaptivepool, adaptiveminref);
 
     % Reconstruct the selected aggregation rule inside this bootstrap sample.
     [meanWeightsStar,aggInfoStar] = local_aggregation_weights( ...
@@ -769,6 +886,19 @@ out.Tobs        = Tobs;
 out.Tboot       = Tboot;
 out.alpha       = alpha;
 out.method      = method;
+out.consistencyfactor = consistencyfactor;
+out.adaptivepool = adaptivepool;
+out.adaptiveminref = adaptiveminref;
+if isfield(outFit,'kfactor')
+    out.TEMkfactor = outFit.kfactor;
+else
+    out.TEMkfactor = NaN;
+end
+if isfield(outFit,'kinfo')
+    out.TEMkinfo = outFit.kinfo;
+else
+    out.TEMkinfo = [];
+end
 out.aggregation = aggregation;
 out.filterlev = filterlev;
 out.filterCutoff = aggInfo.cutoff;
@@ -1023,17 +1153,19 @@ end
 
 
 function [d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distances( ...
-    Y, completeIdx, alpha, method, tol, forcedZero)
+    Y, completeIdx, alpha, method, tol, forcedZero, consistencyfactor, ...
+    Yref, muref, sigmaref, adaptivepool, adaptiveminref)
 %local_fit_and_get_complete_distances fits EM/TEM and returns complete-row distances.
 %
 % forcedZero is a logical n-vector. When alpha>0 and at least one entry is
 % true, TEM's own concentration indicator is multiplied by ~forcedZero at
 % every iteration. This implements the coupled sensitivity rule without
-% changing the default mdTEM fit.
+% changing the default mdTEM fit. For the adaptive correction, Yref, muref
+% and sigmaref are the complete-case reference sample and fitted geometry.
 
 p = size(Y,2);
 n = size(Y,1);
-if nargin < 6 || isempty(forcedZero)
+if isempty(forcedZero)
     forcedZero = false(n,1);
 else
     forcedZero = logical(forcedZero(:));
@@ -1052,8 +1184,14 @@ if alpha == 0
 elseif any(forcedZero)
     outFit = local_coupled_tem(Y,forcedZero,alpha,method,tol);
 else
-    outFit = mdTEM(Y,'method',method,'alpha',alpha,'tol',tol, ...
-        'consistencyfactor','pattern');
+    temArgs = {'method',method,'alpha',alpha,'tol',tol, ...
+        'consistencyfactor',consistencyfactor};
+    if strcmp(consistencyfactor,'adaptive')
+        temArgs = [temArgs, {'Yref',Yref,'muref',muref(:), ...
+            'sigmaref',sigmaref,'adaptivepool',adaptivepool, ...
+            'adaptiveminref',adaptiveminref}];
+    end
+    outFit = mdTEM(Y,temArgs{:});
     outFit.internalWeights = outFit.weights;
     outFit.forcedZero = forcedZero;
 end
@@ -1065,6 +1203,34 @@ SigHat = outFit.cov;
 d2_full = mdPartialMD2full(d2_part, p, poss, 'method', method);
 d2_all_cc = d2_full(completeIdx);
 
+end
+
+% -------------------------------------------------------------------------
+function consistencyfactor = local_parse_consistencyfactor(consistencyfactor)
+%local_parse_consistencyfactor parses the mdTEM consistency-factor option.
+
+if isstring(consistencyfactor)
+    if ~isscalar(consistencyfactor)
+        error('FSDA:mdMDPtest:WrongConsistencyFactor', ...
+            ['Option consistencyfactor must be a character vector or ' ...
+             'string scalar.']);
+    end
+    consistencyfactor = char(consistencyfactor);
+end
+
+if ~ischar(consistencyfactor) || size(consistencyfactor,1) ~= 1
+    error('FSDA:mdMDPtest:WrongConsistencyFactor', ...
+        ['Option consistencyfactor must be ''pattern'', ''adaptive'', ' ...
+         '''global'', ''weighted'' or ''none''.']);
+end
+
+consistencyfactor = lower(strtrim(consistencyfactor));
+valid = {'pattern','adaptive','global','weighted','none'};
+if ~any(strcmp(consistencyfactor,valid))
+    error('FSDA:mdMDPtest:WrongConsistencyFactor', ...
+        ['Option consistencyfactor must be ''pattern'', ''adaptive'', ' ...
+         '''global'', ''weighted'' or ''none''.']);
+end
 end
 
 % -------------------------------------------------------------------------
@@ -2034,7 +2200,7 @@ while dif > tol && iter < maxiter
 
     muDiff = max(abs(mus(:)-mus_old(:)));
     sigmaDiff = max(abs(sigs(:)-sigs_old(:)));
-    if tol_sigma == true
+    if tol_sigma
         dif = max(muDiff,sigmaDiff);
     else
         dif = muDiff;
