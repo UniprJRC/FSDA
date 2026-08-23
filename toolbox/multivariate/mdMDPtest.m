@@ -283,8 +283,10 @@ function out = mdMDPtest(Y, varargin)
 %          out.cov          = Estimated scatter from EM/TEM fit on all data.
 %          out.eps0        = Numerical stabilizer used in the log-distance
 %                            ratio.
-%          out.asympt      = Structure containing the analytical Gaussian
+%          out.asympt      = Structure containing the analytical
 %                            benchmark for the two selected mean statistics.
+%                            Gaussian and adaptive elliptical calibrations are
+%                            returned according to consistencyfactor.
 %                            For MDP-U the ordinary first-order coefficients
 %                            are used. MDP-I inherits the same coefficients
 %                            under the condition that the complete-case rule
@@ -292,10 +294,12 @@ function out = mdMDPtest(Y, varargin)
 %                            MDP-F the base estimator-discrepancy variance is
 %                            multiplied by kc^2 for the mean distance
 %                            difference and by lambda^2 for the stabilized
-%                            mean log-ratio, where
-%                              kc=F_{p+2}(c)/F_p(c)
-%                            and lambda is the corresponding truncated radial
-%                            coefficient. Fields aggregation, filterCutoff,
+%                            mean log-ratio. For the Gaussian pattern branch,
+%                              kc=F_{p+2}(c)/F_p(c).
+%                            For the adaptive elliptical branch, kc and
+%                            lambda are estimated from the robust complete-
+%                            case radial distribution. Fields aggregation,
+%                            filterCutoff,
 %                            gammaFilter, kc, lambda, baseSigmaD2 and
 %                            baseKappa document the applied scaling. For
 %                            alpha=0, the classical closed-form covariance
@@ -303,24 +307,41 @@ function out = mdMDPtest(Y, varargin)
 %                            method='pri' and consistencyfactor='pattern',
 %                            the Gaussian pattern-wise TEM influence function
 %                            and effective Jacobian are evaluated analytically.
-%                            Analytical calibration for consistencyfactor=
-%                            'adaptive' is deliberately not returned in this
-%                            implementation; its empirical-factor influence
-%                            contribution will be added separately. The scalar
-%                            influence of the robust
-%                            complete-case scatter estimator is evaluated by
-%                            a delete-one jackknife and combined with the TEM
-%                            contribution in the end-to-end sandwich variance.
+%                            For consistencyfactor='adaptive', method='pri'
+%                            and adaptivepool=false, the elliptical adaptive
+%                            sandwich is evaluated with the empirical radial-
+%                            factor influence, a kernel estimate of the radial
+%                            density at each trimming boundary, and the robust
+%                            complete-case scatter influence. For FS, the
+%                            complete-case scatter influence is evaluated
+%                            analytically conditional on the final full-sample
+%                            FS classification. For MCD and MM it is currently
+%                            evaluated by a delete-one jackknife. The resulting
+%                            contribution is combined with the TEM influence in
+%                            the end-to-end sandwich variance.
 %                            The fields TDmean and TLmean contain the
 %                            asymptotic variance of sqrt(n)T (sigma2), the
 %                            standard error of T (se), the studentized value
 %                            (z), and the two-sided asymptotic p-value. For
 %                            alpha>0, out.asympt.TEM contains diagnostics for
 %                            the analytical TEM contribution and
-%                            out.asympt.completeCase documents the numerical
-%                            influence evaluation. The adaptive FS branch is
-%                            flagged as experimental because its stopping rule
-%                            is outside the fixed-fraction FS asymptotic theorem.
+%                            out.asympt.completeCase documents the influence
+%                            evaluation, including influenceMethod and, for FS,
+%                            nReferenceInliers and nReferenceOutliers. The
+%                            adaptive FS branch conditions on the selected set;
+%                            its data-dependent stopping/classification rule is
+%                            outside the fixed-fraction FS asymptotic theorem.
+%                            For alpha>0 and consistencyfactor='adaptive',
+%                            out.asympt.secondOrderBenchmark contains the
+%                            complete-Gaussian adaptive-TEM O(n^{-1})
+%                            centering constants cMu, cQuad, cLin and cTotal.
+%                            It also reports the one-step trace-free target
+%                            cQuadOne, shape feedback rhoShape, and the
+%                            boundary-master quantities bP, Cinf, Dinf and
+%                            cLinCompact.  This is a theoretical benchmark
+%                            only: it is not a missing-pattern second-order
+%                            correction and is not used to alter analytical
+%                            or bootstrap p-values.
 %
 %
 %  More About:
@@ -355,9 +376,16 @@ function out = mdMDPtest(Y, varargin)
 %  Small p-values indicate that the change in distances is larger than what
 %  is expected under the MCAR bootstrap model.
 %
-%  The analytical Gaussian benchmark follows the selected mean aggregation.
-%  MDP-I uses the same first-order variance as MDP-U under O_p(1) clean
-%  exclusions. MDP-F multiplies the base mean-difference variance by kc^2
+%  For the adaptive correction and alpha>0, the analytical sandwich assumes
+%  an elliptical MCAR model and a common scatter target S0=tau*Sigma. The
+%  empirical radial-factor influence and the robust complete-case scatter
+%  influence are included explicitly. The current adaptive analytical branch
+%  is available for method='pri' with adaptivepool=false.
+%
+%  The analytical benchmark follows the selected mean aggregation. The
+%  Gaussian pattern branch uses Tallis coefficients, whereas the adaptive
+%  branch uses empirical elliptical radial coefficients. MDP-I uses the same
+%  first-order variance as MDP-U under O_p(1) clean exclusions. MDP-F multiplies the base mean-difference variance by kc^2
 %  and the base stabilized-log-ratio variance by the appropriate truncated
 %  radial coefficient lambda^2. When coupledtrim=true, the analytical
 %  benchmark is deliberately disabled because the external eligibility mask
@@ -365,7 +393,7 @@ function out = mdMDPtest(Y, varargin)
 %  bootstrap p-values in out.pvalue remain the primary finite-sample
 %  calibration.
 %
-% See also: mdEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
+% See also: mdEM, mdTEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
 %
 % References:
 %
@@ -547,7 +575,8 @@ function out = mdMDPtest(Y, varargin)
         'consistencyfactor','adaptive','nsimul',199);
     disp(out.TEMkinfo)
     disp(out.pvalue)
-    disp(out.asympt.reason)
+    disp(out.asympt.TDmean)
+    disp(out.asympt.TEM.patternDiagnostics)
 %}
 
 %% Beginning of code
@@ -784,28 +813,33 @@ else
     elseif strcmp(consistencyfactor,'pattern')
         asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
             alpha, method, robustClass, robustEff, robustBonflev, ...
-            Tobs, eps0);
+            Tobs, eps0, outRob);
+    elseif strcmp(consistencyfactor,'adaptive')
+        asympt = local_tem_adaptive_asymptotic(Y, maskMiss, completeIdx, ...
+            outFit, alpha, method, robustClass, robustEff, robustBonflev, ...
+            Tobs, eps0, muCC, SigCC, adaptivepool, adaptiveminref, outRob);
     else
         asympt = local_unavailable_asymptotic(nComplete/n);
-        if strcmp(consistencyfactor,'adaptive')
-            asympt.reason = ['The adaptive TEM fit is available, but its ' ...
-                'analytical sandwich calibration is not yet implemented in ' ...
-                'mdMDPtest. The current adaptive result is calibrated by ' ...
-                'the mask-preserving bootstrap.'];
-            asympt.mode = 'adaptive TEM bootstrap calibration';
-            asympt.theoryStatus = ['Adaptive radial consistency factors are ' ...
-                'used in the TEM fit. Their first-order influence contribution ' ...
-                'is deliberately not replaced by the Gaussian pattern formula.'];
-        else
-            asympt.reason = ['For alpha>0 the analytical TEM benchmark is ' ...
-                'currently implemented only for consistencyfactor=''pattern''.'];
-            asympt.mode = 'TEM bootstrap calibration';
-            asympt.theoryStatus = 'Bootstrap calibration for the selected TEM correction.';
-        end
+        asympt.reason = ['For alpha>0 the analytical TEM benchmark is ' ...
+            'currently implemented only for consistencyfactor=''pattern'' ' ...
+            'or ''adaptive''.'];
+        asympt.mode = 'TEM bootstrap calibration';
+        asympt.theoryStatus = 'Bootstrap calibration for the selected TEM correction.';
     end
 
     asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
-        p,eps0,n,Tobs);
+        p,eps0,n,Tobs,d2_cc);
+end
+
+% Complete-Gaussian adaptive-TEM second-order benchmark.  This is exposed
+% only as a diagnostic theoretical reference.  It is deliberately not used
+% to recenter the observed statistic or the analytical/bootstrap p-values,
+% because the closed-form cLin result has not yet been extended to genuine
+% missing-pattern mixtures or to the robust complete-case reference fit.
+if alpha > 0 && strcmp(consistencyfactor,'adaptive')
+    asympt.secondOrderBenchmark = mdMDPsecondOrder(p,alpha);
+else
+    asympt.secondOrderBenchmark = [];
 end
 
 % Bootstrap under MCAR
@@ -1358,12 +1392,12 @@ end
 
 % -------------------------------------------------------------------------
 function asympt = local_apply_aggregation_asymptotic(asympt,aggregation, ...
-    aggInfo,p,eps0,n,Tobs)
+    aggInfo,p,eps0,n,Tobs,d2cc)
 %local_apply_aggregation_asymptotic applies MDP-U/I/F first-order scaling.
 %
-% The estimator-discrepancy calculation in local_classical_asymptotic or
-% local_tem_asymptotic supplies the base variance sigma_D^2 associated with
-%   -tr{Sigma^{-1}(SigmaHat_A-SigmaHat_C)}.
+% The estimator-discrepancy calculation supplies the base variance sigma_D^2.
+% In the Gaussian branches the coefficient is based on Sigma^{-1}; in the
+% adaptive elliptical branch it is based on the common target S0=tau*Sigma.
 % The selected mean aggregation changes only its scalar first-order
 % coefficient:
 %   MDP-U: TD coefficient 1,       TL coefficient kappa;
@@ -1432,17 +1466,47 @@ switch aggregation
 
     case 'fixed'
         c = aggInfo.cutoff;
-        gamma = chi2cdf(c,p);
-        if ~isfinite(c) || c <= 0 || ~isfinite(gamma) || gamma <= 0
-            asympt.available = false;
-            asympt.reason = ['Unable to evaluate the fixed-gate analytical ' ...
-                'coefficients.'];
-            return
-        end
+        isAdaptiveRadial = isfield(asympt,'radialModel') && ...
+            strcmp(asympt.radialModel,'adaptive-empirical');
 
-        kc = chi2cdf(c,p+2)/gamma;
-        lambda = integral(@(q) local_kappa_integrand(q,p,eps0),0,c, ...
-            'RelTol',1e-10,'AbsTol',1e-12)/(p*gamma);
+        if isAdaptiveRadial
+            qref = d2cc(:);
+            qref = qref(isfinite(qref) & qref >= 0);
+            inside = qref <= c;
+            gamma = mean(inside);
+            meanQ = mean(qref);
+            if isempty(qref) || ~isfinite(c) || c <= 0 || ...
+                    ~isfinite(gamma) || gamma <= 0 || ...
+                    ~isfinite(meanQ) || meanQ <= 0 || ~any(inside)
+                asympt.available = false;
+                asympt.reason = ['Unable to evaluate the adaptive fixed-gate ' ...
+                    'radial coefficients from the complete-case distances.'];
+                return
+            end
+
+            % Under the elliptical common-target model S0=tau*Sigma,
+            % the fixed-gate TD coefficient relative to MDP-U is
+            % E(Q0|Q0<=c)/E(Q0). The stabilized log-ratio coefficient is
+            % E{Q0/(Q0+eps0)|Q0<=c}/E(Q0).
+            kc = mean(qref(inside))/meanQ;
+            lambda = mean(qref(inside)./(qref(inside)+eps0))/meanQ;
+            note = ['Aggregation=''fixed'' uses empirical elliptical radial ' ...
+                'coefficients estimated from the robust complete-case ' ...
+                'distances.'];
+        else
+            gamma = chi2cdf(c,p);
+            if ~isfinite(c) || c <= 0 || ~isfinite(gamma) || gamma <= 0
+                asympt.available = false;
+                asympt.reason = ['Unable to evaluate the fixed-gate analytical ' ...
+                    'coefficients.'];
+                return
+            end
+            kc = chi2cdf(c,p+2)/gamma;
+            lambda = integral(@(q) local_kappa_integrand(q,p,eps0),0,c, ...
+                'RelTol',1e-10,'AbsTol',1e-12)/(p*gamma);
+            note = ['Aggregation=''fixed'' applies the fixed-gate first-order ' ...
+                'Tallis scaling to the base estimator-discrepancy variance.'];
+        end
 
         if ~isfinite(kc) || kc <= 0 || ~isfinite(lambda) || lambda <= 0
             asympt.available = false;
@@ -1458,8 +1522,6 @@ switch aggregation
         asympt.lambda = lambda;
         asympt.gammaFilter = gamma;
 
-        note = ['Aggregation=''fixed'' applies the fixed-gate first-order ' ...
-            'Tallis scaling to the base estimator-discrepancy variance.'];
         if isfield(asympt,'theoryStatus') && ~isempty(asympt.theoryStatus)
             asympt.theoryStatus = [asympt.theoryStatus ' ' note];
         else
@@ -1542,8 +1604,682 @@ end
 end
 
 % -------------------------------------------------------------------------
+function asympt = local_tem_adaptive_asymptotic(Y, maskMiss, completeIdx, ...
+    outFit, alpha, method, robustClass, robustEff, robustBonflev, ...
+    Tobs, eps0, muCC, SigCC, adaptivepool, adaptiveminref, outRob)
+%local_tem_adaptive_asymptotic Adaptive alpha>0 TEM sandwich calibration.
+%
+% This routine implements the first-order expansion for the distribution-
+% adaptive radial consistency factor under an elliptical MCAR model. The
+% complete-case robust scatter converges to a common target S0=tau*Sigma,
+% not necessarily to the covariance matrix itself. For pattern g the
+% empirical factor is
+%
+%   kappa_g = mean(Q_g | Q_g<=a_g)/p_g,
+%
+% where Q_g is computed from the robust complete-case reference geometry.
+% Its fixed-cutoff influence contains both the empirical truncated radial
+% moment and the plug-in scatter contribution. The random common TEM cutoff
+% is absorbed through the effective Jacobian, so it must not be added a
+% second time to the factor influence.
+%
+% The boundary density f_g(a_g) is estimated by a Gaussian kernel density
+% estimator with reflection at zero. The implementation is currently
+% restricted to method='pri' and unpooled adaptive factors, exactly matching
+% the theoretical effective-Jacobian derivation used here.
+
+[n,p] = size(Y);
+qhat = sum(completeIdx)/n;
+s = p*(p+1)/2;
+
+asympt = local_unavailable_asymptotic(qhat);
+asympt.reason = '';
+asympt.VA = NaN;
+asympt.mode = 'adaptive TEM influence-function sandwich';
+asympt.radialModel = 'adaptive-empirical';
+asympt.theoryStatus = 'available under elliptical MCAR with a common scatter target';
+asympt.TEM = struct('available',false,'sigma2',NaN,'threshold',NaN, ...
+    'Jrcond',NaN,'nActivePatterns',0,'nPatterns',0, ...
+    'factorIFIncluded',true,'densityMethod','Gaussian KDE with reflection', ...
+    'sigma2Base',NaN,'sigma2Factor',NaN,'twiceBaseFactor',NaN, ...
+    'meanInfluenceBeforeCentering',NaN,'meanBaseBeforeCentering',NaN, ...
+    'meanFactorBeforeCentering',NaN,'estimatingEquationMeanNorm',NaN, ...
+    'patternDiagnostics',table());
+asympt.completeCase = struct('influenceMethod','', ...
+    'sigma2',NaN,'crossTEMCC',NaN,'nComplete',sum(completeIdx), ...
+    'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
+    'frozenClassification',false,'robustBonflev',robustBonflev, ...
+    'relCovFrozenVsFS',NaN,'meanInfluenceBeforeCentering',NaN);
+
+if ~strcmpi(method,'pri')
+    asympt.reason = ['For consistencyfactor=''adaptive'' the analytical ' ...
+        'TEM Jacobian is currently implemented only for method=''pri''.'];
+    return
+end
+
+if adaptivepool
+    asympt.reason = ['Analytical calibration for adaptivepool=true is not ' ...
+        'yet implemented. Use adaptivepool=false for the current sandwich ' ...
+        'calibration or use the mask-preserving bootstrap.'];
+    return
+end
+
+if isempty(outFit) || ~isfield(outFit,'weights') || ...
+        ~isfield(outFit,'loc') || ~isfield(outFit,'cov') || ...
+        ~isfield(outFit,'kinfo')
+    asympt.reason = 'The adaptive TEM object does not contain the required fields.';
+    return
+end
+
+Ycc = Y(completeIdx,:);
+ncc = size(Ycc,1);
+
+% The adaptive radial factors are estimated in the frozen complete-case
+% reference geometry. Keep this geometry separate from the fitted TEM
+% geometry used to evaluate the TEM estimating equation below. Both are
+% consistent for the same population target under the null, but using the
+% fitted TEM geometry for the TEM-side innovation makes the empirical
+% estimating equation self-consistent in finite samples.
+muRef = muCC(:);
+Sref = (SigCC+SigCC')/2;
+if numel(muRef) ~= p || ~isequal(size(Sref),[p p]) || ...
+        any(~isfinite(Sref(:))) || rcond(Sref) <= 1e-12
+    asympt.reason = 'The robust complete-case reference geometry is singular.';
+    return
+end
+
+muTEM = outFit.loc(:);
+STEM = (outFit.cov+outFit.cov')/2;
+if numel(muTEM) ~= p || ~isequal(size(STEM),[p p]) || ...
+        any(~isfinite(STEM(:))) || rcond(STEM) <= 1e-12
+    asympt.reason = 'The fitted adaptive TEM geometry is singular.';
+    return
+end
+
+% The ordinary MDP-U coefficient at a common target S0=tau*Sigma is
+% a0=(1/tau)D_p' vec(S0^{-1}). Estimate 1/tau by mean(Q0)/p, where Q0 is
+% the robust complete-case squared distance. This avoids assuming S0=Sigma.
+Dp = local_duplication_matrix(p);
+K0 = Sref\eye(p);
+K0 = (K0+K0')/2;
+q0 = mahalFS(Ycc,muRef',Sref);
+q0 = q0(:);
+if any(~isfinite(q0)) || any(q0 < 0)
+    asympt.reason = 'Nonfinite robust complete-case distances in adaptive calibration.';
+    return
+end
+meanQ0 = mean(q0);
+if ~isfinite(meanQ0) || meanQ0 <= 0
+    asympt.reason = 'The mean robust complete-case squared distance is not positive.';
+    return
+end
+invTauHat = meanQ0/p;
+a0 = invTauHat*(Dp'*K0(:));
+
+% Under ellipticity, the stabilized mean log-ratio coefficient is a scalar
+% multiple of the MDP-U coefficient. On the S0 radial scale this multiplier
+% is E{Q0/(Q0+eps0)}/E(Q0).
+baseKappa = mean(q0./(q0+eps0))/meanQ0;
+if ~isfinite(baseKappa) || baseKappa <= 0
+    asympt.reason = 'The adaptive stabilized-log coefficient is not finite.';
+    return
+end
+
+% Reconstruct the common adjusted-distance threshold. For pri,
+% c=a_g+p-p_g.
+cthr = NaN;
+if isfield(outFit,'cthr') && isscalar(outFit.cthr) && isfinite(outFit.cthr)
+    cthr = outFit.cthr;
+elseif istable(outFit.kinfo) && ~isempty(outFit.kinfo) && ...
+        all(ismember({'pobs','athr'},outFit.kinfo.Properties.VariableNames))
+    okc = isfinite(outFit.kinfo.athr) & outFit.kinfo.athr > 0;
+    if any(okc)
+        cvals = outFit.kinfo.athr(okc)+p-outFit.kinfo.pobs(okc);
+        cvals = cvals(isfinite(cvals));
+        if ~isempty(cvals)
+            cthr = median(cvals);
+        end
+    end
+end
+
+if isfield(outFit,'adjustedD2') && numel(outFit.adjustedD2)==n
+    d2adj = outFit.adjustedD2(:);
+else
+    [d2part,poss] = mdPartialMD(Y,outFit.loc,outFit.cov);
+    d2adj = mdPartialMD2full(d2part,p,poss,'method','pri');
+end
+w = outFit.weights(:) > 0;
+if ~isfinite(cthr)
+    if ~any(w & isfinite(d2adj))
+        asympt.reason = 'Unable to reconstruct the adaptive TEM threshold.';
+        return
+    end
+    cthr = max(d2adj(w & isfinite(d2adj)));
+end
+asympt.TEM.threshold = cthr;
+
+% Full complete-case scatter influence is needed because each empirical
+% radial factor depends on the robust reference scatter through Q_g. For FS
+% this is evaluated analytically conditional on the full-sample final FS
+% classification. MCD and MM retain the delete-one jackknife for now.
+[PsiCcc,ccInfo,ccReason] = local_cc_scatter_influence(Ycc,alpha, ...
+    robustClass,robustEff,robustBonflev,outRob);
+if ~isempty(ccReason)
+    asympt.reason = ccReason;
+    return
+end
+if size(PsiCcc,2) ~= s
+    asympt.reason = 'The robust complete-case scatter influence has wrong dimension.';
+    return
+end
+asympt.completeCase.influenceMethod = ccInfo.influenceMethod;
+asympt.completeCase.nReferenceInliers = ccInfo.nReferenceInliers;
+asympt.completeCase.nReferenceOutliers = ccInfo.nReferenceOutliers;
+asympt.completeCase.frozenClassification = ccInfo.frozenClassification;
+asympt.completeCase.relCovFrozenVsFS = ccInfo.relCovFrozenVsFS;
+
+PsiCfull = zeros(n,s);
+PsiCfull(completeIdx,:) = PsiCcc/qhat;
+
+% Missingness patterns and empirical pattern probabilities.
+[patt,~,ic] = unique(maskMiss,'rows');
+G = size(patt,1);
+asympt.TEM.nPatterns = G;
+
+J = zeros(s,s);
+XiBase = zeros(n,s);
+XiFactor = zeros(n,s);
+active = false(G,1);
+
+pobsDiag = zeros(G,1);
+piDiag = zeros(G,1);
+aDiag = NaN(G,1);
+HDiag = NaN(G,1);
+kDiag = NaN(G,1);
+fDiag = NaN(G,1);
+bwDiag = NaN(G,1);
+rhoDiag = NaN(G,1);
+nrefkeptDiag = zeros(G,1);
+
+Lcell = cell(G,1);
+Vcell = cell(G,1);
+kVec = NaN(G,1);
+
+for g = 1:G
+    obs = find(~patt(g,:));
+    mis = find(patt(g,:));
+    pg = numel(obs);
+    pig = sum(ic==g)/n;
+    pobsDiag(g) = pg;
+    piDiag(g) = pig;
+
+    if pg == 0
+        continue
+    end
+
+    ag = cthr-(p-pg);
+    aDiag(g) = ag;
+    if ~isfinite(ag) || ag <= 0
+        continue
+    end
+
+    % Reference geometry for H_g, kappa_g, f_g and the factor IF.
+    SgRef = Sref(obs,obs);
+    SgRef = (SgRef+SgRef')/2;
+    if rcond(SgRef) <= 1e-12
+        asympt.reason = ['A reference pattern scatter block is numerically ' ...
+            'singular in the adaptive calibration.'];
+        return
+    end
+    BgRef = SgRef\eye(pg);
+    BgRef = (BgRef+BgRef')/2;
+
+    Zref = Ycc(:,obs)-muRef(obs)';
+    Qref = sum((Zref*BgRef).*Zref,2);
+    inside = isfinite(Qref) & Qref <= ag;
+    ninside = sum(inside);
+    nrefkeptDiag(g) = ninside;
+    if ninside < max(adaptiveminref,pg+1)
+        asympt.reason = sprintf(['Adaptive analytical calibration has only %d ' ...
+            'reference radii inside the cutoff for an active p_g=%d pattern; ' ...
+            'at least adaptiveminref=%d are required.'], ...
+            ninside,pg,max(adaptiveminref,pg+1));
+        return
+    end
+
+    Hg = ninside/ncc;
+    kg = mean(Qref(inside))/pg;
+    [fg,bwg] = local_radial_density_reflect(Qref,ag);
+    if ~isfinite(Hg) || Hg <= 0 || ~isfinite(kg) || kg <= 0 || ...
+            ~isfinite(fg) || fg <= 0
+        asympt.reason = ['Unable to estimate an adaptive radial factor or ' ...
+            'boundary density for one active pattern.'];
+        return
+    end
+
+    rho = -kg + (ag*fg/Hg)*(ag/pg-kg);
+    HDiag(g) = Hg;
+    kDiag(g) = kg;
+    fDiag(g) = fg;
+    bwDiag(g) = bwg;
+    rhoDiag(g) = rho;
+
+    % TEM-side conditional reconstruction matrices. The population
+    % derivation evaluates these at the common target S0. In the empirical
+    % sandwich we plug in the fitted TEM geometry because it is the root of
+    % the sample TEM estimating equations. This removes an avoidable
+    % O_p(n^{-1/2}) centering discrepancy caused by combining TEM weights
+    % with complete-case reconstruction matrices.
+    SgTEM = STEM(obs,obs);
+    SgTEM = (SgTEM+SgTEM')/2;
+    if rcond(SgTEM) <= 1e-12
+        asympt.reason = ['A fitted TEM pattern scatter block is numerically ' ...
+            'singular in the adaptive calibration.'];
+        return
+    end
+    BgTEM = SgTEM\eye(pg);
+    BgTEM = (BgTEM+BgTEM')/2;
+
+    Lg = zeros(p,pg);
+    Lg(obs,:) = eye(pg);
+    Vg = zeros(p,p);
+    if ~isempty(mis)
+        Ag = STEM(mis,obs)/SgTEM;
+        Cg = STEM(mis,mis)-Ag*STEM(obs,mis);
+        Cg = (Cg+Cg')/2;
+        Lg(mis,:) = Ag;
+        Vg(mis,mis) = Cg;
+    end
+    Mg = Lg*SgTEM*Lg';
+
+    % Effective adaptive Jacobian:
+    %   J_eff[H]=sum pi_g vech{u_g L_g H_g L_g' +
+    %                          v_g tr(S_g^{-1}H_g) M_g}.
+    ug = -Hg + 2*fg*ag^2/(kg*pg*(pg+2));
+    vg = fg*(ag^2/(kg*pg*(pg+2))-ag/pg);
+    for h = 1:s
+        Hmat = reshape(Dp(:,h),p,p);
+        Hsub = Hmat(obs,obs);
+        tg = trace(BgTEM*Hsub);
+        JH = ug*(Lg*Hsub*Lg') + vg*tg*Mg;
+        J(:,h) = J(:,h)+pig*local_vech(JH);
+    end
+
+    % Fixed-a influence of the empirical radial factor. The first term is
+    % the empirical truncated radial moment; the second is the robust-
+    % scatter plug-in contribution. The random cutoff term is already
+    % absorbed in the effective Jacobian and is intentionally omitted here.
+    psiKg = zeros(n,1);
+    ccRad = zeros(ncc,1);
+    ccRad(inside) = (Qref(inside)-pg*kg)/(qhat*pg*Hg);
+    psiKg(completeIdx) = ccRad;
+
+    Bembed = zeros(p,p);
+    Bembed(obs,obs) = BgRef;
+    bg = Dp'*Bembed(:);
+    psiKg = psiKg + (rho/pg)*(PsiCfull*bg);
+
+    factorCoeff = pig*(Hg/kg)*local_vech(Mg);
+    XiFactor = XiFactor - psiKg*factorCoeff';
+
+    active(g) = true;
+    Lcell{g} = Lg;
+    Vcell{g} = Vg;
+    kVec(g) = kg;
+end
+
+asympt.TEM.nActivePatterns = sum(active);
+asympt.TEM.patternDiagnostics = table(pobsDiag,piDiag,aDiag,HDiag,kDiag, ...
+    fDiag,bwDiag,rhoDiag,nrefkeptDiag,'VariableNames', ...
+    {'pobs','pi','athr','H','kappa','density','bandwidth','rho','nrefkept'});
+
+if ~any(active)
+    asympt.reason = 'No active missingness pattern is available at the adaptive threshold.';
+    return
+end
+
+Jrcond = rcond(J);
+asympt.TEM.Jrcond = Jrcond;
+if ~isfinite(Jrcond) || Jrcond <= 1e-12
+    asympt.reason = ['The adaptive effective TEM scatter Jacobian is ' ...
+        'numerically singular; analytical calibration not computed.'];
+    return
+end
+
+% Base innovation evaluated at the fitted TEM root. At the population
+% common target this is asymptotically equivalent to using the complete-case
+% plug-in, but the TEM plug-in respects the sample estimating equation and
+% should have an empirical mean close to zero before explicit centering.
+for i = 1:n
+    if ~w(i)
+        continue
+    end
+    g = ic(i);
+    if ~active(g)
+        continue
+    end
+    obs = find(~patt(g,:));
+    zi = Y(i,obs)'-muTEM(obs);
+    xhat = Lcell{g}*zi;
+    Ui = (xhat*xhat')/kVec(g)+Vcell{g};
+    XiBase(i,:) = local_vech(Ui-STEM)';
+end
+XiEff = XiBase+XiFactor;
+asympt.TEM.estimatingEquationMeanNorm = norm(mean(XiEff,1));
+
+% Project the adaptive TEM scatter influence onto the ordinary MDP-U
+% coefficient. Since psi_TEM=-J_eff^{-1}xi_eff and TD=-a0'(psi_TEM-psi_C),
+% the TEM contribution is b'xi_eff, where J_eff' b=a0.
+b = J'\a0;
+temBase = XiBase*b;
+temFactor = XiFactor*b;
+temContribution = temBase+temFactor;
+meanBaseRaw = mean(temBase);
+meanFactorRaw = mean(temFactor);
+meanTemRaw = mean(temContribution);
+temBase = temBase-meanBaseRaw;
+temFactor = temFactor-meanFactorRaw;
+temContribution = temContribution-meanTemRaw;
+
+% Robust complete-case contribution to TD,mean.
+ccContribution = PsiCfull*a0;
+meanCCRaw = mean(ccContribution);
+ccContribution = ccContribution-meanCCRaw;
+
+zetaD = temContribution+ccContribution;
+meanTotalRaw = meanTemRaw+meanCCRaw;
+zetaD = zetaD-mean(zetaD);
+
+sigmaBase2 = mean(temBase.^2);
+sigmaFactor2 = mean(temFactor.^2);
+crossBaseFactor = mean(temBase.*temFactor);
+sigmaTEM2 = mean(temContribution.^2);
+sigmaCC2 = mean(ccContribution.^2);
+crossTEMCC = mean(temContribution.*ccContribution);
+sigmaD2 = mean(zetaD.^2);
+
+asympt.TEM.available = true;
+asympt.TEM.sigma2 = sigmaTEM2;
+asympt.TEM.sigma2Base = sigmaBase2;
+asympt.TEM.sigma2Factor = sigmaFactor2;
+asympt.TEM.twiceBaseFactor = 2*crossBaseFactor;
+asympt.TEM.meanInfluenceBeforeCentering = meanTemRaw;
+asympt.TEM.meanBaseBeforeCentering = meanBaseRaw;
+asympt.TEM.meanFactorBeforeCentering = meanFactorRaw;
+asympt.completeCase.sigma2 = sigmaCC2;
+asympt.completeCase.crossTEMCC = crossTEMCC;
+asympt.completeCase.meanInfluenceBeforeCentering = meanCCRaw;
+asympt.meanInfluenceBeforeCentering = meanTotalRaw;
+
+if strcmpi(robustClass,'FS')
+    asympt.theoryStatus = ['Adaptive TEM sandwich under elliptical MCAR. ' ...
+        'The complete-case FS scatter influence is evaluated analytically ' ...
+        'conditional on the full-sample final FS classification; the ' ...
+        'data-dependent FS stopping/classification rule itself is not ' ...
+        'differentiated and remains outside the fixed-fraction FS theorem.'];
+else
+    asympt.theoryStatus = ['Adaptive TEM sandwich under elliptical MCAR. ' ...
+        'The empirical radial-factor influence and robust complete-case ' ...
+        'scatter influence are both included.'];
+end
+
+if ~isfinite(sigmaD2) || sigmaD2 < 0
+    asympt.reason = 'The adaptive end-to-end sandwich variance is not finite.';
+    return
+end
+
+tolVar = 1e-10*max(1,sigmaTEM2+sigmaCC2);
+asympt.available = true;
+asympt.reason = '';
+asympt.qhat = qhat;
+asympt.degenerate = sigmaD2 <= tolVar;
+asympt.baseSigmaD2 = sigmaD2;
+asympt.baseKappa = baseKappa;
+asympt.radialMeanQ = meanQ0;
+asympt.invTauHat = invTauHat;
+
+asympt.TDmean.sigma2 = sigmaD2;
+asympt.TDmean.se = sqrt(sigmaD2/n);
+asympt.TDmean.components = struct('TEM',sigmaTEM2, ...
+    'completeCase',sigmaCC2,'twiceCross',2*crossTEMCC, ...
+    'TEMbase',sigmaBase2,'TEMfactor',sigmaFactor2, ...
+    'TEMtwiceBaseFactor',2*crossBaseFactor);
+
+asympt.TLmean.kappa = baseKappa;
+asympt.TLmean.sigma2 = baseKappa^2*sigmaD2;
+asympt.TLmean.se = sqrt(asympt.TLmean.sigma2/n);
+
+if asympt.degenerate
+    asympt.TDmean.z = NaN;
+    asympt.TDmean.pvalue = NaN;
+    asympt.TLmean.z = NaN;
+    asympt.TLmean.pvalue = NaN;
+else
+    asympt.TDmean.z = Tobs(4)/asympt.TDmean.se;
+    asympt.TDmean.pvalue = erfc(abs(asympt.TDmean.z)/sqrt(2));
+    asympt.TLmean.z = Tobs(2)/asympt.TLmean.se;
+    asympt.TLmean.pvalue = erfc(abs(asympt.TLmean.z)/sqrt(2));
+end
+end
+
+% -------------------------------------------------------------------------
+function [f,h] = local_radial_density_reflect(q,a)
+%local_radial_density_reflect Boundary density estimate on [0,Inf).
+%
+% A Gaussian kernel with reflection at zero is used:
+%   f(a)=mean{phi((a-Q)/h)+phi((a+Q)/h)}/h.
+% The bandwidth is Silverman's robust rule with deterministic fallbacks.
+
+q = q(:);
+q = q(isfinite(q) & q >= 0);
+f = NaN;
+h = NaN;
+if isempty(q) || ~isfinite(a) || a < 0
+    return
+end
+
+nq = numel(q);
+sq = std(q,1);
+if nq >= 4
+    qq = quantile(q,[0.25 0.75]);
+    riqr = (qq(2)-qq(1))/1.349;
+else
+    riqr = NaN;
+end
+scale = sq;
+if isfinite(riqr) && riqr > 0
+    if isfinite(scale) && scale > 0
+        scale = min(scale,riqr);
+    else
+        scale = riqr;
+    end
+end
+if ~isfinite(scale) || scale <= 0
+    scale = max(median(abs(q-median(q))),sqrt(eps)*max(1,a));
+end
+h = 0.9*scale*nq^(-1/5);
+h = max(h,sqrt(eps)*max(1,a));
+
+u1 = (a-q)/h;
+u2 = (a+q)/h;
+phi1 = exp(-0.5*u1.^2)/sqrt(2*pi);
+phi2 = exp(-0.5*u2.^2)/sqrt(2*pi);
+f = mean(phi1+phi2)/h;
+end
+
+% -------------------------------------------------------------------------
+function [PsiC,info,reason] = local_cc_scatter_influence(Ycc,alpha, ...
+    robustClass,robustEff,robustBonflev,outRob)
+%local_cc_scatter_influence Robust complete-case scatter influence vectors.
+%
+% For FS, use an analytical frozen-classification perturbation: condition on
+% the final inlier/outlier set selected by the single full-sample FSM fit and
+% differentiate only the ordinary covariance computed on the retained set.
+% This avoids treating discrete changes of the FS stopping/classification
+% rule under deletion as infinitesimal influence. For MCD and MM the current
+% delete-one jackknife is retained.
+
+ncc = size(Ycc,1);
+info = struct('influenceMethod','', ...
+    'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
+    'frozenClassification',false,'relCovFrozenVsFS',NaN);
+PsiC = [];
+reason = '';
+
+if strcmpi(robustClass,'FS')
+    [PsiC,info,reason] = local_cc_scatter_fs_frozen(Ycc,outRob);
+else
+    [PsiC,reason] = local_cc_scatter_jackknife(Ycc,alpha,robustClass, ...
+        robustEff,robustBonflev);
+    if isempty(reason)
+        info.influenceMethod = 'delete-one jackknife';
+        info.frozenClassification = false;
+    end
+end
+end
+
+% -------------------------------------------------------------------------
+function [PsiC,info,reason] = local_cc_scatter_fs_frozen(Ycc,outRob)
+%local_cc_scatter_fs_frozen Analytical frozen-classification FS influence.
+%
+% Let m be the number of complete cases and I the final inlier set selected
+% by the full-sample FSM fit, with h=|I|. Conditional on I, FSM.cov is the
+% ordinary unbiased covariance of the retained observations. If
+%
+%   A_i=(y_i-ybar_I)*(y_i-ybar_I)',
+%
+% the centered delete-one perturbation has the closed form
+%
+%   Psi_i = (m-1)/(h-2) * {h/(h-1) vech(A_i)-vech(S_I)}, i in I,
+%   Psi_i = 0,                                             i not in I.
+%
+% This equals the frozen-classification delete-one jackknife exactly, apart
+% from floating-point roundoff, but requires no additional FSM fits.
+
+m = size(Ycc,1);
+p = size(Ycc,2);
+s = p*(p+1)/2;
+PsiC = [];
+reason = '';
+info = struct('influenceMethod','FS analytic frozen-classification', ...
+    'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
+    'frozenClassification',true,'relCovFrozenVsFS',NaN);
+
+if m < 5
+    reason = 'Too few complete observations for the FS scatter influence.';
+    return
+end
+if isempty(outRob) || ~isstruct(outRob) || ~isfield(outRob,'cov')
+    reason = ['The full-sample FS fit is required for the analytical ' ...
+        'frozen-classification influence.'];
+    return
+end
+
+outMask = local_cc_outlier_mask(outRob,m);
+inMask = ~outMask;
+h = sum(inMask);
+info.nReferenceInliers = h;
+info.nReferenceOutliers = sum(outMask);
+
+if h < 3
+    reason = ['Too few observations remain in the final FS inlier set for ' ...
+        'the frozen-classification covariance influence.'];
+    return
+end
+
+Yin = Ycc(inMask,:);
+muI = mean(Yin,1)';
+SI = cov(Yin);
+SI = (SI+SI')/2;
+SFS = (outRob.cov+outRob.cov')/2;
+if any(~isfinite(SI(:))) || any(~isfinite(SFS(:)))
+    reason = 'The final FS scatter contains nonfinite values.';
+    return
+end
+
+info.relCovFrozenVsFS = norm(SI-SFS,'fro')/max(norm(SFS,'fro'),eps);
+if info.relCovFrozenVsFS > 1e-8
+    reason = ['FSM.cov differs from the covariance of the final FS inlier ' ...
+        'set; the analytical frozen-classification influence is therefore ' ...
+        'not applied.'];
+    return
+end
+
+vS = local_vech(SI);
+PsiC = zeros(m,s);
+inIdx = find(inMask);
+coef = (m-1)/(h-2);
+radialCoef = h/(h-1);
+for j = 1:numel(inIdx)
+    i = inIdx(j);
+    x = Ycc(i,:)'-muI;
+    vA = local_vech(x*x');
+    PsiC(i,:) = (coef*(radialCoef*vA-vS))';
+end
+
+% The formula is centered algebraically over all m complete cases. Remove
+% only floating-point residuals so downstream empirical sandwiches inherit
+% exact numerical centering.
+PsiC = PsiC-mean(PsiC,1);
+if any(~isfinite(PsiC(:)))
+    reason = 'The analytical frozen-FS scatter influence is nonfinite.';
+    PsiC = [];
+end
+end
+
+% -------------------------------------------------------------------------
+function [PsiC,reason] = local_cc_scatter_jackknife(Ycc,alpha,robustClass, ...
+    robustEff,robustBonflev)
+%local_cc_scatter_jackknife Delete-one robust scatter influence vectors.
+%
+% This numerical branch is retained for MCD and MM. PsiC contains the
+% complete-case-sample influence values for vech(Sigma_C). The full-sample
+% influence used by the missing-data expansion is C*PsiC/q.
+
+ncc = size(Ycc,1);
+p = size(Ycc,2);
+s = p*(p+1)/2;
+PsiC = [];
+reason = '';
+if ncc < 5
+    reason = 'Too few complete observations for the robust delete-one influence.';
+    return
+end
+
+loo = NaN(ncc,s);
+rngState = rng;
+cleanupObj = onCleanup(@() rng(rngState)); %#ok<NASGU>
+for i = 1:ncc
+    keep = true(ncc,1);
+    keep(i) = false;
+    try
+        rng(rngState)
+        [~,SigMinus] = local_complete_case_fit(Ycc(keep,:),alpha, ...
+            robustClass,robustEff,robustBonflev);
+        if any(~isfinite(SigMinus(:)))
+            reason = sprintf(['Nonfinite robust scatter in delete-one fit ' ...
+                'for complete observation %d.'],i);
+            PsiC = [];
+            return
+        end
+        loo(i,:) = local_vech((SigMinus+SigMinus')/2)';
+    catch ME
+        reason = sprintf(['Robust delete-one fit failed for complete ' ...
+            'observation %d: %s'],i,ME.message);
+        PsiC = [];
+        return
+    end
+end
+if any(~isfinite(loo(:)))
+    reason = 'The robust delete-one scatter influence contains nonfinite values.';
+    return
+end
+PsiC = -(ncc-1)*(loo-mean(loo,1));
+end
+
+% -------------------------------------------------------------------------
 function asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
-    alpha, method, robustClass, robustEff, robustBonflev, Tobs, eps0)
+    alpha, method, robustClass, robustEff, robustBonflev, Tobs, eps0, outRob)
 %local_tem_asymptotic Analytical alpha>0 TEM sandwich benchmark.
 %
 % The implementation follows the scalar influence-function representation
@@ -1552,10 +2288,10 @@ function asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
 %   -aSigma' * psi_TEM(W) = b' * xi(W),
 %
 % where xi(W)=vech{w_R(U_R-Sigma)}. The complete-case contribution to the
-% MDP statistic is C*zeta_C/q. The robust complete-case scalar influence
-% zeta_C is evaluated by a delete-one jackknife. Consequently the TEM part
-% of the calculation is analytical, while the estimator-specific robust
-% complete-case influence is evaluated numerically.
+% MDP statistic is C*zeta_C/q. For FS the complete-case scatter influence is
+% evaluated analytically conditional on the final full-sample FS
+% classification. For MCD and MM the current delete-one jackknife is
+% retained.
 %
 % The current Jacobian implementation is restricted to method='pri'. This
 % is the parameter-free additive distance adjustment used in the theoretical
@@ -1573,8 +2309,11 @@ asympt.mode = 'TEM influence-function sandwich';
 asympt.theoryStatus = 'available';
 asympt.TEM = struct('available',false,'sigma2',NaN,'threshold',NaN, ...
     'Jrcond',NaN,'nActivePatterns',0,'nPatterns',0);
-asympt.completeCase = struct('influenceMethod','delete-one jackknife', ...
-    'sigma2',NaN,'crossTEMCC',NaN,'nComplete',sum(completeIdx));
+asympt.completeCase = struct('influenceMethod','', ...
+    'sigma2',NaN,'crossTEMCC',NaN,'nComplete',sum(completeIdx), ...
+    'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
+    'frozenClassification',false,'robustBonflev',robustBonflev, ...
+    'relCovFrozenVsFS',NaN);
 
 if ~strcmpi(method,'pri')
     asympt.reason = ['For alpha>0 the analytical TEM Jacobian is currently ' ...
@@ -1754,18 +2493,21 @@ sigmaTEM2 = mean(temContribution.^2);
 asympt.TEM.available = true;
 asympt.TEM.sigma2 = sigmaTEM2;
 
-% Evaluate the scalar influence of the robust complete-case scatter by a
-% delete-one jackknife. The same random-number state is reset before every
-% robust refit so that stochastic subsampling in MCD/MM does not inject
-% avoidable algorithmic noise into the jackknife differences.
+% Complete-case scatter influence. For FS use the analytical frozen-
+% classification perturbation; MCD and MM retain the delete-one jackknife.
 Ycc = Y(completeIdx,:);
-[zetaC,ccReason] = local_cc_scalar_jackknife(Ycc,alpha,robustClass, ...
-    robustEff,robustBonflev,aSigma);
-
+[PsiCcc,ccInfo,ccReason] = local_cc_scatter_influence(Ycc,alpha, ...
+    robustClass,robustEff,robustBonflev,outRob);
 if ~isempty(ccReason)
     asympt.reason = ccReason;
     return
 end
+zetaC = PsiCcc*aSigma;
+asympt.completeCase.influenceMethod = ccInfo.influenceMethod;
+asympt.completeCase.nReferenceInliers = ccInfo.nReferenceInliers;
+asympt.completeCase.nReferenceOutliers = ccInfo.nReferenceOutliers;
+asympt.completeCase.frozenClassification = ccInfo.frozenClassification;
+asympt.completeCase.relCovFrozenVsFS = ccInfo.relCovFrozenVsFS;
 
 ccContribution = zeros(n,1);
 ccContribution(completeIdx) = zetaC/qhat;
@@ -1785,12 +2527,14 @@ asympt.completeCase.crossTEMCC = crossTEMCC;
 asympt.completeCase.nComplete = size(Ycc,1);
 
 if strcmpi(robustClass,'FS')
-    asympt.theoryStatus = ['experimental for adaptive FS: the TEM influence ' ...
-        'calculation is analytical, but the current FS signal/stopping rule ' ...
-        'is outside the fixed-fraction FS asymptotic theorem.'];
+    asympt.theoryStatus = ['TEM influence calculation is analytical. The ' ...
+        'complete-case FS scatter influence is evaluated analytically ' ...
+        'conditional on the full-sample final FS classification; the ' ...
+        'data-dependent FS stopping/classification rule itself is not ' ...
+        'differentiated.'];
 else
     asympt.theoryStatus = ['TEM influence calculation is analytical; the ' ...
-        'robust complete-case scalar influence is evaluated by delete-one ' ...
+        'robust complete-case scatter influence is evaluated by delete-one ' ...
         'jackknife.'];
 end
 
@@ -1832,58 +2576,6 @@ end
 end
 
 % -------------------------------------------------------------------------
-function [zetaC,reason] = local_cc_scalar_jackknife(Ycc,alpha,robustClass, ...
-    robustEff,robustBonflev,aSigma)
-%local_cc_scalar_jackknife Delete-one estimate of the robust scatter IF.
-%
-% If theta_hat is asymptotically linear on ncc complete observations, then
-% (ncc-1)*(theta_hat-theta_hat_{(-i)}) estimates the centered influence.
-% After centering, the common full-sample estimate cancels, so it is enough
-% to center the scalar leave-one-out estimates themselves.
-
-ncc = size(Ycc,1);
-zetaC = [];
-reason = '';
-
-if ncc < 5
-    reason = 'Too few complete observations for the robust delete-one influence.';
-    return
-end
-
-looScalar = NaN(ncc,1);
-rngState = rng;
-cleanupObj = onCleanup(@() rng(rngState)); %#ok<NASGU>
-
-for i = 1:ncc
-    keep = true(ncc,1);
-    keep(i) = false;
-    try
-        % Reset the state to pair stochastic robust fits across deletions.
-        rng(rngState)
-        [~,SigMinus] = local_complete_case_fit(Ycc(keep,:),alpha, ...
-            robustClass,robustEff,robustBonflev);
-        if any(~isfinite(SigMinus(:)))
-            reason = sprintf(['Nonfinite robust scatter in delete-one fit ' ...
-                'for complete observation %d.'],i);
-            zetaC = [];
-            return
-        end
-        looScalar(i) = aSigma' * local_vech((SigMinus+SigMinus')/2);
-    catch ME
-        reason = sprintf(['Robust delete-one fit failed for complete ' ...
-            'observation %d: %s'],i,ME.message);
-        zetaC = [];
-        return
-    end
-end
-
-if any(~isfinite(looScalar))
-    reason = 'The robust delete-one influence contains nonfinite values.';
-    return
-end
-
-zetaC = -(ncc-1)*(looScalar-mean(looScalar));
-end
 
 % -------------------------------------------------------------------------
 function v = local_vech(S)
@@ -2404,6 +3096,259 @@ if flag == 0
 else
     val = log(max(det(S),realmin));
 end
+end
+
+% -------------------------------------------------------------------------
+function so = mdMDPsecondOrder(p,alpha)
+%mdMDPsecondOrder Complete-Gaussian adaptive-TEM second-order benchmark.
+%
+%  so = mdMDPsecondOrder(p,alpha) returns the final O(n^{-1}) centering
+%  constants for the complete-data Gaussian benchmark with the adaptive
+%  radial TEM correction.  The decomposition is
+%
+%        cTotal = cLin + cQuad + cMu,
+%
+%  where cMu is the location contribution, cQuad is the inverse-scatter
+%  curvature contribution and cLin is the moving-boundary/adaptive-feedback
+%  contribution.
+%
+%  IMPORTANT.  This local function is a theoretical benchmark, not a
+%  general second-order correction for data with missing values.  In
+%  particular, the present closed form for cLin is derived for the complete
+%  Gaussian adaptive benchmark.  mdMDPtest therefore reports these constants
+%  in out.asympt.secondOrderBenchmark but does not use them to modify p-values.
+%
+%  Input arguments:
+%
+%    p     : Dimension. Positive integer >= 2.
+%    alpha : Trimming fraction in [0,0.5].
+%
+%  Output fields:
+%
+%    p, alpha, gamma : Dimension, trimming fraction and retained fraction.
+%    a               : chi-square_p gamma quantile.
+%    f               : chi-square_p density at a.
+%    beta            : F_{p+2}(a).
+%    js              : F_{p+4}(a), trace-free/shape Jacobian coefficient.
+%    jt              : Scalar trace Jacobian coefficient,
+%                       ((p+2)*gamma*js-p*beta^2)/(2*gamma).
+%    kappa           : Population Gaussian Tallis factor beta/gamma.
+%    lambda          : Adaptive scalar trace-feedback coefficient, 1-jt/beta.
+%    rhoShape        : Shape fixed-point feedback coefficient, 1-js/beta.
+%    feedback1       : 1/(1-lambda).
+%    feedback2       : 1/(1-lambda)^2.
+%    cMu             : Location contribution.
+%    cQuad           : Final trace-free inverse-scatter curvature contribution.
+%    cQuadOne        : Trace-free quadratic target after one adaptive update.
+%    cLin            : Moving-boundary/adaptive-feedback contribution.
+%    cLinCompact     : Same cLin reconstructed from the boundary master identity.
+%    cTotal          : Total complete-Gaussian adaptive centering constant.
+%    cLinTerms       : 1 x 3 vector containing the three terms of cLin.
+%    c0, r           : Boundary coefficients a*f/p and (a/kappa-p)/gamma.
+%    bP              : Limit of E(P_n), P_n=S0_n+c0*L_n.
+%    Cinf, Dinf      : O(1) boundary-residual limits.
+%    mS0, Binf       : Limits of E(S0_n) and E(B_n).
+%    bLOO, bOS, bColl: Smooth, tagged and collective pieces of bP.
+%    scope           : Text identifying the theoretical scope.
+%    usedForCalibration : false.  The constants are diagnostic only.
+%
+%  The chi-square recurrences
+%
+%      gamma-beta = 2*a*f/p,
+%      beta-js    = 2*a^2*f/[p(p+2)]
+%
+%  are used for numerically stable evaluation of the small differences in
+%  the cLin formula.  The algebraically equivalent closed form is
+%
+%    cLin = p*(1/jt-1)
+%         + (js-jt)/(2*jt)*cQuad
+%         + (beta-jt)*((p-1)*(p+2)*jt*(beta-js)-2*beta) ...
+%           /(2*jt^2*(gamma-beta)).
+%
+%  An equivalent boundary-master representation is
+%
+%      cLin = (Dinf-Cinf-r*bP)/(1-lambda),
+%
+%  where r=(a/kappa-p)/gamma.  This identity is useful because the boundary
+%  quantities have different stochastic scales: S0_n, P_n, B_n and L_n have
+%  O_p(n^(1/4)) fluctuations, while C_n and D_n are O_p(1).  These rates are
+%  diagnostic/theoretical properties only; no empirical finite-n rate
+%  correction is applied by mdMDPtest.
+%
+%  For p=5 and alpha=0.25 the function returns approximately
+%
+%      cMu      =   4.413807067927
+%      cQuad    =  58.426913409290
+%      cQuadOne =  21.738099801134
+%      cLin     =  41.759878370847
+%      cTotal   = 104.600598848064.
+%
+
+if ~isscalar(p) || ~isnumeric(p) || ~isfinite(p) || p < 2 || p ~= floor(p)
+    error('FSDA:mdMDPtest:WrongSecondOrderP', ...
+        'The second-order benchmark requires an integer p >= 2.');
+end
+if ~isscalar(alpha) || ~isnumeric(alpha) || ~isfinite(alpha) || ...
+        alpha < 0 || alpha > 0.5
+    error('FSDA:mdMDPtest:WrongSecondOrderAlpha', ...
+        'The second-order benchmark requires alpha in [0,0.5].');
+end
+
+gamma = 1-alpha;
+
+% At alpha=0 the complete-data adaptive TEM fit coincides with the
+% untrimmed reference fit.  Return the continuous no-trimming limit directly
+% and avoid the removable 0/0 terms in the positive-trimming formula.
+if alpha == 0
+    a = Inf;
+    f = 0;
+    beta = 1;
+    js = 1;
+    jt = 1;
+    kappa = 1;
+    lambda = 0;
+    rhoShape = 0;
+    feedback1 = 1;
+    feedback2 = 1;
+    cMu = 0;
+    cQuad = 0;
+    cQuadOne = 0;
+    cLinTerms = [0 0 0];
+    cLin = 0;
+    cTotal = 0;
+
+    % Continuous no-trimming convention for the boundary fields.
+    c0 = 0;
+    r = 0;
+    bLOO = 0;
+    bOS = 0;
+    bColl = 0;
+    bP = 0;
+    Cinf = 0;
+    Dinf = 0;
+    mS0 = 0;
+    Binf = 0;
+    cLinCompact = 0;
+else
+    a = chi2inv(gamma,p);
+    f = chi2pdf(a,p);
+    beta = chi2cdf(a,p+2);
+    js = chi2cdf(a,p+4);
+
+    % Scalar trace Jacobian.  This is algebraically equivalent to
+    % beta+a*f*(beta/gamma-a/p), but the CDF form mirrors the final theory.
+    jt = ((p+2)*gamma*js-p*beta^2)/(2*gamma);
+    kappa = beta/gamma;
+
+    if ~isfinite(jt) || jt <= 0 || ~isfinite(beta) || beta <= 0
+        error('FSDA:mdMDPtest:SecondOrderUnstable', ...
+            ['The complete-Gaussian adaptive second-order benchmark is ' ...
+             'outside the regular stable regime (nonpositive jt or beta).']);
+    end
+
+    lambda = 1-jt/beta;
+    if ~isfinite(lambda) || lambda <= 0 || lambda >= 1
+        error('FSDA:mdMDPtest:SecondOrderNoncontractive', ...
+            ['The complete-Gaussian adaptive second-order benchmark is ' ...
+             'outside the locally stable regime 0 < lambda < 1.']);
+    end
+
+    rhoShape = 1-js/beta;
+    feedback1 = 1/(1-lambda);
+    feedback2 = feedback1^2;
+
+    cMu = p*(1/beta-1);
+    cQuad = (p-1)*(p+2)*(1/js-1);
+    cQuadOne = (p-1)*(p+2)*js*(1-js)/(beta^2);
+
+    % Use the recurrence forms of gamma-beta and beta-js in the small
+    % differences.  This is more stable than subtracting nearby CDF values
+    % when alpha is small, while remaining exactly the same theoretically.
+    gammaMinusBeta = 2*a*f/p;
+    betaMinusJs = 2*a^2*f/(p*(p+2));
+
+    if ~isfinite(gammaMinusBeta) || gammaMinusBeta <= 0
+        error('FSDA:mdMDPtest:SecondOrderBoundary', ...
+            'Unable to evaluate the positive-trimming boundary coefficient.');
+    end
+
+    term1 = p*(1/jt-1);
+    term2 = ((js-jt)/(2*jt))*cQuad;
+    term3 = ((beta-jt) * ...
+        ((p-1)*(p+2)*jt*betaMinusJs-2*beta)) / ...
+        (2*jt^2*gammaMinusBeta);
+
+    cLinTerms = [term1 term2 term3];
+    cLin = sum(cLinTerms);
+    cTotal = cLin+cQuad+cMu;
+
+    % Boundary/master representation.  These quantities reproduce cLin but
+    % are kept explicit because they are the natural validation coordinates.
+    c0 = a*f/p;
+    r = (a/kappa-p)/gamma;
+
+    fp = f*((p/2-1)/a-1/2);
+    A_mu0 = -f + 2*(f+a*fp)/p;
+    A_s0 = -(a/p)*f + (2*a*f+a^2*fp)/(p*(p+2));
+
+    rplus = -2*a*(1/beta-1) - ((p-1)/p)*a^2*(1/js-1);
+    rminus = 2*a + ((p-1)/p)*a^2;
+
+    bLOO = A_mu0*cMu + A_s0*cQuad;
+    bOS = 0.5-0.5*f*(rplus+rminus);
+    bColl = lambda/(2*(1-lambda));
+    bP = bLOO+bOS+bColl;
+
+    Cinf = (f/(gamma*kappa))* ...
+        ((2*a/p)*cMu + (a^2/(p*(p+2)))*cQuad);
+    Dinf = cMu/kappa;
+
+    mS0 = (bP+c0*(Cinf-Dinf))/(1-lambda);
+    Binf = r*mS0+Cinf;
+    cLinCompact = (Dinf-Cinf-r*bP)/(1-lambda);
+
+    if abs(cLinCompact-cLin) > 5e-10*max(1,abs(cLin))
+        error('FSDA:mdMDPtest:SecondOrderIdentityMismatch', ...
+            ['The closed-form and boundary-master representations of ' ...
+             'the complete-Gaussian cLin constant do not agree.']);
+    end
+end
+
+so = struct;
+so.p = p;
+so.alpha = alpha;
+so.gamma = gamma;
+so.a = a;
+so.f = f;
+so.beta = beta;
+so.js = js;
+so.jt = jt;
+so.kappa = kappa;
+so.lambda = lambda;
+so.rhoShape = rhoShape;
+so.feedback1 = feedback1;
+so.feedback2 = feedback2;
+so.cMu = cMu;
+so.cQuad = cQuad;
+so.cQuadOne = cQuadOne;
+so.cLin = cLin;
+so.cLinCompact = cLinCompact;
+so.cTotal = cTotal;
+so.cLinTerms = cLinTerms;
+so.c0 = c0;
+so.r = r;
+so.bLOO = bLOO;
+so.bOS = bOS;
+so.bColl = bColl;
+so.bP = bP;
+so.Cinf = Cinf;
+so.Dinf = Dinf;
+so.mS0 = mS0;
+so.Binf = Binf;
+so.boundaryStochasticOrder = ...
+    'S0_n, P_n, B_n and L_n are O_p(n^(1/4)); C_n and D_n are O_p(1)';
+so.scope = 'complete-Gaussian adaptive-TEM second-order benchmark';
+so.usedForCalibration = false;
 end
 
 %FScategory:MULT-MissingData
