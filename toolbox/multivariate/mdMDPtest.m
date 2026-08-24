@@ -285,8 +285,22 @@ function out = mdMDPtest(Y, varargin)
 %                            ratio.
 %          out.asympt      = Structure containing the analytical
 %                            benchmark for the two selected mean statistics.
-%                            Gaussian and adaptive elliptical calibrations are
-%                            returned according to consistencyfactor.
+%                            For alpha=0 and aggregation='ordinary', TDmean
+%                            uses the feasible general-F sandwich calibration
+%                            under MCAR and finite fourth moments. Gaussianity
+%                            and ellipticity are not required for this TDmean
+%                            calibration. The former Gaussian-information law
+%                            is retained in out.asympt.gaussian as a diagnostic
+%                            specialization. Since a general-F scalar law for
+%                            TLmean is not available outside symmetry/
+%                            ellipticity, out.asympt.TLmean remains the
+%                            Gaussian-information diagnostic in this branch
+%                            and is explicitly labelled as such.
+%                            For alpha=0 and aggregation='fixed', the current
+%                            analytical benchmark remains Gaussian because a
+%                            general-F fixed-gate law has not been derived;
+%                            the untrimmed general-F result is nevertheless
+%                            returned in out.asympt.generalF for diagnostics.
 %                            For MDP-U the ordinary first-order coefficients
 %                            are used. MDP-I inherits the same coefficients
 %                            under the condition that the complete-case rule
@@ -302,8 +316,7 @@ function out = mdMDPtest(Y, varargin)
 %                            filterCutoff,
 %                            gammaFilter, kc, lambda, baseSigmaD2 and
 %                            baseKappa document the applied scaling. For
-%                            alpha=0, the classical closed-form covariance
-%                            information formula is used. For alpha>0,
+%                            alpha>0,
 %                            method='pri' and consistencyfactor='pattern',
 %                            the Gaussian pattern-wise TEM influence function
 %                            and effective Jacobian are evaluated analytically.
@@ -335,13 +348,9 @@ function out = mdMDPtest(Y, varargin)
 %                            out.asympt.secondOrderBenchmark contains the
 %                            complete-Gaussian adaptive-TEM O(n^{-1})
 %                            centering constants cMu, cQuad, cLin and cTotal.
-%                            It also reports the one-step trace-free target
-%                            cQuadOne, shape feedback rhoShape, and the
-%                            boundary-master quantities bP, Cinf, Dinf and
-%                            cLinCompact.  This is a theoretical benchmark
-%                            only: it is not a missing-pattern second-order
-%                            correction and is not used to alter analytical
-%                            or bootstrap p-values.
+%                            This is a theoretical benchmark only: it is not
+%                            a missing-pattern second-order correction and is
+%                            not used to alter analytical or bootstrap p-values.
 %
 %
 %  More About:
@@ -382,16 +391,27 @@ function out = mdMDPtest(Y, varargin)
 %  influence are included explicitly. The current adaptive analytical branch
 %  is available for method='pri' with adaptivepool=false.
 %
-%  The analytical benchmark follows the selected mean aggregation. The
-%  Gaussian pattern branch uses Tallis coefficients, whereas the adaptive
+%  For alpha=0 and aggregation='ordinary', the primary analytical
+%  calibration of TDmean is the feasible general-F sandwich. It estimates the
+%  complete-case/all-available scatter-discrepancy influence covariance from
+%  the observed data and is valid under MCAR with finite fourth moments. The
+%  Gaussian-information specialization is retained in out.asympt.gaussian.
+%  A general-F calibration for TLmean is not currently supplied outside
+%  symmetry/ellipticity, so its alpha=0 analytical value is explicitly a
+%  Gaussian diagnostic. For alpha=0 and aggregation='fixed', the existing
+%  Gaussian Tallis benchmark is retained because a general-F fixed-gate law
+%  has not yet been derived.
+%
+%  For alpha>0 the analytical benchmark follows the selected mean aggregation.
+%  The Gaussian pattern branch uses Tallis coefficients, whereas the adaptive
 %  branch uses empirical elliptical radial coefficients. MDP-I uses the same
-%  first-order variance as MDP-U under O_p(1) clean exclusions. MDP-F multiplies the base mean-difference variance by kc^2
-%  and the base stabilized-log-ratio variance by the appropriate truncated
-%  radial coefficient lambda^2. When coupledtrim=true, the analytical
-%  benchmark is deliberately disabled because the external eligibility mask
-%  changes the TEM estimating equations; bootstrap calibration is used. The
-%  bootstrap p-values in out.pvalue remain the primary finite-sample
-%  calibration.
+%  first-order variance as MDP-U under O_p(1) clean exclusions. MDP-F
+%  multiplies the base mean-difference variance by kc^2 and the base
+%  stabilized-log-ratio variance by the appropriate truncated radial
+%  coefficient lambda^2. When coupledtrim=true, the analytical benchmark is
+%  deliberately disabled because the external eligibility mask changes the
+%  TEM estimating equations; bootstrap calibration is used. The bootstrap
+%  p-values in out.pvalue remain the primary finite-sample calibration.
 %
 % See also: mdEM, mdTEM, mdImputeCondMean.m, mdPartialMD.m, mdPartialMD2full
 %
@@ -577,6 +597,20 @@ function out = mdMDPtest(Y, varargin)
     disp(out.pvalue)
     disp(out.asympt.TDmean)
     disp(out.asympt.TEM.patternDiagnostics)
+%}
+
+
+%{
+    %% Example 12: General-F analytical calibration for untrimmed MDP-U.
+    % For alpha=0 and ordinary aggregation, TDmean uses the feasible
+    % general-F sandwich as the primary analytical calibration. The
+    % Gaussian-information specialization is retained as a diagnostic.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'alpha',0,'aggregation','ordinary','nsimul',199);
+    disp(out.asympt.TDmean)
+    disp(out.asympt.generalF)
+    disp(out.asympt.gaussian.TDmean)
 %}
 
 %% Beginning of code
@@ -793,9 +827,18 @@ end
 % Observed statistics
 Tobs = local_statistic(d2_cc,d2_all_cc,eps0,meanWeightsCC);
 
-% Analytical Gaussian benchmark for the selected mean statistics. First
-% compute the base estimator-discrepancy variance and then apply the scalar
-% first-order coefficient implied by the selected aggregation rule.
+% Keep the untrimmed ordinary TDmean available even when aggregation='fixed'.
+% The feasible general-F theorem applies to this MDP-U statistic only.
+TDordinary = mean(d2_all_cc-d2_cc);
+
+% Analytical benchmark for the selected mean statistics.
+%
+% For alpha=0 and ordinary aggregation, TDmean uses the feasible general-F
+% sandwich as the primary analytical calibration. The Gaussian information
+% specialization is retained as a diagnostic. For alpha=0 with a fixed gate,
+% the present analytical law remains Gaussian because a general-F fixed-gate
+% result has not yet been derived. For alpha>0 the existing Gaussian-pattern
+% or adaptive-elliptical TEM branches are used.
 if coupledtrim
     asympt = local_unavailable_asymptotic(nComplete/n);
     asympt.reason = ['Analytical calibration is not supplied when ' ...
@@ -808,16 +851,29 @@ if coupledtrim
     asympt.aggregation = aggregation;
 else
     if alpha == 0
-        asympt = local_classical_asymptotic(maskMiss, SigHat, nComplete, ...
-            Tobs, eps0);
+        preferGeneralF = strcmp(aggregation,'ordinary');
+        asympt = local_classical_asymptotic(Y, maskMiss, completeIdx, ...
+            muHat, SigHat, nComplete, Tobs, TDordinary, eps0, preferGeneralF);
+
+        % The feasible general-F result currently applies only to ordinary
+        % untrimmed TDmean. For the fixed gate, retain the Gaussian Tallis
+        % scaling of the former analytical benchmark.
+        if ~preferGeneralF
+            asympt = local_apply_aggregation_asymptotic(asympt,aggregation, ...
+                aggInfo,p,eps0,n,Tobs,d2_cc);
+        end
     elseif strcmp(consistencyfactor,'pattern')
         asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
             alpha, method, robustClass, robustEff, robustBonflev, ...
             Tobs, eps0, outRob);
+        asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
+            p,eps0,n,Tobs,d2_cc);
     elseif strcmp(consistencyfactor,'adaptive')
         asympt = local_tem_adaptive_asymptotic(Y, maskMiss, completeIdx, ...
             outFit, alpha, method, robustClass, robustEff, robustBonflev, ...
             Tobs, eps0, muCC, SigCC, adaptivepool, adaptiveminref, outRob);
+        asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
+            p,eps0,n,Tobs,d2_cc);
     else
         asympt = local_unavailable_asymptotic(nComplete/n);
         asympt.reason = ['For alpha>0 the analytical TEM benchmark is ' ...
@@ -825,10 +881,9 @@ else
             'or ''adaptive''.'];
         asympt.mode = 'TEM bootstrap calibration';
         asympt.theoryStatus = 'Bootstrap calibration for the selected TEM correction.';
+        asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
+            p,eps0,n,Tobs,d2_cc);
     end
-
-    asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
-        p,eps0,n,Tobs,d2_cc);
 end
 
 % Complete-Gaussian adaptive-TEM second-order benchmark.  This is exposed
@@ -2593,119 +2648,354 @@ end
 end
 
 % -------------------------------------------------------------------------
-function asympt = local_classical_asymptotic(maskMiss, SigmaHat, ...
-    nComplete, Tobs, eps0)
+function asympt = local_classical_asymptotic(Y, maskMiss, completeIdx, ...
+    muHat, SigmaHat, nComplete, Tobs, TDordinary, eps0, preferGeneralF)
 %local_classical_asymptotic Analytical benchmark for alpha=0.
 %
-% Under Gaussian MCAR,
-%   sqrt(n)*TDmean -> N(0,sigmaD2),
-% where
-%   sigmaD2 = 2*p/qhat - aSigma'*(IA\aSigma).
-% The mean stabilized log-ratio has asymptotic variance
-%   sigmaL2 = kappa^2*sigmaD2,
-% with
-%   kappa = E{Q/(Q+eps0)}/p, Q~chi2_p.
+% For ordinary untrimmed MDP-U, the primary TDmean calibration is the
+% feasible general-F sandwich
+%
+%   sqrt(n)*TDmean -> N(0,sigmaD,F^2),
+%
+% valid under MCAR and finite fourth moments. The all-available Gaussian
+% observed-data score is used as a quasi-score and its empirical sandwich
+% covariance estimates the estimator-discrepancy variance. Gaussianity and
+% ellipticity are not required for this TDmean result.
+%
+% The Gaussian-information specialization
+%
+%   sigmaD,N^2 = 2*p/qhat - aSigma'*(IA\aSigma)
+%
+% is retained in asympt.gaussian as a diagnostic. A general-F first-order
+% scalar law for TLmean is not currently available outside symmetry/
+% ellipticity; therefore the top-level TLmean entry in the ordinary alpha=0
+% branch is explicitly the Gaussian-information diagnostic.
+%
+% For aggregation='fixed', preferGeneralF is false. The caller then applies
+% the existing Gaussian Tallis fixed-gate scaling. The untrimmed general-F
+% TDmean result is still returned in asympt.generalF for diagnostics, but is
+% not used to calibrate the filtered statistic.
 
-[n,p] = size(maskMiss);
+[n,p] = size(Y);
 qhat = nComplete/n;
 s = p*(p+1)/2;
 
 asympt = local_unavailable_asymptotic(qhat);
 asympt.reason = '';
+asympt.mode = '';
+asympt.primaryCalibration = '';
+asympt.radialModel = '';
+asympt.theoryStatus = '';
 asympt.VA = NaN;
 
-% Duplication matrix and derivative of log|Sigma|.
-Dp = local_duplication_matrix(p);
+muHat = muHat(:);
 SigmaHat = (SigmaHat + SigmaHat')/2;
+
+if numel(muHat) ~= p || ~isequal(size(SigmaHat),[p p]) || ...
+        any(~isfinite(muHat)) || any(~isfinite(SigmaHat(:)))
+    asympt.reason = 'The alpha=0 all-available fit has invalid dimensions or nonfinite values.';
+    return
+end
+
+[~,flagSigma] = chol(SigmaHat);
+if flagSigma ~= 0
+    asympt.reason = 'The alpha=0 all-available covariance matrix is not positive definite.';
+    return
+end
+
+% Duplication matrix and MDP scatter direction.
+Dp = local_duplication_matrix(p);
 K = SigmaHat\eye(p);
 K = (K + K')/2;
-
-% a_\Sigma=D_p^{\mathsf T}\operatorname{vec}(\Sigma^{-1}),
-% Equation (25)
 aSigma = Dp' * K(:);
 
-% Observed-data covariance information, averaged over the empirical
-% missingness-pattern distribution.
-IA = zeros(s,s);
-[patt,~,ic] = unique(maskMiss,'rows');
+% Missingness patterns, Gaussian quasi-information bread, and observed-data
+% scatter quasi-scores evaluated at the common all-available fit.
+[patt,~,ic] = unique(maskMiss,'rows','stable');
+G = size(patt,1);
+patternCounts = accumarray(ic,1,[G 1]);
+patternProportions = patternCounts/n;
+
+JA = zeros(s,s);
+score = zeros(n,s);
 idxFull = reshape(1:p*p,p,p);
 
-for g = 1:size(patt,1)
+for g = 1:G
+    rows = find(ic == g);
+    ng = numel(rows);
+    pig = ng/n;
+
     obs = ~patt(g,:);
     pg = sum(obs);
     if pg == 0
+        % An all-missing row has zero score and zero information.
         continue
     end
 
-    ng = sum(ic == g);
-    pig = ng/n;
-
     SigmaG = SigmaHat(obs,obs);
     SigmaG = (SigmaG + SigmaG')/2;
+    [~,flagG] = chol(SigmaG);
+    if flagG ~= 0
+        asympt.reason = sprintf(['Observed covariance submatrix is not positive ' ...
+            'definite for missingness pattern %d.'],g);
+        return
+    end
+
     BG = SigmaG\eye(pg);
     BG = (BG + BG')/2;
 
     % Dg maps vech(Sigma) to vec(Sigma_g).
     idxG = idxFull(obs,obs);
     Dg = Dp(idxG(:),:);
+
     Ir = 0.5 * Dg' * kron(BG,BG) * Dg;
-    IA = IA + pig*Ir;
+    JA = JA + pig*Ir;
+
+    % Pattern-r Gaussian scatter quasi-score:
+    % 0.5*Dg'*vec{BG(x_g x_g'-Sigma_g)BG}.
+    Xg = Y(rows,obs) - muHat(obs)';
+    W = Xg*BG;
+    for krow = 1:ng
+        M = W(krow,:)'*W(krow,:) - BG;
+        score(rows(krow),:) = (0.5*Dg'*M(:))';
+    end
 end
 
-IA = (IA + IA')/2;
+JA = (JA + JA')/2;
+rcondJA = rcond(JA);
 
-if rcond(IA) <= 1e-12
-    asympt.reason = ['Observed-data covariance information is numerically ' ...
-        'singular; analytical benchmark not computed.'];
-    return
-end
+% ---------------------------------------------------------------------
+% Feasible general-F sandwich for ordinary untrimmed TDmean.
+% ---------------------------------------------------------------------
+generalF = struct;
+generalF.available = false;
+generalF.reason = '';
+generalF.sigma2 = NaN;
+generalF.se = NaN;
+generalF.z = NaN;
+generalF.pvalue = NaN;
+generalF.OmegaDelta = NaN(s,s);
+generalF.aSigma = aSigma;
+generalF.JA = JA;
+generalF.rcondJA = rcondJA;
+generalF.scoreMeanNorm = NaN;
+generalF.deltaMeanNorm = NaN;
+generalF.varianceIdentityResidual = NaN;
+generalF.degenerate = false;
+generalF.appliesToAggregation = 'ordinary';
+generalF.TDmeanObserved = TDordinary;
+generalF.theoryStatus = ['Feasible first-order general-F sandwich for ' ...
+    'untrimmed ordinary-mean MDP-U under MCAR and finite fourth moments.'];
 
-v = IA\aSigma;
-VA = aSigma' * v;
-sigmaD2 = 2*p/qhat - VA;
-
-% The theoretical variance is nonnegative. Remove only tiny negative values
-% caused by floating-point roundoff.
-tolVar = 1e-10 * max(1,2*p/qhat);
-if sigmaD2 < 0 && sigmaD2 >= -tolVar
-    sigmaD2 = 0;
-elseif sigmaD2 < -tolVar
-    asympt.reason = ['Estimated analytical variance is negative beyond ' ...
-        'numerical tolerance; analytical benchmark not computed.'];
-    asympt.VA = VA;
-    return
-end
-
-% Stabilized log-ratio coefficient. The local integrand handles the
-% endpoints explicitly, avoiding the indeterminate product 0*Inf for p<2.
-kappa = integral(@(q) local_kappa_integrand(q,p,eps0), 0, Inf, ...
-    'RelTol',1e-10,'AbsTol',1e-12) / p;
-
-asympt.available = true;
-asympt.reason = '';
-asympt.qhat = qhat;
-asympt.VA = VA;
-asympt.degenerate = sigmaD2 <= tolVar;
-
-asympt.TDmean.sigma2 = sigmaD2;
-asympt.TDmean.se = sqrt(sigmaD2/n);
-
-asympt.TLmean.kappa = kappa;
-asympt.TLmean.sigma2 = kappa^2*sigmaD2;
-asympt.TLmean.se = sqrt(asympt.TLmean.sigma2/n);
-
-if asympt.degenerate
-    asympt.TDmean.z = NaN;
-    asympt.TDmean.pvalue = NaN;
-    asympt.TLmean.z = NaN;
-    asympt.TLmean.pvalue = NaN;
+if ~isfinite(rcondJA) || rcondJA <= 1e-12
+    generalF.reason = ['Estimated scatter bread J_A is numerically singular; ' ...
+        'general-F calibration not computed.'];
 else
-    % Tobs(4) is mean difference; Tobs(2) is mean log-ratio.
-    asympt.TDmean.z = Tobs(4)/asympt.TDmean.se;
-    asympt.TDmean.pvalue = erfc(abs(asympt.TDmean.z)/sqrt(2));
+    % All-available scatter influence.
+    psiA = (JA\score')';
 
-    asympt.TLmean.z = Tobs(2)/asympt.TLmean.se;
-    asympt.TLmean.pvalue = erfc(abs(asympt.TLmean.z)/sqrt(2));
+    % Complete-case covariance influence, evaluated at the common
+    % all-available quasi-likelihood geometry:
+    % C_i/q * vech{(Y_i-mu)(Y_i-mu)'-Sigma}.
+    psiC = zeros(n,s);
+    rowsC = find(completeIdx);
+    XC = Y(rowsC,:) - muHat';
+
+    for krow = 1:numel(rowsC)
+        H = XC(krow,:)'*XC(krow,:) - SigmaHat;
+        psiC(rowsC(krow),:) = local_vech(H)'/qhat;
+    end
+
+    delta = psiA - psiC;
+    scoreMean = mean(score,1);
+    deltaMean = mean(delta,1);
+    deltaCentered = delta - deltaMean;
+
+    OmegaDelta = (deltaCentered'*deltaCentered)/n;
+    OmegaDelta = (OmegaDelta + OmegaDelta')/2;
+
+    sigmaD2F = aSigma'*OmegaDelta*aSigma;
+
+    % Independent scalar-IF identity: IF(TDmean)=-aSigma'*delta.
+    zeta = -(deltaCentered*aSigma);
+    sigmaD2Scalar = mean(zeta.^2);
+    varianceIdentityResidual = sigmaD2Scalar - sigmaD2F;
+
+    tolVarF = 1e-10*max(1,trace(OmegaDelta)*max(1,norm(aSigma)^2));
+
+    generalF.OmegaDelta = OmegaDelta;
+    generalF.scoreMeanNorm = norm(scoreMean);
+    generalF.deltaMeanNorm = norm(deltaMean);
+    generalF.varianceIdentityResidual = varianceIdentityResidual;
+
+    if sigmaD2F < 0 && sigmaD2F >= -tolVarF
+        sigmaD2F = 0;
+    end
+
+    if ~isfinite(sigmaD2F) || sigmaD2F < 0
+        generalF.reason = ['Estimated general-F sandwich variance is not ' ...
+            'finite and nonnegative.'];
+    elseif sigmaD2F <= tolVarF
+        generalF.degenerate = true;
+        generalF.reason = ['Estimated general-F sandwich variance is ' ...
+            'numerically degenerate.'];
+    else
+        generalF.available = true;
+        generalF.reason = '';
+        generalF.sigma2 = sigmaD2F;
+        generalF.se = sqrt(sigmaD2F/n);
+        generalF.z = TDordinary/generalF.se;
+        generalF.pvalue = erfc(abs(generalF.z)/sqrt(2));
+    end
+end
+
+% ---------------------------------------------------------------------
+% Gaussian-information specialization retained as diagnostic.
+% ---------------------------------------------------------------------
+gaussian = struct;
+gaussian.available = false;
+gaussian.reason = '';
+gaussian.VA = NaN;
+gaussian.IA = JA;
+gaussian.aSigma = aSigma;
+gaussian.kappa = NaN;
+gaussian.TDmean = struct('available',false,'calibration','gaussianInfo', ...
+    'coefficient',1,'sigma2',NaN,'se',NaN,'z',NaN,'pvalue',NaN);
+gaussian.TLmean = struct('available',false,'calibration','gaussianInfo', ...
+    'kappa',NaN,'lambda',NaN,'coefficient',NaN,'sigma2',NaN,'se',NaN, ...
+    'z',NaN,'pvalue',NaN);
+gaussian.theoryStatus = ['Gaussian-information specialization; retained as ' ...
+    'a diagnostic benchmark and not generally valid under non-Gaussian F.'];
+
+if ~isfinite(rcondJA) || rcondJA <= 1e-12
+    gaussian.reason = ['Observed-data Gaussian covariance information is ' ...
+        'numerically singular.'];
+else
+    VA = aSigma'*(JA\aSigma);
+    sigmaD2G = 2*p/qhat - VA;
+    tolVarG = 1e-10*max(1,2*p/qhat);
+
+    if sigmaD2G < 0 && sigmaD2G >= -tolVarG
+        sigmaD2G = 0;
+    end
+
+    gaussian.VA = VA;
+
+    if ~isfinite(sigmaD2G) || sigmaD2G < 0
+        gaussian.reason = ['Gaussian-information variance is not finite and ' ...
+            'nonnegative.'];
+    elseif sigmaD2G <= tolVarG
+        gaussian.reason = 'Gaussian-information variance is numerically degenerate.';
+    else
+        % Stabilized log-ratio coefficient under Q~chi2_p.
+        kappa = integral(@(q) local_kappa_integrand(q,p,eps0),0,Inf, ...
+            'RelTol',1e-10,'AbsTol',1e-12)/p;
+
+        gaussian.available = true;
+        gaussian.reason = '';
+        gaussian.kappa = kappa;
+
+        gaussian.TDmean.available = true;
+        gaussian.TDmean.sigma2 = sigmaD2G;
+        gaussian.TDmean.se = sqrt(sigmaD2G/n);
+        gaussian.TDmean.z = Tobs(4)/gaussian.TDmean.se;
+        gaussian.TDmean.pvalue = erfc(abs(gaussian.TDmean.z)/sqrt(2));
+
+        gaussian.TLmean.available = true;
+        gaussian.TLmean.kappa = kappa;
+        gaussian.TLmean.lambda = kappa;
+        gaussian.TLmean.coefficient = kappa;
+        gaussian.TLmean.sigma2 = kappa^2*sigmaD2G;
+        gaussian.TLmean.se = sqrt(gaussian.TLmean.sigma2/n);
+        gaussian.TLmean.z = Tobs(2)/gaussian.TLmean.se;
+        gaussian.TLmean.pvalue = erfc(abs(gaussian.TLmean.z)/sqrt(2));
+    end
+end
+
+% Common diagnostics, irrespective of which alpha=0 branch is primary.
+asympt.qhat = qhat;
+asympt.aSigma = aSigma;
+asympt.JA = JA;
+asympt.rcondJA = rcondJA;
+asympt.patternsMissing = patt;
+asympt.patternCounts = patternCounts;
+asympt.patternProportions = patternProportions;
+asympt.generalF = generalF;
+asympt.gaussian = gaussian;
+asympt.VA = gaussian.VA; % backward-compatible Gaussian diagnostic field
+
+if preferGeneralF
+    % Ordinary untrimmed MDP-U: general-F is primary for TDmean.
+    asympt.mode = 'feasible general-F sandwich';
+    asympt.primaryCalibration = 'generalF';
+    asympt.radialModel = 'general-F';
+    asympt.theoryStatus = ['TDmean uses the feasible general-F sandwich under ' ...
+        'MCAR and finite fourth moments. TLmean remains a Gaussian-information ' ...
+        'diagnostic because no general-F scalar law is supplied outside ' ...
+        'symmetry/ellipticity.'];
+    asympt.aggregation = 'ordinary';
+    asympt.filterCutoff = NaN;
+    asympt.kc = 1;
+    asympt.gammaFilter = 1;
+
+    if generalF.available
+        asympt.available = true;
+        asympt.reason = '';
+        asympt.degenerate = false;
+        asympt.baseSigmaD2 = generalF.sigma2;
+        asympt.TDmean = struct('available',true,'calibration','generalF', ...
+            'coefficient',1,'sigma2',generalF.sigma2,'se',generalF.se, ...
+            'z',generalF.z,'pvalue',generalF.pvalue);
+    else
+        asympt.available = false;
+        asympt.reason = generalF.reason;
+        asympt.degenerate = generalF.degenerate;
+        asympt.baseSigmaD2 = NaN;
+        asympt.TDmean = struct('available',false,'calibration','generalF', ...
+            'coefficient',1,'sigma2',NaN,'se',NaN,'z',NaN,'pvalue',NaN);
+    end
+
+    % Backward-compatible top-level TLmean field, explicitly labelled as a
+    % Gaussian diagnostic rather than a general-F result.
+    if gaussian.available
+        asympt.TLmean = gaussian.TLmean;
+        asympt.TLmean.calibration = 'gaussianInfoDiagnostic';
+        asympt.TLmean.reason = ['No general-F TLmean calibration is supplied ' ...
+            'outside symmetry/ellipticity.'];
+        asympt.baseKappa = gaussian.kappa;
+        asympt.lambda = gaussian.kappa;
+    else
+        asympt.TLmean = struct('available',false, ...
+            'calibration','gaussianInfoDiagnostic','reason',gaussian.reason, ...
+            'kappa',NaN,'lambda',NaN,'coefficient',NaN,'sigma2',NaN, ...
+            'se',NaN,'z',NaN,'pvalue',NaN);
+        asympt.baseKappa = NaN;
+        asympt.lambda = NaN;
+    end
+else
+    % A general-F fixed-gate theorem is not currently available. Preserve
+    % the previous Gaussian benchmark as the primary analytical reference;
+    % the caller applies the fixed-gate Tallis coefficients afterwards.
+    asympt.mode = 'Gaussian information benchmark';
+    asympt.primaryCalibration = 'gaussianInfo';
+    asympt.radialModel = 'Gaussian';
+    asympt.theoryStatus = ['For alpha=0 with fixed aggregation the analytical ' ...
+        'benchmark remains Gaussian; the untrimmed general-F TDmean result is ' ...
+        'returned in asympt.generalF but is not applied to the fixed gate.'];
+
+    if gaussian.available
+        asympt.available = true;
+        asympt.reason = '';
+        asympt.degenerate = false;
+        asympt.TDmean = gaussian.TDmean;
+        asympt.TLmean = gaussian.TLmean;
+        asympt.baseSigmaD2 = gaussian.TDmean.sigma2;
+        asympt.baseKappa = gaussian.kappa;
+    else
+        asympt.available = false;
+        asympt.reason = gaussian.reason;
+        asympt.degenerate = false;
+    end
 end
 end
 
@@ -3133,22 +3423,14 @@ function so = mdMDPsecondOrder(p,alpha)
 %    jt              : Scalar trace Jacobian coefficient,
 %                       ((p+2)*gamma*js-p*beta^2)/(2*gamma).
 %    kappa           : Population Gaussian Tallis factor beta/gamma.
-%    lambda          : Adaptive scalar trace-feedback coefficient, 1-jt/beta.
-%    rhoShape        : Shape fixed-point feedback coefficient, 1-js/beta.
+%    lambda          : Adaptive scalar feedback coefficient, 1-jt/beta.
 %    feedback1       : 1/(1-lambda).
 %    feedback2       : 1/(1-lambda)^2.
 %    cMu             : Location contribution.
-%    cQuad           : Final trace-free inverse-scatter curvature contribution.
-%    cQuadOne        : Trace-free quadratic target after one adaptive update.
+%    cQuad           : Inverse-scatter curvature contribution.
 %    cLin            : Moving-boundary/adaptive-feedback contribution.
-%    cLinCompact     : Same cLin reconstructed from the boundary master identity.
 %    cTotal          : Total complete-Gaussian adaptive centering constant.
 %    cLinTerms       : 1 x 3 vector containing the three terms of cLin.
-%    c0, r           : Boundary coefficients a*f/p and (a/kappa-p)/gamma.
-%    bP              : Limit of E(P_n), P_n=S0_n+c0*L_n.
-%    Cinf, Dinf      : O(1) boundary-residual limits.
-%    mS0, Binf       : Limits of E(S0_n) and E(B_n).
-%    bLOO, bOS, bColl: Smooth, tagged and collective pieces of bP.
 %    scope           : Text identifying the theoretical scope.
 %    usedForCalibration : false.  The constants are diagnostic only.
 %
@@ -3165,23 +3447,12 @@ function so = mdMDPsecondOrder(p,alpha)
 %         + (beta-jt)*((p-1)*(p+2)*jt*(beta-js)-2*beta) ...
 %           /(2*jt^2*(gamma-beta)).
 %
-%  An equivalent boundary-master representation is
-%
-%      cLin = (Dinf-Cinf-r*bP)/(1-lambda),
-%
-%  where r=(a/kappa-p)/gamma.  This identity is useful because the boundary
-%  quantities have different stochastic scales: S0_n, P_n, B_n and L_n have
-%  O_p(n^(1/4)) fluctuations, while C_n and D_n are O_p(1).  These rates are
-%  diagnostic/theoretical properties only; no empirical finite-n rate
-%  correction is applied by mdMDPtest.
-%
 %  For p=5 and alpha=0.25 the function returns approximately
 %
-%      cMu      =   4.413807067927
-%      cQuad    =  58.426913409290
-%      cQuadOne =  21.738099801134
-%      cLin     =  41.759878370847
-%      cTotal   = 104.600598848064.
+%      cMu    =   4.413807067927
+%      cQuad  =  58.426913409290
+%      cLin   =  41.759878370847
+%      cTotal = 104.600598848064.
 %
 
 if ~isscalar(p) || ~isnumeric(p) || ~isfinite(p) || p < 2 || p ~= floor(p)
@@ -3207,28 +3478,13 @@ if alpha == 0
     jt = 1;
     kappa = 1;
     lambda = 0;
-    rhoShape = 0;
     feedback1 = 1;
     feedback2 = 1;
     cMu = 0;
     cQuad = 0;
-    cQuadOne = 0;
     cLinTerms = [0 0 0];
     cLin = 0;
     cTotal = 0;
-
-    % Continuous no-trimming convention for the boundary fields.
-    c0 = 0;
-    r = 0;
-    bLOO = 0;
-    bOS = 0;
-    bColl = 0;
-    bP = 0;
-    Cinf = 0;
-    Dinf = 0;
-    mS0 = 0;
-    Binf = 0;
-    cLinCompact = 0;
 else
     a = chi2inv(gamma,p);
     f = chi2pdf(a,p);
@@ -3247,19 +3503,17 @@ else
     end
 
     lambda = 1-jt/beta;
-    if ~isfinite(lambda) || lambda <= 0 || lambda >= 1
+    if ~isfinite(lambda) || lambda >= 1
         error('FSDA:mdMDPtest:SecondOrderNoncontractive', ...
             ['The complete-Gaussian adaptive second-order benchmark is ' ...
-             'outside the locally stable regime 0 < lambda < 1.']);
+             'not contractive because lambda >= 1.']);
     end
 
-    rhoShape = 1-js/beta;
     feedback1 = 1/(1-lambda);
     feedback2 = feedback1^2;
 
     cMu = p*(1/beta-1);
     cQuad = (p-1)*(p+2)*(1/js-1);
-    cQuadOne = (p-1)*(p+2)*js*(1-js)/(beta^2);
 
     % Use the recurrence forms of gamma-beta and beta-js in the small
     % differences.  This is more stable than subtracting nearby CDF values
@@ -3281,37 +3535,6 @@ else
     cLinTerms = [term1 term2 term3];
     cLin = sum(cLinTerms);
     cTotal = cLin+cQuad+cMu;
-
-    % Boundary/master representation.  These quantities reproduce cLin but
-    % are kept explicit because they are the natural validation coordinates.
-    c0 = a*f/p;
-    r = (a/kappa-p)/gamma;
-
-    fp = f*((p/2-1)/a-1/2);
-    A_mu0 = -f + 2*(f+a*fp)/p;
-    A_s0 = -(a/p)*f + (2*a*f+a^2*fp)/(p*(p+2));
-
-    rplus = -2*a*(1/beta-1) - ((p-1)/p)*a^2*(1/js-1);
-    rminus = 2*a + ((p-1)/p)*a^2;
-
-    bLOO = A_mu0*cMu + A_s0*cQuad;
-    bOS = 0.5-0.5*f*(rplus+rminus);
-    bColl = lambda/(2*(1-lambda));
-    bP = bLOO+bOS+bColl;
-
-    Cinf = (f/(gamma*kappa))* ...
-        ((2*a/p)*cMu + (a^2/(p*(p+2)))*cQuad);
-    Dinf = cMu/kappa;
-
-    mS0 = (bP+c0*(Cinf-Dinf))/(1-lambda);
-    Binf = r*mS0+Cinf;
-    cLinCompact = (Dinf-Cinf-r*bP)/(1-lambda);
-
-    if abs(cLinCompact-cLin) > 5e-10*max(1,abs(cLin))
-        error('FSDA:mdMDPtest:SecondOrderIdentityMismatch', ...
-            ['The closed-form and boundary-master representations of ' ...
-             'the complete-Gaussian cLin constant do not agree.']);
-    end
 end
 
 so = struct;
@@ -3325,28 +3548,13 @@ so.js = js;
 so.jt = jt;
 so.kappa = kappa;
 so.lambda = lambda;
-so.rhoShape = rhoShape;
 so.feedback1 = feedback1;
 so.feedback2 = feedback2;
 so.cMu = cMu;
 so.cQuad = cQuad;
-so.cQuadOne = cQuadOne;
 so.cLin = cLin;
-so.cLinCompact = cLinCompact;
 so.cTotal = cTotal;
 so.cLinTerms = cLinTerms;
-so.c0 = c0;
-so.r = r;
-so.bLOO = bLOO;
-so.bOS = bOS;
-so.bColl = bColl;
-so.bP = bP;
-so.Cinf = Cinf;
-so.Dinf = Dinf;
-so.mS0 = mS0;
-so.Binf = Binf;
-so.boundaryStochasticOrder = ...
-    'S0_n, P_n, B_n and L_n are O_p(n^(1/4)); C_n and D_n are O_p(1)';
 so.scope = 'complete-Gaussian adaptive-TEM second-order benchmark';
 so.usedForCalibration = false;
 end
