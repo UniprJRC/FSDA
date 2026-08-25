@@ -12,9 +12,14 @@ function out = mdMDPtest(Y, varargin)
 %    2) using all rows through EM/TEM in the presence of missing values.
 %
 %  The bootstrap null hypothesis is that the observed perturbation is
-%  compatible with MCAR. The null distribution is generated from a Gaussian
-%  model fitted on the complete rows and then the observed missingness mask
-%  is imposed on the generated data.
+%  compatible with MCAR. Two mask-preserving bootstrap generators are
+%  available. With bootmethod='gaussian' (default), complete vectors are
+%  generated from a Gaussian model fitted on the complete rows. With
+%  bootmethod='empirical', complete vectors are resampled with replacement
+%  from the observed complete rows. In both cases the observed missingness
+%  mask is then imposed on the generated complete data, and the complete-
+%  case fit, EM/TEM fit, adaptive correction and aggregation rule are
+%  reconstructed independently in every bootstrap replicate.
 %
 %
 %  Required input arguments:
@@ -112,6 +117,27 @@ function out = mdMDPtest(Y, varargin)
 %            The default value is 499.
 %            Example - 'nsimul',999
 %            Data Types - double
+%
+% bootmethod : Mask-preserving bootstrap generator. Character vector or
+%            string scalar. Possible values are 'gaussian' or 'empirical'.
+%            The default is 'gaussian'.
+%
+%            'gaussian' is the parametric bootstrap used in previous
+%            versions: full p-dimensional observations are generated from
+%            N(muCC,SigCC), where muCC and SigCC are the complete-case
+%            estimates, and the observed missingness mask is then imposed.
+%
+%            'empirical' is a nonparametric complete-case bootstrap. For
+%            each replicate, n complete p-dimensional vectors are sampled
+%            with replacement from the observed complete rows and the
+%            original missingness mask is imposed row by row. Under MCAR,
+%            the complete rows form a random sample from the same population
+%            as the incomplete rows, so this generator preserves the
+%            empirical radial distribution without specifying a parametric
+%            family. The selected robust fit, adaptive radial correction
+%            and aggregation rule are re-estimated in every replicate.
+%            Example - 'bootmethod','empirical'
+%            Data Types - char | string
 %
 %  conflev : Confidence level used to compute bootstrap confidence intervals.
 %            Scalar in the interval (0,1). The default value is 0.95.
@@ -223,12 +249,37 @@ function out = mdMDPtest(Y, varargin)
 %
 %    out : Structure containing the following fields:
 %
-%          out.pvalue      = 1 x 4 vector containing the bootstrap p-values
-%                            for the four statistics.
+%          out.pvalue      = 1 x 4 vector containing the absolute-value
+%                            two-sided bootstrap p-values for the four
+%                            statistics. This field is retained for backward
+%                            compatibility and equals out.pvalueAbs.
+%          out.pvalueAbs   = 1 x 4 vector of absolute-value two-sided
+%                            bootstrap p-values, based on |Tboot|>=|Tobs|.
+%          out.pvalueEqualTail = 1 x 4 vector of equal-tail two-sided
+%                            bootstrap p-values, computed as twice the
+%                            smaller empirical lower- and upper-tail
+%                            probabilities. This is particularly informative
+%                            for bootmethod='empirical' when the bootstrap
+%                            distribution is asymmetric.
+%          out.pvalueLower = 1 x 4 vector of lower-tail bootstrap
+%                            probabilities.
+%          out.pvalueUpper = 1 x 4 vector of upper-tail bootstrap
+%                            probabilities.
 %          out.Tobs        = 1 x 4 vector containing the observed values of
 %                            the four statistics.
-%          out.Tboot       = nsimul x 4 matrix containing the bootstrap
-%                            values of the four statistics.
+%          out.Tboot       = nBootstrapUsed x 4 matrix containing the valid
+%                            bootstrap values of the four statistics.
+%          out.bootmethod  = Bootstrap generator actually used: 'gaussian'
+%                            or 'empirical'.
+%          out.nBootstrapRequested = Requested number of bootstrap replicates.
+%          out.nBootstrapUsed = Number of valid bootstrap replicates retained.
+%          out.nBootstrapFailed = Number of requested replicates discarded
+%                            because of a fitting failure or a NaN statistic.
+%          out.bootstrapFailureID = Cell array containing identifiers for
+%                            discarded bootstrap replicates caused by caught
+%                            fitting errors. Empty entries correspond to
+%                            invalid replicates discarded because a statistic
+%                            was NaN rather than because an error was thrown.
 %          out.alpha       = Value of input option alpha.
 %          out.method      = Value of input option method.
 %          out.consistencyfactor = TEM consistency-factor option actually
@@ -407,13 +458,19 @@ function out = mdMDPtest(Y, varargin)
 %  also the reference sample for the empirical radial correction. The
 %  reference location and scatter are the same complete-case estimates used
 %  to compute d2_cc. Consequently the adaptive TEM correction targets the
-%  complete-case scatter functional under an elliptical MCAR model. The
-%  mask-preserving parametric bootstrap remains Gaussian-model based; it
-%  reruns both the robust complete-case fit and adaptive radial correction in
-%  every bootstrap sample.
+%  complete-case scatter functional under an elliptical MCAR model. With
+%  bootmethod='gaussian', the mask-preserving bootstrap is Gaussian-model
+%  based. With bootmethod='empirical', n complete vectors are resampled with
+%  replacement from the observed complete rows before the observed mask is
+%  imposed. Both bootstrap generators rerun the complete-case fit, EM/TEM
+%  fit, adaptive radial correction, pooling and aggregation rule in every
+%  replicate.
 %
-%  Small p-values indicate that the change in distances is larger than what
-%  is expected under the MCAR bootstrap model.
+%  out.pvalue and out.pvalueAbs use the traditional absolute-value two-sided
+%  calibration. out.pvalueEqualTail is also returned because the empirical
+%  bootstrap distribution can be asymmetric. Small p-values indicate that
+%  the observed perturbation is unusual under the selected MCAR bootstrap
+%  generator.
 %
 %  For the adaptive correction and alpha>0, the analytical sandwich assumes
 %  an elliptical MCAR model and a common scatter target S0=tau*Sigma. The
@@ -656,6 +713,19 @@ function out = mdMDPtest(Y, varargin)
     disp(out.asympt.gaussian.TDmean)
 %}
 
+%{
+    %% Example 13: Empirical mask-preserving bootstrap.
+    % Resample complete p-dimensional vectors from the observed complete
+    % cases, impose the original missingness mask and rerun the full MDP-I
+    % pipeline. Both absolute-value and equal-tail p-values are returned.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'alpha',0.25,'bootmethod','empirical','nsimul',199);
+    disp(out.pvalueAbs)
+    disp(out.pvalueEqualTail)
+    disp([out.nBootstrapRequested out.nBootstrapUsed out.nBootstrapFailed])
+%}
+
 %% Beginning of code
 
 if ~ismatrix(Y) || ~isnumeric(Y)
@@ -668,6 +738,7 @@ options = struct;
 options.alpha   = 0;
 options.method  = 'pri';
 options.nsimul  = 499;
+options.bootmethod = 'gaussian';
 options.conflev = 0.95;
 options.tol     = 1e-10;
 options.plots   = false;
@@ -700,6 +771,7 @@ end
 alpha   = options.alpha;
 method  = char(options.method);
 nsimul  = options.nsimul;
+bootmethod = local_parse_bootmethod(options.bootmethod);
 conflev = options.conflev;
 tol     = options.tol;
 plots   = options.plots;
@@ -957,68 +1029,120 @@ end
 Tboot = NaN(nsimul,4);
 nMeanBoot = NaN(nsimul,1);
 nCoupledBoot = NaN(nsimul,1);
+bootFailureID = cell(nsimul,1);
 
-% Use robust complete-case fit to generate bootstrap samples
-SigGen = local_make_spd(SigCC);
-R = chol(SigGen,'upper');
-
-for j = 1:nsimul
-
-    % Generate full data from Gaussian model
-    YfullStar = randn(n,p) * R + muCC(:)';
-
-    % Impose the observed missingness pattern
-    Ystar = YfullStar;
-    Ystar(maskMiss) = NaN;
-
-    % Complete-case reference distances in bootstrap world
-    YccStar = YfullStar(completeIdx,:);
-
-    [muCCStar,SigCCStar,outRobStar] = local_complete_case_fit(YccStar,alpha, ...
-        robustClass,robustEff,robustBonflev);
-
-    d2_cc_star = mahalFS(YccStar, muCCStar, SigCCStar);
-
-    % Reconstruct the coupled complete-case eligibility mask independently
-    % in every bootstrap sample.
-    forcedZeroStar = false(n,1);
-    if coupledtrim
-        ccOutlierMaskStar = local_cc_outlier_mask(outRobStar,nComplete);
-        completeRows = find(completeIdx);
-        forcedZeroStar(completeRows(ccOutlierMaskStar)) = true;
-    end
-    nCoupledBoot(j) = sum(forcedZeroStar);
-
-    % EM/TEM distances for the same complete rows.
-    d2_all_cc_star = local_fit_and_get_complete_distances( ...
-        Ystar, completeIdx, alpha, method, tol, forcedZeroStar, ...
-        consistencyfactor, YccStar, muCCStar, SigCCStar, ...
-        adaptivepool, adaptiveminref);
-
-    % Reconstruct the selected aggregation rule inside this bootstrap sample.
-    [meanWeightsStar,aggInfoStar] = local_aggregation_weights( ...
-        d2_cc_star,outRobStar,alpha,aggregation,filterlev,p);
-    nMeanBoot(j) = aggInfoStar.nSelected;
-
-    % Store the four statistics. If the selected mean rule retains no rows,
-    % the two mean statistics are NaN and this bootstrap sample is discarded.
-    Tboot(j,:) = local_statistic(d2_cc_star,d2_all_cc_star,eps0, ...
-        meanWeightsStar);
+% Parameters needed only by the Gaussian parametric generator.
+if strcmp(bootmethod,'gaussian')
+    SigGen = local_make_spd(SigCC);
+    R = chol(SigGen,'upper');
+else
+    R = [];
 end
 
-% Remove bootstrap samples containing NaNs
+for j = 1:nsimul
+    try
+        switch bootmethod
+            case 'gaussian'
+                % Parametric complete-data generator used in previous
+                % versions of mdMDPtest.
+                YfullStar = randn(n,p) * R + muCC(:)';
+
+            case 'empirical'
+                % Nonparametric MCAR generator. Under MCAR the observed
+                % complete rows are a random sample from the full-data
+                % distribution. Draw n complete vectors with replacement
+                % and then impose exactly the observed row-wise mask.
+                idxStar = randi(nComplete,n,1);
+                YfullStar = Ycc(idxStar,:);
+
+            otherwise
+                error('FSDA:mdMDPtest:InternalBootstrapMethod', ...
+                    'Unexpected bootstrap method.');
+        end
+
+        % Impose the observed missingness pattern.
+        Ystar = YfullStar;
+        Ystar(maskMiss) = NaN;
+
+        % Complete-case reference distances in bootstrap world.
+        YccStar = YfullStar(completeIdx,:);
+
+        [muCCStar,SigCCStar,outRobStar] = local_complete_case_fit(YccStar,alpha, ...
+            robustClass,robustEff,robustBonflev);
+
+        d2_cc_star = mahalFS(YccStar, muCCStar, SigCCStar);
+
+        % Reconstruct the coupled complete-case eligibility mask independently
+        % in every bootstrap sample.
+        forcedZeroStar = false(n,1);
+        if coupledtrim
+            ccOutlierMaskStar = local_cc_outlier_mask(outRobStar,nComplete);
+            completeRows = find(completeIdx);
+            forcedZeroStar(completeRows(ccOutlierMaskStar)) = true;
+        end
+        nCoupledBoot(j) = sum(forcedZeroStar);
+
+        % EM/TEM distances for the same complete rows.
+        d2_all_cc_star = local_fit_and_get_complete_distances( ...
+            Ystar, completeIdx, alpha, method, tol, forcedZeroStar, ...
+            consistencyfactor, YccStar, muCCStar, SigCCStar, ...
+            adaptivepool, adaptiveminref);
+
+        % Reconstruct the selected aggregation rule inside this bootstrap sample.
+        [meanWeightsStar,aggInfoStar] = local_aggregation_weights( ...
+            d2_cc_star,outRobStar,alpha,aggregation,filterlev,p);
+        nMeanBoot(j) = aggInfoStar.nSelected;
+
+        % Store the four statistics. If the selected mean rule retains no rows,
+        % the two mean statistics are NaN and this bootstrap sample is discarded.
+        Tboot(j,:) = local_statistic(d2_cc_star,d2_all_cc_star,eps0, ...
+            meanWeightsStar);
+
+    catch ME
+        % Resampling from a finite empirical support can occasionally create
+        % a degenerate bootstrap sample (for example a singular robust fit).
+        % Such empirical replicates are discarded and documented. Preserve
+        % the historical fail-fast behavior for the Gaussian generator.
+        if strcmp(bootmethod,'empirical')
+            bootFailureID{j} = ME.identifier;
+            continue
+        else
+            rethrow(ME)
+        end
+    end
+end
+
+% Remove bootstrap samples containing NaNs.
 validBoot = all(~isnan(Tboot),2);
+nBootstrapUsed = sum(validBoot);
+nBootstrapFailed = nsimul-nBootstrapUsed;
 Tboot = Tboot(validBoot,:);
 nMeanBoot = nMeanBoot(validBoot);
 nCoupledBoot = nCoupledBoot(validBoot);
+bootFailureID = bootFailureID(~validBoot);
 
 if isempty(Tboot)
     error('FSDA:mdMDPtest:NoValidBootstrap', ...
         'All bootstrap replicates failed.');
 end
 
-% Bootstrap p-values
-pvalue = (1 + sum(abs(Tboot) >= abs(Tobs),1)) / (size(Tboot,1) + 1);
+if nBootstrapUsed < 0.8*nsimul
+    warning('FSDA:mdMDPtest:FewValidBootstrap', ...
+        ['Only %d of %d requested bootstrap replicates were valid. ' ...
+         'Consider increasing nsimul or checking the complete-case sample.'], ...
+        nBootstrapUsed,nsimul);
+end
+
+% Bootstrap p-values. The historical out.pvalue uses the absolute-value
+% two-sided calibration. Equal-tail probabilities are returned separately
+% because the empirical bootstrap distribution need not be symmetric.
+Bvalid = size(Tboot,1);
+pvalueAbs = (1 + sum(abs(Tboot) >= abs(Tobs),1)) / (Bvalid + 1);
+pvalueLower = (1 + sum(Tboot <= Tobs,1)) / (Bvalid + 1);
+pvalueUpper = (1 + sum(Tboot >= Tobs,1)) / (Bvalid + 1);
+pvalueEqualTail = min(ones(size(pvalueLower)), ...
+    2*min(pvalueLower,pvalueUpper));
+pvalue = pvalueAbs;
 
 % Bootstrap confidence intervals
 alphaCI = 1 - conflev;
@@ -1027,8 +1151,17 @@ ciBoot = quantile(Tboot,[alphaCI/2 1-alphaCI/2],1);
 % Store output
 out = struct;
 out.pvalue      = pvalue;
+out.pvalueAbs   = pvalueAbs;
+out.pvalueEqualTail = pvalueEqualTail;
+out.pvalueLower = pvalueLower;
+out.pvalueUpper = pvalueUpper;
 out.Tobs        = Tobs;
 out.Tboot       = Tboot;
+out.bootmethod  = bootmethod;
+out.nBootstrapRequested = nsimul;
+out.nBootstrapUsed = nBootstrapUsed;
+out.nBootstrapFailed = nBootstrapFailed;
+out.bootstrapFailureID = bootFailureID;
 out.alpha       = alpha;
 out.method      = method;
 out.consistencyfactor = consistencyfactor;
@@ -1132,7 +1265,7 @@ if plots
         histogram(Tboot(:,j))
         hold on
         xline(Tobs(j),'r','LineWidth',1.5)
-        title(['p=' num2str(pvalue(j),4)])
+        title([bootmethod ', p=' num2str(pvalue(j),4)])
         xlabel(statNames{j})
         box on
     end
@@ -1348,6 +1481,37 @@ SigHat = outFit.cov;
 d2_full = mdPartialMD2full(d2_part, p, poss, 'method', method);
 d2_all_cc = d2_full(completeIdx);
 
+end
+
+% -------------------------------------------------------------------------
+function bootmethod = local_parse_bootmethod(bootmethod)
+%local_parse_bootmethod parses the mask-preserving bootstrap generator.
+
+if isstring(bootmethod)
+    if ~isscalar(bootmethod)
+        error('FSDA:mdMDPtest:WrongBootstrapMethod', ...
+            'Option bootmethod must be a character vector or string scalar.');
+    end
+    bootmethod = char(bootmethod);
+end
+
+if ~ischar(bootmethod) || size(bootmethod,1) ~= 1
+    error('FSDA:mdMDPtest:WrongBootstrapMethod', ...
+        'Option bootmethod must be ''gaussian'' or ''empirical''.');
+end
+
+bootmethod = lower(strtrim(bootmethod));
+% Accept descriptive aliases but store only the canonical values.
+if strcmp(bootmethod,'parametric')
+    bootmethod = 'gaussian';
+elseif strcmp(bootmethod,'nonparametric')
+    bootmethod = 'empirical';
+end
+
+if ~any(strcmp(bootmethod,{'gaussian','empirical'}))
+    error('FSDA:mdMDPtest:WrongBootstrapMethod', ...
+        'Option bootmethod must be ''gaussian'' or ''empirical''.');
+end
 end
 
 % -------------------------------------------------------------------------
