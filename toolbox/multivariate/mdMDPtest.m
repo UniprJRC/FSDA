@@ -121,18 +121,27 @@ function out = mdMDPtest(Y, varargin)
 %           Data Types - double
 %
 % aggregation : Mean aggregation rule. Character or string. Possible values are
-%           'ordinary', 'inlier' or 'fixed'. The default is 'ordinary'.
+%           'auto', 'ordinary', 'inlier' or 'fixed'. The default is 'auto'.
+%
+%           'auto' selects 'ordinary' when alpha=0 and 'inlier' when
+%           alpha>0. Thus the default call remains the classical MDP-U
+%           procedure, whereas any explicitly requested positive robustness
+%           level automatically uses the recommended robust MDP-I
+%           aggregation.
 %
 %           'ordinary' computes the two mean statistics using all complete
-%           cases (MDP-U).
+%           cases (MDP-U). This is the classical/theoretical aggregation
+%           rule and can also be requested explicitly when alpha>0.
 %
 %           'inlier' computes the two mean statistics using only complete
 %           cases not declared as outliers by the selected robust
-%           complete-case estimator (MDP-I). This option requires alpha>0.
+%           complete-case estimator (MDP-I). This is the recommended robust
+%           aggregation rule and requires alpha>0.
 %
 %           'fixed' computes the two mean statistics using only complete
 %           cases whose complete-case squared Mahalanobis distance is not
-%           larger than chi2inv(filterlev,p) (MDP-F).
+%           larger than chi2inv(filterlev,p) (MDP-F). This rule is intended
+%           primarily as a robust sensitivity diagnostic.
 %
 %           The median statistics are not affected by this option. With
 %           coupledtrim=false (default), the aggregation rule acts only on
@@ -151,7 +160,9 @@ function out = mdMDPtest(Y, varargin)
 %
 % coupledtrim : Couple complete-case outlier decisions to TEM. Logical.
 %           The default is false. This option is available only when
-%           alpha>0 and aggregation='inlier'. When true, complete cases
+%           alpha>0 and the resolved aggregation rule is 'inlier' (for
+%           example, aggregation='auto' with alpha>0, or an explicit
+%           aggregation='inlier'). When true, complete cases
 %           declared as outliers by the selected robust complete-case
 %           estimator are forced to have zero weight in every TEM
 %           concentration step. TEM still applies its own trimming rule to
@@ -366,10 +377,12 @@ function out = mdMDPtest(Y, varargin)
 %    3) median( d2_all - d2_cc );
 %    4) selected mean of d2_all - d2_cc.
 %
-%  The selected means use all complete cases for aggregation='ordinary',
-%  the estimator-defined complete-case inliers for aggregation='inlier',
-%  and the fixed robust-distance gate for aggregation='fixed'. The same
-%  rule is re-estimated in every bootstrap sample. With coupledtrim=true,
+%  With aggregation='auto', the selected mean aggregation resolves to
+%  'ordinary' for alpha=0 and to 'inlier' for alpha>0. The selected means
+%  use all complete cases for aggregation='ordinary', the estimator-defined
+%  complete-case inliers for aggregation='inlier', and the fixed robust-
+%  distance gate for aggregation='fixed'. The same resolved rule is
+%  re-estimated in every bootstrap sample. With coupledtrim=true,
 %  estimator-declared complete-case outliers are additionally forced to zero
 %  weight in every TEM concentration step.
 %
@@ -436,8 +449,9 @@ function out = mdMDPtest(Y, varargin)
 % Examples:
 
 %{
-    %% Example 1: Basic call with default options.
-    % Load data with missing values and run the test with default settings.
+    %% Example 1: Classical MDP-U with default options.
+    % The numerical default alpha=0 is unchanged. With the default
+    % aggregation='auto', alpha=0 resolves to aggregation='ordinary'.
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X);
@@ -447,8 +461,11 @@ function out = mdMDPtest(Y, varargin)
 %}
 
 %{
-    %% Example 2: Test with trimming.
-    % Run the bootstrap test using TEM with trimming level alpha=0.25.
+    %% Example 2: Recommended robust MDP-I analysis.
+    % A positive alpha activates robust complete-case/TEM estimation. With
+    % aggregation='auto' (default), the two mean statistics automatically
+    % use the estimator-defined complete-case inliers (MDP-I). The value
+    % alpha=0.25 is illustrative and is not a new numerical default.
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0.25,'nsimul',199);
@@ -545,7 +562,7 @@ function out = mdMDPtest(Y, varargin)
 %}
 
 %{
-    %% Example 8: Estimator-defined inlier mean (MDP-I).
+    %% Example 8: Explicit estimator-defined inlier mean (MDP-I).
     % The medians use all complete cases. The two means use only complete
     % cases not declared as outliers by the MCD complete-case fit.
     load cows2026
@@ -557,7 +574,7 @@ function out = mdMDPtest(Y, varargin)
 %}
 
 %{
-    %% Example 9: Fixed robust-distance filtered mean (MDP-F).
+    %% Example 9: Fixed robust-distance sensitivity diagnostic (MDP-F).
     % Use the chi-square 0.99 cutoff on the complete-case robust distances.
     load cows2026
     X = cows2026{:,:};
@@ -630,7 +647,7 @@ options.tol     = 1e-10;
 options.plots   = false;
 options.robust  ="FS";
 options.eps0    = 1e-12;
-options.aggregation = 'ordinary';
+options.aggregation = 'auto';
 options.filterlev = 0.99;
 options.coupledtrim = false;
 options.consistencyfactor = 'pattern';
@@ -672,6 +689,19 @@ adaptiveminref = options.adaptiveminref;
 if ~isscalar(alpha) || ~isnumeric(alpha) || alpha < 0 || alpha > 0.5
     error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Option alpha must be a scalar in the interval [0,0.5].');
+end
+
+% Resolve the automatic aggregation policy only after alpha has been
+% validated. The numerical default alpha=0 is deliberately unchanged:
+%   alpha=0  -> classical/theoretical MDP-U ('ordinary');
+%   alpha>0  -> recommended robust MDP-I ('inlier').
+% Explicit 'ordinary', 'inlier' and 'fixed' requests are left unchanged.
+if strcmp(aggregation,'auto')
+    if alpha > 0
+        aggregation = 'inlier';
+    else
+        aggregation = 'ordinary';
+    end
 end
 
 if ~isscalar(nsimul) || nsimul <= 0 || nsimul ~= floor(nsimul)
@@ -1337,14 +1367,14 @@ end
 
 if ~ischar(aggregation) || size(aggregation,1) ~= 1
     error('FSDA:mdMDPtest:WrongAggregation', ...
-        'Option aggregation must be ''ordinary'', ''inlier'' or ''fixed''.');
+        'Option aggregation must be ''auto'', ''ordinary'', ''inlier'' or ''fixed''.');
 end
 
 
 aggregation = lower(strtrim(aggregation));
-if ~any(strcmp(aggregation,{'ordinary','inlier','fixed'}))
+if ~any(strcmp(aggregation,{'auto','ordinary','inlier','fixed'}))
     error('FSDA:mdMDPtest:WrongAggregation', ...
-        'Option aggregation must be ''ordinary'', ''inlier'' or ''fixed''.');
+        'Option aggregation must be ''auto'', ''ordinary'', ''inlier'' or ''fixed''.');
 end
 end
 
