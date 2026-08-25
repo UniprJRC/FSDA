@@ -149,6 +149,18 @@ function out = mdTEM(Y, varargin)
 %                  Example - 'adaptiveminref',10
 %                  Data Types - single | double
 %
+%   maskcache   : precomputed missingness-pattern information. Structure
+%                  or empty. The default is empty, in which case mdTEM
+%                  constructs the cache from isnan(Y). This option is useful
+%                  when mdTEM is called repeatedly with different data values
+%                  but exactly the same missingness mask (for example inside
+%                  the mask-preserving bootstrap of mdMDPtest). The cache is
+%                  returned in out.maskcache and can be passed unchanged to
+%                  subsequent calls. A supplied cache must correspond exactly
+%                  to the missingness mask of Y.
+%                  Example - 'maskcache',out0.maskcache
+%                  Data Types - struct | double
+%
 %   condmeanimp  : also return conditional-mean imputed values. Boolean.
 %                  Default is false.
 %                  Example - 'condmeanimp',true
@@ -183,6 +195,8 @@ function out = mdTEM(Y, varargin)
 %                       kg. For 'adaptive' it additionally contains nref,
 %                       nrefkept and factorType. Empty for 'global'/'none'.
 %       out.consistencyfactor = consistency-factor option used.
+%       out.maskcache  = missingness-pattern cache used by mdTEM. It can
+%                        be reused in subsequent calls having the same mask.
 %
 % More About:
 %
@@ -197,6 +211,11 @@ function out = mdTEM(Y, varargin)
 % iteration. This is essential: they define the complete-case scatter
 % functional that TEM is asked to reproduce. The TEM iterates themselves
 % continue to determine distances, retained rows and the common threshold.
+% For computational efficiency, all complete-case projected reference radii
+% are therefore computed once, before the TEM iterations, and then reused.
+% With adaptivepool=true, the dimension-specific pools are assembled from
+% these cached radii using only patterns retained at the current iteration;
+% this is numerically equivalent to recomputing the radii at every iteration.
 %
 % Patterns with very few retained TEM observations can make the Gaussian
 % pattern factor unstable; the existing Gaussian stabilization is retained.
@@ -255,6 +274,7 @@ muref=[];
 sigmaref=[];
 adaptivepool=false;
 adaptiveminref=20;
+maskcache=[];
 
 if nargin>1
     options=struct('storeobj',storeobj,'alpha',alpha,'mus',mus,'sigs',sigs, ...
@@ -262,7 +282,7 @@ if nargin>1
         'condmeanimp',condmeanimp,'stochimp',stochimp,'method',method, ...
         'consistencyfactor',consistencyfactor,'Yref',Yref,'muref',muref, ...
         'sigmaref',sigmaref,'adaptivepool',adaptivepool, ...
-        'adaptiveminref',adaptiveminref);
+        'adaptiveminref',adaptiveminref,'maskcache',maskcache);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -294,6 +314,7 @@ if nargin>1
     sigmaref=options.sigmaref;
     adaptivepool=logical(options.adaptivepool);
     adaptiveminref=options.adaptiveminref;
+    maskcache=options.maskcache;
 end
 
 validCF={'global','pattern','adaptive','weighted','none'};
@@ -353,10 +374,18 @@ if numel(mus)~=p || ~isequal(size(sigs),[p p])
         'mus and sigs have incompatible dimensions.');
 end
 
-% missingness mask and patterns are intrinsic to the data
+% Missingness mask and its pattern decomposition are intrinsic to the
+% design.  In repeated calls (notably the mdMDPtest mask-preserving
+% bootstrap) this information can be supplied once through maskcache.
 nanY=isnan(Y);
+if isempty(maskcache)
+    maskcache=localBuildMaskCache(nanY);
+else
+    maskcache=localValidateMaskCache(maskcache,nanY);
+end
 
 % Set and freeze the reference distribution used by adaptive factors.
+adaptiveCache=[];
 if strcmp(consistencyfactor,'adaptive')
     if isempty(Yref)
         complete=all(~nanY,2);
@@ -392,6 +421,12 @@ if strcmp(consistencyfactor,'adaptive')
         error('FSDA:mdTEM:NonPDAdaptiveSigmaref', ...
             'sigmaref must be positive definite.');
     end
+
+    % The reference geometry is frozen. Cache each projected reference
+    % radius once for every intrinsic missingness pattern. At a given TEM
+    % iteration only patterns represented among the retained rows are used,
+    % exactly as in the original implementation.
+    adaptiveCache=localBuildAdaptiveCache(maskcache,Yref,muref,sigmaref);
 end
 
 dif=Inf;
@@ -435,12 +470,12 @@ while (dif>tol) && (iter<maxiter)
 
     switch consistencyfactor
         case 'pattern'
-            kinfo=localPatternFactors(nanY,w,poss,cthr,p,n,sigs,method);
-            [mus,sigs,kfactor]=localCorrectedStep(Y,nanY,w,mus,sigs,kinfo);
+            kinfo=localPatternFactors(maskcache,w,poss,cthr,p,n,sigs,method);
+            [mus,sigs,kfactor]=localCorrectedStep(Y,maskcache,w,mus,sigs,kinfo);
 
         case 'adaptive'
-            kinfo=localAdaptiveFactors(nanY,w,cthr,p,n,sigs,method, ...
-                Yref,muref,sigmaref,adaptivepool,adaptiveminref);
+            kinfo=localAdaptiveFactors(maskcache,w,cthr,p,n,sigs,method, ...
+                adaptiveCache,adaptivepool,adaptiveminref);
             bad=~isfinite(kinfo.kg) | kinfo.kg<=0;
             if any(bad)
                 ibad=find(bad,1);
@@ -451,7 +486,7 @@ while (dif>tol) && (iter<maxiter)
                     'reduce adaptiveminref.'], ...
                     kinfo.pobs(ibad),kinfo.nkept(ibad),kinfo.nrefkept(ibad));
             end
-            [mus,sigs,kfactor]=localCorrectedStep(Y,nanY,w,mus,sigs,kinfo);
+            [mus,sigs,kfactor]=localCorrectedStep(Y,maskcache,w,mus,sigs,kinfo);
 
         otherwise
             [T1,T2]=aux.NAcompute_expected_stats(Y,mus,sigs,w);
@@ -463,7 +498,7 @@ while (dif>tol) && (iter<maxiter)
                     kfactor=(n./mm).*chi2cdf(a,p+2);
                     kinfo=[];
                 case 'weighted'
-                    kinfo=localPatternFactors(nanY,w,poss,cthr,p,n,sigs,method);
+                    kinfo=localPatternFactors(maskcache,w,poss,cthr,p,n,sigs,method);
                     kfactor=localWeightedFactor(kinfo);
                 case 'none'
                     kfactor=1;
@@ -516,28 +551,29 @@ out.kinfo=kinfo;
 out.consistencyfactor=consistencyfactor;
 out.cthr=cthr;
 out.adjustedD2=d2_adj;
+out.maskcache=maskcache;
 
 end
 
 %% ------------------------------------------------------------------
-function kinfo=localPatternFactors(nanY,w,poss,cthr,p,n,Sigma,method)
+function kinfo=localPatternFactors(maskcache,w,poss,cthr,p,n,Sigma,method)
 % Exact Gaussian Tallis factors, one per retained missingness pattern.
+% Pattern identities and row memberships are taken from maskcache so they
+% are not recomputed in every TEM call/iteration.
 keep=w>0;
-patt=unique(nanY(keep,:),'rows');
-G=size(patt,1);
+counts=accumarray(maskcache.rowPattern(keep),1,[maskcache.G 1]);
+active=find(counts>0);
+G=numel(active);
 
-pobs=zeros(G,1);
-nkept=zeros(G,1);
+pobs=maskcache.pobs(active);
+nkept=counts(active);
 athr=zeros(G,1);
 gammag=zeros(G,1);
 kg=nan(G,1);
 
 for g=1:G
-    pg=patt(g,:);
-    rows=keep & all(nanY==pg,2);
-    obs=~pg;
-    pobs(g)=sum(obs);
-    nkept(g)=sum(rows);
+    id=active(g);
+    obs=maskcache.obs{id};
 
     if pobs(g)==0
         athr(g)=0;
@@ -571,63 +607,158 @@ kinfo.kg(bad)=kbar;
 end
 
 %% ------------------------------------------------------------------
-function kinfo=localAdaptiveFactors(nanY,w,cthr,p,n,Sigma,method, ...
-    Yref,muref,sigmaref,poolByDimension,minRef)
+function cache=localBuildMaskCache(nanY)
+% Build missingness-pattern information which is invariant across calls
+% having the same row-wise mask.
+[n,p]=size(nanY);
+[patt,~,rowPattern]=unique(nanY,'rows');
+G=size(patt,1);
+pobs=sum(~patt,2);
+obs=cell(G,1);
+miss=cell(G,1);
+rows=cell(G,1);
+for g=1:G
+    obs{g}=find(~patt(g,:));
+    miss{g}=find(patt(g,:));
+    rows{g}=find(rowPattern==g);
+end
+cache=struct;
+cache.nanY=nanY;
+cache.n=n;
+cache.p=p;
+cache.G=G;
+cache.patt=patt;
+cache.rowPattern=rowPattern;
+cache.pobs=pobs;
+cache.poss=pobs(rowPattern);
+cache.obs=obs;
+cache.miss=miss;
+cache.rows=rows;
+end
+
+%% ------------------------------------------------------------------
+function cache=localValidateMaskCache(cache,nanY)
+% Validate a user-supplied reusable pattern cache.
+required={'nanY','n','p','G','patt','rowPattern','pobs','poss', ...
+    'obs','miss','rows'};
+if ~isstruct(cache) || ~all(isfield(cache,required))
+    error('FSDA:mdTEM:WrongMaskCache', ...
+        'Option maskcache is not a valid mdTEM missingness-pattern cache.');
+end
+[n,p]=size(nanY);
+if cache.n~=n || cache.p~=p || ~isequal(size(cache.nanY),[n p]) || ...
+        ~isequal(cache.nanY,nanY)
+    error('FSDA:mdTEM:WrongMaskCache', ...
+        'The supplied maskcache does not correspond to the missingness mask of Y.');
+end
+end
+
+%% ------------------------------------------------------------------
+function cache=localBuildAdaptiveCache(maskcache,Yref,muref,sigmaref)
+% Precompute projected reference radii under the frozen reference geometry.
+% The missingness-pattern decomposition itself is supplied by maskcache and
+% can therefore be reused across repeated mdTEM calls.
+G=maskcache.G;
+qref=cell(G,1);
+
+for g=1:G
+    if maskcache.pobs(g)>0
+        qref{g}=localReferenceRadii(Yref,muref,sigmaref,maskcache.obs{g});
+    else
+        qref{g}=zeros(0,1);
+    end
+end
+
+cache=struct;
+cache.qref=qref;
+end
+
+%% ------------------------------------------------------------------
+function kinfo=localAdaptiveFactors(maskcache,w,cthr,p,n,Sigma,method, ...
+    cache,poolByDimension,minRef)
 % Distribution-adaptive radial factors estimated from complete references.
 %
-% The factor for pattern g is mean(Q_g | Q_g<=a_g)/p_g. Reference radii
-% are always evaluated with the frozen complete-case reference fit.
+% The expensive reference radii are computed once per mdTEM call because
+% they depend on that call's Yref/muref/sigmaref. The fixed missingness
+% pattern bookkeeping is taken from maskcache and can be reused across all
+% mdMDPtest bootstrap calls. When pooling is requested, one pooled factor is
+% computed per active observed dimension and then assigned to every active
+% pattern of that dimension.
 keep=w>0;
-patt=unique(nanY(keep,:),'rows');
-G=size(patt,1);
+counts=accumarray(maskcache.rowPattern(keep),1,[maskcache.G 1]);
+active=find(counts>0);
+G=numel(active);
 
-pobs=zeros(G,1);
-nkept=zeros(G,1);
+pobs=maskcache.pobs(active);
+nkept=counts(active);
 athr=zeros(G,1);
 gammag=nan(G,1);
 kg=nan(G,1);
 nref=zeros(G,1);
 nrefkept=zeros(G,1);
 
-for g=1:G
-    pg=patt(g,:);
-    rows=keep & all(nanY==pg,2);
-    obs=~pg;
-    pobs(g)=sum(obs);
-    nkept(g)=sum(rows);
+if poolByDimension
+    dims=unique(pobs(pobs>0));
+    for jj=1:numel(dims)
+        d=dims(jj);
+        loc=find(pobs==d);
+        ids=active(loc);
 
-    if pobs(g)==0
-        athr(g)=0;
-        gammag(g)=0;
-        continue
-    end
-
-    athr(g)=localInvAdjust(cthr,pobs(g),p,n,Sigma,obs,method);
-    if athr(g)<=0 || ~isfinite(athr(g))
-        gammag(g)=0;
-        continue
-    end
-
-    if poolByDimension
-        sameDim=find(sum(~patt,2)==pobs(g));
-        qcell=cell(numel(sameDim),1);
-        for jj=1:numel(sameDim)
-            obsjj=~patt(sameDim(jj),:);
-            qcell{jj}=localReferenceRadii(Yref,muref,sigmaref,obsjj);
+        % All currently supported adaptive mappings except detMap (which is
+        % explicitly disallowed above) have a cutoff depending on the pattern
+        % only through its observed dimension. Hence compute it once per d.
+        a=localInvAdjust(cthr,d,p,n,Sigma,maskcache.obs{ids(1)},method);
+        athr(loc)=a;
+        if a<=0 || ~isfinite(a)
+            gammag(loc)=0;
+            continue
         end
-        q=vertcat(qcell{:});
-    else
-        q=localReferenceRadii(Yref,muref,sigmaref,obs);
-    end
 
-    nref(g)=numel(q);
-    inside=q<=athr(g);
-    nrefkept(g)=sum(inside);
-    gammag(g)=mean(inside);
-    if nrefkept(g)>=max(minRef,pobs(g)+1)
-        kg(g)=mean(q(inside))/pobs(g);
+        qcell=cache.qref(ids);
+        q=vertcat(qcell{:});
+        nr=numel(q);
+        inside=q<=a;
+        nrk=sum(inside);
+        gam=mean(inside);
+        nref(loc)=nr;
+        nrefkept(loc)=nrk;
+        gammag(loc)=gam;
+        if nrk>=max(minRef,d+1)
+            kval=mean(q(inside))/d;
+            kg(loc)=kval;
+        end
+    end
+else
+    for g=1:G
+        id=active(g);
+        if pobs(g)==0
+            athr(g)=0;
+            gammag(g)=0;
+            continue
+        end
+
+        a=localInvAdjust(cthr,pobs(g),p,n,Sigma,maskcache.obs{id},method);
+        athr(g)=a;
+        if a<=0 || ~isfinite(a)
+            gammag(g)=0;
+            continue
+        end
+
+        q=cache.qref{id};
+        nref(g)=numel(q);
+        inside=q<=a;
+        nrefkept(g)=sum(inside);
+        gammag(g)=mean(inside);
+        if nrefkept(g)>=max(minRef,pobs(g)+1)
+            kg(g)=mean(q(inside))/pobs(g);
+        end
     end
 end
+
+% Preserve the convention for a pattern with no observed variables.
+zeroDim=(pobs==0);
+athr(zeroDim)=0;
+gammag(zeroDim)=0;
 
 factorType=repmat("adaptive",G,1);
 kinfo=table(pobs,nkept,athr,gammag,kg,nref,nrefkept,factorType);
@@ -708,37 +839,39 @@ end
 end
 
 %% ------------------------------------------------------------------
-function [musNew,sigsNew,kbar]=localCorrectedStep(Y,nanY,w,mus,sigs,kinfo)
+function [musNew,sigsNew,kbar]=localCorrectedStep(Y,maskcache,w,mus,sigs,kinfo)
 % Corrected E- and M-step, grouped by retained missingness pattern.
 %
 % Only the data-driven conditional second-moment term is divided by k_g.
 % The conditional covariance contribution is left uncorrected. Location is
-% not corrected. kinfo and patt are constructed from the same retained rows
-% and therefore have the same row ordering.
+% not corrected. Pattern identities and row memberships are reused from the
+% fixed maskcache rather than reconstructed from isnan(Y) at each iteration.
 p=size(Y,2);
 mus=mus(:);
 keep=w>0;
+counts=accumarray(maskcache.rowPattern(keep),1,[maskcache.G 1]);
+active=find(counts>0);
 
 S=zeros(p,p);
 m1=zeros(p,1);
 h=0;
-patt=unique(nanY(keep,:),'rows');
 
-if height(kinfo)~=size(patt,1)
+if height(kinfo)~=numel(active)
     error('FSDA:mdTEM:InternalPatternMismatch', ...
         'Internal pattern-factor table does not match retained patterns.');
 end
 
-for g=1:size(patt,1)
-    pg=patt(g,:);
-    rows=keep & all(nanY==pg,2);
-    hg=sum(rows);
+for g=1:numel(active)
+    id=active(g);
+    idx=maskcache.rows{id};
+    idx=idx(w(idx)>0);
+    hg=numel(idx);
     if hg==0
         continue
     end
 
-    o=find(~pg);
-    m=find(pg);
+    o=maskcache.obs{id};
+    m=maskcache.miss{id};
     if isempty(o)
         continue
     end
@@ -749,7 +882,7 @@ for g=1:size(patt,1)
             'A retained pattern has an invalid consistency factor.');
     end
 
-    Z=Y(rows,o)-mus(o)';
+    Z=Y(idx,o)-mus(o)';
     Szz=(Z'*Z)/kg;
     sZ=sum(Z,1)';
 

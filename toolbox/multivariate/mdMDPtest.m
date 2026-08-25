@@ -878,6 +878,17 @@ maskMiss = isnan(Y);
 completeIdx = all(~maskMiss,2);
 nComplete = sum(completeIdx);
 
+% The missingness mask is identical in the observed fit and in every
+% mask-preserving bootstrap replicate. Build its pattern decomposition once
+% and pass it to mdTEM, avoiding repeated unique(mask,'rows') and row-group
+% construction across the nsimul TEM fits.
+if alpha > 0 && ~coupledtrim && ...
+        any(strcmp(consistencyfactor,{'pattern','adaptive','weighted'}))
+    temMaskCache = local_build_tem_maskcache(maskMiss);
+else
+    temMaskCache = [];
+end
+
 if nComplete < p + 2
     error('FSDA:mdMDPtest:TooFewCompleteRows', ...
         ['Too few complete rows to compute the reference complete-case ' ...
@@ -940,7 +951,8 @@ end
 % mask is multiplied by TEM's own concentration weights at every iteration.
 [d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distances( ...
     Y, completeIdx, alpha, method, tol, forcedZeroTEM, ...
-    consistencyfactor, Ycc, muCC, SigCC, adaptivepool, adaptiveminref);
+    consistencyfactor, Ycc, muCC, SigCC, adaptivepool, adaptiveminref, ...
+    temMaskCache);
 
 % Construct the observed-data aggregation rule for the two mean statistics.
 % The median statistics always use all complete cases.
@@ -1086,7 +1098,7 @@ for j = 1:nsimul
         d2_all_cc_star = local_fit_and_get_complete_distances( ...
             Ystar, completeIdx, alpha, method, tol, forcedZeroStar, ...
             consistencyfactor, YccStar, muCCStar, SigCCStar, ...
-            adaptivepool, adaptiveminref);
+            adaptivepool, adaptiveminref, temMaskCache);
 
         % Reconstruct the selected aggregation rule inside this bootstrap sample.
         [meanWeightsStar,aggInfoStar] = local_aggregation_weights( ...
@@ -1432,7 +1444,7 @@ end
 
 function [d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distances( ...
     Y, completeIdx, alpha, method, tol, forcedZero, consistencyfactor, ...
-    Yref, muref, sigmaref, adaptivepool, adaptiveminref)
+    Yref, muref, sigmaref, adaptivepool, adaptiveminref, maskcache)
 %local_fit_and_get_complete_distances fits EM/TEM and returns complete-row distances.
 %
 % forcedZero is a logical n-vector. When alpha>0 and at least one entry is
@@ -1440,6 +1452,8 @@ function [d2_all_cc, muHat, SigHat, outFit] = local_fit_and_get_complete_distanc
 % every iteration. This implements the coupled sensitivity rule without
 % changing the default mdTEM fit. For the adaptive correction, Yref, muref
 % and sigmaref are the complete-case reference sample and fitted geometry.
+% maskcache contains the fixed row-wise missingness-pattern decomposition
+% and is reused across all mask-preserving bootstrap replicates.
 
 p = size(Y,2);
 n = size(Y,1);
@@ -1464,6 +1478,9 @@ elseif any(forcedZero)
 else
     temArgs = {'method',method,'alpha',alpha,'tol',tol, ...
         'consistencyfactor',consistencyfactor};
+    if ~isempty(maskcache)
+        temArgs = [temArgs, {'maskcache',maskcache}];
+    end
     if strcmp(consistencyfactor,'adaptive')
         temArgs = [temArgs, {'Yref',Yref,'muref',muref(:), ...
             'sigmaref',sigmaref,'adaptivepool',adaptivepool, ...
@@ -1481,6 +1498,38 @@ SigHat = outFit.cov;
 d2_full = mdPartialMD2full(d2_part, p, poss, 'method', method);
 d2_all_cc = d2_full(completeIdx);
 
+end
+
+% -------------------------------------------------------------------------
+function cache = local_build_tem_maskcache(maskMiss)
+%local_build_tem_maskcache Precompute mask-only pattern information for mdTEM.
+%
+% mdMDPtest reapplies exactly the same missingness mask in every bootstrap
+% replicate. These quantities therefore need to be computed only once.
+[n,p]=size(maskMiss);
+[patt,~,rowPattern]=unique(maskMiss,'rows');
+G=size(patt,1);
+pobs=sum(~patt,2);
+obs=cell(G,1);
+miss=cell(G,1);
+rows=cell(G,1);
+for g=1:G
+    obs{g}=find(~patt(g,:));
+    miss{g}=find(patt(g,:));
+    rows{g}=find(rowPattern==g);
+end
+cache=struct;
+cache.nanY=maskMiss;
+cache.n=n;
+cache.p=p;
+cache.G=G;
+cache.patt=patt;
+cache.rowPattern=rowPattern;
+cache.pobs=pobs;
+cache.poss=pobs(rowPattern);
+cache.obs=obs;
+cache.miss=miss;
+cache.rows=rows;
 end
 
 % -------------------------------------------------------------------------
