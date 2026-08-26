@@ -63,7 +63,12 @@ function out = mdMDPtest(Y, varargin)
 %
 %
 %   method : Rescaling method used inside mdTEM and mdPartialMD2full.
-%            The default value is 'pri'.
+%            The default value is 'pri'. The analytical alpha>0 sandwich is
+%            available for 'pri', 'expScale', 'zMap', 'chiMap' and
+%            'betaMap'. The option 'detMap' is deliberately excluded from
+%            the analytical sandwich because its distance adjustment depends
+%            explicitly on the scatter
+%            matrix and would require additional derivative terms.
 %            Example - 'method','betaMap'
 %            Data Types - char | string
 %
@@ -130,7 +135,7 @@ function out = mdMDPtest(Y, varargin)
 %            option is used only when bootstrap=true.
 %            Example - 'conflev',0.99
 %            Data Types - double
-%       
+%
 %    eps0 : Positive numerical stabilizer used in the log-distance ratio.
 %           The statistic is
 %
@@ -359,12 +364,13 @@ function out = mdMDPtest(Y, varargin)
 %                            filterCutoff,
 %                            gammaFilter, kc, lambda, baseSigmaD2 and
 %                            baseKappa document the applied scaling. For
-%                            alpha>0,
-%                            method='pri' and consistencyfactor='pattern',
-%                            the Gaussian pattern-wise TEM influence function
-%                            and effective Jacobian are evaluated analytically.
-%                            For consistencyfactor='adaptive' and method='pri',
-%                            the elliptical adaptive sandwich is evaluated
+%                            alpha>0 and method equal to 'pri',
+%                            'expScale', 'zMap', 'chiMap' or 'betaMap', the
+%                            Gaussian pattern-wise TEM influence function is
+%                            evaluated analytically when
+%                            consistencyfactor='pattern'. For the same five
+%                            methods with consistencyfactor='adaptive', the
+%                            elliptical adaptive sandwich is evaluated
 %                            with the empirical radial-factor influence, a
 %                            kernel estimate of the radial density at each
 %                            trimming boundary, and the robust complete-case
@@ -443,10 +449,14 @@ function out = mdMDPtest(Y, varargin)
 %  For the adaptive correction and alpha>0, the analytical sandwich assumes
 %  an elliptical MCAR model and a common scatter target S0=tau*Sigma. The
 %  empirical radial-factor influence and the robust complete-case scatter
-%  influence are included explicitly. For method='pri', the analytical branch
-%  covers both pattern-specific factors and dimension pooling. In the pooled
-%  branch the sampling unit remains the complete observation: projected radii
-%  from the same row are not treated as independent reference observations.
+%  influence are included explicitly. For the parameter-free mappings
+%  'pri', 'expScale', 'zMap', 'chiMap' and 'betaMap', the analytical branch
+%  covers both pattern-specific factors and dimension pooling. The mapping
+%  enters through the inverse raw-distance cutoff a_g(c). In the pooled branch
+%  the sampling unit remains the complete observation: projected radii from
+%  the same row are not treated as independent reference observations. The
+%  scatter-dependent 'detMap' adjustment is intentionally not covered by the
+%  current analytical sandwich.
 %
 %  For alpha=0 and aggregation='ordinary', the primary analytical
 %  calibration of TDmean is the feasible general-F sandwich. It estimates the
@@ -580,6 +590,7 @@ function out = mdMDPtest(Y, varargin)
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0.25,'method','betaMap', ...
         'bootstrap',true,'nsimul',199);
+    disp(out.pvalueAsym)
     disp(out.pvalueBoot)
 %}
 
@@ -815,7 +826,7 @@ end
 if coupledtrim && ~strcmp(consistencyfactor,'pattern')
     error('FSDA:mdMDPtest:CoupledConsistencyFactor', ...
         ['The current coupledtrim sensitivity implementation supports only ' ...
-         'consistencyfactor=''pattern''.']);
+        'consistencyfactor=''pattern''.']);
 end
 
 if coupledtrim && alpha == 0
@@ -826,13 +837,13 @@ end
 if coupledtrim && ~strcmp(aggregation,'inlier')
     error('FSDA:mdMDPtest:CoupledNeedsInlier', ...
         ['Option coupledtrim=true is currently defined only for ' ...
-         'aggregation=''inlier''.']);
+        'aggregation=''inlier''.']);
 end
 
 if strcmp(aggregation,'inlier') && alpha == 0
     error('FSDA:mdMDPtest:InlierNeedsRobust', ...
         ['Aggregation ''inlier'' requires alpha>0 because the complete-case ' ...
-         'outlier set must be supplied by a robust complete-case fit.']);
+        'outlier set must be supplied by a robust complete-case fit.']);
 end
 
 % Parse the complete-case robust estimator. A simple character/string
@@ -848,7 +859,7 @@ nComplete = sum(completeIdx);
 if nComplete < p + 2
     error('FSDA:mdMDPtest:TooFewCompleteRows', ...
         ['Too few complete rows to compute the reference complete-case ' ...
-         'covariance matrix.']);
+        'covariance matrix.']);
 end
 
 if alpha > 0 && strcmpi(robustClass,'FS')
@@ -858,8 +869,8 @@ if alpha > 0 && strcmpi(robustClass,'FS')
     if h < p+1
         error('FSDA:mdMDPtest:TooSmallFSInit', ...
             ['The value of alpha produces an FSM initial monitoring step ' ...
-             'smaller than p+1. Decrease alpha or increase the number ' ...
-             'of complete observations.']);
+            'smaller than p+1. Decrease alpha or increase the number ' ...
+            'of complete observations.']);
     end
 
     nMon = nComplete-h;
@@ -867,7 +878,7 @@ if alpha > 0 && strcmpi(robustClass,'FS')
     if nMon < 3
         error('FSDA:mdMDPtest:TooLargeFSInit', ...
             ['The value of alpha leaves fewer than three Forward Search ' ...
-             'monitoring steps. Increase alpha.']);
+            'monitoring steps. Increase alpha.']);
 
     elseif nMon < 4 && isempty(robustBonflev)
 
@@ -875,9 +886,9 @@ if alpha > 0 && strcmpi(robustClass,'FS')
 
         warning('FSDA:mdMDPtest:FSBonferroniFallback', ...
             ['Fewer than four Forward Search monitoring steps are ' ...
-             'available. The direct 99 percent Bonferroni stopping ' ...
-             'rule is used instead of the standard FSM ' ...
-             'envelope-resuperimposition rule.']);
+            'available. The direct 99 percent Bonferroni stopping ' ...
+            'rule is used instead of the standard FSM ' ...
+            'envelope-resuperimposition rule.']);
     end
 end
 
@@ -952,9 +963,9 @@ if coupledtrim
         'included in the sandwich approximation.'];
     warning('FSDA:mdMDPtest:CoupledAsymptoticApproximation', ...
         ['With coupledtrim=true the analytical p-value uses a frozen-' ...
-         'eligibility approximation. The realized complete-case eligibility ' ...
-         'mask is treated as fixed and its selection variability is not ' ...
-         'included in the current sandwich calculation.']);
+        'eligibility approximation. The realized complete-case eligibility ' ...
+        'mask is treated as fixed and its selection variability is not ' ...
+        'included in the current sandwich calculation.']);
 else
     if alpha == 0
         preferGeneralF = strcmp(aggregation,'ordinary');
@@ -1186,9 +1197,9 @@ out.asympt = asympt;
 % Optional plots
 if plots
     statNames = {'median log-ratio', ...
-                 'mean log-ratio', ...
-                 'median difference', ...
-                 'mean difference'};
+        'mean log-ratio', ...
+        'median difference', ...
+        'mean difference'};
 
     figure;
     if bootstrap
@@ -1365,11 +1376,11 @@ end
 if strcmp(robustClass,'FS')
     if ~(isempty(robustBonflev) || ...
             (isnumeric(robustBonflev) && isscalar(robustBonflev) && ...
-             isfinite(robustBonflev) && robustBonflev == 0.99))
+            isfinite(robustBonflev) && robustBonflev == 0.99))
         error('FSDA:mdMDPtest:WrongRobustBonflev', ...
             ['Field robust.bonflev must be either 0.99 or empty. ' ...
-             'Use 0.99 for the direct Bonferroni rule and [] for the ' ...
-             'standard FSM envelope-resuperimposition rule.']);
+            'Use 0.99 for the direct Bonferroni rule and [] for the ' ...
+            'standard FSM envelope-resuperimposition rule.']);
     end
 else
     if isstruct(robust) && isfield(robust,'bonflev')
@@ -1443,7 +1454,7 @@ if isstring(consistencyfactor)
     if ~isscalar(consistencyfactor)
         error('FSDA:mdMDPtest:WrongConsistencyFactor', ...
             ['Option consistencyfactor must be a character vector or ' ...
-             'string scalar.']);
+            'string scalar.']);
     end
     consistencyfactor = char(consistencyfactor);
 end
@@ -1451,7 +1462,7 @@ end
 if ~ischar(consistencyfactor) || size(consistencyfactor,1) ~= 1
     error('FSDA:mdMDPtest:WrongConsistencyFactor', ...
         ['Option consistencyfactor must be ''pattern'', ''adaptive'', ' ...
-         '''global'', ''weighted'' or ''none''.']);
+        '''global'', ''weighted'' or ''none''.']);
 end
 
 consistencyfactor = lower(strtrim(consistencyfactor));
@@ -1459,7 +1470,7 @@ valid = {'pattern','adaptive','global','weighted','none'};
 if ~any(strcmp(consistencyfactor,valid))
     error('FSDA:mdMDPtest:WrongConsistencyFactor', ...
         ['Option consistencyfactor must be ''pattern'', ''adaptive'', ' ...
-         '''global'', ''weighted'' or ''none''.']);
+        '''global'', ''weighted'' or ''none''.']);
 end
 end
 
@@ -1513,7 +1524,7 @@ switch aggregation
         if alpha == 0 || isempty(outRob) || ~isfield(outRob,'outliers')
             error('FSDA:mdMDPtest:MissingOutlierSet', ...
                 ['Aggregation ''inlier'' requires a robust complete-case ' ...
-                 'fit returning the field outliers.']);
+                'fit returning the field outliers.']);
         end
 
         A = ~local_cc_outlier_mask(outRob,ncc);
@@ -1829,9 +1840,18 @@ function asympt = local_tem_adaptive_asymptotic(Y, maskMiss, completeIdx, ...
 % the effective Jacobian in both the pooled and unpooled cases.
 %
 % The boundary density is estimated by a Gaussian kernel density estimator
-% with reflection at zero. The present analytical Jacobian is restricted to
-% method='pri'. Under this adjustment, patterns having the same observed
-% dimension also have the same cutoff, which is required by dimension pooling.
+% with reflection at zero. The analytical Jacobian covers the parameter-free
+% adjusted-distance mappings 'pri', 'expScale', 'zMap', 'chiMap' and
+% 'betaMap'. Each mapping enters through its inverse raw-distance cutoff
+% a_g(c). For all five mappings, patterns having the same observed dimension
+% have the same raw cutoff, as required by dimension pooling. The
+% scatter-dependent mapping 'detMap' is deliberately excluded.
+%
+% Although the common empirical TEM cutoff c is random, no derivative of the
+% map with respect to c is needed in the first-order scatter Jacobian. At the
+% common target, the consistency-corrected population estimating equation is
+% zero for every admissible raw cutoff a_g. Hence the direct moving-boundary
+% term and the cutoff-induced change of the consistency factor cancel.
 
 [n,p] = size(Y);
 qhat = sum(completeIdx)/n;
@@ -1861,9 +1881,16 @@ asympt.completeCase = struct('influenceMethod','', ...
     'frozenClassification',false,'robustBonflev',robustBonflev, ...
     'relCovFrozenVsFS',NaN,'meanInfluenceBeforeCentering',NaN);
 
-if ~strcmpi(method,'pri')
-    asympt.reason = ['For consistencyfactor=''adaptive'' the analytical ' ...
-        'TEM Jacobian is currently implemented only for method=''pri''.'];
+supportedMethods = {'pri','expScale','zMap','chiMap','betaMap'};
+if strcmpi(method,'detMap')
+    asympt.reason = ['For consistencyfactor=''adaptive'' the analytical TEM ' ...
+        'sandwich deliberately excludes method=''detMap'' because its ' ...
+        'adjusted-distance map depends explicitly on the scatter matrix.'];
+    return
+elseif ~any(strcmpi(method,supportedMethods))
+    asympt.reason = ['For consistencyfactor=''adaptive'' the analytical TEM ' ...
+        'sandwich is implemented for ''pri'', ''expScale'', ''zMap'', ' ...
+        '''chiMap'' and ''betaMap''.'];
     return
 end
 
@@ -1928,28 +1955,18 @@ if ~isfinite(baseKappa) || baseKappa <= 0
     return
 end
 
-% Reconstruct the common adjusted-distance threshold. For pri,
-% c=a_g+p-p_g.
+% Reconstruct the common adjusted-distance threshold. mdTEM stores the
+% final threshold explicitly. The adjusted-distance fallback is retained for
+% compatibility with fitted objects created by older versions.
 cthr = NaN;
 if isfield(outFit,'cthr') && isscalar(outFit.cthr) && isfinite(outFit.cthr)
     cthr = outFit.cthr;
-elseif istable(outFit.kinfo) && ~isempty(outFit.kinfo) && ...
-        all(ismember({'pobs','athr'},outFit.kinfo.Properties.VariableNames))
-    okc = isfinite(outFit.kinfo.athr) & outFit.kinfo.athr > 0;
-    if any(okc)
-        cvals = outFit.kinfo.athr(okc)+p-outFit.kinfo.pobs(okc);
-        cvals = cvals(isfinite(cvals));
-        if ~isempty(cvals)
-            cthr = median(cvals);
-        end
-    end
 end
 
 if isfield(outFit,'adjustedD2') && numel(outFit.adjustedD2)==n
     d2adj = outFit.adjustedD2(:);
 else
-    [d2part,poss] = mdPartialMD(Y,outFit.loc,outFit.cov);
-    d2adj = mdPartialMD2full(d2part,p,poss,'method','pri');
+    d2adj = local_adjusted_distances(Y,outFit.loc,outFit.cov,method);
 end
 w = outFit.weights(:) > 0;
 if ~isfinite(cthr)
@@ -2036,7 +2053,7 @@ for g = 1:G
         continue
     end
 
-    ag = cthr-(p-pg);
+    ag = local_tem_inv_adjust(cthr,pg,p,n,method);
     aDiag(g) = ag;
     if ~isfinite(ag) || ag <= 0 || nkeptg == 0
         continue
@@ -2122,7 +2139,7 @@ if adaptivepool
         kd = dims(jd);
         members = find(active & pobsDiag==kd);
         mk = numel(members);
-        ak = cthr-(p-kd);
+        ak = local_tem_inv_adjust(cthr,kd,p,n,method);
 
         % Exactly as in mdTEM with adaptivepool=true, concatenate one
         % projected reference-radius vector for each retained pattern of the
@@ -2208,7 +2225,7 @@ if adaptivepool
     asympt.TEM.factorDiagnostics = table(dimFD,nPatternsFD,aFD,HFD,kFD, ...
         fFD,bwFD,rhoFD,nrefFD,nrefkeptFD,'VariableNames', ...
         {'pobs','nPatterns','athr','H','kappa','density','bandwidth', ...
-         'rho','nref','nrefkept'});
+        'rho','nref','nrefkept'});
 else
     members = find(active);
     nGroups = numel(members);
@@ -2292,7 +2309,7 @@ asympt.TEM.patternDiagnostics = table(pobsDiag,piDiag,nkeptDiag,aDiag,HDiag, ...
     kDiag,fDiag,bwDiag,rhoDiag,nrefDiag,nrefkeptDiag,poolSizeDiag, ...
     factorGroupDiag,'VariableNames', ...
     {'pobs','pi','nkept','athr','H','kappa','density','bandwidth','rho', ...
-     'nref','nrefkept','poolSize','factorGroup'});
+    'nref','nrefkept','poolSize','factorGroup'});
 
 Jrcond = rcond(J);
 asympt.TEM.Jrcond = Jrcond;
@@ -2375,15 +2392,18 @@ else
     poolText = ' Pattern-specific adaptive radial factors are used.';
 end
 
+methodText = [' Parameter-free distance mapping method=''' method ''' is ' ...
+    'handled through its inverse raw-distance cutoff.'];
 if strcmpi(robustClass,'FS')
     asympt.theoryStatus = ['Adaptive TEM sandwich under elliptical MCAR.' ...
+        methodText ...
         poolText ' The complete-case FS scatter influence is evaluated ' ...
         'analytically conditional on the full-sample final FS classification; ' ...
         'the data-dependent FS stopping/classification rule itself is not ' ...
         'differentiated and remains outside the fixed-fraction FS theorem.'];
 else
     asympt.theoryStatus = ['Adaptive TEM sandwich under elliptical MCAR.' ...
-        poolText ' The empirical radial-factor influence and robust ' ...
+        methodText poolText ' The empirical radial-factor influence and robust ' ...
         'complete-case scatter influence are both included.'];
 end
 
@@ -2658,10 +2678,14 @@ function asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
 % classification. For MCD and MM the current delete-one jackknife is
 % retained.
 %
-% The current Jacobian implementation is restricted to method='pri'. This
-% is the parameter-free additive distance adjustment used in the theoretical
-% derivation. In particular, detMap would require additional derivatives
-% because its adjustment depends on Sigma.
+% The Jacobian implementation covers the parameter-free adjusted-distance
+% mappings 'pri', 'expScale', 'zMap', 'chiMap' and 'betaMap'. The selected
+% mapping enters only through the inverse raw-distance cutoff a_g(c). At the
+% correctly consistency-adjusted population target the estimating equation is
+% zero for every admissible cutoff, so the first-order contribution from the
+% random common cutoff cancels with the cutoff-induced change of the Tallis
+% factor. The scatter-dependent 'detMap' mapping would require additional
+% derivatives and is deliberately excluded.
 
 [n,p] = size(Y);
 qhat = sum(completeIdx)/n;
@@ -2691,9 +2715,15 @@ asympt.completeCase = struct('influenceMethod','', ...
     'frozenClassification',false,'robustBonflev',robustBonflev, ...
     'relCovFrozenVsFS',NaN);
 
-if ~strcmpi(method,'pri')
-    asympt.reason = ['For alpha>0 the analytical TEM Jacobian is currently ' ...
-        'implemented only for method=''pri''.'];
+supportedMethods = {'pri','expScale','zMap','chiMap','betaMap'};
+if strcmpi(method,'detMap')
+    asympt.reason = ['For alpha>0 the analytical TEM sandwich deliberately ' ...
+        'excludes method=''detMap'' because its adjusted-distance map ' ...
+        'depends explicitly on the scatter matrix.'];
+    return
+elseif ~any(strcmpi(method,supportedMethods))
+    asympt.reason = ['For alpha>0 the analytical TEM sandwich is implemented ' ...
+        'for ''pri'', ''expScale'', ''zMap'', ''chiMap'' and ''betaMap''.'];
     return
 end
 
@@ -2716,23 +2746,20 @@ K = SigmaHat\eye(p);
 K = (K+K')/2;
 aSigma = Dp' * K(:);
 
-% Reconstruct the common adjusted-distance threshold used by TEM. For the
-% pri adjustment, c = a_g + p-p_g. The kinfo values are from the last TEM
-% concentration step and are therefore preferable to recomputing the
-% threshold from rounded final distances. A final-distance fallback is kept
-% for safety.
+% Reconstruct the common adjusted-distance threshold used by TEM. Current
+% mdTEM objects store cthr and the final adjusted distances explicitly. The
+% adjusted-distance fallback also makes the analytical code independent of
+% the particular parameter-free mapping.
 cthr = NaN;
-if isfield(outFit,'kinfo') && istable(outFit.kinfo) && ~isempty(outFit.kinfo) && ...
-        all(ismember({'pobs','athr'},outFit.kinfo.Properties.VariableNames))
-    okc = isfinite(outFit.kinfo.athr) & outFit.kinfo.athr > 0;
-    if any(okc)
-        cvals = outFit.kinfo.athr(okc) + p - outFit.kinfo.pobs(okc);
-        cthr = median(cvals(isfinite(cvals)));
-    end
+if isfield(outFit,'cthr') && isscalar(outFit.cthr) && isfinite(outFit.cthr)
+    cthr = outFit.cthr;
 end
 
-[d2part,poss] = mdPartialMD(Y,muHat,SigmaHat);
-d2adj = mdPartialMD2full(d2part,p,poss,'method','pri');
+if isfield(outFit,'adjustedD2') && numel(outFit.adjustedD2)==n
+    d2adj = outFit.adjustedD2(:);
+else
+    d2adj = local_adjusted_distances(Y,muHat,SigmaHat,method);
+end
 w = outFit.weights(:) > 0;
 
 if ~isfinite(cthr)
@@ -2755,8 +2782,9 @@ Lcell = cell(G,1);
 Vcell = cell(G,1);
 obsCell = cell(G,1);
 
-% Build the effective scatter Jacobian pattern by pattern. For pri,
-% a_g(c)=c-(p-p_g) and therefore dot(a_g)=1.
+% Build the effective scatter Jacobian pattern by pattern. For every
+% supported parameter-free mapping, first invert the common adjusted cutoff c
+% to the corresponding raw p_g-dimensional squared-distance cutoff a_g(c).
 for g = 1:G
     obs = find(~patt(g,:));
     mis = find(patt(g,:));
@@ -2768,7 +2796,7 @@ for g = 1:G
         continue
     end
 
-    ag = cthr - (p-pg);
+    ag = local_tem_inv_adjust(cthr,pg,p,n,method);
     if ~isfinite(ag) || ag <= 0
         continue
     end
@@ -2902,15 +2930,19 @@ asympt.completeCase.sigma2 = sigmaCC2;
 asympt.completeCase.crossTEMCC = crossTEMCC;
 asympt.completeCase.nComplete = size(Ycc,1);
 
+methodText = [' The parameter-free distance mapping method=''' method ''' is ' ...
+    'handled through its inverse raw-distance cutoff.'];
 if strcmpi(robustClass,'FS')
-    asympt.theoryStatus = ['TEM influence calculation is analytical. The ' ...
+    asympt.theoryStatus = ['TEM influence calculation is analytical.' ...
+        methodText ' The ' ...
         'complete-case FS scatter influence is evaluated analytically ' ...
         'conditional on the full-sample final FS classification; the ' ...
         'data-dependent FS stopping/classification rule itself is not ' ...
         'differentiated.'];
 else
-    asympt.theoryStatus = ['TEM influence calculation is analytical; the ' ...
-        'robust complete-case scatter influence is evaluated by delete-one ' ...
+    asympt.theoryStatus = ['TEM influence calculation is analytical.' ...
+        methodText ' The robust complete-case scatter influence is evaluated ' ...
+        'by delete-one ' ...
         'jackknife.'];
 end
 if frozenMode
@@ -3417,6 +3449,67 @@ end
 
 
 % -------------------------------------------------------------------------
+function a = local_tem_inv_adjust(c,pg,p,n,method)
+%local_tem_inv_adjust Inverse parameter-free adjusted-distance map.
+%
+% The analytical alpha>0 sandwich is built on the raw p_g-dimensional
+% squared Mahalanobis radius Q_g. TEM trims on an adjusted full-dimensional
+% distance m_g(Q_g), so this helper returns a_g(c)=m_g^{-1}(c).
+%
+% For the supported maps the transformation depends on the missingness
+% pattern only through p_g (and, for betaMap, n), not through Sigma. This is
+% why the existing scatter Jacobian remains valid after replacing the pri
+% cutoff by the appropriate a_g(c). detMap is intentionally excluded because
+% its transformation depends explicitly on the full and observed-block
+% determinants of Sigma.
+
+method = string(method);
+switch method
+    case "pri"
+        a = c-(p-pg);
+
+    case "expScale"
+        a = c*pg/p;
+
+    case "zMap"
+        a = pg+sqrt(pg/p)*(c-p);
+
+    case "chiMap"
+        u = chi2cdf(c,p);
+        u = min(max(u,eps),1-eps);
+        a = chi2inv(u,pg);
+
+    case "betaMap"
+        cn = (n-1)^2/n;
+        if n <= p+1 || n <= pg+1
+            a = c;
+            return
+        end
+        u = min(max(c/cn,0),1-eps);
+        al = betacdf(u,p/2,(n-p-1)/2);
+        al = min(max(al,eps),1-eps);
+        a = cn*betainv(al,pg/2,(n-pg-1)/2);
+
+    otherwise
+        a = NaN;
+end
+end
+
+% -------------------------------------------------------------------------
+function d2adj = local_adjusted_distances(Y,mu,Sigma,method)
+%local_adjusted_distances Final adjusted distances for analytical fallbacks.
+%
+% This helper mirrors the parameter-free distance calculations in mdTEM.
+% detMap is deliberately not handled because the analytical branches return
+% before reaching this fallback.
+
+p = size(Y,2);
+[d2part,pobs] = mdPartialMD(Y,mu,Sigma);
+d2adj = mdPartialMD2full(d2part,p,pobs,'method',method);
+d2adj = d2adj(:);
+end
+
+% -------------------------------------------------------------------------
 function out = local_coupled_tem(Y,forcedZero,alpha,method,tol)
 %local_coupled_tem Pattern-corrected TEM with fixed forced-zero rows.
 %
@@ -3443,7 +3536,6 @@ if numel(forcedZero) ~= n
 end
 
 maxiter = 100;
-tol_sigma = true;
 method = string(method);
 
 % Same initialization used by mdTEM.
@@ -3510,11 +3602,7 @@ while dif > tol && iter < maxiter
 
     muDiff = max(abs(mus(:)-mus_old(:)));
     sigmaDiff = max(abs(sigs(:)-sigs_old(:)));
-    if tol_sigma
-        dif = max(muDiff,sigmaDiff);
-    else
-        dif = muDiff;
-    end
+    dif = max(muDiff,sigmaDiff);
 end
 
 out = struct;
@@ -3526,6 +3614,8 @@ out.internalWeights = wT;
 out.forcedZero = forcedZero;
 out.kfactor = kfactor;
 out.kinfo = kinfo;
+out.cthr = cthr;
+out.adjustedD2 = d2_adj;
 end
 
 % -------------------------------------------------------------------------
@@ -3827,14 +3917,14 @@ else
     if ~isfinite(jt) || jt <= 0 || ~isfinite(beta) || beta <= 0
         error('FSDA:mdMDPtest:SecondOrderUnstable', ...
             ['The complete-Gaussian adaptive second-order benchmark is ' ...
-             'outside the regular stable regime (nonpositive jt or beta).']);
+            'outside the regular stable regime (nonpositive jt or beta).']);
     end
 
     lambda = 1-jt/beta;
     if ~isfinite(lambda) || lambda >= 1
         error('FSDA:mdMDPtest:SecondOrderNoncontractive', ...
             ['The complete-Gaussian adaptive second-order benchmark is ' ...
-             'not contractive because lambda >= 1.']);
+            'not contractive because lambda >= 1.']);
     end
 
     feedback1 = 1/(1-lambda);
