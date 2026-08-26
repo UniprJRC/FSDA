@@ -238,6 +238,16 @@ function out = mdMDPtest(Y, varargin)
 %            Example - 'plots',true
 %            Data Types - logical
 %
+% dispresults : Display commented test results. Logical scalar.
+%            The default value is false. If true, mdMDPtest displays
+%            the MDP procedure actually used, the principal fitting
+%            options, the number of complete cases, the number entering
+%            the mean statistics, and the table out.results. Small
+%            p-values indicate evidence against MCAR. No automatic
+%            reject/not-reject decision is printed.
+%            Example - 'dispresults',true
+%            Data Types - logical
+%
 %
 %  Output:
 %
@@ -249,7 +259,13 @@ function out = mdMDPtest(Y, varargin)
 %                            entries 1 and 3 (the medians) are NaN.
 %          out.Tobs        = 1 x 4 vector containing the observed values of
 %                            the four statistics.
+%          out.results     = 4 x 3 table with row names TLmedian, TLmean,
+%                            TDmedian and TDmean. The columns are Tobs,
+%                            pvalueAsym and pvalueBoot. The pvalueBoot
+%                            column is present also when bootstrap=false,
+%                            in which case it contains NaNs.
 %          out.bootstrap   = Value of input option bootstrap.
+%          out.dispresults = Value of input option dispresults.
 %          out.pvalueBoot  = 1 x 4 vector containing bootstrap p-values for
 %                            the four statistics. This field is present only
 %                            when bootstrap=true.
@@ -511,8 +527,7 @@ function out = mdMDPtest(Y, varargin)
     X = cows2026{:,:};
     out = mdMDPtest(X);
     % Display observed statistics and p-values
-    disp(out.Tobs)
-    disp(out.pvalueAsym)
+    disp(out.results)
 %}
 
 %{
@@ -527,8 +542,8 @@ function out = mdMDPtest(Y, varargin)
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0.25);
     % Display asymptotic p-values for the two mean statistics
-    disp(out.pvalueAsym)
-%}
+    disp(array2table(out.pvalueAsym([2 4]),'VariableNames',["TLmean"  "TDmean"],'RowNames',"Asymptotic p-values"))
+    %}
 
 %{
     %% Example 3: Simulated data under MCAR.
@@ -595,7 +610,7 @@ function out = mdMDPtest(Y, varargin)
 %}
 
 %{
-    %% Example 6: MM estimator for the complete cases.
+    % Example 6: MM estimator for the complete cases.
     % Use an MM estimator with 95 percent nominal efficiency. The
     % preliminary S estimator has breakdown point alpha=0.25. Outliers are
     % declared using the fixed Bonferronized simultaneous level 0.99.
@@ -623,7 +638,7 @@ function out = mdMDPtest(Y, varargin)
 %}
 
 %{
-    %% Example 8: Explicit estimator-defined inlier mean (MDP-I).
+    % Example 8: Explicit estimator-defined inlier mean (MDP-I).
     % The medians use all complete cases. The two means use only complete
     % cases not declared as outliers by the MCD complete-case fit.
     load cows2026
@@ -696,6 +711,17 @@ function out = mdMDPtest(Y, varargin)
     disp(out.asympt.gaussian.TDmean)
 %}
 
+%{
+    %% Example 13: Display a commented summary and the results table.
+    % The returned table identifies explicitly the four monitored
+    % statistics and keeps the bootstrap column even when bootstrap is
+    % not requested.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'dispresults',true);
+    disp(out.results)
+%}
+
 %% Beginning of code
 
 if ~ismatrix(Y) || ~isnumeric(Y)
@@ -712,6 +738,7 @@ options.nsimul  = 499;
 options.conflev = 0.95;
 options.tol     = 1e-10;
 options.plots   = false;
+options.dispresults = false;
 options.robust  ="FS";
 options.eps0    = 1e-12;
 options.aggregation = 'auto';
@@ -745,6 +772,7 @@ nsimul  = options.nsimul;
 conflev = options.conflev;
 tol     = options.tol;
 plots   = options.plots;
+dispresults = options.dispresults;
 robust  = options.robust;
 eps0 = options.eps0;
 aggregation = local_parse_aggregation(options.aggregation);
@@ -775,6 +803,11 @@ end
 if ~(islogical(bootstrap) && isscalar(bootstrap))
     error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Option bootstrap must be a logical scalar.');
+end
+
+if ~(islogical(dispresults) && isscalar(dispresults))
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'Option dispresults must be a logical scalar.');
 end
 
 % nsimul is deliberately ignored when bootstrap=false. This permits the
@@ -1106,11 +1139,25 @@ if bootstrap
     ciBoot = quantile(Tboot,[alphaCI/2 1-alphaCI/2],1);
 end
 
+% Human-readable table identifying explicitly the four monitored
+% statistics. The bootstrap column is kept even when bootstrap=false so
+% that the structure of out.results is invariant across calls.
+statRowNames = {'TLmedian';'TLmean';'TDmedian';'TDmean'};
+pvalueBootTable = NaN(4,1);
+if bootstrap
+    pvalueBootTable = pvalueBoot(:);
+end
+results = table(Tobs(:),pvalueAsym(:),pvalueBootTable, ...
+    'VariableNames',{'Tobs','pvalueAsym','pvalueBoot'}, ...
+    'RowNames',statRowNames);
+
 % Store output
 out = struct;
 out.pvalueAsym  = pvalueAsym;
 out.Tobs        = Tobs;
+out.results     = results;
 out.bootstrap   = bootstrap;
+out.dispresults = dispresults;
 out.alpha       = alpha;
 out.method      = method;
 out.consistencyfactor = consistencyfactor;
@@ -1193,6 +1240,52 @@ out.loc       = muHat;
 out.cov      = SigHat;
 out.eps0 = eps0;
 out.asympt = asympt;
+
+% Optional commented display.
+if dispresults
+    switch aggregation
+        case 'ordinary'
+            procedure = 'MDP-U';
+        case 'inlier'
+            procedure = 'MDP-I';
+        case 'fixed'
+            procedure = 'MDP-F';
+        otherwise
+            procedure = 'MDP';
+    end
+
+    disp('*****************************************************************')
+    disp('Mahalanobis Distance Perturbation test for MCAR')
+    fprintf('Procedure                    : %s\n',procedure);
+    fprintf('Mean aggregation             : %s\n',aggregation);
+    fprintf('Trimming level alpha         : %g\n',alpha);
+    fprintf('Complete cases               : %d out of %d\n',nComplete,n);
+    fprintf('Complete cases used in means : %d\n',aggInfo.nSelected);
+    if alpha == 0
+        disp('Complete-case fit             : classical')
+        disp('All-data fit                  : EM')
+    else
+        fprintf('Complete-case robust fit      : %s\n',robustClass);
+        fprintf('All-data fit                  : TEM (%s consistency factor)\n', ...
+            consistencyfactor);
+    end
+    fprintf('Distance rescaling method     : %s\n',method);
+    if isfield(asympt,'mode') && ~isempty(asympt.mode)
+        fprintf('Asymptotic reference         : %s\n',asympt.mode);
+    end
+    if bootstrap
+        fprintf('Bootstrap replications kept  : %d\n',size(Tboot,1));
+    else
+        disp('Bootstrap calibration         : not requested')
+    end
+    disp(' ')
+    disp(out.results)
+    if any(isnan(out.results.pvalueAsym([1 3])))
+        disp('Asymptotic p-values are not available for the median statistics.')
+    end
+    disp('Small p-values indicate evidence against MCAR.')
+    disp('*****************************************************************')
+end
 
 % Optional plots
 if plots
