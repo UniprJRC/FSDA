@@ -526,8 +526,9 @@ function out = mdMDPtest(Y, varargin)
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X);
-    % Display observed statistics and p-values
-    disp(out.results)
+    % Display the two statistics TLmean and TDmean 
+    % together with their asymptotic p-values.
+    disp(out.results(["TLmean" "TDmean"],{'Tobs','pvalueAsym'}))
 %}
 
 %{
@@ -541,9 +542,9 @@ function out = mdMDPtest(Y, varargin)
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0.25);
-    % Display asymptotic p-values for the two mean statistics
-    disp(array2table(out.pvalueAsym([2 4]),'VariableNames',["TLmean"  "TDmean"],'RowNames',"Asymptotic p-values"))
-    %}
+    % Display the observed statistics and asymptotic p-values with row names.
+    disp(out.results(:,{'Tobs','pvalueAsym'}))
+%}
 
 %{
     %% Example 3: Simulated data under MCAR.
@@ -554,27 +555,24 @@ function out = mdMDPtest(Y, varargin)
     rho = 0.5;
     Sigma = (1-rho)*eye(p) + rho*ones(p);
     mu = zeros(1,p);
-    
+
     Yfull = mvnrnd(mu,Sigma,n);
-    
+
     missRate = 0.10;
     missMask = rand(n,p) < missRate;
     Y = Yfull;
     Y(missMask) = NaN;
-    % Show also the output plot
+    % Show also the output plot and request bootstrap calibration.
     out = mdMDPtest(Y,'bootstrap',true,'nsimul',199,'plots',true);
-    
-    disp('Observed statistics:')
-    disp(out.Tobs)
-    disp('Asymptotic p-values:')
-    disp(out.pvalueAsym)
-    disp('Bootstrap p-values:')
-    disp(out.pvalueBoot)
+
+    % The table identifies each statistic and reports both calibrations.
+    disp(out.results)
 %}
 
 
 %{
-    % Example 4: Comparison of several trimming levels.
+    %% Example 4: Comparison of several trimming levels.
+    % Compare bootstrap p-values for the four named MDP statistics.
     rng(1)
     n = 300;
     p = 5;
@@ -590,23 +588,23 @@ function out = mdMDPtest(Y, varargin)
     pval = zeros(length(Alpha),4);
     for i=1:length(Alpha)
         out = mdMDPtest(Y,'alpha',Alpha(i),'bootstrap',true,'nsimul',199);
-        pval(i,:) = out.pvalueBoot;
+        pval(i,:) = out.results.pvalueBoot';
     end
-    pvalTable = array2table(pval, ...
-        'VariableNames',{'medLogRatio','meanLogRatio','medDiff','meanDiff'}, ...
-        'RowNames',string(Alpha));
+    pvalTable = table(Alpha,pval(:,1),pval(:,2),pval(:,3),pval(:,4), ...
+        'VariableNames',{'alpha','pBoot_TLmedian','pBoot_TLmean', ...
+        'pBoot_TDmedian','pBoot_TDmean'});
     disp(pvalTable)
 %}
 
 %{
-    % Example 5: Different rescaling method.
+    %% Example 5: Different rescaling method.
     % Use method betaMap instead of the default pri.
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0.25,'method','betaMap', ...
         'bootstrap',true,'nsimul',199);
-    disp(out.pvalueAsym)
-    disp(out.pvalueBoot)
+    % Display statistics, asymptotic p-values and bootstrap p-values together.
+    disp(out.results)
 %}
 
 %{
@@ -620,11 +618,12 @@ function out = mdMDPtest(Y, varargin)
     r.class = 'MM';
     r.eff = 0.95;
     out = mdMDPtest(X,'alpha',0.25,'robust',r);
-    disp(out.pvalueAsym)
+    % Display the four named statistics and their asymptotic p-values.
+    disp(out.results(:,{'Tobs','pvalueAsym'}))
 %}
 
 %{
-    %% Example 7: Standard FSM envelope-resuperimposition rule.
+    % Example 7: Standard FSM envelope-resuperimposition rule.
     % Use the standard FSM signal-detection and validation procedure rather
     % than the direct Bonferroni-bound stopping rule.
     load cows2026
@@ -633,8 +632,8 @@ function out = mdMDPtest(Y, varargin)
     r.class = 'FS';
     r.bonflev = [];
     out = mdMDPtest(X,'alpha',0.25,'robust',r);
-    disp(out.FSrule)
-    disp(out.pvalueAsym)
+    fprintf('Forward Search rule used: %s\n',out.FSrule)
+    disp(out.results(:,{'Tobs','pvalueAsym'}))
 %}
 
 %{
@@ -645,26 +644,34 @@ function out = mdMDPtest(Y, varargin)
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
         'aggregation','inlier');
-    disp(out.nMeanCC)
-    disp(out.pvalueAsym)
+    fprintf('Complete cases entering the mean statistics: %d\n',out.nMeanCC)
+    disp(out.results(:,{'Tobs','pvalueAsym'}))
 %}
 
 %{
-    %% Example 9: Fixed robust-distance sensitivity diagnostic (MDP-F).
+    % Example 9: Fixed robust-distance sensitivity diagnostic (MDP-F).
     % Use the chi-square 0.99 cutoff on the complete-case robust distances.
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
         'aggregation','fixed','filterlev',0.99);
-    disp(out.filterCutoff)
-    disp(out.nMeanCC)
-    disp(out.pvalueAsym)
-    disp([out.asympt.kc out.asympt.lambda])
-    disp([out.asympt.TDmean.sigma2 out.asympt.TLmean.sigma2])
+    fprintf('Fixed robust-distance cutoff: %g\n',out.filterCutoff)
+    fprintf('Complete cases entering the mean statistics: %d\n',out.nMeanCC)
+    disp(out.results(:,{'Tobs','pvalueAsym'}))
+
+    % Display the MDP-F first-order coefficients with explicit names.
+    coefTable = table(out.asympt.kc,out.asympt.lambda, ...
+        'VariableNames',{'kc_TDmean','lambda_TLmean'});
+    disp(coefTable)
+
+    % Display the two asymptotic variances with explicit test names.
+    varTable = table(out.asympt.TDmean.sigma2,out.asympt.TLmean.sigma2, ...
+        'VariableNames',{'sigma2_TDmean','sigma2_TLmean'});
+    disp(varTable)
 %}
 
 %{
-    %% Example 10: Coupled complete-case outlier trimming in TEM.
+    % Example 10: Coupled complete-case outlier trimming in TEM.
     % This sensitivity mode uses the MDP-I aggregation rule and additionally
     % forces estimator-declared complete-case outliers to zero TEM weight.
     % Coupled trimming currently requires the Gaussian pattern correction,
@@ -674,14 +681,15 @@ function out = mdMDPtest(Y, varargin)
     out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
         'aggregation','inlier','consistencyfactor','pattern', ...
         'coupledtrim',true,'bootstrap',true,'nsimul',199);
-    disp(out.nCoupledCC)
+    fprintf('Complete cases forced to zero TEM weight: %d\n',out.nCoupledCC)
+    disp('Rows forced to zero TEM weight:')
     disp(out.coupledRows)
-    disp(out.pvalueAsym)
-    disp(out.pvalueBoot)
+    % Display statistics and both p-value calibrations with explicit row names.
+    disp(out.results)
 %}
 
 %{
-    %% Example 11: Distribution-adaptive pooled TEM correction.
+    % Example 11: Distribution-adaptive pooled TEM correction.
     % Use the MCD complete-case fit as the reference geometry for empirical
     % radial consistency factors. With adaptivepool=true (default), projected
     % reference radii are pooled across patterns of the same observed
@@ -692,7 +700,7 @@ function out = mdMDPtest(Y, varargin)
     out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
         'consistencyfactor','adaptive');
     disp(out.TEMkinfo)
-    disp(out.pvalueAsym)
+    disp(out.results(:,{'Tobs','pvalueAsym'}))
     disp(out.asympt.TDmean)
     disp(out.asympt.TEM.patternDiagnostics)
 %}
@@ -706,6 +714,9 @@ function out = mdMDPtest(Y, varargin)
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0,'aggregation','ordinary');
+    % First display the named test statistics and their analytical p-values.
+    disp(out.results(:,{'Tobs','pvalueAsym'}))
+    % Then inspect the detailed analytical diagnostics for TDmean.
     disp(out.asympt.TDmean)
     disp(out.asympt.generalF)
     disp(out.asympt.gaussian.TDmean)
@@ -713,13 +724,11 @@ function out = mdMDPtest(Y, varargin)
 
 %{
     %% Example 13: Display a commented summary and the results table.
-    % The returned table identifies explicitly the four monitored
-    % statistics and keeps the bootstrap column even when bootstrap is
-    % not requested.
+    % With dispresults=true, the procedure, fitting options, sample sizes,
+    % and the named results table are displayed automatically.
     load cows2026
     X = cows2026{:,:};
-    out = mdMDPtest(X,'dispresults',true);
-    disp(out.results)
+    out = mdMDPtest(X,'dispresults',true,'bootstrap',true);
 %}
 
 %% Beginning of code
