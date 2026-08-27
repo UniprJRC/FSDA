@@ -733,6 +733,11 @@ function out = mdMDPtest(Y, varargin)
 
 %% Beginning of code
 
+if istable(Y)
+    Y=Y{:,:};
+end
+
+
 if ~ismatrix(Y) || ~isnumeric(Y)
     error('FSDA:mdMDPtest:WrongInputOpt', ...
         'Input argument Y must be a numeric matrix.');
