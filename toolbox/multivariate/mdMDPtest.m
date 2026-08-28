@@ -242,9 +242,13 @@ function out = mdMDPtest(Y, varargin)
 %            The default value is false. If true, mdMDPtest displays
 %            the MDP procedure actually used, the principal fitting
 %            options, the number of complete cases, the number entering
-%            the mean statistics, and the table out.results. Small
-%            p-values indicate evidence against MCAR. No automatic
-%            reject/not-reject decision is printed.
+%            the mean statistics, and the table out.results. For classical
+%            ordinary MDP-U, the separate Gaussian-information benchmark is
+%            also displayed when available. If an analytical calibration
+%            fails, its reason and relevant numerical-conditioning diagnostics
+%            are printed rather than leaving unexplained NaNs. Small p-values
+%            indicate evidence against MCAR. No automatic reject/not-reject
+%            decision is printed.
 %            Example - 'dispresults',true
 %            Data Types - logical
 %
@@ -253,17 +257,32 @@ function out = mdMDPtest(Y, varargin)
 %
 %    out : Structure containing the following fields:
 %
-%          out.pvalueAsym  = 1 x 4 vector containing asymptotic p-values in
-%                            the same order as out.Tobs. The analytical theory
-%                            currently concerns the two mean statistics, hence
-%                            entries 1 and 3 (the medians) are NaN.
+%          out.pvalueAsym  = 1 x 4 vector containing the primary asymptotic
+%                            p-values in the same order as out.Tobs. The
+%                            analytical theory currently concerns the two mean
+%                            statistics, hence entries 1 and 3 (the medians)
+%                            are NaN. For classical ordinary MDP-U, entry 2
+%                            is the elliptical radial calibration of TLmean and
+%                            entry 4 is the feasible general-F calibration of
+%                            TDmean; Gaussian-information p-values are reported
+%                            separately in out.resultsGaussian.
 %          out.Tobs        = 1 x 4 vector containing the observed values of
 %                            the four statistics.
-%          out.results     = 4 x 3 table with row names TLmedian, TLmean,
+%          out.results     = 4 x 6 table with row names TLmedian, TLmean,
 %                            TDmedian and TDmean. The columns are Tobs,
-%                            pvalueAsym and pvalueBoot. The pvalueBoot
-%                            column is present also when bootstrap=false,
-%                            in which case it contains NaNs.
+%                            SEasym, zAsym, pvalueAsym, pvalueBoot and
+%                            Calibration. The two median rows have NaN
+%                            asymptotic standard errors, z values and
+%                            p-values because analytical inference is
+%                            currently available only for the mean summaries.
+%                            The pvalueBoot column is present also when
+%                            bootstrap=false, in which case it contains NaNs.
+%          out.resultsGaussian = 2 x 4 table containing Tobs, SE, z and
+%                            pvalue for TLmean and TDmean under the Gaussian-
+%                            information benchmark. It is returned for the
+%                            classical ordinary MDP-U configuration
+%                            (alpha=0, aggregation='ordinary') and is empty
+%                            otherwise.
 %          out.bootstrap   = Value of input option bootstrap.
 %          out.dispresults = Value of input option dispresults.
 %          out.pvalueBoot  = 1 x 4 vector containing bootstrap p-values for
@@ -355,11 +374,15 @@ function out = mdMDPtest(Y, varargin)
 %                            and ellipticity are not required for this TDmean
 %                            calibration. The former Gaussian-information law
 %                            is retained in out.asympt.gaussian as a diagnostic
-%                            specialization. Since a general-F scalar law for
-%                            TLmean is not available outside symmetry/
-%                            ellipticity, out.asympt.TLmean remains the
-%                            Gaussian-information diagnostic in this branch
-%                            and is explicitly labelled as such.
+%                            specialization. Under ellipticity, TLmean is
+%                            calibrated by multiplying the same general-F
+%                            estimator-discrepancy variance used for TDmean
+%                            by an empirical radial coefficient estimated from
+%                            the complete-case Mahalanobis distances. Thus the
+%                            primary TLmean calibration is elliptical but does
+%                            not assume Gaussianity. The distinct Gaussian-
+%                            information results are retained in
+%                            out.asympt.gaussian and out.resultsGaussian.
 %                            For alpha=0 and aggregation='fixed', the current
 %                            analytical benchmark remains Gaussian because a
 %                            general-F fixed-gate law has not been derived;
@@ -479,9 +502,12 @@ function out = mdMDPtest(Y, varargin)
 %  complete-case/all-available scatter-discrepancy influence covariance from
 %  the observed data and is valid under MCAR with finite fourth moments. The
 %  Gaussian-information specialization is retained in out.asympt.gaussian.
-%  A general-F calibration for TLmean is not currently supplied outside
-%  symmetry/ellipticity, so its alpha=0 analytical value is explicitly a
-%  Gaussian diagnostic. For alpha=0 and aggregation='fixed', the existing
+%  Under ellipticity, TLmean is a scalar multiple of TDmean to first order.
+%  Its primary alpha=0 calibration therefore uses the same general-F
+%  estimator-discrepancy variance multiplied by an empirical radial
+%  coefficient estimated from the complete-case Mahalanobis distances.
+%  This elliptical TLmean calibration is distinct from the separate Gaussian-
+%  information benchmark. For alpha=0 and aggregation='fixed', the existing
 %  Gaussian Tallis benchmark is retained because a general-F fixed-gate law
 %  has not yet been derived.
 %
@@ -528,7 +554,7 @@ function out = mdMDPtest(Y, varargin)
     out = mdMDPtest(X);
     % Display the two statistics TLmean and TDmean 
     % together with their asymptotic p-values.
-    disp(out.results(["TLmean" "TDmean"],{'Tobs','pvalueAsym'}))
+    disp(out.results(["TLmean" "TDmean"],{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
 %}
 
 %{
@@ -543,7 +569,7 @@ function out = mdMDPtest(Y, varargin)
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0.25);
     % Display the observed statistics and asymptotic p-values with row names.
-    disp(out.results(:,{'Tobs','pvalueAsym'}))
+    disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
 %}
 
 %{
@@ -619,7 +645,7 @@ function out = mdMDPtest(Y, varargin)
     r.eff = 0.95;
     out = mdMDPtest(X,'alpha',0.25,'robust',r);
     % Display the four named statistics and their asymptotic p-values.
-    disp(out.results(:,{'Tobs','pvalueAsym'}))
+    disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
 %}
 
 %{
@@ -633,7 +659,7 @@ function out = mdMDPtest(Y, varargin)
     r.bonflev = [];
     out = mdMDPtest(X,'alpha',0.25,'robust',r);
     fprintf('Forward Search rule used: %s\n',out.FSrule)
-    disp(out.results(:,{'Tobs','pvalueAsym'}))
+    disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
 %}
 
 %{
@@ -645,7 +671,7 @@ function out = mdMDPtest(Y, varargin)
     out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
         'aggregation','inlier');
     fprintf('Complete cases entering the mean statistics: %d\n',out.nMeanCC)
-    disp(out.results(:,{'Tobs','pvalueAsym'}))
+    disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
 %}
 
 %{
@@ -657,7 +683,7 @@ function out = mdMDPtest(Y, varargin)
         'aggregation','fixed','filterlev',0.99);
     fprintf('Fixed robust-distance cutoff: %g\n',out.filterCutoff)
     fprintf('Complete cases entering the mean statistics: %d\n',out.nMeanCC)
-    disp(out.results(:,{'Tobs','pvalueAsym'}))
+    disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
 
     % Display the MDP-F first-order coefficients with explicit names.
     coefTable = table(out.asympt.kc,out.asympt.lambda, ...
@@ -700,7 +726,7 @@ function out = mdMDPtest(Y, varargin)
     out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
         'consistencyfactor','adaptive');
     disp(out.TEMkinfo)
-    disp(out.results(:,{'Tobs','pvalueAsym'}))
+    disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
     disp(out.asympt.TDmean)
     disp(out.asympt.TEM.patternDiagnostics)
 %}
@@ -714,12 +740,11 @@ function out = mdMDPtest(Y, varargin)
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0,'aggregation','ordinary');
-    % First display the named test statistics and their analytical p-values.
-    disp(out.results(:,{'Tobs','pvalueAsym'}))
-    % Then inspect the detailed analytical diagnostics for TDmean.
-    disp(out.asympt.TDmean)
-    disp(out.asympt.generalF)
-    disp(out.asympt.gaussian.TDmean)
+    % Display the primary analytical results. TLmean uses the elliptical
+    % radial extension of the general-F sandwich; TDmean uses general-F.
+    disp(out.results)
+    % Display separately the Gaussian-information benchmark.
+    disp(out.resultsGaussian)
 %}
 
 %{
@@ -729,6 +754,8 @@ function out = mdMDPtest(Y, varargin)
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X,'dispresults',true,'bootstrap',true);
+    % out.results contains the primary calibration and out.resultsGaussian
+    % contains the distinct Gaussian benchmark when alpha=0 and MDP-U is used.
 %}
 
 %% Beginning of code
@@ -1017,7 +1044,8 @@ else
     if alpha == 0
         preferGeneralF = strcmp(aggregation,'ordinary');
         asympt = local_classical_asymptotic(Y, maskMiss, completeIdx, ...
-            muHat, SigHat, nComplete, Tobs, TDordinary, eps0, preferGeneralF);
+            muHat, SigHat, nComplete, Tobs, TDordinary, eps0, d2_cc, ...
+            preferGeneralF);
 
         % The feasible general-F result currently applies only to ordinary
         % untrimmed TDmean. For the fixed gate, retain the Gaussian Tallis
@@ -1154,22 +1182,61 @@ if bootstrap
 end
 
 % Human-readable table identifying explicitly the four monitored
-% statistics. The bootstrap column is kept even when bootstrap=false so
-% that the structure of out.results is invariant across calls.
+% statistics and the analytical calibration used for each one. The bootstrap
+% column is kept even when bootstrap=false so that the structure of
+% out.results is invariant across calls.
 statRowNames = {'TLmedian';'TLmean';'TDmedian';'TDmean'};
 pvalueBootTable = NaN(4,1);
 if bootstrap
     pvalueBootTable = pvalueBoot(:);
 end
-results = table(Tobs(:),pvalueAsym(:),pvalueBootTable, ...
-    'VariableNames',{'Tobs','pvalueAsym','pvalueBoot'}, ...
+
+SEasym = NaN(4,1);
+zAsym = NaN(4,1);
+if isfield(asympt,'TLmean') && isstruct(asympt.TLmean)
+    if isfield(asympt.TLmean,'se')
+        SEasym(2) = asympt.TLmean.se;
+    end
+    if isfield(asympt.TLmean,'z')
+        zAsym(2) = asympt.TLmean.z;
+    end
+end
+if isfield(asympt,'TDmean') && isstruct(asympt.TDmean)
+    if isfield(asympt.TDmean,'se')
+        SEasym(4) = asympt.TDmean.se;
+    end
+    if isfield(asympt.TDmean,'z')
+        zAsym(4) = asympt.TDmean.z;
+    end
+end
+Calibration = local_calibration_labels(alpha,aggregation, ...
+    consistencyfactor,coupledtrim);
+results = table(Tobs(:),SEasym,zAsym,pvalueAsym(:),pvalueBootTable, ...
+    Calibration,'VariableNames', ...
+    {'Tobs','SEasym','zAsym','pvalueAsym','pvalueBoot','Calibration'}, ...
     'RowNames',statRowNames);
+
+% Separate Gaussian-information benchmark. This is intentionally distinct
+% from the primary alpha=0 ordinary calibration: TDmean is general-F and
+% TLmean uses its empirical elliptical radial extension.
+resultsGaussian = table();
+if alpha == 0 && strcmp(aggregation,'ordinary') && ...
+        isfield(asympt,'gaussian') && isstruct(asympt.gaussian)
+    g = asympt.gaussian;
+    gSE = [g.TLmean.se; g.TDmean.se];
+    gz = [g.TLmean.z; g.TDmean.z];
+    gp = [g.TLmean.pvalue; g.TDmean.pvalue];
+    resultsGaussian = table([Tobs(2);Tobs(4)],gSE,gz,gp, ...
+        'VariableNames',{'Tobs','SE','z','pvalue'}, ...
+        'RowNames',{'TLmean';'TDmean'});
+end
 
 % Store output
 out = struct;
 out.pvalueAsym  = pvalueAsym;
 out.Tobs        = Tobs;
 out.results     = results;
+out.resultsGaussian = resultsGaussian;
 out.bootstrap   = bootstrap;
 out.dispresults = dispresults;
 out.alpha       = alpha;
@@ -1284,20 +1351,67 @@ if dispresults
             consistencyfactor);
     end
     fprintf('Distance rescaling method     : %s\n',method);
-    if isfield(asympt,'mode') && ~isempty(asympt.mode)
-        fprintf('Asymptotic reference         : %s\n',asympt.mode);
+    if alpha == 0 && strcmp(aggregation,'ordinary')
+        disp('Primary analytical reference  : statistic-specific; see Calibration column')
+    elseif isfield(asympt,'mode') && ~isempty(asympt.mode)
+        fprintf('Primary analytical reference  : %s\n',asympt.mode);
     end
     if bootstrap
-        fprintf('Bootstrap replications kept  : %d\n',size(Tboot,1));
+        fprintf('Bootstrap replications kept   : %d\n',size(Tboot,1));
     else
-        disp('Bootstrap calibration         : not requested')
+        disp('Bootstrap calibration          : not requested')
     end
+
+    disp(' ')
+    disp('Primary analytical results')
     disp(' ')
     disp(out.results)
-    if any(isnan(out.results.pvalueAsym([1 3])))
-        disp('Asymptotic p-values are not available for the median statistics.')
+    disp('Asymptotic inference is not available for the median statistics.')
+
+    % Surface analytical failures instead of leaving unexplained NaNs.
+    meanAsymUnavailable = all(isnan(out.results.pvalueAsym([2 4])));
+    if meanAsymUnavailable
+        disp(' ')
+        disp('WARNING: primary analytical calibration for the mean statistics is unavailable.')
+        if isfield(asympt,'reason') && ~isempty(asympt.reason)
+            fprintf('Reason: %s\n',asympt.reason);
+        end
+        if isfield(asympt,'rcondJA') && isfinite(asympt.rcondJA) && ...
+                asympt.rcondJA <= 1e-12
+            fprintf('rcond(J_A)                    : %.6g\n',asympt.rcondJA);
+            disp(['The very small reciprocal condition number indicates severe ' ...
+                'numerical ill-conditioning.'])
+            disp(['This may be caused by variables on very different scales or ' ...
+                'by near-linear dependence.'])
+            disp('Consider rescaling the variables and recomputing the test.')
+            disp('This numerical failure is not evidence for or against MCAR.')
+        end
     end
-    disp('Small p-values indicate evidence against MCAR.')
+
+    % For ordinary classical MDP-U, report the Gaussian-information benchmark
+    % separately. It is not the primary calibration.
+    if alpha == 0 && strcmp(aggregation,'ordinary')
+        disp(' ')
+        if isfield(asympt,'gaussian') && isstruct(asympt.gaussian) && ...
+                isfield(asympt.gaussian,'available') && asympt.gaussian.available
+            disp('Gaussian-information benchmark (normality assumed)')
+            disp(' ')
+            disp(out.resultsGaussian)
+        elseif isfield(asympt,'gaussian') && isstruct(asympt.gaussian)
+            disp('Gaussian-information benchmark unavailable.')
+            if isfield(asympt.gaussian,'reason') && ~isempty(asympt.gaussian.reason)
+                fprintf('Reason: %s\n',asympt.gaussian.reason);
+            end
+        end
+    elseif alpha == 0 && strcmp(aggregation,'fixed')
+        disp('Note: a general-F fixed-gate calibration is not currently available.')
+    end
+
+    if coupledtrim
+        disp(['Note: analytical p-values use a frozen-eligibility approximation; ' ...
+            'selection variability of the eligibility mask is not included.'])
+    end
+    disp('Small p-values indicate evidence against MCAR for the corresponding calibration.')
     disp('*****************************************************************')
 end
 
@@ -3115,7 +3229,8 @@ end
 
 % -------------------------------------------------------------------------
 function asympt = local_classical_asymptotic(Y, maskMiss, completeIdx, ...
-    muHat, SigmaHat, nComplete, Tobs, TDordinary, eps0, preferGeneralF)
+    muHat, SigmaHat, nComplete, Tobs, TDordinary, eps0, d2cc, ...
+    preferGeneralF)
 %local_classical_asymptotic Analytical benchmark for alpha=0.
 %
 % For ordinary untrimmed MDP-U, the primary TDmean calibration is the
@@ -3132,10 +3247,11 @@ function asympt = local_classical_asymptotic(Y, maskMiss, completeIdx, ...
 %
 %   sigmaD,N^2 = 2*p/qhat - aSigma'*(IA\aSigma)
 %
-% is retained in asympt.gaussian as a diagnostic. A general-F first-order
-% scalar law for TLmean is not currently available outside symmetry/
-% ellipticity; therefore the top-level TLmean entry in the ordinary alpha=0
-% branch is explicitly the Gaussian-information diagnostic.
+% is retained in asympt.gaussian as a diagnostic. Under ellipticity,
+% TLmean is a scalar multiple of TDmean to first order. The primary TLmean
+% calibration therefore uses the same feasible general-F variance multiplied
+% by an empirical radial coefficient estimated from the complete-case
+% Mahalanobis distances d2cc. This does not assume Gaussianity.
 %
 % For aggregation='fixed', preferGeneralF is false. The caller then applies
 % the existing Gaussian Tallis fixed-gate scaling. The untrimmed general-F
@@ -3316,6 +3432,45 @@ else
 end
 
 % ---------------------------------------------------------------------
+% Elliptical radial extension for ordinary untrimmed TLmean.
+% ---------------------------------------------------------------------
+ellipticalTL = struct('available',false,'reason','', ...
+    'calibration','ellipticalRadialGeneralF','kappa',NaN,'lambda',NaN, ...
+    'coefficient',NaN,'sigma2',NaN,'se',NaN,'z',NaN,'pvalue',NaN, ...
+    'radialMeanQ',NaN,'theoryStatus', ...
+    ['Elliptical first-order TLmean calibration obtained by multiplying ' ...
+    'the feasible general-F TDmean variance by an empirical radial coefficient.']);
+
+qrad = d2cc(:);
+qrad = qrad(isfinite(qrad) & qrad >= 0);
+if isempty(qrad)
+    ellipticalTL.reason = 'No finite complete-case radial distances are available.';
+else
+    meanQ = mean(qrad);
+    if ~isfinite(meanQ) || meanQ <= 0
+        ellipticalTL.reason = 'The mean complete-case radial distance is not positive.';
+    else
+        kappaF = mean(qrad./(qrad+eps0))/meanQ;
+        ellipticalTL.radialMeanQ = meanQ;
+        ellipticalTL.kappa = kappaF;
+        ellipticalTL.lambda = kappaF;
+        ellipticalTL.coefficient = kappaF;
+        if ~isfinite(kappaF) || kappaF <= 0
+            ellipticalTL.reason = 'The empirical elliptical radial coefficient is not finite and positive.';
+        elseif ~generalF.available
+            ellipticalTL.reason = generalF.reason;
+        else
+            ellipticalTL.available = true;
+            ellipticalTL.reason = '';
+            ellipticalTL.sigma2 = kappaF^2*generalF.sigma2;
+            ellipticalTL.se = sqrt(ellipticalTL.sigma2/n);
+            ellipticalTL.z = Tobs(2)/ellipticalTL.se;
+            ellipticalTL.pvalue = erfc(abs(ellipticalTL.z)/sqrt(2));
+        end
+    end
+end
+
+% ---------------------------------------------------------------------
 % Gaussian-information specialization retained as diagnostic.
 % ---------------------------------------------------------------------
 gaussian = struct;
@@ -3387,18 +3542,20 @@ asympt.patternsMissing = patt;
 asympt.patternCounts = patternCounts;
 asympt.patternProportions = patternProportions;
 asympt.generalF = generalF;
+asympt.ellipticalTL = ellipticalTL;
 asympt.gaussian = gaussian;
 asympt.VA = gaussian.VA; % backward-compatible Gaussian diagnostic field
 
 if preferGeneralF
     % Ordinary untrimmed MDP-U: general-F is primary for TDmean.
     asympt.mode = 'feasible general-F sandwich';
-    asympt.primaryCalibration = 'generalF';
-    asympt.radialModel = 'general-F';
+    asympt.primaryCalibration = 'generalF+ellipticalRadial';
+    asympt.radialModel = 'general-F with elliptical TLmean radial scaling';
     asympt.theoryStatus = ['TDmean uses the feasible general-F sandwich under ' ...
-        'MCAR and finite fourth moments. TLmean remains a Gaussian-information ' ...
-        'diagnostic because no general-F scalar law is supplied outside ' ...
-        'symmetry/ellipticity.'];
+        'MCAR and finite fourth moments. Under ellipticity, TLmean uses the ' ...
+        'same estimator-discrepancy variance multiplied by an empirical ' ...
+        'complete-case radial coefficient. Gaussian-information results are ' ...
+        'reported separately as a benchmark.'];
     asympt.aggregation = 'ordinary';
     asympt.filterCutoff = NaN;
     asympt.kc = 1;
@@ -3421,23 +3578,12 @@ if preferGeneralF
             'coefficient',1,'sigma2',NaN,'se',NaN,'z',NaN,'pvalue',NaN);
     end
 
-    % Backward-compatible top-level TLmean field, explicitly labelled as a
-    % Gaussian diagnostic rather than a general-F result.
-    if gaussian.available
-        asympt.TLmean = gaussian.TLmean;
-        asympt.TLmean.calibration = 'gaussianInfoDiagnostic';
-        asympt.TLmean.reason = ['No general-F TLmean calibration is supplied ' ...
-            'outside symmetry/ellipticity.'];
-        asympt.baseKappa = gaussian.kappa;
-        asympt.lambda = gaussian.kappa;
-    else
-        asympt.TLmean = struct('available',false, ...
-            'calibration','gaussianInfoDiagnostic','reason',gaussian.reason, ...
-            'kappa',NaN,'lambda',NaN,'coefficient',NaN,'sigma2',NaN, ...
-            'se',NaN,'z',NaN,'pvalue',NaN);
-        asympt.baseKappa = NaN;
-        asympt.lambda = NaN;
-    end
+    % Under ellipticity, TLmean is a scalar multiple of TDmean to first
+    % order. Use the empirical radial coefficient with the general-F
+    % estimator-discrepancy variance; keep the Gaussian calculation separate.
+    asympt.TLmean = ellipticalTL;
+    asympt.baseKappa = ellipticalTL.kappa;
+    asympt.lambda = ellipticalTL.kappa;
 else
     % A general-F fixed-gate theorem is not currently available. Preserve
     % the previous Gaussian benchmark as the primary analytical reference;
@@ -3461,6 +3607,45 @@ else
         asympt.available = false;
         asympt.reason = gaussian.reason;
         asympt.degenerate = false;
+    end
+end
+end
+
+% -------------------------------------------------------------------------
+function Calibration = local_calibration_labels(alpha,aggregation, ...
+    consistencyfactor,coupledtrim)
+%local_calibration_labels Labels used in the human-readable results table.
+
+Calibration = {'not available';'not available';'not available';'not available'};
+
+if alpha == 0
+    if strcmp(aggregation,'ordinary')
+        Calibration{2} = 'elliptical radial sandwich';
+        Calibration{4} = 'general-F sandwich';
+    elseif strcmp(aggregation,'fixed')
+        Calibration{2} = 'Gaussian fixed-gate benchmark';
+        Calibration{4} = 'Gaussian fixed-gate benchmark';
+    end
+else
+    if strcmp(consistencyfactor,'adaptive')
+        if strcmp(aggregation,'fixed')
+            Calibration{2} = 'adaptive elliptical fixed-gate';
+            Calibration{4} = 'adaptive elliptical fixed-gate';
+        else
+            Calibration{2} = 'adaptive elliptical sandwich';
+            Calibration{4} = 'adaptive elliptical sandwich';
+        end
+    elseif strcmp(consistencyfactor,'pattern')
+        if coupledtrim
+            Calibration{2} = 'Gaussian TEM sandwich (frozen eligibility)';
+            Calibration{4} = 'Gaussian TEM sandwich (frozen eligibility)';
+        elseif strcmp(aggregation,'fixed')
+            Calibration{2} = 'Gaussian fixed-gate sandwich';
+            Calibration{4} = 'Gaussian fixed-gate sandwich';
+        else
+            Calibration{2} = 'Gaussian pattern sandwich';
+            Calibration{4} = 'Gaussian pattern sandwich';
+        end
     end
 end
 end

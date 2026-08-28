@@ -18,11 +18,11 @@ X = cows2026{:,:};
 out = mdMDPtest(X);
 % Display the two statistics TLmean and TDmean 
 % together with their asymptotic p-values.
-disp(out.results(["TLmean" "TDmean"],{'Tobs','pvalueAsym'}))</pre></div></div><pre class="codeoutput">                     Tobs                pvalueAsym     
-              __________________    ____________________
+disp(out.results(["TLmean" "TDmean"],{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))</pre></div></div><pre class="codeoutput">                Tobs       SEasym      zAsym     pvalueAsym             Calibration          
+              ________    ________    _______    __________    ______________________________
 
-    TLmean    -0.166564767191158    4.82046400041503e-19
-    TDmean     -1.14226633866349     7.3519165507604e-10
+    TLmean    -0.16656    0.026601    -6.2617    3.8089e-10    {'elliptical radial sandwich'}
+    TDmean     -1.1423     0.18548    -6.1583    7.3519e-10    {'general-F sandwich'        }
 
 </pre>
             </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2: Recommended robust MDP-I analysis.</li></span></a></span></h3><div class="collapse"><p>
@@ -35,13 +35,13 @@ disp(out.results(["TLmean" "TDmean"],{'Tobs','pvalueAsym'}))</pre></div></div><
 X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0.25);
 % Display the observed statistics and asymptotic p-values with row names.
-disp(out.results(:,{'Tobs','pvalueAsym'}))</pre></div></div><pre class="codeoutput">                       Tobs               pvalueAsym    
-                ___________________    _________________
+disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))</pre></div></div><pre class="codeoutput">                  Tobs        SEasym      zAsym      pvalueAsym              Calibration           
+                _________    ________    ________    __________    ________________________________
 
-    TLmedian    -0.0527381338456853                  NaN
-    TLmean      -0.0630626316142657    0.287672539571231
-    TDmedian     -0.324038597094619                  NaN
-    TDmean       -0.399904822682785    0.333568013929086
+    TLmedian    -0.052738         NaN         NaN         NaN      {'not available'               }
+    TLmean      -0.063063    0.059312     -1.0632     0.28767      {'adaptive elliptical sandwich'}
+    TDmedian     -0.32404         NaN         NaN         NaN      {'not available'               }
+    TDmean        -0.3999     0.41357    -0.96695     0.33357      {'adaptive elliptical sandwich'}
 
 </pre>
             </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3: Simulated data under MCAR.</li></span></a></span></h3><div class="collapse"><p>
@@ -59,13 +59,13 @@ Y(missMask) = NaN;
 % Show also the output plot and request bootstrap calibration.
 out = mdMDPtest(Y,'bootstrap',true,'nsimul',199,'plots',true);
 % The table identifies each statistic and reports both calibrations.
-disp(out.results)</pre></div></div><pre class="codeoutput">                       Tobs               pvalueAsym        pvalueBoot
-                ___________________    _________________    __________
+disp(out.results)</pre></div></div><pre class="codeoutput">                  Tobs        SEasym      zAsym     pvalueAsym    pvalueBoot             Calibration          
+                _________    ________    _______    __________    __________    ______________________________
 
-    TLmedian     0.0134900119618025                  NaN       0.54   
-    TLmean      0.00891946599165579    0.716603986358525       0.71   
-    TDmedian     0.0378705049751997                  NaN      0.655   
-    TDmean       0.0593970646417507    0.659046224366133      0.615   
+    TLmedian      0.01349         NaN        NaN         NaN         0.54       {'not available'             }
+    TLmean      0.0089195    0.027064    0.32957     0.74172         0.71       {'elliptical radial sandwich'}
+    TDmedian     0.037871         NaN        NaN         NaN        0.655       {'not available'             }
+    TDmean       0.059397     0.13462    0.44123     0.65905        0.615       {'general-F sandwich'        }
 
 </pre>
             <a href='http://rosa.unipr.it/fsda/mdMDPtest.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\mdMDPtest_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 4: Comparison of several trimming levels.</li></span></a></span></h3><div class="collapse"><p>
@@ -98,19 +98,19 @@ disp(pvalTable)</pre></div></div><pre class="codeoutput">    alpha    pBoot_TLm
      0.5         0.395             0.46             0.39            0.515    
 
 </pre>
-            <a href='http://rosa.unipr.it/fsda/mdMDPtest.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\mdMDPtest_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\mdMDPtest_03.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 5: Different rescaling method.</li></span></a></span></h3><div class="collapse"><p>
+            </p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 5: Different rescaling method.</li></span></a></span></h3><div class="collapse"><p>
      Use method betaMap instead of the default pri.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0.25,'method','betaMap', ...
 'bootstrap',true,'nsimul',199);
 % Display statistics, asymptotic p-values and bootstrap p-values together.
-disp(out.results)</pre></div></div><pre class="codeoutput">                       Tobs               pvalueAsym        pvalueBoot
-                ___________________    _________________    __________
+disp(out.results)</pre></div></div><pre class="codeoutput">                  Tobs        SEasym      zAsym     pvalueAsym    pvalueBoot              Calibration           
+                _________    ________    _______    __________    __________    ________________________________
 
-    TLmedian    -0.0957172462970357                  NaN      0.185   
-    TLmean       -0.103397108893602    0.115060767753316      0.165   
-    TDmedian     -0.580159715532273                  NaN      0.155   
-    TDmean       -0.647413937540997    0.157049237984526      0.325   
+    TLmedian    -0.095717         NaN        NaN         NaN        0.185       {'not available'               }
+    TLmean        -0.1034    0.065614    -1.5758     0.11506        0.165       {'adaptive elliptical sandwich'}
+    TDmedian     -0.58016         NaN        NaN         NaN        0.155       {'not available'               }
+    TDmean       -0.64741     0.45752    -1.4151     0.15705        0.325       {'adaptive elliptical sandwich'}
 
 </pre>
             </p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 6: MM estimator for the complete cases.</li></span></a></span></h3><div class="collapse"><p>
@@ -123,7 +123,7 @@ r.class = 'MM';
 r.eff = 0.95;
 out = mdMDPtest(X,'alpha',0.25,'robust',r);
 % Display the four named statistics and their asymptotic p-values.
-disp(out.results(:,{'Tobs','pvalueAsym'}))</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 7: Standard FSM envelope-resuperimposition rule.</li></span></a></span></h3><div class="collapse"><p>
+disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 7: Standard FSM envelope-resuperimposition rule.</li></span></a></span></h3><div class="collapse"><p>
      Use the standard FSM signal-detection and validation procedure rather
      than the direct Bonferroni-bound stopping rule.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
@@ -132,21 +132,21 @@ r.class = 'FS';
 r.bonflev = [];
 out = mdMDPtest(X,'alpha',0.25,'robust',r);
 fprintf('Forward Search rule used: %s\n',out.FSrule)
-disp(out.results(:,{'Tobs','pvalueAsym'}))</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 8: Explicit estimator-defined inlier mean (MDP-I).</li></span></a></span></h3><div class="collapse"><p>
+disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 8: Explicit estimator-defined inlier mean (MDP-I).</li></span></a></span></h3><div class="collapse"><p>
      The medians use all complete cases. The two means use only complete
      cases not declared as outliers by the MCD complete-case fit.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
 'aggregation','inlier');
 fprintf('Complete cases entering the mean statistics: %d\n',out.nMeanCC)
-disp(out.results(:,{'Tobs','pvalueAsym'}))</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 9: Fixed robust-distance sensitivity diagnostic (MDP-F).</li></span></a></span></h3><div class="collapse"><p>
+disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 9: Fixed robust-distance sensitivity diagnostic (MDP-F).</li></span></a></span></h3><div class="collapse"><p>
      Use the chi-square 0.99 cutoff on the complete-case robust distances.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
 'aggregation','fixed','filterlev',0.99);
 fprintf('Fixed robust-distance cutoff: %g\n',out.filterCutoff)
 fprintf('Complete cases entering the mean statistics: %d\n',out.nMeanCC)
-disp(out.results(:,{'Tobs','pvalueAsym'}))
+disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
 % Display the MDP-F first-order coefficients with explicit names.
 coefTable = table(out.asympt.kc,out.asympt.lambda, ...
 'VariableNames',{'kc_TDmean','lambda_TLmean'});
@@ -177,7 +177,7 @@ X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
 'consistencyfactor','adaptive');
 disp(out.TEMkinfo)
-disp(out.results(:,{'Tobs','pvalueAsym'}))
+disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
 disp(out.asympt.TDmean)
 disp(out.asympt.TEM.patternDiagnostics)</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 12: General-F analytical calibration for untrimmed MDP-U.</li></span></a></span></h3><div class="collapse"><p>
      For alpha=0 and ordinary aggregation, TDmean uses the feasible
@@ -185,59 +185,32 @@ disp(out.asympt.TEM.patternDiagnostics)</pre></div></div></p></div></div><d
      Gaussian-information specialization is retained as a diagnostic.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0,'aggregation','ordinary');
-% First display the named test statistics and their analytical p-values.
-disp(out.results(:,{'Tobs','pvalueAsym'}))
-% Then inspect the detailed analytical diagnostics for TDmean.
-disp(out.asympt.TDmean)
-disp(out.asympt.generalF)
-disp(out.asympt.gaussian.TDmean)</pre></div></div><pre class="codeoutput">                       Tobs                pvalueAsym     
-                __________________    ____________________
+% Display the primary analytical results. TLmean uses the elliptical
+% radial extension of the general-F sandwich; TDmean uses general-F.
+disp(out.results)
+% Display separately the Gaussian-information benchmark.
+disp(out.resultsGaussian)</pre></div></div><pre class="codeoutput">                  Tobs       SEasym      zAsym     pvalueAsym    pvalueBoot             Calibration          
+                ________    ________    _______    __________    __________    ______________________________
 
-    TLmedian    -0.126744425690798                     NaN
-    TLmean      -0.166564767191158    4.82046400041503e-19
-    TDmedian     -0.79320634284274                     NaN
-    TDmean       -1.14226633866349     7.3519165507604e-10
+    TLmedian    -0.12674         NaN        NaN           NaN       NaN        {'not available'             }
+    TLmean      -0.16656    0.026601    -6.2617    3.8089e-10       NaN        {'elliptical radial sandwich'}
+    TDmedian    -0.79321         NaN        NaN           NaN       NaN        {'not available'             }
+    TDmean       -1.1423     0.18548    -6.1583    7.3519e-10       NaN        {'general-F sandwich'        }
 
-      available: 1
-    calibration: 'generalF'
-    coefficient: 1
-         sigma2: 17.4084581954554
-             se: 0.185483335046444
-              z: -6.15832327134655
-         pvalue: 7.3519165507604e-10
+                Tobs         SE          z         pvalue  
+              ________    ________    _______    __________
 
-                   available: 1
-                      reason: ''
-                      sigma2: 17.4084581954554
-                          se: 0.185483335046444
-                           z: -6.15832327134655
-                      pvalue: 7.3519165507604e-10
-                  OmegaDelta: [28&times;28 double]
-                      aSigma: [28&times;1 double]
-                          JA: [28&times;28 double]
-                     rcondJA: 0.0052491782167959
-               scoreMeanNorm: 14.7817536255784
-               deltaMeanNorm: 0.000442757889125687
-    varianceIdentityResidual: 0
-                  degenerate: 0
-        appliesToAggregation: 'ordinary'
-              TDmeanObserved: -1.14226633866349
-                theoryStatus: 'Feasible first-order general-F sandwich for untrimmed ordinary-mean MDP-U under MCAR and finite fourth moments.'
-
-      available: 1
-    calibration: 'gaussianInfo'
-    coefficient: 1
-         sigma2: 8.65250277570845
-             se: 0.130766233627536
-              z: -8.73517808822899
-         pvalue: 2.43272552331066e-18
+    TLmean    -0.16656    0.018681    -8.9163    4.8205e-19
+    TDmean     -1.1423     0.13077    -8.7352    2.4327e-18
 
 </pre>
             </p></div></div><div id="Extraexample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 13: Display a commented summary and the results table.</li></span></a></span></h3><div class="collapse"><p>
      With dispresults=true, the procedure, fitting options, sample sizes,
      and the named results table are displayed automatically.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
-out = mdMDPtest(X,'dispresults',true,'bootstrap',true);</pre></div></div><pre class="codeoutput">*****************************************************************
+out = mdMDPtest(X,'dispresults',true,'bootstrap',true);
+% out.results contains the primary calibration and out.resultsGaussian
+% contains the distinct Gaussian benchmark when alpha=0 and MDP-U is used.</pre></div></div><pre class="codeoutput">*****************************************************************
 Mahalanobis Distance Perturbation test for MCAR
 Procedure                    : MDP-U
 Mean aggregation             : ordinary
@@ -247,19 +220,30 @@ Complete cases used in means : 258
 Complete-case fit             : classical
 All-data fit                  : EM
 Distance rescaling method     : pri
-Asymptotic reference         : feasible general-F sandwich
-Bootstrap replications kept  : 499
+Primary analytical reference  : statistic-specific; see Calibration column
+Bootstrap replications kept   : 499
  
-                       Tobs                pvalueAsym         pvalueBoot
-                __________________    ____________________    __________
+Primary analytical results
+ 
+                  Tobs       SEasym      zAsym     pvalueAsym    pvalueBoot             Calibration          
+                ________    ________    _______    __________    __________    ______________________________
 
-    TLmedian    -0.126744425690798                     NaN      0.002   
-    TLmean      -0.166564767191158    4.82046400041503e-19      0.002   
-    TDmedian     -0.79320634284274                     NaN      0.002   
-    TDmean       -1.14226633866349     7.3519165507604e-10      0.002   
+    TLmedian    -0.12674         NaN        NaN           NaN      0.002       {'not available'             }
+    TLmean      -0.16656    0.026601    -6.2617    3.8089e-10      0.002       {'elliptical radial sandwich'}
+    TDmedian    -0.79321         NaN        NaN           NaN      0.002       {'not available'             }
+    TDmean       -1.1423     0.18548    -6.1583    7.3519e-10      0.002       {'general-F sandwich'        }
 
-Asymptotic p-values are not available for the median statistics.
-Small p-values indicate evidence against MCAR.
+Asymptotic inference is not available for the median statistics.
+ 
+Gaussian-information benchmark (normality assumed)
+ 
+                Tobs         SE          z         pvalue  
+              ________    ________    _______    __________
+
+    TLmean    -0.16656    0.018681    -8.9163    4.8205e-19
+    TDmean     -1.1423     0.13077    -8.7352    2.4327e-18
+
+Small p-values indicate evidence against MCAR for the corresponding calibration.
 *****************************************************************
 </pre>
             </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x p data matrix possibly containing NaNs.</p> <p></p> <p>
@@ -445,21 +429,39 @@ Small p-values indicate evidence against MCAR.
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display commented test results.</span></a><span class="example_desc">logical scalar.</span></span></h3><div class="collapse">	<p><p>The default value is false. If true, mdMDPtest displays
             the MDP procedure actually used, the principal fitting
             options, the number of complete cases, the number entering
-            the mean statistics, and the table out.results. Small
-            p-values indicate evidence against MCAR. No automatic
-            reject/not-reject decision is printed.</p> <p></p><p>
+            the mean statistics, and the table out.results. For classical
+            ordinary MDP-U, the separate Gaussian-information benchmark is
+            also displayed when available. If an analytical calibration
+            fails, its reason and relevant numerical-conditioning diagnostics
+            are printed rather than leaving unexplained NaNs. Small p-values
+            indicate evidence against MCAR. No automatic reject/not-reject
+            decision is printed.</p> <p></p><p>
             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>Structure containing the following fields:</p> <p>
 
-  </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pvalueAsym</code></td><td><p>1 x 4 vector containing asymptotic p-values in
-                            the same order as out.Tobs. The analytical theory
-                            currently concerns the two mean statistics, hence
-                            entries 1 and 3 (the medians) are NaN.</p></td></tr><tr valign="top"><td><code>Tobs</code></td><td><p>1 x 4 vector containing the observed values of
-                            the four statistics.</p></td></tr><tr valign="top"><td><code>results</code></td><td><p>4 x 3 table with row names TLmedian, TLmean,
+  </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pvalueAsym</code></td><td><p>1 x 4 vector containing the primary asymptotic
+                            p-values in the same order as out.Tobs. The
+                            analytical theory currently concerns the two mean
+                            statistics, hence entries 1 and 3 (the medians)
+                            are NaN. For classical ordinary MDP-U, entry 2
+                            is the elliptical radial calibration of TLmean and
+                            entry 4 is the feasible general-F calibration of
+                            TDmean; Gaussian-information p-values are reported
+                            separately in out.resultsGaussian.</p></td></tr><tr valign="top"><td><code>Tobs</code></td><td><p>1 x 4 vector containing the observed values of
+                            the four statistics.</p></td></tr><tr valign="top"><td><code>results</code></td><td><p><p>4 x 6 table with row names TLmedian, TLmean,
                             TDmedian and TDmean. The columns are Tobs,
-                            pvalueAsym and pvalueBoot. The pvalueBoot
-                            column is present also when bootstrap=false,
-                            in which case it contains NaNs.</p></td></tr><tr valign="top"><td><code>bootstrap</code></td><td><p>Value of input option bootstrap.</p></td></tr><tr valign="top"><td><code>dispresults</code></td><td><p>Value of input option dispresults.</p></td></tr><tr valign="top"><td><code>pvalueBoot</code></td><td><p>1 x 4 vector containing bootstrap p-values for
+                            SEasym, zAsym, pvalueAsym, pvalueBoot and
+                            Calibration. The two median rows have NaN
+                            asymptotic standard errors, z values and
+                            p-values because analytical inference is
+                            currently available only for the mean summaries.</p> <p></p><p>
+                            The pvalueBoot column is present also when
+                            bootstrap=false, in which case it contains NaNs.</p></p></td></tr><tr valign="top"><td><code>resultsGaussian</code></td><td><p>2 x 4 table containing Tobs, SE, z and
+                            pvalue for TLmean and TDmean under the Gaussian-
+                            information benchmark. It is returned for the
+                            classical ordinary MDP-U configuration
+                            (alpha=0, aggregation='ordinary') and is empty
+                            otherwise.</p></td></tr><tr valign="top"><td><code>bootstrap</code></td><td><p>Value of input option bootstrap.</p></td></tr><tr valign="top"><td><code>dispresults</code></td><td><p>Value of input option dispresults.</p></td></tr><tr valign="top"><td><code>pvalueBoot</code></td><td><p>1 x 4 vector containing bootstrap p-values for
                             the four statistics. This field is present only
                             when bootstrap=true.</p></td></tr><tr valign="top"><td><code>Tboot</code></td><td><p>nsimul x 4 matrix containing the bootstrap values
                             of the four statistics. This field is present only
@@ -508,11 +510,15 @@ Small p-values indicate evidence against MCAR.
                             and ellipticity are not required for this TDmean
                             calibration. The former Gaussian-information law
                             is retained in out.asympt.gaussian as a diagnostic
-                            specialization. Since a general-F scalar law for
-                            TLmean is not available outside symmetry/
-                            ellipticity, out.asympt.TLmean remains the
-                            Gaussian-information diagnostic in this branch
-                            and is explicitly labelled as such.</p> <p></p> <p>
+                            specialization. Under ellipticity, TLmean is
+                            calibrated by multiplying the same general-F
+                            estimator-discrepancy variance used for TDmean
+                            by an empirical radial coefficient estimated from
+                            the complete-case Mahalanobis distances. Thus the
+                            primary TLmean calibration is elliptical but does
+                            not assume Gaussianity. The distinct Gaussian-
+                            information results are retained in
+                            out.asympt.gaussian and out.resultsGaussian.</p> <p></p> <p>
                             For alpha=0 and aggregation='fixed', the current
                             analytical benchmark remains Gaussian because a
                             general-F fixed-gate law has not been derived;</p> <p></p> <p>
@@ -628,9 +634,12 @@ Small p-values indicate evidence against MCAR.
   complete-case/all-available scatter-discrepancy influence covariance from
   the observed data and is valid under MCAR with finite fourth moments. The
   Gaussian-information specialization is retained in out.asympt.gaussian.</p> <p></p> <p>
-  A general-F calibration for TLmean is not currently supplied outside
-  symmetry/ellipticity, so its alpha=0 analytical value is explicitly a
-  Gaussian diagnostic. For alpha=0 and aggregation='fixed', the existing
+  Under ellipticity, TLmean is a scalar multiple of TDmean to first order.</p> <p></p> <p>
+  Its primary alpha=0 calibration therefore uses the same general-F
+  estimator-discrepancy variance multiplied by an empirical radial
+  coefficient estimated from the complete-case Mahalanobis distances.</p> <p></p> <p>
+  This elliptical TLmean calibration is distinct from the separate Gaussian-
+  information benchmark. For alpha=0 and aggregation='fixed', the existing
   Gaussian Tallis benchmark is retained because a general-F fixed-gate law
   has not yet been derived.</p> <p></p> <p>
 
