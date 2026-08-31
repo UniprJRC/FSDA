@@ -141,21 +141,29 @@ function out = mdMDPtest(Y, varargin)
 %            'empiricalradial' is a null-enforcing semiparametric elliptical
 %            generator. Complete-case squared Mahalanobis radii are computed
 %            in the fitted complete-case geometry and resampled with
-%            replacement. Independent directions uniform on the unit sphere
-%            are then generated, full p-dimensional observations are
-%            reconstructed using the fitted complete-case location and scatter,
-%            and finally the observed missingness mask is imposed. Thus the
-%            empirical radial law is retained without specifying a Gaussian
-%            or Student t radial family. This generator is naturally paired
+%            replacement. The empirical radial law uses all complete cases,
+%            including observations with large robust Mahalanobis distances;
+%            no preliminary trimming of the radii is performed. Independent
+%            directions uniform on the unit sphere are then generated, full
+%            p-dimensional observations are reconstructed using the fitted
+%            complete-case location and scatter, and finally the observed
+%            missingness mask is imposed. Thus the observed radial tail is
+%            preserved, whereas robust outlier detection and trimming are
+%            reconstructed independently inside every bootstrap sample. The
+%            generator does not specify a Gaussian or Student t radial family.
+%            This generator is naturally paired
 %            with consistencyfactor='adaptive' under an elliptical common-
 %            target interpretation; it is not a general nonparametric
 %            bootstrap for arbitrary skew or nonelliptical distributions.
 %            Example - 'bootstraptype','empiricalradial'
 %            Data Types - char | string
 %
-%   nsimul : Number of bootstrap simulations. Scalar integer.
+%   nsimul : Number of successful bootstrap simulations. Scalar integer.
 %            The default value is 499. This option is used only when
-%            bootstrap=true.
+%            bootstrap=true. If an individual bootstrap draw fails only
+%            because mdTEM reports too few adaptive reference points, that
+%            draw is discarded and regenerated. Other errors are rethrown.
+%            Draws yielding nonfinite test statistics are also regenerated.
 %            Example - 'nsimul',999
 %            Data Types - double
 %
@@ -364,8 +372,20 @@ function out = mdMDPtest(Y, varargin)
 %          out.nMeanCC     = Number of complete cases entering the two mean
 %                            statistics.
 %          out.nMeanBoot   = Number of complete cases entering the two mean
-%                            statistics in each retained bootstrap sample. This
+%                            statistics in each successful bootstrap sample.
+%                            This field is present only when bootstrap=true.
+%          out.nBootstrapAttempts = Total number of bootstrap draws attempted
+%                            to obtain the requested nsimul successful draws.
+%                            This field is present only when bootstrap=true.
+%          out.nFailedBootstrapFits = Number of attempted bootstrap draws
+%                            discarded because mdTEM returned the specific
+%                            error FSDA:mdTEM:FewAdaptiveReferencePoints.
+%                            Other fitting errors are not suppressed. This
 %                            field is present only when bootstrap=true.
+%          out.nInvalidBootstrapStats = Number of attempted bootstrap draws
+%                            discarded because at least one of the four test
+%                            statistics was nonfinite. This field is present
+%                            only when bootstrap=true.
 %          out.nComplete   = Number of complete rows.
 %          out.completeIdx = Logical index of complete rows.
 %          out.locCC       = Complete-case estimate of location.
@@ -529,10 +549,12 @@ function out = mdMDPtest(Y, varargin)
 %  complete-case scatter functional under an elliptical MCAR model. The
 %  optional mask-preserving full-pipeline bootstrap can use either the fitted
 %  Gaussian null generator or the null-enforcing empirical-radial elliptical
-%  generator selected by bootstraptype. The latter resamples complete-case
-%  radii and generates fresh independent spherical directions. In both cases
-%  the robust complete-case fit, adaptive radial correction and final
-%  aggregation rule are reconstructed in every bootstrap sample.
+%  generator selected by bootstraptype. The latter resamples the radii of
+%  all complete cases, including large robust distances, and generates fresh
+%  independent spherical directions. Hence it preserves radial extremeness
+%  while enforcing the elliptical angular law. In both cases the robust
+%  complete-case fit, adaptive radial correction and final aggregation rule
+%  are reconstructed in every bootstrap sample.
 %
 %  Small asymptotic or bootstrap p-values indicate that the change in distances
 %  is larger than expected under MCAR for the corresponding calibration.
@@ -1193,6 +1215,16 @@ if bootstrap
     nMeanBoot = NaN(nsimul,1);
     nCoupledBoot = NaN(nsimul,1);
 
+    % nsimul denotes the number of successful bootstrap replicates. A draw
+    % that fails only because mdTEM cannot estimate an adaptive factor from
+    % enough reference radii is discarded and regenerated. Other errors are
+    % deliberately rethrown. Nonfinite statistic draws are also regenerated.
+    % The safety margin prevents an infinite loop in pathological cases.
+    nBootstrapAttempts = 0;
+    nFailedBootstrapFits = 0;
+    nInvalidBootstrapStats = 0;
+    maxBootstrapAttempts = nsimul + max(100,ceil(0.10*nsimul));
+
     % Fitted complete-case geometry used by both null generators. Rgen is
     % upper triangular and satisfies Rgen'*Rgen=SigGen. Since observations
     % are stored as row vectors, multiplying a spherical row vector by Rgen
@@ -1218,69 +1250,93 @@ if bootstrap
         nQBoot = numel(QrefBoot);
     end
 
-    for j = 1:nsimul
+    j = 0;
+    while j < nsimul
+        if nBootstrapAttempts >= maxBootstrapAttempts
+            error('FSDA:mdMDPtest:TooManyBootstrapRetries', ...
+                ['Unable to obtain %d valid bootstrap replicates within %d ' ...
+                'attempts. Adaptive-TEM scarcity failures: %d; draws with ' ...
+                'nonfinite statistics: %d.'], ...
+                nsimul,maxBootstrapAttempts,nFailedBootstrapFits, ...
+                nInvalidBootstrapStats);
+        end
+        nBootstrapAttempts = nBootstrapAttempts + 1;
 
-        % Generate latent full data under the selected MCAR null generator.
-        switch bootstraptype
-            case 'gaussian'
-                YfullStar = randn(n,p) * Rgen + muCC(:)';
+        try
+            % Generate latent full data under the selected MCAR null generator.
+            switch bootstraptype
+                case 'gaussian'
+                    YfullStar = randn(n,p) * Rgen + muCC(:)';
 
-            case 'empiricalradial'
-                indQ = randi(nQBoot,n,1);
-                qStar = QrefBoot(indQ);
-                Udir = local_random_spherical_directions(n,p);
-                Xsphere = Udir.*sqrt(qStar);
-                YfullStar = Xsphere * Rgen + muCC(:)';
+                case 'empiricalradial'
+                    indQ = randi(nQBoot,n,1);
+                    qStar = QrefBoot(indQ);
+                    Udir = local_random_spherical_directions(n,p);
+                    Xsphere = Udir.*sqrt(qStar);
+                    YfullStar = Xsphere * Rgen + muCC(:)';
+            end
+
+            % Impose exactly the observed missingness pattern.
+            Ystar = YfullStar;
+            Ystar(maskMiss) = NaN;
+
+            % Complete-case reference distances in bootstrap world.
+            YccStar = YfullStar(completeIdx,:);
+
+            [muCCStar,SigCCStar,outRobStar] = local_complete_case_fit(YccStar,alpha, ...
+                robustClass,robustEff,robustBonflev);
+
+            d2_cc_star = mahalFS(YccStar, muCCStar, SigCCStar);
+
+            % Reconstruct the coupled complete-case eligibility mask independently
+            % in every bootstrap sample.
+            forcedZeroStar = false(n,1);
+            if coupledtrim
+                ccOutlierMaskStar = local_cc_outlier_mask(outRobStar,nComplete);
+                completeRows = find(completeIdx);
+                forcedZeroStar(completeRows(ccOutlierMaskStar)) = true;
+            end
+            nCoupledStar = sum(forcedZeroStar);
+
+            % EM/TEM distances for the same complete rows.
+            d2_all_cc_star = local_fit_and_get_complete_distances( ...
+                Ystar, completeIdx, alpha, method, tol, forcedZeroStar, ...
+                consistencyfactor, YccStar, muCCStar, SigCCStar, ...
+                adaptivepool, adaptiveminref);
+
+            % Reconstruct the selected aggregation rule inside this bootstrap sample.
+            [meanWeightsStar,aggInfoStar] = local_aggregation_weights( ...
+                d2_cc_star,outRobStar,alpha,aggregation,filterlev,p);
+            nMeanStar = aggInfoStar.nSelected;
+
+            % Compute the four statistics. A draw with any nonfinite statistic
+            % is discarded below and regenerated, so successful output always
+            % contains exactly nsimul valid rows.
+            Tstar = local_statistic(d2_cc_star,d2_all_cc_star,eps0, ...
+                meanWeightsStar);
+
+        catch ME
+            % This is the one expected numerical scarcity failure identified
+            % in the adaptive-TEM validation study. It concerns an individual
+            % bootstrap draw, not the observed-data fit. Regenerate the draw.
+            if strcmp(ME.identifier,'FSDA:mdTEM:FewAdaptiveReferencePoints')
+                nFailedBootstrapFits = nFailedBootstrapFits + 1;
+                continue
+            end
+            rethrow(ME)
         end
 
-        % Impose exactly the observed missingness pattern.
-        Ystar = YfullStar;
-        Ystar(maskMiss) = NaN;
-
-        % Complete-case reference distances in bootstrap world.
-        YccStar = YfullStar(completeIdx,:);
-
-        [muCCStar,SigCCStar,outRobStar] = local_complete_case_fit(YccStar,alpha, ...
-            robustClass,robustEff,robustBonflev);
-
-        d2_cc_star = mahalFS(YccStar, muCCStar, SigCCStar);
-
-        % Reconstruct the coupled complete-case eligibility mask independently
-        % in every bootstrap sample.
-        forcedZeroStar = false(n,1);
-        if coupledtrim
-            ccOutlierMaskStar = local_cc_outlier_mask(outRobStar,nComplete);
-            completeRows = find(completeIdx);
-            forcedZeroStar(completeRows(ccOutlierMaskStar)) = true;
+        if any(~isfinite(Tstar))
+            nInvalidBootstrapStats = nInvalidBootstrapStats + 1;
+            continue
         end
-        nCoupledBoot(j) = sum(forcedZeroStar);
 
-        % EM/TEM distances for the same complete rows.
-        d2_all_cc_star = local_fit_and_get_complete_distances( ...
-            Ystar, completeIdx, alpha, method, tol, forcedZeroStar, ...
-            consistencyfactor, YccStar, muCCStar, SigCCStar, ...
-            adaptivepool, adaptiveminref);
-
-        % Reconstruct the selected aggregation rule inside this bootstrap sample.
-        [meanWeightsStar,aggInfoStar] = local_aggregation_weights( ...
-            d2_cc_star,outRobStar,alpha,aggregation,filterlev,p);
-        nMeanBoot(j) = aggInfoStar.nSelected;
-
-        % Store the four statistics. If the selected mean rule retains no rows,
-        % the two mean statistics are NaN and this bootstrap sample is discarded.
-        Tboot(j,:) = local_statistic(d2_cc_star,d2_all_cc_star,eps0, ...
-            meanWeightsStar);
-    end
-
-    % Remove bootstrap samples containing NaNs.
-    validBoot = all(~isnan(Tboot),2);
-    Tboot = Tboot(validBoot,:);
-    nMeanBoot = nMeanBoot(validBoot);
-    nCoupledBoot = nCoupledBoot(validBoot);
-
-    if isempty(Tboot)
-        error('FSDA:mdMDPtest:NoValidBootstrap', ...
-            'All bootstrap replicates failed.');
+        % Retain only successful draws. The storage index is incremented only
+        % here, so Tboot, nMeanBoot and nCoupledBoot always have nsimul rows.
+        j = j + 1;
+        Tboot(j,:) = Tstar;
+        nMeanBoot(j) = nMeanStar;
+        nCoupledBoot(j) = nCoupledStar;
     end
 
     % Bootstrap p-values.
@@ -1397,6 +1453,9 @@ if bootstrap
     out.ciBoot = ciBoot;
     out.nMeanBoot = nMeanBoot;
     out.nCoupledBoot = nCoupledBoot;
+    out.nBootstrapAttempts = nBootstrapAttempts;
+    out.nFailedBootstrapFits = nFailedBootstrapFits;
+    out.nInvalidBootstrapStats = nInvalidBootstrapStats;
 end
 
 out.locCC = muCC;
@@ -1476,6 +1535,15 @@ if dispresults
         end
         fprintf('Bootstrap null generator      : %s\n',bootstrapLabel);
         fprintf('Bootstrap replications kept   : %d\n',size(Tboot,1));
+        fprintf('Bootstrap attempts            : %d\n',out.nBootstrapAttempts);
+        if out.nFailedBootstrapFits > 0
+            fprintf('Adaptive-TEM draws regenerated: %d\n', ...
+                out.nFailedBootstrapFits);
+        end
+        if out.nInvalidBootstrapStats > 0
+            fprintf('Nonfinite draws regenerated   : %d\n', ...
+                out.nInvalidBootstrapStats);
+        end
     else
         disp('Bootstrap calibration          : not requested')
     end
