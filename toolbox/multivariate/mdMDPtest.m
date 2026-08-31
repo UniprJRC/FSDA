@@ -13,10 +13,12 @@ function out = mdMDPtest(Y, varargin)
 %
 %  Mean-statistic inference is based on the analytical asymptotic reference
 %  whenever the corresponding analytical branch is defined. If bootstrap=true,
-%  an additional mask-preserving parametric bootstrap calibration is computed.
-%  Its null distribution is generated from a Gaussian model fitted on the
-%  complete rows and the observed missingness mask is imposed on each generated
-%  sample.
+%  an additional mask-preserving full-pipeline bootstrap calibration is
+%  computed. The null generator is selected through bootstraptype: the
+%  backward-compatible default is a Gaussian model fitted on the complete
+%  rows, while 'empiricalradial' uses a null-enforcing empirical-radial
+%  elliptical generator. In both cases the observed missingness mask is
+%  imposed on each generated sample and the complete MDP pipeline is rerun.
 %
 %
 %  Required input arguments:
@@ -115,14 +117,41 @@ function out = mdMDPtest(Y, varargin)
 %            Example - 'adaptiveminref',10
 %            Data Types - double
 %
-% bootstrap : Add mask-preserving parametric bootstrap calibration. Logical.
-%            The default is false. The analytical p-values for the two mean
-%            statistics are evaluated independently of this option whenever
-%            the corresponding analytical branch is defined. If bootstrap=true,
-%            bootstrap p-values for all four statistics and bootstrap confidence
-%            intervals are additionally computed.
+% bootstrap : Add mask-preserving full-pipeline bootstrap calibration.
+%            Logical scalar. The default is false. The analytical p-values
+%            for the two mean statistics are evaluated independently of this
+%            option whenever the corresponding analytical branch is defined.
+%            If bootstrap=true, bootstrap p-values for all four statistics
+%            and bootstrap confidence intervals are additionally computed.
+%            In every replicate the complete-case fit, the all-data EM/TEM
+%            fit, the adaptive radial correction when requested, and the
+%            selected mean aggregation rule are recomputed.
 %            Example - 'bootstrap',true
 %            Data Types - logical
+%
+% bootstraptype : Bootstrap null generator. Character vector or string scalar.
+%            Possible values are 'gaussian' and 'empiricalradial'. The
+%            default is 'gaussian' for backward compatibility. This option
+%            is used only when bootstrap=true.
+%
+%            'gaussian' generates full p-dimensional observations from the
+%            Gaussian model fitted to the complete cases and then imposes the
+%            observed missingness mask.
+%
+%            'empiricalradial' is a null-enforcing semiparametric elliptical
+%            generator. Complete-case squared Mahalanobis radii are computed
+%            in the fitted complete-case geometry and resampled with
+%            replacement. Independent directions uniform on the unit sphere
+%            are then generated, full p-dimensional observations are
+%            reconstructed using the fitted complete-case location and scatter,
+%            and finally the observed missingness mask is imposed. Thus the
+%            empirical radial law is retained without specifying a Gaussian
+%            or Student t radial family. This generator is naturally paired
+%            with consistencyfactor='adaptive' under an elliptical common-
+%            target interpretation; it is not a general nonparametric
+%            bootstrap for arbitrary skew or nonelliptical distributions.
+%            Example - 'bootstraptype','empiricalradial'
+%            Data Types - char | string
 %
 %   nsimul : Number of bootstrap simulations. Scalar integer.
 %            The default value is 499. This option is used only when
@@ -288,6 +317,8 @@ function out = mdMDPtest(Y, varargin)
 %                            (alpha=0, aggregation='ordinary') and is empty
 %                            otherwise.
 %          out.bootstrap   = Value of input option bootstrap.
+%          out.bootstraptype = Bootstrap null generator actually requested:
+%                            'gaussian' or 'empiricalradial'.
 %          out.dispresults = Value of input option dispresults.
 %          out.pvalueBoot  = 1 x 4 vector containing bootstrap p-values for
 %                            the four statistics. This field is present only
@@ -496,9 +527,12 @@ function out = mdMDPtest(Y, varargin)
 %  reference location and scatter are the same complete-case estimates used
 %  to compute d2_cc. Consequently the adaptive TEM correction targets the
 %  complete-case scatter functional under an elliptical MCAR model. The
-%  optional mask-preserving parametric bootstrap remains Gaussian-model based;
-%  when requested it reruns both the robust complete-case fit and adaptive
-%  radial correction in every bootstrap sample.
+%  optional mask-preserving full-pipeline bootstrap can use either the fitted
+%  Gaussian null generator or the null-enforcing empirical-radial elliptical
+%  generator selected by bootstraptype. The latter resamples complete-case
+%  radii and generates fresh independent spherical directions. In both cases
+%  the robust complete-case fit, adaptive radial correction and final
+%  aggregation rule are reconstructed in every bootstrap sample.
 %
 %  Small asymptotic or bootstrap p-values indicate that the change in distances
 %  is larger than expected under MCAR for the corresponding calibration.
@@ -784,6 +818,20 @@ function out = mdMDPtest(Y, varargin)
     % contains the distinct Gaussian benchmark when alpha=0 and MDP-U is used.
 %}
 
+%{
+    %% Example 14: Empirical-radial elliptical bootstrap.
+    % Calibrate robust MDP-I by resampling the empirical complete-case radial
+    % law rather than imposing a Gaussian radial distribution. The observed
+    % missingness mask is preserved and the full robust MDP pipeline is rerun
+    % independently in every bootstrap replicate.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'alpha',0.25,'bootstrap',true, ...
+        'bootstraptype','empiricalradial','nsimul',999);
+    fprintf('Bootstrap generator: %s\n',out.bootstraptype)
+    disp(out.results)
+%}
+
 %% Beginning of code
 
 if istable(Y)
@@ -801,6 +849,7 @@ options = struct;
 options.alpha   = 0;
 options.method  = 'pri';
 options.bootstrap = false;
+options.bootstraptype = 'gaussian';
 options.nsimul  = 499;
 options.conflev = 0.95;
 options.tol     = 1e-10;
@@ -835,6 +884,7 @@ end
 alpha   = options.alpha;
 method  = char(options.method);
 bootstrap = options.bootstrap;
+bootstraptype = local_parse_bootstraptype(options.bootstraptype);
 nsimul  = options.nsimul;
 conflev = options.conflev;
 tol     = options.tol;
@@ -1128,8 +1178,10 @@ if isfield(asympt,'TDmean') && isstruct(asympt.TDmean) && ...
     pvalueAsym(4) = asympt.TDmean.pvalue;
 end
 
-% Optional mask-preserving parametric bootstrap under MCAR. The expensive
-% resampling pipeline is entered only when bootstrap=true.
+% Optional mask-preserving full-pipeline bootstrap under MCAR. The
+% expensive resampling pipeline is entered only when bootstrap=true. The
+% generator is selected through bootstraptype; all subsequent fitting and
+% aggregation steps are identical for the two generators.
 Tboot = [];
 nMeanBoot = [];
 nCoupledBoot = [];
@@ -1141,16 +1193,47 @@ if bootstrap
     nMeanBoot = NaN(nsimul,1);
     nCoupledBoot = NaN(nsimul,1);
 
-    % Use robust complete-case fit to generate bootstrap samples.
+    % Fitted complete-case geometry used by both null generators. Rgen is
+    % upper triangular and satisfies Rgen'*Rgen=SigGen. Since observations
+    % are stored as row vectors, multiplying a spherical row vector by Rgen
+    % gives the required fitted scatter geometry.
     SigGen = local_make_spd(SigCC);
-    R = chol(SigGen,'upper');
+    Rgen = chol(SigGen,'upper');
+
+    % The empirical-radial generator keeps the observed complete-case radial
+    % law but replaces the empirical angular distribution by independent
+    % directions uniform on the unit sphere. All complete cases contribute
+    % to the empirical radial distribution; robust selection is deliberately
+    % reconstructed afresh inside each bootstrap replicate.
+    QrefBoot = [];
+    nQBoot = 0;
+    if strcmp(bootstraptype,'empiricalradial')
+        QrefBoot = mahalFS(Ycc,muCC,SigGen);
+        QrefBoot = QrefBoot(:);
+        if isempty(QrefBoot) || any(~isfinite(QrefBoot)) || any(QrefBoot < 0)
+            error('FSDA:mdMDPtest:InvalidRadialReference', ...
+                ['Unable to construct the empirical-radial bootstrap because ' ...
+                'the complete-case squared distances are empty, negative or nonfinite.']);
+        end
+        nQBoot = numel(QrefBoot);
+    end
 
     for j = 1:nsimul
 
-        % Generate full data from Gaussian model.
-        YfullStar = randn(n,p) * R + muCC(:)';
+        % Generate latent full data under the selected MCAR null generator.
+        switch bootstraptype
+            case 'gaussian'
+                YfullStar = randn(n,p) * Rgen + muCC(:)';
 
-        % Impose the observed missingness pattern.
+            case 'empiricalradial'
+                indQ = randi(nQBoot,n,1);
+                qStar = QrefBoot(indQ);
+                Udir = local_random_spherical_directions(n,p);
+                Xsphere = Udir.*sqrt(qStar);
+                YfullStar = Xsphere * Rgen + muCC(:)';
+        end
+
+        % Impose exactly the observed missingness pattern.
         Ystar = YfullStar;
         Ystar(maskMiss) = NaN;
 
@@ -1265,6 +1348,7 @@ out.Tobs        = Tobs;
 out.results     = results;
 out.resultsGaussian = resultsGaussian;
 out.bootstrap   = bootstrap;
+out.bootstraptype = bootstraptype;
 out.dispresults = dispresults;
 out.alpha       = alpha;
 out.method      = method;
@@ -1384,6 +1468,13 @@ if dispresults
         fprintf('Primary analytical reference  : %s\n',asympt.mode);
     end
     if bootstrap
+        switch bootstraptype
+            case 'gaussian'
+                bootstrapLabel = 'Gaussian fitted complete-case model';
+            case 'empiricalradial'
+                bootstrapLabel = 'empirical-radial elliptical';
+        end
+        fprintf('Bootstrap null generator      : %s\n',bootstrapLabel);
         fprintf('Bootstrap replications kept   : %d\n',size(Tboot,1));
     else
         disp('Bootstrap calibration          : not requested')
@@ -1732,6 +1823,30 @@ if ~any(strcmp(consistencyfactor,valid))
     error('FSDA:mdMDPtest:WrongConsistencyFactor', ...
         ['Option consistencyfactor must be ''pattern'', ''adaptive'', ' ...
         '''global'', ''weighted'' or ''none''.']);
+end
+end
+
+% -------------------------------------------------------------------------
+function bootstraptype = local_parse_bootstraptype(bootstraptype)
+%local_parse_bootstraptype parses the bootstrap null generator.
+
+if isstring(bootstraptype)
+    if ~isscalar(bootstraptype)
+        error('FSDA:mdMDPtest:WrongBootstrapType', ...
+            'Option bootstraptype must be a character vector or string scalar.');
+    end
+    bootstraptype = char(bootstraptype);
+end
+
+if ~ischar(bootstraptype) || size(bootstraptype,1) ~= 1
+    error('FSDA:mdMDPtest:WrongBootstrapType', ...
+        'Option bootstraptype must be ''gaussian'' or ''empiricalradial''.');
+end
+
+bootstraptype = lower(strtrim(bootstraptype));
+if ~any(strcmp(bootstraptype,{'gaussian','empiricalradial'}))
+    error('FSDA:mdMDPtest:WrongBootstrapType', ...
+        'Option bootstraptype must be ''gaussian'' or ''empiricalradial''.');
 end
 end
 
@@ -3867,6 +3982,26 @@ for j = 1:p
         D(:,k) = E(:);
     end
 end
+end
+
+% -------------------------------------------------------------------------
+function U = local_random_spherical_directions(n,p)
+%local_random_spherical_directions iid uniform directions on S^(p-1).
+%
+% If Z~N_p(0,I), then Z/||Z|| is uniform on the unit sphere and is
+% independent of ||Z||. The Gaussian draw is therefore used only to obtain
+% rotationally invariant directions; it does not impose a Gaussian radial
+% distribution on the empirical-radial bootstrap sample.
+
+U = randn(n,p);
+normU = sqrt(sum(U.^2,2));
+bad = ~isfinite(normU) | normU <= 0;
+while any(bad)
+    U(bad,:) = randn(sum(bad),p);
+    normU(bad) = sqrt(sum(U(bad,:).^2,2));
+    bad = ~isfinite(normU) | normU <= 0;
+end
+U = U./normU;
 end
 
 % -------------------------------------------------------------------------
