@@ -161,7 +161,11 @@ function out = mdMDPtest(Y, varargin)
 %           'inlier' computes the two mean statistics using only complete
 %           cases not declared as outliers by the selected robust
 %           complete-case estimator (MDP-I). This is the recommended robust
-%           aggregation rule and requires alpha>0.
+%           aggregation rule and requires alpha>0. Under an elliptical
+%           common-target model and a stable radial limiting inlier rule, its
+%           analytical calibration permits a nonvanishing excluded fraction
+%           through the empirical multipliers rI and rLI returned in
+%           out.asympt.inlierScaling.
 %
 %           'fixed' computes the two mean statistics using only complete
 %           cases whose complete-case squared Mahalanobis distance is not
@@ -366,6 +370,11 @@ function out = mdMDPtest(Y, varargin)
 %          out.cov          = Estimated scatter from EM/TEM fit on all data.
 %          out.eps0        = Numerical stabilizer used in the log-distance
 %                            ratio.
+%          out.asympt.inlierScaling = Stable-inlier radial diagnostics when
+%                            aggregation='inlier'. Fields include rI, rLI,
+%                            TLtoTDRatio, the retained/excluded fractions and
+%                            the complete-case radial moments used to estimate
+%                            the multipliers.
 %          out.asympt      = Structure containing the analytical
 %                            benchmark for the two selected mean statistics.
 %                            For alpha=0 and aggregation='ordinary', TDmean
@@ -389,20 +398,29 @@ function out = mdMDPtest(Y, varargin)
 %                            the untrimmed general-F result is nevertheless
 %                            returned in out.asympt.generalF for diagnostics.
 %                            For MDP-U the ordinary first-order coefficients
-%                            are used. MDP-I inherits the same coefficients
-%                            under the condition that the complete-case rule
-%                            excludes only O_p(1) clean observations. For
-%                            MDP-F the base estimator-discrepancy variance is
-%                            multiplied by kc^2 for the mean distance
-%                            difference and by lambda^2 for the stabilized
-%                            mean log-ratio. For the Gaussian pattern branch,
-%                              kc=F_{p+2}(c)/F_p(c).
-%                            For the adaptive elliptical branch, kc and
-%                            lambda are estimated from the robust complete-
-%                            case radial distribution. Fields aggregation,
-%                            filterCutoff,
-%                            gammaFilter, kc, lambda, baseSigmaD2 and
-%                            baseKappa document the applied scaling. For
+%                            are used. For MDP-I, a stable estimator-induced
+%                            radial inlier rule is allowed to exclude a
+%                            nonvanishing fraction of complete cases. The
+%                            ordinary estimator-discrepancy variance is then
+%                            multiplied by rI^2 for TDmean and rLI^2 for
+%                            TLmean, where rI and rLI are estimated from the
+%                            robust complete-case squared distances. These
+%                            diagnostics are returned in
+%                            out.asympt.inlierScaling. For MDP-F the base
+%                            variance is multiplied by kc^2 for TDmean and by
+%                            lambda^2 for TLmean. For the Gaussian pattern
+%                            branch, kc=F_{p+2}(c)/F_p(c). For the adaptive
+%                            elliptical branch, kc and lambda are estimated
+%                            from the robust complete-case radial distribution.
+%                            Fields aggregation, filterCutoff, gammaFilter,
+%                            kc, lambda, baseSigmaD2 and baseKappa document the
+%                            applied scaling.
+%                            out.asympt.inlierScaling is a structure with
+%                            fields available, nComplete, nSelected,
+%                            fractionSelected, fractionExcluded, rI,
+%                            rLI, TLtoTDRatio, meanQAll, meanQInlier
+%                            and meanStabilizedQInlier. It is relevant
+%                            when aggregation='inlier'. For
 %                            alpha>0 and method equal to 'pri',
 %                            'expScale', 'zMap', 'chiMap' or 'betaMap', the
 %                            Gaussian pattern-wise TEM influence function is
@@ -513,11 +531,15 @@ function out = mdMDPtest(Y, varargin)
 %
 %  For alpha>0 the analytical benchmark follows the selected mean aggregation.
 %  The Gaussian pattern branch uses Tallis coefficients, whereas the adaptive
-%  branch uses empirical elliptical radial coefficients. MDP-I uses the same
-%  first-order variance as MDP-U under O_p(1) clean exclusions. MDP-F
-%  multiplies the base mean-difference variance by kc^2 and the base
-%  stabilized-log-ratio variance by the appropriate truncated radial
-%  coefficient lambda^2. When coupledtrim=true, mdMDPtest still reports an
+%  branch uses empirical elliptical radial coefficients. Under an elliptical
+%  common-target model and a stable estimator-induced radial inlier rule,
+%  MDP-I permits a nonvanishing excluded fraction. Its TDmean and TLmean
+%  variances use the empirical multipliers rI^2 and rLI^2, respectively.
+%  Sparse exclusion is the special case rI=1 and rLI=baseKappa. MDP-F
+%  multiplies the base
+%  mean-difference variance by kc^2 and the base stabilized-log-ratio variance
+%  by the appropriate truncated radial coefficient lambda^2. When
+%  coupledtrim=true, mdMDPtest still reports an
 %  analytical p-value based on a frozen-eligibility working sandwich: the
 %  realized complete-case eligibility mask is treated as fixed, and its
 %  data-dependent construction is not differentiated. A warning documents
@@ -570,6 +592,8 @@ function out = mdMDPtest(Y, varargin)
     out = mdMDPtest(X,'alpha',0.25);
     % Display the observed statistics and asymptotic p-values with row names.
     disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
+    % Display the stable-inlier radial multipliers used by MDP-I.
+    disp(out.asympt.inlierScaling)
 %}
 
 %{
@@ -672,6 +696,8 @@ function out = mdMDPtest(Y, varargin)
         'aggregation','inlier');
     fprintf('Complete cases entering the mean statistics: %d\n',out.nMeanCC)
     disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
+    % rI and rLI allow the excluded fraction to remain nonvanishing.
+    disp(out.asympt.inlierScaling)
 %}
 
 %{
@@ -1030,7 +1056,8 @@ if coupledtrim
         Tobs, eps0, outRob, ~forcedZeroTEM);
     asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
         p,eps0,n,Tobs,d2_cc);
-    asympt.mode = 'TEM influence-function sandwich (frozen eligibility)';
+    asympt.mode = ['TEM influence-function sandwich with stable-inlier ' ...
+        'radial scaling (frozen eligibility)'];
     asympt.theoryStatus = [asympt.theoryStatus ' With coupledtrim=true, ' ...
         'the realized complete-case eligibility mask is treated as fixed; ' ...
         'the variability induced by its data-dependent construction is not ' ...
@@ -1367,6 +1394,19 @@ if dispresults
     disp(' ')
     disp(out.results)
     disp('Asymptotic inference is not available for the median statistics.')
+
+    if strcmp(aggregation,'inlier') && ...
+            isfield(asympt,'inlierScaling') && ...
+            isstruct(asympt.inlierScaling) && ...
+            isfield(asympt.inlierScaling,'available') && ...
+            asympt.inlierScaling.available
+        fprintf('Stable-inlier retained fraction : %.6g\n', ...
+            asympt.inlierScaling.fractionSelected);
+        fprintf('TD radial multiplier rI         : %.6g\n', ...
+            asympt.inlierScaling.rI);
+        fprintf('TL radial multiplier rLI        : %.6g\n', ...
+            asympt.inlierScaling.rLI);
+    end
 
     % Surface analytical failures instead of leaving unexplained NaNs.
     meanAsymUnavailable = all(isnan(out.results.pvalueAsym([2 4])));
@@ -1761,6 +1801,7 @@ info = struct;
 info.nSelected = sum(A);
 info.fractionSelected = info.nSelected/ncc;
 info.cutoff = cutoff;
+info.weights = A;
 end
 
 % -------------------------------------------------------------------------
@@ -1819,28 +1860,132 @@ T = [T1 T2 T3 T4];
 end
 
 % -------------------------------------------------------------------------
+function [info,reason] = local_stable_inlier_scaling(d2cc,weights,eps0)
+%local_stable_inlier_scaling Empirical radial multipliers for MDP-I.
+%
+% Under an elliptical common-target model and a stable estimator-induced
+% radial inlier rule, the first-order coefficients relative to ordinary
+% MDP-U are
+%
+%   rI  = E(Q0 | inlier) / E(Q0),
+%   rLI = E{Q0/(Q0+eps0) | inlier} / E(Q0).
+%
+% The excluded fraction is allowed to converge to a positive constant. The
+% finite-sample estimators below use the robust complete-case squared
+% distances and the realized estimator-induced inlier indicators.
+
+info = struct('available',false,'reason','','nComplete',NaN, ...
+    'nSelected',NaN,'fractionSelected',NaN,'fractionExcluded',NaN, ...
+    'rI',NaN,'rLI',NaN, ...
+    'TLtoTDRatio',NaN,'meanQAll',NaN,'meanQInlier',NaN, ...
+    'meanStabilizedQInlier',NaN,'theoryStatus', ...
+    ['Empirical radial scaling for a stable estimator-induced inlier rule ' ...
+    'under an elliptical common-target model.']);
+reason = '';
+
+if nargin == 0
+    return
+end
+
+q = d2cc(:);
+A = logical(weights(:));
+info.nComplete = numel(q);
+info.nSelected = sum(A);
+if info.nComplete > 0
+    info.fractionSelected = info.nSelected/info.nComplete;
+    info.fractionExcluded = 1-info.fractionSelected;
+end
+
+if numel(A) ~= numel(q)
+    reason = ['The inlier aggregation weights and complete-case distances ' ...
+        'have different lengths.'];
+    return
+end
+if isempty(q) || any(~isfinite(q)) || any(q < 0)
+    reason = ['Unable to evaluate stable-inlier radial scaling because the ' ...
+        'complete-case squared distances are empty, negative or nonfinite.'];
+    return
+end
+if ~any(A)
+    reason = ['Unable to evaluate stable-inlier radial scaling because the ' ...
+        'inlier rule retains no complete cases.'];
+    return
+end
+
+meanQAll = mean(q);
+meanQInlier = mean(q(A));
+meanStabilizedQInlier = mean(q(A)./(q(A)+eps0));
+if ~isfinite(meanQAll) || meanQAll <= 0 || ...
+        ~isfinite(meanQInlier) || meanQInlier <= 0 || ...
+        ~isfinite(meanStabilizedQInlier) || meanStabilizedQInlier <= 0
+    reason = ['The empirical stable-inlier radial moments are not finite ' ...
+        'and positive.'];
+    return
+end
+
+rI = meanQInlier/meanQAll;
+rLI = meanStabilizedQInlier/meanQAll;
+if ~isfinite(rI) || rI <= 0 || ~isfinite(rLI) || rLI <= 0
+    reason = ['The empirical stable-inlier radial multipliers are not ' ...
+        'finite and positive.'];
+    return
+end
+
+info.available = true;
+info.rI = rI;
+info.rLI = rLI;
+info.TLtoTDRatio = rLI/rI;
+info.meanQAll = meanQAll;
+info.meanQInlier = meanQInlier;
+info.meanStabilizedQInlier = meanStabilizedQInlier;
+end
+
+% -------------------------------------------------------------------------
 function asympt = local_apply_aggregation_asymptotic(asympt,aggregation, ...
     aggInfo,p,eps0,n,Tobs,d2cc)
 %local_apply_aggregation_asymptotic applies MDP-U/I/F first-order scaling.
 %
-% The estimator-discrepancy calculation supplies the base variance sigma_D^2.
-% In the Gaussian branches the coefficient is based on Sigma^{-1}; in the
-% adaptive elliptical branch it is based on the common target S0=tau*Sigma.
-% The selected mean aggregation changes only its scalar first-order
-% coefficient:
-%   MDP-U: TD coefficient 1,       TL coefficient kappa;
-%   MDP-I: TD coefficient 1,       TL coefficient kappa;
-%   MDP-F: TD coefficient k_c,     TL coefficient lambda.
+% The estimator-discrepancy calculation supplies the base ordinary-MDP
+% variance sigma_D^2. The selected mean aggregation changes its scalar
+% first-order coefficient:
+%   MDP-U: TD coefficient 1, TL coefficient kappa;
+%   MDP-I: TD coefficient rI, TL coefficient rLI;
+%   MDP-F: TD coefficient k_c, TL coefficient lambda.
 %
-% For MDP-I the equality with MDP-U is conditional on the clean
-% complete-case rule excluding only O_p(1) observations and on the maximal
-% omitted contrasts being o_p(sqrt(n)). For MDP-F, c is fixed as n grows.
+% For MDP-I, rI and rLI are empirical radial ratios based on the robust
+% complete-case distances and the estimator-induced inlier set. This is the
+% feasible radial specialization of the stable-inlier theorem and permits a
+% nonvanishing excluded fraction. For MDP-F, c is fixed as n grows.
 
 asympt.aggregation = aggregation;
 asympt.filterCutoff = NaN;
 asympt.kc = NaN;
 asympt.lambda = NaN;
 asympt.gammaFilter = NaN;
+[asympt.inlierScaling,~] = local_stable_inlier_scaling();
+
+% The stable-inlier multipliers can be evaluated even if the base sandwich
+% is unavailable. This preserves useful diagnostics when analytical
+% studentization fails for another reason.
+if strcmp(aggregation,'inlier')
+    if ~isfield(aggInfo,'weights')
+        asympt.available = false;
+        asympt.reason = ['The estimator-induced inlier indicators are not ' ...
+            'available for analytical scaling.'];
+        return
+    end
+    [asympt.inlierScaling,scaleReason] = ...
+        local_stable_inlier_scaling(d2cc,aggInfo.weights,eps0);
+    asympt.inlierScaling.reason = scaleReason;
+    asympt.kc = asympt.inlierScaling.rI;
+    asympt.lambda = asympt.inlierScaling.rLI;
+    asympt.gammaFilter = asympt.inlierScaling.fractionSelected;
+    if ~isempty(scaleReason)
+        asympt.available = false;
+        asympt.reason = scaleReason;
+        return
+    end
+end
 
 % If the base estimator-discrepancy benchmark is unavailable, retain its
 % reason and only document the requested aggregation.
@@ -1877,15 +2022,13 @@ switch aggregation
         asympt.gammaFilter = 1;
 
     case 'inlier'
-        coefD = 1;
-        coefL = baseKappa;
-        asympt.kc = 1;
-        asympt.lambda = baseKappa;
-        asympt.gammaFilter = 1;
-        note = ['Aggregation=''inlier'' uses the MDP-U first-order law ' ...
-            'under the condition that the number of falsely excluded clean ' ...
-            'complete cases is O_p(1) and the maximal omitted contrasts are ' ...
-            'o_p(sqrt(n)).'];
+        coefD = asympt.inlierScaling.rI;
+        coefL = asympt.inlierScaling.rLI;
+
+        note = ['Aggregation=''inlier'' uses empirical stable-inlier radial ' ...
+            'multipliers. A nonvanishing excluded fraction is permitted ' ...
+            'when the estimator-induced decisions converge to a stable ' ...
+            'radial population rule under the elliptical common-target null.'];
         if isfield(asympt,'theoryStatus') && ~isempty(asympt.theoryStatus)
             asympt.theoryStatus = [asympt.theoryStatus ' ' note];
         else
@@ -1961,6 +2104,11 @@ switch aggregation
             'Unknown aggregation rule in analytical scaling.');
 end
 
+if ~isfinite(coefD) || coefD <= 0
+    asympt.available = false;
+    asympt.reason = 'The analytical distance-difference coefficient is not finite.';
+    return
+end
 if ~isfinite(coefL) || coefL <= 0
     asympt.available = false;
     asympt.reason = 'The analytical log-ratio coefficient is not finite.';
@@ -1977,12 +2125,17 @@ asympt.TLmean.coefficient = coefL;
 asympt.TLmean.sigma2 = coefL^2*baseSigmaD2;
 asympt.TLmean.se = sqrt(asympt.TLmean.sigma2/n);
 
-% kappa remains the unfiltered stabilized-log coefficient. For the fixed
-% gate, lambda is reported separately and is the coefficient actually used.
+% kappa remains the ordinary stabilized-log coefficient. The field lambda
+% is the aggregation-specific coefficient actually used.
 if ~isfield(asympt.TLmean,'kappa')
     asympt.TLmean.kappa = baseKappa;
 end
 asympt.TLmean.lambda = coefL;
+if strcmp(aggregation,'inlier')
+    asympt.TDmean.rI = coefD;
+    asympt.TLmean.rLI = coefL;
+    asympt.TLmean.TLtoTDRatio = coefL/coefD;
+end
 
 % TEM variance components, when available, inherit the same TD multiplier.
 if isfield(asympt.TDmean,'components') && isstruct(asympt.TDmean.components)
@@ -3628,7 +3781,10 @@ if alpha == 0
     end
 else
     if strcmp(consistencyfactor,'adaptive')
-        if strcmp(aggregation,'fixed')
+        if strcmp(aggregation,'inlier')
+            Calibration{2} = 'adaptive elliptical stable-inlier sandwich';
+            Calibration{4} = 'adaptive elliptical stable-inlier sandwich';
+        elseif strcmp(aggregation,'fixed')
             Calibration{2} = 'adaptive elliptical fixed-gate';
             Calibration{4} = 'adaptive elliptical fixed-gate';
         else
@@ -3637,8 +3793,13 @@ else
         end
     elseif strcmp(consistencyfactor,'pattern')
         if coupledtrim
-            Calibration{2} = 'Gaussian TEM sandwich (frozen eligibility)';
-            Calibration{4} = 'Gaussian TEM sandwich (frozen eligibility)';
+            Calibration{2} = ['Gaussian stable-inlier TEM sandwich ' ...
+                '(frozen eligibility)'];
+            Calibration{4} = ['Gaussian stable-inlier TEM sandwich ' ...
+                '(frozen eligibility)'];
+        elseif strcmp(aggregation,'inlier')
+            Calibration{2} = 'Gaussian pattern stable-inlier sandwich';
+            Calibration{4} = 'Gaussian pattern stable-inlier sandwich';
         elseif strcmp(aggregation,'fixed')
             Calibration{2} = 'Gaussian fixed-gate sandwich';
             Calibration{4} = 'Gaussian fixed-gate sandwich';
@@ -3678,6 +3839,7 @@ asympt.lambda = NaN;
 asympt.gammaFilter = NaN;
 asympt.baseSigmaD2 = NaN;
 asympt.baseKappa = NaN;
+[asympt.inlierScaling,~] = local_stable_inlier_scaling();
 asympt.TDmean = struct('coefficient',NaN,'sigma2',NaN,'se',NaN, ...
     'z',NaN,'pvalue',NaN);
 asympt.TLmean = struct('kappa',NaN,'lambda',NaN,'coefficient',NaN, ...
