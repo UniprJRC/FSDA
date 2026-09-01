@@ -324,6 +324,26 @@ function out = mdMDPtest(Y, varargin)
 %                            classical ordinary MDP-U configuration
 %                            (alpha=0, aggregation='ordinary') and is empty
 %                            otherwise.
+%          out.omnibus     = Structure containing the Hausman-type omnibus
+%                            scatter-discrepancy test. Let
+%                              delta=vech(out.cov-out.covCC)
+%                            and let OmegaDelta estimate the asymptotic
+%                            covariance of sqrt(n)*delta. The statistic is
+%                              H=n*delta'*OmegaDelta^+*delta,
+%                            where ^+ denotes the Moore-Penrose inverse. Under
+%                            the corresponding analytical MCAR reference,
+%                            H is asymptotically chi-square with degrees of
+%                            freedom equal to rank(OmegaDelta). Fields include
+%                            available, stat, df, pvalue, delta, OmegaDelta,
+%                            eigenvalues, rankTolerance, nullSpaceResidual,
+%                            calibration and reason. The omnibus test is an
+%                            analytical diagnostic; bootstrap calibration of
+%                            this quadratic statistic is not currently
+%                            computed.
+%          out.resultsOmnibus = 1 x 4 table containing Stat, df, pvalue and
+%                            Calibration for the Hausman-type omnibus test.
+%                            NaNs are returned when its analytical covariance
+%                            is unavailable.
 %          out.bootstrap   = Value of input option bootstrap.
 %          out.bootstraptype = Bootstrap null generator actually requested:
 %                            'gaussian' or 'empiricalradial'.
@@ -556,6 +576,18 @@ function out = mdMDPtest(Y, varargin)
 %  complete-case fit, adaptive radial correction and final aggregation rule
 %  are reconstructed in every bootstrap sample.
 %
+%  The scalar MDP statistics are directional projections of the estimator
+%  discrepancy. A complementary Hausman-type omnibus diagnostic is therefore
+%  also reported whenever the full scatter-discrepancy influence covariance
+%  is available. With delta=vech(Sigma_all-Sigma_CC), it uses
+%
+%      H = n*delta'*OmegaDelta^+*delta.
+%
+%  Under MCAR, H has an asymptotic chi-square reference with degrees of
+%  freedom rank(OmegaDelta). Unlike the one-dimensional MDP projection, this
+%  quadratic statistic is sensitive to all estimable first-order scatter
+%  discrepancy directions, including trace-free shape/correlation changes.
+%
 %  Small asymptotic or bootstrap p-values indicate that the change in distances
 %  is larger than expected under MCAR for the corresponding calibration.
 %
@@ -611,6 +643,8 @@ function out = mdMDPtest(Y, varargin)
 % Boca Raton, FL: Chapman & Hall/CRC (Taylor & Francis Group).
 % Templ, M. (2023). Visualization and Imputation of Missing Values: With
 % Applications in R. Cham, Switzerland: Springer Nature.
+% Hausman, J. A. (1978). Specification Tests in Econometrics. Econometrica,
+% 46, 1251-1271.
 %
 %
 % Copyright 2008-2026.
@@ -852,6 +886,19 @@ function out = mdMDPtest(Y, varargin)
         'bootstraptype','empiricalradial','nsimul',999);
     fprintf('Bootstrap generator: %s\n',out.bootstraptype)
     disp(out.results)
+%}
+
+%{
+    %% Example 15: Hausman-type omnibus scatter-discrepancy diagnostic.
+    % Compare the complete-case and all-available scatter estimators through
+    % the full quadratic estimator discrepancy rather than through only the
+    % one-dimensional MDP projection.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'alpha',0.25);
+    disp(out.resultsOmnibus)
+    % Detailed rank/eigenvalue diagnostics are stored in out.omnibus.
+    disp(out.omnibus)
 %}
 
 %% Beginning of code
@@ -1188,6 +1235,14 @@ else
     asympt.secondOrderBenchmark = [];
 end
 
+% Hausman-type omnibus estimator-discrepancy diagnostic. This uses the full
+% asymptotic covariance of vech(Sigma_all-Sigma_CC), when available, rather
+% than the one-dimensional MDP projection. The statistic is independent of
+% the final mean aggregation rule because it compares the two fitted scatter
+% estimators themselves.
+omnibus = local_omnibus_test(asympt,SigHat,SigCC,n,alpha, ...
+    consistencyfactor,coupledtrim);
+
 % Assemble the cheap analytical p-value vector in the same order as Tobs.
 % The present analytical theory concerns the two mean statistics only.
 pvalueAsym = NaN(1,4);
@@ -1397,12 +1452,27 @@ if alpha == 0 && strcmp(aggregation,'ordinary') && ...
         'RowNames',{'TLmean';'TDmean'});
 end
 
+% Separate one-row table for the Hausman-type omnibus scatter discrepancy.
+if omnibus.available
+    omnibusCalibration = {omnibus.calibration};
+    resultsOmnibus = table(omnibus.stat,omnibus.df,omnibus.pvalue, ...
+        omnibusCalibration,'VariableNames',{'Stat','df','pvalue','Calibration'}, ...
+        'RowNames',{'HausmanOmnibus'});
+else
+    omnibusCalibration = {omnibus.calibration};
+    resultsOmnibus = table(NaN,NaN,NaN,omnibusCalibration, ...
+        'VariableNames',{'Stat','df','pvalue','Calibration'}, ...
+        'RowNames',{'HausmanOmnibus'});
+end
+
 % Store output
 out = struct;
 out.pvalueAsym  = pvalueAsym;
 out.Tobs        = Tobs;
 out.results     = results;
 out.resultsGaussian = resultsGaussian;
+out.omnibus = omnibus;
+out.resultsOmnibus = resultsOmnibus;
 out.bootstrap   = bootstrap;
 out.bootstraptype = bootstraptype;
 out.dispresults = dispresults;
@@ -1553,6 +1623,23 @@ if dispresults
     disp(' ')
     disp(out.results)
     disp('Asymptotic inference is not available for the median statistics.')
+
+    disp(' ')
+    disp('Hausman-type omnibus scatter-discrepancy diagnostic')
+    if out.omnibus.available
+        disp(out.resultsOmnibus)
+        fprintf('Estimated discrepancy rank    : %d of %d\n', ...
+            out.omnibus.rank,out.omnibus.dimension);
+        if out.omnibus.nullSpaceResidual > 1e-6
+            fprintf('Relative null-space residual  : %.6g\n', ...
+                out.omnibus.nullSpaceResidual);
+        end
+    else
+        disp('Omnibus analytical calibration unavailable.')
+        if ~isempty(out.omnibus.reason)
+            fprintf('Reason: %s\n',out.omnibus.reason);
+        end
+    end
 
     if strcmp(aggregation,'inlier') && ...
             isfield(asympt,'inlierScaling') && ...
@@ -2897,6 +2984,20 @@ end
 XiEff = XiBase+XiFactor;
 asympt.TEM.estimatingEquationMeanNorm = norm(mean(XiEff,1));
 
+% Full estimator-discrepancy influence for the Hausman-type omnibus test.
+% The TEM scatter influence is psi_A=-J^{-1}xi_eff, while PsiCfull contains
+% the complete-case scatter influence on the full-sample scale. Therefore
+% psi_Delta=psi_A-psi_C estimates the influence of
+% vech(Sigma_all-Sigma_CC).
+PsiTEMfull = -(J\XiEff')';
+PsiDelta = PsiTEMfull-PsiCfull;
+meanPsiDelta = mean(PsiDelta,1);
+PsiDeltaCentered = PsiDelta-meanPsiDelta;
+OmegaDelta = (PsiDeltaCentered'*PsiDeltaCentered)/n;
+OmegaDelta = (OmegaDelta+OmegaDelta')/2;
+asympt.OmegaDelta = OmegaDelta;
+asympt.discrepancyIFMeanNorm = norm(meanPsiDelta);
+
 % Project the adaptive TEM scatter influence onto the ordinary MDP-U
 % coefficient. Since psi_TEM=-J_eff^{-1}xi_eff and TD=-a0'(psi_TEM-psi_C),
 % the TEM contribution is b'xi_eff, where J_eff' b=a0.
@@ -2927,6 +3028,8 @@ sigmaTEM2 = mean(temContribution.^2);
 sigmaCC2 = mean(ccContribution.^2);
 crossTEMCC = mean(temContribution.*ccContribution);
 sigmaD2 = mean(zetaD.^2);
+sigmaD2FromOmega = a0'*OmegaDelta*a0;
+asympt.omnibusVarianceIdentityResidual = sigmaD2FromOmega-sigmaD2;
 
 asympt.TEM.available = true;
 asympt.TEM.sigma2 = sigmaTEM2;
@@ -3470,8 +3573,21 @@ asympt.completeCase.nReferenceOutliers = ccInfo.nReferenceOutliers;
 asympt.completeCase.frozenClassification = ccInfo.frozenClassification;
 asympt.completeCase.relCovFrozenVsFS = ccInfo.relCovFrozenVsFS;
 
-ccContribution = zeros(n,1);
-ccContribution(completeIdx) = zetaC/qhat;
+PsiCfull = zeros(n,s);
+PsiCfull(completeIdx,:) = PsiCcc/qhat;
+
+% Full estimator-discrepancy influence for the Hausman-type omnibus test.
+% Here psi_A=-J^{-1}xi and psi_Delta=psi_A-psi_C.
+PsiTEMfull = -(J\Xi')';
+PsiDelta = PsiTEMfull-PsiCfull;
+meanPsiDelta = mean(PsiDelta,1);
+PsiDeltaCentered = PsiDelta-meanPsiDelta;
+OmegaDelta = (PsiDeltaCentered'*PsiDeltaCentered)/n;
+OmegaDelta = (OmegaDelta+OmegaDelta')/2;
+asympt.OmegaDelta = OmegaDelta;
+asympt.discrepancyIFMeanNorm = norm(meanPsiDelta);
+
+ccContribution = PsiCfull*aSigma;
 ccContribution = ccContribution-mean(ccContribution);
 
 % End-to-end influence of TD,mean:
@@ -3482,6 +3598,8 @@ zetaD = zetaD-mean(zetaD);
 sigmaCC2 = mean(ccContribution.^2);
 crossTEMCC = mean(temContribution.*ccContribution);
 sigmaD2 = mean(zetaD.^2);
+sigmaD2FromOmega = aSigma'*OmegaDelta*aSigma;
+asympt.omnibusVarianceIdentityResidual = sigmaD2FromOmega-sigmaD2;
 
 asympt.completeCase.sigma2 = sigmaCC2;
 asympt.completeCase.crossTEMCC = crossTEMCC;
@@ -3878,6 +3996,9 @@ asympt.patternsMissing = patt;
 asympt.patternCounts = patternCounts;
 asympt.patternProportions = patternProportions;
 asympt.generalF = generalF;
+asympt.OmegaDelta = generalF.OmegaDelta;
+asympt.discrepancyIFMeanNorm = generalF.deltaMeanNorm;
+asympt.omnibusVarianceIdentityResidual = generalF.varianceIdentityResidual;
 asympt.ellipticalTL = ellipticalTL;
 asympt.gaussian = gaussian;
 asympt.VA = gaussian.VA; % backward-compatible Gaussian diagnostic field
@@ -4006,6 +4127,130 @@ y(~isfinite(y)) = 0;
 end
 
 % -------------------------------------------------------------------------
+function omnibus = local_omnibus_test(asympt,SigA,SigC,n,alpha, ...
+    consistencyfactor,coupledtrim)
+%local_omnibus_test Hausman-type quadratic scatter-discrepancy diagnostic.
+%
+% Let delta=vech(SigA-SigC) and let OmegaDelta denote the asymptotic
+% covariance of sqrt(n)*delta. The statistic
+%
+%   H = n*delta'*OmegaDelta^+*delta
+%
+% has an asymptotic chi-square distribution with degrees of freedom equal to
+% rank(OmegaDelta) under the corresponding MCAR reference. A spectral
+% Moore-Penrose inverse is used so that structurally singular discrepancy
+% covariances are handled explicitly rather than by an arbitrary ridge.
+
+p = size(SigA,1);
+s = p*(p+1)/2;
+omnibus = struct('available',false,'reason','', ...
+    'stat',NaN,'df',NaN,'pvalue',NaN,'rank',0,'dimension',s, ...
+    'delta',NaN(s,1),'OmegaDelta',NaN(s,s),'OmegaDeltaPlus',NaN(s,s), ...
+    'eigenvalues',NaN(s,1),'rankTolerance',NaN, ...
+    'nullSpaceResidual',NaN,'calibration','not available', ...
+    'theoryStatus',['Hausman-type quadratic estimator-discrepancy test for ' ...
+    'the complete-case versus all-available scatter estimators.']);
+
+if ~isequal(size(SigA),size(SigC)) || size(SigA,2)~=p || ...
+        any(~isfinite(SigA(:))) || any(~isfinite(SigC(:)))
+    omnibus.reason = 'The fitted scatter matrices are invalid.';
+    return
+end
+
+SA = (SigA+SigA')/2;
+SC = (SigC+SigC')/2;
+deltaHat = local_vech(SA-SC);
+omnibus.delta = deltaHat;
+
+if ~isstruct(asympt) || ~isfield(asympt,'OmegaDelta') || ...
+        ~isnumeric(asympt.OmegaDelta) || ...
+        ~isequal(size(asympt.OmegaDelta),[s s]) || ...
+        any(~isfinite(asympt.OmegaDelta(:)))
+    omnibus.reason = ['The full scatter-discrepancy influence covariance is ' ...
+        'not available for this analytical configuration.'];
+    return
+end
+
+Omega = (asympt.OmegaDelta+asympt.OmegaDelta')/2;
+omnibus.OmegaDelta = Omega;
+
+% Spectral rank and generalized inverse. The tolerance follows the scale of
+% the largest covariance eigenvalue and is shared by the rank and inverse.
+[V,Dmat] = eig(Omega);
+D = real(diag(Dmat));
+V = real(V);
+maxEig = max(abs(D));
+if isempty(maxEig) || ~isfinite(maxEig) || maxEig <= 0
+    omnibus.reason = 'The estimated discrepancy covariance is numerically zero.';
+    return
+end
+rankTol = max(s,1)*eps(maxEig);
+omnibus.rankTolerance = rankTol;
+
+% A covariance estimate can have tiny negative eigenvalues from roundoff,
+% but a materially negative eigenvalue signals an invalid sandwich matrix.
+if any(D < -100*rankTol)
+    omnibus.eigenvalues = sort(D,'descend');
+    omnibus.reason = ['The estimated discrepancy covariance is not positive ' ...
+        'semidefinite within numerical tolerance.'];
+    return
+end
+D(D < 0) = 0;
+keep = D > rankTol;
+r = sum(keep);
+omnibus.rank = r;
+omnibus.df = r;
+omnibus.eigenvalues = sort(D,'descend');
+if r == 0
+    omnibus.reason = 'The estimated discrepancy covariance has numerical rank zero.';
+    return
+end
+
+Vr = V(:,keep);
+dr = D(keep);
+OmegaPlus = Vr*diag(1./dr)*Vr';
+OmegaPlus = (OmegaPlus+OmegaPlus')/2;
+omnibus.OmegaDeltaPlus = OmegaPlus;
+
+H = n*(deltaHat'*OmegaPlus*deltaHat);
+if H < 0 && H >= -100*eps(max(1,abs(H)))
+    H = 0;
+end
+if ~isfinite(H) || H < 0
+    omnibus.reason = 'The omnibus quadratic statistic is not finite and nonnegative.';
+    return
+end
+
+% Component of the observed discrepancy outside the estimated covariance
+% range. It is not included in the Moore-Penrose quadratic form and is
+% reported as a numerical/structural diagnostic.
+projDelta = Vr*(Vr'*deltaHat);
+omnibus.nullSpaceResidual = norm(deltaHat-projDelta)/max(norm(deltaHat),eps);
+
+omnibus.stat = H;
+omnibus.pvalue = gammainc(H/2,r/2,'upper');
+omnibus.available = isfinite(omnibus.pvalue);
+if ~omnibus.available
+    omnibus.reason = 'Unable to evaluate the chi-square upper-tail probability.';
+    return
+end
+
+if alpha == 0
+    omnibus.calibration = 'general-F scatter-discrepancy sandwich';
+elseif strcmp(consistencyfactor,'adaptive')
+    omnibus.calibration = 'adaptive elliptical scatter-discrepancy sandwich';
+elseif strcmp(consistencyfactor,'pattern') && coupledtrim
+    omnibus.calibration = ['Gaussian pattern scatter-discrepancy sandwich ' ...
+        '(frozen eligibility)'];
+elseif strcmp(consistencyfactor,'pattern')
+    omnibus.calibration = 'Gaussian pattern scatter-discrepancy sandwich';
+else
+    omnibus.calibration = 'scatter-discrepancy sandwich';
+end
+omnibus.reason = '';
+end
+
+% -------------------------------------------------------------------------
 function asympt = local_unavailable_asymptotic(qhat)
 %local_unavailable_asymptotic Initialize analytical benchmark output.
 
@@ -4022,6 +4267,9 @@ asympt.lambda = NaN;
 asympt.gammaFilter = NaN;
 asympt.baseSigmaD2 = NaN;
 asympt.baseKappa = NaN;
+asympt.OmegaDelta = NaN;
+asympt.discrepancyIFMeanNorm = NaN;
+asympt.omnibusVarianceIdentityResidual = NaN;
 [asympt.inlierScaling,~] = local_stable_inlier_scaling();
 asympt.TDmean = struct('coefficient',NaN,'sigma2',NaN,'se',NaN, ...
     'z',NaN,'pvalue',NaN);
