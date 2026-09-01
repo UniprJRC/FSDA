@@ -217,7 +217,7 @@ function out = mdMDPtest(Y, varargin)
 %           Example - 'aggregation','inlier'
 %           Data Types - char | string
 %
-% filterlev : Probability level defining the fixed robust-distance gate for
+% filterlev : Probability level defining the fixed robust-distance cutoff for
 %           aggregation='fixed'. Scalar in the interval (0,1). The cutoff
 %           is c=chi2inv(filterlev,p). The default value is 0.99.
 %           This option is ignored for the other aggregation rules.
@@ -465,7 +465,7 @@ function out = mdMDPtest(Y, varargin)
 %                            out.asympt.gaussian and out.resultsGaussian.
 %                            For alpha=0 and aggregation='fixed', the current
 %                            analytical benchmark remains Gaussian because a
-%                            general-F fixed-gate law has not been derived;
+%                            general-F fixed-cutoff law has not been derived;
 %                            the untrimmed general-F result is nevertheless
 %                            returned in out.asympt.generalF for diagnostics.
 %                            For MDP-U the ordinary first-order coefficients
@@ -557,7 +557,7 @@ function out = mdMDPtest(Y, varargin)
 %  'ordinary' for alpha=0 and to 'inlier' for alpha>0. The selected means
 %  use all complete cases for aggregation='ordinary', the estimator-defined
 %  complete-case inliers for aggregation='inlier', and the fixed robust-
-%  distance gate for aggregation='fixed'. The same resolved rule is
+%  distance cutoff for aggregation='fixed'. The same resolved rule is
 %  re-estimated in every bootstrap sample. With coupledtrim=true,
 %  estimator-declared complete-case outliers are additionally forced to zero
 %  weight in every TEM concentration step.
@@ -588,6 +588,17 @@ function out = mdMDPtest(Y, varargin)
 %  quadratic statistic is sensitive to all estimable first-order scatter
 %  discrepancy directions, including trace-free shape/correlation changes.
 %
+%  Under adaptive positive trimming, OmegaDelta is the end-to-end
+%  scatter-discrepancy covariance including the adaptive radial-factor
+%  influence and the robust complete-case scatter influence. Under the
+%  elliptical common-target model, the same omnibus construction applies
+%  to MDP-I and MDP-F: the final inlier or fixed-cutoff aggregation changes
+%  the scalar MDP projection but not the underlying fitted scatter-estimator
+%  discrepancy. This statement refers to the default coupledtrim=false;
+%  with coupledtrim=true the eligibility rule also modifies the TEM fit and
+%  the reported omnibus calibration uses the corresponding frozen-eligibility
+%  working sandwich.
+%
 %  Small asymptotic or bootstrap p-values indicate that the change in distances
 %  is larger than expected under MCAR for the corresponding calibration.
 %
@@ -614,7 +625,7 @@ function out = mdMDPtest(Y, varargin)
 %  coefficient estimated from the complete-case Mahalanobis distances.
 %  This elliptical TLmean calibration is distinct from the separate Gaussian-
 %  information benchmark. For alpha=0 and aggregation='fixed', the existing
-%  Gaussian Tallis benchmark is retained because a general-F fixed-gate law
+%  Gaussian Tallis benchmark is retained because a general-F fixed-cutoff law
 %  has not yet been derived.
 %
 %  For alpha>0 the analytical benchmark follows the selected mean aggregation.
@@ -892,7 +903,10 @@ function out = mdMDPtest(Y, varargin)
     %% Example 15: Hausman-type omnibus scatter-discrepancy diagnostic.
     % Compare the complete-case and all-available scatter estimators through
     % the full quadratic estimator discrepancy rather than through only the
-    % one-dimensional MDP projection.
+    % one-dimensional MDP projection. With alpha>0 the default mean
+    % aggregation is MDP-I, but the final inlier aggregation does not alter
+    % the omnibus statistic because the latter acts directly on the fitted
+    % scatter-estimator discrepancy.
     load cows2026
     X = cows2026{:,:};
     out = mdMDPtest(X,'alpha',0.25);
@@ -1160,8 +1174,8 @@ TDordinary = mean(d2_all_cc-d2_cc);
 %
 % For alpha=0 and ordinary aggregation, TDmean uses the feasible general-F
 % sandwich as the primary analytical calibration. The Gaussian information
-% specialization is retained as a diagnostic. For alpha=0 with a fixed gate,
-% the present analytical law remains Gaussian because a general-F fixed-gate
+% specialization is retained as a diagnostic. For alpha=0 with a fixed cutoff,
+% the present analytical law remains Gaussian because a general-F fixed-cutoff
 % result has not yet been derived. For alpha>0 the existing Gaussian-pattern
 % or adaptive-elliptical TEM branches are used.
 if coupledtrim
@@ -1194,7 +1208,7 @@ else
             preferGeneralF);
 
         % The feasible general-F result currently applies only to ordinary
-        % untrimmed TDmean. For the fixed gate, retain the Gaussian Tallis
+        % untrimmed TDmean. For the fixed cutoff, retain the Gaussian Tallis
         % scaling of the former analytical benchmark.
         if ~preferGeneralF
             asympt = local_apply_aggregation_asymptotic(asympt,aggregation, ...
@@ -1690,7 +1704,7 @@ if dispresults
             end
         end
     elseif alpha == 0 && strcmp(aggregation,'fixed')
-        disp('Note: a general-F fixed-gate calibration is not currently available.')
+        disp('Note: a general-F fixed-cutoff calibration is not currently available.')
     end
 
     if coupledtrim
@@ -2320,13 +2334,13 @@ switch aggregation
                     ~isfinite(gamma) || gamma <= 0 || ...
                     ~isfinite(meanQ) || meanQ <= 0 || ~any(inside)
                 asympt.available = false;
-                asympt.reason = ['Unable to evaluate the adaptive fixed-gate ' ...
+                asympt.reason = ['Unable to evaluate the adaptive fixed-cutoff ' ...
                     'radial coefficients from the complete-case distances.'];
                 return
             end
 
             % Under the elliptical common-target model S0=tau*Sigma,
-            % the fixed-gate TD coefficient relative to MDP-U is
+            % the fixed-cutoff TD coefficient relative to MDP-U is
             % E(Q0|Q0<=c)/E(Q0). The stabilized log-ratio coefficient is
             % E{Q0/(Q0+eps0)|Q0<=c}/E(Q0).
             kc = mean(qref(inside))/meanQ;
@@ -2338,20 +2352,20 @@ switch aggregation
             gamma = chi2cdf(c,p);
             if ~isfinite(c) || c <= 0 || ~isfinite(gamma) || gamma <= 0
                 asympt.available = false;
-                asympt.reason = ['Unable to evaluate the fixed-gate analytical ' ...
+                asympt.reason = ['Unable to evaluate the fixed-cutoff analytical ' ...
                     'coefficients.'];
                 return
             end
             kc = chi2cdf(c,p+2)/gamma;
             lambda = integral(@(q) local_kappa_integrand(q,p,eps0),0,c, ...
                 'RelTol',1e-10,'AbsTol',1e-12)/(p*gamma);
-            note = ['Aggregation=''fixed'' applies the fixed-gate first-order ' ...
+            note = ['Aggregation=''fixed'' applies the fixed-cutoff first-order ' ...
                 'Tallis scaling to the base estimator-discrepancy variance.'];
         end
 
         if ~isfinite(kc) || kc <= 0 || ~isfinite(lambda) || lambda <= 0
             asympt.available = false;
-            asympt.reason = ['The fixed-gate analytical coefficients are ' ...
+            asympt.reason = ['The fixed-cutoff analytical coefficients are ' ...
                 'not finite and positive.'];
             return
         end
@@ -3708,7 +3722,7 @@ function asympt = local_classical_asymptotic(Y, maskMiss, completeIdx, ...
 % Mahalanobis distances d2cc. This does not assume Gaussianity.
 %
 % For aggregation='fixed', preferGeneralF is false. The caller then applies
-% the existing Gaussian Tallis fixed-gate scaling. The untrimmed general-F
+% the existing Gaussian Tallis fixed-cutoff scaling. The untrimmed general-F
 % TDmean result is still returned in asympt.generalF for diagnostics, but is
 % not used to calibrate the filtered statistic.
 
@@ -4042,15 +4056,15 @@ if preferGeneralF
     asympt.baseKappa = ellipticalTL.kappa;
     asympt.lambda = ellipticalTL.kappa;
 else
-    % A general-F fixed-gate theorem is not currently available. Preserve
+    % A general-F fixed-cutoff theorem is not currently available. Preserve
     % the previous Gaussian benchmark as the primary analytical reference;
-    % the caller applies the fixed-gate Tallis coefficients afterwards.
+    % the caller applies the fixed-cutoff Tallis coefficients afterwards.
     asympt.mode = 'Gaussian information benchmark';
     asympt.primaryCalibration = 'gaussianInfo';
     asympt.radialModel = 'Gaussian';
     asympt.theoryStatus = ['For alpha=0 with fixed aggregation the analytical ' ...
         'benchmark remains Gaussian; the untrimmed general-F TDmean result is ' ...
-        'returned in asympt.generalF but is not applied to the fixed gate.'];
+        'returned in asympt.generalF but is not applied to the fixed cutoff.'];
 
     if gaussian.available
         asympt.available = true;
@@ -4080,8 +4094,8 @@ if alpha == 0
         Calibration{2} = 'elliptical radial sandwich';
         Calibration{4} = 'general-F sandwich';
     elseif strcmp(aggregation,'fixed')
-        Calibration{2} = 'Gaussian fixed-gate benchmark';
-        Calibration{4} = 'Gaussian fixed-gate benchmark';
+        Calibration{2} = 'Gaussian fixed-cutoff benchmark';
+        Calibration{4} = 'Gaussian fixed-cutoff benchmark';
     end
 else
     if strcmp(consistencyfactor,'adaptive')
@@ -4089,8 +4103,8 @@ else
             Calibration{2} = 'adaptive elliptical stable-inlier sandwich';
             Calibration{4} = 'adaptive elliptical stable-inlier sandwich';
         elseif strcmp(aggregation,'fixed')
-            Calibration{2} = 'adaptive elliptical fixed-gate';
-            Calibration{4} = 'adaptive elliptical fixed-gate';
+            Calibration{2} = 'adaptive elliptical fixed-cutoff';
+            Calibration{4} = 'adaptive elliptical fixed-cutoff';
         else
             Calibration{2} = 'adaptive elliptical sandwich';
             Calibration{4} = 'adaptive elliptical sandwich';
@@ -4105,8 +4119,8 @@ else
             Calibration{2} = 'Gaussian pattern stable-inlier sandwich';
             Calibration{4} = 'Gaussian pattern stable-inlier sandwich';
         elseif strcmp(aggregation,'fixed')
-            Calibration{2} = 'Gaussian fixed-gate sandwich';
-            Calibration{4} = 'Gaussian fixed-gate sandwich';
+            Calibration{2} = 'Gaussian fixed-cutoff sandwich';
+            Calibration{4} = 'Gaussian fixed-cutoff sandwich';
         else
             Calibration{2} = 'Gaussian pattern sandwich';
             Calibration{4} = 'Gaussian pattern sandwich';
