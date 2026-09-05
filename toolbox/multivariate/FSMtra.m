@@ -77,7 +77,7 @@ function out = FSMtra(Y,varargin)
 %               Example - 'onelambda',0
 %               Data Types - double
 %
-%   optmin  :  Optimation options. Structure. It contains the options dealing with the
+%   optmin  :  Optimization options. Structure. It contains the options dealing with the
 %               maximization algorithm.  Use optimset to set
 %               these options. Notice that the maximization algorithm which
 %               is used is fminunc is the optimization toolbox is present
@@ -155,7 +155,7 @@ function out = FSMtra(Y,varargin)
 %               If plotslrt is a scalar, the plot of the monitoring of
 %               likelihood ratio test is produced on the screen with all
 %               default options.
-%               If plotslrt is a strucure, it may contain the following fields:
+%               If plotslrt is a structure, it may contain the following fields:
 %                   plotslrt.xlim     = minimum and maximum on the x axis;
 %                   plotslrt.ylim     = minimum and maximum on the y axis;
 %                   plotslrt.LineWidth= Line width of the trajectory of lrt of
