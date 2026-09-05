@@ -367,8 +367,10 @@ function out = mdMDPtest(Y, varargin)
 %                            largestEigenvalue, numericalTolerance,
 %                            rankThreshold, relativeRankThreshold, rankExponent,
 %                            effectiveSampleSize, effectiveSampleSizeSource,
-%                            rhoLastKept, rhoFirstDiscarded, rankSensitivity,
-%                            nullSpaceResidual, calibration and reason. The
+%                            rhoLastKept, rhoFirstDiscarded, spectralGapRatio,
+%                            lowerThresholdMargin, upperThresholdMargin,
+%                            rankSensitivity, nullSpaceResidual, calibration
+%                            and reason. The
 %                            numerical tolerance is used only to diagnose
 %                            roundoff-level negative eigenvalues; it does not
 %                            determine the statistical rank. Bootstrap
@@ -1715,6 +1717,18 @@ if dispresults
         if isfinite(out.omnibus.rhoFirstDiscarded)
             fprintf('First discarded lambda/lambda1: %.6g\n', ...
                 out.omnibus.rhoFirstDiscarded);
+        end
+        if isfinite(out.omnibus.spectralGapRatio)
+            fprintf('Boundary spectral gap ratio   : %.6g\n', ...
+                out.omnibus.spectralGapRatio);
+        end
+        if isfinite(out.omnibus.lowerThresholdMargin)
+            fprintf('Last-kept / eta margin        : %.6g\n', ...
+                out.omnibus.lowerThresholdMargin);
+        end
+        if isfinite(out.omnibus.upperThresholdMargin)
+            fprintf('Eta / first-discarded margin  : %.6g\n', ...
+                out.omnibus.upperThresholdMargin);
         end
         if out.omnibus.nullSpaceResidual > 1e-6
             fprintf('Relative null-space residual  : %.6g\n', ...
@@ -4290,7 +4304,9 @@ omnibus = struct('available',false,'reason','', ...
     'rankTolerance',NaN,'rankThreshold',NaN,'relativeRankThreshold',NaN, ...
     'rankExponent',rankExponent,'effectiveSampleSize',nEff, ...
     'effectiveSampleSizeSource',nEffSource,'rhoLastKept',NaN, ...
-    'rhoFirstDiscarded',NaN,'rankSensitivity',table(), ...
+    'rhoFirstDiscarded',NaN,'spectralGapRatio',NaN, ...
+    'lowerThresholdMargin',NaN,'upperThresholdMargin',NaN, ...
+    'rankSensitivity',table(), ...
     'nullSpaceResidual',NaN,'calibration','not available', ...
     'theoryStatus',['Rank-selected Hausman-type quadratic estimator-discrepancy ' ...
     'test for the complete-case versus all-available scatter estimators.']);
@@ -4371,10 +4387,27 @@ omnibus.df = r;
 
 if r >= 1
     omnibus.rhoLastKept = rhoEig(r);
+    omnibus.lowerThresholdMargin = omnibus.rhoLastKept/eta;
 end
 if r < s
     omnibus.rhoFirstDiscarded = rhoEig(r+1);
+    if omnibus.rhoFirstDiscarded > 0
+        omnibus.upperThresholdMargin = eta/omnibus.rhoFirstDiscarded;
+        if r >= 1
+            omnibus.spectralGapRatio = ...
+                omnibus.rhoLastKept/omnibus.rhoFirstDiscarded;
+        end
+    elseif r >= 1 && omnibus.rhoFirstDiscarded == 0
+        omnibus.upperThresholdMargin = Inf;
+        omnibus.spectralGapRatio = Inf;
+    end
 end
+
+% Multiplicative rank-separation diagnostics. Values comfortably above one
+% indicate that the last retained eigenvalue lies above the threshold and the
+% first discarded eigenvalue lies below it. spectralGapRatio compares the two
+% boundary eigenvalue ratios directly. These are descriptive finite-sample
+% diagnostics; they do not alter the rank-selection rule.
 
 % Finite-sample sensitivity requested in the paper: eta_n=nEff^(-a) for
 % a in {1/4,1/3,2/5}. Larger a gives a smaller threshold and hence a weakly
