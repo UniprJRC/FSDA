@@ -592,6 +592,20 @@ function out = mdMDPtest(Y, varargin)
 %                            one row per pooled observed dimension, while
 %                            patternDiagnostics reports the corresponding
 %                            poolSize and factorGroup for each pattern.
+%                            For alpha>0, out.asympt.TEM.truncatedMoments is
+%                            an exploratory diagnostic of the patternwise
+%                            truncated-moment isotropy conditions underlying
+%                            scalar TEM Fisher consistency. It projects the
+%                            complete-case reference sample onto every observed
+%                            pattern, applies the raw cutoff implied by the
+%                            fitted TEM threshold, and reports standardized
+%                            retained-location and retained-shape residuals.
+%                            The retained first moments, retained second moments
+%                            and normalized second-moment matrices are also kept
+%                            pattern by pattern for direct inspection.
+%                            The diagnostics are descriptive only and are not
+%                            used to modify fitting, standard errors, p-values
+%                            or the omnibus statistic.
 %                            The fields TDmean and TLmean contain the
 %                            asymptotic variance of sqrt(n)T (sigma2), the
 %                            standard error of T (se), the studentized value
@@ -937,6 +951,7 @@ function out = mdMDPtest(Y, varargin)
     disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
     disp(out.asympt.TDmean)
     disp(out.asympt.TEM.patternDiagnostics)
+    disp(out.asympt.TEM.truncatedMoments.table)
 %}
 
 
@@ -1323,7 +1338,7 @@ else
     elseif strcmp(consistencyfactor,'adaptive')
         asympt = local_tem_adaptive_asymptotic(Y, maskMiss, completeIdx, ...
             outFit, alpha, method, robustClass, robustEff, robustBonflev, ...
-            Tobs, eps0, muCC, SigCC, adaptivepool, adaptiveminref, outRob);
+            Tobs, eps0, muCC, SigCC,adaptivepool,adaptiveminref,outRob);
         asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
             p,eps0,n,Tobs,d2_cc,Ycc,muCC,SigCC);
     else
@@ -1336,6 +1351,20 @@ else
         asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
             p,eps0,n,Tobs,d2_cc,Ycc,muCC,SigCC);
     end
+end
+
+% Patternwise truncated-moment diagnostics. These are deliberately computed
+% after the analytical calibration: they diagnose the population alignment
+% conditions required by a scalar TEM correction but do not enter fitting or
+% inference. In the coupled sensitivity mode the radial cutoff is still
+% diagnosed, while the externally forced eligibility exclusions are reported
+% in the diagnostic status and are not folded into the retained moments.
+if alpha > 0
+    if ~isfield(asympt,'TEM') || ~isstruct(asympt.TEM)
+        asympt.TEM = struct;
+    end
+    asympt.TEM.truncatedMoments = local_truncated_moment_diagnostics( ...
+        Y,maskMiss,completeIdx,outFit,muCC,SigCC,method);
 end
 
 % Complete-Gaussian adaptive-TEM second-order benchmark.  This is exposed
@@ -1927,6 +1956,39 @@ if dispresults
             asympt.inlierScaling.rLI);
     end
 
+    if alpha > 0 && isfield(asympt,'TEM') && isstruct(asympt.TEM) && ...
+            isfield(asympt.TEM,'truncatedMoments') && ...
+            isstruct(asympt.TEM.truncatedMoments)
+        tm = asympt.TEM.truncatedMoments;
+        disp(' ')
+        disp('Patternwise truncated-moment diagnostics (exploratory)')
+        if isfield(tm,'available') && tm.available
+            fprintf('Patterns with usable retained moments : %d of %d\n', ...
+                tm.nDiagnosticPatterns,tm.nPatterns);
+            fprintf('Max retained-location residual       : %.6g\n', ...
+                tm.maxLocationResidual);
+            fprintf('Max retained-shape residual          : %.6g\n', ...
+                tm.maxShapeResidual);
+            fprintf('Pattern-weighted RMS location        : %.6g\n', ...
+                tm.weightedLocationRMS);
+            fprintf('Pattern-weighted RMS shape           : %.6g\n', ...
+                tm.weightedShapeRMS);
+            fprintf('Worst location pattern               : %d\n', ...
+                tm.worstLocationPattern);
+            fprintf('Worst shape pattern                  : %d\n', ...
+                tm.worstShapePattern);
+            disp('Full pattern table: out.asympt.TEM.truncatedMoments.table')
+            if isfield(tm,'eligibilityNote') && ~isempty(tm.eligibilityNote)
+                fprintf('Note: %s\n',tm.eligibilityNote);
+            end
+        else
+            disp('Truncated-moment diagnostics unavailable.')
+            if isfield(tm,'reason') && ~isempty(tm.reason)
+                fprintf('Reason: %s\n',tm.reason);
+            end
+        end
+    end
+
     % Surface analytical failures instead of leaving unexplained NaNs.
     meanAsymUnavailable = all(isnan(out.results.pvalueAsym([2 4])));
     if meanAsymUnavailable
@@ -2221,7 +2283,15 @@ muHat = outFit.loc;
 SigHat = outFit.cov;
 
 [d2_part, poss] = mdPartialMD(Y, muHat, SigHat);
-d2_full = mdPartialMD2full(d2_part, p, poss, 'method', method);
+
+if strcmpi(method,'detMap')
+    d2_full = mdPartialMD2full(d2_part, p, poss, ...
+        'method',method,'Y',Y,'Sigma',SigHat);
+else
+    d2_full = mdPartialMD2full(d2_part, p, poss, ...
+        'method',method);
+end
+
 d2_all_cc = d2_full(completeIdx);
 
 end
@@ -2446,6 +2516,238 @@ else
 end
 
 T = [T1 T2 T3 T4];
+end
+
+% -------------------------------------------------------------------------
+function diagOut = local_truncated_moment_diagnostics(Y,maskMiss,completeIdx, ...
+    outFit,muRef,Sref,method)
+%local_truncated_moment_diagnostics Patternwise retained-moment diagnostics.
+%
+% For pattern g, let Z_g denote the coordinates observed under that pattern,
+% S_g the corresponding block of the complete-case reference scatter, and
+%
+%   Q_g = Z_g' S_g^{-1} Z_g,   A_g = 1(Q_g <= a_g).
+%
+% Scalar TEM Fisher consistency requires, pattern by pattern,
+%
+%   E(Z_g A_g) = 0,
+%   E(Z_g Z_g' A_g) = H_g kappa_g S_g,
+%
+% where H_g=P(A_g=1) and
+% kappa_g=E(Q_g | A_g=1)/p_g. This helper evaluates the direct empirical
+% analogues using the complete-case reference sample projected onto every
+% observed pattern and the raw cutoff a_g implied by the fitted common TEM
+% threshold.
+%
+% The reported residuals are dimensionless:
+%
+%   locationResidual_g = sqrt(m_g' S_g^{-1} m_g / kappa_g),
+%
+% where m_g is the retained conditional mean, and
+%
+%   shapeResidual_g = || S_g^{-1/2} M_g S_g^{-1/2}/kappa_g-I ||_F/sqrt(p_g),
+%
+% where M_g is the retained conditional second moment. Because kappa_g is
+% estimated from the same retained radii, the standardized second moment has
+% unit average eigenvalue by construction; shapeResidual therefore isolates
+% the non-scalar (trace-free) distortion that a scalar correction cannot fix.
+%
+% These quantities are exploratory diagnostics, not test statistics. No
+% universal cutoff or p-value is attached to them, and they are not used for
+% fitting or analytical/bootstrap calibration.
+
+[n,p] = size(Y);
+Ycc = Y(completeIdx,:);
+ncc = size(Ycc,1);
+
+diagOut = struct('available',false,'reason','', ...
+    'table',table(),'nPatterns',0,'nDiagnosticPatterns',0, ...
+    'maxLocationResidual',NaN,'maxShapeResidual',NaN, ...
+    'weightedLocationRMS',NaN,'weightedShapeRMS',NaN, ...
+    'worstLocationPattern',NaN,'worstShapePattern',NaN, ...
+    'usedForCalibration',false,'eligibilityNote','', ...
+    'theoryStatus',['Exploratory empirical diagnostic of patternwise ' ...
+    'truncated-moment isotropy; no formal sampling reference is imposed.']);
+diagOut.retainedFirstMoments = {};
+diagOut.retainedSecondMoments = {};
+diagOut.normalizedSecondMoments = {};
+diagOut.shapeEigenRatios = {};
+
+if ncc == 0
+    diagOut.reason = 'No complete-case reference observations are available.';
+    return
+end
+
+muRef = muRef(:);
+Sref = (Sref+Sref')/2;
+if numel(muRef) ~= p || ~isequal(size(Sref),[p p]) || ...
+        any(~isfinite(muRef)) || any(~isfinite(Sref(:))) || rcond(Sref) <= 1e-12
+    diagOut.reason = 'The complete-case reference geometry is invalid or singular.';
+    return
+end
+
+supportedMethods = {'pri','expScale','zMap','chiMap','betaMap'};
+if ~any(strcmpi(method,supportedMethods))
+    diagOut.reason = ['Truncated-moment diagnostics currently require a ' ...
+        'parameter-free monotone distance mapping: ''pri'', ''expScale'', ' ...
+        '''zMap'', ''chiMap'' or ''betaMap''.'];
+    return
+end
+
+if isempty(outFit) || ~isstruct(outFit)
+    diagOut.reason = 'The fitted TEM object is unavailable.';
+    return
+end
+
+cthr = NaN;
+if isfield(outFit,'cthr') && isscalar(outFit.cthr) && isfinite(outFit.cthr)
+    cthr = outFit.cthr;
+elseif isfield(outFit,'adjustedD2') && numel(outFit.adjustedD2)==n && ...
+        isfield(outFit,'weights') && numel(outFit.weights)==n
+    ww = outFit.weights(:)>0;
+    dd = outFit.adjustedD2(:);
+    okthr = ww & isfinite(dd);
+    if any(okthr)
+        cthr = max(dd(okthr));
+    end
+end
+if ~isfinite(cthr)
+    diagOut.reason = 'Unable to reconstruct the fitted TEM trimming threshold.';
+    return
+end
+
+if isfield(outFit,'forcedZero') && any(outFit.forcedZero(:))
+    diagOut.eligibilityNote = ['Coupled external eligibility exclusions are ' ...
+        'not part of this radial-cutoff moment diagnostic.'];
+end
+
+[patt,~,ic] = unique(maskMiss,'rows');
+G = size(patt,1);
+diagOut.nPatterns = G;
+
+Pattern = (1:G)';
+pobs = zeros(G,1);
+nPattern = zeros(G,1);
+piPattern = zeros(G,1);
+athr = NaN(G,1);
+nref = ncc*ones(G,1);
+nrefkept = zeros(G,1);
+HTrunc = NaN(G,1);
+kappaTrunc = NaN(G,1);
+locationResidual = NaN(G,1);
+shapeResidual = NaN(G,1);
+minShapeEigenRatio = NaN(G,1);
+maxShapeEigenRatio = NaN(G,1);
+maxShapeEigenDeviation = NaN(G,1);
+scaleIdentityResidual = NaN(G,1);
+usable = false(G,1);
+retainedFirstMoments = cell(G,1);
+retainedSecondMoments = cell(G,1);
+normalizedSecondMoments = cell(G,1);
+shapeEigenRatios = cell(G,1);
+
+for g = 1:G
+    obs = find(~patt(g,:));
+    pg = numel(obs);
+    pobs(g) = pg;
+    nPattern(g) = sum(ic==g);
+    piPattern(g) = nPattern(g)/n;
+
+    if pg == 0
+        continue
+    end
+
+    ag = local_tem_inv_adjust(cthr,pg,p,n,method);
+    athr(g) = ag;
+    if ~isfinite(ag) || ag <= 0
+        continue
+    end
+
+    Sg = Sref(obs,obs);
+    Sg = (Sg+Sg')/2;
+    [Rg,flagG] = chol(Sg,'lower');
+    if flagG ~= 0 || rcond(Sg) <= 1e-12
+        continue
+    end
+    Bg = Sg\eye(pg);
+    Bg = (Bg+Bg')/2;
+
+    Zg = Ycc(:,obs)-muRef(obs)';
+    qg = sum((Zg*Bg).*Zg,2);
+    inside = isfinite(qg) & qg >= 0 & qg <= ag;
+    ng = sum(inside);
+    nrefkept(g) = ng;
+    HTrunc(g) = ng/ncc;
+    if ng < 1
+        continue
+    end
+
+    Zret = Zg(inside,:);
+    qret = qg(inside);
+    kg = mean(qret)/pg;
+    kappaTrunc(g) = kg;
+    if ~isfinite(kg) || kg <= 0
+        continue
+    end
+
+    mg = mean(Zret,1)';
+    Mg = (Zret'*Zret)/ng;
+    Mg = (Mg+Mg')/2;
+    retainedFirstMoments{g} = mg;
+    retainedSecondMoments{g} = Mg;
+
+    loc2 = real(mg'*Bg*mg)/kg;
+    locationResidual(g) = sqrt(max(loc2,0));
+
+    Mstd = Rg\Mg/Rg';
+    Mstd = (Mstd+Mstd')/2;
+    shapeRatio = Mstd/kg;
+    shapeRatio = (shapeRatio+shapeRatio')/2;
+    shapeResidual(g) = norm(shapeRatio-eye(pg),'fro')/sqrt(pg);
+
+    ee = real(eig(shapeRatio));
+    normalizedSecondMoments{g} = shapeRatio;
+    shapeEigenRatios{g} = ee;
+    minShapeEigenRatio(g) = min(ee);
+    maxShapeEigenRatio(g) = max(ee);
+    maxShapeEigenDeviation(g) = max(abs(ee-1));
+    scaleIdentityResidual(g) = abs(trace(shapeRatio)/pg-1);
+    usable(g) = true;
+end
+
+diagTable = table(Pattern,pobs,nPattern,piPattern,athr,nref,nrefkept, ...
+    HTrunc,kappaTrunc,locationResidual,shapeResidual,minShapeEigenRatio, ...
+    maxShapeEigenRatio,maxShapeEigenDeviation,scaleIdentityResidual,usable);
+diagOut.table = diagTable;
+diagOut.retainedFirstMoments = retainedFirstMoments;
+diagOut.retainedSecondMoments = retainedSecondMoments;
+diagOut.normalizedSecondMoments = normalizedSecondMoments;
+diagOut.shapeEigenRatios = shapeEigenRatios;
+
+if ~any(usable)
+    diagOut.reason = ['No pattern has finite retained first and second moments ' ...
+        'at the fitted TEM cutoff.'];
+    return
+end
+
+idx = find(usable);
+diagOut.available = true;
+diagOut.reason = '';
+diagOut.nDiagnosticPatterns = numel(idx);
+
+[diagOut.maxLocationResidual,jloc] = max(locationResidual(idx));
+[diagOut.maxShapeResidual,jshape] = max(shapeResidual(idx));
+diagOut.worstLocationPattern = Pattern(idx(jloc));
+diagOut.worstShapePattern = Pattern(idx(jshape));
+
+wg = piPattern(idx);
+sw = sum(wg);
+if sw > 0
+    diagOut.weightedLocationRMS = ...
+        sqrt(sum(wg.*locationResidual(idx).^2)/sw);
+    diagOut.weightedShapeRMS = ...
+        sqrt(sum(wg.*shapeResidual(idx).^2)/sw);
+end
 end
 
 % -------------------------------------------------------------------------
@@ -4643,7 +4945,6 @@ else
     end
 end
 end
-
 % -------------------------------------------------------------------------
 function Calibration = local_calibration_labels(alpha,aggregation, ...
     consistencyfactor,coupledtrim)
@@ -4947,7 +5248,6 @@ end
 % -------------------------------------------------------------------------
 function asympt = local_unavailable_asymptotic(qhat)
 %local_unavailable_asymptotic Initialize analytical benchmark output.
-
 asympt = struct;
 asympt.available = false;
 asympt.reason = 'Analytical benchmark is not available for this configuration.';
