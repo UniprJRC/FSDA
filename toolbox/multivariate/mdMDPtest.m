@@ -117,6 +117,31 @@ function out = mdMDPtest(Y, varargin)
 %            Example - 'adaptiveminref',10
 %            Data Types - double
 %
+% omnibusrankexp : Exponent used by the statistical spectral rank rule for
+%            the Hausman-type omnibus statistic. Scalar in the open interval
+%            (0,0.5). The default is 1/3. If lambda_1 is the largest estimated
+%            eigenvalue of the scatter-discrepancy covariance, the relative
+%            threshold is
+%
+%                eta_n = nEff^(-omnibusrankexp)
+%
+%            and eigenvalue j is retained when lambda_j/lambda_1 > eta_n.
+%            The values 1/4, 1/3 and 2/5 are also reported as sensitivity
+%            diagnostics in out.omnibus.rankSensitivity.
+%            Example - 'omnibusrankexp',0.4
+%            Data Types - double
+%
+% omnibusneff : Effective sample size used by the statistical spectral rank
+%            threshold. Character vector, string scalar or numeric scalar.
+%            The default is 'n'. Possible character values are 'n' and
+%            'complete'. With 'n', nEff is the total number of observations.
+%            With 'complete', nEff is the number of complete cases. A numeric
+%            scalar greater than one can be supplied directly. The option
+%            affects only omnibus spectral rank selection; it does not change
+%            fitting, scalar MDP statistics or the discrepancy covariance.
+%            Example - 'omnibusneff','complete'
+%            Data Types - char | string | double
+%
 % bootstrap : Add mask-preserving full-pipeline bootstrap calibration.
 %            Logical scalar. The default is false. The analytical p-values
 %            for the two mean statistics are evaluated independently of this
@@ -333,13 +358,22 @@ function out = mdMDPtest(Y, varargin)
 %                            where ^+ denotes the Moore-Penrose inverse. Under
 %                            the corresponding analytical MCAR reference,
 %                            H is asymptotically chi-square with degrees of
-%                            freedom equal to rank(OmegaDelta). Fields include
+%                            freedom equal to the statistically selected
+%                            spectral rank. The rank rule retains eigenvalue j
+%                            when lambda_j/lambda_1 exceeds
+%                            eta_n=nEff^(-omnibusrankexp). Fields include
 %                            available, stat, df, pvalue, delta, OmegaDelta,
-%                            eigenvalues, rankTolerance, nullSpaceResidual,
-%                            calibration and reason. The omnibus test is an
-%                            analytical diagnostic; bootstrap calibration of
-%                            this quadratic statistic is not currently
-%                            computed.
+%                            OmegaDeltaPlus, eigenvalues, relativeEigenvalues,
+%                            largestEigenvalue, numericalTolerance,
+%                            rankThreshold, relativeRankThreshold, rankExponent,
+%                            effectiveSampleSize, effectiveSampleSizeSource,
+%                            rhoLastKept, rhoFirstDiscarded, rankSensitivity,
+%                            nullSpaceResidual, calibration and reason. The
+%                            numerical tolerance is used only to diagnose
+%                            roundoff-level negative eigenvalues; it does not
+%                            determine the statistical rank. Bootstrap
+%                            calibration of this quadratic statistic is not
+%                            currently computed.
 %          out.resultsOmnibus = 1 x 4 table containing Stat, df, pvalue and
 %                            Calibration for the Hausman-type omnibus test.
 %                            NaNs are returned when its analytical covariance
@@ -360,6 +394,10 @@ function out = mdMDPtest(Y, varargin)
 %                            requested. It is relevant only when alpha>0.
 %          out.adaptivepool = Logical adaptive pooling option.
 %          out.adaptiveminref = Minimum adaptive reference count.
+%          out.omnibusrankexp = Exponent used by the omnibus spectral rank
+%                            rule. The default is 1/3.
+%          out.omnibusneff = Effective-sample-size specification used by the
+%                            omnibus spectral rank rule.
 %          out.TEMkfactor  = Scalar summary of the final TEM consistency
 %                            correction. NaN for alpha=0.
 %          out.TEMkinfo    = Final pattern-wise TEM consistency-factor
@@ -946,6 +984,8 @@ options.coupledtrim = false;
 options.consistencyfactor = 'adaptive';
 options.adaptivepool = true;
 options.adaptiveminref = 20;
+options.omnibusrankexp = 1/3;
+options.omnibusneff = 'n';
 
 % Check supplied options
 if ~isempty(varargin)
@@ -981,6 +1021,8 @@ coupledtrim = options.coupledtrim;
 consistencyfactor = local_parse_consistencyfactor(options.consistencyfactor);
 adaptivepool = options.adaptivepool;
 adaptiveminref = options.adaptiveminref;
+omnibusrankexp = options.omnibusrankexp;
+omnibusneff = options.omnibusneff;
 
 if ~isscalar(alpha) || ~isnumeric(alpha) || alpha < 0 || alpha > 0.5
     error('FSDA:mdMDPtest:WrongInputOpt', ...
@@ -1056,6 +1098,13 @@ if ~isscalar(adaptiveminref) || ~isnumeric(adaptiveminref) || ...
         'Option adaptiveminref must be a positive integer.');
 end
 
+if ~isscalar(omnibusrankexp) || ~isnumeric(omnibusrankexp) || ...
+        ~isfinite(omnibusrankexp) || omnibusrankexp <= 0 || ...
+        omnibusrankexp >= 0.5
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'Option omnibusrankexp must be a finite scalar in the open interval (0,0.5).');
+end
+
 if coupledtrim && ~strcmp(consistencyfactor,'pattern')
     error('FSDA:mdMDPtest:CoupledConsistencyFactor', ...
         ['The current coupledtrim sensitivity implementation supports only ' ...
@@ -1088,6 +1137,11 @@ end
 maskMiss = isnan(Y);
 completeIdx = all(~maskMiss,2);
 nComplete = sum(completeIdx);
+
+% Resolve the effective sample size used only by the omnibus spectral rank
+% threshold. This does not alter fitting or the discrepancy covariance.
+[nEffOmnibus,nEffOmnibusSource,omnibusneff] = ...
+    local_resolve_omnibus_neff(omnibusneff,n,nComplete);
 
 if nComplete < p + 2
     error('FSDA:mdMDPtest:TooFewCompleteRows', ...
@@ -1255,7 +1309,8 @@ end
 % the final mean aggregation rule because it compares the two fitted scatter
 % estimators themselves.
 omnibus = local_omnibus_test(asympt,SigHat,SigCC,n,alpha, ...
-    consistencyfactor,coupledtrim);
+    consistencyfactor,coupledtrim,omnibusrankexp,nEffOmnibus, ...
+    nEffOmnibusSource);
 
 % Assemble the cheap analytical p-value vector in the same order as Tobs.
 % The present analytical theory concerns the two mean statistics only.
@@ -1495,6 +1550,8 @@ out.method      = method;
 out.consistencyfactor = consistencyfactor;
 out.adaptivepool = adaptivepool;
 out.adaptiveminref = adaptiveminref;
+out.omnibusrankexp = omnibusrankexp;
+out.omnibusneff = omnibusneff;
 if isfield(outFit,'kfactor')
     out.TEMkfactor = outFit.kfactor;
 else
@@ -1644,6 +1701,21 @@ if dispresults
         disp(out.resultsOmnibus)
         fprintf('Estimated discrepancy rank    : %d of %d\n', ...
             out.omnibus.rank,out.omnibus.dimension);
+        fprintf('Omnibus effective sample size : %g (%s)\n', ...
+            out.omnibus.effectiveSampleSize, ...
+            out.omnibus.effectiveSampleSizeSource);
+        fprintf('Relative rank threshold eta_n : %.6g\n', ...
+            out.omnibus.relativeRankThreshold);
+        fprintf('Absolute eigenvalue threshold : %.6g\n', ...
+            out.omnibus.rankThreshold);
+        if isfinite(out.omnibus.rhoLastKept)
+            fprintf('Last retained lambda/lambda1  : %.6g\n', ...
+                out.omnibus.rhoLastKept);
+        end
+        if isfinite(out.omnibus.rhoFirstDiscarded)
+            fprintf('First discarded lambda/lambda1: %.6g\n', ...
+                out.omnibus.rhoFirstDiscarded);
+        end
         if out.omnibus.nullSpaceResidual > 1e-6
             fprintf('Relative null-space residual  : %.6g\n', ...
                 out.omnibus.nullSpaceResidual);
@@ -1965,6 +2037,52 @@ SigHat = outFit.cov;
 d2_full = mdPartialMD2full(d2_part, p, poss, 'method', method);
 d2_all_cc = d2_full(completeIdx);
 
+end
+
+% -------------------------------------------------------------------------
+function [nEff,source,spec] = local_resolve_omnibus_neff(spec,n,nComplete)
+%local_resolve_omnibus_neff resolves the effective sample size for rank selection.
+%
+% The statistical rank threshold is eta_n=nEff^(-a). The choice of nEff
+% affects only the spectral threshold used by the omnibus statistic.
+
+if isstring(spec)
+    if ~isscalar(spec)
+        error('FSDA:mdMDPtest:WrongInputOpt', ...
+            'Option omnibusneff must be ''n'', ''complete'' or a numeric scalar greater than one.');
+    end
+    spec = char(spec);
+end
+
+if ischar(spec)
+    if size(spec,1) ~= 1
+        error('FSDA:mdMDPtest:WrongInputOpt', ...
+            'Option omnibusneff must be ''n'', ''complete'' or a numeric scalar greater than one.');
+    end
+    spec = lower(strtrim(spec));
+    switch spec
+        case 'n'
+            nEff = n;
+            source = 'n';
+        case 'complete'
+            nEff = nComplete;
+            source = 'complete';
+        otherwise
+            error('FSDA:mdMDPtest:WrongInputOpt', ...
+                'Option omnibusneff must be ''n'', ''complete'' or a numeric scalar greater than one.');
+    end
+elseif isnumeric(spec) && isscalar(spec) && isfinite(spec) && spec > 1
+    nEff = double(spec);
+    source = 'numeric';
+else
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'Option omnibusneff must be ''n'', ''complete'' or a numeric scalar greater than one.');
+end
+
+if ~isfinite(nEff) || nEff <= 1
+    error('FSDA:mdMDPtest:WrongInputOpt', ...
+        'The effective sample size used by the omnibus rank rule must exceed one.');
+end
 end
 
 % -------------------------------------------------------------------------
@@ -4142,28 +4260,40 @@ end
 
 % -------------------------------------------------------------------------
 function omnibus = local_omnibus_test(asympt,SigA,SigC,n,alpha, ...
-    consistencyfactor,coupledtrim)
-%local_omnibus_test Hausman-type quadratic scatter-discrepancy diagnostic.
+    consistencyfactor,coupledtrim,rankExponent,nEff,nEffSource)
+%local_omnibus_test Rank-selected Hausman scatter-discrepancy diagnostic.
 %
-% Let delta=vech(SigA-SigC) and let OmegaDelta denote the asymptotic
-% covariance of sqrt(n)*delta. The statistic
+% Let delta=vech(SigA-SigC) and let OmegaDelta estimate the asymptotic
+% covariance of sqrt(n)*delta. If lambda_1 >= ... >= lambda_s >= 0 are the
+% eigenvalues of OmegaDelta, define
 %
-%   H = n*delta'*OmegaDelta^+*delta
+%   eta_n = nEff^(-rankExponent),
+%   tau_n = eta_n*lambda_1,
 %
-% has an asymptotic chi-square distribution with degrees of freedom equal to
-% rank(OmegaDelta) under the corresponding MCAR reference. A spectral
-% Moore-Penrose inverse is used so that structurally singular discrepancy
-% covariances are handled explicitly rather than by an arbitrary ridge.
+% and retain eigenvalue j when lambda_j/lambda_1 > eta_n. The statistic is
+%
+%   H = n*delta'*OmegaDelta_eta^+*delta,
+%
+% where OmegaDelta_eta^+ inverts only the statistically retained spectral
+% subspace. Its analytical null reference is chi-square with degrees of
+% freedom equal to the selected rank. A machine-precision tolerance is used
+% only to diagnose numerical non-positive-semidefiniteness; it does not
+% determine the statistical rank.
 
 p = size(SigA,1);
 s = p*(p+1)/2;
 omnibus = struct('available',false,'reason','', ...
     'stat',NaN,'df',NaN,'pvalue',NaN,'rank',0,'dimension',s, ...
     'delta',NaN(s,1),'OmegaDelta',NaN(s,s),'OmegaDeltaPlus',NaN(s,s), ...
-    'eigenvalues',NaN(s,1),'rankTolerance',NaN, ...
+    'eigenvalues',NaN(s,1),'relativeEigenvalues',NaN(s,1), ...
+    'largestEigenvalue',NaN,'numericalTolerance',NaN, ...
+    'rankTolerance',NaN,'rankThreshold',NaN,'relativeRankThreshold',NaN, ...
+    'rankExponent',rankExponent,'effectiveSampleSize',nEff, ...
+    'effectiveSampleSizeSource',nEffSource,'rhoLastKept',NaN, ...
+    'rhoFirstDiscarded',NaN,'rankSensitivity',table(), ...
     'nullSpaceResidual',NaN,'calibration','not available', ...
-    'theoryStatus',['Hausman-type quadratic estimator-discrepancy test for ' ...
-    'the complete-case versus all-available scatter estimators.']);
+    'theoryStatus',['Rank-selected Hausman-type quadratic estimator-discrepancy ' ...
+    'test for the complete-case versus all-available scatter estimators.']);
 
 if ~isequal(size(SigA),size(SigC)) || size(SigA,2)~=p || ...
         any(~isfinite(SigA(:))) || any(~isfinite(SigC(:)))
@@ -4188,35 +4318,80 @@ end
 Omega = (asympt.OmegaDelta+asympt.OmegaDelta')/2;
 omnibus.OmegaDelta = Omega;
 
-% Spectral rank and generalized inverse. The tolerance follows the scale of
-% the largest covariance eigenvalue and is shared by the rank and inverse.
+% Eigenvalues and a purely numerical tolerance. The numerical tolerance is
+% deliberately separated from the statistical spectral threshold below.
 [V,Dmat] = eig(Omega);
 D = real(diag(Dmat));
 V = real(V);
-maxEig = max(abs(D));
-if isempty(maxEig) || ~isfinite(maxEig) || maxEig <= 0
+maxAbsEig = max(abs(D));
+if isempty(maxAbsEig) || ~isfinite(maxAbsEig) || maxAbsEig <= 0
     omnibus.reason = 'The estimated discrepancy covariance is numerically zero.';
     return
 end
-rankTol = max(s,1)*eps(maxEig);
-omnibus.rankTolerance = rankTol;
+numericalTol = max(s,1)*eps(maxAbsEig);
+omnibus.numericalTolerance = numericalTol;
+% Backward-compatible field name: it now stores only the numerical tolerance,
+% not the statistical rank threshold.
+omnibus.rankTolerance = numericalTol;
 
-% A covariance estimate can have tiny negative eigenvalues from roundoff,
-% but a materially negative eigenvalue signals an invalid sandwich matrix.
-if any(D < -100*rankTol)
+% Tiny negative eigenvalues can arise from roundoff. A materially negative
+% eigenvalue signals an invalid estimated sandwich matrix.
+if any(D < -100*numericalTol)
     omnibus.eigenvalues = sort(D,'descend');
     omnibus.reason = ['The estimated discrepancy covariance is not positive ' ...
         'semidefinite within numerical tolerance.'];
     return
 end
 D(D < 0) = 0;
-keep = D > rankTol;
+
+% Sort the eigensystem in descending order so that boundary ratios and the
+% sensitivity table have a deterministic interpretation.
+[D,ord] = sort(D,'descend');
+V = V(:,ord);
+lambda1 = D(1);
+if ~isfinite(lambda1) || lambda1 <= numericalTol
+    omnibus.eigenvalues = D;
+    omnibus.reason = 'The estimated discrepancy covariance has numerical rank zero.';
+    return
+end
+
+rhoEig = D/lambda1;
+eta = nEff^(-rankExponent);
+rankThreshold = eta*lambda1;
+keep = rhoEig > eta;
 r = sum(keep);
+
+omnibus.eigenvalues = D;
+omnibus.relativeEigenvalues = rhoEig;
+omnibus.largestEigenvalue = lambda1;
+omnibus.relativeRankThreshold = eta;
+omnibus.rankThreshold = rankThreshold;
 omnibus.rank = r;
 omnibus.df = r;
-omnibus.eigenvalues = sort(D,'descend');
+
+if r >= 1
+    omnibus.rhoLastKept = rhoEig(r);
+end
+if r < s
+    omnibus.rhoFirstDiscarded = rhoEig(r+1);
+end
+
+% Finite-sample sensitivity requested in the paper: eta_n=nEff^(-a) for
+% a in {1/4,1/3,2/5}. Larger a gives a smaller threshold and hence a weakly
+% larger selected rank.
+expSens = [1/4;1/3;2/5];
+etaSens = nEff.^(-expSens);
+thrSens = etaSens*lambda1;
+rankSens = zeros(numel(expSens),1);
+for jj = 1:numel(expSens)
+    rankSens(jj) = sum(rhoEig > etaSens(jj));
+end
+omnibus.rankSensitivity = table(expSens,etaSens,thrSens,rankSens, ...
+    'VariableNames',{'Exponent','Eta','Threshold','Rank'});
+
 if r == 0
-    omnibus.reason = 'The estimated discrepancy covariance has numerical rank zero.';
+    omnibus.reason = ['The statistical spectral threshold retains no ' ...
+        'scatter-discrepancy direction.'];
     return
 end
 
@@ -4235,9 +4410,8 @@ if ~isfinite(H) || H < 0
     return
 end
 
-% Component of the observed discrepancy outside the estimated covariance
-% range. It is not included in the Moore-Penrose quadratic form and is
-% reported as a numerical/structural diagnostic.
+% Component of the observed discrepancy outside the statistically selected
+% covariance range. It is not included in the thresholded quadratic form.
 projDelta = Vr*(Vr'*deltaHat);
 omnibus.nullSpaceResidual = norm(deltaHat-projDelta)/max(norm(deltaHat),eps);
 
@@ -4250,16 +4424,16 @@ if ~omnibus.available
 end
 
 if alpha == 0
-    omnibus.calibration = 'general-F scatter-discrepancy sandwich';
+    omnibus.calibration = 'rank-selected general-F scatter-discrepancy sandwich';
 elseif strcmp(consistencyfactor,'adaptive')
-    omnibus.calibration = 'adaptive elliptical scatter-discrepancy sandwich';
+    omnibus.calibration = 'rank-selected adaptive elliptical scatter-discrepancy sandwich';
 elseif strcmp(consistencyfactor,'pattern') && coupledtrim
-    omnibus.calibration = ['Gaussian pattern scatter-discrepancy sandwich ' ...
-        '(frozen eligibility)'];
+    omnibus.calibration = ['rank-selected Gaussian pattern scatter-discrepancy ' ...
+        'sandwich (frozen eligibility)'];
 elseif strcmp(consistencyfactor,'pattern')
-    omnibus.calibration = 'Gaussian pattern scatter-discrepancy sandwich';
+    omnibus.calibration = 'rank-selected Gaussian pattern scatter-discrepancy sandwich';
 else
-    omnibus.calibration = 'scatter-discrepancy sandwich';
+    omnibus.calibration = 'rank-selected scatter-discrepancy sandwich';
 end
 omnibus.reason = '';
 end
