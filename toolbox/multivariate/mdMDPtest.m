@@ -234,11 +234,14 @@ function out = mdMDPtest(Y, varargin)
 %           'inlier' computes the two mean statistics using only complete
 %           cases not declared as outliers by the selected robust
 %           complete-case estimator (MDP-I). This is the recommended robust
-%           aggregation rule and requires alpha>0. Under an elliptical
-%           common-target model and a stable radial limiting inlier rule, its
-%           analytical calibration permits a nonvanishing excluded fraction
-%           through the empirical multipliers rI and rLI returned in
-%           out.asympt.inlierScaling.
+%           aggregation rule and requires alpha>0. Its primary analytical
+%           calibration uses generic retained-moment directions bI,aI for
+%           TDmean and their weighted analogues bLI,aLI for TLmean, propagated
+%           through the joint location--scatter estimator-discrepancy sandwich.
+%           The excluded fraction may converge to a positive constant under
+%           the stable-inlier conditions. The scalar radial multipliers rI
+%           and rLI are retained in out.asympt.inlierScaling only as the
+%           retained-moment proportionality special case.
 %
 %           'fixed' computes the two mean statistics using only complete
 %           cases whose complete-case squared Mahalanobis distance is not
@@ -506,11 +509,15 @@ function out = mdMDPtest(Y, varargin)
 %          out.cov          = Estimated scatter from EM/TEM fit on all data.
 %          out.eps0        = Numerical stabilizer used in the log-distance
 %                            ratio.
-%          out.asympt.inlierScaling = Stable-inlier radial diagnostics when
-%                            aggregation='inlier'. Fields include rI, rLI,
-%                            TLtoTDRatio, the retained/excluded fractions and
-%                            the complete-case radial moments used to estimate
-%                            the multipliers.
+%          out.asympt.inlierScaling = Stable-inlier retained-moment diagnostics
+%                            when aggregation='inlier'. The primary generic
+%                            directions bI,aI and bLI,aLI, together with the
+%                            retained moments mI,MI,mLI,MLI, are returned.
+%                            The fields rI, rLI and TLtoTDRatio remain as the
+%                            proportional-moment radial special case. Additional
+%                            fields quantify empirical departures from zero
+%                            retained first moments and proportional retained
+%                            second moments.
 %          out.asympt      = Structure containing the analytical
 %                            benchmark for the two selected mean statistics.
 %                            For alpha=0 and aggregation='ordinary', TDmean
@@ -535,14 +542,14 @@ function out = mdMDPtest(Y, varargin)
 %                            returned in out.asympt.generalF for diagnostics.
 %                            For MDP-U the ordinary first-order coefficients
 %                            are used. For MDP-I, a stable estimator-induced
-%                            radial inlier rule is allowed to exclude a
-%                            nonvanishing fraction of complete cases. The
-%                            ordinary estimator-discrepancy variance is then
-%                            multiplied by rI^2 for TDmean and rLI^2 for
-%                            TLmean, where rI and rLI are estimated from the
-%                            robust complete-case squared distances. These
-%                            diagnostics are returned in
-%                            out.asympt.inlierScaling. For MDP-F the base
+%                            inlier rule may exclude a nonvanishing fraction
+%                            of complete cases. The primary variance uses the
+%                            generic retained-moment directions bI,aI (and
+%                            bLI,aLI for TLmean) with the joint location--scatter
+%                            estimator-discrepancy covariance. The former rI^2
+%                            and rLI^2 scalar rescalings are still returned as
+%                            the proportional-moment special case, but are not
+%                            used for the primary MDP-I p-values. For MDP-F the base
 %                            variance is multiplied by kc^2 for TDmean and by
 %                            lambda^2 for TLmean. For the Gaussian pattern
 %                            branch, kc=F_{p+2}(c)/F_p(c). For the adaptive
@@ -552,11 +559,12 @@ function out = mdMDPtest(Y, varargin)
 %                            kc, lambda, baseSigmaD2 and baseKappa document the
 %                            applied scaling.
 %                            out.asympt.inlierScaling is a structure with
-%                            fields available, nComplete, nSelected,
-%                            fractionSelected, fractionExcluded, rI,
-%                            rLI, TLtoTDRatio, meanQAll, meanQInlier
-%                            and meanStabilizedQInlier. It is relevant
-%                            when aggregation='inlier'. For
+%                            fields available, genericAvailable, nComplete,
+%                            nSelected, fractionSelected, fractionExcluded,
+%                            mI, MI, bI, aI, mLI, MLI, bLI, aLI, together with
+%                            rI, rLI, TLtoTDRatio and radial/proportionality
+%                            diagnostics. It is relevant when
+%                            aggregation='inlier'. For
 %                            alpha>0 and method equal to 'pri',
 %                            'expScale', 'zMap', 'chiMap' or 'betaMap', the
 %                            Gaussian pattern-wise TEM influence function is
@@ -702,10 +710,12 @@ function out = mdMDPtest(Y, varargin)
 %  For alpha>0 the analytical benchmark follows the selected mean aggregation.
 %  The Gaussian pattern branch uses Tallis coefficients, whereas the adaptive
 %  branch uses empirical elliptical radial coefficients. Under an elliptical
-%  common-target model and a stable estimator-induced radial inlier rule,
-%  MDP-I permits a nonvanishing excluded fraction. Its TDmean and TLmean
-%  variances use the empirical multipliers rI^2 and rLI^2, respectively.
-%  Sparse exclusion is the special case rI=1 and rLI=baseKappa. MDP-F
+%  stable estimator-induced inlier rule, MDP-I permits a nonvanishing
+%  excluded fraction. The generic calibration uses retained first and second
+%  moments directly, so a non-centrally-symmetric retained distribution may
+%  contribute a first-order location term. When retained first moments vanish
+%  and retained second moments are proportional to the common target, this
+%  reduces to the scalar rI^2 and rLI^2 radial rescalings. MDP-F
 %  multiplies the base
 %  mean-difference variance by kc^2 and the base stabilized-log-ratio variance
 %  by the appropriate truncated radial coefficient lambda^2. When
@@ -764,7 +774,7 @@ function out = mdMDPtest(Y, varargin)
     out = mdMDPtest(X,'alpha',0.25);
     % Display the observed statistics and asymptotic p-values with row names.
     disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
-    % Display the stable-inlier radial multipliers used by MDP-I.
+    % Display the generic retained-moment directions and radial special-case diagnostics.
     disp(out.asympt.inlierScaling)
 %}
 
@@ -1278,9 +1288,9 @@ if coupledtrim
         alpha, method, robustClass, robustEff, robustBonflev, ...
         Tobs, eps0, outRob, ~forcedZeroTEM);
     asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
-        p,eps0,n,Tobs,d2_cc);
-    asympt.mode = ['TEM influence-function sandwich with stable-inlier ' ...
-        'radial scaling (frozen eligibility)'];
+        p,eps0,n,Tobs,d2_cc,Ycc,muCC,SigCC);
+    asympt.mode = ['TEM influence-function sandwich with generic stable-inlier ' ...
+        'retained-moment calibration (frozen eligibility)'];
     asympt.theoryStatus = [asympt.theoryStatus ' With coupledtrim=true, ' ...
         'the realized complete-case eligibility mask is treated as fixed; ' ...
         'the variability induced by its data-dependent construction is not ' ...
@@ -1302,20 +1312,20 @@ else
         % scaling of the former analytical benchmark.
         if ~preferGeneralF
             asympt = local_apply_aggregation_asymptotic(asympt,aggregation, ...
-                aggInfo,p,eps0,n,Tobs,d2_cc);
+                aggInfo,p,eps0,n,Tobs,d2_cc,Ycc,muCC,SigCC);
         end
     elseif strcmp(consistencyfactor,'pattern')
         asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
             alpha, method, robustClass, robustEff, robustBonflev, ...
             Tobs, eps0, outRob, []);
         asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
-            p,eps0,n,Tobs,d2_cc);
+            p,eps0,n,Tobs,d2_cc,Ycc,muCC,SigCC);
     elseif strcmp(consistencyfactor,'adaptive')
         asympt = local_tem_adaptive_asymptotic(Y, maskMiss, completeIdx, ...
             outFit, alpha, method, robustClass, robustEff, robustBonflev, ...
             Tobs, eps0, muCC, SigCC, adaptivepool, adaptiveminref, outRob);
         asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
-            p,eps0,n,Tobs,d2_cc);
+            p,eps0,n,Tobs,d2_cc,Ycc,muCC,SigCC);
     else
         asympt = local_unavailable_asymptotic(nComplete/n);
         asympt.reason = ['For alpha>0 the analytical TEM benchmark is ' ...
@@ -1324,7 +1334,7 @@ else
         asympt.mode = 'TEM bootstrap calibration';
         asympt.theoryStatus = 'Bootstrap calibration for the selected TEM correction.';
         asympt = local_apply_aggregation_asymptotic(asympt,aggregation,aggInfo, ...
-            p,eps0,n,Tobs,d2_cc);
+            p,eps0,n,Tobs,d2_cc,Ycc,muCC,SigCC);
     end
 end
 
@@ -1906,9 +1916,14 @@ if dispresults
             asympt.inlierScaling.available
         fprintf('Stable-inlier retained fraction : %.6g\n', ...
             asympt.inlierScaling.fractionSelected);
-        fprintf('TD radial multiplier rI         : %.6g\n', ...
+        fprintf('MDP-I analytical direction      : generic retained moments\n');
+        fprintf('TD retained first-moment norm   : %.6g\n', ...
+            asympt.inlierScaling.firstMomentMahalanobis);
+        fprintf('TD retained shape residual      : %.6g\n', ...
+            asympt.inlierScaling.secondMomentShapeResidual);
+        fprintf('TD radial special-case rI       : %.6g\n', ...
             asympt.inlierScaling.rI);
-        fprintf('TL radial multiplier rLI        : %.6g\n', ...
+        fprintf('TL radial special-case rLI      : %.6g\n', ...
             asympt.inlierScaling.rLI);
     end
 
@@ -2434,61 +2449,102 @@ T = [T1 T2 T3 T4];
 end
 
 % -------------------------------------------------------------------------
-function [info,reason] = local_stable_inlier_scaling(d2cc,weights,eps0)
-%local_stable_inlier_scaling Empirical radial multipliers for MDP-I.
+function [info,reason] = local_stable_inlier_scaling(Ycc,mu0,S0,weights,eps0)
+%local_stable_inlier_scaling Generic retained-moment directions for MDP-I.
 %
-% Under an elliptical common-target model and a stable estimator-induced
-% radial inlier rule, the first-order coefficients relative to ordinary
-% MDP-U are
+% Let X=Y-mu0, K0=S0^{-1}, gamma_I=P(omega=1), and define the retained
+% moments
 %
-%   rI  = E(Q0 | inlier) / E(Q0),
-%   rLI = E{Q0/(Q0+eps0) | inlier} / E(Q0).
+%   m_I = E(omega X)/gamma_I,
+%   M_I = E(omega XX')/gamma_I.
 %
-% The excluded fraction is allowed to converge to a positive constant. The
-% finite-sample estimators below use the robust complete-case squared
-% distances and the realized estimator-induced inlier indicators.
+% The generic first-order MDP-I directions are
+%
+%   b_I = 2*K0*m_I,
+%   a_I = D_p'*vec(K0*M_I*K0).
+%
+% The stabilized log-ratio uses the analogous retained weighted moments
+%
+%   m_LI = E{omega X/(Q0+eps0)}/gamma_I,
+%   M_LI = E{omega XX'/(Q0+eps0)}/gamma_I,
+%
+% with b_LI=2*K0*m_LI and a_LI=D_p'*vec(K0*M_LI*K0).
+%
+% The historical scalar radial multipliers rI and rLI are retained as
+% diagnostics. They are the special proportional-moment case in which
+% b_I=b_LI=0 and a_I=rI*a0, a_LI=rLI*a0.
 
-info = struct('available',false,'reason','','nComplete',NaN, ...
-    'nSelected',NaN,'fractionSelected',NaN,'fractionExcluded',NaN, ...
-    'rI',NaN,'rLI',NaN, ...
-    'TLtoTDRatio',NaN,'meanQAll',NaN,'meanQInlier',NaN, ...
-    'meanStabilizedQInlier',NaN,'theoryStatus', ...
-    ['Empirical radial scaling for a stable estimator-induced inlier rule ' ...
-    'under an elliptical common-target model.']);
+info = struct('available',false,'genericAvailable',false,'reason','', ...
+    'nComplete',NaN,'nSelected',NaN,'fractionSelected',NaN, ...
+    'fractionExcluded',NaN,'rI',NaN,'rLI',NaN,'TLtoTDRatio',NaN, ...
+    'meanQAll',NaN,'meanQInlier',NaN,'meanStabilizedQInlier',NaN, ...
+    'kappa0',NaN,'kappaI',NaN,'lambdaI',NaN, ...
+    'mI',[],'MI',[],'bI',[],'aI',[], ...
+    'mLI',[],'MLI',[],'bLI',[],'aLI',[], ...
+    'a0Radial',[],'aIRadial',[],'aLIRadial',[], ...
+    'bINorm',NaN,'bLINorm',NaN, ...
+    'aIRadialRelativeResidual',NaN,'aLIRadialRelativeResidual',NaN, ...
+    'firstMomentMahalanobis',NaN,'logFirstMomentMahalanobis',NaN, ...
+    'secondMomentShapeResidual',NaN,'logSecondMomentShapeResidual',NaN, ...
+    'radialSigma2TD',NaN,'radialSigma2TL',NaN, ...
+    'genericSigma2TD',NaN,'genericSigma2TL',NaN, ...
+    'primaryCalibration','generic retained moments', ...
+    'theoryStatus',['Generic retained-moment MDP-I calibration. The scalar ' ...
+    'rI and rLI multipliers are retained only as the proportional-moment ' ...
+    'special case.']);
 reason = '';
 
 if nargin == 0
     return
 end
 
-q = d2cc(:);
 A = logical(weights(:));
-info.nComplete = numel(q);
+[ncc,p] = size(Ycc);
+info.nComplete = ncc;
 info.nSelected = sum(A);
-if info.nComplete > 0
-    info.fractionSelected = info.nSelected/info.nComplete;
+if ncc > 0
+    info.fractionSelected = info.nSelected/ncc;
     info.fractionExcluded = 1-info.fractionSelected;
 end
 
-if numel(A) ~= numel(q)
-    reason = ['The inlier aggregation weights and complete-case distances ' ...
+if numel(A) ~= ncc
+    reason = ['The inlier aggregation weights and complete-case sample ' ...
         'have different lengths.'];
     return
 end
-if isempty(q) || any(~isfinite(q)) || any(q < 0)
-    reason = ['Unable to evaluate stable-inlier radial scaling because the ' ...
-        'complete-case squared distances are empty, negative or nonfinite.'];
+if ncc == 0 || ~any(A)
+    reason = ['Unable to evaluate stable-inlier retained moments because ' ...
+        'no complete cases are retained.'];
     return
 end
-if ~any(A)
-    reason = ['Unable to evaluate stable-inlier radial scaling because the ' ...
-        'inlier rule retains no complete cases.'];
+mu0 = mu0(:);
+S0 = (S0+S0')/2;
+if numel(mu0) ~= p || ~isequal(size(S0),[p p]) || ...
+        any(~isfinite(mu0)) || any(~isfinite(S0(:))) || rcond(S0) <= 1e-12
+    reason = 'The complete-case reference geometry is invalid or singular.';
+    return
+end
+if ~isscalar(eps0) || ~isfinite(eps0) || eps0 <= 0
+    reason = 'The log-ratio stabilizer eps0 must be finite and positive.';
     return
 end
 
+K0 = S0\eye(p);
+K0 = (K0+K0')/2;
+X = Ycc-mu0';
+q = sum((X*K0).*X,2);
+if any(~isfinite(q)) || any(q < 0)
+    reason = ['Unable to evaluate stable-inlier retained moments because ' ...
+        'the complete-case squared distances are negative or nonfinite.'];
+    return
+end
+
+XA = X(A,:);
+qA = q(A);
+nA = size(XA,1);
 meanQAll = mean(q);
-meanQInlier = mean(q(A));
-meanStabilizedQInlier = mean(q(A)./(q(A)+eps0));
+meanQInlier = mean(qA);
+meanStabilizedQInlier = mean(qA./(qA+eps0));
 if ~isfinite(meanQAll) || meanQAll <= 0 || ...
         ~isfinite(meanQInlier) || meanQInlier <= 0 || ...
         ~isfinite(meanStabilizedQInlier) || meanStabilizedQInlier <= 0
@@ -2497,39 +2553,81 @@ if ~isfinite(meanQAll) || meanQAll <= 0 || ...
     return
 end
 
-rI = meanQInlier/meanQAll;
-rLI = meanStabilizedQInlier/meanQAll;
-if ~isfinite(rI) || rI <= 0 || ~isfinite(rLI) || rLI <= 0
-    reason = ['The empirical stable-inlier radial multipliers are not ' ...
-        'finite and positive.'];
-    return
-end
+mI = mean(XA,1)';
+MI = (XA'*XA)/nA;
+MI = (MI+MI')/2;
+den = qA+eps0;
+mLI = mean(bsxfun(@rdivide,XA,den),1)';
+MLI = XA'*bsxfun(@rdivide,XA,den)/nA;
+MLI = (MLI+MLI')/2;
+
+Dp = local_duplication_matrix(p);
+KMK = K0*MI*K0;
+KMLK = K0*MLI*K0;
+bI = 2*K0*mI;
+aI = Dp'*KMK(:);
+bLI = 2*K0*mLI;
+aLI = Dp'*KMLK(:);
+
+kappa0 = meanQAll/p;
+kappaI = meanQInlier/p;
+lambdaI = meanStabilizedQInlier/p;
+rI = kappaI/kappa0;
+rLI = lambdaI/kappa0;
+a0Radial = kappa0*(Dp'*K0(:));
+aIRadial = rI*a0Radial;
+aLIRadial = rLI*a0Radial;
+
+R0 = chol(S0,'lower');
+MIstd = R0\MI/R0';
+MLIstd = R0\MLI/R0';
+shapeI = MIstd-(trace(MIstd)/p)*eye(p);
+shapeLI = MLIstd-(trace(MLIstd)/p)*eye(p);
+firstMah = sqrt(max(real(mI'*K0*mI),0));
+logFirstMah = sqrt(max(real(mLI'*K0*mLI),0));
 
 info.available = true;
+info.genericAvailable = true;
 info.rI = rI;
 info.rLI = rLI;
 info.TLtoTDRatio = rLI/rI;
 info.meanQAll = meanQAll;
 info.meanQInlier = meanQInlier;
 info.meanStabilizedQInlier = meanStabilizedQInlier;
+info.kappa0 = kappa0;
+info.kappaI = kappaI;
+info.lambdaI = lambdaI;
+info.mI = mI;
+info.MI = MI;
+info.bI = bI;
+info.aI = aI;
+info.mLI = mLI;
+info.MLI = MLI;
+info.bLI = bLI;
+info.aLI = aLI;
+info.a0Radial = a0Radial;
+info.aIRadial = aIRadial;
+info.aLIRadial = aLIRadial;
+info.bINorm = norm(bI);
+info.bLINorm = norm(bLI);
+info.aIRadialRelativeResidual = norm(aI-aIRadial)/max(norm(aI),eps);
+info.aLIRadialRelativeResidual = norm(aLI-aLIRadial)/max(norm(aLI),eps);
+info.firstMomentMahalanobis = firstMah;
+info.logFirstMomentMahalanobis = logFirstMah;
+info.secondMomentShapeResidual = norm(shapeI,'fro')/max(norm(MIstd,'fro'),eps);
+info.logSecondMomentShapeResidual = norm(shapeLI,'fro')/max(norm(MLIstd,'fro'),eps);
 end
 
 % -------------------------------------------------------------------------
 function asympt = local_apply_aggregation_asymptotic(asympt,aggregation, ...
-    aggInfo,p,eps0,n,Tobs,d2cc)
-%local_apply_aggregation_asymptotic applies MDP-U/I/F first-order scaling.
+    aggInfo,p,eps0,n,Tobs,d2cc,Ycc,muCC,SigCC)
+%local_apply_aggregation_asymptotic applies MDP-U/I/F first-order calibration.
 %
-% The estimator-discrepancy calculation supplies the base ordinary-MDP
-% variance sigma_D^2. The selected mean aggregation changes its scalar
-% first-order coefficient:
-%   MDP-U: TD coefficient 1, TL coefficient kappa;
-%   MDP-I: TD coefficient rI, TL coefficient rLI;
-%   MDP-F: TD coefficient k_c, TL coefficient lambda.
-%
-% For MDP-I, rI and rLI are empirical radial ratios based on the robust
-% complete-case distances and the estimator-induced inlier set. This is the
-% feasible radial specialization of the stable-inlier theorem and permits a
-% nonvanishing excluded fraction. For MDP-F, c is fixed as n grows.
+% MDP-U and MDP-F retain scalar first-order coefficients. MDP-I instead uses
+% the generic stable-inlier directions bI,aI and bLI,aLI together with the
+% joint location--scatter estimator-discrepancy covariance. The empirical
+% radial ratios rI and rLI are preserved as the proportional-moment special
+% case. For MDP-F, c is fixed as n grows.
 
 asympt.aggregation = aggregation;
 asympt.filterCutoff = NaN;
@@ -2549,7 +2647,7 @@ if strcmp(aggregation,'inlier')
         return
     end
     [asympt.inlierScaling,scaleReason] = ...
-        local_stable_inlier_scaling(d2cc,aggInfo.weights,eps0);
+        local_stable_inlier_scaling(Ycc,muCC,SigCC,aggInfo.weights,eps0);
     asympt.inlierScaling.reason = scaleReason;
     asympt.kc = asympt.inlierScaling.rI;
     asympt.lambda = asympt.inlierScaling.rLI;
@@ -2587,6 +2685,121 @@ else
 end
 asympt.baseKappa = baseKappa;
 
+% Generic stable-inlier calibration. The primary MDP-I law uses the joint
+% location--scatter estimator-discrepancy covariance and the retained-moment
+% directions (bI,aI) and (bLI,aLI). The scalar rI/rLI laws are retained only
+% as proportional-moment diagnostics.
+if strcmp(aggregation,'inlier')
+    sdim = p*(p+1)/2;
+    if ~isfield(asympt,'OmegaJoint') || ~isnumeric(asympt.OmegaJoint) || ...
+            ~isequal(size(asympt.OmegaJoint),[p+sdim p+sdim]) || ...
+            any(~isfinite(asympt.OmegaJoint(:)))
+        asympt.available = false;
+        if isfield(asympt,'jointReason') && ~isempty(asympt.jointReason)
+            asympt.reason = asympt.jointReason;
+        else
+            asympt.reason = ['The joint location--scatter estimator-discrepancy ' ...
+                'covariance required for generic MDP-I calibration is unavailable.'];
+        end
+        return
+    end
+
+    dirD = [asympt.inlierScaling.bI; asympt.inlierScaling.aI];
+    dirL = [asympt.inlierScaling.bLI; asympt.inlierScaling.aLI];
+    OmegaJoint = (asympt.OmegaJoint+asympt.OmegaJoint')/2;
+    sigmaD2Generic = real(dirD'*OmegaJoint*dirD);
+    sigmaL2Generic = real(dirL'*OmegaJoint*dirL);
+
+    omegaScale = norm(OmegaJoint,2);
+    tolD = 1e-10*max(1,omegaScale*max(1,norm(dirD)^2));
+    tolL = 1e-10*max(1,omegaScale*max(1,norm(dirL)^2));
+    if sigmaD2Generic < 0 && sigmaD2Generic >= -tolD
+        sigmaD2Generic = 0;
+    end
+    if sigmaL2Generic < 0 && sigmaL2Generic >= -tolL
+        sigmaL2Generic = 0;
+    end
+    if ~isfinite(sigmaD2Generic) || sigmaD2Generic < 0 || ...
+            ~isfinite(sigmaL2Generic) || sigmaL2Generic < 0
+        asympt.available = false;
+        asympt.reason = ['The generic retained-moment MDP-I variance is not ' ...
+            'finite and nonnegative.'];
+        return
+    end
+
+    % Preserve the old scalar radial calibration as an explicit special-case
+    % benchmark, but do not use it for the primary p-values.
+    radialSigma2TD = asympt.inlierScaling.rI^2*baseSigmaD2;
+    radialSigma2TL = asympt.inlierScaling.rLI^2*baseSigmaD2;
+    asympt.inlierScaling.radialSigma2TD = radialSigma2TD;
+    asympt.inlierScaling.radialSigma2TL = radialSigma2TL;
+    asympt.inlierScaling.genericSigma2TD = sigmaD2Generic;
+    asympt.inlierScaling.genericSigma2TL = sigmaL2Generic;
+
+    if isfield(asympt.TDmean,'components') && isstruct(asympt.TDmean.components)
+        asympt.TDmean.baseComponents = asympt.TDmean.components;
+        asympt.TDmean = rmfield(asympt.TDmean,'components');
+    end
+    asympt.TDmean.coefficient = NaN;
+    asympt.TDmean.coefficientType = 'generic retained-moment joint direction';
+    asympt.TDmean.bI = asympt.inlierScaling.bI;
+    asympt.TDmean.aI = asympt.inlierScaling.aI;
+    asympt.TDmean.rI = asympt.inlierScaling.rI;
+    asympt.TDmean.radialSpecialCaseSigma2 = radialSigma2TD;
+    asympt.TDmean.sigma2 = sigmaD2Generic;
+    asympt.TDmean.se = sqrt(sigmaD2Generic/n);
+
+    asympt.TLmean.coefficient = NaN;
+    asympt.TLmean.coefficientType = 'generic retained weighted-moment joint direction';
+    asympt.TLmean.bLI = asympt.inlierScaling.bLI;
+    asympt.TLmean.aLI = asympt.inlierScaling.aLI;
+    asympt.TLmean.rLI = asympt.inlierScaling.rLI;
+    asympt.TLmean.TLtoTDRatio = asympt.inlierScaling.TLtoTDRatio;
+    asympt.TLmean.radialSpecialCaseSigma2 = radialSigma2TL;
+    if ~isfield(asympt.TLmean,'kappa')
+        asympt.TLmean.kappa = baseKappa;
+    end
+    asympt.TLmean.lambda = asympt.inlierScaling.rLI;
+    asympt.TLmean.sigma2 = sigmaL2Generic;
+    asympt.TLmean.se = sqrt(sigmaL2Generic/n);
+
+    % Backward-compatible scalar fields now document the radial special case.
+    asympt.kc = asympt.inlierScaling.rI;
+    asympt.lambda = asympt.inlierScaling.rLI;
+    asympt.gammaFilter = asympt.inlierScaling.fractionSelected;
+
+    asympt.TDmean.degenerate = sigmaD2Generic <= tolD;
+    asympt.TLmean.degenerate = sigmaL2Generic <= tolL;
+    asympt.degenerate = asympt.TDmean.degenerate;
+
+    if asympt.TDmean.degenerate
+        asympt.TDmean.z = NaN;
+        asympt.TDmean.pvalue = NaN;
+    else
+        asympt.TDmean.z = Tobs(4)/asympt.TDmean.se;
+        asympt.TDmean.pvalue = erfc(abs(asympt.TDmean.z)/sqrt(2));
+    end
+    if asympt.TLmean.degenerate
+        asympt.TLmean.z = NaN;
+        asympt.TLmean.pvalue = NaN;
+    else
+        asympt.TLmean.z = Tobs(2)/asympt.TLmean.se;
+        asympt.TLmean.pvalue = erfc(abs(asympt.TLmean.z)/sqrt(2));
+    end
+
+    note = ['Aggregation=''inlier'' uses the generic retained-moment ' ...
+        'joint location--scatter calibration. The empirical rI and rLI ' ...
+        'multipliers are reported only as the retained-moment proportionality ' ...
+        'special case. A nonvanishing excluded fraction is permitted under ' ...
+        'the stable-inlier conditions.'];
+    if isfield(asympt,'theoryStatus') && ~isempty(asympt.theoryStatus)
+        asympt.theoryStatus = [asympt.theoryStatus ' ' note];
+    else
+        asympt.theoryStatus = note;
+    end
+    return
+end
+
 switch aggregation
     case 'ordinary'
         coefD = 1;
@@ -2594,20 +2807,6 @@ switch aggregation
         asympt.kc = 1;
         asympt.lambda = baseKappa;
         asympt.gammaFilter = 1;
-
-    case 'inlier'
-        coefD = asympt.inlierScaling.rI;
-        coefL = asympt.inlierScaling.rLI;
-
-        note = ['Aggregation=''inlier'' uses empirical stable-inlier radial ' ...
-            'multipliers. A nonvanishing excluded fraction is permitted ' ...
-            'when the estimator-induced decisions converge to a stable ' ...
-            'radial population rule under the elliptical common-target null.'];
-        if isfield(asympt,'theoryStatus') && ~isempty(asympt.theoryStatus)
-            asympt.theoryStatus = [asympt.theoryStatus ' ' note];
-        else
-            asympt.theoryStatus = note;
-        end
 
     case 'fixed'
         c = aggInfo.cutoff;
@@ -2764,10 +2963,11 @@ function asympt = local_tem_adaptive_asymptotic(Y, maskMiss, completeIdx, ...
     Tobs, eps0, muCC, SigCC, adaptivepool, adaptiveminref, outRob)
 %local_tem_adaptive_asymptotic Adaptive alpha>0 TEM sandwich calibration.
 %
-% This routine implements the first-order expansion for the distribution-
-% adaptive radial consistency correction under an elliptical MCAR model.
-% The complete-case robust scatter converges to a common target
-% S0=tau*Sigma, not necessarily to the covariance matrix itself.
+% This routine implements the explicit first-order expansion for the
+% distribution-adaptive radial consistency correction under the local shell-
+% moment conditions of the paper. Ellipticity is sufficient, but not necessary,
+% for these identities. The complete-case robust scatter converges to a common
+% target S0, not necessarily to the covariance matrix itself.
 %
 % With adaptivepool=false, pattern g uses
 %
@@ -2814,9 +3014,10 @@ else
     asympt.mode = 'adaptive TEM influence-function sandwich';
 end
 asympt.radialModel = 'adaptive-empirical';
-asympt.theoryStatus = 'available under elliptical MCAR with a common scatter target';
+asympt.theoryStatus = ['available under the local shell-moment conditions ' ...
+    'for the explicit adaptive TEM sandwich; ellipticity is sufficient but not necessary'];
 asympt.TEM = struct('available',false,'sigma2',NaN,'threshold',NaN, ...
-    'Jrcond',NaN,'nActivePatterns',0,'nPatterns',0, ...
+    'Jrcond',NaN,'Jmurcond',NaN,'nActivePatterns',0,'nPatterns',0, ...
     'factorIFIncluded',true,'densityMethod','Gaussian KDE with reflection', ...
     'adaptivepool',adaptivepool,'nFactorGroups',0, ...
     'sigma2Base',NaN,'sigma2Factor',NaN,'twiceBaseFactor',NaN, ...
@@ -2827,7 +3028,8 @@ asympt.completeCase = struct('influenceMethod','', ...
     'sigma2',NaN,'crossTEMCC',NaN,'nComplete',sum(completeIdx), ...
     'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
     'frozenClassification',false,'robustBonflev',robustBonflev, ...
-    'relCovFrozenVsFS',NaN,'meanInfluenceBeforeCentering',NaN);
+    'relCovFrozenVsFS',NaN,'relLocFrozenVsFS',NaN, ...
+    'meanInfluenceBeforeCentering',NaN);
 
 supportedMethods = {'pri','expScale','zMap','chiMap','betaMap'};
 if strcmpi(method,'detMap')
@@ -2930,14 +3132,15 @@ asympt.TEM.threshold = cthr;
 % radial factor depends on the robust reference scatter through Q_g. For FS
 % this is evaluated analytically conditional on the full-sample final FS
 % classification. MCD and MM retain the delete-one jackknife for now.
-[PsiCcc,ccInfo,ccReason] = local_cc_scatter_influence(Ycc,alpha, ...
+[PsiMuCcc,PsiCcc,ccInfo,ccReason] = local_cc_joint_influence(Ycc,alpha, ...
     robustClass,robustEff,robustBonflev,outRob);
 if ~isempty(ccReason)
     asympt.reason = ccReason;
     return
 end
-if size(PsiCcc,2) ~= s
-    asympt.reason = 'The robust complete-case scatter influence has wrong dimension.';
+if size(PsiMuCcc,2) ~= p || size(PsiCcc,2) ~= s
+    asympt.reason = ['The robust complete-case location/scatter influence has ' ...
+        'the wrong dimension.'];
     return
 end
 asympt.completeCase.influenceMethod = ccInfo.influenceMethod;
@@ -2945,9 +3148,12 @@ asympt.completeCase.nReferenceInliers = ccInfo.nReferenceInliers;
 asympt.completeCase.nReferenceOutliers = ccInfo.nReferenceOutliers;
 asympt.completeCase.frozenClassification = ccInfo.frozenClassification;
 asympt.completeCase.relCovFrozenVsFS = ccInfo.relCovFrozenVsFS;
+asympt.completeCase.relLocFrozenVsFS = ccInfo.relLocFrozenVsFS;
 
 PsiCfull = zeros(n,s);
 PsiCfull(completeIdx,:) = PsiCcc/qhat;
+PsiMuCfull = zeros(n,p);
+PsiMuCfull(completeIdx,:) = PsiMuCcc/qhat;
 
 % Missingness patterns and empirical pattern probabilities.
 [patt,~,ic] = unique(maskMiss,'rows');
@@ -2955,7 +3161,9 @@ G = size(patt,1);
 asympt.TEM.nPatterns = G;
 
 J = zeros(s,s);
+Jmu = zeros(p,p);
 XiBase = zeros(n,s);
+XiMu = zeros(n,p);
 XiFactor = zeros(n,s);
 active = false(G,1);
 
@@ -3241,6 +3449,13 @@ for g = find(active)'
     Mg = Mcell{g};
     BgTEM = BgTEMcell{g};
 
+    % Location Jacobian under the same local shell conditions used by the
+    % adaptive TEM theorem.
+    Pg = zeros(pg,p);
+    Pg(:,obs) = eye(pg);
+    jmuCoeff = -Hg + 2*ag*fg/pg;
+    Jmu = Jmu + piDiag(g)*jmuCoeff*(Lg*Pg);
+
     ug = -Hg + 2*fg*ag^2/(kg*pg*(pg+2));
     vg = fg*(ag^2/(kg*pg*(pg+2))-ag/pg);
     for h = 1:s
@@ -3266,6 +3481,14 @@ if ~isfinite(Jrcond) || Jrcond <= 1e-12
         'numerically singular; analytical calibration not computed.'];
     return
 end
+Jmurcond = rcond(Jmu);
+asympt.TEM.Jmurcond = Jmurcond;
+jointLocationAvailable = isfinite(Jmurcond) && Jmurcond > 1e-12;
+if ~jointLocationAvailable
+    asympt.jointReason = ['The adaptive effective TEM location Jacobian is ' ...
+        'numerically singular; generic joint MDP-I calibration is unavailable, ' ...
+        'while the scatter-only analytical results remain usable.'];
+end
 
 % Base innovation evaluated at the fitted TEM root. At the population
 % common target this is asymptotically equivalent to using the complete-case
@@ -3282,17 +3505,15 @@ for i = 1:n
     obs = obsCell{g};
     zi = Y(i,obs)'-muTEM(obs);
     xhat = Lcell{g}*zi;
+    XiMu(i,:) = xhat';
     Ui = (xhat*xhat')/kVec(g)+Vcell{g};
     XiBase(i,:) = local_vech(Ui-STEM)';
 end
 XiEff = XiBase+XiFactor;
 asympt.TEM.estimatingEquationMeanNorm = norm(mean(XiEff,1));
 
-% Full estimator-discrepancy influence for the Hausman-type omnibus test.
-% The TEM scatter influence is psi_A=-J^{-1}xi_eff, while PsiCfull contains
-% the complete-case scatter influence on the full-sample scale. Therefore
-% psi_Delta=psi_A-psi_C estimates the influence of
-% vech(Sigma_all-Sigma_CC).
+% Joint location--scatter estimator-discrepancy influence. The scatter block
+% remains the covariance used by the Hausman omnibus statistic.
 PsiTEMfull = -(J\XiEff')';
 PsiDelta = PsiTEMfull-PsiCfull;
 meanPsiDelta = mean(PsiDelta,1);
@@ -3301,6 +3522,21 @@ OmegaDelta = (PsiDeltaCentered'*PsiDeltaCentered)/n;
 OmegaDelta = (OmegaDelta+OmegaDelta')/2;
 asympt.OmegaDelta = OmegaDelta;
 asympt.discrepancyIFMeanNorm = norm(meanPsiDelta);
+if jointLocationAvailable
+    PsiMuTEMfull = -(Jmu\XiMu')';
+    PsiDeltaMu = PsiMuTEMfull-PsiMuCfull;
+    meanPsiDeltaMu = mean(PsiDeltaMu,1);
+    PsiDeltaMuCentered = PsiDeltaMu-meanPsiDeltaMu;
+    OmegaDeltaMu = (PsiDeltaMuCentered'*PsiDeltaMuCentered)/n;
+    OmegaDeltaMuSigma = (PsiDeltaMuCentered'*PsiDeltaCentered)/n;
+    OmegaJoint = [OmegaDeltaMu OmegaDeltaMuSigma; ...
+        OmegaDeltaMuSigma' OmegaDelta];
+    OmegaJoint = (OmegaJoint+OmegaJoint')/2;
+    asympt.OmegaDeltaMu = OmegaDeltaMu;
+    asympt.OmegaDeltaMuSigma = OmegaDeltaMuSigma;
+    asympt.OmegaJoint = OmegaJoint;
+    asympt.locationDiscrepancyIFMeanNorm = norm(meanPsiDeltaMu);
+end
 
 % Project the adaptive TEM scatter influence onto the ordinary MDP-U
 % coefficient. Since psi_TEM=-J_eff^{-1}xi_eff and TD=-a0'(psi_TEM-psi_C),
@@ -3359,14 +3595,14 @@ end
 methodText = [' Parameter-free distance mapping method=''' method ''' is ' ...
     'handled through its inverse raw-distance cutoff.'];
 if strcmpi(robustClass,'FS')
-    asympt.theoryStatus = ['Adaptive TEM sandwich under elliptical MCAR.' ...
+    asympt.theoryStatus = ['Adaptive TEM sandwich under the local shell-moment conditions.' ...
         methodText ...
         poolText ' The complete-case FS scatter influence is evaluated ' ...
         'analytically conditional on the full-sample final FS classification; ' ...
         'the data-dependent FS stopping/classification rule itself is not ' ...
         'differentiated and remains outside the fixed-fraction FS theorem.'];
 else
-    asympt.theoryStatus = ['Adaptive TEM sandwich under elliptical MCAR.' ...
+    asympt.theoryStatus = ['Adaptive TEM sandwich under the local shell-moment conditions.' ...
         methodText poolText ' The empirical radial-factor influence and robust ' ...
         'complete-case scatter influence are both included.'];
 end
@@ -3456,28 +3692,26 @@ f = mean(phi1+phi2)/h;
 end
 
 % -------------------------------------------------------------------------
-function [PsiC,info,reason] = local_cc_scatter_influence(Ycc,alpha, ...
+function [PsiMuC,PsiC,info,reason] = local_cc_joint_influence(Ycc,alpha, ...
     robustClass,robustEff,robustBonflev,outRob)
-%local_cc_scatter_influence Robust complete-case scatter influence vectors.
+%local_cc_joint_influence Robust complete-case location/scatter influence.
 %
-% For FS, use an analytical frozen-classification perturbation: condition on
-% the final inlier/outlier set selected by the single full-sample FSM fit and
-% differentiate only the ordinary covariance computed on the retained set.
-% This avoids treating discrete changes of the FS stopping/classification
-% rule under deletion as infinitesimal influence. For MCD and MM the current
-% delete-one jackknife is retained.
+% For FS, use an analytical frozen-classification perturbation of the final
+% retained mean and covariance. For MCD and MM, a single delete-one loop is
+% used to obtain both location and scatter influence values.
 
-ncc = size(Ycc,1);
 info = struct('influenceMethod','', ...
     'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
-    'frozenClassification',false,'relCovFrozenVsFS',NaN);
+    'frozenClassification',false,'relCovFrozenVsFS',NaN, ...
+    'relLocFrozenVsFS',NaN);
+PsiMuC = [];
 PsiC = [];
 reason = '';
 
 if strcmpi(robustClass,'FS')
-    [PsiC,info,reason] = local_cc_scatter_fs_frozen(Ycc,outRob);
+    [PsiMuC,PsiC,info,reason] = local_cc_joint_fs_frozen(Ycc,outRob);
 else
-    [PsiC,reason] = local_cc_scatter_jackknife(Ycc,alpha,robustClass, ...
+    [PsiMuC,PsiC,reason] = local_cc_joint_jackknife(Ycc,alpha,robustClass, ...
         robustEff,robustBonflev);
     if isempty(reason)
         info.influenceMethod = 'delete-one jackknife';
@@ -3487,39 +3721,36 @@ end
 end
 
 % -------------------------------------------------------------------------
-function [PsiC,info,reason] = local_cc_scatter_fs_frozen(Ycc,outRob)
-%local_cc_scatter_fs_frozen Analytical frozen-classification FS influence.
+function [PsiMuC,PsiC,info,reason] = local_cc_joint_fs_frozen(Ycc,outRob)
+%local_cc_joint_fs_frozen Analytical frozen-classification FS influence.
 %
-% Let m be the number of complete cases and I the final inlier set selected
-% by the full-sample FSM fit, with h=|I|. Conditional on I, FSM.cov is the
-% ordinary unbiased covariance of the retained observations. If
+% Conditional on the final inlier set I, h=|I|, the location influence is
 %
-%   A_i=(y_i-ybar_I)*(y_i-ybar_I)',
+%   Psi_mu,i = (m-1)/(h-1) * (y_i-ybar_I),  i in I,
+%              0,                            i not in I.
 %
-% the centered delete-one perturbation has the closed form
-%
-%   Psi_i = (m-1)/(h-2) * {h/(h-1) vech(A_i)-vech(S_I)}, i in I,
-%   Psi_i = 0,                                             i not in I.
-%
-% This equals the frozen-classification delete-one jackknife exactly, apart
-% from floating-point roundoff, but requires no additional FSM fits.
+% The scatter influence is the corresponding exact frozen-classification
+% delete-one perturbation used previously by mdMDPtest.
 
 m = size(Ycc,1);
 p = size(Ycc,2);
 s = p*(p+1)/2;
+PsiMuC = [];
 PsiC = [];
 reason = '';
 info = struct('influenceMethod','FS analytic frozen-classification', ...
     'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
-    'frozenClassification',true,'relCovFrozenVsFS',NaN);
+    'frozenClassification',true,'relCovFrozenVsFS',NaN, ...
+    'relLocFrozenVsFS',NaN);
 
 if m < 5
-    reason = 'Too few complete observations for the FS scatter influence.';
+    reason = 'Too few complete observations for the FS joint influence.';
     return
 end
-if isempty(outRob) || ~isstruct(outRob) || ~isfield(outRob,'cov')
+if isempty(outRob) || ~isstruct(outRob) || ~isfield(outRob,'cov') || ...
+        ~isfield(outRob,'loc')
     reason = ['The full-sample FS fit is required for the analytical ' ...
-        'frozen-classification influence.'];
+        'frozen-classification joint influence.'];
     return
 end
 
@@ -3528,10 +3759,9 @@ inMask = ~outMask;
 h = sum(inMask);
 info.nReferenceInliers = h;
 info.nReferenceOutliers = sum(outMask);
-
 if h < 3
     reason = ['Too few observations remain in the final FS inlier set for ' ...
-        'the frozen-classification covariance influence.'];
+        'the frozen-classification influence.'];
     return
 end
 
@@ -3539,54 +3769,58 @@ Yin = Ycc(inMask,:);
 muI = mean(Yin,1)';
 SI = cov(Yin);
 SI = (SI+SI')/2;
+muFS = outRob.loc(:);
 SFS = (outRob.cov+outRob.cov')/2;
-if any(~isfinite(SI(:))) || any(~isfinite(SFS(:)))
-    reason = 'The final FS scatter contains nonfinite values.';
+if any(~isfinite(SI(:))) || any(~isfinite(SFS(:))) || ...
+        any(~isfinite(muI)) || any(~isfinite(muFS))
+    reason = 'The final FS location or scatter contains nonfinite values.';
     return
 end
 
+info.relLocFrozenVsFS = norm(muI-muFS)/max(norm(muFS),1);
 info.relCovFrozenVsFS = norm(SI-SFS,'fro')/max(norm(SFS,'fro'),eps);
-if info.relCovFrozenVsFS > 1e-8
-    reason = ['FSM.cov differs from the covariance of the final FS inlier ' ...
-        'set; the analytical frozen-classification influence is therefore ' ...
-        'not applied.'];
+if info.relLocFrozenVsFS > 1e-8 || info.relCovFrozenVsFS > 1e-8
+    reason = ['FSM location/scatter differs from the mean/covariance of the ' ...
+        'final FS inlier set; the analytical frozen-classification influence ' ...
+        'is therefore not applied.'];
     return
 end
 
-vS = local_vech(SI);
+PsiMuC = zeros(m,p);
 PsiC = zeros(m,s);
+vS = local_vech(SI);
 inIdx = find(inMask);
-coef = (m-1)/(h-2);
+coefMu = (m-1)/(h-1);
+coefS = (m-1)/(h-2);
 radialCoef = h/(h-1);
 for j = 1:numel(inIdx)
     i = inIdx(j);
     x = Ycc(i,:)'-muI;
+    PsiMuC(i,:) = (coefMu*x)';
     vA = local_vech(x*x');
-    PsiC(i,:) = (coef*(radialCoef*vA-vS))';
+    PsiC(i,:) = (coefS*(radialCoef*vA-vS))';
 end
-
-% The formula is centered algebraically over all m complete cases. Remove
-% only floating-point residuals so downstream empirical sandwiches inherit
-% exact numerical centering.
+PsiMuC = PsiMuC-mean(PsiMuC,1);
 PsiC = PsiC-mean(PsiC,1);
-if any(~isfinite(PsiC(:)))
-    reason = 'The analytical frozen-FS scatter influence is nonfinite.';
+if any(~isfinite(PsiMuC(:))) || any(~isfinite(PsiC(:)))
+    reason = 'The analytical frozen-FS joint influence is nonfinite.';
+    PsiMuC = [];
     PsiC = [];
 end
 end
 
 % -------------------------------------------------------------------------
-function [PsiC,reason] = local_cc_scatter_jackknife(Ycc,alpha,robustClass, ...
+function [PsiMuC,PsiC,reason] = local_cc_joint_jackknife(Ycc,alpha,robustClass, ...
     robustEff,robustBonflev)
-%local_cc_scatter_jackknife Delete-one robust scatter influence vectors.
+%local_cc_joint_jackknife Delete-one robust location/scatter influence.
 %
-% This numerical branch is retained for MCD and MM. PsiC contains the
-% complete-case-sample influence values for vech(Sigma_C). The full-sample
-% influence used by the missing-data expansion is C*PsiC/q.
+% The same delete-one fits supply both location and scatter perturbations,
+% avoiding two separate robust jackknife loops.
 
 ncc = size(Ycc,1);
 p = size(Ycc,2);
 s = p*(p+1)/2;
+PsiMuC = [];
 PsiC = [];
 reason = '';
 if ncc < 5
@@ -3594,7 +3828,8 @@ if ncc < 5
     return
 end
 
-loo = NaN(ncc,s);
+looMu = NaN(ncc,p);
+looS = NaN(ncc,s);
 rngState = rng;
 cleanupObj = onCleanup(@() rng(rngState)); %#ok<NASGU>
 for i = 1:ncc
@@ -3602,27 +3837,28 @@ for i = 1:ncc
     keep(i) = false;
     try
         rng(rngState)
-        [~,SigMinus] = local_complete_case_fit(Ycc(keep,:),alpha, ...
+        [muMinus,SigMinus] = local_complete_case_fit(Ycc(keep,:),alpha, ...
             robustClass,robustEff,robustBonflev);
-        if any(~isfinite(SigMinus(:)))
-            reason = sprintf(['Nonfinite robust scatter in delete-one fit ' ...
-                'for complete observation %d.'],i);
-            PsiC = [];
+        muMinus = muMinus(:);
+        if any(~isfinite(muMinus)) || any(~isfinite(SigMinus(:)))
+            reason = sprintf(['Nonfinite robust location/scatter in delete-one ' ...
+                'fit for complete observation %d.'],i);
             return
         end
-        loo(i,:) = local_vech((SigMinus+SigMinus')/2)';
+        looMu(i,:) = muMinus';
+        looS(i,:) = local_vech((SigMinus+SigMinus')/2)';
     catch ME
         reason = sprintf(['Robust delete-one fit failed for complete ' ...
             'observation %d: %s'],i,ME.message);
-        PsiC = [];
         return
     end
 end
-if any(~isfinite(loo(:)))
-    reason = 'The robust delete-one scatter influence contains nonfinite values.';
+if any(~isfinite(looMu(:))) || any(~isfinite(looS(:)))
+    reason = 'The robust delete-one joint influence contains nonfinite values.';
     return
 end
-PsiC = -(ncc-1)*(loo-mean(loo,1));
+PsiMuC = -(ncc-1)*(looMu-mean(looMu,1));
+PsiC = -(ncc-1)*(looS-mean(looS,1));
 end
 
 % -------------------------------------------------------------------------
@@ -3672,12 +3908,12 @@ asympt.VA = NaN;
 asympt.mode = 'TEM influence-function sandwich';
 asympt.theoryStatus = 'available';
 asympt.TEM = struct('available',false,'sigma2',NaN,'threshold',NaN, ...
-    'Jrcond',NaN,'nActivePatterns',0,'nPatterns',0);
+    'Jrcond',NaN,'Jmurcond',NaN,'nActivePatterns',0,'nPatterns',0);
 asympt.completeCase = struct('influenceMethod','', ...
     'sigma2',NaN,'crossTEMCC',NaN,'nComplete',sum(completeIdx), ...
     'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
     'frozenClassification',false,'robustBonflev',robustBonflev, ...
-    'relCovFrozenVsFS',NaN);
+    'relCovFrozenVsFS',NaN,'relLocFrozenVsFS',NaN);
 
 supportedMethods = {'pri','expScale','zMap','chiMap','betaMap'};
 if strcmpi(method,'detMap')
@@ -3740,6 +3976,7 @@ G = size(patt,1);
 asympt.TEM.nPatterns = G;
 
 J = zeros(s,s);
+Jmu = zeros(p,p);
 active = false(G,1);
 kgVec = NaN(G,1);
 Lcell = cell(G,1);
@@ -3795,6 +4032,13 @@ for g = 1:G
         Vg(mis,mis) = Cg;
     end
 
+    % Location Jacobian: J_mumu u = sum_g pi_g
+    % (-gamma_g+2*a_g*f_g/p_g) L_g P_g u.
+    Pg = zeros(pg,p);
+    Pg(:,obs) = eye(pg);
+    jmuCoeff = -gammag + 2*ag*fg/pg;
+    Jmu = Jmu + pig*jmuCoeff*(Lg*Pg);
+
     ug = -gammag + 2*ag^2*fg/(pg*(pg+2)*kg);
     vg = fg*(ag^2/(pg*(pg+2)*kg)-ag/pg);
     LSigmaL = Lg*SigmaG*Lg';
@@ -3828,6 +4072,14 @@ if ~isfinite(Jrcond) || Jrcond <= 1e-12
         'singular; analytical benchmark not computed.'];
     return
 end
+Jmurcond = rcond(Jmu);
+asympt.TEM.Jmurcond = Jmurcond;
+jointLocationAvailable = isfinite(Jmurcond) && Jmurcond > 1e-12;
+if ~jointLocationAvailable
+    asympt.jointReason = ['The effective TEM location Jacobian is numerically ' ...
+        'singular; generic joint MDP-I calibration is unavailable, while the ' ...
+        'scatter-only analytical results remain usable.'];
+end
 
 % b gives the scalar projection needed by TD,mean without constructing the
 % full TEM covariance matrix.
@@ -3837,6 +4089,7 @@ b = J'\aSigma;
 % pattern factor is used here, rather than the finite-sample shrinkage of
 % unstable factors that mdTEM may apply internally.
 Xi = zeros(n,s);
+XiMu = zeros(n,p);
 for i = 1:n
     if ~w(i)
         continue
@@ -3849,6 +4102,7 @@ for i = 1:n
     obs = obsCell{g};
     zi = Y(i,obs)' - muHat(obs);
     xhat = Lcell{g}*zi;
+    XiMu(i,:) = xhat';
     Ui = (xhat*xhat')/kgVec(g) + Vcell{g};
     Xi(i,:) = local_vech(Ui-SigmaHat)';
 end
@@ -3864,7 +4118,7 @@ asympt.TEM.sigma2 = sigmaTEM2;
 % Complete-case scatter influence. For FS use the analytical frozen-
 % classification perturbation; MCD and MM retain the delete-one jackknife.
 Ycc = Y(completeIdx,:);
-[PsiCcc,ccInfo,ccReason] = local_cc_scatter_influence(Ycc,alpha, ...
+[PsiMuCcc,PsiCcc,ccInfo,ccReason] = local_cc_joint_influence(Ycc,alpha, ...
     robustClass,robustEff,robustBonflev,outRob);
 if ~isempty(ccReason)
     asympt.reason = ccReason;
@@ -3876,12 +4130,15 @@ asympt.completeCase.nReferenceInliers = ccInfo.nReferenceInliers;
 asympt.completeCase.nReferenceOutliers = ccInfo.nReferenceOutliers;
 asympt.completeCase.frozenClassification = ccInfo.frozenClassification;
 asympt.completeCase.relCovFrozenVsFS = ccInfo.relCovFrozenVsFS;
+asympt.completeCase.relLocFrozenVsFS = ccInfo.relLocFrozenVsFS;
 
 PsiCfull = zeros(n,s);
 PsiCfull(completeIdx,:) = PsiCcc/qhat;
+PsiMuCfull = zeros(n,p);
+PsiMuCfull(completeIdx,:) = PsiMuCcc/qhat;
 
-% Full estimator-discrepancy influence for the Hausman-type omnibus test.
-% Here psi_A=-J^{-1}xi and psi_Delta=psi_A-psi_C.
+% Joint location--scatter estimator-discrepancy influence. The scatter block
+% is also the covariance used by the Hausman omnibus statistic.
 PsiTEMfull = -(J\Xi')';
 PsiDelta = PsiTEMfull-PsiCfull;
 meanPsiDelta = mean(PsiDelta,1);
@@ -3890,6 +4147,21 @@ OmegaDelta = (PsiDeltaCentered'*PsiDeltaCentered)/n;
 OmegaDelta = (OmegaDelta+OmegaDelta')/2;
 asympt.OmegaDelta = OmegaDelta;
 asympt.discrepancyIFMeanNorm = norm(meanPsiDelta);
+if jointLocationAvailable
+    PsiMuTEMfull = -(Jmu\XiMu')';
+    PsiDeltaMu = PsiMuTEMfull-PsiMuCfull;
+    meanPsiDeltaMu = mean(PsiDeltaMu,1);
+    PsiDeltaMuCentered = PsiDeltaMu-meanPsiDeltaMu;
+    OmegaDeltaMu = (PsiDeltaMuCentered'*PsiDeltaMuCentered)/n;
+    OmegaDeltaMuSigma = (PsiDeltaMuCentered'*PsiDeltaCentered)/n;
+    OmegaJoint = [OmegaDeltaMu OmegaDeltaMuSigma; ...
+        OmegaDeltaMuSigma' OmegaDelta];
+    OmegaJoint = (OmegaJoint+OmegaJoint')/2;
+    asympt.OmegaDeltaMu = OmegaDeltaMu;
+    asympt.OmegaDeltaMuSigma = OmegaDeltaMuSigma;
+    asympt.OmegaJoint = OmegaJoint;
+    asympt.locationDiscrepancyIFMeanNorm = norm(meanPsiDeltaMu);
+end
 
 ccContribution = PsiCfull*aSigma;
 ccContribution = ccContribution-mean(ccContribution);
@@ -4390,8 +4662,8 @@ if alpha == 0
 else
     if strcmp(consistencyfactor,'adaptive')
         if strcmp(aggregation,'inlier')
-            Calibration{2} = 'adaptive elliptical stable-inlier sandwich';
-            Calibration{4} = 'adaptive elliptical stable-inlier sandwich';
+            Calibration{2} = 'adaptive generic retained-moment sandwich';
+            Calibration{4} = 'adaptive generic retained-moment sandwich';
         elseif strcmp(aggregation,'fixed')
             Calibration{2} = 'adaptive elliptical fixed-cutoff';
             Calibration{4} = 'adaptive elliptical fixed-cutoff';
@@ -4401,13 +4673,13 @@ else
         end
     elseif strcmp(consistencyfactor,'pattern')
         if coupledtrim
-            Calibration{2} = ['Gaussian stable-inlier TEM sandwich ' ...
+            Calibration{2} = ['Gaussian-pattern generic retained-moment TEM sandwich ' ...
                 '(frozen eligibility)'];
-            Calibration{4} = ['Gaussian stable-inlier TEM sandwich ' ...
+            Calibration{4} = ['Gaussian-pattern generic retained-moment TEM sandwich ' ...
                 '(frozen eligibility)'];
         elseif strcmp(aggregation,'inlier')
-            Calibration{2} = 'Gaussian pattern stable-inlier sandwich';
-            Calibration{4} = 'Gaussian pattern stable-inlier sandwich';
+            Calibration{2} = 'Gaussian-pattern generic retained-moment sandwich';
+            Calibration{4} = 'Gaussian-pattern generic retained-moment sandwich';
         elseif strcmp(aggregation,'fixed')
             Calibration{2} = 'Gaussian fixed-cutoff sandwich';
             Calibration{4} = 'Gaussian fixed-cutoff sandwich';
@@ -4679,6 +4951,7 @@ function asympt = local_unavailable_asymptotic(qhat)
 asympt = struct;
 asympt.available = false;
 asympt.reason = 'Analytical benchmark is not available for this configuration.';
+asympt.jointReason = '';
 asympt.qhat = qhat;
 asympt.VA = NaN;
 asympt.degenerate = false;
@@ -4690,7 +4963,11 @@ asympt.gammaFilter = NaN;
 asympt.baseSigmaD2 = NaN;
 asympt.baseKappa = NaN;
 asympt.OmegaDelta = NaN;
+asympt.OmegaDeltaMu = NaN;
+asympt.OmegaDeltaMuSigma = NaN;
+asympt.OmegaJoint = NaN;
 asympt.discrepancyIFMeanNorm = NaN;
+asympt.locationDiscrepancyIFMeanNorm = NaN;
 asympt.omnibusVarianceIdentityResidual = NaN;
 [asympt.inlierScaling,~] = local_stable_inlier_scaling();
 asympt.TDmean = struct('coefficient',NaN,'sigma2',NaN,'se',NaN, ...
