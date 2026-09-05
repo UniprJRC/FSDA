@@ -13,16 +13,20 @@ function out = mdMDPtest(Y, varargin)
 %
 %  Mean-statistic inference is based on the analytical asymptotic reference
 %  whenever the corresponding analytical branch is defined. If bootstrap=true,
-%  an additional mask-preserving full-pipeline bootstrap calibration is
+%  an additional full-pipeline bootstrap calibration under MCAR is
 %  computed. The same bootstrap samples also calibrate the Hausman-type omnibus
 %  statistic whenever its scatter-discrepancy covariance is available; the
 %  discrepancy sandwich and statistical spectral rank are recomputed inside
 %  every retained replicate. The null generator is selected through
 %  bootstraptype: the backward-compatible default is a Gaussian model fitted
-%  on the complete rows, while 'empiricalradial' uses a null-enforcing
-%  empirical-radial elliptical generator. In both cases the observed
-%  missingness mask is imposed on each generated sample and the complete MDP
-%  pipeline is rerun.
+%  on the complete rows, 'empiricalradial' uses a null-enforcing
+%  empirical-radial elliptical generator, and 'entropy' uses the
+%  null-enforcing entropy-projected nonelliptical clean generator. Gaussian
+%  and empirical-radial bootstraps preserve the observed mask. The entropy
+%  bootstrap instead resamples values and missingness patterns independently
+%  from their fitted product law, reproducing first-order pattern-frequency
+%  randomness while enforcing MCAR. In every case the complete MDP pipeline
+%  is rerun.
 %
 %
 %  Required input arguments:
@@ -146,13 +150,16 @@ function out = mdMDPtest(Y, varargin)
 %            Example - 'omnibusneff','complete'
 %            Data Types - char | string | double
 %
-% bootstrap : Add mask-preserving full-pipeline bootstrap calibration.
+% bootstrap : Add full-pipeline bootstrap calibration under MCAR.
 %            Logical scalar. The default is false. The analytical p-values
 %            for the two mean statistics are evaluated independently of this
 %            option whenever the corresponding analytical branch is defined.
 %            If bootstrap=true, bootstrap p-values for all four scalar
 %            statistics and bootstrap confidence intervals are additionally
-%            computed. When the Hausman-type omnibus covariance is available,
+%            computed. Gaussian and empirical-radial generators condition on
+%            the observed mask; the entropy generator samples values and masks
+%            independently from its fitted MCAR product law. When the Hausman-
+%            type omnibus covariance is available,
 %            a full-pipeline bootstrap p-value is also computed. In every
 %            replicate the complete-case fit, the all-data EM/TEM fit, the
 %            adaptive radial correction when requested, the selected mean
@@ -162,8 +169,8 @@ function out = mdMDPtest(Y, varargin)
 %            Data Types - logical
 %
 % bootstraptype : Bootstrap null generator. Character vector or string scalar.
-%            Possible values are 'gaussian' and 'empiricalradial'. The
-%            default is 'gaussian' for backward compatibility. This option
+%            Possible values are 'gaussian', 'empiricalradial' and 'entropy'.
+%            The default is 'gaussian' for backward compatibility. This option
 %            is used only when bootstrap=true.
 %
 %            'gaussian' generates full p-dimensional observations from the
@@ -173,22 +180,44 @@ function out = mdMDPtest(Y, varargin)
 %            'empiricalradial' is a null-enforcing semiparametric elliptical
 %            generator. Complete-case squared Mahalanobis radii are computed
 %            in the fitted complete-case geometry and resampled with
-%            replacement. The empirical radial law uses all complete cases,
-%            including observations with large robust Mahalanobis distances;
-%            no preliminary trimming of the radii is performed. Independent
-%            directions uniform on the unit sphere are then generated, full
-%            p-dimensional observations are reconstructed using the fitted
-%            complete-case location and scatter, and finally the observed
-%            missingness mask is imposed. Thus the observed radial tail is
-%            preserved, whereas robust outlier detection and trimming are
-%            reconstructed independently inside every bootstrap sample. The
-%            generator does not specify a Gaussian or Student t radial family.
-%            This generator is naturally paired
-%            with consistencyfactor='adaptive' under an elliptical common-
-%            target interpretation; it is not a general nonparametric
-%            bootstrap for arbitrary skew or nonelliptical distributions.
-%            Example - 'bootstraptype','empiricalradial'
+%            replacement. Independent spherical directions are generated and
+%            the observed missingness mask is imposed. This preserves the
+%            empirical radial law but deliberately imposes elliptical angular
+%            structure.
+%
+%            'entropy' implements the null-enforcing entropy-projected clean
+%            bootstrap. A clean complete-data empirical reference law is first
+%            constructed according to entropyref. Its support points are left
+%            unchanged and only their probabilities are exponentially tilted.
+%            The calibration equations preserve the robust complete-case
+%            functional to first order, enforce patternwise retained-location
+%            zero, enforce trace-free retained second-moment isotropy, and
+%            enforce the common TEM retained fraction. Full observations are
+%            resampled from the projected nonelliptical law and missingness
+%            patterns are independently resampled from their empirical pattern
+%            probabilities. Thus radius-direction and angular structure in the
+%            clean support are preserved rather than sphericalized. This branch
+%            requires alpha>0, consistencyfactor='adaptive',
+%            adaptivepool=false, coupledtrim=false, and one of the parameter-
+%            free mappings 'pri', 'expScale', 'zMap', 'chiMap' or 'betaMap'.
+%            Projection diagnostics are returned in out.entropyProjection.
+%            Example - 'bootstraptype','entropy','adaptivepool',false
 %            Data Types - char | string
+%
+% entropyref : Clean complete-data reference support for bootstraptype='entropy'.
+%            The default is 'robust'. With 'robust', complete cases declared
+%            as outliers by the selected robust complete-case estimator are
+%            removed before entropy projection. With 'all', all observed
+%            complete cases are retained. A logical vector of length n or
+%            nComplete may instead be supplied to define a custom clean
+%            support. The selected support is given uniform base probability.
+%            The automatic robust support is a practical construction of the
+%            clean law; if the robust rule deliberately removes a nonvanishing
+%            fraction of genuine clean observations, a scientifically justified
+%            custom support should be supplied instead. This option is used
+%            only by the entropy bootstrap.
+%            Example - 'entropyref','all'
+%            Data Types - char | string | logical
 %
 %   nsimul : Number of successful bootstrap simulations. Scalar integer.
 %            The default value is 499. This option is used only when
@@ -405,11 +434,42 @@ function out = mdMDPtest(Y, varargin)
 %                            corresponding calibration is unavailable.
 %          out.bootstrap   = Value of input option bootstrap.
 %          out.bootstraptype = Bootstrap null generator actually requested:
-%                            'gaussian' or 'empiricalradial'.
+%                            'gaussian', 'empiricalradial' or 'entropy'.
+%          out.entropyref = Entropy clean-reference specification supplied by
+%                            the user. It is relevant only to bootstraptype
+%                            'entropy'.
+%          out.entropyProjection = Diagnostics for the entropy projection.
+%                            Fields include clean-reference counts, projected
+%                            probabilities, raw and nonredundant constraint
+%                            dimensions, pre/post calibration residuals, the
+%                            calibration-covariance eigenvalue diagnostics,
+%                            exponential-tilt multiplier norm, maximum weight
+%                            ratio, effective sample size, L2 probability-ratio
+%                            change, relative entropy, solver diagnostics and
+%                            patternDiagnostics and nPatterns. Empty unless
+%                            the entropy bootstrap is requested.
 %          out.dispresults = Value of input option dispresults.
-%          out.pvalueBoot  = 1 x 4 vector containing bootstrap p-values for
-%                            the four statistics. This field is present only
-%                            when bootstrap=true.
+%          out.pvalueBoot  = 1 x 4 vector containing the backward-compatible
+%                            absolute-value two-sided bootstrap p-values. This
+%                            field is present only when bootstrap=true.
+%          out.pvalueBootEqualTail = 1 x 4 vector containing equal-tail
+%                            two-sided bootstrap p-values. This is especially
+%                            informative for the finite-sample nonelliptical
+%                            entropy bootstrap, whose distribution need not be
+%                            exactly symmetric.
+%          out.resultsBootstrap = Table with observed statistic, lower
+%                            bootstrap confidence limit, bootstrap median,
+%                            upper bootstrap confidence limit, absolute-value
+%                            p-value and equal-tail p-value. Empty when
+%                            bootstrap=false.
+%          out.bootstrapDiagnostics = Structure documenting bootstrap mask
+%                            mode, lower/upper one-sided probabilities, both
+%                            two-sided p-value definitions and the complete-
+%                            case counts across retained replicates. For the
+%                            entropy generator it also contains patternCountBoot,
+%                            patternFractionBoot, targetPatternProbabilities and
+%                            meanPatternFractions, documenting random-mask
+%                            reproduction of the empirical pattern law.
 %          out.Tboot       = nsimul x 4 matrix containing the bootstrap values
 %                            of the four statistics. This field is present only
 %                            when bootstrap=true.
@@ -457,6 +517,14 @@ function out = mdMDPtest(Y, varargin)
 %          out.nMeanBoot   = Number of complete cases entering the two mean
 %                            statistics in each successful bootstrap sample.
 %                            This field is present only when bootstrap=true.
+%          out.nCompleteBoot = Number of complete cases in each successful
+%                            bootstrap sample. It is constant for fixed-mask
+%                            Gaussian/empirical-radial calibration and random
+%                            for the entropy product-law bootstrap.
+%          out.nInvalidBootstrapMasks = Number of entropy bootstrap attempts
+%                            regenerated because the independently sampled mask
+%                            contained too few complete observations for the
+%                            requested robust fit.
 %          out.nBootstrapAttempts = Total number of bootstrap draws attempted
 %                            to obtain the requested nsimul successful draws.
 %                            This field is present only when bootstrap=true.
@@ -654,13 +722,14 @@ function out = mdMDPtest(Y, varargin)
 %  reference location and scatter are the same complete-case estimates used
 %  to compute d2_cc. Consequently the adaptive TEM correction targets the
 %  complete-case scatter functional under an elliptical MCAR model. The
-%  optional mask-preserving full-pipeline bootstrap can use either the fitted
-%  Gaussian null generator or the null-enforcing empirical-radial elliptical
-%  generator selected by bootstraptype. The latter resamples the radii of
-%  all complete cases, including large robust distances, and generates fresh
-%  independent spherical directions. Hence it preserves radial extremeness
-%  while enforcing the elliptical angular law. In both cases the robust
-%  complete-case fit, adaptive radial correction and final aggregation rule
+%  optional full-pipeline bootstrap can use the fitted Gaussian generator, the
+%  null-enforcing empirical-radial elliptical generator, or the entropy-
+%  projected nonelliptical clean generator selected by bootstraptype. The
+%  entropy generator changes only probabilities on observed clean support
+%  points and therefore preserves their angular and radius-direction structure.
+%  It resamples missingness patterns independently from their empirical law,
+%  imposing MCAR exactly while reproducing pattern-frequency randomness. The
+%  robust complete-case fit, adaptive correction and final aggregation rule
 %  are reconstructed in every bootstrap sample.
 %
 %  The scalar MDP statistics are directional projections of the estimator
@@ -1014,6 +1083,21 @@ function out = mdMDPtest(Y, varargin)
     end
 %}
 
+%{
+    %% Example 16: Entropy-projected nonelliptical bootstrap.
+    % Preserve the angular and radius-direction structure of a clean empirical
+    % complete-data reference law while enforcing exactly the finite-support
+    % moment restrictions needed for the common TEM target. Missingness
+    % patterns are resampled independently from their empirical probabilities.
+    load cows2026
+    X = cows2026{:,:};
+    out = mdMDPtest(X,'alpha',0.25,'bootstrap',true, ...
+        'bootstraptype','entropy','adaptivepool',false,'nsimul',499);
+    disp(out.results)
+    disp(out.pvalueBootEqualTail)
+    disp(out.entropyProjection.patternDiagnostics)
+%}
+
 %% Beginning of code
 
 if istable(Y)
@@ -1032,6 +1116,7 @@ options.alpha   = 0;
 options.method  = 'pri';
 options.bootstrap = false;
 options.bootstraptype = 'gaussian';
+options.entropyref = 'robust';
 options.nsimul  = 499;
 options.conflev = 0.95;
 options.tol     = 1e-10;
@@ -1069,6 +1154,7 @@ alpha   = options.alpha;
 method  = char(options.method);
 bootstrap = options.bootstrap;
 bootstraptype = local_parse_bootstraptype(options.bootstraptype);
+entropyref = options.entropyref;
 nsimul  = options.nsimul;
 conflev = options.conflev;
 tol     = options.tol;
@@ -1208,6 +1294,37 @@ if nComplete < p + 2
     error('FSDA:mdMDPtest:TooFewCompleteRows', ...
         ['Too few complete rows to compute the reference complete-case ' ...
         'covariance matrix.']);
+end
+
+% The entropy-projected nonelliptical bootstrap follows the pattern-specific
+% construction in the paper. Dimension pooling would impose an additional
+% equality of same-dimensional radial laws, which is not part of the general
+% nonelliptical null. The product-law bootstrap also requires uncoupled TEM.
+if bootstrap && strcmp(bootstraptype,'entropy')
+    if alpha <= 0
+        error('FSDA:mdMDPtest:EntropyNeedsRobust', ...
+            'bootstraptype=''entropy'' requires alpha>0.');
+    end
+    if ~strcmp(consistencyfactor,'adaptive')
+        error('FSDA:mdMDPtest:EntropyNeedsAdaptive', ...
+            ['bootstraptype=''entropy'' requires ' ...
+            'consistencyfactor=''adaptive''.']);
+    end
+    if adaptivepool
+        error('FSDA:mdMDPtest:EntropyNeedsPatternFactors', ...
+            ['bootstraptype=''entropy'' requires adaptivepool=false because ' ...
+            'the nonelliptical null uses pattern-specific radial factors.']);
+    end
+    if coupledtrim
+        error('FSDA:mdMDPtest:EntropyCoupledUnsupported', ...
+            'bootstraptype=''entropy'' currently requires coupledtrim=false.');
+    end
+    supportedEntropyMethods = {'pri','expScale','zMap','chiMap','betaMap'};
+    if ~any(strcmpi(method,supportedEntropyMethods))
+        error('FSDA:mdMDPtest:EntropyUnsupportedMethod', ...
+            ['bootstraptype=''entropy'' requires method equal to ''pri'', ' ...
+            '''expScale'', ''zMap'', ''chiMap'' or ''betaMap''.']);
+    end
 end
 
 if alpha > 0 && strcmpi(robustClass,'FS')
@@ -1415,17 +1532,20 @@ if isfield(asympt,'TDmean') && isstruct(asympt.TDmean) && ...
     pvalueAsym(4) = asympt.TDmean.pvalue;
 end
 
-% Optional mask-preserving full-pipeline bootstrap under MCAR. The
+% Optional full-pipeline bootstrap under MCAR. The
 % expensive resampling pipeline is entered only when bootstrap=true. The
 % generator is selected through bootstraptype; all subsequent fitting and
-% aggregation steps are identical for the two generators. When the observed
+% aggregation steps reconstruct the same requested MDP pipeline. When the observed
 % omnibus statistic is available, each retained replicate also reconstructs
 % the full scatter-discrepancy sandwich and reapplies the same rank-selection
 % rule before its bootstrap Hausman statistic is stored.
 Tboot = [];
 nMeanBoot = [];
+nCompleteBoot = [];
 nCoupledBoot = [];
+patternCountBoot = [];
 pvalueBoot = [];
+pvalueBootEqualTail = [];
 ciBoot = [];
 Hboot = [];
 rankBoot = [];
@@ -1435,10 +1555,15 @@ rankThresholdBoot = [];
 relativeRankThresholdBoot = [];
 rhoLastKeptBoot = [];
 rhoFirstDiscardedBoot = [];
+entropyGen = [];
+entropyProjection = [];
+bootstrapDiagnostics = struct();
+resultsBootstrap = table();
 
 if bootstrap
     Tboot = NaN(nsimul,4);
     nMeanBoot = NaN(nsimul,1);
+    nCompleteBoot = NaN(nsimul,1);
     nCoupledBoot = NaN(nsimul,1);
     if omnibus.available
         Hboot = NaN(nsimul,1);
@@ -1455,29 +1580,33 @@ if bootstrap
             omnibus.reason];
     end
 
+    % Construct the entropy-projected clean generator once from the observed
+    % data. Unlike the other generators, it preserves the observed support
+    % geometry and randomizes the missingness pattern independently from Y*.
+    if strcmp(bootstraptype,'entropy')
+        [entropyGen,entropyProjection] = local_entropy_projection_setup( ...
+            Y,maskMiss,completeIdx,outFit,alpha,method,robustClass, ...
+            robustEff,robustBonflev,outRob,entropyref);
+        patternCountBoot = NaN(nsimul,entropyGen.nPatterns);
+    end
+
     % nsimul denotes the number of successful bootstrap replicates. A draw
     % that fails only because mdTEM cannot estimate an adaptive factor from
-    % enough reference radii is discarded and regenerated. Other errors are
-    % deliberately rethrown. Nonfinite statistic draws are also regenerated.
-    % The safety margin prevents an infinite loop in pathological cases.
+    % enough reference radii is discarded and regenerated. Entropy draws with
+    % too few complete cases after random pattern sampling are also regenerated.
     nBootstrapAttempts = 0;
     nFailedBootstrapFits = 0;
     nInvalidBootstrapStats = 0;
     nInvalidBootstrapOmnibus = 0;
+    nInvalidBootstrapMasks = 0;
     maxBootstrapAttempts = nsimul + max(100,ceil(0.10*nsimul));
 
-    % Fitted complete-case geometry used by both null generators. Rgen is
-    % upper triangular and satisfies Rgen'*Rgen=SigGen. Since observations
-    % are stored as row vectors, multiplying a spherical row vector by Rgen
-    % gives the required fitted scatter geometry.
+    % Fitted complete-case geometry used by the Gaussian and empirical-radial
+    % generators. The entropy generator resamples observed clean support points
+    % directly and therefore does not use Rgen.
     SigGen = local_make_spd(SigCC);
     Rgen = chol(SigGen,'upper');
 
-    % The empirical-radial generator keeps the observed complete-case radial
-    % law but replaces the empirical angular distribution by independent
-    % directions uniform on the unit sphere. All complete cases contribute
-    % to the empirical radial distribution; robust selection is deliberately
-    % reconstructed afresh inside each bootstrap replicate.
     QrefBoot = [];
     nQBoot = 0;
     if strcmp(bootstraptype,'empiricalradial')
@@ -1496,18 +1625,25 @@ if bootstrap
         if nBootstrapAttempts >= maxBootstrapAttempts
             error('FSDA:mdMDPtest:TooManyBootstrapRetries', ...
                 ['Unable to obtain %d valid bootstrap replicates within %d ' ...
-                'attempts. Adaptive-TEM scarcity failures: %d; draws with ' ...
-                'nonfinite statistics: %d; unavailable omnibus draws: %d.'], ...
+                'attempts. Adaptive-TEM scarcity failures: %d; invalid random ' ...
+                'masks: %d; draws with nonfinite statistics: %d; unavailable ' ...
+                'omnibus draws: %d.'], ...
                 nsimul,maxBootstrapAttempts,nFailedBootstrapFits, ...
-                nInvalidBootstrapStats,nInvalidBootstrapOmnibus);
+                nInvalidBootstrapMasks,nInvalidBootstrapStats, ...
+                nInvalidBootstrapOmnibus);
         end
         nBootstrapAttempts = nBootstrapAttempts + 1;
 
         try
-            % Generate latent full data under the selected MCAR null generator.
+            % Generate latent full data and the bootstrap missingness mask.
+            % Gaussian and empirical-radial calibration condition on the
+            % observed mask. Entropy calibration uses the MCAR product law
+            % F_n^dagger x Pi_n and therefore samples Y* and R* independently.
             switch bootstraptype
                 case 'gaussian'
                     YfullStar = randn(n,p) * Rgen + muCC(:)';
+                    maskStar = maskMiss;
+                    completeIdxStar = completeIdx;
 
                 case 'empiricalradial'
                     indQ = randi(nQBoot,n,1);
@@ -1515,64 +1651,73 @@ if bootstrap
                     Udir = local_random_spherical_directions(n,p);
                     Xsphere = Udir.*sqrt(qStar);
                     YfullStar = Xsphere * Rgen + muCC(:)';
+                    maskStar = maskMiss;
+                    completeIdxStar = completeIdx;
+
+                case 'entropy'
+                    indY = randsample(entropyGen.nSupport,n,true,entropyGen.prob);
+                    YfullStar = entropyGen.support(indY,:);
+                    indR = randsample(entropyGen.nPatterns,n,true, ...
+                        entropyGen.patternProb);
+                    maskStar = entropyGen.patterns(indR,:);
+                    completeIdxStar = all(~maskStar,2);
             end
 
-            % Impose exactly the observed missingness pattern.
+            nCompleteStar = sum(completeIdxStar);
+            if nCompleteStar < p+2
+                nInvalidBootstrapMasks = nInvalidBootstrapMasks + 1;
+                continue
+            end
+            if alpha > 0 && strcmpi(robustClass,'FS')
+                hStar = floor(nCompleteStar*(1-alpha));
+                if hStar < p+1 || nCompleteStar-hStar < 3
+                    nInvalidBootstrapMasks = nInvalidBootstrapMasks + 1;
+                    continue
+                end
+            end
+
             Ystar = YfullStar;
-            Ystar(maskMiss) = NaN;
+            Ystar(maskStar) = NaN;
+            YccStar = YfullStar(completeIdxStar,:);
 
-            % Complete-case reference distances in bootstrap world.
-            YccStar = YfullStar(completeIdx,:);
-
-            [muCCStar,SigCCStar,outRobStar] = local_complete_case_fit(YccStar,alpha, ...
-                robustClass,robustEff,robustBonflev);
-
+            [muCCStar,SigCCStar,outRobStar] = local_complete_case_fit( ...
+                YccStar,alpha,robustClass,robustEff,robustBonflev);
             d2_cc_star = mahalFS(YccStar, muCCStar, SigCCStar);
 
-            % Reconstruct the coupled complete-case eligibility mask independently
-            % in every bootstrap sample.
+            % Reconstruct coupled complete-case eligibility independently in
+            % each fixed-mask bootstrap sample. The entropy branch is validated
+            % above to be uncoupled.
             forcedZeroStar = false(n,1);
             if coupledtrim
-                ccOutlierMaskStar = local_cc_outlier_mask(outRobStar,nComplete);
-                completeRows = find(completeIdx);
-                forcedZeroStar(completeRows(ccOutlierMaskStar)) = true;
+                ccOutlierMaskStar = local_cc_outlier_mask(outRobStar,nCompleteStar);
+                completeRowsStar = find(completeIdxStar);
+                forcedZeroStar(completeRowsStar(ccOutlierMaskStar)) = true;
             end
             nCoupledStar = sum(forcedZeroStar);
 
-            % EM/TEM distances and fitted geometry for the same complete rows.
-            % The fitted object is retained because the omnibus bootstrap must
-            % reconstruct the replicate-specific discrepancy sandwich.
             [d2_all_cc_star,muHatStar,SigHatStar,outFitStar] = ...
                 local_fit_and_get_complete_distances( ...
-                Ystar, completeIdx, alpha, method, tol, forcedZeroStar, ...
+                Ystar, completeIdxStar, alpha, method, tol, forcedZeroStar, ...
                 consistencyfactor, YccStar, muCCStar, SigCCStar, ...
                 adaptivepool, adaptiveminref);
 
-            % Reconstruct the selected aggregation rule inside this bootstrap sample.
             [meanWeightsStar,aggInfoStar] = local_aggregation_weights( ...
                 d2_cc_star,outRobStar,alpha,aggregation,filterlev,p);
             nMeanStar = aggInfoStar.nSelected;
 
-            % Compute the four statistics. A draw with any nonfinite statistic
-            % is discarded below and regenerated, so successful output always
-            % contains exactly nsimul valid rows.
             Tstar = local_statistic(d2_cc_star,d2_all_cc_star,eps0, ...
                 meanWeightsStar);
 
-            % Full-pipeline omnibus calibration. When the observed omnibus
-            % statistic is available, reconstruct the replicate-specific
-            % scatter-discrepancy covariance and apply exactly the same
-            % statistical spectral rank rule used for the observed sample.
             if omnibus.available
                 asymptStarOmnibus = local_bootstrap_omnibus_asymptotic( ...
-                    Ystar,maskMiss,completeIdx,outFitStar,alpha,method, ...
+                    Ystar,maskStar,completeIdxStar,outFitStar,alpha,method, ...
                     robustClass,robustEff,robustBonflev,Tstar,eps0, ...
                     outRobStar,coupledtrim,forcedZeroStar,consistencyfactor, ...
                     muCCStar,SigCCStar,adaptivepool,adaptiveminref, ...
                     d2_cc_star,d2_all_cc_star,muHatStar,SigHatStar);
 
                 [nEffOmnibusStar,nEffOmnibusSourceStar] = ...
-                    local_resolve_omnibus_neff(omnibusneff,n,sum(completeIdx));
+                    local_resolve_omnibus_neff(omnibusneff,n,nCompleteStar);
                 omnibusStar = local_omnibus_test(asymptStarOmnibus, ...
                     SigHatStar,SigCCStar,n,alpha,consistencyfactor, ...
                     coupledtrim,omnibusrankexp,nEffOmnibusStar, ...
@@ -1582,9 +1727,6 @@ if bootstrap
             end
 
         catch ME
-            % This is the one expected numerical scarcity failure identified
-            % in the adaptive-TEM validation study. It concerns an individual
-            % bootstrap draw, not the observed-data fit. Regenerate the draw.
             if strcmp(ME.identifier,'FSDA:mdTEM:FewAdaptiveReferencePoints')
                 nFailedBootstrapFits = nFailedBootstrapFits + 1;
                 continue
@@ -1604,12 +1746,14 @@ if bootstrap
             continue
         end
 
-        % Retain only successful draws. The storage index is incremented only
-        % here, so Tboot, nMeanBoot and nCoupledBoot always have nsimul rows.
         j = j + 1;
         Tboot(j,:) = Tstar;
         nMeanBoot(j) = nMeanStar;
+        nCompleteBoot(j) = nCompleteStar;
         nCoupledBoot(j) = nCoupledStar;
+        if strcmp(bootstraptype,'entropy')
+            patternCountBoot(j,:) = accumarray(indR,1,[entropyGen.nPatterns 1])';
+        end
         if omnibus.available
             Hboot(j) = omnibusStar.stat;
             rankBoot(j) = omnibusStar.rank;
@@ -1622,11 +1766,60 @@ if bootstrap
         end
     end
 
-    % Bootstrap p-values for the four scalar statistics.
-    pvalueBoot = (1 + sum(abs(Tboot) >= abs(Tobs),1)) / (size(Tboot,1) + 1);
+    % Keep the historical absolute-value p-value for backward compatibility,
+    % and additionally expose the equal-tail definition. The latter is useful
+    % for visibly asymmetric finite-sample nonelliptical bootstrap laws.
+    Bboot = size(Tboot,1);
+    pvalueBoot = (1 + sum(abs(Tboot) >= abs(Tobs),1)) / (Bboot + 1);
+    pBootLower = (1 + sum(Tboot <= Tobs,1)) / (Bboot + 1);
+    pBootUpper = (1 + sum(Tboot >= Tobs,1)) / (Bboot + 1);
+    pvalueBootEqualTail = min(ones(1,4),2*min(pBootLower,pBootUpper));
 
-    % Rank-selected omnibus bootstrap p-value. H is nonnegative, so the
-    % bootstrap comparison uses its upper tail rather than absolute values.
+    if strcmp(bootstraptype,'entropy')
+        maskMode = 'random empirical-pattern product law';
+    else
+        maskMode = 'fixed observed mask';
+    end
+    bootstrapDiagnostics = struct( ...
+        'maskMode',maskMode, ...
+        'pvalueAbsolute',pvalueBoot, ...
+        'pvalueEqualTail',pvalueBootEqualTail, ...
+        'pLower',pBootLower, ...
+        'pUpper',pBootUpper, ...
+        'nCompleteBoot',nCompleteBoot, ...
+        'meanNComplete',mean(nCompleteBoot), ...
+        'sdNComplete',std(nCompleteBoot), ...
+        'minNComplete',min(nCompleteBoot), ...
+        'maxNComplete',max(nCompleteBoot));
+    if strcmp(bootstraptype,'entropy')
+        patternFractionBoot = patternCountBoot/n;
+        bootstrapDiagnostics.patternCountBoot = patternCountBoot;
+        bootstrapDiagnostics.patternFractionBoot = patternFractionBoot;
+        bootstrapDiagnostics.targetPatternProbabilities = entropyGen.patternProb;
+        bootstrapDiagnostics.meanPatternFractions = mean(patternFractionBoot,1)';
+        bootstrapDiagnostics.maxMeanPatternProbabilityError = max(abs( ...
+            bootstrapDiagnostics.meanPatternFractions-entropyGen.patternProb));
+        bootstrapDiagnostics.completePattern = find(all(~entropyGen.patterns,2),1);
+        if isempty(bootstrapDiagnostics.completePattern)
+            bootstrapDiagnostics.expectedNComplete = 0;
+        else
+            bootstrapDiagnostics.expectedNComplete = n*entropyGen.patternProb( ...
+                bootstrapDiagnostics.completePattern);
+        end
+        bootstrapDiagnostics.meanNCompleteError = ...
+            bootstrapDiagnostics.meanNComplete-bootstrapDiagnostics.expectedNComplete;
+    else
+        bootstrapDiagnostics.patternCountBoot = [];
+        bootstrapDiagnostics.patternFractionBoot = [];
+        bootstrapDiagnostics.targetPatternProbabilities = [];
+        bootstrapDiagnostics.meanPatternFractions = [];
+        bootstrapDiagnostics.maxMeanPatternProbabilityError = NaN;
+        bootstrapDiagnostics.completePattern = [];
+        bootstrapDiagnostics.expectedNComplete = nComplete;
+        bootstrapDiagnostics.meanNCompleteError = ...
+            bootstrapDiagnostics.meanNComplete-nComplete;
+    end
+
     if omnibus.available
         omnibus.pvalueBoot = (1 + sum(Hboot >= omnibus.stat)) / ...
             (size(Hboot,1) + 1);
@@ -1649,9 +1842,14 @@ if bootstrap
             'VariableNames',{'Rank','Count','Fraction'});
     end
 
-    % Bootstrap confidence intervals.
     alphaCI = 1 - conflev;
     ciBoot = quantile(Tboot,[alphaCI/2 1-alphaCI/2],1);
+    medBoot = median(Tboot,1);
+    statRowNamesBoot = {'TLmedian';'TLmean';'TDmedian';'TDmean'};
+    resultsBootstrap = table(Tobs(:),ciBoot(1,:)',medBoot(:),ciBoot(2,:)', ...
+        pvalueBoot(:),pvalueBootEqualTail(:), ...
+        'VariableNames',{'Tobs','Lower','Median','Upper','pvalueAbs','pvalueEqualTail'}, ...
+        'RowNames',statRowNamesBoot);
 end
 
 % Human-readable table identifying explicitly the four monitored
@@ -1725,10 +1923,14 @@ out.pvalueAsym  = pvalueAsym;
 out.Tobs        = Tobs;
 out.results     = results;
 out.resultsGaussian = resultsGaussian;
+out.resultsBootstrap = resultsBootstrap;
 out.omnibus = omnibus;
 out.resultsOmnibus = resultsOmnibus;
 out.bootstrap   = bootstrap;
 out.bootstraptype = bootstraptype;
+out.entropyref = entropyref;
+out.entropyProjection = entropyProjection;
+out.bootstrapDiagnostics = bootstrapDiagnostics;
 out.dispresults = dispresults;
 out.alpha       = alpha;
 out.method      = method;
@@ -1775,12 +1977,15 @@ out.completeIdx = completeIdx;
 
 if bootstrap
     out.pvalueBoot = pvalueBoot;
+    out.pvalueBootEqualTail = pvalueBootEqualTail;
     out.Tboot = Tboot;
     out.ciBoot = ciBoot;
     out.nMeanBoot = nMeanBoot;
+    out.nCompleteBoot = nCompleteBoot;
     out.nCoupledBoot = nCoupledBoot;
     out.nBootstrapAttempts = nBootstrapAttempts;
     out.nFailedBootstrapFits = nFailedBootstrapFits;
+    out.nInvalidBootstrapMasks = nInvalidBootstrapMasks;
     out.nInvalidBootstrapStats = nInvalidBootstrapStats;
     out.nInvalidBootstrapOmnibus = nInvalidBootstrapOmnibus;
 end
@@ -1859,10 +2064,18 @@ if dispresults
                 bootstrapLabel = 'Gaussian fitted complete-case model';
             case 'empiricalradial'
                 bootstrapLabel = 'empirical-radial elliptical';
+            case 'entropy'
+                bootstrapLabel = 'entropy-projected nonelliptical';
         end
         fprintf('Bootstrap null generator      : %s\n',bootstrapLabel);
         fprintf('Bootstrap replications kept   : %d\n',size(Tboot,1));
         fprintf('Bootstrap attempts            : %d\n',out.nBootstrapAttempts);
+        fprintf('Bootstrap mask mode           : %s\n', ...
+            out.bootstrapDiagnostics.maskMode);
+        if out.nInvalidBootstrapMasks > 0
+            fprintf('Random masks regenerated      : %d\n', ...
+                out.nInvalidBootstrapMasks);
+        end
         if out.nFailedBootstrapFits > 0
             fprintf('Adaptive-TEM draws regenerated: %d\n', ...
                 out.nFailedBootstrapFits);
@@ -1874,6 +2087,42 @@ if dispresults
         if out.nInvalidBootstrapOmnibus > 0
             fprintf('Omnibus draws regenerated     : %d\n', ...
                 out.nInvalidBootstrapOmnibus);
+        end
+        if strcmp(bootstraptype,'entropy')
+            ep = out.entropyProjection;
+            disp(' ')
+            disp('Entropy-projection diagnostics')
+            fprintf('Clean reference support       : %d of %d complete cases\n', ...
+                ep.nReference,ep.nCompleteOriginal);
+            fprintf('Nonredundant constraints      : %d of %d raw\n', ...
+                ep.constraintRank,ep.nConstraintsRaw);
+            fprintf('Max constraint residual before: %.6g\n', ...
+                ep.maxAbsConstraintBefore);
+            fprintf('Max constraint residual after : %.6g\n', ...
+                ep.maxAbsConstraintAfter);
+            fprintf('Max scaled residual after     : %.6g\n', ...
+                ep.maxScaledConstraintAfter);
+            fprintf('Min normalized calib. cov. eig: %.6g\n', ...
+                ep.minEigenvalueVNormalized);
+            fprintf('Entropy multiplier norm       : %.6g\n',ep.lambdaNorm);
+            fprintf('Maximum probability ratio     : %.6g\n',ep.maxWeightRatio);
+            fprintf('Effective support size        : %.6g\n',ep.effectiveSampleSize);
+            fprintf('Relative entropy D_KL         : %.6g\n',ep.relativeEntropy);
+            fprintf('L2 probability-ratio change   : %.6g\n',ep.l2WeightRatioChange);
+            fprintf('Strict interior feasibility   : %d\n', ...
+                ep.relativeInteriorFeasible);
+            fprintf('TEM fraction residual before  : %.6g\n', ...
+                ep.retainedFractionResidualBefore);
+            fprintf('TEM fraction residual after   : %.6g\n', ...
+                ep.retainedFractionResidualAfter);
+            fprintf('Mean pattern-probability error: %.6g\n', ...
+                out.bootstrapDiagnostics.maxMeanPatternProbabilityError);
+            disp('Pattern diagnostics: out.entropyProjection.patternDiagnostics')
+            if isfield(ep,'referenceNote') && ~isempty(ep.referenceNote)
+                fprintf('Reference note: %s\n',ep.referenceNote);
+            end
+            disp('Entropy bootstrap distribution and p-values')
+            disp(out.resultsBootstrap)
         end
     else
         disp('Bootstrap calibration          : not requested')
@@ -2384,13 +2633,18 @@ end
 
 if ~ischar(bootstraptype) || size(bootstraptype,1) ~= 1
     error('FSDA:mdMDPtest:WrongBootstrapType', ...
-        'Option bootstraptype must be ''gaussian'' or ''empiricalradial''.');
+        ['Option bootstraptype must be ''gaussian'', ''empiricalradial'' ' ...
+        'or ''entropy''.']);
 end
 
 bootstraptype = lower(strtrim(bootstraptype));
-if ~any(strcmp(bootstraptype,{'gaussian','empiricalradial'}))
+if any(strcmp(bootstraptype,{'entropyprojected','entropy-projected'}))
+    bootstraptype = 'entropy';
+end
+if ~any(strcmp(bootstraptype,{'gaussian','empiricalradial','entropy'}))
     error('FSDA:mdMDPtest:WrongBootstrapType', ...
-        'Option bootstraptype must be ''gaussian'' or ''empiricalradial''.');
+        ['Option bootstraptype must be ''gaussian'', ''empiricalradial'' ' ...
+        'or ''entropy''.']);
 end
 end
 
@@ -5317,6 +5571,570 @@ while any(bad)
     bad = ~isfinite(normU) | normU <= 0;
 end
 U = U./normU;
+end
+
+% -------------------------------------------------------------------------
+function [gen,diagOut] = local_entropy_projection_setup(Y,maskMiss,completeIdx, ...
+    outFit,alpha,method,robustClass,robustEff,robustBonflev,outRob,entropyref)
+%local_entropy_projection_setup Null-enforcing nonelliptical clean generator.
+%
+% Implements the finite-support entropy projection described in Supplement
+% S9.7. The support points are unchanged. Their probabilities minimize
+% KL(p||q) subject to the robust-functional influence restriction,
+% patternwise retained first moments, patternwise trace-free retained second
+% moments and the common TEM retained-fraction equation.
+
+[n,p] = size(Y);
+Ycc = Y(completeIdx,:);
+ncc = size(Ycc,1);
+ccRows = find(completeIdx);
+
+% Select the clean complete-data support. The automatic robust rule removes
+% only observations declared outliers by the chosen robust fit; it does not
+% use the initial h-subset of a high-breakdown estimator.
+[refMask,refSource] = local_entropy_reference_mask(entropyref,completeIdx, ...
+    outRob,ncc,n);
+Yref = Ycc(refMask,:);
+refRows = ccRows(refMask);
+m = size(Yref,1);
+if m < p+2
+    error('FSDA:mdMDPtest:EntropyReferenceTooSmall', ...
+        ['The entropy clean reference contains only %d complete observations; ' ...
+        'at least p+2=%d are required.'],m,p+2);
+end
+if strcmpi(robustClass,'FS')
+    href = floor(m*(1-alpha));
+    if href < p+1 || m-href < 3
+        error('FSDA:mdMDPtest:EntropyReferenceTooSmall', ...
+            ['The entropy clean reference is too small for the requested ' ...
+            'Forward Search monitoring configuration.']);
+    end
+end
+qbase = ones(m,1)/m;
+
+% theta_en = T_C(F_clean). Refit the same complete-case functional on the
+% selected clean empirical reference law.
+[muEn,SEn,outRobEn] = local_complete_case_fit(Yref,alpha,robustClass, ...
+    robustEff,robustBonflev);
+muEn = muEn(:);
+SEn = (SEn+SEn')/2;
+if numel(muEn) ~= p || any(~isfinite(SEn(:))) || rcond(SEn) <= 1e-12
+    error('FSDA:mdMDPtest:EntropyReferenceSingular', ...
+        'The fitted entropy clean-reference geometry is singular.');
+end
+
+% h_C: centered estimated influence of the generic robust complete-case
+% functional. The existing FS analytical frozen-classification influence and
+% MCD/MM delete-one influence are reused here.
+[PsiMu,PsiS,ccInfo,ccReason] = local_cc_joint_influence(Yref,alpha, ...
+    robustClass,robustEff,robustBonflev,outRobEn);
+if ~isempty(ccReason)
+    error('FSDA:mdMDPtest:EntropyInfluenceUnavailable','%s',ccReason);
+end
+hC = [PsiMu PsiS];
+hC = hC - sum(hC.*qbase,1);
+
+% Preliminary common TEM threshold e_c,n from the observed-data fit.
+cthr = NaN;
+if isfield(outFit,'cthr') && isscalar(outFit.cthr) && isfinite(outFit.cthr)
+    cthr = outFit.cthr;
+elseif isfield(outFit,'adjustedD2') && numel(outFit.adjustedD2)==n && ...
+        isfield(outFit,'weights') && numel(outFit.weights)==n
+    ww = outFit.weights(:)>0;
+    dd = outFit.adjustedD2(:);
+    if any(ww & isfinite(dd))
+        cthr = max(dd(ww & isfinite(dd)));
+    end
+end
+if ~isfinite(cthr)
+    error('FSDA:mdMDPtest:EntropyThresholdUnavailable', ...
+        'Unable to reconstruct the preliminary TEM threshold.');
+end
+
+gamma = 1-alpha;
+[patt,~,ic] = unique(maskMiss,'rows');
+G = size(patt,1);
+piPattern = accumarray(ic,1,[G 1])/n;
+nPattern = accumarray(ic,1,[G 1]);
+
+Ucell = cell(G,1);
+wcell = cell(G,1);
+qcell = cell(G,1);
+pobs = zeros(G,1);
+athr = NaN(G,1);
+h1cell = cell(G,1);
+h2cell = cell(G,1);
+thresholdScore = zeros(m,1);
+
+for g = 1:G
+    obs = find(~patt(g,:));
+    pg = numel(obs);
+    pobs(g) = pg;
+    if pg == 0
+        error('FSDA:mdMDPtest:EntropyEmptyPattern', ...
+            ['The entropy bootstrap does not support a missingness pattern ' ...
+            'with zero observed coordinates.']);
+    end
+    ag = local_tem_inv_adjust(cthr,pg,p,n,method);
+    athr(g) = ag;
+    if ~isfinite(ag) || ag <= 0
+        error('FSDA:mdMDPtest:EntropyInvalidCutoff', ...
+            'Unable to obtain a positive raw cutoff for entropy pattern %d.',g);
+    end
+
+    Sg = SEn(obs,obs);
+    Sg = (Sg+Sg')/2;
+    [Rg,flag] = chol(Sg,'lower');
+    if flag ~= 0
+        error('FSDA:mdMDPtest:EntropyReferenceSingular', ...
+            'Entropy reference scatter block is singular for pattern %d.',g);
+    end
+    Zg = Yref(:,obs)-muEn(obs)';
+    Ug = Zg/Rg';
+    qg = sum(Ug.^2,2);
+    wg = double(isfinite(qg) & qg>=0 & qg<=ag);
+    if ~any(wg)
+        error('FSDA:mdMDPtest:EntropyNoRetainedSupport', ...
+            ['The clean entropy support contains no point inside the raw ' ...
+            'TEM cutoff for pattern %d.'],g);
+    end
+
+    Ucell{g} = Ug;
+    qcell{g} = qg;
+    wcell{g} = wg;
+    h1cell{g} = Ug.*wg;
+    h2cell{g} = local_tracefree_coordinates_rows(Ug).*wg;
+    thresholdScore = thresholdScore + piPattern(g)*wg;
+end
+h3 = thresholdScore-gamma;
+
+% Stack all raw calibration restrictions. The trace-free shape block uses
+% a one-to-one coordinate system obtained by omitting the final diagonal
+% coordinate; any remaining sample-specific redundancy is removed below.
+Hraw = hC;
+for g = 1:G
+    Hraw = [Hraw h1cell{g} h2cell{g}]; %#ok<AGROW>
+end
+Hraw = [Hraw h3];
+if any(~isfinite(Hraw(:)))
+    error('FSDA:mdMDPtest:EntropyNonfiniteCalibration', ...
+        'The entropy calibration matrix contains nonfinite entries.');
+end
+
+rawMeanBefore = sum(Hraw.*qbase,1);
+rawRms = sqrt(sum((Hraw.^2).*qbase,1));
+scaleTol = 100*eps(max(1,max(rawRms)));
+activeCols = rawRms > scaleTol;
+if ~any(activeCols)
+    error('FSDA:mdMDPtest:EntropyNoConstraints', ...
+        'No nonzero entropy calibration restriction is available.');
+end
+Hscaled = Hraw(:,activeCols)./rawRms(activeCols);
+Hw = Hscaled.*sqrt(qbase);
+[~,Ssvd,Vsvd] = svd(Hw,'econ');
+sv = diag(Ssvd);
+if isempty(sv) || ~isfinite(sv(1)) || sv(1)<=0
+    error('FSDA:mdMDPtest:EntropyNoConstraints', ...
+        'Unable to determine the rank of the entropy calibration system.');
+end
+rankTol = max(size(Hw))*eps(sv(1))*100;
+r = sum(sv>rankTol);
+if r < 1
+    error('FSDA:mdMDPtest:EntropyNoConstraints', ...
+        'All entropy calibration restrictions are numerically redundant.');
+end
+Vr = Vsvd(:,1:r);
+Hred = Hscaled*Vr;
+
+hbarRed = sum(Hred.*qbase,1);
+Hc = Hred-hbarRed;
+Vn = Hc'*(Hc.*qbase);
+Vn = (Vn+Vn')/2;
+ev = sort(real(eig(Vn)),'ascend');
+maxEig = ev(end);
+minEig = ev(1);
+if ~isfinite(minEig) || ~isfinite(maxEig) || maxEig<=0 || ...
+        minEig <= max(1e-12*maxEig,1e-14)
+    error('FSDA:mdMDPtest:EntropyCalibrationSingular', ...
+        ['The nonredundant entropy calibration covariance is singular or ' ...
+        'nearly singular (min eigenvalue %.6g, max %.6g).'],minEig,maxEig);
+end
+
+[pdag,lambdaRed,solver] = local_entropy_tilt(Hred,qbase,1e-10,100);
+if ~solver.converged
+    error('FSDA:mdMDPtest:EntropyProjectionFailed', ...
+        ['Entropy projection did not converge: %s Final max calibration ' ...
+        'residual %.6g.'],solver.reason,solver.gradientInfNorm);
+end
+
+% Map the reduced normalized multiplier back to the original raw coordinates
+% for an interpretable multiplier diagnostic.
+lambdaScaled = Vr*lambdaRed;
+lambdaRaw = zeros(size(Hraw,2),1);
+lambdaRaw(activeCols) = lambdaScaled./rawRms(activeCols)';
+
+rawMeanAfter = sum(Hraw.*pdag,1);
+scaledMeanBefore = rawMeanBefore(activeCols)./rawRms(activeCols);
+scaledMeanAfter = rawMeanAfter(activeCols)./rawRms(activeCols);
+maxScaledAfter = max(abs(scaledMeanAfter));
+if ~isfinite(maxScaledAfter) || maxScaledAfter > 1e-8
+    error('FSDA:mdMDPtest:EntropyProjectionResidual', ...
+        ['Entropy projection converged in reduced coordinates but the ' ...
+        'reconstructed scaled raw-constraint residual is %.6g.'],maxScaledAfter);
+end
+if any(~isfinite(pdag)) || any(pdag<=0)
+    error('FSDA:mdMDPtest:EntropyProjectionBoundary', ...
+        ['The entropy solution is not strictly positive in floating-point ' ...
+        'arithmetic; the relative-interior feasibility condition is not met.']);
+end
+ratio = pdag./qbase;
+relativeEntropy = sum(pdag.*log(ratio));
+l2Ratio = sqrt(sum(qbase.*(ratio-1).^2));
+ess = 1/sum(pdag.^2);
+
+% Patternwise before/after diagnostics make the enforced null restrictions
+% directly inspectable in the same standardized geometry used to build h_n.
+HBefore = NaN(G,1); HAfter = NaN(G,1);
+kappaBefore = NaN(G,1); kappaAfter = NaN(G,1);
+locBefore = NaN(G,1); locAfter = NaN(G,1);
+shapeBefore = NaN(G,1); shapeAfter = NaN(G,1);
+firstBefore = NaN(G,1); firstAfter = NaN(G,1);
+shapeConstraintBefore = NaN(G,1); shapeConstraintAfter = NaN(G,1);
+for g = 1:G
+    [HBefore(g),kappaBefore(g),locBefore(g),shapeBefore(g), ...
+        firstBefore(g),shapeConstraintBefore(g)] = ...
+        local_entropy_pattern_moments(Ucell{g},wcell{g},qbase);
+    [HAfter(g),kappaAfter(g),locAfter(g),shapeAfter(g), ...
+        firstAfter(g),shapeConstraintAfter(g)] = ...
+        local_entropy_pattern_moments(Ucell{g},wcell{g},pdag);
+end
+retainedBefore = sum(piPattern.*HBefore)-gamma;
+retainedAfter = sum(piPattern.*HAfter)-gamma;
+
+Pattern = (1:G)';
+patternDiagnostics = table(Pattern,pobs,nPattern,piPattern,athr, ...
+    HBefore,HAfter,kappaBefore,kappaAfter,locBefore,locAfter, ...
+    shapeBefore,shapeAfter,firstBefore,firstAfter, ...
+    shapeConstraintBefore,shapeConstraintAfter, ...
+    'VariableNames',{'Pattern','pobs','nPattern','piPattern','athr', ...
+    'HBefore','HAfter','kappaBefore','kappaAfter', ...
+    'locationResidualBefore','locationResidualAfter', ...
+    'shapeResidualBefore','shapeResidualAfter', ...
+    'firstConstraintBefore','firstConstraintAfter', ...
+    'shapeConstraintBefore','shapeConstraintAfter'});
+
+% Generator information kept separate from public diagnostics to avoid
+% duplicating the complete support matrix in the returned output structure.
+gen = struct;
+gen.support = Yref;
+gen.prob = pdag;
+gen.nSupport = m;
+gen.patterns = patt;
+gen.patternProb = piPattern;
+gen.nPatterns = G;
+
+diagOut = struct;
+diagOut.available = true;
+diagOut.reason = '';
+diagOut.supportPreserved = true;
+diagOut.maskSampling = 'independent empirical pattern law';
+diagOut.adaptivepool = false;
+diagOut.method = method;
+diagOut.theoryStatus = ['Null-enforcing entropy projection preserving the ' ...
+    'nonelliptical clean empirical support; values and masks are sampled ' ...
+    'independently from the fitted MCAR product law.'];
+diagOut.referenceSource = refSource;
+diagOut.referenceRows = refRows;
+diagOut.nCompleteOriginal = ncc;
+diagOut.nReference = m;
+diagOut.nReferenceExcluded = ncc-m;
+diagOut.referenceFraction = m/ncc;
+diagOut.nPatterns = G;
+diagOut.referenceLoc = muEn;
+diagOut.referenceCov = SEn;
+diagOut.patterns = patt;
+diagOut.patternProbabilities = piPattern;
+diagOut.baseWeights = qbase;
+diagOut.projectedWeights = pdag;
+diagOut.weightDiagnostics = table(refRows,qbase,pdag,ratio, ...
+    'VariableNames',{'DataRow','BaseProbability','ProjectedProbability','ProbabilityRatio'});
+diagOut.nConstraintsRaw = size(Hraw,2);
+diagOut.nNonzeroConstraints = sum(activeCols);
+diagOut.constraintRank = r;
+diagOut.rankTolerance = rankTol;
+diagOut.minEigenvalueV = minEig;
+diagOut.maxEigenvalueV = maxEig;
+diagOut.conditionV = maxEig/minEig;
+diagOut.minEigenvalueVNormalized = minEig;
+diagOut.maxEigenvalueVNormalized = maxEig;
+diagOut.conditionVNormalized = maxEig/minEig;
+diagOut.constraintScaling = rawRms(activeCols)';
+diagOut.lambda = lambdaRaw;
+diagOut.lambdaNorm = norm(lambdaRaw);
+diagOut.lambdaReducedNorm = norm(lambdaRed);
+diagOut.maxWeightRatio = max(ratio);
+diagOut.minWeightRatio = min(ratio);
+diagOut.minProjectedWeight = min(pdag);
+diagOut.maxProjectedWeight = max(pdag);
+diagOut.relativeInteriorFeasible = solver.converged && all(pdag>0) && ...
+    maxScaledAfter <= 1e-8;
+diagOut.effectiveSampleSize = ess;
+diagOut.effectiveSampleFraction = ess/m;
+diagOut.relativeEntropy = relativeEntropy;
+diagOut.nTimesRelativeEntropy = n*relativeEntropy;
+diagOut.l2WeightRatioChange = l2Ratio;
+diagOut.sqrtNTimesL2WeightRatioChange = sqrt(n)*l2Ratio;
+diagOut.sqrtNTimesLambdaNorm = sqrt(n)*diagOut.lambdaNorm;
+diagOut.maxCalibrationVectorNorm = max(sqrt(sum(Hraw.^2,2)));
+diagOut.maxCalibrationVectorNormOverSqrtN = ...
+    diagOut.maxCalibrationVectorNorm/sqrt(n);
+diagOut.meanConstraintBefore = rawMeanBefore(:);
+diagOut.meanConstraintAfter = rawMeanAfter(:);
+diagOut.maxAbsConstraintBefore = max(abs(rawMeanBefore));
+diagOut.maxAbsConstraintAfter = max(abs(rawMeanAfter));
+diagOut.maxScaledConstraintBefore = max(abs(scaledMeanBefore));
+diagOut.maxScaledConstraintAfter = maxScaledAfter;
+diagOut.robustInfluenceResidualBefore = norm(sum(hC.*qbase,1));
+diagOut.robustInfluenceResidualAfter = norm(sum(hC.*pdag,1));
+diagOut.gamma = gamma;
+diagOut.threshold = cthr;
+diagOut.retainedFractionResidualBefore = retainedBefore;
+diagOut.retainedFractionResidualAfter = retainedAfter;
+diagOut.maxLocationResidualBefore = max(locBefore,[],'omitnan');
+diagOut.maxLocationResidualAfter = max(locAfter,[],'omitnan');
+diagOut.maxShapeResidualBefore = max(shapeBefore,[],'omitnan');
+diagOut.maxShapeResidualAfter = max(shapeAfter,[],'omitnan');
+diagOut.patternDiagnostics = patternDiagnostics;
+diagOut.completeCaseInfluence = ccInfo;
+diagOut.solver = solver;
+if strcmp(refSource,'robust-declared clean complete cases')
+    diagOut.referenceNote = ['The automatic entropy reference uses the ' ...
+        'complete cases not declared outliers by the robust complete-case ' ...
+        'fit. If this classification removes a nonvanishing fraction of ' ...
+        'genuine clean observations rather than gross contamination, supply ' ...
+        'entropyref=''all'' or a scientifically justified custom logical mask.'];
+else
+    diagOut.referenceNote = '';
+end
+end
+
+% -------------------------------------------------------------------------
+function [mask,source] = local_entropy_reference_mask(spec,completeIdx,outRob,ncc,n)
+%local_entropy_reference_mask Parse the entropy clean-support specification.
+
+if isstring(spec)
+    if ~isscalar(spec)
+        error('FSDA:mdMDPtest:WrongEntropyReference', ...
+            'entropyref must be a character vector, string scalar or logical vector.');
+    end
+    spec = char(spec);
+end
+
+if ischar(spec)
+    key = lower(strtrim(spec));
+    switch key
+        case 'robust'
+            if isempty(outRob) || ~isstruct(outRob)
+                error('FSDA:mdMDPtest:WrongEntropyReference', ...
+                    'entropyref=''robust'' requires a robust complete-case fit.');
+            end
+            mask = ~local_cc_outlier_mask(outRob,ncc);
+            source = 'robust-declared clean complete cases';
+        case 'all'
+            mask = true(ncc,1);
+            source = 'all complete cases';
+        otherwise
+            error('FSDA:mdMDPtest:WrongEntropyReference', ...
+                'entropyref must be ''robust'', ''all'' or a logical vector.');
+    end
+elseif islogical(spec) && isvector(spec)
+    spec = spec(:);
+    if numel(spec)==ncc
+        mask = spec;
+    elseif numel(spec)==n
+        if any(spec & ~completeIdx)
+            error('FSDA:mdMDPtest:WrongEntropyReference', ...
+                'A length-n entropyref logical vector may select only complete rows.');
+        end
+        mask = spec(completeIdx);
+    else
+        error('FSDA:mdMDPtest:WrongEntropyReference', ...
+            'A logical entropyref must have length n or nComplete.');
+    end
+    source = 'user-supplied clean complete-case mask';
+else
+    error('FSDA:mdMDPtest:WrongEntropyReference', ...
+        'entropyref must be ''robust'', ''all'' or a logical vector.');
+end
+
+mask = logical(mask(:));
+if ~any(mask)
+    error('FSDA:mdMDPtest:WrongEntropyReference', ...
+        'The entropy clean-reference mask selects no complete observations.');
+end
+end
+
+% -------------------------------------------------------------------------
+function Htf = local_tracefree_coordinates_rows(U)
+%local_tracefree_coordinates_rows One-to-one trace-free symmetric coordinates.
+%
+% For A=UU'-tr(UU')I/k, lower-triangular coordinates are formed and the
+% final diagonal entry A(k,k) is omitted. Since tr(A)=0, that entry is
+% determined by the other diagonal entries. The resulting dimension is
+% k(k+1)/2-1, as required for a one-to-one vectorization of trace-free
+% symmetric matrices.
+
+[m,k] = size(U);
+s = max(0,k*(k+1)/2-1);
+Htf = zeros(m,s);
+if k==1
+    return
+end
+q = sum(U.^2,2);
+col = 0;
+for j = 1:k
+    for i = j:k
+        if i==k && j==k
+            continue
+        end
+        col = col+1;
+        Htf(:,col) = U(:,i).*U(:,j);
+        if i==j
+            Htf(:,col) = Htf(:,col)-q/k;
+        end
+    end
+end
+end
+
+% -------------------------------------------------------------------------
+function [prob,lambda,info] = local_entropy_tilt(H,q,tol,maxiter)
+%local_entropy_tilt Solve sum p_i H_i=0 by stabilized exponential tilting.
+%
+% The dual objective is log(sum q_i exp(H_i lambda)). Newton steps use the
+% current weighted covariance of H and a backtracking Armijo line search.
+
+[m,d] = size(H);
+q = q(:);
+if numel(q)~=m || any(~isfinite(q)) || any(q<=0)
+    error('FSDA:mdMDPtest:EntropyInvalidBaseWeights', ...
+        'Entropy base probabilities must be finite and strictly positive.');
+end
+q = q/sum(q);
+lambda = zeros(d,1);
+converged = false;
+reason = '';
+stepHalvingsTotal = 0;
+
+for iter = 1:maxiter
+    [prob,phi,grad,Hess] = local_entropy_dual_state(H,q,lambda);
+    gradInf = norm(grad,inf);
+    if gradInf <= tol
+        converged = true;
+        break
+    end
+
+    Hess = (Hess+Hess')/2;
+    rc = rcond(Hess);
+    if isfinite(rc) && rc > 1e-12
+        step = -(Hess\grad);
+    else
+        step = -pinv(Hess,1e-12)*grad;
+    end
+    if any(~isfinite(step)) || grad'*step >= 0
+        reason = 'Unable to construct a finite descent Newton step.';
+        break
+    end
+
+    t = 1;
+    descent = grad'*step;
+    accepted = false;
+    for ls = 1:60
+        lambdaTry = lambda+t*step;
+        [~,phiTry] = local_entropy_dual_state(H,q,lambdaTry);
+        if isfinite(phiTry) && phiTry <= phi + 1e-4*t*descent
+            lambda = lambdaTry;
+            accepted = true;
+            stepHalvingsTotal = stepHalvingsTotal + (ls-1);
+            break
+        end
+        t = t/2;
+    end
+    if ~accepted
+        reason = 'Backtracking line search failed.';
+        break
+    end
+end
+
+[prob,phi,grad,Hess] = local_entropy_dual_state(H,q,lambda);
+gradInf = norm(grad,inf);
+if ~converged && gradInf <= tol
+    converged = true;
+end
+if ~converged && isempty(reason)
+    reason = 'Maximum number of Newton iterations reached.';
+end
+
+info = struct('converged',converged,'reason',reason,'iterations',iter, ...
+    'gradientInfNorm',gradInf,'dualObjective',phi, ...
+    'hessianRcond',rcond((Hess+Hess')/2), ...
+    'lineSearchHalvings',stepHalvingsTotal);
+end
+
+% -------------------------------------------------------------------------
+function [prob,phi,grad,Hess] = local_entropy_dual_state(H,q,lambda)
+%local_entropy_dual_state Stable exponential-tilt probabilities and derivatives.
+
+eta = H*lambda;
+c = max(eta);
+w = q.*exp(eta-c);
+z = sum(w);
+if ~isfinite(z) || z<=0
+    prob = NaN(size(q));
+    phi = Inf;
+    grad = NaN(size(lambda));
+    Hess = NaN(numel(lambda));
+    return
+end
+prob = w/z;
+phi = c+log(z);
+mu = H'*prob;
+HC = H-mu';
+Hess = HC'*(HC.*prob);
+grad = mu;
+end
+
+% -------------------------------------------------------------------------
+function [Hret,kappa,locResidual,shapeResidual,firstNorm,shapeNorm] = ...
+    local_entropy_pattern_moments(U,w,prob)
+%local_entropy_pattern_moments Weighted retained-moment diagnostics.
+
+k = size(U,2);
+prob = prob(:);
+w = double(w(:));
+mass = prob.*w;
+Hret = sum(mass);
+first = U'*mass;
+Munc = U'*(U.*mass);
+firstNorm = norm(first);
+shapeTF = Munc-trace(Munc)*eye(k)/k;
+shapeNorm = norm(shapeTF,'fro');
+if Hret<=0 || ~isfinite(Hret)
+    kappa = NaN;
+    locResidual = NaN;
+    shapeResidual = NaN;
+    return
+end
+mret = first/Hret;
+Mret = Munc/Hret;
+kappa = trace(Mret)/k;
+if ~isfinite(kappa) || kappa<=0
+    locResidual = NaN;
+    shapeResidual = NaN;
+    return
+end
+locResidual = norm(mret)/sqrt(kappa);
+shapeRatio = Mret/kappa;
+shapeResidual = norm(shapeRatio-eye(k),'fro')/sqrt(k);
 end
 
 % -------------------------------------------------------------------------
