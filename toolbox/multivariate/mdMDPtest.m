@@ -14,11 +14,15 @@ function out = mdMDPtest(Y, varargin)
 %  Mean-statistic inference is based on the analytical asymptotic reference
 %  whenever the corresponding analytical branch is defined. If bootstrap=true,
 %  an additional mask-preserving full-pipeline bootstrap calibration is
-%  computed. The null generator is selected through bootstraptype: the
-%  backward-compatible default is a Gaussian model fitted on the complete
-%  rows, while 'empiricalradial' uses a null-enforcing empirical-radial
-%  elliptical generator. In both cases the observed missingness mask is
-%  imposed on each generated sample and the complete MDP pipeline is rerun.
+%  computed. The same bootstrap samples also calibrate the Hausman-type omnibus
+%  statistic whenever its scatter-discrepancy covariance is available; the
+%  discrepancy sandwich and statistical spectral rank are recomputed inside
+%  every retained replicate. The null generator is selected through
+%  bootstraptype: the backward-compatible default is a Gaussian model fitted
+%  on the complete rows, while 'empiricalradial' uses a null-enforcing
+%  empirical-radial elliptical generator. In both cases the observed
+%  missingness mask is imposed on each generated sample and the complete MDP
+%  pipeline is rerun.
 %
 %
 %  Required input arguments:
@@ -146,11 +150,14 @@ function out = mdMDPtest(Y, varargin)
 %            Logical scalar. The default is false. The analytical p-values
 %            for the two mean statistics are evaluated independently of this
 %            option whenever the corresponding analytical branch is defined.
-%            If bootstrap=true, bootstrap p-values for all four statistics
-%            and bootstrap confidence intervals are additionally computed.
-%            In every replicate the complete-case fit, the all-data EM/TEM
-%            fit, the adaptive radial correction when requested, and the
-%            selected mean aggregation rule are recomputed.
+%            If bootstrap=true, bootstrap p-values for all four scalar
+%            statistics and bootstrap confidence intervals are additionally
+%            computed. When the Hausman-type omnibus covariance is available,
+%            a full-pipeline bootstrap p-value is also computed. In every
+%            replicate the complete-case fit, the all-data EM/TEM fit, the
+%            adaptive radial correction when requested, the selected mean
+%            aggregation rule, the scatter-discrepancy covariance and the
+%            omnibus spectral rank are recomputed.
 %            Example - 'bootstrap',true
 %            Data Types - logical
 %
@@ -188,7 +195,11 @@ function out = mdMDPtest(Y, varargin)
 %            bootstrap=true. If an individual bootstrap draw fails only
 %            because mdTEM reports too few adaptive reference points, that
 %            draw is discarded and regenerated. Other errors are rethrown.
-%            Draws yielding nonfinite test statistics are also regenerated.
+%            Draws yielding nonfinite scalar statistics are also regenerated.
+%            When omnibus calibration is active, a draw whose replicate-
+%            specific discrepancy covariance or rank-selected Hausman
+%            statistic is unavailable is likewise regenerated and counted in
+%            out.nInvalidBootstrapOmnibus.
 %            Example - 'nsimul',999
 %            Data Types - double
 %
@@ -370,16 +381,25 @@ function out = mdMDPtest(Y, varargin)
 %                            rhoLastKept, rhoFirstDiscarded, spectralGapRatio,
 %                            lowerThresholdMargin, upperThresholdMargin,
 %                            rankSensitivity, nullSpaceResidual, calibration
-%                            and reason. The
-%                            numerical tolerance is used only to diagnose
-%                            roundoff-level negative eigenvalues; it does not
-%                            determine the statistical rank. Bootstrap
-%                            calibration of this quadratic statistic is not
-%                            currently computed.
-%          out.resultsOmnibus = 1 x 4 table containing Stat, df, pvalue and
-%                            Calibration for the Hausman-type omnibus test.
-%                            NaNs are returned when its analytical covariance
-%                            is unavailable.
+%                            and reason. The numerical tolerance is used only
+%                            to diagnose roundoff-level negative eigenvalues;
+%                            it does not determine the statistical rank. When
+%                            bootstrap=true and the observed omnibus statistic
+%                            is available, the same full fitting and covariance
+%                            pipeline is rerun in every bootstrap replicate and
+%                            the same spectral rank rule is recomputed. Further
+%                            fields then include bootstrapAvailable,
+%                            bootstrapReason, pvalueBoot, statBoot, rankBoot,
+%                            relativeEigenvaluesBoot, largestEigenvalueBoot,
+%                            rankThresholdBoot, relativeRankThresholdBoot,
+%                            rhoLastKeptBoot, rhoFirstDiscardedBoot and
+%                            rankBootFrequency.
+%          out.resultsOmnibus = 1 x 5 table containing Stat, df, pvalue,
+%                            pvalueBoot and Calibration for the Hausman-type
+%                            omnibus test. The column pvalue is the analytical
+%                            chi-square p-value; pvalueBoot is the full-pipeline
+%                            bootstrap p-value. NaNs are returned when the
+%                            corresponding calibration is unavailable.
 %          out.bootstrap   = Value of input option bootstrap.
 %          out.bootstraptype = Bootstrap null generator actually requested:
 %                            'gaussian' or 'empiricalradial'.
@@ -446,6 +466,11 @@ function out = mdMDPtest(Y, varargin)
 %                            discarded because at least one of the four test
 %                            statistics was nonfinite. This field is present
 %                            only when bootstrap=true.
+%          out.nInvalidBootstrapOmnibus = Number of attempted bootstrap draws
+%                            regenerated because the replicate-specific
+%                            scatter-discrepancy covariance or rank-selected
+%                            omnibus statistic was unavailable. This field is
+%                            present only when bootstrap=true.
 %          out.nComplete   = Number of complete rows.
 %          out.completeIdx = Logical index of complete rows.
 %          out.locCC       = Complete-case estimate of location.
@@ -624,9 +649,15 @@ function out = mdMDPtest(Y, varargin)
 %      H = n*delta'*OmegaDelta^+*delta.
 %
 %  Under MCAR, H has an asymptotic chi-square reference with degrees of
-%  freedom rank(OmegaDelta). Unlike the one-dimensional MDP projection, this
-%  quadratic statistic is sensitive to all estimable first-order scatter
-%  discrepancy directions, including trace-free shape/correlation changes.
+%  freedom equal to the statistically selected spectral rank. The relative
+%  threshold is eta_n=nEff^(-omnibusrankexp), and the thresholded inverse keeps
+%  only eigenvalues satisfying lambda_j/lambda_1>eta_n. Unlike the
+%  one-dimensional MDP projection, this quadratic statistic is sensitive to
+%  all retained first-order scatter-discrepancy directions, including
+%  trace-free shape/correlation changes. With bootstrap=true, the complete
+%  fitting pipeline, the discrepancy sandwich and this same rank rule are
+%  recomputed independently in every retained bootstrap replicate; the
+%  omnibus bootstrap p-value uses the resulting nonnegative H* statistics.
 %
 %  Under adaptive positive trimming, OmegaDelta is the end-to-end
 %  scatter-discrepancy covariance including the adaptive radial-factor
@@ -949,10 +980,13 @@ function out = mdMDPtest(Y, varargin)
     % scatter-estimator discrepancy.
     load cows2026
     X = cows2026{:,:};
-    out = mdMDPtest(X,'alpha',0.25);
+    out = mdMDPtest(X,'alpha',0.25,'bootstrap',true,'nsimul',199);
     disp(out.resultsOmnibus)
-    % Detailed rank/eigenvalue diagnostics are stored in out.omnibus.
-    disp(out.omnibus)
+    % Detailed observed and bootstrap rank diagnostics are stored in out.omnibus.
+    disp(out.omnibus.rankSensitivity)
+    if out.omnibus.bootstrapAvailable
+        disp(out.omnibus.rankBootFrequency)
+    end
 %}
 
 %% Beginning of code
@@ -1314,6 +1348,22 @@ omnibus = local_omnibus_test(asympt,SigHat,SigCC,n,alpha, ...
     consistencyfactor,coupledtrim,omnibusrankexp,nEffOmnibus, ...
     nEffOmnibusSource);
 
+% Bootstrap-specific omnibus fields are initialized even when bootstrap is
+% not requested so that the omnibus output has a stable structure.
+omnibus.bootstrapAvailable = false;
+omnibus.bootstrapReason = 'Bootstrap calibration not requested.';
+omnibus.bootstrapCalibration = '';
+omnibus.pvalueBoot = NaN;
+omnibus.statBoot = [];
+omnibus.rankBoot = [];
+omnibus.relativeEigenvaluesBoot = [];
+omnibus.largestEigenvalueBoot = [];
+omnibus.rankThresholdBoot = [];
+omnibus.relativeRankThresholdBoot = [];
+omnibus.rhoLastKeptBoot = [];
+omnibus.rhoFirstDiscardedBoot = [];
+omnibus.rankBootFrequency = table();
+
 % Assemble the cheap analytical p-value vector in the same order as Tobs.
 % The present analytical theory concerns the two mean statistics only.
 pvalueAsym = NaN(1,4);
@@ -1329,17 +1379,42 @@ end
 % Optional mask-preserving full-pipeline bootstrap under MCAR. The
 % expensive resampling pipeline is entered only when bootstrap=true. The
 % generator is selected through bootstraptype; all subsequent fitting and
-% aggregation steps are identical for the two generators.
+% aggregation steps are identical for the two generators. When the observed
+% omnibus statistic is available, each retained replicate also reconstructs
+% the full scatter-discrepancy sandwich and reapplies the same rank-selection
+% rule before its bootstrap Hausman statistic is stored.
 Tboot = [];
 nMeanBoot = [];
 nCoupledBoot = [];
 pvalueBoot = [];
 ciBoot = [];
+Hboot = [];
+rankBoot = [];
+relativeEigenvaluesBoot = [];
+largestEigenvalueBoot = [];
+rankThresholdBoot = [];
+relativeRankThresholdBoot = [];
+rhoLastKeptBoot = [];
+rhoFirstDiscardedBoot = [];
 
 if bootstrap
     Tboot = NaN(nsimul,4);
     nMeanBoot = NaN(nsimul,1);
     nCoupledBoot = NaN(nsimul,1);
+    if omnibus.available
+        Hboot = NaN(nsimul,1);
+        rankBoot = NaN(nsimul,1);
+        relativeEigenvaluesBoot = NaN(nsimul,omnibus.dimension);
+        largestEigenvalueBoot = NaN(nsimul,1);
+        rankThresholdBoot = NaN(nsimul,1);
+        relativeRankThresholdBoot = NaN(nsimul,1);
+        rhoLastKeptBoot = NaN(nsimul,1);
+        rhoFirstDiscardedBoot = NaN(nsimul,1);
+        omnibus.bootstrapReason = '';
+    else
+        omnibus.bootstrapReason = ['Observed omnibus statistic unavailable: ' ...
+            omnibus.reason];
+    end
 
     % nsimul denotes the number of successful bootstrap replicates. A draw
     % that fails only because mdTEM cannot estimate an adaptive factor from
@@ -1349,6 +1424,7 @@ if bootstrap
     nBootstrapAttempts = 0;
     nFailedBootstrapFits = 0;
     nInvalidBootstrapStats = 0;
+    nInvalidBootstrapOmnibus = 0;
     maxBootstrapAttempts = nsimul + max(100,ceil(0.10*nsimul));
 
     % Fitted complete-case geometry used by both null generators. Rgen is
@@ -1382,9 +1458,9 @@ if bootstrap
             error('FSDA:mdMDPtest:TooManyBootstrapRetries', ...
                 ['Unable to obtain %d valid bootstrap replicates within %d ' ...
                 'attempts. Adaptive-TEM scarcity failures: %d; draws with ' ...
-                'nonfinite statistics: %d.'], ...
+                'nonfinite statistics: %d; unavailable omnibus draws: %d.'], ...
                 nsimul,maxBootstrapAttempts,nFailedBootstrapFits, ...
-                nInvalidBootstrapStats);
+                nInvalidBootstrapStats,nInvalidBootstrapOmnibus);
         end
         nBootstrapAttempts = nBootstrapAttempts + 1;
 
@@ -1424,8 +1500,11 @@ if bootstrap
             end
             nCoupledStar = sum(forcedZeroStar);
 
-            % EM/TEM distances for the same complete rows.
-            d2_all_cc_star = local_fit_and_get_complete_distances( ...
+            % EM/TEM distances and fitted geometry for the same complete rows.
+            % The fitted object is retained because the omnibus bootstrap must
+            % reconstruct the replicate-specific discrepancy sandwich.
+            [d2_all_cc_star,muHatStar,SigHatStar,outFitStar] = ...
+                local_fit_and_get_complete_distances( ...
                 Ystar, completeIdx, alpha, method, tol, forcedZeroStar, ...
                 consistencyfactor, YccStar, muCCStar, SigCCStar, ...
                 adaptivepool, adaptiveminref);
@@ -1440,6 +1519,28 @@ if bootstrap
             % contains exactly nsimul valid rows.
             Tstar = local_statistic(d2_cc_star,d2_all_cc_star,eps0, ...
                 meanWeightsStar);
+
+            % Full-pipeline omnibus calibration. When the observed omnibus
+            % statistic is available, reconstruct the replicate-specific
+            % scatter-discrepancy covariance and apply exactly the same
+            % statistical spectral rank rule used for the observed sample.
+            if omnibus.available
+                asymptStarOmnibus = local_bootstrap_omnibus_asymptotic( ...
+                    Ystar,maskMiss,completeIdx,outFitStar,alpha,method, ...
+                    robustClass,robustEff,robustBonflev,Tstar,eps0, ...
+                    outRobStar,coupledtrim,forcedZeroStar,consistencyfactor, ...
+                    muCCStar,SigCCStar,adaptivepool,adaptiveminref, ...
+                    d2_cc_star,d2_all_cc_star,muHatStar,SigHatStar);
+
+                [nEffOmnibusStar,nEffOmnibusSourceStar] = ...
+                    local_resolve_omnibus_neff(omnibusneff,n,sum(completeIdx));
+                omnibusStar = local_omnibus_test(asymptStarOmnibus, ...
+                    SigHatStar,SigCCStar,n,alpha,consistencyfactor, ...
+                    coupledtrim,omnibusrankexp,nEffOmnibusStar, ...
+                    nEffOmnibusSourceStar);
+            else
+                omnibusStar = [];
+            end
 
         catch ME
             % This is the one expected numerical scarcity failure identified
@@ -1457,16 +1558,57 @@ if bootstrap
             continue
         end
 
+        if omnibus.available && (~isstruct(omnibusStar) || ...
+                ~omnibusStar.available || ~isfinite(omnibusStar.stat) || ...
+                omnibusStar.stat < 0)
+            nInvalidBootstrapOmnibus = nInvalidBootstrapOmnibus + 1;
+            continue
+        end
+
         % Retain only successful draws. The storage index is incremented only
         % here, so Tboot, nMeanBoot and nCoupledBoot always have nsimul rows.
         j = j + 1;
         Tboot(j,:) = Tstar;
         nMeanBoot(j) = nMeanStar;
         nCoupledBoot(j) = nCoupledStar;
+        if omnibus.available
+            Hboot(j) = omnibusStar.stat;
+            rankBoot(j) = omnibusStar.rank;
+            relativeEigenvaluesBoot(j,:) = omnibusStar.relativeEigenvalues(:)';
+            largestEigenvalueBoot(j) = omnibusStar.largestEigenvalue;
+            rankThresholdBoot(j) = omnibusStar.rankThreshold;
+            relativeRankThresholdBoot(j) = omnibusStar.relativeRankThreshold;
+            rhoLastKeptBoot(j) = omnibusStar.rhoLastKept;
+            rhoFirstDiscardedBoot(j) = omnibusStar.rhoFirstDiscarded;
+        end
     end
 
-    % Bootstrap p-values.
+    % Bootstrap p-values for the four scalar statistics.
     pvalueBoot = (1 + sum(abs(Tboot) >= abs(Tobs),1)) / (size(Tboot,1) + 1);
+
+    % Rank-selected omnibus bootstrap p-value. H is nonnegative, so the
+    % bootstrap comparison uses its upper tail rather than absolute values.
+    if omnibus.available
+        omnibus.pvalueBoot = (1 + sum(Hboot >= omnibus.stat)) / ...
+            (size(Hboot,1) + 1);
+        omnibus.bootstrapAvailable = true;
+        omnibus.bootstrapReason = '';
+        omnibus.bootstrapCalibration = ...
+            ['full-pipeline rank-selected ' bootstraptype ' bootstrap'];
+        omnibus.statBoot = Hboot;
+        omnibus.rankBoot = rankBoot;
+        omnibus.relativeEigenvaluesBoot = relativeEigenvaluesBoot;
+        omnibus.largestEigenvalueBoot = largestEigenvalueBoot;
+        omnibus.rankThresholdBoot = rankThresholdBoot;
+        omnibus.relativeRankThresholdBoot = relativeRankThresholdBoot;
+        omnibus.rhoLastKeptBoot = rhoLastKeptBoot;
+        omnibus.rhoFirstDiscardedBoot = rhoFirstDiscardedBoot;
+        [rankValues,~,rankIndex] = unique(rankBoot);
+        rankCounts = accumarray(rankIndex,1);
+        rankFractions = rankCounts/numel(rankBoot);
+        omnibus.rankBootFrequency = table(rankValues,rankCounts,rankFractions, ...
+            'VariableNames',{'Rank','Count','Fraction'});
+    end
 
     % Bootstrap confidence intervals.
     alphaCI = 1 - conflev;
@@ -1524,15 +1666,17 @@ if alpha == 0 && strcmp(aggregation,'ordinary') && ...
 end
 
 % Separate one-row table for the Hausman-type omnibus scatter discrepancy.
+% The pvalue column retains the analytical chi-square calibration for backward
+% compatibility; pvalueBoot is the full-pipeline rank-selected bootstrap value.
+omnibusCalibration = {omnibus.calibration};
 if omnibus.available
-    omnibusCalibration = {omnibus.calibration};
     resultsOmnibus = table(omnibus.stat,omnibus.df,omnibus.pvalue, ...
-        omnibusCalibration,'VariableNames',{'Stat','df','pvalue','Calibration'}, ...
+        omnibus.pvalueBoot,omnibusCalibration, ...
+        'VariableNames',{'Stat','df','pvalue','pvalueBoot','Calibration'}, ...
         'RowNames',{'HausmanOmnibus'});
 else
-    omnibusCalibration = {omnibus.calibration};
-    resultsOmnibus = table(NaN,NaN,NaN,omnibusCalibration, ...
-        'VariableNames',{'Stat','df','pvalue','Calibration'}, ...
+    resultsOmnibus = table(NaN,NaN,NaN,NaN,omnibusCalibration, ...
+        'VariableNames',{'Stat','df','pvalue','pvalueBoot','Calibration'}, ...
         'RowNames',{'HausmanOmnibus'});
 end
 
@@ -1599,6 +1743,7 @@ if bootstrap
     out.nBootstrapAttempts = nBootstrapAttempts;
     out.nFailedBootstrapFits = nFailedBootstrapFits;
     out.nInvalidBootstrapStats = nInvalidBootstrapStats;
+    out.nInvalidBootstrapOmnibus = nInvalidBootstrapOmnibus;
 end
 
 out.locCC = muCC;
@@ -1687,6 +1832,10 @@ if dispresults
             fprintf('Nonfinite draws regenerated   : %d\n', ...
                 out.nInvalidBootstrapStats);
         end
+        if out.nInvalidBootstrapOmnibus > 0
+            fprintf('Omnibus draws regenerated     : %d\n', ...
+                out.nInvalidBootstrapOmnibus);
+        end
     else
         disp('Bootstrap calibration          : not requested')
     end
@@ -1733,6 +1882,15 @@ if dispresults
         if out.omnibus.nullSpaceResidual > 1e-6
             fprintf('Relative null-space residual  : %.6g\n', ...
                 out.omnibus.nullSpaceResidual);
+        end
+        if bootstrap && out.omnibus.bootstrapAvailable
+            fprintf('Omnibus bootstrap p-value     : %.6g\n', ...
+                out.omnibus.pvalueBoot);
+            disp('Bootstrap selected-rank frequencies')
+            disp(out.omnibus.rankBootFrequency)
+        elseif bootstrap && ~out.omnibus.bootstrapAvailable
+            fprintf('Omnibus bootstrap unavailable : %s\n', ...
+                out.omnibus.bootstrapReason);
         end
     else
         disp('Omnibus analytical calibration unavailable.')
@@ -4270,6 +4428,49 @@ ratio(q == 0) = 0;
 ratio(isinf(q)) = 1;
 y = ratio.*chi2pdf(q,p);
 y(~isfinite(y)) = 0;
+end
+
+% -------------------------------------------------------------------------
+function asymptStar = local_bootstrap_omnibus_asymptotic( ...
+    Ystar,maskMiss,completeIdx,outFitStar,alpha,method,robustClass, ...
+    robustEff,robustBonflev,Tstar,eps0,outRobStar,coupledtrim, ...
+    forcedZeroStar,consistencyfactor,muCCStar,SigCCStar,adaptivepool, ...
+    adaptiveminref,d2ccStar,d2allccStar,muHatStar,SigHatStar)
+%local_bootstrap_omnibus_asymptotic Replicate-specific discrepancy sandwich.
+%
+% This helper reconstructs the same end-to-end scatter-discrepancy covariance
+% estimator used for the observed omnibus statistic, but evaluated entirely in
+% one bootstrap replicate. Final scalar aggregation does not enter because the
+% omnibus statistic acts on the fitted scatter-estimator discrepancy itself.
+
+n = size(Ystar,1);
+nCompleteStar = sum(completeIdx);
+
+if coupledtrim
+    % Frozen-eligibility working sandwich, matching the observed coupled branch.
+    asymptStar = local_tem_asymptotic(Ystar,maskMiss,completeIdx,outFitStar, ...
+        alpha,method,robustClass,robustEff,robustBonflev,Tstar,eps0, ...
+        outRobStar,~forcedZeroStar);
+elseif alpha == 0
+    % The omnibus discrepancy covariance is the general-F covariance even when
+    % the final scalar aggregation is not ordinary.
+    TDordinaryStar = mean(d2allccStar-d2ccStar);
+    asymptStar = local_classical_asymptotic(Ystar,maskMiss,completeIdx, ...
+        muHatStar,SigHatStar,nCompleteStar,Tstar,TDordinaryStar,eps0, ...
+        d2ccStar,true);
+elseif strcmp(consistencyfactor,'pattern')
+    asymptStar = local_tem_asymptotic(Ystar,maskMiss,completeIdx,outFitStar, ...
+        alpha,method,robustClass,robustEff,robustBonflev,Tstar,eps0, ...
+        outRobStar,[]);
+elseif strcmp(consistencyfactor,'adaptive')
+    asymptStar = local_tem_adaptive_asymptotic(Ystar,maskMiss,completeIdx, ...
+        outFitStar,alpha,method,robustClass,robustEff,robustBonflev, ...
+        Tstar,eps0,muCCStar,SigCCStar,adaptivepool,adaptiveminref,outRobStar);
+else
+    asymptStar = local_unavailable_asymptotic(nCompleteStar/n);
+    asymptStar.reason = ['Bootstrap omnibus covariance is unavailable for ' ...
+        'the selected TEM consistency-factor option.'];
+end
 end
 
 % -------------------------------------------------------------------------
