@@ -188,19 +188,26 @@ function out = mdMDPtest(Y, varargin)
 %            'entropy' implements the null-enforcing entropy-projected clean
 %            bootstrap. A clean complete-data empirical reference law is first
 %            constructed according to entropyref. Its support points are left
-%            unchanged and only their probabilities are exponentially tilted.
-%            The calibration equations preserve the robust complete-case
-%            functional to first order, enforce patternwise retained-location
-%            zero, enforce trace-free retained second-moment isotropy, and
-%            enforce the common TEM retained fraction. Full observations are
+%            unchanged and only their probabilities are changed by a minimum-
+%            KL projection. In finite samples, the robust-functional and
+%            patternwise retained-location restrictions are imposed exactly,
+%            the common retained fraction is imposed exactly at a jointly
+%            selected projected TEM cutoff, and the trace-free retained-shape
+%            restrictions are imposed within a shrinking RMS-normalized
+%            tolerance. The base tolerance is log(n)/n and is enlarged only
+%            by the minimum amount required for finite-support feasibility and
+%            a strict relative-interior solution. Population trace-free shape
+%            isotropy remains the null condition. Full observations are
 %            resampled from the projected nonelliptical law and missingness
 %            patterns are independently resampled from their empirical pattern
 %            probabilities. Thus radius-direction and angular structure in the
 %            clean support are preserved rather than sphericalized. This branch
 %            requires alpha>0, consistencyfactor='adaptive',
-%            adaptivepool=false, coupledtrim=false, and one of the parameter-
-%            free mappings 'pri', 'expScale', 'zMap', 'chiMap' or 'betaMap'.
-%            Projection diagnostics are returned in out.entropyProjection.
+%            adaptivepool=false, coupledtrim=false, one of the parameter-
+%            free mappings 'pri', 'expScale', 'zMap', 'chiMap' or 'betaMap',
+%            and Optimization Toolbox (linprog and fmincon) for the finite-
+%            support feasibility and minimum-KL programs. Projection
+%            diagnostics are returned in out.entropyProjection.
 %            Example - 'bootstraptype','entropy','adaptivepool',false
 %            Data Types - char | string
 %
@@ -445,7 +452,8 @@ function out = mdMDPtest(Y, varargin)
 %                            calibration-covariance eigenvalue diagnostics,
 %                            exponential-tilt multiplier norm, maximum weight
 %                            ratio, effective sample size, L2 probability-ratio
-%                            change, relative entropy, solver diagnostics and
+%                            change, relative entropy, an exact finite-support
+%                            relative-interior LP diagnostic, solver diagnostics,
 %                            patternDiagnostics and nPatterns. Empty unless
 %                            the entropy bootstrap is requested.
 %          out.dispresults = Value of input option dispresults.
@@ -727,6 +735,9 @@ function out = mdMDPtest(Y, varargin)
 %  projected nonelliptical clean generator selected by bootstraptype. The
 %  entropy generator changes only probabilities on observed clean support
 %  points and therefore preserves their angular and radius-direction structure.
+%  Its finite-sample calibration keeps robust/location/fraction restrictions
+%  exact, allows a shrinking tolerance for trace-free shape moments and jointly
+%  selects a nearby TEM cutoff to avoid artificial fixed-support infeasibility.
 %  It resamples missingness patterns independently from their empirical law,
 %  imposing MCAR exactly while reproducing pattern-frequency randomness. The
 %  robust complete-case fit, adaptive correction and final aggregation rule
@@ -1086,8 +1097,9 @@ function out = mdMDPtest(Y, varargin)
 %{
     %% Example 16: Entropy-projected nonelliptical bootstrap.
     % Preserve the angular and radius-direction structure of a clean empirical
-    % complete-data reference law while enforcing exactly the finite-support
-    % moment restrictions needed for the common TEM target. Missingness
+    % complete-data reference law while enforcing exact robust/location/fraction
+    % restrictions and shrinking-tolerance trace-free shape restrictions at a
+    % jointly selected projected TEM cutoff. Missingness
     % patterns are resampled independently from their empirical probabilities.
     load cows2026
     X = cows2026{:,:};
@@ -2104,13 +2116,43 @@ if dispresults
                 ep.maxScaledConstraintAfter);
             fprintf('Min normalized calib. cov. eig: %.6g\n', ...
                 ep.minEigenvalueVNormalized);
-            fprintf('Entropy multiplier norm       : %.6g\n',ep.lambdaNorm);
+            fprintf('Entropy dual multiplier norm  : %.6g\n',ep.lambdaNorm);
             fprintf('Maximum probability ratio     : %.6g\n',ep.maxWeightRatio);
             fprintf('Effective support size        : %.6g\n',ep.effectiveSampleSize);
             fprintf('Relative entropy D_KL         : %.6g\n',ep.relativeEntropy);
             fprintf('L2 probability-ratio change   : %.6g\n',ep.l2WeightRatioChange);
             fprintf('Strict interior feasibility   : %d\n', ...
                 ep.relativeInteriorFeasible);
+            if isfield(ep,'thresholdObserved')
+                fprintf('Observed TEM cutoff           : %.6g\n',ep.thresholdObserved);
+                fprintf('Projected TEM cutoff          : %.6g\n',ep.thresholdProjected);
+                fprintf('TEM cutoff shift              : %.6g\n',ep.thresholdShift);
+                fprintf('Minimum shape relaxation      : %.6g\n',ep.minimumShapeRelaxation);
+                fprintf('Shape tolerance base          : %.6g\n',ep.shapeToleranceBase);
+                fprintf('Shape tolerance used          : %.6g\n',ep.shapeToleranceUsed);
+                fprintf('sqrt(n) * shape tolerance     : %.6g\n', ...
+                    ep.sqrtNTimesShapeToleranceUsed);
+                fprintf('Max exact scaled residual     : %.6g\n', ...
+                    ep.maxExactScaledConstraintAfter);
+                fprintf('Max shape scaled residual     : %.6g\n', ...
+                    ep.maxShapeScaledConstraintAfter);
+            end
+            if isfield(ep,'exactBlockRelativeInteriorLP') && ...
+                    ep.exactBlockRelativeInteriorLP.available
+                fprintf('Exact-block LP margin         : %.6g\n', ...
+                    ep.exactBlockRelativeInteriorLP.tStar);
+                fprintf('Exact-block LP class          : %s\n', ...
+                    ep.exactBlockRelativeInteriorLP.classification);
+            elseif isfield(ep,'exactBlockRelativeInteriorLP')
+                fprintf('Exact-block LP diagnostic     : %s\n', ...
+                    ep.exactBlockRelativeInteriorLP.reason);
+            end
+            if isfield(ep,'relativeInteriorLP') && ep.relativeInteriorLP.available
+                fprintf('LP relative-interior margin   : %.6g\n', ...
+                    ep.relativeInteriorLP.tStar);
+                fprintf('LP relative-interior class    : %s\n', ...
+                    ep.relativeInteriorLP.classification);
+            end
             fprintf('TEM fraction residual before  : %.6g\n', ...
                 ep.retainedFractionResidualBefore);
             fprintf('TEM fraction residual after   : %.6g\n', ...
@@ -2354,17 +2396,21 @@ elseif strcmpi(robustClass,'FS')
 
     if isempty(robustBonflev)
         % Standard FSM signal detection and envelope resuperimposition.
+        try
         outRob = FSM(Ycc, ...
             'init',h, ...
             'plots',0, ...
-            'msg',false);
+            'msg',false,'bsbmfullrank',false);
+        catch
+            dd=1;
+        end
     else
         % Direct Bonferroni-bound stopping rule.
         outRob = FSM(Ycc, ...
             'init',h, ...
             'bonflev',robustBonflev, ...
             'plots',0, ...
-            'msg',false);
+            'msg',false,'bsbmfullrank',false);
     end
 
     muCC = outRob.loc;
@@ -5578,20 +5624,39 @@ function [gen,diagOut] = local_entropy_projection_setup(Y,maskMiss,completeIdx, 
     outFit,alpha,method,robustClass,robustEff,robustBonflev,outRob,entropyref)
 %local_entropy_projection_setup Null-enforcing nonelliptical clean generator.
 %
-% Implements the finite-support entropy projection described in Supplement
-% S9.7. The support points are unchanged. Their probabilities minimize
-% KL(p||q) subject to the robust-functional influence restriction,
-% patternwise retained first moments, patternwise trace-free retained second
-% moments and the common TEM retained-fraction equation.
+% Finite-sample implementation of the entropy-projected nonelliptical null.
+% The population restrictions are unchanged, but their empirical enforcement
+% is separated according to statistical role:
+%
+%   * the robust-functional influence restriction is exact;
+%   * the patternwise retained-location restrictions are exact;
+%   * the common retained-fraction restriction is exact at a jointly selected
+%     projected TEM cutoff c^dagger;
+%   * the patternwise trace-free retained-shape restrictions are imposed with
+%     a shrinking normalized tolerance.  The tolerance is at least log(n)/n
+%     and is enlarged only by the minimum amount required by finite-support
+%     feasibility/interiority.
+%
+% This avoids forcing a finite empirical support to satisfy every population
+% shape identity exactly while retaining the population null conditions.  The
+% projected cutoff is chosen among nearby empirical breakpoints and the
+% observed TEM cutoff is preferred whenever it yields a strictly feasible
+% exact block with the nominal shrinking shape tolerance.
 
 [n,p] = size(Y);
 Ycc = Y(completeIdx,:);
 ncc = size(Ycc,1);
 ccRows = find(completeIdx);
 
-% Select the clean complete-data support. The automatic robust rule removes
-% only observations declared outliers by the chosen robust fit; it does not
-% use the initial h-subset of a high-breakdown estimator.
+% The relaxed finite-support projection uses two small convex programs: a
+% phase-I linear program and a KL minimization with linear constraints.
+if exist('linprog','file') == 0 || exist('fmincon','file') == 0
+    error('FSDA:mdMDPtest:EntropyOptimizationUnavailable', ...
+        ['bootstraptype=''entropy'' with finite-sample relaxed shape ' ...
+        'calibration requires linprog and fmincon (Optimization Toolbox).']);
+end
+
+% Select the clean complete-data support.
 [refMask,refSource] = local_entropy_reference_mask(entropyref,completeIdx, ...
     outRob,ncc,n);
 Yref = Ycc(refMask,:);
@@ -5612,7 +5677,7 @@ if strcmpi(robustClass,'FS')
 end
 qbase = ones(m,1)/m;
 
-% theta_en = T_C(F_clean). Refit the same complete-case functional on the
+% theta_en=T_C(F_clean). Refit the same complete-case functional on the
 % selected clean empirical reference law.
 [muEn,SEn,outRobEn] = local_complete_case_fit(Yref,alpha,robustClass, ...
     robustEff,robustBonflev);
@@ -5623,9 +5688,7 @@ if numel(muEn) ~= p || any(~isfinite(SEn(:))) || rcond(SEn) <= 1e-12
         'The fitted entropy clean-reference geometry is singular.');
 end
 
-% h_C: centered estimated influence of the generic robust complete-case
-% functional. The existing FS analytical frozen-classification influence and
-% MCD/MM delete-one influence are reused here.
+% h_C: centered estimated influence of the robust complete-case functional.
 [PsiMu,PsiS,ccInfo,ccReason] = local_cc_joint_influence(Yref,alpha, ...
     robustClass,robustEff,robustBonflev,outRobEn);
 if ~isempty(ccReason)
@@ -5634,19 +5697,19 @@ end
 hC = [PsiMu PsiS];
 hC = hC - sum(hC.*qbase,1);
 
-% Preliminary common TEM threshold e_c,n from the observed-data fit.
-cthr = NaN;
+% Observed-data preliminary TEM threshold.
+cthrObserved = NaN;
 if isfield(outFit,'cthr') && isscalar(outFit.cthr) && isfinite(outFit.cthr)
-    cthr = outFit.cthr;
+    cthrObserved = outFit.cthr;
 elseif isfield(outFit,'adjustedD2') && numel(outFit.adjustedD2)==n && ...
         isfield(outFit,'weights') && numel(outFit.weights)==n
     ww = outFit.weights(:)>0;
     dd = outFit.adjustedD2(:);
     if any(ww & isfinite(dd))
-        cthr = max(dd(ww & isfinite(dd)));
+        cthrObserved = max(dd(ww & isfinite(dd)));
     end
 end
-if ~isfinite(cthr)
+if ~isfinite(cthrObserved)
     error('FSDA:mdMDPtest:EntropyThresholdUnavailable', ...
         'Unable to reconstruct the preliminary TEM threshold.');
 end
@@ -5656,16 +5719,13 @@ gamma = 1-alpha;
 G = size(patt,1);
 piPattern = accumarray(ic,1,[G 1])/n;
 nPattern = accumarray(ic,1,[G 1]);
-
-Ucell = cell(G,1);
-wcell = cell(G,1);
-qcell = cell(G,1);
 pobs = zeros(G,1);
-athr = NaN(G,1);
-h1cell = cell(G,1);
-h2cell = cell(G,1);
-thresholdScore = zeros(m,1);
+Ucell = cell(G,1);
+qcell = cell(G,1);
 
+% The standardized projected coordinates do not depend on the cutoff and are
+% therefore constructed once.  Only their retained indicators change during
+% the local threshold search.
 for g = 1:G
     obs = find(~patt(g,:));
     pg = numel(obs);
@@ -5675,13 +5735,6 @@ for g = 1:G
             ['The entropy bootstrap does not support a missingness pattern ' ...
             'with zero observed coordinates.']);
     end
-    ag = local_tem_inv_adjust(cthr,pg,p,n,method);
-    athr(g) = ag;
-    if ~isfinite(ag) || ag <= 0
-        error('FSDA:mdMDPtest:EntropyInvalidCutoff', ...
-            'Unable to obtain a positive raw cutoff for entropy pattern %d.',g);
-    end
-
     Sg = SEn(obs,obs);
     Sg = (Sg+Sg')/2;
     [Rg,flag] = chol(Sg,'lower');
@@ -5692,108 +5745,111 @@ for g = 1:G
     Zg = Yref(:,obs)-muEn(obs)';
     Ug = Zg/Rg';
     qg = sum(Ug.^2,2);
-    wg = double(isfinite(qg) & qg>=0 & qg<=ag);
-    if ~any(wg)
-        error('FSDA:mdMDPtest:EntropyNoRetainedSupport', ...
-            ['The clean entropy support contains no point inside the raw ' ...
-            'TEM cutoff for pattern %d.'],g);
+    if any(~isfinite(qg)) || any(qg<0)
+        error('FSDA:mdMDPtest:EntropyNonfiniteCalibration', ...
+            'A projected entropy reference radius is negative or nonfinite.');
     end
-
     Ucell{g} = Ug;
     qcell{g} = qg;
-    wcell{g} = wg;
-    h1cell{g} = Ug.*wg;
-    h2cell{g} = local_tracefree_coordinates_rows(Ug).*wg;
-    thresholdScore = thresholdScore + piPattern(g)*wg;
-end
-h3 = thresholdScore-gamma;
-
-% Stack all raw calibration restrictions. The trace-free shape block uses
-% a one-to-one coordinate system obtained by omitting the final diagonal
-% coordinate; any remaining sample-specific redundancy is removed below.
-Hraw = hC;
-for g = 1:G
-    Hraw = [Hraw h1cell{g} h2cell{g}]; %#ok<AGROW>
-end
-Hraw = [Hraw h3];
-if any(~isfinite(Hraw(:)))
-    error('FSDA:mdMDPtest:EntropyNonfiniteCalibration', ...
-        'The entropy calibration matrix contains nonfinite entries.');
 end
 
-rawMeanBefore = sum(Hraw.*qbase,1);
-rawRms = sqrt(sum((Hraw.^2).*qbase,1));
-scaleTol = 100*eps(max(1,max(rawRms)));
-activeCols = rawRms > scaleTol;
-if ~any(activeCols)
-    error('FSDA:mdMDPtest:EntropyNoConstraints', ...
-        'No nonzero entropy calibration restriction is available.');
-end
-Hscaled = Hraw(:,activeCols)./rawRms(activeCols);
-Hw = Hscaled.*sqrt(qbase);
-[~,Ssvd,Vsvd] = svd(Hw,'econ');
-sv = diag(Ssvd);
-if isempty(sv) || ~isfinite(sv(1)) || sv(1)<=0
-    error('FSDA:mdMDPtest:EntropyNoConstraints', ...
-        'Unable to determine the rank of the entropy calibration system.');
-end
-rankTol = max(size(Hw))*eps(sv(1))*100;
-r = sum(sv>rankTol);
-if r < 1
-    error('FSDA:mdMDPtest:EntropyNoConstraints', ...
-        'All entropy calibration restrictions are numerically redundant.');
-end
-Vr = Vsvd(:,1:r);
-Hred = Hscaled*Vr;
+% Base shrinking tolerance in RMS-normalized trace-free shape coordinates.
+% The actual tolerance can be larger only when finite-support feasibility
+% requires it; both quantities are returned explicitly.
+shapeTolBase = log(max(n,3))/n;
 
-hbarRed = sum(Hred.*qbase,1);
-Hc = Hred-hbarRed;
-Vn = Hc'*(Hc.*qbase);
-Vn = (Vn+Vn')/2;
-ev = sort(real(eig(Vn)),'ascend');
-maxEig = ev(end);
-minEig = ev(1);
-if ~isfinite(minEig) || ~isfinite(maxEig) || maxEig<=0 || ...
-        minEig <= max(1e-12*maxEig,1e-14)
-    error('FSDA:mdMDPtest:EntropyCalibrationSingular', ...
-        ['The nonredundant entropy calibration covariance is singular or ' ...
-        'nearly singular (min eigenvalue %.6g, max %.6g).'],minEig,maxEig);
+% Select c^dagger.  The search is local in the empirical breakpoint order and
+% prefers the observed TEM threshold whenever it already gives a strictly
+% interior exact block and requires no more than shapeTolBase.
+sel = local_entropy_select_projected_threshold(cthrObserved,Ucell,qcell, ...
+    pobs,piPattern,gamma,hC,qbase,p,n,method,shapeTolBase);
+cthr = sel.threshold;
+Araw = sel.Araw;
+Braw = sel.Braw;
+wcell = sel.wcell;
+h1cell = sel.h1cell;
+h2cell = sel.h2cell;
+athr = sel.athr;
+thresholdScore = sel.thresholdScore;
+h3 = sel.h3;
+
+% Prepare the exact and soft blocks.  Exact-block redundancy is assessed in
+% centered coordinates; trace-free shape columns are only RMS normalized.
+exactPrep = local_entropy_prepare_exact_block(Araw,qbase);
+shapePrep = local_entropy_prepare_shape_block(Braw,qbase);
+Ared = exactPrep.Hred;
+Bscaled = shapePrep.Hscaled;
+
+% Minimum shape relaxation at the selected cutoff.
+minRelax = local_entropy_min_shape_relaxation(Ared,Bscaled,qbase);
+if ~minRelax.available || ~minRelax.feasible
+    error('FSDA:mdMDPtest:EntropyRelaxationInfeasible', ...
+        ['The selected projected threshold has no feasible probability law ' ...
+        'even after allowing trace-free shape relaxation.']);
+end
+shapeTol = max(shapeTolBase, ...
+    minRelax.rhoStar*(1+1e-6)+1e-10);
+
+% Require a genuine finite-support interior point for the relaxed problem.
+% If the minimal tolerance leaves the solution on the boundary, increase it
+% only as much as needed to create a small positive interior margin.
+riRelaxed = local_entropy_relaxed_interior_lp(Ared,Bscaled,qbase,shapeTol);
+for jr = 1:20
+    if riRelaxed.available && riRelaxed.strictInteriorFeasible
+        break
+    end
+    shapeTol = max(shapeTol*1.25,shapeTol+1e-6);
+    riRelaxed = local_entropy_relaxed_interior_lp(Ared,Bscaled,qbase,shapeTol);
+end
+if ~riRelaxed.available || ~riRelaxed.strictInteriorFeasible
+    error('FSDA:mdMDPtest:EntropyRelaxedBoundary', ...
+        ['Unable to construct a strictly interior finite-support entropy ' ...
+        'problem after shape relaxation.']);
 end
 
-[pdag,lambdaRed,solver] = local_entropy_tilt(Hred,qbase,1e-10,100);
+% Solve the actual KL projection with the exact and relaxed linear
+% restrictions.  The phase-I LP solution is a strictly feasible starting
+% point and the final KL objective is unchanged from ordinary entropy
+% projection.
+[pdag,solver] = local_entropy_relaxed_kl(Ared,Bscaled,qbase,shapeTol, ...
+    riRelaxed.probability);
 if ~solver.converged
     error('FSDA:mdMDPtest:EntropyProjectionFailed', ...
-        ['Entropy projection did not converge: %s Final max calibration ' ...
-        'residual %.6g.'],solver.reason,solver.gradientInfNorm);
+        ['Relaxed entropy projection did not converge: %s Exact residual ' ...
+        '%.6g; shape violation %.6g.'],solver.reason, ...
+        solver.exactResidual,solver.shapeViolation);
 end
 
-% Map the reduced normalized multiplier back to the original raw coordinates
-% for an interpretable multiplier diagnostic.
-lambdaScaled = Vr*lambdaRed;
-lambdaRaw = zeros(size(Hraw,2),1);
-lambdaRaw(activeCols) = lambdaScaled./rawRms(activeCols)';
-
-rawMeanAfter = sum(Hraw.*pdag,1);
-scaledMeanBefore = rawMeanBefore(activeCols)./rawRms(activeCols);
-scaledMeanAfter = rawMeanAfter(activeCols)./rawRms(activeCols);
-maxScaledAfter = max(abs(scaledMeanAfter));
-if ~isfinite(maxScaledAfter) || maxScaledAfter > 1e-8
-    error('FSDA:mdMDPtest:EntropyProjectionResidual', ...
-        ['Entropy projection converged in reduced coordinates but the ' ...
-        'reconstructed scaled raw-constraint residual is %.6g.'],maxScaledAfter);
-end
-if any(~isfinite(pdag)) || any(pdag<=0)
-    error('FSDA:mdMDPtest:EntropyProjectionBoundary', ...
-        ['The entropy solution is not strictly positive in floating-point ' ...
-        'arithmetic; the relative-interior feasibility condition is not met.']);
-end
 ratio = pdag./qbase;
 relativeEntropy = sum(pdag.*log(ratio));
 l2Ratio = sqrt(sum(qbase.*(ratio-1).^2));
 ess = 1/sum(pdag.^2);
 
-% Patternwise before/after diagnostics make the enforced null restrictions
-% directly inspectable in the same standardized geometry used to build h_n.
+% Raw/calibrated residuals.  Exact restrictions must remain numerically zero;
+% shape restrictions are assessed in their normalized soft coordinates.
+exactRawBefore = sum(Araw.*qbase,1);
+exactRawAfter = sum(Araw.*pdag,1);
+shapeRawBefore = sum(Braw.*qbase,1);
+shapeRawAfter = sum(Braw.*pdag,1);
+exactScaledBefore = exactPrep.Hscaled'*qbase;
+exactScaledAfter = exactPrep.Hscaled'*pdag;
+if isempty(Bscaled)
+    shapeScaledBefore = zeros(0,1);
+    shapeScaledAfter = zeros(0,1);
+else
+    shapeScaledBefore = Bscaled'*qbase;
+    shapeScaledAfter = Bscaled'*pdag;
+end
+maxExactScaledAfter = max([0;abs(exactScaledAfter)]);
+maxShapeScaledAfter = max([0;abs(shapeScaledAfter)]);
+if maxExactScaledAfter > 1e-8 || maxShapeScaledAfter > shapeTol+1e-8
+    error('FSDA:mdMDPtest:EntropyProjectionResidual', ...
+        ['Relaxed entropy projection violates its reconstructed constraints ' ...
+        '(exact %.6g; shape %.6g; shape tolerance %.6g).'], ...
+        maxExactScaledAfter,maxShapeScaledAfter,shapeTol);
+end
+
+% Patternwise before/after diagnostics in the selected projected geometry.
 HBefore = NaN(G,1); HAfter = NaN(G,1);
 kappaBefore = NaN(G,1); kappaAfter = NaN(G,1);
 locBefore = NaN(G,1); locAfter = NaN(G,1);
@@ -5823,8 +5879,7 @@ patternDiagnostics = table(Pattern,pobs,nPattern,piPattern,athr, ...
     'firstConstraintBefore','firstConstraintAfter', ...
     'shapeConstraintBefore','shapeConstraintAfter'});
 
-% Generator information kept separate from public diagnostics to avoid
-% duplicating the complete support matrix in the returned output structure.
+% Generator information.
 gen = struct;
 gen.support = Yref;
 gen.prob = pdag;
@@ -5833,6 +5888,7 @@ gen.patterns = patt;
 gen.patternProb = piPattern;
 gen.nPatterns = G;
 
+% Public diagnostics.
 diagOut = struct;
 diagOut.available = true;
 diagOut.reason = '';
@@ -5840,9 +5896,12 @@ diagOut.supportPreserved = true;
 diagOut.maskSampling = 'independent empirical pattern law';
 diagOut.adaptivepool = false;
 diagOut.method = method;
-diagOut.theoryStatus = ['Null-enforcing entropy projection preserving the ' ...
-    'nonelliptical clean empirical support; values and masks are sampled ' ...
-    'independently from the fitted MCAR product law.'];
+diagOut.calibrationMode = ['exact robust/location/fraction; shrinking-tolerance ' ...
+    'trace-free shape; jointly selected TEM cutoff'];
+diagOut.theoryStatus = ['Finite-support entropy projection preserving the ' ...
+    'nonelliptical clean empirical support. Population shape isotropy remains ' ...
+    'the null condition, while its empirical trace-free coordinates are ' ...
+    'enforced within a shrinking normalized tolerance.'];
 diagOut.referenceSource = refSource;
 diagOut.referenceRows = refRows;
 diagOut.nCompleteOriginal = ncc;
@@ -5858,46 +5917,86 @@ diagOut.baseWeights = qbase;
 diagOut.projectedWeights = pdag;
 diagOut.weightDiagnostics = table(refRows,qbase,pdag,ratio, ...
     'VariableNames',{'DataRow','BaseProbability','ProjectedProbability','ProbabilityRatio'});
-diagOut.nConstraintsRaw = size(Hraw,2);
-diagOut.nNonzeroConstraints = sum(activeCols);
-diagOut.constraintRank = r;
-diagOut.rankTolerance = rankTol;
-diagOut.minEigenvalueV = minEig;
-diagOut.maxEigenvalueV = maxEig;
-diagOut.conditionV = maxEig/minEig;
-diagOut.minEigenvalueVNormalized = minEig;
-diagOut.maxEigenvalueVNormalized = maxEig;
-diagOut.conditionVNormalized = maxEig/minEig;
-diagOut.constraintScaling = rawRms(activeCols)';
-diagOut.lambda = lambdaRaw;
-diagOut.lambdaNorm = norm(lambdaRaw);
-diagOut.lambdaReducedNorm = norm(lambdaRed);
+
+diagOut.nConstraintsRaw = size(Araw,2)+size(Braw,2);
+diagOut.nExactConstraintsRaw = size(Araw,2);
+diagOut.nShapeConstraintsRaw = size(Braw,2);
+diagOut.nNonzeroConstraints = exactPrep.nActive+shapePrep.nActive;
+diagOut.constraintRank = exactPrep.rank;
+diagOut.rankTolerance = exactPrep.rankTolerance;
+diagOut.affineNullity = exactPrep.nActive-exactPrep.rank;
+diagOut.affineOffsetNorm = exactPrep.affineOffsetNorm;
+diagOut.maxAffineOffset = exactPrep.maxAffineOffset;
+diagOut.affineFeasibilityTolerance = exactPrep.affineTolerance;
+diagOut.minEigenvalueV = exactPrep.minEigenvalue;
+diagOut.maxEigenvalueV = exactPrep.maxEigenvalue;
+diagOut.conditionV = exactPrep.conditionNumber;
+diagOut.minEigenvalueVNormalized = exactPrep.minEigenvalue;
+diagOut.maxEigenvalueVNormalized = exactPrep.maxEigenvalue;
+diagOut.conditionVNormalized = exactPrep.conditionNumber;
+diagOut.constraintScaling = [exactPrep.rawRms(exactPrep.activeCols) ...
+    shapePrep.rawRms(shapePrep.activeCols)]';
+
+% Retain legacy multiplier fields as optimizer dual diagnostics.  They are no
+% longer the pure exponential-tilt lambda because the shape block is an
+% inequality system.
+diagOut.dualMultiplier = solver.dualVector;
+diagOut.dualMultiplierNorm = norm(solver.dualVector);
+diagOut.lambda = solver.dualVector;
+diagOut.lambdaNorm = diagOut.dualMultiplierNorm;
+diagOut.lambdaReducedNorm = diagOut.lambdaNorm;
 diagOut.maxWeightRatio = max(ratio);
 diagOut.minWeightRatio = min(ratio);
 diagOut.minProjectedWeight = min(pdag);
 diagOut.maxProjectedWeight = max(pdag);
-diagOut.relativeInteriorFeasible = solver.converged && all(pdag>0) && ...
-    maxScaledAfter <= 1e-8;
+diagOut.allProjectedWeightsPositive = all(pdag>0);
+
+% Exact relative-interior diagnostic for the exact block and for the final
+% relaxed problem.  The latter is the rigorous finite-sample certificate used
+% by the new implementation.
+diagOut.exactBlockRelativeInteriorLP = sel.exactInteriorLP;
+diagOut.relativeInteriorLP = riRelaxed;
+diagOut.relativeInteriorMargin = riRelaxed.tStar;
+diagOut.relativeInteriorLPCertified = riRelaxed.strictInteriorFeasible;
+diagOut.relativeInteriorLPBoundary = riRelaxed.boundary;
+diagOut.relativeInteriorFeasible = riRelaxed.strictInteriorFeasible;
+diagOut.relaxedRelativeInteriorLP = riRelaxed;
+
 diagOut.effectiveSampleSize = ess;
 diagOut.effectiveSampleFraction = ess/m;
 diagOut.relativeEntropy = relativeEntropy;
 diagOut.nTimesRelativeEntropy = n*relativeEntropy;
 diagOut.l2WeightRatioChange = l2Ratio;
 diagOut.sqrtNTimesL2WeightRatioChange = sqrt(n)*l2Ratio;
-diagOut.sqrtNTimesLambdaNorm = sqrt(n)*diagOut.lambdaNorm;
-diagOut.maxCalibrationVectorNorm = max(sqrt(sum(Hraw.^2,2)));
+diagOut.maxCalibrationVectorNorm = max(sqrt(sum([Araw Braw].^2,2)));
 diagOut.maxCalibrationVectorNormOverSqrtN = ...
     diagOut.maxCalibrationVectorNorm/sqrt(n);
-diagOut.meanConstraintBefore = rawMeanBefore(:);
-diagOut.meanConstraintAfter = rawMeanAfter(:);
-diagOut.maxAbsConstraintBefore = max(abs(rawMeanBefore));
-diagOut.maxAbsConstraintAfter = max(abs(rawMeanAfter));
-diagOut.maxScaledConstraintBefore = max(abs(scaledMeanBefore));
-diagOut.maxScaledConstraintAfter = maxScaledAfter;
+
+diagOut.meanConstraintBefore = [exactRawBefore shapeRawBefore]';
+diagOut.meanConstraintAfter = [exactRawAfter shapeRawAfter]';
+diagOut.maxAbsConstraintBefore = max(abs([exactRawBefore shapeRawBefore]));
+diagOut.maxAbsConstraintAfter = max(abs([exactRawAfter shapeRawAfter]));
+diagOut.maxScaledConstraintBefore = max([0;abs(exactScaledBefore);abs(shapeScaledBefore)]);
+diagOut.maxScaledConstraintAfter = max([maxExactScaledAfter;maxShapeScaledAfter]);
+diagOut.maxExactScaledConstraintAfter = maxExactScaledAfter;
+diagOut.maxShapeScaledConstraintAfter = maxShapeScaledAfter;
 diagOut.robustInfluenceResidualBefore = norm(sum(hC.*qbase,1));
 diagOut.robustInfluenceResidualAfter = norm(sum(hC.*pdag,1));
+
 diagOut.gamma = gamma;
 diagOut.threshold = cthr;
+diagOut.thresholdObserved = cthrObserved;
+diagOut.thresholdProjected = cthr;
+diagOut.thresholdShift = cthr-cthrObserved;
+diagOut.relativeThresholdShift = (cthr-cthrObserved)/max(1,abs(cthrObserved));
+diagOut.thresholdSearch = sel.searchDiagnostics;
+diagOut.minimumShapeRelaxation = minRelax.rhoStar;
+diagOut.sqrtNTimesMinimumShapeRelaxation = sqrt(n)*minRelax.rhoStar;
+diagOut.shapeToleranceBase = shapeTolBase;
+diagOut.shapeToleranceUsed = shapeTol;
+diagOut.sqrtNTimesShapeToleranceUsed = sqrt(n)*shapeTol;
+diagOut.shapeToleranceInflation = shapeTol/max(shapeTolBase,eps);
+
 diagOut.retainedFractionResidualBefore = retainedBefore;
 diagOut.retainedFractionResidualAfter = retainedAfter;
 diagOut.maxLocationResidualBefore = max(locBefore,[],'omitnan');
@@ -5916,6 +6015,536 @@ if strcmp(refSource,'robust-declared clean complete cases')
 else
     diagOut.referenceNote = '';
 end
+end
+
+% -------------------------------------------------------------------------
+function sel = local_entropy_select_projected_threshold(c0,Ucell,qcell,pobs, ...
+    piPattern,gamma,hC,qbase,p,n,method,shapeTolBase)
+%local_entropy_select_projected_threshold Select a nearby feasible c^dagger.
+%
+% Candidate cutoffs are the observed threshold and the nearest empirical
+% adjusted-radius breakpoints.  A candidate is admissible only when the exact
+% block (robust functional, retained location and retained fraction) has a
+% strictly interior feasible probability law.  Among nearby admissible
+% candidates, the observed threshold is preferred; otherwise the nearest
+% candidate whose minimum normalized shape relaxation does not exceed the
+% base shrinking tolerance is selected.  If none meets that target, the
+% candidate with the smallest required relaxation is used.
+
+G = numel(Ucell);
+breaks = [];
+for g=1:G
+    cg = local_tem_adjust_raw(qcell{g},pobs(g),p,n,method);
+    cg = cg(isfinite(cg) & cg>0);
+    breaks = [breaks; cg(:)]; %#ok<AGROW>
+end
+breaks = unique(breaks);
+if isempty(breaks)
+    error('FSDA:mdMDPtest:EntropyThresholdUnavailable', ...
+        'No finite empirical cutoff breakpoints are available.');
+end
+
+% Search at most the 301 nearest empirical states.  This is deliberately
+% local: c^dagger is a finite-sample nuisance adjustment, not a second global
+% trimming optimization.
+allCandidates = unique([c0; breaks]);
+[~,ord] = sort(abs(allCandidates-c0),'ascend');
+maxCandidates = min(numel(ord),301);
+ord = ord(1:maxCandidates);
+
+best = [];
+bestRho = Inf;
+bestShift = Inf;
+nExactInterior = 0;
+nEvaluated = 0;
+for jj=1:numel(ord)
+    c = allCandidates(ord(jj));
+    nEvaluated = nEvaluated+1;
+    try
+        blk = local_entropy_blocks_at_threshold(c,Ucell,qcell,pobs, ...
+            piPattern,gamma,hC,qbase,p,n,method);
+        ex = local_entropy_prepare_exact_block(blk.Araw,qbase);
+    catch ME
+        expected = {'FSDA:mdMDPtest:EntropyInvalidCutoff', ...
+            'FSDA:mdMDPtest:EntropyNoRetainedSupport', ...
+            'FSDA:mdMDPtest:EntropyAffineInfeasible', ...
+            'FSDA:mdMDPtest:EntropyCalibrationSingular', ...
+            'FSDA:mdMDPtest:EntropyNoConstraints'};
+        if any(strcmp(ME.identifier,expected))
+            continue
+        end
+        rethrow(ME)
+    end
+    ri = local_entropy_relative_interior_lp(ex.Hred,qbase);
+    if ~ri.available || ~ri.strictInteriorFeasible
+        continue
+    end
+    nExactInterior = nExactInterior+1;
+    sh = local_entropy_prepare_shape_block(blk.Braw,qbase);
+    mr = local_entropy_min_shape_relaxation(ex.Hred,sh.Hscaled,qbase);
+    if ~mr.available || ~mr.feasible
+        continue
+    end
+    shift = abs(c-c0);
+
+    candidate = blk;
+    candidate.exactPrep = ex;
+    candidate.shapePrep = sh;
+    candidate.exactInteriorLP = ri;
+    candidate.minRelax = mr;
+    candidate.threshold = c;
+
+    % Preferred target: nearest cutoff requiring no more than the nominal
+    % shrinking shape tolerance. Because candidates are examined by distance,
+    % the first such candidate is the closest one.
+    if mr.rhoStar <= shapeTolBase+1e-12
+        best = candidate;
+        bestRho = mr.rhoStar;
+        bestShift = shift;
+        break
+    end
+
+    % Fallback: smallest required relaxation, then smallest threshold shift.
+    if mr.rhoStar < bestRho-1e-12 || ...
+            (abs(mr.rhoStar-bestRho)<=1e-12 && shift<bestShift)
+        best = candidate;
+        bestRho = mr.rhoStar;
+        bestShift = shift;
+    end
+end
+
+if isempty(best)
+    error('FSDA:mdMDPtest:EntropyThresholdProjectionInfeasible', ...
+        ['No nearby projected TEM cutoff gives a strictly interior exact ' ...
+        'robust/location/fraction calibration system.']);
+end
+
+sel = best;
+sel.searchDiagnostics = struct( ...
+    'observedThreshold',c0, ...
+    'selectedThreshold',best.threshold, ...
+    'absoluteShift',best.threshold-c0, ...
+    'relativeShift',(best.threshold-c0)/max(1,abs(c0)), ...
+    'nCandidatesAvailable',numel(allCandidates), ...
+    'nCandidatesEvaluated',nEvaluated, ...
+    'nExactInteriorCandidates',nExactInterior, ...
+    'maxCandidates',maxCandidates, ...
+    'baseShapeTolerance',shapeTolBase, ...
+    'selectedMinimumShapeRelaxation',bestRho);
+end
+
+% -------------------------------------------------------------------------
+function blk = local_entropy_blocks_at_threshold(c,Ucell,qcell,pobs, ...
+    piPattern,gamma,hC,qbase,p,n,method)
+%local_entropy_blocks_at_threshold Construct exact/shape blocks at cutoff c.
+
+G = numel(Ucell);
+m = size(hC,1);
+wcell = cell(G,1);
+h1cell = cell(G,1);
+h2cell = cell(G,1);
+athr = NaN(G,1);
+thresholdScore = zeros(m,1);
+Araw = hC;
+Braw = zeros(m,0);
+for g=1:G
+    pg = pobs(g);
+    ag = local_tem_inv_adjust(c,pg,p,n,method);
+    if ~isfinite(ag) || ag<=0
+        error('FSDA:mdMDPtest:EntropyInvalidCutoff', ...
+            'Unable to obtain a positive raw cutoff for entropy pattern %d.',g);
+    end
+    wg = double(qcell{g}<=ag);
+    if ~any(wg)
+        error('FSDA:mdMDPtest:EntropyNoRetainedSupport', ...
+            'No entropy support point is retained for pattern %d.',g);
+    end
+    athr(g)=ag;
+    wcell{g}=wg;
+    h1cell{g}=Ucell{g}.*wg;
+    h2cell{g}=local_tracefree_coordinates_rows(Ucell{g}).*wg;
+    Araw=[Araw h1cell{g}]; %#ok<AGROW>
+    Braw=[Braw h2cell{g}]; %#ok<AGROW>
+    thresholdScore=thresholdScore+piPattern(g)*wg;
+end
+h3=thresholdScore-gamma;
+Araw=[Araw h3];
+if any(~isfinite(Araw(:))) || any(~isfinite(Braw(:)))
+    error('FSDA:mdMDPtest:EntropyNonfiniteCalibration', ...
+        'The entropy calibration blocks contain nonfinite entries.');
+end
+blk=struct('Araw',Araw,'Braw',Braw,'wcell',{wcell}, ...
+    'h1cell',{h1cell},'h2cell',{h2cell},'athr',athr, ...
+    'thresholdScore',thresholdScore,'h3',h3,'qbase',qbase);
+end
+
+% -------------------------------------------------------------------------
+function prep = local_entropy_prepare_exact_block(Hraw,q)
+%local_entropy_prepare_exact_block Scale and remove exact-block redundancy.
+
+rawRms=sqrt(sum((Hraw.^2).*q,1));
+scaleTol=100*eps(max(1,max(rawRms)));
+active=rawRms>scaleTol;
+if ~any(active)
+    error('FSDA:mdMDPtest:EntropyNoConstraints', ...
+        'No nonzero exact entropy calibration restriction is available.');
+end
+Hscaled=Hraw(:,active)./rawRms(active);
+hbar=sum(Hscaled.*q,1);
+Hcentered=Hscaled-hbar;
+Hw=Hcentered.*sqrt(q);
+[~,S,V]=svd(Hw,'econ');
+sv=diag(S);
+if isempty(sv) || ~isfinite(sv(1)) || sv(1)<=0
+    error('FSDA:mdMDPtest:EntropyNoConstraints', ...
+        'Unable to determine the centered rank of the exact entropy block.');
+end
+rankTol=max(size(Hw))*eps(sv(1))*100;
+r=sum(sv>rankTol);
+if r<1
+    error('FSDA:mdMDPtest:EntropyNoConstraints', ...
+        'All exact entropy restrictions have zero numerical variance.');
+end
+Vr=V(:,1:r);
+hbarProj=(hbar*Vr)*Vr';
+aff=hbar-hbarProj;
+affMax=norm(aff,inf);
+affTol=1e-8;
+if ~isfinite(affMax) || affMax>affTol
+    error('FSDA:mdMDPtest:EntropyAffineInfeasible', ...
+        ['Zero is outside the numerical affine hull of the exact entropy ' ...
+        'block (max normalized affine offset %.6g).'],affMax);
+end
+Hred=Hscaled*Vr;
+Hc=Hred-sum(Hred.*q,1);
+Vn=Hc'*(Hc.*q); Vn=(Vn+Vn')/2;
+ev=sort(real(eig(Vn)),'ascend');
+minEig=ev(1); maxEig=ev(end);
+if ~isfinite(minEig) || ~isfinite(maxEig) || maxEig<=0 || ...
+        minEig<=max(1e-12*maxEig,1e-14)
+    error('FSDA:mdMDPtest:EntropyCalibrationSingular', ...
+        'The nonredundant exact entropy covariance is singular or nearly singular.');
+end
+prep=struct('Hraw',Hraw,'Hscaled',Hscaled,'Hred',Hred, ...
+    'rawRms',rawRms,'activeCols',active,'nActive',sum(active),'rank',r, ...
+    'rankTolerance',rankTol,'affineOffsetNorm',norm(aff), ...
+    'maxAffineOffset',affMax,'affineTolerance',affTol, ...
+    'minEigenvalue',minEig,'maxEigenvalue',maxEig, ...
+    'conditionNumber',maxEig/minEig,'Vr',Vr);
+end
+
+% -------------------------------------------------------------------------
+function prep = local_entropy_prepare_shape_block(Hraw,q)
+%local_entropy_prepare_shape_block RMS-normalize soft shape coordinates.
+
+if isempty(Hraw)
+    prep=struct('Hraw',Hraw,'Hscaled',zeros(numel(q),0), ...
+        'rawRms',zeros(1,0),'activeCols',false(1,0),'nActive',0);
+    return
+end
+rawRms=sqrt(sum((Hraw.^2).*q,1));
+scaleTol=100*eps(max(1,max(rawRms)));
+active=rawRms>scaleTol;
+Hscaled=Hraw(:,active)./rawRms(active);
+prep=struct('Hraw',Hraw,'Hscaled',Hscaled,'rawRms',rawRms, ...
+    'activeCols',active,'nActive',sum(active));
+end
+
+% -------------------------------------------------------------------------
+function info = local_entropy_min_shape_relaxation(A,B,q)
+%local_entropy_min_shape_relaxation Minimum normalized sup-norm shape slack.
+%
+% min rho subject to E_p(A)=0, sum p=1, p>=0 and |E_p(B_j)|<=rho.
+
+[m,~]=size(A); dB=size(B,2); q=q(:); %#ok<NASGU>
+info=struct('available',false,'feasible',false,'rhoStar',NaN, ...
+    'probability',[],'exitflag',NaN,'reason','');
+if exist('linprog','file')==0
+    info.reason='linprog unavailable'; return
+end
+f=[zeros(m,1);1];
+if dB>0
+    Aineq=[B' -ones(dB,1); -B' -ones(dB,1)];
+    bineq=zeros(2*dB,1);
+else
+    Aineq=[]; bineq=[];
+end
+Aeq=[ones(1,m) 0; A' zeros(size(A,2),1)];
+beq=[1;zeros(size(A,2),1)];
+lb=[zeros(m,1);0]; ub=[ones(m,1);Inf];
+try
+    opts=optimoptions('linprog','Display','none');
+    [x,~,ef,out]=linprog(f,Aineq,bineq,Aeq,beq,lb,ub,opts);
+catch ME
+    info.reason=ME.message; return
+end
+info.available=true; info.exitflag=ef;
+if ef>0 && numel(x)==m+1 && all(isfinite(x))
+    info.feasible=true; info.rhoStar=max(0,x(end)); info.probability=x(1:m);
+else
+    if isstruct(out) && isfield(out,'message')
+        info.reason=out.message;
+    end
+end
+end
+
+% -------------------------------------------------------------------------
+function info = local_entropy_relaxed_interior_lp(A,B,q,shapeTol)
+%local_entropy_relaxed_interior_lp Strict-interior certificate with soft shape.
+%
+% max t subject to exact block, |E_p(B)|<=shapeTol and p_i>=t q_i.
+
+[m,~]=size(A); dB=size(B,2); q=q(:); q=q/sum(q);
+info=struct('available',false,'reason','','exitflag',NaN,'tStar',NaN, ...
+    'classification','unavailable','convexHullFeasible',false, ...
+    'strictInteriorFeasible',false,'boundary',false, ...
+    'interiorTolerance',1e-8,'probability',[], ...
+    'equalityResidual',NaN,'shapeViolation',NaN,'minProbabilityRatio',NaN);
+f=[zeros(m,1);-1];
+Aineq=[-eye(m) q]; bineq=zeros(m,1);
+if dB>0
+    Aineq=[Aineq; B' zeros(dB,1); -B' zeros(dB,1)];
+    bineq=[bineq; shapeTol*ones(2*dB,1)];
+end
+Aeq=[ones(1,m) 0; A' zeros(size(A,2),1)];
+beq=[1;zeros(size(A,2),1)];
+lb=zeros(m+1,1); ub=[ones(m,1);1];
+try
+    opts=optimoptions('linprog','Display','none');
+    [x,~,ef,out]=linprog(f,Aineq,bineq,Aeq,beq,lb,ub,opts);
+catch ME
+    info.reason=ME.message; return
+end
+info.available=true; info.exitflag=ef;
+if ef>0 && numel(x)==m+1 && all(isfinite(x))
+    pp=x(1:m); info.probability=pp; info.tStar=max(0,min(1,x(end)));
+    info.convexHullFeasible=true;
+    info.equalityResidual=norm(Aeq*x-beq,inf);
+    if dB>0
+        info.shapeViolation=max([0;abs(B'*pp)-shapeTol]);
+    else
+        info.shapeViolation=0;
+    end
+    info.minProbabilityRatio=min(pp./q);
+    if info.tStar>info.interiorTolerance
+        info.strictInteriorFeasible=true; info.classification='strict relative interior';
+    else
+        info.boundary=true; info.classification='relaxed convex-hull boundary';
+    end
+elseif ef==-2
+    info.classification='outside relaxed convex hull'; info.reason='LP infeasible';
+else
+    if isstruct(out) && isfield(out,'message')
+        info.reason=out.message;
+    end
+end
+end
+
+% -------------------------------------------------------------------------
+function [prob,info] = local_entropy_relaxed_kl(A,B,q,shapeTol,p0)
+%local_entropy_relaxed_kl KL projection with exact and soft linear moments.
+%
+% The objective is KL(p||q).  Its analytical gradient and exact Hessian are
+%
+%   grad_i = log(p_i/q_i)+1,
+%   Hessian = diag(1./p_i).
+%
+% All calibration restrictions are linear.  The interior-point solver is
+% therefore supplied with the exact objective Hessian.  A feasible iterate
+% that reaches the iteration limit is not rejected automatically: it is
+% accepted when the first-order/KKT optimality measure is sufficiently small.
+% Otherwise one warm restart is performed from the feasible returned iterate.
+
+m=numel(q); dB=size(B,2); q=q(:); q=q/sum(q);
+Aeq=[ones(1,m);A']; beq=[1;zeros(size(A,2),1)];
+if dB>0
+    Aineq=[B';-B']; bineq=shapeTol*ones(2*dB,1);
+else
+    Aineq=[]; bineq=[];
+end
+lb=max(realmin('double')*ones(m,1),1e-14*q);
+ub=ones(m,1);
+pstart=p0(:);
+if numel(pstart)~=m || any(~isfinite(pstart)) || any(pstart<lb) || ...
+        abs(sum(pstart)-1)>1e-8
+    error('FSDA:mdMDPtest:EntropyInvalidFeasibleStart', ...
+        'The phase-I entropy starting probability is not strictly feasible.');
+end
+
+% Numerical tolerances.  The calibration restrictions are kept more
+% stringent than the optimization stopping criterion because first-order
+% statistical validity depends on the former, not on driving the KL objective
+% to machine precision.
+constraintTol = 1e-10;
+feasibilityTol = 1e-9;
+optimalityTol = 1e-8;
+acceptKKT = 1e-7;
+maxIterInitial = 1000;
+maxIterRestart = 3000;
+
+obj=@(pp)local_entropy_kl_objective(pp,q);
+hess=@(pp,lambda)local_entropy_kl_hessian(pp,lambda); %#ok<NASGU>
+
+% First interior-point pass.
+try
+    opts=optimoptions('fmincon','Algorithm','interior-point','Display','none', ...
+        'SpecifyObjectiveGradient',true,'HessianFcn',hess, ...
+        'ConstraintTolerance',constraintTol, ...
+        'OptimalityTolerance',optimalityTol,'StepTolerance',1e-12, ...
+        'MaxIterations',maxIterInitial,'MaxFunctionEvaluations',200000);
+    [prob,fval,ef,out,lambda]=fmincon(obj,pstart,Aineq,bineq,Aeq,beq,lb,ub,[],opts);
+catch ME
+    prob=pstart;
+    info=struct('converged',false,'reason',ME.message,'iterations',0, ...
+        'gradientInfNorm',NaN,'dualObjective',NaN,'primalObjective',NaN, ...
+        'hessianRcond',NaN,'lineSearchHalvings',0,'nNewtonSteps',0, ...
+        'nRidgeSteps',0,'nGradientSteps',0,'nRidgeEscalations',0, ...
+        'lineSearchFailures',0,'maxRidgeUsed',0,'lastStepType','fmincon failed', ...
+        'exactResidual',Inf,'shapeViolation',Inf,'dualVector',[], ...
+        'exitflag',NaN,'initialExitflag',NaN,'restartCount',0, ...
+        'firstOrderOptimality',NaN,'initialFirstOrderOptimality',NaN, ...
+        'acceptedByKKT',false,'feasible',false, ...
+        'feasibilityTolerance',feasibilityTol,'kktAcceptanceTolerance',acceptKKT, ...
+        'optimalityTolerance',optimalityTol,'constraintTolerance',constraintTol, ...
+        'usedExactKLHessian',true);
+    return
+end
+
+[exactRes,shapeViol,feasible,fo,it] = local_entropy_relaxed_solver_status( ...
+    prob,Aeq,beq,B,shapeTol,out,feasibilityTol);
+initialEf = ef;
+initialFo = fo;
+initialIt = it;
+restartCount = 0;
+acceptedByKKT = feasible && ef<=0 && isfinite(fo) && fo<=acceptKKT;
+converged = feasible && (ef>0 || acceptedByKKT);
+
+% A feasible iteration-limit termination can simply mean that the objective
+% is converging slowly along the active linear-constraint face.  Continue
+% once from the returned feasible point before declaring a numerical failure.
+if ~converged && feasible && ef<=0
+    restartCount = 1;
+    pRestart = prob;
+    try
+        optsRestart=optimoptions(opts,'MaxIterations',maxIterRestart, ...
+            'MaxFunctionEvaluations',500000);
+        [prob2,fval2,ef2,out2,lambda2]=fmincon(obj,pRestart,Aineq,bineq, ...
+            Aeq,beq,lb,ub,[],optsRestart);
+        [exactRes2,shapeViol2,feasible2,fo2,it2] = ...
+            local_entropy_relaxed_solver_status(prob2,Aeq,beq,B,shapeTol, ...
+            out2,feasibilityTol);
+
+        % The restarted run is the final optimizer state.  Keep it whenever
+        % it is finite; feasibility and KKT acceptance are assessed below.
+        if all(isfinite(prob2)) && isfinite(fval2)
+            prob=prob2;
+            fval=fval2;
+            ef=ef2;
+            out=out2;
+            lambda=lambda2;
+            exactRes=exactRes2;
+            shapeViol=shapeViol2;
+            feasible=feasible2;
+            fo=fo2;
+            it=initialIt+it2;
+        end
+    catch MErestart
+        % Preserve the first feasible result and record the restart failure.
+        if isstruct(out) && isfield(out,'message')
+            out.message=[out.message ' Warm restart failed: ' MErestart.message];
+        else
+            out=struct('message',['Warm restart failed: ' MErestart.message], ...
+                'iterations',initialIt,'firstorderopt',initialFo);
+        end
+        it=initialIt;
+    end
+end
+
+acceptedByKKT = feasible && ef<=0 && isfinite(fo) && fo<=acceptKKT;
+converged = feasible && (ef>0 || acceptedByKKT);
+reason='';
+if ~converged
+    if isstruct(out) && isfield(out,'message')
+        reason=out.message;
+    else
+        reason='fmincon did not meet the feasibility/KKT acceptance criteria';
+    end
+elseif acceptedByKKT
+    reason=['Feasible solution accepted by the explicit first-order/KKT ' ...
+        'tolerance after nonpositive fmincon exitflag.'];
+end
+
+% Assemble the final dual vector for diagnostics.
+dual=[];
+if isstruct(lambda)
+    if isfield(lambda,'eqlin')
+        dual=[dual;lambda.eqlin(:)];
+    end
+    if isfield(lambda,'ineqlin')
+        dual=[dual;lambda.ineqlin(:)];
+    end
+end
+
+info=struct('converged',converged,'reason',reason,'iterations',it, ...
+    'gradientInfNorm',fo,'dualObjective',NaN,'primalObjective',fval, ...
+    'hessianRcond',NaN,'lineSearchHalvings',0,'nNewtonSteps',0, ...
+    'nRidgeSteps',0,'nGradientSteps',0,'nRidgeEscalations',0, ...
+    'lineSearchFailures',0,'maxRidgeUsed',0,'lastStepType','fmincon interior-point', ...
+    'exactResidual',exactRes,'shapeViolation',shapeViol,'dualVector',dual, ...
+    'exitflag',ef,'initialExitflag',initialEf,'restartCount',restartCount, ...
+    'firstOrderOptimality',fo,'initialFirstOrderOptimality',initialFo, ...
+    'acceptedByKKT',acceptedByKKT,'feasible',feasible, ...
+    'feasibilityTolerance',feasibilityTol,'kktAcceptanceTolerance',acceptKKT, ...
+    'optimalityTolerance',optimalityTol,'constraintTolerance',constraintTol, ...
+    'usedExactKLHessian',true);
+end
+
+% -------------------------------------------------------------------------
+function [exactRes,shapeViol,feasible,fo,it] = ...
+    local_entropy_relaxed_solver_status(prob,Aeq,beq,B,shapeTol,out,feasTol)
+%local_entropy_relaxed_solver_status Common feasibility/KKT diagnostics.
+
+exactRes=norm(Aeq*prob-beq,inf);
+if isempty(B)
+    shapeViol=0;
+else
+    shapeViol=max([0;abs(B'*prob)-shapeTol]);
+end
+feasible=all(isfinite(prob)) && all(prob>0) && ...
+    exactRes<=feasTol && shapeViol<=feasTol;
+if isstruct(out) && isfield(out,'firstorderopt')
+    fo=out.firstorderopt;
+else
+    fo=NaN;
+end
+if isstruct(out) && isfield(out,'iterations')
+    it=out.iterations;
+else
+    it=NaN;
+end
+end
+
+% -------------------------------------------------------------------------
+function [f,g] = local_entropy_kl_objective(p,q)
+%local_entropy_kl_objective KL(p||q) and analytical gradient.
+
+if any(p<=0) || any(~isfinite(p))
+    f=Inf; g=NaN(size(p)); return
+end
+lr=log(p./q);
+f=sum(p.*lr);
+g=lr+1;
+end
+
+% -------------------------------------------------------------------------
+function H = local_entropy_kl_hessian(p,lambda) %#ok<INUSD>
+%local_entropy_kl_hessian Exact Hessian of KL(p||q).
+%
+% The entropy calibration constraints are linear, hence their second
+% derivatives vanish and the Lagrangian Hessian equals diag(1./p).
+
+p=max(p(:),realmin('double'));
+H=spdiags(1./p,0,numel(p),numel(p));
 end
 
 % -------------------------------------------------------------------------
@@ -5975,132 +6604,37 @@ end
 end
 
 % -------------------------------------------------------------------------
-function Htf = local_tracefree_coordinates_rows(U)
-%local_tracefree_coordinates_rows One-to-one trace-free symmetric coordinates.
+function Sspd = local_make_spd(S)
+%local_make_spd Make a covariance matrix symmetric positive definite.
 %
-% For A=UU'-tr(UU')I/k, lower-triangular coordinates are formed and the
-% final diagonal entry A(k,k) is omitted. Since tr(A)=0, that entry is
-% determined by the other diagonal entries. The resulting dimension is
-% k(k+1)/2-1, as required for a one-to-one vectorization of trace-free
-% symmetric matrices.
+% This is the same numerical safeguard used by the preceding mdMDPtest
+% versions for Gaussian and empirical-radial bootstrap generation.
 
-[m,k] = size(U);
-s = max(0,k*(k+1)/2-1);
-Htf = zeros(m,s);
-if k==1
+S = (S+S')/2;
+[~,flag] = chol(S);
+if flag==0
+    Sspd = S;
     return
 end
-q = sum(U.^2,2);
-col = 0;
-for j = 1:k
-    for i = j:k
-        if i==k && j==k
-            continue
-        end
-        col = col+1;
-        Htf(:,col) = U(:,i).*U(:,j);
-        if i==j
-            Htf(:,col) = Htf(:,col)-q/k;
-        end
+
+lam = 1e-8*trace(S)/size(S,1);
+if lam<=0 || ~isfinite(lam)
+    lam = 1e-8;
+end
+
+I = eye(size(S));
+for k=1:8
+    Stmp = S+lam*I;
+    [~,flag] = chol(Stmp);
+    if flag==0
+        Sspd = Stmp;
+        return
     end
-end
-end
-
-% -------------------------------------------------------------------------
-function [prob,lambda,info] = local_entropy_tilt(H,q,tol,maxiter)
-%local_entropy_tilt Solve sum p_i H_i=0 by stabilized exponential tilting.
-%
-% The dual objective is log(sum q_i exp(H_i lambda)). Newton steps use the
-% current weighted covariance of H and a backtracking Armijo line search.
-
-[m,d] = size(H);
-q = q(:);
-if numel(q)~=m || any(~isfinite(q)) || any(q<=0)
-    error('FSDA:mdMDPtest:EntropyInvalidBaseWeights', ...
-        'Entropy base probabilities must be finite and strictly positive.');
-end
-q = q/sum(q);
-lambda = zeros(d,1);
-converged = false;
-reason = '';
-stepHalvingsTotal = 0;
-
-for iter = 1:maxiter
-    [prob,phi,grad,Hess] = local_entropy_dual_state(H,q,lambda);
-    gradInf = norm(grad,inf);
-    if gradInf <= tol
-        converged = true;
-        break
-    end
-
-    Hess = (Hess+Hess')/2;
-    rc = rcond(Hess);
-    if isfinite(rc) && rc > 1e-12
-        step = -(Hess\grad);
-    else
-        step = -pinv(Hess,1e-12)*grad;
-    end
-    if any(~isfinite(step)) || grad'*step >= 0
-        reason = 'Unable to construct a finite descent Newton step.';
-        break
-    end
-
-    t = 1;
-    descent = grad'*step;
-    accepted = false;
-    for ls = 1:60
-        lambdaTry = lambda+t*step;
-        [~,phiTry] = local_entropy_dual_state(H,q,lambdaTry);
-        if isfinite(phiTry) && phiTry <= phi + 1e-4*t*descent
-            lambda = lambdaTry;
-            accepted = true;
-            stepHalvingsTotal = stepHalvingsTotal + (ls-1);
-            break
-        end
-        t = t/2;
-    end
-    if ~accepted
-        reason = 'Backtracking line search failed.';
-        break
-    end
+    lam = 10*lam;
 end
 
-[prob,phi,grad,Hess] = local_entropy_dual_state(H,q,lambda);
-gradInf = norm(grad,inf);
-if ~converged && gradInf <= tol
-    converged = true;
-end
-if ~converged && isempty(reason)
-    reason = 'Maximum number of Newton iterations reached.';
-end
-
-info = struct('converged',converged,'reason',reason,'iterations',iter, ...
-    'gradientInfNorm',gradInf,'dualObjective',phi, ...
-    'hessianRcond',rcond((Hess+Hess')/2), ...
-    'lineSearchHalvings',stepHalvingsTotal);
-end
-
-% -------------------------------------------------------------------------
-function [prob,phi,grad,Hess] = local_entropy_dual_state(H,q,lambda)
-%local_entropy_dual_state Stable exponential-tilt probabilities and derivatives.
-
-eta = H*lambda;
-c = max(eta);
-w = q.*exp(eta-c);
-z = sum(w);
-if ~isfinite(z) || z<=0
-    prob = NaN(size(q));
-    phi = Inf;
-    grad = NaN(size(lambda));
-    Hess = NaN(numel(lambda));
-    return
-end
-prob = w/z;
-phi = c+log(z);
-mu = H'*prob;
-HC = H-mu';
-Hess = HC'*(HC.*prob);
-grad = mu;
+error('FSDA:mdMDPtest:NonSPD', ...
+    'Unable to regularize covariance matrix to positive definiteness.');
 end
 
 % -------------------------------------------------------------------------
@@ -6138,37 +6672,175 @@ shapeResidual = norm(shapeRatio-eye(k),'fro')/sqrt(k);
 end
 
 % -------------------------------------------------------------------------
-function Sspd = local_make_spd(S)
-% Make covariance matrix symmetric positive definite if needed.
+function Htf = local_tracefree_coordinates_rows(U)
+%local_tracefree_coordinates_rows One-to-one trace-free symmetric coordinates.
+%
+% For A=UU'-tr(UU')I/k, lower-triangular coordinates are formed and the
+% final diagonal entry A(k,k) is omitted. Since tr(A)=0, that entry is
+% determined by the other diagonal entries. The resulting dimension is
+% k(k+1)/2-1, as required for a one-to-one vectorization of trace-free
+% symmetric matrices.
 
-S = (S + S')/2;
-[~,flag] = chol(S);
+[m,k] = size(U);
+s = max(0,k*(k+1)/2-1);
+Htf = zeros(m,s);
+if k==1
+    return
+end
+q = sum(U.^2,2);
+col = 0;
+for j = 1:k
+    for i = j:k
+        if i==k && j==k
+            continue
+        end
+        col = col+1;
+        Htf(:,col) = U(:,i).*U(:,j);
+        if i==j
+            Htf(:,col) = Htf(:,col)-q/k;
+        end
+    end
+end
+end
 
-if flag == 0
-    Sspd = S;
+% -------------------------------------------------------------------------
+function info = local_entropy_relative_interior_lp(H,q)
+%local_entropy_relative_interior_lp Exact finite-support interior diagnostic.
+%
+% Solve the phase-I linear program
+%
+%   maximize t
+%   subject to sum_i p_i = 1,
+%              sum_i p_i H_i = 0,
+%              p_i >= t q_i,  p_i >= 0,  t >= 0.
+%
+% Because every q_i is strictly positive, tStar>0 if and only if the zero
+% target belongs to the relative interior of conv{H_i}.  tStar=0 identifies
+% a convex-hull boundary solution, while LP infeasibility places zero outside
+% the convex hull.  This routine is diagnostic only and never changes the
+% entropy projection itself.
+
+[m,d] = size(H);
+q = q(:);
+info = struct('available',false,'reason','', 'exitflag',NaN, ...
+    'tStar',NaN,'classification','unavailable', ...
+    'convexHullFeasible',false,'strictInteriorFeasible',false, ...
+    'boundary',false,'interiorTolerance',1e-8, ...
+    'equalityResidual',NaN,'inequalityViolation',NaN, ...
+    'minProbability',NaN,'minProbabilityRatio',NaN, ...
+    'iterations',NaN,'algorithm','');
+
+if numel(q)~=m || any(~isfinite(q)) || any(q<=0) || ...
+        any(~isfinite(H(:)))
+    info.reason = 'Invalid finite-support calibration matrix or base weights.';
+    return
+end
+q = q/sum(q);
+
+% This helper is also used by the finite-support entropy calibration. The
+% entropy branch checks availability of Optimization Toolbox before entering
+% the projected-threshold/relaxed-shape program.
+if exist('linprog','file') == 0
+    info.reason = ['Function linprog is unavailable; the exact finite-support ' ...
+        'relative-interior LP diagnostic was not computed.'];
     return
 end
 
-lam = 1e-8 * trace(S) / size(S,1);
-if lam <= 0 || ~isfinite(lam)
-    lam = 1e-8;
+% Variables are x=[p;t].  Summing p_i>=t q_i already implies t<=1, but the
+% explicit upper bound improves numerical scaling.
+f = [zeros(m,1); -1];
+A = [-eye(m) q];
+b = zeros(m,1);
+Aeq = [ones(1,m) 0; H' zeros(d,1)];
+beq = [1; zeros(d,1)];
+lb = zeros(m+1,1);
+ub = [ones(m,1); 1];
+
+try
+    opts = optimoptions('linprog','Display','none');
+    [x,~,exitflag,output] = linprog(f,A,b,Aeq,beq,lb,ub,opts);
+catch ME
+    info.reason = sprintf('linprog failed: %s',ME.message);
+    return
 end
 
-I = eye(size(S));
-for k = 1:8
-    Stmp = S + lam*I;
-    [~,flag] = chol(Stmp);
-    if flag == 0
-        Sspd = Stmp;
-        return
+info.available = true;
+info.exitflag = exitflag;
+if isstruct(output)
+    if isfield(output,'iterations')
+        info.iterations = output.iterations;
     end
-    lam = 10*lam;
+    if isfield(output,'algorithm')
+        info.algorithm = output.algorithm;
+    end
 end
 
-error('FSDA:mdMDPtest:NonSPD', ...
-    'Unable to regularize covariance matrix to positive definiteness.');
+if exitflag > 0 && numel(x)==m+1 && all(isfinite(x))
+    pLP = x(1:m);
+    tStar = max(0,min(1,x(end)));
+    info.tStar = tStar;
+    info.convexHullFeasible = true;
+    info.equalityResidual = norm(Aeq*x-beq,inf);
+    info.inequalityViolation = max([0; A*x-b]);
+    info.minProbability = min(pLP);
+    info.minProbabilityRatio = min(pLP./q);
+    if tStar > info.interiorTolerance
+        info.strictInteriorFeasible = true;
+        info.boundary = false;
+        info.classification = 'strict relative interior';
+    else
+        info.strictInteriorFeasible = false;
+        info.boundary = true;
+        info.classification = 'convex-hull boundary or near-boundary';
+    end
+    info.reason = '';
+elseif exitflag == -2
+    info.convexHullFeasible = false;
+    info.classification = 'outside convex hull';
+    info.reason = 'The phase-I relative-interior LP is infeasible.';
+else
+    info.classification = 'LP unresolved';
+    if isstruct(output) && isfield(output,'message')
+        info.reason = output.message;
+    else
+        info.reason = sprintf('linprog returned exitflag %g.',exitflag);
+    end
+end
 end
 
+% -------------------------------------------------------------------------
+function c = local_tem_adjust_raw(a,pg,p,n,method)
+%local_tem_adjust_raw Forward parameter-free adjusted-distance map.
+%
+% Vectorized inverse of local_tem_inv_adjust, used only to enumerate the
+% empirical cutoff breakpoints in the entropy projected-threshold search.
+
+method = string(method);
+switch method
+    case "pri"
+        c = a+(p-pg);
+    case "expScale"
+        c = a*p/pg;
+    case "zMap"
+        c = p+sqrt(p/pg)*(a-pg);
+    case "chiMap"
+        u = chi2cdf(a,pg);
+        u = min(max(u,eps),1-eps);
+        c = chi2inv(u,p);
+    case "betaMap"
+        cn = (n-1)^2/n;
+        if n <= p+1 || n <= pg+1
+            c = a;
+            return
+        end
+        u = min(max(a/cn,0),1-eps);
+        al = betacdf(u,pg/2,(n-pg-1)/2);
+        al = min(max(al,eps),1-eps);
+        c = cn*betainv(al,p/2,(n-p-1)/2);
+    otherwise
+        c = NaN(size(a));
+end
+end
 
 % -------------------------------------------------------------------------
 function a = local_tem_inv_adjust(c,pg,p,n,method)
