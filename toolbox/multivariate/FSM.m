@@ -20,6 +20,17 @@ function [out]=FSM(Y,varargin)
 % Optional input arguments:
 %
 %
+% bsbmfullrank : Dealing with a singular centered subset matrix. Boolean.
+%                 This option controls what to do when the matrix of
+%                 deviations from the subset mean at step m is not full
+%                 rank. If bsbmfullrank=true (default), the units producing
+%                 the singularity are constrained to enter the search in
+%                 the final steps. If bsbmfullrank=false, the search
+%                 continues using the location and covariance estimates
+%                 from the previous full-rank step.
+%                 Example - 'bsbmfullrank',false
+%                 Data Types - logical
+%
 %      bonflev  : option that might be used to identify extreme outliers
 %                 when the distribution of the data is strongly non normal.
 %                 Scalar.
@@ -314,7 +325,8 @@ end
 if coder.target('MATLAB')
 
     options=struct('m0',v+1,'init',hdef,'crit',critdef,'rf',0.95,...
-        'plots',1,'msg',true,'bonflev','','nocheck',0);
+        'plots',1,'msg',true,'bonflev','','nocheck',0,...
+        'bsbmfullrank',true);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -341,6 +353,7 @@ init=options.init;
 msg=options.msg;
 crit=options.crit;
 m0=options.m0;
+bsbmfullrank=options.bsbmfullrank;
 
 % fsizeannot is a scalar which Font Size of the annotations which are
 % shown on the screen
@@ -348,7 +361,8 @@ fsizeannot=11;
 
 %% Start of the forward search
 
-if length(m0)>1
+initialSubsetSupplied=length(m0)>1;
+if initialSubsetSupplied
     bs=m0;
     if max(m0)>n || min(m0)<1
         mess=sprintf(['Attention : Initial subset contains indexes outside the interval 1,...,n. \n',...
@@ -357,6 +371,7 @@ if length(m0)>1
         boo=bs>n | bs<1;
         bs(boo)=[];
     end
+    fre=zeros(0,4);
 else
     % m0(1) necessary for MATLAB C coder
     m0=m0(1);
@@ -390,40 +405,103 @@ else
         error('FSDA:FSM:WrongInputOpt','Supplied options to initialize the search does not exist. crit must be ''md'' ''biv'' or ''uni''');
     end
 
-    % initial subset
-    bs=fre(1:m0,1);
-
-    % the subset need to be incremented if it is not full rank. We also
-    % treat the unfortunate case when the rank of the matrix is v but a
-    % column is constant.
-    incre = 1;
-    %the second condition is added to treat subset with a constant
-    %variable. This situation does not decrease the rank of Y, but it
-    %decreases the rank of ym (i.e. Y-mean(Y)) inside FSMmmd.
-    while (rank(Y(bs,:))<v) || min(max(Y(bs,:)) - min(Y(bs,:))) == 0
-        bs=fre(1:m0+incre,1);
-        incre = incre+1;
-    end
-
-    % To make sure that new value of init is minimum lenght of bs for which
-    % the Y matrix is full rank
-    if init<length(bs)
-        init=length(bs);
-    end
-
 end
 
-
-
-% Compute Minimum Mahalanobis Distance for each step of the search
-if n<5000
-    [mmd,Un,bb] = FSMmmd(Y,bs,'init',init,'nocheck',true,'msg',msg,'bsbsteps','');
+if coder.target('MATLAB')
+    constr=[];
 else
-    [mmd,Un] = FSMmmd(Y,bs,'init',init,'nocheck',true,'msg',msg,'bsbsteps','');
-    bb=0;
+    % Initialization for MATLAB Coder: these indexes are outside 1,...,n
+    % and therefore do not impose a constraint.
+    constr=((n+1):2*n)';
 end
 
-if isnan(mmd)
+iter=0;
+searchCompleted=false;
+searchFailed=false;
+mmd=NaN;
+Un=NaN;
+bb=NaN;
+
+while searchCompleted==false && searchFailed==false && iter<6
+
+    if initialSubsetSupplied==false
+        % Exclude units which produced a singular centered subset in a
+        % previous attempt. They will be forced to enter in the final steps.
+        freok=fre(~ismember(fre(:,1),constr),:);
+        if size(freok,1)<v+1
+            searchFailed=true;
+            break
+        end
+
+        % Select the first full-rank initial subset according to crit.
+        incre=0;
+        subsetFullRank=false;
+        while subsetFullRank==false && m0+incre<=size(freok,1)
+            bs=freok(1:m0+incre,1);
+            Ybs=Y(bs,:);
+            if any(ismissing(Ybs),'all')
+                outEMini=mdEM(Ybs);
+                covIni=outEMini.cov;
+                subsetFullRank=all(isfinite(covIni(:))) && rank(covIni)==v;
+            else
+                meanYbs=sum(Ybs,1)/size(Ybs,1);
+                subsetFullRank=rank(Ybs-meanYbs)==v;
+            end
+            incre=incre+1;
+        end
+
+        if subsetFullRank==false
+            searchFailed=true;
+            break
+        end
+
+        % Ensure that monitoring does not start before the initial subset.
+        if init<length(bs)
+            init=length(bs);
+        end
+    end
+
+    % Compute the minimum Mahalanobis distance for each step of the search.
+    if n<5000
+        [mmd,Un,bb] = FSMmmd(Y,bs,'init',init,'nocheck',true,...
+            'msg',msg,'bsbsteps','','bsbmfullrank',bsbmfullrank,...
+            'constr',constr);
+    else
+        [mmd,Un] = FSMmmd(Y,bs,'init',init,'nocheck',true,...
+            'msg',msg,'bsbsteps','','bsbmfullrank',bsbmfullrank,...
+            'constr',constr);
+        bb=0;
+    end
+
+    if size(mmd,2)==2
+        searchCompleted=true;
+    elseif initialSubsetSupplied==false && bsbmfullrank==true && ...
+            length(mmd)<n/2 && iter<5
+        % FSMmmd returns the units which keep the centered subset singular.
+        % Restart without them and constrain them to enter in the final steps.
+        if isnan(mmd(1))
+            constr=bs(:);
+        else
+            constr=mmd(:);
+        end
+        iter=iter+1;
+    else
+        searchFailed=true;
+    end
+end
+
+if searchCompleted==false
+    if ~isnan(mmd(1)) && length(mmd)>=n/2
+        disp('More than half of the observations produce a singular centered subset matrix.')
+        disp('Y is badly defined for a full-rank multivariate search.')
+        disp('Use option bsbmfullrank=false to continue with the latest full-rank estimates.')
+    elseif initialSubsetSupplied
+        disp('The supplied starting subset leads to a singular centered subset matrix.')
+        disp('Please use a different starting subset or set bsbmfullrank=false.')
+    elseif iter>=5
+        error('FSDA:FSM:NoConv','No convergence while handling singular subsets.')
+    end
+
     out = struct;
     out.outliers=[];
     out.loc=[];

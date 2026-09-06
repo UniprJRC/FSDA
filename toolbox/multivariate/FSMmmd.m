@@ -25,6 +25,19 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %
 % Optional input arguments:
 %
+% bsbmfullrank : Dealing with a singular centered subset matrix. Boolean.
+%               This option controls what to do when the matrix of
+%               deviations from the subset mean at step m is not full
+%               rank. If bsbmfullrank=true (default), the units producing
+%               the singularity are returned so that the calling routine
+%               can constrain them to enter in the final steps of the
+%               search. If bsbmfullrank=false, the search continues and
+%               Mahalanobis distances at step m are computed using the
+%               location and covariance estimates from the previous
+%               full-rank step.
+%               Example - 'bsbmfullrank',false
+%               Data Types - logical
+%
 %   bsbsteps :  Save the units forming subsets. Vector. It specifies for
 %               which steps of the fwd search it
 %               is necessary to save the units forming subsets. If bsbsteps
@@ -37,6 +50,14 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %               m=init, 100, 200, ..., 7500.
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
+%               Data Types - double
+%
+% constr :      Constrained search. Vector. Vector containing the units
+%               which are forced to join the search in the final
+%               length(constr) steps. The default is constr=[], that is no
+%               constraint is imposed. This option is used internally by
+%               FSM when bsbmfullrank=true.
+%               Example - 'constr',1:10
 %               Data Types - double
 %
 % init :       Point where to start monitoring
@@ -86,6 +107,11 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %               Mahalanobis distance each step of the forward search.
 %               1st col = fwd search index (from init to n-1);
 %               2nd col = minimum Mahalanobis distance.
+%               REMARK: if a later subset is singular and
+%               bsbmfullrank=true, mmd is returned as a column vector
+%               containing the units which produce the singular centered
+%               subset matrix. If the initial subset is singular, mmd is
+%               NaN because no previous estimates are available.
 % Un :          (n-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
@@ -230,7 +256,8 @@ if nargin<2
 end
 
 if coder.target('MATLAB')
-    options=struct('init',initdef,'plots',0,'msg',1,'nocheck',0,'bsbsteps',bsbstepdef);
+    options=struct('init',initdef,'plots',0,'msg',1,'nocheck',0,...
+        'bsbmfullrank',true,'bsbsteps',bsbstepdef,'constr',[]);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
     UserOptions=varargin(1:2:length(varargin));
@@ -348,6 +375,10 @@ ini0=length(bsb);
 % check init
 init1=options.init;
 msg=options.msg;
+bsbmfullrank=options.bsbmfullrank;
+constr=options.constr(:);
+constr=constr(constr>=1 & constr<=n);
+constr=unique(constr);
 
 if  init1 <v+1
     mess=sprintf(['Attention : init1 should be larger than v. \n',...
@@ -436,9 +467,15 @@ end
 
 lunit=length(unit);
 
-% If the subset Y(bsb,:) is not full rank or a column is constant, then we
-% return as output an empty structure.
-if hasMiss==false && ((rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0)
+% If the centered initial subset is not full rank, there are no previous
+% estimates which can be used and therefore the search cannot start.
+if hasMiss==false
+    Ybini=Y(bsb,:);
+    Ybinic=bsxfun(@minus,Ybini,sum(Ybini,1)/ini0);
+else
+    Ybinic=zeros(ini0,v);
+end
+if hasMiss==false && rank(Ybinic)<v
     if coder.target('MATLAB')
         warning('FSDA:FSMmmd:NoFullRank','The supplied initial subset does not produce a full rank matrix');
     else
@@ -453,6 +490,14 @@ else
     % ij = index which is linked with the columns of matrix BB. During the
     % search every time a subset is stored inside matrix BB ij increases by one
     ij=1;
+
+    % Store the estimates and the distances from the latest full-rank
+    % subset. They are used when bsbmfullrank=false and a later subset is
+    % singular.
+    lastym=zeros(1,v);
+    lastMD=zeros(n,1);
+    lastS=zeros(v,v);
+    previousRankProblem=false;
 
     for mm = ini0:n
         % disp(mm)
@@ -478,167 +523,212 @@ else
         end
         if hasMiss==true
 
-            % run trimmed EM with missingness to estimate mu and Sigma
+            % Run trimmed EM with missingness to estimate mu and Sigma.
             if mm<=percn
                 idxPatternsb=idxPatterns(bsb);
             else
                 idxPatternsb=idxPatterns(bsbT);
             end
             tem = mdEM(Yb,'Patterns',Patterns,'idxPatterns',idxPatternsb);
-            ym  = tem.loc;
-            covYb = tem.cov;
+            ymCurrent=tem.loc;
+            covYb=tem.cov;
+            NoRankProblem=all(isfinite(covYb(:))) && rank(covYb)==v;
 
-            a=chi2inv(mm/n,v);
-            corr=(n./mm).*(chi2cdf(a,v+2));
-            covYbRescaled=covYb/corr;
+            if NoRankProblem
+                ym=ymCurrent;
+                a=chi2inv(mm/n,v);
+                corr=(n./mm).*(chi2cdf(a,v+2));
+                covYbRescaled=covYb/corr;
 
-            % compute adjusted partial squared distances for ALL units
-            [d2p, poss] = mdPartialMD(Y, ym, covYbRescaled);
-            % rescaled MD for all units
-            d2_adj1 = mdPartialMD2full(d2p, v, poss);
+                % Compute adjusted partial squared distances for all units.
+                [d2p, poss] = mdPartialMD(Y,ym,covYbRescaled);
+                d2_adj1 = mdPartialMD2full(d2p,v,poss);
 
-            % MD distances (squared) without consistency factor
-            d2_adj=d2_adj1/corr;
-
-            % For monitoring we use sqrt distance like FSMeda
-            % Note that similarly to traditional implementation we do not use a
-            % rescaled cov. matrix
-            MD = d2_adj;
+                % For monitoring use squared distances without the
+                % consistency factor, as in the traditional implementation.
+                MD=d2_adj1/corr;
+            end
 
         else
 
-            % Find vector of means inside subset
-            % Note that ym is a row vector
-            ym=sum(Yb,1)/mm;
+            % ymCurrent and YbCentered refer to the actual subset at step mm.
+            ymCurrent=sum(Yb,1)/mm;
+            YbCentered=bsxfun(@minus,Yb,ymCurrent);
+            NoRankProblem=rank(YbCentered)==v;
 
-            % Ym = n-by-v matrix containing deviations from the means computed
-            % using units forming subset
-            % Ym=Y-one*ym;
-            Ym = Y - ym;
+            if NoRankProblem
+                ym=ymCurrent;
+                Ym=bsxfun(@minus,Y,ym);
 
-            if mm-lunit>v+1
+                % After a singular step S does not correspond to the subset
+                % at step mm-1. Recompute it directly at the first subsequent
+                % full-rank step; otherwise retain the fast updating formulae.
+                if mm-lunit>v+1 && previousRankProblem==false
 
-                % Find new S
-                if lunit>1
-                    % S0=S;
-                    % Find units which left subset
-                    % Inefficient code is
-                    % unitout=setdiff(oldbsb,bsb);
+                    % Find new S.
+                    if lunit>1
+                        if mm>percn || rankgap>nrepmin
+                            unitoutT=oldbsbT & ~bsbT;
+                            unitout=seq(unitoutT);
+                        end
 
-                    % unitoutT = Boolean for units which left subset
-                    % ~oldbsbF = units which were in previous subset
-                    % ~bsbT = units which are not in the current subset
-                    % unitoutT=~oldbsbF & ~bsbT;
-                    % Given that \not A intersect \not B = \not (A U B)
+                        lunitout=length(unitout);
+                        mi=sum(Y(unitout,:),1)/lunitout;
 
-                    if mm>percn || rankgap>nrepmin
-                        % unitoutT=~(~oldbsbT | bsbT);
-                        unitoutT = oldbsbT & ~bsbT;
-                        unitout=seq(unitoutT);
-                    end
+                        if mm>percn || rankgap>nrepmin
+                            bsbrT=oldbsbT & bsbT;
+                            mibsbr=sum(Y(bsbrT,:),1)/(mm-1-lunitout);
+                        else
+                            mibsbr=sum(Y(bsbr,:),1)/(mm-1-lunitout);
+                        end
 
-                    lunitout=length(unitout);
-                    mi=sum(Y(unitout,:),1)/lunitout;
-
-                    % bsbr units which remained in subset
-                    % old inefficient code
-                    % bsbr=setdiff(oldbsb,unitout);
-
-                    % If mm>percn or if rankgap is greater than nrepmin, the units
-                    % which remained in subset are found using Boolean
-                    % operations
-                    % else they were immediately stored when repeated minima
-                    % were taken
-                    if mm>percn || rankgap>nrepmin
-                        % oldbsbT = units which were in previous subset
-                        % bsbT = units which are in current subset
-                        bsbrT=oldbsbT & bsbT;
-                        mibsbr=sum(Y(bsbrT,:),1)/(mm-1-lunitout);
+                        zi=sqrt(lunitout*(mm-1-lunitout)/(mm-1))*(mi-mibsbr);
+                        Szi=S*zi';
+                        S=S+Szi*(Szi')/(1-zi*Szi);
+                        if lunitout>1
+                            for i=1:lunitout
+                                zi=Y(unitout(i),:)-mi;
+                                Szi=S*zi';
+                                S=S+Szi*(Szi')/(1-zi*Szi);
+                            end
+                        end
                     else
-                        mibsbr=sum(Y(bsbr,:),1)/(mm-1-lunitout);
+                        lunitout=0;
+                        mibsbr=meoldbsb;
                     end
 
-                    zi=sqrt(lunitout*(mm-1-lunitout)/(mm-1))*(mi-mibsbr);
+                    % Add the units which entered the subset.
+                    mi=sum(Y(unit,:),1)/lunit;
+                    zi=sqrt(lunit*(mm-1-lunitout)/(mm-1-lunitout+lunit))*(mi-mibsbr);
                     Szi=S*zi';
-                    % S=S+(S*(zi')*zi*S)/(1-zi*S*(zi'));
-                    S=S+Szi*(Szi')/(1-zi*Szi);
-                    if lunitout>1
-                        for i=1:lunitout
-                            zi=Y(unitout(i),:)-mi;
+                    S=S-Szi*(Szi')/(1+zi*Szi);
+                    if lunit>1
+                        for i=1:lunit
+                            zi=Y(unit(i),:)-mi;
                             Szi=S*zi';
-                            % S=S+(S*(zi')*zi*S)/(1-zi*S*(zi'));
-                            S=S+Szi*(Szi')/(1-zi*Szi);
+                            S=S-Szi*(Szi')/(1+zi*Szi);
                         end
                     end
-                else
-                    lunitout=0;
-                    mibsbr=meoldbsb;
-                end
 
-                % mi = mean of units entering subset
-                mi=sum(Y(unit,:),1)/lunit;
-                % zi=sqrt(kin*(mm-1-k)/(mm-1-k+kin))*(mi-mean(Y(bsbr,:),1));
-                zi=sqrt(lunit*(mm-1-lunitout)/(mm-1-lunitout+lunit))*(mi-mibsbr);
-                Szi=S*zi';
-                % S=S+(S*(zi')*zi*S)/(1-zi*S*(zi'));
-                S=S-Szi*(Szi')/(1+zi*Szi);
-                if lunit>1
-                    %mi=mean(Y(unit,:),1);
-                    for i=1:lunit
-                        zi=Y(unit(i),:)-mi;
-                        Szi=S*zi';
-                        % S=S-(S*(zi')*zi*S)/(1+zi*S*(zi'));
-                        S=S-Szi*(Szi')/(1+zi*Szi);
-                    end
-                end
-
-                % Compute Mahalanobis distance using updating formulae
-                % Note that up for n>30000 it seems faster to use bsxfun rather
-                % than .*
-                if n<30000
-                    MD=(mm-1)*sum((Ym*S).*Ym,2);
-                else
-                    MD=(mm-1)*sum(bsxfun(@times,mtimes(Ym,S),Ym),2);
-                end
-
-
-            else % In the initial step of the search the inverse is computed directly
-                if mm>percn
-                    S=inv(Ym(bsbT,:)'*Ym(bsbT,:));
-                    [~,R]=qr(Ym(bsbT,:),0);
-                else
-                    S=inv(Ym(bsb,:)'*Ym(bsb,:));
-                    [~,R]=qr(Ym(bsb,:),0);
-                end
-                if sum(isinf(S(:)))>0
-                    if coder.target('MATLAB')
-                        warning('FSDA:FSMmmd:NoFullRank',['Subset at step mm= ' num2str(mm) ' is not full rank matrix']);
+                    if n<30000
+                        MD=(mm-1)*sum((Ym*S).*Ym,2);
                     else
-                        disp('FSDA:FSMmmd:NoFullRank','Subset at step mm is not full rank matrix');
+                        MD=(mm-1)*sum(bsxfun(@times,mtimes(Ym,S),Ym),2);
                     end
-                    disp('FS loop will not be performed')
 
-                    mmd=NaN;
-                    Un=NaN;
-                    varargout={NaN};
-                    return
+                else
+                    % Initial step, or first full-rank step following a
+                    % singular subset: compute the inverse directly.
+                    if mm>percn
+                        Ymb=Ym(bsbT,:);
+                    else
+                        Ymb=Ym(bsb,:);
+                    end
+                    S=inv(Ymb'*Ymb);
+                    [~,R]=qr(Ymb,0);
+                    u=Ym/R;
+                    MD=(mm-1)*sum(u.^2,2);
                 end
-
-                u=(Ym/R);
-                % Compute squared Mahalanobis distances
-                MD=(mm-1)*sum(u.^2,2);
             end
-
         end
+
+        if NoRankProblem==false
+            if mm==ini0
+                if coder.target('MATLAB')
+                    warning('FSDA:FSMmmd:NoFullRank',...
+                        'The supplied initial subset does not produce a full rank covariance matrix');
+                else
+                    disp('FSDA:FSMmmd:NoFullRank','The supplied initial subset does not produce a full rank covariance matrix');
+                end
+                mmd=NaN;
+                Un=NaN;
+                varargout={NaN};
+                return
+            elseif bsbmfullrank==true
+                % Find the block of units which keeps the centered subset
+                % singular. Units outside the subset are considered in the
+                % order induced by the latest valid Mahalanobis distances.
+                bsbsing=seq;
+                if mm>percn
+                    bsbsing(1:mm)=seq(bsbT);
+                else
+                    bsbsing(1:mm)=bsb;
+                end
+                nsing=mm;
+
+                if hasMiss==false
+                    nclx=seq(~bsbT);
+                    [~,ordnclx]=sort(lastMD(nclx));
+                    nclx=nclx(ordnclx);
+                    Ybx=Y(bsbsing(1:nsing),:);
+                    for ix=1:length(nclx)
+                        Ybb=[Ybx;Y(nclx(ix),:)];
+                        ymbb=sum(Ybb,1)/size(Ybb,1);
+                        if rank(bsxfun(@minus,Ybb,ymbb))==v
+                            break
+                        else
+                            nsing=nsing+1;
+                            bsbsing(nsing)=nclx(ix);
+                            Ybx=Ybb;
+                        end
+                    end
+                end
+                bsbsing=bsbsing(1:nsing);
+
+                if msg==1
+                    if coder.target('MATLAB')
+                        warning('FSDA:FSMmmd:NoFullRank','Rank problem in step %d.',mm);
+                    else
+                        fprintf('FSDA:FSMmmd: rank problem in step %.0f.\n',mm);
+                    end
+                    disp('The following observations produce a singular centered subset matrix:')
+                    disp(bsbsing')
+                end
+                mmd=bsbsing;
+                Un=NaN;
+                varargout={NaN};
+                return
+            else
+                if msg==1
+                    fprintf('Centered subset matrix without full rank at step m=%.0f.\n',mm);
+                    disp('Location and covariance estimates from the previous full-rank step are used.')
+                end
+                ym=lastym;
+                S=lastS;
+                MD=lastMD;
+            end
+        else
+            % Update the stored estimates only after a valid fit.
+            lastym=ym;
+            lastMD=MD;
+            if hasMiss==false
+                lastS=S;
+            end
+        end
+        previousRankProblem=~NoRankProblem;
 
         if mm<n
 
-            % MDmod contains modified Mahalanobis distances. The
-            % Mahalanobis distance of the units belonging to subset are set
-            % to inf because we need to consider the minimum of the units
-            % outside subset
+            % minMDmonitor is the minimum distance outside the actual
+            % subset and is stored in mmd. It is not affected by eventual
+            % constraints on the order in which units may enter.
             MDmod=MD;
 
+            if mm>percn
+                MDmod(bsbT)=Inf;
+            else
+                MDmod(bsb)=Inf;
+            end
+            minMDmonitor=min(MDmod);
+
+            % MDsearch contains the distances used to construct the next
+            % subset. Constrained units cannot enter before the final
+            % length(constr) steps.
+            MDsearch=MD;
+            if ~isempty(constr) && mm<n-length(constr)
+                MDsearch(constr)=Inf;
+            end
+            MDmod=MDsearch;
             if mm>percn
                 MDmod(bsbT)=Inf;
             else
@@ -654,7 +744,7 @@ else
 
             % MDltminT = n x 1 Boolean vector which is true if corresponding MD is
             % smaller or equal minMD
-            MDltminT=MD<=minMD;
+            MDltminT=MDsearch<=minMD;
 
             % MDltminbsb = n x 1 Boolean vector (if m>percn) or
             % int32 vector containing the units which certainly remain inside subset
@@ -693,7 +783,7 @@ else
                 % MDmod is the vector of Mahalanobis distance which will have
                 % a Inf in correspondence of the units of old subset which
                 % had a MD smaller than minMD
-                MDmod=MD;
+                MDmod=MDsearch;
 
 
                 % Find bsbrini, i.e. the vector which will contain the
@@ -802,16 +892,16 @@ else
 
 
                 % New sorting based on quickselectFS
-                [ksor]=quickselectFS(MD,mm+1,minMDindex);
-                bsbT=MD<=ksor;
+                [ksor]=quickselectFS(MDsearch,mm+1,minMDindex);
+                bsbT=MDsearch<=ksor;
 
                 if sum(bsbT)==mm+1
                     if mm<=percn
                         bsb=seq(bsbT);
                     end
                 else
-                    bsbmin=seq(MD<ksor);
-                    bsbeq=seq(MD==ksor);
+                    bsbmin=seq(MDsearch<ksor);
+                    bsbeq=seq(MDsearch==ksor);
 
                     bsb=[bsbmin;bsbeq(1:mm+1-length(bsbmin))];
 
@@ -830,7 +920,7 @@ else
 
                 % mmd contains minimum of Mahalanobis distances among
                 % the units which are not in the subset at step m
-                mmd(mm-init1+1,2)=sqrt(minMD);
+                mmd(mm-init1+1,2)=sqrt(minMDmonitor);
             end
 
 
