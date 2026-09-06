@@ -2396,14 +2396,10 @@ elseif strcmpi(robustClass,'FS')
 
     if isempty(robustBonflev)
         % Standard FSM signal detection and envelope resuperimposition.
-        try
         outRob = FSM(Ycc, ...
             'init',h, ...
             'plots',0, ...
             'msg',false,'bsbmfullrank',false);
-        catch
-            dd=1;
-        end
     else
         % Direct Bonferroni-bound stopping rule.
         outRob = FSM(Ycc, ...
