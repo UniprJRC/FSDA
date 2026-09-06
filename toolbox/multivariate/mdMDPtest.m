@@ -206,8 +206,13 @@ function out = mdMDPtest(Y, varargin)
 %            adaptivepool=false, coupledtrim=false, one of the parameter-
 %            free mappings 'pri', 'expScale', 'zMap', 'chiMap' or 'betaMap',
 %            and Optimization Toolbox (linprog and fmincon) for the finite-
-%            support feasibility and minimum-KL programs. Projection
-%            diagnostics are returned in out.entropyProjection.
+%            support feasibility and minimum-KL programs. In the rare case
+%            where the exact finite-support target is feasible only on a
+%            proper convex-hull face, the minimum-KL projection is performed
+%            on the maximal feasible active support; only support points that
+%            are numerically forced to zero by the exact calibration system
+%            receive zero projected probability. Projection diagnostics are
+%            returned in out.entropyProjection.
 %            Example - 'bootstraptype','entropy','adaptivepool',false
 %            Data Types - char | string
 %
@@ -454,7 +459,9 @@ function out = mdMDPtest(Y, varargin)
 %                            ratio, effective sample size, L2 probability-ratio
 %                            change, relative entropy, an exact finite-support
 %                            relative-interior LP diagnostic, solver diagnostics,
-%                            patternDiagnostics and nPatterns. Empty unless
+%                            activeSupport diagnostics for the rare boundary
+%                            I-projection fallback, patternDiagnostics and
+%                            nPatterns. Empty unless
 %                            the entropy bootstrap is requested.
 %          out.dispresults = Value of input option dispresults.
 %          out.pvalueBoot  = 1 x 4 vector containing the backward-compatible
@@ -737,7 +744,9 @@ function out = mdMDPtest(Y, varargin)
 %  points and therefore preserves their angular and radius-direction structure.
 %  Its finite-sample calibration keeps robust/location/fraction restrictions
 %  exact, allows a shrinking tolerance for trace-free shape moments and jointly
-%  selects a nearby TEM cutoff to avoid artificial fixed-support infeasibility.
+%  selects a nearby TEM cutoff to avoid artificial fixed-support infeasibility;
+%  an exhaustive empirical-breakpoint search is used only if the local cutoff
+%  window contains no strictly interior exact calibration.
 %  It resamples missingness patterns independently from their empirical law,
 %  imposing MCAR exactly while reproducing pattern-frequency randomness. The
 %  robust complete-case fit, adaptive correction and final aggregation rule
@@ -2127,6 +2136,17 @@ if dispresults
                 fprintf('Observed TEM cutoff           : %.6g\n',ep.thresholdObserved);
                 fprintf('Projected TEM cutoff          : %.6g\n',ep.thresholdProjected);
                 fprintf('TEM cutoff shift              : %.6g\n',ep.thresholdShift);
+                if isfield(ep,'activeSupport') && ...
+                        isfield(ep.activeSupport,'boundaryFallbackUsed') && ...
+                        ep.activeSupport.boundaryFallbackUsed
+                    fprintf('Boundary active-face fallback : %d\n',1);
+                    fprintf('Active entropy support        : %d of %d\n', ...
+                        ep.activeSupport.activeSize,ep.activeSupport.originalSize);
+                    fprintf('Structurally forced zero mass : %d support points\n', ...
+                        ep.activeSupport.nForcedZero);
+                    fprintf('Active-face LP margin         : %.6g\n', ...
+                        ep.activeSupport.relativeInteriorMargin);
+                end
                 fprintf('Minimum shape relaxation      : %.6g\n',ep.minimumShapeRelaxation);
                 fprintf('Shape tolerance base          : %.6g\n',ep.shapeToleranceBase);
                 fprintf('Shape tolerance used          : %.6g\n',ep.shapeToleranceUsed);
@@ -5637,7 +5657,9 @@ function [gen,diagOut] = local_entropy_projection_setup(Y,maskMiss,completeIdx, 
 % shape identity exactly while retaining the population null conditions.  The
 % projected cutoff is chosen among nearby empirical breakpoints and the
 % observed TEM cutoff is preferred whenever it yields a strictly feasible
-% exact block with the nominal shrinking shape tolerance.
+% exact block with the nominal shrinking shape tolerance.  Only if the local
+% breakpoint search finds no strictly interior exact calibration does the
+% implementation examine the remaining empirical breakpoints exhaustively.
 
 [n,p] = size(Y);
 Ycc = Y(completeIdx,:);
@@ -5769,52 +5791,86 @@ athr = sel.athr;
 thresholdScore = sel.thresholdScore;
 h3 = sel.h3;
 
-% Prepare the exact and soft blocks.  Exact-block redundancy is assessed in
-% centered coordinates; trace-free shape columns are only RMS normalized.
-exactPrep = local_entropy_prepare_exact_block(Araw,qbase);
-shapePrep = local_entropy_prepare_shape_block(Braw,qbase);
+% Prepare the optimization support. The ordinary branch uses the complete
+% clean reference. In the rare boundary fallback, the exact calibration
+% target lies on a proper face of its empirical convex hull. Then optimize on
+% the maximal feasible active face and reinsert exact zeros afterwards. No
+% exact calibration equation is relaxed by this operation.
+boundaryFallbackUsed = isfield(sel,'boundaryFallbackUsed') && ...
+    sel.boundaryFallbackUsed;
+activeSupportMask = true(m,1);
+activeSupportInfo = struct('available',true,'feasible',true, ...
+    'originalSize',m,'activeSize',m,'nForcedZero',0,'activeFraction',1, ...
+    'activeMask',activeSupportMask,'forcedZeroIndices',[], ...
+    'maxProbabilityPerPoint',ones(m,1), ...
+    'supportTolerance',NaN,'relativeInteriorMargin',NaN, ...
+    'relativeInterior',struct(),'faceProbability',qbase, ...
+    'faceExactResidual',0,'faceMinProbabilityRatio',1, ...
+    'nCoordinateLPs',0,'coordinateLPFailures',0,'reason','');
+if boundaryFallbackUsed
+    activeSupportInfo = sel.activeSupport;
+    activeSupportMask = logical(activeSupportInfo.activeMask(:));
+    if numel(activeSupportMask)~=m || ~any(activeSupportMask)
+        error('FSDA:mdMDPtest:EntropyActiveSupportInvalid', ...
+            'The active-support boundary fallback returned an invalid support mask.');
+    end
+end
+
+qWork = qbase(activeSupportMask);
+qWork = qWork/sum(qWork);
+ArawWork = Araw(activeSupportMask,:);
+BrawWork = Braw(activeSupportMask,:);
+
+% Exact-block redundancy and trace-free shape scaling are recomputed on the
+% optimization support. For a boundary I-projection this is the maximal
+% feasible face; for the ordinary branch it is the full support.
+exactPrep = local_entropy_prepare_exact_block(ArawWork,qWork);
+shapePrep = local_entropy_prepare_shape_block(BrawWork,qWork);
 Ared = exactPrep.Hred;
 Bscaled = shapePrep.Hscaled;
 
-% Minimum shape relaxation at the selected cutoff.
-minRelax = local_entropy_min_shape_relaxation(Ared,Bscaled,qbase);
+% Minimum shape relaxation at the selected cutoff/support.
+minRelax = local_entropy_min_shape_relaxation(Ared,Bscaled,qWork);
 if ~minRelax.available || ~minRelax.feasible
     error('FSDA:mdMDPtest:EntropyRelaxationInfeasible', ...
-        ['The selected projected threshold has no feasible probability law ' ...
-        'even after allowing trace-free shape relaxation.']);
+        ['The selected projected threshold/support has no feasible probability ' ...
+        'law even after allowing trace-free shape relaxation.']);
 end
 shapeTol = max(shapeTolBase, ...
     minRelax.rhoStar*(1+1e-6)+1e-10);
 
-% Require a genuine finite-support interior point for the relaxed problem.
-% If the minimal tolerance leaves the solution on the boundary, increase it
-% only as much as needed to create a small positive interior margin.
-riRelaxed = local_entropy_relaxed_interior_lp(Ared,Bscaled,qbase,shapeTol);
+% Require a genuine relative-interior point on the optimization support. If
+% the minimal shape tolerance leaves the active problem on its boundary,
+% increase only the soft shape tolerance until a small positive margin exists.
+riRelaxed = local_entropy_relaxed_interior_lp(Ared,Bscaled,qWork,shapeTol);
 for jr = 1:20
     if riRelaxed.available && riRelaxed.strictInteriorFeasible
         break
     end
     shapeTol = max(shapeTol*1.25,shapeTol+1e-6);
-    riRelaxed = local_entropy_relaxed_interior_lp(Ared,Bscaled,qbase,shapeTol);
+    riRelaxed = local_entropy_relaxed_interior_lp(Ared,Bscaled,qWork,shapeTol);
 end
 if ~riRelaxed.available || ~riRelaxed.strictInteriorFeasible
     error('FSDA:mdMDPtest:EntropyRelaxedBoundary', ...
-        ['Unable to construct a strictly interior finite-support entropy ' ...
-        'problem after shape relaxation.']);
+        ['Unable to construct a strictly interior entropy problem on the ' ...
+        'selected optimization support after shape relaxation.']);
 end
-if ~isfield(riRelaxed,'polished') || ~riRelaxed.polished
+if (~isfield(riRelaxed,'polished') || ~riRelaxed.polished) && ...
+        (~isfield(riRelaxed,'positiveStartFallbackUsed') || ...
+        ~riRelaxed.positiveStartFallbackUsed)
     error('FSDA:mdMDPtest:EntropyInteriorPolishFailed', ...
         ['The maximum-margin phase-I LP certifies strict interiority, but ' ...
-        'the auxiliary polishing LP could not construct a numerically ' ...
-        'positive feasible starting probability. %s'],riRelaxed.polishReason);
+        'neither the auxiliary polishing LP nor the positive-start fallback ' ...
+        'could construct a usable KL starting probability. %s'], ...
+        riRelaxed.polishReason);
 end
 
-% Solve the actual KL projection with the exact and relaxed linear
-% restrictions.  The maximum-margin phase-I LP is followed by a second
-% feasibility LP at a fixed positive fraction of tStar, so the probability
-% supplied here is numerically inside the positive orthant.  The final KL
-% objective and all statistical calibration constraints are unchanged.
-[pdag,solver] = local_entropy_relaxed_kl(Ared,Bscaled,qbase,shapeTol, ...
+% Solve the KL projection on the optimization support. In a boundary case the
+% base law qWork is qbase conditioned on the maximal feasible face; this
+% changes KL only by an additive constant and therefore leaves the I-projection
+% minimizer unchanged. The full projected probability pdag below restores the
+% structurally forced zeros.
+[pWork,solver] = local_entropy_relaxed_kl(Ared,Bscaled,qWork,shapeTol, ...
     riRelaxed.probability);
 if ~solver.converged
     error('FSDA:mdMDPtest:EntropyProjectionFailed', ...
@@ -5822,9 +5878,12 @@ if ~solver.converged
         '%.6g; shape violation %.6g.'],solver.reason, ...
         solver.exactResidual,solver.shapeViolation);
 end
+pdag = zeros(m,1);
+pdag(activeSupportMask) = pWork;
 
 ratio = pdag./qbase;
-relativeEntropy = sum(pdag.*log(ratio));
+posProb = pdag>0;
+relativeEntropy = sum(pdag(posProb).*log(ratio(posProb)));
 l2Ratio = sqrt(sum(qbase.*(ratio-1).^2));
 ess = 1/sum(pdag.^2);
 
@@ -5834,14 +5893,14 @@ exactRawBefore = sum(Araw.*qbase,1);
 exactRawAfter = sum(Araw.*pdag,1);
 shapeRawBefore = sum(Braw.*qbase,1);
 shapeRawAfter = sum(Braw.*pdag,1);
-exactScaledBefore = exactPrep.Hscaled'*qbase;
-exactScaledAfter = exactPrep.Hscaled'*pdag;
+exactScaledBefore = exactPrep.Hscaled'*qWork;
+exactScaledAfter = exactPrep.Hscaled'*pWork;
 if isempty(Bscaled)
     shapeScaledBefore = zeros(0,1);
     shapeScaledAfter = zeros(0,1);
 else
-    shapeScaledBefore = Bscaled'*qbase;
-    shapeScaledAfter = Bscaled'*pdag;
+    shapeScaledBefore = Bscaled'*qWork;
+    shapeScaledAfter = Bscaled'*pWork;
 end
 maxExactScaledAfter = max([0;abs(exactScaledAfter)]);
 maxShapeScaledAfter = max([0;abs(shapeScaledAfter)]);
@@ -5895,16 +5954,28 @@ gen.nPatterns = G;
 diagOut = struct;
 diagOut.available = true;
 diagOut.reason = '';
-diagOut.supportPreserved = true;
+diagOut.supportPreserved = ~boundaryFallbackUsed;
+diagOut.supportLocationsUnchanged = true;
 diagOut.maskSampling = 'independent empirical pattern law';
 diagOut.adaptivepool = false;
 diagOut.method = method;
-diagOut.calibrationMode = ['exact robust/location/fraction; shrinking-tolerance ' ...
-    'trace-free shape; jointly selected TEM cutoff'];
-diagOut.theoryStatus = ['Finite-support entropy projection preserving the ' ...
-    'nonelliptical clean empirical support. Population shape isotropy remains ' ...
-    'the null condition, while its empirical trace-free coordinates are ' ...
-    'enforced within a shrinking normalized tolerance.'];
+if boundaryFallbackUsed
+    diagOut.calibrationMode = ['exact robust/location/fraction; shrinking-tolerance ' ...
+        'trace-free shape; jointly selected TEM cutoff; active-support boundary I-projection'];
+    diagOut.theoryStatus = ['Finite-support entropy projection on the maximal ' ...
+        'feasible face of the nonelliptical clean empirical law. Exact zero ' ...
+        'probabilities are assigned only to support points forced to zero by ' ...
+        'the exact calibration system. Population shape isotropy remains the ' ...
+        'null condition, with empirical trace-free coordinates enforced within ' ...
+        'a shrinking normalized tolerance on the active face.'];
+else
+    diagOut.calibrationMode = ['exact robust/location/fraction; shrinking-tolerance ' ...
+        'trace-free shape; jointly selected TEM cutoff'];
+    diagOut.theoryStatus = ['Finite-support entropy projection preserving the ' ...
+        'nonelliptical clean empirical support. Population shape isotropy remains ' ...
+        'the null condition, while its empirical trace-free coordinates are ' ...
+        'enforced within a shrinking normalized tolerance.'];
+end
 diagOut.referenceSource = refSource;
 diagOut.referenceRows = refRows;
 diagOut.nCompleteOriginal = ncc;
@@ -5920,6 +5991,10 @@ diagOut.baseWeights = qbase;
 diagOut.projectedWeights = pdag;
 diagOut.weightDiagnostics = table(refRows,qbase,pdag,ratio, ...
     'VariableNames',{'DataRow','BaseProbability','ProjectedProbability','ProbabilityRatio'});
+activeSupportInfo.boundaryFallbackUsed = boundaryFallbackUsed;
+activeSupportInfo.forcedZeroReferenceRows = refRows(~activeSupportMask);
+activeSupportInfo.activeReferenceRows = refRows(activeSupportMask);
+diagOut.activeSupport = activeSupportInfo;
 
 diagOut.nConstraintsRaw = size(Araw,2)+size(Braw,2);
 diagOut.nExactConstraintsRaw = size(Araw,2);
@@ -5967,6 +6042,7 @@ diagOut.relaxedRelativeInteriorLP = riRelaxed;
 
 diagOut.effectiveSampleSize = ess;
 diagOut.effectiveSampleFraction = ess/m;
+diagOut.effectiveSampleFractionActive = ess/sum(activeSupportMask);
 diagOut.relativeEntropy = relativeEntropy;
 diagOut.nTimesRelativeEntropy = n*relativeEntropy;
 diagOut.l2WeightRatioChange = l2Ratio;
@@ -5993,6 +6069,7 @@ diagOut.thresholdProjected = cthr;
 diagOut.thresholdShift = cthr-cthrObserved;
 diagOut.relativeThresholdShift = (cthr-cthrObserved)/max(1,abs(cthrObserved));
 diagOut.thresholdSearch = sel.searchDiagnostics;
+diagOut.boundaryFallbackUsed = boundaryFallbackUsed;
 diagOut.minimumShapeRelaxation = minRelax.rhoStar;
 diagOut.sqrtNTimesMinimumShapeRelaxation = sqrt(n)*minRelax.rhoStar;
 diagOut.shapeToleranceBase = shapeTolBase;
@@ -6025,14 +6102,20 @@ function sel = local_entropy_select_projected_threshold(c0,Ucell,qcell,pobs, ...
     piPattern,gamma,hC,qbase,p,n,method,shapeTolBase)
 %local_entropy_select_projected_threshold Select a nearby feasible c^dagger.
 %
-% Candidate cutoffs are the observed threshold and the nearest empirical
-% adjusted-radius breakpoints.  A candidate is admissible only when the exact
-% block (robust functional, retained location and retained fraction) has a
-% strictly interior feasible probability law.  Among nearby admissible
-% candidates, the observed threshold is preferred; otherwise the nearest
-% candidate whose minimum normalized shape relaxation does not exceed the
-% base shrinking tolerance is selected.  If none meets that target, the
-% candidate with the smallest required relaxation is used.
+% Candidate cutoffs are the observed threshold and empirical adjusted-radius
+% breakpoints. The nearest 301 states are examined first. A candidate is
+% ordinarily admissible only when the exact block (robust functional,
+% retained location and retained fraction) has a strictly interior feasible
+% probability law. If the local search contains no such candidate, the
+% remaining empirical states are examined exhaustively.
+%
+% Rare finite-support boundary fallback. If no empirical cutoff has strict
+% full-support interiority but one or more cutoffs are convex-hull feasible on
+% the boundary, the nearest such cutoff is examined on the maximal feasible
+% face of the exact calibration polytope. Points whose maximum attainable
+% probability is numerically zero under the exact constraints are removed
+% from the optimization support. The entropy projection is then carried out
+% on that active face. This does not relax the exact calibration equations.
 
 G = numel(Ucell);
 breaks = [];
@@ -6047,79 +6130,194 @@ if isempty(breaks)
         'No finite empirical cutoff breakpoints are available.');
 end
 
-% Search at most the 301 nearest empirical states.  This is deliberately
-% local: c^dagger is a finite-sample nuisance adjustment, not a second global
-% trimming optimization.
 allCandidates = unique([c0; breaks]);
-[~,ord] = sort(abs(allCandidates-c0),'ascend');
-maxCandidates = min(numel(ord),301);
-ord = ord(1:maxCandidates);
+[~,ordAll] = sort(abs(allCandidates-c0),'ascend');
+maxCandidates = min(numel(ordAll),301);
+ordLocal = ordAll(1:maxCandidates);
 
 best = [];
 bestRho = Inf;
 bestShift = Inf;
 nExactInterior = 0;
 nEvaluated = 0;
-for jj=1:numel(ord)
-    c = allCandidates(ord(jj));
+localCandidatesEvaluated = 0;
+exhaustiveCandidatesEvaluated = 0;
+exhaustiveFallbackUsed = false;
+boundaryCandidates = zeros(0,1);
+
+% Diagnostics for exact-block phase-I geometry.
+maxTStar = -Inf;
+cutoffAtMaxTStar = NaN;
+nConvexHullFeasible = 0;
+nSmallPositiveMargin = 0;
+nBoundary = 0;
+nOutsideConvexHull = 0;
+nLPUnresolved = 0;
+nBlockConstructionSkipped = 0;
+
+% ---------- local search ----------
+for jj=1:numel(ordLocal)
+    c = allCandidates(ordLocal(jj));
     nEvaluated = nEvaluated+1;
-    try
-        blk = local_entropy_blocks_at_threshold(c,Ucell,qcell,pobs, ...
-            piPattern,gamma,hC,qbase,p,n,method);
-        ex = local_entropy_prepare_exact_block(blk.Araw,qbase);
-    catch ME
-        expected = {'FSDA:mdMDPtest:EntropyInvalidCutoff', ...
-            'FSDA:mdMDPtest:EntropyNoRetainedSupport', ...
-            'FSDA:mdMDPtest:EntropyAffineInfeasible', ...
-            'FSDA:mdMDPtest:EntropyCalibrationSingular', ...
-            'FSDA:mdMDPtest:EntropyNoConstraints'};
-        if any(strcmp(ME.identifier,expected))
-            continue
-        end
-        rethrow(ME)
-    end
-    ri = local_entropy_relative_interior_lp(ex.Hred,qbase);
-    if ~ri.available || ~ri.strictInteriorFeasible
+    localCandidatesEvaluated = localCandidatesEvaluated+1;
+    ev = local_entropy_threshold_candidate(c,Ucell,qcell,pobs, ...
+        piPattern,gamma,hC,qbase,p,n,method);
+
+    [maxTStar,cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
+        nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
+        nBlockConstructionSkipped,boundaryCandidates] = ...
+        local_entropy_accumulate_threshold_diagnostics(ev,c,maxTStar, ...
+        cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
+        nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
+        nBlockConstructionSkipped,boundaryCandidates);
+
+    if ~strcmp(ev.status,'strict')
         continue
     end
-    nExactInterior = nExactInterior+1;
-    sh = local_entropy_prepare_shape_block(blk.Braw,qbase);
-    mr = local_entropy_min_shape_relaxation(ex.Hred,sh.Hscaled,qbase);
-    if ~mr.available || ~mr.feasible
-        continue
-    end
+
     shift = abs(c-c0);
-
-    candidate = blk;
-    candidate.exactPrep = ex;
-    candidate.shapePrep = sh;
-    candidate.exactInteriorLP = ri;
-    candidate.minRelax = mr;
+    candidate = ev.candidate;
     candidate.threshold = c;
+    candidate.boundaryFallbackUsed = false;
+    candidate.activeSupport = [];
 
-    % Preferred target: nearest cutoff requiring no more than the nominal
-    % shrinking shape tolerance. Because candidates are examined by distance,
-    % the first such candidate is the closest one.
-    if mr.rhoStar <= shapeTolBase+1e-12
+    if ev.minRelax.rhoStar <= shapeTolBase+1e-12
         best = candidate;
-        bestRho = mr.rhoStar;
+        bestRho = ev.minRelax.rhoStar;
         bestShift = shift;
         break
     end
-
-    % Fallback: smallest required relaxation, then smallest threshold shift.
-    if mr.rhoStar < bestRho-1e-12 || ...
-            (abs(mr.rhoStar-bestRho)<=1e-12 && shift<bestShift)
+    if ev.minRelax.rhoStar < bestRho-1e-12 || ...
+            (abs(ev.minRelax.rhoStar-bestRho)<=1e-12 && shift<bestShift)
         best = candidate;
-        bestRho = mr.rhoStar;
+        bestRho = ev.minRelax.rhoStar;
         bestShift = shift;
     end
 end
 
+% ---------- exhaustive full-support search ----------
+if isempty(best) && maxCandidates < numel(ordAll)
+    exhaustiveFallbackUsed = true;
+    ordRest = ordAll(maxCandidates+1:end);
+    for jj=1:numel(ordRest)
+        c = allCandidates(ordRest(jj));
+        nEvaluated = nEvaluated+1;
+        exhaustiveCandidatesEvaluated = exhaustiveCandidatesEvaluated+1;
+        ev = local_entropy_threshold_candidate(c,Ucell,qcell,pobs, ...
+            piPattern,gamma,hC,qbase,p,n,method);
+
+        [maxTStar,cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
+            nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
+            nBlockConstructionSkipped,boundaryCandidates] = ...
+            local_entropy_accumulate_threshold_diagnostics(ev,c,maxTStar, ...
+            cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
+            nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
+            nBlockConstructionSkipped,boundaryCandidates);
+
+        if ~strcmp(ev.status,'strict')
+            continue
+        end
+
+        shift = abs(c-c0);
+        candidate = ev.candidate;
+        candidate.threshold = c;
+        candidate.boundaryFallbackUsed = false;
+        candidate.activeSupport = [];
+
+        if ev.minRelax.rhoStar <= shapeTolBase+1e-12
+            best = candidate;
+            bestRho = ev.minRelax.rhoStar;
+            bestShift = shift;
+            break
+        end
+        if ev.minRelax.rhoStar < bestRho-1e-12 || ...
+                (abs(ev.minRelax.rhoStar-bestRho)<=1e-12 && shift<bestShift)
+            best = candidate;
+            bestRho = ev.minRelax.rhoStar;
+            bestShift = shift;
+        end
+    end
+end
+
+% ---------- rare active-support boundary fallback ----------
+boundaryFallbackUsed = false;
+boundaryFallbackCandidatesEvaluated = 0;
+boundaryFallbackFailures = 0;
+boundaryCutoff = NaN;
+if isempty(best) && ~isempty(boundaryCandidates)
+    % boundaryCandidates were collected in increasing distance from c0.
+    for jb=1:numel(boundaryCandidates)
+        c = boundaryCandidates(jb);
+        boundaryFallbackCandidatesEvaluated = ...
+            boundaryFallbackCandidatesEvaluated+1;
+        ev = local_entropy_threshold_candidate(c,Ucell,qcell,pobs, ...
+            piPattern,gamma,hC,qbase,p,n,method);
+        if ~strcmp(ev.status,'boundary')
+            boundaryFallbackFailures = boundaryFallbackFailures+1;
+            continue
+        end
+
+        activeInfo = local_entropy_active_support_from_exact( ...
+            ev.exactPrep.Hred,qbase);
+        if ~activeInfo.available || ~activeInfo.feasible || ...
+                activeInfo.nForcedZero<1
+            boundaryFallbackFailures = boundaryFallbackFailures+1;
+            continue
+        end
+
+        active = activeInfo.activeMask;
+        qActive = qbase(active);
+        qActive = qActive/sum(qActive);
+        try
+            exactActive = local_entropy_prepare_exact_block( ...
+                ev.block.Araw(active,:),qActive);
+            shapeActive = local_entropy_prepare_shape_block( ...
+                ev.block.Braw(active,:),qActive);
+            minRelaxActive = local_entropy_min_shape_relaxation( ...
+                exactActive.Hred,shapeActive.Hscaled,qActive);
+        catch
+            boundaryFallbackFailures = boundaryFallbackFailures+1;
+            continue
+        end
+        if ~minRelaxActive.available || ~minRelaxActive.feasible
+            boundaryFallbackFailures = boundaryFallbackFailures+1;
+            continue
+        end
+
+        candidate = ev.block;
+        candidate.threshold = c;
+        candidate.exactPrep = exactActive;
+        candidate.shapePrep = shapeActive;
+        candidate.exactInteriorLP = ev.relativeInterior;
+        candidate.minRelax = minRelaxActive;
+        candidate.boundaryFallbackUsed = true;
+        candidate.activeSupport = activeInfo;
+        best = candidate;
+        bestRho = minRelaxActive.rhoStar;
+        bestShift = abs(c-c0);
+        boundaryFallbackUsed = true;
+        boundaryCutoff = c;
+        break
+    end
+end
+
 if isempty(best)
+    if ~isfinite(maxTStar)
+        maxTStar = NaN;
+        cutoffAtMaxTStar = NaN;
+    end
     error('FSDA:mdMDPtest:EntropyThresholdProjectionInfeasible', ...
-        ['No nearby projected TEM cutoff gives a strictly interior exact ' ...
-        'robust/location/fraction calibration system.']);
+        ['No empirical projected TEM cutoff gives a usable exact ' ...
+        'robust/location/fraction calibration system after full-support ' ...
+        'and active-support searches. Phase-I diagnostics over %d examined ' ...
+        'states: max tStar %.12g at cutoff %.12g; convex-hull feasible %d; ' ...
+        'strict interior %d; positive margin <=1e-8 %d; boundary %d; ' ...
+        'outside convex hull %d; LP unresolved %d; block construction skipped %d; ' ...
+        'active-support candidates tried %d; active-support failures %d.'], ...
+        nEvaluated,maxTStar,cutoffAtMaxTStar,nConvexHullFeasible, ...
+        nExactInterior,nSmallPositiveMargin,nBoundary,nOutsideConvexHull, ...
+        nLPUnresolved,nBlockConstructionSkipped, ...
+        boundaryFallbackCandidatesEvaluated,boundaryFallbackFailures);
 end
 
 sel = best;
@@ -6132,8 +6330,286 @@ sel.searchDiagnostics = struct( ...
     'nCandidatesEvaluated',nEvaluated, ...
     'nExactInteriorCandidates',nExactInterior, ...
     'maxCandidates',maxCandidates, ...
+    'localCandidatesEvaluated',localCandidatesEvaluated, ...
+    'exhaustiveFallbackUsed',exhaustiveFallbackUsed, ...
+    'exhaustiveCandidatesEvaluated',exhaustiveCandidatesEvaluated, ...
+    'totalCandidatesExamined',nEvaluated, ...
+    'maxTStar',maxTStar, ...
+    'cutoffAtMaxTStar',cutoffAtMaxTStar, ...
+    'nConvexHullFeasible',nConvexHullFeasible, ...
+    'nStrictInterior',nExactInterior, ...
+    'nSmallPositiveMargin',nSmallPositiveMargin, ...
+    'nBoundary',nBoundary, ...
+    'nBoundaryFeasibleCandidates',numel(boundaryCandidates), ...
+    'nOutsideConvexHull',nOutsideConvexHull, ...
+    'nLPUnresolved',nLPUnresolved, ...
+    'nBlockConstructionSkipped',nBlockConstructionSkipped, ...
+    'interiorTolerance',1e-8, ...
+    'boundaryTolerance',100*eps, ...
+    'boundaryFallbackUsed',boundaryFallbackUsed, ...
+    'boundaryCutoff',boundaryCutoff, ...
+    'boundaryFallbackCandidatesEvaluated',boundaryFallbackCandidatesEvaluated, ...
+    'boundaryFallbackFailures',boundaryFallbackFailures, ...
     'baseShapeTolerance',shapeTolBase, ...
     'selectedMinimumShapeRelaxation',bestRho);
+end
+
+% -------------------------------------------------------------------------
+function ev = local_entropy_threshold_candidate(c,Ucell,qcell,pobs, ...
+    piPattern,gamma,hC,qbase,p,n,method)
+%local_entropy_threshold_candidate Evaluate one empirical cutoff state.
+
+ev = struct('status','skipped','block',[],'exactPrep',[], ...
+    'relativeInterior',[],'shapePrep',[],'minRelax',[],'candidate',[], ...
+    'reason','');
+try
+    blk = local_entropy_blocks_at_threshold(c,Ucell,qcell,pobs, ...
+        piPattern,gamma,hC,qbase,p,n,method);
+    ex = local_entropy_prepare_exact_block(blk.Araw,qbase);
+catch ME
+    expected = {'FSDA:mdMDPtest:EntropyInvalidCutoff', ...
+        'FSDA:mdMDPtest:EntropyNoRetainedSupport', ...
+        'FSDA:mdMDPtest:EntropyAffineInfeasible', ...
+        'FSDA:mdMDPtest:EntropyCalibrationSingular', ...
+        'FSDA:mdMDPtest:EntropyNoConstraints'};
+    if any(strcmp(ME.identifier,expected))
+        ev.reason = ME.message;
+        return
+    end
+    rethrow(ME)
+end
+
+ev.block = blk;
+ev.exactPrep = ex;
+ri = local_entropy_relative_interior_lp(ex.Hred,qbase);
+ev.relativeInterior = ri;
+if ~ri.available
+    ev.status = 'unresolved';
+    ev.reason = ri.reason;
+    return
+end
+if ~ri.convexHullFeasible
+    if strcmp(ri.classification,'outside convex hull')
+        ev.status = 'outside';
+    else
+        ev.status = 'unresolved';
+    end
+    ev.reason = ri.reason;
+    return
+end
+if ~ri.strictInteriorFeasible
+    if isfield(ri,'smallPositiveMargin') && ri.smallPositiveMargin
+        ev.status = 'smallpositive';
+    else
+        ev.status = 'boundary';
+    end
+    return
+end
+
+sh = local_entropy_prepare_shape_block(blk.Braw,qbase);
+mr = local_entropy_min_shape_relaxation(ex.Hred,sh.Hscaled,qbase);
+ev.shapePrep = sh;
+ev.minRelax = mr;
+if ~mr.available || ~mr.feasible
+    ev.status = 'unresolved';
+    ev.reason = mr.reason;
+    return
+end
+
+candidate = blk;
+candidate.exactPrep = ex;
+candidate.shapePrep = sh;
+candidate.exactInteriorLP = ri;
+candidate.minRelax = mr;
+ev.candidate = candidate;
+ev.status = 'strict';
+end
+
+% -------------------------------------------------------------------------
+function [maxTStar,cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
+    nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
+    nBlockConstructionSkipped,boundaryCandidates] = ...
+    local_entropy_accumulate_threshold_diagnostics(ev,c,maxTStar, ...
+    cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
+    nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
+    nBlockConstructionSkipped,boundaryCandidates)
+%local_entropy_accumulate_threshold_diagnostics Update cutoff-search counts.
+
+switch ev.status
+    case 'skipped'
+        nBlockConstructionSkipped = nBlockConstructionSkipped+1;
+        return
+    case 'unresolved'
+        nLPUnresolved = nLPUnresolved+1;
+        return
+    case 'outside'
+        nOutsideConvexHull = nOutsideConvexHull+1;
+        return
+end
+
+% strict, smallpositive and boundary are all convex-hull feasible.
+nConvexHullFeasible = nConvexHullFeasible+1;
+ri = ev.relativeInterior;
+if isstruct(ri) && isfield(ri,'tStar') && isfinite(ri.tStar) && ...
+        ri.tStar > maxTStar
+    maxTStar = ri.tStar;
+    cutoffAtMaxTStar = c;
+end
+
+switch ev.status
+    case 'strict'
+        nExactInterior = nExactInterior+1;
+    case 'smallpositive'
+        nSmallPositiveMargin = nSmallPositiveMargin+1;
+    case 'boundary'
+        nBoundary = nBoundary+1;
+        boundaryCandidates(end+1,1) = c; %#ok<AGROW>
+end
+end
+
+% -------------------------------------------------------------------------
+function info = local_entropy_active_support_from_exact(A,q)
+%local_entropy_active_support_from_exact Maximal numerical face of exact block.
+%
+% For each support point i, solve max p_i subject to the exact calibration
+% equations, unit mass and p>=0. A point is removed only when its maximum
+% attainable probability is numerically negligible. The numerical zero
+% threshold is increased only if needed, over 1e-10, 1e-9 and 1e-8, and the
+% smallest threshold yielding a certified strict relative interior on the
+% remaining face is retained.
+
+[m,~] = size(A);
+q = q(:);
+q = q/sum(q);
+info = struct('available',false,'feasible',false,'reason','', ...
+    'originalSize',m,'activeSize',NaN,'nForcedZero',NaN, ...
+    'activeFraction',NaN,'activeMask',false(m,1), ...
+    'forcedZeroIndices',[],'maxProbabilityPerPoint',NaN(m,1), ...
+    'supportTolerance',NaN,'supportToleranceSequence',[1e-10 1e-9 1e-8], ...
+    'relativeInteriorMargin',NaN,'relativeInterior',struct(), ...
+    'faceProbability',[],'faceExactResidual',NaN, ...
+    'faceMinProbabilityRatio',NaN,'nCoordinateLPs',0, ...
+    'coordinateLPFailures',0,'facePolishExitflag',NaN);
+
+if numel(q)~=m || any(~isfinite(q)) || any(q<=0) || any(~isfinite(A(:)))
+    info.reason = 'Invalid exact calibration matrix or base probabilities.';
+    return
+end
+if exist('linprog','file')==0
+    info.reason = 'linprog unavailable';
+    return
+end
+
+Aeq = [ones(1,m); A'];
+beq = [1; zeros(size(A,2),1)];
+lb = zeros(m,1);
+ub = ones(m,1);
+try
+    opts = optimoptions('linprog','Display','none', ...
+        'ConstraintTolerance',1e-10);
+catch
+    opts = optimoptions('linprog','Display','none');
+end
+
+maxProb = NaN(m,1);
+for i=1:m
+    f = zeros(m,1);
+    f(i) = -1;
+    info.nCoordinateLPs = info.nCoordinateLPs+1;
+    try
+        [x,~,ef,out] = linprog(f,[],[],Aeq,beq,lb,ub,opts);
+    catch ME
+        info.coordinateLPFailures = info.coordinateLPFailures+1;
+        info.reason = sprintf('Coordinate support LP %d failed: %s',i,ME.message);
+        return
+    end
+    if ef<=0 || numel(x)~=m || any(~isfinite(x))
+        info.coordinateLPFailures = info.coordinateLPFailures+1;
+        if isstruct(out) && isfield(out,'message')
+            info.reason = sprintf('Coordinate support LP %d unresolved: %s',i,out.message);
+        else
+            info.reason = sprintf('Coordinate support LP %d unresolved.',i);
+        end
+        return
+    end
+    maxProb(i) = max(0,min(1,x(i)));
+end
+info.maxProbabilityPerPoint = maxProb;
+
+% Use the smallest numerical-zero threshold that exposes a strict interior on
+% the remaining feasible face. This guards against solver-level positive
+% leakage into coordinates that are geometrically forced to zero.
+tolSeq = info.supportToleranceSequence;
+chosen = false;
+for jt=1:numel(tolSeq)
+    supportTol = tolSeq(jt);
+    active = maxProb > supportTol;
+    if all(active) || ~any(active)
+        continue
+    end
+
+    qActive = q(active);
+    qActive = qActive/sum(qActive);
+    riActive = local_entropy_relative_interior_lp(A(active,:),qActive);
+    if ~riActive.available || ~riActive.convexHullFeasible || ...
+            ~riActive.strictInteriorFeasible
+        continue
+    end
+
+    % Construct an exact, strictly positive point on the active face using a
+    % lower bound below the certified maximum relative-interior margin.
+    AeqA = [ones(1,sum(active)); A(active,:)'];
+    beqA = [1; zeros(size(A,2),1)];
+    lbA = 0.5*riActive.tStar*qActive;
+    ubA = ones(sum(active),1);
+    try
+        [pActive,~,efA,outA] = linprog(zeros(sum(active),1),[],[], ...
+            AeqA,beqA,lbA,ubA,opts);
+    catch ME
+        efA = NaN;
+        pActive = [];
+        outA = struct('message',ME.message);
+    end
+    info.facePolishExitflag = efA;
+    if efA<=0 || numel(pActive)~=sum(active) || any(~isfinite(pActive))
+        if isstruct(outA) && isfield(outA,'message')
+            info.reason = ['Active-face polishing LP failed: ' outA.message];
+        end
+        continue
+    end
+
+    pFace = zeros(m,1);
+    pFace(active) = pActive;
+    faceRes = norm(Aeq*pFace-beq,inf);
+    minRatio = min(pActive./qActive);
+    if faceRes>1e-8 || ~isfinite(minRatio) || minRatio<=0
+        continue
+    end
+
+    chosen = true;
+    break
+end
+
+if ~chosen
+    info.reason = ['The boundary-feasible exact system did not yield a ' ...
+        'numerically certified active face under the support-zero tolerances.'];
+    return
+end
+
+info.available = true;
+info.feasible = true;
+info.activeMask = active;
+info.forcedZeroIndices = find(~active);
+info.activeSize = sum(active);
+info.nForcedZero = sum(~active);
+info.activeFraction = info.activeSize/m;
+info.supportTolerance = supportTol;
+info.relativeInterior = riActive;
+info.relativeInteriorMargin = riActive.tStar;
+info.faceProbability = pFace;
+info.faceExactResidual = faceRes;
+info.faceMinProbabilityRatio = minRatio;
+info.reason = '';
 end
 
 % -------------------------------------------------------------------------
@@ -6317,7 +6793,9 @@ info=struct('available',false,'reason','','exitflag',NaN,'tStar',NaN, ...
     'rawEqualityResidual',NaN,'rawShapeViolation',NaN, ...
     'rawMinProbabilityRatio',NaN,'polished',false, ...
     'polishedMarginTarget',NaN,'polishedMargin',NaN, ...
-    'polishAttempts',0,'polishExitflag',NaN,'polishReason','');
+    'polishAttempts',0,'polishExitflag',NaN,'polishReason','', ...
+    'positiveStartFallbackUsed',false,'fallbackExactResidual',NaN, ...
+    'fallbackShapeViolation',NaN,'fallbackMinProbabilityRatio',NaN);
 
 % Phase I: maximize the relative-interior margin.
 f=[zeros(m,1);-1];
@@ -6375,6 +6853,8 @@ if ef>0 && numel(x)==m+1 && all(isfinite(x))
         ubP=ones(m,1);
         polishTol=1e-7;
         lastPolishReason='';
+        bestStartCandidate=[];
+        bestStartMinRatio=-Inf;
 
         for jp=1:numel(polishFactors)
             tPolish=info.tStar*polishFactors(jp);
@@ -6398,6 +6878,10 @@ if ef>0 && numel(x)==m+1 && all(isfinite(x))
                     shapeP=0;
                 end
                 minRatioP=min(pPolish./q);
+                if isfinite(minRatioP) && minRatioP>bestStartMinRatio
+                    bestStartCandidate=pPolish;
+                    bestStartMinRatio=minRatioP;
+                end
 
                 % The lower-bound target is deliberately separated from the
                 % acceptance threshold.  A small numerical bound violation is
@@ -6433,11 +6917,64 @@ if ef>0 && numel(x)==m+1 && all(isfinite(x))
         end
 
         if ~info.polished
-            info.classification='strict relative interior; numerical polishing failed';
-            info.polishReason=lastPolishReason;
-            info.reason=['The maximum-margin LP certifies strict interiority, ' ...
-                'but a numerically positive feasible starting probability ' ...
-                'could not be reconstructed. ' lastPolishReason];
+            % The phase-I LP has already certified strict interiority. Some
+            % linprog versions can nevertheless return the auxiliary LP point
+            % with tiny negative coordinates at their feasibility tolerance.
+            % Construct a strictly positive vector only for fmincon
+            % initialization. This fallback is not claimed to satisfy the
+            % calibration equations exactly; fmincon may start slightly
+            % infeasible and the final KL solution is checked against all
+            % exact and shape restrictions before it is accepted.
+            if isempty(bestStartCandidate)
+                pFallback=pp;
+            else
+                pFallback=bestStartCandidate;
+            end
+            etaStart=100*eps;
+            pFallback=max(pFallback,etaStart*q);
+            massFallback=sum(pFallback);
+            if isfinite(massFallback) && massFallback>0 && ...
+                    all(isfinite(pFallback))
+                pFallback=pFallback/massFallback;
+                eqFallback=norm(AeqP*pFallback-beqP,inf);
+                if dB>0
+                    shapeFallback=max([0;abs(B'*pFallback)-shapeTol]);
+                else
+                    shapeFallback=0;
+                end
+                minRatioFallback=min(pFallback./q);
+                if isfinite(minRatioFallback) && minRatioFallback>0
+                    info.probability=pFallback;
+                    info.equalityResidual=eqFallback;
+                    info.shapeViolation=shapeFallback;
+                    info.minProbabilityRatio=minRatioFallback;
+                    info.positiveStartFallbackUsed=true;
+                    info.fallbackExactResidual=eqFallback;
+                    info.fallbackShapeViolation=shapeFallback;
+                    info.fallbackMinProbabilityRatio=minRatioFallback;
+                    info.classification=['strict relative interior; ' ...
+                        'positive numerical start fallback'];
+                    info.polishReason=lastPolishReason;
+                    info.reason=['The maximum-margin LP certifies strict ' ...
+                        'interiority. The auxiliary polishing LP did not ' ...
+                        'return a strictly positive feasible point, so a ' ...
+                        'positive-only fmincon starting vector was constructed.'];
+                else
+                    info.classification=['strict relative interior; numerical ' ...
+                        'positive-start construction failed'];
+                    info.polishReason=lastPolishReason;
+                    info.reason=['The maximum-margin LP certifies strict ' ...
+                        'interiority, but a positive numerical KL starting ' ...
+                        'probability could not be constructed. ' lastPolishReason];
+                end
+            else
+                info.classification=['strict relative interior; numerical ' ...
+                    'positive-start construction failed'];
+                info.polishReason=lastPolishReason;
+                info.reason=['The maximum-margin LP certifies strict ' ...
+                    'interiority, but a positive numerical KL starting ' ...
+                    'probability could not be constructed. ' lastPolishReason];
+            end
         end
     else
         info.boundary=true;
@@ -6518,17 +7055,19 @@ end
 startMinProbability=min(pstart);
 startMinProbabilityRatio=min(pstart./q);
 
-% Strict positivity is the genuine interior requirement.  Do not reject a
-% phase-I point merely because it lies below the artificial lower bound used
-% internally by fmincon.  Instead choose that numerical lower bound below the
-% certified starting probability.  A genuinely nonpositive or materially
-% infeasible phase-I point is still rejected.
+% Strict positivity is the only requirement imposed on the initial point.
+% The phase-I program has already certified that the constrained problem has
+% a strict relative interior, but the positive-start fallback may be slightly
+% infeasible after flooring tiny negative LP coordinates. fmincon's
+% interior-point algorithm can start from such a point. Exact and shape
+% feasibility are therefore recorded here as diagnostics and enforced on the
+% final KL solution rather than used to reject the initialization.
+startNumericallyFeasible = startExactResidual<=startFeasibilityTol && ...
+    startShapeViolation<=startFeasibilityTol;
 if startMinProbability<=0 || ~isfinite(startMinProbabilityRatio) || ...
-        startMinProbabilityRatio<=0 || ...
-        startExactResidual>startFeasibilityTol || ...
-        startShapeViolation>startFeasibilityTol
+        startMinProbabilityRatio<=0
     error('FSDA:mdMDPtest:EntropyInvalidFeasibleStart', ...
-        ['The phase-I entropy starting probability is not numerically feasible. ' ...
+        ['The entropy KL starting probability is not strictly positive. ' ...
         'Exact residual %.6g; shape violation %.6g; min(p/q) %.6g; ' ...
         'raw mass error %.6g.'], ...
         startExactResidual,startShapeViolation,startMinProbabilityRatio, ...
@@ -6569,6 +7108,7 @@ catch ME
         'startMassErrorBeforeNormalization',abs(startMassBefore-1), ...
         'startExactResidual',startExactResidual, ...
         'startShapeViolation',startShapeViolation, ...
+        'startNumericallyFeasible',startNumericallyFeasible, ...
         'startMinProbability',startMinProbability, ...
         'startMinProbabilityRatio',startMinProbabilityRatio, ...
         'kktAcceptanceTolerance',acceptKKT, ...
@@ -6667,6 +7207,7 @@ info=struct('converged',converged,'reason',reason,'iterations',it, ...
     'startMassErrorBeforeNormalization',abs(startMassBefore-1), ...
     'startExactResidual',startExactResidual, ...
     'startShapeViolation',startShapeViolation, ...
+    'startNumericallyFeasible',startNumericallyFeasible, ...
     'startMinProbability',startMinProbability, ...
     'startMinProbabilityRatio',startMinProbabilityRatio, ...
     'kktAcceptanceTolerance',acceptKKT, ...
@@ -6890,17 +7431,20 @@ function info = local_entropy_relative_interior_lp(H,q)
 %              p_i >= t q_i,  p_i >= 0,  t >= 0.
 %
 % Because every q_i is strictly positive, tStar>0 if and only if the zero
-% target belongs to the relative interior of conv{H_i}.  tStar=0 identifies
-% a convex-hull boundary solution, while LP infeasibility places zero outside
-% the convex hull.  This routine is diagnostic only and never changes the
-% entropy projection itself.
+% target belongs to the relative interior of conv{H_i}.  Numerically, values
+% above 1e-8 are certified as strict interior; positive values between
+% 100*eps and 1e-8 are reported separately as small positive margins; values
+% at or below 100*eps are treated as numerical boundary solutions. LP
+% infeasibility places zero outside the convex hull. This routine is
+% diagnostic only and never changes the entropy projection itself.
 
 [m,d] = size(H);
 q = q(:);
 info = struct('available',false,'reason','', 'exitflag',NaN, ...
     'tStar',NaN,'classification','unavailable', ...
     'convexHullFeasible',false,'strictInteriorFeasible',false, ...
-    'boundary',false,'interiorTolerance',1e-8, ...
+    'smallPositiveMargin',false,'boundary',false, ...
+    'interiorTolerance',1e-8,'boundaryTolerance',100*eps, ...
     'equalityResidual',NaN,'inequalityViolation',NaN, ...
     'minProbability',NaN,'minProbabilityRatio',NaN, ...
     'iterations',NaN,'algorithm','');
@@ -6961,12 +7505,22 @@ if exitflag > 0 && numel(x)==m+1 && all(isfinite(x))
     info.minProbabilityRatio = min(pLP./q);
     if tStar > info.interiorTolerance
         info.strictInteriorFeasible = true;
+        info.smallPositiveMargin = false;
         info.boundary = false;
         info.classification = 'strict relative interior';
+    elseif tStar > info.boundaryTolerance
+        info.strictInteriorFeasible = false;
+        info.smallPositiveMargin = true;
+        % Preserve boundary=true for backward-compatible interpretation of
+        % any feasible but non-certified phase-I solution, while the new
+        % smallPositiveMargin flag distinguishes it from an actual zero margin.
+        info.boundary = true;
+        info.classification = 'feasible with positive margin below interior tolerance';
     else
         info.strictInteriorFeasible = false;
+        info.smallPositiveMargin = false;
         info.boundary = true;
-        info.classification = 'convex-hull boundary or near-boundary';
+        info.classification = 'convex-hull boundary';
     end
     info.reason = '';
 elseif exitflag == -2
