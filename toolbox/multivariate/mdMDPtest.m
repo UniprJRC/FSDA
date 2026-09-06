@@ -5806,11 +5806,18 @@ if ~riRelaxed.available || ~riRelaxed.strictInteriorFeasible
         ['Unable to construct a strictly interior finite-support entropy ' ...
         'problem after shape relaxation.']);
 end
+if ~isfield(riRelaxed,'polished') || ~riRelaxed.polished
+    error('FSDA:mdMDPtest:EntropyInteriorPolishFailed', ...
+        ['The maximum-margin phase-I LP certifies strict interiority, but ' ...
+        'the auxiliary polishing LP could not construct a numerically ' ...
+        'positive feasible starting probability. %s'],riRelaxed.polishReason);
+end
 
 % Solve the actual KL projection with the exact and relaxed linear
-% restrictions.  The phase-I LP solution is a strictly feasible starting
-% point and the final KL objective is unchanged from ordinary entropy
-% projection.
+% restrictions.  The maximum-margin phase-I LP is followed by a second
+% feasibility LP at a fixed positive fraction of tStar, so the probability
+% supplied here is numerically inside the positive orthant.  The final KL
+% objective and all statistical calibration constraints are unchanged.
 [pdag,solver] = local_entropy_relaxed_kl(Ared,Bscaled,qbase,shapeTol, ...
     riRelaxed.probability);
 if ~solver.converged
@@ -6292,14 +6299,31 @@ end
 function info = local_entropy_relaxed_interior_lp(A,B,q,shapeTol)
 %local_entropy_relaxed_interior_lp Strict-interior certificate with soft shape.
 %
-% max t subject to exact block, |E_p(B)|<=shapeTol and p_i>=t q_i.
+% The first LP maximizes the relative-interior margin t:
+%
+%   max t  subject to exact block, |E_p(B)|<=shapeTol, p_i>=t q_i.
+%
+% Its optimal value tStar is the geometric finite-support certificate.  The
+% raw maximizing solution can nevertheless contain numerically zero weights
+% because linprog enforces the inequalities only to its feasibility tolerance.
+% Therefore, whenever tStar is strictly positive, a second feasibility LP is
+% solved with t fixed below tStar and p_i>=tPolish*q_i imposed directly as
+% lower bounds.  This polished probability is used only as the starting point
+% for the KL minimization; it does not change the entropy constraints or the
+% value tStar used for the relative-interior diagnostic.
 
 [m,~]=size(A); dB=size(B,2); q=q(:); q=q/sum(q);
 info=struct('available',false,'reason','','exitflag',NaN,'tStar',NaN, ...
     'classification','unavailable','convexHullFeasible',false, ...
     'strictInteriorFeasible',false,'boundary',false, ...
-    'interiorTolerance',1e-8,'probability',[], ...
-    'equalityResidual',NaN,'shapeViolation',NaN,'minProbabilityRatio',NaN);
+    'interiorTolerance',1e-8,'probability',[],'probabilityRaw',[], ...
+    'equalityResidual',NaN,'shapeViolation',NaN,'minProbabilityRatio',NaN, ...
+    'rawEqualityResidual',NaN,'rawShapeViolation',NaN, ...
+    'rawMinProbabilityRatio',NaN,'polished',false, ...
+    'polishedMarginTarget',NaN,'polishedMargin',NaN, ...
+    'polishAttempts',0,'polishExitflag',NaN,'polishReason','');
+
+% Phase I: maximize the relative-interior margin.
 f=[zeros(m,1);-1];
 Aineq=[-eye(m) q]; bineq=zeros(m,1);
 if dB>0
@@ -6317,19 +6341,111 @@ catch ME
 end
 info.available=true; info.exitflag=ef;
 if ef>0 && numel(x)==m+1 && all(isfinite(x))
-    pp=x(1:m); info.probability=pp; info.tStar=max(0,min(1,x(end)));
+    pp=x(1:m);
+    info.probabilityRaw=pp;
+    info.probability=pp;
+    info.tStar=max(0,min(1,x(end)));
     info.convexHullFeasible=true;
-    info.equalityResidual=norm(Aeq*x-beq,inf);
+    info.rawEqualityResidual=norm(Aeq*x-beq,inf);
     if dB>0
-        info.shapeViolation=max([0;abs(B'*pp)-shapeTol]);
+        info.rawShapeViolation=max([0;abs(B'*pp)-shapeTol]);
     else
-        info.shapeViolation=0;
+        info.rawShapeViolation=0;
     end
-    info.minProbabilityRatio=min(pp./q);
+    info.rawMinProbabilityRatio=min(pp./q);
+    info.equalityResidual=info.rawEqualityResidual;
+    info.shapeViolation=info.rawShapeViolation;
+    info.minProbabilityRatio=info.rawMinProbabilityRatio;
+
     if info.tStar>info.interiorTolerance
-        info.strictInteriorFeasible=true; info.classification='strict relative interior';
+        info.strictInteriorFeasible=true;
+        info.classification='strict relative interior';
+
+        % Phase II: construct a numerically interior feasible probability.
+        % Start at half the certified maximum margin.  If the auxiliary LP
+        % encounters a numerical difficulty, progressively reduce the target
+        % margin while keeping it strictly positive.
+        polishFactors=0.5.^(1:8);
+        AeqP=[ones(1,m);A'];
+        beqP=[1;zeros(size(A,2),1)];
+        if dB>0
+            AineqP=[B';-B'];
+            bineqP=shapeTol*ones(2*dB,1);
+        else
+            AineqP=[];
+            bineqP=[];
+        end
+        fP=zeros(m,1);
+        ubP=ones(m,1);
+        polishTol=1e-7;
+        lastPolishReason='';
+
+        for jp=1:numel(polishFactors)
+            tPolish=info.tStar*polishFactors(jp);
+            lbP=tPolish*q;
+            info.polishAttempts=jp;
+            try
+                [pPolish,~,efP,outP]=linprog(fP,AineqP,bineqP, ...
+                    AeqP,beqP,lbP,ubP,opts);
+            catch ME
+                efP=NaN;
+                pPolish=[];
+                outP=struct('message',ME.message);
+            end
+            info.polishExitflag=efP;
+
+            if efP>0 && numel(pPolish)==m && all(isfinite(pPolish))
+                eqP=norm(AeqP*pPolish-beqP,inf);
+                if dB>0
+                    shapeP=max([0;abs(B'*pPolish)-shapeTol]);
+                else
+                    shapeP=0;
+                end
+                minRatioP=min(pPolish./q);
+
+                % The lower-bound target is deliberately separated from the
+                % acceptance threshold.  A small numerical bound violation is
+                % harmless, but the returned vector must remain numerically strictly
+                % positive and satisfy the calibration equations.
+                minAccept=100*eps;
+                if eqP<=polishTol && shapeP<=polishTol && ...
+                        isfinite(minRatioP) && minRatioP>=minAccept
+                    info.probability=pPolish;
+                    info.equalityResidual=eqP;
+                    info.shapeViolation=shapeP;
+                    info.minProbabilityRatio=minRatioP;
+                    info.polished=true;
+                    info.polishedMarginTarget=tPolish;
+                    info.polishedMargin=minRatioP;
+                    info.polishReason='';
+                    info.strictInteriorFeasible=true;
+                    info.classification='strict relative interior';
+                    break
+                else
+                    lastPolishReason=sprintf([ ...
+                        'Polished LP residuals: exact %.6g, shape %.6g, ' ...
+                        'min(p/q) %.6g, target %.6g.'], ...
+                        eqP,shapeP,minRatioP,tPolish);
+                end
+            else
+                if isstruct(outP) && isfield(outP,'message')
+                    lastPolishReason=outP.message;
+                else
+                    lastPolishReason='The polishing LP did not return a finite solution.';
+                end
+            end
+        end
+
+        if ~info.polished
+            info.classification='strict relative interior; numerical polishing failed';
+            info.polishReason=lastPolishReason;
+            info.reason=['The maximum-margin LP certifies strict interiority, ' ...
+                'but a numerically positive feasible starting probability ' ...
+                'could not be reconstructed. ' lastPolishReason];
+        end
     else
-        info.boundary=true; info.classification='relaxed convex-hull boundary';
+        info.boundary=true;
+        info.classification='relaxed convex-hull boundary';
     end
 elseif ef==-2
     info.classification='outside relaxed convex hull'; info.reason='LP infeasible';
@@ -6362,25 +6478,72 @@ if dB>0
 else
     Aineq=[]; bineq=[];
 end
-lb=max(realmin('double')*ones(m,1),1e-14*q);
 ub=ones(m,1);
-pstart=p0(:);
-if numel(pstart)~=m || any(~isfinite(pstart)) || any(pstart<lb) || ...
-        abs(sum(pstart)-1)>1e-8
-    error('FSDA:mdMDPtest:EntropyInvalidFeasibleStart', ...
-        'The phase-I entropy starting probability is not strictly feasible.');
-end
 
 % Numerical tolerances.  The calibration restrictions are kept more
 % stringent than the optimization stopping criterion because first-order
 % statistical validity depends on the former, not on driving the KL objective
-% to machine precision.
+% to machine precision.  The phase-I LP and fmincon use different numerical
+% feasibility tolerances, so the LP probability is validated through the
+% actual calibration residuals rather than by requiring its raw output to
+% satisfy an arbitrary probability lower bound to machine precision.
 constraintTol = 1e-10;
 feasibilityTol = 1e-9;
+startFeasibilityTol = 1e-7;
 optimalityTol = 1e-8;
 acceptKKT = 1e-7;
 maxIterInitial = 1000;
 maxIterRestart = 3000;
+
+% The phase-I LP already certifies a strict relative-interior solution.
+% linprog can nevertheless return a probability vector whose total mass
+% differs from one by a few numerical ulps (or slightly more at small n).
+% Normalize that vector before passing it to fmincon.  The homogeneous
+% moment equalities A'*p=0 are invariant to this normalization; the shape
+% inequalities are checked again explicitly below.
+pstart=p0(:);
+if numel(pstart)~=m || any(~isfinite(pstart))
+    error('FSDA:mdMDPtest:EntropyInvalidFeasibleStart', ...
+        'The phase-I entropy starting probability is invalid or has the wrong length.');
+end
+startMassBefore=sum(pstart);
+if ~isfinite(startMassBefore) || startMassBefore<=0
+    error('FSDA:mdMDPtest:EntropyInvalidFeasibleStart', ...
+        'The phase-I entropy starting probability has invalid total mass.');
+end
+pstart=pstart/startMassBefore;
+
+startExactResidual=norm(Aeq*pstart-beq,inf);
+if dB>0
+    startShapeViolation=max([0;abs(B'*pstart)-shapeTol]);
+else
+    startShapeViolation=0;
+end
+startMinProbability=min(pstart);
+startMinProbabilityRatio=min(pstart./q);
+
+% Strict positivity is the genuine interior requirement.  Do not reject a
+% phase-I point merely because it lies below the artificial lower bound used
+% internally by fmincon.  Instead choose that numerical lower bound below the
+% certified starting probability.  A genuinely nonpositive or materially
+% infeasible phase-I point is still rejected.
+if startMinProbability<=0 || ~isfinite(startMinProbabilityRatio) || ...
+        startMinProbabilityRatio<=0 || ...
+        startExactResidual>startFeasibilityTol || ...
+        startShapeViolation>startFeasibilityTol
+    error('FSDA:mdMDPtest:EntropyInvalidFeasibleStart', ...
+        ['The phase-I entropy starting probability is not numerically feasible. ' ...
+        'Exact residual %.6g; shape violation %.6g; min(p/q) %.6g; ' ...
+        'raw mass error %.6g.'], ...
+        startExactResidual,startShapeViolation,startMinProbabilityRatio, ...
+        abs(startMassBefore-1));
+end
+
+% The lower bound is only a numerical device to keep the KL objective and
+% Hessian away from zero.  Place it strictly below the supplied interior
+% point instead of using it as a second, unrelated feasibility criterion.
+lb=max(realmin('double')*ones(m,1), ...
+    min(1e-14*q,0.5*pstart));
 
 obj=@(pp)local_entropy_kl_objective(pp,q);
 hess=@(pp,lambda)local_entropy_kl_hessian(pp,lambda); %#ok<NASGU>
@@ -6404,7 +6567,15 @@ catch ME
         'exitflag',NaN,'initialExitflag',NaN,'restartCount',0, ...
         'firstOrderOptimality',NaN,'initialFirstOrderOptimality',NaN, ...
         'acceptedByKKT',false,'feasible',false, ...
-        'feasibilityTolerance',feasibilityTol,'kktAcceptanceTolerance',acceptKKT, ...
+        'feasibilityTolerance',feasibilityTol, ...
+        'startFeasibilityTolerance',startFeasibilityTol, ...
+        'startMassBeforeNormalization',startMassBefore, ...
+        'startMassErrorBeforeNormalization',abs(startMassBefore-1), ...
+        'startExactResidual',startExactResidual, ...
+        'startShapeViolation',startShapeViolation, ...
+        'startMinProbability',startMinProbability, ...
+        'startMinProbabilityRatio',startMinProbabilityRatio, ...
+        'kktAcceptanceTolerance',acceptKKT, ...
         'optimalityTolerance',optimalityTol,'constraintTolerance',constraintTol, ...
         'usedExactKLHessian',true);
     return
@@ -6494,7 +6665,15 @@ info=struct('converged',converged,'reason',reason,'iterations',it, ...
     'exitflag',ef,'initialExitflag',initialEf,'restartCount',restartCount, ...
     'firstOrderOptimality',fo,'initialFirstOrderOptimality',initialFo, ...
     'acceptedByKKT',acceptedByKKT,'feasible',feasible, ...
-    'feasibilityTolerance',feasibilityTol,'kktAcceptanceTolerance',acceptKKT, ...
+    'feasibilityTolerance',feasibilityTol, ...
+    'startFeasibilityTolerance',startFeasibilityTol, ...
+    'startMassBeforeNormalization',startMassBefore, ...
+    'startMassErrorBeforeNormalization',abs(startMassBefore-1), ...
+    'startExactResidual',startExactResidual, ...
+    'startShapeViolation',startShapeViolation, ...
+    'startMinProbability',startMinProbability, ...
+    'startMinProbabilityRatio',startMinProbabilityRatio, ...
+    'kktAcceptanceTolerance',acceptKKT, ...
     'optimalityTolerance',optimalityTol,'constraintTolerance',constraintTol, ...
     'usedExactKLHessian',true);
 end
