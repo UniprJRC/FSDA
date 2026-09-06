@@ -565,6 +565,21 @@ else
                 % full-rank step; otherwise retain the fast updating formulae.
                 if mm-lunit>v+1 && previousRankProblem==false
 
+                    % Try the fast Sherman-Morrison updating/downdating
+                    % formulae. In samples with repeated observations (for
+                    % example, nonparametric bootstrap samples), the
+                    % intermediate subset obtained after removing outgoing
+                    % units can be singular even though the final subset at
+                    % step mm is full rank. In that case a downdate
+                    % denominator 1-z*S*z' is zero (or numerically too close
+                    % to zero). The inverse of the intermediate cross-product
+                    % matrix does not exist, so regularizing the denominator
+                    % would not be a valid Sherman-Morrison update. Instead,
+                    % abandon the fast update and recompute S directly from
+                    % the current full-rank subset.
+                    fastUpdateOK=true;
+                    smTol=sqrt(eps);
+
                     % Find new S.
                     if lunit>1
                         if mm>percn || rankgap>nrepmin
@@ -584,12 +599,23 @@ else
 
                         zi=sqrt(lunitout*(mm-1-lunitout)/(mm-1))*(mi-mibsbr);
                         Szi=S*zi';
-                        S=S+Szi*(Szi')/(1-zi*Szi);
-                        if lunitout>1
+                        smDen=1-zi*Szi;
+                        if ~isfinite(smDen) || smDen<=smTol
+                            fastUpdateOK=false;
+                        else
+                            S=S+Szi*(Szi')/smDen;
+                        end
+
+                        if fastUpdateOK && lunitout>1
                             for i=1:lunitout
                                 zi=Y(unitout(i),:)-mi;
                                 Szi=S*zi';
-                                S=S+Szi*(Szi')/(1-zi*Szi);
+                                smDen=1-zi*Szi;
+                                if ~isfinite(smDen) || smDen<=smTol
+                                    fastUpdateOK=false;
+                                    break
+                                end
+                                S=S+Szi*(Szi')/smDen;
                             end
                         end
                     else
@@ -597,23 +623,65 @@ else
                         mibsbr=meoldbsb;
                     end
 
-                    % Add the units which entered the subset.
-                    mi=sum(Y(unit,:),1)/lunit;
-                    zi=sqrt(lunit*(mm-1-lunitout)/(mm-1-lunitout+lunit))*(mi-mibsbr);
-                    Szi=S*zi';
-                    S=S-Szi*(Szi')/(1+zi*Szi);
-                    if lunit>1
-                        for i=1:lunit
-                            zi=Y(unit(i),:)-mi;
-                            Szi=S*zi';
-                            S=S-Szi*(Szi')/(1+zi*Szi);
+                    % Add the units which entered the subset. The addition
+                    % denominator 1+z*S*z' is positive for a positive-
+                    % definite S, but guard it as well because S may have
+                    % become numerically unstable during a preceding update.
+                    if fastUpdateOK
+                        mi=sum(Y(unit,:),1)/lunit;
+                        zi=sqrt(lunit*(mm-1-lunitout)/(mm-1-lunitout+lunit))*(mi-mibsbr);
+                        Szi=S*zi';
+                        smDen=1+zi*Szi;
+                        if ~isfinite(smDen) || smDen<=smTol
+                            fastUpdateOK=false;
+                        else
+                            S=S-Szi*(Szi')/smDen;
                         end
                     end
 
-                    if n<30000
-                        MD=(mm-1)*sum((Ym*S).*Ym,2);
+                    if fastUpdateOK && lunit>1
+                        for i=1:lunit
+                            zi=Y(unit(i),:)-mi;
+                            Szi=S*zi';
+                            smDen=1+zi*Szi;
+                            if ~isfinite(smDen) || smDen<=smTol
+                                fastUpdateOK=false;
+                                break
+                            end
+                            S=S-Szi*(Szi')/smDen;
+                        end
+                    end
+
+                    % A finite Sherman-Morrison denominator is not by itself
+                    % sufficient if accumulated roundoff has made S invalid.
+                    if fastUpdateOK && all(isfinite(S(:)))
+                        if n<30000
+                            MD=(mm-1)*sum((Ym*S).*Ym,2);
+                        else
+                            MD=(mm-1)*sum(bsxfun(@times,mtimes(Ym,S),Ym),2);
+                        end
+                        if any(~isfinite(MD))
+                            fastUpdateOK=false;
+                        end
                     else
-                        MD=(mm-1)*sum(bsxfun(@times,mtimes(Ym,S),Ym),2);
+                        fastUpdateOK=false;
+                    end
+
+                    if ~fastUpdateOK
+                        % Current YbCentered has already been verified to be
+                        % full rank. Recompute the inverse and distances from
+                        % this final subset rather than from a singular
+                        % intermediate downdate.
+                        if mm>percn
+                            Ymb=Ym(bsbT,:);
+                        else
+                            Ymb=Ym(bsb,:);
+                        end
+                        [~,R]=qr(Ymb,0);
+                        S=R\(R'\eye(v));
+                        S=(S+S')/2;
+                        u=Ym/R;
+                        MD=(mm-1)*sum(u.^2,2);
                     end
 
                 else
@@ -624,8 +692,9 @@ else
                     else
                         Ymb=Ym(bsb,:);
                     end
-                    S=inv(Ymb'*Ymb);
                     [~,R]=qr(Ymb,0);
+                    S=R\(R'\eye(v));
+                    S=(S+S')/2;
                     u=Ym/R;
                     MD=(mm-1)*sum(u.^2,2);
                 end
