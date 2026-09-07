@@ -334,9 +334,9 @@ function out = mdMDPtest(Y, varargin)
 %                             default value is 0.95.
 %              robust.bonflev = Forward Search signal/stopping rule. This
 %                             field is used only if robust.class='FS'.
-%                             Use [] (default) for the standard FSM
+%                             Use [] for the standard FSM
 %                             signal-detection, validation and envelope-
-%                             resuperimposition rules, or 0.99 for the
+%                             resuperimposition rules, or 0.99 (default) for the
 %                             direct 99 percent Bonferroni-bound rule.
 %            The robustness level is controlled by alpha. In the FS case,
 %            floor(nComplete*(1-alpha)) is used as the FSM initial
