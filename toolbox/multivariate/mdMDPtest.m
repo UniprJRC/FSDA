@@ -2412,7 +2412,7 @@ if alpha == 0
 
 elseif strcmpi(robustClass,'FS')
 
-    h = floor(ncc*(1-alpha));
+    h = floor(ncc*(1-alpha))-1;
 
     if isempty(robustBonflev)
         % Standard FSM signal detection and envelope resuperimposition.
@@ -2467,7 +2467,7 @@ function [robustClass,robustEff,robustBonflev] = local_parse_robust(robust)
 %local_parse_robust parses the robust option.
 
 robustEff = 0.95;
-robustBonflev = []; % default is envelope resuperimposition
+robustBonflev = 0.99; % default is not envelope resuperimposition
 
 if isstruct(robust)
     if ~isscalar(robust)
