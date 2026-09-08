@@ -6271,7 +6271,12 @@ function sel = local_entropy_select_projected_threshold(c0,Ucell,qcell,pobs, ...
 %local_entropy_select_projected_threshold Select a nearby feasible c^dagger.
 %
 % Candidate cutoffs are the observed threshold and empirical adjusted-radius
-% breakpoints. The nearest 301 states are examined first. A candidate is
+% breakpoints. Before candidate evaluation, an exact one-dimensional h3
+% retained-fraction screen removes cutoff states that cannot satisfy the
+% common retained-fraction restriction under any probability law on the
+% empirical support. During candidate evaluation, a raw-coordinate sign
+% certificate is applied before exact-block scaling/SVD. The nearest 301
+% remaining states are examined first. A candidate is
 % ordinarily admissible only when the exact block (robust functional,
 % retained location and retained fraction) has a strictly interior feasible
 % probability law. If the local search contains no such candidate, the
@@ -6298,7 +6303,31 @@ if isempty(breaks)
         'No finite empirical cutoff breakpoints are available.');
 end
 
-allCandidates = unique([c0; breaks]);
+% Exact retained-fraction pre-screen. Before any SVD or LP is attempted,
+% discard cutoff states for which the exact common retained-fraction
+% restriction can never be matched by a probability law on the empirical
+% support. For cutoff c define
+%
+%   s_i(c) = sum_g pi_g 1{q_ig <= a_g(c)}.
+%
+% The exact h3 restriction requires a convex combination of s_i(c)-gamma
+% to equal zero, hence necessarily
+%
+%   min_i s_i(c) <= gamma <= max_i s_i(c).
+%
+% Both extrema are nondecreasing in c, so the admissible states form one
+% empirical cutoff interval. This is an exact necessary condition and does
+% not change the subsequent full-support/boundary selection rule.
+allCandidatesRaw = unique([c0; breaks]);
+fractionScreen = local_entropy_fraction_cutoff_screen(allCandidatesRaw, ...
+    qcell,pobs,piPattern,gamma,p,n,method);
+allCandidates = allCandidatesRaw(fractionScreen.admissibleMask);
+if isempty(allCandidates)
+    error('FSDA:mdMDPtest:EntropyFractionCutoffInfeasible', ...
+        ['No empirical cutoff can satisfy the exact common retained-fraction ' ...
+        'restriction on the entropy support.']);
+end
+
 [~,ordAll] = sort(abs(allCandidates-c0),'ascend');
 maxCandidates = min(numel(ordAll),301);
 ordLocal = ordAll(1:maxCandidates);
@@ -6325,6 +6354,7 @@ nBlockConstructionSkipped = 0;
 % Screening-method diagnostics. These count the first-pass candidate
 % classifications only (the active-face fallback may re-evaluate a small
 % number of boundary candidates afterwards).
+nRawRangeOutsideCertificates = 0;
 nRangeOutsideCertificates = 0;
 nAffineInteriorCertificates = 0;
 nPhaseILPCalls = 0;
@@ -6344,9 +6374,11 @@ for jj=1:numel(ordLocal)
         cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
         nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
         nBlockConstructionSkipped,boundaryCandidates);
-    [nRangeOutsideCertificates,nAffineInteriorCertificates,nPhaseILPCalls] = ...
+    [nRawRangeOutsideCertificates,nRangeOutsideCertificates, ...
+        nAffineInteriorCertificates,nPhaseILPCalls] = ...
         local_entropy_accumulate_certificate_counts(ev, ...
-        nRangeOutsideCertificates,nAffineInteriorCertificates,nPhaseILPCalls);
+        nRawRangeOutsideCertificates,nRangeOutsideCertificates, ...
+        nAffineInteriorCertificates,nPhaseILPCalls);
 
     if ~strcmp(ev.status,'strict')
         continue
@@ -6390,9 +6422,11 @@ if isempty(best) && maxCandidates < numel(ordAll)
             cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
             nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
             nBlockConstructionSkipped,boundaryCandidates);
-        [nRangeOutsideCertificates,nAffineInteriorCertificates,nPhaseILPCalls] = ...
+        [nRawRangeOutsideCertificates,nRangeOutsideCertificates, ...
+            nAffineInteriorCertificates,nPhaseILPCalls] = ...
             local_entropy_accumulate_certificate_counts(ev, ...
-            nRangeOutsideCertificates,nAffineInteriorCertificates,nPhaseILPCalls);
+            nRawRangeOutsideCertificates,nRangeOutsideCertificates, ...
+            nAffineInteriorCertificates,nPhaseILPCalls);
 
         if ~strcmp(ev.status,'strict')
             continue
@@ -6506,7 +6540,12 @@ sel.searchDiagnostics = struct( ...
     'selectedThreshold',best.threshold, ...
     'absoluteShift',best.threshold-c0, ...
     'relativeShift',(best.threshold-c0)/max(1,abs(c0)), ...
-    'nCandidatesAvailable',numel(allCandidates), ...
+    'nCandidatesAvailable',numel(allCandidatesRaw), ...
+    'nCandidatesAfterFractionScreen',numel(allCandidates), ...
+    'nFractionScreenedOut',fractionScreen.nExcluded, ...
+    'fractionAdmissibleLowerCutoff',fractionScreen.lowerCutoff, ...
+    'fractionAdmissibleUpperCutoff',fractionScreen.upperCutoff, ...
+    'fractionScreenTolerance',fractionScreen.tolerance, ...
     'nCandidatesEvaluated',nEvaluated, ...
     'nExactInteriorCandidates',nExactInterior, ...
     'maxCandidates',maxCandidates, ...
@@ -6523,6 +6562,7 @@ sel.searchDiagnostics = struct( ...
     'nBoundaryFeasibleCandidates',numel(boundaryCandidates), ...
     'nOutsideConvexHull',nOutsideConvexHull, ...
     'nLPUnresolved',nLPUnresolved, ...
+    'nRawBlockRangeOutsideCertificates',nRawRangeOutsideCertificates, ...
     'nCoordinateRangeOutsideCertificates',nRangeOutsideCertificates, ...
     'nAffineInteriorCertificates',nAffineInteriorCertificates, ...
     'nPhaseILPCalls',nPhaseILPCalls, ...
@@ -6538,6 +6578,69 @@ sel.searchDiagnostics = struct( ...
 end
 
 % -------------------------------------------------------------------------
+function screen = local_entropy_fraction_cutoff_screen(candidates,qcell,pobs, ...
+    piPattern,gamma,p,n,method)
+%local_entropy_fraction_cutoff_screen Exact retained-fraction cutoff screen.
+%
+% For support point i and cutoff c, define
+%
+%   s_i(c)=sum_g pi_g 1{q_ig<=a_g(c)}.
+%
+% The exact retained-fraction equation is E_p{s_i(c)-gamma}=0. Therefore
+% zero can belong to the one-dimensional convex hull only if
+% min_i s_i(c)<=gamma<=max_i s_i(c). Because every indicator is monotone in
+% c, these necessary-feasibility states form one cutoff interval. This helper
+% computes the interval before any exact-block construction, SVD or LP.
+
+candidates = candidates(:);
+G = numel(qcell);
+m = numel(qcell{1});
+minScore = NaN(numel(candidates),1);
+maxScore = NaN(numel(candidates),1);
+valid = true(numel(candidates),1);
+
+for jc = 1:numel(candidates)
+    c = candidates(jc);
+    score = zeros(m,1);
+    for g = 1:G
+        if numel(qcell{g}) ~= m
+            error('FSDA:mdMDPtest:EntropySupportMismatch', ...
+                'Entropy projected-radius vectors have inconsistent support sizes.');
+        end
+        ag = local_tem_inv_adjust(c,pobs(g),p,n,method);
+        if ~isfinite(ag) || ag <= 0
+            valid(jc) = false;
+            break
+        end
+        score = score + piPattern(g)*double(qcell{g}<=ag);
+    end
+    if valid(jc)
+        minScore(jc) = min(score);
+        maxScore(jc) = max(score);
+    end
+end
+
+% Numerical allowance only for floating-point accumulation of pattern
+% probabilities; it is many orders smaller than any statistical tolerance.
+tol = 100*eps*max(1,G)*max(1,max(abs([gamma; piPattern(:)])));
+admissible = valid & minScore <= gamma+tol & maxScore >= gamma-tol;
+
+if any(admissible)
+    lowerCutoff = min(candidates(admissible));
+    upperCutoff = max(candidates(admissible));
+else
+    lowerCutoff = NaN;
+    upperCutoff = NaN;
+end
+
+screen = struct('admissibleMask',admissible, ...
+    'lowerCutoff',lowerCutoff,'upperCutoff',upperCutoff, ...
+    'nCandidates',numel(candidates),'nAdmissible',sum(admissible), ...
+    'nExcluded',sum(~admissible),'tolerance',tol, ...
+    'minScore',minScore,'maxScore',maxScore);
+end
+
+% -------------------------------------------------------------------------
 function ev = local_entropy_threshold_candidate(c,Ucell,qcell,pobs, ...
     piPattern,gamma,hC,qbase,p,n,method)
 %local_entropy_threshold_candidate Evaluate one empirical cutoff state.
@@ -6548,6 +6651,34 @@ ev = struct('status','skipped','block',[],'exactPrep',[], ...
 try
     blk = local_entropy_blocks_at_threshold(c,Ucell,qcell,pobs, ...
         piPattern,gamma,hC,qbase,p,n,method);
+
+    % Exact raw-coordinate convex-hull exclusion before scaling/SVD. If one
+    % raw exact calibration coordinate has the same strict sign over the
+    % entire support, no nonnegative probability vector can make its mean
+    % zero. Reject immediately, avoiding local_entropy_prepare_exact_block.
+    rawMin = min(blk.Araw,[],1);
+    rawMax = max(blk.Araw,[],1);
+    rawScale = max(1,max(abs(blk.Araw),[],1));
+    rawTol = 100*eps.*rawScale;
+    jsep = find(rawMin > rawTol | rawMax < -rawTol,1,'first');
+    if ~isempty(jsep)
+        ev.block = blk;
+        ev.status = 'outside';
+        ev.reason = ['The zero target is outside the convex hull because one ' ...
+            'raw exact calibration coordinate has the same strict sign on ' ...
+            'the full entropy support.'];
+        ev.relativeInterior = struct( ...
+            'available',true,'reason',ev.reason,'tStar',NaN, ...
+            'classification','outside convex hull (raw coordinate-range certificate)', ...
+            'convexHullFeasible',false,'strictInteriorFeasible',false, ...
+            'smallPositiveMargin',false,'boundary',false, ...
+            'certificateMethod','raw coordinate-range certificate', ...
+            'rangeCertificateColumn',jsep, ...
+            'rangeCertificateMin',rawMin(jsep), ...
+            'rangeCertificateMax',rawMax(jsep));
+        return
+    end
+
     ex = local_entropy_prepare_exact_block(blk.Araw,qbase);
 catch ME
     expected = {'FSDA:mdMDPtest:EntropyInvalidCutoff', ...
@@ -6651,13 +6782,14 @@ end
 end
 
 % -------------------------------------------------------------------------
-function [nRange,nAffine,nLP] = local_entropy_accumulate_certificate_counts( ...
-    ev,nRange,nAffine,nLP)
+function [nRawRange,nRange,nAffine,nLP] = ...
+    local_entropy_accumulate_certificate_counts( ...
+    ev,nRawRange,nRange,nAffine,nLP)
 %local_entropy_accumulate_certificate_counts Count exact-block screen methods.
 %
 % The counts refer to the first-pass projected-threshold screening. They are
 % diagnostic only and make it possible to verify how often the cheap exact
-% certificates avoid a phase-I LP.
+% certificates avoid exact-block preparation or a phase-I LP.
 
 if ~isstruct(ev) || ~isfield(ev,'relativeInterior') || ...
         ~isstruct(ev.relativeInterior) || ...
@@ -6665,7 +6797,9 @@ if ~isstruct(ev) || ~isfield(ev,'relativeInterior') || ...
     return
 end
 method = ev.relativeInterior.certificateMethod;
-if strcmp(method,'coordinate-range certificate')
+if strcmp(method,'raw coordinate-range certificate')
+    nRawRange = nRawRange+1;
+elseif strcmp(method,'coordinate-range certificate')
     nRange = nRange+1;
 elseif strcmp(method,'affine projection')
     nAffine = nAffine+1;
