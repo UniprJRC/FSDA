@@ -340,12 +340,15 @@ function out = mdMDPtest(Y, varargin)
 %                             direct 99 percent Bonferroni-bound rule.
 %            The robustness level is controlled by alpha. In the FS case,
 %            floor(nComplete*(1-alpha)) is used as the FSM initial
-%            monitoring step; in the MCD case alpha is passed as bdp; in
-%            the MM case alpha is passed as Sbdp. For all three estimators,
-%            the confidence level used to declare outliers is fixed at the
-%            Bonferronized simultaneous level 0.99. In the FS case the user
-%            can choose between the direct Bonferroni rule and the standard
-%            envelope-resuperimposition rule through robust.bonflev.
+%            monitoring step; in the MCD case alpha is passed as bdp and the
+%            reweighted MCD location/scatter are used; in the MM case alpha
+%            is passed as Sbdp. For all three estimators, the confidence level
+%            used to declare outliers is fixed at the Bonferronized simultaneous
+%            level 0.99. In the FS case the user can choose between the direct
+%            Bonferroni rule and the standard envelope-resuperimposition rule
+%            through robust.bonflev. For MCD, the observations retained by the
+%            reweighting step define the final complete-case fit and the frozen
+%            classification used by the analytical sandwich.
 %            Example - 'robust','MCD' | r=struct; r.class='FS'; r.bonflev=[]; 'robust',r
 %            Data Types - char | string | struct
 %
@@ -664,13 +667,16 @@ function out = mdMDPtest(Y, varargin)
 %                            pooled case, the influence function is formed at
 %                            the complete-observation level, preserving the
 %                            dependence among projections of the same row.
-%                            For FS, the
-%                            complete-case scatter influence is evaluated
+%                            For FS, the complete-case influence is evaluated
 %                            analytically conditional on the final full-sample
-%                            FS classification. For MCD and MM it is currently
-%                            evaluated by a delete-one jackknife. The resulting
-%                            contribution is combined with the TEM influence in
-%                            the end-to-end sandwich variance. With adaptive
+%                            FS classification. For MCD, the reweighted MCD
+%                            location/scatter are used and the influence is
+%                            evaluated analytically conditional on the final
+%                            reweighted inlier set, with the fitted scalar
+%                            scatter correction held fixed. MM retains the
+%                            delete-one jackknife. The resulting contribution
+%                            is combined with the TEM influence in the end-to-end
+%                            sandwich variance. With adaptive
 %                            pooling, out.asympt.TEM.factorDiagnostics reports
 %                            one row per pooled observed dimension, while
 %                            patternDiagnostics reports the corresponding
@@ -696,11 +702,13 @@ function out = mdMDPtest(Y, varargin)
 %                            alpha>0, out.asympt.TEM contains diagnostics for
 %                            the analytical TEM contribution and
 %                            out.asympt.completeCase documents the influence
-%                            evaluation, including influenceMethod and, for FS,
-%                            nReferenceInliers and nReferenceOutliers. The
-%                            adaptive FS branch conditions on the selected set;
-%                            its data-dependent stopping/classification rule is
-%                            outside the fixed-fraction FS asymptotic theorem.
+%                            evaluation, including influenceMethod,
+%                            nReferenceInliers and nReferenceOutliers. The FS
+%                            and MCD analytical branches condition on their final
+%                            selected sets; the data-dependent selection rules
+%                            themselves are not differentiated. For MCD,
+%                            mcdScatterScaleFactor and mcdScatterScaleResidual
+%                            document the frozen reweighted-scatter correction.
 %                            For alpha>0 and consistencyfactor='adaptive',
 %                            out.asympt.secondOrderBenchmark contains the
 %                            complete-Gaussian adaptive-TEM O(n^{-1})
@@ -2434,7 +2442,10 @@ elseif strcmpi(robustClass,'FS')
 
 elseif strcmpi(robustClass,'MCD')
 
-    outRob = mcd(Ycc, ...
+    % Use the reweighted MCD fit. This makes the MCD complete-case geometry
+    % parallel in spirit to FS: all observations retained by the final
+    % significance-level reweighting rule enter the location/scatter fit.
+    [~,outRob] = mcd(Ycc, ...
         'bdp',alpha, ...
         'conflev',conflevOut, ...
         'plots',0, ...
@@ -3650,6 +3661,8 @@ asympt.completeCase = struct('influenceMethod','', ...
     'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
     'frozenClassification',false,'robustBonflev',robustBonflev, ...
     'relCovFrozenVsFS',NaN,'relLocFrozenVsFS',NaN, ...
+    'relCovFrozenVsMCD',NaN,'relLocFrozenVsMCD',NaN, ...
+    'mcdScatterScaleFactor',NaN,'mcdScatterScaleResidual',NaN, ...
     'meanInfluenceBeforeCentering',NaN);
 
 supportedMethods = {'pri','expScale','zMap','chiMap','betaMap'};
@@ -3752,7 +3765,8 @@ asympt.TEM.threshold = cthr;
 % Full complete-case scatter influence is needed because each empirical
 % radial factor depends on the robust reference scatter through Q_g. For FS
 % this is evaluated analytically conditional on the full-sample final FS
-% classification. MCD and MM retain the delete-one jackknife for now.
+% classification; MCD uses the analogous frozen reweighted-inlier
+% perturbation. MM retains the delete-one jackknife.
 [PsiMuCcc,PsiCcc,ccInfo,ccReason] = local_cc_joint_influence(Ycc,alpha, ...
     robustClass,robustEff,robustBonflev,outRob);
 if ~isempty(ccReason)
@@ -3770,6 +3784,10 @@ asympt.completeCase.nReferenceOutliers = ccInfo.nReferenceOutliers;
 asympt.completeCase.frozenClassification = ccInfo.frozenClassification;
 asympt.completeCase.relCovFrozenVsFS = ccInfo.relCovFrozenVsFS;
 asympt.completeCase.relLocFrozenVsFS = ccInfo.relLocFrozenVsFS;
+asympt.completeCase.relCovFrozenVsMCD = ccInfo.relCovFrozenVsMCD;
+asympt.completeCase.relLocFrozenVsMCD = ccInfo.relLocFrozenVsMCD;
+asympt.completeCase.mcdScatterScaleFactor = ccInfo.mcdScatterScaleFactor;
+asympt.completeCase.mcdScatterScaleResidual = ccInfo.mcdScatterScaleResidual;
 
 PsiCfull = zeros(n,s);
 PsiCfull(completeIdx,:) = PsiCcc/qhat;
@@ -4098,7 +4116,7 @@ asympt.TEM.patternDiagnostics = table(pobsDiag,piDiag,nkeptDiag,aDiag,HDiag, ...
 Jrcond = rcond(J);
 asympt.TEM.Jrcond = Jrcond;
 
-% Singular-value decomposition of the adaptive TEM
+% TEMPORARY DIAGNOSTIC: singular-value decomposition of the adaptive TEM
 % scatter Jacobian. These fields are diagnostic only and do not alter
 % fitting, analytical calibration, p-values or the omnibus statistic.
 [UJ,SJ,VJ] = svd(J);
@@ -4160,7 +4178,7 @@ end
 XiEff = XiBase+XiFactor;
 asympt.TEM.estimatingEquationMeanNorm = norm(mean(XiEff,1));
 
-% DIAGNOSTIC: decompose the TEM scatter influence variance along
+% TEMPORARY DIAGNOSTIC: decompose the TEM scatter influence variance along
 % the singular directions of J. Since
 %
 %   J = U*S*V',   Psi_TEM = -XiEff*J^{-T}
@@ -4285,14 +4303,21 @@ methodText = [' Parameter-free distance mapping method=''' method ''' is ' ...
 if strcmpi(robustClass,'FS')
     asympt.theoryStatus = ['Adaptive TEM sandwich under the local shell-moment conditions.' ...
         methodText ...
-        poolText ' The complete-case FS scatter influence is evaluated ' ...
-        'analytically conditional on the full-sample final FS classification; ' ...
-        'the data-dependent FS stopping/classification rule itself is not ' ...
+        poolText ' The complete-case FS influence is evaluated analytically ' ...
+        'conditional on the full-sample final FS classification; the ' ...
+        'data-dependent FS stopping/classification rule itself is not ' ...
         'differentiated and remains outside the fixed-fraction FS theorem.'];
+elseif strcmpi(robustClass,'MCD')
+    asympt.theoryStatus = ['Adaptive TEM sandwich under the local shell-moment conditions.' ...
+        methodText poolText ' The complete-case fit is the reweighted MCD ' ...
+        'location/scatter. Its influence is evaluated analytically conditional ' ...
+        'on the final reweighted inlier set, with the fitted scalar scatter ' ...
+        'correction held fixed; the MCD selection/reweighting rule itself is ' ...
+        'not differentiated.'];
 else
     asympt.theoryStatus = ['Adaptive TEM sandwich under the local shell-moment conditions.' ...
-        methodText poolText ' The empirical radial-factor influence and robust ' ...
-        'complete-case scatter influence are both included.'];
+        methodText poolText ' The empirical radial-factor influence and MM ' ...
+        'complete-case influence are included; MM uses a delete-one jackknife.'];
 end
 
 if ~isfinite(sigmaD2) || sigmaD2 < 0
@@ -4384,28 +4409,41 @@ function [PsiMuC,PsiC,info,reason] = local_cc_joint_influence(Ycc,alpha, ...
     robustClass,robustEff,robustBonflev,outRob)
 %local_cc_joint_influence Robust complete-case location/scatter influence.
 %
-% For FS, use an analytical frozen-classification perturbation of the final
-% retained mean and covariance. For MCD and MM, a single delete-one loop is
-% used to obtain both location and scatter influence values.
+% FS and MCD use analytical frozen-classification perturbations of their
+% final fitted inlier sets. For MCD the fit is the reweighted MCD fit and
+% the scalar scatter correction multiplying the covariance of the retained
+% observations is held fixed. MM retains a delete-one jackknife.
 
-info = struct('influenceMethod','', ...
-    'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
-    'frozenClassification',false,'relCovFrozenVsFS',NaN, ...
-    'relLocFrozenVsFS',NaN);
+info = local_empty_cc_influence_info();
 PsiMuC = [];
 PsiC = [];
 reason = '';
 
 if strcmpi(robustClass,'FS')
     [PsiMuC,PsiC,info,reason] = local_cc_joint_fs_frozen(Ycc,outRob);
-else
-    [PsiMuC,PsiC,reason] = local_cc_joint_jackknife(Ycc,alpha,robustClass, ...
-        robustEff,robustBonflev);
+elseif strcmpi(robustClass,'MCD')
+    [PsiMuC,PsiC,info,reason] = local_cc_joint_mcd_frozen(Ycc,outRob);
+elseif strcmpi(robustClass,'MM')
+    [PsiMuC,PsiC,reason] = local_cc_joint_mm_jackknife(Ycc,alpha,robustEff);
     if isempty(reason)
-        info.influenceMethod = 'delete-one jackknife';
+        info.influenceMethod = 'MM delete-one jackknife';
         info.frozenClassification = false;
     end
+else
+    reason = sprintf('Unsupported robust class ''%s'' in complete-case influence.', ...
+        robustClass);
 end
+end
+
+% -------------------------------------------------------------------------
+function info = local_empty_cc_influence_info()
+%local_empty_cc_influence_info Initialize complete-case influence diagnostics.
+info = struct('influenceMethod','', ...
+    'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
+    'frozenClassification',false, ...
+    'relCovFrozenVsFS',NaN,'relLocFrozenVsFS',NaN, ...
+    'relCovFrozenVsMCD',NaN,'relLocFrozenVsMCD',NaN, ...
+    'mcdScatterScaleFactor',NaN,'mcdScatterScaleResidual',NaN);
 end
 
 % -------------------------------------------------------------------------
@@ -4426,10 +4464,9 @@ s = p*(p+1)/2;
 PsiMuC = [];
 PsiC = [];
 reason = '';
-info = struct('influenceMethod','FS analytic frozen-classification', ...
-    'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
-    'frozenClassification',true,'relCovFrozenVsFS',NaN, ...
-    'relLocFrozenVsFS',NaN);
+info = local_empty_cc_influence_info();
+info.influenceMethod = 'FS analytic frozen-classification';
+info.frozenClassification = true;
 
 if m < 5
     reason = 'Too few complete observations for the FS joint influence.';
@@ -4498,12 +4535,119 @@ end
 end
 
 % -------------------------------------------------------------------------
-function [PsiMuC,PsiC,reason] = local_cc_joint_jackknife(Ycc,alpha,robustClass, ...
-    robustEff,robustBonflev)
-%local_cc_joint_jackknife Delete-one robust location/scatter influence.
+function [PsiMuC,PsiC,info,reason] = local_cc_joint_mcd_frozen(Ycc,outRob)
+%local_cc_joint_mcd_frozen Analytical frozen-reweighting MCD influence.
 %
-% The same delete-one fits supply both location and scatter perturbations,
-% avoiding two separate robust jackknife loops.
+% mdMDPtest uses the reweighted MCD fit. Conditional on the final REW.weights
+% set I, the location is the mean of the retained observations. The reweighted
+% scatter is a scalar multiple c_MCD of their ordinary covariance. This
+% routine freezes both I and c_MCD and applies the same exact delete-one
+% perturbation of the retained mean/covariance used by the FS frozen branch.
+% The MCD subset/reweighting selection rule itself is not differentiated.
+
+m = size(Ycc,1);
+p = size(Ycc,2);
+s = p*(p+1)/2;
+PsiMuC = [];
+PsiC = [];
+reason = '';
+info = local_empty_cc_influence_info();
+info.influenceMethod = 'MCD analytic frozen-reweighting';
+info.frozenClassification = true;
+
+if m < 5
+    reason = 'Too few complete observations for the MCD joint influence.';
+    return
+end
+if isempty(outRob) || ~isstruct(outRob) || ~isfield(outRob,'weights') || ...
+        ~isfield(outRob,'cov') || ~isfield(outRob,'loc')
+    reason = ['The full-sample reweighted MCD fit, including weights, is ' ...
+        'required for the analytical frozen-reweighting joint influence.'];
+    return
+end
+
+w = outRob.weights(:);
+if numel(w) ~= m || any(~isfinite(w))
+    reason = 'The reweighted MCD weights are invalid.';
+    return
+end
+inMask = w > 0;
+h = sum(inMask);
+info.nReferenceInliers = h;
+info.nReferenceOutliers = m-h;
+if h < 3
+    reason = ['Too few observations remain in the reweighted MCD inlier set ' ...
+        'for the frozen-classification influence.'];
+    return
+end
+
+Yin = Ycc(inMask,:);
+muI = mean(Yin,1)';
+SI = cov(Yin);
+SI = (SI+SI')/2;
+muMCD = outRob.loc(:);
+SMCD = (outRob.cov+outRob.cov')/2;
+if any(~isfinite(SI(:))) || any(~isfinite(SMCD(:))) || ...
+        any(~isfinite(muI)) || any(~isfinite(muMCD))
+    reason = 'The final reweighted MCD location or scatter contains nonfinite values.';
+    return
+end
+
+info.relLocFrozenVsMCD = norm(muI-muMCD)/max(norm(muMCD),1);
+den = sum(SI(:).^2);
+if ~isfinite(den) || den <= eps
+    reason = 'The covariance of the reweighted MCD inlier set is degenerate.';
+    return
+end
+cMCD = sum(SI(:).*SMCD(:))/den;
+if ~isfinite(cMCD) || cMCD <= 0
+    reason = 'Unable to recover a positive scalar correction for reweighted MCD scatter.';
+    return
+end
+Sscaled = cMCD*SI;
+scaleResidual = norm(SMCD-Sscaled,'fro')/max(norm(SMCD,'fro'),eps);
+info.relCovFrozenVsMCD = scaleResidual;
+info.mcdScatterScaleFactor = cMCD;
+info.mcdScatterScaleResidual = scaleResidual;
+
+if info.relLocFrozenVsMCD > 1e-8 || scaleResidual > 1e-8
+    reason = ['Reweighted MCD location/scatter is not the mean and a scalar ' ...
+        'multiple of the covariance of REW.weights==1; the analytical ' ...
+        'frozen-reweighting influence is therefore not applied.'];
+    return
+end
+
+PsiMuC = zeros(m,p);
+PsiC = zeros(m,s);
+vS = local_vech(SI);
+inIdx = find(inMask);
+coefMu = (m-1)/(h-1);
+coefS = (m-1)/(h-2);
+radialCoef = h/(h-1);
+for j = 1:numel(inIdx)
+    i = inIdx(j);
+    x = Ycc(i,:)'-muI;
+    PsiMuC(i,:) = (coefMu*x)';
+    vA = local_vech(x*x');
+    PsiC(i,:) = (cMCD*coefS*(radialCoef*vA-vS))';
+end
+PsiMuC = PsiMuC-mean(PsiMuC,1);
+PsiC = PsiC-mean(PsiC,1);
+if any(~isfinite(PsiMuC(:))) || any(~isfinite(PsiC(:)))
+    reason = 'The analytical frozen-MCD joint influence is nonfinite.';
+    PsiMuC = [];
+    PsiC = [];
+end
+end
+
+% -------------------------------------------------------------------------
+function [PsiMuC,PsiC,reason] = local_cc_joint_mm_jackknife(Ycc,alpha,robustEff)
+%local_cc_joint_mm_jackknife Delete-one MM location/scatter influence.
+%
+% MM is a smooth weighted M-estimator rather than a hard retained-subset
+% mean/covariance fit, so it remains the only complete-case estimator for
+% which mdMDPtest uses a delete-one jackknife. The same delete-one fits
+% supply both location and scatter perturbations.
 
 ncc = size(Ycc,1);
 p = size(Ycc,2);
@@ -4512,7 +4656,7 @@ PsiMuC = [];
 PsiC = [];
 reason = '';
 if ncc < 5
-    reason = 'Too few complete observations for the robust delete-one influence.';
+    reason = 'Too few complete observations for the MM delete-one influence.';
     return
 end
 
@@ -4526,23 +4670,23 @@ for i = 1:ncc
     try
         rng(rngState)
         [muMinus,SigMinus] = local_complete_case_fit(Ycc(keep,:),alpha, ...
-            robustClass,robustEff,robustBonflev);
+            'MM',robustEff,[]);
         muMinus = muMinus(:);
         if any(~isfinite(muMinus)) || any(~isfinite(SigMinus(:)))
-            reason = sprintf(['Nonfinite robust location/scatter in delete-one ' ...
+            reason = sprintf(['Nonfinite MM location/scatter in delete-one ' ...
                 'fit for complete observation %d.'],i);
             return
         end
         looMu(i,:) = muMinus';
         looS(i,:) = local_vech((SigMinus+SigMinus')/2)';
     catch ME
-        reason = sprintf(['Robust delete-one fit failed for complete ' ...
+        reason = sprintf(['MM delete-one fit failed for complete ' ...
             'observation %d: %s'],i,ME.message);
         return
     end
 end
 if any(~isfinite(looMu(:))) || any(~isfinite(looS(:)))
-    reason = 'The robust delete-one joint influence contains nonfinite values.';
+    reason = 'The MM delete-one joint influence contains nonfinite values.';
     return
 end
 PsiMuC = -(ncc-1)*(looMu-mean(looMu,1));
@@ -4561,10 +4705,9 @@ function asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
 %   -aSigma' * psi_TEM(W) = b' * xi(W),
 %
 % where xi(W)=vech{w_R(U_R-Sigma)}. The complete-case contribution to the
-% MDP statistic is C*zeta_C/q. For FS the complete-case scatter influence is
-% evaluated analytically conditional on the final full-sample FS
-% classification. For MCD and MM the current delete-one jackknife is
-% retained.
+% MDP statistic is C*zeta_C/q. FS and reweighted MCD use analytical
+% frozen-classification influences based on their final retained sets; MM
+% retains the delete-one jackknife.
 %
 % The Jacobian implementation covers the parameter-free adjusted-distance
 % mappings 'pri', 'expScale', 'zMap', 'chiMap' and 'betaMap'. The selected
@@ -4601,7 +4744,9 @@ asympt.completeCase = struct('influenceMethod','', ...
     'sigma2',NaN,'crossTEMCC',NaN,'nComplete',sum(completeIdx), ...
     'nReferenceInliers',NaN,'nReferenceOutliers',NaN, ...
     'frozenClassification',false,'robustBonflev',robustBonflev, ...
-    'relCovFrozenVsFS',NaN,'relLocFrozenVsFS',NaN);
+    'relCovFrozenVsFS',NaN,'relLocFrozenVsFS',NaN, ...
+    'relCovFrozenVsMCD',NaN,'relLocFrozenVsMCD',NaN, ...
+    'mcdScatterScaleFactor',NaN,'mcdScatterScaleResidual',NaN);
 
 supportedMethods = {'pri','expScale','zMap','chiMap','betaMap'};
 if strcmpi(method,'detMap')
@@ -4804,7 +4949,8 @@ asympt.TEM.available = true;
 asympt.TEM.sigma2 = sigmaTEM2;
 
 % Complete-case scatter influence. For FS use the analytical frozen-
-% classification perturbation; MCD and MM retain the delete-one jackknife.
+% classification perturbation; MCD uses frozen reweighted inliers; MM
+% retains the delete-one jackknife.
 Ycc = Y(completeIdx,:);
 [PsiMuCcc,PsiCcc,ccInfo,ccReason] = local_cc_joint_influence(Ycc,alpha, ...
     robustClass,robustEff,robustBonflev,outRob);
@@ -4819,6 +4965,10 @@ asympt.completeCase.nReferenceOutliers = ccInfo.nReferenceOutliers;
 asympt.completeCase.frozenClassification = ccInfo.frozenClassification;
 asympt.completeCase.relCovFrozenVsFS = ccInfo.relCovFrozenVsFS;
 asympt.completeCase.relLocFrozenVsFS = ccInfo.relLocFrozenVsFS;
+asympt.completeCase.relCovFrozenVsMCD = ccInfo.relCovFrozenVsMCD;
+asympt.completeCase.relLocFrozenVsMCD = ccInfo.relLocFrozenVsMCD;
+asympt.completeCase.mcdScatterScaleFactor = ccInfo.mcdScatterScaleFactor;
+asympt.completeCase.mcdScatterScaleResidual = ccInfo.mcdScatterScaleResidual;
 
 PsiCfull = zeros(n,s);
 PsiCfull(completeIdx,:) = PsiCcc/qhat;
@@ -6224,6 +6374,12 @@ nBoundary = 0;
 nOutsideConvexHull = 0;
 nLPUnresolved = 0;
 nBlockConstructionSkipped = 0;
+% Screening-method diagnostics. These count the first-pass candidate
+% classifications only (the active-face fallback may re-evaluate a small
+% number of boundary candidates afterwards).
+nRangeOutsideCertificates = 0;
+nAffineInteriorCertificates = 0;
+nPhaseILPCalls = 0;
 
 % ---------- local search ----------
 for jj=1:numel(ordLocal)
@@ -6240,6 +6396,9 @@ for jj=1:numel(ordLocal)
         cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
         nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
         nBlockConstructionSkipped,boundaryCandidates);
+    [nRangeOutsideCertificates,nAffineInteriorCertificates,nPhaseILPCalls] = ...
+        local_entropy_accumulate_certificate_counts(ev, ...
+        nRangeOutsideCertificates,nAffineInteriorCertificates,nPhaseILPCalls);
 
     if ~strcmp(ev.status,'strict')
         continue
@@ -6283,6 +6442,9 @@ if isempty(best) && maxCandidates < numel(ordAll)
             cutoffAtMaxTStar,nConvexHullFeasible,nExactInterior, ...
             nSmallPositiveMargin,nBoundary,nOutsideConvexHull,nLPUnresolved, ...
             nBlockConstructionSkipped,boundaryCandidates);
+        [nRangeOutsideCertificates,nAffineInteriorCertificates,nPhaseILPCalls] = ...
+            local_entropy_accumulate_certificate_counts(ev, ...
+            nRangeOutsideCertificates,nAffineInteriorCertificates,nPhaseILPCalls);
 
         if ~strcmp(ev.status,'strict')
             continue
@@ -6413,6 +6575,9 @@ sel.searchDiagnostics = struct( ...
     'nBoundaryFeasibleCandidates',numel(boundaryCandidates), ...
     'nOutsideConvexHull',nOutsideConvexHull, ...
     'nLPUnresolved',nLPUnresolved, ...
+    'nCoordinateRangeOutsideCertificates',nRangeOutsideCertificates, ...
+    'nAffineInteriorCertificates',nAffineInteriorCertificates, ...
+    'nPhaseILPCalls',nPhaseILPCalls, ...
     'nBlockConstructionSkipped',nBlockConstructionSkipped, ...
     'interiorTolerance',1e-8, ...
     'boundaryTolerance',100*eps, ...
@@ -6534,6 +6699,30 @@ switch ev.status
     case 'boundary'
         nBoundary = nBoundary+1;
         boundaryCandidates(end+1,1) = c; %#ok<AGROW>
+end
+end
+
+% -------------------------------------------------------------------------
+function [nRange,nAffine,nLP] = local_entropy_accumulate_certificate_counts( ...
+    ev,nRange,nAffine,nLP)
+%local_entropy_accumulate_certificate_counts Count exact-block screen methods.
+%
+% The counts refer to the first-pass projected-threshold screening. They are
+% diagnostic only and make it possible to verify how often the cheap exact
+% certificates avoid a phase-I LP.
+
+if ~isstruct(ev) || ~isfield(ev,'relativeInterior') || ...
+        ~isstruct(ev.relativeInterior) || ...
+        ~isfield(ev.relativeInterior,'certificateMethod')
+    return
+end
+method = ev.relativeInterior.certificateMethod;
+if strcmp(method,'coordinate-range certificate')
+    nRange = nRange+1;
+elseif strcmp(method,'affine projection')
+    nAffine = nAffine+1;
+elseif strcmp(method,'phase-I LP')
+    nLP = nLP+1;
 end
 end
 
@@ -7493,7 +7682,12 @@ end
 function info = local_entropy_relative_interior_lp(H,q)
 %local_entropy_relative_interior_lp Exact finite-support interior diagnostic.
 %
-% Solve the phase-I linear program
+% Certify whether the zero target belongs to the relative interior of the
+% finite-support calibration hull. Two cheap exact certificates are attempted
+% before optimization: a coordinate-range separation test can prove that zero
+% lies outside the convex hull, while an affine-projection construction can
+% prove strict interiority when it yields a positive feasible probability.
+% Only inconclusive cases are sent to the original phase-I linear program:
 %
 %   maximize t
 %   subject to sum_i p_i = 1,
@@ -7501,23 +7695,39 @@ function info = local_entropy_relative_interior_lp(H,q)
 %              p_i >= t q_i,  p_i >= 0,  t >= 0.
 %
 % Because every q_i is strictly positive, tStar>0 if and only if the zero
-% target belongs to the relative interior of conv{H_i}.  Numerically, values
-% above 1e-8 are certified as strict interior; positive values between
-% 100*eps and 1e-8 are reported separately as small positive margins; values
-% at or below 100*eps are treated as numerical boundary solutions. LP
-% infeasibility places zero outside the convex hull. This routine is
-% diagnostic only and never changes the entropy projection itself.
+% target belongs to the relative interior of conv{H_i}. When the affine
+% certificate is accepted, info.tStar is the exhibited feasible margin and
+% therefore a lower bound on the maximum phase-I margin; this is flagged by
+% info.tStarIsLowerBound=true. Numerically, values above 1e-8 are certified
+% as strict interior; positive LP values between 100*eps and 1e-8 are
+% reported separately as small positive margins; values at or below 100*eps
+% are treated as numerical boundary solutions. LP infeasibility places zero
+% outside the convex hull. This routine is diagnostic only and never changes
+% the entropy projection itself.
 
 [m,d] = size(H);
 q = q(:);
 info = struct('available',false,'reason','', 'exitflag',NaN, ...
-    'tStar',NaN,'classification','unavailable', ...
+    'tStar',NaN,'tStarIsLowerBound',false, ...
+    'classification','unavailable', ...
     'convexHullFeasible',false,'strictInteriorFeasible',false, ...
     'smallPositiveMargin',false,'boundary',false, ...
     'interiorTolerance',1e-8,'boundaryTolerance',100*eps, ...
     'equalityResidual',NaN,'inequalityViolation',NaN, ...
     'minProbability',NaN,'minProbabilityRatio',NaN, ...
-    'iterations',NaN,'algorithm','');
+    'iterations',NaN,'algorithm','', ...
+    'certificateMethod','phase-I LP', ...
+    'phaseIParameterization','', ...
+    'rangeCertificateAttempted',false, ...
+    'rangeCertificateAccepted',false, ...
+    'rangeCertificateColumn',NaN, ...
+    'rangeCertificateMin',NaN, ...
+    'rangeCertificateMax',NaN, ...
+    'affineCertificateAttempted',false, ...
+    'affineCertificateAccepted',false, ...
+    'affineEqualityResidual',NaN, ...
+    'affineMinProbability',NaN, ...
+    'affineMinProbabilityRatio',NaN);
 
 if numel(q)~=m || any(~isfinite(q)) || any(q<=0) || ...
         any(~isfinite(H(:)))
@@ -7525,6 +7735,98 @@ if numel(q)~=m || any(~isfinite(q)) || any(q<=0) || ...
     return
 end
 q = q/sum(q);
+
+% Cheap exact certificate that the zero target is outside the convex hull.
+% For every coordinate of H, any convex combination must lie between the
+% coordinatewise minimum and maximum. Hence if one normalized calibration
+% coordinate is strictly positive for every support point (or strictly
+% negative for every support point), zero cannot belong to conv{H_i}. This
+% certificate is only one-way: failure to separate coordinatewise is
+% inconclusive and execution proceeds to the affine/LP checks below.
+info.rangeCertificateAttempted = true;
+hmin = min(H,[],1);
+hmax = max(H,[],1);
+hscale = max(1,max(abs(H),[],1));
+rangeTol = 100*eps.*hscale;
+jsep = find(hmin > rangeTol | hmax < -rangeTol,1,'first');
+if ~isempty(jsep)
+    info.available = true;
+    info.convexHullFeasible = false;
+    info.strictInteriorFeasible = false;
+    info.smallPositiveMargin = false;
+    info.boundary = false;
+    info.classification = 'outside convex hull (coordinate-range certificate)';
+    info.certificateMethod = 'coordinate-range certificate';
+    info.rangeCertificateAccepted = true;
+    info.rangeCertificateColumn = jsep;
+    info.rangeCertificateMin = hmin(jsep);
+    info.rangeCertificateMax = hmax(jsep);
+    info.iterations = 0;
+    info.algorithm = 'coordinate-range certificate';
+    info.reason = ['The zero target is outside the convex hull because one ' ...
+        'calibration coordinate has the same strict sign on the full support.'];
+    return
+end
+
+% Cheap exact certificate of strict relative interiority. Project the base
+% probabilities q onto the affine calibration space
+%
+%       sum_i p_i = 1,      sum_i p_i H_i = 0,
+%
+% using the minimum-Euclidean-norm correction. If the projected probability
+% vector satisfies the equalities to numerical precision and remains safely
+% positive relative to q, it is itself a constructive strict-interior
+% certificate. In that case the expensive maximum-margin phase-I LP is not
+% needed. If the projection is nonpositive, poorly conditioned or otherwise
+% inconclusive, fall through to the original LP without changing its logic.
+AeqCert = [ones(1,m); H'];
+beqCert = [1; zeros(d,1)];
+rhsCert = beqCert-AeqCert*q;
+Gcert = AeqCert*AeqCert';
+Gcert = (Gcert+Gcert')/2;
+info.affineCertificateAttempted = true;
+if all(isfinite(Gcert(:)))
+    rcG = rcond(Gcert);
+else
+    rcG = NaN;
+end
+if isfinite(rcG) && rcG > 1e-12
+    yCert = Gcert\rhsCert;
+    pCert = q+AeqCert'*yCert;
+    eqCert = norm(AeqCert*pCert-beqCert,inf);
+    minPCert = min(pCert);
+    minRatioCert = min(pCert./q);
+    info.affineEqualityResidual = eqCert;
+    info.affineMinProbability = minPCert;
+    info.affineMinProbabilityRatio = minRatioCert;
+
+    certEqTol = 1e-10;
+    if all(isfinite(pCert)) && eqCert <= certEqTol && ...
+            isfinite(minRatioCert) && minRatioCert > info.interiorTolerance
+        % min(pCert./q) is a certified feasible margin, hence a lower bound
+        % on the maximum phase-I margin tStar. The exact maximizing tStar is
+        % deliberately not computed because it is unnecessary for deciding
+        % strict interiority during the cutoff search.
+        info.available = true;
+        info.tStar = min(1,minRatioCert);
+        info.tStarIsLowerBound = true;
+        info.classification = 'strict relative interior (affine certificate)';
+        info.convexHullFeasible = true;
+        info.strictInteriorFeasible = true;
+        info.smallPositiveMargin = false;
+        info.boundary = false;
+        info.equalityResidual = eqCert;
+        info.inequalityViolation = 0;
+        info.minProbability = minPCert;
+        info.minProbabilityRatio = minRatioCert;
+        info.iterations = 0;
+        info.algorithm = 'affine projection certificate';
+        info.certificateMethod = 'affine projection';
+        info.affineCertificateAccepted = true;
+        info.reason = '';
+        return
+    end
+end
 
 % This helper is also used by the finite-support entropy calibration. The
 % entropy branch checks availability of Optimization Toolbox before entering
@@ -7535,19 +7837,66 @@ if exist('linprog','file') == 0
     return
 end
 
-% Variables are x=[p;t].  Summing p_i>=t q_i already implies t<=1, but the
-% explicit upper bound improves numerical scaling.
+% Reparameterized phase-I LP. The original problem is
+%
+%   maximize t
+%   subject to sum(p)=1, H'*p=0, p>=t*q, t>=0.
+%
+% Write
+%
+%   p = t*q + (1-t)*y,     y>=0, sum(y)=1,
+%
+% and set a=t/(1-t). For t<1 the exact calibration equations become
+%
+%   H'*y + a*(H'*q) = 0.
+%
+% Maximizing t is therefore equivalent to maximizing a. The m inequalities
+% p_i>=t*q_i disappear and are replaced by simple nonnegativity bounds on y.
+% This is exactly equivalent to the original phase-I LP and is substantially
+% cheaper for entropy supports with thousands of points. If H'*q is already
+% zero, q itself is feasible with t=1 and no LP is needed.
+muq = H'*q;
+muTol = 1e-12*max(1,norm(H,inf));
+if norm(muq,inf) <= muTol
+    pLP = q;
+    tStar = 1;
+    info.available = true;
+    info.exitflag = 1;
+    info.tStar = tStar;
+    info.tStarIsLowerBound = false;
+    info.classification = 'strict relative interior';
+    info.convexHullFeasible = true;
+    info.strictInteriorFeasible = true;
+    info.smallPositiveMargin = false;
+    info.boundary = false;
+    info.equalityResidual = max(abs(sum(pLP)-1),norm(H'*pLP,inf));
+    info.inequalityViolation = 0;
+    info.minProbability = min(pLP);
+    info.minProbabilityRatio = min(pLP./q);
+    info.iterations = 0;
+    info.algorithm = 'direct base-probability certificate';
+    info.certificateMethod = 'affine projection';
+    info.phaseIParameterization = 'not needed: q exactly feasible';
+    info.affineCertificateAccepted = true;
+    info.affineEqualityResidual = info.equalityResidual;
+    info.affineMinProbability = info.minProbability;
+    info.affineMinProbabilityRatio = info.minProbabilityRatio;
+    info.reason = '';
+    return
+end
+
+% Variables are x=[y;a], with y on the simplex and a>=0. No inequality
+% matrix is required; all geometry is carried by a small equality block and
+% lower bounds. The upper bounds y<=1 are redundant but improve scaling.
 f = [zeros(m,1); -1];
-A = [-eye(m) q];
-b = zeros(m,1);
-Aeq = [ones(1,m) 0; H' zeros(d,1)];
-beq = [1; zeros(d,1)];
+AeqRA = [sparse(ones(1,m)) sparse(0); sparse(H') sparse(muq)];
+beqRA = [1; zeros(d,1)];
 lb = zeros(m+1,1);
-ub = [ones(m,1); 1];
+ub = [ones(m,1); Inf];
 
 try
     opts = optimoptions('linprog','Display','none');
-    [x,~,exitflag,output] = linprog(f,A,b,Aeq,beq,lb,ub,opts);
+    [x,~,exitflag,output] = linprog(f,[],[],AeqRA,beqRA,lb,ub,opts);
 catch ME
     info.reason = sprintf('linprog failed: %s',ME.message);
     return
@@ -7555,6 +7904,9 @@ end
 
 info.available = true;
 info.exitflag = exitflag;
+info.certificateMethod = 'phase-I LP';
+info.phaseIParameterization = 'simplex-slack reparameterization';
+info.tStarIsLowerBound = false;
 if isstruct(output)
     if isfield(output,'iterations')
         info.iterations = output.iterations;
@@ -7565,12 +7917,20 @@ if isstruct(output)
 end
 
 if exitflag > 0 && numel(x)==m+1 && all(isfinite(x))
-    pLP = x(1:m);
-    tStar = max(0,min(1,x(end)));
+    yLP = x(1:m);
+    aStar = max(0,x(end));
+    if isinf(aStar)
+        tStar = 1;
+        pLP = q;
+    else
+        tStar = aStar/(1+aStar);
+        pLP = tStar*q + (1-tStar)*yLP;
+    end
+    tStar = max(0,min(1,tStar));
     info.tStar = tStar;
     info.convexHullFeasible = true;
-    info.equalityResidual = norm(Aeq*x-beq,inf);
-    info.inequalityViolation = max([0; A*x-b]);
+    info.equalityResidual = max(abs(sum(pLP)-1),norm(H'*pLP,inf));
+    info.inequalityViolation = max([0; tStar*q-pLP]);
     info.minProbability = min(pLP);
     info.minProbabilityRatio = min(pLP./q);
     if tStar > info.interiorTolerance
@@ -7596,7 +7956,7 @@ if exitflag > 0 && numel(x)==m+1 && all(isfinite(x))
 elseif exitflag == -2
     info.convexHullFeasible = false;
     info.classification = 'outside convex hull';
-    info.reason = 'The phase-I relative-interior LP is infeasible.';
+    info.reason = 'The reparameterized phase-I relative-interior LP is infeasible.';
 else
     info.classification = 'LP unresolved';
     if isstruct(output) && isfield(output,'message')
