@@ -263,14 +263,13 @@ function out = mdMDPtest(Y, varargin)
 %           'auto', 'ordinary', 'inlier' or 'fixed'. The default is 'auto'.
 %
 %           'auto' selects 'ordinary' when alpha=0 and 'inlier' when
-%           alpha>0. Thus the default call remains the classical MDP-U
-%           procedure, whereas any explicitly requested positive robustness
-%           level automatically uses the recommended robust MDP-I
-%           aggregation.
+%           alpha>0. The analysis is deliberately kept coherent: alpha=0
+%           defines the fully nonrobust MDP-U procedure, whereas alpha>0
+%           defines a robust procedure throughout.
 %
 %           'ordinary' computes the two mean statistics using all complete
-%           cases (MDP-U). This is the classical/theoretical aggregation
-%           rule and can also be requested explicitly when alpha>0.
+%           cases (MDP-U). It is available only when alpha=0. A robust fit
+%           (alpha>0) cannot be combined with ordinary aggregation.
 %
 %           'inlier' computes the two mean statistics using only complete
 %           cases not declared as outliers by the selected robust
@@ -285,15 +284,18 @@ function out = mdMDPtest(Y, varargin)
 %           retained-moment proportionality special case.
 %
 %           'fixed' computes the two mean statistics using only complete
-%           cases whose complete-case squared Mahalanobis distance is not
-%           larger than chi2inv(filterlev,p) (MDP-F). This rule is intended
-%           primarily as a robust sensitivity diagnostic.
+%           cases whose robust complete-case squared Mahalanobis distance is
+%           not larger than chi2inv(filterlev,p) (MDP-F). It requires
+%           alpha>0 and is intended primarily as a robust sensitivity
+%           diagnostic.
 %
-%           The median statistics are not affected by this option. With
-%           coupledtrim=false (default), the aggregation rule acts only on
-%           the final two means and does not alter the EM/TEM fit. The
-%           selected mean aggregation rule is reconstructed independently
-%           in every bootstrap sample.
+%           Mixed robust/nonrobust configurations are not allowed:
+%           alpha=0 requires aggregation='ordinary', while alpha>0 requires
+%           aggregation='inlier' or 'fixed'. The median statistics are not
+%           affected by this option. With coupledtrim=false (default), the
+%           aggregation rule acts only on the final two means and does not
+%           alter the EM/TEM fit. The selected mean aggregation rule is
+%           reconstructed independently in every bootstrap sample.
 %           Example - 'aggregation','inlier'
 %           Data Types - char | string
 %
@@ -621,11 +623,6 @@ function out = mdMDPtest(Y, varargin)
 %                            not assume Gaussianity. The distinct Gaussian-
 %                            information results are retained in
 %                            out.asympt.gaussian and out.resultsGaussian.
-%                            For alpha=0 and aggregation='fixed', the current
-%                            analytical benchmark remains Gaussian because a
-%                            general-F fixed-cutoff law has not been derived;
-%                            the untrimmed general-F result is nevertheless
-%                            returned in out.asympt.generalF for diagnostics.
 %                            For MDP-U the ordinary first-order coefficients
 %                            are used. For MDP-I, a stable estimator-induced
 %                            inlier rule may exclude a nonvanishing fraction
@@ -732,11 +729,11 @@ function out = mdMDPtest(Y, varargin)
 %    4) selected mean of d2_all - d2_cc.
 %
 %  With aggregation='auto', the selected mean aggregation resolves to
-%  'ordinary' for alpha=0 and to 'inlier' for alpha>0. The selected means
-%  use all complete cases for aggregation='ordinary', the estimator-defined
-%  complete-case inliers for aggregation='inlier', and the fixed robust-
-%  distance cutoff for aggregation='fixed'. The same resolved rule is
-%  re-estimated in every bootstrap sample. With coupledtrim=true,
+%  'ordinary' for alpha=0 and to 'inlier' for alpha>0. Mixed robust/nonrobust
+%  analyses are deliberately excluded: ordinary aggregation is available only
+%  with alpha=0, while inlier and fixed aggregation require alpha>0. The same
+%  resolved robust rule is re-estimated in every bootstrap sample. With
+%  coupledtrim=true,
 %  estimator-declared complete-case outliers are additionally forced to zero
 %  weight in every TEM concentration step.
 %
@@ -814,9 +811,7 @@ function out = mdMDPtest(Y, varargin)
 %  estimator-discrepancy variance multiplied by an empirical radial
 %  coefficient estimated from the complete-case Mahalanobis distances.
 %  This elliptical TLmean calibration is distinct from the separate Gaussian-
-%  information benchmark. For alpha=0 and aggregation='fixed', the existing
-%  Gaussian Tallis benchmark is retained because a general-F fixed-cutoff law
-%  has not yet been derived.
+%  information benchmark.
 %
 %  For alpha>0 the analytical benchmark follows the selected mean aggregation.
 %  The Gaussian pattern branch uses Tallis coefficients, whereas the adaptive
@@ -1207,15 +1202,31 @@ end
 
 % Resolve the automatic aggregation policy only after alpha has been
 % validated. The numerical default alpha=0 is deliberately unchanged:
-%   alpha=0  -> classical/theoretical MDP-U ('ordinary');
-%   alpha>0  -> recommended robust MDP-I ('inlier').
-% Explicit 'ordinary', 'inlier' and 'fixed' requests are left unchanged.
+%   alpha=0  -> fully nonrobust MDP-U ('ordinary');
+%   alpha>0  -> robust MDP-I ('inlier').
 if strcmp(aggregation,'auto')
     if alpha > 0
         aggregation = 'inlier';
     else
         aggregation = 'ordinary';
     end
+end
+
+% Do not mix robust and nonrobust stages. A classical analysis uses alpha=0
+% and ordinary aggregation throughout. A robust analysis uses alpha>0 and
+% either estimator-defined inliers (MDP-I) or the fixed-cutoff sensitivity
+% rule (MDP-F). In particular, robust fitting followed by ordinary MDP-U
+% aggregation is deliberately not supported.
+if alpha == 0 && ~strcmp(aggregation,'ordinary')
+    error('FSDA:mdMDPtest:ClassicalNeedsOrdinaryAggregation', ...
+        ['With alpha=0 mdMDPtest performs the fully nonrobust MDP-U analysis ' ...
+        'and requires aggregation=''ordinary''. Use alpha>0 for robust MDP-I ' ...
+        'or MDP-F analysis.']);
+elseif alpha > 0 && strcmp(aggregation,'ordinary')
+    error('FSDA:mdMDPtest:RobustNeedsRobustAggregation', ...
+        ['With alpha>0 mdMDPtest performs a robust analysis and ordinary ' ...
+        'aggregation is not allowed. Use aggregation=''inlier'' (MDP-I, ' ...
+        'recommended) or aggregation=''fixed'' (MDP-F sensitivity).']);
 end
 
 if ~(islogical(bootstrap) && isscalar(bootstrap))
@@ -1427,18 +1438,16 @@ end
 % Observed statistics
 Tobs = local_statistic(d2_cc,d2_all_cc,eps0,meanWeightsCC);
 
-% Keep the untrimmed ordinary TDmean available even when aggregation='fixed'.
-% The feasible general-F theorem applies to this MDP-U statistic only.
+% Ordinary TDmean used by the fully nonrobust alpha=0 MDP-U analysis.
 TDordinary = mean(d2_all_cc-d2_cc);
 
 % Analytical benchmark for the selected mean statistics.
 %
-% For alpha=0 and ordinary aggregation, TDmean uses the feasible general-F
-% sandwich as the primary analytical calibration. The Gaussian information
-% specialization is retained as a diagnostic. For alpha=0 with a fixed cutoff,
-% the present analytical law remains Gaussian because a general-F fixed-cutoff
-% result has not yet been derived. For alpha>0 the existing Gaussian-pattern
-% or adaptive-elliptical TEM branches are used.
+% For alpha=0, ordinary MDP-U uses the feasible general-F sandwich as the
+% primary TDmean calibration; the Gaussian information specialization is
+% retained as a diagnostic. For alpha>0 only robust MDP-I or MDP-F is
+% admissible and the Gaussian-pattern or adaptive-elliptical TEM branches
+% are used.
 if coupledtrim
     % Frozen-eligibility working sandwich. The realized externally imposed
     % complete-case eligibility mask is held fixed. Its effect on the TEM
@@ -1463,18 +1472,8 @@ if coupledtrim
         'included in the current sandwich calculation.']);
 else
     if alpha == 0
-        preferGeneralF = strcmp(aggregation,'ordinary');
         asympt = local_classical_asymptotic(Y, maskMiss, completeIdx, ...
-            muHat, SigHat, nComplete, Tobs, TDordinary, eps0, d2_cc, ...
-            preferGeneralF);
-
-        % The feasible general-F result currently applies only to ordinary
-        % untrimmed TDmean. For the fixed cutoff, retain the Gaussian Tallis
-        % scaling of the former analytical benchmark.
-        if ~preferGeneralF
-            asympt = local_apply_aggregation_asymptotic(asympt,aggregation, ...
-                aggInfo,p,eps0,n,Tobs,d2_cc,Ycc,muCC,SigCC);
-        end
+            muHat, SigHat, nComplete, Tobs, TDordinary, eps0, d2_cc);
     elseif strcmp(consistencyfactor,'pattern')
         asympt = local_tem_asymptotic(Y, maskMiss, completeIdx, outFit, ...
             alpha, method, robustClass, robustEff, robustBonflev, ...
@@ -2343,8 +2342,6 @@ if dispresults
                 fprintf('Reason: %s\n',asympt.gaussian.reason);
             end
         end
-    elseif alpha == 0 && strcmp(aggregation,'fixed')
-        disp('Note: a general-F fixed-cutoff calibration is not currently available.')
     end
 
     if coupledtrim
@@ -3250,9 +3247,9 @@ end
 % -------------------------------------------------------------------------
 function asympt = local_apply_aggregation_asymptotic(asympt,aggregation, ...
     aggInfo,p,eps0,n,Tobs,d2cc,Ycc,muCC,SigCC)
-%local_apply_aggregation_asymptotic applies MDP-U/I/F first-order calibration.
+%local_apply_aggregation_asymptotic applies robust MDP-I/F calibration.
 %
-% MDP-U and MDP-F retain scalar first-order coefficients. MDP-I instead uses
+% MDP-F retains scalar first-order coefficients. MDP-I instead uses
 % the generic stable-inlier directions bI,aI and bLI,aLI together with the
 % joint location--scatter estimator-discrepancy covariance. The empirical
 % radial ratios rI and rLI are preserved as the proportional-moment special
@@ -3430,13 +3427,6 @@ if strcmp(aggregation,'inlier')
 end
 
 switch aggregation
-    case 'ordinary'
-        coefD = 1;
-        coefL = baseKappa;
-        asympt.kc = 1;
-        asympt.lambda = baseKappa;
-        asympt.gammaFilter = 1;
-
     case 'fixed'
         c = aggInfo.cutoff;
         isAdaptiveRadial = isfield(asympt,'radialModel') && ...
@@ -3503,7 +3493,8 @@ switch aggregation
 
     otherwise
         error('FSDA:mdMDPtest:WrongAggregation', ...
-            'Unknown aggregation rule in analytical scaling.');
+            ['Robust analytical scaling requires aggregation=''inlier'' or ' ...
+            '''fixed''. Ordinary aggregation is reserved for alpha=0 MDP-U.']);
 end
 
 if ~isfinite(coefD) || coefD <= 0
@@ -5097,8 +5088,7 @@ end
 
 % -------------------------------------------------------------------------
 function asympt = local_classical_asymptotic(Y, maskMiss, completeIdx, ...
-    muHat, SigmaHat, nComplete, Tobs, TDordinary, eps0, d2cc, ...
-    preferGeneralF)
+    muHat, SigmaHat, nComplete, Tobs, TDordinary, eps0, d2cc)
 %local_classical_asymptotic Analytical benchmark for alpha=0.
 %
 % For ordinary untrimmed MDP-U, the primary TDmean calibration is the
@@ -5120,11 +5110,6 @@ function asympt = local_classical_asymptotic(Y, maskMiss, completeIdx, ...
 % calibration therefore uses the same feasible general-F variance multiplied
 % by an empirical radial coefficient estimated from the complete-case
 % Mahalanobis distances d2cc. This does not assume Gaussianity.
-%
-% For aggregation='fixed', preferGeneralF is false. The caller then applies
-% the existing Gaussian Tallis fixed-cutoff scaling. The untrimmed general-F
-% TDmean result is still returned in asympt.generalF for diagnostics, but is
-% not used to calibrate the filtered statistic.
 
 [n,p] = size(Y);
 qhat = nComplete/n;
@@ -5417,69 +5402,43 @@ asympt.ellipticalTL = ellipticalTL;
 asympt.gaussian = gaussian;
 asympt.VA = gaussian.VA; % backward-compatible Gaussian diagnostic field
 
-if preferGeneralF
-    % Ordinary untrimmed MDP-U: general-F is primary for TDmean.
-    asympt.mode = 'feasible general-F sandwich';
-    asympt.primaryCalibration = 'generalF+ellipticalRadial';
-    asympt.radialModel = 'general-F with elliptical TLmean radial scaling';
-    asympt.theoryStatus = ['TDmean uses the feasible general-F sandwich under ' ...
-        'MCAR and finite fourth moments. Under ellipticity, TLmean uses the ' ...
-        'same estimator-discrepancy variance multiplied by an empirical ' ...
-        'complete-case radial coefficient. Gaussian-information results are ' ...
-        'reported separately as a benchmark.'];
-    asympt.aggregation = 'ordinary';
-    asympt.filterCutoff = NaN;
-    asympt.kc = 1;
-    asympt.gammaFilter = 1;
+% Ordinary untrimmed MDP-U: general-F is primary for TDmean.
+asympt.mode = 'feasible general-F sandwich';
+asympt.primaryCalibration = 'generalF+ellipticalRadial';
+asympt.radialModel = 'general-F with elliptical TLmean radial scaling';
+asympt.theoryStatus = ['TDmean uses the feasible general-F sandwich under ' ...
+    'MCAR and finite fourth moments. Under ellipticity, TLmean uses the ' ...
+    'same estimator-discrepancy variance multiplied by an empirical ' ...
+    'complete-case radial coefficient. Gaussian-information results are ' ...
+    'reported separately as a benchmark.'];
+asympt.aggregation = 'ordinary';
+asympt.filterCutoff = NaN;
+asympt.kc = 1;
+asympt.gammaFilter = 1;
 
-    if generalF.available
-        asympt.available = true;
-        asympt.reason = '';
-        asympt.degenerate = false;
-        asympt.baseSigmaD2 = generalF.sigma2;
-        asympt.TDmean = struct('available',true,'calibration','generalF', ...
-            'coefficient',1,'sigma2',generalF.sigma2,'se',generalF.se, ...
-            'z',generalF.z,'pvalue',generalF.pvalue);
-    else
-        asympt.available = false;
-        asympt.reason = generalF.reason;
-        asympt.degenerate = generalF.degenerate;
-        asympt.baseSigmaD2 = NaN;
-        asympt.TDmean = struct('available',false,'calibration','generalF', ...
-            'coefficient',1,'sigma2',NaN,'se',NaN,'z',NaN,'pvalue',NaN);
-    end
-
-    % Under ellipticity, TLmean is a scalar multiple of TDmean to first
-    % order. Use the empirical radial coefficient with the general-F
-    % estimator-discrepancy variance; keep the Gaussian calculation separate.
-    asympt.TLmean = ellipticalTL;
-    asympt.baseKappa = ellipticalTL.kappa;
-    asympt.lambda = ellipticalTL.kappa;
+if generalF.available
+    asympt.available = true;
+    asympt.reason = '';
+    asympt.degenerate = false;
+    asympt.baseSigmaD2 = generalF.sigma2;
+    asympt.TDmean = struct('available',true,'calibration','generalF', ...
+        'coefficient',1,'sigma2',generalF.sigma2,'se',generalF.se, ...
+        'z',generalF.z,'pvalue',generalF.pvalue);
 else
-    % A general-F fixed-cutoff theorem is not currently available. Preserve
-    % the previous Gaussian benchmark as the primary analytical reference;
-    % the caller applies the fixed-cutoff Tallis coefficients afterwards.
-    asympt.mode = 'Gaussian information benchmark';
-    asympt.primaryCalibration = 'gaussianInfo';
-    asympt.radialModel = 'Gaussian';
-    asympt.theoryStatus = ['For alpha=0 with fixed aggregation the analytical ' ...
-        'benchmark remains Gaussian; the untrimmed general-F TDmean result is ' ...
-        'returned in asympt.generalF but is not applied to the fixed cutoff.'];
-
-    if gaussian.available
-        asympt.available = true;
-        asympt.reason = '';
-        asympt.degenerate = false;
-        asympt.TDmean = gaussian.TDmean;
-        asympt.TLmean = gaussian.TLmean;
-        asympt.baseSigmaD2 = gaussian.TDmean.sigma2;
-        asympt.baseKappa = gaussian.kappa;
-    else
-        asympt.available = false;
-        asympt.reason = gaussian.reason;
-        asympt.degenerate = false;
-    end
+    asympt.available = false;
+    asympt.reason = generalF.reason;
+    asympt.degenerate = generalF.degenerate;
+    asympt.baseSigmaD2 = NaN;
+    asympt.TDmean = struct('available',false,'calibration','generalF', ...
+        'coefficient',1,'sigma2',NaN,'se',NaN,'z',NaN,'pvalue',NaN);
 end
+
+% Under ellipticity, TLmean is a scalar multiple of TDmean to first order.
+% Use the empirical radial coefficient with the general-F estimator-
+% discrepancy variance; keep the Gaussian calculation separate.
+asympt.TLmean = ellipticalTL;
+asympt.baseKappa = ellipticalTL.kappa;
+asympt.lambda = ellipticalTL.kappa;
 end
 % -------------------------------------------------------------------------
 function Calibration = local_calibration_labels(alpha,aggregation, ...
@@ -5489,13 +5448,8 @@ function Calibration = local_calibration_labels(alpha,aggregation, ...
 Calibration = {'not available';'not available';'not available';'not available'};
 
 if alpha == 0
-    if strcmp(aggregation,'ordinary')
-        Calibration{2} = 'elliptical radial sandwich';
-        Calibration{4} = 'general-F sandwich';
-    elseif strcmp(aggregation,'fixed')
-        Calibration{2} = 'Gaussian fixed-cutoff benchmark';
-        Calibration{4} = 'Gaussian fixed-cutoff benchmark';
-    end
+    Calibration{2} = 'elliptical radial sandwich';
+    Calibration{4} = 'general-F sandwich';
 else
     if strcmp(consistencyfactor,'adaptive')
         if strcmp(aggregation,'inlier')
@@ -5504,9 +5458,6 @@ else
         elseif strcmp(aggregation,'fixed')
             Calibration{2} = 'adaptive elliptical fixed-cutoff';
             Calibration{4} = 'adaptive elliptical fixed-cutoff';
-        else
-            Calibration{2} = 'adaptive elliptical sandwich';
-            Calibration{4} = 'adaptive elliptical sandwich';
         end
     elseif strcmp(consistencyfactor,'pattern')
         if coupledtrim
@@ -5520,9 +5471,6 @@ else
         elseif strcmp(aggregation,'fixed')
             Calibration{2} = 'Gaussian fixed-cutoff sandwich';
             Calibration{4} = 'Gaussian fixed-cutoff sandwich';
-        else
-            Calibration{2} = 'Gaussian pattern sandwich';
-            Calibration{4} = 'Gaussian pattern sandwich';
         end
     end
 end
@@ -5561,12 +5509,12 @@ if coupledtrim
         alpha,method,robustClass,robustEff,robustBonflev,Tstar,eps0, ...
         outRobStar,~forcedZeroStar);
 elseif alpha == 0
-    % The omnibus discrepancy covariance is the general-F covariance even when
-    % the final scalar aggregation is not ordinary.
+    % The fully nonrobust bootstrap replicate uses the same ordinary MDP-U
+    % general-F discrepancy covariance as the observed analysis.
     TDordinaryStar = mean(d2allccStar-d2ccStar);
     asymptStar = local_classical_asymptotic(Ystar,maskMiss,completeIdx, ...
         muHatStar,SigHatStar,nCompleteStar,Tstar,TDordinaryStar,eps0, ...
-        d2ccStar,true);
+        d2ccStar);
 elseif strcmp(consistencyfactor,'pattern')
     asymptStar = local_tem_asymptotic(Ystar,maskMiss,completeIdx,outFitStar, ...
         alpha,method,robustClass,robustEff,robustBonflev,Tstar,eps0, ...
