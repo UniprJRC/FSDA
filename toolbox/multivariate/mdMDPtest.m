@@ -3641,6 +3641,9 @@ asympt.TEM = struct('available',false,'sigma2',NaN,'threshold',NaN, ...
     'sigma2Base',NaN,'sigma2Factor',NaN,'twiceBaseFactor',NaN, ...
     'meanInfluenceBeforeCentering',NaN,'meanBaseBeforeCentering',NaN, ...
     'meanFactorBeforeCentering',NaN,'estimatingEquationMeanNorm',NaN, ...
+    'JsingularValues',[],'Jcond2',NaN,'Jsmax',NaN,'Jsmin',NaN, ...
+    'JweakLeft',[],'JweakRight',[],'JdirectionDiagnostics',table(), ...
+    'traceFromJDirections',NaN, ...
     'patternDiagnostics',table(),'factorDiagnostics',table());
 asympt.completeCase = struct('influenceMethod','', ...
     'sigma2',NaN,'crossTEMCC',NaN,'nComplete',sum(completeIdx), ...
@@ -4094,6 +4097,33 @@ asympt.TEM.patternDiagnostics = table(pobsDiag,piDiag,nkeptDiag,aDiag,HDiag, ...
 
 Jrcond = rcond(J);
 asympt.TEM.Jrcond = Jrcond;
+
+% Singular-value decomposition of the adaptive TEM
+% scatter Jacobian. These fields are diagnostic only and do not alter
+% fitting, analytical calibration, p-values or the omnibus statistic.
+[UJ,SJ,VJ] = svd(J);
+sJ = diag(SJ);
+asympt.TEM.JsingularValues = sJ;
+if isempty(sJ)
+    asympt.TEM.Jcond2 = NaN;
+    asympt.TEM.Jsmax = NaN;
+    asympt.TEM.Jsmin = NaN;
+    asympt.TEM.JweakLeft = [];
+    asympt.TEM.JweakRight = [];
+else
+    asympt.TEM.Jsmax = sJ(1);
+    asympt.TEM.Jsmin = sJ(end);
+    if sJ(end) > 0
+        asympt.TEM.Jcond2 = sJ(1)/sJ(end);
+    else
+        asympt.TEM.Jcond2 = Inf;
+    end
+    % UJ(:,end) is the weakest estimating-equation direction and
+    % VJ(:,end) is the corresponding scatter-parameter direction.
+    asympt.TEM.JweakLeft = UJ(:,end);
+    asympt.TEM.JweakRight = VJ(:,end);
+end
+
 if ~isfinite(Jrcond) || Jrcond <= 1e-12
     asympt.reason = ['The adaptive effective TEM scatter Jacobian is ' ...
         'numerically singular; analytical calibration not computed.'];
@@ -4129,6 +4159,46 @@ for i = 1:n
 end
 XiEff = XiBase+XiFactor;
 asympt.TEM.estimatingEquationMeanNorm = norm(mean(XiEff,1));
+
+% DIAGNOSTIC: decompose the TEM scatter influence variance along
+% the singular directions of J. Since
+%
+%   J = U*S*V',   Psi_TEM = -XiEff*J^{-T}
+%                        = -XiEff*U*S^{-1}*V',
+%
+% direction j contributes Var(XiEff*u_j)/s_j^2 to the trace of the TEM
+% scatter influence covariance. The same decomposition is reported
+% separately for the base innovation, adaptive-factor innovation and their
+% twice-cross term.
+Zbase = XiBase*UJ;
+Zfactor = XiFactor*UJ;
+Zeff = XiEff*UJ;
+
+ZbaseC = Zbase-mean(Zbase,1);
+ZfactorC = Zfactor-mean(Zfactor,1);
+ZeffC = Zeff-mean(Zeff,1);
+
+varBaseJ = mean(ZbaseC.^2,1)';
+varFactorJ = mean(ZfactorC.^2,1)';
+crossJ = 2*mean(ZbaseC.*ZfactorC,1)';
+varEffJ = mean(ZeffC.^2,1)';
+
+sJ2 = sJ.^2;
+traceBaseJ = varBaseJ./sJ2;
+traceFactorJ = varFactorJ./sJ2;
+traceCrossJ = crossJ./sJ2;
+traceContribJ = varEffJ./sJ2;
+
+direction = (1:numel(sJ))';
+asympt.TEM.JdirectionDiagnostics = table( ...
+    direction,sJ,1./sJ, ...
+    varBaseJ,varFactorJ,crossJ,varEffJ, ...
+    traceBaseJ,traceFactorJ,traceCrossJ,traceContribJ, ...
+    'VariableNames', ...
+    {'direction','singularValue','inverseSingularValue', ...
+    'innovationVarBase','innovationVarFactor','innovationTwiceCross', ...
+    'innovationVarTotal','traceBase','traceFactor','traceCross','traceTotal'});
+asympt.TEM.traceFromJDirections = sum(traceContribJ);
 
 % Joint location--scatter estimator-discrepancy influence. The scatter block
 % remains the covariance used by the Hausman omnibus statistic.
