@@ -338,5 +338,83 @@
         "purpose": "Table of fundamental company information"
       }
     ]
+  },
+  "zscoreFS": {
+    "inputs": [
+      {
+        "name": "X",
+        "kind": "required",
+        "type": [
+          "numeric",
+          "table"
+        ],
+        "purpose": "Input data. Vector, Matrix, 3D array or table"
+      },
+      {
+        "name": "loc",
+        "kind": "optional",
+        "type": [
+          [
+            "char",
+            "choices={'median','mean'}"
+          ],
+          [
+            "string",
+            "choices={'median','mean'}"
+          ]
+        ],
+        "purpose": "Location measure to use ('median' or 'mean')"
+      },
+      {
+        "name": "scale",
+        "kind": "optional",
+        "type": [
+          [
+            "char",
+            "choices={'mad','Qn','Sn','std','modmadp'}"
+          ],
+          [
+            "string",
+            "choices={'mad','Qn','Sn','std','modmadp'}"
+          ]
+        ],
+        "purpose": "Scale measure to use"
+      },
+      {
+        "name": "dim",
+        "kind": "optional",
+        "type": [
+          "numeric",
+          "scalar",
+          "integer",
+          ">=1"
+        ],
+        "purpose": "Dimension to operate along"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "Z",
+        "type": [
+          "numeric",
+          "table"
+        ],
+        "purpose": "Centered and scaled version of X"
+      },
+      {
+        "name": "mu",
+        "type": [
+          "numeric"
+        ],
+        "purpose": "Location estimate"
+      },
+      {
+        "name": "sigma",
+        "type": [
+          "numeric"
+        ],
+        "purpose": "Scale estimate"
+      }
+    ]
   }
 }
