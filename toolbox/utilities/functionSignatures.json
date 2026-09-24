@@ -6,14 +6,9 @@
         "name": "market",
         "kind": "namevalue",
         "type": [
-          [
-            "char",
-            "choices={'Nasdaq','SP500','NYSE','FTSEMIB','London','DAX40','CAC40','Nikkei225'}"
-          ],
-          [
-            "string",
-            "choices={'Nasdaq','SP500','NYSE','FTSEMIB','London','DAX40','CAC40','Nikkei225'}"
-          ]
+          "char",
+          "string",
+          "choices={'Nasdaq','SP500','NYSE','FTSEMIB','London','DAX40','CAC40','Nikkei225'}"
         ],
         "purpose": "Market or index name"
       },
@@ -31,14 +26,9 @@
         "name": "Source",
         "kind": "namevalue",
         "type": [
-          [
-            "char",
-            "choices={'static','dynamic'}"
-          ],
-          [
-            "string",
-            "choices={'static','dynamic'}"
-          ]
+          "char",
+          "string",
+          "choices={'static','dynamic'}"
         ],
         "purpose": "Source used to build the market universe"
       },
@@ -86,15 +76,9 @@
         "name": "ticker",
         "kind": "required",
         "type": [
-          [
-            "char"
-          ],
-          [
-            "string"
-          ],
-          [
-            "cellstr"
-          ]
+          "char",
+          "string",
+          "cellstr"
         ],
         "purpose": "Ticker symbol or collection of ticker symbols"
       },
@@ -102,14 +86,9 @@
         "name": "LastPeriod",
         "kind": "namevalue",
         "type": [
-          [
-            "char",
-            "choices={'1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max'}"
-          ],
-          [
-            "string",
-            "choices={'1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max'}"
-          ]
+          "char",
+          "string",
+          "choices={'1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max'}"
         ],
         "purpose": "Time span to download"
       },
@@ -117,14 +96,9 @@
         "name": "interval",
         "kind": "namevalue",
         "type": [
-          [
-            "char",
-            "choices={'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'}"
-          ],
-          [
-            "string",
-            "choices={'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'}"
-          ]
+          "char",
+          "string",
+          "choices={'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'}"
         ],
         "purpose": "Sampling interval requested to Yahoo Finance"
       },
@@ -173,21 +147,15 @@
         "type": [
           [
             "char",
-            "choices={'candle','line','ma','boll'}"
-          ],
-          [
             "string",
             "choices={'candle','line','ma','boll'}"
           ],
           [
             "struct",
-            "scalar",
-            "field Name required",
-            "Name choices={'candle','line','ma','boll'}",
-            "admissible fields depend on Name: candle->{Name,widthFactor,upColor,downColor}; line->{Name}; ma->{Name,maFastLen,maMidLen,maSlowLen,showMACrossovers}; boll->{Name,bollWindow,bollNumStd}"
+            "scalar"
           ]
         ],
-        "purpose": "Type of plot in the top panel; \n when supplied as a struct, \n it also controls the suboptions associated with the selected visualization"
+        "purpose": "Type of plot in the top panel; when supplied as a struct, it also controls suboptions (field Name required). Admissible fields: candle->{Name,widthFactor,upColor,downColor}; line->{Name}; ma->{Name,maFastLen,maMidLen,maSlowLen,showMACrossovers}; boll->{Name,bollWindow,bollNumStd}"
       },
       {
         "name": "bottomPanelMode",
@@ -195,21 +163,15 @@
         "type": [
           [
             "char",
-            "choices={'rsi','stoch','macd','williamsr','roc'}"
-          ],
-          [
             "string",
             "choices={'rsi','stoch','macd','williamsr','roc'}"
           ],
           [
             "struct",
-            "scalar",
-            "field Name required",
-            "Name choices={'rsi','stoch','macd','williamsr','roc'}",
-            "admissible fields depend on Name: rsi->{Name,topRSI,lowRSI,rsiLen}; stoch->{Name,topStoch,lowStoch,stochLen,stochSmooth}; macd->{Name,macdFastLen,macdSlowLen,macdSigLen}; williamsr->{Name,topWilliams,lowWilliams,wrLen}; roc->{Name,rocLen}"
+            "scalar"
           ]
         ],
-        "purpose": "Indicator shown in the bottom panel; when supplied as a struct, it also controls the suboptions associated with the selected indicator"
+        "purpose": "Indicator shown in the bottom panel; when supplied as a struct, it also controls suboptions (field Name required). Admissible fields: rsi->{Name,topRSI,lowRSI,rsiLen}; stoch->{Name,topStoch,lowStoch,stochLen,stochSmooth}; macd->{Name,macdFastLen,macdSlowLen,macdSigLen}; williamsr->{Name,topWilliams,lowWilliams,wrLen}; roc->{Name,rocLen}"
       },
       {
         "name": "showPanelHelp",
@@ -264,15 +226,9 @@
         "name": "ticker",
         "kind": "required",
         "type": [
-          [
-            "char"
-          ],
-          [
-            "string"
-          ],
-          [
-            "cellstr"
-          ]
+          "char",
+          "string",
+          "cellstr"
         ],
         "purpose": "Ticker symbol or collection of ticker symbols"
       },
@@ -280,14 +236,9 @@
         "name": "RankBy",
         "kind": "namevalue",
         "type": [
-          [
-            "char" ,
-            "choices={'marketCap','trailingPE','forwardPE','priceToBook','beta','enterpriseValue','profitMargins','returnOnEquity','returnOnAssets','totalRevenue'}"
-          ],
-          [
-            "string" ,
-            "choices={'marketCap','trailingPE','forwardPE','priceToBook','beta','enterpriseValue','profitMargins','returnOnEquity','returnOnAssets','totalRevenue'}"
-          ]
+          "char",
+          "string",
+          "choices={'marketCap','trailingPE','forwardPE','priceToBook','beta','enterpriseValue','profitMargins','returnOnEquity','returnOnAssets','totalRevenue'}"
         ],
         "purpose": "Numeric variable used to rank rows in descending order"
       },
@@ -301,9 +252,6 @@
           ],
           [
             "char",
-            "choices={'all','basic','valuation','performance'}"
-          ],
-          [
             "string",
             "choices={'all','basic','valuation','performance'}"
           ]
@@ -316,9 +264,6 @@
         "type": [
           [
             "char",
-            "choices={'all','basic','valuation','performance'}"
-          ],
-          [
             "string",
             "choices={'all','basic','valuation','performance'}"
           ],
@@ -354,14 +299,9 @@
         "name": "loc",
         "kind": "ordered",
         "type": [
-          [
-            "char",
-            "choices={'median','mean'}"
-          ],
-          [
-            "string",
-            "choices={'median','mean'}"
-          ]
+          "char",
+          "string",
+          "choices={'median','mean'}"
         ],
         "purpose": "Location measure to use ('median' or 'mean')"
       },
@@ -369,14 +309,9 @@
         "name": "scale",
         "kind": "ordered",
         "type": [
-          [
-            "char",
-            "choices={'mad','Qn','Sn','std','modmadp'}"
-          ],
-          [
-            "string",
-            "choices={'mad','Qn','Sn','std','modmadp'}"
-          ]
+          "char",
+          "string",
+          "choices={'mad','Qn','Sn','std','modmadp'}"
         ],
         "purpose": "Scale measure to use"
       },
