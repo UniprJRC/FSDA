@@ -400,7 +400,11 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 a field named 'type' of a structure. In the latter case it
 %                 is possible to specify the additional field 'conflev',
 %                 which specifies the confidence level to use and it is a
-%                 value between 0 and 1.
+%                 value between 0 and 1. It is also possible to specify the
+%                 additional field 'ellipsetype' (see Case 3 below), which
+%                 controls whether the ellipses are drawn from the raw,
+%                 empirical covariance of the classified points, or from
+%                 the fitted, constrained covariance matrices out.sigmaopt.
 %               - plots='boxplotb' superimposes on the bivariate scatterplots
 %                 the bivariate boxplots for each group, using the boxplotb
 %                 function. This argument may also be inserted in a field
@@ -421,6 +425,27 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 0 and 1. For example, one can set:
 %                 plots.type = 'ellipse';
 %                 plots.conflev = 0.5;
+%                 plots.ellipsetype = this field only applies together with
+%                 plots.type = 'ellipse'. It selects which covariance the
+%                 ellipses are drawn from: 'empirical' (the default, used
+%                 whenever this field is omitted) reproduces tclust's
+%                 traditional behavior, drawing each group's ellipse from
+%                 the raw, unconstrained covariance of the units currently
+%                 classified into that group -- available for any v, but by
+%                 construction it ignores every restriction actually
+%                 imposed during the fit (the eigenvalue-ratio restriction
+%                 controlled by restrfactor, the determinant/shape
+%                 restrictions of the GPCM syntax, etc.), so it cannot be
+%                 used to check whether such a restriction changed the
+%                 estimated shape. 'fitted' instead draws each ellipse
+%                 directly from the FITTED, constrained
+%                 out.sigmaopt/out.muopt -- the only way to see, on the
+%                 plot itself, whatever restriction was actually applied;
+%                 currently only implemented for v=2 ('fitted' raises an
+%                 error for v>2 -- use 'empirical' there, or simply omit
+%                 the field). For example:
+%                 plots.type = 'ellipse';
+%                 plots.ellipsetype = 'fitted';
 %
 %               REMARK - The labels=0 are automatically excluded from the
 %                          overlaying phase, considering them as outliers.
@@ -602,6 +627,24 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     plots.cmap = autumn;
     out=tclust(Y,3,0.1,10000,'plots',plots);
     title('contourf plot with autumn colormap','interpreter','LaTex','FontSize',18);
+
+    % 'ellipsetype' selects which covariance the ellipses are drawn from:
+    % the default 'empirical' shows the RAW covariance of the classified
+    % points, ignoring any restriction actually applied during the fit;
+    % 'fitted' instead shows the FITTED, constrained covariance
+    % out.sigmaopt. The difference is most visible with a tight
+    % eigenvalue-ratio restriction, which forces the groups to be closer
+    % to equally shaped than their raw classified points would suggest.
+    restrfactorTight = 2;
+
+    plots.type = 'ellipse';
+    plots.ellipsetype = 'empirical';
+    out=tclust(Y,3,0.1,restrfactorTight,'plots',plots);
+    title('restrfactor=2: empirical ellipses (raw covariance)','interpreter','LaTex','FontSize',14);
+
+    plots.ellipsetype = 'fitted';
+    out=tclust(Y,3,0.1,restrfactorTight,'plots',plots);
+    title('restrfactor=2: fitted ellipses (constrained covariance)','interpreter','LaTex','FontSize',14);
 
     cascade
 %}
@@ -2420,8 +2463,86 @@ if coder.target('MATLAB')
             % id(idx==0)=cellstr('Trimmed units');
 
             % bivariate scatter
+
+            % An 'ellipse' overlay can be drawn two ways, selected via the
+            % additional field plots.ellipsetype (see 'plots' in the help
+            % above): 'empirical' (the default, used whenever this field
+            % is omitted -- spmplot's usual behavior, ellipses from the
+            % RAW covariance of the classified points, available for any
+            % v) or 'fitted' (ellipses drawn directly from the FITTED,
+            % constrained out.sigmaopt/out.muopt -- the only way to see
+            % the effect of any restriction actually imposed during the
+            % fit (eigenvalue-ratio, determinant/shape, ...), since the
+            % empirical overlay ignores every restriction by construction;
+            % currently only implemented for v=2).
+            ellipseRequested = isstruct(overlay) && isfield(overlay,'type') && ...
+                strcmpi(overlay.type,'ellipse');
+
+            if ellipseRequested && isfield(overlay,'ellipsetype')
+                ellipsetype = overlay.ellipsetype;
+                if ~(ischar(ellipsetype) && any(strcmpi(ellipsetype,{'empirical','fitted'})))
+                    error('FSDA:tclust:WrongInputOpt', ...
+                        'plots.ellipsetype must be the string ''empirical'' or ''fitted''.');
+                end
+            else
+                ellipsetype = 'empirical';
+            end
+
             figure;
-            spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlay);
+            if ellipseRequested && strcmpi(ellipsetype,'fitted')
+
+                if v~=2
+                    error('FSDA:tclust:WrongInputOpt', ...
+                        ['plots.ellipsetype=''fitted'' is currently only supported for v=2; ' ...
+                        'use ''empirical'' (or simply omit the field) for v>2 ' ...
+                        '(relies on spmplot''s general scatterplot-matrix handling).']);
+                end
+
+                hold on
+                cmapfit = lines(k);
+                circlefit = linspace(0,2*pi,200);
+                circlefit = [cos(circlefit); sin(circlefit)];
+
+                % trimmed / outlying units, highlighted distinctly
+                outl = idx==0;
+                if any(outl)
+                    plot(Y(outl,1), Y(outl,2), 'x', 'Color', [0.35 0.35 0.35], ...
+                        'MarkerSize', 7, 'LineWidth', 1.3, 'DisplayName', 'trimmed');
+                end
+
+                % retained units, colored by cluster
+                for j = 1:k
+                    sel = idx==j;
+                    plot(Y(sel,1), Y(sel,2), 'o', 'Color', cmapfit(j,:), ...
+                        'MarkerFaceColor', 'none', 'MarkerSize', 3, ...
+                        'DisplayName', sprintf('group %d', j));
+                end
+
+                % fitted (constrained) ellipses, same color as their group
+                for j = 1:k
+                    [Vfit,Dfit] = eig(out.sigmaopt(:,:,j));
+                    [~,imaxfit] = max(diag(Dfit));
+                    vfit = Vfit(:,imaxfit);
+                    angfit = mod(atan2d(vfit(2),vfit(1)),180);
+                    ptsfit = Vfit*diag(2.2*sqrt(max(diag(Dfit),0)))*circlefit + out.muopt(j,:)';
+                    plot(ptsfit(1,:), ptsfit(2,:), 'LineWidth', 2, 'Color', cmapfit(j,:), ...
+                        'HandleVisibility','off');
+                    text(out.muopt(j,1), out.muopt(j,2), sprintf('  %.1f^\\circ',angfit), ...
+                        'FontWeight','bold');
+                end
+
+                axis equal
+                legend('Location','best')
+
+            else
+                % strip 'ellipsetype' (unknown to spmplot) before passing
+                % the overlay struct on, in the 'empirical' case
+                overlayspm = overlay;
+                if isstruct(overlayspm) && isfield(overlayspm,'ellipsetype')
+                    overlayspm = rmfield(overlayspm,'ellipsetype');
+                end
+                spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlayspm);
+            end
 
         end
 
