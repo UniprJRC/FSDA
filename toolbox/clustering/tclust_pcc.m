@@ -144,19 +144,45 @@ function [out , varargout]  = tclust_pcc(Y,k,alpha,restrfactor,varargin)
 %        cpc  : number of common principal axes. Scalar integer between
 %               0 (default, no constraint) and v-1. If cpc=q>0, the first
 %               q eigenvectors of the covariance matrices are forced to
-%               be identical across all k groups (e.g. cpc=1 forces the
-%               major axis of the k ellipsoids to point in the same
-%               direction), while the remaining v-q eigenvectors/
-%               eigenvalues, and all volume/shape constraints implied by
-%               restrfactor, are estimated/applied exactly as usual.
-%               The shared direction(s) are re-estimated at every
-%               concentration step as the leading eigenvector(s) of the
-%               (trimming-weighted) pooled scatter matrix, so trimmed
+%               be identical across all k groups, while the remaining
+%               v-q eigenvectors/eigenvalues, and all volume/shape
+%               constraints implied by restrfactor, are estimated/applied
+%               exactly as usual.
+%               By default (see option cpcmajor below) the shared
+%               direction(s) are chosen as the leading eigenvector(s) of
+%               the (trimming-weighted) pooled scatter matrix, so trimmed
 %               units never contribute to determining the common axes.
+%               NOTE: with the default cpcmajor=false, cpc=1 guarantees
+%               that the k groups share ONE eigenvector, but NOT that
+%               this shared direction is the major (largest-eigenvalue)
+%               axis of every group: for a group whose own covariance
+%               structure disagrees with the pooled vote, the shared
+%               direction can end up in that group's minor-axis slot
+%               instead. Set cpcmajor=true to additionally require the
+%               shared axis to be the dominant direction of every group
+%               (see cpcmajor below).
 %               This option requires restrfactor to be a scalar (it is
 %               not yet supported together with the GPCM struct syntax).
 %                 Example - 'cpc',1
 %                 Data Types - double
+%
+%   cpcmajor : enforce the shared axis to be each group's own major axis.
+%               Logical scalar, default false. Only meaningful together
+%               with cpc=1 (an error is raised otherwise, since "the
+%               major axis" only makes sense for a single shared
+%               direction). When true, the single shared direction is
+%               chosen, at every concentration step, among those
+%               directions that are simultaneously the dominant
+%               (largest-eigenvalue) direction of EVERY group, picking
+%               among these the one maximizing the trimming-weighted
+%               pooled variance; when no such direction exists (possible
+%               with 3 or more groups whose own orientations span more
+%               than 90 degrees), the direction with the best worst-case
+%               margin is used instead, and this is reported through
+%               restrcommonpc's third (diagnostic) output when called
+%               directly. See restrcommonpc.m for the full derivation.
+%                 Example - 'cpcmajor',true
+%                 Data Types - logical
 %
 %equalweights : Cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
@@ -417,7 +443,11 @@ function [out , varargout]  = tclust_pcc(Y,k,alpha,restrfactor,varargin)
 %                 a field named 'type' of a structure. In the latter case it
 %                 is possible to specify the additional field 'conflev',
 %                 which specifies the confidence level to use and it is a
-%                 value between 0 and 1.
+%                 value between 0 and 1. It is also possible to specify the
+%                 additional field 'ellipsetype' (see Case 3 below), which
+%                 controls whether the ellipses are drawn from the raw,
+%                 empirical covariance of the classified points, or from
+%                 the fitted, constrained covariance matrices out.sigmaopt.
 %               - plots='boxplotb' superimposes on the bivariate scatterplots
 %                 the bivariate boxplots for each group, using the boxplotb
 %                 function. This argument may also be inserted in a field
@@ -438,6 +468,25 @@ function [out , varargout]  = tclust_pcc(Y,k,alpha,restrfactor,varargin)
 %                 0 and 1. For example, one can set:
 %                 plots.type = 'ellipse';
 %                 plots.conflev = 0.5;
+%                 plots.ellipsetype = this field only applies together with
+%                 plots.type = 'ellipse'. It selects which covariance the
+%                 ellipses are drawn from: 'empirical' (the default, used
+%                 whenever this field is omitted) reproduces tclust's
+%                 traditional behavior, drawing each group's ellipse from
+%                 the raw, unconstrained covariance of the units currently
+%                 classified into that group -- available for any v, but by
+%                 construction it ignores every restriction actually
+%                 imposed during the fit (eigenvalue ratio, shape, or the
+%                 cpc/cpcmajor constraints of this function alike), so it
+%                 cannot be used to check whether such a restriction took
+%                 effect. 'fitted' instead draws each ellipse directly from
+%                 the FITTED, constrained out.sigmaopt/out.muopt -- the
+%                 only way to see, on the plot itself, whatever restriction
+%                 was actually applied; currently only implemented for v=2
+%                 ('fitted' raises an error for v>2 -- use 'empirical'
+%                 there, or simply omit the field). For example:
+%                 plots.type = 'ellipse';
+%                 plots.ellipsetype = 'fitted';
 %
 %               REMARK - The labels=0 are automatically excluded from the
 %                          overlaying phase, considering them as outliers.
@@ -863,80 +912,115 @@ function [out , varargout]  = tclust_pcc(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
-    %% tclust with a common major axis (option 'cpc')
-    % Generate two elliptical groups along the 45 degree diagonal
-    n1 = 600; n2 = 100;
+    %% tclust with a common major axis (option 'cpc').
+    % Two elliptical groups generated with a genuinely shared 45-degree
+    % orientation (group 2's true major axis is close to, but not
+    % exactly, 45 degrees, so estimation still has some work to do).
+    rng(2)
+    n1 = 600;
+    n2 = 100;
+
     % Group 1: 45-degree diagonal orientation
     Sigma1 = [1 0.9; 0.9 1];
-    % Group 2 before rotation (it is along the x-axis)
-    lambda1 = 0.285; % Length
-    lambda2 = 0.005; % Thickness; smaller value will thin it
-    Sigma2_base = [lambda1 0; 0 lambda2];
-    theta  = deg2rad(49); % rotation angle 
-    R      = [cos(theta), -sin(theta); sin(theta),  cos(theta)]; % Rotation matrix
-    Sigma2 = R * Sigma2_base * R'; % Apply rotation
-    
-    % Generate sample with random and concentrated contaminants
+
+    % Group 2: built along the x-axis first, then rotated close to 45
+    % degrees, so the two groups genuinely share an orientation
+    lambda1 = 0.285;   % length
+    lambda2 = 0.015;   % thickness
+    theta   = deg2rad(49);
+    Rrot    = [cos(theta) -sin(theta); sin(theta) cos(theta)];
+    Sigma2  = Rrot*diag([lambda1 lambda2])*Rrot';
+
     Y1 = mvnrnd([0 0], Sigma1, n1);
-    Y2 = mvnrnd([2.1 2.1], Sigma2, n2);
+    Y2 = mvnrnd([5 5], Sigma2, n2);
     Ynoise = unifrnd(-4,6,10,2);            % scattered background noise
     Ycont  = mvnrnd([9 -3],0.3*eye(2),15);  % concentrated contaminants
-    Y      = [Y1; Y2; Ynoise; Ycont];
+    Y = [Y1; Y2; Ynoise; Ycont];
 
-    % Apply TCLUST
     alpha=0.15; k=2; restrfactor=1000;
+
+    % plots.ellipsetype='fitted' draws the ellipses from the FITTED,
+    % constrained out.sigmaopt/out.muopt rather than from the raw
+    % empirical covariance of the classified points: the latter (the
+    % default 'empirical') ignores every restriction by construction and
+    % so cannot show whether cpc actually took effect. Note: this field
+    % is a tclust_pcc-only extension of the 'plots' struct; the plain
+    % tclust call below (out1, no cpc restriction to show) just uses the
+    % ordinary 'ellipse' overlay.
     out1 = tclust(Y,k,alpha,restrfactor,'plots','ellipse');
-    out2 = tclust_pcc(Y,k,alpha,restrfactor,'cpc',1,'plots','ellipse');
+    title('Standard tclust (no common axis)','Interpreter','Latex');
+
+    plotsFitted = struct('type','ellipse','ellipsetype','fitted');
+    out2 = tclust_pcc(Y,k,alpha,restrfactor,'cpc',1,'plots',plotsFitted);
     title('tclust with common major axis (cpc=1)','Interpreter','Latex');
 
-    % The plots above use spmplot's 'ellipse' overlay, which redraws each 
-    % ellipse from the RAW empirical covariance of the classified points, 
-    % ignoring any restriction actually imposed during the fit. To see 
-    % whether the FITTED (constrained) covariance matrices out.sigmaopt  
-    % really share a common major axis, we plot them directly.
-
-    theta_c = linspace(0,2*pi,200);
-    circle  = [cos(theta_c); sin(theta_c)];
-    cmap    = lines(k);              % one fixed color per cluster, same in both panels
-    
-    figure('Color','w','Position',[100 100 1200 550]);
-    outs = {out1, out2};
-    titl = {'Standard tclust (no common axis)','tclust with common major axis (cpc=1)'};
-    for p_ = 1:2
-        subplot(1,2,p_)
-        outp = outs{p_};
-        hold on
-    
-        % --- trimmed / outlying units (idx == 0), highlighted distinctly ---
-        outl = outp.idx == 0;
-        plot(Y(outl,1), Y(outl,2), 'x', 'Color', [0.35 0.35 0.35], ...
-            'MarkerSize', 7, 'LineWidth', 1.3, 'DisplayName', 'trimmed')
-    
-        % --- retained units, colored by cluster ---
-        for j = 1:k
-            sel = outp.idx == j;
-            plot(Y(sel,1), Y(sel,2), 'o', 'Color', cmap(j,:), ...
-                'MarkerFaceColor', 'none', 'MarkerSize', 3, ...
-                'DisplayName', sprintf('group %d', j))
-        end
-    
-        % --- fitted (constrained) ellipses, same color as their group ---
-        for j = 1:k
-            [V,D] = eig(outp.sigmaopt(:,:,j));
-            [~,imax] = max(diag(D));
-            v = V(:,imax);
-            ang = mod(atan2d(v(2),v(1)),180);
-            pts = V*diag(2.2*sqrt(max(diag(D),0)))*circle + outp.muopt(j,:)';
-            plot(pts(1,:), pts(2,:), 'LineWidth', 2, 'Color', cmap(j,:), ...
-                'HandleVisibility','off')
-            text(outp.muopt(j,1), outp.muopt(j,2), sprintf('  %.1f^\\circ',ang), 'FontWeight','bold')
-        end
-    
-        axis equal
-        legend('Location','best')
-        title(titl{p_},'Interpreter','Latex')
+    for j = 1:k
+        [V,D] = eig(out2.sigmaopt(:,:,j));
+        [~,im] = max(diag(D));
+        ang = mod(atan2d(V(2,im),V(1,im)),180);
+        fprintf('group %d: cpc=1 major-axis angle = %.1f degrees\n',j,ang);
     end
-    sgtitle('Fitted ellipses (out.sigmaopt); x = trimmed units')
+%}
+
+%{
+    %% tclust with 'cpc' vs 'cpc'+'cpcmajor' -- when the plain shared axis is not the major one.
+    % A case where the minority group's OWN natural orientation is far
+    % from the majority group's (more than 45 degrees apart -- here 45
+    % vs 110 degrees) and it also has a different position and a
+    % different, more elongated shape. With plain cpc=1, the
+    % pooled-variance criterion is dominated by the large group and
+    % simply adopts group 1's own orientation (45 degrees) as the shared
+    % axis; but that direction is NOT within 45 degrees of group 2's own
+    % orientation, so it lands in group 2's minor-axis slot instead of
+    % its major one (its own reported "major axis" then comes out about
+    % 90 degrees off -- 135 instead of 45). cpcmajor=true fixes this by
+    % only ever choosing among directions that are simultaneously every
+    % group's own dominant axis; here it settles on 65 degrees, a
+    % compromise both groups can support. plots.ellipsetype='fitted' is
+    % used, as in the previous example, so the plotted ellipses actually
+    % reflect the fitted (constrained) covariance matrices.
+    rng(2)
+    n1 = 600; n2 = 100;
+
+    % Group 1: major axis at 45 degrees, centered at the origin
+    Sigma1 = [1 0.9; 0.9 1];
+    mean1  = [0 0];
+
+    % Group 2: its OWN major axis is at 110 degrees -- 65 degrees away
+    % from group 1's, i.e. outside the +/-45-degree arc within which a
+    % direction can be group 2's own major axis while also being close
+    % to group 1's -- plus a different position and a more elongated,
+    % differently shaped ellipse
+    lambda1 = 0.2; lambda2 = 0.02;                 % elongation ratio 10
+    theta2  = deg2rad(110);
+    Rrot    = [cos(theta2) -sin(theta2); sin(theta2) cos(theta2)];
+    Sigma2  = Rrot*diag([lambda1 lambda2])*Rrot';
+    mean2   = [4 -1];
+
+    Y1 = mvnrnd(mean1, Sigma1, n1);
+    Y2 = mvnrnd(mean2, Sigma2, n2);
+    Ynoise = unifrnd(-4,7,10,2);
+    Ycont  = mvnrnd([9 -4],0.3*eye(2),15);
+    Y = [Y1; Y2; Ynoise; Ycont];
+
+    alpha=0.15; k=2; restrfactor=1000;
+
+    plotsFitted = struct('type','ellipse','ellipsetype','fitted');
+    outPlain = tclust_pcc(Y,k,alpha,restrfactor,'cpc',1,'plots',plotsFitted);
+    title('tclust\_pc with cpc=1 (no cpcmajor)','Interpreter','Latex');
+
+    outMajor = tclust_pcc(Y,k,alpha,restrfactor,'cpc',1,'cpcmajor',true,'plots',plotsFitted);
+    title('tclust\_pc with cpc=1, cpcmajor=true','Interpreter','Latex');
+
+    for j=1:k
+        [V,D]=eig(outPlain.sigmaopt(:,:,j)); [~,im]=max(diag(D));
+        angPlain = mod(atan2d(V(2,im),V(1,im)),180);
+        [V,D]=eig(outMajor.sigmaopt(:,:,j)); [~,im]=max(diag(D));
+        angMajor = mod(atan2d(V(2,im),V(1,im)),180);
+        fprintf('group %d: plain cpc angle = %.1f, cpcmajor angle = %.1f\n',j,angPlain,angMajor);
+    end
+    % With cpcmajor=true the two groups' reported major-axis angles
+    % should coincide; with plain cpc=1 they need not.
 %}
 
 %% Beginning of code
@@ -1122,13 +1206,16 @@ tolrestreigen=1e-08;
 cshape=10^10;
 
 cpcdef = 0;   % 0 = no common-principal-axis constraint (default behavior of tclust is unchanged)
+cpcmajordef = false; % false = shared axis chosen by the pooled-variance criterion (restrcommonpc.m
+                      % default mode); true = shared axis additionally required to be the DOMINANT
+                      % (major) eigenvalue direction of every group (restrcommonpc.m 'majoraxis' mode)
 
 if coder.target('MATLAB')
 
     options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
         'msg',1,'Ysave',false,'refsteps',refstepsdef,'equalweights',false,...
         'reftol',reftoldef,'mixt',0,'startv1',startv1def, ...
-        'restrtype','eigen','cshape',cshape,'cpc',cpcdef,...
+        'restrtype','eigen','cshape',cshape,'cpc',cpcdef,'cpcmajor',cpcmajordef,...
         'startv1true1unitCentroid',startv1true1unitCentroiddef,'priorSol',priorSoldef);
 
     [varargin{:}] = convertStringsToChars(varargin{:});
@@ -1247,6 +1334,7 @@ else
 end
 
 cpc = options.cpc;
+cpcmajor = options.cpcmajor;
 if cpc ~= 0
     if restrGPCM == true
         error('FSDA:tclust:WrongInputOpt', ...
@@ -1255,6 +1343,12 @@ if cpc ~= 0
     if cpc < 1 || cpc > v-1 || cpc ~= round(cpc)
         error('FSDA:tclust:WrongInputOpt', ...
             'Option ''cpc'' must be an integer between 1 and v-1 (number of variables minus 1).');
+    end
+end
+if cpcmajor
+    if cpc ~= 1
+        error('FSDA:tclust:WrongInputOpt', ...
+            'Option ''cpcmajor'',true requires ''cpc'',1: "the major axis" only has meaning for a single shared direction.');
     end
 end
 
@@ -1545,7 +1639,7 @@ for i=1:nselected
                 % added for common PC
                 if cpc >= 1
                     % Common principal axis / axes constraint
-                    [U, Lambda_vk] = restrcommonpc(sigmaini, niini, cpc);
+                    [U, Lambda_vk] = restrcommonpc(sigmaini, niini, cpc, 'majoraxis', cpcmajor);
                 else
                     for j=1:k
                         [Uj,Lambdaj] = eig(sigmaini(:,:,j));
@@ -1847,7 +1941,7 @@ for i=1:nselected
         % New code inserted after the deletion of the above blocks
         if restrGPCM == false
             if cpc >= 1
-                [U, Lambda_vk] = restrcommonpc(sigmaini, niini, cpc);
+                [U, Lambda_vk] = restrcommonpc(sigmaini, niini, cpc, 'majoraxis', cpcmajor);
             else
                 for j=1:k
                     [Uj,Lambdaj] = eig(sigmaini(:,:,j));
@@ -2558,8 +2652,85 @@ if coder.target('MATLAB')
             % id(idx==0)=cellstr('Trimmed units');
 
             % bivariate scatter
+
+            % An 'ellipse' overlay can be drawn two ways, selected via the
+            % additional field plots.ellipsetype (see 'plots' in the help
+            % above): 'empirical' (the default, used whenever this field
+            % is omitted -- spmplot's usual behavior, ellipses from the
+            % RAW covariance of the classified points, available for any
+            % v) or 'fitted' (ellipses drawn directly from the FITTED,
+            % constrained out.sigmaopt/out.muopt -- the only way to see
+            % the effect of any restriction, cpc included, since the
+            % empirical overlay ignores every restriction by construction;
+            % currently only implemented for v=2).
+            ellipseRequested = isstruct(overlay) && isfield(overlay,'type') && ...
+                strcmpi(overlay.type,'ellipse');
+
+            if ellipseRequested && isfield(overlay,'ellipsetype')
+                ellipsetype = overlay.ellipsetype;
+                if ~(ischar(ellipsetype) && any(strcmpi(ellipsetype,{'empirical','fitted'})))
+                    error('FSDA:tclust:WrongInputOpt', ...
+                        'plots.ellipsetype must be the string ''empirical'' or ''fitted''.');
+                end
+            else
+                ellipsetype = 'empirical';
+            end
+
             figure;
-            spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlay);
+            if ellipseRequested && strcmpi(ellipsetype,'fitted')
+
+                if v~=2
+                    error('FSDA:tclust:WrongInputOpt', ...
+                        ['plots.ellipsetype=''fitted'' is currently only supported for v=2; ' ...
+                        'use ''empirical'' (or simply omit the field) for v>2 ' ...
+                        '(relies on spmplot''s general scatterplot-matrix handling).']);
+                end
+
+                hold on
+                cmapfit = lines(k);
+                circlefit = linspace(0,2*pi,200);
+                circlefit = [cos(circlefit); sin(circlefit)];
+
+                % trimmed / outlying units, highlighted distinctly
+                outl = idx==0;
+                if any(outl)
+                    plot(Y(outl,1), Y(outl,2), 'x', 'Color', [0.35 0.35 0.35], ...
+                        'MarkerSize', 7, 'LineWidth', 1.3, 'DisplayName', 'trimmed');
+                end
+
+                % retained units, colored by cluster
+                for j = 1:k
+                    sel = idx==j;
+                    plot(Y(sel,1), Y(sel,2), 'o', 'Color', cmapfit(j,:), ...
+                        'MarkerFaceColor', 'none', 'MarkerSize', 3, ...
+                        'DisplayName', sprintf('group %d', j));
+                end
+
+                % fitted (constrained) ellipses, same color as their group
+                for j = 1:k
+                    [Vfit,Dfit] = eig(out.sigmaopt(:,:,j));
+                    [~,imaxfit] = max(diag(Dfit));
+                    vfit = Vfit(:,imaxfit);
+                    angfit = mod(atan2d(vfit(2),vfit(1)),180);
+                    ptsfit = Vfit*diag(2.2*sqrt(max(diag(Dfit),0)))*circlefit + out.muopt(j,:)';
+                    plot(ptsfit(1,:), ptsfit(2,:), 'LineWidth', 2, 'Color', cmapfit(j,:), ...
+                        'HandleVisibility','off');
+                    text(out.muopt(j,1), out.muopt(j,2), sprintf('  %.1f^\\circ',angfit), ...
+                        'FontWeight','bold');
+                end
+
+                axis equal
+                legend('Location','best')
+
+            else
+                % strip 'ellipsetype' (unknown to spmplot) before passing
+                % the overlay struct on, in the 'empirical' case
+                overlayspm = overlay;
+                if isstruct(overlayspm) && isfield(overlayspm,'ellipsetype')
+                    overlayspm = rmfield(overlayspm,'ellipsetype');
+                end
+                spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlayspm);
+            end
 
         end
 
