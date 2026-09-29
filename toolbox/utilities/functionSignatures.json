@@ -292,7 +292,7 @@
         "type": [
           ["char"],
           ["string"],
-          ["choices={'mad','Qn','Sn','std','modmadp'}"]
+          ["choices={'mad','Qn','Sn','std'}"]
         ],
         "purpose": "Scale measure to use"
       },
