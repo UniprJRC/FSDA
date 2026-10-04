@@ -3,8 +3,9 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
 %
-% It is possible to set a model with a trend (up to third order), a
-% seasonality (constant or of varying amplitude and with a different number
+% It is possible to set a model with a polynomial trend (up to third
+% order) or an HP trend, a seasonality (constant or of varying amplitude
+% and with a different number
 % of harmonics) and a level shift (in this last case it is possible to
 % specify the window in which level shift has to be searched for).
 %
@@ -115,14 +116,25 @@ function [out, varargout] = LTSts(y,varargin)
 %               fields:
 %               model.s = scalar (length of seasonal period). For monthly
 %                         data s=12 (default), for quarterly data s=4, ...
-%               model.trend = scalar (order of the trend component).
+%               model.trend = scalar or character vector specifying the
+%                       trend component. If model.trend is numeric:
 %                       trend = 0 implies no trend;
 %                       trend = 1 implies linear trend with intercept (default);
 %                       trend = 2 implies quadratic trend;
 %                       trend = 3 implies cubic trend.
-%                       Admissible values for trend are, 0, 1, 2 and 3.
-%                       In the paper RPRH to denote the order of the trend
-%                       symbol A is used.
+%                       Alternatively, model.trend='HP' specifies a
+%                       Hodrick-Prescott trend. The value 'HP' is matched
+%                       case-insensitively. In the HP branch no separate
+%                       polynomial trend is included in the design matrix.
+%                       In the paper RPRH to denote the order of the
+%                       polynomial trend symbol A is used.
+%               model.lambdaHP = HP smoothing parameter. Positive scalar or
+%                       empty value. This option is used only when
+%                       model.trend='HP'. If model.lambdaHP is empty
+%                       (default), its value is determined once, before the
+%                       robust iterations, using the Ravn-Uhlig rule
+%                       1600*(model.s/4)^4. The resulting value is kept
+%                       fixed throughout the entire call to LTSts.
 %               model.seasonal = scalar (integer specifying number of
 %                        frequencies, i.e. harmonics, in the seasonal
 %                        component. Possible values for seasonal are
@@ -220,6 +232,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                               model=struct;
 %                               model.s=12;
 %                               model.trend=1;
+%                               model.lambdaHP=[];
 %                               model.seasonal=1;
 %                               model.X=[];
 %                               model.lshift=0;
@@ -378,9 +391,15 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %  out :     A structure containing the following fields
 %
-%             out.B =   Matrix containing estimated beta coefficients,
-%                       (including the intercept when options.intercept=true)
-%                       standard errors, t-stat and p-values.
+%             out.B =   Matrix containing estimated finite-dimensional
+%                       coefficients, standard errors, test statistics and
+%                       p-values. With a polynomial trend the interpretation
+%                       is unchanged and the intercept is included when
+%                       options.intercept=true. With model.trend='HP' the HP
+%                       trend is returned separately in out.trend. HP standard
+%                       errors and p-values are conditional on the final
+%                       reweighting subset and fixed model.lambdaHP and are
+%                       not adjusted for robust subset selection.
 %                       The content of matrix B is as follows:
 %                       1st col = beta coefficients.
 %                        The order of the beta coefficients is as follows:
@@ -406,7 +425,8 @@ function [out, varargout] = LTSts(y,varargin)
 %                        level shift takes place, is given in output
 %                        out.posLS.
 %                       2nd col = standard errors;
-%                       3rd col = t-statistics;
+%                       3rd col = t-statistics for a polynomial trend and
+%                       approximate Wald z statistics for an HP trend;
 %                       4th col = p values.
 %          out.Btable = same thing as out.B but in table format.
 %               out.h = The number of observations that have determined the
@@ -436,11 +456,14 @@ function [out, varargout] = LTSts(y,varargin)
 %                       option model.lshift is not equal to 0.
 %     out.numscale2 = matrix of size lts.bestr-by-(T-2*lshift) containing
 %                       (in the columns) the values of the lts.bestr smallest
-%                       values of the target function. Target function = truncated
-%                       residuals sum of squares.
+%                       residual sums of squares. With model.trend='HP',
+%                       these values are kept for scale estimation while
+%                       candidate ranking uses the penalized HP objective.
 %     out.BestIndexes = matrix of size nbestindexes-by-(T-2*lshift)
 %                       containing in each column the indexes
 %                       associated with the best nbestindexes solutions.
+%                       With model.trend='HP', best means smallest penalized
+%                       HP objective; otherwise it means smallest trimmed RSS.
 %                       The indexes from lts.bestr/2+1 to lts.bestr are
 %                       associated with best solutions from previous
 %                       tentative level shift.
@@ -466,8 +489,9 @@ function [out, varargout] = LTSts(y,varargin)
 %                       level shift position, lshift+2 is the second level
 %                       shift position, and so on. This output is present
 %                       just if input option model.lshift is not equal to 0.
-%            out.yhat = vector of fitted values after final (NLS=non linear
-%                       least squares) step.
+%            out.yhat = vector of fitted values after the final reweighted
+%                       fit. For model.trend='HP' this is the final joint
+%                       penalized fit on observations with out.weights=1.
 %                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$
 %       out.residuals = Vector T-by-1 containing the scaled residuals from
 %                       after final NLS step.
@@ -495,9 +519,12 @@ function [out, varargout] = LTSts(y,varargin)
 %         out.singsub = Number of subsets without full rank. Notice that if
 %                       this number is greater than 0.1*(number of
 %                       subsamples) a warning is produced on the screen.
-%            out.invXX = $cov(\beta)/\hat \sigma^2$. p-by-p, square matrix.
-%                       If the model is linear, out.invXX is equal to
-%                       $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$
+%            out.invXX = $cov(\beta)/\hat \sigma^2$. Square matrix.
+%                       For the polynomial branch its interpretation is
+%                       unchanged. For model.trend='HP' it is the inverse
+%                       profiled penalized information matrix for the
+%                       finite-dimensional coefficients, conditional on the
+%                       final subset and fixed model.lambdaHP.
 %                       where $A$ is the matrix of partial derivatives. More
 %                       precisely:
 %                       \[
@@ -510,16 +537,34 @@ function [out, varargout] = LTSts(y,varargin)
 %                           & = & \eta(x_i,\hat \beta)+ e_i  \\
 %                           & = & \hat \eta_i + e_i
 %                       \end{eqnarray}
-% out.LastHarmonicPval = combined p value for the two coefficients of the
-%                        last harmonic (this p value comes from an F test).
-% out.LevelShiftPval  =  p value of the level shift which takes into
-%                       account (this pvalue comes from Bonferronization to
-%                       take it account that if you impose a level shift,
-%                       this component is always found).
+%          out.trend = T-by-1 vector containing the final HP trend. This
+%                       field is present when model.trend='HP'.
+%       out.seasonal = T-by-1 vector containing the final seasonal component.
+%                       This field is present when model.trend='HP'.
+%    out.explanatory = T-by-1 vector containing the final contribution of
+%                       explanatory and autoregressive variables. This field
+%                       is present when model.trend='HP'.
+%     out.levelshift = T-by-1 vector containing the final level-shift
+%                       contribution (zero if no level shift is fitted). This
+%                       field is present when model.trend='HP'.
+%              out.hp = structure containing HP-specific final-fit
+%                       information. Fields are lambda, rss, penalty,
+%                       objective, objectiveCandidates, objectiveLSH and
+%                       inference. The objective is rss+penalty.
+% out.LastHarmonicPval = combined p value for the coefficients of the
+%                        last harmonic. For a polynomial trend this is the
+%                        existing F-test calculation. For an HP trend it is
+%                        an approximate conditional Wald test.
+% out.LevelShiftPval  = p value of the level shift corrected for the
+%                       search over tentative shift positions. The existing
+%                       polynomial-trend calculation is unchanged. For an HP
+%                       trend a Bonferroni bound is applied to the conditional
+%                       Wald p-value in out.B.
 %            out.y    = response vector y.
 %            out.X    = data matrix X containing trend, seasonal, expl
 %                       (with autoregressive component) and
-%                       lshift, if the model is linear or linearized
+%                       lshift, if the polynomial-trend model is linear or
+%                       linearized
 %                       version of $\eta(x_i, \beta)$ if the model is non
 %                       linear containing in the columns partial
 %                       derivatives evaluated in correspondence of
@@ -529,6 +574,9 @@ function [out, varargout] = LTSts(y,varargin)
 %                       \frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
 %                       \]
 %                       $j=1, 2, \ldots, p$, $i \in S_m$.
+%                       With model.trend='HP', out.X contains the full-grid
+%                       Jacobian of the finite-dimensional component; the HP
+%                       trend is returned separately in out.trend.
 %                       The size of this matrix is:
 %                       n-length(out.outliers)-by-p
 %                       The field is present only if option
@@ -1023,7 +1071,7 @@ function [out, varargout] = LTSts(y,varargin)
 %}
 
 %{
-    %% Examples 4 and 5 used in the paper RPRH: trade data.
+    % Examples 4 and 5 used in the paper RPRH: trade data.
     close all; clear all;
     % the datasets
     load('TTP12119085');
@@ -1125,6 +1173,7 @@ areMissing=nummissing>0;
 % Set up values for default model
 modeldef         =struct;
 modeldef.trend   =1;        % linear trend
+modeldef.lambdaHP=[];       % HP smoothing parameter (used if trend='HP')
 modeldef.s       =12;       % monthly time series
 modeldef.seasonal=1;        % just one harmonic
 modeldef.X       =[];       % no extra explanatory variable
@@ -1234,10 +1283,41 @@ else
 end
 
 % Get model parameters
-s        = model.s;           % get periodicity of time series
-trend    = model.trend;       % get kind of trend
-seasonal = model.seasonal;    % get number of harmonics
-lshift   = model.lshift;      % get level shift
+s          = model.s;           % get periodicity of time series
+trendInput = model.trend;       % get kind of trend
+seasonal   = model.seasonal;    % get number of harmonics
+lshift     = model.lshift;      % get level shift
+lambdaHP   = model.lambdaHP;    % HP smoothing parameter
+
+% trendHPYN is true when the nonparametric Hodrick-Prescott trend is used.
+% At this stage the HP branch is available only for MATLAB execution.
+if coder.target('MATLAB')
+    trendHPYN=(ischar(trendInput) || ...
+        (isstring(trendInput) && isscalar(trendInput))) && ...
+        strcmpi(trendInput,'HP');
+else
+    trendHPYN=false;
+end
+
+if trendHPYN
+    % trend is kept numeric because a number of existing indexing
+    % expressions use it. There are no polynomial trend coefficients in
+    % the HP branch; the trend itself is stored separately in trendHP.
+    trend=0;
+
+    % Resolve lambdaHP once before any subset or concentration iteration.
+    % The resulting value is fixed throughout the call to LTSts.
+    if isempty(lambdaHP)
+        lambdaHP=1600*(s/4)^4;
+    end
+    if ~(isnumeric(lambdaHP) && isscalar(lambdaHP) && ...
+            isfinite(lambdaHP) && lambdaHP>0)
+        error('FSDA:LTSts:WrongInput', ...
+            'model.lambdaHP must be a positive finite scalar or empty')
+    end
+else
+    trend=trendInput;
+end
 
 % nbestindexes = indexes of the best nbestindexes solutions for each
 % tentative position of level shift.
@@ -1248,22 +1328,36 @@ if s <=0
     error('FSDA:LTSts:WrongInput','s= %.0f is the periodicity of the time series (cannot be negative or 0)',s)
 end
 
-if isempty(intersect(trend,0:3))
-    error('FSDA:LTSts:WrongInput','Trend must assume the following values: 0  1 or 2 or 3')
+if ~trendHPYN && ( ...
+        ~(isnumeric(trend) && isscalar(trend)) || isempty(intersect(trend,0:3)))
+    error('FSDA:LTSts:WrongInput', ...
+        'Trend must assume the values 0, 1, 2, 3 or ''HP''')
 end
 
 % Construct the matrices which are fixed in each step of the minimization
 % procedure
 Seq = [one seq seq.^2 seq.^3];
 
-% Define matrix which contains linear quadratic of cubic trend
+% Define matrix which contains linear, quadratic or cubic trend.
+% With model.trend='HP' the polynomial trend matrix is empty because the
+% trend is estimated separately by hpfilterFS.
 intercept=options.intercept;
-if intercept ==true
-    Xtrend = Seq(:,1:trend+1);
+if trendHPYN
+    Xtrend=zeros(T,0);
 else
-    Xtrend = Seq(:,2:trend+1);
+    if intercept ==true
+        Xtrend = Seq(:,1:trend+1);
+    else
+        Xtrend = Seq(:,2:trend+1);
+    end
 end
 ntrend = size(Xtrend,2);
+
+% trendHP contains the HP trend on the complete time grid for the
+% current conditional fit. In the HP branch it is updated by the initial
+% joint fit, by ALS when time-varying seasonal amplitude is present, by
+% every concentration step and by the final reweighted fit.
+trendHP=zeros(T,1);
 
 % seasonal component
 yhatseaso=0;
@@ -1356,6 +1450,18 @@ end
 % nexpl = number of explanatory variables,
 pini=ntrend+nseaso+nexpl;
 
+% piniElemental is the size of an elemental subset in the absence of a
+% level shift. The HP penalty has a two-dimensional affine null space
+% (level and slope). Moreover, when the seasonal amplitude varies, the HP
+% step inside ALS conditionally estimates varampl coefficients after the
+% nseaso linear seasonal coefficients have been removed. Therefore the HP
+% elemental subset must identify both conditional linear problems.
+if trendHPYN
+    piniElemental=nexpl+max(nseaso,varampl)+2;
+else
+    piniElemental=pini;
+end
+
 % p = total number of parameters in the model
 % nini +
 % varampl = number of parameters involving time varying trend,
@@ -1377,23 +1483,34 @@ if coder.target('MATLAB')
     end
 end
 
-% indexes of linear part of seasonal component
-if seasonal <6
-    indlinsc=(trend+2):(trend+1+seasonal*2);
+% Indexes of the finite-dimensional coefficients. The order is:
+% trend coefficients (polynomial branch only), linear seasonal
+% coefficients, explanatory variables, coefficients governing the varying
+% seasonal amplitude, level-shift magnitude and, finally, level-shift
+% position. Using ntrend and nseaso rather than trend makes these indexes
+% valid also when model.trend='HP', for which ntrend=0.
+indlinsc=ntrend+(1:nseaso);
+indexpl=ntrend+nseaso+(1:nexpl);
+indvarampl=ntrend+nseaso+nexpl+(1:varampl);
+if lshiftYN==1
+    indlshiftcoef=ntrend+nseaso+nexpl+varampl+1;
+    indlshiftpos=indlshiftcoef+1;
 else
-    indlinsc=(trend+2):(trend+1+seasonal*2-1);
+    indlshiftcoef=[];
+    indlshiftpos=[];
 end
 
 otherind=setdiff(1:p,indlinsc);
 if lshiftYN==1
-    otherind=otherind(1:end-1);
+    % The level-shift position is discrete and is not updated by ALS.
+    otherind(otherind==indlshiftpos)=[];
 end
 
 % If the number of all possible subsets is <10000, the default is to extract
 % all subsets otherwise just 10000. Notice that we use bc, a fast version
 % of function nchoosek. One may also use the approximation
 % floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(pini+1))+0.5)
-ncomb=bc(T-nummissing,pini);
+ncomb=bc(T-nummissing,piniElemental);
 
 
 % And check if the optional user parameters are reasonable.
@@ -1474,13 +1591,7 @@ if varampl>0
     % Convergence criteria inside ALS loop
     reftolALS=options.reftolALS;
     refstepsALS=options.refstepsALS;
-    if coder.target('MATLAB')
-        verLess2016b=verLessThanFS('9.1');
-    else
-        verLess2016b=true;
-    end
 else
-    verLess2016b=false;
     reftolALS=0;
     refstepsALS=0;
 end
@@ -1552,7 +1663,7 @@ if lshiftYN==1
     % vector.
     LSH = lshift(:)';
     % total number of subsets to pass to procedure subsets.
-    ncombLSH = bc(T-1-nummissing,pini+1);
+    ncombLSH = bc(T-1-nummissing,piniElemental+1);
     if numel(options.nsamp) == 2
         if options.msg == 1 && options.nsamp(2) > ncombLSH
             disp(['nsamp(2) > ncombLSH: only ' num2str(ncombLSH) , 'samples are used' ]);
@@ -1574,19 +1685,36 @@ numscale2LSH=[LSH' inf(lLSH,2)];
 % yhatrobLSH = vector of fitted values for each value of LSH
 yhatrobLSH=zeros(T,lLSH);
 
+% trendHProbLSH stores the HP trend associated with the best robust
+% solution for each tentative level shift position. It is used only when
+% model.trend='HP'.
+trendHProbLSH=zeros(T,lLSH);
+
 % ilsh is a counter which is linked to the rows of LSH
 
 
 
 bestrdiv2=round(bestr/2);
 
-% allnumscale2 will contain the best estimates of the target function
-% for a tentative value of level shift position
+% allnumscale2 contains the residual sum of squares of the bestr
+% solutions for a tentative value of the level shift position. This
+% quantity is kept separate from the penalized HP objective because it is
+% used for scale estimation.
 allnumscale2=zeros(bestr,1);
 
-% Store all bestr target functions for each tentative level shift
-% position (target function = truncated residual sum of squares)
+% allobjective contains the criterion used to rank the bestr solutions.
+% For polynomial trends it coincides with allnumscale2. For the HP trend it
+% is RSS + lambdaHP*||D*trendHP||^2.
+allobjective=Inf(bestr,1);
+
+% Store residual sum of squares and ranking objective for all tentative
+% level shift positions.
 ALLnumscale2=zeros(bestr,lLSH);
+ALLobjective=Inf(bestr,lLSH);
+
+% objectiveLSH stores, for each tentative level shift position, the best
+% value of the criterion used for ranking candidates.
+objectiveLSH=[LSH' inf(lLSH,1)];
 
 % Store the position of the indexes occupying nbestindexes best solutions of target
 % function for each tentative level shift position
@@ -1678,16 +1806,20 @@ for ilsh=1:lLSH
         nsamp=nsampsubsequentsteps;
         bestrLSH=bestrdiv2;
         bestnumscale2 = Inf * ones(bestrdiv2,1);
+        bestobjective = Inf * ones(bestrdiv2,1);
         bestbetas = zeros(bestrdiv2,p);
         bestyhat=zeros(T,bestrdiv2);
-        bestsubset = zeros(bestrdiv2,pini+lshiftYN*2);
+        besttrendHP=zeros(T,bestrdiv2);
+        bestsubset = zeros(bestrdiv2,piniElemental+lshiftYN*2);
 
     else
 
         bestbetas = zeros(bestr,p);
         bestyhat=zeros(T,bestr);
-        bestsubset = zeros(bestr,pini+lshiftYN*2);
+        besttrendHP=zeros(T,bestr);
+        bestsubset = zeros(bestr,piniElemental+lshiftYN*2);
         bestnumscale2 = Inf * ones(bestr,1);
+        bestobjective = Inf * ones(bestr,1);
         bestrLSH=bestr;
     end
 
@@ -1698,9 +1830,9 @@ for ilsh=1:lLSH
         % lsh to T
         Xlshift= [zeros(lsh-1,1);ones(T-lsh+1,1)];
 
-        [Cini,nselected] = subsets(nsamp,T-1-nummissing,pini+1,ncombLSH,msg);
+        [Cini,nselected] = subsets(nsamp,T-1-nummissing,piniElemental+1,ncombLSH,msg);
 
-        C=[lsh*ones(nselected,1) zeros(nselected,pini+1)];
+        C=[lsh*ones(nselected,1) zeros(nselected,piniElemental+1)];
 
 
         % Make sure that observation lsh is always included in the subset
@@ -1726,7 +1858,7 @@ for ilsh=1:lLSH
 
     else
         % If there is no level shift component
-        [Cini,nselected] = subsets(nsamp,T-nummissing,pini,ncomb,msg);
+        [Cini,nselected] = subsets(nsamp,T-nummissing,piniElemental,ncomb,msg);
         if nummissing>0
             % Extract subsets which are not associated with missing values
             % of y
@@ -1795,10 +1927,51 @@ for ilsh=1:lLSH
         end
 
         Xfinal=[Xsel Xlshift];
-        % Preliminary OLS estimates (including tentative level shift) based
-        % just on the units forming subset
-        bsb=index(:);
-        betaini=Xfinal(bsb,:)\yin(bsb);
+        % Preliminary estimates (including tentative level shift) based
+        % just on the units forming subset.
+        bsb=double(index(:));
+        if trendHPYN
+            % Joint conditional fit of HP trend and all finite-dimensional
+            % linear components. lambdaHP is fixed throughout LTSts.
+            % Check identifiability before calling hpfilterFS so that a
+            % singular elemental subset is skipped rather than terminating
+            % the complete robust search.
+            qhp=size(Xfinal,2);
+            Aid=[ones(length(bsb),1) double(bsb) double(Xfinal(bsb,:))];
+
+            % With a rich seasonal design (in particular when all seasonal
+            % harmonics are used), a uniformly drawn minimal subset can be
+            % rank deficient with high probability because too few seasonal
+            % phases are represented. If this happens, repair the elemental
+            % subset by exchanging redundant rows for randomly ordered
+            % non-missing observations until the augmented design
+            % [1,t,Xfinal] has full row rank. The subset cardinality is kept
+            % unchanged, so the fit remains elemental.
+            if length(bsb)>=qhp+2 && rank(Aid)<qhp+2
+                [bsb,fullrankHP]=repairHPElementalSubset(bsb,Xfinal,lsh);
+                if fullrankHP
+                    % Keep the internally stored elemental subset aligned
+                    % with the observations actually used for the HP fit.
+                    index=bsb';
+                end
+            else
+                fullrankHP=length(bsb)>=qhp+2;
+            end
+
+            if ~fullrankHP
+                betaini=NaN(qhp,1);
+                trendHP=NaN(T,1);
+                singsub=singsub+1;
+            else
+                outHP=hpfilterFS(yin,'bsb',bsb,'X',Xfinal, ...
+                    'lambda',lambdaHP,'fitonly',true);
+                betaini=outHP.beta;
+                trendHP=outHP.mhat;
+            end
+        else
+            % Existing polynomial-trend branch: ordinary least squares.
+            betaini=Xfinal(bsb,:)\yin(bsb);
+        end
         % Check if betaini contains NaN
         if ~any(isnan(betaini))
             % The first pini components are associated with
@@ -1815,13 +1988,7 @@ for ilsh=1:lLSH
             end
 
             if varampl>0
-                if verLess2016b==1
-                    [betaout]=ALSbsxfun(beta0);
-                else
-                    [betaout]=ALS(beta0);
-                end
-                %  betaoutCHK=ALSbsxfun(beta0);
-                % dd=1;
+                betaout=ALS(beta0);
             else
                 betaout=beta0;
 
@@ -1851,35 +2018,42 @@ for ilsh=1:lLSH
 
             betarw = tmp.betarw;
             numscale2rw = tmp.numscale2rw;
+            objectiveRW = tmp.objective;
 
-            % 1(c) Consider only the 10 subsets that yield the lowest objective
-            % function so far.
+            % 1(c) Consider only the subsets that yield the lowest value of
+            % the ranking criterion. For polynomial trends this criterion is
+            % the trimmed residual sum of squares. For the HP trend it is
+            % RSS + lambdaHP*||D*trendHP||^2. The residual RSS is stored
+            % separately because it is used later for scale estimation.
             if ij > bestrLSH
 
-                if numscale2rw < sworst
+                if objectiveRW < sworst
 
-                    % Store numscale2rw, betarw and indexes of the units
-                    % forming the best subset for the current iteration
+                    % Find position of the worst previously stored value of
+                    % the ranking criterion.
+                    [~,ind] = max(bestobjective);
 
-                    % Find position of the maximum value of previously
-                    % stored best numerator of squared scaled
-                    [~,ind] = max(bestnumscale2);
-
+                    bestobjective(ind) = objectiveRW;
                     bestnumscale2(ind) = numscale2rw;
                     bestbetas(ind,:)   = betarw';
                     bestsubset(ind,:)  = index;
-                    bestyhat(:,ind)    = yhat;
-                    % sworst = best scale among the bestr found up to now
-                    sworst             = max(bestnumscale2);
+                    bestyhat(:,ind)    = tmp.yhat;
+                    if trendHPYN
+                        besttrendHP(:,ind)=tmp.trendHP;
+                    end
+                    sworst = max(bestobjective);
                 end
             else
 
-                bestnumscale2(ij)  = numscale2rw;
+                bestobjective(ij) = objectiveRW;
+                bestnumscale2(ij) = numscale2rw;
                 bestbetas(ij,:) = betarw';
                 bestsubset(ij,:)= index;
-                bestyhat(:,ij)=yhat;
-                % sworst = best scale among the bestr found up to now
-                sworst = max(bestnumscale2);
+                bestyhat(:,ij)=tmp.yhat;
+                if trendHPYN
+                    besttrendHP(:,ij)=tmp.trendHP;
+                end
+                sworst = max(bestobjective);
                 ij = ij+1;
                 brob = 1;
             end
@@ -1915,15 +2089,24 @@ for ilsh=1:lLSH
             bestyhatall=bestyhat;
             bestbetasall=bestbetas;
             bestsubsetall=bestsubset;
+            if trendHPYN
+                besttrendHPall=besttrendHP;
+            end
         else
             bestyhatall=[bestyhat bestyhattoadd];
             bestbetasall=[bestbetas; bestbetastoadd];
             bestsubsetall=[bestsubset; bestsubsettoadd];
+            if trendHPYN
+                besttrendHPall=[besttrendHP besttrendHPtoadd];
+            end
         end
 
-        % numsuperbestscale2 = numerator of estimate of super best squared
-        % scale
+        % numsuperbestscale2 is the residual RSS of the solution selected by
+        % the ranking criterion. superbestobjective is the corresponding
+        % criterion value.
         numsuperbestscale2 = Inf;
+        superbestobjective = Inf;
+        trendHProb=zeros(T,1);
 
         % Just to have an idea about y and yhat for a particular lsh value
         % plot([y bestyhat(:,1)])
@@ -1931,47 +2114,63 @@ for ilsh=1:lLSH
 
         for ii=1:bestr
             yhat=bestyhatall(:,ii);
+            if trendHPYN
+                % yhat, beta and trendHP must refer to the same starting
+                % candidate, in particular when refstepsbestr=0.
+                trendHP=besttrendHPall(:,ii);
+            end
             tmp = IRWLSreg(yin,bestbetasall(ii,:)',refstepsbestr,reftolbestr,h);
 
             % Store information about the units forming best h subset among the
-            % 10 best
+            % best solutions.
             WEIibestrdiv2(:,ii)=tmp.weights;
 
             allnumscale2(ii,1)=tmp.numscale2rw;
-            % allscales(i,2)=tmp.betarw(end);
+            allobjective(ii,1)=tmp.objective;
 
-            if tmp.numscale2rw < numsuperbestscale2
-                % brob = superbestbeta
+            if tmp.objective < superbestobjective
+                % brob = superbestbeta according to the ranking criterion.
                 brob = tmp.betarw;
-                % bs = superbestsubset, units forming best subset according to
-                % fastlts
-                % bs = bestsubsetall(ii,:);
                 yhatrob=tmp.yhat;
                 numsuperbestscale2=tmp.numscale2rw;
+                superbestobjective=tmp.objective;
+                if trendHPYN
+                    trendHProb=tmp.trendHP;
+                end
                 ibest=ii;
                 weightsst=tmp.weights;
             end
         end
 
-        % Store the bestrdiv2 best values of target function
-        [~,numscale2ssorind]=sort(allnumscale2);
+        % Store the bestrdiv2 best values according to the ranking
+        % criterion. For the HP trend this is the penalized objective.
+        [~,numscale2ssorind]=sort(allobjective);
         bestyhattoadd=bestyhatall(:,numscale2ssorind(1:bestrdiv2));
         bestbetastoadd=bestbetasall(numscale2ssorind(1:bestrdiv2),:);
-        % The last element of estimated beta coefficients is the point in
-        % which level shift takes place. This has to be increased by one
-        % unit. Please note that betas are stored in rows, therefore we have
-        % to change the last column.
-        bestbetastoadd(:,end)=bestbetastoadd(:,end)+1;
+        if trendHPYN
+            besttrendHPtoadd=besttrendHPall(:,numscale2ssorind(1:bestrdiv2));
+        end
+        % If a level shift is present, the last element of beta is the
+        % tentative level-shift position. Solutions carried to the next
+        % tentative position must therefore be shifted by one unit.
+        if lshiftYN==1
+            bestbetastoadd(:,end)=bestbetastoadd(:,end)+1;
+        end
 
         bestsubsettoadd=bestsubsetall(numscale2ssorind(1:bestrdiv2),:);
 
         numscale2LSH(ilsh,2:3)=[numsuperbestscale2 ibest];
+        objectiveLSH(ilsh,2)=superbestobjective;
         yhatrobLSH(:,ilsh)=yhatrob;
         brobLSH(:,ilsh)=brob;
+        if trendHPYN
+            trendHProbLSH(:,ilsh)=trendHProb;
+        end
 
         % plot(seq,[y yhatrob])
         % title(['Level shift in step t=' num2str(LSH(ilsh))])
         ALLnumscale2(:,ilsh)=allnumscale2;
+        ALLobjective(:,ilsh)=allobjective;
 
         scaledres = (yin-yhatrob)/sqrt(numsuperbestscale2/h);
         RES(:,ilsh) = scaledres;
@@ -2003,11 +2202,18 @@ for j=1:size(Weimod,2)
 end
 
 
-[~,minidx]=min(numscale2LSH(:,2));
+if trendHPYN
+    % Candidate level-shift positions are compared using the penalized HP
+    % objective, not the residual RSS.
+    [~,minidx]=min(objectiveLSH(:,2));
+    trendHP=trendHProbLSH(:,minidx);
+else
+    [~,minidx]=min(numscale2LSH(:,2));
+end
 brobbest=brobLSH(:,minidx);
 
 % Pass from numerator of squared estimate of the scale to proper scale
-% estimate
+% estimate. The scale always uses residual RSS, never the HP penalty.
 sh0=sqrt(numscale2LSH(minidx,2)/h);
 
 % Consistency factor
@@ -2098,19 +2304,45 @@ lik(brobfinal);
 % residuals = Raw residuals using final estimate of beta
 residuals=yin-yhat;
 
-% Find the units with the smallest absolute p+1 residuals (before
-% reweighting step)
+% Find the smallest set of observations, ordered by absolute robust
+% residual, which identifies the model before the reweighting step.
 [~,IndBestRes]=sort(abs(residuals));
-nofullrank=true;
-bs=IndBestRes(1:p+1);
-ij=0;
 
-while nofullrank
-    bs=IndBestRes(1:p+ij);
-    if rank(zscore(Xsel(bs,2:end)))<pini-1
-        ij=ij+1;
-    else
-        nofullrank = false;
+if trendHPYN
+    % The HP trend has a two-dimensional unpenalized affine null space.
+    % Identification must therefore be checked jointly for [1,t,J], where
+    % J is the Jacobian of all finite-dimensional components except the
+    % discrete level-shift position.
+    Jbs=hpFiniteJacobian(brobfinal);
+    qbs=size(Jbs,2);
+    nbs=qbs+2;
+    nofullrank=true;
+    while nofullrank
+        if nbs>T-nummissing
+            error('FSDA:LTSts:NoFullRank', ...
+                'The final HP model is not identifiable on the non-missing observations.')
+        end
+        bs=IndBestRes(1:nbs);
+        bs=bs(~isnan(yin(bs)));
+        if length(bs)>=qbs+2 && ...
+                rank([ones(length(bs),1) double(bs) double(Jbs(bs,:))])==qbs+2
+            nofullrank=false;
+        else
+            nbs=nbs+1;
+        end
+    end
+else
+    % Existing polynomial-trend calculation.
+    nofullrank=true;
+    bs=IndBestRes(1:p+1);
+    ij=0;
+    while nofullrank
+        bs=IndBestRes(1:p+ij);
+        if rank(zscore(Xsel(bs,2:end)))<pini-1
+            ij=ij+1;
+        else
+            nofullrank = false;
+        end
     end
 end
 
@@ -2146,7 +2378,20 @@ end
 stdres = residuals/s0;
 if SmallSampleCor==1
     if h<T
-        plinear=pini+lshiftYN;
+        if trendHPYN
+            % RobRegrSize is calibrated for finite-dimensional linear
+            % regression. For the HP branch use the finite-dimensional
+            % coefficients plus the two affine null-space directions as an
+            % approximation.
+            plinear=nseaso+nexpl+varampl+lshiftYN+2;
+            if msg==true
+                warning('FSDA:LTSts:HPsmallSampleCor', ...
+                    ['SmallSampleCor=1 is based on a linear-regression ' ...
+                    'calibration and is only approximate for the HP trend.'])
+            end
+        else
+            plinear=pini+lshiftYN;
+        end
         robest='LTS';
         eff=[];
         rhofunc='';
@@ -2196,7 +2441,9 @@ end
 % end
 
 
-% weights is a boolean vector.
+% weights is a boolean vector. Missing responses cannot participate in
+% the final reweighted fit.
+weights(isnan(yin))=false;
 bsb=seq(weights);
 
 % Store bsb to use in order to find sum of squares of residuals for
@@ -2204,103 +2451,185 @@ bsb=seq(weights);
 bsbModSel=bsb;
 
 % Find new estimate of beta using only observations which have
-% weight equal to 1. Notice that new brob overwrites old brob
-% computed previously.
+% weight equal to 1. The polynomial branch below is unchanged. In the HP
+% branch the trend and all finite-dimensional components are refitted
+% jointly on the final reweighting subset.
 
+hpFinalRSS=[];
+hpFinalPenalty=[];
+hpFinalObjective=[];
+hpInference='';
 
-if varampl==0 && lshiftYN==0 % In this case, the model is linear.
-    % Function lik constructs fitted values and residual sum of
-    % squares
-    betaout = Xsel(bsb,:) \ yin(bsb);
-    % update fitted values
-    yhat = Xsel * betaout;
+% Final refinement after the reweighting step.
+% For the traditional polynomial-trend model, the final refinement is
+% performed below by OLS or, when the seasonal amplitude varies, by
+% nlinfit. In the HP branch nlinfit is not appropriate because the trend
+% is not represented by a finite-dimensional vector of parameters: it is
+% a penalized latent component which must be re-estimated jointly with the
+% remaining model components. Therefore, when trendHPYN is true, the final
+% refinement is obtained directly from the joint hpfilterFS fit if the
+% seasonal amplitude is fixed, and from the HP/ALS iterations followed by
+% a final synchronization step if the seasonal amplitude varies.
+if trendHPYN
+    bsbFinal=bsb;
 
-    % find fitted values using all observations
-    yhat =  Xsel * betaout;
-    s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
-    invXX=inv(Xsel'*Xsel);
-    covB=s2*invXX; %#ok<MINV>
-    Xlin=Xsel;
-
-elseif   varampl==0 && lshiftYN==1
-    % In this case there is just level shift, however we do not redo
-    % the non linear estimation but a simple LS
-
-    Xseldum=[Xsel Xlshift];
-    betaout = Xseldum(bsb,:) \ yin(bsb);
-
-    % find fitted values using all observations
-    yhat =  Xseldum * betaout;
-    s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
-    invXX=inv(Xseldum(bsb,:)'*Xseldum(bsb,:));
-    covB=s2*invXX; %#ok<MINV>
-    Xlin=Xseldum;
-else % model is non linear because there is time varying amplitude in seasonal component
-    Xtrendf=Xtrend(bsb,:);
-    Xseasof=Xseaso(bsb,:);
-    if ~isempty(X)
-        Xf=X(bsb,:);
-    end
-    Seqf=Seq(bsb,:);
-    yf=yin(bsb);
-
-    % Find new estimate of scale using only observations which have
-    % weight equal to 1.
-    weights=false(T,1);
-    weights(bsb)=true;
-
-    if coder.target('MATLAB')
-
+    if varampl==0
+        % With fixed seasonal amplitude all finite-dimensional components
+        % are linear once the level-shift position has been fixed.
         if lshiftYN==1
-            Xlshiftf=Xlshift(bsb);
-            [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
+            XhpFinal=[Xsel Xlshift];
         else
-            Xlshiftf=0;
-            [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
-            % [betaout,R,J,covB,MSE,ErrorModelInfo] = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
-            % Note that MSE*inv(J'*J) = covB
+            XhpFinal=Xsel;
         end
 
-        % yfitFS = likyhat(betaout,Xtrendf);
-        % nans=false(length(yfitFS),1);
-        % sqweights=ones(length(yfitFS),1);
-        % fdiffstep=1.0e-05*0.6655*ones(length(betaout),1);
-        % J = getjacobianFS(betaout,fdiffstep,@likyhat,yfitFS,nans,sqweights);
-    else  % MATLAB CCODER PART nlinfit replaced by lsqcurvefit
-        optionsLSQcurvefit = optimoptions('lsqcurvefit','Algorithm','Levenberg-Marquardt');
+        outHPfinal=hpfilterFS(yin,'bsb',bsbFinal,'X',XhpFinal, ...
+            'lambda',lambdaHP,'fitonly',true);
+        trendHP=outHPfinal.mhat;
+        betaout=outHPfinal.beta;
+        yhat=outHPfinal.yhat;
+        hpFinalRSS=outHPfinal.rss;
+        hpFinalPenalty=outHPfinal.penalty;
+        hpFinalObjective=outHPfinal.objective;
+
         if lshiftYN==1
-            Xlshiftf=Xlshift(bsb);
-            ub=Inf(length(brobfinal)-1,1);
-            lb=-ub;
-            [betaout,~,~,~,~,~,Xlin] = lsqcurvefit(@likyhat,brobfinal(1:end-1),Xtrendf,yf,lb,ub,optionsLSQcurvefit);
+            brobfinal=[betaout; posLS];
         else
-            Xlshiftf=0;
-            % [betaoutCHK,resnorm,residual,exitflag,output,lambda,XlinCHK]= lsqcurvefit(@likyhat,brobfinal,Xtrendf,yf);
-            ub=Inf(length(brobfinal),1);
-            lb=-ub;
-            [betaout,~,~,~,~,~,Xlin] = lsqcurvefit(@likyhat,brobfinal,Xtrendf,yf,lb,ub,optionsLSQcurvefit);
+            brobfinal=betaout;
         end
-        covB=eye/length(betaout);
-        MSE=1;
-        %         MSE=(residuals'*residuals)/length(betaout);
-        %         covB=MSE*inv(XlinCHK'*XlinCHK)*MSE;
+    else
+        % Time-varying seasonal amplitude: use the same conditional HP/ALS
+        % updates as in the robust search, now on the final reweighting set.
+        [betafinalHP,exitflagHP]=ALS(brobfinal);
+        if exitflagHP~=0 || any(isnan(betafinalHP)) || any(isnan(trendHP))
+            error('FSDA:LTSts:HPFinalFit', ...
+                'The final reweighted HP/ALS fit did not converge to an admissible solution.')
+        end
+        % Synchronize the HP trend and the non-seasonal coefficients with
+        % the final linear seasonal coefficients returned by ALS. This
+        % removes the one-half-step lag inherent in the alternating update.
+        b2378Final=betafinalHP(indlinsc);
+        atFullFinal=Xseaso*b2378Final;
+        XhpFinal=[X atFullFinal.*Seq(:,2:varampl+1) Xlshift];
+        outHPsync=hpfilterFS(yin-atFullFinal,'bsb',bsbFinal,'X',XhpFinal, ...
+            'lambda',lambdaHP,'fitonly',true);
+        trendHP=outHPsync.mhat;
+        betafinalHP(otherind)=outHPsync.beta;
+
+        brobfinal=betafinalHP;
+        if lshiftYN==1
+            betaout=betafinalHP(1:end-1);
+        else
+            betaout=betafinalHP;
+        end
+
+        bsb=seq;
+        lik(brobfinal);
+        bsb=bsbFinal;
+        hpFinalRSS=sum((yin(bsbFinal)-yhat(bsbFinal)).^2,'omitnan');
+        hpFinalPenalty=lambdaHP*sum(diff(trendHP,2).^2);
+        hpFinalObjective=hpFinalRSS+hpFinalPenalty;
+    end
+
+    % Profile the HP trend out of the local information matrix. invXX is
+    % cov(beta)/sigma^2 under the fixed-lambda conditional working model.
+    Xlin=hpFiniteJacobian(betaout);
+    invXX=hpProfileInvInfo(Xlin,bsbFinal);
+    hpInference='conditional-fixed-lambda-profiled-Wald';
+
+else
+    if varampl==0 && lshiftYN==0 % In this case, the model is linear.
+        % Function lik constructs fitted values and residual sum of
+        % squares
+        betaout = Xsel(bsb,:) \ yin(bsb);
+        % update fitted values
+        yhat = Xsel * betaout;
+
+        % find fitted values using all observations
+        yhat =  Xsel * betaout;
+        s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
+        invXX=inv(Xsel'*Xsel);
+        covB=s2*invXX; %#ok<MINV>
+        Xlin=Xsel;
+
+    elseif   varampl==0 && lshiftYN==1
+        % In this case there is just level shift, however we do not redo
+        % the non linear estimation but a simple LS
+
+        Xseldum=[Xsel Xlshift];
+        betaout = Xseldum(bsb,:) \ yin(bsb);
+
+        % find fitted values using all observations
+        yhat =  Xseldum * betaout;
+        s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
+        invXX=inv(Xseldum(bsb,:)'*Xseldum(bsb,:));
+        covB=s2*invXX; %#ok<MINV>
+        Xlin=Xseldum;
+    else % model is non linear because there is time varying amplitude in seasonal component
+        Xtrendf=Xtrend(bsb,:);
+        Xseasof=Xseaso(bsb,:);
+        if ~isempty(X)
+            Xf=X(bsb,:);
+        end
+        Seqf=Seq(bsb,:);
+        yf=yin(bsb);
+
+        % Find new estimate of scale using only observations which have
+        % weight equal to 1.
+        weights=false(T,1);
+        weights(bsb)=true;
+
+        if coder.target('MATLAB')
+
+            if lshiftYN==1
+                Xlshiftf=Xlshift(bsb);
+                [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
+            else
+                Xlshiftf=0;
+                [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+                % [betaout,R,J,covB,MSE,ErrorModelInfo] = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+                % Note that MSE*inv(J'*J) = covB
+            end
+
+            % yfitFS = likyhat(betaout,Xtrendf);
+            % nans=false(length(yfitFS),1);
+            % sqweights=ones(length(yfitFS),1);
+            % fdiffstep=1.0e-05*0.6655*ones(length(betaout),1);
+            % J = getjacobianFS(betaout,fdiffstep,@likyhat,yfitFS,nans,sqweights);
+        else  % MATLAB CCODER PART nlinfit replaced by lsqcurvefit
+            optionsLSQcurvefit = optimoptions('lsqcurvefit','Algorithm','Levenberg-Marquardt');
+            if lshiftYN==1
+                Xlshiftf=Xlshift(bsb);
+                ub=Inf(length(brobfinal)-1,1);
+                lb=-ub;
+                [betaout,~,~,~,~,~,Xlin] = lsqcurvefit(@likyhat,brobfinal(1:end-1),Xtrendf,yf,lb,ub,optionsLSQcurvefit);
+            else
+                Xlshiftf=0;
+                % [betaoutCHK,resnorm,residual,exitflag,output,lambda,XlinCHK]= lsqcurvefit(@likyhat,brobfinal,Xtrendf,yf);
+                ub=Inf(length(brobfinal),1);
+                lb=-ub;
+                [betaout,~,~,~,~,~,Xlin] = lsqcurvefit(@likyhat,brobfinal,Xtrendf,yf,lb,ub,optionsLSQcurvefit);
+            end
+            covB=eye/length(betaout);
+            MSE=1;
+            %         MSE=(residuals'*residuals)/length(betaout);
+            %         covB=MSE*inv(XlinCHK'*XlinCHK)*MSE;
+
+        end
+        invXX=covB/MSE;
+
+        % Now compute again vector yhat using final vector betaout
+        bsb=seq;
+        lik(betaout);
 
     end
-    invXX=covB/MSE;
 
-    % Now compute again vector yhat using final vector betaout
-    bsb=seq;
-    lik(betaout);
-
+    % Existing polynomial-trend inference.
+    sebetaout=sqrt(diag(covB));
+    tout=betaout./sebetaout;
+    dfe=T-length(betaout);
+    pval=2*(tcdf(-abs(tout), dfe));
+    B=[betaout sebetaout tout pval];
 end
-
-% Store beta standard error, t stat and p values
-sebetaout=sqrt(diag(covB));
-tout=betaout./sebetaout;
-dfe=T-length(betaout);
-pval=2*(tcdf(-abs(tout), dfe));
-B=[betaout sebetaout tout pval];
-
 
 % Computation of reweighted residuals.
 residuals=yin-yhat;
@@ -2332,6 +2661,23 @@ else
 end
 
 s0=s0*factor;
+
+if trendHPYN
+    % Approximate conditional covariance of the finite-dimensional HP
+    % coefficients. The robust final scale multiplies the inverse profiled
+    % penalized information matrix. lambdaHP and the final subset are
+    % treated as fixed; robust selection uncertainty is not included.
+    covB=(s0^2)*invXX;
+    if isempty(betaout)
+        B=zeros(0,4);
+    else
+        sebetaout=sqrt(max(diag(covB),0));
+        statout=betaout./sebetaout;
+        pval=2*normcdf(-abs(statout));
+        B=[betaout sebetaout statout pval];
+    end
+end
+
 if s0==0
     stdres=residuals;
 else
@@ -2374,27 +2720,47 @@ else
     b_expl=b_X;
 end
 
-if seasonal>0
-    if 2*seasonal==s
-        lab=[b_trend(1:trend+1,:); b_seaso];
-    else
-        lab=[b_trend(1:trend+1,:); b_seaso(1:2*seasonal,:)];
+if trendHPYN
+    % There are no polynomial-trend coefficients in out.B for an HP trend.
+    lab=repmat(' ',0,8);
+    if nseaso>0
+        lab=[lab; b_seaso(1:nseaso,:)];
     end
+    if nexpl>0
+        lab=[lab; b_expl(1:nexpl,:)];
+    end
+    if varampl>0
+        lab=[lab; b_varampl(1:varampl,:)];
+    end
+    if lshiftYN==1
+        lab=[lab; b_lshift(1,:)];
+    end
+    posvarampl=indvarampl;
 else
-    lab=b_trend(1:trend+1,:);
-end
+    if seasonal>0
 
-if nexpl>0
-    lab=[lab;b_expl(1:nexpl,:)];
-end
-if varampl>0
-    lab=[lab;b_varampl(1:varampl,:)];
-    posvarampl=length(lab)-varampl+1:length(lab);
-else
-    posvarampl=[];
-end
-if lshiftYN==1
-    lab=[lab; b_lshift(1,:)];
+        % nseaso is the actual number of seasonal columns in Xseaso. In
+        % particular, when seasonal=s/2 and s is even, the sine term of the
+        % last harmonic is identically zero and is removed from Xseaso.
+        % Use nseaso also for the labels so that B and Btable have the same
+        % number of rows.
+        lab=[b_trend(1:trend+1,:); b_seaso(1:nseaso,:)];
+    else
+        lab=b_trend(1:trend+1,:);
+    end
+
+    if nexpl>0
+        lab=[lab;b_expl(1:nexpl,:)];
+    end
+    if varampl>0
+        lab=[lab;b_varampl(1:varampl,:)];
+        posvarampl=length(lab)-varampl+1:length(lab);
+    else
+        posvarampl=[];
+    end
+    if lshiftYN==1
+        lab=[lab; b_lshift(1,:)];
+    end
 end
 
 if msg==true
@@ -2409,7 +2775,17 @@ end
 
 % Store matrix B in table format (with labels for rows and columns)
 if coder.target('MATLAB')
-    Btable=array2table(B,'RowNames',string(lab(2-intercept:end,:))','VariableNames',{'Coeff','SE','t','pval'});
+    if trendHPYN
+        if isempty(B)
+            Btable=array2table(B,'VariableNames',{'Coeff','SE','t','pval'});
+        else
+            Btable=array2table(B,'RowNames',cellstr(lab), ...
+                'VariableNames',{'Coeff','SE','t','pval'});
+        end
+    else
+        Btable=array2table(B,'RowNames',string(lab(2-intercept:end,:))', ...
+            'VariableNames',{'Coeff','SE','t','pval'});
+    end
 else
     Btable=array2table(B,'VariableNames',{'Coeff','SE','t','pval'});
 end
@@ -2436,11 +2812,46 @@ out.Btable=Btable;
 
 out.invXX=invXX;
 
+if trendHPYN
+    % Final additive decomposition. The seasonal component includes its
+    % time-varying amplitude when requested.
+    if seasonal>0
+        seasonalHP=Xseaso*betaout(indlinsc);
+        if varampl>0
+            seasonalHP=(1+Seq(:,2:varampl+1)*betaout(indvarampl)).*seasonalHP;
+        end
+    else
+        seasonalHP=zeros(T,1);
+    end
+
+    if nexpl>0
+        explanatoryHP=X*betaout(indexpl);
+    else
+        explanatoryHP=zeros(T,1);
+    end
+
+    if lshiftYN==1
+        levelshiftHP=Xlshift*betaout(indlshiftcoef);
+    else
+        levelshiftHP=zeros(T,1);
+    end
+
+    out.trend=trendHP;
+    out.seasonal=seasonalHP;
+    out.explanatory=explanatoryHP;
+    out.levelshift=levelshiftHP;
+    out.hp=struct('lambda',lambdaHP,'rss',hpFinalRSS, ...
+        'penalty',hpFinalPenalty,'objective',hpFinalObjective, ...
+        'objectiveCandidates',ALLobjective,'objectiveLSH',objectiveLSH, ...
+        'inference',hpInference);
+end
+
 % Store robust estimate of s
 out.scale = s0;
 
-% Store the 20 best estimates of the scale for each tentative level shift
-% which is considered
+% Store residual sums of squares for the best solutions at each tentative
+% level shift. In the HP branch these values are not the ranking criterion;
+% candidate ranking uses the penalized objective stored internally.
 out.numscale2 = ALLnumscale2;
 
 
@@ -2513,7 +2924,11 @@ out.weights=weights;
 out.y=yin;
 
 if options.yxsave == true
-    if options.intercept==true
+    if trendHPYN
+        % In the HP branch Xlin is the Jacobian of the finite-dimensional
+        % component. There is no separate intercept column to remove.
+        out.X=Xlin;
+    elseif options.intercept==true
         % Store X (without the column of ones, if there is an intercept)
         out.X=Xlin(:,2:end);
     else
@@ -2631,9 +3046,18 @@ if coder.target('MATLAB')
 
     if plots==2 && lshiftYN==1
 
-        % Values of the target function for each tentative level shift position
+        % Values of the target function for each tentative level shift
+        % position. For the HP trend the target is the penalized objective;
+        % otherwise it is the truncated residual sum of squares.
         figure;
-        boxplot(ALLnumscale2(:,1:end),LSH(1:end)','labelorientation','inline');
+        if trendHPYN
+            targetPlot=ALLobjective;
+            targetBest=objectiveLSH(:,2);
+        else
+            targetPlot=ALLnumscale2;
+            targetBest=numscale2LSH(:,2);
+        end
+        boxplot(targetPlot(:,1:end),LSH(1:end)','labelorientation','inline');
         % boxplot uses text to put the labels on the X axes labeling, therefore
         % we have to use findobj here to fix the font size
         txt = findobj(gca,'Type','text');
@@ -2645,11 +3069,11 @@ if coder.target('MATLAB')
         end
         set(txt2,'FontSize',SizeAxesNum,'VerticalAlignment', 'Middle');
         hold('on');
-        plot(numscale2LSH(:,2));
+        plot(targetBest);
         set(gca,'Fontsize',SizeAxesNum);
         xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
         title('Target function values','interpreter','none','FontSize',FontSize+2);
-        ylim([min(ALLnumscale2(:)), prctile(ALLnumscale2(:),90)]);
+        ylim([min(targetPlot(:)), prctile(targetPlot(:),90)]);
 
         % Level Shift local refinement
         figure;
@@ -2712,106 +3136,156 @@ if coder.target('MATLAB')
     end
 end
 
-% Part of the code to find the F test for the final harmonic of the seasonal
-% component part
+% Inference for the final harmonic of the seasonal component.
 bsb=bsbModSel;
 
 pval=[];
-if seasonal>0 && seasonal<6
-    % selWithoutLastHarmonic = indexes of the linear part of the model after excluding the last harmonic
-    selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:size(Xsel,2)];
-
-    if varampl==0 && lshiftYN==0 % In this case the model is linear
-        % Function lik constructs fitted values and residual sum of
-        % squares
-        betaout = Xsel(bsb,selWithoutLastHarmonic) \ yin(bsb);
-        % update fitted values
-        yhat = Xsel(:,selWithoutLastHarmonic) * betaout;
-
-        s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
-
-    elseif   varampl==0 && lshiftYN==1
-        % In this case there is just level shift, however we do not redo
-        % the non linear estimation but a simple LS
-        Xselreduced= Xsel(:,selWithoutLastHarmonic);
-        Xseldum=[Xselreduced  Xlshift];
-        betaout = Xseldum(bsb,:) \ yin(bsb);
-
-        % find fitted values using all observations
-        yhat =  Xseldum * betaout;
-
-        s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
-
-    else % model is non linear because there is time varying amplitude in seasonal component
-        Xtrendf=Xtrend(bsb,:);
-
-        % Remove the last harmonic from Xseaso
-        seasonal=seasonal-1;
-        if seasonal==0
-            Xseaso=[];
-            Xseasof=[];
-            yhatseaso=0;
+if trendHPYN
+    if seasonal>0
+        if seasonal==(s/2)
+            idxLast=nseaso;
         else
-            Xseaso=Xseaso(:,1:end-2);
-            Xseasof=Xseaso(bsb,:);
+            idxLast=(nseaso-1):nseaso;
         end
 
-        if ~isempty(X)
-            Xf=X(bsb,:);
-        end
-        Seqf=Seq(bsb,:);
-        yf=yin(bsb);
-
-        lasind=length(brobfinal);
-
-        selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
-
-        % If there is no seasonality, it is also necessary to
-        % remove the non linear part of the seasonal component
-        % that is, it is necessary to select the elements of vector selWithoutLastHarmonic
-        % apart from those which are in posvarampl
-        if seasonal==0
-            selWithoutLastHarmonic=setdiff(selWithoutLastHarmonic,posvarampl);
-            varampl=0;
-        end
-
-        if coder.target('MATLAB')
-            if lshiftYN==1
-                Xlshiftf=Xlshift(bsb);
-                [betaout,~,~,~,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(selWithoutLastHarmonic(1:end-1)));
-            else
-                [betaout,~,~,~,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(selWithoutLastHarmonic));
-            end
+        % If there is only one harmonic and its amplitude is time-varying,
+        % the amplitude parameters are not identified under the null that
+        % the complete harmonic is absent. Return NaN rather than applying
+        % a non-regular Wald reference distribution.
+        if varampl>0 && seasonal==1
+            pval=NaN;
         else
-            % TODO nlinfit not supported by MATLAB C Coder
-            if lshiftYN==1
-                betaout= brobfinal(selWithoutLastHarmonic(1:end-1));
+            covLast=covB(idxLast,idxLast);
+            if any(~isfinite(covLast(:))) || rank(covLast)<length(idxLast)
+                pval=NaN;
             else
-                betaout=brobfinal(selWithoutLastHarmonic);
+                bLast=betaout(idxLast);
+                waldLast=bLast'*(covLast\bLast);
+                pval=1-chi2cdf(waldLast,length(idxLast));
             end
         end
-
-
-        lik(betaout);
-        % Computation of residuals.
-        residuals=yin(bsb)-yhat;
-        s2reduced=sum(residuals.^2);
     end
-    v1=2;
-    numFtest=(s2reduced-s2full)/v1;
-    v2=(length(bsb)-p);
-    denFtest=s2full/v2;
-    pval=1-fcdf(numFtest/denFtest,v1,v2);
-elseif seasonal>0
-    % In presence of 6 harmonics, the last one is just made up of a single
-    % variable, therefore the p value is just the p value of the associated
-    % t-stat
-    pval=B(ntrend+nseaso,4);
+else
+    if seasonal>0 && seasonal<6
+        % selWithoutLastHarmonic = indexes of the linear part of the model after excluding the last harmonic
+        selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:size(Xsel,2)];
+
+        if varampl==0 && lshiftYN==0 % In this case the model is linear
+            % Function lik constructs fitted values and residual sum of
+            % squares
+            betaout = Xsel(bsb,selWithoutLastHarmonic) \ yin(bsb);
+            % update fitted values
+            yhat = Xsel(:,selWithoutLastHarmonic) * betaout;
+
+            s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
+
+        elseif   varampl==0 && lshiftYN==1
+            % In this case there is just level shift, however we do not redo
+            % the non linear estimation but a simple LS
+            Xselreduced= Xsel(:,selWithoutLastHarmonic);
+            Xseldum=[Xselreduced  Xlshift];
+            betaout = Xseldum(bsb,:) \ yin(bsb);
+
+            % find fitted values using all observations
+            yhat =  Xseldum * betaout;
+
+            s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
+
+        else % model is non linear because there is time varying amplitude in seasonal component
+            Xtrendf=Xtrend(bsb,:);
+
+            % The last-harmonic test fits a reduced nonlinear model. The
+            % following quantities are temporarily modified so that likyhat
+            % represents that reduced model. Save the full-model values because
+            % the fixed index vectors (for example indlinsc) refer to the full
+            % model and must not be used to evaluate the reduced fit.
+            seasonalFull=seasonal;
+            varamplFull=varampl;
+            XseasoFull=Xseaso;
+            yhatseasoFull=yhatseaso;
+
+            % Remove the last harmonic from Xseaso.
+            seasonal=seasonal-1;
+            if seasonal==0
+                Xseaso=[];
+                Xseasof=[];
+                yhatseaso=0;
+            else
+                Xseaso=Xseaso(:,1:end-2);
+                Xseasof=Xseaso(bsb,:);
+            end
+
+            if ~isempty(X)
+                Xf=X(bsb,:);
+            end
+            Seqf=Seq(bsb,:);
+            yf=yin(bsb);
+
+            lasind=length(brobfinal);
+
+            selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
+
+            % If there is no seasonality, it is also necessary to remove the
+            % nonlinear part of the seasonal component from the reduced model.
+            if seasonal==0
+                selWithoutLastHarmonic=setdiff(selWithoutLastHarmonic,posvarampl);
+                varampl=0;
+            end
+
+            if coder.target('MATLAB')
+                if lshiftYN==1
+                    Xlshiftf=Xlshift(bsb);
+                    betaReduced=nlinfit(Xtrendf,yf,@likyhat, ...
+                        brobfinal(selWithoutLastHarmonic(1:end-1)));
+                else
+                    betaReduced=nlinfit(Xtrendf,yf,@likyhat, ...
+                        brobfinal(selWithoutLastHarmonic));
+                end
+            else
+                % TODO nlinfit not supported by MATLAB C Coder
+                if lshiftYN==1
+                    betaReduced=brobfinal(selWithoutLastHarmonic(1:end-1));
+                else
+                    betaReduced=brobfinal(selWithoutLastHarmonic);
+                end
+            end
+
+            % Evaluate the same reduced nonlinear model which has just been
+            % fitted by nlinfit. Do not call lik here: lik uses the fixed
+            % full-model coefficient indexes (indlinsc, indexpl, indvarampl),
+            % which are not compatible with betaReduced after removing the last
+            % harmonic.
+            yhatReduced=likyhat(betaReduced,Xtrendf);
+            residualsReduced=yf-yhatReduced;
+            s2reduced=sum(residualsReduced.^2);
+
+            % Restore the full model after computing the reduced-model RSS.
+            seasonal=seasonalFull;
+            varampl=varamplFull;
+            Xseaso=XseasoFull;
+            yhatseaso=yhatseasoFull;
+        end
+        v1=2;
+        numFtest=(s2reduced-s2full)/v1;
+        v2=(length(bsb)-p);
+        denFtest=s2full/v2;
+        pval=1-fcdf(numFtest/denFtest,v1,v2);
+    elseif seasonal>0
+        % In presence of 6 harmonics, the last one is just made up of a single
+        % variable, therefore the p value is just the p value of the associated
+        % t-stat
+        pval=B(ntrend+nseaso,4);
+    end
 end
 out.LastHarmonicPval=pval;
 
 if lshiftYN==1
-    if length(LSH)>p-1
+    if trendHPYN
+        % The HP coefficient test is conditional on fixed lambda and final
+        % weights. Correct only for the search over the tested level-shift
+        % positions using a transparent Bonferroni bound.
+        LevelShiftPval=min(1,length(LSH)*out.B(end,4));
+    elseif length(LSH)>p-1
         lsdet=FSRinvmdr([length(LSH) abs(B(end,3))],min([p-1, length(LSH)-1]));
         LevelShiftPval=1-lsdet(1,2);
     else
@@ -2852,163 +3326,126 @@ end
         % implies normal convergence, else no convergence has been obtained
         exitflag=0;
 
-        % Define all the relevant matrices before the loop
-        Seqbsb=Seq(bsb,1);
+        % Define all the relevant matrices before the loop.
         Xseasobsb=Xseaso(bsb,:);
-        Xtrendbsb=Xtrend(bsb,:);
         yinbsb=yin(bsb);
-        indnlseaso=(trend+2+nexpl):(trend+2+nexpl+varampl-1);
         Seqbsbvarampl=Seq(bsb,2:varampl+1);
 
         if isemptyX
-            if lshiftYN==1
-                Xlshiftbsb=Xlshift(bsb);
-                XtrendXbsbXseasonXlshift=[Xtrendbsb Seqbsbvarampl Xlshiftbsb];
-                XtrendbsbXbsbXlshiftbsb=[Xtrendbsb Xlshiftbsb];
-                indnlseasoc=[1:trend+1 trend+2+nexpl+varampl];
-            else
-                XtrendXbsbXseasonXlshift=[Xtrendbsb Seqbsbvarampl];
-                XtrendbsbXbsbXlshiftbsb=Xtrendbsb;
-                indnlseasoc=1:(trend+1);
-            end
+            Xbsb=zeros(length(bsb),0);
         else
-            Xbsb= X(bsb,:);
-            XtrendbsbXbsb=[Xtrendbsb Xbsb];
+            Xbsb=X(bsb,:);
+        end
+
+        if lshiftYN==1
+            Xlshiftbsb=Xlshift(bsb);
+        else
+            Xlshiftbsb=zeros(length(bsb),0);
+        end
+
+        if ~trendHPYN
+            % Matrices used by the original polynomial-trend ALS branch.
+            % The local order in b0145 is: trend, X, varying-amplitude
+            % coefficients and level-shift magnitude.
+            Xtrendbsb=Xtrend(bsb,:);
+            Xbase=[Xtrendbsb Xbsb];
+            XtrendXbsbXseasonXlshift=[Xbase Seqbsbvarampl Xlshiftbsb];
+            XtrendbsbXbsbXlshiftbsb=[Xbase Xlshiftbsb];
+
+            indnlseasoLocal=ntrend+nexpl+(1:varampl);
+            indnlseasocLocal=1:(ntrend+nexpl);
             if lshiftYN==1
-                Xlshiftbsb=Xlshift(bsb);
-                XtrendXbsbXseasonXlshift=[XtrendbsbXbsb Seqbsbvarampl Xlshiftbsb];
-                XtrendbsbXbsbXlshiftbsb=[Xtrendbsb Xbsb Xlshiftbsb];
-                indnlseasoc=[1:trend+1+nexpl trend+2+nexpl+varampl];
-            else
-                XtrendXbsbXseasonXlshift=[XtrendbsbXbsb Seqbsbvarampl];
-                XtrendbsbXbsbXlshiftbsb=[Xtrendbsb Xbsb];
-                indnlseasoc=1:trend+1+nexpl;
+                indnlseasocLocal=[indnlseasocLocal ntrend+nexpl+varampl+1];
             end
         end
 
         while ( (betadiff > reftolALS) && (iter < refstepsALS) )
             iter = iter + 1;
 
-            % b2378 estimate of linear part of seasonal component
+            % b2378 = estimate of the linear part of seasonal component.
             b2378=newbeta(indlinsc);
-            % at= yhatseaso = fitted values for linear part of seasonal
-            % component
+            % at = fitted values for the linear part of seasonal component.
             at=Xseasobsb*b2378;
 
-            % OLS to estimate coefficients of trend + expl variables + non lin coeff of
-            % seasonal + coefficient of fixed level shift
-            % tr_expl_nls_lshift is the matrix of explanatory variables
-            XtrendXbsbXseasonXlshift(:,indnlseaso)=at.*Seqbsbvarampl;
+            if trendHPYN
+                % Given the current linear seasonal component, estimate
+                % jointly the HP trend, explanatory-variable coefficients,
+                % varying-amplitude coefficients and (when present) the
+                % level-shift magnitude.
+                atFull=Xseaso*b2378;
+                Xhp=[X atFull.*Seq(:,2:varampl+1) Xlshift];
 
-            % b0145 = coefficients of intercept trend + expl var + non
-            % linear part of seasonal component + level shift
-            b0145=XtrendXbsbXseasonXlshift\(yinbsb-at) ;
+                % The conditional HP problem must identify the two affine
+                % null-space components together with all columns of Xhp.
+                qhp=size(Xhp,2);
+                Aid=[ones(length(bsb),1) double(bsb) double(Xhp(bsb,:))];
+                if length(bsb)<qhp+2 || rank(Aid)<qhp+2
+                    newbeta=beta0;
+                    exitflag=-1;
+                    break
+                end
 
-            % Now find new coefficients of linear part of seasonal
-            % component in the regression of y-trend-expl-lsihft versus
-            % vector which contains non linear part of seasonal component
-            % which multiplies each column of matrix Xseaso (linear part of
-            % seasonal component)
-            yhatnlseaso = Seqbsb + Seqbsbvarampl * b0145(indnlseaso);
-            b2378 = (yhatnlseaso.*Xseasobsb) \ (yinbsb - XtrendbsbXbsbXlshiftbsb * b0145(indnlseasoc));
+                outHPals=hpfilterFS(yin-atFull,'bsb',bsb,'X',Xhp, ...
+                    'lambda',lambdaHP,'fitonly',true);
+                trendHP=outHPals.mhat;
+                b0145=outHPals.beta;
 
-            % Store new value of beta
+                % Local order in b0145 for the HP branch is:
+                % X, varying-amplitude coefficients, level-shift magnitude.
+                if isemptyX
+                    yhatXbsb=0;
+                else
+                    yhatXbsb=Xbsb*b0145(1:nexpl);
+                end
+
+                indnlseasoLocal=nexpl+(1:varampl);
+                yhatnlseaso=Seq(bsb,1)+ ...
+                    Seqbsbvarampl*b0145(indnlseasoLocal);
+
+                if lshiftYN==1
+                    yhatlshiftbsb=Xlshiftbsb*b0145(nexpl+varampl+1);
+                else
+                    yhatlshiftbsb=0;
+                end
+
+                % Conditional update of the linear seasonal coefficients.
+                b2378=(yhatnlseaso.*Xseasobsb) \ ...
+                    (yinbsb-trendHP(bsb)-yhatXbsb-yhatlshiftbsb);
+
+            else
+                % Original polynomial-trend ALS update, rewritten using
+                % ntrend so that coefficient positions do not depend on the
+                % presence of the intercept.
+                XtrendXbsbXseasonXlshift(:,indnlseasoLocal)= ...
+                    at.*Seqbsbvarampl;
+
+                % b0145 = coefficients of trend + explanatory variables +
+                % non linear part of seasonal component + level shift.
+                b0145=XtrendXbsbXseasonXlshift\(yinbsb-at);
+
+                % Update coefficients of the linear seasonal component.
+                yhatnlseaso = Seq(bsb,1)+ ...
+                    Seqbsbvarampl*b0145(indnlseasoLocal);
+                b2378 = (yhatnlseaso.*Xseasobsb) \ ...
+                    (yinbsb-XtrendbsbXbsbXlshiftbsb* ...
+                    b0145(indnlseasocLocal));
+            end
+
+            % Store new value of beta. otherind has the same order as b0145
+            % in both the polynomial and HP branches.
             newbeta(indlinsc)=b2378;
             newbeta(otherind)=b0145;
 
             % betadiff is linked to the tolerance (specified in scalar
-            % reftol)
-            betadiff = norm(oldbeta - newbeta,1) / norm(newbeta,1);
-
+            % reftol).
+            betadiff = norm(oldbeta-newbeta,1)/norm(newbeta,1);
             oldbeta=newbeta;
 
-            % exit from the loop if the new beta has singular values. In
+            % Exit from the loop if the new beta has singular values. In
             % such a case, any intermediate estimate is not reliable and we
             % can just keep the initial beta and initial scale.
-            if (any(isnan(newbeta)))
-                newbeta = beta0;
-                exitflag=-1;
-                break
-            end
-        end
-    end
-
-    function [newbeta,exitflag]=ALSbsxfun(beta0)
-        iter        = 0;
-        betadiff    = 9999;
-        newbeta=beta0;
-        oldbeta=beta0;
-        % exitflag = flag which informs about convergence. exitflag =0
-        % implies normal convergence, else no convergence has been obtained
-        exitflag=0;
-
-        while ( (betadiff > reftolALS) && (iter < refstepsALS) )
-            iter = iter + 1;
-
-            % b2378 estimate of linear part of seasonal component
-            b2378=newbeta(indlinsc);
-            % at= yhatseaso = fitted values for linear part of seasonal
-            % component
-            at=Xseaso(bsb,:)*b2378;
-
-            % OLS to estimate coefficients of trend + expl variables + non lin coeff of
-            % seasonal + coefficient of fixed level shift
-            % tr_expl_nls_lshift is the matrix of explanatory variables
-            if isemptyX
-                if lshiftYN==1
-                    tr_expl_nls_lshift=[Xtrend(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1)) Xlshift(bsb)];
-                else
-                    tr_expl_nls_lshift=[Xtrend(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1))];
-                end
-            else
-                if lshiftYN==1
-                    tr_expl_nls_lshift=[Xtrend(bsb,:) X(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1)) Xlshift(bsb)];
-                else
-                    tr_expl_nls_lshift=[Xtrend(bsb,:) X(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1))];
-                end
-            end
-            % b0145 = coefficients of intercept trend + expl var + non
-            % linear part of seasonal component + level shift
-            b0145=tr_expl_nls_lshift\(yin(bsb)-at) ;
-
-            % Now find new coefficients of linear part of seasonal
-            % component in the regression of y_trend_expl_lsihft versus
-            % vector which contains non linear part of seasonal component
-            % which multiplies each column of matrix Xseaso (linear part of
-            % seasonal component)
-            yhatnlseaso=Seq(bsb,1)+ Seq(bsb,2:varampl+1)*b0145((trend+2+nexpl):(trend+2+nexpl+varampl-1));
-            if isemptyX
-                if lshiftYN==1
-                    b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
-                        \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-Xlshift(bsb)*b0145(end));
-                else
-                    b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
-                        \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1));
-                end
-            else
-                if lshiftYN==1
-                    b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
-                        \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-X(bsb,:)*b0145((trend+2):(trend+1+nexpl)) - Xlshift(bsb)*b0145(end));
-                else
-                    b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
-                        \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-X(bsb,:)*b0145((trend+2):(trend+1+nexpl)));
-                end
-            end
-
-            newbeta(indlinsc)=b2378;
-
-            newbeta(otherind)=b0145;
-
-            % betadiff is linked to the tolerance (specified in reftol)
-            betadiff = norm(oldbeta - newbeta,1) / norm(newbeta,1);
-
-            oldbeta=newbeta;
-
-            % exit from the loop if the new beta has singular values. In
-            % such a case, any intermediate estimate is not reliable and we
-            % can just keep the initial beta and initial scale.
-            if (any(isnan(newbeta)))
-                newbeta = beta0;
+            if any(isnan(newbeta))
+                newbeta=beta0;
                 exitflag=-1;
                 break
             end
@@ -3021,49 +3458,47 @@ end
 % to call this function to compute fitted values for the units specified in bsb
     function obj=lik(beta0)
 
-        if intercept ==true
-            yhattrend=Xtrend(bsb,:)*beta0(1:trend+1);
-            npar=trend+1;
+        % Trend component. In the HP branch there are no trend coefficients
+        % in beta0: the current trend is stored separately in trendHP.
+        if trendHPYN
+            yhattrend=trendHP(bsb);
         else
-            yhattrend=Xtrend(bsb,:)*beta0(2:trend+1);
-            npar=trend;
+            if ntrend>0
+                yhattrend=Xtrend(bsb,:)*beta0(1:ntrend);
+            else
+                yhattrend=0;
+            end
         end
 
-        if seasonal >0
-            if seasonal<s/2
-                yhatseaso=Xseaso(bsb,:)*beta0(npar+1:npar+seasonal*2);
-                npar=npar+seasonal*2;
-            else
-                yhatseaso=Xseaso(bsb,:)*beta0(npar+1:npar+seasonal*2-1);
-                npar=npar+seasonal*2-1;
-            end
-
+        % Linear seasonal component and, when requested, its varying
+        % amplitude. indlinsc and indvarampl are valid for both trend types.
+        if seasonal>0
+            yhatseaso=Xseaso(bsb,:)*beta0(indlinsc);
             if varampl>0
-                Xtre=1+Seq(bsb,2:varampl+1)*beta0((npar+1+nexpl):(npar+varampl+nexpl));
+                Xtre=1+Seq(bsb,2:varampl+1)*beta0(indvarampl);
                 yhatseaso=Xtre.*yhatseaso;
-                npar=npar+varampl;
             end
+        else
+            yhatseaso=0;
         end
 
         if isemptyX
             yhatX=0;
         else
             % Note the order of coefficients is trend, linear part of
-            % seasonal component, expl variables, non linear part of
-            % seasonal component, level shift
-            yhatX=X(bsb,:)*beta0(npar+1-varampl:npar+nexpl-varampl);
-            npar=npar+nexpl;
+            % seasonal component, explanatory variables, non linear part of
+            % seasonal component, level shift.
+            yhatX=X(bsb,:)*beta0(indexpl);
         end
 
         if lshiftYN==1
-            %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
-            %  is a real number and \beta_(npar+2) is a integer which
-            %  denotes the period in which level shift shows up
-            yhatlshift=beta0(npar+1)*Xlshift(bsb);
+            % beta0(indlshiftcoef) is the magnitude of the level shift. The
+            % discrete position is stored separately in beta0(indlshiftpos)
+            % when that element is present.
+            yhatlshift=beta0(indlshiftcoef)*Xlshift(bsb);
 
-            % Fitted values from trend (yhattrend), (time varying) seasonal
-            % (yhatseaso), explanatory variables (yhatX) and level shift
-            % component (yhatlshift)
+            % Fitted values from trend, (time varying) seasonal,
+            % explanatory variables and level shift components.
             yhat=yhattrend+yhatseaso+yhatX+yhatlshift;
         else
             yhat=yhattrend+yhatseaso+yhatX;
@@ -3082,7 +3517,10 @@ end
         %             yhat(ARp+1:end)=Yhatlagged*blagged;
         %         end
 
-        % obj = sum of squares of residuals/2 = negative log likelihood
+        % obj = sum of squares of residuals/2 = negative log likelihood.
+        % In the HP branch the roughness penalty is kept separate from this
+        % residual quantity and is added explicitly when the penalized
+        % objective is required.
         obj=sum((yin(bsb)-yhat).^2,'omitnan')/2;
         % format long
         % disp(obj)
@@ -3146,6 +3584,88 @@ end
     end
 
 % -------------------------------------------------------------------
+% subfunction hpFiniteJacobian
+% -------------------------------------------------------------------
+
+    function J=hpFiniteJacobian(beta0)
+        %hpFiniteJacobian Jacobian of the finite-dimensional HP component.
+        % The HP trend itself is profiled out and is not included in J.
+
+        q=nseaso+nexpl+varampl+lshiftYN;
+        J=zeros(T,q);
+
+        if nseaso>0
+            if varampl>0
+                ampl=1+Seq(:,2:varampl+1)*beta0(indvarampl);
+            else
+                ampl=ones(T,1);
+            end
+            J(:,indlinsc)=Xseaso.*ampl;
+        end
+
+        if nexpl>0
+            J(:,indexpl)=X;
+        end
+
+        if varampl>0
+            seasonalBase=Xseaso*beta0(indlinsc);
+            J(:,indvarampl)=seasonalBase.*Seq(:,2:varampl+1);
+        end
+
+        if lshiftYN==1
+            J(:,indlshiftcoef)=Xlshift;
+        end
+    end
+
+% -------------------------------------------------------------------
+% subfunction hpProfileInvInfo
+% -------------------------------------------------------------------
+
+    function invInfo=hpProfileInvInfo(J,bsbInfo)
+        %hpProfileInvInfo inverse profiled penalized information matrix.
+        % For fixed lambdaHP and subset B,
+        % G=J_B'*(I-S_B*A^{-1}*S_B')*J_B, A=W_B+lambdaHP*D'*D.
+
+        q=size(J,2);
+        if q==0
+            invInfo=zeros(0,0);
+            return
+        end
+
+        Jb=J(bsbInfo,:);
+        Aid=[ones(length(bsbInfo),1) double(bsbInfo) double(Jb)];
+        if length(bsbInfo)<q+2 || rank(Aid)<q+2
+            error('FSDA:LTSts:HPFinalRankDeficient', ...
+                ['The finite-dimensional component is not identifiable ' ...
+                'jointly with the affine null space of the HP trend on ' ...
+                'the final reweighting subset.'])
+        end
+
+        w=zeros(T,1);
+        w(bsbInfo)=1;
+        W=spdiags(w,0,T,T);
+        e=ones(T,1);
+        D=spdiags([e -2*e e],0:2,T-2,T);
+        A=W+lambdaHP*(D'*D);
+        Aready=decomposition(A,'chol');
+
+        WJ=zeros(T,q);
+        WJ(bsbInfo,:)=Jb;
+        AinvWJ=Aready\WJ;
+        RJ=Jb-AinvWJ(bsbInfo,:);
+        G=Jb'*RJ;
+        G=(G+G')/2;
+
+        if rank(G)<q
+            error('FSDA:LTSts:HPFinalInformation', ...
+                'The profiled HP information matrix is rank deficient.')
+        end
+
+        invInfo=G\eye(q);
+        invInfo=(invInfo+invInfo')/2;
+    end
+
+% -------------------------------------------------------------------
 % subfunction IRWLSreg
 % -------------------------------------------------------------------
 
@@ -3187,6 +3707,15 @@ end
         % For performance reasons, the output structure is created only at
         % the end
         % outIRWLS = struct('betarw',[],'yhat',[],'weights',[],'exiflag',[],'numscale2rw',[]);
+
+        % The HP branch uses a dedicated concentration-step routine. This
+        % keeps the original polynomial-trend IRWLS code unchanged and
+        % ensures that every C-step refits the HP trend jointly with the
+        % finite-dimensional components on the new subset.
+        if trendHPYN
+            outIRWLS=IRWLSregHP(y,initialbeta,refsteps,reftol,h);
+            return
+        end
 
         % Residuals for the initialbeta
         res = y - yhat;
@@ -3263,11 +3792,7 @@ end
                 if varampl>0
                     % No minimization is used but just ALS
 
-                    if verLess2016b==1
-                        [newbeta,exitfl]=ALSbsxfun(initialbeta);
-                    else
-                        [newbeta,exitfl]=ALS(initialbeta);
-                    end
+                    [newbeta,exitfl]=ALS(initialbeta);
 
 
                     % Construct vector of fitted values for all the
@@ -3297,11 +3822,7 @@ end
                 % Use Alternative least squares to update beta (just using
                 % the units forming subset)
 
-                if verLess2016b==1
-                    [newbeta,exitfl]=ALSbsxfun(beta);
-                else
-                    [newbeta,exitfl]=ALS(beta);
-                end
+                [newbeta,exitfl]=ALS(beta);
 
 
                 % Call lik with bsb=seq in order to create the vector
@@ -3390,9 +3911,306 @@ end
         % exitfl = the exit flag to be stored in outIRWLS.exiflag
         %outIRWLS.exiflag=exitfl;
 
-        % Store all output variables
-        outIRWLS = struct('betarw',newbeta,'yhat',yhat,'weights',weights,'exiflag',exitfl,'numscale2rw',numscale2);
+        % Store all output variables. For the polynomial branch the
+        % ranking objective is simply the residual sum of squares and there
+        % is no roughness penalty.
+        outIRWLS = struct('betarw',newbeta,'yhat',yhat,'weights',weights, ...
+            'exiflag',exitfl,'numscale2rw',numscale2, ...
+            'penalty',0,'objective',numscale2,'trendHP',zeros(0,1));
 
+    end
+
+% -------------------------------------------------------------------
+% subfunction IRWLSregHP
+% -------------------------------------------------------------------
+
+    function outIRWLS = IRWLSregHP(y,initialbeta,refsteps,reftol,h)
+        %IRWLSregHP concentration steps for the HP-trend branch.
+        %
+        % At each C-step the h observations with the smallest squared
+        % residuals are selected and the HP trend is refitted jointly with
+        % all finite-dimensional components on that subset. Candidate fits
+        % are ranked by
+        %
+        %   RSS_B + lambdaHP*||D*trendHP||^2,
+        %
+        % whereas numscale2rw contains RSS_B only and is therefore suitable
+        % for the existing scale calculations.
+
+        % Save the starting fitted signal and HP trend so that a singular
+        % C-step can return a coherent starting candidate.
+        initialYhat=yhat;
+        initialTrendHP=trendHP;
+
+        res=y-yhat;
+        r2=res.^2;
+        [r2s,i_r2s]=sort(r2);
+        ininumscale2=sum(r2s(1:h));
+
+        beta=initialbeta;
+        newbeta=initialbeta;
+        exitfl=0;
+        penalty=lambdaHP*sum(diff(trendHP,2).^2);
+        objective=ininumscale2+penalty;
+        numscale2=ininumscale2;
+
+        % refsteps=0 means raw subsampling: retain the current elemental fit
+        % and only identify the h observations with the smallest residuals.
+        if refsteps==0
+            bsb=selectHsubset(i_r2s,initialbeta,h);
+            numscale2=sum(r2(bsb));
+            penalty=lambdaHP*sum(diff(trendHP,2).^2);
+            objective=numscale2+penalty;
+        else
+            previousObjective=Inf;
+            previousBsb=zeros(0,1);
+
+            for iter=1:refsteps
+                % Select the new h-subset from the fitted values obtained at
+                % the previous step. This is the C-step subset update.
+                bsb=selectHsubset(i_r2s,initialbeta,h);
+                bsbfit=bsb;
+
+                if varampl==0
+                    % All finite-dimensional components are linear once the
+                    % level-shift position has been fixed.
+                    if lshiftYN==1
+                        Xhp=[Xsel Xlshift];
+                    else
+                        Xhp=Xsel;
+                    end
+
+                    qhp=size(Xhp,2);
+                    Aid=[ones(length(bsbfit),1) double(bsbfit) double(Xhp(bsbfit,:))];
+                    if length(bsbfit)<qhp+2 || rank(Aid)<qhp+2
+                        exitfl=-1;
+                        break
+                    end
+
+                    outHPstep=hpfilterFS(y,'bsb',bsbfit,'X',Xhp, ...
+                        'lambda',lambdaHP,'fitonly',true);
+                    trendHP=outHPstep.mhat;
+                    if lshiftYN==1
+                        newbeta=[outHPstep.beta; initialbeta(indlshiftpos)];
+                    else
+                        newbeta=outHPstep.beta;
+                    end
+                    yhat=outHPstep.yhat;
+                    numscale2=outHPstep.rss;
+                    penalty=outHPstep.penalty;
+                    objective=outHPstep.objective;
+                else
+                    % With varying seasonal amplitude, ALS performs the
+                    % conditional HP and seasonal updates on the current
+                    % subset. The resulting objective is then evaluated on
+                    % that same subset.
+                    [newbeta,exitfl]=ALS(beta);
+                    if exitfl~=0 || any(isnan(newbeta)) || any(isnan(trendHP))
+                        break
+                    end
+
+                    bsb=seq;
+                    lik(newbeta);
+                    bsb=bsbfit;
+                    numscale2=sum((y(bsbfit)-yhat(bsbfit)).^2,'omitnan');
+                    penalty=lambdaHP*sum(diff(trendHP,2).^2);
+                    objective=numscale2+penalty;
+                end
+
+                if any(isnan(newbeta)) || ~isfinite(objective)
+                    exitfl=-1;
+                    break
+                end
+
+                % Update residual ordering for the following C-step.
+                res=y-yhat;
+                r2=res.^2;
+                [~,i_r2s]=sort(r2);
+
+                if isfinite(previousObjective)
+                    objdiff=abs(previousObjective-objective)/ ...
+                        max(abs(previousObjective),1);
+                    subsetStable=isequal(sort(previousBsb),sort(bsbfit));
+                    if subsetStable && objdiff<=reftol
+                        beta=newbeta;
+                        break
+                    end
+                end
+
+                previousObjective=objective;
+                previousBsb=bsbfit;
+                beta=newbeta;
+            end
+
+            if exitfl~=0
+                % Keep the starting candidate if the HP refit is singular or
+                % ALS does not return a usable update. Restore beta, trend
+                % and fitted values together so that the returned quantities
+                % refer to the same model.
+                newbeta=initialbeta;
+                trendHP=initialTrendHP;
+                yhat=initialYhat;
+                res=y-yhat;
+                r2=res.^2;
+                [~,i_r2s]=sort(r2);
+                bsb=selectHsubset(i_r2s,initialbeta,h);
+                numscale2=sum(r2(bsb));
+                penalty=lambdaHP*sum(diff(trendHP,2).^2);
+                objective=numscale2+penalty;
+            else
+                % bsb is the subset on which the last HP fit was actually
+                % computed. This keeps weights, RSS and objective aligned.
+                bsb=bsbfit;
+            end
+        end
+
+        weights=zerT1;
+        weights(bsb)=true;
+
+        outIRWLS=struct('betarw',newbeta,'yhat',yhat,'weights',weights, ...
+            'exiflag',exitfl,'numscale2rw',numscale2, ...
+            'penalty',penalty,'objective',objective,'trendHP',trendHP);
+    end
+
+% -------------------------------------------------------------------
+% subfunction repairHPElementalSubset
+% -------------------------------------------------------------------
+
+    function [bsbout,fullrankHP]=repairHPElementalSubset(bsbin,Xhp,lshCurrent)
+        %repairHPElementalSubset repairs a singular HP elemental subset.
+        %
+        % The HP conditional fit is identifiable when the augmented design
+        % [1,t,Xhp] has rank size(Xhp,2)+2. Rich periodic designs can make a
+        % random minimal subset singular even when the complete design is
+        % identifiable. This routine keeps the original subset cardinality
+        % but exchanges redundant rows for non-missing observations until a
+        % full-rank elemental subset is obtained. Candidate rows are examined
+        % in random order so that repeated subsamples do not systematically
+        % favour particular time points.
+
+        bsbin=double(bsbin(:));
+        targetSize=length(bsbin);
+        targetRank=size(Xhp,2)+2;
+        bsbout=bsbin;
+        fullrankHP=false;
+
+        if targetSize<targetRank
+            return
+        end
+
+        % All observations used to repair the subset must have a finite
+        % response. ynotmissing is already defined in the parent function.
+        available=double(ynotmissing(:));
+
+        % Preserve the structural requirements of a tentative level shift:
+        % the shift position itself and at least one observation before it.
+        forced=zeros(0,1);
+        if lshiftYN==1
+            if ~ismember(lshCurrent,available)
+                return
+            end
+            forced=lshCurrent;
+            pre=bsbin(bsbin<lshCurrent);
+            if isempty(pre)
+                pre=available(available<lshCurrent);
+            end
+            if isempty(pre)
+                return
+            end
+            pre=pre(randperm(length(pre),1));
+            forced=[forced; pre];
+        end
+
+        % Randomize both the original seed and the remaining observations.
+        % The seed is considered first so that a nonsingular part of the
+        % originally drawn subset is retained whenever possible.
+        seed=bsbin(randperm(targetSize));
+        remaining=setdiff(available,[forced; seed],'stable');
+        if ~isempty(remaining)
+            remaining=remaining(randperm(length(remaining)));
+        end
+        candidates=[forced; seed; remaining];
+
+        selected=zeros(0,1);
+        currentRank=0;
+        for jj=1:length(candidates)
+            cand=candidates(jj);
+            if any(selected==cand)
+                continue
+            end
+            trial=[selected; cand];
+            Atrial=[ones(length(trial),1) double(trial) ...
+                double(Xhp(trial,:))];
+            newRank=rank(Atrial);
+            if newRank>currentRank
+                selected=trial;
+                currentRank=newRank;
+                if currentRank==targetRank
+                    break
+                end
+            end
+        end
+
+        if currentRank<targetRank
+            return
+        end
+
+        % If the original subset was larger than the minimum rank needed
+        % (this can happen with varying seasonal amplitude or a level shift),
+        % fill the remaining slots without changing the achieved rank.
+        fillOrder=[seed; remaining];
+        for jj=1:length(fillOrder)
+            if length(selected)>=targetSize
+                break
+            end
+            cand=fillOrder(jj);
+            if ~any(selected==cand)
+                selected=[selected; cand]; %#ok<AGROW>
+            end
+        end
+
+        if length(selected)~=targetSize
+            return
+        end
+
+        Afinal=[ones(targetSize,1) double(selected) ...
+            double(Xhp(selected,:))];
+        fullrankHP=rank(Afinal)>=targetRank;
+        if fullrankHP
+            bsbout=selected;
+        end
+    end
+
+% -------------------------------------------------------------------
+% subfunction selectHsubset
+% -------------------------------------------------------------------
+
+    function bsbout=selectHsubset(i_r2s,initialbeta,h)
+        %selectHsubset returns the h-subset used in a concentration step,
+        %respecting the existing level-shift constraints.
+
+        if constr==1
+            if sum(i_r2s(1:h)==initialbeta(end))==0
+                bsbout=[i_r2s(1:h-1); initialbeta(end)];
+            else
+                bsbout=i_r2s(1:h);
+            end
+        elseif constr==2
+            booLS=sum(i_r2s(1:h)==initialbeta(end));
+            booLSprev=sum(i_r2s(1:h)==initialbeta(end)-1);
+
+            if booLS==0 && booLSprev==0
+                bsbout=[i_r2s(1:h-2); initialbeta(end)-1; initialbeta(end)];
+            elseif booLS==0
+                bsbout=[i_r2s(1:h-1); initialbeta(end)];
+            elseif booLSprev==0
+                bsbout=[i_r2s(1:h-1); initialbeta(end)-1];
+            else
+                bsbout=i_r2s(1:h);
+            end
+        else
+            bsbout=i_r2s(1:h);
+        end
     end
 
 if nargout>1

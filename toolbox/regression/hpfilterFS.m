@@ -6,7 +6,7 @@ function out = hpfilterFS(y, varargin)
 % Model interpretation (Gaussian).
 %
 %   $y=(y_1, y_2, \ldots, y_T)'$ is the observed time series. $y_bsb$ is a
-%   subset of units from $y$ of length $n_{bsb}$. 
+%   subset of units from $y$ of length $n_{bsb}$.
 %
 %   $Sy=y_{bsb} = Sm + S\epsilon$,        $\epsilon \sim N(0, \sigma_\epsilon^2 I_{nbsb})$;
 %   $D m = u$,                 $u   \sim N(0, \sigma^2_\epsilon (1/\lambda) I_T)$.
@@ -14,9 +14,9 @@ function out = hpfilterFS(y, varargin)
 %   HP ratio: $\lambda=\sigma^2_\epsilon/\sigma^2_u$,
 %             the greater $\lambda$, the smoother is the trend.
 %
-%   $D$ is the Second-difference matrix of size (T-2 x T): 
+%   $D$ is the Second-difference matrix of size (T-2 x T):
 %       each row has [1 -2 1].
-%   $S$ is the selection matrix of size nbsb x T. Note that $SS'=I_{nbsb}$.  
+%   $S$ is the selection matrix of size nbsb x T. Note that $SS'=I_{nbsb}$.
 %
 %   Conditioning on observed subset y_bsb = S y,
 %   using W = S'S (diag 0/1).
@@ -27,6 +27,21 @@ function out = hpfilterFS(y, varargin)
 %
 %   Posterior cov:
 %  $Cov(m|y_{bsb}) = \sigma^2_\epsilon  (W + \lambda D'D)^{-1}$
+%
+%   If the optional input matrix X is supplied, the fitted model becomes
+%
+%   $Sy_{bsb}=S(m+X\beta)+S\epsilon$
+%
+%   and hpfilterFS solves the joint penalized least-squares problem
+%
+%   $\min_{m,\beta} ||S(y-m-X\beta)||^2 + \lambda ||D m||^2$.
+%
+%   The joint fit is computed exactly by profiling the HP trend. When X is
+%   supplied, the current implementation is intended for the fitting-only
+%   calculations required by LTSts. Therefore X can presently be used only
+%   together with option fitonly=true. Inferential quantities for the joint
+%   trend-regression model require an additional treatment of the
+%   uncertainty of beta and are not produced in fitting-only mode.
 %
 %  Required input arguments:
 %
@@ -42,10 +57,34 @@ function out = hpfilterFS(y, varargin)
 %
 %
 %   bsb :   Indices of observed points to condition on. Vector of
-%           length>=3. Indices of observed points used in the conditioning.
-%           If bsb is empty the the first 80 per cent units are used
-%               Example - 'bsb',1:round(T/0.7): T=length(y);
-%               Data Types - double
+%           integer-valued numeric indices. In ordinary inference mode at
+%           least 3 observations are required. In fitonly mode the minimum
+%           is size(X,2)+2, reflecting the two-dimensional affine null
+%           space of the HP penalty; therefore a trend-only fit can use an
+%           elemental subset of 2 observations. If bsb is empty all finite
+%           observations are used.
+%               Example - 'bsb',1:round(T*0.7); T=length(y);
+%               Data Types - numeric
+%
+%       X : additional linear components. Numeric matrix or empty.
+%           Matrix with T rows containing additional regressors to be
+%           estimated jointly with the HP trend. The fitted model is
+%           y=m+X*beta+epsilon. Because the HP trend contains an
+%           unpenalized affine component, X cannot contain an intercept, a
+%           linear time trend or columns which make these components
+%           linearly dependent. If X is nonempty, fitonly must be true.
+%               Example - 'X',X
+%               Data Types - double or empty
+%
+% fitonly : fitting-only mode. Boolean.
+%           If fitonly is true, hpfilterFS computes the trend, the
+%           coefficients associated with X, fitted values, residuals and
+%           objective components, and skips residual-variance estimation
+%           and prediction intervals. This option is intended for repeated
+%           calls from fitting algorithms such as LTSts. The default value
+%           is false.
+%               Example - 'fitonly',true
+%               Data Types - logical
 %
 %      conflev : confidence level for the confidence bands. Scalar.
 %                A number between 0 and 1 which defines the confidence
@@ -63,7 +102,7 @@ function out = hpfilterFS(y, varargin)
 %           which is used depends on the Ravn–Uhlig scaling rule (adjust by
 %           the 4th power of the observation frequency ratio):
 %           \[
-%               \lambda(s)=1600(s/4​)^4
+%               \lambda(s)=1600(s/4)^4
 %           \]
 %           where $s$ is the number of observations per year
 %           Therefore, lambda=1600 for quarterly data, lambda=129600
@@ -79,12 +118,12 @@ function out = hpfilterFS(y, varargin)
 %            computed just for the units not beloing to bsb. If predint is
 %            "all" variance of the prediciton interval is computed for all
 %            the units. If predint="" variance of prediction interval is
-%            not computed.
+%            not computed. predint must be empty when fitonly=true.
 %               Example - 'predint',"all";
 %               Data Types - string or empty.
 %
 %     s    : length of seasonal period. Numeric scalar or empty value.
-%           For monthly data s=12 (default), for quarterly data s=4,
+%           For monthly data s=12, for quarterly data s=4 (default),
 %               Example - 's',52;
 %               Data Types - double or empty.
 %
@@ -104,8 +143,8 @@ function out = hpfilterFS(y, varargin)
 %               $MAPig= (b_0 + 0.5\hat Q)/(a_0 + 1 + 0.5K)$.
 %            dfREML = df-REML-like (marginal smoother likelihood).
 %               $dfREML=RSS / (nbsb - df(lambda))$.
-%               $df(lambda)=trace(H)
-%               = trace(S A^{-1} S') = trace(A^{-1} S' S) = trace(A^{-1} W)$.
+%               $df(lambda)=trace(H)$
+%               $= trace(S A^{-1} S') = trace(A^{-1} S' S) = trace(A^{-1} W)$.
 %               The estimate of the $trace(A^{-1} W)$ is via Hutchinson:
 %               $tr(M) ≈ (1/niter) \sum_{i=1}^{niter} z'_i M z_i$.
 %               $z_i$ are Rademacher random. $niter$ is fixed to 50.
@@ -146,15 +185,25 @@ function out = hpfilterFS(y, varargin)
 %  out :     A structure containing the following fields
 %
 %   out.mhat        = n x 1 posterior mean of y. Estimated HP trend
+%   out.beta        = q x 1 vector containing the coefficients associated
+%                     with X. It is empty if X is empty.
+%   out.yhat        = n x 1 fitted values. out.mhat if X is empty and
+%                     out.mhat+X*out.beta otherwise.
+%   out.residuals   = n x 1 vector of residuals y-out.yhat.
 %   out.bsb         = indexes of the units used in the fit.
+%   out.lambda      = numerical value of lambda used in the fit.
+%   out.rss         = residual sum of squares computed on bsb.
+%   out.penalty     = value of lambda*||D*out.mhat||^2.
+%   out.objective   = out.rss+out.penalty.
+%   out.fitonly     = value of input option fitonly.
 %   out.sigma2_ML   = estimate of residual variance using augmented
-%                     likelihood approach.
+%                     likelihood approach. Empty if fitonly=true.
 %   out.sigma2_Jef  = MAP estimate of residual variance using Jeffreys
-%                     prior.
+%                     prior. Empty if fitonly=true.
 %   out.sigma2_IG   = MAP estimate of residual variance based on
-%                     inverse gamma prior.
+%                     inverse gamma prior. Empty if fitonly=true.
 %   out.sigma2_dfREML= MAP estimate of residual variance based on
-%                     marginal smoother likelihood.
+%                     marginal smoother likelihood. Empty if fitonly=true.
 %   out.predVar    = n x 1 predictive variance or missing. This is the
 %                     estimated trend variance + observation noise
 %                     variance. The observation noise variance depends on
@@ -165,16 +214,16 @@ function out = hpfilterFS(y, varargin)
 %                     or for all the units (input option predint is "all")
 %   out.PI_low    = n x 1 predictive variance or missing. This is the
 %                    lower band of the confidence interval.  out.PI_low is
-%                     a scalar missing if input option predint is empty.
-%                     out.PI_low is populated just for the units not
-%                     belonging to bsb (input option predint is "nobsb"),
-%                     or for all the units (input option predint is "all")
+%                    a scalar missing if input option predint is empty.
+%                    out.PI_low is populated just for the units not
+%                    belonging to bsb (input option predint is "nobsb"),
+%                    or for all the units (input option predint is "all")
 %   out.PI_high    = n x 1 predictive variance or missing. This is the
 %                    upper band of the confidence interval.  out.PI_high is
-%                     a scalar missing if input option predint is empty.
-%                     out.PI_high is populated just for the units not
-%                     belonging to bsb (input option predint is "nobsb"),
-%                     or for all the units (input option predint is "all")
+%                    a scalar missing if input option predint is empty.
+%                    out.PI_high is populated just for the units not
+%                    belonging to bsb (input option predint is "nobsb"),
+%                    or for all the units (input option predint is "all")
 %
 %
 % See also hpfilter, LTSts, supsmu
@@ -205,12 +254,12 @@ function out = hpfilterFS(y, varargin)
 % Examples:
 
 %{
-    % Call to hpfilterFS with all default arguments.
+    %% Call to hpfilterFS with all default arguments.
     Mdl = arima('Constant',0,'D',1,'MA',{0.5},'Variance',100);
     n = 60;
-    y = simulate(Mdl,n);      
-    % In this case just the conditional mena 
-    out = hpfilterFS(y); 
+    y = simulate(Mdl,n);
+    % In this case just the conditional mean
+    out = hpfilterFS(y);
 %}
 
 %{
@@ -218,11 +267,11 @@ function out = hpfilterFS(y, varargin)
     rng(1000)
     Mdl = arima('Constant',0,'D',1,'MA',{0.5},'Variance',100);
     n = 150;
-    y = simulate(Mdl,n); 
-    bsb = (1:round(n*0.9))';      
-    
-    % In this case just the conditional mena 
-    out = hpfilterFS(y,'bsb',bsb); 
+    y = simulate(Mdl,n);
+    bsb = (1:round(n*0.9))';
+
+    % In this case just the conditional mena
+    out = hpfilterFS(y,'bsb',bsb);
 %}
 
 %{
@@ -230,10 +279,23 @@ function out = hpfilterFS(y, varargin)
     rng(1000)
     Mdl = arima('Constant',0,'D',1,'MA',{0.5},'Variance',100);
     n = 150;
-    y = simulate(Mdl,n); 
-    bsb = (1:round(n*0.9))';      
+    y = simulate(Mdl,n);
+    bsb = (1:round(n*0.9))';
     % Prediction interval on all the observations (included and excluded)
-    out = hpfilterFS(y,'bsb',bsb,'predint','all','plots',true); 
+    out = hpfilterFS(y,'bsb',bsb,'predint','all','plots',true);
+%}
+
+%{
+    %% Joint HP trend and additional linear components in fitting-only mode.
+    rng(1000)
+    n = 120;
+    t = (1:n)';
+    X = [sin(2*pi*t/12) cos(2*pi*t/12)];
+    y = 0.02*t + X*[3;-2] + randn(n,1);
+    bsb = (1:100)';
+    out = hpfilterFS(y,'bsb',bsb,'X',X,'lambda',1600,...
+        'fitonly',true);
+    % out.mhat contains the HP trend and out.beta the coefficients of X.
 %}
 
 %{
@@ -256,97 +318,214 @@ function out = hpfilterFS(y, varargin)
 %% Beginning of code
 
 if nargin<1
-    error('FSDA:hpfilterFS:missingInputs','Required input argument is missing.')
+    error('FSDA:hpfilterFS:missingInputs',...
+        'Required input argument is missing.')
 end
 
+% Default options.
 conflev = 0.99;
-s=4;
-bsb=[];
-plots=false;
-lambda=1600;
-ig_a0=[];
-ig_b0=[];
+s = 4;
+bsb = [];
+plots = false;
+lambda = [];
+ig_a0 = [];
+ig_b0 = [];
+X = [];
+fitonly = false;
 
-% Method to use to estimate the residual variance
-sigma2_eps="MLaug";
-predint=[];
+% Method used to estimate the residual variance.
+sigma2_eps = "MLaug";
+predint = [];
 
-if nargin > 1
-
-    options=struct('bsb',bsb,'plots',plots,'lambda',lambda,'conflev',conflev, ...
-        'sigma2_eps',sigma2_eps,'s',s,'ig_a0',ig_a0,'ig_b0',ig_b0,'predint',predint);
-
-    for i=1:2:(length(varargin)-1)
-        options.(varargin{i})=varargin{i+1};
+if nargin>1
+    if rem(length(varargin),2)~=0
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            'Optional arguments must be supplied as name/value pairs.')
     end
 
+    options=struct('bsb',bsb,'plots',plots,'lambda',lambda,...
+        'conflev',conflev,'sigma2_eps',sigma2_eps,'s',s,...
+        'ig_a0',ig_a0,'ig_b0',ig_b0,'predint',predint,...
+        'X',X,'fitonly',fitonly);
+
+    names=fieldnames(options);
+    for i=1:2:length(varargin)
+        name=varargin{i};
+        if ~(ischar(name) || (isstring(name) && isscalar(name)))
+            error('FSDA:hpfilterFS:WrongInputOpt',...
+                'Optional argument names must be strings or character vectors.')
+        end
+        name=char(name);
+        if ~any(strcmp(name,names))
+            error('FSDA:hpfilterFS:WrongInputOpt',...
+                'Unknown option ''%s''.',name)
+        end
+        options.(name)=varargin{i+1};
+    end
 
     s=options.s;
     plots=options.plots;
     bsb=options.bsb;
     lambda=options.lambda;
-    conflev =options.conflev;
+    conflev=options.conflev;
     sigma2_eps=options.sigma2_eps;
     ig_a0=options.ig_a0;
     ig_b0=options.ig_b0;
     predint=options.predint;
+    X=options.X;
+    fitonly=options.fitonly;
 end
 
+% Convert timetable input and, when possible, infer the periodicity.
 if istimetable(y)
     isTT=true;
     rowTimes=y.Properties.RowTimes;
-    % Given rowTimes find time series periodicity
     stent=findTimeSeriesPeriodicity(rowTimes);
-    % Overwrite the value of s with found periodicity
     if ~isempty(stent)
         s=stent;
     end
     y=y{:,1};
 else
-    y = y(:);
+    y=y(:);
     isTT=false;
 end
 
-% default value of lambda depending on the sampling frequency. We use
-% Ravn–Uhlig scaling rule (adjust by the 4th power of the observation
-% frequency ratio)
-if isempty(lambda)
-    if s==4
-        lambda=1600;
-    else
-        lambda = 1600 * (s/4)^4;
-    end
-end
-
-
-
-T = length(y);
+T=length(y);
 seq=(1:T)';
-if T < 3
-    error('FSDA:hpfilterFS:WrongInputOpt','Need n >= 3 for HP second differences.');
+
+if T<3
+    error('FSDA:hpfilterFS:WrongInputOpt',...
+        'Need T >= 3 for HP second differences.')
 end
 
-if isempty(bsb)
-    bsb=seq;
-else
-    % Validate bsb
-    bsb = bsb(:);
-    bsb = unique(bsb);
-    if any(bsb < 1) || any(bsb > T)
-        error('FSDA:hpfilterFS:WrongInputOpt','bsb contains indices outside 1..n.');
+if ~(islogical(fitonly) && isscalar(fitonly))
+    if isnumeric(fitonly) && isscalar(fitonly) && ismember(fitonly,[0 1])
+        fitonly=logical(fitonly);
+    else
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            'fitonly must be a logical scalar.')
     end
 end
+
+if ~(islogical(plots) && isscalar(plots))
+    if isnumeric(plots) && isscalar(plots) && ismember(plots,[0 1])
+        plots=logical(plots);
+    else
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            'plots must be a logical scalar.')
+    end
+end
+
+if ~(isnumeric(conflev) && isscalar(conflev) && isfinite(conflev) && ...
+        conflev>0 && conflev<1)
+    error('FSDA:hpfilterFS:WrongInputOpt',...
+        'conflev must be a scalar strictly between 0 and 1.')
+end
+
+% Resolve lambda once. This value is then fixed for the whole call.
+if isempty(lambda)
+    if ~(isnumeric(s) && isscalar(s) && isfinite(s) && s>0)
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            's must be a positive scalar when lambda is empty.')
+    end
+    lambda=1600*(s/4)^4;
+end
+if ~(isnumeric(lambda) && isscalar(lambda) && isfinite(lambda) && lambda>0)
+    error('FSDA:hpfilterFS:WrongInputOpt',...
+        'lambda must be a positive finite scalar or empty.')
+end
+
+% Validate bsb. If it is not supplied, use all finite observations.
+if isempty(bsb)
+    bsb=find(isfinite(y));
+else
+    if ~isnumeric(bsb) || ~isvector(bsb) || any(~isfinite(bsb)) || ...
+            any(bsb~=fix(bsb))
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            'bsb must contain finite integer indices.')
+    end
+    bsb=unique(bsb(:));
+    if any(bsb<1) || any(bsb>T)
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            'bsb contains indices outside 1..T.')
+    end
+    if any(~isfinite(y(bsb)))
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            'All values y(bsb) must be finite.')
+    end
+end
+
 nbsb=length(bsb);
 
-% Selection via diagonal weights: W = S'S (n x n), with 1 on observed
-% entries
-w = zeros(T,1);
-w(bsb) = 1;
-W = spdiags(w, 0, T, T);   % sparse diagonal
+% Validate the optional design matrix. The minimum admissible size of bsb
+% depends on q=size(X,2), so the cardinality check is performed below once
+% q is known.
+if isempty(X)
+    X=zeros(T,0);
+else
+    if ~(isnumeric(X) && ismatrix(X) && size(X,1)==T)
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            'X must be a numeric matrix with T rows.')
+    end
+    if any(any(~isfinite(X)))
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            'All entries of X must be finite.')
+    end
+end
+q=size(X,2);
+
+if q>0 && ~fitonly
+    error('FSDA:hpfilterFS:JointInferenceNotImplemented',...
+        ['When X is supplied, use ''fitonly'',true. Prediction intervals ' ...
+        'and variance estimates for the joint HP-regression model require ' ...
+        'the additional uncertainty of beta and are not yet implemented.'])
+end
+if fitonly && ~isempty(predint)
+    error('FSDA:hpfilterFS:WrongInputOpt',...
+        'predint must be empty when fitonly=true.')
+end
+
+% The null space of D is span{1,t}. In fitonly mode the smallest
+% identifiable subset therefore contains q+2 observations, where
+% q=size(X,2). In particular, a trend-only elemental fit (q=0) needs just
+% two distinct observations. The legacy inference branch still requires
+% at least three observations because its variance calculations were
+% developed under that condition.
+if fitonly
+    if nbsb<q+2
+        if q==0
+            error('FSDA:hpfilterFS:WrongInputOpt',...
+                'At least two finite observations are required in bsb when fitonly=true.')
+        else
+            error('FSDA:hpfilterFS:RankDeficient',...
+                ['The number of observations in bsb must be at least ' ...
+                'size(X,2)+2 for the joint HP-regression fit.'])
+        end
+    end
+else
+    if nbsb<3
+        error('FSDA:hpfilterFS:WrongInputOpt',...
+            'At least three finite observations are required in bsb.')
+    end
+end
+
+Xb=X(bsb,:);
+Aid=[ones(nbsb,1) double(bsb) double(Xb)];
+if rank(Aid)<q+2
+    error('FSDA:hpfilterFS:RankDeficient',...
+        ['The columns of X are not identifiable jointly with the HP ' ...
+        'trend. In particular, X cannot contain an intercept, a linear ' ...
+        'time trend, or a collinear combination of these components.'])
+end
+
+% Selection via diagonal weights W=S''S.
+w=zeros(T,1);
+w(bsb)=1;
+W=spdiags(w,0,T,T);
 
 % Second-difference matrix D (T-2 x T): each row has [1 -2 1]
-e = ones(T,1);
-D = spdiags([e -2*e e], 0:2, T-2, T);
+e=ones(T,1);
+D=spdiags([e -2*e e],0:2,T-2,T);
 
 % % Build P = D'*D as 5-diagonal sparse matrix (T x T)
 % d0 = [1; 5; repmat(6,T-4,1); 5; 1];
@@ -355,183 +534,257 @@ D = spdiags([e -2*e e], 0:2, T-2, T);
 % d2 = e;
 % DtD = spdiags([d2 d1b d0 d1a d2], [-2 -1 0 1 2], T, T);
 
-% Solve for posterior mean of trend:
-A = W + lambda*(D'*D);
-b = W*y;
-Aready = decomposition(A, 'chol');
+% A is common to the conditional trend solution and to the profiled
+% regression solution. Factorize it once.
+A=W+lambda*(D'*D);
+Aready=decomposition(A,'chol');
 
-% Predictive mean for y is E[y|data] = E[m|data] since E[eps]=0
-m_hat = Aready \ b;
+% Never form W*y directly when y can contain NaNs outside bsb: in MATLAB,
+% zero times NaN can propagate through ordinary arithmetic. Build the
+% selected right-hand side explicitly instead.
+Wy=zeros(T,1);
+Wy(bsb)=y(bsb);
+AinvWy=Aready\Wy;
 
-% Compute RSS ||y_bsb - S m_hat||^2
-r_obs = y(bsb) - m_hat(bsb);
-RSS = full(r_obs' * r_obs);
-% Compute Qhat =  RSS + lambda ||D m_hat||^2
-Qhat = RSS + lambda * full((D*m_hat)'*(D*m_hat));
-
-% Estimate of sigma^2 (fixed lambda)
-%   1) ML (augmented)         : Qhat / K, K = nObs + (n-2)
-K=nbsb + (T-2);
-sigma2_ML   = Qhat / K;
-%   2) MAP (Jeffreys)         : Qhat / (K+2)
-sigma2_Jef  = Qhat / (K + 2);
-%   3) MAP (Inv-Gamma a0,b0)  : (b0 + 0.5*Qhat)/(a0 + 1 + 0.5*K)
-if isempty(ig_a0)
-    ig_a0=1e-03;
-end
-if isempty(ig_b0)
-    ig_b0=1e-03*var(y(bsb));
-end
-sigma2_IG   = (ig_b0 + 0.5*Qhat) / (ig_a0 + 1 + 0.5*K);
-%   4) df-REML-like (smoother): RSS / (nObs - df(lambda)),
-% df(lambda)=trace(H)
-% trace(H) = trace(S A^{-1} S') = trace(A^{-1} S' S) = trace(A^{-1} W)
-% Estimate trace(A^{-1} W) via Hutchinson: tr(M) ≈ (1/R) Σ z' M z, z_i=±1
-% This methods correspond to a marginal smoother likelihood
-nTrace=50;
-df = hutch_trace_AinvW(Aready, W, nTrace);
-
-if (nbsb - df) <= 0
-    warning('nbsb - df(lambda) <= 0. df-based estimator not defined; returning NaN.');
-    sigma2_dfREML = NaN;
+if q==0
+    beta=zeros(0,1);
+    m_hat=AinvWy;
 else
-    sigma2_dfREML = RSS / (nbsb - df);
+    % Profile m out of
+    %   ||S(y-m-X*beta)||^2 + lambda||Dm||^2.
+    % The normal equations for beta are
+    %   X'*(W-W*A^{-1}*W)*X beta =
+    %   X'*(W-W*A^{-1}*W)*y.
+    WX=zeros(T,q);
+    WX(bsb,:)=Xb;
+    AinvWX=Aready\WX;
+
+    Ry=y(bsb)-AinvWy(bsb);
+    RX=Xb-AinvWX(bsb,:);
+
+    G=Xb'*RX;
+    G=(G+G')/2;
+    g=Xb'*Ry;
+
+    % The rank check above addresses structural non-identifiability. The
+    % backslash solve is retained so that MATLAB can diagnose any remaining
+    % severe numerical ill-conditioning in the usual way.
+    beta=G\g;
+    m_hat=AinvWy-AinvWX*beta;
 end
 
-if sigma2_eps=="MLaug"
-    sigma2_eps = sigma2_ML;
-elseif sigma2_eps=="MAPjef"
-    sigma2_eps = sigma2_Jef;
-elseif sigma2_eps=="MAPig"
-    sigma2_eps = sigma2_IG;  % Use Inverse-Gamma estimate for sigma^2
-elseif sigma2_eps=="dfREML"
-    sigma2_eps=sigma2_dfREML;
-else
-    % Check that the value of sigma2 if it is a string is one
-    % of the above values
-    if isstring(sigma2_eps) & ~ismember(sigma2_eps,["MLaug" "MAPjef" "MAPig" "dfREML"])
-        error('FSDA:hpfilterFS:InvalidInput', 'sigma2 must be a numeric scalar or a valid string option.');
+% Complete fitted signal. If X is empty predictive mean for y is
+% E[y|data] = E[m|data] since E[eps]=0.
+yhat=m_hat+X*beta;
+residuals=y-yhat;
+
+% Compute RSS ||y_bsb - S(m_hat+X*beta)||^2
+r_obs=y(bsb)-yhat(bsb);
+RSS=full(r_obs'*r_obs);
+% Compute Qhat = RSS + lambda ||D m_hat||^2
+Dm=D*m_hat;
+penalty=lambda*full(Dm'*Dm);
+Qhat=RSS+penalty;
+
+% Initialize inferential outputs. They remain empty in fitting-only mode.
+sigma2_ML=[];
+sigma2_Jef=[];
+sigma2_IG=[];
+sigma2_dfREML=[];
+predVar=[];
+PI_low=[];
+PI_high=[];
+
+if ~fitonly
+    % The following calculations refer to the original trend-only model.
+
+    % Estimate of sigma^2 (fixed lambda)
+    %   1) ML (augmented)         : Qhat / K, K = nObs + (n-2)
+    K=nbsb+(T-2);
+    sigma2_ML=Qhat/K;
+    %   2) MAP (Jeffreys)         : Qhat / (K+2)
+    sigma2_Jef=Qhat/(K+2);
+    %   3) MAP (Inv-Gamma a0,b0)  : (b0 + 0.5*Qhat)/(a0 + 1 + 0.5*K)
+
+    if isempty(ig_a0)
+        ig_a0=1e-3;
     end
-    if isnumeric(sigma2_eps) && isscalar(sigma2_eps)
-        % use prior value
+    if isempty(ig_b0)
+        ig_b0=1e-3*var(y(bsb));
+    end
+    sigma2_IG=(ig_b0+0.5*Qhat)/(ig_a0+1+0.5*K);
+
+    %   4) df-REML-like (smoother): RSS / (nObs - df(lambda)),
+    % df(lambda)=trace(H)
+    % trace(H) = trace(S A^{-1} S') = trace(A^{-1} S' S) = trace(A^{-1} W)
+    % Estimate trace(A^{-1} W) via Hutchinson: tr(M) ≈ (1/R) Σ z' M z, z_i=±1
+    % This method corresponds to a marginal smoother likelihood.
+    %
+    % Preserve the caller's random-number state. The stochastic trace
+    % estimate must not affect subsequent random subset generation in LTSts
+    % or in user code.
+    rngState=rng;
+    cleanupObj=onCleanup(@() rng(rngState));
+    nTrace=50;
+    df=hutch_trace_AinvW(Aready,W,nTrace);
+    clear cleanupObj
+
+    if (nbsb-df)<=0
+        warning('FSDA:hpfilterFS:DFNotPositive',...
+            ['nbsb-df(lambda) <= 0. The df-based variance estimate is ' ...
+            'not defined; returning NaN.'])
+        sigma2_dfREML=NaN;
     else
-        error('FSDA:hpfilterFS:InvalidInput', 'sigma2 must be a numeric scalar or a valid string option.');
+        sigma2_dfREML=RSS/(nbsb-df);
+    end
+
+    if ischar(sigma2_eps)
+        sigma2_eps=string(sigma2_eps);
+    end
+
+    if isstring(sigma2_eps) && isscalar(sigma2_eps)
+        switch sigma2_eps
+            case "MLaug"
+                sigma2_eps=sigma2_ML;
+            case "MAPjef"
+                sigma2_eps=sigma2_Jef;
+            case "MAPig"
+                sigma2_eps=sigma2_IG;
+            case "dfREML"
+                sigma2_eps=sigma2_dfREML;
+            otherwise
+                error('FSDA:hpfilterFS:InvalidInput',...
+                    ['sigma2_eps must be a positive numeric scalar or one ' ...
+                    'of "MLaug", "MAPjef", "MAPig", "dfREML".'])
+        end
+    elseif isnumeric(sigma2_eps) && isscalar(sigma2_eps) && ...
+            isfinite(sigma2_eps) && sigma2_eps>0
+        % Use the supplied value.
+    else
+        error('FSDA:hpfilterFS:InvalidInput',...
+            ['sigma2_eps must be a positive numeric scalar or one of ' ...
+            '"MLaug", "MAPjef", "MAPig", "dfREML".'])
+    end
+
+    % Note that using var(y - y_hat) is not coherent with the model, because
+    % those residuals mix observation noise with trend-estimation error in a
+    % way that depends on the smoother.
+
+    % --- Prediction intervals need Var(y | data)
+    % Posterior covariance of m is sigma_eps^2 * A^{-1}
+    % We only need diagonal elements of A^{-1} for the requested indices.
+    %
+    % Efficient trick: compute columns of A^{-1} corresponding to the
+    % requested indices and extract the associated diagonal elements.
+    if ~isempty(predint)
+        if ischar(predint)
+            predint=string(predint);
+        end
+        if ~(isstring(predint) && isscalar(predint))
+            error('FSDA:hpfilterFS:InvalidInput',...
+                'predint must be "all", "nobsb", or empty.')
+        end
+
+        switch predint
+            case "all"
+                idxPred=seq;
+            case "nobsb"
+                idxPred=setdiff(seq,bsb);
+            otherwise
+                error('FSDA:hpfilterFS:InvalidInput',...
+                    'predint must be "all", "nobsb", or empty.')
+        end
+
+        blockSize=1000;
+        var_m_unit=diag_inv_sparse_block(Aready,blockSize,idxPred);
+
+        % kMiss=length(idxPred);
+        %
+        % E = sparse(idxPred, 1:kMiss, 1, T, kMiss); % T x kMiss selection columns
+        % % One factorization, many RHS:
+        % Xtmp = Aready \ E;                         % Xtmp = A^{-1} E
+        %
+        % % Extract posterior variance of m at requested indices
+        % var_m_unitCHK = full(diag(Xtmp(idxPred,:)));
+
+        % Posterior Var(m_t|data)=sigma2_eps*(A^{-1})_tt. Predictive
+        % variance adds a further sigma2_eps for the observation noise.
+        predVar=NaN(T,1);
+        predVar(idxPred)=sigma2_eps*(var_m_unit+1);
+
+        z=norminv((1+conflev)/2);
+        PI_low=NaN(T,1);
+        PI_high=NaN(T,1);
+        PI_low(idxPred)=full(m_hat(idxPred))-z*sqrt(predVar(idxPred));
+        PI_high(idxPred)=full(m_hat(idxPred))+z*sqrt(predVar(idxPred));
     end
 end
 
-% Note that using var(y - y_hat) is not coherent with the model, because
-% those residuals mix observation noise with trend-estimation error in a
-% way that depends on the smoother.
-
-% --- Prediction intervals need Var(y | data)
-% Posterior covariance of m is sigma_eps^2 * A^{-1}
-% We only need diagonal elements of A^{-1} for missing indices.
-%
-% Efficient trick: compute columns of A^{-1} corresponding to missing indices:
-% Solve A * X = E, where E has columns e_{idxMiss(j)}.
-% Then var_m(idxMiss(j)) = X(idxMiss(j), j)
-
-if ~isempty(predint)
-    switch predint
-        case "all"
-            idxMiss=seq;
-        case "nobsb"
-            % Forecasts for excluded indices:
-            idxMiss=setdiff(seq,bsb) ;
-        otherwise
-            % predint must be equal to all or to nobsb
-            % otherwise produce an error
-            error('FSDA:hpfilterFS:InvalidInput', 'predint must be "all" or "nobsb" or []');
-    end
-
-
-    blockSize=1000;
-    var_m = diag_inv_sparse_block(Aready, blockSize,idxMiss);
-
-    % kMiss=length(idxMiss);
-    %
-    % E = sparse(idxMiss, 1:kMiss, 1, n, kMiss);   % n x kMiss selection columns
-    % % One factorization, many RHS:
-    % Aready = decomposition(A, 'chol');                % uses sparse Cholesky if available
-    % X = Aready \ E;                                   % X = A^{-1} E
-    %
-    % % Extract posterior variance of m at missing indices
-    % var_m = full( diag( X(idxMiss, :) ) );        % (A^{-1})_{ii} for i in idxMiss
-
-    % niter=10000;
-    % [dhat, info] = diag_inv_hutchinson(A, niter, 1e-8, 300, struct('type','ict','droptol',1e-3));
-    % var_mCHK =  dhat;    % posterior Var(m_t|data) = sigma^2 * (A^{-1})_tt
-
-
-    % Predictive variance adds observation noise variance
-    predVar=NaN(T,1);
-    predVar(idxMiss) = var_m+ sigma2_eps;
-
-    % z-quantile
-    z = norminv((1+conflev)/2);
-
-    PI_low=NaN(T,1);
-    PI_high=PI_low;
-    PI_low(idxMiss)  = full(m_hat(idxMiss)) - z*sqrt(predVar(idxMiss));
-    PI_high(idxMiss) = full(m_hat(idxMiss)) + z*sqrt(predVar(idxMiss));
-else
-    predVar = [];
-    PI_low = [];
-    PI_high = [];
-end
-
-if plots==true
+if plots
     figure;
-    if isTT ==true
-        seq=rowTimes;
+    if isTT
+        seqPlot=rowTimes;
+    else
+        seqPlot=seq;
     end
-    plot(seq, y, 'k-');
+
+    plot(seqPlot,y,'k-');
     hold on;
     if T<100
-        plot(seq(bsb), y(bsb), 'o');
+        plot(seqPlot(bsb),y(bsb),'o');
     end
-    plot(seq, m_hat, 'b-', 'LineWidth', 1.5);
-    if ~isempty(predint)
-        plot(seq, PI_low, 'r--');
-        plot(seq, PI_high, 'r--');
-        if T<100
-            legend('y','values of bsb','HP mean (all t)','PI low','PI high');
-        else
-            legend('y','HP mean (all t)','PI low','PI high');
-        end
-        title('y, HP-based predictive mean and prediction intervals');
+
+    if q>0
+        plot(seqPlot,m_hat,'b-','LineWidth',1.5);
+        plot(seqPlot,yhat,'m-','LineWidth',1.2);
     else
-        if T<100
-            legend('y','values of bsb','HP mean (all t)');
-        else
-            legend('y','HP mean (all t)');
-        end
-        title('HP-based predictive mean');
+        plot(seqPlot,m_hat,'b-','LineWidth',1.5);
     end
+
+    if ~isempty(predint)
+        plot(seqPlot,PI_low,'r--');
+        plot(seqPlot,PI_high,'r--');
+    end
+
+    if q>0
+        title('Series, HP trend and complete fitted signal');
+    elseif ~isempty(predint)
+        title('Series, HP trend and prediction intervals');
+    else
+        title('Series and HP trend');
+    end
+
     legend('AutoUpdate','off','Location','best')
     grid on;
     if max(bsb)<T
-        xline(seq(max(bsb))+0.5)
+        if isdatetime(seqPlot) || isduration(seqPlot)
+            xline(seqPlot(max(bsb)))
+        else
+            xline(seqPlot(max(bsb))+0.5)
+        end
     end
-
 end
 
+out=struct();
+out.mhat=full(m_hat);
+out.beta=full(beta);
+out.yhat=full(yhat);
+out.residuals=full(residuals);
+out.bsb=bsb;
+out.lambda=lambda;
+out.rss=RSS;
+out.penalty=penalty;
+out.objective=Qhat;
+out.fitonly=fitonly;
 
-out = struct();
-out.mhat       = full(m_hat);
-out.bsb         = bsb;
-
-% Store estimates of residual variance
-out.sigma2_ML  =sigma2_ML;
-out.sigma2_Jef =sigma2_Jef;
-out.sigma2_IG  =sigma2_IG;
+out.sigma2_ML=sigma2_ML;
+out.sigma2_Jef=sigma2_Jef;
+out.sigma2_IG=sigma2_IG;
 out.sigma2_dfREML=sigma2_dfREML;
 
-% Store prediciton intervals
-out.predVar    = predVar; % predictive variance
-out.PI_low     = PI_low;
-out.PI_high    = PI_high;
-
+out.predVar=predVar;
+out.PI_low=PI_low;
+out.PI_high=PI_high;
 
 end
 
@@ -620,6 +873,9 @@ function d = diag_inv_sparse_block(A, blockSize, idx)
 %   For each block of indices I:
 %       Solve A X = E_I
 %       Extract diag entries from X(I,:)
+%
+% Note that an explicitly supplied empty idx returns an empty vector. This
+% is needed when predint="nobsb" and bsb contains all observations.
 
 if nargin < 2 || isempty(blockSize)
     blockSize = 200;
@@ -627,7 +883,7 @@ end
 
 n = A.MatrixSize(1);
 
-if nargin < 3 || isempty(idx)
+if nargin < 3
     idx = (1:n)';
 else
     idx = idx(:);
@@ -704,6 +960,4 @@ else
 end
 end
 
-
 %FScategory:REG-Regression
-
