@@ -141,7 +141,7 @@ end
 
 % Get installed add-ons
 addons = matlab.addons.installedAddons;
-row = strcmp(addons.Name, toolboxName);
+row = contains(addons.Name, toolboxName);
 
 if ~any(row)
     warning('Toolbox "%s" is not installed.', toolboxName);
